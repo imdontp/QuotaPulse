@@ -1,0 +1,14 @@
+# Normalise line endings in the repository to LF, whatever the checkout platform does.
+# Set before the first commit on purpose: introducing this later rewrites every text file
+# in one renormalisation commit and makes the history harder to read.
+* text=auto eol=lf
+
+# PowerShell is the Windows-only half of this project and CRLF is what its tooling expects.
+*.ps1 text eol=crlf
+
+# Generated, and large. Diffing it is never useful.
+package-lock.json -diff linguist-generated
+
+# These are written by scripts/gen-vendor-icons.mjs; review the generator, not the output.
+packages/web/src/vendor-colors.css linguist-generated
+packages/web/src/components/vendor-icon.tsx linguist-generated

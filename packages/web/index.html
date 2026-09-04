@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The load line, the marking this app is named after. Served from disk like
+         everything else: no request leaves the machine. Fonts are bundled by Vite
+         from @fontsource-variable, imported in src/main.tsx.
+
+         The ?v= is not decoration. Chromium keeps favicons in a store of its own that a
+         page reload does not revisit, so the browsers that already fetched the broken
+         file would go on showing nothing forever. Bumping the query string makes it a
+         new icon URL and forces the refetch. Bump it again if the artwork ever changes. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
+    <script>
+      // Applied before first paint so a dark-theme user never sees a light flash.
+      try {
+        var t = localStorage.getItem('quotapulse-theme') || localStorage.getItem('plimsoll-theme');
+        if (t !== 'light' && (t === 'dark' || matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+        // Set before first paint: Chrome chooses its line-breaking dictionary from
+        // <html lang>, and Thai wraps mid-word without it.
+        var p = JSON.parse(
+          localStorage.getItem('quotapulse-prefs') || localStorage.getItem('plimsoll-prefs') || '{}',
+        );
+        if (p.lang === 'th' || p.lang === 'en') document.documentElement.lang = p.lang;
+      } catch (e) {}
+    </script>
+    <title>QuotaPulse - Monitor. Understand. Optimize.</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

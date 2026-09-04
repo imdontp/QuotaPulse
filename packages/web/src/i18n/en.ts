@@ -1,0 +1,250 @@
+/**
+ * The source of truth for every user-visible string. `th.ts` is typed against these keys,
+ * so a missing translation is a typecheck failure rather than an English word appearing
+ * mid-sentence at runtime.
+ *
+ * `{placeholders}` are substituted by `t(key, vars)`.
+ */
+export const en = {
+  // shell
+  'app.tagline': 'Monitor. Understand. Optimize.',
+  'app.sources': '{n} sources',
+  'app.lastPass': 'last pass {ms}ms',
+  'app.streaming': 'streaming',
+  'app.idle': 'idle',
+  'app.connecting': 'connecting',
+  'app.loading': 'loading…',
+  'app.themeToLight': 'Switch to light theme',
+  'app.themeToDark': 'Switch to dark theme',
+
+  // settings popover
+  'settings.title': 'Language & currency',
+  'settings.language': 'Language',
+  'settings.currency': 'Currency',
+  'settings.rate': 'Rate',
+  'settings.ratePerUsd': '1 USD =',
+  'settings.rateHelp':
+    'Figures are computed in USD from published list prices. This rate is yours, applied for display only — nothing fetches it.',
+
+  // tabs
+  'tab.live': 'Live',
+  'tab.limits': 'Limits',
+  'tab.trend': 'Trend',
+  'tab.cost': 'Cost',
+  'tab.sessions': 'Sessions',
+  'tab.projects': 'Projects',
+  'tab.models': 'Models',
+  'tab.health': 'Health',
+
+  // live
+  'live.tokensToday': 'Tokens today',
+  'live.valueToday': 'Value today',
+  // Rolling seven days, not the calendar week -- the label says what it counts.
+  'live.tokensWeek': 'Tokens, last 7 days',
+  'live.cacheToday': 'Cache read today',
+  'live.apiCalls': '{n} API calls',
+  'live.calls': '{n} calls',
+  'live.unpriced': '{n} unpriced',
+  'live.listPrice': 'list price, not billed',
+  'live.listPriceHint':
+    'Computed from published list API prices for the tokens used. On a subscription plan this is not an amount billed to you.',
+  'live.cacheShare': '{pct}% of input served from cache',
+  'live.noInput': 'no input yet',
+  'live.activityToday': 'Activity today',
+  'live.byHarness': 'by harness',
+  'live.noActivity': 'nothing recorded today',
+
+  // shared table headers
+  'col.harness': 'Harness',
+  'col.calls': 'Calls',
+  'col.freshIn': 'Fresh in',
+  'col.cacheRead': 'Cache read',
+  'col.output': 'Output',
+  'col.total': 'Total',
+  'col.value': 'Value',
+  'col.model': 'Model',
+  'col.effort': 'Effort',
+  'col.project': 'Project',
+  'col.reasoning': 'Reasoning',
+  'col.source': 'Source',
+  'col.window': 'Window',
+  'col.used': 'Used',
+  'col.level': 'Level',
+  'col.resets': 'Resets',
+  'col.burn': 'Burn',
+  'col.projectedFull': 'Projected full',
+  'col.freshness': 'Freshness',
+  'col.lastActive': 'Last active',
+  'col.harnessSays': 'Harness says',
+  'col.events': 'Events',
+  'col.targets': 'Targets',
+  'col.errors': 'Errors',
+  'col.oldest': 'Oldest',
+  'col.newest': 'Newest',
+  'col.lastIngest': 'Last ingest',
+
+  // gauges / limits
+  'gauge.5h': '5-hour',
+  'gauge.weekly': 'Weekly',
+  'gauge.weeklyOpus': 'Weekly (Opus)',
+  'gauge.weeklySonnet': 'Weekly (Sonnet)',
+  'gauge.resetsIn': 'resets in',
+  'gauge.windowReset': 'window reset {ago} ago',
+  'gauge.windowResetJust': 'window reset just now',
+  'gauge.lastRead': 'last read {pct}, awaiting a fresh one',
+  'gauge.hits100': 'hits 100% at {time}',
+  'gauge.alsoVia': 'also {pct} via',
+  'limits.title': 'All quota windows',
+  'limits.blurb':
+    'Every reading carries the age of the underlying data. Codex republishes its quota on every API call; Claude’s percentages come from a running statusline and fall back to a cached config value that can be days old.',
+  'limits.alsoVia': 'also {pct} via {origin}, {age} old',
+  'limits.rolledOver': 'window rolled over',
+  'limits.notBeforeReset': 'not before reset',
+  'limits.passed': '(passed)',
+  'limits.noReset': 'none reported',
+  'limits.footnote':
+    'A row greyed to a dash has not gone missing — its window rolled over and the harness has not published a new reading yet. Showing the pre-reset number there would be the one genuinely misleading thing this page could do.',
+  'limits.expiredHint': 'Its window rolled over. The last reading before that was {pct}.',
+  'badge.live': 'live',
+  'badge.old': '{age} old',
+  'badge.freshHint': 'The harness last confirmed this reading {age} ago.',
+  'badge.originHint': 'The file this reading was read from.',
+
+  // trend
+  'trend.metric': 'Metric',
+  'trend.bucket': 'Bucket',
+  'trend.groupBy': 'Group by',
+  'trend.range': 'Range',
+  'trend.metricTotal': 'Total tokens',
+  'trend.metricOutput': 'Output tokens',
+  'trend.metricCost': 'Value',
+  'trend.metricCalls': 'API calls',
+  'trend.hourly': 'Hourly',
+  'trend.daily': 'Daily',
+  'trend.byHarness': 'Harness',
+  'trend.byModel': 'Model',
+  'trend.byVendor': 'Vendor',
+  'trend.byProject': 'Project',
+  'trend.byNone': 'Everything',
+  'trend.range24h': '24 hours',
+  'trend.range7d': '7 days',
+  'trend.range30d': '30 days',
+  'trend.range120d': '120 days',
+  'trend.empty': 'no usage in this range',
+  'trend.coarsened':
+    'Hourly detail is off over {days} days — a point would be under two pixels wide. Showing daily instead.',
+  'trend.tooltipTotal': 'Total',
+  'trend.legendHint': 'Click a series to hide it',
+
+  // cost
+  'cost.allTimeValue': 'All-time value',
+  'cost.allTimeTokens': 'All-time tokens',
+  'cost.savedByCache': 'Saved by caching',
+  'cost.unpricedCalls': 'Unpriced calls',
+  'cost.listPriceNote': 'token value at list API prices',
+  'cost.cacheExact': 'vs paying the full input rate',
+  'cost.estimatedCalls': '{n} priced from another provider',
+  'cost.breakdown': 'Where the money went',
+  'cost.breakdownBlurb':
+    'Each token bucket priced at its own rate. Cache reads are billed far below fresh input, which is why they dominate the token count without dominating the bill.',
+  'col.costShare': 'Share',
+  'col.bucket': 'Token bucket',
+  'health.catalogAge': 'catalog {age} old',
+  'health.catalogUnknownAge': 'catalog age unknown',
+  'health.catalogBorrowed': "OpenCode's copy; run prices:refresh to own it",
+  'health.catalogMissing': 'no catalog found; run prices:refresh',
+  'col.tokens': 'Tokens',
+  'col.cacheWrite': 'Cache write',
+  'cost.shownAsDash': 'shown as —, never as $0',
+  'cost.allPriced': 'every model priced',
+  'cost.byModel': 'Value by model',
+  'cost.byModelBlurb':
+    'The list-price value of the tokens consumed. On a subscription plan this is not money billed to you — it is what the same work would cost through the API. Calls on models with no published price are excluded, never counted as zero.',
+  'cost.converted':
+    'Converted from USD at {rate}, a rate you set. The underlying figures are USD list prices.',
+  'cost.allTimeByHarness': 'All-time by harness',
+  'cost.noData': 'no data',
+
+  // sessions
+  'sessions.title': 'Sessions',
+  'sessions.none': 'no sessions recorded yet',
+  'sessions.sub': 'sub',
+  'sessions.nativeHint':
+    'The figure the harness computed for itself. It includes background calls that never reach its transcript, so it is usually a little higher than ours.',
+
+  // models
+  'models.title': 'Models & Effort',
+  'models.blurb':
+    'Reasoning effort is only meaningful next to the model that ran at it. Both views below carry the same totals, cut the two ways worth asking about.',
+  'models.measure': 'Measure',
+  'models.effortByModel': 'Effort, broken down by model',
+  'models.effortByModelBlurb':
+    'Which models are behind each effort level. Bars are to scale against each other.',
+  'models.modelByEffort': 'Model, broken down by effort',
+  'models.modelByEffortBlurb': 'The mirror view: how each model’s work splits by effort.',
+  'models.detail': 'Detail',
+  'models.effortRamp': 'Bars are the maker’s colour; the deeper the shade, the higher the reasoning effort.',
+  'models.multiEffort': 'Run at more than one effort level:',
+  'models.none': 'no model usage recorded yet',
+  'models.filterAll': 'All vendors',
+  'models.filterHint': 'Filter by who made the model, not which gateway routed it',
+  'models.nModels': '{n} models',
+  'models.effortNone': 'none reported',
+  'models.noneMatch': 'no models match this filter',
+
+  'alerts.title': 'Approaching a limit',
+  'alerts.rate': 'Burning {rate}/h —',
+  'alerts.full': 'full at {time}',
+  'alerts.resets': 'Resets {time}',
+  'alerts.footnote': 'Only windows that run out before they reset are listed here.',
+  'sessions.range': '{from}–{to} of {total}',
+  'sessions.perPage': 'Per page',
+  'sessions.prev': 'Previous',
+  'sessions.next': 'Next',
+  'live.noQuota': 'This harness publishes no quota, so there is nothing to gauge — usage is still tracked.',
+  'live.lastUsed': 'last used {age} ago',
+  'live.neverUsed': 'no usage recorded yet',
+  'live.allTime': '{tokens} all time',
+
+  'projects.title': 'Projects',
+  'projects.blurb':
+    'What each project actually consumed, and on which tool and model. A project is the working directory a session ran in, so the same folder opened by two different harnesses is one project here.',
+  'projects.byProject': 'Every project',
+  'projects.byProjectBlurb': 'Each bar is split by the harness that did the work. Pick one to break it down further.',
+  'projects.cutsBlurb': 'The same total, cut three ways.',
+  'projects.byHarness': 'By harness',
+  'projects.byVendor': 'By vendor',
+  'projects.byModel': 'By model',
+  'projects.detail': 'Harness and model together',
+  'projects.detailBlurb': 'One row per pair, which is the cut a single bar cannot show.',
+  'projects.allTime': 'All time',
+  'projects.none': 'no usage recorded in this range',
+
+  // health
+  'health.adapters': 'Adapters',
+  'health.adaptersBlurb':
+    'One row per harness profile we read. A target is a single thing being followed — usually one transcript file, sometimes a table inside the harness’s own database — and Errors counts the targets that are failing to read right now, the same signal the Ingest errors card breaks down below.',
+  'health.coverage': 'Coverage vs each harness’s own accounting',
+  'health.coverageBlurb':
+    'Where a harness publishes its own cost figure we compare against it. Below ~90% means the harness makes API calls it never writes to its transcript (Claude’s background title and summary calls behave this way), so our figure is a floor, not a ceiling.',
+  'health.noCoverage': 'no harness on this machine publishes its own cost',
+  'health.sessionsCompared': 'Sessions compared',
+  'health.harnessReports': 'Harness reports',
+  'health.weDerived': 'We derived',
+  'health.coveragePct': 'Coverage',
+  'health.unpricedModels': 'Unpriced models',
+  'health.catalogCount': '{n} models in the catalog',
+  'health.unpricedBlurb':
+    'Models we saw in use that carry no published price, so their calls cannot be valued. Those calls are excluded from every money figure in this app — never counted as zero — which is why a total that leaves some out is marked with a trailing +. A harness’s internal pseudo-models (Codex writes codex-auto-review for its own review runs) and locally-run models will never appear in a price catalog, so they stay here permanently.',
+  'health.allPriced': 'every observed model has a published price',
+  'health.ingestErrors': 'Ingest errors',
+  'health.errorsBlurb':
+    'Reads that failed, one row per target. The count is how many passes in a row it has failed, not a lifetime total: it clears itself the moment the target reads cleanly again. A failure filed under (adapter) escaped before any single file could be blamed.',
+  'health.noErrors': 'no read errors',
+  'health.target': 'Target',
+  'health.count': 'Count',
+  'health.callsN': '{n} calls',
+  'health.ago': '{age} ago',
+} as const;
+
+export type MessageKey = keyof typeof en;

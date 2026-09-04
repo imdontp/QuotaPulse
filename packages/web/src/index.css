@@ -1,0 +1,193 @@
+@import 'tailwindcss';
+/* One bar colour per vendor, generated from the brand marks. See the file header. */
+@import './vendor-colors.css';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * shadcn/ui base, retuned to the QuotaPulse palette. Semantic status colours
+ * (ok / warn / crit) are first-class tokens rather than ad-hoc utilities: on a monitoring
+ * dashboard "how bad is this" is the primary channel, and it has to survive a theme
+ * switch unchanged in meaning.
+ *
+ * Every colour below is OKLCH, converted from the brand sheet's hex rather than eyeballed:
+ *   #0B0F14 #121821 #1E2631   surfaces      #00E5FF brand   #22D3A7 ok
+ *   #FFB020 warn   #FF4D4F crit             #7C5CFF chart-1
+ *
+ * Three rules this file is holding up, each of which has a way of breaking quietly:
+ *
+ * 1. Do NOT move the --chart-* lightness band (light 0.606 to 0.769, dark 0.702 to 0.828).
+ *    scripts/gen-vendor-icons.mjs pins all 37 --vendor-* colours to L 0.650 light and
+ *    0.750 dark so they sit inside this band and a vendor bar reads as the same weight as
+ *    a model bar beside it. Hue is free; lightness is load-bearing. Changing --brand alone
+ *    is safe, which is why the rebrand did not touch these.
+ *
+ * 2. --brand is NOT the same value in both themes. The sheet's #00E5FF is L 0.844: brilliant
+ *    on #0B0F14 (12.5:1) and effectively invisible on white (2.0:1). The light theme uses
+ *    the same hue dropped to L 0.600, measured at 3.5:1 on --background.
+ *
+ * 3. --accent stays a neutral. It is shadcn's hover/active surface, used by every Radix
+ *    menu, select and dropdown; pointing it at cyan turns every hover row cyan. The
+ *    accent-led look in the brand sheet comes from --brand and --ring instead.
+ */
+:root {
+  --radius: 0.625rem;
+
+  /* Neutrals carry a trace of the brand hue (chroma 0.002 to 0.006) so the light theme
+     reads as the same system as the dark one rather than a stock zinc sheet. */
+  --background: oklch(0.985 0.002 256);
+  --foreground: oklch(0.160 0.012 256);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.160 0.012 256);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.160 0.012 256);
+  --primary: oklch(0.210 0.015 256);
+  --primary-foreground: oklch(0.985 0.002 256);
+  --secondary: oklch(0.968 0.004 256);
+  --secondary-foreground: oklch(0.210 0.015 256);
+  --muted: oklch(0.968 0.004 256);
+  --muted-foreground: oklch(0.552 0.014 256);
+  --accent: oklch(0.968 0.004 256);
+  --accent-foreground: oklch(0.210 0.015 256);
+  --border: oklch(0.918 0.006 256);
+  --input: oklch(0.918 0.006 256);
+  --ring: oklch(0.600 0.120 209);
+
+  --ok: oklch(0.596 0.145 163);
+  --warn: oklch(0.667 0.163 58);
+  --crit: oklch(0.577 0.213 27);
+  --track: oklch(0.952 0.004 256);
+
+  /* The two ends of the brand gradient: cyan to teal, the mark's own colours. Kept as a
+     pair of tokens so the logo, the progress fills and any accent sweep all bend together
+     on a palette change instead of drifting apart as hardcoded hex. */
+  --brand: oklch(0.600 0.120 209);
+  --brand-2: oklch(0.600 0.120 170);
+
+  /* Categorical series, shared by charts and legends: assigned by rank over the visible
+     set, for series that are NOT a single vendor -- a model, a harness, a project.
+     A series that IS a vendor uses its own --vendor-* token instead. */
+  --chart-1: oklch(0.606 0.208 286);
+  --chart-2: oklch(0.696 0.152 163);
+  --chart-3: oklch(0.685 0.153 220);
+  --chart-4: oklch(0.769 0.157 70);
+  --chart-5: oklch(0.627 0.194 330);
+  --chart-6: oklch(0.7 0.13 195);
+  --chart-7: oklch(0.646 0.166 25);
+  --chart-8: oklch(0.65 0.05 250);
+}
+
+.dark {
+  --background: oklch(0.167 0.012 254);
+  --foreground: oklch(0.985 0.002 256);
+  --card: oklch(0.207 0.020 258);
+  --card-foreground: oklch(0.985 0.002 256);
+  /* A step above --card, so a popover lifts off the card it opens from. */
+  --popover: oklch(0.232 0.021 257);
+  --popover-foreground: oklch(0.985 0.002 256);
+  --primary: oklch(0.985 0.002 256);
+  --primary-foreground: oklch(0.207 0.020 258);
+  --secondary: oklch(0.266 0.024 256);
+  --secondary-foreground: oklch(0.985 0.002 256);
+  --muted: oklch(0.266 0.024 256);
+  --muted-foreground: oklch(0.712 0.018 256);
+  --accent: oklch(0.298 0.024 256);
+  --accent-foreground: oklch(0.985 0.002 256);
+  --border: oklch(0.266 0.024 256);
+  --input: oklch(0.266 0.024 256);
+  --ring: oklch(0.844 0.146 209);
+
+  --ok: oklch(0.774 0.148 170);
+  --warn: oklch(0.813 0.165 75);
+  --crit: oklch(0.673 0.214 24);
+  --track: oklch(0.252 0.020 257);
+
+  /* --brand-2 and --ok are deliberately the same teal here, as they are in the brand
+     sheet: the healthy end of the gradient is the healthy colour. */
+  --brand: oklch(0.844 0.146 209);
+  --brand-2: oklch(0.774 0.148 170);
+
+  --chart-1: oklch(0.702 0.161 286);
+  --chart-2: oklch(0.765 0.144 163);
+  --chart-3: oklch(0.755 0.13 220);
+  --chart-4: oklch(0.828 0.152 84);
+  --chart-5: oklch(0.712 0.166 330);
+  --chart-6: oklch(0.78 0.12 195);
+  --chart-7: oklch(0.72 0.15 25);
+  --chart-8: oklch(0.72 0.04 250);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-crit: var(--crit);
+  --color-track: var(--track);
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: 'Geist Variable', Geist, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@layer components {
+  /*
+   * Card captions are one to three lines read once, not body prose scanned line by
+   * line, so the container width is the right measure for them. A fixed 48rem cap left
+   * 448px of dead space beside a two-line note and pushed most of these onto a second
+   * line they did not need. `balance` evens out the ones that genuinely still wrap, so
+   * the last line is never a lone orphaned word.
+   */
+  .note {
+    text-wrap: balance;
+  }
+
+  /* The brand sweep, cyan to teal. One place to change it, and it follows the theme. */
+  .brand-gradient {
+    background-image: linear-gradient(90deg, var(--brand), var(--brand-2));
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  /* Every figure on this page is meant to be compared down a column. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

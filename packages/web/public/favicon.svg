@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" role="img" aria-label="QuotaPulse">
+  <title>QuotaPulse</title>
+  <!--
+    The QuotaPulse mark: a quota ring broken at the top right, a column chart inside it,
+    and a filled dot in the break. Ring is the limit, bars are the spend against it, dot
+    says the reading is live.
+
+    NEVER write two hyphens in a row anywhere in this file, including in prose here.
+    A favicon is fetched as an IMAGE, which parses it as strict XML, and XML forbids a
+    double hyphen inside a comment. This comment used to name the brand CSS token with
+    its leading dashes; that one token name made Chromium fail to decode the whole file,
+    so the tab silently showed nothing. Serving it was fine the entire time: 200,
+    image/svg+xml, 947 bytes. Only rasterising it revealed the failure. The generator in
+    this repo now asserts on it, which is how the rebrand caught itself doing it again.
+
+    Three bars, not the four the full mark carries. A favicon is read at 16px, where the
+    fourth bar closes the gaps into a solid block; the app logo in src/components/logo.tsx
+    is never smaller than 18px and keeps all four.
+
+    Drawn with strokes rather than filled shapes so it survives being scaled to 16px.
+    One flat colour rather than the brand gradient, and no prefers-color-scheme swap:
+    a favicon is a standalone document with no access to the page CSS variables, so a
+    var() reference to the brand token resolves to nothing here. This hex IS the light
+    theme brand value, measured against the tab strips it actually sits on: white 3.5:1,
+    Chrome dark 4.3:1, Firefox dark 3.8:1, all clear of 3:1. Favicon support for media
+    queries is uneven enough that a swap would be a second way to render nothing.
+  -->
+  <g fill="none" stroke="#0093A7" stroke-linecap="round">
+    <path d="M20.495 4.874 A12 12 0 1 0 26.876 10.929" stroke-width="3.25" />
+    <g stroke-width="2.8">
+      <path d="M12.2 21.2 V17.6" />
+      <path d="M16 21.2 V13.4" />
+      <path d="M19.8 21.2 V15.2" />
+    </g>
+  </g>
+  <circle cx="24.26" cy="7.296" r="3" fill="#0093A7" />
+</svg>

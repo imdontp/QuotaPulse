@@ -1,0 +1,16 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.DS_Store
+data/
+*.db
+*.db-wal
+*.db-shm
+screens/
+# npm run icon-preview writes a strip of tray PNGs here
+icon-preview/
+# local agent settings, not project config
+.claude/
+# editor local
+.vscode/

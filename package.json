@@ -1,0 +1,37 @@
+{
+  "name": "quotapulse",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Unified local dashboard for AI agent harness usage, limits, cost and trends",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imdontp/QuotaPulse.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imdontp/QuotaPulse/issues"
+  },
+  "homepage": "https://github.com/imdontp/QuotaPulse#readme",
+  "workspaces": [
+    "packages/daemon",
+    "packages/web",
+    "packages/tray"
+  ],
+  "scripts": {
+    "daemon": "npm run dev -w @quotapulse/daemon",
+    "daemon:build": "npm run build -w @quotapulse/daemon",
+    "backfill": "npm run backfill -w @quotapulse/daemon",
+    "probe": "npm run probe -w @quotapulse/daemon",
+    "test": "npm run test -w @quotapulse/daemon && npm run test -w @quotapulse/web && npm run test -w @quotapulse/tray",
+    "shoot": "node scripts/shoot.mjs",
+    "prices:refresh": "node scripts/fetch-prices.mjs",
+    "doctor": "node scripts/doctor.mjs"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "devDependencies": {
+    "@lobehub/icons-static-svg": "^1.94.0",
+    "playwright": "^1.62.1"
+  }
+}

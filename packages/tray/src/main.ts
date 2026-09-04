@@ -1,0 +1,242 @@
+import { app, Tray, Menu, BrowserWindow, Notification, nativeImage, shell } from 'electron';
+import { readFileSync, existsSync } from 'node:fs';
+import { spawn } from 'node:child_process';
+import { join, resolve } from 'node:path';
+import { homedir } from 'node:os';
+import { fileURLToPath } from 'node:url';
+import { trayIconFor, severityFor, menuGaugeFor } from './icon.js';
+import {
+  buildTooltip,
+  currentLimits,
+  worst,
+  isExpired,
+  isUsable,
+  shortSource,
+  shortWindow,
+  shortAge,
+  clockAt,
+  type Limit,
+} from './limits.js';
+
+interface Lock {
+  pid: number;
+  port: number;
+  token: string;
+  startedAt: number;
+}
+
+const DATA_DIR =
+  process.env.QUOTAPULSE_DATA_DIR ??
+  join(process.env.LOCALAPPDATA ?? join(homedir(), '.local', 'share'), 'quotapulse');
+const LOCK_PATH = join(DATA_DIR, 'daemon.lock');
+const REPO_ROOT = resolve(fileURLToPath(new URL('.', import.meta.url)), '..', '..', '..');
+
+/** Thresholds that are worth interrupting someone for, in ascending order. */
+const ALERT_STEPS = [50, 80, 95];
+const POLL_MS = 15_000;
+
+let tray: Tray | null = null;
+let popup: BrowserWindow | null = null;
+let lock: Lock | null = null;
+let limits: Limit[] = [];
+let alertsEnabled = true;
+let daemonChild: ReturnType<typeof spawn> | null = null;
+/** Highest alert step already fired per gauge, reset when its window rolls over. */
+const alerted = new Map<string, { step: number; resetsAt: number | null }>();
+
+function readLock(): Lock | null {
+  if (!existsSync(LOCK_PATH)) return null;
+  try {
+    const l = JSON.parse(readFileSync(LOCK_PATH, 'utf8')) as Lock;
+    process.kill(l.pid, 0); // confirm the pid is alive
+    return l;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The daemon is deliberately a separate process: closing the tray must not stop
+ * collection. We only start one if nothing is already listening, and we never kill it
+ * on exit -- whoever started it owns its lifetime.
+ */
+function ensureDaemon(): void {
+  if (readLock()) return;
+  if (daemonChild) return;
+  const entry = join(REPO_ROOT, 'packages', 'daemon', 'dist', 'index.js');
+  if (!existsSync(entry)) {
+    console.error(`daemon build not found at ${entry}; run: npm run daemon:build`);
+    return;
+  }
+  daemonChild = spawn(process.execPath, [entry], {
+    detached: true,
+    stdio: 'ignore',
+    env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' },
+  });
+  daemonChild.unref();
+}
+
+async function fetchLimits(): Promise<void> {
+  lock = readLock();
+  if (!lock) {
+    limits = [];
+    render();
+    return;
+  }
+  try {
+    const res = await fetch(`http://127.0.0.1:${lock.port}/api/limits`, {
+      headers: { 'x-quotapulse-token': lock.token },
+    });
+    if (!res.ok) throw new Error(String(res.status));
+    const body = (await res.json()) as { limits: Limit[] };
+    limits = body.limits;
+    checkAlerts();
+  } catch {
+    limits = [];
+  }
+  render();
+}
+
+function render(): void {
+  if (!tray) return;
+  const w = worst(limits);
+  const pct = w?.used_percent ?? null;
+
+  tray.setImage(nativeImage.createFromBuffer(trayIconFor(pct)));
+  tray.setToolTip(buildTooltip(limits, lock != null));
+
+  // The context menu has no length limit, so it carries the full detail the tooltip
+  // cannot: every source, every window, its reset time and how old the reading is.
+  const detail: Electron.MenuItemConstructorOptions[] = currentLimits(limits).map((l) => {
+    const expired = isExpired(l);
+    const value = expired ? '--' : `${Math.round(l.used_percent!)}%`;
+    const when = expired
+      ? 'window reset, awaiting a fresh reading'
+      : l.resets_at
+        ? `resets ${clockAt(l.resets_at)}`
+        : 'no reset time reported';
+    const agePart = l.ageSeconds != null && l.ageSeconds >= 120 ? `, ${shortAge(l.ageSeconds).trim()} old` : '';
+    return {
+      label: `${l.display_name} · ${shortWindow(l.window_kind)} ${value} — ${when}${agePart}`,
+      /*
+       * The row's own reading as a ring, so the shape carries the number and the colour
+       * carries the severity without reading the sentence. An expired window has no
+       * percentage to draw, and gets the empty grey ring that matches its `--`.
+       *
+       * Rendered at 32px and declared scaleFactor 2, so Windows lays it out at the 16px a
+       * menu icon wants while a 200% display still gets real pixels.
+       */
+      icon: nativeImage.createFromBuffer(menuGaugeFor(expired ? null : l.used_percent), {
+        scaleFactor: 2,
+      }),
+      enabled: false,
+    };
+  });
+
+  tray.setContextMenu(
+    Menu.buildFromTemplate([
+      {
+        label: w
+          ? `Worst: ${shortSource(w.display_name)} ${shortWindow(w.window_kind)} ${Math.round(w.used_percent!)}%`
+          : 'No live limits',
+        enabled: false,
+      },
+      { type: 'separator' },
+      ...(detail.length > 0 ? detail : [{ label: 'no quota data yet', enabled: false }]),
+      { type: 'separator' },
+      { label: 'Open dashboard in browser', click: openBrowser },
+      { label: 'Show panel', click: togglePopup },
+      { label: 'Refresh now', click: () => void fetchLimits() },
+      { type: 'separator' },
+      {
+        label: 'Threshold alerts',
+        type: 'checkbox',
+        checked: alertsEnabled,
+        click: (item) => {
+          alertsEnabled = item.checked;
+        },
+      },
+      { type: 'separator' },
+      { label: 'Quit tray (daemon keeps running)', click: () => app.quit() },
+    ]),
+  );
+}
+
+function checkAlerts(): void {
+  if (!alertsEnabled) return;
+  // Only a live window can cross a threshold; a rolled-over one is back near zero.
+  for (const l of currentLimits(limits).filter((l) => isUsable(l))) {
+    const key = `${l.source_id}:${l.window_kind}`;
+    const prev = alerted.get(key);
+    // A new window period starts the alert ladder over.
+    if (prev && prev.resetsAt !== l.resets_at) alerted.delete(key);
+
+    const pct = l.used_percent!;
+    const step = [...ALERT_STEPS].reverse().find((s) => pct >= s);
+    if (step == null) continue;
+    const already = alerted.get(key)?.step ?? 0;
+    if (step <= already) continue;
+
+    alerted.set(key, { step, resetsAt: l.resets_at });
+    const when = l.resets_at
+      ? `resets ${new Date(l.resets_at).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}`
+      : 'no reset time reported';
+    new Notification({
+      title: `${l.display_name}: ${Math.round(pct)}% of ${l.window_kind}`,
+      body: l.burn?.projectedFullAt && l.resets_at && l.burn.projectedFullAt < l.resets_at
+        ? `At the current rate this runs out before it resets (${when}).`
+        : when,
+      silent: step < 95,
+    }).show();
+  }
+}
+
+function openBrowser(): void {
+  if (!lock) return;
+  void shell.openExternal(`http://127.0.0.1:${lock.port}/`);
+}
+
+function togglePopup(): void {
+  if (popup && !popup.isDestroyed()) {
+    if (popup.isVisible()) popup.hide();
+    else {
+      popup.show();
+      popup.focus();
+    }
+    return;
+  }
+  if (!lock) return;
+  popup = new BrowserWindow({
+    width: 460,
+    height: 620,
+    show: false,
+    frame: true,
+    resizable: true,
+    skipTaskbar: true,
+    title: 'QuotaPulse',
+    webPreferences: { nodeIntegration: false, contextIsolation: true },
+  });
+  // Reuses the dashboard rather than maintaining a second UI for the same numbers.
+  void popup.loadURL(`http://127.0.0.1:${lock.port}/#limits`);
+  popup.once('ready-to-show', () => popup?.show());
+  popup.on('closed', () => {
+    popup = null;
+  });
+}
+
+app.on('window-all-closed', () => {
+  // Tray app: closing the panel must not quit.
+});
+
+void app.whenReady().then(() => {
+  app.setAppUserModelId('dev.quotapulse.tray');
+  ensureDaemon();
+
+  tray = new Tray(nativeImage.createFromBuffer(trayIconFor(null)));
+  tray.on('click', togglePopup);
+  render();
+
+  void fetchLimits();
+  const timer = setInterval(() => void fetchLimits(), POLL_MS);
+  app.on('before-quit', () => clearInterval(timer));
+});

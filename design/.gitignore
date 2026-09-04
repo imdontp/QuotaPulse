@@ -1,0 +1,7 @@
+# Design source assets: brand sheets, exports, mockups. Large binaries that change often
+# and are needed to build nothing, so the folder is kept (as the agreed home for them)
+# while its contents stay out of the repo.
+#
+# Ignore everything here except this file.
+*
+!.gitignore
