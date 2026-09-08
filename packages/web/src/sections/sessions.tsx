@@ -28,6 +28,7 @@ export function SessionsSection() {
   const [offset, setOffset] = useState(0);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loaded, setLoaded] = useState(false);
 
   const vendorKey = useMemo(() => [...selected].sort().join(','), [selected]);
 
@@ -36,15 +37,19 @@ export function SessionsSection() {
       // A live refresh keeps the current table on screen: a spinner every few seconds
       // while you are reading a page is worse than a row arriving a moment late.
       if (!live) setLoading(true);
-      api
+      return api
         .sessions({ limit, offset, vendor: vendorKey })
         .then((r) => {
           setRows(r.sessions);
           setTotal(r.total);
           setVendors(r.vendors.map((v) => ({ id: v.vendor, count: v.sessions })));
           setErr(null);
+          setLoaded(true);
         })
-        .catch((e) => setErr(String(e)))
+        .catch((e) => {
+          setErr(String(e));
+          throw e;
+        })
         .finally(() => setLoading(false));
     },
     [limit, offset, vendorKey],
@@ -57,7 +62,7 @@ export function SessionsSection() {
     setOffset(0);
   };
 
-  if (err) return <ErrorBox>{err}</ErrorBox>;
+  if (err && !loaded) return <ErrorBox>{err}</ErrorBox>;
 
   const from = total === 0 ? 0 : offset + 1;
   const to = Math.min(offset + limit, total);

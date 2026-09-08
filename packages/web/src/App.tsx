@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   Activity,
@@ -9,10 +9,11 @@ import {
   HeartPulse,
   MessagesSquare,
   Moon,
+  RefreshCw,
   Sun,
   TrendingUp,
 } from 'lucide-react';
-import { api, subscribe, type Overview } from '@/api';
+import { api, type Overview } from '@/api';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SettingsMenu } from '@/components/settings-menu';
 import { I18nProvider, useI18n, useT } from '@/i18n';
@@ -29,6 +30,7 @@ import { SessionsSection } from '@/sections/sessions';
 import { ProjectsSection } from '@/sections/projects';
 import { ModelsSection } from '@/sections/models';
 import { HealthSection } from '@/sections/health';
+import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 
 const TABS = [
   { id: 'live', key: 'tab.live', icon: Activity },
@@ -45,10 +47,10 @@ type TabId = (typeof TABS)[number]['id'];
 type Theme = 'light' | 'dark';
 
 /**
- * The sidebar collapses to icons below this width. The number is set by the tray popup,
- * which is a 460px BrowserWindow (packages/tray/src/main.ts): a full width rail would eat
- * nearly half of it. Kept in JS as well as CSS because the collapsed rail needs tooltips,
- * and a tooltip cannot be turned on by a media query alone.
+ * The sidebar collapses to icons below this width. The tray panel opens at 1280px, while
+ * this breakpoint also keeps narrower browser windows usable. Kept in JS as well as CSS
+ * because the collapsed rail needs tooltips, and a tooltip cannot be turned on by a media
+ * query alone.
  */
 const WIDE = '(min-width: 900px)';
 
@@ -100,33 +102,28 @@ function Dashboard() {
   );
   const [ov, setOv] = useState<Overview | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const [lastUpdate, setLastUpdate] = useState(Date.now());
   const [theme, toggleTheme] = useTheme();
   const reduced = useReducedMotion();
   const collapsed = !useMediaQuery(WIDE);
+  const refreshStatus = useRefreshStatus();
+  const ovRef = useRef<Overview | null>(null);
 
-  const refresh = useCallback(() => {
+  useLiveRefresh(() =>
     api
       .overview()
       .then((o) => {
+        ovRef.current = o;
         setOv(o);
         setErr(null);
-        setLastUpdate(Date.now());
       })
-      .catch((e) => setErr(String(e)));
-  }, []);
-
-  useEffect(() => {
-    refresh();
-    // The daemon pushes on every pass that produced new rows, so the page never polls.
-    const off = subscribe(refresh);
-    // Countdowns still need to tick when no new data arrives.
-    const tick = setInterval(() => setLastUpdate((v) => v), 30_000);
-    return () => {
-      off();
-      clearInterval(tick);
-    };
-  }, [refresh]);
+      .catch((e) => {
+        // Once the shell has data, a transient background failure belongs in the
+        // connection status rather than replacing the dashboard with an error box.
+        if (!ovRef.current) setErr(String(e));
+        throw e;
+      }),
+    [],
+  );
 
   useEffect(() => {
     location.hash = tab;
@@ -141,7 +138,38 @@ function Dashboard() {
     document.documentElement.lang = lang;
   }, [lang]);
 
-  const streaming = Date.now() - lastUpdate < 90_000;
+  const statusLabel = {
+    connecting: t('app.refreshConnecting'),
+    live: t('app.refreshLive'),
+    reconnecting: t('app.refreshReconnecting'),
+    unavailable: t('app.refreshUnavailable'),
+  }[refreshStatus.state];
+  const lastSuccess = refreshStatus.lastSuccessAt
+    ? new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      }).format(refreshStatus.lastSuccessAt)
+    : null;
+  const statusTitle = lastSuccess
+    ? `${statusLabel} · ${t('app.lastRefresh', { time: lastSuccess })}`
+    : statusLabel;
+  const statusTone =
+    refreshStatus.state === 'live'
+      ? 'border-ok/30 bg-ok/8 text-ok'
+      : refreshStatus.state === 'reconnecting'
+        ? 'border-warn/30 bg-warn/8 text-warn'
+        : refreshStatus.state === 'unavailable'
+          ? 'border-crit/30 bg-crit/8 text-crit'
+          : 'text-muted-foreground border-border';
+  const statusColor =
+    refreshStatus.state === 'live'
+      ? 'var(--ok)'
+      : refreshStatus.state === 'reconnecting'
+        ? 'var(--warn)'
+        : refreshStatus.state === 'unavailable'
+          ? 'var(--crit)'
+          : 'var(--muted-foreground)';
 
   return (
     <TooltipProvider>
@@ -195,27 +223,31 @@ function Dashboard() {
             </TabsList>
           </nav>
 
-          <div className="shrink-0 border-t p-2">
+          <div className="flex shrink-0 items-center gap-1 border-t p-2">
             <div
-              className={
-                streaming
-                  ? 'border-ok/30 bg-ok/8 text-ok flex items-center justify-center gap-2 rounded-full border px-2.5 py-1 text-[11.5px] font-medium min-[900px]:justify-start'
-                  : 'text-muted-foreground border-border flex items-center justify-center gap-2 rounded-full border px-2.5 py-1 text-[11.5px] min-[900px]:justify-start'
-              }
+              className={`${statusTone} flex min-w-0 flex-1 items-center justify-center gap-2 rounded-full border px-2.5 py-1 text-[11.5px] font-medium min-[900px]:justify-start`}
+              title={statusTitle}
+              aria-label={statusTitle}
+              role="status"
             >
               <span className="relative flex size-1.5 shrink-0">
-                {streaming && (
+                {refreshStatus.state === 'live' && (
                   <span className="bg-ok absolute inline-flex size-full animate-ping rounded-full opacity-60" />
                 )}
-                <span
-                  className="relative inline-flex size-1.5 rounded-full"
-                  style={{ background: streaming ? 'var(--ok)' : 'var(--muted-foreground)' }}
-                />
+                <span className="relative inline-flex size-1.5 rounded-full" style={{ background: statusColor }} />
               </span>
-              <span className="hidden truncate min-[900px]:inline">
-                {streaming ? t('app.streaming') : t('app.idle')}
-              </span>
+              <span className="hidden truncate min-[900px]:inline">{statusLabel}</span>
             </div>
+            <Button
+              size="icon"
+              onClick={() => void refreshStatus.refreshNow()}
+              disabled={refreshStatus.refreshing}
+              aria-label={t('app.refreshNow')}
+              title={t('app.refreshNow')}
+              className="text-muted-foreground size-7 shrink-0"
+            >
+              <RefreshCw className={refreshStatus.refreshing ? 'size-[14px] animate-spin' : 'size-[14px]'} />
+            </Button>
           </div>
         </aside>
 

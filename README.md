@@ -50,6 +50,12 @@ npm run build -w @quotapulse/web
 npm run daemon          # http://127.0.0.1:7676
 ```
 
+The dashboard listens for daemon updates over SSE and refreshes the visible tab as soon as
+new rows arrive. A 30-second local fallback catches a quiet or interrupted stream; hiding
+the tab pauses that fallback and returning to it refreshes immediately. The status pill
+shows the connection state, and its refresh button runs one incremental ingest pass before
+updating the dashboard.
+
 Start at logon (daemon + tray), from PowerShell:
 
 ```powershell
@@ -171,7 +177,7 @@ cannot be priced. There is a regression test per adapter that reads a file in tw
 compares it against the ground truth each harness computes for itself.
 
 `npm run shoot` starts its own daemon on port 7799 against a throwaway database, so it
-never touches the real one, and writes a fixed set of shots: both themes, the 460px tray
+never touches the real one, and writes a fixed set of shots: both themes, the 1280×800 tray
 popup, either side of the sidebar breakpoint, all eight sections, Thai, and the logo mark.
 It drives the Chrome already installed on the machine (`channel: 'chrome'`), which is why
 `.npmrc` turns off Playwright's own 2.2 GB browser download.

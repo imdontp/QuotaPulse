@@ -91,6 +91,30 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     };
   });
 
+  /**
+   * Interactive refresh: ingest the current source cursors before the browser
+   * re-queries its view. The scheduler serializes this with watch/poll passes, so
+   * two tabs cannot make adapters read concurrently.
+   */
+  app.post('/api/refresh', async (_req, reply) => {
+    try {
+      const pass = await scheduler.runNow();
+      return {
+        now: Date.now(),
+        pass: {
+          newEvents: pass.newEvents,
+          newLimits: pass.newLimits,
+          durationMs: pass.durationMs,
+          failedSources: pass.results.filter((r) => r.error != null).length,
+          trigger: 'manual' as const,
+        },
+      };
+    } catch (err) {
+      log.error('manual refresh failed', (err as Error).message);
+      return reply.code(503).send({ error: 'refresh failed' });
+    }
+  });
+
   app.get('/api/limits', async () => ({
     now: Date.now(),
     limits: withBurn(db, q.latestLimits(db)),
@@ -170,14 +194,15 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     return detail;
   });
 
-  // Server-sent events: the dashboard updates without polling.
+  // Server-sent events: the dashboard updates immediately when ingest produces rows;
+  // the client also has a local fallback query for quiet or interrupted streams.
   app.get('/api/events/stream', async (req, reply) => {
     reply.raw.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache, no-transform',
       Connection: 'keep-alive',
     });
-    reply.raw.write(`event: hello\ndata: ${JSON.stringify({ now: Date.now() })}\n\n`);
+    reply.raw.write(`retry: 3000\nevent: hello\ndata: ${JSON.stringify({ now: Date.now() })}\n\n`);
 
     const onData = (evt: { newEvents: number; newLimits: number; trigger: string }) => {
       reply.raw.write(

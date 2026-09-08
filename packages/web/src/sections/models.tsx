@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { EffortByModel, ModelByEffort } from '@/components/effort-breakdown';
 import { VendorIcon } from '@/components/vendor-icon';
 import { VendorFilter, toggleIn } from '@/components/vendor-filter';
-import { Empty, Stagger, StaggerItem } from '@/components/primitives';
+import { Empty, ErrorBox, Stagger, StaggerItem } from '@/components/primitives';
 import { effortColor, vendorLabel } from '@/format';
 import { useFormat } from '@/i18n/format';
 import { useT } from '@/i18n';
@@ -23,13 +23,20 @@ export function ModelsSection() {
   const [metric, setMetric] = useState<Metric>('total_tokens');
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [loaded, setLoaded] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
 
   useLiveRefresh(() => {
-    api
+    return api
       .models(0)
-      .then((r) => setModels(r.models))
-      .catch(() => setModels([]))
-      .finally(() => setLoaded(true));
+      .then((r) => {
+        setModels(r.models);
+        setLoaded(true);
+        setErr(null);
+      })
+      .catch((error) => {
+        setErr(String(error));
+        throw error;
+      });
   }, []);
 
   /**
@@ -62,6 +69,7 @@ export function ModelsSection() {
     [filtered],
   );
 
+  if (err && !loaded) return <ErrorBox>{err}</ErrorBox>;
   if (loaded && models.length === 0) return <Empty>{t('models.none')}</Empty>;
 
   return (

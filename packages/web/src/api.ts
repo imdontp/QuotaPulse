@@ -1,8 +1,48 @@
-const TOKEN = (window as unknown as { __QUOTAPULSE_TOKEN__?: string }).__QUOTAPULSE_TOKEN__ ?? '';
+const TOKEN =
+  typeof window === 'undefined'
+    ? ''
+    : (window as unknown as { __QUOTAPULSE_TOKEN__?: string }).__QUOTAPULSE_TOKEN__ ?? '';
+
+export class ApiError extends Error {
+  constructor(
+    readonly status: number,
+    readonly path: string,
+    message: string,
+  ) {
+    super(message);
+    this.name = 'ApiError';
+  }
+}
+
+const REQUEST_TIMEOUT_MS = 30_000;
+
+async function request(path: string, init?: RequestInit): Promise<Response> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  try {
+    const res = await fetch(path, {
+      ...init,
+      signal: init?.signal ?? controller.signal,
+    });
+    if (!res.ok) {
+      throw new ApiError(res.status, path, `${res.status} ${res.statusText} on ${path}`);
+    }
+    return res;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
 
 async function get<T>(path: string): Promise<T> {
-  const res = await fetch(path, { headers: TOKEN ? { 'x-quotapulse-token': TOKEN } : {} });
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText} on ${path}`);
+  const res = await request(path, { headers: TOKEN ? { 'x-quotapulse-token': TOKEN } : {} });
+  return (await res.json()) as T;
+}
+
+async function post<T>(path: string): Promise<T> {
+  const res = await request(path, {
+    method: 'POST',
+    headers: TOKEN ? { 'x-quotapulse-token': TOKEN } : {},
+  });
   return (await res.json()) as T;
 }
 
@@ -191,6 +231,17 @@ export interface Health {
   catalogOwn: boolean;
 }
 
+export interface ManualRefresh {
+  now: number;
+  pass: {
+    newEvents: number;
+    newLimits: number;
+    durationMs: number;
+    failedSources: number;
+    trigger: 'manual';
+  };
+}
+
 export const api = {
   overview: () => get<Overview>('/api/overview'),
   limits: () => get<{ now: number; limits: Limit[] }>('/api/limits'),
@@ -215,10 +266,11 @@ export const api = {
         (p.vendor ? `&vendor=${encodeURIComponent(p.vendor)}` : ''),
     ),
   health: () => get<Health>('/api/health'),
+  refresh: () => post<ManualRefresh>('/api/refresh'),
 };
 
 /*
- * One EventSource for the whole page, fanned out to every listener.
+ * One EventSource for the whole page, fanned out to the refresh coordinator.
  *
  * This used to open a fresh connection per call, which was fine while the shell was the
  * only subscriber. It is not fine now that each section subscribes too: a browser allows
@@ -227,30 +279,55 @@ export const api = {
  * make and the page would hang rather than fail.
  *
  * Ref counted: the stream opens on the first subscriber and closes on the last, so
- * switching tabs does not leave connections behind.
+ * switching tabs does not leave connections behind. State listeners expose the browser's
+ * reconnect lifecycle without creating a second stream.
  */
 const listeners = new Set<() => void>();
+export type StreamState = 'connecting' | 'connected' | 'reconnecting';
+const streamStateListeners = new Set<(state: StreamState) => void>();
 let stream: EventSource | null = null;
+let streamState: StreamState = 'connecting';
+
+function setStreamState(next: StreamState): void {
+  if (streamState === next) return;
+  streamState = next;
+  for (const listener of [...streamStateListeners]) listener(next);
+}
+
+function openStream(): void {
+  const url = TOKEN
+    ? `/api/events/stream?token=${encodeURIComponent(TOKEN)}`
+    : '/api/events/stream';
+  stream = new EventSource(url);
+  setStreamState('connecting');
+  stream.addEventListener('open', () => setStreamState('connected'));
+  stream.addEventListener('error', () => setStreamState('reconnecting'));
+  stream.addEventListener('data', () => {
+    // Copied before iterating: a listener that unsubscribes itself while we are
+    // notifying would otherwise mutate the set mid-loop.
+    for (const fn of [...listeners]) fn();
+  });
+}
 
 /** Subscribe to daemon pushes. Returns an unsubscribe function. */
 export function subscribe(onData: () => void): () => void {
   listeners.add(onData);
   if (stream == null) {
-    const url = TOKEN
-      ? `/api/events/stream?token=${encodeURIComponent(TOKEN)}`
-      : '/api/events/stream';
-    stream = new EventSource(url);
-    stream.addEventListener('data', () => {
-      // Copied before iterating: a listener that unsubscribes itself while we are
-      // notifying would otherwise mutate the set mid-loop.
-      for (const fn of [...listeners]) fn();
-    });
+    openStream();
   }
   return () => {
     listeners.delete(onData);
     if (listeners.size === 0 && stream != null) {
       stream.close();
       stream = null;
+      setStreamState('connecting');
     }
   };
+}
+
+/** Subscribe to the transport state of the page-wide SSE stream. */
+export function subscribeStreamStatus(onStatus: (state: StreamState) => void): () => void {
+  streamStateListeners.add(onStatus);
+  onStatus(streamState);
+  return () => streamStateListeners.delete(onStatus);
 }

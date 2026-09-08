@@ -27,7 +27,7 @@ function useRecentHours(hours = 24) {
 
   useLiveRefresh(() => {
     const to = Date.now();
-    api
+    return api
       .trend({ bucket: 'hour', from: to - hours * 3_600_000, to, groupBy: 'none' })
       .then((r) => {
         const byBucket = new Map<number, { t: number; c: number; n: number }>();
@@ -45,7 +45,11 @@ function useRecentHours(hours = 24) {
           calls: ordered.map((v) => v.n),
         });
       })
-      .catch(() => setSeries({ tokens: [], cost: [], calls: [] }));
+      // Keep the last sparkline when a background query fails. The coordinator
+      // records the failure and retries; clearing it would make the card flicker.
+      .catch((error) => {
+        throw error;
+      });
   }, [hours]);
 
   return series;

@@ -142,7 +142,7 @@ export function ProjectsSection() {
     const to = Date.now();
     // 0 days means everything: the first event predates any range we offer.
     const from = days === 0 ? 0 : to - days * DAY;
-    api
+    return api
       .projects({ from, to })
       .then((r) => {
         setRows(r.rows);
@@ -151,7 +151,7 @@ export function ProjectsSection() {
       })
       .catch((e) => {
         setErr(String(e));
-        setLoaded(true);
+        throw e;
       });
   }, [days]);
 
@@ -296,7 +296,7 @@ export function ProjectsSection() {
         </div>
       </StaggerItem>
 
-      {err && (
+      {err && !loaded && (
         <StaggerItem>
           <ErrorBox>{err}</ErrorBox>
         </StaggerItem>

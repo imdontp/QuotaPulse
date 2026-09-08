@@ -16,11 +16,20 @@ export function HealthSection() {
   const [h, setH] = useState<Health | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
-  useLiveRefresh(() => {
-    api.health().then(setH).catch((e) => setErr(String(e)));
-  }, []);
+  useLiveRefresh(() =>
+    api
+      .health()
+      .then((next) => {
+        setH(next);
+        setErr(null);
+      })
+      .catch((e) => {
+        if (!h) setErr(String(e));
+        throw e;
+      }),
+  []);
 
-  if (err) return <ErrorBox>{err}</ErrorBox>;
+  if (err && !h) return <ErrorBox>{err}</ErrorBox>;
   if (!h) return <Empty>{t('app.loading')}</Empty>;
 
   return (

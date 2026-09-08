@@ -21,8 +21,10 @@ export interface PassEvent {
   newEvents: number;
   newLimits: number;
   durationMs: number;
-  trigger: 'watch' | 'poll' | 'initial';
+  trigger: 'watch' | 'poll' | 'initial' | 'manual';
 }
+
+type ScheduledTrigger = Exclude<PassEvent['trigger'], 'initial'>;
 
 /**
  * Drives ingest. Two triggers on purpose: fs.watch gives sub-second reaction to a
@@ -34,8 +36,13 @@ export class Scheduler extends EventEmitter {
   private timer: NodeJS.Timeout | null = null;
   private pollTimer: NodeJS.Timeout | null = null;
   private detectTimer: NodeJS.Timeout | null = null;
+  private queuedTimer: NodeJS.Timeout | null = null;
   private running = false;
-  private queued: 'watch' | 'poll' | null = null;
+  private queued: ScheduledTrigger | null = null;
+  private manualWaiters: Array<{
+    resolve: (evt: PassEvent) => void;
+    reject: (err: unknown) => void;
+  }> = [];
   private sources: ResolvedSource[] = [];
   private lastPass: PassEvent | null = null;
 
@@ -90,7 +97,7 @@ export class Scheduler extends EventEmitter {
   }
 
   /** Pick up harnesses that appeared since startup, and start watching their files. */
-  private async redetect(): Promise<void> {
+  private async redetect(schedulePass = true): Promise<void> {
     let found: ResolvedSource[];
     try {
       found = await resolveSources(this.db, this.adapters);
@@ -112,7 +119,48 @@ export class Scheduler extends EventEmitter {
       this.watchSource(s);
     }
     // Ingest immediately so it shows up now rather than on the next tick.
-    void this.trigger('watch');
+    if (schedulePass) void this.trigger('watch');
+  }
+
+  /**
+   * Run an incremental pass immediately for an interactive refresh request.
+   *
+   * A request arriving during a pass is joined to one follow-up pass rather than
+   * starting a concurrent reader. Multiple callers therefore wait for the same
+   * idempotent cursor/dedup work.
+   */
+  async runNow(): Promise<PassEvent> {
+    await this.redetect(false);
+
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+
+    if (this.running) {
+      this.queued = 'manual';
+      return new Promise<PassEvent>((resolve, reject) => {
+        this.manualWaiters.push({ resolve, reject });
+      });
+    }
+
+    // A queued watcher/poll pass is still waiting for its 50ms hand-off. Manual
+    // refresh takes its place and captures the latest source state now.
+    const hadQueuedManual = this.queued === 'manual';
+    if (this.queuedTimer) {
+      clearTimeout(this.queuedTimer);
+      this.queuedTimer = null;
+    }
+    this.queued = null;
+
+    const pass = this.pass('manual');
+    if (hadQueuedManual && this.manualWaiters.length > 0) {
+      void pass.then(
+        (evt) => this.resolveManual(evt),
+        (err) => this.rejectManual(err),
+      );
+    }
+    return pass;
   }
 
   private attachWatchers() {
@@ -140,7 +188,7 @@ export class Scheduler extends EventEmitter {
     }
   }
 
-  private trigger(kind: 'watch' | 'poll') {
+  private trigger(kind: ScheduledTrigger) {
     if (this.timer) return;
     this.timer = setTimeout(() => {
       this.timer = null;
@@ -152,7 +200,10 @@ export class Scheduler extends EventEmitter {
   /** Only one pass at a time; a request arriving mid-pass is collapsed into one rerun. */
   private async pass(trigger: PassEvent['trigger']): Promise<PassEvent> {
     if (this.running) {
-      this.queued = trigger === 'initial' ? 'watch' : trigger;
+      const next = trigger === 'initial' ? 'watch' : trigger;
+      // A manual caller is already waiting for this follow-up. Preserve that
+      // stronger guarantee if a watcher/poll event arrives before the pass ends.
+      this.queued = this.queued === 'manual' || next === 'manual' ? 'manual' : next;
       return this.lastPass ?? { results: [], newEvents: 0, newLimits: 0, durationMs: 0, trigger };
     }
     this.running = true;
@@ -199,9 +250,33 @@ export class Scheduler extends EventEmitter {
     if (this.queued) {
       const q = this.queued;
       this.queued = null;
-      setTimeout(() => void this.pass(q), 50);
+      this.queuedTimer = setTimeout(() => {
+        this.queuedTimer = null;
+        // The hand-off can race another debounce timer. If a pass is already
+        // running, leave the manual request queued for that pass's completion;
+        // calling pass() here would return the previous event and resolve the
+        // waiter before the requested ingest actually happened.
+        if (q === 'manual' && this.running) {
+          this.queued = 'manual';
+          return;
+        }
+        void this.pass(q).then(
+          (next) => q === 'manual' && this.resolveManual(next),
+          (err) => q === 'manual' && this.rejectManual(err),
+        );
+      }, 50);
     }
     return evt;
+  }
+
+  private resolveManual(evt: PassEvent): void {
+    const waiters = this.manualWaiters.splice(0);
+    for (const waiter of waiters) waiter.resolve(evt);
+  }
+
+  private rejectManual(err: unknown): void {
+    const waiters = this.manualWaiters.splice(0);
+    for (const waiter of waiters) waiter.reject(err);
   }
 
   stop() {
@@ -214,7 +289,12 @@ export class Scheduler extends EventEmitter {
     }
     this.watchers = [];
     if (this.timer) clearTimeout(this.timer);
+    if (this.queuedTimer) clearTimeout(this.queuedTimer);
     if (this.pollTimer) clearInterval(this.pollTimer);
     if (this.detectTimer) clearInterval(this.detectTimer);
+    this.timer = null;
+    this.queuedTimer = null;
+    this.queued = null;
+    this.rejectManual(new Error('scheduler stopped'));
   }
 }

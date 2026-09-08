@@ -19,6 +19,12 @@ export const th: Record<MessageKey, string> = {
   'app.loading': 'กำลังโหลด…',
   'app.themeToLight': 'สลับเป็นธีมสว่าง',
   'app.themeToDark': 'สลับเป็นธีมมืด',
+  'app.refreshConnecting': 'กำลังเชื่อมต่อ',
+  'app.refreshLive': 'กำลังอัปเดต',
+  'app.refreshReconnecting': 'กำลังเชื่อมต่อใหม่',
+  'app.refreshUnavailable': 'เชื่อมต่อ daemon ไม่ได้',
+  'app.refreshNow': 'รีเฟรชตอนนี้',
+  'app.lastRefresh': 'รีเฟรชล่าสุด {time}',
 
   'settings.title': 'ภาษาและสกุลเงิน',
   'settings.language': 'ภาษา',

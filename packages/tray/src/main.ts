@@ -34,6 +34,10 @@ const REPO_ROOT = resolve(fileURLToPath(new URL('.', import.meta.url)), '..', '.
 /** Thresholds that are worth interrupting someone for, in ascending order. */
 const ALERT_STEPS = [50, 80, 95];
 const POLL_MS = 15_000;
+const PANEL_WIDTH = 1280;
+const PANEL_HEIGHT = 800;
+const PANEL_MIN_WIDTH = 900;
+const PANEL_MIN_HEIGHT = 600;
 
 let tray: Tray | null = null;
 let popup: BrowserWindow | null = null;
@@ -193,22 +197,29 @@ function checkAlerts(): void {
 
 function openBrowser(): void {
   if (!lock) return;
-  void shell.openExternal(`http://127.0.0.1:${lock.port}/`);
+  void shell.openExternal(`http://127.0.0.1:${lock.port}/#live`);
 }
 
 function togglePopup(): void {
   if (popup && !popup.isDestroyed()) {
     if (popup.isVisible()) popup.hide();
-    else {
-      popup.show();
-      popup.focus();
+    else if (lock) {
+      // Returning to the panel is an intentional shortcut to the live view. Reloading
+      // the existing window also lets the dashboard initialise its tab from the hash.
+      void popup.loadURL(`http://127.0.0.1:${lock.port}/#live`).then(() => {
+        if (!popup || popup.isDestroyed()) return;
+        popup.show();
+        popup.focus();
+      });
     }
     return;
   }
   if (!lock) return;
   popup = new BrowserWindow({
-    width: 460,
-    height: 620,
+    width: PANEL_WIDTH,
+    height: PANEL_HEIGHT,
+    minWidth: PANEL_MIN_WIDTH,
+    minHeight: PANEL_MIN_HEIGHT,
     show: false,
     frame: true,
     resizable: true,
@@ -217,7 +228,7 @@ function togglePopup(): void {
     webPreferences: { nodeIntegration: false, contextIsolation: true },
   });
   // Reuses the dashboard rather than maintaining a second UI for the same numbers.
-  void popup.loadURL(`http://127.0.0.1:${lock.port}/#limits`);
+  void popup.loadURL(`http://127.0.0.1:${lock.port}/#live`);
   popup.once('ready-to-show', () => popup?.show());
   popup.on('closed', () => {
     popup = null;

@@ -16,6 +16,12 @@ export const en = {
   'app.loading': 'loading…',
   'app.themeToLight': 'Switch to light theme',
   'app.themeToDark': 'Switch to dark theme',
+  'app.refreshConnecting': 'connecting',
+  'app.refreshLive': 'live',
+  'app.refreshReconnecting': 'reconnecting',
+  'app.refreshUnavailable': 'daemon unavailable',
+  'app.refreshNow': 'Refresh now',
+  'app.lastRefresh': 'last refresh {time}',
 
   // settings popover
   'settings.title': 'Language & currency',

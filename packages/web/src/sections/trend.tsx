@@ -25,6 +25,7 @@ export function TrendSection() {
   const [days, setDays] = useState(30);
   const [rows, setRows] = useState<TrendRow[]>([]);
   const [err, setErr] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
   const wouldBe = bucket === 'hour' ? days * 24 : days;
   const coarsened = bucket === 'hour' && wouldBe > MAX_BUCKETS;
@@ -32,13 +33,17 @@ export function TrendSection() {
 
   useLiveRefresh(() => {
     const to = Date.now();
-    api
+    return api
       .trend({ bucket: effectiveBucket, from: to - days * DAY, to, groupBy })
       .then((r) => {
         setRows(r.rows);
         setErr(null);
+        setLoaded(true);
       })
-      .catch((e) => setErr(String(e)));
+      .catch((e) => {
+        setErr(String(e));
+        throw e;
+      });
   }, [effectiveBucket, groupBy, days]);
 
   return (
@@ -74,7 +79,7 @@ export function TrendSection() {
 
         </div>
 
-        {err && <ErrorBox>{err}</ErrorBox>}
+        {err && !loaded && <ErrorBox>{err}</ErrorBox>}
 
         <TrendChart rows={rows} metric={metric} bucket={effectiveBucket} groupBy={groupBy} />
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Coins, Layers, PiggyBank, CircleHelp } from 'lucide-react';
 import { api, type ModelRow, type Overview } from '@/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,14 +19,15 @@ import {
   numCell,
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
+import { useLiveRefresh } from '@/lib/use-live';
 
 export function CostSection({ ov }: { ov: Overview }) {
   const t = useT();
   const f = useFormat();
   const [models, setModels] = useState<ModelRow[]>([]);
-  useEffect(() => {
-    api.models(0).then((r) => setModels(r.models)).catch(() => setModels([]));
-  }, []);
+  useLiveRefresh(() =>
+    api.models(0).then((r) => setModels(r.models)),
+  []);
 
   const byModel = useMemo(() => {
     const m = new Map<string, { cost: number; unknown: number; calls: number; vendor: string }>();

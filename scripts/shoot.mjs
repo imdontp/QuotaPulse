@@ -141,7 +141,7 @@ try {
 
   await shoot(browser, 'wide-dark', { width: 1440, height: 900, theme: 'dark' });
   await shoot(browser, 'wide-light', { width: 1440, height: 900, theme: 'light' });
-  await shoot(browser, 'tray-popup', { width: 460, height: 620, theme: 'dark' });
+  await shoot(browser, 'tray-popup', { width: 1280, height: 800, theme: 'dark' });
   await shoot(browser, 'breakpoint-899', { width: 899, height: 800, theme: 'dark' });
   await shoot(browser, 'breakpoint-901', { width: 901, height: 800, theme: 'dark' });
   await shoot(browser, 'wide-thai', { width: 1440, height: 900, theme: 'dark', lang: 'th' });

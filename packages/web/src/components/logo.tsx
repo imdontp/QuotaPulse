@@ -69,7 +69,7 @@ export function QuotaPulseMark({ className }: { className?: string }) {
 /**
  * The horizontal lockup from the brand sheet. "Pulse" carries the brand colour so the
  * wordmark still reads as the logo when the mark is too small to make out, which is the
- * case in the collapsed sidebar and the 460px tray popup.
+ * case in the collapsed sidebar and other compact layouts.
  */
 export function QuotaPulseWordmark({ className }: { className?: string }) {
   return (
