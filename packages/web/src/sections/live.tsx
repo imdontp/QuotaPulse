@@ -8,8 +8,8 @@ import { AnimatedNumber, Empty, Sparkline, Stagger, StaggerItem } from '@/compon
 import { GaugeStack } from '@/components/gauge';
 import { Hint } from '@/components/ui/tooltip';
 import { age } from '@/format';
-import { isExpired, tokensParts, vendorLabel } from '@/format';
-import { VendorIcon } from '@/components/vendor-icon';
+import { isExpired, tokensParts } from '@/format';
+import { HarnessIcon } from '@/components/harness-icon';
 import { useFormat } from '@/i18n/format';
 import { useT } from '@/i18n';
 import { useLiveRefresh } from '@/lib/use-live';
@@ -224,9 +224,10 @@ export function LiveSection({ ov }: { ov: Overview }) {
             <StaggerItem key={src.source_id}>
               <Card className="h-full">
                 <CardHeader>
-                  <VendorIcon
+                  <HarnessIcon
+                    harness={src.harness}
                     vendor={src.vendor}
-                    label={vendorLabel(src.vendor)}
+                    label={src.display_name}
                     className="text-[16px]"
                   />
                   <CardTitle>{src.display_name}</CardTitle>
@@ -303,10 +304,10 @@ export function SourceTable({ rows, empty }: { rows: SourceTotals[]; empty: stri
           <TableRow key={r.source_id}>
             <TableCell>
               <span className="inline-flex items-center gap-2">
-                {/* The brand behind the harness, not an abstract colour dot. */}
-                <VendorIcon
+                <HarnessIcon
+                  harness={r.harness}
                   vendor={r.vendor}
-                  label={vendorLabel(r.vendor)}
+                  label={r.display_name}
                   className="text-muted-foreground text-[15px]"
                 />
                 {r.display_name}

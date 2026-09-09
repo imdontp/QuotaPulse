@@ -171,7 +171,7 @@ cannot be priced. There is a regression test per adapter that reads a file in tw
 | `npm run doctor` | check the things that fail silently: stale `dist/`, broken task paths, two daemons, missing catalog |
 | `npm run shoot` | screenshot the dashboard into `screens/` for a visual once over |
 | `npm run icon-preview -w @quotapulse/tray` | render the tray icon states to PNGs |
-| `node scripts/gen-vendor-icons.mjs` | regenerate the brand marks and `--vendor-*` colours after adding a vendor; prints the contrast and hue-separation tables |
+| `node scripts/gen-vendor-icons.mjs` | regenerate the vendor/harness brand marks and `--vendor-*` colours after adding a vendor or harness; prints the contrast and hue-separation tables |
 
 `npm run probe` is the one to reach for when a number looks wrong. It prints what landed and
 compares it against the ground truth each harness computes for itself.

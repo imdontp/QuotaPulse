@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/table';
 import { Empty, ErrorBox, Stagger, StaggerItem } from '@/components/primitives';
 import { Legend, StackedBars, type BarMetric, type Row } from '@/components/stacked-bars';
+import { HarnessIcon } from '@/components/harness-icon';
 import { VendorIcon } from '@/components/vendor-icon';
 import { OTHER_LABEL, palette, vendorColor, vendorLabel } from '@/format';
 import { useFormat } from '@/i18n/format';
@@ -25,6 +26,17 @@ const DAY = 86_400_000;
 const markOf = (vendors: Map<string, string>) => (key: string) => {
   const vendor = vendors.get(key) ?? 'unknown';
   return <VendorIcon vendor={vendor} label={vendorLabel(vendor)} />;
+};
+
+const harnessMarkOf = (brands: Map<string, { harness: string; vendor: string }>) => (key: string) => {
+  const brand = brands.get(key);
+  return (
+    <HarnessIcon
+      harness={brand?.harness ?? 'unknown'}
+      vendor={brand?.vendor}
+      label={key}
+    />
+  );
 };
 
 /** Sums one metric over a set of rows, keyed by whichever dimension is being cut. */
@@ -222,8 +234,14 @@ export function ProjectsSection() {
     () => new Map(detail.map((r) => [r.model, r.vendor || 'unknown'])),
     [detail],
   );
-  const harnessVendors = useMemo(
-    () => new Map(detail.map((r) => [r.display_name, r.harness_vendor || 'unknown'])),
+  const harnessBrands = useMemo(
+    () =>
+      new Map(
+        detail.map((r) => [
+          r.display_name,
+          { harness: r.harness, vendor: r.harness_vendor || 'unknown' },
+        ]),
+      ),
     [detail],
   );
 
@@ -342,7 +360,7 @@ export function ProjectsSection() {
                   keyOf={(r) => r.display_name}
                   labelOf={(k) => k}
                   metric={metric}
-                  iconOf={markOf(harnessVendors)}
+                  iconOf={harnessMarkOf(harnessBrands)}
                 />
                 <Cut
                   title={t('projects.byVendor')}
@@ -385,7 +403,17 @@ export function ProjectsSection() {
                 <TableBody>
                   {pairs.map((r) => (
                     <TableRow key={r.key}>
-                      <TableCell>{r.display_name}</TableCell>
+                      <TableCell>
+                        <span className="inline-flex items-center gap-2">
+                          <HarnessIcon
+                            harness={r.harness}
+                            vendor={r.harness_vendor}
+                            label={r.display_name}
+                            className="text-[15px]"
+                          />
+                          {r.display_name}
+                        </span>
+                      </TableCell>
                       <TableCell>
                         <span className="inline-flex items-center gap-2">
                           <VendorIcon

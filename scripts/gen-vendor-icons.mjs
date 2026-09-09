@@ -1,9 +1,9 @@
 /**
- * Generate packages/web/src/components/vendor-icon.tsx from @lobehub/icons-static-svg.
+ * Generate the offline vendor and harness icon modules from @lobehub/icons-static-svg.
  *
  * The marks are baked into the repo rather than imported at runtime: this dashboard is
  * offline by design, so it must not depend on a package (or a CDN) being reachable when
- * the page loads. Re-run after adding a vendor:
+ * the page loads. Re-run after adding a vendor or harness:
  *
  *   node scripts/gen-vendor-icons.mjs
  *
@@ -19,6 +19,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..');
 const ICON_DIR = join(REPO, 'node_modules', '@lobehub', 'icons-static-svg', 'icons');
 const OUT = join(REPO, 'packages', 'web', 'src', 'components', 'vendor-icon.tsx');
+const HARNESS_OUT = join(REPO, 'packages', 'web', 'src', 'components', 'harness-icon.tsx');
 
 /*
  * vendor id (see packages/daemon/src/util/vendor.ts) -> icon slug in the package.
@@ -70,11 +71,11 @@ const MAP = {
   zai: { slug: 'zai', color: false },
   /*
    * Upstream ships this same artwork under both `nousresearch` and `hermesagent`, so it
-   * is the right brand. Worth knowing: at ~29 subpaths it is the most detailed mark in
-   * the set, and it renders at 13-16px on the Live cards for all three Hermes profiles.
-   * Kept deliberately -- it is the real logo, and a letter badge would be a downgrade.
+   * is the right brand. The official asset has a black/transparent edge around a white
+   * field and a black portrait; `frame: 'nous'` preserves that composition instead of
+   * flattening the mark into a white glyph on the dark theme.
    */
-  nous: { slug: 'nousresearch', color: false },
+  nous: { slug: 'nousresearch', color: false, frame: 'nous' },
   ollama: { slug: 'ollama', color: false },
   // The colour mark is a bare #C8FF00 lime glyph with no backing shape: unreadable on
   // white, but perfectly legible on the dark theme, so it gets its colour back there.
@@ -118,6 +119,15 @@ const MAP = {
   internlm: { slug: 'internlm', color: true, provisional: true },
   baichuan: { slug: 'baichuan', color: true, provisional: true, colorIn: 'dark' },
   zeroone: { slug: 'zeroone', color: true, provisional: true, colorIn: 'dark' },
+};
+
+/*
+ * Harness marks answer a different question from vendor marks: which tool recorded the
+ * usage, not who made the model. Keep this map separate so adding Hermes cannot weaken
+ * the vendor/provider distinction in packages/daemon/src/util/vendor.ts.
+ */
+const HARNESS_MAP = {
+  hermes: { slug: 'hermesagent', frame: 'nous' },
 };
 
 /*
@@ -534,9 +544,27 @@ for (const [vendor, spec] of Object.entries(MAP)) {
     viewBox: monoSrc.viewBox,
     body: namespaceIds(monoSrc.body, vendor, 'm'),
     fillRule: monoSrc.fillRule,
+    frame: spec.frame,
     colorBody,
     colorIn: wantColor ? (spec.colorIn ?? 'both') : null,
     contrastNote,
+  });
+}
+
+const harnessEntries = [];
+for (const [harness, spec] of Object.entries(HARNESS_MAP)) {
+  const monoFile = join(ICON_DIR, `${spec.slug}.svg`);
+  if (!existsSync(monoFile)) {
+    console.error(`missing harness mark ${harness} (${spec.slug}.svg)`);
+    process.exit(1);
+  }
+  const monoSrc = extract(readFileSync(monoFile, 'utf8'));
+  harnessEntries.push({
+    harness,
+    viewBox: monoSrc.viewBox,
+    body: namespaceIds(monoSrc.body, `harness-${harness}`, 'm'),
+    fillRule: monoSrc.fillRule,
+    frame: spec.frame,
   });
 }
 
@@ -562,6 +590,8 @@ lines.push('   * there and falls back to currentColor on the other.');
 lines.push('   */');
 lines.push('  colorIn?: "both" | "light" | "dark";');
 lines.push('  fillRule?: string;');
+lines.push('  /** Official composition used by marks that need a backing field to stay faithful. */');
+lines.push('  frame?: "nous";');
 lines.push('}');
 lines.push('');
 lines.push('const MARKS: Record<string, Mark> = {');
@@ -570,6 +600,7 @@ for (const e of entries) {
   lines.push(`    viewBox: ${JSON.stringify(e.viewBox)},`);
   if (e.fillRule) lines.push(`    fillRule: ${JSON.stringify(e.fillRule)},`);
   lines.push(`    body: ${JSON.stringify(e.body)},`);
+  if (e.frame) lines.push(`    frame: ${JSON.stringify(e.frame)},`);
   if (e.colorBody) lines.push(`    colorBody: ${JSON.stringify(e.colorBody)},`);
   if (e.colorIn && e.colorIn !== 'both') lines.push(`    colorIn: ${JSON.stringify(e.colorIn)},`);
   lines.push('  },');
@@ -632,6 +663,38 @@ lines.push('    />');
 lines.push('  );');
 lines.push('');
 lines.push('  /*');
+lines.push('   * Nous publishes a black/transparent edge around a white field with a black');
+lines.push('   * portrait. Keep the frame explicit so the mark does not become a white glyph');
+lines.push('   * on dark surfaces or inherit an unrelated provider colour.');
+lines.push('   */');
+lines.push('  if (mark.frame === "nous") {');
+lines.push('    return (');
+lines.push('      <span');
+lines.push('        aria-hidden');
+lines.push('        className={cn(');
+lines.push('          "inline-flex size-[1em] shrink-0 items-center justify-center overflow-hidden rounded-[3px] bg-black p-px",');
+lines.push('          className,');
+lines.push('        )}');
+lines.push('      >');
+lines.push('        <span className="inline-flex size-full items-center justify-center bg-white">');
+lines.push('          <svg');
+lines.push('            viewBox={mark.viewBox}');
+lines.push('            width="1em"');
+lines.push('            height="1em"');
+lines.push('            fill="currentColor"');
+lines.push('            {...(mark.fillRule ? { fillRule: mark.fillRule as "evenodd" | "nonzero" } : {})}');
+lines.push('            aria-hidden');
+lines.push('            focusable="false"');
+lines.push('            className="size-[0.8em] shrink-0 text-black"');
+lines.push('            dangerouslySetInnerHTML={{ __html: mark.body }}');
+lines.push('            {...rest}');
+lines.push('          />');
+lines.push('        </span>');
+lines.push('      </span>');
+lines.push('    );');
+lines.push('  }');
+lines.push('');
+lines.push('  /*');
 lines.push('   * A mark that only reads on one background renders BOTH treatments, swapped by');
 lines.push('   * CSS rather than by JavaScript. The theme is a class on <html> set before the');
 lines.push('   * first paint, so a CSS swap is right on the very first frame -- reading the');
@@ -650,6 +713,83 @@ lines.push('');
 lines.push('  return draw(paintSelf ? mark.colorBody! : mark.body, paintSelf);');
 lines.push('}');
 lines.push('');
+
+const harnessLines = [];
+harnessLines.push('/* GENERATED by scripts/gen-vendor-icons.mjs -- do not edit by hand.');
+harnessLines.push(' *');
+harnessLines.push(' * Harness marks are kept separate from model-vendor marks so a source can');
+harnessLines.push(' * identify the tool doing the work without mislabelling the model maker.');
+harnessLines.push(' * The vector is inlined so the dashboard stays fully offline.');
+harnessLines.push(' */');
+harnessLines.push("import { cn } from '@/lib/utils';");
+harnessLines.push("import { VendorIcon } from '@/components/vendor-icon';");
+harnessLines.push('');
+harnessLines.push('interface Mark {');
+harnessLines.push('  viewBox: string;');
+harnessLines.push('  body: string;');
+harnessLines.push('  fillRule?: string;');
+harnessLines.push('  frame?: "nous";');
+harnessLines.push('}');
+harnessLines.push('');
+harnessLines.push('const HARNESSES: Record<string, Mark> = {');
+for (const e of harnessEntries) {
+  harnessLines.push(`  ${e.harness}: {`);
+  harnessLines.push(`    viewBox: ${JSON.stringify(e.viewBox)},`);
+  if (e.fillRule) harnessLines.push(`    fillRule: ${JSON.stringify(e.fillRule)},`);
+  harnessLines.push(`    body: ${JSON.stringify(e.body)},`);
+  if (e.frame) harnessLines.push(`    frame: ${JSON.stringify(e.frame)},`);
+  harnessLines.push('  },');
+}
+harnessLines.push('};');
+harnessLines.push('');
+harnessLines.push('export interface HarnessIconProps {');
+harnessLines.push('  harness: string;');
+harnessLines.push('  /** Vendor that owns the harness when no dedicated harness mark exists. */');
+harnessLines.push('  vendor?: string;');
+harnessLines.push('  /** Shown by the vendor fallback when a harness/vendor has no published mark. */');
+harnessLines.push('  label?: string;');
+harnessLines.push('  className?: string;');
+harnessLines.push('}');
+harnessLines.push('');
+harnessLines.push('/**');
+harnessLines.push(' * A harness mark. Hermes uses the official Nous black/white composition so its');
+harnessLines.push(' * detailed monochrome vector stays faithful and legible on dark surfaces.');
+harnessLines.push(' * Other harnesses use the existing vendor mark supplied by the API.');
+harnessLines.push(' */');
+harnessLines.push('export function HarnessIcon({ harness, vendor, label, className }: HarnessIconProps) {');
+harnessLines.push('  const mark = HARNESSES[harness];');
+harnessLines.push('  if (!mark) {');
+harnessLines.push('    return <VendorIcon vendor={vendor ?? "unknown"} label={label} className={className} />;');
+harnessLines.push('  }');
+harnessLines.push('');
+harnessLines.push('  if (mark.frame === "nous") {');
+harnessLines.push('    return <VendorIcon vendor="nous" label={label} className={className} />;');
+harnessLines.push('  }');
+harnessLines.push('');
+harnessLines.push('  return (');
+harnessLines.push('    <span');
+harnessLines.push('      aria-hidden');
+harnessLines.push('      className={cn(');
+harnessLines.push('        "inline-flex size-[1.2em] shrink-0 items-center justify-center rounded-[4px] border border-neutral-500/60 bg-neutral-700 text-white",');
+harnessLines.push('        className,');
+harnessLines.push('        "text-white",');
+harnessLines.push('      )}');
+harnessLines.push('    >');
+harnessLines.push('      <svg');
+harnessLines.push('        viewBox={mark.viewBox}');
+harnessLines.push('        width="1em"');
+harnessLines.push('        height="1em"');
+harnessLines.push('        fill="currentColor"');
+harnessLines.push('        {...(mark.fillRule ? { fillRule: mark.fillRule as "evenodd" | "nonzero" } : {})}');
+harnessLines.push('        aria-hidden');
+harnessLines.push('        focusable="false"');
+harnessLines.push('        className="size-[0.9em] shrink-0"');
+harnessLines.push('        dangerouslySetInnerHTML={{ __html: mark.body }}');
+harnessLines.push('      />');
+harnessLines.push('    </span>');
+harnessLines.push('  );');
+harnessLines.push('}');
+harnessLines.push('');
 
 /*
  * The vendor list lives in three places -- VENDORS in the daemon, VENDOR_LABELS on the
@@ -676,8 +816,10 @@ if (notMapped.length || extra.length) {
 }
 
 writeFileSync(OUT, lines.join('\n'), 'utf8');
+writeFileSync(HARNESS_OUT, harnessLines.join('\n'), 'utf8');
 
 console.log(`wrote ${OUT}`);
+console.log(`wrote ${HARNESS_OUT}`);
 const col = entries.filter((e) => e.colorBody).map((e) => e.vendor);
 const mono = entries.filter((e) => !e.colorBody).map((e) => e.vendor);
 console.log(`  ${col.length} in brand colour: ${col.join(', ')}`);
