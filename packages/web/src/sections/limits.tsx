@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { FreshnessBadge } from '@/components/primitives';
 import { Badge } from '@/components/ui/badge';
-import { age } from '@/format';
+import { age, windowLabel } from '@/format';
 import { Hint } from '@/components/ui/tooltip';
 import { isExpired, pct, primaryLimits, severityOf, willExhaust } from '@/format';
 import { useFormat } from '@/i18n/format';
@@ -38,11 +38,10 @@ export function LimitsSection({ ov }: { ov: Overview }) {
           </TableHeader>
           <TableBody>
             {/*
-              * One row per WINDOW, not per origin. A source can publish the same window
-              * through several origins -- Claude reports one live and one from a cached
-              * config that can be days old -- and listing each made a two-window source
-              * fill four rows whose numbers openly disagreed. The reading in force is
-              * shown; the ones it supersedes are on the freshness chip.
+              * One row per ACCOUNT/WINDOW, not per reader or origin. Codex and Hermes can
+              * read the same OpenAI subscription, while Claude's live and cached feeds
+              * are also separate origins. The reading in force is shown; the ones it
+              * supersedes are on the freshness chip.
               */}
             {primaryLimits(ov.limits, now).map(({ primary: l, superseded }) => {
               const expired = isExpired(l, now);
@@ -50,9 +49,9 @@ export function LimitsSection({ ov }: { ov: Overview }) {
               const exhausts = willExhaust(l, now);
 
               return (
-                <TableRow key={`${l.source_id}-${l.window_kind}`}>
-                  <TableCell>{l.display_name}</TableCell>
-                  <TableCell className="text-muted-foreground">{l.window_kind}</TableCell>
+                <TableRow key={`${l.account_key ?? `source:${l.source_id}`}-${l.window_kind}`}>
+                  <TableCell>{l.subscription_display_name ?? l.account_display_name ?? l.display_name}</TableCell>
+                  <TableCell className="text-muted-foreground">{windowLabel(l.window_kind)}</TableCell>
 
                   <TableCell className="tabular text-right font-mono font-semibold">
                     {expired ? (
@@ -125,7 +124,7 @@ export function LimitsSection({ ov }: { ov: Overview }) {
                           text={
                             <span className="flex flex-col gap-1">
                               {superseded.map((o) => (
-                                <span key={o.origin}>
+                                <span key={`${o.source_id}:${o.origin}`}>
                                   {t('limits.alsoVia', {
                                     pct: pct(o.used_percent),
                                     origin: o.origin,

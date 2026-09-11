@@ -12,6 +12,11 @@ export interface Limit {
   origin: string;
   ageSeconds: number | null;
   burn: { percentPerHour: number; projectedFullAt: number | null } | null;
+  /** Canonical quota owner. Several harness/account readers can share one subscription. */
+  account_key?: string | null;
+  subscription_key?: string | null;
+  account_display_name?: string | null;
+  subscription_display_name?: string | null;
 }
 
 /** How long each quota window covers; used to judge a reading with no reset timestamp. */
@@ -20,6 +25,7 @@ const WINDOW_SPAN_MS: Record<string, number> = {
   weekly: 7 * 86_400_000,
   weekly_opus: 7 * 86_400_000,
   weekly_sonnet: 7 * 86_400_000,
+  monthly: 31 * 86_400_000,
   session: 5 * 3_600_000,
 };
 
@@ -78,6 +84,45 @@ export function currentLimits(all: Limit[], now = Date.now()): Limit[] {
   );
 }
 
+const ownerKey = (l: Limit): string =>
+  l.subscription_key ?? l.account_key ?? `source:${l.source_id}`;
+
+const ownerName = (l: Limit): string =>
+  l.subscription_display_name ?? l.account_display_name ?? l.display_name;
+
+/**
+ * One row per (subscription, window), collapsing readers such as Codex and Hermes that
+ * report the same OpenAI quota. Reader/origin deduplication happens first, so a live
+ * statusline still beats that source's cached fallback before subscriptions are merged.
+ */
+export function subscriptionLimits(all: Limit[], now = Date.now()): Limit[] {
+  const best = new Map<string, Limit>();
+  for (const l of currentLimits(all, now)) {
+    const key = `${ownerKey(l)}:${l.window_kind}`;
+    const candidate = { ...l, display_name: ownerName(l) };
+    const prev = best.get(key);
+    if (!prev) {
+      best.set(key, candidate);
+      continue;
+    }
+
+    // A still-valid reader is preferable to an expired reader for the same quota pool.
+    const prevDead = isExpired(prev, now);
+    const currDead = isExpired(candidate, now);
+    if (prevDead !== currDead) {
+      if (prevDead) best.set(key, candidate);
+      continue;
+    }
+    if ((candidate.ageSeconds ?? Infinity) < (prev.ageSeconds ?? Infinity)) {
+      best.set(key, candidate);
+    }
+  }
+
+  return [...best.values()].sort(
+    (a, b) => a.display_name.localeCompare(b.display_name) || a.window_kind.localeCompare(b.window_kind),
+  );
+}
+
 /** The badge tracks the worst limit that is still live. */
 export function worst(all: Limit[], now = Date.now()): Limit | null {
   const usable = currentLimits(all, now).filter((l) => isUsable(l, now));
@@ -97,10 +142,14 @@ export const shortAge = (s: number | null | undefined): string => {
 };
 
 export const shortWindow = (kind: string): string =>
-  kind === '5h' ? '5h' : kind === 'weekly' ? 'wk' : kind.replace('weekly_', 'wk-');
+  kind === '5h' ? '5h' : kind === 'weekly' ? 'wk' : kind === 'monthly' ? 'mo' : kind.replace('weekly_', 'wk-');
 
 export const shortSource = (name: string): string =>
   name
+    .replace(/^OpenAI Subscription$/, 'OpenAI')
+    .replace(/^Claude Company Subscription$/, 'Claude company')
+    .replace(/^Claude Personal Subscription$/, 'Claude personal')
+    .replace(/^OpenCode Go Subscription$/, 'OpenCode Go')
     .replace(/^Claude Code$/, 'Claude')
     .replace(/^Claude Code \((.+)\)$/, 'Claude $1')
     .replace(/^Codex CLI$/, 'Codex')
@@ -111,12 +160,12 @@ export const clockAt = (ms: number | null): string =>
   ms == null ? '' : new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
 export const sourceCount = (all: Limit[], now = Date.now()): number =>
-  new Set(currentLimits(all, now).map((l) => l.display_name)).size;
+  new Set(subscriptionLimits(all, now).map((l) => l.display_name)).size;
 
-/** One line per source, so every harness is represented rather than just the freshest. */
+/** One line per subscription/source, with shared readers collapsed before the tooltip is built. */
 export function tooltipLines(all: Limit[], now = Date.now()): string[] {
   const bySource = new Map<string, Limit[]>();
-  for (const l of currentLimits(all, now)) {
+  for (const l of subscriptionLimits(all, now)) {
     if (!bySource.has(l.display_name)) bySource.set(l.display_name, []);
     bySource.get(l.display_name)!.push(l);
   }

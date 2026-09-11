@@ -1,5 +1,5 @@
 import { existsSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import type { Adapter, IngestCtx, Profile, WatchTarget } from './types.js';
 import { openForeignRo } from '../db/index.js';
 import { fromEpochAuto } from '../util/time.js';
@@ -59,6 +59,11 @@ function profileDbs(): Array<{ profile: string; file: string; label: string }> {
     }
   }
   return out;
+}
+
+/** The Hermes home that owns a detected state database, including named profiles. */
+export function hermesHomeForProfile(p: Profile): string {
+  return dirname(p.rootPath);
 }
 
 export const hermesAdapter: Adapter = {
@@ -158,6 +163,7 @@ export const hermesAdapter: Adapter = {
         ctx.sink.usage({
           dedupKey: `agg:${key}`,
           ts,
+          callCount: r.api_call_count ?? 1,
           nativeSessionId: r.session_id,
           model: r.model,
           provider: r.billing_provider,

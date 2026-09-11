@@ -72,6 +72,8 @@ export function windowLabel(kind: string): string {
       return 'Weekly (Opus)';
     case 'weekly_sonnet':
       return 'Weekly (Sonnet)';
+    case 'monthly':
+      return 'Monthly';
     default:
       return kind;
   }
@@ -83,6 +85,7 @@ const WINDOW_SPAN_MS: Record<string, number> = {
   weekly: 7 * 86_400_000,
   weekly_opus: 7 * 86_400_000,
   weekly_sonnet: 7 * 86_400_000,
+  monthly: 31 * 86_400_000,
   session: 5 * 3_600_000,
 };
 
@@ -105,6 +108,10 @@ export function isExpired(
 /** The shape every consumer of a quota reading needs; `Limit` from the API satisfies it. */
 interface Readingish {
   source_id: number;
+  /** Account-level rows collapse readers such as Codex and Hermes into one quota. */
+  account_key?: string | null;
+  /** Canonical subscription-level owner; falls back to the legacy account key. */
+  subscription_key?: string | null;
   window_kind: string;
   origin: string;
   resets_at: number | null;
@@ -120,7 +127,8 @@ export interface WindowReadings<T> {
 }
 
 /**
- * Collapse a flat list of readings to one per (source, window).
+ * Collapse a flat list of readings to one per (account, window), falling back to the
+ * source for legacy/non-account readings.
  *
  * `/api/limits` returns one row per (source, window, ORIGIN) on purpose -- Claude
  * publishes the same window through a live statusline and a cached config file that can
@@ -139,7 +147,8 @@ export function primaryLimits<T extends Readingish>(
 ): Array<WindowReadings<T>> {
   const byWindow = new Map<string, T[]>();
   for (const r of readings) {
-    const key = `${r.source_id}:${r.window_kind}`;
+    const owner = r.subscription_key ?? r.account_key ?? `source:${r.source_id}`;
+    const key = `${owner}:${r.window_kind}`;
     if (!byWindow.has(key)) byWindow.set(key, []);
     byWindow.get(key)!.push(r);
   }

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { trayIconFor, severityFor, menuGaugeFor } from './icon.js';
 import {
   buildTooltip,
-  currentLimits,
+  subscriptionLimits,
   worst,
   isExpired,
   isUsable,
@@ -103,15 +103,16 @@ async function fetchLimits(): Promise<void> {
 
 function render(): void {
   if (!tray) return;
-  const w = worst(limits);
-  const pct = w?.used_percent ?? null;
+  const menuLimits = subscriptionLimits(limits);
+  const menuWorst = worst(menuLimits);
+  const pct = menuWorst?.used_percent ?? null;
 
   tray.setImage(nativeImage.createFromBuffer(trayIconFor(pct)));
   tray.setToolTip(buildTooltip(limits, lock != null));
 
-  // The context menu has no length limit, so it carries the full detail the tooltip
-  // cannot: every source, every window, its reset time and how old the reading is.
-  const detail: Electron.MenuItemConstructorOptions[] = currentLimits(limits).map((l) => {
+  // Keep this at subscription/window grain: Codex and Hermes can be two readers of one
+  // OpenAI quota, and a right-click menu should not repeat the same numbers per reader.
+  const detail: Electron.MenuItemConstructorOptions[] = menuLimits.map((l) => {
     const expired = isExpired(l);
     const value = expired ? '--' : `${Math.round(l.used_percent!)}%`;
     const when = expired
@@ -121,7 +122,7 @@ function render(): void {
         : 'no reset time reported';
     const agePart = l.ageSeconds != null && l.ageSeconds >= 120 ? `, ${shortAge(l.ageSeconds).trim()} old` : '';
     return {
-      label: `${l.display_name} · ${shortWindow(l.window_kind)} ${value} — ${when}${agePart}`,
+      label: `${shortSource(l.display_name)} · ${shortWindow(l.window_kind)} ${value} — ${when}${agePart}`,
       /*
        * The row's own reading as a ring, so the shape carries the number and the colour
        * carries the severity without reading the sentence. An expired window has no
@@ -140,8 +141,8 @@ function render(): void {
   tray.setContextMenu(
     Menu.buildFromTemplate([
       {
-        label: w
-          ? `Worst: ${shortSource(w.display_name)} ${shortWindow(w.window_kind)} ${Math.round(w.used_percent!)}%`
+        label: menuWorst
+          ? `Worst: ${shortSource(menuWorst.display_name)} ${shortWindow(menuWorst.window_kind)} ${Math.round(menuWorst.used_percent!)}%`
           : 'No live limits',
         enabled: false,
       },
@@ -169,8 +170,8 @@ function render(): void {
 function checkAlerts(): void {
   if (!alertsEnabled) return;
   // Only a live window can cross a threshold; a rolled-over one is back near zero.
-  for (const l of currentLimits(limits).filter((l) => isUsable(l))) {
-    const key = `${l.source_id}:${l.window_kind}`;
+  for (const l of subscriptionLimits(limits).filter((l) => isUsable(l))) {
+    const key = `${l.subscription_key ?? l.account_key ?? `source:${l.source_id}`}:${l.window_kind}`;
     const prev = alerted.get(key);
     // A new window period starts the alert ladder over.
     if (prev && prev.resetsAt !== l.resets_at) alerted.delete(key);
@@ -186,7 +187,7 @@ function checkAlerts(): void {
       ? `resets ${new Date(l.resets_at).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}`
       : 'no reset time reported';
     new Notification({
-      title: `${l.display_name}: ${Math.round(pct)}% of ${l.window_kind}`,
+      title: `${l.display_name}: ${Math.round(pct)}% of ${shortWindow(l.window_kind)}`,
       body: l.burn?.projectedFullAt && l.resets_at && l.burn.projectedFullAt < l.resets_at
         ? `At the current rate this runs out before it resets (${when}).`
         : when,

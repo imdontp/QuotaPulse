@@ -11,12 +11,15 @@ One dashboard for every AI agent harness on this machine: tokens, quota limits, 
 burn rate, cost, models, effort, and history that keeps accruing whether or not anything is
 open.
 
-It reads only files the harnesses already write. No credentials, no API calls, no proxy, no
-network. Works fully offline.
+It reads only counters and metadata from files the harnesses already write. For Hermes
+profiles using OpenAI Codex OAuth, it also asks Hermes' own account-usage helper for the
+subscription quota. For OpenCode Go, it calls the official account quota endpoint through a
+small helper. QuotaPulse never stores either provider credential. Disable those probes with
+`QUOTAPULSE_HERMES_ACCOUNT_QUOTA=off` and `QUOTAPULSE_OPENCODE_GO_QUOTA=off` respectively.
 
-The one exception is opt-in and separate: `npm run prices:refresh` fetches the public
-models.dev price list, sends nothing, and is a command you run rather than anything the
-daemon does. Skip it and the tool still works -- costs read `--`.
+A separate opt-in command, `npm run prices:refresh`, fetches the public models.dev price
+list, sends no usage data, and is not part of the daemon's account probe. Skip it and the
+tool still works -- costs read `--`.
 
 ```
    ~/.claude/**      ~/.codex/**      opencode.db      hermes state.db
@@ -94,14 +97,17 @@ compiling, which needs a toolchain.
 
 Your data stays in `%LOCALAPPDATA%\quotapulse\`; the repo carries none of it.
 
-## Supported harnesses
+## Supported harnesses and accounts
 
-| Harness | Tokens | Cost | Quota + reset | Live |
+| Surface | Tokens | Cost | Quota + reset | Live |
 |---|---|---|---|---|
-| Claude Code (both profiles) | yes | computed + its own `cost-state` | yes, live while a session runs | yes |
+| Claude Code (company + personal profiles) | yes | computed + its own `cost-state` | yes, live while a session runs | yes |
 | Codex CLI | yes | computed | **yes, on every API call** | yes |
-| OpenCode | yes | native | none published | yes |
-| Hermes Agent (all profiles) | yes | computed | none published | per session |
+| OpenCode | yes | native | no harness quota published | yes |
+| Hermes Agent (all profiles) | yes | computed | shown under the shared Subscription when using Codex OAuth | per session |
+| OpenAI Subscription | — | — | **yes, shared by Codex + Hermes; 5h + weekly + reset** | every 60s |
+| Claude Company / Personal Subscription | — | — | separate quota windows; Personal stays visible as inactive when unsubscribed | source-dependent |
+| OpenCode Go Subscription | — | — | **yes, 5h + weekly + monthly + reset** | every 60s when entitled |
 
 Adding another is one file: see [docs/ADAPTER.md](docs/ADAPTER.md). Copilot, Cursor, Gemini
 and others were surveyed and deliberately left out — [docs/DATA-SOURCES.md](docs/DATA-SOURCES.md)
@@ -167,7 +173,7 @@ cannot be priced. There is a regression test per adapter that reads a file in tw
 | `npm run start -w @quotapulse/tray` | build and run the tray |
 | `npm run preview-tooltip -w @quotapulse/tray` | print what the tray tooltip and menu currently say |
 | `npm run vendor-check -w @quotapulse/daemon` | show how every (model, provider) pair resolves to a vendor |
-| `npm run prices:refresh` | fetch the models.dev price catalog (the only command that uses the network) |
+| `npm run prices:refresh` | fetch the models.dev price catalog (the user-invoked network command) |
 | `npm run doctor` | check the things that fail silently: stale `dist/`, broken task paths, two daemons, missing catalog |
 | `npm run shoot` | screenshot the dashboard into `screens/` for a visual once over |
 | `npm run icon-preview -w @quotapulse/tray` | render the tray icon states to PNGs |
@@ -190,10 +196,15 @@ holds an SSE stream open forever, so `chrome --screenshot --virtual-time-budget`
 
 ## Sections
 
-**Live** every detected source -- a gauge where the harness publishes a quota, and for the
-ones that publish none (OpenCode, Hermes) a card saying so plus the totals we do have, so a
-tracked harness never looks untracked -- alongside today's totals with sparklines and the
-cache hit rate ·
+**Live** separates two ownership layers: Subscription cards (OpenAI, Claude Company and
+Claude Personal) own quota windows, while Harness cards (Codex CLI, Claude Code Company,
+Claude Code Personal, OpenCode and Hermes Agent) own usage. Hermes contains nested Delegate
+cards for Codex CLI and both Claude Code subscriptions. A quota reader such as
+`hermes-account-usage` is never a visible Harness card, and Codex/Hermes readers that use
+the same OpenAI subscription share one quota card. OpenCode Go is an optional Subscription
+card that appears after the official account quota endpoint confirms the Go entitlement;
+an ordinary OpenCode API key is not enough. OpenCode remains the Harness card. The page
+also shows today's totals with sparklines and the cache hit rate ·
 **Limits** one row per quota window with burn rate and "hits 100% at ..." projection; a
 harness that reports the same window through several origins shows the reading in force,
 with the ones it supersedes on the freshness chip ·
@@ -316,15 +327,15 @@ InclusionAI rendered as silhouettes.
 ## Currency
 
 Figures are computed in USD from published list prices. Switching to another currency
-converts for display at **a rate you set yourself** — nothing fetches an exchange rate,
-because nothing in QuotaPulse makes a network request. Every converted figure states its
-rate next to it, so a baht total can never be mistaken for money actually billed.
+converts for display at **a rate you set yourself**. Every converted figure states its rate
+next to it, so a baht total can never be mistaken for money actually billed.
 
 ## Privacy
 
-Counters and metadata only. Prompts, responses, code and credentials are never read. Bound to
-`127.0.0.1`, token-authenticated, no outbound requests — including from the dashboard page
-itself, whose fonts and icons are bundled rather than fetched. See
+Counters and metadata only. Prompts, responses, code and credentials are never read by QuotaPulse. Bound to
+`127.0.0.1`, token-authenticated. The optional Hermes account probe uses Hermes' own
+authenticated helper and sends only the provider's quota request; the dashboard page
+itself, whose fonts and icons are bundled, makes no outbound requests. See
 [docs/PRIVACY.md](docs/PRIVACY.md).
 
 ## Licence

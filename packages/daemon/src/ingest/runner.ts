@@ -45,6 +45,8 @@ export async function resolveSources(db: DB, adapters: Adapter[]): Promise<Resol
         profile: profile.profile,
         rootPath: profile.rootPath,
         displayName: profile.displayName,
+        account: profile.account,
+        sourceKind: profile.sourceKind,
       });
       out.push({ adapter, profile, sourceId });
       log.info(`${adapter.id}/${profile.profile} -> ${profile.rootPath}`);

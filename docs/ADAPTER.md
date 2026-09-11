@@ -19,22 +19,29 @@ export interface Adapter {
 ```
 
 A **profile** is one account or install of a harness. Claude Code has two here
-(`~/.claude` and `~/.claude-company`); Hermes has three. Profiles have separate quotas, so
-they are separate sources and must never be merged.
+(`~/.claude` and `~/.claude-company`); Hermes has three. Profiles are separate usage
+sources. Quota ownership is modelled separately: multiple auth-owned readers may feed one
+Subscription card (for example Codex CLI and Hermes reading the same OpenAI subscription).
+The dashboard then relates that Subscription to a Harness card, with Hermes delegates nested
+under the Hermes parent. A quota reader is an ingestion detail, not another Harness card.
 
-The **sink** takes three record kinds:
+The **sink** takes four record kinds:
 
 ```ts
 sink.usage(e: UsageEvent)     // one API call
 sink.limit(s: LimitSample)    // one quota reading
 sink.session(d: SessionDim)   // session metadata
+sink.accountState(s)          // subscription/account availability
 ```
 
 ## Five rules
 
 **1. Never read content.** No prompts, no responses, no code, no file contents. Counters and
 metadata only. Do not open `auth.json`, `.credentials.json`, `google_accounts.json`, or
-anything holding a token. See [PRIVACY.md](PRIVACY.md).
+anything holding a token from the daemon. The OpenAI Subscription quota reader invokes
+Hermes' own account-usage helper, and the OpenCode Go reader invokes its small helper; each
+helper owns the credential handling and returns only sanitized quota fields. Neither reader
+is another Harness card. See [PRIVACY.md](PRIVACY.md).
 
 **2. Open foreign SQLite read-only.** Use `openForeignRo(path)` from `db/index.js`. Never
 write to, checkpoint, or vacuum another tool's database.

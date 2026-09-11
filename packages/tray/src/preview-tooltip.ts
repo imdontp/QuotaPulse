@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { homedir } from 'node:os';
 import {
   buildTooltip,
-  currentLimits,
+  subscriptionLimits,
   worst,
   isExpired,
   shortWindow,
@@ -41,7 +41,8 @@ async function main() {
   console.log(`\n=== TOOLTIP (${tip.length}/${TOOLTIP_MAX} chars) ===`);
   for (const line of tip.split('\n')) console.log('  | ' + line);
 
-  const w = worst(limits);
+  const shown = subscriptionLimits(limits);
+  const w = worst(shown);
   console.log('\n=== CONTEXT MENU ===');
   console.log(
     '  ' +
@@ -50,7 +51,7 @@ async function main() {
         : 'No live limits'),
   );
   console.log('  ---');
-  for (const l of currentLimits(limits)) {
+  for (const l of shown) {
     const expired = isExpired(l);
     const value = expired ? '--' : `${Math.round(l.used_percent!)}%`;
     const when = expired
@@ -60,11 +61,11 @@ async function main() {
         : 'no reset time reported';
     const agePart =
       l.ageSeconds != null && l.ageSeconds >= 120 ? `, ${shortAge(l.ageSeconds).trim()} old` : '';
-    console.log(`  ${l.display_name} | ${shortWindow(l.window_kind)} ${value} - ${when}${agePart}`);
+    console.log(`  ${shortSource(l.display_name)} · ${shortWindow(l.window_kind)} ${value} — ${when}${agePart}`);
   }
 
-  const hidden = limits.length - currentLimits(limits).length;
-  console.log(`\n  (${currentLimits(limits).length} shown, ${hidden} superseded by a fresher origin)`);
+  const hidden = limits.length - shown.length;
+  console.log(`\n  (${shown.length} shown, ${hidden} duplicate reader/origin rows hidden)`);
 }
 
 main().catch((err) => {

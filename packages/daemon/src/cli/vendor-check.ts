@@ -16,7 +16,7 @@ const db = openForeignRo(DB_PATH);
 const pairs = db
   .prepare(
     `SELECT COALESCE(model,'') AS model, COALESCE(provider,'') AS provider,
-            SUM(total_tokens) AS tok, COUNT(*) AS calls
+            SUM(total_tokens) AS tok, COALESCE(SUM(call_count),0) AS calls
        FROM usage_event GROUP BY 1, 2 ORDER BY tok DESC`,
   )
   .all() as Array<{ model: string; provider: string; tok: number; calls: number }>;

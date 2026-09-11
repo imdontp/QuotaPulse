@@ -99,7 +99,18 @@ export const codexAdapter: Adapter = {
 
   async detect(): Promise<Profile[]> {
     if (!existsSync(join(ROOT, 'sessions'))) return [];
-    return [{ profile: 'default', rootPath: ROOT, displayName: 'Codex CLI' }];
+    return [
+      {
+        profile: 'default',
+        rootPath: ROOT,
+        displayName: 'Codex CLI',
+        account: {
+          key: 'openai:subscription',
+          provider: 'openai',
+          displayName: 'OpenAI Subscription',
+        },
+      },
+    ];
   },
 
   watchTargets(p: Profile): WatchTarget[] {

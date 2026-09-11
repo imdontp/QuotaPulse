@@ -41,7 +41,7 @@ async function main() {
   console.log('\n--- stored totals by source ---');
   const rows = db
     .prepare(
-      `SELECT s.harness, s.profile, COUNT(*) AS calls,
+      `SELECT s.harness, s.profile, COALESCE(SUM(u.call_count),0) AS calls,
               SUM(u.input_tokens)        AS input,
               SUM(u.cached_input_tokens) AS cached,
               SUM(u.output_tokens)       AS output,
@@ -116,7 +116,7 @@ function crossCheck(db: ReturnType<typeof openDb>) {
       (
         db
           .prepare(
-            `SELECT COUNT(*) AS v FROM usage_event u JOIN source s ON s.id=u.source_id
+            `SELECT COALESCE(SUM(u.call_count),0) AS v FROM usage_event u JOIN source s ON s.id=u.source_id
               WHERE s.harness=? AND s.profile=?`,
           )
           .get(harness, profile) as { v: number }

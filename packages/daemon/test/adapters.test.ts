@@ -1,9 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
-import { appendFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, writeFileSync, mkdirSync } from 'node:fs';
 
 import { openDb, upsertSource, type DB } from '../src/db/index.js';
+import { totalsSince } from '../src/api/queries.js';
 import { DbCursorStore } from '../src/ingest/cursor.js';
 import { DbSink } from '../src/ingest/sink.js';
 import { PriceResolver } from '../src/pricing/resolve.js';
@@ -86,6 +87,51 @@ test('claude: cost-state lands on the session as the native figure', async () =>
   const s = db.prepare(`SELECT * FROM session WHERE native_session_id = 'sess-1'`).get() as Record<string, number>;
   assert.equal(s.native_cost_usd, 1.2345);
   assert.equal(s.native_lines_added, 10);
+  db.close();
+});
+
+test('claude account state stays visible while inactive and reactivates from quota', async () => {
+  const dir = tmpRoot();
+  const db = openDb(join(dir, 'claude-account.db'));
+  const root = join(dir, '.claude-company');
+  mkdirSync(root, { recursive: true });
+  const profile: Profile = {
+    profile: 'company',
+    rootPath: root,
+    displayName: 'Claude Code (company)',
+    account: { key: 'anthropic:claude:company', provider: 'anthropic', displayName: 'Claude Company' },
+  };
+  const sourceId = upsertSource(db, {
+    harness: 'claude-code',
+    profile: 'company',
+    rootPath: root,
+    displayName: profile.displayName,
+    account: profile.account,
+  });
+
+  writeFileSync(join(root, '.claude.json'), JSON.stringify({ oauthAccount: {} }), 'utf8');
+  await ingestOnce(db, claudeCodeAdapter, profile, sourceId);
+  assert.equal(
+    (db.prepare(`SELECT account_state FROM source WHERE id = ?`).get(sourceId) as { account_state: string }).account_state,
+    'inactive',
+  );
+
+  writeFileSync(
+    join(root, '.claude.json'),
+    JSON.stringify({
+      oauthAccount: { organizationType: 'claude_pro' },
+      cachedUsageUtilization: {
+        fetchedAtMs: Date.now(),
+        utilization: { five_hour: { utilization: 12, resets_at: new Date(Date.now() + 3_600_000).toISOString() } },
+      },
+    }),
+    'utf8',
+  );
+  await ingestOnce(db, claudeCodeAdapter, profile, sourceId);
+  assert.equal(
+    (db.prepare(`SELECT account_state FROM source WHERE id = ?`).get(sourceId) as { account_state: string }).account_state,
+    'active',
+  );
   db.close();
 });
 
@@ -194,6 +240,30 @@ test('codex: quota is recorded even from an event with no usage, and a missing s
 
   const weekly = db.prepare(`SELECT COUNT(*) c FROM limit_sample WHERE window_kind='weekly'`).get() as { c: number };
   assert.equal(weekly.c, 1, 'only the one event that carried a secondary window');
+  db.close();
+});
+
+test('aggregate usage rows contribute their native API call count', () => {
+  const dir = tmpRoot();
+  const db = openDb(join(dir, 'aggregate-count.db'));
+  const sourceId = upsertSource(db, {
+    harness: 'hermes',
+    profile: 'default',
+    rootPath: join(dir, 'state.db'),
+    displayName: 'Hermes',
+  });
+  const sink = new DbSink(db, sourceId, new PriceResolver(db));
+
+  sink.usage({
+    dedupKey: 'aggregate:session:model',
+    ts: Date.now(),
+    callCount: 7,
+    model: 'gpt-5.5',
+    provider: 'openai-codex',
+    inputTokens: 10,
+  });
+
+  assert.equal(totalsSince(db, 0, sourceId).calls, 7);
   db.close();
 });
 

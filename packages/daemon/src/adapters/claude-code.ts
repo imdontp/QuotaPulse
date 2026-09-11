@@ -17,9 +17,36 @@ const log = logger('claude-code');
  * separate accounts with separate quotas, so they are separate sources.
  */
 const KNOWN_ROOTS: Array<{ profile: string; path: string; label: string }> = [
-  { profile: 'default', path: home('.claude'), label: 'Claude Code' },
-  { profile: 'company', path: home('.claude-company'), label: 'Claude Code (company)' },
+  { profile: 'default', path: home('.claude'), label: 'Claude Code Personal' },
+  { profile: 'company', path: home('.claude-company'), label: 'Claude Code Company' },
 ];
+
+function accountFor(profile: string) {
+  if (profile === 'company') {
+    return {
+      key: 'anthropic:claude:company',
+      provider: 'anthropic',
+      displayName: 'Claude Company Subscription',
+    };
+  }
+  if (profile === 'default') {
+    return {
+      key: 'anthropic:claude:personal',
+      provider: 'anthropic',
+      displayName: 'Claude Personal Subscription',
+    };
+  }
+  const label = profile
+    .split(/[-_\s]+/)
+    .filter(Boolean)
+    .map((part) => part[0]!.toUpperCase() + part.slice(1))
+    .join(' ');
+    return {
+      key: `anthropic:claude:${profile}`,
+      provider: 'anthropic',
+      displayName: `Claude ${label || profile} Subscription`,
+    };
+}
 
 interface ClaudeUsage {
   input_tokens?: number;
@@ -88,8 +115,16 @@ export const claudeCodeAdapter: Adapter = {
       roots.push({ profile: basename(envRoot).replace(/^\./, ''), path: envRoot, label: `Claude Code (${basename(envRoot)})` });
     }
     for (const r of roots) {
-      if (existsSync(join(r.path, 'projects'))) {
-        found.push({ profile: r.profile, rootPath: r.path, displayName: r.label });
+      // Keep a known profile visible even before its first transcript exists. The
+      // account card can then say "inactive" or "waiting" and can become active again
+      // as soon as Claude publishes quota, without a code/config change.
+      if (existsSync(r.path) || existsSync(configPathFor({ profile: r.profile, rootPath: r.path, displayName: r.label }))) {
+        found.push({
+          profile: r.profile,
+          rootPath: r.path,
+          displayName: r.label,
+          account: accountFor(r.profile),
+        });
       }
     }
     return found;
@@ -110,11 +145,10 @@ export const claudeCodeAdapter: Adapter = {
 };
 
 function configPathFor(p: Profile): string {
-  // The company profile keeps its config inside the config dir; the default profile
-  // keeps it beside the home directory.
-  const inRoot = join(p.rootPath, '.claude.json');
-  if (existsSync(inRoot)) return inRoot;
-  return join(HOME, '.claude.json');
+  // The personal profile keeps its config beside the home directory; alternate
+  // profiles keep theirs inside their config directory. Never let a missing company
+  // config accidentally read the personal account's cached quota.
+  return p.profile === 'default' ? join(HOME, '.claude.json') : join(p.rootPath, '.claude.json');
 }
 
 async function ingestTranscripts(ctx: IngestCtx): Promise<void> {
@@ -306,6 +340,7 @@ interface UtilWindow {
 }
 
 interface ClaudeConfig {
+  oauthAccount?: { organizationType?: string | null } | null;
   cachedUsageUtilization?: {
     fetchedAtMs?: number;
     utilization?: Record<string, UtilWindow | unknown> & {
@@ -326,6 +361,7 @@ interface ClaudeConfig {
  */
 function ingestLimits(ctx: IngestCtx): void {
   const now = Date.now();
+  let published = false;
 
   const statuslineDir = join(ctx.profile.rootPath, 'statusline');
   if (existsSync(statuslineDir)) {
@@ -345,6 +381,7 @@ function ingestLimits(ctx: IngestCtx): void {
     if (best) {
       const { snap, at } = best;
       if (snap.five_hour?.used_percentage != null || snap.five_hour?.resets_at != null) {
+        published = true;
         ctx.sink.limit({
           windowKind: '5h',
           usedPercent: snap.five_hour?.used_percentage ?? null,
@@ -356,6 +393,7 @@ function ingestLimits(ctx: IngestCtx): void {
         });
       }
       if (snap.seven_day?.used_percentage != null || snap.seven_day?.resets_at != null) {
+        published = true;
         ctx.sink.limit({
           windowKind: 'weekly',
           usedPercent: snap.seven_day?.used_percentage ?? null,
@@ -371,29 +409,45 @@ function ingestLimits(ctx: IngestCtx): void {
 
   const cfg = readJsonFile<ClaudeConfig>(configPathFor(ctx.profile));
   const cached = cfg?.cachedUsageUtilization;
-  if (!cached?.utilization) return;
-  const fetchedAt = cached.fetchedAtMs ?? null;
-  const util = cached.utilization;
+  if (cached?.utilization) {
+    const fetchedAt = cached.fetchedAtMs ?? null;
+    const util = cached.utilization;
 
-  const windows: Array<[string, string]> = [
-    ['five_hour', '5h'],
-    ['seven_day', 'weekly'],
-    ['seven_day_opus', 'weekly_opus'],
-    ['seven_day_sonnet', 'weekly_sonnet'],
-  ];
-  for (const [key, kind] of windows) {
-    const w = util[key] as UtilWindow | null | undefined;
-    if (!w || typeof w !== 'object') continue;
-    if (w.utilization == null && w.resets_at == null) continue;
-    ctx.sink.limit({
-      windowKind: kind as never,
-      usedPercent: w.utilization ?? null,
-      usedDollars: w.used_dollars ?? null,
-      limitDollars: w.limit_dollars ?? null,
-      resetsAt: fromIso(w.resets_at),
-      observedAt: fetchedAt ?? now,
-      sourceFetchedAt: fetchedAt,
-      origin: 'claude.json',
-    });
+    const windows: Array<[string, string]> = [
+      ['five_hour', '5h'],
+      ['seven_day', 'weekly'],
+      ['seven_day_opus', 'weekly_opus'],
+      ['seven_day_sonnet', 'weekly_sonnet'],
+    ];
+    for (const [key, kind] of windows) {
+      const w = util[key] as UtilWindow | null | undefined;
+      if (!w || typeof w !== 'object') continue;
+      if (w.utilization == null && w.resets_at == null) continue;
+      published = true;
+      ctx.sink.limit({
+        windowKind: kind as never,
+        usedPercent: w.utilization ?? null,
+        usedDollars: w.used_dollars ?? null,
+        limitDollars: w.limit_dollars ?? null,
+        resetsAt: fromIso(w.resets_at),
+        observedAt: fetchedAt ?? now,
+        sourceFetchedAt: fetchedAt,
+        origin: 'claude.json',
+      });
+    }
+  }
+
+  if (published) return;
+
+  // A readable config with no OAuth organization is the durable local indication
+  // that this profile is no longer subscribed. Missing/malformed config is left in
+  // waiting, because it cannot distinguish a transient read problem from logout.
+  if (cfg && !cfg.oauthAccount?.organizationType) {
+    ctx.sink.accountState({ state: 'inactive', reason: 'no-subscription', observedAt: now });
+    return;
+  }
+
+  if (cfg?.oauthAccount?.organizationType) {
+    ctx.sink.accountState({ state: 'waiting', reason: 'quota-not-published', observedAt: now });
   }
 }

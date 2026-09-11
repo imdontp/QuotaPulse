@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Activity, Coins, CalendarRange, Database } from 'lucide-react';
-import { api, type Overview, type SourceTotals } from '@/api';
+import { api, type HarnessStatus, type Overview, type SourceTotals, type SubscriptionStatus } from '@/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -87,18 +87,39 @@ function Stat({
   );
 }
 
+function subscriptionStateLabel(t: ReturnType<typeof useT>, state: SubscriptionStatus['state']): string {
+  return state === 'active'
+    ? t('live.subscriptionActive')
+    : state === 'stale'
+      ? t('live.subscriptionStale')
+      : state === 'inactive'
+        ? t('live.subscriptionInactive')
+        : state === 'unavailable'
+          ? t('live.subscriptionUnavailable')
+          : t('live.subscriptionWaiting');
+}
+
+function stateVariant(state: SubscriptionStatus['state']): 'ok' | 'outline' | 'warn' {
+  return state === 'active' ? 'ok' : state === 'inactive' ? 'outline' : 'warn';
+}
+
+function harnessStatusLabel(
+  t: ReturnType<typeof useT>,
+  harness: HarnessStatus,
+  now: number,
+): string {
+  if (!harness.detected) return t('live.harnessNotDetected');
+  if (harness.last_event_ts != null && now - harness.last_event_ts < 120_000) {
+    return t('live.harnessActive');
+  }
+  return t('live.harnessTracked');
+}
+
 export function LiveSection({ ov }: { ov: Overview }) {
   const t = useT();
   const f = useFormat();
   const now = ov.now;
   const spark = useRecentHours(24);
-
-  // One card per source: two Claude profiles have separate quotas and must never blur.
-  const bySource = new Map<number, typeof ov.limits>();
-  for (const l of ov.limits) {
-    if (!bySource.has(l.source_id)) bySource.set(l.source_id, []);
-    bySource.get(l.source_id)!.push(l);
-  }
 
   const today = ov.today;
   /*
@@ -209,69 +230,173 @@ export function LiveSection({ ov }: { ov: Overview }) {
         </StaggerItem>
       </Stagger>
 
-      {/*
-        * Every source we detected, not only the ones that publish a quota. OpenCode and
-        * Hermes publish none at all, and a quota-driven list left them invisible here --
-        * which reads as "not tracked" when in fact their usage is in every other tab.
-        */}
-      <Stagger className="grid grid-cols-1 gap-3.5 md:grid-cols-2 lg:grid-cols-3">
-        {(ov.sourceStatus ?? []).map((src) => {
-          const limits = bySource.get(src.source_id) ?? [];
-          const hasQuota = limits.length > 0;
-          const anyLive = limits.some((l) => !isExpired(l, now) && (l.ageSeconds ?? 1e9) < 120);
-          const anyStale = hasQuota && limits.every((l) => isExpired(l, now));
-          return (
-            <StaggerItem key={src.source_id}>
-              <Card className="h-full">
-                <CardHeader>
-                  <HarnessIcon
-                    harness={src.harness}
-                    vendor={src.vendor}
-                    label={src.display_name}
-                    className="text-[16px]"
-                  />
-                  <CardTitle>{src.display_name}</CardTitle>
-                  <div className="flex-1" />
-                  <span
-                    className="size-1.5 rounded-full"
-                    style={{
-                      background: anyLive
-                        ? 'var(--ok)'
-                        : anyStale || !hasQuota
-                          ? 'var(--muted-foreground)'
-                          : 'var(--warn)',
-                    }}
-                  />
-                </CardHeader>
-                <CardContent>
-                  {hasQuota ? (
-                    <GaugeStack limits={limits} now={now} />
-                  ) : (
-                    <div className="flex flex-col gap-2">
-                      <p className="text-muted-foreground note text-[11.5px] leading-relaxed">
-                        {t('live.noQuota')}
-                      </p>
-                      <div className="text-muted-foreground/70 flex flex-wrap items-baseline gap-x-3 text-[11.5px]">
-                        <span className="tabular text-foreground/80 font-mono">
-                          {t('live.allTime', { tokens: f.tokens(src.total_tokens) })}
-                        </span>
-                        <span>{t('live.calls', { n: src.calls.toLocaleString() })}</span>
-                        <span>
-                          {src.last_event_ts
-                            ? t('live.lastUsed', { age: age((now - src.last_event_ts) / 1000) })
-                            : t('live.neverUsed')}
-                        </span>
+      <div className="order-2 flex flex-col gap-3.5">
+        <div className="flex items-baseline justify-between gap-3 px-0.5">
+          <h2 className="text-[13px] font-semibold">{t('live.harnessGroup')}</h2>
+          <span className="text-muted-foreground text-[11.5px]">{t('live.harnessGroupBlurb')}</span>
+        </div>
+        <Stagger className="grid grid-cols-1 gap-3.5 md:grid-cols-2 lg:grid-cols-3">
+          {(ov.harnesses ?? [])
+            .filter((harness) => harness.parent_harness_key == null)
+            .map((harness) => {
+              const delegates = (ov.harnesses ?? []).filter(
+                (child) => child.parent_harness_key === harness.harness_key,
+              );
+              const isLive = harness.last_event_ts != null && now - harness.last_event_ts < 120_000;
+              const subscriptions = (ov.subscriptions ?? []).filter((subscription) =>
+                harness.subscription_keys.includes(subscription.subscription_key),
+              );
+              return (
+                <StaggerItem key={harness.harness_key}>
+                  <Card className="h-full">
+                    <CardHeader>
+                      <HarnessIcon
+                        harness={harness.harness}
+                        vendor={harness.vendor}
+                        label={harness.display_name}
+                        className="text-[16px]"
+                      />
+                      <CardTitle>{harness.display_name}</CardTitle>
+                      <div className="flex-1" />
+                      <Badge variant={harness.detected ? (isLive ? 'ok' : 'outline') : 'warn'}>
+                        {harnessStatusLabel(t, harness, now)}
+                      </Badge>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-col gap-2">
+                        <p className="text-muted-foreground note text-[11.5px] leading-relaxed">
+                          {delegates.length > 0 ? t('live.parentHarnessHint') : t('live.harnessUsageHint')}
+                        </p>
+                        <div className="text-muted-foreground/70 flex flex-wrap items-baseline gap-x-3 text-[11.5px]">
+                          <span className="tabular text-foreground/80 font-mono">
+                            {t('live.allTime', { tokens: f.tokens(harness.total_tokens) })}
+                          </span>
+                          <span>{t('live.calls', { n: harness.calls.toLocaleString() })}</span>
+                          <span>
+                            {harness.last_event_ts
+                              ? t('live.lastUsed', { age: age((now - harness.last_event_ts) / 1000) })
+                              : harness.detected
+                                ? t('live.neverUsed')
+                                : t('live.harnessNotDetected')}
+                          </span>
+                        </div>
+                        {subscriptions.length > 0 && (
+                          <div className="text-muted-foreground/70 text-[11px]">
+                            {t('live.usesSubscription', {
+                              name: subscriptions.map((subscription) => subscription.subscription_display_name).join(', '),
+                            })}
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </StaggerItem>
-          );
-        })}
-      </Stagger>
 
-      <Card>
+                      {delegates.length > 0 && (
+                        <div className="border-border/70 mt-4 border-t pt-3">
+                          <div className="text-muted-foreground mb-2 text-[11px] font-semibold">
+                            {t('live.delegates')}
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            {delegates.map((delegate) => {
+                              const delegateSubscriptions = (ov.subscriptions ?? []).filter((subscription) =>
+                                delegate.subscription_keys.includes(subscription.subscription_key),
+                              );
+                              return (
+                                <div
+                                  key={delegate.harness_key}
+                                  className="border-border/60 bg-muted/20 rounded-md border px-3 py-2"
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <HarnessIcon
+                                      harness={delegate.harness}
+                                      vendor={delegate.vendor}
+                                      label={delegate.display_name}
+                                      className="text-[13px]"
+                                    />
+                                    <span className="text-[11.5px] font-medium">{delegate.display_name}</span>
+                                    <div className="flex-1" />
+                                    <Badge variant="outline">{t('live.delegate')}</Badge>
+                                  </div>
+                                  <div className="text-muted-foreground/70 mt-1.5 text-[10.5px] leading-relaxed">
+                                    {delegateSubscriptions.length > 0
+                                      ? t('live.delegateSubscription', {
+                                          name: delegateSubscriptions
+                                            .map((subscription) => subscription.subscription_display_name)
+                                            .join(', '),
+                                        })
+                                      : t('live.delegateUsagePending')}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </StaggerItem>
+              );
+            })}
+        </Stagger>
+      </div>
+
+      <div className="order-1 flex flex-col gap-3.5">
+        <div className="flex items-baseline justify-between gap-3 px-0.5">
+          <h2 className="text-[13px] font-semibold">{t('live.subscriptionGroup')}</h2>
+          <span className="text-muted-foreground text-[11.5px]">{t('live.subscriptionGroupBlurb')}</span>
+        </div>
+        <Stagger className="grid grid-cols-1 gap-3.5 md:grid-cols-2 lg:grid-cols-3">
+          {(ov.subscriptions ?? []).map((subscription) => {
+            const limits = ov.limits.filter(
+              (limit) => (limit.subscription_key ?? limit.account_key) === subscription.subscription_key,
+            );
+            const linkedHarness = (ov.harnesses ?? []).find((harness) =>
+              subscription.linked_harness_keys.includes(harness.harness_key),
+            );
+            const anyLive = limits.some(
+              (limit) => !isExpired(limit, now) && (limit.ageSeconds ?? 1e9) < 120,
+            );
+            const statusLabel = subscriptionStateLabel(t, subscription.state);
+            return (
+              <StaggerItem key={subscription.subscription_key}>
+                <Card className="h-full">
+                  <CardHeader>
+                    <HarnessIcon
+                      harness={linkedHarness?.harness ?? 'unknown'}
+                      vendor={subscription.provider}
+                      label={subscription.subscription_display_name}
+                      className="text-[16px]"
+                    />
+                    <CardTitle>{subscription.subscription_display_name}</CardTitle>
+                    <div className="flex-1" />
+                    <Badge variant={stateVariant(subscription.state)}>{statusLabel}</Badge>
+                    <span
+                      className="size-1.5 rounded-full"
+                      style={{ background: anyLive ? 'var(--ok)' : 'var(--muted-foreground)' }}
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    {limits.length > 0 && subscription.state !== 'inactive' ? (
+                      <GaugeStack limits={limits} now={now} />
+                    ) : (
+                      <p className="text-muted-foreground note text-[11.5px] leading-relaxed">
+                        {subscription.state === 'inactive' ? statusLabel : t('live.subscriptionNoReading')}
+                      </p>
+                    )}
+                    {subscription.linked_harness_keys.length > 0 && (
+                      <div className="text-muted-foreground/70 mt-3 text-[11px]">
+                        {t('live.subscriptionLinkedHarnesses', {
+                          n: subscription.linked_harness_keys.length,
+                        })}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </StaggerItem>
+            );
+          })}
+        </Stagger>
+      </div>
+
+      <Card className="order-3">
         <CardHeader>
           <CardTitle>{t('live.activityToday')}</CardTitle>
           <span className="text-muted-foreground text-[11.5px]">{t('live.byHarness')}</span>

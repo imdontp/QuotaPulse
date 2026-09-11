@@ -1,10 +1,33 @@
 import type { Millis } from '../util/time.js';
 
+export type AccountState = 'active' | 'stale' | 'inactive' | 'unavailable' | 'waiting';
+
+/** A subscription entitlement, which can have more than one auth-owned reader. */
+export interface SubscriptionIdentity {
+  /** Stable key for the actual quota pool, not the harness that reads it. */
+  key: string;
+  provider: string;
+  displayName: string;
+}
+
+/** Compatibility alias for adapters and persisted code written before Subscription naming. */
+export type AccountIdentity = SubscriptionIdentity;
+
+export interface AccountStateUpdate {
+  state: AccountState;
+  reason?: string | null;
+  observedAt?: Millis | null;
+}
+
 export interface Profile {
   /** Stable key within a harness. Claude Code has two on this machine: 'default' and 'company'. */
   profile: string;
   rootPath: string;
   displayName: string;
+  /** Optional quota entitlement associated with this source. */
+  account?: AccountIdentity;
+  /** Account-only readers do not represent a usage harness on the dashboard. */
+  sourceKind?: 'harness' | 'account';
 }
 
 export type WindowKind =
@@ -12,6 +35,7 @@ export type WindowKind =
   | 'weekly'
   | 'weekly_opus'
   | 'weekly_sonnet'
+  | 'monthly'
   | 'credits'
   | 'session';
 
@@ -23,6 +47,8 @@ export interface UsageEvent {
   /** Unique and STABLE within a source. Re-ingesting the same call must produce the same key. */
   dedupKey: string;
   ts: Millis;
+  /** Number of API calls represented by this row. Aggregate sources (Hermes) can be > 1. */
+  callCount?: number;
   nativeSessionId?: string | null;
   model?: string | null;
   provider?: string | null;
@@ -88,6 +114,7 @@ export interface Sink {
   usage(e: UsageEvent): void;
   limit(s: LimitSample): void;
   session(d: SessionDim): void;
+  accountState(s: AccountStateUpdate): void;
 }
 
 /** Per-target incremental position. `targetKey` is a file path or a table name. */

@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path';
 import { DATA_DIR, DB_PATH, LEGACY_DATA_DIRS, projectOf } from '../util/paths.js';
 import { SCHEMA_SQL, SCHEMA_VERSION } from './schema.js';
 import { logger } from '../util/log.js';
+import type { AccountIdentity } from '../adapters/types.js';
 
 const log = logger('db');
 export type DB = Database.Database;
@@ -81,6 +82,29 @@ export function openDb(path = DB_PATH): DB {
  */
 const REPAIRS: Array<{ name: string; run: (db: DB) => void }> = [
   {
+    name: 'source.account_metadata',
+    run: (db) => {
+      const cols = new Set(
+        (db.prepare(`PRAGMA table_info(source)`).all() as Array<{ name: string }>).map(
+          (c) => c.name,
+        ),
+      );
+      const wanted: Array<[string, string]> = [
+        ['source_kind', "TEXT NOT NULL DEFAULT 'harness'"],
+        ['account_key', 'TEXT'],
+        ['account_provider', 'TEXT'],
+        ['account_display_name', 'TEXT'],
+        ['account_state', "TEXT NOT NULL DEFAULT 'waiting'"],
+        ['account_state_reason', 'TEXT'],
+        ['account_last_success_at', 'INTEGER'],
+      ];
+      for (const [name, type] of wanted) {
+        if (!cols.has(name)) db.exec(`ALTER TABLE source ADD COLUMN ${name} ${type}`);
+      }
+      db.exec(`CREATE INDEX IF NOT EXISTS idx_source_account_key ON source(account_key)`);
+    },
+  },
+  {
     /*
      * The cost breakdown columns and the provider a price came from.
      *
@@ -109,6 +133,20 @@ const REPAIRS: Array<{ name: string; run: (db: DB) => void }> = [
       ];
       for (const [name, type] of wanted) {
         if (!cols.has(name)) db.exec(`ALTER TABLE usage_event ADD COLUMN ${name} ${type}`);
+      }
+    },
+  },
+  {
+    name: 'usage_event.call_count',
+    run: (db) => {
+      const cols = new Set(
+        (db.prepare(`PRAGMA table_info(usage_event)`).all() as Array<{ name: string }>).map(
+          (c) => c.name,
+        ),
+      );
+      if (!cols.has('call_count')) {
+        db.exec(`ALTER TABLE usage_event ADD COLUMN call_count INTEGER NOT NULL DEFAULT 1`);
+        log.info('repaired: added usage_event.call_count');
       }
     },
   },
@@ -358,17 +396,41 @@ export function openForeignRo(path: string): DB {
 /** Resolve (or create) the source row for an adapter profile. */
 export function upsertSource(
   db: DB,
-  s: { harness: string; profile: string; rootPath: string; displayName: string },
+  s: {
+    harness: string;
+    profile: string;
+    rootPath: string;
+    displayName: string;
+    account?: AccountIdentity;
+    sourceKind?: 'harness' | 'account';
+  },
 ): number {
   db.prepare(
-    `INSERT INTO source (harness, profile, root_path, display_name, detected_at)
-     VALUES (@harness, @profile, @rootPath, @displayName, @now)
+    `INSERT INTO source (
+       harness, profile, root_path, display_name, source_kind,
+       account_key, account_provider, account_display_name, detected_at
+     )
+     VALUES (
+       @harness, @profile, @rootPath, @displayName, @sourceKind,
+       @accountKey, @accountProvider, @accountDisplayName, @now
+     )
      ON CONFLICT (harness, profile)
      DO UPDATE SET root_path = excluded.root_path, display_name = excluded.display_name,
+                   source_kind = excluded.source_kind,
+                   account_key = excluded.account_key,
+                   account_provider = excluded.account_provider,
+                   account_display_name = excluded.account_display_name,
                    -- A source we can see again is active again, whatever disableMissingSources
                    -- concluded when it was last absent.
                    enabled = 1`,
-  ).run({ ...s, now: Date.now() });
+  ).run({
+    ...s,
+    sourceKind: s.sourceKind ?? 'harness',
+    accountKey: s.account?.key ?? null,
+    accountProvider: s.account?.provider ?? null,
+    accountDisplayName: s.account?.displayName ?? null,
+    now: Date.now(),
+  });
   const row = db
     .prepare(`SELECT id FROM source WHERE harness = ? AND profile = ?`)
     .get(s.harness, s.profile) as { id: number };

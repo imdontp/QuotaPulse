@@ -255,6 +255,30 @@ Two consequences worth knowing when reading a chart:
    "covered by a subscription", not "free". A zero is discarded and the value is priced from
    tokens instead; only a positive `actual_cost_usd` is trusted.
 
+When a Hermes profile is present, QuotaPulse also runs Hermes' own `agent.account_usage`
+helper once per minute for the profile's `HERMES_HOME`. For `openai-codex`, that helper
+returns the provider account's primary and secondary windows. These readings are kept under
+an internal quota reader and merged into the single `OpenAI Subscription` entitlement,
+so Codex CLI and Hermes never produce duplicate OpenAI quota cards. Hermes remains a
+Harness card, with its Codex/Claude routes represented as nested delegates rather than
+additional subscriptions. The helper keeps OAuth handling inside Hermes; QuotaPulse receives
+no token and stores no account credential. If the profile has no OpenAI Codex OAuth credential,
+the subscription card reports unavailable.
+
+Claude Code maps its known config profiles to two independent entitlements: `Claude Company Subscription`
+and `Claude Personal Subscription`. Personal remains a known subscription when its subscription is absent and
+is shown as inactive; a later subscription is detected automatically from the same local
+profile.
+
+OpenCode is a Harness, not a subscription. `OpenCode Go Subscription` is an optional account
+reader backed by OpenCode's official `GET https://opencode.ai/zen/go/v1/usage` endpoint. The
+reader invokes a helper that reads the OpenCode API key in memory, sends the authenticated
+quota request, and returns only sanitized `rolling` (5-hour), `weekly`, and `monthly`
+percentages plus provider reset timestamps. A successful Go entitlement response creates the
+Subscription card; a normal OpenCode API key or a `403` entitlement response does not.
+OpenCode's local SQLite database remains the Harness usage source, and is never used as a
+fallback for subscription quota. API connectivity itself never creates another Harness card.
+
 ---
 
 ## Pricing

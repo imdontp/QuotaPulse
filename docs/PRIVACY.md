@@ -2,7 +2,9 @@
 
 QuotaPulse reads files that contain some of the most sensitive material on the machine:
 every prompt you have typed, every response, and the contents of files you have edited. It is
-built so that none of that is ever read, stored, or served.
+built so that none of that content is ever read, stored, or served. Hermes' own helper and
+the OpenCode Go quota helper may read their provider credential state internally, but only
+return sanitized quota fields to QuotaPulse.
 
 ## What is read
 
@@ -17,9 +19,10 @@ Counters and metadata only:
 
 - prompt text, response text, thinking/reasoning text
 - tool inputs and outputs, file contents, diffs, patches
-- credentials of any kind
+- credentials of any kind in the QuotaPulse database, logs, API, or browser
 
-These files sit right beside the ones we do read, and are explicitly excluded:
+These files sit right beside the ones we do read, and are not opened directly by the
+QuotaPulse daemon. Provider auth files are handled only inside their dedicated helpers:
 
 ```
 ~/.codex/auth.json                    OAuth tokens
@@ -30,19 +33,32 @@ These files sit right beside the ones we do read, and are explicitly excluded:
 ~/.codex/history.jsonl                every prompt typed
 ~/.claude/file-history/**             file content snapshots
 AppData/Local/hermes/sessions/request_dump_*.json   raw API request payloads
+AppData/Local/hermes/auth.json                      OAuth tokens (read only by Hermes)
+~/.local/share/opencode/auth.json                   API key (read only by the OpenCode Go helper)
 ```
 
 Rule 1 in [ADAPTER.md](ADAPTER.md) makes this binding on new adapters.
 
 ## Where data goes
 
-Nowhere. There is no telemetry, no analytics, and no cloud sync. Nothing about your usage,
-your projects, your prompts or your machine is ever transmitted.
+Nowhere by default. There is no telemetry, no analytics, and no cloud sync. Nothing about
+your usage, your projects, your prompts or your machine is ever transmitted. Account quota
+probes are deliberate exceptions: they send only the authenticated provider quota request
+needed to obtain the account limit; they never send prompts, responses, project data, or
+QuotaPulse history.
 
-**The daemon makes no outbound request at all** -- not at startup, not on a timer, never. It
-reads the pricing catalog from a file on disk.
+When Hermes account quota monitoring is enabled (the default), QuotaPulse starts Hermes'
+own Python helper for each Hermes profile. Hermes reads and refreshes its own OAuth state,
+makes the provider's account-usage request, and returns only sanitized percentages and
+reset timestamps. For OpenCode Go, QuotaPulse starts its Node helper only when the local
+OpenCode auth file exists; the helper reads the key in memory, calls the official usage
+endpoint, and returns only the three quota windows and reset timestamps. QuotaPulse never
+receives or stores either bearer token, never logs it, and never writes into either tool's
+state. Set
+`QUOTAPULSE_HERMES_ACCOUNT_QUOTA=off` to disable the Hermes path entirely, or
+`QUOTAPULSE_OPENCODE_GO_QUOTA=off` to disable the OpenCode Go reader.
 
-There is exactly one command in the repo that uses the network, and it is one you run:
+The price catalog command is still opt-in and separate:
 
 ```
 npm run prices:refresh
@@ -53,8 +69,9 @@ list, and writes it to `%LOCALAPPDATA%\quotapulse\models.dev.json`. **It sends n
 credentials, no usage data, no identifiers, and no query string** -- the request body is
 empty and the URL is constant, so the only thing the other end learns is that some IP asked
 for a public file. Skip it entirely and the tool works; costs read `--` until a catalog
-exists. `scripts/fetch-prices.mjs` is the whole implementation, and it is the only file in
-the project that calls `fetch`.
+exists. `scripts/fetch-prices.mjs` is the whole implementation of this user-invoked price
+request. The OpenCode Go account request is similarly isolated in
+`scripts/opencode-go-usage.mjs`; both helpers keep credentials out of the daemon and logs.
 
 - Storage: `%LOCALAPPDATA%\quotapulse\usage.db`, a local SQLite file.
 - Serving: `127.0.0.1` only. Not `0.0.0.0` — nothing on your network can reach it.
@@ -62,7 +79,9 @@ the project that calls `fetch`.
   your user account) and injected into the page it serves. It stops another local process or
   a stray page in your browser from reading the API.
 
-The daemon works fully offline, and so does the dashboard page.
+The dashboard page itself always stays local. The daemon's account quota readers are the
+only paths that make authenticated outbound requests; disable the relevant reader or remove
+its provider credential if fully offline operation is required.
 
 That second half was not always true: the page pulled its typeface from Google Fonts on
 every load, so opening the dashboard told Google the machine's IP, its User-Agent and when

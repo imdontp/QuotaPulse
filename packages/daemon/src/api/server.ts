@@ -84,8 +84,13 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       bySourceToday: q.totalsBySource(db, startOfToday(now)),
       bySourceAll: q.totalsBySource(db, 0),
       limits: withBurn(db, limits),
+      subscriptions: q.subscriptionStatus(db),
+      harnesses: q.harnessStatus(db),
+      // Legacy aliases kept while clients migrate from Account quota to Subscription.
+      accounts: q.accountStatus(db),
       sources: q.listSources(db),
-      // Every source, including ones with no quota to gauge.
+      // Raw source rows remain useful to diagnostics and older clients; the dashboard
+      // renders the hierarchical harnesses field above.
       sourceStatus: q.sourceStatus(db),
       lastPass: scheduler.status.lastPass,
     };
@@ -118,6 +123,9 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
   app.get('/api/limits', async () => ({
     now: Date.now(),
     limits: withBurn(db, q.latestLimits(db)),
+    subscriptions: q.subscriptionStatus(db),
+    harnesses: q.harnessStatus(db),
+    accounts: q.accountStatus(db),
   }));
 
   app.get('/api/trend', async (req) => {
@@ -269,6 +277,10 @@ function withBurn(db: DB, limits: q.LimitRow[]) {
   const now = Date.now();
   return limits.map((l) => ({
     ...l,
+    // Expose the new domain vocabulary without breaking persisted/account readers.
+    subscription_key: l.account_key,
+    subscription_provider: l.account_provider,
+    subscription_display_name: l.account_display_name,
     // How long since the SOURCE last confirmed this reading -- not how long since the
     // value changed. A steady 12% that the harness republishes every 5s is live data.
     ageSeconds: Math.round((now - Math.max(l.last_seen_at, l.source_fetched_at ?? 0)) / 1000),

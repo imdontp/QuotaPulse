@@ -65,6 +65,40 @@ test('different sources and windows are never merged', () => {
   assert.equal(out.length, 4, 'four distinct (source, window) pairs');
 });
 
+test('readers with the same account key collapse to one account window', () => {
+  const rows = [
+    { ...reading({ origin: 'codex', source: 1, ageSeconds: 90 }), account_key: 'openai:subscription' },
+    { ...reading({ origin: 'hermes-account-usage', source: 2, ageSeconds: 30 }), account_key: 'openai:subscription' },
+  ];
+  const out = primaryLimits(rows, now);
+  assert.equal(out.length, 1);
+  assert.equal(out[0]!.primary.origin, 'hermes-account-usage');
+  assert.equal(out[0]!.superseded[0]!.origin, 'codex');
+});
+
+test('subscription key is the canonical owner when account compatibility fields are absent', () => {
+  const rows = [
+    { ...reading({ origin: 'codex', source: 1 }), subscription_key: 'openai:subscription' },
+    { ...reading({ origin: 'hermes', source: 2 }), subscription_key: 'openai:subscription' },
+  ];
+  const out = primaryLimits(rows, now);
+  assert.equal(out.length, 1);
+  assert.equal(out[0]!.superseded.length, 1);
+});
+
+test('OpenCode Go monthly readings stay separate from its 5-hour and weekly windows', () => {
+  const rows = [
+    { ...reading({ origin: 'opencode-go', window: '5h' }), subscription_key: 'opencode:go' },
+    { ...reading({ origin: 'opencode-go', window: 'weekly' }), subscription_key: 'opencode:go' },
+    { ...reading({ origin: 'opencode-go', window: 'monthly' }), subscription_key: 'opencode:go' },
+  ];
+  const out = primaryLimits(rows, now);
+  assert.deepEqual(
+    out.map((entry) => entry.primary.window_kind).sort(),
+    ['5h', 'monthly', 'weekly'],
+  );
+});
+
 /*
  * The bug this was written for. Both origins of one window projected a full-up before
  * reset, so filtering the raw list alerted twice on the same window -- two rows reading

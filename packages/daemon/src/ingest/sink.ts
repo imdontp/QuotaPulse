@@ -1,5 +1,5 @@
 import type { DB } from '../db/index.js';
-import type { LimitSample, SessionDim, Sink, UsageEvent } from '../adapters/types.js';
+import type { AccountStateUpdate, LimitSample, SessionDim, Sink, UsageEvent } from '../adapters/types.js';
 import type { PriceResolver, CostBreakdown } from '../pricing/resolve.js';
 import { projectOf } from '../util/paths.js';
 
@@ -49,6 +49,7 @@ export class DbSink implements Sink {
   private insertLimit;
   private latestLimit;
   private touchLimit;
+  private updateAccountState;
   private upsertSession;
   private selectSession;
 
@@ -59,13 +60,13 @@ export class DbSink implements Sink {
   ) {
     this.insertUsage = db.prepare(
       `INSERT INTO usage_event (
-         source_id, session_id, dedup_key, ts, model, provider, effort, service_tier,
+         source_id, session_id, dedup_key, ts, call_count, model, provider, effort, service_tier,
          context_window, input_tokens, cached_input_tokens, cache_write_tokens,
          output_tokens, reasoning_tokens, total_tokens, cost_usd, cost_source,
          cost_input_usd, cost_cached_input_usd, cost_cache_write_usd, cost_output_usd,
          cost_cache_saving_usd, price_provider, duration_ms, request_id, native_msg_id
        ) VALUES (
-         @sourceId, @sessionId, @dedupKey, @ts, @model, @provider, @effort, @serviceTier,
+         @sourceId, @sessionId, @dedupKey, @ts, @callCount, @model, @provider, @effort, @serviceTier,
          @contextWindow, @inputTokens, @cachedInputTokens, @cacheWriteTokens,
          @outputTokens, @reasoningTokens, @totalTokens, @costUsd, @costSource,
          @costInputUsd, @costCachedInputUsd, @costCacheWriteUsd, @costOutputUsd,
@@ -77,13 +78,13 @@ export class DbSink implements Sink {
     // Aggregate-grain rows (see UsageEvent.replaceOnConflict) revise themselves.
     this.replaceUsage = db.prepare(
       `INSERT INTO usage_event (
-         source_id, session_id, dedup_key, ts, model, provider, effort, service_tier,
+         source_id, session_id, dedup_key, ts, call_count, model, provider, effort, service_tier,
          context_window, input_tokens, cached_input_tokens, cache_write_tokens,
          output_tokens, reasoning_tokens, total_tokens, cost_usd, cost_source,
          cost_input_usd, cost_cached_input_usd, cost_cache_write_usd, cost_output_usd,
          cost_cache_saving_usd, price_provider, duration_ms, request_id, native_msg_id
        ) VALUES (
-         @sourceId, @sessionId, @dedupKey, @ts, @model, @provider, @effort, @serviceTier,
+         @sourceId, @sessionId, @dedupKey, @ts, @callCount, @model, @provider, @effort, @serviceTier,
          @contextWindow, @inputTokens, @cachedInputTokens, @cacheWriteTokens,
          @outputTokens, @reasoningTokens, @totalTokens, @costUsd, @costSource,
          @costInputUsd, @costCachedInputUsd, @costCacheWriteUsd, @costOutputUsd,
@@ -91,6 +92,7 @@ export class DbSink implements Sink {
        )
        ON CONFLICT (source_id, dedup_key) DO UPDATE SET
          ts                  = excluded.ts,
+         call_count          = excluded.call_count,
          model               = excluded.model,
          input_tokens        = excluded.input_tokens,
          cached_input_tokens = excluded.cached_input_tokens,
@@ -108,6 +110,7 @@ export class DbSink implements Sink {
          price_provider        = excluded.price_provider
        WHERE usage_event.total_tokens IS NOT excluded.total_tokens
           OR usage_event.output_tokens IS NOT excluded.output_tokens
+          OR usage_event.call_count   IS NOT excluded.call_count
           OR usage_event.cost_usd     IS NOT excluded.cost_usd
           OR usage_event.ts           IS NOT excluded.ts`,
     );
@@ -135,6 +138,18 @@ export class DbSink implements Sink {
       `UPDATE limit_sample SET last_seen_at = MAX(last_seen_at, @seenAt),
                                source_fetched_at = @sourceFetchedAt
         WHERE id = @id`,
+    );
+
+    this.updateAccountState = db.prepare(
+      `UPDATE source
+          SET account_state = @state,
+              account_state_reason = @reason,
+              account_last_success_at = CASE
+                WHEN @state = 'active'
+                  THEN MAX(COALESCE(account_last_success_at, 0), COALESCE(@observedAt, 0))
+                ELSE account_last_success_at
+              END
+        WHERE id = @sourceId`,
     );
 
     this.upsertSession = db.prepare(
@@ -285,6 +300,7 @@ export class DbSink implements Sink {
       sessionId: this.resolveSessionId(e.nativeSessionId),
       dedupKey: e.dedupKey,
       ts: e.ts,
+      callCount: Math.max(1, Math.round(e.callCount ?? 1)),
       model: e.model ?? null,
       provider: e.provider ?? null,
       costInputUsd: breakdown?.inputUsd ?? null,
@@ -314,7 +330,25 @@ export class DbSink implements Sink {
     if (info.changes > 0) this.stats.usageInserted++;
   }
 
+  accountState(s: AccountStateUpdate): void {
+    this.updateAccountState.run({
+      sourceId: this.sourceId,
+      state: s.state,
+      reason: s.reason ?? null,
+      observedAt: s.observedAt ?? null,
+    });
+  }
+
   limit(s: LimitSample): void {
+    // A successfully read quota sample is the strongest evidence that the account is
+    // currently usable. This also lets account readers and harness readers converge on
+    // one state without each adapter having to repeat the same bookkeeping.
+    this.accountState({
+      state: 'active',
+      reason: null,
+      observedAt: s.sourceFetchedAt ?? s.observedAt,
+    });
+
     const prev = this.latestLimit.get(this.sourceId, s.windowKind, s.origin) as
       | { id: number; used_percent: number | null; used_dollars: number | null; resets_at: number | null }
       | undefined;

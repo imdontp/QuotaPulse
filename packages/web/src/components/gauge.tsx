@@ -18,6 +18,7 @@ const WINDOW_KEY: Record<string, MessageKey> = {
   weekly: 'gauge.weekly',
   weekly_opus: 'gauge.weeklyOpus',
   weekly_sonnet: 'gauge.weeklySonnet',
+  monthly: 'gauge.monthly',
 };
 
 export function Gauge({ limit, now, badge }: { limit: Limit; now: number; badge?: React.ReactNode }) {
@@ -94,7 +95,7 @@ export function Gauge({ limit, now, badge }: { limit: Limit; now: number; badge?
   );
 }
 
-/** A source's gauges plus whatever other origin reports the same windows. */
+/** One canonical gauge per quota window. Reader-level duplicates stay out of the card. */
 export function GaugeStack({
   limits,
   now,
@@ -102,11 +103,9 @@ export function GaugeStack({
   limits: Limit[];
   now: number;
 }) {
-  const t = useT();
-
   return (
     <div className="flex flex-col gap-4">
-      {primaryLimits(limits, now).map(({ primary, superseded: others }) => {
+      {primaryLimits(limits, now).map(({ primary }) => {
         const kind = primary.window_kind;
         return (
           <div key={kind}>
@@ -115,15 +114,6 @@ export function GaugeStack({
               now={now}
               badge={<FreshnessBadge seconds={primary.ageSeconds} origin={primary.origin} />}
             />
-            {others.map((o) => (
-              <div
-                key={o.origin}
-                className="text-muted-foreground/60 mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"
-              >
-                {t('gauge.alsoVia', { pct: o.used_percent == null ? '--' : `${Math.round(o.used_percent)}%` })}
-                <FreshnessBadge seconds={o.ageSeconds} origin={o.origin} />
-              </div>
-            ))}
           </div>
         );
       })}

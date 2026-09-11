@@ -95,12 +95,56 @@ export interface Limit {
   observed_at: number;
   source_fetched_at: number | null;
   origin: string;
+  /** The quota entitlement shared by one or more auth-owned readers. */
+  account_key: string | null;
+  account_provider: string | null;
+  account_display_name: string | null;
+  subscription_key: string | null;
+  subscription_provider: string | null;
+  subscription_display_name: string | null;
   /** Since the harness last CONFIRMED this reading -- drives the staleness badge. */
   ageSeconds: number | null;
   /** Since the VALUE itself last changed. */
   valueAgeSeconds: number | null;
   last_seen_at: number;
   burn: Burn | null;
+}
+
+export type AccountState = 'active' | 'stale' | 'inactive' | 'unavailable' | 'waiting';
+
+export interface AccountStatus {
+  account_key: string;
+  provider: string;
+  display_name: string;
+  state: AccountState;
+  reason: string | null;
+  last_success_at: number | null;
+  owners: Array<{ harness: string; profile: string }>;
+}
+
+/** Canonical subscription view; account fields remain on the API for compatibility. */
+export interface SubscriptionStatus extends AccountStatus {
+  subscription_key: string;
+  subscription_display_name: string;
+  linked_harness_keys: string[];
+}
+
+export interface HarnessStatus {
+  harness_key: string;
+  parent_harness_key: string | null;
+  harness: string;
+  profile: string | null;
+  display_name: string;
+  vendor: string;
+  source_ids: number[];
+  subscription_keys: string[];
+  delegate_keys: string[];
+  detected: boolean;
+  usage_attributed: boolean;
+  calls: number;
+  total_tokens: number;
+  last_event_ts: number | null;
+  limit_samples: number;
 }
 
 export interface SourceStatus {
@@ -113,7 +157,7 @@ export interface SourceStatus {
   calls: number;
   total_tokens: number;
   last_event_ts: number | null;
-  /** 0 means this harness publishes no quota at all -- not that we failed to read it. */
+  /** 0 means no quota reading is available -- the harness may publish none or auth may be unavailable. */
   limit_samples: number;
 }
 
@@ -125,6 +169,10 @@ export interface Overview {
   bySourceToday: SourceTotals[];
   bySourceAll: SourceTotals[];
   limits: Limit[];
+  subscriptions: SubscriptionStatus[];
+  harnesses: HarnessStatus[];
+  /** Legacy alias for clients that still call this Account quota. */
+  accounts: AccountStatus[];
   sources: Array<{ id: number; harness: string; profile: string; display_name: string; root_path: string }>;
   sourceStatus: SourceStatus[];
   lastPass: { newEvents: number; newLimits: number; durationMs: number; trigger: string } | null;
@@ -244,7 +292,14 @@ export interface ManualRefresh {
 
 export const api = {
   overview: () => get<Overview>('/api/overview'),
-  limits: () => get<{ now: number; limits: Limit[] }>('/api/limits'),
+  limits: () =>
+    get<{
+      now: number;
+      limits: Limit[];
+      subscriptions: SubscriptionStatus[];
+      harnesses: HarnessStatus[];
+      accounts: AccountStatus[];
+    }>('/api/limits'),
   trend: (p: { bucket: 'hour' | 'day'; from: number; to: number; groupBy: string }) =>
     get<{ bucket: string; from: number; to: number; rows: TrendRow[] }>(
       `/api/trend?bucket=${p.bucket}&from=${p.from}&to=${p.to}&group_by=${p.groupBy}`,

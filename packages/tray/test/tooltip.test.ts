@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildTooltip, currentLimits, worst, isUsable, type Limit } from '../src/limits.js';
+import { buildTooltip, currentLimits, shortWindow, subscriptionLimits, worst, isUsable, type Limit } from '../src/limits.js';
 
 // Pinned: a wall-clock-dependent test would pass or fail depending on the hour.
 const NOW = Date.parse('2026-09-02T12:00:00Z');
@@ -58,6 +58,55 @@ test('the freshest origin wins for a window, and both are not listed twice', () 
   assert.equal(current.length, 1);
   assert.equal(current[0]!.used_percent, 93);
   assert.equal(current[0]!.origin, 'statusline-snapshot');
+});
+
+test('shared quota readers collapse into one subscription row per window', () => {
+  const rows = [
+    limit({
+      source_id: 1,
+      display_name: 'Codex CLI',
+      subscription_key: 'openai:subscription',
+      subscription_display_name: 'OpenAI Subscription',
+      window_kind: '5h',
+      used_percent: 18,
+      ageSeconds: 60,
+    }),
+    limit({
+      source_id: 2,
+      display_name: 'OpenAI Subscription',
+      subscription_key: 'openai:subscription',
+      subscription_display_name: 'OpenAI Subscription',
+      window_kind: '5h',
+      used_percent: 18,
+      ageSeconds: 15,
+    }),
+    limit({
+      source_id: 1,
+      display_name: 'Codex CLI',
+      subscription_key: 'openai:subscription',
+      subscription_display_name: 'OpenAI Subscription',
+      window_kind: 'weekly',
+      used_percent: 34,
+      ageSeconds: 60,
+    }),
+    limit({
+      source_id: 2,
+      display_name: 'OpenAI Subscription',
+      subscription_key: 'openai:subscription',
+      subscription_display_name: 'OpenAI Subscription',
+      window_kind: 'weekly',
+      used_percent: 34,
+      ageSeconds: 15,
+    }),
+  ];
+
+  const current = subscriptionLimits(rows, NOW);
+  assert.deepEqual(current.map((row) => row.window_kind), ['5h', 'weekly']);
+  assert.deepEqual(current.map((row) => row.display_name), ['OpenAI Subscription', 'OpenAI Subscription']);
+  assert.deepEqual(current.map((row) => row.source_id), [2, 2]);
+  const tip = buildTooltip(rows, true, NOW);
+  assert.match(tip, /OpenAI 5h 18% · wk 34%/);
+  assert.doesNotMatch(tip, /Codex/);
 });
 
 test('a live window beats a rolled-over one even when the dead reading is fresher', () => {
@@ -124,4 +173,22 @@ test('a weekly reading hours old is still valid for its seven-day window', () =>
   });
   assert.equal(isUsable(row, NOW), true, '10h is well inside a 7-day window');
   assert.match(buildTooltip([row], true, NOW), /Codex wk 4% 10h/);
+});
+
+test('a monthly reading has a distinct tray label and month-sized no-reset expiry', () => {
+  assert.equal(shortWindow('monthly'), 'mo');
+  const row = limit({
+    display_name: 'OpenCode Go Subscription',
+    window_kind: 'monthly',
+    resets_at: null,
+    ageSeconds: 30 * 86400,
+    used_percent: 64,
+  });
+  assert.equal(isUsable(row, NOW), true);
+  assert.match(buildTooltip([row], true, NOW), /OpenCode Go mo 64% 30d/);
+  assert.equal(
+    isUsable({ ...row, ageSeconds: 32 * 86400 }, NOW),
+    false,
+    'a no-reset monthly fallback is stale after the safety span',
+  );
 });

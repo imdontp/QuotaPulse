@@ -56,7 +56,7 @@ export class Scheduler extends EventEmitter {
 
   get status() {
     return {
-      sources: this.sources.map((s) => ({
+      sources: this.sources.filter((s) => s.profile.sourceKind !== 'account').map((s) => ({
         harness: s.adapter.id,
         profile: s.profile.profile,
         sourceId: s.sourceId,

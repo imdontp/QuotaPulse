@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Bell, TriangleAlert } from 'lucide-react';
 import type { Limit } from '@/api';
 import { Button } from '@/components/ui/button';
-import { pct, primaryLimits, willExhaust } from '@/format';
+import { pct, primaryLimits, windowLabel, willExhaust } from '@/format';
 import { useFormat } from '@/i18n/format';
 import { useT } from '@/i18n';
 import { cn } from '@/lib/utils';
@@ -124,7 +124,7 @@ export function AlertBell({ limits, now, onOpenLimits }: { limits: Limit[]; now:
                   <span className="min-w-0 flex-1">
                     <span className="block text-[12.5px] font-medium">
                       {l.display_name}
-                      <span className="text-muted-foreground font-normal"> · {l.window_kind}</span>
+                      <span className="text-muted-foreground font-normal"> · {windowLabel(l.window_kind)}</span>
                     </span>
                     <span className="text-muted-foreground mt-0.5 block text-[11.5px] leading-relaxed">
                       {t('alerts.rate', { rate: `${l.burn!.percentPerHour.toFixed(1)}%` })}{' '}

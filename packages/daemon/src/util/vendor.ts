@@ -178,6 +178,8 @@ export function vendorOfHarness(harness: string): string {
       return 'anthropic';
     case 'codex':
       return 'openai';
+    case 'openai-account':
+      return 'openai';
     case 'opencode':
       return 'opencode';
     case 'hermes':
@@ -195,7 +197,7 @@ function sqlLiteral(s: string): string {
 
 /** The harness mapping as SQL, generated from the same switch so the two cannot drift. */
 export function harnessVendorSqlCase(harnessCol: string): string {
-  const known = ['claude-code', 'codex', 'opencode', 'hermes'];
+  const known = ['claude-code', 'codex', 'opencode', 'hermes', 'openai-account'];
   const parts = known.map(
     (h) => `WHEN ${harnessCol} = ${sqlLiteral(h)} THEN ${sqlLiteral(vendorOfHarness(h))}`,
   );
