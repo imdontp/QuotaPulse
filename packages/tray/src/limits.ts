@@ -29,6 +29,23 @@ const WINDOW_SPAN_MS: Record<string, number> = {
   session: 5 * 3_600_000,
 };
 
+const WINDOW_ORDER = ['5h', 'weekly', 'weekly_opus', 'weekly_sonnet', 'monthly'];
+const SHORT_WINDOW_LABEL: Record<string, string> = {
+  '5h': '5h',
+  weekly: 'wk',
+  weekly_opus: 'wk-opus',
+  weekly_sonnet: 'wk-sonnet',
+  monthly: 'mo',
+};
+
+const windowRank = (kind: string): number => {
+  const rank = WINDOW_ORDER.indexOf(kind);
+  return rank < 0 ? WINDOW_ORDER.length : rank;
+};
+
+const compareLimits = (a: Limit, b: Limit): number =>
+  a.display_name.localeCompare(b.display_name) || windowRank(a.window_kind) - windowRank(b.window_kind);
+
 /**
  * A reading is void when it can no longer describe the CURRENT window, for either of two
  * reasons:
@@ -78,10 +95,7 @@ export function currentLimits(all: Limit[], now = Date.now()): Limit[] {
     }
     if ((l.ageSeconds ?? Infinity) < (prev.ageSeconds ?? Infinity)) best.set(key, l);
   }
-  return [...best.values()].sort(
-    (a, b) =>
-      a.display_name.localeCompare(b.display_name) || a.window_kind.localeCompare(b.window_kind),
-  );
+  return [...best.values()].sort(compareLimits);
 }
 
 const ownerKey = (l: Limit): string =>
@@ -118,9 +132,7 @@ export function subscriptionLimits(all: Limit[], now = Date.now()): Limit[] {
     }
   }
 
-  return [...best.values()].sort(
-    (a, b) => a.display_name.localeCompare(b.display_name) || a.window_kind.localeCompare(b.window_kind),
-  );
+  return [...best.values()].sort(compareLimits);
 }
 
 /** The badge tracks the worst limit that is still live. */
@@ -142,7 +154,7 @@ export const shortAge = (s: number | null | undefined): string => {
 };
 
 export const shortWindow = (kind: string): string =>
-  kind === '5h' ? '5h' : kind === 'weekly' ? 'wk' : kind === 'monthly' ? 'mo' : kind.replace('weekly_', 'wk-');
+  SHORT_WINDOW_LABEL[kind] ?? kind.replace('weekly_', 'wk-');
 
 export const shortSource = (name: string): string =>
   name

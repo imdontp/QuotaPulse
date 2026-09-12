@@ -12,9 +12,10 @@ burn rate, cost, models, effort, and history that keeps accruing whether or not 
 open.
 
 It reads only counters and metadata from files the harnesses already write. For Hermes
-profiles using OpenAI Codex OAuth, it also asks Hermes' own account-usage helper for the
-subscription quota. For OpenCode Go, it calls the official account quota endpoint through a
-small helper. QuotaPulse never stores either provider credential. Disable those probes with
+profiles using OpenAI Codex OAuth, it resolves credentials through Hermes and calls the Codex
+provider usage endpoint directly for subscription quota. For OpenCode Go, it calls the official
+account quota endpoint through a small helper. QuotaPulse never stores either provider
+credential. Disable those probes with
 `QUOTAPULSE_HERMES_ACCOUNT_QUOTA=off` and `QUOTAPULSE_OPENCODE_GO_QUOTA=off` respectively.
 
 A separate opt-in command, `npm run prices:refresh`, fetches the public models.dev price
@@ -183,8 +184,8 @@ cannot be priced. There is a regression test per adapter that reads a file in tw
 compares it against the ground truth each harness computes for itself.
 
 `npm run shoot` starts its own daemon on port 7799 against a throwaway database, so it
-never touches the real one, and writes a fixed set of shots: both themes, the 1280×800 tray
-popup, either side of the sidebar breakpoint, all eight sections, Thai, and the logo mark.
+never touches the real one, and writes a fixed set of shots: both themes, a 1280×800 tray
+viewport, either side of the sidebar breakpoint, all nine sections, Thai, and the logo mark.
 It drives the Chrome already installed on the machine (`channel: 'chrome'`), which is why
 `.npmrc` turns off Playwright's own 2.2 GB browser download.
 
@@ -200,7 +201,7 @@ holds an SSE stream open forever, so `chrome --screenshot --virtual-time-budget`
 Claude Personal) own quota windows, while Harness cards (Codex CLI, Claude Code Company,
 Claude Code Personal, OpenCode and Hermes Agent) own usage. Hermes contains nested Delegate
 cards for Codex CLI and both Claude Code subscriptions. A quota reader such as
-`hermes-account-usage` is never a visible Harness card, and Codex/Hermes readers that use
+An account quota reader is never a visible Harness card, and Codex/Hermes readers that use
 the same OpenAI subscription share one quota card. OpenCode Go is an optional Subscription
 card that appears after the official account quota endpoint confirms the Go entitlement;
 an ordinary OpenCode API key is not enough. OpenCode remains the Harness card. The page

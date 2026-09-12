@@ -124,7 +124,7 @@ corresponding `assistant` rows. So `cost-state` is stored on the session row as 
 figure and `/api/health` reports the coverage ratio, rather than either number pretending to
 be the whole truth.
 
-### Quota: two sources, wildly different freshness
+### Quota: local snapshots plus a provider reader
 
 **1. `~/.claude/statusline/<sessionId>/snapshot.json`** -- the only genuinely live gauge.
 Written every ~5s **by a running session** (this is the user's own `usage-statusline.ps1`,
@@ -137,7 +137,9 @@ context{used_percentage, input_tokens, window_size}, cost.total_cost_usd, model,
 
 Two traps:
 - The **root** `~/.claude/usage-snapshot.json` is a last-writer-wins aggregate and is often
-  stale or all-null. Read the **per-session** files instead.
+  stale or all-null. Read the **per-session** files first. QuotaPulse also accepts the root
+  file as a fallback for headless sessions that do not have a session-specific statusline
+  snapshot.
 - Idle sessions write `used_percentage: null`. Pick the newest snapshot that actually
   carries a percentage, or an idle session will mask a live reading.
 
@@ -155,6 +157,43 @@ utilization: { five_hour|seven_day|seven_day_opus|seven_day_sonnet:
 
 Both are recorded, each tagged with its `origin`, and the UI shows the age of every reading.
 Never present the fallback as current.
+
+**3. Claude OAuth usage reader** -- `claude-account` invokes
+`scripts/claude-oauth-usage.mjs` for every configured Claude profile on a bounded 60-second
+cadence. The helper reads the profile's OAuth token in memory and calls Claude's account usage
+endpoint, then returns only sanitized `five_hour` and `seven_day` percentages plus reset times.
+This is the authoritative path for headless calls such as `claude -p`, because those calls can
+record transcript usage without writing a statusline snapshot. It is deliberately isolated
+from the transcript adapter and is marked `claude-oauth-usage` in the source reader metadata.
+The endpoint is provider-owned rather than a public QuotaPulse contract; a 401, 429, network
+failure, or response-shape change leaves the last successful reading in place and marks the
+reader unavailable. Set `QUOTAPULSE_CLAUDE_QUOTA=off` to disable it.
+
+### Headless quota event bridge
+
+An invocation that runs without a live status line, such as `claude -p`, can still publish
+usage into its transcript without publishing a fresh quota snapshot. QuotaPulse accepts an
+optional sanitized JSONL hand-off at `%LOCALAPPDATA%\\quotapulse\\events\\quota.jsonl` for
+an existing wrapper or harness integration to append when the invocation itself exposes a
+structured rate-limit event.
+
+Each event identifies `source`, `profile`, subscription identity, execution mode, timestamps,
+and quota windows. Prompt text, responses, token payloads, credentials, and request bodies
+are not part of the contract. QuotaPulse never starts a synthetic prompt to obtain this
+event. When no event is available, the dashboard keeps the transcript usage and reports the
+quota as stale or unknown with the missing-rate-limit reason.
+
+Transcript usage remains available to usage and trend views, but is intentionally not shown on
+the subscription card as a 5-hour quota value. Token usage alone cannot prove how much of
+Anthropic's rolling quota remains. The dedicated OAuth reader supplies the provider percentage
+independently; the wrapper bridge is only a fallback for integrations that already expose a
+structured rate-limit event.
+
+The repository includes `scripts/claude-headless-bridge.mjs` for integrations that can
+replace the `claude` executable in a route. It forwards the original command output and
+only writes recognized rate-limit fields to the event file; it does not create an extra
+Claude request. Set `QUOTAPULSE_EVENT_PROFILE` and `QUOTAPULSE_ACCOUNT_KEY` for the Claude
+profile being delegated.
 
 The company profile keeps its config at `~/.claude-company/.claude.json`; the default profile
 at `~/.claude.json` (one level *above* the config dir).
@@ -255,15 +294,16 @@ Two consequences worth knowing when reading a chart:
    "covered by a subscription", not "free". A zero is discarded and the value is priced from
    tokens instead; only a positive `actual_cost_usd` is trusted.
 
-When a Hermes profile is present, QuotaPulse also runs Hermes' own `agent.account_usage`
-helper once per minute for the profile's `HERMES_HOME`. For `openai-codex`, that helper
-returns the provider account's primary and secondary windows. These readings are kept under
-an internal quota reader and merged into the single `OpenAI Subscription` entitlement,
-so Codex CLI and Hermes never produce duplicate OpenAI quota cards. Hermes remains a
-Harness card, with its Codex/Claude routes represented as nested delegates rather than
-additional subscriptions. The helper keeps OAuth handling inside Hermes; QuotaPulse receives
-no token and stores no account credential. If the profile has no OpenAI Codex OAuth credential,
-the subscription card reports unavailable.
+When a Hermes profile is present, QuotaPulse runs `scripts/hermes-account-usage.py` once per
+minute for the profile's `HERMES_HOME`. Hermes resolves and refreshes the credential, while the
+QuotaPulse reader calls the provider's Codex usage endpoint directly (`/wham/usage` for a
+ChatGPT backend URL or `/api/codex/usage` otherwise). It returns only the provider account's
+primary (5-hour) and secondary (weekly) windows plus reset timestamps. These readings are kept
+under an internal quota reader and merged into the single `OpenAI Subscription` entitlement,
+so Codex CLI and Hermes never produce duplicate OpenAI quota cards. Hermes remains a Harness
+card, with its Codex/Claude routes represented as nested delegates rather than additional
+subscriptions. QuotaPulse receives no token and stores no account credential. If the profile
+has no OpenAI Codex OAuth credential, the subscription card reports unavailable.
 
 Claude Code maps its known config profiles to two independent entitlements: `Claude Company Subscription`
 and `Claude Personal Subscription`. Personal remains a known subscription when its subscription is absent and

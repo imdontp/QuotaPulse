@@ -10,12 +10,12 @@ import { logger } from '../util/log.js';
 const log = logger('openai-account');
 const PROBE_INTERVAL_MS = 60_000;
 const PROBE_TIMEOUT_MS = 20_000;
-const PROBE_ORIGIN = 'hermes-account-usage';
+const PROBE_ORIGIN = 'openai-codex-usage';
 const SCRIPT_PATH = fileURLToPath(new URL('../../../../scripts/hermes-account-usage.py', import.meta.url));
 const HERMES_ROOT = home('AppData', 'Local', 'hermes');
 
 interface RawWindow {
-  label?: unknown;
+  windowKind?: unknown;
   usedPercent?: unknown;
   resetAt?: unknown;
 }
@@ -50,13 +50,6 @@ function timestamp(value: unknown): number | null {
   return null;
 }
 
-function windowKind(label: unknown, index: number): AccountQuotaReading['windowKind'] | null {
-  const normalized = typeof label === 'string' ? label.toLowerCase() : '';
-  if (normalized.includes('week')) return 'weekly';
-  if (normalized.includes('session') || normalized.includes('hour')) return '5h';
-  return index === 0 ? '5h' : index === 1 ? 'weekly' : null;
-}
-
 /** Parse the helper's stdout without accepting provider errors or arbitrary fields. */
 export function parseAccountQuotaOutput(stdout: string, now = Date.now()): AccountQuotaSnapshot | null {
   const lines = stdout
@@ -79,11 +72,11 @@ export function parseAccountQuotaOutput(stdout: string, now = Date.now()): Accou
   if (!raw || raw.available !== true || !Array.isArray(raw.windows)) return null;
 
   const readings: AccountQuotaReading[] = [];
-  for (const [index, candidate] of raw.windows.entries()) {
+  for (const candidate of raw.windows) {
     if (!candidate || typeof candidate !== 'object') continue;
     const w = candidate as RawWindow;
     if (!finiteNumber(w.usedPercent)) continue;
-    const kind = windowKind(w.label, index);
+    const kind = w.windowKind === '5h' || w.windowKind === 'weekly' ? w.windowKind : null;
     if (!kind) continue;
     readings.push({
       windowKind: kind,

@@ -18,6 +18,8 @@ export interface Prefs {
   currency: CurrencyCode;
   /** Units of `currency` per 1 USD. Set by the user; nothing fetches it. */
   rate: number;
+  /** Stable subscription keys hidden from the Live cards and alert bell. */
+  hiddenSubscriptions: string[];
 }
 
 const STORAGE_KEY = 'quotapulse-prefs';
@@ -30,8 +32,32 @@ const STORAGE_KEY = 'quotapulse-prefs';
  */
 const LEGACY_STORAGE_KEYS = ['plimsoll-prefs'];
 
+export function normalizeHiddenSubscriptions(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return [
+    ...new Set(
+      value
+        .filter((key): key is string => typeof key === 'string' && key.trim() !== '')
+        .map((key) => key.trim()),
+    ),
+  ];
+}
+
+export function setSubscriptionVisibility(
+  hiddenSubscriptions: string[],
+  key: string,
+  visible: boolean,
+): string[] {
+  const hidden = new Set(normalizeHiddenSubscriptions(hiddenSubscriptions));
+  const normalizedKey = key.trim();
+  if (!normalizedKey) return [...hidden];
+  if (visible) hidden.delete(normalizedKey);
+  else hidden.add(normalizedKey);
+  return [...hidden];
+}
+
 function loadPrefs(): Prefs {
-  const fallback: Prefs = { lang: 'en', currency: 'USD', rate: 1 };
+  const fallback: Prefs = { lang: 'en', currency: 'USD', rate: 1, hiddenSubscriptions: [] };
   try {
     const raw =
       localStorage.getItem(STORAGE_KEY) ??
@@ -46,6 +72,7 @@ function loadPrefs(): Prefs {
       lang,
       currency,
       rate: Number.isFinite(rate) && rate > 0 ? rate : CURRENCIES[currency].defaultRate,
+      hiddenSubscriptions: normalizeHiddenSubscriptions(p.hiddenSubscriptions),
     };
   } catch {
     // Private window or blocked storage: preferences are a convenience, not a requirement.
@@ -58,6 +85,7 @@ interface I18nValue extends Prefs {
   setLang: (lang: Lang) => void;
   setCurrency: (currency: CurrencyCode) => void;
   setRate: (rate: number) => void;
+  setSubscriptionVisible: (key: string, visible: boolean) => void;
 }
 
 const I18nContext = createContext<I18nValue | null>(null);
@@ -96,6 +124,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
         persist({ ...prefs, currency, rate });
       },
       setRate: (rate) => persist({ ...prefs, rate: rate > 0 ? rate : prefs.rate }),
+      setSubscriptionVisible: (key, visible) => {
+        persist({
+          ...prefs,
+          hiddenSubscriptions: setSubscriptionVisibility(prefs.hiddenSubscriptions, key, visible),
+        });
+      },
     };
   }, [prefs, persist]);
 

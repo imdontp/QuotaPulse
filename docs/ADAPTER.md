@@ -38,10 +38,10 @@ sink.accountState(s)          // subscription/account availability
 
 **1. Never read content.** No prompts, no responses, no code, no file contents. Counters and
 metadata only. Do not open `auth.json`, `.credentials.json`, `google_accounts.json`, or
-anything holding a token from the daemon. The OpenAI Subscription quota reader invokes
-Hermes' own account-usage helper, and the OpenCode Go reader invokes its small helper; each
-helper owns the credential handling and returns only sanitized quota fields. Neither reader
-is another Harness card. See [PRIVACY.md](PRIVACY.md).
+anything holding a token from the daemon. The OpenAI Subscription, Claude OAuth, and
+OpenCode Go quota readers invoke dedicated helpers; each helper owns the credential handling
+and returns only sanitized quota fields. Neither reader is another Harness card. See
+[PRIVACY.md](PRIVACY.md).
 
 **2. Open foreign SQLite read-only.** Use `openForeignRo(path)` from `db/index.js`. Never
 write to, checkpoint, or vacuum another tool's database.
@@ -124,6 +124,21 @@ that is seconds old and a Claude fallback that is two days old.
 The sink handles repetition: an unchanged reading refreshes liveness in place instead of
 inserting a row, so a statusline rewriting the same percentage every 5 seconds does not add
 17,000 rows a day or wake the dashboard.
+
+### Headless quota events
+
+Existing wrappers may append sanitized rate-limit observations to
+`%LOCALAPPDATA%\\quotapulse\\events\\quota.jsonl`. The envelope has `schema: 1`,
+`source`, `profile`, an optional subscription identity, `execution_mode`, timestamps, and a
+`windows` array containing only quota fields. This is an in-band hand-off from an invocation
+that already happened; an adapter must never launch a synthetic prompt just to refresh quota.
+If the harness emits no structured rate-limit event, leave the usage rows intact and let the
+dashboard report the quota feed as stale or unknown.
+
+Transcript calls and tokens are kept for usage and trend analysis, but are not shown as a
+subscription's 5-hour quota gauge. They cannot prove provider utilization. The quota percentage
+and reset time come only from a provider reader or an explicitly structured quota event; the
+latest transcript timestamp remains diagnostic for detecting a stale or missing quota feed.
 
 ## Registering
 

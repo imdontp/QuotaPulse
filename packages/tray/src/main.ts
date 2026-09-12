@@ -209,6 +209,7 @@ function togglePopup(): void {
       // the existing window also lets the dashboard initialise its tab from the hash.
       void popup.loadURL(`http://127.0.0.1:${lock.port}/#live`).then(() => {
         if (!popup || popup.isDestroyed()) return;
+        if (!popup.isMaximized()) popup.maximize();
         popup.show();
         popup.focus();
       });
@@ -224,13 +225,19 @@ function togglePopup(): void {
     show: false,
     frame: true,
     resizable: true,
+    maximizable: true,
     skipTaskbar: true,
     title: 'QuotaPulse',
     webPreferences: { nodeIntegration: false, contextIsolation: true },
   });
   // Reuses the dashboard rather than maintaining a second UI for the same numbers.
   void popup.loadURL(`http://127.0.0.1:${lock.port}/#live`);
-  popup.once('ready-to-show', () => popup?.show());
+  popup.once('ready-to-show', () => {
+    if (!popup || popup.isDestroyed()) return;
+    popup.maximize();
+    popup.show();
+    popup.focus();
+  });
   popup.on('closed', () => {
     popup = null;
   });

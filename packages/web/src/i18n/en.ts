@@ -24,16 +24,20 @@ export const en = {
   'app.lastRefresh': 'last refresh {time}',
 
   // settings popover
-  'settings.title': 'Language & currency',
+  'settings.title': 'Settings',
   'settings.language': 'Language',
   'settings.currency': 'Currency',
   'settings.rate': 'Rate',
   'settings.ratePerUsd': '1 USD =',
+  'settings.subscriptions': 'Subscriptions on Live',
+  'settings.visible': 'shown',
+  'settings.hidden': 'hidden',
   'settings.rateHelp':
     'Figures are computed in USD from published list prices. This rate is yours, applied for display only — nothing fetches it.',
 
   // tabs
   'tab.live': 'Live',
+  'tab.sources': 'Sources',
   'tab.limits': 'Limits',
   'tab.trend': 'Trend',
   'tab.cost': 'Cost',
@@ -79,6 +83,11 @@ export const en = {
   'live.subscriptionWaiting': 'waiting for quota',
   'live.subscriptionNoReading': 'No current quota reading is available yet.',
   'live.subscriptionLinkedHarnesses': '{n} linked harness routes',
+  'live.allSubscriptionsHidden': 'All subscription cards are hidden. Turn one on from Settings.',
+  'live.quotaGap': 'quota gap',
+  'live.quotaLastRead': 'last quota read {age} ago',
+  'live.quotaGapTitle': 'Usage is newer than the quota reading',
+  'live.quotaGapBlurb': 'The harness recorded usage, but did not publish a newer 5-hour or weekly quota value. The last known value is kept and marked stale.',
   'live.accountQuotas': 'Account quota',
   'live.byAccount': 'one card per entitlement',
   'live.accountActive': 'active',
@@ -88,6 +97,23 @@ export const en = {
   'live.accountNoReading': 'No current quota reading is available yet.',
   'live.harnessUsageHint': 'Usage is tracked here; quota is shown in Account quota.',
   'live.accountLinkedHarnesses': '{n} linked harnesses',
+
+  // sources
+  'sources.title': 'Sources',
+  'sources.blurb': 'Where usage came from, which quota reader is working, and how Hermes routes are attributed.',
+  'sources.empty': 'No harness sources detected yet.',
+  'sources.source': 'Source',
+  'sources.subscription': 'Subscription',
+  'sources.quota': 'Quota feed',
+  'sources.lastUsage': 'Last usage',
+  'sources.samples': 'Samples',
+  'sources.usageNewerThanQuota': 'usage is newer than quota',
+  'sources.routesTitle': 'Delegate routes',
+  'sources.routesBlurb': 'Delegate cards show configured relationships; usage stays on the parent until trusted routing metadata is available.',
+  'sources.attributed': 'attributed',
+  'sources.parentOnly': 'parent only',
+  'sources.parentOnlyHint': 'No trusted per-delegate usage attribution yet.',
+  'sources.unknownParent': 'unknown parent',
 
   // shared table headers
   'col.harness': 'Harness',
@@ -232,7 +258,9 @@ export const en = {
   'alerts.rate': 'Burning {rate}/h —',
   'alerts.full': 'full at {time}',
   'alerts.resets': 'Resets {time}',
-  'alerts.footnote': 'Only windows that run out before they reset are listed here.',
+  'alerts.threshold': 'Quota is at {pct}% used.',
+  'alerts.quotaGap': 'Usage is newer than the latest quota reading.',
+  'alerts.footnote': 'Shows projected exhaustion, high usage, and quota telemetry gaps.',
   'sessions.range': '{from}–{to} of {total}',
   'sessions.perPage': 'Per page',
   'sessions.prev': 'Previous',

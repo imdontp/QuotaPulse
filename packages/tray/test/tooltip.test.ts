@@ -98,14 +98,33 @@ test('shared quota readers collapse into one subscription row per window', () =>
       used_percent: 34,
       ageSeconds: 15,
     }),
+    limit({
+      source_id: 1,
+      display_name: 'Codex CLI',
+      subscription_key: 'openai:subscription',
+      subscription_display_name: 'OpenAI Subscription',
+      window_kind: 'monthly',
+      used_percent: 81,
+      ageSeconds: 60,
+    }),
+    limit({
+      source_id: 2,
+      display_name: 'OpenAI Subscription',
+      subscription_key: 'openai:subscription',
+      subscription_display_name: 'OpenAI Subscription',
+      window_kind: 'monthly',
+      used_percent: 81,
+      ageSeconds: 15,
+    }),
   ];
 
   const current = subscriptionLimits(rows, NOW);
-  assert.deepEqual(current.map((row) => row.window_kind), ['5h', 'weekly']);
-  assert.deepEqual(current.map((row) => row.display_name), ['OpenAI Subscription', 'OpenAI Subscription']);
-  assert.deepEqual(current.map((row) => row.source_id), [2, 2]);
+  assert.deepEqual(current.map((row) => row.window_kind), ['5h', 'weekly', 'monthly']);
+  assert.deepEqual(current.map((row) => row.display_name), ['OpenAI Subscription', 'OpenAI Subscription', 'OpenAI Subscription']);
+  assert.deepEqual(current.map((row) => row.source_id), [2, 2, 2]);
   const tip = buildTooltip(rows, true, NOW);
   assert.match(tip, /OpenAI 5h 18% · wk 34%/);
+  assert.match(tip, /mo 81%/);
   assert.doesNotMatch(tip, /Codex/);
 });
 
@@ -190,5 +209,50 @@ test('a monthly reading has a distinct tray label and month-sized no-reset expir
     isUsable({ ...row, ageSeconds: 32 * 86400 }, NOW),
     false,
     'a no-reset monthly fallback is stale after the safety span',
+  );
+});
+
+test('OpenCode Go keeps weekly and monthly values attached to the right tray labels', () => {
+  const rows = [
+    limit({
+      display_name: 'OpenCode Go Subscription',
+      subscription_key: 'opencode:go',
+      subscription_display_name: 'OpenCode Go Subscription',
+      window_kind: 'monthly',
+      used_percent: 3,
+      resets_at: NOW + 30 * 86400_000,
+      origin: 'opencode-go-usage',
+    }),
+    limit({
+      display_name: 'OpenCode Go Subscription',
+      subscription_key: 'opencode:go',
+      subscription_display_name: 'OpenCode Go Subscription',
+      window_kind: 'weekly',
+      used_percent: 7,
+      resets_at: NOW + 2 * 86400_000,
+      origin: 'opencode-go-usage',
+    }),
+    limit({
+      display_name: 'OpenCode Go Subscription',
+      subscription_key: 'opencode:go',
+      subscription_display_name: 'OpenCode Go Subscription',
+      window_kind: '5h',
+      used_percent: 0,
+      resets_at: NOW + 3 * HOUR,
+      origin: 'opencode-go-usage',
+    }),
+  ];
+
+  assert.deepEqual(
+    subscriptionLimits(rows, NOW).map((row) => [row.window_kind, row.used_percent]),
+    [
+      ['5h', 0],
+      ['weekly', 7],
+      ['monthly', 3],
+    ],
+  );
+  assert.equal(
+    buildTooltip(rows, true, NOW),
+    'QuotaPulse\nOpenCode Go 5h 0% · wk 7% · mo 3%',
   );
 });

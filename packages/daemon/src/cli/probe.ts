@@ -77,7 +77,16 @@ async function main() {
                  FROM limit_sample GROUP BY source_id, window_kind, origin) t
            ON t.source_id = l.source_id AND t.window_kind = l.window_kind
           AND t.origin = l.origin AND t.mx = l.observed_at
-        ORDER BY s.harness, l.window_kind`,
+        ORDER BY s.harness,
+          CASE l.window_kind
+            WHEN '5h' THEN 0
+            WHEN 'weekly' THEN 1
+            WHEN 'weekly_opus' THEN 2
+            WHEN 'weekly_sonnet' THEN 3
+            WHEN 'monthly' THEN 4
+            ELSE 99
+          END,
+          l.window_kind`,
     )
     .all() as Array<Record<string, number | string | null>>;
   const now = Date.now();

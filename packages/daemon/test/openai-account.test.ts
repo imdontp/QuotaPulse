@@ -5,14 +5,14 @@ import { parseAccountQuotaOutput } from '../src/adapters/openai-account.js';
 
 const NOW = 1_800_000_000_000;
 
-test('OpenAI account helper output maps Hermes session and weekly windows', () => {
+test('OpenAI provider usage output maps primary and secondary windows', () => {
   const snapshot = parseAccountQuotaOutput(
     JSON.stringify({
       available: true,
       fetchedAt: NOW - 2_000,
       windows: [
-        { label: 'Session', usedPercent: 12.5, resetAt: 1_800_018_000 },
-        { label: 'Weekly', usedPercent: 4, resetAt: '2026-09-15T12:00:00Z' },
+        { windowKind: '5h', usedPercent: 12.5, resetAt: 1_800_018_000 },
+        { windowKind: 'weekly', usedPercent: 4, resetAt: '2026-09-15T12:00:00Z' },
       ],
     }),
     NOW,
@@ -34,9 +34,9 @@ test('OpenAI account parser rejects unavailable data and unknown windows', () =>
     JSON.stringify({
       available: true,
       windows: [
-        { label: 'Session', usedPercent: 150 },
-        { label: 'Weekly', usedPercent: -5, resetAt: null },
-        { label: 'Monthly', usedPercent: 20 },
+        { windowKind: '5h', usedPercent: 150 },
+        { windowKind: 'weekly', usedPercent: -5, resetAt: null },
+        { windowKind: 'monthly', usedPercent: 20 },
       ],
     }),
     NOW,
@@ -57,7 +57,7 @@ test('OpenAI account parser ignores helper noise and malformed readings', () => 
       'Hermes plugin log line',
       JSON.stringify({
         available: true,
-        windows: [{ label: 'Session', usedPercent: '12' }, null, { label: 'Weekly' }],
+        windows: [{ windowKind: '5h', usedPercent: '12' }, null, { windowKind: 'weekly' }],
       }),
     ].join('\n'),
     NOW,

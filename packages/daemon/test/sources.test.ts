@@ -152,6 +152,48 @@ test('Codex and an account reader share one quota card while harness cards stay 
   assert.deepEqual(sourceStatus(d).map((source) => source.source_id), [codexSource.sourceId]);
 });
 
+test('telemetry reports usage newer than quota instead of presenting a fresh value', () => {
+  const d = db();
+  const account = {
+    key: 'anthropic:claude:company',
+    provider: 'anthropic',
+    displayName: 'Claude Company Subscription',
+  };
+  const sourceId = upsertSource(d, {
+    harness: 'claude-code',
+    profile: 'company',
+    rootPath: '/fake/claude-company',
+    displayName: 'Claude Code Company',
+    account,
+  });
+  const sink = new DbSink(d, sourceId, new PriceResolver(d));
+  const quotaAt = Date.now() - 30_000;
+  sink.limit({
+    windowKind: '5h',
+    usedPercent: 42,
+    resetsAt: Date.now() + 3_600_000,
+    observedAt: quotaAt,
+    sourceFetchedAt: quotaAt,
+    origin: 'statusline-snapshot',
+  });
+  sink.usage({
+    dedupKey: 'headless-call-1',
+    ts: Date.now(),
+    model: 'claude-opus-5',
+    provider: 'anthropic',
+    outputTokens: 100,
+  });
+
+  const source = sourceStatus(d).find((row) => row.source_id === sourceId)!;
+  assert.equal(source.telemetry.gap, true);
+  assert.equal(source.telemetry.reason, 'usage_newer_than_quota');
+  const subscription = subscriptionStatus(d).find((row) => row.subscription_key === account.key)!;
+  assert.equal(subscription.telemetry.gap, true);
+  assert.equal(subscription.telemetry.windows[0]!.window_kind, '5h');
+  assert.equal(subscription.telemetry.windows[0]!.reason, 'usage_newer_than_quota');
+  d.close();
+});
+
 test('stale quota does not keep a subscription active, and fresh quota reactivates it', () => {
   const d = db();
   const account = {

@@ -10,6 +10,9 @@ export const DATA_DIR =
 
 export const DB_PATH = join(DATA_DIR, 'usage.db');
 export const LOCK_PATH = join(DATA_DIR, 'daemon.lock');
+/** Optional sanitized quota events emitted by an existing harness invocation. */
+export const EVENTS_DIR = join(DATA_DIR, 'events');
+export const QUOTA_EVENTS_PATH = join(EVENTS_DIR, 'quota.jsonl');
 export const DEFAULT_PORT = Number(process.env.QUOTAPULSE_PORT ?? 7676);
 
 /**

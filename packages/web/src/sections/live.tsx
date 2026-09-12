@@ -1,17 +1,16 @@
 import { useState } from 'react';
-import { Activity, Coins, CalendarRange, Database } from 'lucide-react';
-import { api, type HarnessStatus, type Overview, type SourceTotals, type SubscriptionStatus } from '@/api';
+import { Activity, Coins, CalendarRange, Database, TriangleAlert } from 'lucide-react';
+import { api, type Overview, type SourceTotals, type SubscriptionStatus } from '@/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AnimatedNumber, Empty, Sparkline, Stagger, StaggerItem } from '@/components/primitives';
 import { GaugeStack } from '@/components/gauge';
 import { Hint } from '@/components/ui/tooltip';
-import { age } from '@/format';
-import { isExpired, tokensParts } from '@/format';
+import { age, isExpired, tokensParts } from '@/format';
 import { HarnessIcon } from '@/components/harness-icon';
 import { useFormat } from '@/i18n/format';
-import { useT } from '@/i18n';
+import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh } from '@/lib/use-live';
 
 /**
@@ -103,21 +102,10 @@ function stateVariant(state: SubscriptionStatus['state']): 'ok' | 'outline' | 'w
   return state === 'active' ? 'ok' : state === 'inactive' ? 'outline' : 'warn';
 }
 
-function harnessStatusLabel(
-  t: ReturnType<typeof useT>,
-  harness: HarnessStatus,
-  now: number,
-): string {
-  if (!harness.detected) return t('live.harnessNotDetected');
-  if (harness.last_event_ts != null && now - harness.last_event_ts < 120_000) {
-    return t('live.harnessActive');
-  }
-  return t('live.harnessTracked');
-}
-
 export function LiveSection({ ov }: { ov: Overview }) {
   const t = useT();
   const f = useFormat();
+  const { hiddenSubscriptions } = useI18n();
   const now = ov.now;
   const spark = useRecentHours(24);
 
@@ -139,6 +127,9 @@ export function LiveSection({ ov }: { ov: Overview }) {
   const weekTok = tokensParts(ov.week.total_tokens);
   const todayTok = tokensParts(today.total_tokens);
   const cacheTok = tokensParts(today.cached_input_tokens);
+  const subscriptions = (ov.subscriptions ?? []).filter(
+    (subscription) => !hiddenSubscriptions.includes(subscription.subscription_key),
+  );
 
   return (
     <div className="flex flex-col gap-3.5">
@@ -230,104 +221,67 @@ export function LiveSection({ ov }: { ov: Overview }) {
         </StaggerItem>
       </Stagger>
 
-      <div className="order-2 flex flex-col gap-3.5">
+      <div className="flex flex-col gap-3.5">
         <div className="flex items-baseline justify-between gap-3 px-0.5">
-          <h2 className="text-[13px] font-semibold">{t('live.harnessGroup')}</h2>
-          <span className="text-muted-foreground text-[11.5px]">{t('live.harnessGroupBlurb')}</span>
+          <h2 className="text-[13px] font-semibold">{t('live.subscriptionGroup')}</h2>
+          <span className="text-muted-foreground text-[11.5px]">{t('live.subscriptionGroupBlurb')}</span>
         </div>
-        <Stagger className="grid grid-cols-1 gap-3.5 md:grid-cols-2 lg:grid-cols-3">
-          {(ov.harnesses ?? [])
-            .filter((harness) => harness.parent_harness_key == null)
-            .map((harness) => {
-              const delegates = (ov.harnesses ?? []).filter(
-                (child) => child.parent_harness_key === harness.harness_key,
+        {subscriptions.length === 0 ? (
+          <p className="text-muted-foreground note text-[11.5px] leading-relaxed">
+            {t('live.allSubscriptionsHidden')}
+          </p>
+        ) : (
+          <Stagger className="grid grid-cols-1 gap-3.5 md:grid-cols-2 lg:grid-cols-3">
+            {subscriptions.map((subscription) => {
+              const limits = ov.limits.filter(
+                (limit) => (limit.subscription_key ?? limit.account_key) === subscription.subscription_key,
               );
-              const isLive = harness.last_event_ts != null && now - harness.last_event_ts < 120_000;
-              const subscriptions = (ov.subscriptions ?? []).filter((subscription) =>
-                harness.subscription_keys.includes(subscription.subscription_key),
+              const linkedHarness = (ov.harnesses ?? []).find((harness) =>
+                subscription.linked_harness_keys.includes(harness.harness_key),
               );
+              const anyLive = limits.some(
+                (limit) => !isExpired(limit, now) && (limit.ageSeconds ?? 1e9) < 120,
+              );
+              const statusLabel = subscriptionStateLabel(t, subscription.state);
               return (
-                <StaggerItem key={harness.harness_key}>
+                <StaggerItem key={subscription.subscription_key}>
                   <Card className="h-full">
                     <CardHeader>
                       <HarnessIcon
-                        harness={harness.harness}
-                        vendor={harness.vendor}
-                        label={harness.display_name}
+                        harness={linkedHarness?.harness ?? 'unknown'}
+                        vendor={subscription.provider}
+                        label={subscription.subscription_display_name}
                         className="text-[16px]"
                       />
-                      <CardTitle>{harness.display_name}</CardTitle>
+                      <CardTitle>{subscription.subscription_display_name}</CardTitle>
                       <div className="flex-1" />
-                      <Badge variant={harness.detected ? (isLive ? 'ok' : 'outline') : 'warn'}>
-                        {harnessStatusLabel(t, harness, now)}
-                      </Badge>
+                      <Badge variant={stateVariant(subscription.state)}>{statusLabel}</Badge>
+                      {subscription.telemetry.gap && <Badge variant="warn">{t('live.quotaGap')}</Badge>}
+                      <span
+                        className="size-1.5 rounded-full"
+                        style={{ background: anyLive ? 'var(--ok)' : 'var(--muted-foreground)' }}
+                      />
                     </CardHeader>
                     <CardContent>
-                      <div className="flex flex-col gap-2">
+                      {limits.length > 0 && subscription.state !== 'inactive' ? (
+                        <GaugeStack limits={limits} now={now} />
+                      ) : (
                         <p className="text-muted-foreground note text-[11.5px] leading-relaxed">
-                          {delegates.length > 0 ? t('live.parentHarnessHint') : t('live.harnessUsageHint')}
+                          {subscription.state === 'inactive' ? statusLabel : t('live.subscriptionNoReading')}
                         </p>
-                        <div className="text-muted-foreground/70 flex flex-wrap items-baseline gap-x-3 text-[11.5px]">
-                          <span className="tabular text-foreground/80 font-mono">
-                            {t('live.allTime', { tokens: f.tokens(harness.total_tokens) })}
-                          </span>
-                          <span>{t('live.calls', { n: harness.calls.toLocaleString() })}</span>
-                          <span>
-                            {harness.last_event_ts
-                              ? t('live.lastUsed', { age: age((now - harness.last_event_ts) / 1000) })
-                              : harness.detected
-                                ? t('live.neverUsed')
-                                : t('live.harnessNotDetected')}
-                          </span>
+                      )}
+                      {subscription.linked_harness_keys.length > 0 && (
+                        <div className="text-muted-foreground/70 mt-3 text-[11px]">
+                          {t('live.subscriptionLinkedHarnesses', {
+                            n: subscription.linked_harness_keys.length,
+                          })}
                         </div>
-                        {subscriptions.length > 0 && (
-                          <div className="text-muted-foreground/70 text-[11px]">
-                            {t('live.usesSubscription', {
-                              name: subscriptions.map((subscription) => subscription.subscription_display_name).join(', '),
-                            })}
-                          </div>
-                        )}
-                      </div>
-
-                      {delegates.length > 0 && (
-                        <div className="border-border/70 mt-4 border-t pt-3">
-                          <div className="text-muted-foreground mb-2 text-[11px] font-semibold">
-                            {t('live.delegates')}
-                          </div>
-                          <div className="flex flex-col gap-2">
-                            {delegates.map((delegate) => {
-                              const delegateSubscriptions = (ov.subscriptions ?? []).filter((subscription) =>
-                                delegate.subscription_keys.includes(subscription.subscription_key),
-                              );
-                              return (
-                                <div
-                                  key={delegate.harness_key}
-                                  className="border-border/60 bg-muted/20 rounded-md border px-3 py-2"
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <HarnessIcon
-                                      harness={delegate.harness}
-                                      vendor={delegate.vendor}
-                                      label={delegate.display_name}
-                                      className="text-[13px]"
-                                    />
-                                    <span className="text-[11.5px] font-medium">{delegate.display_name}</span>
-                                    <div className="flex-1" />
-                                    <Badge variant="outline">{t('live.delegate')}</Badge>
-                                  </div>
-                                  <div className="text-muted-foreground/70 mt-1.5 text-[10.5px] leading-relaxed">
-                                    {delegateSubscriptions.length > 0
-                                      ? t('live.delegateSubscription', {
-                                          name: delegateSubscriptions
-                                            .map((subscription) => subscription.subscription_display_name)
-                                            .join(', '),
-                                        })
-                                      : t('live.delegateUsagePending')}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
+                      )}
+                      {subscription.telemetry.latest_quota_at != null && subscription.telemetry.freshness !== 'live' && (
+                        <div className="text-muted-foreground/70 mt-1 text-[11px]">
+                          {t('live.quotaLastRead', {
+                            age: age((now - subscription.telemetry.latest_quota_at) / 1000),
+                          })}
                         </div>
                       )}
                     </CardContent>
@@ -335,68 +289,23 @@ export function LiveSection({ ov }: { ov: Overview }) {
                 </StaggerItem>
               );
             })}
-        </Stagger>
+          </Stagger>
+        )}
       </div>
 
-      <div className="order-1 flex flex-col gap-3.5">
-        <div className="flex items-baseline justify-between gap-3 px-0.5">
-          <h2 className="text-[13px] font-semibold">{t('live.subscriptionGroup')}</h2>
-          <span className="text-muted-foreground text-[11.5px]">{t('live.subscriptionGroupBlurb')}</span>
-        </div>
-        <Stagger className="grid grid-cols-1 gap-3.5 md:grid-cols-2 lg:grid-cols-3">
-          {(ov.subscriptions ?? []).map((subscription) => {
-            const limits = ov.limits.filter(
-              (limit) => (limit.subscription_key ?? limit.account_key) === subscription.subscription_key,
-            );
-            const linkedHarness = (ov.harnesses ?? []).find((harness) =>
-              subscription.linked_harness_keys.includes(harness.harness_key),
-            );
-            const anyLive = limits.some(
-              (limit) => !isExpired(limit, now) && (limit.ageSeconds ?? 1e9) < 120,
-            );
-            const statusLabel = subscriptionStateLabel(t, subscription.state);
-            return (
-              <StaggerItem key={subscription.subscription_key}>
-                <Card className="h-full">
-                  <CardHeader>
-                    <HarnessIcon
-                      harness={linkedHarness?.harness ?? 'unknown'}
-                      vendor={subscription.provider}
-                      label={subscription.subscription_display_name}
-                      className="text-[16px]"
-                    />
-                    <CardTitle>{subscription.subscription_display_name}</CardTitle>
-                    <div className="flex-1" />
-                    <Badge variant={stateVariant(subscription.state)}>{statusLabel}</Badge>
-                    <span
-                      className="size-1.5 rounded-full"
-                      style={{ background: anyLive ? 'var(--ok)' : 'var(--muted-foreground)' }}
-                    />
-                  </CardHeader>
-                  <CardContent>
-                    {limits.length > 0 && subscription.state !== 'inactive' ? (
-                      <GaugeStack limits={limits} now={now} />
-                    ) : (
-                      <p className="text-muted-foreground note text-[11.5px] leading-relaxed">
-                        {subscription.state === 'inactive' ? statusLabel : t('live.subscriptionNoReading')}
-                      </p>
-                    )}
-                    {subscription.linked_harness_keys.length > 0 && (
-                      <div className="text-muted-foreground/70 mt-3 text-[11px]">
-                        {t('live.subscriptionLinkedHarnesses', {
-                          n: subscription.linked_harness_keys.length,
-                        })}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </StaggerItem>
-            );
-          })}
-        </Stagger>
-      </div>
+      {subscriptions.some((subscription) => subscription.telemetry.gap) && (
+        <Card className="border-warn/30 bg-warn/5">
+          <CardContent className="flex items-start gap-2.5 py-3">
+            <TriangleAlert className="text-warn mt-0.5 size-4 shrink-0" />
+            <div className="text-[12px] leading-relaxed">
+              <div className="font-medium">{t('live.quotaGapTitle')}</div>
+              <div className="text-muted-foreground mt-0.5">{t('live.quotaGapBlurb')}</div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
-      <Card className="order-3">
+      <Card>
         <CardHeader>
           <CardTitle>{t('live.activityToday')}</CardTitle>
           <span className="text-muted-foreground text-[11.5px]">{t('live.byHarness')}</span>

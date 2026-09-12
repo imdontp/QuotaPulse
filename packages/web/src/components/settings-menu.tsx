@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Languages, Info } from 'lucide-react';
+import type { SubscriptionStatus } from '@/api';
 import { Button } from '@/components/ui/button';
 import { CURRENCIES, useI18n, type CurrencyCode, type Lang } from '@/i18n';
 import { cn } from '@/lib/utils';
@@ -10,12 +11,21 @@ const LANGS: Array<{ id: Lang; label: string }> = [
 ];
 
 /**
- * Language, currency and the exchange rate in one popover. They live together because
- * they are one decision: the rate only matters once a non-USD currency is chosen, and
- * choosing Thai is the usual reason to want baht.
+ * Language, currency, exchange rate and subscription visibility in one popover. They live
+ * together because they are lightweight display preferences rather than provider settings.
  */
-export function SettingsMenu() {
-  const { lang, currency, rate, setLang, setCurrency, setRate, t } = useI18n();
+export function SettingsMenu({ subscriptions = [] }: { subscriptions?: SubscriptionStatus[] }) {
+  const {
+    lang,
+    currency,
+    rate,
+    hiddenSubscriptions,
+    setLang,
+    setCurrency,
+    setRate,
+    setSubscriptionVisible,
+    t,
+  } = useI18n();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(String(rate));
   const ref = useRef<HTMLDivElement | null>(null);
@@ -82,6 +92,39 @@ export function SettingsMenu() {
               ))}
             </div>
           </div>
+
+          {subscriptions.length > 0 && (
+            <div className="mb-3">
+              <div className="text-muted-foreground mb-1.5 text-[11.5px]">{t('settings.subscriptions')}</div>
+              <div className="flex max-h-36 flex-col gap-1 overflow-y-auto">
+                {subscriptions.map((subscription) => {
+                  const visible = !hiddenSubscriptions.includes(subscription.subscription_key);
+                  return (
+                    <label
+                      key={subscription.subscription_key}
+                      className="hover:bg-accent/60 flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 transition-colors"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={visible}
+                        onChange={(event) =>
+                          setSubscriptionVisible(subscription.subscription_key, event.target.checked)
+                        }
+                        aria-label={subscription.subscription_display_name}
+                        className="accent-foreground size-3.5 shrink-0"
+                      />
+                      <span className="min-w-0 flex-1 truncate text-[12px]">
+                        {subscription.subscription_display_name}
+                      </span>
+                      <span className="text-muted-foreground/60 text-[10.5px]">
+                        {visible ? t('settings.visible') : t('settings.hidden')}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           <div className="mb-3">
             <div className="text-muted-foreground mb-1.5 text-[11.5px]">{t('settings.currency')}</div>

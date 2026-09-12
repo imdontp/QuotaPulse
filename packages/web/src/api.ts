@@ -112,6 +112,37 @@ export interface Limit {
 
 export type AccountState = 'active' | 'stale' | 'inactive' | 'unavailable' | 'waiting';
 
+export type QuotaFreshness = 'live' | 'recent' | 'stale' | 'unknown' | 'expired' | 'mixed';
+
+export type QuotaTelemetryReason =
+  | 'usage_newer_than_quota'
+  | 'no_quota_observed'
+  | 'cached_only'
+  | 'reader_error'
+  | null;
+
+export interface QuotaWindowTelemetry {
+  window_kind: string;
+  freshness: QuotaFreshness;
+  latest_quota_at: number | null;
+  latest_source_fetched_at: number | null;
+  latest_usage_at: number | null;
+  gap: boolean;
+  reason: QuotaTelemetryReason;
+  origins: string[];
+}
+
+export interface QuotaTelemetry {
+  freshness: QuotaFreshness;
+  latest_quota_at: number | null;
+  latest_source_fetched_at: number | null;
+  latest_usage_at: number | null;
+  gap: boolean;
+  reason: QuotaTelemetryReason;
+  origins: string[];
+  windows: QuotaWindowTelemetry[];
+}
+
 export interface AccountStatus {
   account_key: string;
   provider: string;
@@ -127,6 +158,7 @@ export interface SubscriptionStatus extends AccountStatus {
   subscription_key: string;
   subscription_display_name: string;
   linked_harness_keys: string[];
+  telemetry: QuotaTelemetry;
 }
 
 export interface HarnessStatus {
@@ -154,11 +186,17 @@ export interface SourceStatus {
   display_name: string;
   root_path: string;
   vendor: string;
+  account_state: AccountState;
   calls: number;
   total_tokens: number;
   last_event_ts: number | null;
+  last_limit_at: number | null;
+  last_limit_source_fetched_at: number | null;
+  last_limit_reset_at: number | null;
+  limit_origins: string | null;
   /** 0 means no quota reading is available -- the harness may publish none or auth may be unavailable. */
   limit_samples: number;
+  telemetry: QuotaTelemetry;
 }
 
 export interface Overview {

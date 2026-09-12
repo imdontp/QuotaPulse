@@ -47,6 +47,8 @@ const ACCOUNT_DISPLAY_SQL = `COALESCE(
  * entitlement with stale telemetry, not as proof that the subscription is active.
  */
 export const ACCOUNT_QUOTA_FRESHNESS_MS = 24 * 60 * 60 * 1000;
+/** A gap alert is actionable only while the related usage is still recent. */
+export const QUOTA_GAP_ACTIVITY_MS = 24 * 60 * 60 * 1000;
 
 export interface SourceRow {
   id: number;
@@ -54,6 +56,106 @@ export interface SourceRow {
   profile: string;
   display_name: string;
   root_path: string;
+}
+
+export type QuotaFreshness = 'live' | 'recent' | 'stale' | 'unknown' | 'expired' | 'mixed';
+
+export type QuotaTelemetryReason =
+  | 'usage_newer_than_quota'
+  | 'no_quota_observed'
+  | 'cached_only'
+  | 'reader_error'
+  | null;
+
+export interface QuotaWindowTelemetry {
+  window_kind: string;
+  freshness: QuotaFreshness;
+  latest_quota_at: number | null;
+  latest_source_fetched_at: number | null;
+  latest_usage_at: number | null;
+  gap: boolean;
+  reason: QuotaTelemetryReason;
+  origins: string[];
+}
+
+export interface QuotaTelemetry {
+  freshness: QuotaFreshness;
+  latest_quota_at: number | null;
+  latest_source_fetched_at: number | null;
+  latest_usage_at: number | null;
+  gap: boolean;
+  reason: QuotaTelemetryReason;
+  origins: string[];
+  windows: QuotaWindowTelemetry[];
+}
+
+function freshnessFor(
+  latestQuotaAt: number | null,
+  now: number,
+  resetAt: number | null = null,
+): QuotaFreshness {
+  if (latestQuotaAt == null) return 'unknown';
+  if (resetAt != null && resetAt <= now) return 'expired';
+  const age = now - latestQuotaAt;
+  if (age < 120_000) return 'live';
+  if (age < 3_600_000) return 'recent';
+  return 'stale';
+}
+
+function overallFreshness(windows: QuotaWindowTelemetry[]): QuotaFreshness {
+  if (windows.length === 0) return 'unknown';
+  const unique = new Set(windows.map((window) => window.freshness));
+  return unique.size === 1 ? windows[0]!.freshness : 'mixed';
+}
+
+function telemetryReason(
+  latestQuotaAt: number | null,
+  latestUsageAt: number | null,
+  origins: string[],
+  now: number,
+  readerError = false,
+): QuotaTelemetryReason {
+  if (readerError) return 'reader_error';
+  if (
+    latestUsageAt != null &&
+    now - latestUsageAt <= QUOTA_GAP_ACTIVITY_MS &&
+    (latestQuotaAt == null || latestUsageAt > latestQuotaAt)
+  ) {
+    return 'usage_newer_than_quota';
+  }
+  if (latestQuotaAt == null) return 'no_quota_observed';
+  if (origins.length > 0 && origins.every((origin) => origin === 'claude.json' || origin.includes('cached'))) {
+    return 'cached_only';
+  }
+  return null;
+}
+
+function summaryTelemetry(row: {
+  last_limit_at: number | null;
+  last_limit_source_fetched_at: number | null;
+  last_limit_reset_at: number | null;
+  last_event_ts: number | null;
+  limit_origins: string | null;
+  account_state?: AccountState;
+}, now: number): QuotaTelemetry {
+  const origins = row.limit_origins ? row.limit_origins.split(',').filter(Boolean) : [];
+  const reason = telemetryReason(
+    row.last_limit_at,
+    row.last_event_ts,
+    origins,
+    now,
+    row.account_state === 'unavailable',
+  );
+  return {
+    freshness: freshnessFor(row.last_limit_at, now, row.last_limit_reset_at),
+    latest_quota_at: row.last_limit_at,
+    latest_source_fetched_at: row.last_limit_source_fetched_at,
+    latest_usage_at: row.last_event_ts,
+    gap: reason === 'usage_newer_than_quota',
+    reason,
+    origins,
+    windows: [],
+  };
 }
 
 export const listSources = (db: DB): SourceRow[] =>
@@ -137,14 +239,22 @@ export const totalsBySource = (db: DB, sinceMs: number) =>
  * usage sources publish no quota, while account-only readers belong in Account Quota.
  * A quota-driven list would otherwise leave those harnesses invisible.
  */
-export const sourceStatus = (db: DB) =>
-  db
+export const sourceStatus = (db: DB) => {
+  const now = Date.now();
+  const rows = db
     .prepare(
       `SELECT s.id AS source_id, s.harness, s.profile, s.display_name, s.root_path,
               ${harnessVendorSqlCase('s.harness')} AS vendor,
+              COALESCE(s.account_state, 'waiting') AS account_state,
               (SELECT COALESCE(SUM(u.call_count),0) FROM usage_event u WHERE u.source_id = s.id) AS calls,
               (SELECT COALESCE(SUM(u.total_tokens),0) FROM usage_event u WHERE u.source_id = s.id) AS total_tokens,
               (SELECT MAX(u.ts)     FROM usage_event u WHERE u.source_id = s.id) AS last_event_ts,
+              (SELECT MAX(l.last_seen_at) FROM limit_sample l WHERE l.source_id = s.id) AS last_limit_at,
+              (SELECT l.source_fetched_at FROM limit_sample l WHERE l.source_id = s.id
+                ORDER BY l.last_seen_at DESC, l.id DESC LIMIT 1) AS last_limit_source_fetched_at,
+              (SELECT l.resets_at FROM limit_sample l WHERE l.source_id = s.id
+                ORDER BY l.last_seen_at DESC, l.id DESC LIMIT 1) AS last_limit_reset_at,
+              (SELECT GROUP_CONCAT(DISTINCT l.origin) FROM limit_sample l WHERE l.source_id = s.id) AS limit_origins,
               (SELECT COUNT(*)      FROM limit_sample l WHERE l.source_id = s.id) AS limit_samples
          FROM source s
         WHERE s.source_kind = 'harness'
@@ -159,11 +269,21 @@ export const sourceStatus = (db: DB) =>
       display_name: string;
       root_path: string;
       vendor: string;
+      account_state: AccountState;
       calls: number;
       total_tokens: number;
       last_event_ts: number | null;
+      last_limit_at: number | null;
+      last_limit_source_fetched_at: number | null;
+      last_limit_reset_at: number | null;
+      limit_origins: string | null;
       limit_samples: number;
     }>;
+  return rows.map((row) => ({
+    ...row,
+    telemetry: summaryTelemetry(row, now),
+  }));
+};
 
 export interface LimitRow {
   source_id: number;
@@ -212,7 +332,16 @@ export const latestLimits = (db: DB): LimitRow[] =>
           AND t.origin = l.origin AND t.mx = l.observed_at
         WHERE s.enabled = 1
           AND (s.source_kind = 'harness' OR COALESCE(s.account_state, 'waiting') <> 'inactive')
-        ORDER BY s.harness, s.profile, l.window_kind`,
+        ORDER BY s.harness, s.profile,
+          CASE l.window_kind
+            WHEN '5h' THEN 0
+            WHEN 'weekly' THEN 1
+            WHEN 'weekly_opus' THEN 2
+            WHEN 'weekly_sonnet' THEN 3
+            WHEN 'monthly' THEN 4
+            ELSE 99
+          END,
+          l.window_kind`,
     )
     .all() as LimitRow[];
 
@@ -353,6 +482,82 @@ export interface SubscriptionStatus extends AccountStatus {
   subscription_key: string;
   subscription_display_name: string;
   linked_harness_keys: string[];
+  telemetry: QuotaTelemetry;
+}
+
+function latestUsageBySubscription(db: DB): Map<string, number> {
+  const rows = db
+    .prepare(
+      `SELECT ${ACCOUNT_KEY_SQL} AS account_key, MAX(u.ts) AS latest_usage_at
+         FROM usage_event u
+         JOIN source s ON s.id = u.source_id
+        WHERE ${ACCOUNT_KEY_SQL} IS NOT NULL
+        GROUP BY account_key`,
+    )
+    .all() as Array<{ account_key: string | null; latest_usage_at: number | null }>;
+  return new Map(
+    rows
+      .filter((row): row is { account_key: string; latest_usage_at: number } =>
+        row.account_key != null && row.latest_usage_at != null,
+      )
+      .map((row) => [row.account_key, row.latest_usage_at]),
+  );
+}
+
+function telemetryForSubscription(
+  key: string,
+  limits: LimitRow[],
+  latestUsageAt: number | null,
+  now: number,
+): QuotaTelemetry {
+  const owned = limits.filter((limit) => limit.account_key === key);
+  const grouped = new Map<string, LimitRow[]>();
+  for (const limit of owned) {
+    const rows = grouped.get(limit.window_kind) ?? [];
+    rows.push(limit);
+    grouped.set(limit.window_kind, rows);
+  }
+
+  const windows: QuotaWindowTelemetry[] = [...grouped.entries()].map(([windowKind, rows]) => {
+    const latest = [...rows].sort((a, b) => b.last_seen_at - a.last_seen_at)[0]!;
+    const latestQuotaAt = latest.last_seen_at;
+    const origins = [...new Set(rows.map((row) => row.origin))];
+    const reason = telemetryReason(latestQuotaAt, latestUsageAt, origins, now);
+    return {
+      window_kind: windowKind,
+      freshness: freshnessFor(latestQuotaAt, now, latest.resets_at),
+      latest_quota_at: latestQuotaAt,
+      latest_source_fetched_at: latest.source_fetched_at,
+      latest_usage_at: latestUsageAt,
+      gap: reason === 'usage_newer_than_quota',
+      reason,
+      origins,
+    };
+  });
+
+  const latestQuotaAt = owned.reduce<number | null>(
+    (latest, row) => (latest == null || row.last_seen_at > latest ? row.last_seen_at : latest),
+    null,
+  );
+  const latestSourceFetchedAt = owned.reduce<number | null>(
+    (latest, row) =>
+      row.source_fetched_at != null && (latest == null || row.source_fetched_at > latest)
+        ? row.source_fetched_at
+        : latest,
+    null,
+  );
+  const origins = [...new Set(owned.map((row) => row.origin))];
+  const reason = telemetryReason(latestQuotaAt, latestUsageAt, origins, now);
+  return {
+    freshness: overallFreshness(windows),
+    latest_quota_at: latestQuotaAt,
+    latest_source_fetched_at: latestSourceFetchedAt,
+    latest_usage_at: latestUsageAt,
+    gap: windows.some((window) => window.gap),
+    reason,
+    origins,
+    windows,
+  };
 }
 
 /**
@@ -364,6 +569,9 @@ export interface SubscriptionStatus extends AccountStatus {
 export const subscriptionStatus = (db: DB): SubscriptionStatus[] => {
   const observed = accountStatus(db);
   const byKey = new Map(observed.map((entry) => [entry.account_key, entry]));
+  const limits = latestLimits(db);
+  const usageBySubscription = latestUsageBySubscription(db);
+  const now = Date.now();
   const linkedBySubscription = new Map<string, string[]>();
 
   for (const definition of HARNESS_CATALOG) {
@@ -395,6 +603,12 @@ export const subscriptionStatus = (db: DB): SubscriptionStatus[] => {
     }
     const state = current?.state ?? definition.stateWhenMissing;
     const displayName = definition.displayName;
+    const telemetry = telemetryForSubscription(
+      definition.key,
+      limits,
+      usageBySubscription.get(definition.key) ?? null,
+      now,
+    );
     result.push({
       account_key: definition.key,
       provider: current?.provider ?? definition.provider,
@@ -412,6 +626,7 @@ export const subscriptionStatus = (db: DB): SubscriptionStatus[] => {
       subscription_key: definition.key,
       subscription_display_name: displayName,
       linked_harness_keys: linkedBySubscription.get(definition.key) ?? [],
+      telemetry,
     });
   }
 
@@ -426,6 +641,12 @@ export const subscriptionStatus = (db: DB): SubscriptionStatus[] => {
       subscription_key: current.account_key,
       subscription_display_name: displayName,
       linked_harness_keys: linkedBySubscription.get(current.account_key) ?? [],
+      telemetry: telemetryForSubscription(
+        current.account_key,
+        limits,
+        usageBySubscription.get(current.account_key) ?? null,
+        now,
+      ),
     });
   }
 

@@ -9,6 +9,7 @@ import {
   HeartPulse,
   MessagesSquare,
   Moon,
+  Radio,
   RefreshCw,
   Sun,
   TrendingUp,
@@ -23,6 +24,7 @@ import { Button } from '@/components/ui/button';
 import { Empty, ErrorBox } from '@/components/primitives';
 import { QuotaPulseMark, QuotaPulseWordmark } from '@/components/logo';
 import { LiveSection } from '@/sections/live';
+import { SourcesSection } from '@/sections/sources';
 import { LimitsSection } from '@/sections/limits';
 import { TrendSection } from '@/sections/trend';
 import { CostSection } from '@/sections/cost';
@@ -34,6 +36,7 @@ import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 
 const TABS = [
   { id: 'live', key: 'tab.live', icon: Activity },
+  { id: 'sources', key: 'tab.sources', icon: Radio },
   { id: 'limits', key: 'tab.limits', icon: Gauge },
   { id: 'trend', key: 'tab.trend', icon: TrendingUp },
   { id: 'cost', key: 'tab.cost', icon: Coins },
@@ -47,7 +50,7 @@ type TabId = (typeof TABS)[number]['id'];
 type Theme = 'light' | 'dark';
 
 /**
- * The sidebar collapses to icons below this width. The tray panel opens at 1280px, while
+ * The sidebar collapses to icons below this width. The tray panel opens maximized, while
  * this breakpoint also keeps narrower browser windows usable. Kept in JS as well as CSS
  * because the collapsed rail needs tooltips, and a tooltip cannot be turned on by a media
  * query alone.
@@ -270,10 +273,15 @@ function Dashboard() {
               <div className="flex-1" />
 
               {ov && (
-                <AlertBell limits={ov.limits} now={ov.now} onOpenLimits={() => setTab('limits')} />
+                <AlertBell
+                  limits={ov.limits}
+                  subscriptions={ov.subscriptions}
+                  now={ov.now}
+                  onOpenLimits={() => setTab('limits')}
+                />
               )}
 
-              <SettingsMenu />
+              <SettingsMenu subscriptions={ov?.subscriptions} />
 
               <Button
                 size="icon"
@@ -304,6 +312,9 @@ function Dashboard() {
               >
                 <TabsContent value="live" forceMount={tab === 'live' ? true : undefined}>
                   {tab === 'live' && (ov ? <LiveSection ov={ov} /> : <Loading />)}
+                </TabsContent>
+                <TabsContent value="sources" forceMount={tab === 'sources' ? true : undefined}>
+                  {tab === 'sources' && (ov ? <SourcesSection ov={ov} /> : <Loading />)}
                 </TabsContent>
                 <TabsContent value="limits" forceMount={tab === 'limits' ? true : undefined}>
                   {tab === 'limits' && (ov ? <LimitsSection ov={ov} /> : <Loading />)}
