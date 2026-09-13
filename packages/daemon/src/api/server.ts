@@ -96,6 +96,65 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     };
   });
 
+  app.get('/api/pricing/coverage', async (req, reply) => {
+    const p = req.query as Record<string, string | undefined>;
+    const from = Number(p.from), to = Number(p.to);
+    const sourceId = p.source_id == null ? undefined : Number(p.source_id);
+    if (!p.from || !p.to || !Number.isSafeInteger(from) || !Number.isSafeInteger(to) ||
+        from < 0 || to < from || to > 8_640_000_000_000_000 ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Expected from/to epoch milliseconds and an optional positive source_id' });
+    }
+    return q.pricingCoverage(db, { from, to, ...(sourceId == null ? {} : { sourceId }) });
+  });
+
+  app.get('/api/alerts', async (req, reply) => {
+    const p = req.query as Record<string, string | undefined>;
+    const from = p.from == null ? undefined : Number(p.from);
+    const to = p.to == null ? undefined : Number(p.to);
+    const sourceId = p.source_id == null ? undefined : Number(p.source_id);
+    const limit = p.limit == null ? undefined : Number(p.limit);
+    if ((from != null && !Number.isSafeInteger(from)) ||
+        (to != null && !Number.isSafeInteger(to)) ||
+        (from != null && from < 0) || (to != null && to < 0) ||
+        (from != null && to != null && to < from) ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0)) ||
+        (limit != null && (!Number.isSafeInteger(limit) || limit < 1 || limit > 500))) {
+      return reply.code(400).send({ error: 'Invalid alert history range, source_id, or limit' });
+    }
+    return { events: q.alertHistory(db, {
+      ...(from == null ? {} : { from }), ...(to == null ? {} : { to }),
+      ...(sourceId == null ? {} : { sourceId }), ...(limit == null ? {} : { limit }),
+      pending: p.pending === '1',
+    }) };
+  });
+
+  app.post('/api/alerts/:id/delivered', async (req, reply) => {
+    const id = Number((req.params as { id: string }).id);
+    if (!Number.isSafeInteger(id) || id <= 0) return reply.code(400).send({ error: 'Invalid alert id' });
+    if (!q.markAlertDelivered(db, id)) return reply.code(404).send({ error: 'Alert not found' });
+    return { ok: true };
+  });
+
+  app.get('/api/notification-settings', async () => q.notificationSettings(db));
+  app.put('/api/notification-settings', async (req, reply) => {
+    if (req.body != null && (typeof req.body !== 'object' || Array.isArray(req.body))) {
+      return reply.code(400).send({ error: 'Notification settings must be a JSON object' });
+    }
+    const body = (req.body ?? {}) as Record<string, unknown>;
+    const validMinute = (value: unknown) => value == null || (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 && value < 1440);
+    const validSnooze = (value: unknown) => value == null || (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0);
+    if ((body.enabled != null && typeof body.enabled !== 'boolean') || !validMinute(body.quiet_start) || !validMinute(body.quiet_end) || !validSnooze(body.snooze_until)) {
+      return reply.code(400).send({ error: 'Invalid notification settings' });
+    }
+    return q.updateNotificationSettings(db, {
+      ...(body.enabled == null ? {} : { enabled: body.enabled }),
+      ...(body.snooze_until === undefined ? {} : { snooze_until: body.snooze_until as number | null }),
+      ...(body.quiet_start === undefined ? {} : { quiet_start: body.quiet_start as number | null }),
+      ...(body.quiet_end === undefined ? {} : { quiet_end: body.quiet_end as number | null }),
+    });
+  });
+
   /**
    * Interactive refresh: ingest the current source cursors before the browser
    * re-queries its view. The scheduler serializes this with watch/poll passes, so
@@ -128,17 +187,22 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     accounts: q.accountStatus(db),
   }));
 
-  app.get('/api/trend', async (req) => {
+  app.get('/api/trend', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
     const bucket: q.Bucket = s.bucket === 'day' ? 'day' : 'hour';
-    const to = s.to ? Number(s.to) : Date.now();
+    const to = s.to == null ? Date.now() : Number(s.to);
     const defaultSpan = bucket === 'hour' ? 2 * DAY : 30 * DAY;
-    const from = s.from ? Number(s.from) : to - defaultSpan;
+    const from = s.from == null ? to - defaultSpan : Number(s.from);
     const groupBy = (['harness', 'model', 'vendor', 'project', 'none'] as const).includes(
       s.group_by as q.GroupBy,
     )
       ? (s.group_by as q.GroupBy)
       : 'harness';
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    if (!Number.isSafeInteger(from) || !Number.isSafeInteger(to) || from < 0 || to <= from ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Invalid trend range or source_id' });
+    }
     return {
       bucket,
       from,
@@ -149,9 +213,20 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
         to,
         bucket,
         groupBy,
-        ...(s.source_id ? { sourceId: Number(s.source_id) } : {}),
+        ...(sourceId == null ? {} : { sourceId }),
       }),
     };
+  });
+
+  app.get('/api/compare', async (req, reply) => {
+    const s = req.query as Record<string, string | undefined>;
+    const from = Number(s.from), to = Number(s.to), previousFrom = Number(s.previous_from), previousTo = Number(s.previous_to);
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    const groupBy = (['harness', 'model', 'vendor', 'project', 'none'] as const).includes(s.group_by as q.GroupBy) ? s.group_by as q.GroupBy : 'harness';
+    if (![from, to, previousFrom, previousTo].every(Number.isSafeInteger) || from < 0 || to <= from || previousFrom < 0 || previousTo <= previousFrom || to - from !== previousTo - previousFrom || (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Expected equal-length current and previous ranges' });
+    }
+    return q.compareUsage(db, { from, to, previousFrom, previousTo, groupBy, ...(sourceId == null ? {} : { sourceId }) });
   });
 
   app.get('/api/models', async (req) => {
@@ -165,31 +240,53 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
    * /projects/by-harness, /by-vendor and /by-model would ship the same rows three times
    * and let the three views disagree about a total.
    */
-  app.get('/api/projects', async (req) => {
+  app.get('/api/projects', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
-    const to = s.to ? Number(s.to) : Date.now();
+    const to = s.to == null ? Date.now() : Number(s.to);
     // Default 30 days, matching the Trend tab's default range.
-    const from = s.from ? Number(s.from) : to - 30 * 86_400_000;
-    return { from, to, rows: q.projectBreakdown(db, { from, to }) };
+    const from = s.from == null ? to - 30 * 86_400_000 : Number(s.from);
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    if (!Number.isSafeInteger(from) || !Number.isSafeInteger(to) || from < 0 || to <= from ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Invalid project range or source_id' });
+    }
+    return { from, to, rows: q.projectBreakdown(db, { from, to, ...(sourceId == null ? {} : { sourceId }) }) };
   });
 
-  app.get('/api/sessions', async (req) => {
+  app.get('/api/sessions', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
     const vendors = (s.vendor ?? '')
       .split(',')
       .map((v) => v.trim())
       .filter(Boolean);
+    const from = s.from == null ? undefined : Number(s.from);
+    const to = s.to == null ? undefined : Number(s.to);
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    const rawLimit = s.limit == null ? 50 : Number(s.limit);
+    const rawOffset = s.offset == null ? 0 : Number(s.offset);
+    if ((from != null && (!Number.isSafeInteger(from) || from < 0)) ||
+        (to != null && (!Number.isSafeInteger(to) || to < 0)) ||
+        (from != null && to != null && to <= from)) {
+      return reply.code(400).send({ error: 'Invalid session time range' });
+    }
+    if ((sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0)) ||
+        !Number.isSafeInteger(rawLimit) || rawLimit < 1 || rawLimit > 500 ||
+        !Number.isSafeInteger(rawOffset) || rawOffset < 0) {
+      return reply.code(400).send({ error: 'Invalid session pagination or source_id' });
+    }
     const opts = {
-      limit: Math.min(Math.max(Number(s.limit ?? 50), 1), 500),
-      offset: Math.max(Number(s.offset ?? 0), 0),
-      ...(s.source_id ? { sourceId: Number(s.source_id) } : {}),
+      limit: rawLimit,
+      offset: rawOffset,
+      ...(sourceId == null ? {} : { sourceId }),
+      ...(from == null ? {} : { from }),
+      ...(to == null ? {} : { to }),
       ...(vendors.length ? { vendors } : {}),
     };
     return {
       sessions: q.sessionList(db, opts),
       // The page control needs the filtered total, not just this page's length.
       total: q.sessionCount(db, opts),
-      vendors: q.sessionVendors(db),
+      vendors: q.sessionVendors(db, opts),
       limit: opts.limit,
       offset: opts.offset,
     };
@@ -286,6 +383,7 @@ function withBurn(db: DB, limits: q.LimitRow[]) {
     ageSeconds: Math.round((now - Math.max(l.last_seen_at, l.source_fetched_at ?? 0)) / 1000),
     valueAgeSeconds: Math.round((now - l.observed_at) / 1000),
     burn: q.burnRate(db, l.source_id, l.window_kind, l.origin),
+    forecast: q.quotaForecast(db, l.source_id, l.window_kind, l.origin, now),
   }));
 }
 

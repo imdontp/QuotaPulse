@@ -167,6 +167,34 @@ CREATE TABLE IF NOT EXISTS price (
 );
 CREATE INDEX IF NOT EXISTS idx_price_model ON price(model);
 
+-- Quota threshold events are facts discovered by the daemon. They are deliberately
+-- separate from tray delivery state: closing the tray must not erase the history.
+CREATE TABLE IF NOT EXISTS alert_event (
+  id              INTEGER PRIMARY KEY,
+  kind            TEXT NOT NULL,
+  source_id       INTEGER REFERENCES source(id),
+  owner_key       TEXT NOT NULL,
+  window_kind     TEXT NOT NULL,
+  threshold       INTEGER,
+  used_percent    REAL,
+  resets_at       INTEGER,
+  detected_at     INTEGER NOT NULL,
+  delivered_at    INTEGER,
+  origin          TEXT NOT NULL DEFAULT '',
+  UNIQUE (kind, owner_key, window_kind, threshold, resets_at)
+);
+CREATE INDEX IF NOT EXISTS idx_alert_event_detected ON alert_event(detected_at DESC);
+CREATE INDEX IF NOT EXISTS idx_alert_event_pending ON alert_event(delivered_at, detected_at DESC);
+
+CREATE TABLE IF NOT EXISTS notification_setting (
+  id           INTEGER PRIMARY KEY CHECK (id = 1),
+  enabled      INTEGER NOT NULL DEFAULT 1,
+  snooze_until INTEGER,
+  quiet_start  INTEGER,
+  quiet_end    INTEGER,
+  updated_at   INTEGER NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS rollup_hourly (
   bucket_ts        INTEGER NOT NULL,
   source_id        INTEGER NOT NULL REFERENCES source(id),

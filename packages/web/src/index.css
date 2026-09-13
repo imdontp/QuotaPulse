@@ -153,6 +153,30 @@
 }
 
 @layer components {
+  .quota-hero {
+    position: relative;
+    overflow: hidden;
+    background-image: radial-gradient(ellipse at 100% 0%, color-mix(in oklch, var(--brand) 14%, transparent), transparent 65%);
+  }
+  .quota-card {
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+  }
+  .quota-card:hover {
+    box-shadow: 0 8px 28px -16px color-mix(in oklch, var(--brand) 25%, transparent);
+  }
+  .nav-drawer {
+    margin: 0;
+    height: 100dvh;
+    max-height: 100dvh;
+    width: min(300px, 85vw);
+    max-width: 85vw;
+    border-right: 1px solid var(--border);
+  }
+  .nav-drawer::backdrop { background: rgb(0 0 0 / 50%); backdrop-filter: blur(3px); }
+  button:focus-visible, summary:focus-visible, select:focus-visible, a:focus-visible, ol[tabindex]:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
   /*
    * Card captions are one to three lines read once, not body prose scanned line by
    * line, so the container width is the right measure for them. A fixed 48rem cap left

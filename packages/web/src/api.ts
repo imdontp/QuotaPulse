@@ -46,6 +46,15 @@ async function post<T>(path: string): Promise<T> {
   return (await res.json()) as T;
 }
 
+async function put<T>(path: string, body: unknown): Promise<T> {
+  const res = await request(path, {
+    method: 'PUT',
+    headers: { 'content-type': 'application/json', ...(TOKEN ? { 'x-quotapulse-token': TOKEN } : {}) },
+    body: JSON.stringify(body),
+  });
+  return (await res.json()) as T;
+}
+
 export interface Totals {
   calls: number;
   input_tokens: number;
@@ -83,6 +92,15 @@ export interface Burn {
   samples: number;
 }
 
+export interface QuotaForecast {
+  status: 'ready' | 'insufficient' | 'flat' | 'reset';
+  samples: number;
+  fromAt: number | null;
+  toAt: number | null;
+  percentPerHour: number | null;
+  projectedFullAt: number | null;
+}
+
 export interface Limit {
   source_id: number;
   harness: string;
@@ -108,6 +126,7 @@ export interface Limit {
   valueAgeSeconds: number | null;
   last_seen_at: number;
   burn: Burn | null;
+  forecast?: QuotaForecast;
 }
 
 export type AccountState = 'active' | 'stale' | 'inactive' | 'unavailable' | 'waiting';
@@ -226,6 +245,8 @@ export interface TrendRow {
   output_tokens: number;
   total_tokens: number;
   cost_usd: number;
+  cost_unknown_calls: number;
+  cost_estimated_calls: number;
 }
 
 export interface ModelRow extends Totals {
@@ -259,6 +280,7 @@ export interface ProjectRow {
   total_tokens: number;
   cost_usd: number;
   cost_unknown_calls: number;
+  cost_estimated_calls: number;
   last_ts: number;
 }
 
@@ -282,6 +304,69 @@ export interface SessionRow {
   total_tokens: number;
   cost_usd: number;
   cost_unknown_calls: number;
+  cost_estimated_calls: number;
+}
+
+export interface CompareResult {
+  current: Totals;
+  previous: Totals;
+  series: Array<{ series: string; current: Totals | null; previous: Totals | null }>;
+}
+
+export interface SessionEvent {
+  ts: number;
+  model: string | null;
+  effort: string | null;
+  input_tokens: number;
+  cached_input_tokens: number;
+  cache_write_tokens: number;
+  output_tokens: number;
+  reasoning_tokens: number;
+  total_tokens: number;
+  cost_usd: number | null;
+  cost_source: 'known' | 'unknown' | 'estimated' | string;
+  duration_ms: number | null;
+}
+
+export interface SessionDetail {
+  session: SessionRow & Record<string, unknown>;
+  events: SessionEvent[];
+}
+
+export interface AlertEvent {
+  id: number;
+  kind: 'threshold' | string;
+  source_id: number;
+  owner_key: string;
+  window_kind: string;
+  threshold: number;
+  used_percent: number;
+  resets_at: number | null;
+  detected_at: number;
+  delivered_at: number | null;
+  display_name: string;
+  subscription_display_name: string | null;
+  origin: string;
+}
+
+export interface NotificationSettings {
+  enabled: boolean;
+  snooze_until: number | null;
+  quiet_start: number | null;
+  quiet_end: number | null;
+  updated_at: number;
+}
+
+export interface PricingScope { from: number; to: number; sourceId?: number }
+export interface PricingCoverage {
+  from: number;
+  to: number;
+  source_id: number | null;
+  sourceName: string | null;
+  totals: Totals;
+  models: Array<Totals & { model: string | null; provider: string | null; price_provider: string | null }>;
+  hasHermes: boolean;
+  catalog: { pricedModels: number; loadedAt: number | null; catalogAgeMs: number | null; catalogOwn: boolean; catalogPresent: boolean };
 }
 
 export interface Health {
@@ -329,6 +414,9 @@ export interface ManualRefresh {
 }
 
 export const api = {
+  pricingCoverage: (p: PricingScope) => get<PricingCoverage>(
+    `/api/pricing/coverage?from=${p.from}&to=${p.to}` + (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
+  ),
   overview: () => get<Overview>('/api/overview'),
   limits: () =>
     get<{
@@ -338,16 +426,17 @@ export const api = {
       harnesses: HarnessStatus[];
       accounts: AccountStatus[];
     }>('/api/limits'),
-  trend: (p: { bucket: 'hour' | 'day'; from: number; to: number; groupBy: string }) =>
+  trend: (p: { bucket: 'hour' | 'day'; from: number; to: number; groupBy: string; sourceId?: number }) =>
     get<{ bucket: string; from: number; to: number; rows: TrendRow[] }>(
-      `/api/trend?bucket=${p.bucket}&from=${p.from}&to=${p.to}&group_by=${p.groupBy}`,
+      `/api/trend?bucket=${p.bucket}&from=${p.from}&to=${p.to}&group_by=${p.groupBy}` +
+        (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
     ),
   models: (since: number) => get<{ models: ModelRow[] }>(`/api/models?since=${since}`),
-  projects: (p: { from: number; to: number }) =>
+  projects: (p: { from: number; to: number; sourceId?: number }) =>
     get<{ from: number; to: number; rows: ProjectRow[] }>(
-      `/api/projects?from=${p.from}&to=${p.to}`,
+      `/api/projects?from=${p.from}&to=${p.to}` + (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
     ),
-  sessions: (p: { limit: number; offset: number; vendor?: string }) =>
+  sessions: (p: { limit: number; offset: number; vendor?: string; sourceId?: number; from?: number; to?: number }) =>
     get<{
       sessions: SessionRow[];
       total: number;
@@ -355,8 +444,26 @@ export const api = {
       limit: number;
       offset: number;
     }>(
-      `/api/sessions?limit=${p.limit}&offset=${p.offset}` +
-        (p.vendor ? `&vendor=${encodeURIComponent(p.vendor)}` : ''),
+        `/api/sessions?limit=${p.limit}&offset=${p.offset}` +
+        (p.vendor ? `&vendor=${encodeURIComponent(p.vendor)}` : '') +
+        (p.sourceId == null ? '' : `&source_id=${p.sourceId}`) +
+        (p.from == null ? '' : `&from=${p.from}`) +
+        (p.to == null ? '' : `&to=${p.to}`),
+  ),
+  sessionDetail: (id: number) => get<SessionDetail>(`/api/sessions/${id}`),
+  alerts: (p: { from?: number; to?: number; limit?: number; pending?: boolean } = {}) =>
+    get<{ events: AlertEvent[] }>(
+      `/api/alerts?limit=${p.limit ?? 100}` +
+        (p.from == null ? '' : `&from=${p.from}`) +
+        (p.to == null ? '' : `&to=${p.to}`) +
+        (p.pending ? '&pending=1' : ''),
+    ),
+  notificationSettings: () => get<NotificationSettings>('/api/notification-settings'),
+  updateNotificationSettings: (patch: Partial<NotificationSettings>) => put<NotificationSettings>('/api/notification-settings', patch),
+  compare: (p: { from: number; to: number; previousFrom: number; previousTo: number; groupBy: string; sourceId?: number }) =>
+    get<CompareResult>(
+      `/api/compare?from=${p.from}&to=${p.to}&previous_from=${p.previousFrom}&previous_to=${p.previousTo}&group_by=${p.groupBy}` +
+        (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
     ),
   health: () => get<Health>('/api/health'),
   refresh: () => post<ManualRefresh>('/api/refresh'),

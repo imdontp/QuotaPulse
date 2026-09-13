@@ -13,6 +13,7 @@ import { useFormat } from '@/i18n/format';
 import { useT } from '@/i18n';
 import { useLiveRefresh } from '@/lib/use-live';
 import { cn } from '@/lib/utils';
+import { ValueDisplay } from '@/components/value-display';
 
 type Metric = 'total_tokens' | 'cost_usd' | 'calls';
 
@@ -206,11 +207,7 @@ export function ModelsSection() {
                         {f.tokens(m.total_tokens)}
                       </TableCell>
                       <TableCell className="tabular text-right font-mono">
-                        {m.cost_unknown_calls === m.calls ? (
-                          <span className="text-muted-foreground/60">--</span>
-                        ) : (
-                          f.money(m.cost_usd, m.cost_unknown_calls)
-                        )}
+                        <ValueDisplay total={m} />
                       </TableCell>
                     </TableRow>
                   ))}

@@ -144,6 +144,12 @@ its last percentage. So does a reading older than the window it describes -- Cla
 fallback publishes a percentage with no reset time at all, and a two-day-old "0%" cannot be a
 statement about a five-hour window.
 
+Reset timestamps may jitter slightly between provider readings. Burn-rate calculations
+and tray alert deduplication treat resets within **2,000 ms** as the same period, while
+preserving the original timestamps in storage. A reproduced 28 ms shift at an unchanged
+75% used to restart the alert ladder and discard the burn-rate sample. Boundary and
+rollover regressions now cover both daemon and tray; thresholds remain 50/80/95%.
+
 **4. Cost is value, not spend, and a guessed price says so.** On a subscription plan these
 figures are what the same tokens would cost through the API. Calls on models with no published
 price are shown as `--`, never as `$0` — and that dash means *every* call in the total was
@@ -156,6 +162,23 @@ a 29x spread — so a price is looked up by `(provider, model)` first. Where onl
 matched, the call is marked `estimated` and names whose price was used, because a figure
 derived from a provider we picked is a weaker claim than one from the provider the call
 actually ran through, and the two should not look alike.
+
+Value totals distinguish no usage (zero), entirely unpriced usage (`--`), partially
+priced usage (`+`), and a priced zero. Live and Cost have a **Pricing details** button
+beside their totals and source rows. The dialog shows the selected period/source,
+call-count coverage, missing/reference-price models, and catalog metadata. Coverage is
+weighted by `call_count`, not event-row count; Hermes rows are session aggregates placed
+at their last-seen timestamp, not individual call times. A monetary Trend bucket with
+only unpriced calls is a gap, not a zero-cost point.
+
+`GET /api/pricing/coverage?from=<epoch-ms>&to=<epoch-ms>&source_id=<optional-id>` is
+token-authenticated and read-only. It uses `[from,to)` and returns totals, affected
+model/provider groups, and catalog metadata. Opening a dialog freezes its displayed
+time range; live refreshes re-read that same selection. Neither opening it nor retrying
+downloads a catalog or reprices history. To update prices, run `npm run prices:refresh`
+from this repository, then restart the daemon using your normal launch method. This only
+helps missing prices that the catalog can actually resolve; dashboard Refresh is an
+ingest refresh, not a price update.
 
 **5. An ingest pass sees only new bytes.** A harness names the model, the effort or the
 working directory once per turn and then writes many usage lines against it, so an adapter
@@ -177,11 +200,27 @@ cannot be priced. There is a regression test per adapter that reads a file in tw
 | `npm run prices:refresh` | fetch the models.dev price catalog (the user-invoked network command) |
 | `npm run doctor` | check the things that fail silently: stale `dist/`, broken task paths, two daemons, missing catalog |
 | `npm run shoot` | screenshot the dashboard into `screens/` for a visual once over |
+| `npm run test:ui` | browser regressions with fixture API data; screenshots in `screens/quota-redesign/` |
 | `npm run icon-preview -w @quotapulse/tray` | render the tray icon states to PNGs |
 | `node scripts/gen-vendor-icons.mjs` | regenerate the vendor/harness brand marks and `--vendor-*` colours after adding a vendor or harness; prints the contrast and hue-separation tables |
 
 `npm run probe` is the one to reach for when a number looks wrong. It prints what landed and
 compares it against the ground truth each harness computes for itself.
+
+The Live page now starts with a compact data-status strip and an attention panel. Connection,
+ingest, quota freshness and price coverage are separate signals, so a quiet source is not
+mistaken for a broken reader. Attention cards link directly to Limits, Cost or Health. The
+analysis pages share URL-backed range/source filters; use Ctrl/Cmd+K to jump between pages and
+save a frequently used filter as a local view. Sessions open a read-only detail drawer with
+their recorded calls. Trend can compare the selected range with the immediately preceding
+range; Value comparisons retain the same unpriced/estimated caveats as the rest of the app.
+
+Threshold crossings (50/80/95%) are recorded by the daemon in a local 90-day alert history,
+independent of the tray process. The Alerts page shows what was detected and whether delivery
+was attempted. Notification settings in the gear menu support disable, one/four-hour snooze,
+and local quiet hours; suppressed events remain in history. The conservative quota forecast
+requires three readings spanning at least fifteen minutes before it shows a projected full
+time.
 
 `npm run shoot` starts its own daemon on port 7799 against a throwaway database, so it
 never touches the real one, and writes a fixed set of shots: both themes, a 1280×800 tray
@@ -197,15 +236,29 @@ holds an SSE stream open forever, so `chrome --screenshot --virtual-time-budget`
 
 ## Sections
 
-**Live** separates two ownership layers: Subscription cards (OpenAI, Claude Company and
-Claude Personal) own quota windows, while Harness cards (Codex CLI, Claude Code Company,
-Claude Code Personal, OpenCode and Hermes Agent) own usage. Hermes contains nested Delegate
-cards for Codex CLI and both Claude Code subscriptions. A quota reader such as
-An account quota reader is never a visible Harness card, and Codex/Hermes readers that use
-the same OpenAI subscription share one quota card. OpenCode Go is an optional Subscription
-card that appears after the official account quota endpoint confirms the Go entitlement;
-an ordinary OpenCode API key is not enough. OpenCode remains the Harness card. The page
-also shows today's totals with sparklines and the cache hit rate ·
+The Live page starts with subscription readiness and the next five reported resets, then
+quota cards and usage statistics. Readiness reuses the existing alert rules; stale, missing,
+or expired readings cannot confirm availability. Inactive subscriptions are collapsed, and
+hidden subscriptions stay out of the Live summary and reset list. Limits retains all
+subscriptions and adds subscription/status filters, with cards on small screens.
+
+The sidebar groups monitoring, analysis, and system pages. Below 640px, navigation opens
+in a keyboard-accessible drawer. Existing section hashes and display preferences continue
+to work, including browser Back and Forward. Unknown cost totals show `--`; partially priced
+totals keep their `+`. Usage sparklines use the same metric and time range as their totals.
+
+`npm run test:ui` uses the installed Chrome with fixture API responses and never starts the
+collector or probes accounts. It checks navigation, status/attention, filters, command palette,
+alerts, session details, Trend comparison, cost states, empty/error states, and Live/Limits in
+both languages and themes at 390, 900, 1280, and 1440px. Pricing dialog checks cover keyboard
+focus/return, loading, retry, empty results, late responses after closing, read-only requests,
+and desktop/mobile layouts in both languages and themes.
+
+**Live** shows readiness, upcoming resets, subscription quota windows, and usage totals.
+Codex/Hermes readers sharing the same OpenAI subscription produce one quota card.
+OpenCode Go appears only after its account reader confirms the entitlement ·
+**Sources** shows harness usage and ownership, including nested Hermes delegates.
+Account quota readers are not rendered as separate harnesses ·
 **Limits** one row per quota window with burn rate and "hits 100% at ..." projection; a
 harness that reports the same window through several origins shows the reading in force,
 with the ones it supersedes on the freshness chip ·

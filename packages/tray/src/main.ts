@@ -5,12 +5,12 @@ import { join, resolve } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { trayIconFor, severityFor, menuGaugeFor } from './icon.js';
+import { thresholdAlerts, type AlertState } from './alerts.js';
 import {
   buildTooltip,
   subscriptionLimits,
   worst,
   isExpired,
-  isUsable,
   shortSource,
   shortWindow,
   shortAge,
@@ -25,14 +25,30 @@ interface Lock {
   startedAt: number;
 }
 
+interface ServerAlert {
+  id: number;
+  display_name: string;
+  subscription_display_name: string | null;
+  threshold: number;
+  used_percent: number;
+  window_kind: string;
+  resets_at: number | null;
+  detected_at: number;
+}
+
+interface NotificationSettings {
+  enabled: boolean;
+  snooze_until: number | null;
+  quiet_start: number | null;
+  quiet_end: number | null;
+}
+
 const DATA_DIR =
   process.env.QUOTAPULSE_DATA_DIR ??
   join(process.env.LOCALAPPDATA ?? join(homedir(), '.local', 'share'), 'quotapulse');
 const LOCK_PATH = join(DATA_DIR, 'daemon.lock');
 const REPO_ROOT = resolve(fileURLToPath(new URL('.', import.meta.url)), '..', '..', '..');
 
-/** Thresholds that are worth interrupting someone for, in ascending order. */
-const ALERT_STEPS = [50, 80, 95];
 const POLL_MS = 15_000;
 const PANEL_WIDTH = 1280;
 const PANEL_HEIGHT = 800;
@@ -46,7 +62,7 @@ let limits: Limit[] = [];
 let alertsEnabled = true;
 let daemonChild: ReturnType<typeof spawn> | null = null;
 /** Highest alert step already fired per gauge, reset when its window rolls over. */
-const alerted = new Map<string, { step: number; resetsAt: number | null }>();
+const alerted = new Map<string, AlertState>();
 
 function readLock(): Lock | null {
   if (!existsSync(LOCK_PATH)) return null;
@@ -94,11 +110,60 @@ async function fetchLimits(): Promise<void> {
     if (!res.ok) throw new Error(String(res.status));
     const body = (await res.json()) as { limits: Limit[] };
     limits = body.limits;
-    checkAlerts();
+    // New daemons own threshold detection and persist it while the tray is closed. Keep
+    // the in-memory helper as a compatibility fallback for an older daemon during upgrade.
+    if (!(await deliverPendingAlerts(lock))) checkAlerts();
   } catch {
     limits = [];
   }
   render();
+}
+
+/** Return false only when talking to an older daemon; a successful empty list is handled. */
+async function deliverPendingAlerts(current: Lock): Promise<boolean> {
+  if (!alertsEnabled) return true;
+  try {
+    const settingsRes = await fetch(`http://127.0.0.1:${current.port}/api/notification-settings`, {
+      headers: { 'x-quotapulse-token': current.token },
+    });
+    if (!settingsRes.ok) return false;
+    const settings = (await settingsRes.json()) as NotificationSettings;
+    if (!settings.enabled || (settings.snooze_until != null && settings.snooze_until > Date.now()) || inQuietHours(settings)) return true;
+    const res = await fetch(`http://127.0.0.1:${current.port}/api/alerts?pending=1&limit=20`, {
+      headers: { 'x-quotapulse-token': current.token },
+    });
+    if (!res.ok) return false;
+    const body = (await res.json()) as { events?: ServerAlert[] };
+    for (const event of body.events ?? []) {
+      if (event.detected_at != null && Date.now() - event.detected_at > 15 * 60_000) {
+        void fetch(`http://127.0.0.1:${current.port}/api/alerts/${event.id}/delivered`, { method: 'POST', headers: { 'x-quotapulse-token': current.token } }).catch(() => undefined);
+        continue;
+      }
+      const when = event.resets_at
+        ? `resets ${new Date(event.resets_at).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}`
+        : 'no reset time reported';
+      new Notification({
+        title: `${event.subscription_display_name ?? event.display_name}: ${Math.round(event.used_percent)}% of ${shortWindow(event.window_kind)}`,
+        body: `Crossed the ${event.threshold}% threshold (${when}).`,
+        silent: event.threshold < 95,
+      }).show();
+      void fetch(`http://127.0.0.1:${current.port}/api/alerts/${event.id}/delivered`, {
+        method: 'POST',
+        headers: { 'x-quotapulse-token': current.token },
+      }).catch(() => undefined);
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function inQuietHours(settings: NotificationSettings, now = new Date()): boolean {
+  if (settings.quiet_start == null || settings.quiet_end == null || settings.quiet_start === settings.quiet_end) return false;
+  const minute = now.getHours() * 60 + now.getMinutes();
+  return settings.quiet_start < settings.quiet_end
+    ? minute >= settings.quiet_start && minute < settings.quiet_end
+    : minute >= settings.quiet_start || minute < settings.quiet_end;
 }
 
 function render(): void {
@@ -169,20 +234,8 @@ function render(): void {
 
 function checkAlerts(): void {
   if (!alertsEnabled) return;
-  // Only a live window can cross a threshold; a rolled-over one is back near zero.
-  for (const l of subscriptionLimits(limits).filter((l) => isUsable(l))) {
-    const key = `${l.subscription_key ?? l.account_key ?? `source:${l.source_id}`}:${l.window_kind}`;
-    const prev = alerted.get(key);
-    // A new window period starts the alert ladder over.
-    if (prev && prev.resetsAt !== l.resets_at) alerted.delete(key);
-
+  for (const { limit: l, step } of thresholdAlerts(limits, alerted)) {
     const pct = l.used_percent!;
-    const step = [...ALERT_STEPS].reverse().find((s) => pct >= s);
-    if (step == null) continue;
-    const already = alerted.get(key)?.step ?? 0;
-    if (step <= already) continue;
-
-    alerted.set(key, { step, resetsAt: l.resets_at });
     const when = l.resets_at
       ? `resets ${new Date(l.resets_at).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}`
       : 'no reset time reported';

@@ -216,6 +216,47 @@ export const totalsSince = (db: DB, sinceMs: number, sourceId?: number): Totals 
     )
     .get(...(sourceId ? [sinceMs, sourceId] : [sinceMs])) as Totals;
 
+export const totalsBetween = (db: DB, fromMs: number, toMs: number, sourceId?: number): Totals =>
+  db.prepare(
+    `SELECT ${TOTALS_SELECT} FROM usage_event
+      WHERE ts >= @from AND ts < @to ${sourceId == null ? '' : 'AND source_id = @sourceId'}`,
+  ).get({ from: fromMs, to: toMs, sourceId: sourceId ?? null }) as Totals;
+
+/** Compare equal-length windows without mixing price coverage or call weights. */
+export function compareUsage(
+  db: DB,
+  opts: { from: number; to: number; previousFrom: number; previousTo: number; groupBy: GroupBy; sourceId?: number },
+) {
+  const groupExpr =
+    opts.groupBy === 'harness'
+      ? `s.harness || '/' || s.profile`
+      : opts.groupBy === 'model'
+        ? `COALESCE(u.model,'(unknown)')`
+        : opts.groupBy === 'vendor'
+          ? vendorSqlCase('u.model', 'u.provider')
+          : opts.groupBy === 'project'
+            ? `COALESCE(sess.project,'(none)')`
+            : `'all'`;
+  const grouped = db.prepare(
+    `SELECT ${groupExpr} AS series, ${TOTALS_SELECT}
+       FROM usage_event u JOIN source s ON s.id = u.source_id
+       LEFT JOIN session sess ON sess.id = u.session_id
+      WHERE u.ts >= @from AND u.ts < @to
+        AND (@sourceId IS NULL OR u.source_id = @sourceId)
+      GROUP BY series ORDER BY total_tokens DESC`,
+  );
+  const current = grouped.all({ from: opts.from, to: opts.to, sourceId: opts.sourceId ?? null }) as Array<Totals & { series: string }>;
+  const previous = grouped.all({ from: opts.previousFrom, to: opts.previousTo, sourceId: opts.sourceId ?? null }) as Array<Totals & { series: string }>;
+  const bySeries = new Map<string, { current: Totals | null; previous: Totals | null }>();
+  for (const row of current) bySeries.set(row.series, { current: row, previous: null });
+  for (const row of previous) bySeries.set(row.series, { ...(bySeries.get(row.series) ?? { current: null }), previous: row });
+  return {
+    current: totalsBetween(db, opts.from, opts.to, opts.sourceId),
+    previous: totalsBetween(db, opts.previousFrom, opts.previousTo, opts.sourceId),
+    series: [...bySeries.entries()].map(([series, pair]) => ({ series, ...pair })),
+  };
+}
+
 export const totalsBySource = (db: DB, sinceMs: number) =>
   db
     .prepare(
@@ -343,7 +384,188 @@ export const latestLimits = (db: DB): LimitRow[] =>
           END,
           l.window_kind`,
     )
-    .all() as LimitRow[];
+        .all() as LimitRow[];
+
+export interface AlertEventRow {
+  id: number;
+  kind: 'threshold';
+  source_id: number;
+  owner_key: string;
+  window_kind: string;
+  threshold: number;
+  used_percent: number;
+  resets_at: number | null;
+  detected_at: number;
+  delivered_at: number | null;
+  display_name: string;
+  subscription_display_name: string | null;
+  origin: string;
+}
+
+/**
+ * Record threshold crossings from the provider's quota samples. This is intentionally a
+ * daemon-side fact rather than a tray concern: the dashboard and tray can be closed while
+ * collection continues, and a process restart must not make a 80% reading look new.
+ *
+ * We only record a crossing when there is an earlier sample in the same reset period. The
+ * initial reading therefore establishes a baseline; it cannot manufacture a historical
+ * alert on the first daemon start. Reset jitter follows the same two-second rule as burn
+ * rate and tray deduplication.
+ */
+export const recordQuotaAlerts = (db: DB, now = Date.now()): AlertEventRow[] => {
+  const created: AlertEventRow[] = [];
+  const thresholds = [50, 80, 95] as const;
+  const sameReset = (a: number | null, b: number | null) =>
+    a == null || b == null ? a === b : Math.abs(a - b) <= RESET_TOLERANCE_MS;
+
+  return db.transaction(() => {
+    db.prepare('DELETE FROM alert_event WHERE detected_at < ?').run(now - 90 * 86_400_000);
+    const latest = db
+      .prepare(
+        `SELECT l.id, l.source_id, l.window_kind, l.used_percent, l.resets_at,
+                l.observed_at, l.origin, s.display_name,
+                COALESCE(${ACCOUNT_KEY_SQL}, 'source:' || s.id) AS owner_key,
+                ${ACCOUNT_DISPLAY_SQL} AS subscription_display_name
+           FROM limit_sample l JOIN source s ON s.id = l.source_id
+          WHERE l.used_percent IS NOT NULL AND s.enabled = 1
+            AND (s.source_kind = 'harness' OR COALESCE(s.account_state, 'waiting') <> 'inactive')
+            AND l.id = (SELECT l2.id FROM limit_sample l2
+                          WHERE l2.source_id = l.source_id
+                            AND l2.window_kind = l.window_kind
+                            AND l2.origin = l.origin
+                          ORDER BY l2.observed_at DESC, l2.id DESC LIMIT 1)`,
+      )
+      .all() as Array<{
+      id: number;
+      source_id: number;
+      window_kind: string;
+      used_percent: number;
+      resets_at: number | null;
+      observed_at: number;
+      origin: string;
+      display_name: string;
+      owner_key: string;
+      subscription_display_name: string | null;
+    }>;
+    const prior = db.prepare(
+      `SELECT used_percent, resets_at FROM limit_sample
+         WHERE source_id = ? AND window_kind = ? AND origin = ?
+           AND observed_at < ?
+         ORDER BY observed_at DESC, id DESC LIMIT 1`,
+    );
+    const insert = db.prepare(
+      `INSERT OR IGNORE INTO alert_event
+        (kind, source_id, owner_key, window_kind, threshold, used_percent, resets_at, detected_at, origin)
+       VALUES ('threshold', ?, ?, ?, ?, ?, ?, ?, ?)`,
+    );
+    const existing = db.prepare(
+      `SELECT resets_at FROM alert_event
+         WHERE kind = 'threshold' AND owner_key = ? AND window_kind = ? AND threshold = ?
+         ORDER BY detected_at DESC LIMIT 8`,
+    );
+    const rowById = db.prepare(
+      `SELECT e.*, s.display_name, ${ACCOUNT_DISPLAY_SQL} AS subscription_display_name,
+              COALESCE(NULLIF(e.origin, ''), (SELECT l.origin FROM limit_sample l
+                 WHERE l.source_id = e.source_id AND l.window_kind = e.window_kind
+                 ORDER BY l.observed_at DESC, l.id DESC LIMIT 1)) AS origin
+         FROM alert_event e JOIN source s ON s.id = e.source_id WHERE e.id = ?`,
+    );
+
+    for (const row of latest) {
+      const previous = prior.get(row.source_id, row.window_kind, row.origin, row.observed_at) as
+        | { used_percent: number; resets_at: number | null }
+        | undefined;
+      if (!previous || !sameReset(previous.resets_at, row.resets_at)) continue;
+      for (const threshold of thresholds) {
+        if (previous.used_percent >= threshold || row.used_percent < threshold) continue;
+        const priorEvents = existing.all(row.owner_key, row.window_kind, threshold) as Array<{ resets_at: number | null }>;
+        if (priorEvents.some((event) => sameReset(event.resets_at, row.resets_at))) continue;
+        const result = insert.run(
+          row.source_id,
+          row.owner_key,
+          row.window_kind,
+          threshold,
+          row.used_percent,
+          row.resets_at,
+          now,
+          row.origin,
+        );
+        if (result.changes === 0) continue;
+        const event = rowById.get(Number(result.lastInsertRowid)) as AlertEventRow | undefined;
+        if (event) created.push(event);
+      }
+    }
+    return created;
+  })();
+};
+
+export const alertHistory = (
+  db: DB,
+  opts: { from?: number; to?: number; limit?: number; pending?: boolean; sourceId?: number } = {},
+): AlertEventRow[] => {
+  const parts = ['1=1'];
+  const params: Record<string, number | null> = {
+    from: opts.from ?? null,
+    to: opts.to ?? null,
+    sourceId: opts.sourceId ?? null,
+    limit: Math.min(Math.max(Math.trunc(opts.limit ?? 100), 1), 500),
+  };
+  if (opts.from != null) parts.push('e.detected_at >= @from');
+  if (opts.to != null) parts.push('e.detected_at < @to');
+  if (opts.pending) parts.push('e.delivered_at IS NULL');
+  if (opts.sourceId != null) parts.push('e.source_id = @sourceId');
+  return db.prepare(
+    `SELECT e.id, e.kind, e.source_id, e.owner_key, e.window_kind, e.threshold,
+            e.used_percent, e.resets_at, e.detected_at, e.delivered_at,
+            s.display_name, ${ACCOUNT_DISPLAY_SQL} AS subscription_display_name,
+            COALESCE(NULLIF(e.origin, ''), (SELECT l.origin FROM limit_sample l
+                       WHERE l.source_id = e.source_id AND l.window_kind = e.window_kind
+                       ORDER BY l.observed_at DESC, l.id DESC LIMIT 1), '') AS origin
+       FROM alert_event e JOIN source s ON s.id = e.source_id
+      WHERE ${parts.join(' AND ')}
+      ORDER BY e.detected_at DESC, e.id DESC LIMIT @limit`,
+  ).all(params) as AlertEventRow[];
+};
+
+export const markAlertDelivered = (db: DB, id: number, at = Date.now()): boolean =>
+  db.prepare('UPDATE alert_event SET delivered_at = COALESCE(delivered_at, ?) WHERE id = ?').run(at, id).changes > 0;
+
+export interface NotificationSettings {
+  enabled: boolean;
+  snooze_until: number | null;
+  quiet_start: number | null;
+  quiet_end: number | null;
+  updated_at: number;
+}
+
+export const notificationSettings = (db: DB): NotificationSettings => {
+  const row = db.prepare('SELECT enabled, snooze_until, quiet_start, quiet_end, updated_at FROM notification_setting WHERE id = 1').get() as
+    | { enabled: number; snooze_until: number | null; quiet_start: number | null; quiet_end: number | null; updated_at: number }
+    | undefined;
+  return row ? { ...row, enabled: row.enabled === 1 } : { enabled: true, snooze_until: null, quiet_start: null, quiet_end: null, updated_at: 0 };
+};
+
+export const updateNotificationSettings = (
+  db: DB,
+  patch: Partial<Pick<NotificationSettings, 'enabled' | 'snooze_until' | 'quiet_start' | 'quiet_end'>>,
+): NotificationSettings => {
+  const current = notificationSettings(db);
+  const next = {
+    enabled: patch.enabled ?? current.enabled,
+    snooze_until: patch.snooze_until === undefined ? current.snooze_until : patch.snooze_until,
+    quiet_start: patch.quiet_start === undefined ? current.quiet_start : patch.quiet_start,
+    quiet_end: patch.quiet_end === undefined ? current.quiet_end : patch.quiet_end,
+    updated_at: Date.now(),
+  };
+  db.prepare(`INSERT INTO notification_setting (id, enabled, snooze_until, quiet_start, quiet_end, updated_at)
+    VALUES (1, @enabled, @snooze_until, @quiet_start, @quiet_end, @updated_at)
+    ON CONFLICT(id) DO UPDATE SET enabled=excluded.enabled, snooze_until=excluded.snooze_until,
+      quiet_start=excluded.quiet_start, quiet_end=excluded.quiet_end, updated_at=excluded.updated_at`).run({
+    ...next,
+    enabled: next.enabled ? 1 : 0,
+  });
+  return { ...next };
+};
 
 export interface AccountOwner {
   harness: string;
@@ -757,9 +979,11 @@ export interface BurnRate {
 
 /**
  * Burn rate from the provider's OWN percentage deltas, measured only within the
- * current window period (same resets_at). Comparing across a reset would read the
+ * current window period (resets_at within 2s of the latest reading). Comparing across a reset would read the
  * drop back to zero as negative burn.
  */
+export const RESET_TOLERANCE_MS = 2_000;
+
 export function burnRate(db: DB, sourceId: number, windowKind: string, origin: string): BurnRate | null {
   // Both endpoints use observed_at (when the VALUE appeared). Using last_seen_at would
   // compress the measured span whenever a source keeps confirming an unchanged reading.
@@ -779,7 +1003,7 @@ export function burnRate(db: DB, sourceId: number, windowKind: string, origin: s
       `SELECT used_percent, observed_at, COUNT(*) OVER () AS n FROM limit_sample
         WHERE source_id = ? AND window_kind = ? AND origin = ? AND used_percent IS NOT NULL
           AND observed_at < ?
-          AND ((resets_at IS NULL AND ? IS NULL) OR resets_at = ?)
+          AND ((resets_at IS NULL AND ? IS NULL) OR ABS(resets_at - ?) <= ${RESET_TOLERANCE_MS})
         ORDER BY observed_at ASC LIMIT 1`,
     )
     .get(sourceId, windowKind, origin, latest.observed_at, latest.resets_at, latest.resets_at) as
@@ -841,7 +1065,9 @@ export function trend(
               COALESCE(SUM(u.cache_write_tokens),0)  AS cache_write_tokens,
               COALESCE(SUM(u.output_tokens),0)       AS output_tokens,
               COALESCE(SUM(u.total_tokens),0)        AS total_tokens,
-              COALESCE(SUM(u.cost_usd),0)            AS cost_usd
+              COALESCE(SUM(u.cost_usd),0)            AS cost_usd,
+              COALESCE(SUM(CASE WHEN u.cost_source='unknown' THEN u.call_count ELSE 0 END),0) AS cost_unknown_calls,
+              COALESCE(SUM(CASE WHEN u.cost_source='estimated' THEN u.call_count ELSE 0 END),0) AS cost_estimated_calls
          FROM usage_event u
          JOIN source s ON s.id = u.source_id
          LEFT JOIN session sess ON sess.id = u.session_id
@@ -860,6 +1086,8 @@ export function trend(
     output_tokens: number;
     total_tokens: number;
     cost_usd: number;
+    cost_unknown_calls: number;
+    cost_estimated_calls: number;
   }>;
 }
 
@@ -904,7 +1132,7 @@ export interface ProjectRow extends Totals {
  * `cost_unknown_calls` rides along because a page that shows money must be able to tell
  * "nothing was spent" from "we have no price for this", and print a dash for the second.
  */
-export const projectBreakdown = (db: DB, opts: { from: number; to: number }) =>
+export const projectBreakdown = (db: DB, opts: { from: number; to: number; sourceId?: number }) =>
   db
     .prepare(
       `SELECT COALESCE(sess.project,'(none)') AS project,
@@ -918,15 +1146,19 @@ export const projectBreakdown = (db: DB, opts: { from: number; to: number }) =>
          JOIN source s ON s.id = u.source_id
          LEFT JOIN session sess ON sess.id = u.session_id
         WHERE u.ts >= @from AND u.ts < @to
+          AND (@sourceId IS NULL OR u.source_id = @sourceId)
         GROUP BY project, u.source_id, vendor, model
         ORDER BY total_tokens DESC`,
     )
-    .all({ from: opts.from, to: opts.to }) as ProjectRow[];
+    .all({ from: opts.from, to: opts.to, sourceId: opts.sourceId ?? null }) as ProjectRow[];
 
 export interface SessionQuery {
   limit: number;
   offset: number;
   sourceId?: number;
+  /** Restrict the session's usage rows to this half-open window. */
+  from?: number;
+  to?: number;
   /** Vendor ids to keep. Empty or omitted means every vendor. */
   vendors?: string[];
 }
@@ -937,13 +1169,22 @@ export interface SessionQuery {
  * always agrees with what the reader sees. A session that switched models mid-way is
  * therefore judged by its main one.
  */
-function sessionWhere(opts: SessionQuery): string {
+type SessionFilter = Pick<SessionQuery, 'sourceId' | 'from' | 'to' | 'vendors'>;
+
+function sessionWhere(opts: SessionFilter): string {
   const parts = ['1=1'];
-  if (opts.sourceId) parts.push('sess.source_id = @sourceId');
+  if (opts.sourceId != null) parts.push('sess.source_id = @sourceId');
   if (opts.vendors?.length) {
     const list = opts.vendors.map((v) => `'${v.replace(/'/g, "''")}'`).join(', ');
     parts.push(`${vendorSqlCase('sess.model_default', "''")} IN (${list})`);
   }
+  return parts.join(' AND ');
+}
+
+function sessionUsageJoin(opts: SessionFilter): string {
+  const parts = ['u.session_id = sess.id'];
+  if (opts.from != null) parts.push('u.ts >= @from');
+  if (opts.to != null) parts.push('u.ts < @to');
   return parts.join(' AND ');
 }
 
@@ -958,17 +1199,18 @@ export const sessionList = (db: DB, opts: SessionQuery) =>
               COALESCE(SUM(u.call_count),0)          AS calls,
               COALESCE(SUM(u.total_tokens),0)        AS total_tokens,
               COALESCE(SUM(u.cost_usd),0)            AS cost_usd,
-              COALESCE(SUM(CASE WHEN u.cost_source='unknown' THEN u.call_count ELSE 0 END),0) AS cost_unknown_calls
+              COALESCE(SUM(CASE WHEN u.cost_source='unknown' THEN u.call_count ELSE 0 END),0) AS cost_unknown_calls,
+              COALESCE(SUM(CASE WHEN u.cost_source='estimated' THEN u.call_count ELSE 0 END),0) AS cost_estimated_calls
          FROM session sess
          JOIN source s ON s.id = sess.source_id
-         LEFT JOIN usage_event u ON u.session_id = sess.id
+         LEFT JOIN usage_event u ON ${sessionUsageJoin(opts)}
         WHERE ${sessionWhere(opts)}
         GROUP BY sess.id
        HAVING calls > 0
         ORDER BY sess.last_seen_at DESC
         LIMIT @limit OFFSET @offset`,
     )
-    .all({ limit: opts.limit, offset: opts.offset, sourceId: opts.sourceId ?? null });
+     .all({ limit: opts.limit, offset: opts.offset, sourceId: opts.sourceId ?? null, from: opts.from ?? null, to: opts.to ?? null });
 
 /**
  * How many sessions the same filter matches, so the page control can say "1-50 of 457"
@@ -984,27 +1226,28 @@ export const sessionCount = (db: DB, opts: Omit<SessionQuery, 'limit' | 'offset'
              SELECT sess.id
                FROM session sess
                JOIN source s ON s.id = sess.source_id
-               LEFT JOIN usage_event u ON u.session_id = sess.id
-              WHERE ${sessionWhere({ ...opts, limit: 0, offset: 0 })}
+               LEFT JOIN usage_event u ON ${sessionUsageJoin(opts)}
+              WHERE ${sessionWhere(opts)}
               GROUP BY sess.id
              HAVING COUNT(u.id) > 0
            )`,
         )
-        .get({ sourceId: opts.sourceId ?? null }) as { n: number }
+         .get({ sourceId: opts.sourceId ?? null, from: opts.from ?? null, to: opts.to ?? null }) as { n: number }
     ).n,
   );
 
 /** Vendors present across sessions, for the filter chips. */
-export const sessionVendors = (db: DB) =>
+export const sessionVendors = (db: DB, opts: Omit<SessionQuery, 'limit' | 'offset'> = {}) =>
   db
     .prepare(
       `SELECT ${vendorSqlCase('sess.model_default', "''")} AS vendor,
               COUNT(DISTINCT sess.id) AS sessions
          FROM session sess
-         JOIN usage_event u ON u.session_id = sess.id
-        GROUP BY vendor ORDER BY sessions DESC`,
+         JOIN usage_event u ON ${sessionUsageJoin(opts)}
+        WHERE ${sessionWhere(opts)}
+         GROUP BY vendor ORDER BY sessions DESC`,
     )
-    .all() as Array<{ vendor: string; sessions: number }>;
+    .all({ sourceId: opts.sourceId ?? null, from: opts.from ?? null, to: opts.to ?? null }) as Array<{ vendor: string; sessions: number }>;
 
 export const sessionDetail = (db: DB, id: number) => {
   const head = db
@@ -1023,6 +1266,65 @@ export const sessionDetail = (db: DB, id: number) => {
     .all(id);
   return { session: head, events };
 };
+
+/** File age is not load time: this describes the catalog file and the stored price table separately. */
+export function pricingCatalog(db: DB, catalogPath = findCatalog()) {
+  let catalogAgeMs: number | null = null;
+  if (catalogPath) {
+    try { catalogAgeMs = Date.now() - statSync(catalogPath).mtimeMs; } catch { /* file disappeared */ }
+  }
+  const row = db.prepare('SELECT COUNT(*) AS n, MAX(updated_at) AS loadedAt FROM price').get() as { n: number; loadedAt: number | null };
+  return { pricedModels: row.n, loadedAt: row.loadedAt, catalogAgeMs, catalogOwn: catalogPath?.startsWith(DATA_DIR) ?? false, catalogPresent: catalogPath != null };
+}
+
+export interface QuotaForecast {
+  status: 'ready' | 'insufficient' | 'flat' | 'reset';
+  samples: number;
+  fromAt: number | null;
+  toAt: number | null;
+  percentPerHour: number | null;
+  projectedFullAt: number | null;
+}
+
+/** Conservative forecast for UI guidance; burnRate remains the compatibility signal used by alerts. */
+export function quotaForecast(db: DB, sourceId: number, windowKind: string, origin: string, now = Date.now()): QuotaForecast {
+  const rows = db.prepare(
+    `SELECT used_percent, resets_at, observed_at FROM limit_sample
+       WHERE source_id = ? AND window_kind = ? AND origin = ? AND used_percent IS NOT NULL
+       ORDER BY observed_at DESC, id DESC LIMIT 12`,
+  ).all(sourceId, windowKind, origin) as Array<{ used_percent: number; resets_at: number | null; observed_at: number }>;
+  if (rows.length < 3) return { status: 'insufficient', samples: rows.length, fromAt: rows.at(-1)?.observed_at ?? null, toAt: rows[0]?.observed_at ?? null, percentPerHour: null, projectedFullAt: null };
+  const latest = rows[0]!;
+  if (latest.resets_at != null && latest.resets_at <= now) return { status: 'reset', samples: 0, fromAt: null, toAt: latest.observed_at, percentPerHour: null, projectedFullAt: null };
+  const samePeriod = rows.filter((row) => row.resets_at == null || latest.resets_at == null ? row.resets_at === latest.resets_at : Math.abs(row.resets_at - latest.resets_at) <= RESET_TOLERANCE_MS);
+  if (samePeriod.length < 3) return { status: 'reset', samples: samePeriod.length, fromAt: samePeriod.at(-1)?.observed_at ?? null, toAt: latest.observed_at, percentPerHour: null, projectedFullAt: null };
+  const first = samePeriod.at(-1)!;
+  const hours = (latest.observed_at - first.observed_at) / 3_600_000;
+  if (hours < 0.25) return { status: 'insufficient', samples: samePeriod.length, fromAt: first.observed_at, toAt: latest.observed_at, percentPerHour: null, projectedFullAt: null };
+  const rate = (latest.used_percent - first.used_percent) / hours;
+  if (rate <= 0.01) return { status: 'flat', samples: samePeriod.length, fromAt: first.observed_at, toAt: latest.observed_at, percentPerHour: rate, projectedFullAt: null };
+  return { status: 'ready', samples: samePeriod.length, fromAt: first.observed_at, toAt: latest.observed_at, percentPerHour: rate, projectedFullAt: now + Math.max(0, 100 - latest.used_percent) / rate * 3_600_000 };
+}
+
+export function pricingCoverage(db: DB, scope: { from: number; to: number; sourceId?: number }) {
+  const where = `u.ts >= @from AND u.ts < @to AND (@sourceId IS NULL OR u.source_id = @sourceId)`;
+  const params = { from: scope.from, to: scope.to, sourceId: scope.sourceId ?? null };
+  // The aggregates and affected models share one read snapshot, including during live ingest.
+  return db.transaction(() => {
+    const { hasHermes, ...totals } = db.prepare(`SELECT ${totalsSelect('u.')},
+      COALESCE(MAX(s.harness = 'hermes'),0) AS hasHermes
+      FROM usage_event u JOIN source s ON s.id = u.source_id WHERE ${where}`).get(params) as Totals & { hasHermes: number };
+    const models = db.prepare(`SELECT u.model, u.provider, u.price_provider, ${totalsSelect('u.')}
+      FROM usage_event u WHERE ${where}
+      GROUP BY u.model, u.provider, u.price_provider
+      HAVING cost_unknown_calls > 0 OR cost_estimated_calls > 0
+      ORDER BY cost_unknown_calls DESC, cost_estimated_calls DESC, u.model, u.provider, u.price_provider`).all(params);
+    const source = scope.sourceId == null ? null : db.prepare('SELECT display_name FROM source WHERE id = ?').get(scope.sourceId) as { display_name: string } | undefined;
+    return { from: scope.from, to: scope.to, source_id: scope.sourceId ?? null,
+      sourceName: source?.display_name ?? null, totals, models,
+      hasHermes: hasHermes === 1, catalog: pricingCatalog(db) };
+  }).deferred();
+}
 
 /** Per-source ingest health: cursors, errors, lag, and coverage against native cost. */
 export const health = (db: DB) => {

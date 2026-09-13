@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Languages, Info } from 'lucide-react';
+import { Settings, Info } from 'lucide-react';
 import type { SubscriptionStatus } from '@/api';
+import { api, type NotificationSettings } from '@/api';
 import { Button } from '@/components/ui/button';
 import { CURRENCIES, useI18n, type CurrencyCode, type Lang } from '@/i18n';
 import { cn } from '@/lib/utils';
@@ -28,16 +29,39 @@ export function SettingsMenu({ subscriptions = [] }: { subscriptions?: Subscript
   } = useI18n();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(String(rate));
+  const [notifications, setNotifications] = useState<NotificationSettings | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => setDraft(String(rate)), [rate]);
 
   useEffect(() => {
     if (!open) return;
+    void api.notificationSettings().then(setNotifications).catch(() => undefined);
+  }, [open]);
+
+  const updateNotifications = (patch: Partial<NotificationSettings>) => {
+    setNotifications((current) => current ? { ...current, ...patch } : current);
+    void api.updateNotificationSettings(patch).then(setNotifications).catch(() => undefined);
+  };
+  const clockValue = (minutes: number | null) => minutes == null ? '' : `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+  const minutesValue = (value: string) => { const [hours, minutes] = value.split(':').map(Number); return Number.isFinite(hours) && Number.isFinite(minutes) ? hours * 60 + minutes : null; };
+
+  useEffect(() => {
+    if (!open) return;
     const onDown = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
+    const panel = ref.current?.querySelector<HTMLElement>('[role="dialog"]');
+    panel?.querySelector<HTMLElement>('button, input')?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { e.preventDefault(); setOpen(false); ref.current?.querySelector('button')?.focus(); }
+      if (e.key === 'Tab' && panel) {
+        const controls = [...panel.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), select, [tabindex="0"]')];
+        const first = controls[0], last = controls.at(-1);
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+    };
     document.addEventListener('mousedown', onDown);
     document.addEventListener('keydown', onKey);
     return () => {
@@ -58,17 +82,18 @@ export function SettingsMenu({ subscriptions = [] }: { subscriptions?: Subscript
         size="sm"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
+        aria-label={t('settings.title')}
         className="text-muted-foreground gap-1.5"
       >
-        <Languages className="size-[14px]" />
-        <span className="font-medium uppercase">{lang}</span>
+        <Settings className="size-[14px]" />
+        <span className="hidden font-medium uppercase sm:inline">{lang}</span>
         {currency !== 'USD' && (
           <span className="text-muted-foreground/70">{CURRENCIES[currency].symbol}</span>
         )}
       </Button>
 
       {open && (
-        <div className="bg-popover text-popover-foreground absolute right-0 z-50 mt-1.5 w-72 rounded-lg border p-3 shadow-md">
+        <div role="dialog" aria-label={t('settings.title')} className="bg-popover text-popover-foreground absolute right-0 z-50 mt-1.5 w-72 max-w-[calc(100vw-5rem)] max-h-[75vh] overflow-y-auto rounded-xl border p-4 shadow-xl">
           <div className="text-muted-foreground mb-2 text-[11px] font-semibold tracking-wider uppercase">
             {t('settings.title')}
           </div>
@@ -126,6 +151,14 @@ export function SettingsMenu({ subscriptions = [] }: { subscriptions?: Subscript
             </div>
           )}
 
+          {notifications && <div className="mb-3 border-t pt-3">
+            <div className="text-muted-foreground mb-1.5 text-[11.5px]">{t('settings.notifications')}</div>
+            <label className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[12px]"><input type="checkbox" checked={notifications.enabled} onChange={(event) => updateNotifications({ enabled: event.target.checked })} className="accent-foreground size-3.5" />{t('settings.notificationsEnabled')}</label>
+            <div className="mt-2 flex flex-wrap gap-1"><button className="rounded border px-2 py-1 text-[11px]" onClick={() => updateNotifications({ snooze_until: Date.now() + 60 * 60_000 })}>{t('settings.snooze1h')}</button><button className="rounded border px-2 py-1 text-[11px]" onClick={() => updateNotifications({ snooze_until: Date.now() + 4 * 60 * 60_000 })}>{t('settings.snooze4h')}</button><button className="rounded border px-2 py-1 text-[11px]" onClick={() => updateNotifications({ snooze_until: null })}>{t('settings.unsnooze')}</button></div>
+            <div className="text-muted-foreground mt-2 text-[11px]">{t('settings.quietHours')}</div>
+            <div className="mt-1 flex items-center gap-2"><input type="time" aria-label={t('settings.quietStart')} value={clockValue(notifications.quiet_start)} onChange={(event) => updateNotifications({ quiet_start: minutesValue(event.target.value) })} className="bg-card border-input h-7 rounded border px-1 text-[11px]" /><span className="text-muted-foreground text-[11px]">–</span><input type="time" aria-label={t('settings.quietEnd')} value={clockValue(notifications.quiet_end)} onChange={(event) => updateNotifications({ quiet_end: minutesValue(event.target.value) })} className="bg-card border-input h-7 rounded border px-1 text-[11px]" /></div>
+          </div>}
+
           <div className="mb-3">
             <div className="text-muted-foreground mb-1.5 text-[11.5px]">{t('settings.currency')}</div>
             <div className="grid grid-cols-2 gap-1">
@@ -160,6 +193,7 @@ export function SettingsMenu({ subscriptions = [] }: { subscriptions?: Subscript
                   onBlur={commitRate}
                   onKeyDown={(e) => e.key === 'Enter' && commitRate()}
                   inputMode="decimal"
+                  aria-label={t('settings.rate')}
                   className="border-input bg-card focus-visible:ring-ring/40 tabular h-7 w-20 rounded-md border px-2 text-right font-mono text-[12.5px] outline-none focus-visible:ring-[3px]"
                 />
               </div>

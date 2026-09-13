@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { CURRENCIES, useI18n, type CurrencyCode } from './index';
 import * as raw from '@/format';
+import { formatValue } from '@/lib/pricing';
 
 export interface Formatter {
   /** Token counts and percentages never convert -- only money does. */
@@ -10,6 +11,7 @@ export interface Formatter {
   age: (seconds: number | null | undefined) => string;
   countdown: (toMs: number | null | undefined, now?: number) => string;
   clock: (ms: number | null | undefined) => string;
+  window: (kind: string) => string;
 
   /** Converts from USD into the selected currency at the user's rate. */
   money: (usd: number | null | undefined, unknownCalls?: number) => string;
@@ -30,7 +32,7 @@ export interface Formatter {
 }
 
 export function useFormat(): Formatter {
-  const { currency, rate, t } = useI18n();
+  const { currency, rate, t, lang } = useI18n();
 
   return useMemo<Formatter>(() => {
     const meta = CURRENCIES[currency];
@@ -51,7 +53,7 @@ export function useFormat(): Formatter {
     };
 
     const moneyTotal = (usd: number | null | undefined, unknownCalls: number, calls: number) =>
-      calls > 0 && unknownCalls >= calls ? '--' : money(usd, unknownCalls);
+      formatValue({ cost_usd: usd, cost_unknown_calls: unknownCalls, calls }, money);
 
     return {
       tokens: raw.tokens,
@@ -59,7 +61,11 @@ export function useFormat(): Formatter {
       pct: raw.pct,
       age: raw.age,
       countdown: raw.countdown,
-      clock: raw.clock,
+      clock: (ms) => ms == null ? '--' : new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(ms),
+      window: (kind) => {
+        const names: Record<string, string> = { '5h': t('gauge.5h'), weekly: t('gauge.weekly'), weekly_opus: t('gauge.weeklyOpus'), weekly_sonnet: t('gauge.weeklySonnet'), monthly: t('gauge.monthly') };
+        return names[kind] ?? kind;
+      },
       money,
       moneyTotal,
       currency,
@@ -71,5 +77,5 @@ export function useFormat(): Formatter {
           : t('cost.converted', { rate: `1 USD = ${meta.symbol}${rate}` }) +
             ` (${raw.money(usd)})`,
     };
-  }, [currency, rate, t]);
+  }, [currency, rate, t, lang]);
 }

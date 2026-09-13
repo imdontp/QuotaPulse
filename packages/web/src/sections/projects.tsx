@@ -19,6 +19,8 @@ import { OTHER_LABEL, palette, vendorColor, vendorLabel } from '@/format';
 import { useFormat } from '@/i18n/format';
 import { useT } from '@/i18n';
 import { useLiveRefresh } from '@/lib/use-live';
+import { ValueDisplay } from '@/components/value-display';
+import { AnalysisFilterBar, useAnalysisFilters } from '@/components/analysis-filters';
 
 const DAY = 86_400_000;
 
@@ -44,7 +46,7 @@ function fold(rows: ProjectRow[], keyOf: (r: ProjectRow) => string, metric: BarM
   const out = new Map<string, number>();
   for (const r of rows) {
     const v = Number(r[metric] ?? 0);
-    if (v <= 0) continue;
+    if (v <= 0 && metric !== 'cost_usd') continue;
     const k = keyOf(r);
     out.set(k, (out.get(k) ?? 0) + v);
   }
@@ -90,7 +92,7 @@ function Cut({
     const agg = new Map<string, { value: number; calls: number; unknown: number }>();
     for (const r of rows) {
       const v = Number(r[metric] ?? 0);
-      if (v <= 0) continue;
+      if (v <= 0 && metric !== 'cost_usd') continue;
       const k = bucket(keyOf(r));
       const cur = agg.get(k) ?? { value: 0, calls: 0, unknown: 0 };
       cur.value += v;
@@ -140,11 +142,12 @@ function Cut({
   );
 }
 
-export function ProjectsSection() {
+export function ProjectsSection({ sources = [] }: { sources?: Array<{ id: number; display_name: string }> }) {
   const t = useT();
   const f = useFormat();
   const [metric, setMetric] = useState<BarMetric>('total_tokens');
-  const [days, setDays] = useState(30);
+  const [filters, setFilters, clearFilters] = useAnalysisFilters();
+  const days = filters.days;
   const [rows, setRows] = useState<ProjectRow[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -155,7 +158,7 @@ export function ProjectsSection() {
     // 0 days means everything: the first event predates any range we offer.
     const from = days === 0 ? 0 : to - days * DAY;
     return api
-      .projects({ from, to })
+      .projects({ from, to, sourceId: filters.sourceId })
       .then((r) => {
         setRows(r.rows);
         setErr(null);
@@ -165,7 +168,7 @@ export function ProjectsSection() {
         setErr(String(e));
         throw e;
       });
-  }, [days]);
+  }, [days, filters.sourceId]);
 
   /**
    * Level one: one bar per project, already segmented by harness. The question "which
@@ -185,7 +188,7 @@ export function ProjectsSection() {
     >();
     for (const r of rows) {
       const v = Number(r[metric] ?? 0);
-      if (v <= 0) continue;
+      if (v <= 0 && metric !== 'cost_usd') continue;
       const cur = byProject.get(r.project) ?? { segments: new Map(), calls: 0, unknown: 0 };
       cur.segments.set(r.display_name, (cur.segments.get(r.display_name) ?? 0) + v);
       cur.calls += r.calls;
@@ -274,12 +277,15 @@ export function ProjectsSection() {
       cur.total_tokens += r.total_tokens;
       cur.cost_usd += r.cost_usd;
       cur.cost_unknown_calls += r.cost_unknown_calls;
+      cur.cost_estimated_calls += r.cost_estimated_calls;
       cur.last_ts = Math.max(cur.last_ts, r.last_ts);
     }
     return [...out.values()].sort((a, b) => b.total_tokens - a.total_tokens);
   }, [detail]);
 
   return (
+    <div className="flex flex-col gap-3.5">
+    <AnalysisFilterBar filters={filters} sources={sources} allowAllTime onChange={setFilters} onClear={clearFilters} />
     <Stagger className="flex flex-col gap-3.5">
       <StaggerItem>
         <div className="flex flex-wrap items-end justify-between gap-3">
@@ -298,17 +304,6 @@ export function ProjectsSection() {
               <option value="total_tokens">{t('trend.metricTotal')}</option>
               <option value="cost_usd">{t('trend.metricCost')}</option>
               <option value="calls">{t('trend.metricCalls')}</option>
-            </Select>
-            <Select
-              label={t('trend.range')}
-              value={days}
-              onChange={(e) => setDays(Number(e.target.value))}
-            >
-              <option value={1}>{t('trend.range24h')}</option>
-              <option value={7}>{t('trend.range7d')}</option>
-              <option value={30}>{t('trend.range30d')}</option>
-              <option value={120}>{t('trend.range120d')}</option>
-              <option value={0}>{t('projects.allTime')}</option>
             </Select>
           </div>
         </div>
@@ -431,7 +426,7 @@ export function ProjectsSection() {
                         {f.tokens(r.total_tokens)}
                       </TableCell>
                       <TableCell className="tabular text-right font-mono">
-                        {f.moneyTotal(r.cost_usd, r.cost_unknown_calls, r.calls)}
+                        <ValueDisplay total={r} />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -442,5 +437,6 @@ export function ProjectsSection() {
         </>
       )}
     </Stagger>
+    </div>
   );
 }

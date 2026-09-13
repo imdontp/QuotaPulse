@@ -6,7 +6,7 @@ export const Card = React.forwardRef<HTMLDivElement, React.ComponentProps<'div'>
     <div
       ref={ref}
       data-slot="card"
-      className={cn('bg-card text-card-foreground rounded-lg border shadow-xs', className)}
+      className={cn('bg-card text-card-foreground min-w-0 rounded-2xl border shadow-xs', className)}
       {...props}
     />
   ),
@@ -18,7 +18,7 @@ export const CardHeader = ({ className, ...props }: React.ComponentProps<'div'>)
 );
 
 export const CardTitle = ({ className, ...props }: React.ComponentProps<'div'>) => (
-  <div data-slot="card-title" className={cn('text-[13px] leading-none font-semibold', className)} {...props} />
+  <div data-slot="card-title" className={cn('text-[15px] leading-snug font-semibold', className)} {...props} />
 );
 
 export const CardDescription = ({ className, ...props }: React.ComponentProps<'p'>) => (

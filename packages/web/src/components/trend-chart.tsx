@@ -8,6 +8,8 @@ import { OTHER_LABEL, palette, vendorColor, vendorLabel } from '@/format';
 import { useFormat } from '@/i18n/format';
 import { useT } from '@/i18n';
 import { cn } from '@/lib/utils';
+import { chartValue, foldPricingPoints, type ValueTotal } from '@/lib/pricing';
+import { ValueDisplay } from '@/components/value-display';
 
 export type Metric = 'total_tokens' | 'cost_usd' | 'calls' | 'output_tokens';
 
@@ -23,7 +25,7 @@ const keyOf = (name: string) => 's_' + name.replace(/[^a-zA-Z0-9]/g, '_');
 
 interface Point {
   ts: number;
-  [seriesKey: string]: number;
+  [seriesKey: string]: number | null;
 }
 
 export function TrendChart({
@@ -41,7 +43,7 @@ export function TrendChart({
   const t = useT();
   const [hidden, setHidden] = useState<Set<string>>(new Set());
 
-  const { data, series, config } = useMemo(() => {
+  const { data, series, config, coverage } = useMemo(() => {
     // Rank by magnitude, then cap: distinct colours only exist for so many series, and
     // beyond that a stacked bar becomes unreadable anyway. The tail folds into `other`.
     const totals = new Map<string, number>();
@@ -52,6 +54,7 @@ export function TrendChart({
 
     const names = ranked.filter((n) => keep.has(n));
     if (hasOther) names.push(OTHER_LABEL);
+    const coverage = foldPricingPoints(rows, n => keyOf(bucketName(n)));
 
     const byTs = new Map<number, Point>();
     for (const r of rows) {
@@ -63,6 +66,11 @@ export function TrendChart({
       }
       const k = keyOf(bucketName(r.series));
       p[k] = (p[k] ?? 0) + Number(r[metric] ?? 0);
+    }
+    if (metric === 'cost_usd') {
+      for (const [ts, point] of byTs) for (const [key, total] of Object.entries(coverage.get(ts)!)) {
+        point[key] = chartValue(total);
+      }
     }
 
     /*
@@ -80,6 +88,7 @@ export function TrendChart({
       data: [...byTs.values()].sort((a, b) => a.ts - b.ts),
       series: names,
       config,
+      coverage,
     };
   }, [rows, metric, groupBy]);
 
@@ -100,6 +109,12 @@ export function TrendChart({
     });
 
   if (rows.length === 0) return <Empty>{t('trend.empty')}</Empty>;
+  const unpriced = rows.reduce((n, r) => n + r.cost_unknown_calls, 0);
+  const calls = rows.reduce((n, r) => n + r.calls, 0);
+  if (metric === 'cost_usd' && calls > 0 && unpriced >= calls) return <div data-testid="unpriced-chart">
+    <Empty>{t('pricing.unknown')}</Empty>
+    <p className="text-muted-foreground text-sm">{t('pricing.coverage', { known: 0, calls, unknown: unpriced })}</p>
+  </div>;
 
   const visible = series.filter((n) => !hidden.has(n));
   // One series needs no legend: the controls above already say what it is.
@@ -107,6 +122,7 @@ export function TrendChart({
 
   return (
     <div>
+      {metric === 'cost_usd' && unpriced > 0 && <p className="text-warn mb-3 text-xs">{t('pricing.chartPartial')}</p>}
       <ChartContainer config={config} className="aspect-auto h-[320px] w-full">
         <AreaChart data={data} margin={{ top: 8, right: 8, left: 4, bottom: 0 }}>
           <defs>
@@ -138,6 +154,7 @@ export function TrendChart({
             tickFormatter={(v: number) => fmtValue(v)}
           />
           <Tooltip
+            filterNull={false}
             cursor={{ strokeDasharray: '3 3' }}
             content={(props) => (
               <TrendTooltip
@@ -148,6 +165,8 @@ export function TrendChart({
                 fmtValue={fmtValue}
                 bucket={bucket}
                 groupBy={groupBy}
+                costMode={metric === 'cost_usd'}
+                coverage={coverage.get(Number(props.label))}
               />
             )}
           />
@@ -162,6 +181,7 @@ export function TrendChart({
               fill={`url(#fill-${keyOf(n)})`}
               strokeWidth={1.5}
               isAnimationActive={false}
+              connectNulls={false}
             />
           ))}
         </AreaChart>
@@ -226,6 +246,8 @@ interface TooltipProps {
   fmtValue: (v: number) => string;
   bucket: 'hour' | 'day';
   groupBy: string;
+  costMode: boolean;
+  coverage?: Record<string, ValueTotal>;
 }
 
 /**
@@ -233,7 +255,7 @@ interface TooltipProps {
  * chart's legend showed the same numbers in a flat row where the biggest contributor was
  * no easier to find than the smallest.
  */
-function TrendTooltip({ active, payload, label, config, fmtValue, bucket, groupBy }: TooltipProps) {
+function TrendTooltip({ active, payload, label, config, fmtValue, bucket, groupBy, costMode, coverage }: TooltipProps) {
   const t = useT();
   if (!active || !payload?.length) return null;
 
@@ -243,12 +265,19 @@ function TrendTooltip({ active, payload, label, config, fmtValue, bucket, groupB
       name: String(config[String(p.dataKey ?? '')]?.label ?? p.dataKey),
       value: Number(p.value ?? 0),
       color: p.color,
+      pricing: coverage?.[String(p.dataKey ?? '')],
     }))
-    .filter((r) => r.value > 0)
+    .filter((r) => costMode ? (r.pricing?.calls ?? 0) > 0 : r.value > 0)
     .sort((a, b) => b.value - a.value);
 
   if (rows.length === 0) return null;
   const total = rows.reduce((a, r) => a + r.value, 0);
+  const pricingTotal = rows.reduce<ValueTotal>((a, r) => ({
+    calls: a.calls + (r.pricing?.calls ?? 0),
+    cost_usd: (a.cost_usd ?? 0) + (r.pricing?.cost_usd ?? 0),
+    cost_unknown_calls: a.cost_unknown_calls + (r.pricing?.cost_unknown_calls ?? 0),
+    cost_estimated_calls: (a.cost_estimated_calls ?? 0) + (r.pricing?.cost_estimated_calls ?? 0),
+  }), { calls: 0, cost_usd: 0, cost_unknown_calls: 0, cost_estimated_calls: 0 });
 
   const when = label
     ? new Date(Number(label)).toLocaleString(undefined, {
@@ -277,14 +306,14 @@ function TrendTooltip({ active, payload, label, config, fmtValue, bucket, groupB
                     : r.name}
               </span>
             </span>
-            <span className="tabular shrink-0 font-mono">{fmtValue(r.value)}</span>
+            <span className="tabular font-mono">{costMode && r.pricing ? <ValueDisplay total={r.pricing} /> : fmtValue(r.value)}</span>
           </div>
         ))}
       </div>
       {rows.length > 1 && (
         <div className="mt-1.5 flex items-center gap-2 border-t pt-1.5 text-[12px] font-semibold">
           <span className="flex-1">{t('trend.tooltipTotal')}</span>
-          <span className="tabular font-mono">{fmtValue(total)}</span>
+          <span className="tabular font-mono">{costMode ? <ValueDisplay total={pricingTotal} /> : fmtValue(total)}</span>
         </div>
       )}
     </div>

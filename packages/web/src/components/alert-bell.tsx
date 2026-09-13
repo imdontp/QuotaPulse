@@ -84,7 +84,17 @@ export function AlertBell({
     const onDown = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
+    const panel = ref.current?.querySelector<HTMLElement>('[role="dialog"]');
+    panel?.querySelector<HTMLElement>('button')?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { e.preventDefault(); setOpen(false); ref.current?.querySelector('button')?.focus(); }
+      if (e.key === 'Tab' && panel) {
+        const controls = [...panel.querySelectorAll<HTMLElement>('button:not([disabled])')];
+        const first = controls[0], last = controls.at(-1);
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+    };
     document.addEventListener('mousedown', onDown);
     document.addEventListener('keydown', onKey);
     return () => {
@@ -122,7 +132,9 @@ export function AlertBell({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={reduced ? undefined : { opacity: 0, scale: 0.98, y: -4 }}
             transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-popover text-popover-foreground absolute right-0 z-50 mt-1.5 w-[22rem] origin-top-right rounded-lg border p-2 shadow-md"
+            role="dialog"
+            aria-label={t('alerts.title')}
+            className="bg-popover text-popover-foreground absolute right-0 z-50 mt-1.5 w-[22rem] max-w-[calc(100vw-8rem)] max-h-[70vh] overflow-y-auto origin-top-right rounded-xl border p-3 shadow-xl"
           >
             <div className="text-muted-foreground px-1.5 pt-1 pb-2 text-[11px] font-semibold tracking-wider uppercase">
               {t('alerts.title')}

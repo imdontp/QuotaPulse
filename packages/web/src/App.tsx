@@ -1,7 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   Activity,
+  BellRing,
+  Menu,
+  X,
   Boxes,
   Coins,
   FolderGit2,
@@ -33,16 +36,19 @@ import { ProjectsSection } from '@/sections/projects';
 import { ModelsSection } from '@/sections/models';
 import { HealthSection } from '@/sections/health';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
+import { CommandPalette } from '@/components/command-palette';
+import { AlertsSection } from '@/sections/alerts';
 
 const TABS = [
   { id: 'live', key: 'tab.live', icon: Activity },
-  { id: 'sources', key: 'tab.sources', icon: Radio },
   { id: 'limits', key: 'tab.limits', icon: Gauge },
+  { id: 'alerts', key: 'tab.alerts', icon: BellRing },
   { id: 'trend', key: 'tab.trend', icon: TrendingUp },
   { id: 'cost', key: 'tab.cost', icon: Coins },
   { id: 'sessions', key: 'tab.sessions', icon: MessagesSquare },
   { id: 'projects', key: 'tab.projects', icon: FolderGit2 },
   { id: 'models', key: 'tab.models', icon: Boxes },
+  { id: 'sources', key: 'tab.sources', icon: Radio },
   { id: 'health', key: 'tab.health', icon: HeartPulse },
 ] as const;
 
@@ -100,7 +106,7 @@ function useTheme(): [Theme, () => void] {
 function Dashboard() {
   const t = useT();
   const { lang } = useI18n();
-  const [tab, setTab] = useState<TabId>(
+  const [tab, setTabState] = useState<TabId>(
     () => (TABS.find((t) => t.id === location.hash.slice(1))?.id ?? 'live') as TabId,
   );
   const [ov, setOv] = useState<Overview | null>(null);
@@ -110,6 +116,16 @@ function Dashboard() {
   const collapsed = !useMediaQuery(WIDE);
   const refreshStatus = useRefreshStatus();
   const ovRef = useRef<Overview | null>(null);
+  const drawer = useRef<HTMLDialogElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const isMobile = !useMediaQuery('(min-width: 640px)');
+  const setTab = (next: TabId) => {
+    if (location.hash !== `#${next}`) location.hash = next;
+    setTabState(next);
+    drawer.current?.close();
+  };
+
+  useEffect(() => { if (!isMobile) drawer.current?.close(); }, [isMobile]);
 
   useLiveRefresh(() =>
     api
@@ -129,8 +145,16 @@ function Dashboard() {
   );
 
   useEffect(() => {
-    location.hash = tab;
-  }, [tab]);
+    const sync = () => {
+      const next = TABS.find(t => t.id === location.hash.slice(1))?.id ?? 'live';
+      if (location.hash !== `#${next}`) history.replaceState(null, '', `#${next}`);
+      setTabState(next);
+      drawer.current?.close();
+    };
+    sync();
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
+  }, []);
 
   /*
    * Chrome picks its line-breaking dictionary from <html lang>. Thai has no spaces
@@ -183,8 +207,13 @@ function Dashboard() {
         orientation="vertical"
         className="flex min-h-screen"
       >
-        <aside className="bg-card/40 sticky top-0 flex h-screen w-[60px] shrink-0 flex-col border-r min-[900px]:w-[212px]">
-          <div className="flex h-[57px] shrink-0 items-center justify-center border-b min-[900px]:justify-start min-[900px]:px-4">
+        <dialog ref={drawer} aria-label={t('nav.open')} className="nav-drawer bg-card text-foreground" onClose={() => menuButton.current?.focus()} onClick={event => { if (event.target === event.currentTarget) drawer.current?.close(); }}>
+          <div className="flex items-center justify-between border-b p-5"><QuotaPulseWordmark /><Button size="icon" onClick={() => drawer.current?.close()} aria-label={t('nav.close')}><X className="size-4" /></Button></div>
+          <nav className="space-y-1 p-3">{TABS.map(tb => <button key={tb.id} onClick={() => setTab(tb.id)} aria-current={tab === tb.id ? 'page' : undefined} className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm ${tab === tb.id ? 'bg-secondary text-brand' : 'text-muted-foreground'}`}><tb.icon className="size-4" />{t(tb.key)}</button>)}</nav>
+          <div className="border-t p-4 text-sm text-muted-foreground">{statusLabel}<Button size="icon" className="ml-3" aria-label={t('app.refreshNow')} disabled={refreshStatus.refreshing} onClick={() => void refreshStatus.refreshNow()}><RefreshCw className="size-4" /></Button></div>
+        </dialog>
+        <aside className="bg-card/40 sticky top-0 hidden h-screen w-[60px] shrink-0 flex-col border-r sm:flex min-[900px]:w-[212px]">
+          <div className="flex h-[64px] shrink-0 items-center justify-center border-b min-[900px]:justify-start min-[900px]:px-4">
             {/*
              * The tagline rides on the logo rather than sitting under it. The brand sheet
              * stacks the two in its logo lockup, but the sheet's OWN dashboard preview
@@ -215,20 +244,21 @@ function Dashboard() {
                   </TabsTrigger>
                 );
                 // Only worth a tooltip when the label is not on screen.
-                return collapsed ? (
-                  <Hint key={tb.id} text={t(tb.key)}>
-                    {trigger}
-                  </Hint>
-                ) : (
-                  trigger
-                );
+                // Keep each sidebar group heading to one occurrence; Alerts belongs to
+                // monitoring but sits directly below Limits rather than starting a second
+                // "Monitor" section halfway down the rail.
+                const group = tb.id === 'live' ? 'nav.monitor' : tb.id === 'trend' ? 'nav.analyze' : tb.id === 'sources' ? 'nav.system' : null;
+                return <Fragment key={tb.id}>
+                  {group && <span className={collapsed ? 'mt-4' : 'text-muted-foreground/70 mt-5 mb-2 px-2.5 text-[10px] font-semibold uppercase tracking-widest'}>{!collapsed && t(group)}</span>}
+                  {collapsed ? <Hint text={t(tb.key)}>{trigger}</Hint> : trigger}
+                </Fragment>;
               })}
             </TabsList>
           </nav>
 
           <div className="flex shrink-0 items-center gap-1 border-t p-2">
             <div
-              className={`${statusTone} flex min-w-0 flex-1 items-center justify-center gap-2 rounded-full border px-2.5 py-1 text-[11.5px] font-medium min-[900px]:justify-start`}
+              className={`${statusTone} flex min-w-0 flex-1 items-center justify-center gap-2 rounded-full border px-1 py-1 text-[11.5px] font-medium min-[900px]:justify-start min-[900px]:px-2.5`}
               title={statusTitle}
               aria-label={statusTitle}
               role="status"
@@ -257,18 +287,12 @@ function Dashboard() {
         {/* min-w-0 so a wide table scrolls inside the main column instead of stretching it. */}
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="bg-background/80 sticky top-0 z-40 border-b backdrop-blur-sm">
-            <div className="flex h-[57px] flex-wrap items-center gap-3 px-4 min-[900px]:px-6">
-              <span className="text-muted-foreground text-[12.5px]">
+            <div className="flex min-h-[64px] items-center gap-2 px-4 min-[900px]:px-6">
+              <Button ref={menuButton} size="icon" className="shrink-0 sm:hidden" onClick={() => drawer.current?.showModal()} aria-label={t('nav.open')}><Menu className="size-4" /></Button>
+              <h1 className="min-w-0 truncate text-base font-semibold">{t(TABS.find(tb => tb.id === tab)!.key)}</h1>
+              <span className="text-muted-foreground ml-4 hidden text-xs lg:inline" title={ov?.lastPass ? t('app.lastPass', { ms: ov.lastPass.durationMs }) : undefined}>
                 {ov ? t('app.sources', { n: ov.sources.length }) : t('app.connecting')}
               </span>
-              {ov?.lastPass && (
-                <>
-                  <span className="text-muted-foreground/50 text-[12.5px]">&middot;</span>
-                  <span className="text-muted-foreground/70 tabular font-mono text-[12px]">
-                    {t('app.lastPass', { ms: ov.lastPass.durationMs })}
-                  </span>
-                </>
-              )}
 
               <div className="flex-1" />
 
@@ -280,6 +304,8 @@ function Dashboard() {
                   onOpenLimits={() => setTab('limits')}
                 />
               )}
+
+               <CommandPalette items={TABS.map((item) => ({ id: item.id, label: t(item.key), group: item.id === 'live' || item.id === 'limits' || item.id === 'alerts' ? t('nav.monitor') : item.id === 'health' || item.id === 'sources' ? t('nav.system') : t('nav.analyze') }))} onSelect={(id) => { if (TABS.some((item) => item.id === id)) setTab(id as TabId); }} />
 
               <SettingsMenu subscriptions={ov?.subscriptions} />
 
@@ -298,7 +324,7 @@ function Dashboard() {
             </div>
           </header>
 
-          <main className="mx-auto w-full max-w-[1400px] px-4 pt-4 pb-16 min-[900px]:px-6">
+          <main className="mx-auto w-full max-w-[1400px] px-4 pt-6 pb-16 min-[900px]:px-6">
             {err && <ErrorBox>{err}</ErrorBox>}
 
             {/* Content cross-fades on tab change; the pill itself slides (see TabsTrigger). */}
@@ -311,7 +337,7 @@ function Dashboard() {
                 transition={{ duration: 0.18, ease: 'easeOut' }}
               >
                 <TabsContent value="live" forceMount={tab === 'live' ? true : undefined}>
-                  {tab === 'live' && (ov ? <LiveSection ov={ov} /> : <Loading />)}
+                  {tab === 'live' && (ov ? <LiveSection ov={ov} onOpenLimits={() => setTab('limits')} onOpenHealth={() => setTab('health')} onOpenCost={() => setTab('cost')} /> : <Loading />)}
                 </TabsContent>
                 <TabsContent value="sources" forceMount={tab === 'sources' ? true : undefined}>
                   {tab === 'sources' && (ov ? <SourcesSection ov={ov} /> : <Loading />)}
@@ -319,17 +345,20 @@ function Dashboard() {
                 <TabsContent value="limits" forceMount={tab === 'limits' ? true : undefined}>
                   {tab === 'limits' && (ov ? <LimitsSection ov={ov} /> : <Loading />)}
                 </TabsContent>
+                <TabsContent value="alerts" forceMount={tab === 'alerts' ? true : undefined}>
+                  {tab === 'alerts' && <AlertsSection />}
+                </TabsContent>
                 <TabsContent value="trend" forceMount={tab === 'trend' ? true : undefined}>
-                  {tab === 'trend' && <TrendSection />}
+                  {tab === 'trend' && <TrendSection sources={ov?.sources ?? []} />}
                 </TabsContent>
                 <TabsContent value="cost" forceMount={tab === 'cost' ? true : undefined}>
                   {tab === 'cost' && (ov ? <CostSection ov={ov} /> : <Loading />)}
                 </TabsContent>
                 <TabsContent value="sessions" forceMount={tab === 'sessions' ? true : undefined}>
-                  {tab === 'sessions' && <SessionsSection />}
+                  {tab === 'sessions' && <SessionsSection sources={ov?.sources ?? []} />}
                 </TabsContent>
                 <TabsContent value="projects" forceMount={tab === 'projects' ? true : undefined}>
-                  {tab === 'projects' && <ProjectsSection />}
+                  {tab === 'projects' && <ProjectsSection sources={ov?.sources ?? []} />}
                 </TabsContent>
                 <TabsContent value="models" forceMount={tab === 'models' ? true : undefined}>
                   {tab === 'models' && <ModelsSection />}

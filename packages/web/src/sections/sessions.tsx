@@ -14,10 +14,14 @@ import { vendorLabel } from '@/format';
 import { useFormat } from '@/i18n/format';
 import { useT } from '@/i18n';
 import { useLiveRefresh } from '@/lib/use-live';
+import { ValueDisplay } from '@/components/value-display';
+import { AnalysisFilterBar, useAnalysisFilters } from '@/components/analysis-filters';
+import { SessionDetailDrawer } from '@/components/session-detail-drawer';
 
 const PAGE_SIZES = [25, 50, 100];
+const DAY = 86_400_000;
 
-export function SessionsSection() {
+export function SessionsSection({ sources = [] }: { sources?: Array<{ id: number; display_name: string }> }) {
   const t = useT();
   const f = useFormat();
   const [rows, setRows] = useState<SessionRow[]>([]);
@@ -29,6 +33,8 @@ export function SessionsSection() {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [loaded, setLoaded] = useState(false);
+  const [filters, setFilters, clearFilters] = useAnalysisFilters();
+  const [selectedSession, setSelectedSession] = useState<SessionRow | null>(null);
 
   const vendorKey = useMemo(() => [...selected].sort().join(','), [selected]);
 
@@ -37,8 +43,10 @@ export function SessionsSection() {
       // A live refresh keeps the current table on screen: a spinner every few seconds
       // while you are reading a page is worse than a row arriving a moment late.
       if (!live) setLoading(true);
+      const to = Date.now();
+      const from = filters.days === 0 ? 0 : to - filters.days * DAY;
       return api
-        .sessions({ limit, offset, vendor: vendorKey })
+        .sessions({ limit, offset, vendor: vendorKey, sourceId: filters.sourceId, from, to })
         .then((r) => {
           setRows(r.sessions);
           setTotal(r.total);
@@ -52,7 +60,7 @@ export function SessionsSection() {
         })
         .finally(() => setLoading(false));
     },
-    [limit, offset, vendorKey],
+    [limit, offset, vendorKey, filters.sourceId, filters.days],
   );
 
   // Any filter or page-size change invalidates the current offset: page 6 of the old
@@ -71,6 +79,7 @@ export function SessionsSection() {
 
   return (
     <div className="flex flex-col gap-3.5">
+      <AnalysisFilterBar filters={filters} sources={sources} allowAllTime onChange={(next) => { if ('days' in next || 'sourceId' in next) setOffset(0); setFilters(next); }} onClear={() => { setOffset(0); clearFilters(); }} />
       <VendorFilter
         vendors={vendors}
         selected={selected}
@@ -119,7 +128,7 @@ export function SessionsSection() {
             </TableHeader>
             <TableBody>
               {rows.map((s) => (
-                <TableRow key={s.id}>
+                <TableRow key={s.id} tabIndex={0} className="cursor-pointer" onClick={() => setSelectedSession(s)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setSelectedSession(s); } }} aria-label={t('sessions.detail')}>
                   <TableCell className="text-muted-foreground whitespace-nowrap">
                     {f.clock(s.last_seen_at)}
                   </TableCell>
@@ -155,7 +164,7 @@ export function SessionsSection() {
                     {f.tokens(s.total_tokens)}
                   </TableCell>
                   <TableCell className="tabular text-right font-mono">
-                    {f.money(s.cost_usd, s.cost_unknown_calls)}
+                    <ValueDisplay total={s} />
                   </TableCell>
                   <TableCell className="tabular text-muted-foreground text-right font-mono">
                     {s.native_cost_usd == null ? (
@@ -199,6 +208,7 @@ export function SessionsSection() {
           </CardContent>
         )}
       </Card>
+      <SessionDetailDrawer summary={selectedSession} onClose={() => setSelectedSession(null)} />
     </div>
   );
 }

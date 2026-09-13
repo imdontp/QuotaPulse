@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Clock, TrendingUp, RotateCcw } from 'lucide-react';
 import type { Limit } from '@/api';
 import { FreshnessBadge } from '@/components/primitives';
@@ -23,6 +23,7 @@ const WINDOW_KEY: Record<string, MessageKey> = {
 
 export function Gauge({ limit, now, badge }: { limit: Limit; now: number; badge?: React.ReactNode }) {
   const t = useT();
+  const reduced = useReducedMotion();
   const f = useFormat();
   const windowName = WINDOW_KEY[limit.window_kind] ? t(WINDOW_KEY[limit.window_kind]!) : limit.window_kind;
   const expired = isExpired(limit, now);
@@ -35,7 +36,7 @@ export function Gauge({ limit, now, badge }: { limit: Limit; now: number; badge?
 
   return (
     <div className={cn(expired && 'opacity-60')}>
-      <div className="mb-1.5 flex items-center gap-2">
+      <div className="mb-1.5 flex flex-wrap items-center gap-2">
         <span className="text-muted-foreground text-[12.5px] font-medium">
           {windowName}
         </span>
@@ -52,9 +53,9 @@ export function Gauge({ limit, now, badge }: { limit: Limit; now: number; badge?
         {!expired && (
           <motion.div
             className={cn('h-full rounded', tone.bar)}
-            initial={{ width: 0 }}
+            initial={reduced ? false : { width: 0 }}
             animate={{ width: `${Math.min(100, Math.max(0, p ?? 0))}%` }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: reduced ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
           />
         )}
       </div>
@@ -112,7 +113,7 @@ export function GaugeStack({
             <Gauge
               limit={primary}
               now={now}
-              badge={<FreshnessBadge seconds={primary.ageSeconds} origin={primary.origin} />}
+              badge={<FreshnessBadge seconds={primary.ageSeconds} />}
             />
           </div>
         );

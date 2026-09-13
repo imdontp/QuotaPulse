@@ -4,6 +4,7 @@ import type { DB } from '../db/index.js';
 import type { Adapter } from '../adapters/types.js';
 import { resolveSources, runPass, type ResolvedSource, type RunResult } from './runner.js';
 import { logger } from '../util/log.js';
+import { recordQuotaAlerts } from '../api/queries.js';
 
 const log = logger('scheduler');
 
@@ -45,6 +46,8 @@ export class Scheduler extends EventEmitter {
   }> = [];
   private sources: ResolvedSource[] = [];
   private lastPass: PassEvent | null = null;
+  /** The initial backfill establishes quota baselines; only later samples can cross a threshold. */
+  private alertBaselineReady = false;
 
   constructor(
     private db: DB,
@@ -219,6 +222,17 @@ export class Scheduler extends EventEmitter {
 
     const newEvents = results.reduce((a, r) => a + r.stats.usageInserted, 0);
     const newLimits = results.reduce((a, r) => a + r.stats.limitsInserted, 0);
+    if (trigger === 'initial') {
+      this.alertBaselineReady = true;
+    } else if (this.alertBaselineReady && newLimits > 0) {
+      try {
+        const events = recordQuotaAlerts(this.db);
+        if (events.length > 0) this.emit('alerts', events);
+      } catch (err) {
+        // Alert history must never make an ingest pass fail; the next sample can retry.
+        log.debug('alert history update failed', (err as Error).message);
+      }
+    }
     const evt: PassEvent = {
       results,
       newEvents,
