@@ -456,6 +456,13 @@ export const en = {
   'settings.quietHours': 'Quiet hours (local time)',
   'settings.quietStart': 'Quiet hours start',
   'settings.quietEnd': 'Quiet hours end',
+
+  // pet popup (opened from the taskbar PulsePet)
+  'pet.title': 'Quotas',
+  'pet.updated': 'updated {time}',
+  'pet.openDashboard': 'Open dashboard',
+  'pet.hide': 'Hide pet',
+  'pet.close': 'Close',
 } as const;
 
 export type MessageKey = keyof typeof en;

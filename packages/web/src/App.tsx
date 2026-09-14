@@ -36,8 +36,10 @@ import { ProjectsSection } from '@/sections/projects';
 import { ModelsSection } from '@/sections/models';
 import { HealthSection } from '@/sections/health';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
+import { useTheme } from '@/lib/use-theme';
 import { CommandPalette } from '@/components/command-palette';
 import { AlertsSection } from '@/sections/alerts';
+import { PetPopup } from '@/components/pet-popup';
 
 const TABS = [
   { id: 'live', key: 'tab.live', icon: Activity },
@@ -53,7 +55,6 @@ const TABS = [
 ] as const;
 
 type TabId = (typeof TABS)[number]['id'];
-type Theme = 'light' | 'dark';
 
 /**
  * The sidebar collapses to icons below this width. The tray panel opens maximized, while
@@ -74,33 +75,6 @@ function useMediaQuery(query: string): boolean {
     return () => mq.removeEventListener('change', on);
   }, [query]);
   return matches;
-}
-
-function useTheme(): [Theme, () => void] {
-  const [theme, setTheme] = useState<Theme>(() => {
-    try {
-      // 'plimsoll-theme' is the key from the previous name: read it once so a rename
-      // does not silently flip everyone back to their OS preference.
-      const saved =
-        localStorage.getItem('quotapulse-theme') ?? localStorage.getItem('plimsoll-theme');
-      if (saved === 'light' || saved === 'dark') return saved;
-    } catch {
-      /* private window or blocked storage: fall through to the OS preference */
-    }
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  });
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    document.documentElement.style.colorScheme = theme;
-    try {
-      localStorage.setItem('quotapulse-theme', theme);
-    } catch {
-      /* remembering the choice is a convenience, never a requirement */
-    }
-  }, [theme]);
-
-  return [theme, () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))];
 }
 
 function Dashboard() {
@@ -388,9 +362,14 @@ function Loading() {
 }
 
 export default function App() {
+  // The PulsePet opens this app with ?mode=popup in a small frameless window. Same
+  // origin, same providers, same preferences -- only the layout differs.
+  const popupMode =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('mode') === 'popup';
   return (
     <I18nProvider>
-      <Dashboard />
+      {popupMode ? <PetPopup /> : <Dashboard />}
     </I18nProvider>
   );
 }

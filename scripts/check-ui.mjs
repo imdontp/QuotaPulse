@@ -57,16 +57,16 @@ const overview = () => ({ now, today, week: { ...totals, calls: 250, total_token
 let server, browser;
 const errors = [];
 const requests = [];
-async function contextFor(lang = 'en', theme = 'dark', width = 1440) {
+async function contextFor(lang = 'en', theme = 'dark', width = 1440, hiddenSubscriptions = []) {
   const context = await browser.newContext({ viewport: { width, height: 1000 }, colorScheme: theme, reducedMotion: 'reduce' });
-  await context.addInitScript(({ lang, theme }) => {
+  await context.addInitScript(({ lang, theme, hiddenSubscriptions }) => {
     localStorage.setItem('quotapulse-theme', theme);
-    localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang, currency: 'USD', rate: 1 }));
+    localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang, currency: 'USD', rate: 1, hiddenSubscriptions }));
     window.EventSource = class extends EventTarget {
       constructor() { super(); (window.__quotaStreams ??= new Set()).add(this); setTimeout(() => this.dispatchEvent(new Event('open')), 10); }
       close() { window.__quotaStreams.delete(this); }
     };
-  }, { lang, theme });
+  }, { lang, theme, hiddenSubscriptions });
   await context.route('**/api/**', async route => {
     const u = new URL(route.request().url());
     apiMethods.push(route.request().method());
@@ -326,6 +326,31 @@ try {
   unavailable = false; empty = false;
   await last.page.reload(); await settle(last.page);
   await last.context.close();
+
+  /*
+   * PulsePet popup: the SAME app in ?mode=popup, which is what the taskbar pet opens in
+   * its small frameless window. Rendering it here is what proves the two hard parts --
+   * it is not a second UI, and hiding a subscription in Settings hides it here too.
+   */
+  const pet = await contextFor();
+  await pet.page.goto('http://127.0.0.1:7798/?mode=popup');
+  await pet.page.getByRole('heading', { name: 'Quotas', exact: true }).waitFor();
+  await pet.page.getByText('OpenAI Subscription', { exact: true }).waitFor();
+  assert.equal(await pet.page.getByText('Claude Personal Subscription', { exact: true }).count(), 1);
+  await noOverflow(pet.page, 'pet-popup');
+  await pet.page.screenshot({ path: resolve(output, 'pet-popup-en-dark.png') });
+  await pet.context.close();
+
+  // Request 3: the preference the dashboard's Settings writes must reach the popup too.
+  const petHidden = await contextFor('en', 'dark', 1440, ['claude-personal']);
+  await petHidden.page.goto('http://127.0.0.1:7798/?mode=popup');
+  await petHidden.page.getByRole('heading', { name: 'Quotas', exact: true }).waitFor();
+  await petHidden.page.getByText('OpenAI Subscription', { exact: true }).waitFor();
+  assert.equal(await petHidden.page.getByText('Claude Personal Subscription', { exact: true }).count(), 0,
+    'a subscription hidden in Settings must be hidden in the pet popup');
+  await petHidden.context.close();
+  console.log('PASS PulsePet popup renders and follows the hidden-subscription preference');
+
   assert.deepEqual(errors, []);
   assert.deepEqual(externalRequests, []);
   assert.ok(apiMethods.every(method=>method==='GET'),'pricing explanations and retries must not mutate data');

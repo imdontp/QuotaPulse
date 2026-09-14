@@ -15,6 +15,20 @@ const COLORS: Record<Severity, [number, number, number]> = {
   unknown: [0x8a, 0x93, 0x9e],
 };
 
+/**
+ * RunCat-style frame rate for the tray animation. Null (no live reading) is
+ * static: a grey icon that does not move is a different, honest statement from
+ * a slowly walking one.
+ */
+export const TRAY_FRAME_COUNT = 4;
+
+export function fpsFor(percent: number | null): number {
+  if (percent == null) return 0;
+  if (percent >= 85) return 12;
+  if (percent >= 60) return 8;
+  return 4;
+}
+
 /** The unspent part of the gauge. Blue grey so it reads as the same family as the rest. */
 const TRACK: [number, number, number] = [0x5a, 0x66, 0x74];
 
@@ -60,11 +74,28 @@ const DOT_R = 3.2;
  * Rendered by supersampled coverage tests rather than a rasteriser: at this size that is
  * both simpler and sharper than pulling one in, and it is the only way the arc's leading
  * edge lands on a sub-pixel boundary instead of snapping to whole pixels.
+ *
+ * `frame` (0..TRAY_FRAME_COUNT-1) bounces the bars and breathes the live dot, so
+ * cycling frames reads as walking. Frame 0 is the canonical still.
  */
 export function renderTrayIcon(percent: number | null, severity = severityFor(percent)): Buffer {
+  return renderTrayFrame(percent, 0, severity);
+}
+
+export function renderTrayFrame(
+  percent: number | null,
+  frame = 0,
+  severity = severityFor(percent),
+): Buffer {
   const rgba = new Uint8Array(SIZE * SIZE * 4);
   const frac = percent == null ? 0 : Math.min(100, Math.max(0, percent)) / 100;
   const color = COLORS[severity];
+  const animated = fpsFor(percent) > 0;
+  // Per-bar phase offsets so the three bars take turns lifting, like a walk cycle.
+  const phase = ((frame % TRAY_FRAME_COUNT) + TRAY_FRAME_COUNT) % TRAY_FRAME_COUNT;
+  const angle = (phase / TRAY_FRAME_COUNT) * Math.PI * 2;
+  const lift = (i: number) => (animated ? Math.sin(angle + (i * Math.PI * 2) / BARS.length) * 1.4 : 0);
+  const dotR = animated ? DOT_R + Math.sin(angle) * 0.5 : DOT_R;
   const SS = 3; // supersample factor per axis
   const total = SS * SS;
 
@@ -81,13 +112,14 @@ export function renderTrayIcon(percent: number | null, severity = severityFor(pe
           const dy = py - CY;
 
           // The live dot and the bars are solid identity, never a proportion.
-          if (Math.hypot(px - DOT_X, py - DOT_Y) <= DOT_R) {
+          if (Math.hypot(px - DOT_X, py - DOT_Y) <= dotR) {
             hitFill++;
             continue;
           }
           let inBar = false;
-          for (const [bx, top] of BARS) {
-            if (Math.abs(px - bx) <= BAR_W / 2 && py >= top && py <= BAR_BASE) {
+          for (let i = 0; i < BARS.length; i++) {
+            const [bx, top] = BARS[i]!;
+            if (Math.abs(px - bx) <= BAR_W / 2 && py >= top + lift(i) && py <= BAR_BASE) {
               inBar = true;
               break;
             }
@@ -132,13 +164,27 @@ export function renderTrayIcon(percent: number | null, severity = severityFor(pe
 /** Icons are cached per 2% step; a tray icon cannot show finer detail than that. */
 const cache = new Map<string, Buffer>();
 export function trayIconFor(percent: number | null): Buffer {
+  return trayFrameFor(percent, 0);
+}
+
+/** One cache entry per (severity, 2% bucket, frame): 51 buckets x 4 frames worst case. */
+const frameCache = new Map<string, Buffer>();
+export function trayFrameFor(percent: number | null, frame = 0): Buffer {
   const sev = severityFor(percent);
   const bucket = percent == null ? -1 : Math.round(percent / 2) * 2;
-  const key = `${sev}:${bucket}`;
-  let icon = cache.get(key);
+  const f = ((frame % TRAY_FRAME_COUNT) + TRAY_FRAME_COUNT) % TRAY_FRAME_COUNT;
+  const key = `${sev}:${bucket}:${f}`;
+  let icon = frameCache.get(key);
   if (!icon) {
-    icon = renderTrayIcon(bucket < 0 ? null : bucket, sev);
-    cache.set(key, icon);
+    // A static reading shares frame 0's entry with the old single-frame cache key,
+    // so callers that never animate pay nothing extra.
+    const legacyKey = `${sev}:${bucket}`;
+    icon = cache.get(legacyKey) ?? undefined;
+    if (f !== 0 || !icon) {
+      icon = renderTrayFrame(bucket < 0 ? null : bucket, f, sev);
+      if (f === 0) cache.set(legacyKey, icon);
+    }
+    frameCache.set(key, icon);
   }
   return icon;
 }

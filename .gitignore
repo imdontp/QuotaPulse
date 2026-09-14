@@ -1,5 +1,6 @@
 node_modules/
 dist/
+dist-preload/
 *.tsbuildinfo
 .env
 .DS_Store
@@ -14,3 +15,6 @@ icon-preview/
 .claude/
 # editor local
 .vscode/
+# Pet Mode v2 spec: a local design input, deliberately not versioned (see docs/ for the
+# committed docs). Kept in the tree so the implementation it drove stays traceable.
+docs/PET_MODE_V2_SPEC.md

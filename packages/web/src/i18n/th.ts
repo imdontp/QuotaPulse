@@ -447,4 +447,9 @@ export const th: Record<MessageKey, string> = {
   'settings.quietHours': 'ช่วงงดแจ้งเตือน (เวลาท้องถิ่น)',
   'settings.quietStart': 'เริ่มงดแจ้งเตือน',
   'settings.quietEnd': 'สิ้นสุดงดแจ้งเตือน',
+  'pet.title': 'โควตา',
+  'pet.updated': 'อัปเดต {time}',
+  'pet.openDashboard': 'เปิดแดชบอร์ด',
+  'pet.hide': 'ซ่อนเพ็ท',
+  'pet.close': 'ปิด',
 };

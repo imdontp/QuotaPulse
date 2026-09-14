@@ -5,11 +5,12 @@
   "type": "module",
   "main": "dist/main.js",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.preload.json",
     "start": "npm run build && electron dist/main.js",
     "icon-preview": "tsx src/preview-icons.ts",
     "test": "tsx --test test/*.test.ts",
-    "preview-tooltip": "tsx src/preview-tooltip.ts"
+    "preview-tooltip": "tsx src/preview-tooltip.ts",
+    "preview-pet": "tsx src/preview-pet.ts"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

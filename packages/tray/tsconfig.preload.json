@@ -1,0 +1,17 @@
+{
+  // Sandboxed preload scripts run as plain scripts without an ESM context
+  // (https://www.electronjs.org/docs/latest/tutorial/esm#sandboxed-preload-scripts-cant-use-esm-imports),
+  // so the two bridges compile here as CommonJS: `require('electron')` is the
+  // polyfilled loader the sandbox provides. The rest of the tray stays ESM.
+  //
+  // Separate outDir on purpose: tsc follows the preloads' `import type`s and
+  // would otherwise re-emit limits/icon/pet-state as CommonJS OVER dist/,
+  // mixing module systems and breaking every ESM importer at startup.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node10",
+    "outDir": "dist-preload"
+  },
+  "include": ["src/pet-preload.ts", "src/popup-preload.ts"]
+}

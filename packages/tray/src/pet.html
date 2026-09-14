@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QuotaPulse PulsePet</title>
+<style>
+  :root {
+    --pet: #22d3a7;
+    --alert: #ffb020;
+    --pet-size: 64px;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: default;
+  }
+  #stage { position: relative; width: 100vw; height: 100vh; }
+
+  /*
+   * Two layers on purpose (spec §27, §30):
+   *   #pet-wrap  -- DESKTOP motion. Its transform is the walk position, set from JS only.
+   *   #pet       -- BODY motion. All CSS animation lives here so a breath or a bounce can
+   *                 never clobber the walk position the way a single element would.
+   */
+  #pet-wrap {
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: var(--pet-size);
+    height: var(--pet-size);
+    transform-origin: 50% 88%;
+    will-change: transform;
+  }
+  #pet {
+    position: absolute;
+    inset: 0;
+    background-image: url('../assets/pulsepet_states_sprite.png');
+    background-repeat: no-repeat;
+    background-size: 320px 64px;
+    background-position: 0 0;
+    cursor: pointer;
+    will-change: transform;
+    transform-origin: 50% 88%;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
+  }
+
+  /* Body motion per mood (spec §31). */
+  #pet-wrap.healthy #pet { animation: breathe 3.4s ease-in-out infinite; }
+  #pet-wrap.working #pet { animation: breathe 1.5s ease-in-out infinite; }
+  #pet-wrap.warning #pet { animation: warnBob 2.6s ease-in-out infinite; }
+  #pet-wrap.critical #pet { animation: droop 4.5s ease-in-out infinite; }
+  #pet-wrap.reset #pet { animation: bounce 640ms cubic-bezier(0.34, 1.56, 0.64, 1) 2; }
+  #pet-wrap.idle #pet { opacity: 0.62; animation: breathe 5s ease-in-out infinite; }
+  /* A single short shake when the Pet ENTERS critical; it must not shake forever. */
+  #pet-wrap.shake-once #pet { animation: shakeOnce 240ms ease-in-out 2; }
+  /* Idle actions (spec §32): low-distraction, one at a time, never during interaction. */
+  #pet-wrap.look #pet { animation: lookAround 1.5s ease-in-out 1; }
+  #pet-wrap.hop #pet { animation: hop 640ms ease-out 1; }
+  #pet-wrap.stretch #pet { animation: stretch 900ms ease-in-out 1; }
+
+  @keyframes breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  @keyframes warnBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  @keyframes droop { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(2px) scaleY(0.98); } }
+  @keyframes bounce {
+    0% { transform: translateY(0) scale(1, 1); }
+    35% { transform: translateY(-14px) scale(0.96, 1.06); }
+    70% { transform: translateY(0) scale(1.06, 0.94); }
+    100% { transform: translateY(0) scale(1, 1); }
+  }
+  @keyframes shakeOnce {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+  }
+  @keyframes lookAround {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-5deg); }
+    60% { transform: rotate(5deg); }
+  }
+  @keyframes hop {
+    0% { transform: translateY(0) scale(1.04, 0.94); }
+    40% { transform: translateY(-16px) scale(0.96, 1.05); }
+    75% { transform: translateY(0) scale(1.05, 0.95); }
+    100% { transform: translateY(0) scale(1, 1); }
+  }
+  @keyframes stretch {
+    0%, 100% { transform: scale(1, 1); }
+    45% { transform: scale(0.94, 1.08); }
+    70% { transform: scale(1.03, 0.97); }
+  }
+
+  /* Reset sparkles: four brand ticks that flash outward once per bounce cycle. */
+  #sparkles { position: absolute; inset: 0; pointer-events: none; opacity: 0; }
+  #pet-wrap.reset #sparkles { animation: sparkle 640ms ease-out 2; }
+  #sparkles i { position: absolute; width: 2px; height: 7px; border-radius: 2px; background: var(--pet); }
+  #sparkles i:nth-child(1) { top: 4px; left: 6px; transform: rotate(-35deg); }
+  #sparkles i:nth-child(2) { top: 0; right: 10px; transform: rotate(25deg); }
+  #sparkles i:nth-child(3) { bottom: 10px; left: 0; transform: rotate(30deg); }
+  #sparkles i:nth-child(4) { bottom: 6px; right: 2px; transform: rotate(-25deg); }
+  @keyframes sparkle {
+    0% { opacity: 0; transform: scale(0.6); }
+    40% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(1.35); }
+  }
+
+  /* ---- Global risk indicator (spec §16) ------------------------------------ */
+  /* Separate from the mood: the Pet can be working happily while the system is critical. */
+  #halo {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    display: none;
+    pointer-events: none;
+  }
+  #halo.show { display: block; }
+  #halo span {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--alert);
+    box-shadow: 0 0 8px var(--alert);
+  }
+  #halo.crit span::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--alert);
+    animation: haloPing 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  @keyframes haloPing { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(2.4); opacity: 0; } }
+
+  /* ---- Reset badge --------------------------------------------------------- */
+  #badge {
+    position: absolute;
+    bottom: 74px;
+    left: 0;
+    display: none;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(11, 15, 20, 0.92);
+    border: 1px solid var(--pet);
+    color: #e8edf3;
+    font: 600 12px/1.4 'Segoe UI', system-ui, sans-serif;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px -6px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+    transform: translateX(-50%);
+  }
+  #badge.show { display: block; }
+
+  /* ---- Speech bubble (spec §21–§25) --------------------------------------- */
+  #bubble {
+    position: absolute;
+    bottom: 104px;
+    left: 0;
+    display: none;
+    max-width: 300px;
+    padding: 9px 11px 8px;
+    border-radius: 12px;
+    background: rgba(11, 15, 20, 0.95);
+    border: 1px solid #2b3543;
+    color: #e8edf3;
+    font: 12px/1.45 'Segoe UI', system-ui, sans-serif;
+    box-shadow: 0 10px 26px -12px rgba(0, 0, 0, 0.85);
+    transform: translateX(-50%);
+    -webkit-font-smoothing: antialiased;
+  }
+  #bubble.show { display: block; }
+  #bubble.tone-warn { border-color: #6a5320; }
+  #bubble.tone-crit { border-color: #6d2b2c; }
+  #bubble .b-title { font-weight: 650; font-size: 12.5px; margin-bottom: 3px; }
+  #bubble .b-line { color: #b9c3d0; white-space: nowrap; }
+  #bubble .b-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+  #bubble button {
+    /* Two per row: the spec's action list can reach four buttons, which will not fit on one
+       line inside a 300px bubble. */
+    flex: 1 1 calc(50% - 3px);
+    min-width: 88px;
+    background: #1b2530;
+    color: #e8edf3;
+    border: 1px solid #31404f;
+    border-radius: 7px;
+    padding: 4px 8px;
+    font: 600 11px/1.3 'Segoe UI', system-ui, sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #bubble button:hover { background: #25313f; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #pet, #pet-wrap #pet, #sparkles, #halo span::after { animation: none !important; }
+    #sparkles { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="pet-wrap" class="idle" title="QuotaPulse">
+    <div id="pet"></div>
+    <div id="sparkles" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div id="halo" aria-hidden="true"><span></span></div>
+  </div>
+  <div id="badge"></div>
+  <div id="bubble" role="status">
+    <div class="b-title"></div>
+    <div class="b-lines"></div>
+    <div class="b-actions"></div>
+  </div>
+</div>
+<script>
+(function () {
+  var SIZE = 64;
+  var wrap = document.getElementById('pet-wrap');
+  var pet = document.getElementById('pet');
+  var badge = document.getElementById('badge');
+  var bubble = document.getElementById('bubble');
+  var halo = document.getElementById('halo');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var SPEED = { healthy: 36, working: 90, warning: 55, critical: 22, reset: 0, idle: 0 };
+  /* Spec §33 recommends 20–80px for local walking; §34's 80–150px is the Companion ceiling,
+     which this stays under. These are only used when no roaming zones were sent. */
+  var RANGE = { minimal: [0, 0], companion: [20, 80], roaming: [120, 520] };
+  /* The pack names the healthy loop `idle`, not `healthy`; the map keeps that quirk in one
+     place instead of string-building a filename that silently 404s to a blank sprite. */
+  var LOOP_ART = { healthy: 'pulsepet_idle.webp', working: 'pulsepet_working.webp' };
+  /* Bubble button labels (spec §25). `details` opens the popup, which is also what a left
+     click does, so the button keeps the label the spec's example bubble shows. */
+  var ACTION_LABEL = {
+    details: 'Details',
+    pin: 'Pin',
+    unpin: 'Unpin',
+    'open-dashboard': 'Dashboard',
+    snooze: 'Snooze 1h',
+  };
+
+  var frame = {
+    mood: 'idle', spriteIndex: 0, colorCss: '#8a939e', alertColorCss: '#8a939e',
+    showGlobalAlert: false, badge: null, bubble: null, movement: 'minimal',
+    hasData: false, reducedMotion: false, focus: null, providers: []
+  };
+  var x = Math.max(0, Math.floor(window.innerWidth / 2 - SIZE / 2));
+  var anchorX = x;
+  var dir = 1;
+  var targetX = x;
+  var walking = false;
+  /** Roaming only: window-local x segments with real screen under them (spec §34). */
+  var zones = null;
+  var idleTimer = null;
+  var actionTimer = null;
+  var last = performance.now();
+  var raf = null;
+  var hoverOver = false;
+  var clickTimer = null;
+  var bubbleKey = '';
+  var bubbleHideTimer = null;
+  var lastMood = 'idle';
+
+  // ---- Painting -------------------------------------------------------------
+  function paint() {
+    // Settings can force reduced motion on top of the OS preference (spec §35, §37).
+    reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches || !!frame.reducedMotion;
+    wrap.className = frame.hasData ? frame.mood : 'idle';
+    wrap.style.setProperty('--pet', frame.colorCss);
+    badge.style.setProperty('--pet', frame.colorCss);
+    halo.style.setProperty('--alert', frame.alertColorCss);
+    applyArt();
+
+    // A single shake on entering critical, never a permanent one (spec §31).
+    if (frame.hasData && frame.mood === 'critical' && lastMood !== 'critical') {
+      wrap.classList.add('shake-once');
+      setTimeout(function () { wrap.classList.remove('shake-once'); }, 520);
+    }
+    lastMood = frame.hasData ? frame.mood : 'idle';
+
+    var focusLabel = frame.focus
+      ? frame.focus.name + (frame.focus.usedPercent != null ? ' · ' + Math.round(frame.focus.usedPercent) + '%' : '')
+      : 'no live quota';
+    wrap.title = 'QuotaPulse — ' + focusLabel + ' (click for details)';
+
+    halo.classList.toggle('show', !!frame.showGlobalAlert);
+    halo.classList.toggle('crit', !!(frame.global && frame.global.severity === 'crit'));
+
+    var badgeText = frame.badge ? frame.badge + ' to reset' : '';
+    badge.textContent = badgeText;
+    badge.classList.toggle('show', !!badgeText && frame.hasData);
+
+    paintBubble();
+    place();
+    scheduleIdle();
+  }
+
+  // ---- Expression layer (spec §28, §31) ------------------------------------
+  /*
+   * Healthy and working have looping artwork with blink and eye-scan, so the expression
+   * layer is a real animation rather than a CSS approximation. Warning, critical and reset
+   * have no looping art, so they keep the static sprite frames -- and every state falls
+   * back to the sprite under reduced motion, where a looping image would be exactly the
+   * motion §35 says to suppress.
+   */
+  function applyArt() {
+    var loop = reduced ? null : LOOP_ART[frame.mood];
+    if (loop) {
+      pet.style.backgroundImage = "url('../assets/" + loop + "')";
+      pet.style.backgroundSize = SIZE + 'px ' + SIZE + 'px';
+      pet.style.backgroundPosition = '0 0';
+      return;
+    }
+    pet.style.backgroundImage = "url('../assets/pulsepet_states_sprite.png')";
+    pet.style.backgroundSize = SIZE * 5 + 'px ' + SIZE + 'px';
+    pet.style.backgroundPosition = '-' + ((frame.spriteIndex || 0) * SIZE) + 'px 0';
+  }
+
+  function paintBubble() {
+    var b = frame.bubble;
+    var key = b ? (b.kind + '|' + b.title + '|' + b.lines.join('~') + '|' + b.actions.join(',')) : '';
+    if (key === bubbleKey) return;
+    bubbleKey = key;
+    if (bubbleHideTimer) { clearTimeout(bubbleHideTimer); bubbleHideTimer = null; }
+    if (!b) { bubble.classList.remove('show'); return; }
+    bubble.className = 'tone-' + b.tone;
+    bubble.querySelector('.b-title').textContent = b.title;
+    bubble.querySelector('.b-lines').innerHTML = b.lines.map(function (line) {
+      return '<div class="b-line">' + escapeHtml(line) + '</div>';
+    }).join('');
+    var actions = bubble.querySelector('.b-actions');
+    actions.innerHTML = '';
+    b.actions.forEach(function (action) {
+      var btn = document.createElement('button');
+      btn.textContent = ACTION_LABEL[action] || action;
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (window.qpPet) window.qpPet.action(action, b.ownerKey);
+      });
+      actions.appendChild(btn);
+    });
+    bubble.classList.add('show');
+    if (b.until) {
+      bubbleHideTimer = setTimeout(function () {
+        bubble.classList.remove('show');
+      }, Math.max(0, b.until - Date.now()));
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  // ---- Positioning ----------------------------------------------------------
+  function place() {
+    // ONLY the desktop layer is transformed here; body animation lives on #pet.
+    wrap.style.transform = 'translateX(' + x + 'px) scaleX(' + dir + ')';
+    var cx = x + SIZE / 2;
+    if (badge.classList.contains('show')) {
+      var half = badge.offsetWidth / 2;
+      badge.style.left = Math.max(half + 4, Math.min(window.innerWidth - half - 4, cx)) + 'px';
+    }
+    if (bubble.classList.contains('show')) {
+      var bhalf = bubble.offsetWidth / 2;
+      bubble.style.left = Math.max(bhalf + 6, Math.min(window.innerWidth - bhalf - 6, cx)) + 'px';
+      bubble.style.bottom = badge.classList.contains('show') ? '104px' : '76px';
+    }
+    // The pet can walk out from under a stationary cursor; re-read the pointer so the
+    // transparent strip does not keep capturing clicks.
+    if (walking) syncHover();
+  }
+
+  // ---- Desktop motion + idle behaviour (spec §32–§34) ----------------------
+  function range() { return RANGE[frame.movement] || RANGE.minimal; }
+  function bubbleVisible() { return bubble.classList.contains('show'); }
+
+  /** The zone the pet is fully standing in, or null when it is over a bezel gap. */
+  function zoneAt(px) {
+    if (!zones) return null;
+    for (var i = 0; i < zones.length; i++) {
+      if (px >= zones[i].x0 && px + SIZE <= zones[i].x1) return zones[i];
+    }
+    return null;
+  }
+
+  /** A random x inside one of the walkable zones, weighted by how wide each zone is. */
+  function zoneTarget() {
+    var total = 0;
+    for (var i = 0; i < zones.length; i++) total += zones[i].x1 - zones[i].x0;
+    var roll = Math.random() * total;
+    for (var j = 0; j < zones.length; j++) {
+      var width = zones[j].x1 - zones[j].x0;
+      if (roll < width) {
+        var z = zones[j];
+        return z.x0 + Math.random() * Math.max(0, z.x1 - SIZE - z.x0);
+      }
+      roll -= width;
+    }
+    return x;
+  }
+
+  /**
+   * One low-distraction action after 20–40s of quiet (spec §32). Skipped while the user is
+   * interacting, and skipped entirely under reduced motion. A walk is only an option when
+   * the movement mode allows desktop motion; the body-only actions always are.
+   */
+  function scheduleIdle() {
+    if (reduced || !frame.hasData || idleTimer || walking || actionTimer) return;
+    idleTimer = setTimeout(function () {
+      idleTimer = null;
+      if (hoverOver || bubbleVisible()) { scheduleIdle(); return; }
+      var choices = ['look', 'hop', 'stretch'];
+      if (range()[1] > 0) choices.push('walk', 'walk');
+      var pick = choices[Math.floor(Math.random() * choices.length)];
+      if (pick === 'walk') startWalk();
+      else playBodyAction(pick);
+    }, 20_000 + Math.random() * 20_000);
+  }
+
+  function playBodyAction(name) {
+    // The mood class is on the wrapper and would be replaced by the next frame, so the
+    // action class is added on top and removed by its own timer.
+    wrap.classList.add(name);
+    actionTimer = setTimeout(function () {
+      actionTimer = null;
+      wrap.classList.remove(name);
+      scheduleIdle();
+    }, 1_600);
+  }
+
+  function startWalk() {
+    var r = range();
+    var useZones = !!(zones && zones.length > 0);
+    if (!useZones && r[1] <= 0) return;
+    targetX = useZones
+      ? zoneTarget()
+      : Math.max(
+          0,
+          Math.min(
+            window.innerWidth - SIZE,
+            anchorX + (Math.random() < 0.5 ? -1 : 1) * (r[0] + Math.random() * (r[1] - r[0])),
+          ),
+        );
+    dir = targetX < x ? -1 : 1;
+    walking = true;
+    loop();
+  }
+
+  /**
+   * Cross-screen behaviour (spec §34): a monitor gap is not walkable, so when the pet
+   * reaches one it hops to the nearest zone ahead instead of strolling through a bezel
+   * where nothing is drawn.
+   */
+  function hopAcrossGap() {
+    var ahead = zones.filter(function (z) {
+      return dir > 0 ? z.x0 > x : z.x1 - SIZE < x;
+    });
+    if (ahead.length === 0) {
+      walking = false;
+      targetX = x;
+      anchorX = x;
+      return;
+    }
+    var next = dir > 0
+      ? ahead.reduce(function (a, b) { return a.x0 < b.x0 ? a : b; })
+      : ahead.reduce(function (a, b) { return a.x1 > b.x1 ? a : b; });
+    x = dir > 0 ? next.x0 : next.x1 - SIZE;
+    x = Math.max(0, Math.min(window.innerWidth - SIZE, x));
+    playBodyAction('hop');
+  }
+
+  function loop() {
+    if (raf == null) raf = requestAnimationFrame(tick);
+  }
+
+  function tick(now) {
+    raf = null;
+    var dt = Math.min(0.1, (now - last) / 1000);
+    last = now;
+    if (walking) {
+      var speed = reduced ? 0 : (SPEED[frame.mood] || 0);
+      var step = speed * dt;
+      if (Math.abs(targetX - x) <= step || speed === 0) {
+        x = targetX;
+        walking = false;
+        anchorX = x;
+        if (window.qpPet) window.qpPet.moved(Math.round(x));
+      } else {
+        x += dir * step;
+        // Entering a bezel gap: hop to the next monitor rather than walking through nothing.
+        if (zones && zones.length > 1 && !zoneAt(x)) hopAcrossGap();
+      }
+      place();
+    }
+    if (walking) loop();
+    else scheduleIdle();
+  }
+
+  // ---- Interactions (spec §26) ---------------------------------------------
+  function interactiveAt(e) {
+    var el = document.elementFromPoint(e.clientX, e.clientY);
+    return !!(el && el.closest && el.closest('#pet-wrap, #bubble'));
+  }
+
+  var lastMouse = null;
+  function syncHover() {
+    if (!window.qpPet || !lastMouse) return;
+    var over = interactiveAt({ clientX: lastMouse.x, clientY: lastMouse.y });
+    if (over !== hoverOver) {
+      hoverOver = over;
+      window.qpPet.hover(over);
+    }
+  }
+
+  document.addEventListener('mousemove', function (e) {
+    lastMouse = { x: e.clientX, y: e.clientY };
+    syncHover();
+  });
+
+  // Losing the pointer while interactive would leave the whole transparent strip capturing
+  // clicks, so the click-through state is reset the moment the cursor leaves.
+  document.addEventListener('mouseleave', function () {
+    lastMouse = null;
+    if (hoverOver && window.qpPet) {
+      hoverOver = false;
+      window.qpPet.hover(false);
+    }
+  });
+
+  pet.addEventListener('click', function (e) {
+    e.stopPropagation();
+    // Wait out the double-click window so a dblclick does not also toggle the bubble.
+    if (clickTimer) return;
+    clickTimer = setTimeout(function () {
+      clickTimer = null;
+      if (window.qpPet) window.qpPet.click(x + SIZE / 2);
+    }, 220);
+  });
+
+  pet.addEventListener('dblclick', function () {
+    if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; }
+    if (window.qpPet) window.qpPet.openDashboard();
+  });
+
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+    if (window.qpPet) window.qpPet.contextMenu();
+  });
+
+  if (window.qpPet) window.qpPet.onState(function (next) {
+    frame = next;
+    paint();
+  });
+  if (window.qpPet && window.qpPet.onPosition) {
+    window.qpPet.onPosition(function (startX) {
+      if (typeof startX === 'number' && Number.isFinite(startX)) {
+        x = Math.max(0, Math.min(window.innerWidth - SIZE, startX));
+        anchorX = x;
+        targetX = x;
+        place();
+      }
+    });
+  }
+  if (window.qpPet && window.qpPet.onZones) {
+    window.qpPet.onZones(function (next) {
+      zones = next && next.length ? next : null;
+      // Roaming only: never leave the pet parked where there is no screen under it.
+      if (zones && !zoneAt(x)) {
+        var z = zones[0];
+        x = Math.max(z.x0, Math.min(z.x1 - SIZE, x));
+        anchorX = x;
+        targetX = x;
+        place();
+      }
+    });
+  }
+  paint();
+})();
+</script>
+</body>
+</html>
