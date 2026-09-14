@@ -32,6 +32,7 @@ async function main() {
     speechBubbles: true,
     eventNotifications: true,
     reducedMotion: false,
+    character: 'orbit_bot',
   };
 
   if (!existsSync(LOCK_PATH)) {
@@ -58,7 +59,7 @@ async function main() {
   console.log(`\n=== TRAY ANIMATION (worst ${frame.global.highest?.usedPercent == null ? '--' : Math.round(frame.global.highest.usedPercent) + '%'} @ ${fpsFor(frame.global.highest?.usedPercent ?? null)}fps) ===`);
   console.log(`TRAY  global=${frame.global.severity} worst=${frame.global.highest?.name ?? 'none'}`);
   console.log(
-    `PET   mood=${frame.mood} sprite=${frame.spriteIndex} speed=${moodSpeed(frame.mood)}px/s ` +
+    `PET   character=${frame.character} mood=${frame.mood} sprite=${frame.spriteIndex} speed=${moodSpeed(frame.mood)}px/s ` +
       `focus=${frame.focus?.name ?? 'none'}` +
       `${frame.focus?.usedPercent != null ? ` ${Math.round(frame.focus.usedPercent)}%` : ''}` +
       `${frame.showGlobalAlert ? ` + global ${frame.global.severity} badge` : ''}` +

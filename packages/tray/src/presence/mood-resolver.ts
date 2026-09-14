@@ -11,7 +11,10 @@ export function resolvePetMood(
   focus: ProviderPresence | null,
   event?: PresenceEvent | null,
 ): PetMood {
-  if (!focus) return 'healthy';
+  // `unknown` is a first-class state (Next Handoff Pack DECISIONS.md): no focus or no
+  // readable window means "no data", not a healthy 0%.
+  if (!focus) return 'unknown';
+  if (focus.severity === 'unknown') return 'unknown';
 
   if (event?.type === 'reset' && event.ownerKey === focus.key) return 'reset';
   if (focus.severity === 'crit') return 'critical';

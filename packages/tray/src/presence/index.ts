@@ -12,6 +12,8 @@ import { resolvePetMood, shouldShowGlobalAlert } from './mood-resolver.js';
 import { eventBubble } from './bubble.js';
 import { PET_POINT_WITHIN_MS, shortCountdown } from '../pet-state.js';
 import { MOOD_COLORS, SEVERITY_COLORS, SPRITE_INDEX } from '../pet/motion.js';
+import { isVectorCharacter, renderPetSvg } from '../pet/characters.js';
+import { animationPlayback, baseAnimationForMood } from '../pet/runtime.js';
 
 /**
  * The Presence Engine (docs/PET_MODE_V2_SPEC.md §6, §9, Phase 1).
@@ -36,6 +38,43 @@ export { selectFocus, EVENT_FOCUS_MS, DEFAULT_ROTATE_MS, type FocusOptions } fro
 export { resolvePetMood, shouldShowGlobalAlert } from './mood-resolver.js';
 export { createEventTracker, type EventTracker } from './event-tracker.js';
 export { statusBubble, eventBubble, daemonDownBubble, noDataBubble, snoozedBubble } from './bubble.js';
+export {
+  PET_CHARACTERS,
+  isPetCharacter,
+  coercePetCharacter,
+  isVectorCharacter,
+  petCharacterName,
+  renderPetSvg,
+  type PetCharacterDef,
+  type PetSvgOptions,
+} from '../pet/characters.js';
+export {
+  ANIMATION_PLAYBACK,
+  ONCE_DURATION_MS,
+  animationPlayback,
+  baseAnimationForMood,
+  isOnce,
+  type OnceAnimationId,
+} from '../pet/runtime.js';
+export {
+  DEFAULT_FALLBACK,
+  readManifest,
+  resolveAnimation,
+  validateManifest,
+  type ManifestIssue,
+  type ManifestValidation,
+  type ResolvedAnimation,
+} from '../pet/manifest.js';
+export {
+  createAnimationResolver,
+  toVisualState,
+  type AnimationDecision,
+  type AnimationEvent,
+  type AnimationResolver,
+  type PetInteraction,
+  type ResolveAnimationInput,
+  type VisualStateInput,
+} from '../pet/animation-resolver.js';
 
 export interface ResolvePetFrameInput {
   limits: Limit[];
@@ -84,6 +123,8 @@ export function resolvePetFrame(input: ResolvePetFrameInput): PetFrame {
       ? eventBubble(freshEvent, providers.find((p) => p.key === freshEvent.ownerKey), now)
       : null;
 
+  const baseAnimation = baseAnimationForMood(mood, !!bubble);
+
   return {
     mood,
     spriteIndex: SPRITE_INDEX[mood],
@@ -97,6 +138,21 @@ export function resolvePetFrame(input: ResolvePetFrameInput): PetFrame {
     bubble,
     movement: settings.movement,
     reducedMotion: settings.reducedMotion,
+    character: settings.character,
+    // Persistent base animation. `main.ts` layers transient overrides (intros/reset/
+    // hover/click) on top via the stateful resolver, which also suppresses restarts.
+    animation: baseAnimation,
+    animationPlayback: animationPlayback(baseAnimation),
+    // Filled by the main process from the character manifest when a raster clip exists.
+    animationSrc: null,
+    // Vector mascots are drawn from the frame's own mood/colour/percentage, so the art is
+    // resolved here where those values already exist. Raster mascots keep their asset set.
+    spriteSvg: isVectorCharacter(settings.character)
+      ? renderPetSvg(settings.character, mood, {
+          color: MOOD_COLORS[mood],
+          percent: focus?.usedPercent ?? null,
+        })
+      : null,
     hasData: providers.some((p) => p.usedPercent != null),
     updatedAt: now,
   };

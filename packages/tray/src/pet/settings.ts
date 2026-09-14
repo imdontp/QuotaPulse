@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { DEFAULT_PET_SETTINGS, type PetSettings } from '../presence/types.js';
+import { coercePetCharacter } from './characters.js';
 
 /**
  * Pet settings persistence (docs/PET_MODE_V2_SPEC.md §37–§38).
@@ -36,6 +37,9 @@ function coerce(raw: unknown): PetSettings {
     eventNotifications:
       typeof p.eventNotifications === 'boolean' ? p.eventNotifications : DEFAULT_PET_SETTINGS.eventNotifications,
     reducedMotion: typeof p.reducedMotion === 'boolean' ? p.reducedMotion : DEFAULT_PET_SETTINGS.reducedMotion,
+    // A file written before v2 has no character at all; an unknown slug falls back too,
+    // and the pre-Wave-1 hyphen form (`pulse-fox`) migrates to `pulse_fox`.
+    character: coercePetCharacter(p.character) ?? DEFAULT_PET_SETTINGS.character,
   };
 }
 

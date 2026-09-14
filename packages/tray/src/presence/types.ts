@@ -8,11 +8,124 @@
 /** Global quota severity. `unknown` is a first-class state, never a synonym for `ok`. */
 export type Severity = 'ok' | 'warn' | 'crit' | 'unknown';
 
-/** The five mascot states. `pulsepet_states_sprite.png` holds them in this order. */
-export type PetMood = 'healthy' | 'working' | 'warning' | 'critical' | 'reset';
+/**
+ * Mascot moods. `unknown` is a first-class state (Next Handoff Pack DECISIONS.md): it means
+ * insufficient or untrusted data, never a synonym for `healthy` and never 0%.
+ */
+export type PetMood = 'healthy' | 'working' | 'warning' | 'critical' | 'reset' | 'unknown';
 
 export type MovementMode = 'minimal' | 'companion' | 'roaming';
 export type FocusMode = 'auto' | 'pinned';
+
+/**
+ * Selectable mascots. IDs use the frozen underscore form from the Next Handoff Pack
+ * (`04_runtime_contract/pet-runtime-contract.ts`). The state engine is shared; only the
+ * renderer/asset set behind each id changes, so switching a character must never affect
+ * focus, thresholds, notification history or the pin.
+ */
+export type PetCharacterId = 'orbit_bot' | 'pulse_fox' | 'flux_blob' | 'capsule_cat';
+
+/** Manifest order; also the order the settings radio group is built in. */
+export const PET_CHARACTER_IDS: readonly PetCharacterId[] = [
+  'orbit_bot',
+  'pulse_fox',
+  'flux_blob',
+  'capsule_cat',
+];
+
+/** Default recommendation (DECISIONS.md — Character model). */
+export const DEFAULT_PET_CHARACTER: PetCharacterId = 'orbit_bot';
+
+/* ---------------------------------------------- Wave 1 animation runtime contract */
+
+/** The ten Wave 1 runtime animation IDs (WAVE1_PRODUCTION_ASSET_BIBLE.md §1). */
+export type PetAnimationId =
+  | 'healthy_idle'
+  | 'working_loop'
+  | 'warning_intro'
+  | 'warning_loop'
+  | 'critical_intro'
+  | 'critical_loop'
+  | 'reset_celebrate'
+  | 'talk_loop'
+  | 'hover_react'
+  | 'click_react';
+
+export const PET_ANIMATION_IDS: readonly PetAnimationId[] = [
+  'healthy_idle',
+  'working_loop',
+  'warning_intro',
+  'warning_loop',
+  'critical_intro',
+  'critical_loop',
+  'reset_celebrate',
+  'talk_loop',
+  'hover_react',
+  'click_react',
+];
+
+export type AnimationPlayback = 'loop' | 'once';
+
+/** `healthy_static` is the terminal fallback: the first frame of `healthy_idle`. */
+export type AnimationFallback = PetAnimationId | 'healthy_static';
+
+export interface PetAnimationAsset {
+  playback: AnimationPlayback;
+  src: string;
+  fallback: AnimationFallback;
+  /** Static/low-motion variant for reduced-motion mode, when the asset agent supplied one. */
+  reducedMotionSrc: string | null;
+}
+
+export interface PetManifestPivot {
+  x: number;
+  y: number;
+}
+
+/** One character manifest (schema: 04_runtime_contract/pet-manifest.schema.json). */
+export interface PetCharacterManifest {
+  id: PetCharacterId;
+  displayName: string;
+  assetVersion: number;
+  default?: boolean;
+  personality?: string[];
+  motionStyle?: string;
+  brandAnchors?: string[];
+  pivot: PetManifestPivot;
+  supportedSizes: number[];
+  animations: Partial<Record<PetAnimationId, PetAnimationAsset>>;
+}
+
+export type GlobalStatusSeverity = Severity;
+
+export interface PetGlobalStatus {
+  severity: GlobalStatusSeverity;
+  ownerKey: string | null;
+  usedPercent: number | null;
+}
+
+export interface PetFocusStatus {
+  ownerKey: string | null;
+  displayName: string | null;
+  usedPercent: number | null;
+  windowKind: string | null;
+  active: boolean;
+}
+
+/**
+ * Everything the renderer needs to pick an animation, resolved away from the character
+ * asset set (Next Handoff Pack Phase C). Provider/harness stay replaceable: this carries
+ * only normalized state.
+ */
+export interface PetVisualState {
+  characterId: PetCharacterId;
+  mood: PetMood;
+  animation: PetAnimationId;
+  global: PetGlobalStatus;
+  focus: PetFocusStatus;
+  bubbleOpen: boolean;
+  reducedMotion: boolean;
+}
 
 /** One quota window of a provider, as shown when the user asks about that provider. */
 export interface ProviderWindow {
@@ -106,6 +219,18 @@ export interface PetFrame {
   movement: MovementMode;
   /** User-forced reduced motion, layered on top of the OS `prefers-reduced-motion`. */
   reducedMotion: boolean;
+  /** The selected mascot (asset spec §18). Presentation only; never affects focus/mood. */
+  character: PetCharacterId;
+  /** Resolved Wave 1 animation (Next Handoff Pack). Base by default; main may override. */
+  animation: PetAnimationId;
+  animationPlayback: AnimationPlayback;
+  /** Raster clip URL for the resolved animation, when one exists on disk; else null. */
+  animationSrc: string | null;
+  /**
+   * Inline SVG for the selected mascot, when it renders as vector art. `null` means the
+   * character ships raster art and the renderer should use its sprite/WebP asset set.
+   */
+  spriteSvg: string | null;
   hasData: boolean;
   updatedAt: number;
 }
@@ -119,6 +244,8 @@ export interface PetSettings {
   speechBubbles: boolean;
   eventNotifications: boolean;
   reducedMotion: boolean;
+  /** Selected mascot (asset spec §18). Added in v2; older files fall back to the default. */
+  character: PetCharacterId;
 }
 
 /** The spec's defaults (§38). Minimal motion is deliberate: motion is the last priority. */
@@ -131,6 +258,7 @@ export const DEFAULT_PET_SETTINGS: PetSettings = {
   speechBubbles: true,
   eventNotifications: true,
   reducedMotion: false,
+  character: DEFAULT_PET_CHARACTER,
 };
 
 /** Severity bands, shared with the tray icon (`severityFor`). Kept here as the one source. */

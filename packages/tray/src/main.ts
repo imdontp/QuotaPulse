@@ -26,14 +26,27 @@ import {
   daemonDownBubble,
   noDataBubble,
   snoozedBubble,
+  PET_CHARACTERS,
+  isVectorCharacter,
+  renderPetSvg,
+  createAnimationResolver,
+  readManifest,
+  resolveAnimation,
+  validateManifest,
+  type AnimationEvent,
   type PetBubble,
+  type PetCharacterId,
+  type PetCharacterManifest,
   type PetFrame,
+  type PetInteraction,
+  type PetMood,
   type PetSettings,
   type PresenceEvent,
   type ProviderPresence,
   type Severity,
   type SubscriptionInfo,
 } from './presence/index.js';
+import { MOOD_COLORS } from './pet/motion.js';
 import { loadPetSettings, savePetSettings } from './pet/settings.js';
 import { loadPetPosition, savePetPosition } from './pet/position.js';
 
@@ -113,6 +126,14 @@ let lastActivityBubbleAt = 0;
 /** The interactive bubble the pet is currently showing, if any (spec §23). */
 let interactiveBubble: PetBubble | null = null;
 const presenceEvents = createEventTracker();
+
+/** Wave 1 animation runtime (Next Handoff Pack): resolver, manifests, transient queues. */
+const animationResolver = createAnimationResolver();
+let pendingAnimationEvents: AnimationEvent[] = [];
+let pendingInteraction: PetInteraction = null;
+const characterManifests = new Map<PetCharacterId, PetCharacterManifest>();
+const warnedAnimationKeys = new Set<string>();
+const ASSETS_DIR = join(REPO_ROOT, 'packages', 'tray', 'assets');
 
 function readLock(): Lock | null {
   if (!existsSync(LOCK_PATH)) return null;
@@ -222,6 +243,11 @@ function runPresenceEvents(): void {
       lastActivityBubbleAt = Date.now();
     }
     if (!lastEvent || rank[event.type]! >= rank[lastEvent.type]!) lastEvent = event;
+    // Transient animation intros (Phase D): a threshold/reset event temporarily overrides
+    // the persistent loop in the resolver, then settles back into it.
+    if (event.type === 'critical' || event.type === 'warning' || event.type === 'reset') {
+      pendingAnimationEvents.push({ type: event.type });
+    }
     notifyEvent(event, base.providers);
   }
 }
@@ -631,7 +657,8 @@ function sendPetPosition(): void {
 }
 
 function pushPetState(): void {
-  if (!pet || pet.isDestroyed() || pet.webContents.isLoading()) return;
+  // Resolve regardless of whether the pet window is open: the tray menu summary, the
+  // status bubble and the quota popup's mascot all read `lastFrame`.
   lastFrame = resolvePetFrame({
     limits,
     subscriptions,
@@ -641,7 +668,104 @@ function pushPetState(): void {
   });
   // An interactive bubble wins over the automatic one: the user is asking, so answer.
   if (interactiveBubble) lastFrame = { ...lastFrame, bubble: interactiveBubble };
-  pet.webContents.send('qp-pet-state', lastFrame);
+  lastFrame = applyAnimation(lastFrame);
+  if (pet && !pet.isDestroyed() && !pet.webContents.isLoading()) {
+    pet.webContents.send('qp-pet-state', lastFrame);
+  }
+  sendPopupSprite();
+}
+
+/**
+ * The quota popup shows the same mascot as the Pet (asset spec §18). The tray already
+ * resolved the character, so it sends the mark rather than making the web app duplicate
+ * the renderer; `null` tells the popup to fall back to the raster asset set.
+ */
+function sendPopupSprite(): void {
+  if (!quotaPopup || quotaPopup.isDestroyed() || quotaPopup.webContents.isLoading()) return;
+  const frame = lastFrame;
+  if (!frame) return;
+  const mood: PetMood =
+    frame.global.severity === 'crit' ? 'critical' : frame.global.severity === 'warn' ? 'warning' : 'healthy';
+  quotaPopup.webContents.send(
+    'qp-popup-sprite',
+    isVectorCharacter(frame.character)
+      ? renderPetSvg(frame.character, mood, {
+          color: MOOD_COLORS[mood],
+          percent: frame.global.highest?.usedPercent ?? null,
+        })
+      : null,
+  );
+}
+
+/** Load + validate the four character manifests (Next Handoff Pack Phase A). */
+function loadCharacterManifests(): void {
+  for (const c of PET_CHARACTERS) {
+    // Manifest ids are underscore (`orbit_bot`); asset folders are hyphen (`orbit-bot`).
+    const path = join(ASSETS_DIR, 'pets', c.id.replace(/_/g, '-'), 'manifest.json');
+    if (!existsSync(path)) {
+      console.error(`[pet] manifest missing for ${c.id}: ${path}`);
+      continue;
+    }
+    try {
+      const { manifest, validation } = readManifest(path);
+      characterManifests.set(c.id, manifest);
+      for (const issue of validation.issues) {
+        console.error(`[pet] manifest ${c.id} invalid at ${issue.path}: ${issue.message}`);
+      }
+    } catch (err) {
+      console.error(`[pet] manifest ${c.id} unreadable: ${String(err)}`);
+    }
+  }
+}
+
+/** `/assets/pets/x/y.webp` -> a URL the pet window can load, when the file exists on disk. */
+function localAssetUrl(src: string): string | null {
+  const rel = src.replace(/^\/?assets\//, '');
+  return existsSync(join(ASSETS_DIR, rel)) ? `../assets/${rel}` : null;
+}
+
+/**
+ * Layer the Wave 1 animation decision onto a frame: transient intros/reactions override
+ * the persistent base, restart suppression lives in the resolver, and a manifest asset is
+ * used only when it actually exists (otherwise the renderer draws the vector placeholder).
+ */
+function applyAnimation(frame: PetFrame): PetFrame {
+  const events = pendingAnimationEvents;
+  const interaction = pendingInteraction;
+  pendingAnimationEvents = [];
+  pendingInteraction = null;
+
+  const manifest = characterManifests.get(frame.character);
+  const decision = animationResolver.resolve({
+    characterId: frame.character,
+    assetVersion: manifest?.assetVersion ?? 1,
+    mood: frame.mood,
+    bubbleOpen: !!frame.bubble,
+    reducedMotion: frame.reducedMotion,
+    now: Date.now(),
+    events,
+    interaction,
+  });
+
+  const resolved = manifest
+    ? resolveAnimation(manifest, decision.animation, {
+        reducedMotion: frame.reducedMotion,
+        warn: (message) => console.warn(message),
+        warned: warnedAnimationKeys,
+      })
+    : null;
+
+  // Under reduced motion a looping clip without a supplied still variant must not play:
+  // drop the raster source so the renderer uses its safe static fallback instead
+  // (ACCEPTANCE_TEST_MATRIX.md — Reduced motion).
+  const allowRaster = resolved != null && !(frame.reducedMotion && resolved.static && !resolved.reducedVariant);
+
+  return {
+    ...frame,
+    animation: decision.animation,
+    animationPlayback: decision.playback,
+    animationSrc: allowRaster && resolved?.src ? localAssetUrl(resolved.src) : null,
+  };
 }
 
 /** Build the hover/click status bubble for whatever the Pet is focused on (spec §23). */
@@ -745,14 +869,22 @@ function registerCompanionIpc(): void {
     const sender = BrowserWindow.fromWebContents(event.sender);
     if (sender !== pet || !pet || pet.isDestroyed()) return;
     pet.setIgnoreMouseEvents(!over, { forward: true });
-    if (over) showStatusBubble();
-    else clearStatusBubble();
+    if (over) {
+      // At most one hover_react per hover entry (ACCEPTANCE_TEST_MATRIX.md — Interaction).
+      pendingInteraction = 'hover';
+      showStatusBubble();
+    } else {
+      clearStatusBubble();
+    }
   });
   // Left click opens the details popup. Hovering already answers "how is this provider
   // doing?", so a click asking the same question would be redundant -- it opens the
   // full quota popup instead, and the double click goes straight to the dashboard.
   ipcMain.on('qp-pet-click', (_event, centerX: number) => {
     if (typeof centerX === 'number' && Number.isFinite(centerX)) petCenterX = centerX;
+    // click_react plays once before the popup takes over (ACCEPTANCE_TEST_MATRIX.md).
+    pendingInteraction = 'click';
+    pushPetState();
     openQuotaPopup();
   });
   ipcMain.on('qp-pet-open-dashboard', () => openBrowser());
@@ -783,6 +915,7 @@ function registerCompanionIpc(): void {
       render();
     }
   });
+  ipcMain.on('qp-popup-ready', () => sendPopupSprite());
   ipcMain.on('qp-popup-refresh', () => void fetchLimits());
   ipcMain.on('qp-popup-open-dashboard', () => openBrowser());
   ipcMain.on('qp-popup-hide-pet', () => setPetEnabled(false));
@@ -880,11 +1013,25 @@ function openPetMenu(): void {
       pushPetState();
     },
   }));
+  // Asset spec §18: switching the mascot changes presentation only, so focus, pin,
+  // thresholds and notification history are all deliberately left untouched here.
+  const characterItems: Electron.MenuItemConstructorOptions[] = PET_CHARACTERS.map((c) => ({
+    label: c.name,
+    type: 'radio',
+    checked: petSettings.character === c.id,
+    click: () => {
+      if (petSettings.character === c.id) return;
+      petSettings = { ...petSettings, character: c.id };
+      savePetSettings(DATA_DIR, petSettings);
+      pushPetState();
+    },
+  }));
   Menu.buildFromTemplate([
     { label: 'Open dashboard', click: openBrowser },
     { type: 'separator' },
     { label: 'Focus', submenu: focusItems },
     { label: 'Movement', submenu: movementItems },
+    { label: 'Pet character', submenu: characterItems },
     { label: 'Rotate every', submenu: rotateItems },
     { type: 'separator' },
     {
@@ -992,6 +1139,7 @@ app.on('window-all-closed', () => {
 void app.whenReady().then(() => {
   app.setAppUserModelId('dev.quotapulse.tray');
   ensureDaemon();
+  loadCharacterManifests();
   registerCompanionIpc();
 
   tray = new Tray(nativeImage.createFromBuffer(trayIconFor(null)));

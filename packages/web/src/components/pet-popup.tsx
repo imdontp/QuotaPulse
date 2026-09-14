@@ -36,6 +36,30 @@ function SpriteMark({ ov }: { ov: Overview | null }) {
   const worst = ov ? worstLimit(ov) : null;
   const frame = SPRITE_FOR_SEVERITY[worst ? severityOf(worst.used_percent) : 'ok'];
   const reduced = useReducedMotion();
+  // The tray owns the selected mascot (asset spec §18) and pushes its SVG here, so the
+  // popup shows the same character without duplicating the renderer. Null = raster set.
+  const [spriteSvg, setSpriteSvg] = useState<string | null>(null);
+
+  useEffect(() => {
+    const bridge = window.qpPopup;
+    if (!bridge?.onSprite) return;
+    const off = bridge.onSprite(setSpriteSvg);
+    bridge.ready();
+    return off;
+  }, []);
+
+  if (spriteSvg) {
+    return (
+      <motion.div
+        aria-hidden="true"
+        className="shrink-0 [&>svg]:h-full [&>svg]:w-full"
+        style={{ width: SPRITE_SIZE, height: SPRITE_SIZE }}
+        animate={reduced ? undefined : { y: [0, -2, 0] }}
+        transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+        dangerouslySetInnerHTML={{ __html: spriteSvg }}
+      />
+    );
+  }
   return (
     <motion.div
       aria-hidden="true"

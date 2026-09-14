@@ -12,6 +12,10 @@ interface QpPopupBridge {
   hidePet(): void;
   showPet(): void;
   close(): void;
+  /** Ask the tray for the selected mascot's SVG mark. */
+  ready(): void;
+  /** Receives the selected character's SVG mark, or null for the raster asset set. */
+  onSprite(cb: (svg: string | null) => void): () => void;
 }
 
 interface Window {

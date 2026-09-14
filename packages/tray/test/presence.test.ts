@@ -161,7 +161,7 @@ test('mood follows the focused provider, not the global worst', () => {
   assert.equal(resolvePetMood({ ...by('claude'), severity: 'warn' }), 'warning');
   assert.equal(resolvePetMood(by('openai')), 'working');
   assert.equal(resolvePetMood(by('claude')), 'healthy');
-  assert.equal(resolvePetMood(null), 'healthy');
+  assert.equal(resolvePetMood(null), 'unknown', 'no focus means unknown data, not healthy');
   assert.equal(
     resolvePetMood(by('claude'), { type: 'reset', ownerKey: 'claude', at: NOW }),
     'reset',
@@ -288,7 +288,7 @@ test('an unknown provider is neither critical nor active', () => {
     ageSeconds: null,
     windows: [],
   };
-  assert.equal(resolvePetMood(provider), 'healthy');
+  assert.equal(resolvePetMood(provider), 'unknown');
   assert.equal(resolveGlobalSeverity([provider]), 'unknown');
 });
 
@@ -306,6 +306,26 @@ test('a provider presence carries every live window, worst first', () => {
   );
   assert.equal(p!.usedPercent, 80, 'the mood still follows the worst window');
   assert.equal(p!.windowKind, 'weekly');
+});
+
+test('the selected character is presentation only: it never changes focus or mood', () => {
+  const limits = trio([90, 35, 20]);
+  const subscriptions = trioSubs.map((s) =>
+    s.subscription_key === 'openai' ? { ...s, telemetry: { latest_usage_at: NOW - 1_000 } } : s,
+  );
+  const base = resolvePetFrame({ limits, subscriptions, settings: DEFAULT_PET_SETTINGS, now: NOW });
+  assert.equal(base.character, 'orbit_bot');
+  assert.equal(base.spriteSvg, null, 'the default mascot prefers its raster clips');
+
+  const fox: PetSettings = { ...DEFAULT_PET_SETTINGS, character: 'pulse_fox' };
+  const withFox = resolvePetFrame({ limits, subscriptions, settings: fox, now: NOW });
+  assert.equal(withFox.character, 'pulse_fox');
+  assert.match(withFox.spriteSvg!, /data-character="pulse_fox"/);
+  // Switching the mascot must not disturb the contextual decision.
+  assert.equal(withFox.focus!.key, base.focus!.key);
+  assert.equal(withFox.mood, base.mood);
+  assert.equal(withFox.global.severity, base.global.severity);
+  assert.equal(withFox.bubble, base.bubble);
 });
 
 test('the hover bubble lists every window of the focused provider', () => {

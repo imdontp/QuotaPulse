@@ -8,13 +8,14 @@ import type { PetMood, Severity } from '../presence/types.js';
  * palette (see the note in icon.ts about mirroring the dashboard tokens by hand).
  */
 
-/** Sprite order in `pulsepet_states_sprite.png`, left to right. */
+/** Sprite order in `pulsepet_states_sprite.png`, left to right. Unknown reuses frame 0. */
 export const SPRITE_INDEX: Record<PetMood, number> = {
   healthy: 0,
   working: 1,
   warning: 2,
   critical: 3,
   reset: 4,
+  unknown: 0,
 };
 
 /** Mirrors --ok / --brand / --warn / --crit from packages/web/src/index.css. */
@@ -24,6 +25,7 @@ export const MOOD_COLORS: Record<PetMood, string> = {
   warning: '#ffb020',
   critical: '#ff4d4f',
   reset: '#22d3a7',
+  unknown: '#8a939e',
 };
 
 export const SEVERITY_COLORS: Record<Severity, string> = {

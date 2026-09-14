@@ -41,7 +41,7 @@
   #pet {
     position: absolute;
     inset: 0;
-    background-image: url('../assets/pulsepet_states_sprite.png');
+    background-image: url('../assets/pets/orbit-bot/sprite/pulsepet_states_sprite.png');
     background-repeat: no-repeat;
     background-size: 320px 64px;
     background-position: 0 0;
@@ -56,7 +56,7 @@
   #pet-wrap.working #pet { animation: breathe 1.5s ease-in-out infinite; }
   #pet-wrap.warning #pet { animation: warnBob 2.6s ease-in-out infinite; }
   #pet-wrap.critical #pet { animation: droop 4.5s ease-in-out infinite; }
-  #pet-wrap.reset #pet { animation: bounce 640ms cubic-bezier(0.34, 1.56, 0.64, 1) 2; }
+  #pet-wrap.reset #pet { animation: bounce 640ms cubic-bezier(0.34, 1.56, 0.64, 1) 4; }
   #pet-wrap.idle #pet { opacity: 0.62; animation: breathe 5s ease-in-out infinite; }
   /* A single short shake when the Pet ENTERS critical; it must not shake forever. */
   #pet-wrap.shake-once #pet { animation: shakeOnce 240ms ease-in-out 2; }
@@ -98,7 +98,7 @@
 
   /* Reset sparkles: four brand ticks that flash outward once per bounce cycle. */
   #sparkles { position: absolute; inset: 0; pointer-events: none; opacity: 0; }
-  #pet-wrap.reset #sparkles { animation: sparkle 640ms ease-out 2; }
+  #pet-wrap.reset #sparkles { animation: sparkle 640ms ease-out 4; }
   #sparkles i { position: absolute; width: 2px; height: 7px; border-radius: 2px; background: var(--pet); }
   #sparkles i:nth-child(1) { top: 4px; left: 6px; transform: rotate(-35deg); }
   #sparkles i:nth-child(2) { top: 0; right: 10px; transform: rotate(25deg); }
@@ -197,10 +197,86 @@
   }
   #bubble button:hover { background: #25313f; }
 
+  /*
+   * ---- Expression layer (asset spec §4, §11, §28) --------------------------
+   * Vector mascots expose stable part classes, so blink / scan / talk / tail / antenna /
+   * legs animate inside the artwork without re-resolving the frame. Body motion per mood
+   * already lives on #pet above; these target the SVG's own parts.
+   */
+  .qp-sprite, .qp-head, .qp-eye, .qp-look, .qp-mouth, .qp-tail, .qp-ear,
+  .qp-antenna, .qp-leg, .qp-live {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .qp-leg { transform-origin: center bottom; }
+  .qp-tail { transform-origin: 15% 85%; }
+  .qp-head { transform-origin: center bottom; }
+
+  #pet-wrap .qp-eye { animation: qpBlink 5.4s ease-in-out infinite; }
+  #pet-wrap .qp-tail { animation: qpTail 4.2s ease-in-out infinite; }
+  #pet-wrap .qp-antenna { animation: qpAntenna 3s ease-in-out infinite; }
+  #pet-wrap .qp-live { animation: qpLive 2.4s ease-in-out infinite; }
+
+  /* Working: focused eye scan + a faster live dot. */
+  #pet-wrap.working .qp-look { animation: qpScan 1.6s ease-in-out infinite; }
+  #pet-wrap.working .qp-live { animation-duration: 0.9s; }
+
+  /* Warning tilts its head; critical and reset keep their drawn expression still. */
+  #pet-wrap.warning .qp-head { animation: qpTilt 2.6s ease-in-out infinite; }
+  #pet-wrap.critical .qp-eye, #pet-wrap.reset .qp-eye { animation: none; }
+
+  /* Transient reactions (spec §26, §28). */
+  #pet-wrap.talking .qp-mouth { animation: qpTalk 300ms ease-in-out infinite; }
+  #pet-wrap.hovering .qp-sprite { animation: qpHover 600ms ease-out 1; }
+  #pet-wrap.clicked .qp-sprite { animation: qpClick 340ms cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
+  #pet-wrap.walking .qp-sprite { animation: qpWalkBob 420ms ease-in-out infinite; }
+  #pet-wrap.walking .qp-leg { animation: qpLeg 420ms ease-in-out infinite; }
+  #pet-wrap.walking .qp-leg-r { animation-delay: -210ms; }
+  #pet-wrap.turning .qp-sprite { animation: qpTurn 320ms ease-out 1; }
+
+  @keyframes qpBlink { 0%, 90%, 100% { transform: scaleY(1); } 94%, 96% { transform: scaleY(0.1); } }
+  @keyframes qpTail { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(7deg); } }
+  @keyframes qpAntenna { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+  @keyframes qpLive { 0%, 100% { opacity: 0.65; transform: scale(1); } 50% { opacity: 1; transform: scale(1.18); } }
+  @keyframes qpScan { 0%, 100% { transform: translateX(-1.2px); } 50% { transform: translateX(1.2px); } }
+  @keyframes qpTilt { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+  @keyframes qpTalk { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.45); } }
+  @keyframes qpHover { 0% { transform: translateY(0); } 40% { transform: translateY(-4px); } 100% { transform: translateY(0); } }
+  @keyframes qpClick { 0% { transform: scale(1, 1); } 40% { transform: scale(1.12, 0.88); } 100% { transform: scale(1, 1); } }
+  @keyframes qpWalkBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+  @keyframes qpLeg { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.5px); } }
+  @keyframes qpTurn { 0% { transform: scaleX(0.7); } 100% { transform: scaleX(1); } }
+
+  /* Wave 1 transient intros (Next Handoff Pack §4 state transitions). */
+  #pet-wrap.unknown #pet { opacity: 0.72; animation: breathe 5s ease-in-out infinite; }
+  #pet-wrap.intro-warning .qp-sprite { animation: qpWarnFlash 900ms ease-out 1; }
+  #pet-wrap.intro-critical .qp-sprite { animation: qpCritShake 900ms ease-out 1; }
+  #pet-wrap.celebrate .qp-sprite { animation: qpCelebrate 900ms ease-out 1; }
+  @keyframes qpWarnFlash {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.08) rotate(-3deg); }
+    100% { transform: scale(1); }
+  }
+  @keyframes qpCritShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-3px); }
+    40% { transform: translateX(3px); }
+    60% { transform: translateX(-2px); }
+    80% { transform: translateX(2px); }
+  }
+  @keyframes qpCelebrate {
+    0% { transform: translateY(0); }
+    35% { transform: translateY(-8px) scale(1.05); }
+    100% { transform: translateY(0); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    #pet, #pet-wrap #pet, #sparkles, #halo span::after { animation: none !important; }
+    #pet, #pet-wrap #pet, #pet-wrap #pet *, #sparkles, #halo span::after { animation: none !important; }
     #sparkles { display: none; }
   }
+  /* User-forced reduced motion, layered on top of the OS preference (spec §35). */
+  #pet-wrap.reduced-motion #pet,
+  #pet-wrap.reduced-motion #pet * { animation: none !important; }
 </style>
 </head>
 <body>
@@ -233,7 +309,9 @@
   var RANGE = { minimal: [0, 0], companion: [20, 80], roaming: [120, 520] };
   /* The pack names the healthy loop `idle`, not `healthy`; the map keeps that quirk in one
      place instead of string-building a filename that silently 404s to a blank sprite. */
-  var LOOP_ART = { healthy: 'pulsepet_idle.webp', working: 'pulsepet_working.webp' };
+  var LOOP_ART = { healthy: 'idle/pulsepet_idle.webp', working: 'working/pulsepet_working.webp' };
+  /* Raster asset root for the default Orbit Bot (asset spec §17 layout). */
+  var ORBIT_ASSETS = '../assets/pets/orbit-bot/';
   /* Bubble button labels (spec §25). `details` opens the popup, which is also what a left
      click does, so the button keeps the label the spec's example bubble shows. */
   var ACTION_LABEL = {
@@ -247,7 +325,9 @@
   var frame = {
     mood: 'idle', spriteIndex: 0, colorCss: '#8a939e', alertColorCss: '#8a939e',
     showGlobalAlert: false, badge: null, bubble: null, movement: 'minimal',
-    hasData: false, reducedMotion: false, focus: null, providers: []
+    hasData: false, reducedMotion: false, focus: null, providers: [],
+    character: 'orbit_bot', spriteSvg: null,
+    animation: 'healthy_idle', animationPlayback: 'loop', animationSrc: null
   };
   var x = Math.max(0, Math.floor(window.innerWidth / 2 - SIZE / 2));
   var anchorX = x;
@@ -265,12 +345,41 @@
   var bubbleKey = '';
   var bubbleHideTimer = null;
   var lastMood = 'idle';
+  /* Key of the currently injected vector mascot, so a repaint does not restart it. */
+  var lastSvgKey = null;
+  /* Last raster clip URL chosen from the manifest; avoids reloading the same clip. */
+  var lastRasterSrc = null;
+  /* Last resolved animation id, so a `once` reaction retriggers only when it changes. */
+  var lastAnimation = null;
+  /*
+   * Wave 1 animation ids that add a one-shot expression class on top of the mood. Presence
+   * is resolved in the tray; the renderer only maps the resolved id to motion (Phase C).
+   */
+  var ONCE_ANIM_CLASS = {
+    warning_intro: 'intro-warning',
+    critical_intro: 'intro-critical',
+    reset_celebrate: 'celebrate',
+    hover_react: 'hovering',
+    click_react: 'clicked'
+  };
+  var ONCE_ANIM_MS = {
+    warning_intro: 1100, critical_intro: 1000, reset_celebrate: 2800,
+    hover_react: 600, click_react: 750
+  };
 
   // ---- Painting -------------------------------------------------------------
   function paint() {
     // Settings can force reduced motion on top of the OS preference (spec §35, §37).
     reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches || !!frame.reducedMotion;
-    wrap.className = frame.hasData ? frame.mood : 'idle';
+    // Swap only the mood class: transient classes (hovering/walking/talking...) must survive
+    // a repaint, which happens on every poll.
+    var moodClass = frame.hasData ? frame.mood : 'idle';
+    if (!wrap.classList.contains(moodClass)) {
+      wrap.classList.remove('healthy', 'working', 'warning', 'critical', 'reset', 'idle');
+      wrap.classList.add(moodClass);
+    }
+    wrap.classList.toggle('reduced-motion', !!frame.reducedMotion);
+    applyAnimationClass();
     wrap.style.setProperty('--pet', frame.colorCss);
     badge.style.setProperty('--pet', frame.colorCss);
     halo.style.setProperty('--alert', frame.alertColorCss);
@@ -300,6 +409,22 @@
     scheduleIdle();
   }
 
+  /*
+   * Map the tray-resolved Wave 1 animation id onto the expression layer. Only a change of
+   * id retriggers a one-shot, so a quota refresh that keeps the same base loop never
+   * restarts motion (Next Handoff Pack — restart suppression). Strong reactions are
+   * skipped under reduced motion; the manifest already downgraded them to a safe variant.
+   */
+  function applyAnimationClass() {
+    if (frame.animation === lastAnimation) return;
+    lastAnimation = frame.animation;
+    var cls = ONCE_ANIM_CLASS[frame.animation];
+    if (!cls) return;
+    if (reduced && (frame.animation === 'critical_intro' || frame.animation === 'warning_intro' || frame.animation === 'reset_celebrate')) return;
+    wrap.classList.add(cls);
+    setTimeout(function () { wrap.classList.remove(cls); }, ONCE_ANIM_MS[frame.animation] || 900);
+  }
+
   // ---- Expression layer (spec §28, §31) ------------------------------------
   /*
    * Healthy and working have looping artwork with blink and eye-scan, so the expression
@@ -309,16 +434,57 @@
    * motion §35 says to suppress.
    */
   function applyArt() {
+    /*
+     * Vector mascots arrive pre-resolved in the frame (engine owns mood/colour/ring), so
+     * the renderer only swaps the markup when the key actually changes -- a repaint every
+     * 15s must not restart the artwork. Raster mascots keep their sprite/WebP asset set.
+     */
+    // A real Wave 1 clip exists for this animation (Orbit Bot healthy/working today):
+    // prefer it over the placeholder art, reloading only when the clip changes.
+    if (frame.animationSrc) {
+      if (lastRasterSrc !== frame.animationSrc) {
+        lastRasterSrc = frame.animationSrc;
+        lastSvgKey = null;
+        pet.innerHTML = '';
+        pet.style.backgroundImage = "url('" + frame.animationSrc + "')";
+        pet.style.backgroundSize = 'contain';
+        pet.style.backgroundPosition = 'center bottom';
+      }
+      return;
+    }
+    if (lastRasterSrc !== null) lastRasterSrc = null;
+
+    if (frame.spriteSvg) {
+      var pct = frame.focus && frame.focus.usedPercent != null
+        ? Math.round(frame.focus.usedPercent / 2) * 2
+        : 'x';
+      var svgKey = frame.character + '|' + frame.mood + '|' + pct;
+      if (svgKey !== lastSvgKey) {
+        lastSvgKey = svgKey;
+        pet.innerHTML = frame.spriteSvg;
+      }
+      pet.style.backgroundImage = 'none';
+      return;
+    }
+    if (lastSvgKey !== null) {
+      lastSvgKey = null;
+      pet.innerHTML = '';
+    }
     var loop = reduced ? null : LOOP_ART[frame.mood];
     if (loop) {
-      pet.style.backgroundImage = "url('../assets/" + loop + "')";
+      pet.style.backgroundImage = "url('" + ORBIT_ASSETS + loop + "')";
       pet.style.backgroundSize = SIZE + 'px ' + SIZE + 'px';
       pet.style.backgroundPosition = '0 0';
       return;
     }
-    pet.style.backgroundImage = "url('../assets/pulsepet_states_sprite.png')";
+    pet.style.backgroundImage = "url('" + ORBIT_ASSETS + 'sprite/pulsepet_states_sprite.png' + "')";
     pet.style.backgroundSize = SIZE * 5 + 'px ' + SIZE + 'px';
     pet.style.backgroundPosition = '-' + ((frame.spriteIndex || 0) * SIZE) + 'px 0';
+  }
+
+  /* The mascot mouths along while a bubble is visible (asset spec §4 talk). */
+  function setTalking() {
+    wrap.classList.toggle('talking', bubble.classList.contains('show'));
   }
 
   function paintBubble() {
@@ -327,7 +493,7 @@
     if (key === bubbleKey) return;
     bubbleKey = key;
     if (bubbleHideTimer) { clearTimeout(bubbleHideTimer); bubbleHideTimer = null; }
-    if (!b) { bubble.classList.remove('show'); return; }
+    if (!b) { bubble.classList.remove('show'); setTalking(); return; }
     bubble.className = 'tone-' + b.tone;
     bubble.querySelector('.b-title').textContent = b.title;
     bubble.querySelector('.b-lines').innerHTML = b.lines.map(function (line) {
@@ -345,9 +511,11 @@
       actions.appendChild(btn);
     });
     bubble.classList.add('show');
+    setTalking();
     if (b.until) {
       bubbleHideTimer = setTimeout(function () {
         bubble.classList.remove('show');
+        setTalking();
       }, Math.max(0, b.until - Date.now()));
     }
   }
@@ -448,8 +616,15 @@
             anchorX + (Math.random() < 0.5 ? -1 : 1) * (r[0] + Math.random() * (r[1] - r[0])),
           ),
         );
+    var prevDir = dir;
     dir = targetX < x ? -1 : 1;
+    if (dir !== prevDir) {
+      // A short turn lean when the mascot changes direction (asset spec §4 turn).
+      wrap.classList.add('turning');
+      setTimeout(function () { wrap.classList.remove('turning'); }, 340);
+    }
     walking = true;
+    wrap.classList.add('walking');
     loop();
   }
 
@@ -464,6 +639,7 @@
     });
     if (ahead.length === 0) {
       walking = false;
+      wrap.classList.remove('walking');
       targetX = x;
       anchorX = x;
       return;
@@ -490,6 +666,7 @@
       if (Math.abs(targetX - x) <= step || speed === 0) {
         x = targetX;
         walking = false;
+        wrap.classList.remove('walking');
         anchorX = x;
         if (window.qpPet) window.qpPet.moved(Math.round(x));
       } else {
@@ -515,6 +692,8 @@
     var over = interactiveAt({ clientX: lastMouse.x, clientY: lastMouse.y });
     if (over !== hoverOver) {
       hoverOver = over;
+      // Curious/react pose while the pointer is on the mascot (asset spec §4 hover_react).
+      wrap.classList.toggle('hovering', over);
       window.qpPet.hover(over);
     }
   }
@@ -528,6 +707,7 @@
   // clicks, so the click-through state is reset the moment the cursor leaves.
   document.addEventListener('mouseleave', function () {
     lastMouse = null;
+    wrap.classList.remove('hovering');
     if (hoverOver && window.qpPet) {
       hoverOver = false;
       window.qpPet.hover(false);
@@ -536,6 +716,9 @@
 
   pet.addEventListener('click', function (e) {
     e.stopPropagation();
+    // A quick squash acknowledges the press (asset spec §4 click_react).
+    wrap.classList.add('clicked');
+    setTimeout(function () { wrap.classList.remove('clicked'); }, 360);
     // Wait out the double-click window so a dblclick does not also toggle the bubble.
     if (clickTimer) return;
     clickTimer = setTimeout(function () {

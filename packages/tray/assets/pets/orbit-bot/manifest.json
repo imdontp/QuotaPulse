@@ -1,0 +1,90 @@
+{
+  "id": "orbit_bot",
+  "displayName": "Orbit Bot",
+  "personality": [
+    "reliable",
+    "technical",
+    "focused",
+    "playful"
+  ],
+  "motionStyle": "soft_mechanical",
+  "brandAnchors": [
+    "chest_quota_ring",
+    "usage_bars",
+    "antenna_live_dot",
+    "screen_face"
+  ],
+  "default": true,
+  "assetVersion": 1,
+  "pivot": {
+    "x": 0.5,
+    "y": 0.92
+  },
+  "supportedSizes": [
+    512,
+    256,
+    128
+  ],
+  "animations": {
+    "healthy_idle": {
+      "playback": "loop",
+      "fallback": "healthy_static",
+      "src": "/assets/pets/orbit-bot/healthy_idle.webp",
+      "reducedMotionSrc": null
+    },
+    "working_loop": {
+      "playback": "loop",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/orbit-bot/working_loop.webp",
+      "reducedMotionSrc": null
+    },
+    "warning_intro": {
+      "playback": "once",
+      "fallback": "warning_loop",
+      "src": "/assets/pets/orbit-bot/warning_intro.webp",
+      "reducedMotionSrc": "/assets/pets/orbit-bot/warning_intro_reduced.webp"
+    },
+    "warning_loop": {
+      "playback": "loop",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/orbit-bot/warning_loop.webp",
+      "reducedMotionSrc": null
+    },
+    "critical_intro": {
+      "playback": "once",
+      "fallback": "critical_loop",
+      "src": "/assets/pets/orbit-bot/critical_intro.webp",
+      "reducedMotionSrc": "/assets/pets/orbit-bot/critical_intro_reduced.webp"
+    },
+    "critical_loop": {
+      "playback": "loop",
+      "fallback": "warning_loop",
+      "src": "/assets/pets/orbit-bot/critical_loop.webp",
+      "reducedMotionSrc": null
+    },
+    "reset_celebrate": {
+      "playback": "once",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/orbit-bot/reset_celebrate.webp",
+      "reducedMotionSrc": "/assets/pets/orbit-bot/reset_celebrate_reduced.webp"
+    },
+    "talk_loop": {
+      "playback": "loop",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/orbit-bot/talk_loop.webp",
+      "reducedMotionSrc": null
+    },
+    "hover_react": {
+      "playback": "once",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/orbit-bot/hover_react.webp",
+      "reducedMotionSrc": null
+    },
+    "click_react": {
+      "playback": "once",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/orbit-bot/click_react.webp",
+      "reducedMotionSrc": null
+    }
+  }
+}
