@@ -16,13 +16,13 @@ import {
 
 const MOODS: PetMood[] = ['healthy', 'working', 'warning', 'critical', 'reset', 'unknown'];
 
-test('the registry ships the four documented mascots with Orbit Bot as default', () => {
+test('the registry ships originals and approved bonus mascots with Orbit Bot as default', () => {
   assert.deepEqual(
     PET_CHARACTERS.map((c) => c.id),
-    ['orbit_bot', 'pulse_fox', 'flux_blob', 'capsule_cat'],
+    ['orbit_bot', 'pulse_fox', 'flux_blob', 'capsule_cat', 'nova', 'byte', 'mochi', 'kuro'],
   );
-  assert.deepEqual(PET_CHARACTERS.map((c) => c.name), ['Orbit Bot', 'Pulse Fox', 'Flux Blob', 'Capsule Cat']);
-  assert.deepEqual([...PET_CHARACTER_IDS], ['orbit_bot', 'pulse_fox', 'flux_blob', 'capsule_cat']);
+  assert.deepEqual(PET_CHARACTERS.map((c) => c.name), ['Orbit Bot', 'Pulse Fox', 'Flux Blob', 'Capsule Cat', 'Nova', 'Byte', 'Mochi', 'Kuro']);
+  assert.deepEqual([...PET_CHARACTER_IDS], PET_CHARACTERS.map(c => c.id));
   assert.equal(DEFAULT_PET_CHARACTER, 'orbit_bot');
   assert.equal(petCharacterName('capsule_cat'), 'Capsule Cat');
 });

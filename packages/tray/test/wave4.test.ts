@@ -22,10 +22,16 @@ test('the stable roster lists the four approved selectable characters', () => {
   assert.ok(entries.every((e) => e.selectable));
 });
 
-test('experimental candidates are preview-only and never selectable', () => {
-  const experimental = galleryRoster().filter((e) => e.status === 'experimental');
-  assert.deepEqual(experimental.map((e) => e.id), ['nova', 'byte', 'mochi', 'kuro']);
-  assert.ok(experimental.every((e) => !e.selectable));
+test('approved bonus characters are selectable Beta entries with preview art', () => {
+  const bonus = galleryRoster().filter(e => e.collection === 'bonus');
+  assert.deepEqual(bonus.map(e => e.id), ['nova', 'byte', 'mochi', 'kuro']);
+  for (const entry of bonus) {
+    assert.equal(entry.status, 'beta');
+    assert.ok(entry.selectable && entry.previewAsset);
+    assert.ok(isSelectableCharacterId(entry.id));
+    assert.equal(isExperimentalCharacterId(entry.id), false);
+  }
+  assert.equal(isSelectableCharacterId('unapproved_pet'), false);
 });
 
 // ---------------------------------------------------------------------------
@@ -118,12 +124,12 @@ test('experimental candidates only warn, never hard-fail the tree', () => {
         'utf8',
       );
     }
-    mkdirSync(join(dir, 'byte'), { recursive: true });
-    writeFileSync(join(dir, 'byte', 'manifest.json'), '{"id":"byte","broken":true}', 'utf8');
-    writeFileSync(join(dir, 'byte', 'readonly_note.txt'), 'n/a');
+    mkdirSync(join(dir, 'future-pet'), { recursive: true });
+    writeFileSync(join(dir, 'future-pet', 'manifest.json'), '{"id":"future_pet","broken":true}', 'utf8');
+    writeFileSync(join(dir, 'future-pet', 'readonly_note.txt'), 'n/a');
     const report = validatePetAssetTree(dir);
     assert.equal(report.ok, true, report.issues.filter((i) => i.severity === 'error').map((i) => i.message).join(' | '));
-    assert.ok(report.issues.some((i) => i.severity === 'warning' && i.path.startsWith('byte')));
+    assert.ok(report.issues.some((i) => i.severity === 'warning' && i.path.startsWith('future-pet')));
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

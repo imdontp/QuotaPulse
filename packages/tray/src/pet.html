@@ -202,9 +202,9 @@
     display: none;
     max-width: 300px;
     padding: 9px 11px 8px;
-    border-radius: 12px;
-    background: rgba(11, 15, 20, 0.95);
-    border: 1px solid #2b3543;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(22, 43, 58, 0.98), rgba(11, 24, 36, 0.98));
+    border: 1px solid #385b6c;
     color: #e8edf3;
     font: 12px/1.45 'Segoe UI', system-ui, sans-serif;
     box-shadow: 0 10px 26px -12px rgba(0, 0, 0, 0.85);
@@ -214,7 +214,7 @@
   #bubble.show { display: block; }
   #bubble.tone-warn { border-color: #6a5320; }
   #bubble.tone-crit { border-color: #6d2b2c; }
-  #bubble .b-title { font-weight: 650; font-size: 12.5px; margin-bottom: 3px; }
+  #bubble .b-title { font-weight: 650; font-size: 12.5px; margin-bottom: 3px; color: #b3f2f0; }
   #bubble .b-line { color: #b9c3d0; white-space: nowrap; }
   #bubble .b-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
   #bubble button {
@@ -222,9 +222,9 @@
        line inside a 300px bubble. */
     flex: 1 1 calc(50% - 3px);
     min-width: 88px;
-    background: #1b2530;
+    background: #173544;
     color: #e8edf3;
-    border: 1px solid #31404f;
+    border: 1px solid #345869;
     border-radius: 7px;
     padding: 4px 8px;
     font: 600 11px/1.3 'Segoe UI', system-ui, sans-serif;
@@ -509,7 +509,7 @@
     blink: 'blink', look_left: 'look-left', look_right: 'look-right',
     idle_variant_1: 'idle-variant-1', idle_variant_2: 'idle-variant-2', stretch: 'stretch'
   };
-  var CHAR_CLASSES = ['char-orbit_bot', 'char-pulse_fox', 'char-flux_blob', 'char-capsule_cat'];
+  var CHAR_CLASSES = ['char-orbit_bot', 'char-pulse_fox', 'char-flux_blob', 'char-capsule_cat', 'char-nova', 'char-byte', 'char-mochi', 'char-kuro'];
 
   // ---- Painting -------------------------------------------------------------
   function paint() {
@@ -519,7 +519,7 @@
     // a repaint, which happens on every poll.
     var moodClass = frame.hasData ? frame.mood : 'idle';
     if (!wrap.classList.contains(moodClass)) {
-      wrap.classList.remove('healthy', 'working', 'warning', 'critical', 'reset', 'idle');
+      wrap.classList.remove('healthy', 'working', 'warning', 'critical', 'reset', 'idle', 'unknown');
       wrap.classList.add(moodClass);
     }
     // Wave 2 personality: a stable class per character lets CSS tune motion language.
@@ -631,10 +631,7 @@
     if (lastRasterSrc !== null) lastRasterSrc = null;
 
     if (frame.spriteSvg) {
-      var pct = frame.focus && frame.focus.usedPercent != null
-        ? Math.round(frame.focus.usedPercent / 2) * 2
-        : 'x';
-      var svgKey = frame.character + '|' + frame.mood + '|' + pct;
+      var svgKey = frame.spriteSvg;
       if (svgKey !== lastSvgKey) {
         lastSvgKey = svgKey;
         pet.innerHTML = frame.spriteSvg;

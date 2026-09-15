@@ -538,13 +538,13 @@ test('priority ranking orders passive < info < warning < critical < recovery', (
 /* -------------------------------------------------------------------- G. Skins */
 
 test('built-in skins exist per character and always include a default', () => {
-  for (const character of ['orbit_bot', 'pulse_fox', 'flux_blob', 'capsule_cat'] as const) {
+  for (const character of ['orbit_bot', 'pulse_fox', 'flux_blob', 'capsule_cat', 'nova', 'byte', 'mochi', 'kuro'] as const) {
     const skins = skinsForCharacter(character);
     assert.equal(skins.length, 4);
     assert.ok(skins.some((s) => s.id === 'default'));
     assert.ok(resolveSkin(character, 'midnight'));
   }
-  assert.equal(BUILTIN_SKINS.length, 16);
+  assert.equal(BUILTIN_SKINS.length, 32);
 });
 
 test('a skin may not repurpose semantic colors', () => {

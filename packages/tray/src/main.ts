@@ -84,6 +84,7 @@ import {
   type SubscriptionInfo,
 } from './presence/index.js';
 import { MOOD_COLORS } from './pet/motion.js';
+import { conceptAssetPath, renderConceptPet } from './pet/concept-art.js';
 import { galleryRoster, isExperimentalCharacterId, isSelectableCharacterId } from './pet/catalog.js';
 import { DEFAULT_SKIN_ID } from './pet/skins.js';
 import { loadPetSettings, savePetSettings } from './pet/settings.js';
@@ -1165,12 +1166,12 @@ function sendPopupSprite(): void {
     frame.global.severity === 'crit' ? 'critical' : frame.global.severity === 'warn' ? 'warning' : 'healthy';
   quotaPopup.webContents.send(
     'qp-popup-sprite',
-    isVectorCharacter(frame.character)
+    conceptSprite(frame.character, mood, true) ?? (isVectorCharacter(frame.character)
       ? renderPetSvg(frame.character, mood, {
           color: MOOD_COLORS[mood],
           percent: frame.global.highest?.usedPercent ?? null,
         })
-      : null,
+      : null),
   );
 }
 
@@ -1202,7 +1203,25 @@ function loadCharacterManifests(): void {
   }
 }
 
-/** `/assets/pets/x/y.webp` -> a URL the pet window can load, when the file exists on disk. */
+// HTTP popup images must be embedded; desktop/gallery share Chromium's local cache.
+const conceptDataUrls = new Map<PetCharacterId, string>();
+function conceptSprite(character: PetCharacterId, mood: PetMood, embed = false): string | null {
+  const rel = conceptAssetPath(character);
+  const file = join(ASSETS_DIR, rel);
+  if (!existsSync(file)) return null;
+  let href = `../assets/${rel}`;
+  if (embed) {
+    let cached = conceptDataUrls.get(character);
+    if (!cached) {
+      cached = `data:image/png;base64,${readFileSync(file).toString('base64')}`;
+      conceptDataUrls.set(character, cached);
+    }
+    href = cached;
+  }
+  return renderConceptPet(character, mood, href);
+}
+
+/** `/assets/pets/x/y.webp` -> a local URL, only when the file exists on disk. */
 function localAssetUrl(src: string): string | null {
   const rel = src.replace(/^\/?assets\//, '');
   return existsSync(join(ASSETS_DIR, rel)) ? `../assets/${rel}` : null;
@@ -1232,8 +1251,11 @@ function showGallery(): void {
     return;
   }
   galleryWindow = new BrowserWindow({
-    width: 560,
-    height: 720,
+    width: 1080,
+    height: 860,
+    minWidth: 540,
+    minHeight: 640,
+    backgroundColor: '#090f17',
     autoHideMenuBar: true,
     title: 'QuotaPulse Pet Gallery',
     webPreferences: { preload: galleryPreloadPath(), contextIsolation: true, nodeIntegration: false, sandbox: true },
@@ -1311,17 +1333,22 @@ function gallerySettingsPayload(): PetSettings {
 }
 
 /** Resolve a preview state against the current manifest; read-only (spec §5). */
-function galleryPreviewPayload(state: string): { src: string | null; animation: string; fellBack: boolean } {
-  const animation = GALLERY_PREVIEW_ANIMATIONS[state];
+function galleryPreviewPayload(state: string): { src: string | null; animation: string; fellBack: boolean; svg?: string } {
+  const animation = Object.hasOwn(GALLERY_PREVIEW_ANIMATIONS, state) ? GALLERY_PREVIEW_ANIMATIONS[state] : undefined;
+  const svg = animation ? conceptSprite(petSettings.character, state as PetMood) : null;
+  if (svg && animation) return { src: null, svg, animation, fellBack: false };
   const manifest = characterManifests.get(petSettings.character);
   if (!animation || !manifest) return { src: null, animation: String(animation ?? state), fellBack: false };
   const resolved = resolveAnimation(manifest, animation, { reducedMotion: false });
-  return { src: resolved.src, animation: resolved.animation, fellBack: resolved.fellBack };
+  return { src: resolved.src ? localAssetUrl(resolved.src) : null, animation: resolved.animation, fellBack: resolved.fellBack };
 }
 
 function registerGalleryIpc(): void {
   ipcMain.handle('qp-gallery:roster', () => ({
-    entries: galleryRoster(),
+    entries: galleryRoster().map((entry) => ({
+      ...entry,
+      previewSvg: isSelectableCharacterId(entry.id) ? conceptSprite(entry.id, 'healthy') : null,
+    })),
     skins: skinsForCharacter(petSettings.character),
     movementModes: ['minimal', 'companion', 'roaming'],
   }));
@@ -1386,6 +1413,7 @@ function applyAnimation(frame: PetFrame): PetFrame {
     manifest ? manifestAnimationSources(manifest) : null,
   );
   const preferredSrc = skinAsset.src ?? resolved?.src ?? null;
+  const concept = conceptSprite(frame.character, frame.mood);
 
   // The accessory overlay is real art on disk; a missing file falls back gracefully, and
   // the default skin ships none. The accent colors decorative trims only -- never status.
@@ -1415,7 +1443,8 @@ function applyAnimation(frame: PetFrame): PetFrame {
     ...frame,
     animation: decision.animation,
     animationPlayback: decision.playback,
-    animationSrc: allowRaster && preferredSrc ? localAssetUrl(preferredSrc) : null,
+    spriteSvg: concept ?? frame.spriteSvg,
+    animationSrc: concept ? null : allowRaster && preferredSrc ? localAssetUrl(preferredSrc) : null,
     layers,
     skinAccessory: skinAccessorySrc,
     skinAccentCss,

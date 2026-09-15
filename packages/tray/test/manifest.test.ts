@@ -17,6 +17,7 @@ const DIR: Record<string, string> = {
   pulse_fox: 'pulse-fox',
   flux_blob: 'flux-blob',
   capsule_cat: 'capsule-cat',
+  nova: 'nova', byte: 'byte', mochi: 'mochi', kuro: 'kuro',
 };
 
 function asset(src: string, over: Partial<PetAnimationAsset> = {}): PetAnimationAsset {

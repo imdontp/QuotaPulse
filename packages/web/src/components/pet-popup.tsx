@@ -12,6 +12,7 @@ import { GaugeStack } from '@/components/gauge';
 import { Empty, ErrorBox, Stagger, StaggerItem } from '@/components/primitives';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { severityOf } from '@/format';
+import './pet-popup.css';
 
 /**
  * The pet popup: the dashboard's own design system (shadcn tokens, motion) in the small
@@ -22,7 +23,7 @@ import { severityOf } from '@/format';
 
 /** Sprite frames, in `pulsepet_states_sprite.png` order, for the worst live severity. */
 const SPRITE_FOR_SEVERITY = { ok: 0, warn: 2, crit: 3 } as const;
-const SPRITE_SIZE = 44;
+const SPRITE_SIZE = 104;
 
 const BADGE_VARIANT = { available: 'ok', attention: 'crit', check: 'warn', inactive: 'outline' } as const;
 
@@ -113,19 +114,20 @@ export function PetPopup() {
 
   return (
     <TooltipProvider>
-      <div className="bg-background text-foreground flex h-screen flex-col overflow-hidden">
-        <header className="border-border bg-card/40 flex items-center gap-3 border-b px-3 py-2.5 [-webkit-app-region:drag]">
-          <SpriteMark ov={ov} />
+      <div className="pet-popup bg-background text-foreground flex h-screen flex-col overflow-hidden">
+        <header className="pet-popup-header border-border flex items-center gap-3 border-b px-5 py-3 [-webkit-app-region:drag]">
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-[13.5px] font-semibold">{t('pet.title')}</h1>
+            <div className="pet-popup-brand">Quota<span>Pulse</span></div>
+            <h1 className="mt-2 truncate text-[16px] font-semibold">{t('pet.title')}</h1>
             <p className="text-muted-foreground tabular truncate text-[11px]">
               {updated ? t('pet.updated', { time: updated }) : t('app.connecting')}
             </p>
           </div>
+          <div className="pet-popup-companion"><SpriteMark ov={ov} /></div>
           <Button
             size="icon"
             variant="ghost"
-            className="[-webkit-app-region:no-drag] size-7"
+            className="pet-popup-close [-webkit-app-region:no-drag] size-7"
             aria-label={t('pet.close')}
             title={t('pet.close')}
             onClick={run('close')}
@@ -154,7 +156,7 @@ export function PetPopup() {
                     <StaggerItem key={s.subscription_key}>
                       <motion.section
                         whileHover={reduced ? undefined : { y: -2 }}
-                        className="quota-card bg-card rounded-xl border p-3"
+                        className="quota-card bg-card rounded-xl border p-3.5"
                       >
                         <div className="mb-2.5 flex items-center gap-2">
                           <span
@@ -190,6 +192,7 @@ export function PetPopup() {
         <footer className="border-border bg-card/40 flex items-center gap-2 border-t px-3 py-2.5">
           <Button
             size="sm"
+            variant="outline"
             className="flex-1"
             onClick={() => {
               run('refresh')();

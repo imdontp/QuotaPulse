@@ -23,8 +23,14 @@ test('a missing settings file uses the spec defaults, including Orbit Bot', () =
 test('the chosen character round-trips through disk', () => {
   const dir = tempDir();
   try {
-    savePetSettings(dir, { ...DEFAULT_PET_SETTINGS, character: 'flux_blob' });
-    assert.equal(loadPetSettings(dir).character, 'flux_blob');
+    for (const character of ['flux_blob', 'nova', 'byte', 'mochi', 'kuro'] as const) {
+      savePetSettings(dir, { ...DEFAULT_PET_SETTINGS, character, skin: 'winter', movement: 'companion', reducedMotion: true });
+      const restored = loadPetSettings(dir);
+      assert.equal(restored.character, character);
+      assert.equal(restored.skin, 'winter');
+      assert.equal(restored.movement, 'companion');
+      assert.equal(restored.reducedMotion, true);
+    }
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

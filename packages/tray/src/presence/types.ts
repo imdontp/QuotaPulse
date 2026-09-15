@@ -23,7 +23,7 @@ export type FocusMode = 'auto' | 'pinned';
  * renderer/asset set behind each id changes, so switching a character must never affect
  * focus, thresholds, notification history or the pin.
  */
-export type PetCharacterId = 'orbit_bot' | 'pulse_fox' | 'flux_blob' | 'capsule_cat';
+export type PetCharacterId = 'orbit_bot' | 'pulse_fox' | 'flux_blob' | 'capsule_cat' | 'nova' | 'byte' | 'mochi' | 'kuro';
 
 /** Manifest order; also the order the settings radio group is built in. */
 export const PET_CHARACTER_IDS: readonly PetCharacterId[] = [
@@ -31,6 +31,7 @@ export const PET_CHARACTER_IDS: readonly PetCharacterId[] = [
   'pulse_fox',
   'flux_blob',
   'capsule_cat',
+  'nova', 'byte', 'mochi', 'kuro',
 ];
 
 /** Default recommendation (DECISIONS.md — Character model). */
@@ -299,8 +300,8 @@ export interface PetFrame {
   /** Wave 2 layered behavior state (mood + expression + locomotion + interaction). */
   layers: PetLayeredVisualState;
   /**
-   * Inline SVG for the selected mascot, when it renders as vector art. `null` means the
-   * character ships raster art and the renderer should use its sprite/WebP asset set.
+   * Inline presentation: a viewport over the concept PNG or the vector fallback.
+   * `null` delegates to the legacy sprite/WebP set. The SVG may contain raster art.
    */
   spriteSvg: string | null;
   /**

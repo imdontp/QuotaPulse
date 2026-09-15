@@ -10,8 +10,8 @@ import { defaultPetSettings, loadPetSettings, savePetSettings, settingsPath } fr
 // Wave 5 G16 hardening: only stable-rooster directories may ship in production
 // ---------------------------------------------------------------------------
 
-const STABLE_DIRS = ['orbit-bot', 'pulse-fox', 'flux-blob', 'capsule-cat'];
-const EXPERIMENTAL_DIRS = ['nova', 'byte', 'mochi', 'kuro'];
+const STABLE_DIRS = ['orbit-bot', 'pulse-fox', 'flux-blob', 'capsule-cat', 'nova', 'byte', 'mochi', 'kuro'];
+const EXPERIMENTAL_DIRS = ['future-pet', 'unapproved-cat'];
 
 test('packaging includes every stable character directory regardless of id form', () => {
   for (const dir of STABLE_DIRS) {

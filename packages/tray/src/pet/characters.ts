@@ -3,16 +3,13 @@ import type { PetCharacterId, PetMood } from '../presence/types.js';
 /**
  * Selectable Pet Mode mascots.
  *
- * One shared state engine, four interchangeable renderers. Identity/anchors/motion style
+ * One shared state engine, eight interchangeable companions. Identity/anchors/motion style
  * mirror the character manifests in `assets/pets/<id>/manifest.json`, so adding a mascot
  * never touches focus, mood, events or the tray.
  *
- * The Wave 1 production clips (animated WebP, WAVE1_PRODUCTION_ASSET_BIBLE.md) are the
- * asset agent's deliverable and are not in the tree yet. Until they land, every character
- * renders through this inline-SVG placeholder — the same vector path the original
- * PulsePet spec recommended — driven by the resolved `PetAnimationId`. When a real `src`
- * exists the renderer prefers the raster clip; this vector renderer is the safe fallback
- * the manifests point at (`fallback: healthy_static`).
+ * Concept pose sheets are preferred by main.ts. This inline-SVG renderer remains
+ * the safe fallback when artwork is unavailable. Bonus pets share a generic cat
+ * fallback; their normal appearance comes from their individual concept sheets.
  *
  * The SVG emits stable part classes (`qp-sprite`, `qp-head`, `qp-eye`, `qp-look`,
  * `qp-mouth`, `qp-tail`, `qp-ear`, `qp-antenna`, `qp-leg`, `qp-live`, `qp-ring`) so the
@@ -26,9 +23,11 @@ export interface PetCharacterDef {
   anchors: readonly string[];
   /** `raster` prefers a shipped asset set; `vector` is the inline SVG placeholder. */
   art: 'raster' | 'vector';
+  collection?: 'bonus';
 }
 
 export const PET_CHARACTERS: readonly PetCharacterDef[] = [
+  // Bonus characters use the same concept-pose presentation as the original roster.
   {
     id: 'orbit_bot',
     name: 'Orbit Bot',
@@ -57,6 +56,10 @@ export const PET_CHARACTERS: readonly PetCharacterDef[] = [
     anchors: ['chest_quota_ring', 'screen_face', 'led_ears', 'smart_tail', 'live_dot'],
     art: 'vector',
   },
+  { id: 'nova', name: 'Nova', motionStyle: 'soft_companion', anchors: ["cyan_headphones","white_cat_hood","live_face"], art: 'vector', collection: 'bonus' },
+  { id: 'byte', name: 'Byte', motionStyle: 'focused_mechanical', anchors: ["cyan_headphones","dark_cat_hood","screen_face"], art: 'vector', collection: 'bonus' },
+  { id: 'mochi', name: 'Mochi', motionStyle: 'gentle_expressive', anchors: ["amber_headphones","cream_cat_hood","expressive_face"], art: 'vector', collection: 'bonus' },
+  { id: 'kuro', name: 'Kuro', motionStyle: 'guardian_mechanical', anchors: ["red_headphones","dark_cat_hood","screen_face"], art: 'vector', collection: 'bonus' },
 ];
 
 const BY_ID = new Map<PetCharacterId, PetCharacterDef>(PET_CHARACTERS.map((c) => [c.id, c]));
@@ -335,6 +338,10 @@ const RENDERERS: Record<Exclude<PetCharacterId, 'orbit_bot'>, (m: PetMood, c: st
   pulse_fox: pulseFox,
   flux_blob: fluxBlob,
   capsule_cat: capsuleCat,
+  nova: capsuleCat,
+  byte: capsuleCat,
+  mochi: capsuleCat,
+  kuro: capsuleCat,
 };
 
 /**

@@ -7,18 +7,17 @@ import { validatePetAssetTree } from '../src/pet/asset-pipeline.js';
 /**
  * Wave 4 production packaging helper (PRODUCTION_PACKAGING_SPEC.md).
  *
- * Copies ONLY stable runtime asset types into `dist-package/pets`:
+ * Copies approved runtime asset types into `dist-package/pets`:
  * - manifest.json files
  * - `<animation_id>.webp` runtime clips
  * - skins (accessory SVGs)
- * - Gallery previews (`preview_128.png`)
+ * - Gallery previews (`preview_128.png`) and concept pose sheets
  *
  * Excluded on purpose: 1024px masters, raw sprite sheets, prompt/spec archives,
  * development contact sheets, READMEs, and — Wave 5 hardening — any directory
- * that is not one of the four stable characters. Experimental/incubating
- * candidate directories (nova, byte, mochi, kuro, or anything unblessed) never
- * ship: their incomplete runtime sets are harmless at validation level (they
- * only warn) but must not land in the production bundle (RELEASE_GATE G16).
+ * that is not in the approved character registry. The four user-approved bonus
+ * companions ship as Beta alongside the original four. Other unapproved
+ * directories remain excluded (RELEASE_GATE G16).
  */
 
 const trayRoot = resolve(fileURLToPath(import.meta.url), '..', '..');
@@ -28,13 +27,13 @@ const destination = join(trayRoot, 'dist-package', 'pets');
 const EXCLUDED_BASENAMES = new Set(['README.md', 'contact-sheet.png']);
 const EXCLUDED_DIR_HINTS = new Set(['prompt', 'master', 'draft', 'contact']);
 
-/** Top-level directories packaged from the pets tree: only the stable roster. */
-const STABLE_CHAR_DIRS = new Set(PET_CHARACTERS.map((def) => def.id.replace(/_/g, '-')));
+/** Top-level directories packaged from the pets tree: only the approved roster. */
+const APPROVED_CHAR_DIRS = new Set(PET_CHARACTERS.map((def) => def.id.replace(/_/g, '-')));
 
-/** Wave 5 G16: a top-level pets directory ships only if it is a stable roster character. */
+/** Wave 5 G16: a top-level pets directory ships only if it is a registered character. */
 export function isShippableCharacterDir(dirName: string): boolean {
   const hyphenated = dirName.replace(/_/g, '-');
-  return STABLE_CHAR_DIRS.has(dirName) || STABLE_CHAR_DIRS.has(hyphenated);
+  return APPROVED_CHAR_DIRS.has(dirName) || APPROVED_CHAR_DIRS.has(hyphenated);
 }
 
 const report = validatePetAssetTree(petsSource);
@@ -58,7 +57,7 @@ function copyAllowedFile(file: string): boolean {
   const isManifest = name === 'manifest.json';
   const isClip = /\.webp$/i.test(name);
   const isPreview = /^preview_\d+\.png$/i.test(name) || name === 'accessory.svg';
-  return isManifest || isClip || isPreview;
+  return isManifest || isClip || isPreview || name === 'concept-states.png';
 }
 
 function walk(dir: string, relBase: string): void {
