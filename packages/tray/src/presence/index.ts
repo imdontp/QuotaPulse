@@ -37,7 +37,7 @@ export {
 export { selectFocus, EVENT_FOCUS_MS, DEFAULT_ROTATE_MS, type FocusOptions } from './focus-resolver.js';
 export { resolvePetMood, shouldShowGlobalAlert } from './mood-resolver.js';
 export { createEventTracker, type EventTracker } from './event-tracker.js';
-export { statusBubble, eventBubble, daemonDownBubble, noDataBubble, snoozedBubble } from './bubble.js';
+export { peekBubble, statusBubble, eventBubble, daemonDownBubble, noDataBubble, snoozedBubble } from './bubble.js';
 export {
   PET_CHARACTERS,
   isPetCharacter,
@@ -66,6 +66,26 @@ export {
   type ResolvedAnimation,
 } from '../pet/manifest.js';
 export {
+  IDLE_BEHAVIOR_TIERS,
+  WAVE2_EXPRESSION_ASSETS,
+  WAVE2_EXTENDED_ASSETS,
+  WAVE2_LOCOMOTION_ASSETS,
+  idleBehaviorsFor,
+  interactionBlocksLocomotion,
+  interactionForAnimation,
+  locomotionAllowed,
+  locomotionRange,
+  pickIdleBehavior,
+  resolveLayeredState,
+  turnFor,
+  usesLegWalk,
+  wave2ClipSrc,
+  type IdleBehavior,
+  type LocomotionRange,
+  type ResolveLayersInput,
+  type Wave2AssetId,
+} from '../pet/wave2.js';
+export {
   createAnimationResolver,
   toVisualState,
   type AnimationDecision,
@@ -75,6 +95,87 @@ export {
   type ResolveAnimationInput,
   type VisualStateInput,
 } from '../pet/animation-resolver.js';
+export {
+  CLICK_DRAG_THRESHOLD_PX,
+  DEFAULT_SAFE_MARGIN_PX,
+  DOCK_SNAP_THRESHOLD_PX,
+  MANUAL_MOVE_COOLDOWN_MS,
+  MIN_VISIBLE_FRACTION,
+  clampPetToRect,
+  defaultPlacement,
+  desktopOverlayBounds,
+  displayForPoint,
+  dockPoint,
+  dockPointsFor,
+  findDisplayById,
+  homeAnchor,
+  nearestValidPosition,
+  overlappingZone,
+  petRectAt,
+  rectAround,
+  recoverPlacement,
+  resolvePlacementDisplay,
+  safeRegionFor,
+  snapToDock,
+  validatePlacement,
+  visibleFraction,
+  type PlacementValidation,
+} from '../pet/desktop.js';
+export {
+  ROAM_MEDIUM_MAX_PX,
+  ROAM_MEDIUM_MIN_PX,
+  ROAM_SHORT_MAX_PX,
+  ROAM_SHORT_MIN_PX,
+  canAutonomouslyMove,
+  cornerAnchor,
+  chooseMoveKind,
+  classifyGesture,
+  createRoamingController,
+  planTarget,
+  setManualCooldown,
+  type PetRoamState,
+  type PlanTargetInput,
+  type PointerGesture,
+  type RoamCommand,
+  type RoamMoveKind,
+  type RoamTarget,
+  type RoamingController,
+  type RoamingControllerOptions,
+} from '../pet/roaming.js';
+export {
+  isQuietHours,
+  parseClock,
+  priorityRank,
+  resolveScenePolicy,
+  sceneDedupeKey,
+  sceneForEvent,
+  scenesForEvents,
+  createSceneQueue,
+  type PetNotificationScene,
+  type ScenePolicy,
+  type ScenePolicyOptions,
+  type ScenePriority,
+  type SceneQueue,
+} from './scenes.js';
+export {
+  BUILTIN_SKINS,
+  DEFAULT_SKIN_ID,
+  PROTECTED_MOOD_COLORS,
+  PROTECTED_SEVERITY_COLORS,
+  SEMANTIC_COLOR_FAMILY,
+  defaultSkinFor,
+  protectedMoodColor,
+  resolveSkin,
+  resolveSkinAccessory,
+  resolveSkinAsset,
+  skinAssetSrc,
+  skinsForCharacter,
+  validateSkin,
+  type PetSkinManifest,
+  type PetSkinPalette,
+  type SkinAssetResolution,
+  type SkinValidation,
+} from '../pet/skins.js';
 
 export interface ResolvePetFrameInput {
   limits: Limit[];
@@ -85,6 +186,12 @@ export interface ResolvePetFrameInput {
   event?: PresenceEvent | null;
   /** Override the derived activity signal (tests, or an explicit user action). */
   activeOwnerKey?: string | null;
+  /**
+   * Wave 3: the event allowed to raise an automatic bubble, when the scene policy suppresses
+   * one (quiet hours) that focus/animation should still reflect. Defaults to `event`, so the
+   * pre-Wave-3 behavior is unchanged.
+   */
+  bubbleEvent?: PresenceEvent | null;
 }
 
 /** A reset this close raises the countdown badge above the Pet. */
@@ -116,8 +223,11 @@ export function resolvePetFrame(input: ResolvePetFrameInput): PetFrame {
       : null;
 
   // An event bubble only lives for its own short window; after that the focus reverts.
+  // `bubbleEvent` lets the caller suppress the interruption (quiet hours) while the focus
+  // and animation still follow the event itself.
+  const bubbleSource = input.bubbleEvent !== undefined ? input.bubbleEvent : (input.event ?? null);
   const freshEvent =
-    input.event && now - input.event.at <= EVENT_FOCUS_MS ? input.event : null;
+    bubbleSource && now - bubbleSource.at <= EVENT_FOCUS_MS ? bubbleSource : null;
   const bubble =
     settings.speechBubbles && freshEvent
       ? eventBubble(freshEvent, providers.find((p) => p.key === freshEvent.ownerKey), now)
@@ -145,6 +255,8 @@ export function resolvePetFrame(input: ResolvePetFrameInput): PetFrame {
     animationPlayback: animationPlayback(baseAnimation),
     // Filled by the main process from the character manifest when a raster clip exists.
     animationSrc: null,
+    // Wave 2 layers; main fills interaction/facing and clamps locomotion via the policy.
+    layers: { mood, expression: 'none', locomotion: 'stationary', interaction: 'none', facing: 'right' },
     // Vector mascots are drawn from the frame's own mood/colour/percentage, so the art is
     // resolved here where those values already exist. Raster mascots keep their asset set.
     spriteSvg: isVectorCharacter(settings.character)
@@ -153,6 +265,9 @@ export function resolvePetFrame(input: ResolvePetFrameInput): PetFrame {
           percent: focus?.usedPercent ?? null,
         })
       : null,
+    // Skins are presentation-only; main.ts fills these from the skin manifest.
+    skinAccessory: null,
+    skinAccentCss: null,
     hasData: providers.some((p) => p.usedPercent != null),
     updatedAt: now,
   };

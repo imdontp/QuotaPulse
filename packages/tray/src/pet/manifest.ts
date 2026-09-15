@@ -9,6 +9,7 @@ import {
   type PetCharacterId,
   type PetCharacterManifest,
 } from '../presence/types.js';
+import { isContractCompatible, runtimeSatisfies } from './contract.js';
 import { isOnce } from './runtime.js';
 
 /**
@@ -67,6 +68,22 @@ export function validateManifest(raw: unknown): ManifestValidation {
   const id = raw.id;
   if (!PET_CHARACTER_IDS.includes(id as PetCharacterId)) {
     issues.push({ path: 'id', message: `unknown character id: ${String(id)}` });
+  }
+  // Contract compatibility (Wave 4, ASSET_VERSIONING_POLICY.md): an explicit
+  // contractVersion this runtime does not understand is a hard reject so the
+  // caller falls back to the known-good default pet instead of partial loading.
+  if (raw.contractVersion !== undefined && !isContractCompatible(raw.contractVersion)) {
+    issues.push({ path: 'contractVersion', message: `unsupported contract version: ${String(raw.contractVersion)}` });
+  }
+  if (raw.minimumRuntimeVersion !== undefined && !runtimeSatisfies(raw.minimumRuntimeVersion)) {
+    issues.push({ path: 'minimumRuntimeVersion', message: `runtime older than required minimum: ${String(raw.minimumRuntimeVersion)}` });
+  }
+  const status = raw.status;
+  if (status !== undefined && status !== null && status !== 'stable' && status !== 'beta' && status !== 'experimental') {
+    issues.push({ path: 'status', message: 'status must be stable|beta|experimental when present' });
+  }
+  if (raw.selectable !== undefined && typeof raw.selectable !== 'boolean') {
+    issues.push({ path: 'selectable', message: 'selectable must be boolean when present' });
   }
   if (typeof raw.displayName !== 'string' || raw.displayName.length === 0) {
     issues.push({ path: 'displayName', message: 'displayName must be a non-empty string' });

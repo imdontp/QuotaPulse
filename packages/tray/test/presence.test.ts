@@ -6,6 +6,7 @@ import {
   buildProviderPresence,
   resolveGlobalSeverity,
   resolvePetFrame,
+  peekBubble,
   statusBubble,
   type PetSettings,
   type PresenceEvent,
@@ -336,8 +337,22 @@ test('the hover bubble lists every window of the focused provider', () => {
   const [provider] = buildProviderPresence(rows, [sub('claude', 'Claude')], NOW);
   const bubble = statusBubble(provider!, NOW);
   assert.equal(bubble.title, 'Claude');
+  assert.equal(bubble.mode, 'expanded');
   assert.equal(bubble.lines.length, 2);
   assert.match(bubble.lines[0]!, /5-hour · 12%/);
   assert.match(bubble.lines[1]!, /Weekly · 80%/);
   assert.deepEqual(bubble.actions, ['details', 'pin', 'open-dashboard', 'snooze']);
+});
+
+test('the peeking bubble is short and has no action buttons', () => {
+  const rows = [
+    limit({ display_name: 'Claude', subscription_key: 'claude', window_kind: 'weekly', used_percent: 80, resets_at: NOW + 4 * DAY }),
+  ];
+  const [provider] = buildProviderPresence(rows, [sub('claude', 'Claude')], NOW);
+  const peek = peekBubble(provider!, NOW);
+  assert.equal(peek.mode, 'peek');
+  assert.equal(peek.title, 'Claude');
+  assert.deepEqual(peek.actions, [], 'peek must not present buttons');
+  assert.equal(peek.lines.length, 1, 'peek is a single short line');
+  assert.match(peek.lines[0]!, /Weekly · 80% — warning/);
 });

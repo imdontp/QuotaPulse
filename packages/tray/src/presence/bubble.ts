@@ -36,7 +36,29 @@ const toneForSeverity = (severity: ProviderPresence['severity']): BubbleTone =>
 const durationForTone = (tone: BubbleTone): number =>
   tone === 'crit' ? 9_000 : tone === 'warn' ? 6_000 : 4_000;
 
-/** The interactive status bubble shown on hover or click (§23–§25). */
+const statusWord = (severity: ProviderPresence['severity']): string =>
+  severity === 'crit' ? 'critical' : severity === 'warn' ? 'warning' : severity === 'unknown' ? 'no reading' : 'healthy';
+
+/**
+ * Peek bubble: the lightweight hover state (Wave 2 §4). Provider name, the focused
+ * window's percentage and a short status line — no buttons, so hovering never presents a
+ * click target the pointer did not ask for.
+ */
+export function peekBubble(provider: ProviderPresence, _now: number): PetBubble {
+  const pct = provider.usedPercent != null ? `${Math.round(provider.usedPercent)}%` : '--';
+  return {
+    kind: 'status',
+    ownerKey: provider.key,
+    tone: toneForSeverity(provider.severity),
+    title: provider.name,
+    lines: [`${windowLabel(provider.windowKind)} · ${pct} — ${statusWord(provider.severity)}`],
+    until: null,
+    actions: [],
+    mode: 'peek',
+  };
+}
+
+/** Expanded bubble: shown on click (§4). Adds reset time and the action row. */
 export function statusBubble(provider: ProviderPresence, now: number, pinned = false): PetBubble {
   const tone = toneForSeverity(provider.severity);
   const lines: string[] = [];
@@ -63,6 +85,7 @@ export function statusBubble(provider: ProviderPresence, now: number, pinned = f
     lines,
     until: null, // interactive bubbles do not auto-dismiss (§23)
     actions,
+    mode: 'expanded',
   };
 }
 
@@ -103,6 +126,7 @@ function make(tone: BubbleTone, title: string, lines: string[], now: number): Pe
     lines,
     until: now + durationForTone(tone),
     actions: ['details'],
+    mode: 'expanded',
   };
 }
 
@@ -116,6 +140,7 @@ export function snoozedBubble(minutes: number, now: number): PetBubble {
     lines: [`Notifications snoozed for ${minutes} minutes.`],
     until: now + 4_000,
     actions: [],
+    mode: 'expanded',
   };
 }
 
@@ -129,6 +154,7 @@ export function daemonDownBubble(now: number): PetBubble {
     lines: ['QuotaPulse daemon is unavailable.'],
     until: now + 4_000,
     actions: ['details'],
+    mode: 'expanded',
   };
 }
 
@@ -145,5 +171,6 @@ export function noDataBubble(now: number): PetBubble {
     lines: ['Quota data unavailable'],
     until: now + 4_000,
     actions: ['details'],
+    mode: 'expanded',
   };
 }

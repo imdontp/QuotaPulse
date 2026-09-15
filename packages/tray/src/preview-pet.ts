@@ -12,6 +12,7 @@ import type { Limit } from './limits.js';
 import {
   activeOwnerKey,
   resolvePetFrame,
+  DEFAULT_PET_SETTINGS,
   type PetSettings,
   type SubscriptionInfo,
 } from './presence/index.js';
@@ -23,17 +24,7 @@ const DATA_DIR =
 const LOCK_PATH = join(DATA_DIR, 'daemon.lock');
 
 async function main() {
-  const settings: PetSettings = {
-    enabled: true,
-    movement: 'minimal',
-    focusMode: 'auto',
-    pinnedOwnerKey: null,
-    rotateIntervalMs: 8_000,
-    speechBubbles: true,
-    eventNotifications: true,
-    reducedMotion: false,
-    character: 'orbit_bot',
-  };
+  const settings: PetSettings = { ...DEFAULT_PET_SETTINGS };
 
   if (!existsSync(LOCK_PATH)) {
     console.log('daemon not running (no lock file)');

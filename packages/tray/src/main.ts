@@ -1,11 +1,11 @@
 import { app, Tray, Menu, BrowserWindow, Notification, nativeImage, shell, screen, ipcMain } from 'electron';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 import { join, resolve } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { trayIconFor, trayFrameFor, fpsFor, TRAY_FRAME_COUNT, severityFor, menuGaugeFor } from './icon.js';
-import { petWindowBounds, petPopupBounds, roamWindowBounds, roamZones, type Rect } from './pet-state.js';
+import { petPopupBounds, PET_SPRITE_SIZE, type Rect } from './pet-state.js';
 import { thresholdAlerts, type AlertState } from './alerts.js';
 import {
   buildTooltip,
@@ -22,6 +22,7 @@ import {
   activeOwnerKey,
   createEventTracker,
   resolvePetFrame,
+  peekBubble,
   statusBubble,
   daemonDownBubble,
   noDataBubble,
@@ -33,13 +34,49 @@ import {
   readManifest,
   resolveAnimation,
   validateManifest,
+  interactionForAnimation,
+  resolveLayeredState,
+  clampPetToRect,
+  createRoamingController,
+  createSceneQueue,
+  defaultPlacement,
+  desktopOverlayBounds,
+  displayForPoint,
+  dockPoint,
+  homeAnchor,
+  rectAround,
+  recoverPlacement,
+  resolvePlacementDisplay,
+  resolveScenePolicy,
+  resolveSkin,
+  resolveSkinAccessory,
+  resolveSkinAsset,
+  roamingConfigFor,
+  safeRegionFor,
+  sceneForEvent,
+  scenesForEvents,
+  setManualCooldown,
+  skinsForCharacter,
+  snapToDock,
+  DOCK_SNAP_THRESHOLD_PX,
+  MANUAL_MOVE_COOLDOWN_MS,
+  ONCE_DURATION_MS,
   type AnimationEvent,
+  type BubbleMode,
+  type PetAnimationId,
   type PetBubble,
   type PetCharacterId,
   type PetCharacterManifest,
+  type PetDesktopContext,
+  type PetDisplayInfo,
+  type PetDockTarget,
+  type PetExclusionZone,
+  type PetFacing,
   type PetFrame,
   type PetInteraction,
   type PetMood,
+  type PetNotificationScene,
+  type PetPlacement,
   type PetSettings,
   type PresenceEvent,
   type ProviderPresence,
@@ -47,8 +84,11 @@ import {
   type SubscriptionInfo,
 } from './presence/index.js';
 import { MOOD_COLORS } from './pet/motion.js';
+import { galleryRoster, isExperimentalCharacterId, isSelectableCharacterId } from './pet/catalog.js';
+import { DEFAULT_SKIN_ID } from './pet/skins.js';
 import { loadPetSettings, savePetSettings } from './pet/settings.js';
-import { loadPetPosition, savePetPosition } from './pet/position.js';
+import { PetDiagnostics, isCrashLoop } from './pet/diagnostics.js';
+import { loadPlacement, savePlacement } from './pet/position.js';
 
 interface Lock {
   pid: number;
@@ -95,7 +135,7 @@ let lock: Lock | null = null;
 let limits: Limit[] = [];
 let subscriptions: SubscriptionInfo[] = [];
 let alertsEnabled = true;
-/** RunCat-style tray animation + taskbar pet, each independently toggleable. */
+/** RunCat-style tray animation + desktop pet, each independently toggleable. */
 let trayAnimationEnabled = true;
 /** Current frame timer for the tray icon; restarted whenever the rate changes. */
 let trayAnimTimer: NodeJS.Timeout | null = null;
@@ -112,10 +152,26 @@ let daemonChild: ReturnType<typeof spawn> | null = null;
 /** Highest alert step already fired per gauge, reset when its window rolls over. */
 const alerted = new Map<string, AlertState>();
 /** Pet Mode v2 state: settings, presence events, and the interactive bubble. */
-let petSettings: PetSettings = loadPetSettings(DATA_DIR);
+const petSettingsLoadDiag = { corrupt: false, recoveredFromBackup: false };
+let petSettings: PetSettings = loadPetSettings(DATA_DIR, petSettingsLoadDiag);
+if (petSettingsLoadDiag.corrupt || petSettingsLoadDiag.recoveredFromBackup) {
+  console.warn(
+    `[pet] settings recovery: primary=${petSettingsLoadDiag.corrupt ? 'corrupt' : 'ok'} ` +
+      `backup=${petSettingsLoadDiag.recoveredFromBackup ? 'used' : 'clean'}`,
+  );
+}
 let petEnabled = petSettings.enabled;
-let petAnchorX: number | null = null;
-let petAnchorDisplayId: string | null = null;
+/** Wave 3: absolute desktop placement (display/x/y/dock/home) is the position source. */
+let petPlacement: PetPlacement | null = null;
+/** Wave 3: user-defined no-go rectangles, loaded from `pet-exclusion-zones.json`. */
+let petExclusionZones: PetExclusionZone[] = [];
+let petDragging = false;
+/** True while a warning/critical/reset intro is playing; roaming must stay put. */
+let petUrgentInteractionActive = false;
+let petUrgentTimer: NodeJS.Timeout | null = null;
+/** Wave 3 roaming controller + notification-scene queue (dedupe lives in the queue). */
+const roamingController = createRoamingController();
+const sceneQueue = createSceneQueue();
 /** Last frame rendered, so hover/click can build a bubble without re-resolving everything. */
 let lastFrame: PetFrame | null = null;
 /** Latest important event; gives temporary focus and the automatic bubble (spec §13, §22). */
@@ -133,7 +189,19 @@ let pendingAnimationEvents: AnimationEvent[] = [];
 let pendingInteraction: PetInteraction = null;
 const characterManifests = new Map<PetCharacterId, PetCharacterManifest>();
 const warnedAnimationKeys = new Set<string>();
+const petDiagnostics = new PetDiagnostics();
+let rendererCrashes: number[] = [];
+let petSafeMode = false;
 const ASSETS_DIR = join(REPO_ROOT, 'packages', 'tray', 'assets');
+/** Wave 2 behavior inputs: whether the pointer is on the Pet, and last user interaction. */
+let petHovering = false;
+let lastUserInteractionAt = Date.now();
+/** Wave 2 facing (renderer-owned, mirrored here so the engine can reason about turns). */
+let petFacing: PetFacing = 'right';
+/** Peek on hover, expanded on click (Wave 2 INTERACTION_AND_BUBBLE_SPEC.md §4). */
+let bubbleMode: BubbleMode = 'peek';
+/** Auto-dismiss for the expanded bubble: it must not linger forever. */
+let bubbleDismissTimer: NodeJS.Timeout | null = null;
 
 function readLock(): Lock | null {
   if (!existsSync(LOCK_PATH)) return null;
@@ -210,6 +278,13 @@ async function fetchLimits(): Promise<void> {
   render();
 }
 
+/** Presence event -> the Wave 1 once-animation whose duration bounds the interruption. */
+const URGENT_ONCE_KEY = {
+  warning: 'warning_intro',
+  critical: 'critical_intro',
+  reset: 'reset_celebrate',
+} as const;
+
 /**
  * Presence events (spec §18–§20): the Pet's own threshold/reset/activity detection, on top
  * of which the notification policy is applied. Only meaningful events interrupt; 50% and
@@ -247,30 +322,29 @@ function runPresenceEvents(): void {
     // the persistent loop in the resolver, then settles back into it.
     if (event.type === 'critical' || event.type === 'warning' || event.type === 'reset') {
       pendingAnimationEvents.push({ type: event.type });
+      // An urgent intro is an interruption: roaming pauses until it finishes.
+      markUrgent(ONCE_DURATION_MS[URGENT_ONCE_KEY[event.type]]);
+      roamingController.onUrgent();
     }
-    notifyEvent(event, base.providers);
+  }
+
+  // Wave 3 scene policy: dedupe by provider/window/kind/step, then apply quiet hours to
+  // decide whether the scene may raise a native notification.
+  const options = scenePolicyOptions();
+  for (const scene of scenesForEvents(events, base.providers)) {
+    if (!sceneQueue.enqueue(scene)) continue;
+    const policy = resolveScenePolicy(scene, options);
+    if (policy.native) notifyScene(scene, base.providers, policy.sound);
   }
 }
 
-/** The Windows notification half of the policy (§20): 80% once, 95%, and resets. */
-function notifyEvent(event: PresenceEvent, providers: ProviderPresence[]): void {
-  if (!petSettings.eventNotifications) return;
-  // The Pet's notifications obey the same switch, snooze and quiet hours as the tray's
-  // alert ladder. Without this, the bubble's Snooze button would be a lie.
-  if (settingsSuppressed()) return;
-  const provider = providers.find((p) => p.key === event.ownerKey);
-  const name = provider?.name ?? event.ownerKey;
-  if (event.type === 'usage-half' || event.type === 'activity-start' || event.type === 'activity-stop') return;
-  const when = provider?.resetsAt ? `resets ${new Date(provider.resetsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'no reset time reported';
-  if (event.type === 'reset') {
-    new Notification({ title: `${name} quota has reset`, body: 'A new quota window has started.' }).show();
-    return;
-  }
-  new Notification({
-    title: `${name}: ${Math.round(event.percent ?? 0)}% used`,
-    body: event.type === 'critical' ? `Near the limit — ${when}.` : `Crossed the 80% threshold (${when}).`,
-    silent: event.type !== 'critical',
-  }).show();
+/** The Windows notification half of the scene policy (§20, §2). */
+function notifyScene(scene: PetNotificationScene, providers: ProviderPresence[], sound: boolean): void {
+  const provider = providers.find((p) => p.key === scene.ownerKey);
+  const when = provider?.resetsAt
+    ? ` (resets ${new Date(provider.resetsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})`
+    : '';
+  new Notification({ title: scene.title, body: `${scene.body ?? ''}${when}`.trim(), silent: !sound }).show();
 }
 
 /**
@@ -464,7 +538,7 @@ function render(): void {
         },
       },
       {
-        label: 'Taskbar pet',
+        label: 'Desktop pet',
         type: 'checkbox',
         checked: petEnabled,
         click: (item) => setPetEnabled(item.checked),
@@ -521,13 +595,31 @@ function driveTrayAnimation(pct: number | null): void {
   }
 }
 
-/** Primary display only for the fixed modes; Roaming uses every display (spec §34). */
+/** The current display layout as the desktop layer needs it (logical DIP coordinates). */
+function currentDisplays(): PetDisplayInfo[] {
+  const primaryId = String(screen.getPrimaryDisplay().id);
+  return screen.getAllDisplays().map((d) => ({
+    id: String(d.id),
+    primary: String(d.id) === primaryId,
+    bounds: { x: d.bounds.x, y: d.bounds.y, width: d.bounds.width, height: d.bounds.height },
+    workArea: { x: d.workArea.x, y: d.workArea.y, width: d.workArea.width, height: d.workArea.height },
+    scaleFactor: d.scaleFactor,
+  }));
+}
+
+function primaryDisplayOf(displays: readonly PetDisplayInfo[]): PetDisplayInfo {
+  return displays.find((d) => d.primary) ?? displays[0]!;
+}
+
+/**
+ * The Pet window is one transparent overlay over the union of every display's work area
+ * (MULTI_MONITOR_SPEC.md §5). The sprite is positioned inside it in absolute desktop
+ * coordinates, which is what makes drag, docking and multi-monitor roaming one mechanism.
+ */
 function petBounds(): Rect {
-  const displays = screen.getAllDisplays().map((d) => ({ id: String(d.id), ...d.workArea }));
-  if (petSettings.movement === 'roaming' && displays.length > 1) {
-    return roamWindowBounds(displays, screen.getPrimaryDisplay().workArea);
-  }
-  return petWindowBounds(screen.getPrimaryDisplay().workArea);
+  const displays = currentDisplays();
+  const fallback = primaryDisplayOf(displays).workArea;
+  return desktopOverlayBounds(displays, fallback, 'workArea');
 }
 
 /** The pet's window rect, kept so absolute positions can be converted both ways. */
@@ -547,10 +639,130 @@ function popupPreloadPath(): string {
   return join(REPO_ROOT, 'packages', 'tray', 'dist-preload', 'popup-preload.js');
 }
 
+function galleryHtmlPath(): string {
+  return join(REPO_ROOT, 'packages', 'tray', 'src', 'gallery.html');
+}
+
+function galleryPreloadPath(): string {
+  return join(REPO_ROOT, 'packages', 'tray', 'dist-preload', 'gallery-preload.js');
+}
+
+/** Load and revalidate the saved placement, repairing it after a monitor/DPI change. */
+function ensurePlacement(): PetPlacement {
+  const displays = currentDisplays();
+  const primary = primaryDisplayOf(displays);
+  if (!petPlacement) {
+    const saved = loadPlacement(DATA_DIR);
+    petPlacement = saved
+      ? recoverPlacement(saved, displays, PET_SPRITE_SIZE, petExclusionZones, petSettings.safeMarginPx)
+      : defaultPlacement(primary, PET_SPRITE_SIZE, petSettings.safeMarginPx);
+  } else {
+    petPlacement = recoverPlacement(
+      petPlacement,
+      displays,
+      PET_SPRITE_SIZE,
+      petExclusionZones,
+      petSettings.safeMarginPx,
+    );
+  }
+  return petPlacement;
+}
+
+/** The full desktop context the roaming controller reasons about (Wave 3 runtime contract). */
+function petDesktopContext(): PetDesktopContext {
+  return {
+    displays: currentDisplays(),
+    exclusionZones: petExclusionZones,
+    placement: ensurePlacement(),
+    roaming: roamingConfigFor(petSettings),
+    quietHours: petSettings.quietHours,
+    reducedMotion: petSettings.reducedMotion,
+    userHovering: petHovering,
+    userDragging: petDragging,
+    bubbleExpanded: bubbleMode === 'expanded' && !!interactiveBubble,
+    urgentInteractionActive: petUrgentInteractionActive,
+    petVisible: !!pet && !pet.isDestroyed() && pet.isVisible(),
+  };
+}
+
+/** User-defined no-go zones, if the user configured any (SAFE_ZONE_SPEC.md §3). */
+function loadExclusionZones(): void {
+  const path = join(DATA_DIR, 'pet-exclusion-zones.json');
+  if (!existsSync(path)) return;
+  try {
+    const raw = JSON.parse(readFileSync(path, 'utf8')) as unknown;
+    if (!Array.isArray(raw)) return;
+    petExclusionZones = raw.filter(
+      (z): z is PetExclusionZone =>
+        !!z &&
+        typeof z === 'object' &&
+        typeof (z as PetExclusionZone).id === 'string' &&
+        typeof (z as PetExclusionZone).displayId === 'string' &&
+        ['x', 'y', 'width', 'height'].every((k) => Number.isFinite((z as Record<string, unknown>)[k])),
+    );
+  } catch {
+    /* a malformed zone file must not take the pet down */
+  }
+}
+
+/** Persist the user's exclusion zones (SAFE_ZONE_SPEC.md §3). */
+function saveExclusionZones(): void {
+  try {
+    writeFileSync(join(DATA_DIR, 'pet-exclusion-zones.json'), JSON.stringify(petExclusionZones, null, 2), 'utf8');
+  } catch {
+    /* a lost zone list is annoying, not fatal */
+  }
+}
+
+/** Revalidate the placement (it may now sit inside a zone) and refresh the renderer. */
+function revalidatePlacementAfterZoneChange(): void {
+  petPlacement = ensurePlacement();
+  savePlacement(DATA_DIR, petPlacement);
+  roamingController.onGeometryChanged();
+  sendPetPosition();
+  pushPetState();
+}
+
+/** Freeze the Pet's current footprint (plus bubble headroom) as a no-go region. */
+function addExclusionZoneAroundPet(): void {
+  const placement = ensurePlacement();
+  const displays = currentDisplays();
+  const display =
+    displayForPoint(
+      displays,
+      placement.x + PET_SPRITE_SIZE / 2,
+      placement.y + PET_SPRITE_SIZE / 2,
+    ) ?? primaryDisplayOf(displays);
+  petExclusionZones = [
+    ...petExclusionZones,
+    {
+      id: `zone-${Date.now()}-${petExclusionZones.length + 1}`,
+      displayId: display.id,
+      ...rectAround(placement.x, placement.y, PET_SPRITE_SIZE, 8),
+      enabled: true,
+    },
+  ];
+  saveExclusionZones();
+  revalidatePlacementAfterZoneChange();
+}
+
+function toggleExclusionZone(id: string, enabled: boolean): void {
+  petExclusionZones = petExclusionZones.map((zone) => (zone.id === id ? { ...zone, enabled } : zone));
+  saveExclusionZones();
+  revalidatePlacementAfterZoneChange();
+}
+
+function clearExclusionZones(): void {
+  petExclusionZones = [];
+  saveExclusionZones();
+  revalidatePlacementAfterZoneChange();
+}
+
 /**
- * The taskbar pet: a full-width, transparent, always-on-top strip pinned to the
- * bottom of the primary work area (never over the taskbar itself). The window
- * starts click-through; the renderer reports hover over the sprite so only the
+ * The desktop pet: one transparent, always-on-top, click-through overlay covering the union
+ * of every display's work area (never the taskbar itself). The sprite is placed at absolute
+ * coordinates inside it, which is what makes drag, docking and multi-monitor roaming work.
+ * The window starts click-through; the renderer reports hover over the sprite so only the
  * pet itself becomes clickable -- the Shimeji-in-Electron pattern.
  */
 function ensurePet(): void {
@@ -598,12 +810,36 @@ function ensurePet(): void {
   void pet.loadFile(petHtmlPath());
   pet.once('ready-to-show', () => pet?.showInactive());
   pet.webContents.on('did-finish-load', () => {
+    sendDesktop();
     sendPetPosition();
     pushPetState();
+  });
+  // Wave 4 crash-loop protection (CRASH_RECOVERY_SPEC.md §6): three renderer
+  // crashes inside ten minutes puts the pet into safe mode (minimal motion,
+  // static-friendly) and stops silent reboots; diagnostics note it.
+  pet.webContents.on('render-process-gone', (_event, details) => {
+    petDiagnostics.count('rendererRestarts');
+    const now = Date.now();
+    rendererCrashes = rendererCrashes.filter((t) => now - t <= 600_000);
+    rendererCrashes.push(now);
+    if (!isCrashLoop(rendererCrashes, now)) return;
+    rendererCrashes = [];
+    if (petSafeMode) return; // already degraded; stay down rather than flapping
+    petSafeMode = true;
+    console.warn('[pet] renderer crash loop detected; entering safe mode (minimal motion)');
+    petSettings = {
+      ...petSettings,
+      movement: 'minimal',
+      allowCrossMonitor: false,
+      reducedMotion: true,
+      skin: DEFAULT_SKIN_ID,
+    };
+    savePetSettings(DATA_DIR, petSettings);
   });
   pet.on('closed', () => {
     pet = null;
   });
+  sendDesktop();
   sendPetPosition();
   pushPetState();
 }
@@ -613,47 +849,265 @@ function destroyPet(): void {
   pet = null;
   petWindowRect = null;
   interactiveBubble = null;
+  petDragging = false;
+  roamingController.reset();
   closeQuotaPopup();
 }
 
 /**
- * Re-apply the window rect for the current movement mode and tell the renderer where the
- * walkable zones are. Roaming changes the window from "primary strip" to "union of every
- * display", so this runs on mode changes and on display-metrics-changed.
+ * Re-apply the overlay rectangle after a movement-mode or display change, and tell the
+ * renderer where the safe regions are. The overlay itself never moves -- only the sprite
+ * inside it does.
  */
 function applyPetBounds(): void {
   if (!pet || pet.isDestroyed()) return;
   const bounds = petBounds();
   petWindowRect = bounds;
   pet.setBounds(bounds);
-  sendRoamZones();
+  sendDesktop();
+  sendPetPosition();
 }
 
-function sendRoamZones(): void {
+/** Safe regions (work area minus margin) in overlay-local coordinates, for renderer clamps. */
+function sendDesktop(): void {
   if (!pet || pet.isDestroyed() || pet.webContents.isLoading()) return;
-  const displays = screen.getAllDisplays().map((d) => ({ id: String(d.id), ...d.workArea }));
-  const window: Rect = petWindowRect ?? petBounds();
-  const zones = petSettings.movement === 'roaming' ? roamZones(displays, window) : null;
-  pet.webContents.send('qp-pet-zones', zones);
+  const overlay = petWindowRect ?? petBounds();
+  const zones = currentDisplays()
+    .map((d) => safeRegionFor(d, petSettings.safeMarginPx))
+    .filter((region): region is NonNullable<typeof region> => region != null)
+    .map((region) => ({
+      x: region.x - overlay.x,
+      y: region.y - overlay.y,
+      width: region.width,
+      height: region.height,
+    }));
+  pet.webContents.send('qp-pet-desktop', {
+    zones,
+    lockPosition: petSettings.lockPosition,
+    reducedMotion: petSettings.reducedMotion,
+    sprite: PET_SPRITE_SIZE,
+  });
 }
 
-/** Anchor as an absolute screen x, so switching modes keeps the Pet on the same pixel. */
-function absolutePetX(): number {
-  const window = petWindowRect ?? petBounds();
-  const display = screen.getPrimaryDisplay();
-  if (petAnchorDisplayId !== String(display.id)) {
-    petAnchorDisplayId = String(display.id);
-    petAnchorX = loadPetPosition(DATA_DIR, petAnchorDisplayId)?.x ?? null;
-  }
-  return petAnchorX ?? Math.round(display.workArea.x + display.workArea.width / 2 - 32);
-}
-
-/** The persisted anchor, restored so the Pet reappears where it was left (spec §36). */
+/** The persisted placement, restored so the Pet reappears where it was left (spec §36). */
 function sendPetPosition(): void {
   if (!pet || pet.isDestroyed() || pet.webContents.isLoading()) return;
-  const window = petWindowRect ?? petBounds();
-  pet.webContents.send('qp-pet-position', absolutePetX() - window.x);
-  sendRoamZones();
+  const overlay = petWindowRect ?? petBounds();
+  const placement = ensurePlacement();
+  pet.webContents.send('qp-pet-position', {
+    x: placement.x - overlay.x,
+    y: placement.y - overlay.y,
+    originX: overlay.x,
+    originY: overlay.y,
+    dock: placement.dock,
+  });
+}
+
+/** Ask the renderer to walk/glide to an absolute target; `kind` only labels the intent. */
+function sendRoamTarget(target: { x: number; y: number }, kind: string): void {
+  if (!pet || pet.isDestroyed() || pet.webContents.isLoading()) return;
+  const overlay = petWindowRect ?? petBounds();
+  pet.webContents.send('qp-pet-roam-target', {
+    x: target.x - overlay.x,
+    y: target.y - overlay.y,
+    kind,
+  });
+}
+
+function isPoint(value: unknown): value is { x: number; y: number } {
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    Number.isFinite((value as { x?: unknown }).x) &&
+    Number.isFinite((value as { y?: unknown }).y)
+  );
+}
+
+/** Persist an overlay-local sprite position as the new absolute placement. */
+function persistLocalPosition(local: { x: number; y: number }): void {
+  const overlay = petWindowRect ?? petBounds();
+  const absX = overlay.x + local.x;
+  const absY = overlay.y + local.y;
+  const displays = currentDisplays();
+  const display =
+    displayForPoint(displays, absX + PET_SPRITE_SIZE / 2, absY + PET_SPRITE_SIZE / 2) ??
+    primaryDisplayOf(displays);
+  const current = petPlacement ?? ensurePlacement();
+  petPlacement = {
+    displayId: display.id,
+    x: Math.round(absX),
+    y: Math.round(absY),
+    dock: current.dock,
+    homeX: current.homeX,
+    homeY: current.homeY,
+    updatedAt: Date.now(),
+  };
+  savePlacement(DATA_DIR, petPlacement);
+}
+
+/**
+ * Finish a user drag (DRAG_REPOSITION_SPEC.md §1): clamp into the work area, snap to a dock
+ * when close, persist the placement, and start the manual-placement cooldown.
+ */
+function finishDrag(local: { x: number; y: number }): void {
+  petDragging = false;
+  if (petSettings.lockPosition) return;
+  const overlay = petWindowRect ?? petBounds();
+  const displays = currentDisplays();
+  const absX = overlay.x + local.x;
+  const absY = overlay.y + local.y;
+  const display =
+    displayForPoint(displays, absX + PET_SPRITE_SIZE / 2, absY + PET_SPRITE_SIZE / 2) ??
+    primaryDisplayOf(displays);
+  const current = petPlacement ?? ensurePlacement();
+  const home = homeAnchor(current, display, PET_SPRITE_SIZE, petSettings.safeMarginPx);
+  const snapped = snapToDock(
+    absX,
+    absY,
+    PET_SPRITE_SIZE,
+    display,
+    petSettings.safeMarginPx,
+    DOCK_SNAP_THRESHOLD_PX,
+    home,
+  );
+  let x: number;
+  let y: number;
+  let dock: PetDockTarget | null;
+  if (snapped) {
+    x = snapped.x;
+    y = snapped.y;
+    dock = snapped.dock;
+  } else {
+    const clamped = clampPetToRect(absX, absY, PET_SPRITE_SIZE, display.workArea);
+    x = clamped.x;
+    y = clamped.y;
+    dock = null;
+  }
+  // A manual drag becomes the new home anchor (DRAG_REPOSITION_SPEC.md §5).
+  petPlacement = { displayId: display.id, x, y, dock, homeX: x, homeY: y, updatedAt: Date.now() };
+  savePlacement(DATA_DIR, petPlacement);
+  roamingController.onDragEnd(petDesktopContext(), Date.now());
+  sendPetPosition();
+  sendDesktop();
+  pushPetState();
+}
+
+/** Context menu "Return Home" (DOCK_AND_SNAP_SPEC.md §4). */
+function returnHome(): void {
+  const displays = currentDisplays();
+  const current = ensurePlacement();
+  const display = resolvePlacementDisplay(current, displays) ?? primaryDisplayOf(displays);
+  const home = homeAnchor(current, display, PET_SPRITE_SIZE, petSettings.safeMarginPx);
+  const canTravel = pet && !pet.isDestroyed() && !pet.webContents.isLoading();
+  if (!petSettings.reducedMotion && canTravel) {
+    // A short travel animation is optional; reduced motion moves immediately (spec §4).
+    sendRoamTarget(home, 'home');
+    return;
+  }
+  petPlacement = { ...current, displayId: display.id, x: home.x, y: home.y, updatedAt: Date.now() };
+  savePlacement(DATA_DIR, petPlacement);
+  sendPetPosition();
+  pushPetState();
+}
+
+/** Move the Pet to one of the named dock points (DOCK_AND_SNAP_SPEC.md §1). */
+function applyDock(dock: PetDockTarget): void {
+  const displays = currentDisplays();
+  const current = ensurePlacement();
+  const display = resolvePlacementDisplay(current, displays) ?? primaryDisplayOf(displays);
+  const home = homeAnchor(current, display, PET_SPRITE_SIZE, petSettings.safeMarginPx);
+  const point = dockPoint(display, dock, PET_SPRITE_SIZE, petSettings.safeMarginPx, home);
+  if (!point) return;
+  // Docking is an intentional placement, so it also becomes the Return Home anchor.
+  petPlacement = {
+    ...current,
+    displayId: display.id,
+    x: point.x,
+    y: point.y,
+    dock,
+    homeX: point.x,
+    homeY: point.y,
+    updatedAt: Date.now(),
+  };
+  savePlacement(DATA_DIR, petPlacement);
+  sendPetPosition();
+  pushPetState();
+}
+
+/** Patch one quiet-hours field and persist (NOTIFICATION_SCENES_SPEC.md §7). */
+function updateQuietHours(patch: Partial<PetSettings['quietHours']>): void {
+  petSettings = { ...petSettings, quietHours: { ...petSettings.quietHours, ...patch } };
+  savePetSettings(DATA_DIR, petSettings);
+  sceneQueue.clear();
+  pushPetState();
+}
+
+/** Mark an urgent interaction (warning/critical/reset intro) so roaming pauses meanwhile. */
+function markUrgent(ms: number): void {
+  petUrgentInteractionActive = true;
+  if (petUrgentTimer) clearTimeout(petUrgentTimer);
+  petUrgentTimer = setTimeout(() => {
+    petUrgentTimer = null;
+    petUrgentInteractionActive = false;
+  }, ms);
+}
+
+/** The interruption policy inputs shared by the scene queue and the notification path. */
+function scenePolicyOptions(): {
+  quietHours: PetSettings['quietHours'];
+  petAlerts: boolean;
+  nativeAlerts: boolean;
+  sounds: boolean;
+  criticalOverride: boolean;
+} {
+  const suppressed = settingsSuppressed();
+  return {
+    quietHours: petSettings.quietHours,
+    petAlerts: petSettings.speechBubbles,
+    nativeAlerts: petSettings.eventNotifications && !suppressed,
+    sounds: petSettings.eventNotifications && !suppressed,
+    criticalOverride: petSettings.quietHours.allowCritical,
+  };
+}
+
+/**
+ * The event allowed to raise an automatic bubble, after the scene policy. Focus and
+ * animation still follow `lastEvent`; only the interruption is suppressed (quiet hours).
+ */
+function bubbleEventForCurrent(): PresenceEvent | null {
+  if (!lastEvent) return null;
+  const provider = lastFrame?.providers.find((p) => p.key === lastEvent!.ownerKey);
+  const scene = sceneForEvent(lastEvent, provider);
+  if (!scene) return null;
+  return resolveScenePolicy(scene, scenePolicyOptions()).showBubble ? lastEvent : null;
+}
+
+/**
+ * Wave 3 roaming tick: ask the controller whether a burst is due, and if so send the target
+ * to the renderer. It runs on a slow timer, so the 45-180s cadence costs almost nothing.
+ */
+function driveRoaming(): void {
+  if (!pet || pet.isDestroyed() || !petEnabled || pet.webContents.isLoading()) return;
+  const ctx = petDesktopContext();
+  const display =
+    displayForPoint(ctx.displays, ctx.placement.x, ctx.placement.y) ?? primaryDisplayOf(ctx.displays);
+  const command = roamingController.update(ctx, display, PET_SPRITE_SIZE, petSettings.safeMarginPx);
+  if (!command) return;
+  sendRoamTarget(command.target, command.target.kind);
+}
+
+/** Revalidate placement and pause roaming after any display layout change. */
+function onDisplayChange(): void {
+  if (!petEnabled) return;
+  const before = petPlacement;
+  const after = ensurePlacement();
+  roamingController.onGeometryChanged();
+  applyPetBounds();
+  sendPetPosition();
+  pushPetState();
+  if (before && (before.displayId !== after.displayId || before.x !== after.x || before.y !== after.y)) {
+    savePlacement(DATA_DIR, after);
+  }
 }
 
 function pushPetState(): void {
@@ -665,6 +1119,8 @@ function pushPetState(): void {
     settings: petSettings,
     event: lastEvent,
     activeOwnerKey: activeOwnerKey(subscriptions),
+    // Quiet hours suppresses the automatic bubble but not the mood/focus it represents.
+    bubbleEvent: bubbleEventForCurrent(),
   });
   // An interactive bubble wins over the automatic one: the user is asking, so answer.
   if (interactiveBubble) lastFrame = { ...lastFrame, bubble: interactiveBubble };
@@ -708,10 +1164,17 @@ function loadCharacterManifests(): void {
     }
     try {
       const { manifest, validation } = readManifest(path);
-      characterManifests.set(c.id, manifest);
-      for (const issue of validation.issues) {
-        console.error(`[pet] manifest ${c.id} invalid at ${issue.path}: ${issue.message}`);
+      // Wave 4 (CRASH_RECOVERY_SPEC.md §Manifest corruption): an invalid or
+      // incompatible manifest is never partially activated. The character is
+      // simply absent from the runtime map and the renderer falls back to the
+      // vector placeholder / known-good default chain.
+      if (!validation.ok) {
+        for (const issue of validation.issues) {
+          console.error(`[pet] manifest ${c.id} invalid at ${issue.path}: ${issue.message}`);
+        }
+        continue;
       }
+      characterManifests.set(c.id, manifest);
     } catch (err) {
       console.error(`[pet] manifest ${c.id} unreadable: ${String(err)}`);
     }
@@ -722,6 +1185,132 @@ function loadCharacterManifests(): void {
 function localAssetUrl(src: string): string | null {
   const rel = src.replace(/^\/?assets\//, '');
   return existsSync(join(ASSETS_DIR, rel)) ? `../assets/${rel}` : null;
+}
+
+// ---------------------------------------------------------------------------
+// Pet Gallery (PET_GALLERY_SPEC.md) — one predictable place to configure Pet
+// Mode. The gallery window is pure UI: roster data is served by the main
+// process, every mutation is validated here, and preview states are resolved
+// against manifests without ever touching quota state, event history, native
+// notifications or roaming.
+// ---------------------------------------------------------------------------
+
+let galleryWindow: Electron.BrowserWindow | null = null;
+
+const GALLERY_PREVIEW_ANIMATIONS: Record<string, PetAnimationId> = {
+  healthy: 'healthy_idle',
+  working: 'working_loop',
+  warning: 'warning_loop',
+  critical: 'critical_loop',
+  reset: 'reset_celebrate',
+};
+
+function showGallery(): void {
+  if (galleryWindow && !galleryWindow.isDestroyed()) {
+    galleryWindow.focus();
+    return;
+  }
+  galleryWindow = new BrowserWindow({
+    width: 560,
+    height: 720,
+    autoHideMenuBar: true,
+    title: 'QuotaPulse Pet Gallery',
+    webPreferences: { preload: galleryPreloadPath(), contextIsolation: true, nodeIntegration: false, sandbox: true },
+  });
+  galleryWindow.on('closed', () => {
+    galleryWindow = null;
+  });
+  void galleryWindow.loadFile(galleryHtmlPath());
+}
+
+interface GalleryUpdateResult {
+  settings: unknown;
+  error?: string;
+}
+
+/**
+ * Validate + apply a gallery patch. Experimental character ids are always
+ * rejected here — concept art never flips a pet to selectable — and unknown
+ * fields are ignored rather than trusted (CUSTOMIZATION_STATE_MODEL.md §Rules).
+ */
+function applyGalleryPatch(patch: unknown): GalleryUpdateResult {
+  if (patch == null || typeof patch !== 'object' || Array.isArray(patch)) {
+    return { settings: petSettings, error: 'invalid patch' };
+  }
+  const p = patch as Record<string, unknown>;
+  const next: PetSettings = { ...petSettings };
+  let characterError: string | undefined;
+
+  if (typeof p.character === 'string') {
+    if (!isSelectableCharacterId(p.character)) {
+      characterError = isExperimentalCharacterId(p.character)
+        ? 'Experimental characters cannot be activated until promoted'
+        : 'Unknown character';
+    } else {
+      next.character = p.character;
+      next.skin = DEFAULT_SKIN_ID; // new character -> its default skin
+    }
+  }
+  if (typeof p.skin === 'string' && p.skin) {
+    const compatible = skinsForCharacter(next.character).some((skin) => skin.id === p.skin);
+    if (!compatible) {
+      return { settings: petSettings, error: 'skin is not compatible with this character' };
+    }
+    next.skin = p.skin;
+  }
+  if (typeof p.movement === 'string' && p.movement !== next.movement) {
+    if (p.movement === 'minimal' || p.movement === 'companion' || p.movement === 'roaming') {
+      next.movement = p.movement;
+    }
+  }
+  if (p.flags != null && typeof p.flags === 'object' && !Array.isArray(p.flags)) {
+    for (const [key, value] of Object.entries(p.flags as Record<string, unknown>)) {
+      if (typeof value !== 'boolean') continue;
+      if (key === 'speechBubbles' || key === 'eventNotifications' || key === 'reducedMotion' || key === 'lockPosition' || key === 'allowCrossMonitor' || key === 'stayNearCorner') {
+        (next as unknown as Record<string, unknown>)[key] = value;
+      }
+    }
+  }
+  if (p.quiet != null && typeof p.quiet === 'object' && !Array.isArray(p.quiet)) {
+    const q = p.quiet as Record<string, unknown>;
+    if (typeof q.allowCritical === 'boolean') next.quietHours.allowCritical = q.allowCritical;
+    if (typeof q.suppressPetInfo === 'boolean') next.quietHours.suppressPetInfo = q.suppressPetInfo;
+    if (typeof q.disableRoaming === 'boolean') next.quietHours.disableRoaming = q.disableRoaming;
+  }
+
+  petSettings = next;
+  savePetSettings(DATA_DIR, petSettings);
+  pushPetState();
+  return { settings: petSettings, error: characterError };
+}
+
+/** Serialize the live settings for the gallery, including nested quiet hours. */
+function gallerySettingsPayload(): PetSettings {
+  return { ...petSettings, quietHours: { ...petSettings.quietHours } };
+}
+
+/** Resolve a preview state against the current manifest; read-only (spec §5). */
+function galleryPreviewPayload(state: string): { src: string | null; animation: string; fellBack: boolean } {
+  const animation = GALLERY_PREVIEW_ANIMATIONS[state];
+  const manifest = characterManifests.get(petSettings.character);
+  if (!animation || !manifest) return { src: null, animation: String(animation ?? state), fellBack: false };
+  const resolved = resolveAnimation(manifest, animation, { reducedMotion: false });
+  return { src: resolved.src, animation: resolved.animation, fellBack: resolved.fellBack };
+}
+
+function registerGalleryIpc(): void {
+  ipcMain.handle('qp-gallery:roster', () => ({
+    entries: galleryRoster(),
+    skins: skinsForCharacter(petSettings.character),
+    movementModes: ['minimal', 'companion', 'roaming'],
+  }));
+  ipcMain.handle('qp-gallery:settings', () => gallerySettingsPayload());
+  ipcMain.handle('qp-gallery:update', (_event, patch: unknown): GalleryUpdateResult => applyGalleryPatch(patch));
+  ipcMain.handle('qp-gallery:preview', (_event, state: string) => galleryPreviewPayload(String(state)));
+  ipcMain.handle('qp-gallery:return-home', () => {
+    returnHome();
+  });
+  ipcMain.on('qp-gallery:close', () => galleryWindow?.close());
 }
 
 /**
@@ -760,32 +1349,109 @@ function applyAnimation(frame: PetFrame): PetFrame {
   // (ACCEPTANCE_TEST_MATRIX.md — Reduced motion).
   const allowRaster = resolved != null && !(frame.reducedMotion && resolved.static && !resolved.reducedVariant);
 
+  // Local runtime diagnostics (LOCAL_RUNTIME_DIAGNOSTICS_SPEC.md): fallbacks and
+  // animation identity changes are counted, swaps on unchanged state are not.
+  if (resolved?.fellBack) petDiagnostics.count('fallbackCount');
+  if (resolved?.src == null && !isVectorCharacter(frame.character)) petDiagnostics.count('decodeFailures');
+  petDiagnostics.observeAnimation(resolved?.animation ?? null);
+
+  // Wave 3 skins layer on top of the manifest: prefer the active skin's clip, fall back to
+  // the character default skin, then the manifest asset (SKIN_THEME_ARCHITECTURE.md §5).
+  // Semantic colors never come from here -- the vector renderer owns those.
+  const skinAsset = resolveSkinAsset(
+    frame.character,
+    petSettings.skin,
+    decision.animation,
+    manifest ? manifestAnimationSources(manifest) : null,
+  );
+  const preferredSrc = skinAsset.src ?? resolved?.src ?? null;
+
+  // The accessory overlay is real art on disk; a missing file falls back gracefully, and
+  // the default skin ships none. The accent colors decorative trims only -- never status.
+  const skin = resolveSkin(frame.character, petSettings.skin);
+  const accessoryRaw = skin ? resolveSkinAccessory(frame.character, skin.id) : null;
+  const skinAccessorySrc = accessoryRaw ? localAssetUrl(accessoryRaw) : null;
+  const skinAccentCss = skin?.palette?.primary ?? null;
+
+  // Wave 2 layered state: the interaction layer clamps locomotion during urgent intros,
+  // hover/bubble, Minimal mode and reduced motion (WAVE2_LAYERING_RULES.md).
+  const layers = resolveLayeredState({
+    mood: frame.mood,
+    interaction: interactionForAnimation(decision.animation),
+    facing: petFacing,
+    context: {
+      movementMode: petSettings.movement,
+      reducedMotion: frame.reducedMotion,
+      bubbleOpen: !!frame.bubble,
+      userHovering: petHovering,
+      userDragging: petDragging,
+      elapsedIdleMs: Date.now() - lastUserInteractionAt,
+      facing: petFacing,
+    },
+  });
+
   return {
     ...frame,
     animation: decision.animation,
     animationPlayback: decision.playback,
-    animationSrc: allowRaster && resolved?.src ? localAssetUrl(resolved.src) : null,
+    animationSrc: allowRaster && preferredSrc ? localAssetUrl(preferredSrc) : null,
+    layers,
+    skinAccessory: skinAccessorySrc,
+    skinAccentCss,
   };
 }
 
-/** Build the hover/click status bubble for whatever the Pet is focused on (spec §23). */
-function showStatusBubble(): void {
+/** Animation id -> manifest asset src, used as the skin fallback chain's last link. */
+function manifestAnimationSources(manifest: PetCharacterManifest): Partial<Record<PetAnimationId, string>> {
+  const sources: Partial<Record<PetAnimationId, string>> = {};
+  for (const [id, asset] of Object.entries(manifest.animations)) {
+    if (asset?.src) sources[id as PetAnimationId] = asset.src;
+  }
+  return sources;
+}
+
+/**
+ * Build the interactive bubble for whatever the Pet is focused on (spec §23). Hover shows
+ * the lightweight `peek`; click escalates to `expanded` with reset time and actions
+ * (Wave 2 INTERACTION_AND_BUBBLE_SPEC.md §4).
+ */
+function showStatusBubble(mode: BubbleMode = 'peek'): void {
   if (!lastFrame) pushPetState();
   const frame = lastFrame;
   if (!frame) return;
+  bubbleMode = mode;
   if (frame.focus) {
     const pinned = petSettings.focusMode === 'pinned' && petSettings.pinnedOwnerKey === frame.focus.key;
-    interactiveBubble = statusBubble(frame.focus, Date.now(), pinned);
+    interactiveBubble = mode === 'peek' ? peekBubble(frame.focus, Date.now()) : statusBubble(frame.focus, Date.now(), pinned);
   } else {
     // No provider to describe: say why. A daemon that is down and a daemon with no reading
     // yet are different problems and must not read the same (spec §45–§46).
     interactiveBubble = lock ? noDataBubble(Date.now()) : daemonDownBubble(Date.now());
   }
+  scheduleBubbleDismiss(mode);
   pushPetState();
+}
+
+/** Expanded bubbles auto-dismiss; peek bubbles are owned by the hover state. */
+function scheduleBubbleDismiss(mode: BubbleMode): void {
+  if (bubbleDismissTimer) {
+    clearTimeout(bubbleDismissTimer);
+    bubbleDismissTimer = null;
+  }
+  if (mode !== 'expanded') return;
+  bubbleDismissTimer = setTimeout(() => {
+    bubbleDismissTimer = null;
+    if (bubbleMode !== 'expanded') return;
+    interactiveBubble = null;
+    bubbleMode = 'peek';
+    pushPetState();
+  }, 12_000);
 }
 
 function clearStatusBubble(): void {
   if (!interactiveBubble) return;
+  // An expanded bubble the user opened stays until they click again or it times out.
+  if (bubbleMode === 'expanded') return;
   interactiveBubble = null;
   pushPetState();
 }
@@ -796,9 +1462,17 @@ function clearStatusBubble(): void {
  * left-most monitor) would place the popup on the wrong screen.
  */
 function popupBoundsForPet(): Rect {
-  const workArea = screen.getPrimaryDisplay().workArea;
-  const window = petWindowRect ?? petBounds();
-  const absolute = petCenterX == null ? null : window.x + petCenterX;
+  const overlay = petWindowRect ?? petBounds();
+  const absolute =
+    petCenterX != null
+      ? overlay.x + petCenterX
+      : petPlacement
+        ? petPlacement.x + PET_SPRITE_SIZE / 2
+        : null;
+  const displays = currentDisplays();
+  const display =
+    displayForPoint(displays, absolute ?? 0, petPlacement?.y ?? 0) ?? primaryDisplayOf(displays);
+  const workArea = display.workArea;
   return petPopupBounds(workArea, absolute == null ? null : absolute - workArea.x);
 }
 
@@ -814,6 +1488,11 @@ function openQuotaPopup(): void {
   if (!lock) return;
   // The popup shows the same numbers as the bubble, so the bubble would only be in the way.
   interactiveBubble = null;
+  bubbleMode = 'peek';
+  if (bubbleDismissTimer) {
+    clearTimeout(bubbleDismissTimer);
+    bubbleDismissTimer = null;
+  }
   if (quotaPopup && !quotaPopup.isDestroyed()) {
     quotaPopup.setBounds(popupBoundsForPet());
     quotaPopup.reload();
@@ -869,10 +1548,13 @@ function registerCompanionIpc(): void {
     const sender = BrowserWindow.fromWebContents(event.sender);
     if (sender !== pet || !pet || pet.isDestroyed()) return;
     pet.setIgnoreMouseEvents(!over, { forward: true });
+    petHovering = over;
+    lastUserInteractionAt = Date.now();
     if (over) {
       // At most one hover_react per hover entry (ACCEPTANCE_TEST_MATRIX.md — Interaction).
       pendingInteraction = 'hover';
-      showStatusBubble();
+      // Hover shows the peek; it must not collapse an expanded bubble the user clicked.
+      if (bubbleMode !== 'expanded') showStatusBubble('peek');
     } else {
       clearStatusBubble();
     }
@@ -882,21 +1564,51 @@ function registerCompanionIpc(): void {
   // full quota popup instead, and the double click goes straight to the dashboard.
   ipcMain.on('qp-pet-click', (_event, centerX: number) => {
     if (typeof centerX === 'number' && Number.isFinite(centerX)) petCenterX = centerX;
-    // click_react plays once before the popup takes over (ACCEPTANCE_TEST_MATRIX.md).
+    // Wave 2: click_react once, then toggle the expanded details bubble. The full quota
+    // popup is reached from that bubble's Details action (and double-click -> dashboard).
     pendingInteraction = 'click';
-    pushPetState();
-    openQuotaPopup();
+    lastUserInteractionAt = Date.now();
+    if (bubbleMode === 'expanded' && interactiveBubble) {
+      interactiveBubble = null;
+      bubbleMode = 'peek';
+      if (bubbleDismissTimer) {
+        clearTimeout(bubbleDismissTimer);
+        bubbleDismissTimer = null;
+      }
+      pushPetState();
+    } else {
+      showStatusBubble('expanded');
+    }
+  });
+  ipcMain.on('qp-pet-facing', (_event, facing: string) => {
+    // The renderer owns smooth movement; it mirrors facing so turns can be reasoned about.
+    if (facing === 'left' || facing === 'right') petFacing = facing;
   });
   ipcMain.on('qp-pet-open-dashboard', () => openBrowser());
   ipcMain.on('qp-pet-details', () => openQuotaPopup());
   ipcMain.on('qp-pet-context', () => openPetMenu());
-  ipcMain.on('qp-pet-moved', (_event, x: number) => {
-    if (typeof x !== 'number' || !Number.isFinite(x)) return;
-    const window = petWindowRect ?? petBounds();
-    // Stored as an absolute screen x so the same anchor survives a movement-mode switch
-    // between a primary-only strip and the union window.
-    petAnchorX = window.x + x;
-    if (petAnchorDisplayId) savePetPosition(DATA_DIR, { displayId: petAnchorDisplayId, x: petAnchorX, y: 0 });
+  // Wave 3: a drag is user intent. Cancel roaming immediately, close a peek bubble, and
+  // only persist on release (DRAG_REPOSITION_SPEC.md §1).
+  ipcMain.on('qp-pet-drag-start', () => {
+    if (petSettings.lockPosition) return;
+    if (bubbleMode !== 'expanded') clearStatusBubble();
+    petDragging = true;
+    roamingController.onDragStart();
+  });
+  ipcMain.on('qp-pet-drag-end', (_event, local: unknown) => {
+    if (!isPoint(local)) return;
+    finishDrag(local);
+  });
+  // The renderer finished a main-planned roaming burst (or Return Home travel).
+  ipcMain.on('qp-pet-roamed', (_event, local: unknown) => {
+    if (!isPoint(local)) return;
+    persistLocalPosition(local);
+    roamingController.onMoveComplete();
+    sendPetPosition();
+  });
+  // The renderer finished a local (renderer-driven) idle reposition.
+  ipcMain.on('qp-pet-moved', (_event, local: unknown) => {
+    if (isPoint(local)) persistLocalPosition(local);
   });
   ipcMain.on('qp-pet-action', (_event, payload: { action?: string; ownerKey?: string | null }) => {
     const action = payload?.action;
@@ -994,8 +1706,9 @@ function openPetMenu(): void {
       click: () => {
         petSettings = { ...petSettings, movement: mode };
         savePetSettings(DATA_DIR, petSettings);
-        // Roaming swaps the window to the union of every display; the others go back to
-        // the primary strip. Re-anchor first so the Pet does not jump screens.
+        // Switching modes must not leave a stale burst pending; the Pet stays put until the
+        // next eligible decision. (WAVE3_SCOPE.md §4: Minimal stays the default.)
+        roamingController.reset();
         applyPetBounds();
         sendPetPosition();
         pushPetState();
@@ -1026,13 +1739,139 @@ function openPetMenu(): void {
       pushPetState();
     },
   }));
+  // Wave 3 skins are per-character presentation only: switching one preserves focus, mood
+  // and notification history (SKIN_THEME_ARCHITECTURE.md §6).
+  const skinItems: Electron.MenuItemConstructorOptions[] = skinsForCharacter(petSettings.character).map((skin) => ({
+    label: skin.displayName,
+    type: 'radio',
+    checked: petSettings.skin === skin.id,
+    click: () => {
+      if (petSettings.skin === skin.id) return;
+      petSettings = { ...petSettings, skin: skin.id };
+      savePetSettings(DATA_DIR, petSettings);
+      pushPetState();
+    },
+  }));
+  const dockTargets: PetDockTarget[] = [
+    'top-left',
+    'top-center',
+    'top-right',
+    'middle-left',
+    'middle-right',
+    'bottom-left',
+    'bottom-center',
+    'bottom-right',
+  ];
+  const dockItems: Electron.MenuItemConstructorOptions[] = dockTargets.map((dock) => ({
+    label: dock.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+    type: 'radio',
+    checked: petPlacement?.dock === dock,
+    click: () => applyDock(dock),
+  }));
+  const quiet = petSettings.quietHours;
+  const quietItems: Electron.MenuItemConstructorOptions[] = [
+    {
+      label: 'Enable quiet hours',
+      type: 'checkbox',
+      checked: quiet.enabled,
+      click: (item) => updateQuietHours({ enabled: item.checked }),
+    },
+    {
+      label: `Window ${quiet.startLocal} - ${quiet.endLocal}`,
+      enabled: false,
+    },
+    { type: 'separator' },
+    {
+      label: 'Keep critical notifications',
+      type: 'checkbox',
+      checked: quiet.allowCritical,
+      click: (item) => updateQuietHours({ allowCritical: item.checked }),
+    },
+    {
+      label: 'Suppress native warnings',
+      type: 'checkbox',
+      checked: quiet.suppressNativeWarning,
+      click: (item) => updateQuietHours({ suppressNativeWarning: item.checked }),
+    },
+    {
+      label: 'Suppress informational bubbles',
+      type: 'checkbox',
+      checked: quiet.suppressPetInfo,
+      click: (item) => updateQuietHours({ suppressPetInfo: item.checked }),
+    },
+    {
+      label: 'Disable roaming',
+      type: 'checkbox',
+      checked: quiet.disableRoaming,
+      click: (item) => updateQuietHours({ disableRoaming: item.checked }),
+    },
+  ];
+  // Exclusion zones (SAFE_ZONE_SPEC.md §3): freeze the Pet's current spot as a no-go area
+  // or toggle/remove existing ones. Zones live beside the other pet state files.
+  const exclusionItems: Electron.MenuItemConstructorOptions[] = [
+    { label: 'Exclude area around Pet', click: addExclusionZoneAroundPet },
+    { type: 'separator' },
+    ...petExclusionZones.map(
+      (zone): Electron.MenuItemConstructorOptions => ({
+        label: `${zone.id} (${Math.round(zone.width)}×${Math.round(zone.height)})`,
+        type: 'checkbox',
+        checked: zone.enabled,
+        click: (item) => toggleExclusionZone(zone.id, item.checked),
+      }),
+    ),
+    {
+      label: 'Clear exclusion zones',
+      enabled: petExclusionZones.length > 0,
+      click: () => clearExclusionZones(),
+    },
+  ];
   Menu.buildFromTemplate([
     { label: 'Open dashboard', click: openBrowser },
+    { label: 'Pet Gallery…', click: showGallery },
     { type: 'separator' },
     { label: 'Focus', submenu: focusItems },
     { label: 'Movement', submenu: movementItems },
     { label: 'Pet character', submenu: characterItems },
+    { label: 'Skin', submenu: skinItems },
     { label: 'Rotate every', submenu: rotateItems },
+    { type: 'separator' },
+    { label: 'Return Home', click: returnHome },
+    { label: 'Dock to', submenu: dockItems },
+    {
+      label: 'Stay near corner',
+      type: 'checkbox',
+      checked: petSettings.stayNearCorner,
+      click: (item) => {
+        petSettings = { ...petSettings, stayNearCorner: item.checked };
+        savePetSettings(DATA_DIR, petSettings);
+        roamingController.reset();
+        pushPetState();
+      },
+    },
+    { label: 'Exclusion zones', submenu: exclusionItems },
+    {
+      label: 'Lock Pet Position',
+      type: 'checkbox',
+      checked: petSettings.lockPosition,
+      click: (item) => {
+        petSettings = { ...petSettings, lockPosition: item.checked };
+        savePetSettings(DATA_DIR, petSettings);
+        roamingController.reset();
+        sendDesktop();
+        pushPetState();
+      },
+    },
+    {
+      label: 'Allow cross-monitor roaming',
+      type: 'checkbox',
+      checked: petSettings.allowCrossMonitor,
+      enabled: petSettings.movement === 'roaming',
+      click: (item) => {
+        petSettings = { ...petSettings, allowCrossMonitor: item.checked };
+        savePetSettings(DATA_DIR, petSettings);
+      },
+    },
+    { label: 'Quiet hours', submenu: quietItems },
     { type: 'separator' },
     {
       label: 'Speech bubbles',
@@ -1140,28 +1979,30 @@ void app.whenReady().then(() => {
   app.setAppUserModelId('dev.quotapulse.tray');
   ensureDaemon();
   loadCharacterManifests();
+  loadExclusionZones();
+  setManualCooldown(petSettings.manualMoveCooldownMs || MANUAL_MOVE_COOLDOWN_MS);
   registerCompanionIpc();
+  registerGalleryIpc();
 
   tray = new Tray(nativeImage.createFromBuffer(trayIconFor(null)));
   tray.on('click', togglePopup);
   render();
   ensurePet();
 
-  // Taskbar edge / DPI / resolution changes move the work area: re-pin the pet.
-  screen.on('display-metrics-changed', () => {
-    if (petEnabled) applyPetBounds();
-  });
-  screen.on('display-added', () => {
-    if (petEnabled) applyPetBounds();
-  });
-  screen.on('display-removed', () => {
-    if (petEnabled) applyPetBounds();
-  });
+  // Taskbar edge / DPI / resolution / monitor changes: revalidate the placement and resize
+  // the overlay. A disconnected monitor must never orphan the Pet (spec §5).
+  screen.on('display-metrics-changed', onDisplayChange);
+  screen.on('display-added', onDisplayChange);
+  screen.on('display-removed', onDisplayChange);
 
   void fetchLimits();
   const timer = setInterval(() => void fetchLimits(), POLL_MS);
+  // The roaming decision is slow by design; the renderer animates the actual walk.
+  const roamTimer = setInterval(driveRoaming, 4_000);
   app.on('before-quit', () => {
     clearInterval(timer);
+    clearInterval(roamTimer);
     if (trayAnimTimer) clearInterval(trayAnimTimer);
+    if (petUrgentTimer) clearTimeout(petUrgentTimer);
   });
 });

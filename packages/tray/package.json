@@ -6,9 +6,11 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc -p tsconfig.preload.json",
+    "package": "npm test && tsx scripts/package-assets.ts",
     "start": "npm run build && electron dist/main.js",
     "icon-preview": "tsx src/preview-icons.ts",
     "test": "tsx --test test/*.test.ts",
+    "validate-assets": "tsx scripts/validate-pet-assets.ts",
     "preview-tooltip": "tsx src/preview-tooltip.ts",
     "preview-pet": "tsx src/preview-pet.ts"
   },

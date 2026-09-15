@@ -29,9 +29,13 @@
    *   #pet       -- BODY motion. All CSS animation lives here so a breath or a bounce can
    *                 never clobber the walk position the way a single element would.
    */
+  /*
+   * Wave 3: the sprite lives at an absolute (x, y) inside the desktop overlay. `top/left:0`
+   * plus a translate keeps it on its own compositor layer, exactly as the old strip did.
+   */
   #pet-wrap {
     position: absolute;
-    bottom: 4px;
+    top: 0;
     left: 0;
     width: var(--pet-size);
     height: var(--pet-size);
@@ -50,6 +54,38 @@
     transform-origin: 50% 88%;
     filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
   }
+  #pet-wrap.dragging #pet { cursor: grabbing; }
+  #pet-wrap.position-locked #pet { cursor: default; }
+
+  /*
+   * Wave 3 skin layer (SKIN_THEME_ARCHITECTURE.md §3–§4): a decorative accent trim plus an
+   * optional accessory overlay from the active skin. Both are NON-semantic -- status colors
+   * (--pet/--alert) are never touched by the skin.
+   */
+  #accessory {
+    position: absolute;
+    left: 14px;
+    top: -12px;
+    width: 36px;
+    height: 24px;
+    display: none;
+    pointer-events: none;
+  }
+  #accessory.show { display: block; }
+  #accessory img { width: 100%; height: 100%; }
+  #skin-trim {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: -2px;
+    height: 4px;
+    display: none;
+    border-radius: 3px;
+    background: var(--skin-accent, var(--pet));
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  #pet-wrap.skin-applied #skin-trim { display: block; }
 
   /* Body motion per mood (spec §31). */
   #pet-wrap.healthy #pet { animation: breathe 3.4s ease-in-out infinite; }
@@ -142,7 +178,7 @@
   /* ---- Reset badge --------------------------------------------------------- */
   #badge {
     position: absolute;
-    bottom: 74px;
+    top: 0;
     left: 0;
     display: none;
     padding: 3px 10px;
@@ -154,14 +190,14 @@
     white-space: nowrap;
     box-shadow: 0 4px 14px -6px rgba(0, 0, 0, 0.7);
     pointer-events: none;
-    transform: translateX(-50%);
+    transform: translate(-50%, -100%);
   }
   #badge.show { display: block; }
 
   /* ---- Speech bubble (spec §21–§25) --------------------------------------- */
   #bubble {
     position: absolute;
-    bottom: 104px;
+    top: 0;
     left: 0;
     display: none;
     max-width: 300px;
@@ -172,7 +208,7 @@
     color: #e8edf3;
     font: 12px/1.45 'Segoe UI', system-ui, sans-serif;
     box-shadow: 0 10px 26px -12px rgba(0, 0, 0, 0.85);
-    transform: translateX(-50%);
+    transform: translate(-50%, -100%);
     -webkit-font-smoothing: antialiased;
   }
   #bubble.show { display: block; }
@@ -270,6 +306,68 @@
     100% { transform: translateY(0); }
   }
 
+  /* ---- Wave 2 micro-behaviors & long-idle (Motion Bible §1, §3) ------------ */
+  #pet-wrap.blink .qp-eye { animation: qpBlink 260ms ease-in-out 1; }
+  #pet-wrap.look-left .qp-look { animation: qpLookLeft 900ms ease-in-out 1; }
+  #pet-wrap.look-right .qp-look { animation: qpLookRight 900ms ease-in-out 1; }
+  #pet-wrap.idle-variant-1 .qp-sprite { animation: qpIdleV1 1600ms ease-in-out 1; }
+  #pet-wrap.idle-variant-2 .qp-head { animation: qpIdleV2 1600ms ease-in-out 1; }
+  #pet-wrap.sit .qp-sprite { transform: translateY(3px) scaleY(0.92); }
+  #pet-wrap.lie .qp-sprite { transform: translateY(7px) scaleY(0.8); }
+  #pet-wrap.sleep .qp-sprite { transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
+  #pet-wrap.sleep .qp-eye { animation: none; }
+  #pet-wrap.wake .qp-sprite { animation: qpWake 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
+  #pet-wrap.stopping .qp-sprite { animation: qpStop 420ms ease-out 1; }
+  /* Flux Blob glides/morphs instead of stepping (Wave 2 handoff constraint). */
+  #pet-wrap.walking.glide .qp-sprite { animation: qpGlide 900ms ease-in-out infinite; }
+  #pet-wrap.walking.glide .qp-leg { animation: none; }
+
+  @keyframes qpLookLeft { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-2.2px); } }
+  @keyframes qpLookRight { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(2.2px); } }
+  @keyframes qpIdleV1 { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-2.5px); } 70% { transform: translateY(0.5px); } }
+  @keyframes qpIdleV2 { 0%, 100% { transform: rotate(0deg); } 30% { transform: rotate(-4deg); } 70% { transform: rotate(3deg); } }
+  @keyframes qpWake {
+    0% { transform: translateY(6px) scaleY(0.84); }
+    60% { transform: translateY(-4px) scaleY(1.04); }
+    100% { transform: translateY(0) scaleY(1); }
+  }
+  @keyframes qpStop { 0% { transform: translateY(-2px) scale(1.04, 0.96); } 100% { transform: translateY(0) scale(1, 1); } }
+  @keyframes qpGlide { 0%, 100% { transform: translateY(0) scale(1, 1); } 50% { transform: translateY(-3px) scale(1.03, 0.97); } }
+
+  /*
+   * Wave 2 posture and look also drive the raster body (#pet), so they work for characters
+   * with no SVG parts. Declared after the mood rules so they win while active.
+   */
+  #pet-wrap.sit #pet { animation: none; transform: translateY(3px) scaleY(0.92); }
+  #pet-wrap.lie #pet { animation: none; transform: translateY(7px) scaleY(0.8); }
+  #pet-wrap.sleep #pet { animation: none; transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
+  #pet-wrap.wake #pet { animation: qpWake 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
+  #pet-wrap.stopping #pet { animation: qpStop 420ms ease-out 1; }
+  #pet-wrap.look-left #pet { animation: qpLookLeftBody 900ms ease-in-out 1; }
+  #pet-wrap.look-right #pet { animation: qpLookRightBody 900ms ease-in-out 1; }
+  @keyframes qpLookLeftBody { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-6deg); } }
+  @keyframes qpLookRightBody { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(6deg); } }
+
+  /* Peek bubble: no action row, tighter padding (Wave 2 interaction spec §4). */
+  #bubble[data-mode="peek"] { padding: 7px 10px; }
+  #bubble[data-mode="peek"] .b-actions { display: none; }
+
+  /*
+   * Wave 2 personality differentiation (personality bibles): one motion language per
+   * character instead of one shared default.
+   */
+  #pet-wrap.char-orbit_bot .qp-antenna { animation-duration: 2.2s; }
+  #pet-wrap.char-pulse_fox .qp-tail { animation-duration: 3.2s; }
+  #pet-wrap.char-pulse_fox .qp-ear { animation: qpEarTwitch 4.6s ease-in-out infinite; }
+  #pet-wrap.char-capsule_cat .qp-tail { animation-duration: 5.4s; }
+  #pet-wrap.char-capsule_cat .qp-ear { animation: qpEarLed 2.6s ease-in-out infinite; }
+  #pet-wrap.char-flux_blob .qp-body { animation: qpBlobMorph 3.8s ease-in-out infinite; }
+  #pet-wrap.char-flux_blob .qp-leg { animation: none; }
+
+  @keyframes qpEarTwitch { 0%, 92%, 100% { transform: rotate(0deg); } 95% { transform: rotate(-8deg); } 97% { transform: rotate(6deg); } }
+  @keyframes qpEarLed { 0%, 100% { opacity: 0.72; } 50% { opacity: 1; } }
+  @keyframes qpBlobMorph { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.04, 0.96); } }
+
   @media (prefers-reduced-motion: reduce) {
     #pet, #pet-wrap #pet, #pet-wrap #pet *, #sparkles, #halo span::after { animation: none !important; }
     #sparkles { display: none; }
@@ -277,12 +375,17 @@
   /* User-forced reduced motion, layered on top of the OS preference (spec §35). */
   #pet-wrap.reduced-motion #pet,
   #pet-wrap.reduced-motion #pet * { animation: none !important; }
+  /* Blink is the one behavior reduced motion keeps (Wave 2 Motion Bible §6). The selector
+     out-specifies the blanket animation:none rules above so the blink still plays. */
+  #pet-wrap.blink #pet .qp-eye { animation: qpBlink 260ms ease-in-out 1 !important; }
 </style>
 </head>
 <body>
 <div id="stage">
   <div id="pet-wrap" class="idle" title="QuotaPulse">
     <div id="pet"></div>
+    <div id="accessory" aria-hidden="true"></div>
+    <div id="skin-trim" aria-hidden="true"></div>
     <div id="sparkles" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <div id="halo" aria-hidden="true"><span></span></div>
   </div>
@@ -301,12 +404,13 @@
   var badge = document.getElementById('badge');
   var bubble = document.getElementById('bubble');
   var halo = document.getElementById('halo');
+  var accessory = document.getElementById('accessory');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var SPEED = { healthy: 36, working: 90, warning: 55, critical: 22, reset: 0, idle: 0 };
-  /* Spec §33 recommends 20–80px for local walking; §34's 80–150px is the Companion ceiling,
-     which this stays under. These are only used when no roaming zones were sent. */
-  var RANGE = { minimal: [0, 0], companion: [20, 80], roaming: [120, 520] };
+  /* Wave 2 local range (Motion Bible §4): Minimal never moves, Companion is 20–150px,
+     Roaming is the optional/later feature. Used only when no roaming zones were sent. */
+  var RANGE = { minimal: [0, 0], companion: [20, 150], roaming: [120, 520] };
   /* The pack names the healthy loop `idle`, not `healthy`; the map keeps that quirk in one
      place instead of string-building a filename that silently 404s to a blank sprite. */
   var LOOP_ART = { healthy: 'idle/pulsepet_idle.webp', working: 'working/pulsepet_working.webp' };
@@ -327,15 +431,39 @@
     showGlobalAlert: false, badge: null, bubble: null, movement: 'minimal',
     hasData: false, reducedMotion: false, focus: null, providers: [],
     character: 'orbit_bot', spriteSvg: null,
-    animation: 'healthy_idle', animationPlayback: 'loop', animationSrc: null
+    animation: 'healthy_idle', animationPlayback: 'loop', animationSrc: null,
+    skinAccessory: null, skinAccentCss: null,
+    layers: { mood: 'unknown', expression: 'none', locomotion: 'stationary', interaction: 'none', facing: 'right' }
   };
+  /*
+   * Wave 3: the sprite is positioned at an absolute (x, y) inside the desktop overlay. The
+   * main process owns the placement policy; the renderer animates toward targets and reports
+   * where it ended up.
+   */
   var x = Math.max(0, Math.floor(window.innerWidth / 2 - SIZE / 2));
+  var y = Math.max(0, window.innerHeight - SIZE - 8);
   var anchorX = x;
+  var anchorY = y;
   var dir = 1;
+  /* Direction-specific locomotion classes, the Wave 2 asset contract (walk_left etc.). */
+  var walkSide = null;
   var targetX = x;
+  var targetY = y;
   var walking = false;
-  /** Roaming only: window-local x segments with real screen under them (spec §34). */
+  /** True when the current walk is a main-planned roaming burst / Return Home travel. */
+  var roaming = false;
+  /** Safe regions (overlay-local) from the main process; local movement is clamped to them. */
   var zones = null;
+  /** Overlay origin in screen coordinates, for converting local px to absolute px. */
+  var originX = 0;
+  var originY = 0;
+  /** Wave 3 drag state (click-vs-drag threshold lives in main's policy). */
+  var pointerDown = false;
+  var dragging = false;
+  var suppressClick = false;
+  var dragStartClient = null;
+  var dragStartSprite = null;
+  var locked = false;
   var idleTimer = null;
   var actionTimer = null;
   var last = performance.now();
@@ -349,6 +477,8 @@
   var lastSvgKey = null;
   /* Last raster clip URL chosen from the manifest; avoids reloading the same clip. */
   var lastRasterSrc = null;
+  /* Last skin accessory injected, so a repaint every poll does not restart the overlay. */
+  var lastAccessorySrc = null;
   /* Last resolved animation id, so a `once` reaction retriggers only when it changes. */
   var lastAnimation = null;
   /*
@@ -366,6 +496,20 @@
     warning_intro: 1100, critical_intro: 1000, reset_celebrate: 2800,
     hover_react: 600, click_react: 750
   };
+  /*
+   * Wave 2 behavior state (WAVE2_MOTION_BIBLE.md §3): idle tier is measured from the last
+   * user interaction, a posture (sit/lie/sleep) persists until interrupted, and the
+   * scheduler randomizes within the tier so the Pet never reads as a metronome.
+   */
+  var lastInteractionAt = Date.now();
+  var posture = null;
+  var BODY_ACTION_MS = { look: 1500, 'look-left': 1200, 'look-right': 1200, hop: 1600, stretch: 1600, blink: 260 };
+  /* Idle behavior id -> wrapper class. Kept here so the mapping has one home. */
+  var CLASS_FOR_IDLE = {
+    blink: 'blink', look_left: 'look-left', look_right: 'look-right',
+    idle_variant_1: 'idle-variant-1', idle_variant_2: 'idle-variant-2', stretch: 'stretch'
+  };
+  var CHAR_CLASSES = ['char-orbit_bot', 'char-pulse_fox', 'char-flux_blob', 'char-capsule_cat'];
 
   // ---- Painting -------------------------------------------------------------
   function paint() {
@@ -378,7 +522,15 @@
       wrap.classList.remove('healthy', 'working', 'warning', 'critical', 'reset', 'idle');
       wrap.classList.add(moodClass);
     }
+    // Wave 2 personality: a stable class per character lets CSS tune motion language.
+    var charClass = 'char-' + frame.character;
+    if (!wrap.classList.contains(charClass)) {
+      for (var ci = 0; ci < CHAR_CLASSES.length; ci++) wrap.classList.remove(CHAR_CLASSES[ci]);
+      wrap.classList.add(charClass);
+    }
     wrap.classList.toggle('reduced-motion', !!frame.reducedMotion);
+    // Wave 3 skin overlays: only the accessory/trim change; the mood class is untouched.
+    paintSkin();
     applyAnimationClass();
     wrap.style.setProperty('--pet', frame.colorCss);
     badge.style.setProperty('--pet', frame.colorCss);
@@ -421,8 +573,32 @@
     var cls = ONCE_ANIM_CLASS[frame.animation];
     if (!cls) return;
     if (reduced && (frame.animation === 'critical_intro' || frame.animation === 'warning_intro' || frame.animation === 'reset_celebrate')) return;
+    // An alert/acknowledgement interrupts sleep or a resting posture (Wave 2 QA D).
+    wake();
     wrap.classList.add(cls);
     setTimeout(function () { wrap.classList.remove(cls); }, ONCE_ANIM_MS[frame.animation] || 900);
+  }
+
+  /*
+   * Wave 3 skin layer: inject the accessory overlay when the active skin ships one, and
+   * surface the decorative accent. Neither touches a status color.
+   */
+  function paintSkin() {
+    var accent = frame.skinAccentCss || frame.colorCss;
+    wrap.style.setProperty('--skin-accent', accent);
+    var framed = !!(frame.skinAccessory || (frame.skinAccentCss && frame.skinAccentCss !== frame.colorCss));
+    wrap.classList.toggle('skin-applied', framed);
+    if (frame.skinAccessory) {
+      if (lastAccessorySrc !== frame.skinAccessory) {
+        lastAccessorySrc = frame.skinAccessory;
+        accessory.innerHTML = "<img src='" + frame.skinAccessory + "' alt='' />";
+      }
+      accessory.classList.add('show');
+    } else {
+      if (lastAccessorySrc !== null) lastAccessorySrc = null;
+      accessory.innerHTML = '';
+      accessory.classList.remove('show');
+    }
   }
 
   // ---- Expression layer (spec §28, §31) ------------------------------------
@@ -489,12 +665,14 @@
 
   function paintBubble() {
     var b = frame.bubble;
-    var key = b ? (b.kind + '|' + b.title + '|' + b.lines.join('~') + '|' + b.actions.join(',')) : '';
+    var key = b ? (b.kind + '|' + b.mode + '|' + b.title + '|' + b.lines.join('~') + '|' + b.actions.join(',')) : '';
     if (key === bubbleKey) return;
     bubbleKey = key;
     if (bubbleHideTimer) { clearTimeout(bubbleHideTimer); bubbleHideTimer = null; }
     if (!b) { bubble.classList.remove('show'); setTalking(); return; }
     bubble.className = 'tone-' + b.tone;
+    // Peek vs expanded (Wave 2 interaction spec §4); the actions row is empty for peek.
+    bubble.setAttribute('data-mode', b.mode || 'expanded');
     bubble.querySelector('.b-title').textContent = b.title;
     bubble.querySelector('.b-lines').innerHTML = b.lines.map(function (line) {
       return '<div class="b-line">' + escapeHtml(line) + '</div>';
@@ -529,19 +707,20 @@
   // ---- Positioning ----------------------------------------------------------
   function place() {
     // ONLY the desktop layer is transformed here; body animation lives on #pet.
-    wrap.style.transform = 'translateX(' + x + 'px) scaleX(' + dir + ')';
+    wrap.style.transform = 'translate(' + x + 'px,' + y + 'px) scaleX(' + dir + ')';
     var cx = x + SIZE / 2;
     if (badge.classList.contains('show')) {
       var half = badge.offsetWidth / 2;
       badge.style.left = Math.max(half + 4, Math.min(window.innerWidth - half - 4, cx)) + 'px';
+      badge.style.top = Math.max(badge.offsetHeight + 4, y - 4) + 'px';
     }
     if (bubble.classList.contains('show')) {
       var bhalf = bubble.offsetWidth / 2;
       bubble.style.left = Math.max(bhalf + 6, Math.min(window.innerWidth - bhalf - 6, cx)) + 'px';
-      bubble.style.bottom = badge.classList.contains('show') ? '104px' : '76px';
+      bubble.style.top = Math.max(bubble.offsetHeight + 6, y - 8) + 'px';
     }
     // The pet can walk out from under a stationary cursor; re-read the pointer so the
-    // transparent strip does not keep capturing clicks.
+    // transparent overlay does not keep capturing clicks.
     if (walking) syncHover();
   }
 
@@ -549,47 +728,129 @@
   function range() { return RANGE[frame.movement] || RANGE.minimal; }
   function bubbleVisible() { return bubble.classList.contains('show'); }
 
-  /** The zone the pet is fully standing in, or null when it is over a bezel gap. */
-  function zoneAt(px) {
-    if (!zones) return null;
-    for (var i = 0; i < zones.length; i++) {
-      if (px >= zones[i].x0 && px + SIZE <= zones[i].x1) return zones[i];
+  /**
+   * Clamp a sprite position into the nearest safe region, so local movement never parks the
+   * Pet over a bezel gap or off the desktop (SAFE_ZONE_SPEC.md §5).
+   */
+  function clampToZones(px, py) {
+    if (!zones || zones.length === 0) {
+      return {
+        x: Math.max(0, Math.min(window.innerWidth - SIZE, px)),
+        y: Math.max(0, Math.min(window.innerHeight - SIZE, py)),
+      };
     }
-    return null;
+    for (var i = 0; i < zones.length; i++) {
+      var z = zones[i];
+      if (px >= z.x && px + SIZE <= z.x + z.width && py >= z.y && py + SIZE <= z.y + z.height) {
+        return { x: px, y: py };
+      }
+    }
+    var best = null;
+    var bestDistance = Infinity;
+    for (var j = 0; j < zones.length; j++) {
+      var zone = zones[j];
+      var cx = Math.max(zone.x, Math.min(zone.x + zone.width - SIZE, px));
+      var cy = Math.max(zone.y, Math.min(zone.y + zone.height - SIZE, py));
+      var d = (cx - px) * (cx - px) + (cy - py) * (cy - py);
+      if (d < bestDistance) {
+        bestDistance = d;
+        best = { x: cx, y: cy };
+      }
+    }
+    return best || { x: px, y: py };
   }
 
-  /** A random x inside one of the walkable zones, weighted by how wide each zone is. */
+  /** A random point inside one of the safe regions, weighted by area. */
   function zoneTarget() {
     var total = 0;
-    for (var i = 0; i < zones.length; i++) total += zones[i].x1 - zones[i].x0;
+    for (var i = 0; i < zones.length; i++) total += zones[i].width * zones[i].height;
+    if (total <= 0) return { x: x, y: y };
     var roll = Math.random() * total;
     for (var j = 0; j < zones.length; j++) {
-      var width = zones[j].x1 - zones[j].x0;
-      if (roll < width) {
-        var z = zones[j];
-        return z.x0 + Math.random() * Math.max(0, z.x1 - SIZE - z.x0);
+      var zone = zones[j];
+      var area = zone.width * zone.height;
+      if (roll < area) {
+        var maxX = Math.max(zone.x, zone.x + zone.width - SIZE);
+        var maxY = Math.max(zone.y, zone.y + zone.height - SIZE);
+        return { x: zone.x + Math.random() * (maxX - zone.x), y: zone.y + Math.random() * (maxY - zone.y) };
       }
-      roll -= width;
+      roll -= area;
     }
-    return x;
+    return { x: x, y: y };
+  }
+
+  /** Wave 2: urgent intros/click suppress autonomous locomotion (Motion Bible §2). */
+  function interactionBlocked() {
+    var i = frame.layers && frame.layers.interaction;
+    return i === 'warning_intro' || i === 'critical_intro' || i === 'reset_celebrate' || i === 'click_react';
+  }
+
+  /** Whether the Pet may walk right now: mode, reduced motion, hover, bubble, intro. */
+  function locomotionAllowedLocal() {
+    if (reduced) return false;
+    if (range()[1] <= 0) return false;
+    if (hoverOver || bubbleVisible()) return false;
+    if (interactionBlocked()) return false;
+    return true;
+  }
+
+  /** A user action wakes any posture and restarts the idle clock (Motion Bible §3). */
+  function userInteracted() {
+    lastInteractionAt = Date.now();
+    wake();
+  }
+
+  function setPosture(name) {
+    wake();
+    posture = name;
+    wrap.classList.add(name);
+    actionTimer = setTimeout(function () { actionTimer = null; scheduleIdle(); }, 4_000);
+  }
+
+  function wake() {
+    if (!posture) return;
+    wrap.classList.remove(posture);
+    posture = null;
+    wrap.classList.add('wake');
+    setTimeout(function () { wrap.classList.remove('wake'); }, 700);
   }
 
   /**
-   * One low-distraction action after 20–40s of quiet (spec §32). Skipped while the user is
-   * interacting, and skipped entirely under reduced motion. A walk is only an option when
-   * the movement mode allows desktop motion; the body-only actions always are.
+   * Wave 2 idle scheduler (Motion Bible §3): behaviors unlock in tiers measured from the
+   * last interaction (10s blink/look, 18s idle variants, 35s variants, 60s sit/lie, 120s
+   * sleep). Locomotion is only in the pool when the policy allows it, and the delay is
+   * randomized so the Pet never fires on a fixed cadence.
    */
   function scheduleIdle() {
-    if (reduced || !frame.hasData || idleTimer || walking || actionTimer) return;
+    if (!frame.hasData || idleTimer || walking || actionTimer) return;
     idleTimer = setTimeout(function () {
       idleTimer = null;
-      if (hoverOver || bubbleVisible()) { scheduleIdle(); return; }
-      var choices = ['look', 'hop', 'stretch'];
-      if (range()[1] > 0) choices.push('walk', 'walk');
-      var pick = choices[Math.floor(Math.random() * choices.length)];
-      if (pick === 'walk') startWalk();
-      else playBodyAction(pick);
-    }, 20_000 + Math.random() * 20_000);
+      if (hoverOver || bubbleVisible() || interactionBlocked()) { scheduleIdle(); return; }
+      // Reduced motion keeps a subtle blink and nothing more (Motion Bible §6).
+      if (reduced) { playBodyAction('blink'); return; }
+      var idleMs = Date.now() - lastInteractionAt;
+      var pick = pickIdle(idleMs);
+      if (!pick) { scheduleIdle(); return; }
+      if (pick === 'reposition') startWalk();
+      else if (pick === 'sit' || pick === 'lie_down' || pick === 'sleep_loop') setPosture(pick === 'lie_down' ? 'lie' : pick);
+      else playBodyAction(CLASS_FOR_IDLE[pick] || pick);
+    }, 6_000 + Math.random() * 12_000);
+  }
+
+  /** Weighted pick from the tiers, mirroring `pickIdleBehavior` in pet/wave2.ts. */
+  function pickIdle(idleMs) {
+    var tiers = [
+      { after: 10_000, choices: ['blink', 'look_left', 'look_right'] },
+      { after: 18_000, choices: ['blink', 'look_left', 'look_right', 'idle_variant_1', 'idle_variant_2'] },
+      { after: 35_000, choices: ['idle_variant_1', 'idle_variant_2', 'look_left', 'look_right', 'stretch'] },
+      { after: 60_000, choices: ['sit', 'lie_down', 'stretch', 'idle_variant_1'] },
+      { after: 120_000, choices: ['sleep_loop', 'lie_down'] }
+    ];
+    var pool = [];
+    for (var i = 0; i < tiers.length; i++) if (idleMs >= tiers[i].after) pool = tiers[i].choices;
+    if (pool.length === 0) return null;
+    if (locomotionAllowedLocal()) pool = pool.concat(['reposition']);
+    return pool[Math.floor(Math.random() * pool.length)];
   }
 
   function playBodyAction(name) {
@@ -600,56 +861,49 @@
       actionTimer = null;
       wrap.classList.remove(name);
       scheduleIdle();
-    }, 1_600);
+    }, BODY_ACTION_MS[name] || 1_600);
   }
 
+  /** A renderer-driven idle reposition inside the local range (Companion mode). */
   function startWalk() {
+    if (!locomotionAllowedLocal()) return;
     var r = range();
     var useZones = !!(zones && zones.length > 0);
     if (!useZones && r[1] <= 0) return;
-    targetX = useZones
-      ? zoneTarget()
-      : Math.max(
-          0,
-          Math.min(
-            window.innerWidth - SIZE,
-            anchorX + (Math.random() < 0.5 ? -1 : 1) * (r[0] + Math.random() * (r[1] - r[0])),
-          ),
-        );
-    var prevDir = dir;
-    dir = targetX < x ? -1 : 1;
-    if (dir !== prevDir) {
-      // A short turn lean when the mascot changes direction (asset spec §4 turn).
-      wrap.classList.add('turning');
-      setTimeout(function () { wrap.classList.remove('turning'); }, 340);
+    var target;
+    if (useZones) {
+      target = zoneTarget();
+    } else {
+      var distance = r[0] + Math.random() * (r[1] - r[0]);
+      var angle = Math.random() * Math.PI * 2;
+      target = clampToZones(x + Math.cos(angle) * distance, y + Math.sin(angle) * distance);
     }
-    walking = true;
-    wrap.classList.add('walking');
-    loop();
+    beginWalkTo(target.x, target.y, false);
   }
 
-  /**
-   * Cross-screen behaviour (spec §34): a monitor gap is not walkable, so when the pet
-   * reaches one it hops to the nearest zone ahead instead of strolling through a bezel
-   * where nothing is drawn.
-   */
-  function hopAcrossGap() {
-    var ahead = zones.filter(function (z) {
-      return dir > 0 ? z.x0 > x : z.x1 - SIZE < x;
-    });
-    if (ahead.length === 0) {
-      walking = false;
-      wrap.classList.remove('walking');
-      targetX = x;
-      anchorX = x;
-      return;
+  /** Start (or retarget) a walk toward an overlay-local point, turning first if needed. */
+  function beginWalkTo(tx, ty, isRoam) {
+    var clamped = clampToZones(tx, ty);
+    targetX = clamped.x;
+    targetY = clamped.y;
+    roaming = !!isRoam;
+    var prevDir = dir;
+    dir = targetX < x ? -1 : 1;
+    var side = dir < 0 ? 'left' : 'right';
+    if (dir !== prevDir) {
+      // Turn before walking (Wave 2 layering rules §4). The direction-specific class is
+      // the asset contract id (turn_left/right); `.turning` is the shared visual.
+      wrap.classList.add('turning', 'turn-' + side);
+      setTimeout(function () { wrap.classList.remove('turning', 'turn-left', 'turn-right'); }, 340);
+      // Mirror facing so the engine can reason about the next turn.
+      if (window.qpPet && window.qpPet.facing) window.qpPet.facing(side);
     }
-    var next = dir > 0
-      ? ahead.reduce(function (a, b) { return a.x0 < b.x0 ? a : b; })
-      : ahead.reduce(function (a, b) { return a.x1 > b.x1 ? a : b; });
-    x = dir > 0 ? next.x0 : next.x1 - SIZE;
-    x = Math.max(0, Math.min(window.innerWidth - SIZE, x));
-    playBodyAction('hop');
+    walking = true;
+    walkSide = side;
+    wrap.classList.add('walking', 'walking-' + side);
+    // Flux Blob glides/morphs rather than faking leg steps (Wave 2 handoff constraint).
+    if (frame.character === 'flux_blob') wrap.classList.add('glide');
+    loop();
   }
 
   function loop() {
@@ -662,17 +916,34 @@
     last = now;
     if (walking) {
       var speed = reduced ? 0 : (SPEED[frame.mood] || 0);
+      var dx = targetX - x;
+      var dy = targetY - y;
+      var distance = Math.sqrt(dx * dx + dy * dy);
       var step = speed * dt;
-      if (Math.abs(targetX - x) <= step || speed === 0) {
+      if (distance <= step || speed === 0) {
+        var cameFromRoam = roaming;
         x = targetX;
+        y = targetY;
         walking = false;
-        wrap.classList.remove('walking');
+        roaming = false;
+        wrap.classList.remove('walking', 'walking-left', 'walking-right');
+        wrap.classList.remove('glide');
+        // A clean mechanical stop at the destination (Wave 2 layering rules §4). The
+        // direction-specific class is the asset contract id (stop_left/right).
+        wrap.classList.add('stopping', 'stop-' + (walkSide || 'right'));
+        setTimeout(function () { wrap.classList.remove('stopping', 'stop-left', 'stop-right'); }, 420);
+        walkSide = null;
         anchorX = x;
-        if (window.qpPet) window.qpPet.moved(Math.round(x));
+        anchorY = y;
+        if (window.qpPet) {
+          // A main-planned burst reports `roamed` (starts the idle cooldown there); a local
+          // reposition reports `moved` (persisted without touching the cadence).
+          if (cameFromRoam && window.qpPet.roamed) window.qpPet.roamed(Math.round(x), Math.round(y));
+          else if (window.qpPet.moved) window.qpPet.moved(Math.round(x), Math.round(y));
+        }
       } else {
-        x += dir * step;
-        // Entering a bezel gap: hop to the next monitor rather than walking through nothing.
-        if (zones && zones.length > 1 && !zoneAt(x)) hopAcrossGap();
+        x += (dx / distance) * step;
+        y += (dy / distance) * step;
       }
       place();
     }
@@ -694,6 +965,8 @@
       hoverOver = over;
       // Curious/react pose while the pointer is on the mascot (asset spec §4 hover_react).
       wrap.classList.toggle('hovering', over);
+      // Hovering wakes a resting Pet and pauses locomotion (Wave 2 interaction spec §2).
+      if (over) userInteracted();
       window.qpPet.hover(over);
     }
   }
@@ -714,8 +987,59 @@
     }
   });
 
+  // ---- Wave 3 drag & reposition (DRAG_REPOSITION_SPEC.md) -------------------
+  /*
+   * A small pointer travel is a click, not a drag. The main process clamps/snaps/persists on
+   * release, so the renderer only moves its own sprite and reports the final point.
+   */
+  var DRAG_THRESHOLD = 6;
+  pet.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0 || locked) return;
+    pointerDown = true;
+    dragging = false;
+    suppressClick = false;
+    dragStartClient = { x: e.clientX, y: e.clientY };
+    dragStartSprite = { x: x, y: y };
+    try { pet.setPointerCapture(e.pointerId); } catch (err) { /* capture is optional */ }
+  });
+
+  document.addEventListener('pointermove', function (e) {
+    if (!pointerDown || !dragStartClient) return;
+    var dx = e.clientX - dragStartClient.x;
+    var dy = e.clientY - dragStartClient.y;
+    if (!dragging) {
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < DRAG_THRESHOLD) return;
+      dragging = true;
+      suppressClick = true;
+      wrap.classList.add('dragging');
+      if (window.qpPet && window.qpPet.dragStart) window.qpPet.dragStart();
+    }
+    var next = clampToZones(dragStartSprite.x + dx, dragStartSprite.y + dy);
+    x = next.x;
+    y = next.y;
+    place();
+  });
+
+  function endDrag(e) {
+    if (!pointerDown) return;
+    pointerDown = false;
+    if (dragging) {
+      dragging = false;
+      wrap.classList.remove('dragging');
+      if (window.qpPet && window.qpPet.dragEnd) window.qpPet.dragEnd(Math.round(x), Math.round(y));
+    }
+    dragStartClient = null;
+    dragStartSprite = null;
+    try { pet.releasePointerCapture(e.pointerId); } catch (err) { /* already released */ }
+  }
+  document.addEventListener('pointerup', endDrag);
+  document.addEventListener('pointercancel', endDrag);
+
   pet.addEventListener('click', function (e) {
     e.stopPropagation();
+    // A completed drag is not a click; swallow the synthetic click it produces.
+    if (suppressClick) { suppressClick = false; return; }
+    userInteracted();
     // A quick squash acknowledges the press (asset spec §4 click_react).
     wrap.classList.add('clicked');
     setTimeout(function () { wrap.classList.remove('clicked'); }, 360);
@@ -742,26 +1066,46 @@
     paint();
   });
   if (window.qpPet && window.qpPet.onPosition) {
-    window.qpPet.onPosition(function (startX) {
-      if (typeof startX === 'number' && Number.isFinite(startX)) {
-        x = Math.max(0, Math.min(window.innerWidth - SIZE, startX));
-        anchorX = x;
-        targetX = x;
-        place();
-      }
+    window.qpPet.onPosition(function (pos) {
+      if (!pos || !Number.isFinite(pos.x) || !Number.isFinite(pos.y)) return;
+      originX = Number.isFinite(pos.originX) ? pos.originX : 0;
+      originY = Number.isFinite(pos.originY) ? pos.originY : 0;
+      var clamped = clampToZones(pos.x, pos.y);
+      x = clamped.x;
+      y = clamped.y;
+      anchorX = x;
+      anchorY = y;
+      targetX = x;
+      targetY = y;
+      walking = false;
+      place();
     });
   }
-  if (window.qpPet && window.qpPet.onZones) {
-    window.qpPet.onZones(function (next) {
-      zones = next && next.length ? next : null;
-      // Roaming only: never leave the pet parked where there is no screen under it.
-      if (zones && !zoneAt(x)) {
-        var z = zones[0];
-        x = Math.max(z.x0, Math.min(z.x1 - SIZE, x));
+  if (window.qpPet && window.qpPet.onDesktop) {
+    window.qpPet.onDesktop(function (desktop) {
+      if (!desktop) return;
+      zones = desktop.zones && desktop.zones.length ? desktop.zones : null;
+      locked = !!desktop.lockPosition;
+      wrap.classList.toggle('position-locked', locked);
+      // Never leave the Pet parked where there is no screen under it.
+      var clamped = clampToZones(x, y);
+      if (clamped.x !== x || clamped.y !== y) {
+        x = clamped.x;
+        y = clamped.y;
         anchorX = x;
+        anchorY = y;
         targetX = x;
-        place();
+        targetY = y;
       }
+      place();
+    });
+  }
+  if (window.qpPet && window.qpPet.onRoamTarget) {
+    window.qpPet.onRoamTarget(function (target) {
+      if (!target || !Number.isFinite(target.x) || !Number.isFinite(target.y)) return;
+      // A user interrupt always wins: the main process re-checks eligibility on its own tick.
+      if (locked || reduced || hoverOver || bubbleVisible() || interactionBlocked()) return;
+      beginWalkTo(target.x, target.y, true);
     });
   }
   paint();

@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>QuotaPulse Pet Gallery</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body { font: 13px/1.45 "Segoe UI", system-ui, sans-serif; margin: 0; padding: 16px 18px 24px; }
+  h1 { font-size: 16px; margin: 0 0 4px; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; opacity: .65; margin: 18px 0 8px; }
+  .sub { opacity: .6; margin: 0 0 10px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .card { border: 1px solid color-mix(in srgb, currentColor 18%, transparent); border-radius: 10px; padding: 10px; cursor: pointer; position: relative; }
+  .card.selected { outline: 2px solid #14b8a6; }
+  .card .name { font-weight: 600; }
+  .card .desc { opacity: .7; font-size: 11px; margin-top: 4px; }
+  .badge { position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 1px 6px; border-radius: 8px; background: #a16207; color: #fff; }
+  .badge.experimental { background: #7c3aed; }
+  .card.experimental { cursor: default; opacity: .75; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 6px 0; }
+  .row label { border: 1px solid color-mix(in srgb, currentColor 25%, transparent); border-radius: 8px; padding: 5px 10px; cursor: pointer; user-select: none; }
+  .row label.on { background: #14b8a6; color: #fff; border-color: transparent; }
+  .row label.disabled { opacity: .4; cursor: default; }
+  button { cursor: pointer; }
+  section[hidden] { display: none; }
+</style>
+</head>
+<body>
+  <h1>Pet Gallery</h1>
+  <p class="sub">One predictable place to configure Pet Mode. Preview mode never changes your real quota state.</p>
+
+  <h2>Character</h2>
+  <div class="cards" id="characters"></div>
+
+  <h2>Experimental concepts</h2>
+  <p class="sub">Preview-only candidates. They cannot be activated as your pet until promoted.</p>
+  <div class="cards" id="experimental"></div>
+
+  <h2>Skin</h2>
+  <div class="row" id="skins"></div>
+
+  <h2>Preview state</h2>
+  <div class="row" id="preview"></div>
+  <div id="previewDetail" class="sub" style="min-height: 18px"></div>
+
+  <h2>Motion</h2>
+  <div class="row" id="motion"></div>
+  <div class="row">
+    <label data-toggle="reducedMotion" data-section="flags"></label>
+  </div>
+
+  <h2>Placement</h2>
+  <div class="row">
+    <button id="returnHome">Return home</button>
+    <label data-toggle="lockPosition" data-section="flags"></label>
+    <label data-toggle="allowCrossMonitor" data-section="flags"></label>
+  </div>
+
+  <h2>Notifications</h2>
+  <div class="row">
+    <label data-toggle="speechBubbles" data-section="flags"></label>
+    <label data-toggle="eventNotifications" data-section="flags"></label>
+    <label data-toggle="allowCritical" data-section="quiet"></label>
+  </div>
+
+  <script>
+    'use strict';
+    var api = window.qpGallery;
+    var PREVIEW_STATES = ['Healthy', 'Working', 'Warning', 'Critical', 'Reset'];
+    var TOGGLE_LABELS = {
+      speechBubbles: 'Pet bubbles',
+      eventNotifications: 'Native alerts',
+      reducedMotion: 'Reduced motion',
+      lockPosition: 'Lock position',
+      allowCrossMonitor: 'Cross-monitor roaming',
+    };
+    var QUIET_TOGGLE_LABELS = {
+      enabled: 'Enable quiet hours',
+      allowCritical: 'Alerts through quiet hours',
+      disableRoaming: 'No roaming in quiet hours',
+    };
+    var state = null;
+    var roster = null;
+
+    function setText(el, text) { el.textContent = text; }
+
+    function renderRoster() {
+      var chars = document.getElementById('characters');
+      var exps = document.getElementById('experimental');
+      chars.textContent = '';
+      exps.textContent = '';
+      roster.entries.forEach(function (entry) {
+        var card = document.createElement('div');
+        card.className = 'card' +
+          (entry.status !== 'stable' ? ' experimental' : '') +
+          (entry.id === state.character ? ' selected' : '');
+        var name = document.createElement('div'); name.className = 'name'; name.textContent = entry.displayName;
+        var desc = document.createElement('div'); desc.className = 'desc';
+        desc.textContent = entry.status === 'experimental'
+          ? entry.notes || 'Experimental candidate — preview concept only.'
+          : entry.personality.join(' · ');
+        card.appendChild(name); card.appendChild(desc);
+        var badge = document.createElement('span');
+        badge.className = 'badge' + (entry.status === 'experimental' ? ' experimental' : '');
+        badge.textContent = entry.status === 'experimental' ? 'Experimental'
+          : entry.status === 'beta' ? 'Beta' : 'Stable';
+        card.appendChild(badge);
+        if (entry.status === 'experimental') { exps.appendChild(card); return; }
+        card.addEventListener('click', function () {
+          // Changing character preserves non-visual preferences and resets skin to the
+          // new character's default (CUSTOMIZATION_STATE_MODEL.md §Rules).
+          update({ character: entry.id, skin: 'default' });
+        });
+        chars.appendChild(card);
+      });
+    }
+
+    function renderSkins() {
+      var row = document.getElementById('skins');
+      row.textContent = '';
+      roster.skins.forEach(function (skin) {
+        var el = document.createElement('label');
+        el.className = skin.id === state.skin ? 'on' : '';
+        setText(el, skin.displayName);
+        el.addEventListener('click', function () { update({ skin: skin.id }); });
+        row.appendChild(el);
+      });
+    }
+
+    function renderMotion() {
+      var row = document.getElementById('motion');
+      row.textContent = '';
+      roster.movementModes.forEach(function (mode) {
+        var el = document.createElement('label');
+        el.className = mode === state.movement ? 'on' : '';
+        setText(el, mode.charAt(0).toUpperCase() + mode.slice(1));
+        el.addEventListener('click', function () { update({ movement: mode }); });
+        row.appendChild(el);
+      });
+    }
+
+    function renderToggles() {
+      document.querySelectorAll('[data-toggle]').forEach(function (el) {
+        var key = el.getAttribute('data-toggle');
+        var section = el.getAttribute('data-section');
+        var value = section === 'quiet' ? !!state.quietHours[key] : !!state[key];
+        var text = (section === 'quiet' ? QUIET_TOGGLE_LABELS[key] : TOGGLE_LABELS[key] || key) + (value ? ' ✓' : '');
+        setText(el, text);
+        el.classList.toggle('on', value);
+        if (el.dataset.bound) return;
+        el.dataset.bound = '1';
+        el.addEventListener('click', function () {
+          if (section === 'quiet') {
+            var q = {}; q[key] = !state.quietHours[key];
+            update({ quiet: q });
+            return;
+          }
+          var flags = {}; flags[key] = !state[key];
+          update({ flags: flags });
+        });
+      });
+    }
+
+    function renderPreview() {
+      var row = document.getElementById('preview');
+      row.textContent = '';
+      PREVIEW_STATES.forEach(function (name) {
+        var el = document.createElement('button');
+        setText(el, name);
+        el.addEventListener('click', function () {
+          api.preview(name.toLowerCase()).then(function (info) {
+            document.getElementById('previewDetail').textContent = info && info.src
+              ? 'Local asset: ' + info.src + (info.fellBack ? ' (fell back to ' + info.animation + ')' : '')
+              : 'No raster asset for this preview; the live pet draws its vector placeholder.';
+          });
+        });
+        row.appendChild(el);
+      });
+    }
+
+    function refreshPanels() {
+      renderRoster(); renderSkins(); renderMotion(); renderToggles();
+    }
+
+    function update(patch) {
+      return api.update(patch).then(function (result) {
+        state = result.settings;
+        if (result.error) { document.getElementById('previewDetail').textContent = result.error; return; }
+        refreshPanels();
+      });
+    }
+
+    document.getElementById('returnHome').addEventListener('click', function () { api.returnHome(); });
+
+    Promise.all([api.roster(), api.settings()]).then(function (loaded) {
+      roster = loaded[0];
+      state = loaded[1];
+      refreshPanels();
+      renderPreview();
+    });
+  </script>
+</body>
+</html>
