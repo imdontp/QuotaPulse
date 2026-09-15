@@ -1,6 +1,7 @@
 import { cpSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { PET_CHARACTERS } from '../src/pet/characters.js';
 import { validatePetAssetTree } from '../src/pet/asset-pipeline.js';
 
 /**
@@ -13,8 +14,11 @@ import { validatePetAssetTree } from '../src/pet/asset-pipeline.js';
  * - Gallery previews (`preview_128.png`)
  *
  * Excluded on purpose: 1024px masters, raw sprite sheets, prompt/spec archives,
- * development contact sheets, experimental candidate directories (no runtime set
- * may ship as selectable while unblessed), and READMEs.
+ * development contact sheets, READMEs, and — Wave 5 hardening — any directory
+ * that is not one of the four stable characters. Experimental/incubating
+ * candidate directories (nova, byte, mochi, kuro, or anything unblessed) never
+ * ship: their incomplete runtime sets are harmless at validation level (they
+ * only warn) but must not land in the production bundle (RELEASE_GATE G16).
  */
 
 const trayRoot = resolve(fileURLToPath(import.meta.url), '..', '..');
@@ -23,6 +27,15 @@ const destination = join(trayRoot, 'dist-package', 'pets');
 
 const EXCLUDED_BASENAMES = new Set(['README.md', 'contact-sheet.png']);
 const EXCLUDED_DIR_HINTS = new Set(['prompt', 'master', 'draft', 'contact']);
+
+/** Top-level directories packaged from the pets tree: only the stable roster. */
+const STABLE_CHAR_DIRS = new Set(PET_CHARACTERS.map((def) => def.id.replace(/_/g, '-')));
+
+/** Wave 5 G16: a top-level pets directory ships only if it is a stable roster character. */
+export function isShippableCharacterDir(dirName: string): boolean {
+  const hyphenated = dirName.replace(/_/g, '-');
+  return STABLE_CHAR_DIRS.has(dirName) || STABLE_CHAR_DIRS.has(hyphenated);
+}
 
 const report = validatePetAssetTree(petsSource);
 if (!report.ok) {
@@ -53,6 +66,10 @@ function walk(dir: string, relBase: string): void {
     const source = join(dir, entry.name);
     const rel = relBase ? `${relBase}/${entry.name}` : entry.name;
     if (entry.isDirectory()) {
+      if (!relBase && !isShippableCharacterDir(entry.name)) {
+        skipped++;
+        continue;
+      }
       if ([...EXCLUDED_DIR_HINTS].some((hint) => entry.name.toLowerCase().includes(hint))) {
         skipped++;
         continue;

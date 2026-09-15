@@ -827,6 +827,10 @@ function ensurePet(): void {
     if (petSafeMode) return; // already degraded; stay down rather than flapping
     petSafeMode = true;
     console.warn('[pet] renderer crash loop detected; entering safe mode (minimal motion)');
+    // Safe mode is a RUNTIME-only downgrade. The downgrade is deliberately NOT saved:
+    // persisting it permanently rewrote the user's movement/motion/cross-monitor
+    // preferences with no visible recovery path (Wave 5 RC1 defect, G13/SAFE_MODE_SPEC).
+    // The in-memory copy is re-read from disk when the user exits safe mode.
     petSettings = {
       ...petSettings,
       movement: 'minimal',
@@ -834,13 +838,30 @@ function ensurePet(): void {
       reducedMotion: true,
       skin: DEFAULT_SKIN_ID,
     };
-    savePetSettings(DATA_DIR, petSettings);
+    roamingController.reset();
+    applyPetBounds();
+    pushPetState();
   });
   pet.on('closed', () => {
     pet = null;
   });
   sendDesktop();
   sendPetPosition();
+  pushPetState();
+}
+
+/**
+ * Leave safe mode explicitly (SAFE_MODE_SPEC: the user must trigger the retry, the app
+ * never auto-oscillates). Re-reads the real settings from disk -- safe mode never wrote
+ * to it -- and rebuilds the pet window with normal motion restored.
+ */
+function exitPetSafeMode(): void {
+  petSafeMode = false;
+  rendererCrashes = [];
+  petSettings = loadPetSettings(DATA_DIR);
+  roamingController.reset();
+  destroyPet();
+  ensurePet();
   pushPetState();
 }
 
@@ -1903,6 +1924,15 @@ function openPetMenu(): void {
       },
     },
     { type: 'separator' },
+    ...(petSafeMode
+      ? ([
+          {
+            label: 'Exit Pet Safe Mode (restore normal motion)',
+            click: () => exitPetSafeMode(),
+          },
+          { type: 'separator' as const },
+        ] as Electron.MenuItemConstructorOptions[])
+      : []),
     { label: 'Hide Pet', click: () => setPetEnabled(false) },
   ]).popup({ window: pet });
 }
@@ -2004,5 +2034,6 @@ void app.whenReady().then(() => {
     clearInterval(roamTimer);
     if (trayAnimTimer) clearInterval(trayAnimTimer);
     if (petUrgentTimer) clearTimeout(petUrgentTimer);
+    if (bubbleDismissTimer) clearTimeout(bubbleDismissTimer);
   });
 });
