@@ -312,9 +312,9 @@
   #pet-wrap.look-right .qp-look { animation: qpLookRight 900ms ease-in-out 1; }
   #pet-wrap.idle-variant-1 .qp-sprite { animation: qpIdleV1 1600ms ease-in-out 1; }
   #pet-wrap.idle-variant-2 .qp-head { animation: qpIdleV2 1600ms ease-in-out 1; }
-  #pet-wrap.sit .qp-sprite { transform: translateY(3px) scaleY(0.92); }
-  #pet-wrap.lie .qp-sprite { transform: translateY(7px) scaleY(0.8); }
-  #pet-wrap.sleep .qp-sprite { transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
+  #pet-wrap:not(.concept-art).sit .qp-sprite { transform: translateY(3px) scaleY(0.92); }
+  #pet-wrap:not(.concept-art).lie .qp-sprite { transform: translateY(7px) scaleY(0.8); }
+  #pet-wrap:not(.concept-art).sleep .qp-sprite { transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
   #pet-wrap.sleep .qp-eye { animation: none; }
   #pet-wrap.wake .qp-sprite { animation: qpWake 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
   #pet-wrap.stopping .qp-sprite { animation: qpStop 420ms ease-out 1; }
@@ -338,9 +338,12 @@
    * Wave 2 posture and look also drive the raster body (#pet), so they work for characters
    * with no SVG parts. Declared after the mood rules so they win while active.
    */
-  #pet-wrap.sit #pet { animation: none; transform: translateY(3px) scaleY(0.92); }
-  #pet-wrap.lie #pet { animation: none; transform: translateY(7px) scaleY(0.8); }
-  #pet-wrap.sleep #pet { animation: none; transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
+  /* Concept sheets are finished illustrations, not skeletal sprites. Do not squash or
+     stretch the whole raster when a rest state is requested; motion assets can opt into
+     posture-specific keys by omitting this class. */
+  #pet-wrap:not(.concept-art).sit #pet { animation: none; transform: translateY(3px) scaleY(0.92); }
+  #pet-wrap:not(.concept-art).lie #pet { animation: none; transform: translateY(7px) scaleY(0.8); }
+  #pet-wrap:not(.concept-art).sleep #pet { animation: none; transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
   #pet-wrap.wake #pet { animation: qpWake 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
   #pet-wrap.stopping #pet { animation: qpStop 420ms ease-out 1; }
   #pet-wrap.look-left #pet { animation: qpLookLeftBody 900ms ease-in-out 1; }
@@ -454,6 +457,8 @@
   var roaming = false;
   /** Safe regions (overlay-local) from the main process; local movement is clamped to them. */
   var zones = null;
+  /** Enabled exclusion zones (overlay-local) supplied by the main process. */
+  var blocked = null;
   /** Overlay origin in screen coordinates, for converting local px to absolute px. */
   var originX = 0;
   var originY = 0;
@@ -481,6 +486,8 @@
   var lastAccessorySrc = null;
   /* Last resolved animation id, so a `once` reaction retriggers only when it changes. */
   var lastAnimation = null;
+  /* Last Motion Extension Pack crop injected into the body. */
+  var lastMotionKey = null;
   /*
    * Wave 1 animation ids that add a one-shot expression class on top of the mood. Presence
    * is resolved in the tray; the renderer only maps the resolved id to motion (Phase C).
@@ -535,7 +542,9 @@
     wrap.style.setProperty('--pet', frame.colorCss);
     badge.style.setProperty('--pet', frame.colorCss);
     halo.style.setProperty('--alert', frame.alertColorCss);
+    halo.title = frame.showGlobalAlert ? 'Global quota alert: the highest-severity subscription is shown here.' : '';
     applyArt();
+    wrap.classList.toggle('concept-art', !!frame.spriteSvg || !!frame.animationSrc);
 
     // A single shake on entering critical, never a permanent one (spec §31).
     if (frame.hasData && frame.mood === 'critical' && lastMood !== 'critical') {
@@ -549,6 +558,10 @@
       : 'no live quota';
     wrap.title = 'QuotaPulse — ' + focusLabel + ' (click for details)';
 
+    var globalAlertLabel = frame.showGlobalAlert && frame.global
+      ? ' Global alert: ' + (frame.global.severity === 'crit' ? 'another subscription is critical.' : 'another subscription needs attention.')
+      : '';
+    wrap.title += globalAlertLabel;
     halo.classList.toggle('show', !!frame.showGlobalAlert);
     halo.classList.toggle('crit', !!(frame.global && frame.global.severity === 'crit'));
 
@@ -601,6 +614,35 @@
     }
   }
 
+  function motionSvg(src, index) {
+    var width = 2172;
+    var height = 724;
+    var cell = width / 5;
+    var offset = cell * index;
+    var safe = String(src).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 ' + cell + ' ' + height + '"><g class="qp-sprite"><image href="' + safe + '" x="-' + offset + '" y="0" width="' + width + '" height="' + height + '" preserveAspectRatio="none"/></g></svg>';
+  }
+
+  function motionCrop() {
+    var motion = frame.motion;
+    if (!motion || (!motion.coreSheet && !motion.actionSheet)) return null;
+    /* The generated extension sheets are neutral/cyan. Warning, critical and reset keep
+       the authored concept states so semantic severity colours remain unmistakable. */
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var actionIndex = -1;
+    if (walking) actionIndex = dir < 0 ? 0 : 1;
+    else if (wrap.classList.contains('turning')) actionIndex = 2;
+    else if (wrap.classList.contains('stopping')) actionIndex = 3;
+    else if (posture === 'sleep' || posture === 'lie' || posture === 'sit') actionIndex = 4;
+    if (actionIndex >= 0 && motion.actionSheet) return { src: motion.actionSheet, index: actionIndex };
+    var coreIndex = 0;
+    if (wrap.classList.contains('blink')) coreIndex = 1;
+    else if (wrap.classList.contains('look-left')) coreIndex = 2;
+    else if (wrap.classList.contains('look-right')) coreIndex = 3;
+    else if (wrap.classList.contains('clicked') || wrap.classList.contains('hovering')) coreIndex = 4;
+    return motion.coreSheet ? { src: motion.coreSheet, index: coreIndex } : null;
+  }
+
   // ---- Expression layer (spec §28, §31) ------------------------------------
   /*
    * Healthy and working have looping artwork with blink and eye-scan, so the expression
@@ -615,6 +657,22 @@
      * the renderer only swaps the markup when the key actually changes -- a repaint every
      * 15s must not restart the artwork. Raster mascots keep their sprite/WebP asset set.
      */
+    var crop = motionCrop();
+    if (crop) {
+      var motionKey = crop.src + '|' + crop.index;
+      if (motionKey !== lastMotionKey) {
+        lastMotionKey = motionKey;
+        lastRasterSrc = null;
+        lastSvgKey = null;
+        pet.style.backgroundImage = 'none';
+        pet.innerHTML = motionSvg(crop.src, crop.index);
+      }
+      return;
+    }
+    if (lastMotionKey !== null) {
+      lastMotionKey = null;
+      pet.innerHTML = '';
+    }
     // A real Wave 1 clip exists for this animation (Orbit Bot healthy/working today):
     // prefer it over the placeholder art, reloading only when the clip changes.
     if (frame.animationSrc) {
@@ -730,50 +788,50 @@
    * Pet over a bezel gap or off the desktop (SAFE_ZONE_SPEC.md §5).
    */
   function clampToZones(px, py) {
-    if (!zones || zones.length === 0) {
-      return {
-        x: Math.max(0, Math.min(window.innerWidth - SIZE, px)),
-        y: Math.max(0, Math.min(window.innerHeight - SIZE, py)),
-      };
-    }
-    for (var i = 0; i < zones.length; i++) {
-      var z = zones[i];
-      if (px >= z.x && px + SIZE <= z.x + z.width && py >= z.y && py + SIZE <= z.y + z.height) {
-        return { x: px, y: py };
-      }
-    }
+    var safeZones = zones && zones.length ? zones : [{ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }];
+    if (isAllowedPoint(px, py, safeZones)) return { x: px, y: py };
     var best = null;
     var bestDistance = Infinity;
-    for (var j = 0; j < zones.length; j++) {
-      var zone = zones[j];
+    for (var j = 0; j < safeZones.length; j++) {
+      var zone = safeZones[j];
       var cx = Math.max(zone.x, Math.min(zone.x + zone.width - SIZE, px));
       var cy = Math.max(zone.y, Math.min(zone.y + zone.height - SIZE, py));
+      if (!isAllowedPoint(cx, cy, safeZones)) continue;
       var d = (cx - px) * (cx - px) + (cy - py) * (cy - py);
       if (d < bestDistance) {
         bestDistance = d;
         best = { x: cx, y: cy };
       }
     }
-    return best || { x: px, y: py };
+    if (best) return best;
+    /* An exclusion zone can cover the nearest edge. Probe outward before falling back to
+       the clamped point; this keeps drag and companion movement from parking in a no-go. */
+    for (var radius = 8; radius <= 256; radius += 8) {
+      for (var angle = 0; angle < Math.PI * 2; angle += Math.PI / 8) {
+        var candidate = { x: px + Math.cos(angle) * radius, y: py + Math.sin(angle) * radius };
+        if (isAllowedPoint(candidate.x, candidate.y, safeZones)) return candidate;
+      }
+    }
+    return { x: Math.max(0, Math.min(window.innerWidth - SIZE, px)), y: Math.max(0, Math.min(window.innerHeight - SIZE, py)) };
   }
 
-  /** A random point inside one of the safe regions, weighted by area. */
-  function zoneTarget() {
-    var total = 0;
-    for (var i = 0; i < zones.length; i++) total += zones[i].width * zones[i].height;
-    if (total <= 0) return { x: x, y: y };
-    var roll = Math.random() * total;
-    for (var j = 0; j < zones.length; j++) {
-      var zone = zones[j];
-      var area = zone.width * zone.height;
-      if (roll < area) {
-        var maxX = Math.max(zone.x, zone.x + zone.width - SIZE);
-        var maxY = Math.max(zone.y, zone.y + zone.height - SIZE);
-        return { x: zone.x + Math.random() * (maxX - zone.x), y: zone.y + Math.random() * (maxY - zone.y) };
+  function overlaps(a, b) {
+    return a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
+  }
+
+  function isAllowedPoint(px, py, safeZones) {
+    var inside = false;
+    for (var i = 0; i < safeZones.length; i++) {
+      var z = safeZones[i];
+      if (px >= z.x && px + SIZE <= z.x + z.width && py >= z.y && py + SIZE <= z.y + z.height) {
+        inside = true;
+        break;
       }
-      roll -= area;
     }
-    return { x: x, y: y };
+    if (!inside) return false;
+    var body = { x: px, y: py, width: SIZE, height: SIZE };
+    for (var j = 0; blocked && j < blocked.length; j++) if (overlaps(body, blocked[j])) return false;
+    return true;
   }
 
   /** Wave 2: urgent intros/click suppress autonomous locomotion (Motion Bible §2). */
@@ -801,6 +859,7 @@
     wake();
     posture = name;
     wrap.classList.add(name);
+    applyArt();
     actionTimer = setTimeout(function () { actionTimer = null; scheduleIdle(); }, 4_000);
   }
 
@@ -809,6 +868,7 @@
     wrap.classList.remove(posture);
     posture = null;
     wrap.classList.add('wake');
+    applyArt();
     setTimeout(function () { wrap.classList.remove('wake'); }, 700);
   }
 
@@ -854,9 +914,11 @@
     // The mood class is on the wrapper and would be replaced by the next frame, so the
     // action class is added on top and removed by its own timer.
     wrap.classList.add(name);
+    applyArt();
     actionTimer = setTimeout(function () {
       actionTimer = null;
       wrap.classList.remove(name);
+      applyArt();
       scheduleIdle();
     }, BODY_ACTION_MS[name] || 1_600);
   }
@@ -864,23 +926,31 @@
   /** A renderer-driven idle reposition inside the local range (Companion mode). */
   function startWalk() {
     if (!locomotionAllowedLocal()) return;
+    /* Roaming targets are planned by the main process. A second renderer timer used to
+       select an arbitrary point in the union of all monitors, causing giant jumps and
+       cross-monitor warps. */
+    if (frame.movement === 'roaming') return;
     var r = range();
-    var useZones = !!(zones && zones.length > 0);
-    if (!useZones && r[1] <= 0) return;
-    var target;
-    if (useZones) {
-      target = zoneTarget();
-    } else {
+    if (r[1] <= 0) return;
+    var safeZones = zones && zones.length ? zones : [{ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }];
+    for (var attempt = 0; attempt < 12; attempt++) {
       var distance = r[0] + Math.random() * (r[1] - r[0]);
       var angle = Math.random() * Math.PI * 2;
-      target = clampToZones(x + Math.cos(angle) * distance, y + Math.sin(angle) * distance);
+      var raw = { x: x + Math.cos(angle) * distance, y: y + Math.sin(angle) * distance };
+      var target = clampToZones(raw.x, raw.y);
+      if (isAllowedPoint(target.x, target.y, safeZones)) {
+        beginWalkTo(target.x, target.y, false);
+        return;
+      }
     }
-    beginWalkTo(target.x, target.y, false);
   }
 
   /** Start (or retarget) a walk toward an overlay-local point, turning first if needed. */
   function beginWalkTo(tx, ty, isRoam) {
     var clamped = clampToZones(tx, ty);
+    var safeZones = zones && zones.length ? zones : [{ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }];
+    if (!isAllowedPoint(clamped.x, clamped.y, safeZones)) return;
+    if (Math.hypot(clamped.x - x, clamped.y - y) < 1) return;
     targetX = clamped.x;
     targetY = clamped.y;
     roaming = !!isRoam;
@@ -891,7 +961,7 @@
       // Turn before walking (Wave 2 layering rules §4). The direction-specific class is
       // the asset contract id (turn_left/right); `.turning` is the shared visual.
       wrap.classList.add('turning', 'turn-' + side);
-      setTimeout(function () { wrap.classList.remove('turning', 'turn-left', 'turn-right'); }, 340);
+      setTimeout(function () { wrap.classList.remove('turning', 'turn-left', 'turn-right'); applyArt(); }, 340);
       // Mirror facing so the engine can reason about the next turn.
       if (window.qpPet && window.qpPet.facing) window.qpPet.facing(side);
     }
@@ -900,6 +970,7 @@
     wrap.classList.add('walking', 'walking-' + side);
     // Flux Blob glides/morphs rather than faking leg steps (Wave 2 handoff constraint).
     if (frame.character === 'flux_blob') wrap.classList.add('glide');
+    applyArt();
     loop();
   }
 
@@ -913,11 +984,25 @@
     last = now;
     if (walking) {
       var speed = reduced ? 0 : (SPEED[frame.mood] || 0);
+      if (speed <= 0) {
+        /* Reduced motion and reset/idle states must pause in place. The old `speed === 0`
+           branch assigned targetX/Y in one frame, which looked like a warp. */
+        walking = false;
+        roaming = false;
+        targetX = x;
+        targetY = y;
+        wrap.classList.remove('walking', 'walking-left', 'walking-right', 'glide');
+        walkSide = null;
+        applyArt();
+        place();
+        scheduleIdle();
+        return;
+      }
       var dx = targetX - x;
       var dy = targetY - y;
       var distance = Math.sqrt(dx * dx + dy * dy);
       var step = speed * dt;
-      if (distance <= step || speed === 0) {
+      if (distance <= step) {
         var cameFromRoam = roaming;
         x = targetX;
         y = targetY;
@@ -928,7 +1013,8 @@
         // A clean mechanical stop at the destination (Wave 2 layering rules §4). The
         // direction-specific class is the asset contract id (stop_left/right).
         wrap.classList.add('stopping', 'stop-' + (walkSide || 'right'));
-        setTimeout(function () { wrap.classList.remove('stopping', 'stop-left', 'stop-right'); }, 420);
+        applyArt();
+        setTimeout(function () { wrap.classList.remove('stopping', 'stop-left', 'stop-right'); applyArt(); }, 420);
         walkSide = null;
         anchorX = x;
         anchorY = y;
@@ -1082,6 +1168,7 @@
     window.qpPet.onDesktop(function (desktop) {
       if (!desktop) return;
       zones = desktop.zones && desktop.zones.length ? desktop.zones : null;
+      blocked = desktop.blocked && desktop.blocked.length ? desktop.blocked : null;
       locked = !!desktop.lockPosition;
       wrap.classList.toggle('position-locked', locked);
       // Never leave the Pet parked where there is no screen under it.
@@ -1100,8 +1187,11 @@
   if (window.qpPet && window.qpPet.onRoamTarget) {
     window.qpPet.onRoamTarget(function (target) {
       if (!target || !Number.isFinite(target.x) || !Number.isFinite(target.y)) return;
-      // A user interrupt always wins: the main process re-checks eligibility on its own tick.
-      if (locked || reduced || hoverOver || bubbleVisible() || interactionBlocked()) return;
+      var isHome = target.kind === 'home';
+      // Return Home is an explicit user command and may interrupt hover/rest; autonomous
+      // roaming still yields to interaction and speech.
+      if (locked || reduced || (!isHome && (hoverOver || bubbleVisible() || interactionBlocked()))) return;
+      if (isHome) wake();
       beginWalkTo(target.x, target.y, true);
     });
   }

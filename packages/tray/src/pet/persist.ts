@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 
 /**
@@ -25,8 +25,16 @@ export function writeJsonAtomic(path: string, value: unknown): void {
   mkdirSync(dirname(path), { recursive: true });
   const tmp = `${path}.tmp`;
   writeFileSync(tmp, JSON.stringify(value, null, 2), 'utf8');
-  // renameSync over an existing file overwrites (MoveFileEx w/ REPLACE_EXISTING on Windows)
-  renameSync(tmp, path);
+  try {
+    // POSIX rename replaces an existing file atomically. Node's Windows implementation can
+    // still report EEXIST when the destination is open, so keep the same durable temp-write
+    // contract with a narrowly-scoped replacement fallback instead of silently losing a save.
+    renameSync(tmp, path);
+  } catch (error) {
+    if (!existsSync(path)) throw error;
+    unlinkSync(path);
+    renameSync(tmp, path);
+  }
 }
 
 /** Read JSON with last-known-good recovery. Returns null only when nothing usable exists. */

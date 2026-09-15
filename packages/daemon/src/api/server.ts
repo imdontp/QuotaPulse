@@ -6,6 +6,7 @@ import type { DB } from '../db/index.js';
 import type { Scheduler } from '../ingest/scheduler.js';
 import * as q from '../api/queries.js';
 import { logger } from '../util/log.js';
+import { refreshPricing } from '../pricing/refresh.js';
 
 const log = logger('api');
 
@@ -106,6 +107,19 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       return reply.code(400).send({ error: 'Expected from/to epoch milliseconds and an optional positive source_id' });
     }
     return q.pricingCoverage(db, { from, to, ...(sourceId == null ? {} : { sourceId }) });
+  });
+
+  app.post('/api/pricing/refresh', async (_req, reply) => {
+    try {
+      return await refreshPricing(db);
+    } catch (error) {
+      const code = (error as { code?: string }).code;
+      log.error('pricing refresh failed', (error as Error).message);
+      return reply.code(code === 'network' || code === 'http' ? 502 : 422).send({
+        error: 'pricing refresh failed',
+        reason: (error as Error).message,
+      });
+    }
   });
 
   app.get('/api/alerts', async (req, reply) => {

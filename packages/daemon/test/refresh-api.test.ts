@@ -41,6 +41,8 @@ test('POST /api/refresh requires the daemon token and returns a pass summary', a
   try {
     const unauthorized = await app.inject({ method: 'POST', url: '/api/refresh' });
     assert.equal(unauthorized.statusCode, 401);
+    const pricingUnauthorized = await app.inject({ method: 'POST', url: '/api/pricing/refresh' });
+    assert.equal(pricingUnauthorized.statusCode, 401);
 
     const response = await app.inject({
       method: 'POST',

@@ -28,7 +28,7 @@ export const en = {
   'pricing.own': 'QuotaPulse copy',
   'pricing.borrowed': 'Borrowed cache',
   'pricing.noCatalog': 'No catalog file found. This does not erase prices already stored.',
-  'pricing.update': 'To update: run npm run prices:refresh from the QuotaPulse repository, then restart the daemon using your normal launch method. New prices can fill previously unpriced calls only if the catalog contains a usable rate. The dashboard refresh button does not update prices.',
+  'pricing.update': 'To update: use Update model prices in Dashboard or run npm run prices:refresh from the QuotaPulse repository. The daemon refreshes its catalog in place; new prices can fill previously unpriced calls only when the catalog contains a usable rate.',
   'pricing.hermes': 'Hermes records running session totals at their last-seen time. These are not individual call timestamps.',
   'pricing.error': 'Could not load pricing details. Any details still shown are from the last successful read.',
   'pricing.retry': 'Try again',
@@ -140,6 +140,11 @@ export const en = {
   'settings.subscriptions': 'Subscriptions on Live',
   'settings.visible': 'shown',
   'settings.hidden': 'hidden',
+  'settings.pricing': 'Model prices',
+  'settings.pricingRefresh': 'Update model prices',
+  'settings.pricingRefreshing': 'Updating prices…',
+  'settings.pricingUpdated': '{models} models updated · {repriced} historical calls repriced',
+  'settings.pricingFailed': 'Could not update model prices',
   'settings.rateHelp':
     'Figures are computed in USD from published list prices. This rate is yours, applied for display only — nothing fetches it.',
 

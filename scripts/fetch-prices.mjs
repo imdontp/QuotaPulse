@@ -1,10 +1,8 @@
 /**
  * Fetch the models.dev price catalog into QuotaPulse's own state directory.
  *
- * This is the ONLY thing in the project that touches the network, and it is a separate
- * process you start by hand. The daemon never fetches: leaving it that way is what keeps
- * "no credentials, no API calls, no proxy, no network" literally true of the process that
- * runs all day, which is the part of the promise that matters.
+ * The CLI remains a safe manual fallback. The running daemon now exposes the same guarded
+ * refresh through the Dashboard, so users do not need to restart the app just to update prices.
  *
  * What goes out: an unauthenticated GET for a public static JSON file. No credentials, no
  * usage data, no identifiers, no query string. What comes back is a price list.
@@ -72,6 +70,5 @@ if (before) {
   const days = (Date.now() - before.mtimeMs) / 86_400_000;
   console.log(`  replaced a copy ${days.toFixed(1)} days old`);
 }
-console.log('\nThe daemon picks this up on its next start; it is preferred over the');
-console.log('OpenCode and Hermes caches. Restart it to reprice immediately:');
-console.log('  Stop-ScheduledTask quotapulse-daemon; Start-ScheduledTask quotapulse-daemon');
+console.log('\nThe daemon will use this catalog on its next refresh/start.');
+console.log('You can also update model prices from Dashboard > Settings without restarting.');

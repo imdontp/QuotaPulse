@@ -153,6 +153,34 @@
 }
 
 @layer components {
+  /* Companion Studio visual language shared by every dashboard tab: deep navy/cyan in
+     dark mode, the same geometry and restrained cyan ink in light mode. */
+  .dashboard-shell {
+    background:
+      radial-gradient(ellipse 72% 34% at 100% 0%, color-mix(in oklch, var(--brand) 12%, transparent), transparent 72%),
+      radial-gradient(ellipse 55% 30% at 0% 100%, color-mix(in oklch, var(--brand-2) 7%, transparent), transparent 78%),
+      var(--background);
+  }
+  .dashboard-sidebar {
+    background: color-mix(in oklch, var(--card) 82%, transparent);
+    backdrop-filter: blur(18px);
+  }
+  .dashboard-topbar {
+    background: color-mix(in oklch, var(--background) 84%, transparent);
+    backdrop-filter: blur(18px);
+  }
+  .dashboard-content {
+    position: relative;
+  }
+  .dashboard-content::before {
+    content: '';
+    position: absolute;
+    inset: 0 1.5rem auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, color-mix(in oklch, var(--brand) 55%, transparent), transparent);
+    pointer-events: none;
+  }
+
   .quota-hero {
     position: relative;
     overflow: hidden;
@@ -163,6 +191,10 @@
   }
   .quota-card:hover {
     box-shadow: 0 8px 28px -16px color-mix(in oklch, var(--brand) 25%, transparent);
+  }
+  /* Give the existing section cards the Gallery's quiet lift without rewriting every tab. */
+  .dashboard-content section[class*='rounded'][class*='border'] {
+    border-color: color-mix(in oklch, var(--border) 88%, var(--brand) 12%);
   }
   .nav-drawer {
     margin: 0;

@@ -24,6 +24,8 @@ export interface QpPetPosition {
 
 export interface QpPetDesktop {
   zones: Array<{ x: number; y: number; width: number; height: number }>;
+  /** Enabled exclusion zones, translated into overlay-local coordinates. */
+  blocked: Array<{ x: number; y: number; width: number; height: number }>;
   lockPosition: boolean;
   reducedMotion: boolean;
   sprite: number;
@@ -47,7 +49,7 @@ const api = {
     ipcRenderer.on('qp-pet-position', listener);
     return () => ipcRenderer.removeListener('qp-pet-position', listener);
   },
-  /** Safe regions (work area minus margin) the renderer clamps local movement to. */
+  /** Safe regions (work area minus margin) and no-go regions for local movement. */
   onDesktop: (cb: (desktop: QpPetDesktop) => void): (() => void) => {
     const listener = (_event: unknown, desktop: QpPetDesktop): void => cb(desktop);
     ipcRenderer.on('qp-pet-desktop', listener);
@@ -60,7 +62,7 @@ const api = {
     return () => ipcRenderer.removeListener('qp-pet-roam-target', listener);
   },
   hover: (over: boolean): void => ipcRenderer.send('qp-pet-hover', over),
-  /** Left click toggles the detailed bubble; `centerX` positions the popup over the pet. */
+  /** Left click opens the quota panel directly; `centerX` positions it over the pet. */
   click: (centerX: number): void => ipcRenderer.send('qp-pet-click', centerX),
   openDashboard: (): void => ipcRenderer.send('qp-pet-open-dashboard'),
   contextMenu: (): void => ipcRenderer.send('qp-pet-context'),

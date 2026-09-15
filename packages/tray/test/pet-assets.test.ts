@@ -41,3 +41,11 @@ test('the two Orbit Bot placeholder clips referenced today exist on disk', () =>
   assert.ok(existsSync(join(PETS_DIR, 'orbit-bot', 'healthy_idle.webp')));
   assert.ok(existsSync(join(PETS_DIR, 'orbit-bot', 'working_loop.webp')));
 });
+
+test('the stable roster ships concept-safe motion extension sheets', () => {
+  for (const id of ['orbit_bot', 'pulse_fox', 'flux_blob', 'capsule_cat']) {
+    const motionDir = join(PETS_DIR, dirFor(id), 'motion-extension');
+    assert.ok(existsSync(join(motionDir, 'core-pose-sheet.png')), `${id} needs a core pose sheet`);
+    assert.ok(existsSync(join(motionDir, 'action-pose-sheet.png')), `${id} needs an action pose sheet`);
+  }
+});

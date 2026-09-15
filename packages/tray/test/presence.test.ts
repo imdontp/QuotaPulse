@@ -344,7 +344,7 @@ test('the hover bubble lists every window of the focused provider', () => {
   assert.deepEqual(bubble.actions, ['details', 'pin', 'open-dashboard', 'snooze']);
 });
 
-test('the peeking bubble is short and has no action buttons', () => {
+test('the peeking bubble lists every window and has no action buttons', () => {
   const rows = [
     limit({ display_name: 'Claude', subscription_key: 'claude', window_kind: 'weekly', used_percent: 80, resets_at: NOW + 4 * DAY }),
   ];
@@ -353,6 +353,6 @@ test('the peeking bubble is short and has no action buttons', () => {
   assert.equal(peek.mode, 'peek');
   assert.equal(peek.title, 'Claude');
   assert.deepEqual(peek.actions, [], 'peek must not present buttons');
-  assert.equal(peek.lines.length, 1, 'peek is a single short line');
+  assert.equal(peek.lines.length, 1, 'peek has one compact line per focused window');
   assert.match(peek.lines[0]!, /Weekly · 80% — warning/);
 });

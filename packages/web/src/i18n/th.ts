@@ -32,7 +32,7 @@ export const th: Record<MessageKey, string> = {
   'pricing.own': 'สำเนาของ QuotaPulse',
   'pricing.borrowed': 'แคชจากแอปอื่น',
   'pricing.noCatalog': 'ไม่พบไฟล์แค็ตตาล็อก แต่ราคาที่เก็บไว้แล้วไม่ได้ถูกลบ',
-  'pricing.update': 'วิธีอัปเดต: รัน npm run prices:refresh จากโฟลเดอร์ QuotaPulse แล้วเปิด daemon ใหม่ด้วยวิธีที่ใช้อยู่ ราคาที่เพิ่มจะช่วยคำนวณรายการเดิมได้เฉพาะเมื่อแค็ตตาล็อกมีอัตราราคาที่ใช้ได้ ปุ่มรีเฟรช dashboard ไม่ได้อัปเดตราคา',
+  'pricing.update': 'วิธีอัปเดต: กดปุ่มอัปเดตราคาโมเดลใน Dashboard หรือรัน npm run prices:refresh จากโฟลเดอร์ QuotaPulse ระบบจะรีเฟรชแค็ตตาล็อกใน daemon ทันที และเติมราคาที่ขาดได้เมื่อพบอัตราที่ใช้งานได้',
   'pricing.hermes': 'Hermes บันทึกยอดสะสมของ session ตามเวลาที่พบล่าสุด ไม่ใช่เวลาของแต่ละ call',
   'pricing.error': 'โหลดรายละเอียดราคาไม่สำเร็จ รายละเอียดที่ยังแสดงอยู่เป็นข้อมูลจากการอ่านสำเร็จครั้งก่อน',
   'pricing.retry': 'ลองอีกครั้ง',
@@ -89,6 +89,11 @@ export const th: Record<MessageKey, string> = {
   'settings.subscriptions': 'Subscription ที่แสดงในหน้า Live',
   'settings.visible': 'แสดง',
   'settings.hidden': 'ซ่อน',
+  'settings.pricing': 'ราคาโมเดล',
+  'settings.pricingRefresh': 'อัปเดตราคาโมเดล',
+  'settings.pricingRefreshing': 'กำลังอัปเดตราคา…',
+  'settings.pricingUpdated': 'อัปเดต {models} โมเดล · คำนวณย้อนหลัง {repriced} รายการ',
+  'settings.pricingFailed': 'อัปเดตราคาโมเดลไม่สำเร็จ',
   'settings.rateHelp':
     'ตัวเลขทั้งหมดคำนวณเป็น USD จากราคา list price ที่ประกาศไว้ อัตรานี้คุณตั้งเอง ใช้แสดงผลเท่านั้น ระบบไม่ได้ดึงอัตราจากที่ไหน',
 

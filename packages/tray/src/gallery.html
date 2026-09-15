@@ -43,7 +43,6 @@
         </section>
         <section class="settings-card" aria-label="Companion preferences">
           <div class="section-heading"><h2>Make it yours</h2><span class="save-state" id="saveState" role="status">Saved on this device</span></div>
-          <div class="setting-group"><h3>Finishing touch</h3><div class="choices" id="skins"></div></div>
           <div class="setting-group"><h3>How we move</h3><div class="motion-choices" id="motion"></div></div>
           <button class="toggle-row" data-toggle="reducedMotion" data-section="flags"></button>
           <details><summary>Placement <span>Where your companion feels at home</span></summary><div class="detail-content">
@@ -118,14 +117,6 @@ function renderHero() {
   (entry.personality || []).forEach(function (trait) { var el = document.createElement('span'); el.textContent = trait; traits.appendChild(el); });
 }
 function renderChoices() {
-  var skins = document.getElementById('skins'); skins.textContent = '';
-  roster.skins.forEach(function (skin) {
-    var el = document.createElement('button'); el.className = 'skin-choice'; el.dataset.focus = 'skin-' + skin.id;
-    el.setAttribute('aria-pressed', String(skin.id === state.skin));
-    var swatch = document.createElement('i'); swatch.style.background = skin.palette && skin.palette.primary || '#43d5e5';
-    el.appendChild(swatch); el.appendChild(document.createTextNode(skin.displayName));
-    el.addEventListener('click', function () { update({ skin: skin.id }); }); skins.appendChild(el);
-  });
   var row = document.getElementById('motion'); row.textContent = '';
   var descriptions = { minimal: 'Quietly by your side', companion: 'A little room to wander', roaming: 'Explore your desktop' };
   roster.movementModes.forEach(function (mode) {

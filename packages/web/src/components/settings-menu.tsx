@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Settings, Info } from 'lucide-react';
+import { Settings, Info, RefreshCw } from 'lucide-react';
 import type { SubscriptionStatus } from '@/api';
 import { api, type NotificationSettings } from '@/api';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,13 @@ const LANGS: Array<{ id: Lang; label: string }> = [
  * Language, currency, exchange rate and subscription visibility in one popover. They live
  * together because they are lightweight display preferences rather than provider settings.
  */
-export function SettingsMenu({ subscriptions = [] }: { subscriptions?: SubscriptionStatus[] }) {
+export function SettingsMenu({
+  subscriptions = [],
+  onPricingUpdated,
+}: {
+  subscriptions?: SubscriptionStatus[];
+  onPricingUpdated?: () => void;
+}) {
   const {
     lang,
     currency,
@@ -30,6 +36,8 @@ export function SettingsMenu({ subscriptions = [] }: { subscriptions?: Subscript
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(String(rate));
   const [notifications, setNotifications] = useState<NotificationSettings | null>(null);
+  const [pricingBusy, setPricingBusy] = useState(false);
+  const [pricingMessage, setPricingMessage] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => setDraft(String(rate)), [rate]);
@@ -74,6 +82,23 @@ export function SettingsMenu({ subscriptions = [] }: { subscriptions?: Subscript
     const n = Number(draft.replace(/,/g, ''));
     if (Number.isFinite(n) && n > 0) setRate(n);
     else setDraft(String(rate));
+  };
+
+  const refreshPricing = async () => {
+    if (pricingBusy) return;
+    setPricingBusy(true);
+    setPricingMessage(null);
+    try {
+      const result = await api.refreshPricing();
+      setPricingMessage(t('settings.pricingUpdated', { models: result.models, repriced: result.repriced }));
+      // Re-query mounted sections so the new historical classifications are visible now,
+      // rather than waiting for the next SSE/fallback tick.
+      onPricingUpdated?.();
+    } catch {
+      setPricingMessage(t('settings.pricingFailed'));
+    } finally {
+      setPricingBusy(false);
+    }
   };
 
   return (
@@ -199,6 +224,20 @@ export function SettingsMenu({ subscriptions = [] }: { subscriptions?: Subscript
               </div>
             </div>
           )}
+
+          <div className="mt-3 border-t pt-3">
+            <div className="text-muted-foreground mb-1.5 text-[11.5px]">{t('settings.pricing')}</div>
+            <button
+              type="button"
+              onClick={() => void refreshPricing()}
+              disabled={pricingBusy}
+              className="border-input bg-card hover:bg-accent/60 flex w-full items-center justify-center gap-1.5 rounded-md border px-2 py-1.5 text-[12px] transition-colors disabled:cursor-wait disabled:opacity-60"
+            >
+              <RefreshCw className={pricingBusy ? 'size-3 animate-spin' : 'size-3'} />
+              {pricingBusy ? t('settings.pricingRefreshing') : t('settings.pricingRefresh')}
+            </button>
+            {pricingMessage && <p className="text-muted-foreground mt-1.5 text-[10.5px] leading-relaxed">{pricingMessage}</p>}
+          </div>
 
           {/* The rate is the user's own number, and every converted figure on the page
               depends on it. Saying so here is the difference between a display setting

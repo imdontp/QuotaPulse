@@ -120,14 +120,22 @@ export function planTarget(input: PlanTargetInput): RoamTarget | null {
   const kind = chooseMoveKind(rng);
   if (kind === 'idle') return null;
 
-  // Cross-monitor is opt-in and only ever targets a display that is actually walkable.
+  // Cross-monitor is opt-in and only ever targets a display that is actually walkable. Home
+  // is special: it follows its saved absolute anchor, never a random monitor selected for a
+  // normal roaming burst.
+  const homeDisplay =
+    kind === 'home'
+      ? displayContaining(ctx.displays, home.x + size / 2, home.y + size / 2) ?? input.display
+      : null;
   const targetDisplay =
-    ctx.roaming.mode === 'roaming' && ctx.roaming.allowCrossMonitor && ctx.displays.length > 1 && rng() < 0.35
+    homeDisplay ??
+    (ctx.roaming.mode === 'roaming' && ctx.roaming.allowCrossMonitor && ctx.displays.length > 1 && rng() < 0.35
       ? ctx.displays[Math.floor(rng() * ctx.displays.length)]!
-      : input.display;
+      : input.display);
 
   if (kind === 'home') {
     const point = clampToDisplay(home.x, home.y, size, targetDisplay, margin);
+    if (!pathClear({ x, y }, point, size, ctx, margin)) return null;
     return { kind, x: point.x, y: point.y, crossMonitor: targetDisplay.id !== input.display.id };
   }
 
@@ -147,14 +155,21 @@ export function planTarget(input: PlanTargetInput): RoamTarget | null {
       : companion
         ? companionCandidate(x, y, ctx.roaming.localRadiusPx, region, size, rng)
         : roamingCandidate(x, y, kind, region, size, rng, ctx.displays);
-    if (candidate && overlappingZone(petRectAt(candidate.x, candidate.y, size), targetDisplay.id, ctx.exclusionZones)) {
+    if (
+      candidate &&
+      (overlappingZone(petRectAt(candidate.x, candidate.y, size), targetDisplay.id, ctx.exclusionZones) ||
+        !pathClear({ x, y }, candidate, size, ctx, margin))
+    ) {
       candidate = null;
     }
   }
   if (!candidate) {
     // Fallback (SAFE_ZONE_SPEC.md §6): stay put rather than roam into a forbidden region.
-    candidate = clampToDisplay(nearCorner ? corner!.x : home.x, nearCorner ? corner!.y : home.y, size, targetDisplay, margin);
+    const fallback = clampToDisplay(nearCorner ? corner!.x : home.x, nearCorner ? corner!.y : home.y, size, targetDisplay, margin);
+    candidate = pathClear({ x, y }, fallback, size, ctx, margin) ? fallback : null;
   }
+
+  if (!candidate) return null;
 
   // Avoid repeating the same direction: mirror around the Pet when the sample continues it.
   // Skipped in corner mode, which must keep the Pet near its anchor even at long idle.
@@ -163,7 +178,10 @@ export function planTarget(input: PlanTargetInput): RoamTarget | null {
   if (!nearCorner && lastDirection !== 0 && Math.sign(dx) === lastDirection && rng() < 0.5) {
     const mirrored = x - dx;
     const mirroredPoint = clampToDisplay(mirrored, candidate.y, size, targetDisplay, margin);
-    if (!overlappingZone(petRectAt(mirroredPoint.x, mirroredPoint.y, size), targetDisplay.id, ctx.exclusionZones)) {
+    if (
+      !overlappingZone(petRectAt(mirroredPoint.x, mirroredPoint.y, size), targetDisplay.id, ctx.exclusionZones) &&
+      pathClear({ x, y }, mirroredPoint, size, ctx, margin)
+    ) {
       candidate = mirroredPoint;
       dx = candidate.x - x;
     }
@@ -175,6 +193,54 @@ export function planTarget(input: PlanTargetInput): RoamTarget | null {
     y: candidate.y,
     crossMonitor: targetDisplay.id !== input.display.id,
   };
+}
+
+function displayContaining(displays: readonly PetDisplayInfo[], x: number, y: number): PetDisplayInfo | null {
+  return (
+    displays.find(
+      (display) =>
+        x >= display.bounds.x &&
+        x < display.bounds.x + display.bounds.width &&
+        y >= display.bounds.y &&
+        y < display.bounds.y + display.bounds.height,
+    ) ?? null
+  );
+}
+
+/**
+ * A straight-line walk is valid only when every sampled sprite rectangle remains inside one
+ * safe display region and outside exclusion zones. This rejects monitor gaps and forbidden
+ * windows before a cross-monitor command can turn into a visible warp.
+ */
+export function pathClear(
+  from: { x: number; y: number },
+  to: { x: number; y: number },
+  size: number,
+  ctx: PetDesktopContext,
+  marginPx: number = DEFAULT_SAFE_MARGIN_PX,
+): boolean {
+  const distance = Math.hypot(to.x - from.x, to.y - from.y);
+  const steps = Math.max(1, Math.ceil(distance / Math.max(24, size / 2)));
+  for (let i = 0; i <= steps; i += 1) {
+    const t = i / steps;
+    const x = from.x + (to.x - from.x) * t;
+    const y = from.y + (to.y - from.y) * t;
+    const display = displayContaining(ctx.displays, x + size / 2, y + size / 2);
+    if (!display) return false;
+    const region = safeRegionFor(display, marginPx);
+    if (!region || !containsRect(region, petRectAt(x, y, size))) return false;
+    if (overlappingZone(petRectAt(x, y, size), display.id, ctx.exclusionZones)) return false;
+  }
+  return true;
+}
+
+function containsRect(area: PetRect, rect: PetRect): boolean {
+  return (
+    rect.x >= area.x &&
+    rect.y >= area.y &&
+    rect.x + rect.width <= area.x + area.width &&
+    rect.y + rect.height <= area.y + area.height
+  );
 }
 
 function clampToDisplay(

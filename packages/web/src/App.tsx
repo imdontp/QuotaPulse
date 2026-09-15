@@ -57,8 +57,9 @@ const TABS = [
 type TabId = (typeof TABS)[number]['id'];
 
 /**
- * The sidebar collapses to icons below this width. The tray panel opens maximized, while
- * this breakpoint also keeps narrower browser windows usable. Kept in JS as well as CSS
+ * The sidebar collapses to icons below this width. The tray and Gallery windows share a
+ * compact native size, while this breakpoint also keeps narrower browser windows usable.
+ * Kept in JS as well as CSS
  * because the collapsed rail needs tooltips, and a tooltip cannot be turned on by a media
  * query alone.
  */
@@ -179,14 +180,14 @@ function Dashboard() {
         value={tab}
         onValueChange={(v) => setTab(v as TabId)}
         orientation="vertical"
-        className="flex min-h-screen"
+        className="dashboard-shell flex min-h-screen"
       >
         <dialog ref={drawer} aria-label={t('nav.open')} className="nav-drawer bg-card text-foreground" onClose={() => menuButton.current?.focus()} onClick={event => { if (event.target === event.currentTarget) drawer.current?.close(); }}>
           <div className="flex items-center justify-between border-b p-5"><QuotaPulseWordmark /><Button size="icon" onClick={() => drawer.current?.close()} aria-label={t('nav.close')}><X className="size-4" /></Button></div>
           <nav className="space-y-1 p-3">{TABS.map(tb => <button key={tb.id} onClick={() => setTab(tb.id)} aria-current={tab === tb.id ? 'page' : undefined} className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm ${tab === tb.id ? 'bg-secondary text-brand' : 'text-muted-foreground'}`}><tb.icon className="size-4" />{t(tb.key)}</button>)}</nav>
           <div className="border-t p-4 text-sm text-muted-foreground">{statusLabel}<Button size="icon" className="ml-3" aria-label={t('app.refreshNow')} disabled={refreshStatus.refreshing} onClick={() => void refreshStatus.refreshNow()}><RefreshCw className="size-4" /></Button></div>
         </dialog>
-        <aside className="bg-card/40 sticky top-0 hidden h-screen w-[60px] shrink-0 flex-col border-r sm:flex min-[900px]:w-[212px]">
+        <aside className="dashboard-sidebar bg-card/40 sticky top-0 hidden h-screen w-[60px] shrink-0 flex-col border-r sm:flex min-[900px]:w-[212px]">
           <div className="flex h-[64px] shrink-0 items-center justify-center border-b min-[900px]:justify-start min-[900px]:px-4">
             {/*
              * The tagline rides on the logo rather than sitting under it. The brand sheet
@@ -260,7 +261,7 @@ function Dashboard() {
 
         {/* min-w-0 so a wide table scrolls inside the main column instead of stretching it. */}
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="bg-background/80 sticky top-0 z-40 border-b backdrop-blur-sm">
+          <header className="dashboard-topbar bg-background/80 sticky top-0 z-40 border-b backdrop-blur-sm">
             <div className="flex min-h-[64px] items-center gap-2 px-4 min-[900px]:px-6">
               <Button ref={menuButton} size="icon" className="shrink-0 sm:hidden" onClick={() => drawer.current?.showModal()} aria-label={t('nav.open')}><Menu className="size-4" /></Button>
               <h1 className="min-w-0 truncate text-base font-semibold">{t(TABS.find(tb => tb.id === tab)!.key)}</h1>
@@ -281,7 +282,7 @@ function Dashboard() {
 
                <CommandPalette items={TABS.map((item) => ({ id: item.id, label: t(item.key), group: item.id === 'live' || item.id === 'limits' || item.id === 'alerts' ? t('nav.monitor') : item.id === 'health' || item.id === 'sources' ? t('nav.system') : t('nav.analyze') }))} onSelect={(id) => { if (TABS.some((item) => item.id === id)) setTab(id as TabId); }} />
 
-              <SettingsMenu subscriptions={ov?.subscriptions} />
+              <SettingsMenu subscriptions={ov?.subscriptions} onPricingUpdated={() => void refreshStatus.refreshNow()} />
 
               <Button
                 size="icon"
@@ -298,7 +299,7 @@ function Dashboard() {
             </div>
           </header>
 
-          <main className="mx-auto w-full max-w-[1400px] px-4 pt-6 pb-16 min-[900px]:px-6">
+          <main className="dashboard-content mx-auto w-full max-w-[1400px] px-4 pt-6 pb-16 min-[900px]:px-6">
             {err && <ErrorBox>{err}</ErrorBox>}
 
             {/* Content cross-fades on tab change; the pill itself slides (see TabsTrigger). */}

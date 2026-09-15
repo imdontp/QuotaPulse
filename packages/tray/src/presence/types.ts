@@ -271,6 +271,15 @@ export interface PetBubble {
   mode: BubbleMode;
 }
 
+/** Optional Motion Extension Pack sheets. The desktop controller owns translation; these
+ * assets only replace the body artwork while walking/resting/expressing. */
+export interface PetMotionAssets {
+  coreSheet: string | null;
+  actionSheet: string | null;
+  columns: number;
+  source: 'motion-extension';
+}
+
 /** Everything the pet renderer needs for one frame. */
 export interface PetFrame {
   mood: PetMood;
@@ -297,6 +306,8 @@ export interface PetFrame {
   animationPlayback: AnimationPlayback;
   /** Raster clip URL for the resolved animation, when one exists on disk; else null. */
   animationSrc: string | null;
+  /** Motion Extension Pack sheets, when the selected character has passed asset checks. */
+  motion?: PetMotionAssets | null;
   /** Wave 2 layered behavior state (mood + expression + locomotion + interaction). */
   layers: PetLayeredVisualState;
   /**

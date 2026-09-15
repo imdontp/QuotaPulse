@@ -27,6 +27,7 @@ import {
   isQuietHours,
   nearestValidPosition,
   parseClock,
+  pathClear,
   planTarget,
   priorityRank,
   protectedMoodColor,
@@ -147,6 +148,17 @@ test('an exclusion zone rejects a placement and the nearest valid point escapes 
   // Idempotent: re-running the repair must not keep moving the Pet.
   const again = nearestValidPosition(fixed.x, fixed.y, SIZE, PRIMARY, zones, 16);
   assert.deepEqual(again, fixed);
+});
+
+test('a desktop walk path cannot cross a monitor gap or an exclusion zone', () => {
+  const blocked = ctx({ exclusionZones: [zone('blocked', 'primary', 760, 760, 180, 120)] });
+  assert.equal(pathClear({ x: 500, y: 800 }, { x: 900, y: 800 }, SIZE, blocked, 16), false);
+  assert.equal(pathClear({ x: 500, y: 800 }, { x: 1700, y: 800 }, ctx(), 16), true);
+
+  // Displays that touch at their bounds still have a safe-region gap after margins;
+  // the renderer must stay put instead of visibly warping across it.
+  const split = ctx({ displays: [PRIMARY, SECONDARY] });
+  assert.equal(pathClear({ x: 1840, y: 800 }, { x: 1960, y: 800 }, SIZE, split, 16), false);
 });
 
 test('docked placements may show less than the roaming minimum (spec §4)', () => {

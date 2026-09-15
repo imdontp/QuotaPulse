@@ -40,18 +40,29 @@ const statusWord = (severity: ProviderPresence['severity']): string =>
   severity === 'crit' ? 'critical' : severity === 'warn' ? 'warning' : severity === 'unknown' ? 'no reading' : 'healthy';
 
 /**
- * Peek bubble: the lightweight hover state (Wave 2 §4). Provider name, the focused
- * window's percentage and a short status line — no buttons, so hovering never presents a
- * click target the pointer did not ask for.
+ * Peek bubble: the lightweight hover state. A hover is the user's request for a quick
+ * status read, so it includes every live window rather than rotating one number at a time.
+ * It deliberately has no buttons: the first click owns the panel action now.
  */
 export function peekBubble(provider: ProviderPresence, _now: number): PetBubble {
-  const pct = provider.usedPercent != null ? `${Math.round(provider.usedPercent)}%` : '--';
+  const lines = provider.windows.length > 0
+    ? provider.windows.map((window) => {
+        const pct = `${Math.round(window.usedPercent)}%`;
+        return window.resetsAt != null
+          ? `${windowLabel(window.windowKind)} · ${pct} — resets ${clock(window.resetsAt)}`
+          : `${windowLabel(window.windowKind)} · ${pct} — reset unknown`;
+      })
+    : ['Quota data unavailable'];
+  const annotatedLines = lines.map((line) => {
+    if (line === 'Quota data unavailable') return line;
+    return line.replace(/^(.*\d+%)(.*)$/, `$1 — ${statusWord(provider.severity)}$2`);
+  });
   return {
     kind: 'status',
     ownerKey: provider.key,
     tone: toneForSeverity(provider.severity),
     title: provider.name,
-    lines: [`${windowLabel(provider.windowKind)} · ${pct} — ${statusWord(provider.severity)}`],
+    lines: annotatedLines,
     until: null,
     actions: [],
     mode: 'peek',

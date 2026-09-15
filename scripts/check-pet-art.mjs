@@ -64,6 +64,21 @@ try {
     }
   }
 
+  // Motion Extension Pack sheets are opt-in runtime art: healthy/working may use a crop,
+  // while warning/critical still keep the authored concept frame for semantic clarity.
+  const motion = {
+    coreSheet: '../assets/pets/orbit-bot/motion-extension/core-pose-sheet.png',
+    actionSheet: '../assets/pets/orbit-bot/motion-extension/action-pose-sheet.png',
+    columns: 5,
+    source: 'motion-extension',
+  };
+  await page.evaluate(next => window.deliverPet(next), { ...frame, character: 'orbit_bot', motion, spriteSvg: null });
+  await page.locator('#pet > svg image').waitFor();
+  await page.locator('#pet > svg image').evaluate(el => new Promise((done, reject) => {
+    const img = new Image(); img.onload = done; img.onerror = reject; img.src = el.getAttribute('href');
+  }));
+  assert.equal(await page.locator('#pet-wrap').evaluate(el => el.classList.contains('concept-art')), false);
+
   // The gallery must show artwork and update it on both state and character selection.
   await page.addInitScript(({ characters, sprites, entries, skins }) => {
     const settings = { character: characters[0], skin: 'default', movement: 'minimal', quietHours: {} };
@@ -98,8 +113,6 @@ try {
   await page.waitForFunction(() => document.querySelector('#selectedName').textContent === 'Nova');
   await page.getByRole('button', { name: 'Healthy', exact: true }).click();
   await page.locator('#previewArt [data-concept-pose="healthy"]').waitFor();
-  await page.getByRole('button', { name: 'Winter', exact: true }).click();
-  await page.waitForFunction(() => document.querySelector('[data-focus="skin-winter"]').getAttribute('aria-pressed') === 'true');
   await page.getByRole('switch', { name: 'Reduced motion', exact: true }).click();
   await page.waitForFunction(() => document.querySelector('[data-toggle="reducedMotion"]').getAttribute('aria-checked') === 'true');
   await page.screenshot({ path: resolve(output, 'gallery-bonus.png'), fullPage: true });

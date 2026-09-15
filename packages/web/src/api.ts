@@ -413,6 +413,16 @@ export interface ManualRefresh {
   };
 }
 
+export interface PricingRefresh {
+  ok: true;
+  fetchedAt: number;
+  catalogPath: string;
+  providers: number;
+  models: number;
+  repriced: number;
+  reclassified: number;
+}
+
 export const api = {
   pricingCoverage: (p: PricingScope) => get<PricingCoverage>(
     `/api/pricing/coverage?from=${p.from}&to=${p.to}` + (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
@@ -467,6 +477,7 @@ export const api = {
     ),
   health: () => get<Health>('/api/health'),
   refresh: () => post<ManualRefresh>('/api/refresh'),
+  refreshPricing: () => post<PricingRefresh>('/api/pricing/refresh'),
 };
 
 /*

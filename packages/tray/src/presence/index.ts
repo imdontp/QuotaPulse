@@ -131,6 +131,7 @@ export {
   chooseMoveKind,
   classifyGesture,
   createRoamingController,
+  pathClear,
   planTarget,
   setManualCooldown,
   type PetRoamState,
@@ -255,6 +256,7 @@ export function resolvePetFrame(input: ResolvePetFrameInput): PetFrame {
     animationPlayback: animationPlayback(baseAnimation),
     // Filled by the main process from the character manifest when a raster clip exists.
     animationSrc: null,
+    motion: null,
     // Wave 2 layers; main fills interaction/facing and clamps locomotion via the policy.
     layers: { mood, expression: 'none', locomotion: 'stationary', interaction: 'none', facing: 'right' },
     // Vector mascots are drawn from the frame's own mood/colour/percentage, so the art is

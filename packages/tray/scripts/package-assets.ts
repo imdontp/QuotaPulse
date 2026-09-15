@@ -11,7 +11,8 @@ import { validatePetAssetTree } from '../src/pet/asset-pipeline.js';
  * - manifest.json files
  * - `<animation_id>.webp` runtime clips
  * - skins (accessory SVGs)
- * - Gallery previews (`preview_128.png`) and concept pose sheets
+ * - Gallery previews (`preview_128.png`), concept pose sheets and the optional
+ *   five-cell Motion Extension Pack sheets
  *
  * Excluded on purpose: 1024px masters, raw sprite sheets, prompt/spec archives,
  * development contact sheets, READMEs, and — Wave 5 hardening — any directory
@@ -57,7 +58,8 @@ function copyAllowedFile(file: string): boolean {
   const isManifest = name === 'manifest.json';
   const isClip = /\.webp$/i.test(name);
   const isPreview = /^preview_\d+\.png$/i.test(name) || name === 'accessory.svg';
-  return isManifest || isClip || isPreview || name === 'concept-states.png';
+  const isMotionSheet = /^(core|action)-pose-sheet\.png$/i.test(name);
+  return isManifest || isClip || isPreview || isMotionSheet || name === 'concept-states.png';
 }
 
 function walk(dir: string, relBase: string): void {
