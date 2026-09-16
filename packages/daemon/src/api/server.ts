@@ -7,6 +7,7 @@ import type { Scheduler } from '../ingest/scheduler.js';
 import * as q from '../api/queries.js';
 import { logger } from '../util/log.js';
 import { refreshPricing } from '../pricing/refresh.js';
+import { runtimeSnapshot } from '../runtime.js';
 
 const log = logger('api');
 
@@ -72,6 +73,10 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     scheduler: scheduler.status,
     ...q.health(db),
   }));
+
+  // Opt-in local diagnostics endpoint. It contains process/scheduler counters only;
+  // usage rows, paths, prompts, and credentials stay outside this response.
+  app.get('/api/diagnostics/runtime', async () => runtimeSnapshot(scheduler));
 
   app.get('/api/overview', async () => {
     const now = Date.now();

@@ -221,26 +221,80 @@ export function pathClear(
 ): boolean {
   const distance = Math.hypot(to.x - from.x, to.y - from.y);
   const steps = Math.max(1, Math.ceil(distance / Math.max(24, size / 2)));
+  const fromDisplay = displayContaining(ctx.displays, from.x + size / 2, from.y + size / 2);
+  const pathRegions = safePathRegions(ctx.displays, marginPx);
   for (let i = 0; i <= steps; i += 1) {
     const t = i / steps;
     const x = from.x + (to.x - from.x) * t;
     const y = from.y + (to.y - from.y) * t;
     const display = displayContaining(ctx.displays, x + size / 2, y + size / 2);
     if (!display) return false;
-    const region = safeRegionFor(display, marginPx);
-    if (!region || !containsRect(region, petRectAt(x, y, size))) return false;
-    if (overlappingZone(petRectAt(x, y, size), display.id, ctx.exclusionZones)) return false;
+    // A disabled cross-monitor setting is a hard boundary, including for an explicit
+    // home target. Adjacent displays are allowed only when the user opted in.
+    if (fromDisplay && display.id !== fromDisplay.id && !ctx.roaming.allowCrossMonitor) return false;
+    const rect = petRectAt(x, y, size);
+    if (!rectCoveredByRegions(rect, pathRegions)) return false;
+    if (ctx.exclusionZones.some((zone) => zone.enabled && overlapsRect(rect, zone))) return false;
   }
   return true;
 }
 
-function containsRect(area: PetRect, rect: PetRect): boolean {
-  return (
-    rect.x >= area.x &&
-    rect.y >= area.y &&
-    rect.x + rect.width <= area.x + area.width &&
-    rect.y + rect.height <= area.y + area.height
-  );
+function overlapsRect(a: PetRect, b: PetRect): boolean {
+  return a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
+}
+
+/**
+ * Remove only the inner margin where two work areas share an edge. This keeps the
+ * taskbar/outer-edge inset while allowing a sprite to straddle a genuinely adjacent
+ * monitor seam instead of treating the seam as a teleport.
+ */
+function safePathRegions(displays: readonly PetDisplayInfo[], margin: number): PetRect[] {
+  return displays.flatMap((display) => {
+    const safe = safeRegionFor(display, margin);
+    if (!safe) return [];
+    let left = safe.x;
+    let right = safe.x + safe.width;
+    let top = safe.y;
+    let bottom = safe.y + safe.height;
+    for (const other of displays) {
+      if (other.id === display.id) continue;
+      const verticalOverlap = Math.min(display.workArea.y + display.workArea.height, other.workArea.y + other.workArea.height)
+        - Math.max(display.workArea.y, other.workArea.y);
+      const horizontalOverlap = Math.min(display.workArea.x + display.workArea.width, other.workArea.x + other.workArea.width)
+        - Math.max(display.workArea.x, other.workArea.x);
+      if (verticalOverlap > 0 && display.workArea.x + display.workArea.width === other.workArea.x) right += margin;
+      if (verticalOverlap > 0 && other.workArea.x + other.workArea.width === display.workArea.x) left -= margin;
+      if (horizontalOverlap > 0 && display.workArea.y + display.workArea.height === other.workArea.y) bottom += margin;
+      if (horizontalOverlap > 0 && other.workArea.y + other.workArea.height === display.workArea.y) top -= margin;
+    }
+    return [{ x: left, y: top, width: Math.max(0, right - left), height: Math.max(0, bottom - top) }];
+  });
+}
+
+/** Check complete rectangle coverage by a small union of possibly seam-adjacent regions. */
+function rectCoveredByRegions(rect: PetRect, regions: readonly PetRect[]): boolean {
+  const xCuts = [rect.x, rect.x + rect.width];
+  const yCuts = [rect.y, rect.y + rect.height];
+  for (const region of regions) {
+    if (region.x > rect.x && region.x < rect.x + rect.width) xCuts.push(region.x);
+    if (region.x + region.width > rect.x && region.x + region.width < rect.x + rect.width) xCuts.push(region.x + region.width);
+    if (region.y > rect.y && region.y < rect.y + rect.height) yCuts.push(region.y);
+    if (region.y + region.height > rect.y && region.y + region.height < rect.y + rect.height) yCuts.push(region.y + region.height);
+  }
+  xCuts.sort((a, b) => a - b);
+  yCuts.sort((a, b) => a - b);
+  for (let xi = 0; xi < xCuts.length - 1; xi += 1) {
+    const midpointX = (xCuts[xi]! + xCuts[xi + 1]!) / 2;
+    for (let yi = 0; yi < yCuts.length - 1; yi += 1) {
+      const midpointY = (yCuts[yi]! + yCuts[yi + 1]!) / 2;
+      const covered = regions.some((region) =>
+        midpointX >= region.x && midpointX <= region.x + region.width &&
+        midpointY >= region.y && midpointY <= region.y + region.height,
+      );
+      if (!covered) return false;
+    }
+  }
+  return xCuts.length >= 2 && yCuts.length >= 2;
 }
 
 function clampToDisplay(

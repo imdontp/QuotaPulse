@@ -2,7 +2,7 @@ import { app, Tray, Menu, BrowserWindow, Notification, nativeImage, screen, ipcM
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 import { join, resolve } from 'node:path';
-import { homedir } from 'node:os';
+import { homedir, totalmem, freemem } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { trayIconFor, trayFrameFor, fpsFor, TRAY_FRAME_COUNT, severityFor, menuGaugeFor } from './icon.js';
 import { petPopupBounds, PET_SPRITE_SIZE, type Rect } from './pet-state.js';
@@ -88,6 +88,13 @@ import { DEFAULT_SKIN_ID, skinsForCharacter } from './pet/skins.js';
 import { loadPetSettings, savePetSettings } from './pet/settings.js';
 import { PetDiagnostics, isCrashLoop } from './pet/diagnostics.js';
 import { loadPlacement, savePlacement } from './pet/position.js';
+import { validateOrbitBotMotionPilot, type OrbitBotMotionPilotManifest } from './pet/orbit-motion.js';
+import {
+  collectExternalProcessSnapshot,
+  createRuntimeDiagnosticsSession,
+  type RuntimeProcessSample,
+  type RuntimeSample,
+} from './runtime-diagnostics.js';
 
 interface Lock {
   pid: number;
@@ -132,11 +139,13 @@ let tray: Tray | null = null;
 let popup: BrowserWindow | null = null;
 let dashboardRecoveryAttempts = 0;
 let dashboardRecoveryInFlight = false;
+let dashboardRecoveryWatchdog: NodeJS.Timeout | null = null;
 let dashboardUnresponsiveTimer: NodeJS.Timeout | null = null;
 let pet: BrowserWindow | null = null;
 let quotaPopup: BrowserWindow | null = null;
 let quotaPopupRecoveryAttempts = 0;
 let quotaPopupRecoveryInFlight = false;
+let quotaPopupRecoveryWatchdog: NodeJS.Timeout | null = null;
 let quotaPopupUnresponsiveTimer: NodeJS.Timeout | null = null;
 let lock: Lock | null = null;
 let limits: Limit[] = [];
@@ -170,6 +179,11 @@ if (petSettingsLoadDiag.corrupt || petSettingsLoadDiag.recoveredFromBackup) {
 let petEnabled = petSettings.enabled;
 /** Wave 3: absolute desktop placement (display/x/y/dock/home) is the position source. */
 let petPlacement: PetPlacement | null = null;
+/** Monotonic geometry/command tokens prevent a delayed renderer completion from warping the Pet. */
+let petGeometryVersion = 0;
+let nextRoamCommandId = 0;
+let activeRoamCommandId: number | null = null;
+let activeRoamGeometryVersion: number | null = null;
 /** Wave 3: user-defined no-go rectangles, loaded from `pet-exclusion-zones.json`. */
 let petExclusionZones: PetExclusionZone[] = [];
 let petDragging = false;
@@ -195,13 +209,20 @@ const animationResolver = createAnimationResolver();
 let pendingAnimationEvents: AnimationEvent[] = [];
 let pendingInteraction: PetInteraction = null;
 const characterManifests = new Map<PetCharacterId, PetCharacterManifest>();
+let orbitMotionPilot: OrbitBotMotionPilotManifest | null = null;
 const warnedAnimationKeys = new Set<string>();
 const petDiagnostics = new PetDiagnostics();
 let rendererCrashes: number[] = [];
 let petSafeMode = false;
 let petRecoveryTimer: NodeJS.Timeout | null = null;
+let petRecoveryWatchdog: NodeJS.Timeout | null = null;
 let petRecoveryInFlight = false;
 const ASSETS_DIR = join(REPO_ROOT, 'packages', 'tray', 'assets');
+/** Opt-in, bounded process/RAM evidence recorder. It is deliberately off by default. */
+const runtimeDiagnostics = createRuntimeDiagnosticsSession(DATA_DIR, {
+  onError: (error) => console.error(`[diagnostics] sample failed: ${error.message}`),
+  onLimit: (path) => console.warn(`[diagnostics] file limit reached; recording stopped: ${path}`),
+});
 /** Wave 2 behavior inputs: whether the pointer is on the Pet, and last user interaction. */
 let petHovering = false;
 let lastUserInteractionAt = Date.now();
@@ -283,6 +304,72 @@ async function fetchLimits(): Promise<void> {
     limits = [];
     subscriptions = [];
     lastFrame = resolvePetFrame({ limits, subscriptions, settings: petSettings });
+  }
+  render();
+}
+
+function electronMetricSample(metric: Electron.ProcessMetric): RuntimeProcessSample {
+  return {
+    pid: metric.pid,
+    parentPid: null,
+    name: metric.name ?? metric.serviceName ?? metric.type,
+    executable: null,
+    workingSetBytes: Number.isFinite(metric.memory.workingSetSize) ? metric.memory.workingSetSize * 1024 : null,
+    privateBytes: metric.memory.privateBytes == null ? null : metric.memory.privateBytes * 1024,
+    cpuPercent: Number.isFinite(metric.cpu.percentCPUUsage) ? metric.cpu.percentCPUUsage : null,
+    source: 'electron',
+  };
+}
+
+async function collectRuntimeSample(): Promise<RuntimeSample> {
+  const capturedAt = Date.now();
+  const daemonLock = lock ?? readLock();
+  let daemon: RuntimeSample['daemon'] = null;
+  if (daemonLock) {
+    try {
+      const response = await fetch(`http://127.0.0.1:${daemonLock.port}/api/diagnostics/runtime`, {
+        headers: { 'x-quotapulse-token': daemonLock.token },
+        signal: AbortSignal.timeout(3_000),
+      });
+      if (response.ok) daemon = (await response.json()) as RuntimeSample['daemon'];
+    } catch {
+      // A missing daemon sample is represented as null; it is not a zero-memory reading.
+    }
+  }
+  const health = petDiagnostics.snapshot(petSettings.character, petSettings.skin);
+  const counters = Object.fromEntries(
+    Object.entries(health).filter(([, value]) => typeof value === 'number'),
+  ) as Record<string, number>;
+  return {
+    schemaVersion: 1,
+    capturedAt,
+    host: { platform: process.platform, totalMemoryBytes: totalmem(), freeMemoryBytes: freemem() },
+    process: { pid: process.pid, parentPid: process.ppid || null, executable: process.execPath, memory: process.memoryUsage() },
+    electron: app.getAppMetrics().map(electronMetricSample),
+    daemon,
+    external: await collectExternalProcessSnapshot(),
+    pet: {
+      enabled: petEnabled,
+      movement: petSettings.movement,
+      character: petSettings.character,
+      windows: {
+        pet: !!pet && !pet.isDestroyed(),
+        quotaPopup: !!quotaPopup && !quotaPopup.isDestroyed(),
+        dashboard: !!popup && !popup.isDestroyed(),
+        gallery: !!galleryWindow && !galleryWindow.isDestroyed(),
+      },
+      counters,
+    },
+  };
+}
+
+function toggleRuntimeDiagnostics(enabled: boolean): void {
+  if (enabled) {
+    const path = runtimeDiagnostics.start(collectRuntimeSample);
+    console.info(`[diagnostics] RAM evidence recording to ${path}`);
+  } else {
+    runtimeDiagnostics.stop();
+    console.info('[diagnostics] RAM evidence recording stopped');
   }
   render();
 }
@@ -526,6 +613,12 @@ function render(): void {
       { type: 'separator' },
       { label: 'Open dashboard', click: togglePopup },
       { label: 'Refresh now', click: () => void fetchLimits() },
+      {
+        label: runtimeDiagnostics.active ? 'Stop RAM diagnostics' : 'Start RAM diagnostics',
+        type: 'checkbox',
+        checked: runtimeDiagnostics.active,
+        click: (item) => toggleRuntimeDiagnostics(item.checked),
+      },
       { type: 'separator' },
       {
         label: 'Threshold alerts',
@@ -687,7 +780,9 @@ function petDesktopContext(): PetDesktopContext {
     reducedMotion: petSettings.reducedMotion,
     userHovering: petHovering,
     userDragging: petDragging,
-    bubbleExpanded: bubbleMode === 'expanded' && !!interactiveBubble,
+    // Automatic event bubbles are also an interaction surface: the renderer will not accept
+    // a roaming target while one is visible, so expose both automatic and user bubbles.
+    bubbleExpanded: !!interactiveBubble || !!lastFrame?.bubble,
     urgentInteractionActive: petUrgentInteractionActive,
     petVisible: !!pet && !pet.isDestroyed() && pet.isVisible(),
   };
@@ -724,6 +819,7 @@ function saveExclusionZones(): void {
 
 /** Revalidate the placement (it may now sit inside a zone) and refresh the renderer. */
 function revalidatePlacementAfterZoneChange(): void {
+  invalidateRoamCommand();
   petPlacement = ensurePlacement();
   savePlacement(DATA_DIR, petPlacement);
   roamingController.onGeometryChanged();
@@ -771,16 +867,32 @@ function recoverPetRenderer(): void {
   if (petSafeMode || !pet || pet.isDestroyed() || petRecoveryInFlight) return;
   petRecoveryInFlight = true;
   if (petRecoveryTimer) clearTimeout(petRecoveryTimer);
+  if (petRecoveryWatchdog) clearTimeout(petRecoveryWatchdog);
+  petRecoveryWatchdog = setTimeout(() => {
+    petRecoveryWatchdog = null;
+    if (!pet || pet.isDestroyed() || !petRecoveryInFlight) return;
+    petRecoveryInFlight = false;
+    recoverPetRenderer();
+  }, 15_000);
+  petRecoveryWatchdog.unref?.();
   petRecoveryTimer = setTimeout(() => {
     petRecoveryTimer = null;
     if (!pet || pet.isDestroyed()) {
       petRecoveryInFlight = false;
+      if (petRecoveryWatchdog) {
+        clearTimeout(petRecoveryWatchdog);
+        petRecoveryWatchdog = null;
+      }
       return;
     }
     try {
       pet.webContents.reload();
     } catch (error) {
       petRecoveryInFlight = false;
+      if (petRecoveryWatchdog) {
+        clearTimeout(petRecoveryWatchdog);
+        petRecoveryWatchdog = null;
+      }
       console.error(`[pet] renderer recovery failed: ${String(error)}`);
     }
   }, 350);
@@ -827,6 +939,7 @@ function ensurePet(): void {
       contextIsolation: true,
     },
   });
+  const petWindow = pet;
   pet.setIgnoreMouseEvents(true, { forward: true });
   // All virtual desktops, but never above a fullscreen app.
   pet.setVisibleOnAllWorkspaces(true);
@@ -839,14 +952,33 @@ function ensurePet(): void {
   pet.once('ready-to-show', () => pet?.showInactive());
   pet.webContents.on('did-finish-load', () => {
     petRecoveryInFlight = false;
+    if (petRecoveryWatchdog) {
+      clearTimeout(petRecoveryWatchdog);
+      petRecoveryWatchdog = null;
+    }
     sendDesktop();
     sendPetPosition();
     pushPetState();
+  });
+  pet.webContents.on('did-fail-load', (_event, errorCode, description, _url, isMainFrame) => {
+    if (!isMainFrame || errorCode === -3) return;
+    petRecoveryInFlight = false;
+    if (petRecoveryWatchdog) {
+      clearTimeout(petRecoveryWatchdog);
+      petRecoveryWatchdog = null;
+    }
+    console.error(`[pet] renderer failed to load (${errorCode}): ${description}`);
+    recoverPetRenderer();
   });
   // Wave 4 crash-loop protection (CRASH_RECOVERY_SPEC.md §6): three renderer
   // crashes inside ten minutes puts the pet into safe mode (minimal motion,
   // static-friendly) and stops silent reboots; diagnostics note it.
   pet.webContents.on('render-process-gone', (_event, details) => {
+    petRecoveryInFlight = false;
+    if (petRecoveryWatchdog) {
+      clearTimeout(petRecoveryWatchdog);
+      petRecoveryWatchdog = null;
+    }
     petDiagnostics.count('rendererRestarts');
     const now = Date.now();
     rendererCrashes = rendererCrashes.filter((t) => now - t <= 600_000);
@@ -871,14 +1003,27 @@ function ensurePet(): void {
       skin: DEFAULT_SKIN_ID,
     };
     roamingController.reset();
-    applyPetBounds();
+    // Recreate the dead renderer once in degraded mode so the user still has a visible
+    // static Pet and a tray action to leave safe mode; leaving the crashed BrowserWindow
+    // alive made safe mode look like a missing Pet and blocked recovery.
+    const crashedPet = pet;
+    pet = null;
+    if (crashedPet && !crashedPet.isDestroyed()) crashedPet.destroy();
+    ensurePet();
     pushPetState();
   });
   pet.webContents.on('unresponsive', () => recoverPetRenderer());
   pet.on('closed', () => {
+    // Safe-mode recovery can destroy a crashed window while a replacement is already
+    // being created. An old window's late `closed` event must not clear the replacement.
+    if (pet !== petWindow) return;
     if (petRecoveryTimer) {
       clearTimeout(petRecoveryTimer);
       petRecoveryTimer = null;
+    }
+    if (petRecoveryWatchdog) {
+      clearTimeout(petRecoveryWatchdog);
+      petRecoveryWatchdog = null;
     }
     petRecoveryInFlight = false;
     pet = null;
@@ -927,6 +1072,7 @@ function applyPetBounds(): void {
   // window is closed. Reassert the intended level whenever geometry is applied; this is
   // cheap and avoids stealing focus from the user's active application.
   pet.setAlwaysOnTop(true, 'floating');
+  pet.moveTop();
   sendDesktop();
   sendPetPosition();
 }
@@ -975,18 +1121,33 @@ function sendPetPosition(): void {
   });
 }
 
+function invalidateRoamCommand(): void {
+  petGeometryVersion += 1;
+  activeRoamCommandId = null;
+  activeRoamGeometryVersion = null;
+  if (pet && !pet.isDestroyed() && !pet.webContents.isLoading()) {
+    pet.webContents.send('qp-pet-cancel-roam');
+  }
+}
+
 /** Ask the renderer to walk/glide to an absolute target; `kind` only labels the intent. */
 function sendRoamTarget(target: { x: number; y: number }, kind: string): void {
   if (!pet || pet.isDestroyed() || pet.webContents.isLoading()) return;
   const overlay = petWindowRect ?? petBounds();
+  const commandId = ++nextRoamCommandId;
+  activeRoamCommandId = commandId;
+  activeRoamGeometryVersion = petGeometryVersion;
+  petDiagnostics.count('roamingMoves');
   pet.webContents.send('qp-pet-roam-target', {
     x: target.x - overlay.x,
     y: target.y - overlay.y,
     kind,
+    commandId,
+    geometryVersion: petGeometryVersion,
   });
 }
 
-function isPoint(value: unknown): value is { x: number; y: number } {
+function isPoint(value: unknown): value is { x: number; y: number; commandId?: unknown; geometryVersion?: unknown } {
   return (
     !!value &&
     typeof value === 'object' &&
@@ -1074,6 +1235,19 @@ function finishDrag(local: { x: number; y: number }): void {
 
 /** Context menu "Return Home" (DOCK_AND_SNAP_SPEC.md §4). */
 function returnHome(): void {
+  if (petSettings.lockPosition) {
+    invalidateRoamCommand();
+    interactiveBubble = noDataBubble(Date.now());
+    interactiveBubble = {
+      ...interactiveBubble,
+      title: 'Pet position locked',
+      lines: ['Unlock the position before returning home.'],
+    };
+    bubbleMode = 'expanded';
+    scheduleBubbleDismiss('expanded');
+    pushPetState();
+    return;
+  }
   const displays = currentDisplays();
   const current = ensurePlacement();
   const display = resolvePlacementDisplay(current, displays) ?? primaryDisplayOf(displays);
@@ -1093,12 +1267,19 @@ function returnHome(): void {
   );
   if (!petSettings.reducedMotion && canTravel && walkable) {
     // A short travel animation is optional; reduced motion moves immediately (spec §4).
+    invalidateRoamCommand();
     sendRoamTarget(home, 'home');
     return;
   }
+  invalidateRoamCommand();
   petPlacement = { ...current, displayId: homeDisplay.id, x: home.x, y: home.y, updatedAt: Date.now() };
   savePlacement(DATA_DIR, petPlacement);
-  sendPetPosition();
+  if (!petSettings.reducedMotion && canTravel && pet && !pet.isDestroyed() && !pet.webContents.isLoading()) {
+    const overlay = petWindowRect ?? petBounds();
+    pet.webContents.send('qp-pet-home-warp', { x: home.x - overlay.x, y: home.y - overlay.y });
+  } else {
+    sendPetPosition();
+  }
   pushPetState();
 }
 
@@ -1110,6 +1291,7 @@ function applyDock(dock: PetDockTarget): void {
   const home = homeAnchor(current, display, PET_SPRITE_SIZE, petSettings.safeMarginPx);
   const point = dockPoint(display, dock, PET_SPRITE_SIZE, petSettings.safeMarginPx, home);
   if (!point) return;
+  invalidateRoamCommand();
   // Docking is an intentional placement, so it also becomes the Return Home anchor.
   petPlacement = {
     ...current,
@@ -1136,6 +1318,7 @@ function updateQuietHours(patch: Partial<PetSettings['quietHours']>): void {
 
 /** Mark an urgent interaction (warning/critical/reset intro) so roaming pauses meanwhile. */
 function markUrgent(ms: number): void {
+  invalidateRoamCommand();
   petUrgentInteractionActive = true;
   if (petUrgentTimer) clearTimeout(petUrgentTimer);
   petUrgentTimer = setTimeout(() => {
@@ -1183,6 +1366,7 @@ function driveRoaming(): void {
   // Keep the transparent surface above normal app windows without taking focus. Windows can
   // otherwise lower a click-through overlay after a display changes z-order.
   pet.setAlwaysOnTop(true, 'floating');
+  pet.moveTop();
   if (!pet.isVisible()) pet.showInactive();
   const ctx = petDesktopContext();
   const display =
@@ -1195,6 +1379,7 @@ function driveRoaming(): void {
 /** Revalidate placement and pause roaming after any display layout change. */
 function onDisplayChange(): void {
   if (!petEnabled) return;
+  invalidateRoamCommand();
   const before = petPlacement;
   const after = ensurePlacement();
   roamingController.onGeometryChanged();
@@ -1209,6 +1394,7 @@ function onDisplayChange(): void {
 function pushPetState(): void {
   // Resolve regardless of whether the pet window is open: the tray menu summary, the
   // status bubble and the quota popup's mascot all read `lastFrame`.
+  const hadBubble = !!lastFrame?.bubble;
   lastFrame = resolvePetFrame({
     limits,
     subscriptions,
@@ -1221,6 +1407,7 @@ function pushPetState(): void {
   // An interactive bubble wins over the automatic one: the user is asking, so answer.
   if (interactiveBubble) lastFrame = { ...lastFrame, bubble: interactiveBubble };
   lastFrame = applyAnimation(lastFrame);
+  if (!hadBubble && !!lastFrame.bubble) invalidateRoamCommand();
   if (pet && !pet.isDestroyed() && !pet.webContents.isLoading()) {
     pet.webContents.send('qp-pet-state', lastFrame);
   }
@@ -1275,6 +1462,23 @@ function loadCharacterManifests(): void {
       console.error(`[pet] manifest ${c.id} unreadable: ${String(err)}`);
     }
   }
+  const pilotPath = join(ASSETS_DIR, 'pets', 'orbit-bot', 'motion-pilot.json');
+  if (!existsSync(pilotPath)) {
+    console.warn(`[pet] Orbit Bot motion pilot manifest missing: ${pilotPath}`);
+    return;
+  }
+  try {
+    const raw = JSON.parse(readFileSync(pilotPath, 'utf8')) as unknown;
+    const validation = validateOrbitBotMotionPilot(raw);
+    if (!validation.ok) {
+      for (const issue of validation.issues) console.error(`[pet] Orbit Bot motion pilot invalid at ${issue.path}: ${issue.message}`);
+      return;
+    }
+    orbitMotionPilot = raw as OrbitBotMotionPilotManifest;
+    console.info(`[pet] Orbit Bot motion pilot contract loaded (${Object.keys(orbitMotionPilot.animations).length} clips; final art gated)`);
+  } catch (err) {
+    console.error(`[pet] Orbit Bot motion pilot unreadable: ${String(err)}`);
+  }
 }
 
 // HTTP popup images must be embedded; desktop/gallery share Chromium's local cache.
@@ -1307,6 +1511,7 @@ function setHomeHere(): void {
   const current = ensurePlacement();
   const display = displayForPoint(displays, current.x + PET_SPRITE_SIZE / 2, current.y + PET_SPRITE_SIZE / 2) ?? primaryDisplayOf(displays);
   const fixed = nearestValidPosition(current.x, current.y, PET_SPRITE_SIZE, display, petExclusionZones, petSettings.safeMarginPx);
+  invalidateRoamCommand();
   petPlacement = { ...current, displayId: display.id, x: fixed.x, y: fixed.y, homeX: fixed.x, homeY: fixed.y, dock: null, updatedAt: Date.now() };
   savePlacement(DATA_DIR, petPlacement);
   sendPetPosition();
@@ -1373,6 +1578,7 @@ function applyGalleryPatch(patch: unknown): GalleryUpdateResult {
     return { settings: petSettings, error: 'invalid patch' };
   }
   const p = patch as Record<string, unknown>;
+  const previous = petSettings;
   const next: PetSettings = { ...petSettings };
   let characterError: string | undefined;
 
@@ -1415,6 +1621,17 @@ function applyGalleryPatch(patch: unknown): GalleryUpdateResult {
 
   petSettings = next;
   savePetSettings(DATA_DIR, petSettings);
+  if (
+    previous.movement !== next.movement ||
+    previous.reducedMotion !== next.reducedMotion ||
+    previous.lockPosition !== next.lockPosition ||
+    previous.allowCrossMonitor !== next.allowCrossMonitor ||
+    previous.stayNearCorner !== next.stayNearCorner
+  ) {
+    invalidateRoamCommand();
+    roamingController.reset();
+    sendDesktop();
+  }
   pushPetState();
   return { settings: petSettings, error: characterError };
 }
@@ -1537,13 +1754,12 @@ function applyAnimation(frame: PetFrame): PetFrame {
  * bonus characters and older installs.
  */
 function motionAssetsForCharacter(character: PetCharacterId): PetFrame['motion'] {
-  const dir = character.replace(/_/g, '-');
-  const core = `/assets/pets/${dir}/motion-extension/core-pose-sheet.png`;
-  const action = `/assets/pets/${dir}/motion-extension/action-pose-sheet.png`;
-  const coreSrc = localAssetUrl(core);
-  const actionSrc = localAssetUrl(action);
-  if (!coreSrc && !actionSrc) return null;
-  return { coreSheet: coreSrc, actionSheet: actionSrc, columns: 5, source: 'motion-extension' };
+  // The legacy five-cell sheets are production references, not approved runtime
+  // animation clips. Keep the compatibility field in PetFrame for older test bridges,
+  // but never select those files from the main process. Orbit's pilot frame manifest
+  // will opt in only after every clip has passed its visual gate.
+  void character;
+  return null;
 }
 
 /**
@@ -1672,6 +1888,11 @@ function openQuotaPopup(): void {
   quotaPopup.webContents.on('did-finish-load', () => {
     if (!quotaPopup || quotaPopup.isDestroyed()) return;
     quotaPopupRecoveryInFlight = false;
+    quotaPopupRecoveryAttempts = 0;
+    if (quotaPopupRecoveryWatchdog) {
+      clearTimeout(quotaPopupRecoveryWatchdog);
+      quotaPopupRecoveryWatchdog = null;
+    }
     quotaPopup.setBounds(popupBoundsForPet());
     quotaPopup.show();
     quotaPopup.focus();
@@ -1679,10 +1900,20 @@ function openQuotaPopup(): void {
   });
   quotaPopup.webContents.on('did-fail-load', (_event, errorCode, description, _url, isMainFrame) => {
     if (!isMainFrame || errorCode === -3) return; // aborted navigations are not failures
+    quotaPopupRecoveryInFlight = false;
+    if (quotaPopupRecoveryWatchdog) {
+      clearTimeout(quotaPopupRecoveryWatchdog);
+      quotaPopupRecoveryWatchdog = null;
+    }
     console.error(`quota popup failed to load (${errorCode}): ${description}`);
     recoverQuotaPopup();
   });
   quotaPopup.webContents.on('render-process-gone', (_event, details) => {
+    quotaPopupRecoveryInFlight = false;
+    if (quotaPopupRecoveryWatchdog) {
+      clearTimeout(quotaPopupRecoveryWatchdog);
+      quotaPopupRecoveryWatchdog = null;
+    }
     console.error(`quota popup renderer exited (${details.reason})`);
     recoverQuotaPopup();
   });
@@ -1705,10 +1936,17 @@ function openQuotaPopup(): void {
     quotaPopup.show();
     quotaPopup.focus();
   });
+  quotaPopup.webContents.on('before-input-event', (_event, input) => {
+    if (input.type === 'keyDown' && input.key === 'Escape') closeQuotaPopup();
+  });
   quotaPopup.on('closed', () => {
     if (quotaPopupUnresponsiveTimer) {
       clearTimeout(quotaPopupUnresponsiveTimer);
       quotaPopupUnresponsiveTimer = null;
+    }
+    if (quotaPopupRecoveryWatchdog) {
+      clearTimeout(quotaPopupRecoveryWatchdog);
+      quotaPopupRecoveryWatchdog = null;
     }
     quotaPopupRecoveryInFlight = false;
     quotaPopupRecoveryAttempts = 0;
@@ -1732,10 +1970,22 @@ function recoverQuotaPopup(): void {
   }
   quotaPopupRecoveryAttempts += 1;
   quotaPopupRecoveryInFlight = true;
+  if (quotaPopupRecoveryWatchdog) clearTimeout(quotaPopupRecoveryWatchdog);
+  quotaPopupRecoveryWatchdog = setTimeout(() => {
+    quotaPopupRecoveryWatchdog = null;
+    if (!quotaPopup || quotaPopup.isDestroyed() || !quotaPopupRecoveryInFlight) return;
+    quotaPopupRecoveryInFlight = false;
+    recoverQuotaPopup();
+  }, 15_000);
+  quotaPopupRecoveryWatchdog.unref?.();
   try {
     quotaPopup.webContents.reloadIgnoringCache();
   } catch (error) {
     quotaPopupRecoveryInFlight = false;
+    if (quotaPopupRecoveryWatchdog) {
+      clearTimeout(quotaPopupRecoveryWatchdog);
+      quotaPopupRecoveryWatchdog = null;
+    }
     console.error(`quota popup recovery failed: ${String(error)}`);
   }
 }
@@ -1753,6 +2003,7 @@ function registerCompanionIpc(): void {
     petHovering = over;
     lastUserInteractionAt = Date.now();
     if (over) {
+      invalidateRoamCommand();
       // At most one hover_react per hover entry (ACCEPTANCE_TEST_MATRIX.md — Interaction).
       pendingInteraction = 'hover';
       // Hover shows the peek; it must not collapse an expanded bubble the user clicked.
@@ -1767,6 +2018,7 @@ function registerCompanionIpc(): void {
     const sender = BrowserWindow.fromWebContents(event.sender);
     if (sender !== pet || !pet || pet.isDestroyed()) return;
     if (typeof centerX === 'number' && Number.isFinite(centerX)) petCenterX = centerX;
+    invalidateRoamCommand();
     pendingInteraction = 'click';
     lastUserInteractionAt = Date.now();
     interactiveBubble = null;
@@ -1790,6 +2042,7 @@ function registerCompanionIpc(): void {
   ipcMain.on('qp-pet-drag-start', () => {
     if (petSettings.lockPosition) return;
     if (bubbleMode !== 'expanded') clearStatusBubble();
+    invalidateRoamCommand();
     petDragging = true;
     roamingController.onDragStart();
   });
@@ -1798,9 +2051,16 @@ function registerCompanionIpc(): void {
     finishDrag(local);
   });
   // The renderer finished a main-planned roaming burst (or Return Home travel).
-  ipcMain.on('qp-pet-roamed', (_event, local: unknown) => {
-    if (!isPoint(local)) return;
-    persistLocalPosition(local);
+  ipcMain.on('qp-pet-roamed', (_event, payload: unknown) => {
+    if (!isPoint(payload)) return;
+    const commandId = payload.commandId;
+    const geometryVersion = payload.geometryVersion;
+    if (typeof commandId !== 'number' || typeof geometryVersion !== 'number' ||
+        commandId !== activeRoamCommandId || geometryVersion !== activeRoamGeometryVersion ||
+        geometryVersion !== petGeometryVersion) return;
+    activeRoamCommandId = null;
+    activeRoamGeometryVersion = null;
+    persistLocalPosition(payload);
     roamingController.onMoveComplete();
     sendPetPosition();
   });
@@ -1906,6 +2166,7 @@ function openPetMenu(): void {
         savePetSettings(DATA_DIR, petSettings);
         // Switching modes must not leave a stale burst pending; the Pet stays put until the
         // next eligible decision. (WAVE3_SCOPE.md §4: Minimal stays the default.)
+        invalidateRoamCommand();
         roamingController.reset();
         applyPetBounds();
         sendPetPosition();
@@ -2029,6 +2290,7 @@ function openPetMenu(): void {
       click: (item) => {
         petSettings = { ...petSettings, stayNearCorner: item.checked };
         savePetSettings(DATA_DIR, petSettings);
+        invalidateRoamCommand();
         roamingController.reset();
         pushPetState();
       },
@@ -2041,6 +2303,7 @@ function openPetMenu(): void {
       click: (item) => {
         petSettings = { ...petSettings, lockPosition: item.checked };
         savePetSettings(DATA_DIR, petSettings);
+        invalidateRoamCommand();
         roamingController.reset();
         sendDesktop();
         pushPetState();
@@ -2054,6 +2317,8 @@ function openPetMenu(): void {
       click: (item) => {
         petSettings = { ...petSettings, allowCrossMonitor: item.checked };
         savePetSettings(DATA_DIR, petSettings);
+        invalidateRoamCommand();
+        roamingController.reset();
       },
     },
     { label: 'Quiet hours', submenu: quietItems },
@@ -2084,6 +2349,8 @@ function openPetMenu(): void {
       click: (item) => {
         petSettings = { ...petSettings, reducedMotion: item.checked };
         savePetSettings(DATA_DIR, petSettings);
+        invalidateRoamCommand();
+        roamingController.reset();
         pushPetState();
       },
     },
@@ -2119,15 +2386,25 @@ function checkAlerts(): void {
 }
 
 function openDashboard(): void {
-  togglePopup();
+  if (popup && !popup.isDestroyed()) {
+    if (popup.isMinimized()) popup.restore();
+    if (!popup.isVisible()) popup.show();
+    popup.focus();
+    return;
+  }
+  createDashboardWindow();
 }
 
 function togglePopup(): void {
   if (popup && !popup.isDestroyed()) {
     if (popup.isVisible()) popup.hide();
-    else { popup.show(); popup.focus(); }
+    else openDashboard();
     return;
   }
+  openDashboard();
+}
+
+function createDashboardWindow(): void {
   if (!lock) return;
   popup = new BrowserWindow({
     width: PANEL_WIDTH,
@@ -2146,13 +2423,28 @@ function togglePopup(): void {
   dashboardRecoveryInFlight = false;
   popup.webContents.on('did-finish-load', () => {
     dashboardRecoveryInFlight = false;
+    dashboardRecoveryAttempts = 0;
+    if (dashboardRecoveryWatchdog) {
+      clearTimeout(dashboardRecoveryWatchdog);
+      dashboardRecoveryWatchdog = null;
+    }
   });
   popup.webContents.on('did-fail-load', (_event, errorCode, description, _url, isMainFrame) => {
     if (!isMainFrame || errorCode === -3) return;
+    dashboardRecoveryInFlight = false;
+    if (dashboardRecoveryWatchdog) {
+      clearTimeout(dashboardRecoveryWatchdog);
+      dashboardRecoveryWatchdog = null;
+    }
     console.error(`dashboard failed to load (${errorCode}): ${description}`);
     recoverDashboard();
   });
   popup.webContents.on('render-process-gone', (_event, details) => {
+    dashboardRecoveryInFlight = false;
+    if (dashboardRecoveryWatchdog) {
+      clearTimeout(dashboardRecoveryWatchdog);
+      dashboardRecoveryWatchdog = null;
+    }
     console.error(`dashboard renderer exited (${details.reason})`);
     recoverDashboard();
   });
@@ -2181,6 +2473,10 @@ function togglePopup(): void {
       clearTimeout(dashboardUnresponsiveTimer);
       dashboardUnresponsiveTimer = null;
     }
+    if (dashboardRecoveryWatchdog) {
+      clearTimeout(dashboardRecoveryWatchdog);
+      dashboardRecoveryWatchdog = null;
+    }
     dashboardRecoveryInFlight = false;
     dashboardRecoveryAttempts = 0;
     popup = null;
@@ -2196,10 +2492,22 @@ function recoverDashboard(): void {
   }
   dashboardRecoveryAttempts += 1;
   dashboardRecoveryInFlight = true;
+  if (dashboardRecoveryWatchdog) clearTimeout(dashboardRecoveryWatchdog);
+  dashboardRecoveryWatchdog = setTimeout(() => {
+    dashboardRecoveryWatchdog = null;
+    if (!popup || popup.isDestroyed() || !dashboardRecoveryInFlight) return;
+    dashboardRecoveryInFlight = false;
+    recoverDashboard();
+  }, 15_000);
+  dashboardRecoveryWatchdog.unref?.();
   try {
     popup.webContents.reloadIgnoringCache();
   } catch (error) {
     dashboardRecoveryInFlight = false;
+    if (dashboardRecoveryWatchdog) {
+      clearTimeout(dashboardRecoveryWatchdog);
+      dashboardRecoveryWatchdog = null;
+    }
     console.error(`dashboard recovery failed: ${String(error)}`);
   }
 }
@@ -2238,5 +2546,9 @@ void app.whenReady().then(() => {
     if (trayAnimTimer) clearInterval(trayAnimTimer);
     if (petUrgentTimer) clearTimeout(petUrgentTimer);
     if (bubbleDismissTimer) clearTimeout(bubbleDismissTimer);
+    if (petRecoveryWatchdog) clearTimeout(petRecoveryWatchdog);
+    if (quotaPopupRecoveryWatchdog) clearTimeout(quotaPopupRecoveryWatchdog);
+    if (dashboardRecoveryWatchdog) clearTimeout(dashboardRecoveryWatchdog);
+    runtimeDiagnostics.stop();
   });
 });

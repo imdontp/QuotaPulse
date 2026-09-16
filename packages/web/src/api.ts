@@ -14,7 +14,10 @@ export class ApiError extends Error {
   }
 }
 
-const REQUEST_TIMEOUT_MS = 30_000;
+// Pricing downloads can legitimately take up to the daemon's 60s upstream timeout.
+// Keep a small client-side margin so the UI reports a real timeout instead of aborting
+// while the daemon is still safely validating the response.
+const REQUEST_TIMEOUT_MS = 75_000;
 
 async function request(path: string, init?: RequestInit): Promise<Response> {
   const controller = new AbortController();

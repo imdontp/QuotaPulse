@@ -11,8 +11,8 @@ import { validatePetAssetTree } from '../src/pet/asset-pipeline.js';
  * - manifest.json files
  * - `<animation_id>.webp` runtime clips
  * - skins (accessory SVGs)
- * - Gallery previews (`preview_128.png`), concept pose sheets and the optional
- *   five-cell Motion Extension Pack sheets
+ * - Gallery previews (`preview_128.png`), concept pose sheets and only approved
+ *   runtime motion clips
  *
  * Excluded on purpose: 1024px masters, raw sprite sheets, prompt/spec archives,
  * development contact sheets, READMEs, and — Wave 5 hardening — any directory
@@ -55,11 +55,13 @@ let skipped = 0;
 function copyAllowedFile(file: string): boolean {
   const name = file.replace(/\\/g, '/').split('/').pop() ?? '';
   if (EXCLUDED_BASENAMES.has(name)) return false;
-  const isManifest = name === 'manifest.json';
+  const isManifest = name === 'manifest.json' || name === 'motion-pilot.json';
   const isClip = /\.webp$/i.test(name);
   const isPreview = /^preview_\d+\.png$/i.test(name) || name === 'accessory.svg';
-  const isMotionSheet = /^(core|action)-pose-sheet\.png$/i.test(name);
-  return isManifest || isClip || isPreview || isMotionSheet || name === 'concept-states.png';
+  // The old five-cell Motion Extension Pack sheets are references only. They have
+  // different character identities and must never enter a release package; pilot
+  // frame sequences are shipped as canonical WebP clips once individually approved.
+  return isManifest || isClip || isPreview || name === 'concept-states.png';
 }
 
 function walk(dir: string, relBase: string): void {

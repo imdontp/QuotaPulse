@@ -455,6 +455,9 @@
   var walking = false;
   /** True when the current walk is a main-planned roaming burst / Return Home travel. */
   var roaming = false;
+  /** Main-process token for the active roam command; stale completions are ignored upstream. */
+  var activeRoamCommandId = null;
+  var activeRoamGeometryVersion = null;
   /** Safe regions (overlay-local) from the main process; local movement is clamped to them. */
   var zones = null;
   /** Enabled exclusion zones (overlay-local) supplied by the main process. */
@@ -974,6 +977,42 @@
     loop();
   }
 
+  /** Stop any renderer walk without reporting a completion for a command that was cancelled. */
+  function cancelWalkMotion() {
+    walking = false;
+    roaming = false;
+    activeRoamCommandId = null;
+    activeRoamGeometryVersion = null;
+    targetX = x;
+    targetY = y;
+    walkSide = null;
+    wrap.classList.remove('walking', 'walking-left', 'walking-right', 'glide', 'turning', 'turn-left', 'turn-right');
+    applyArt();
+    place();
+  }
+
+  /** Explicit Return Home fallback when a safe walk cannot cross a monitor gap. */
+  function warpHome(target) {
+    if (!target || !Number.isFinite(target.x) || !Number.isFinite(target.y)) return;
+    cancelWalkMotion();
+    var next = clampToZones(target.x, target.y);
+    wrap.style.transition = 'opacity 180ms ease';
+    wrap.style.opacity = '0';
+    setTimeout(function () {
+      x = next.x;
+      y = next.y;
+      anchorX = x;
+      anchorY = y;
+      targetX = x;
+      targetY = y;
+      place();
+      requestAnimationFrame(function () {
+        wrap.style.opacity = '';
+        setTimeout(function () { wrap.style.transition = ''; }, 220);
+      });
+    }, 180);
+  }
+
   function loop() {
     if (raf == null) raf = requestAnimationFrame(tick);
   }
@@ -989,6 +1028,8 @@
            branch assigned targetX/Y in one frame, which looked like a warp. */
         walking = false;
         roaming = false;
+        activeRoamCommandId = null;
+        activeRoamGeometryVersion = null;
         targetX = x;
         targetY = y;
         wrap.classList.remove('walking', 'walking-left', 'walking-right', 'glide');
@@ -1004,10 +1045,14 @@
       var step = speed * dt;
       if (distance <= step) {
         var cameFromRoam = roaming;
+        var completedCommandId = activeRoamCommandId;
+        var completedGeometryVersion = activeRoamGeometryVersion;
         x = targetX;
         y = targetY;
         walking = false;
         roaming = false;
+        activeRoamCommandId = null;
+        activeRoamGeometryVersion = null;
         wrap.classList.remove('walking', 'walking-left', 'walking-right');
         wrap.classList.remove('glide');
         // A clean mechanical stop at the destination (Wave 2 layering rules §4). The
@@ -1021,7 +1066,9 @@
         if (window.qpPet) {
           // A main-planned burst reports `roamed` (starts the idle cooldown there); a local
           // reposition reports `moved` (persisted without touching the cadence).
-          if (cameFromRoam && window.qpPet.roamed) window.qpPet.roamed(Math.round(x), Math.round(y));
+          if (cameFromRoam && window.qpPet.roamed) {
+            window.qpPet.roamed(Math.round(x), Math.round(y), completedCommandId, completedGeometryVersion);
+          }
           else if (window.qpPet.moved) window.qpPet.moved(Math.round(x), Math.round(y));
         }
       } else {
@@ -1049,7 +1096,10 @@
       // Curious/react pose while the pointer is on the mascot (asset spec §4 hover_react).
       wrap.classList.toggle('hovering', over);
       // Hovering wakes a resting Pet and pauses locomotion (Wave 2 interaction spec §2).
-      if (over) userInteracted();
+      if (over) {
+        cancelWalkMotion();
+        userInteracted();
+      }
       window.qpPet.hover(over);
     }
   }
@@ -1145,12 +1195,14 @@
   });
 
   if (window.qpPet) window.qpPet.onState(function (next) {
+    if (next && next.bubble && !frame.bubble) cancelWalkMotion();
     frame = next;
     paint();
   });
   if (window.qpPet && window.qpPet.onPosition) {
     window.qpPet.onPosition(function (pos) {
       if (!pos || !Number.isFinite(pos.x) || !Number.isFinite(pos.y)) return;
+      cancelWalkMotion();
       originX = Number.isFinite(pos.originX) ? pos.originX : 0;
       originY = Number.isFinite(pos.originY) ? pos.originY : 0;
       var clamped = clampToZones(pos.x, pos.y);
@@ -1167,6 +1219,7 @@
   if (window.qpPet && window.qpPet.onDesktop) {
     window.qpPet.onDesktop(function (desktop) {
       if (!desktop) return;
+      cancelWalkMotion();
       zones = desktop.zones && desktop.zones.length ? desktop.zones : null;
       blocked = desktop.blocked && desktop.blocked.length ? desktop.blocked : null;
       locked = !!desktop.lockPosition;
@@ -1192,8 +1245,24 @@
       // roaming still yields to interaction and speech.
       if (locked || reduced || (!isHome && (hoverOver || bubbleVisible() || interactionBlocked()))) return;
       if (isHome) wake();
+      activeRoamCommandId = Number.isFinite(target.commandId) ? target.commandId : null;
+      activeRoamGeometryVersion = Number.isFinite(target.geometryVersion) ? target.geometryVersion : null;
       beginWalkTo(target.x, target.y, true);
+      // A target can be rejected after clamping (for example, while the display topology is
+      // being updated). Do not leave the main process waiting for a completion that cannot
+      // arrive.
+      if (!walking && activeRoamCommandId != null && window.qpPet && window.qpPet.roamed) {
+        window.qpPet.roamed(Math.round(x), Math.round(y), activeRoamCommandId, activeRoamGeometryVersion);
+        activeRoamCommandId = null;
+        activeRoamGeometryVersion = null;
+      }
     });
+  }
+  if (window.qpPet && window.qpPet.onCancelRoam) {
+    window.qpPet.onCancelRoam(function () { cancelWalkMotion(); });
+  }
+  if (window.qpPet && window.qpPet.onHomeWarp) {
+    window.qpPet.onHomeWarp(function (target) { warpHome(target); });
   }
   paint();
 })();

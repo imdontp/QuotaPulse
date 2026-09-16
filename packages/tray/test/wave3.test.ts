@@ -153,12 +153,42 @@ test('an exclusion zone rejects a placement and the nearest valid point escapes 
 test('a desktop walk path cannot cross a monitor gap or an exclusion zone', () => {
   const blocked = ctx({ exclusionZones: [zone('blocked', 'primary', 760, 760, 180, 120)] });
   assert.equal(pathClear({ x: 500, y: 800 }, { x: 900, y: 800 }, SIZE, blocked, 16), false);
-  assert.equal(pathClear({ x: 500, y: 800 }, { x: 1700, y: 800 }, ctx(), 16), true);
+  assert.equal(pathClear({ x: 500, y: 800 }, { x: 1700, y: 800 }, SIZE, ctx(), 16), true);
 
-  // Displays that touch at their bounds still have a safe-region gap after margins;
-  // the renderer must stay put instead of visibly warping across it.
+  // A disabled cross-monitor setting remains a hard boundary.
   const split = ctx({ displays: [PRIMARY, SECONDARY] });
   assert.equal(pathClear({ x: 1840, y: 800 }, { x: 1960, y: 800 }, SIZE, split, 16), false);
+
+  // When explicitly enabled, adjoining work areas form one walkable corridor even
+  // though each outer edge keeps its safety margin.
+  const adjoining = ctx({
+    displays: [PRIMARY, SECONDARY],
+    roaming: { ...ctx().roaming, mode: 'roaming', allowCrossMonitor: true },
+  });
+  assert.equal(pathClear({ x: 1840, y: 800 }, { x: 1960, y: 800 }, SIZE, adjoining, 16), true);
+
+  // A real 20px monitor gap is still rejected; it must not become a visible warp.
+  const gap = display('gap', false, { x: 1940, y: 0, width: 1080, height: 1040 });
+  const gapped = ctx({
+    displays: [PRIMARY, gap],
+    roaming: { ...ctx().roaming, mode: 'roaming', allowCrossMonitor: true },
+  });
+  assert.equal(pathClear({ x: 1840, y: 800 }, { x: 1980, y: 800 }, SIZE, gapped, 16), false);
+
+  // The same seam rule applies to vertically stacked displays; a rectangle may straddle
+  // their shared edge only when the work areas actually touch.
+  const below = display('below', false, { x: 0, y: 1040, width: 1920, height: 900 });
+  const stacked = ctx({
+    displays: [PRIMARY, below],
+    roaming: { ...ctx().roaming, mode: 'roaming', allowCrossMonitor: true },
+  });
+  assert.equal(pathClear({ x: 500, y: 960 }, { x: 500, y: 1060 }, SIZE, stacked, 16), true);
+  const belowGap = display('below-gap', false, { x: 0, y: 1060, width: 1920, height: 900 });
+  const stackedGap = ctx({
+    displays: [PRIMARY, belowGap],
+    roaming: { ...ctx().roaming, mode: 'roaming', allowCrossMonitor: true },
+  });
+  assert.equal(pathClear({ x: 500, y: 960 }, { x: 500, y: 1080 }, SIZE, stackedGap, 16), false);
 });
 
 test('docked placements may show less than the roaming minimum (spec §4)', () => {

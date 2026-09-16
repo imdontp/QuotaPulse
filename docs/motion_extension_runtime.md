@@ -1,9 +1,12 @@
 # Motion Extension runtime notes
 
-The four stable companions ship optional `motion-extension/` sheets beside their concept
-art. Each sheet is a five-cell, transparent strip on a shared 2172×724 export canvas. The
-renderer crops a cell into the fixed 64px viewport; the main process still owns desktop
-translation, safe zones, monitor changes, and Return Home.
+The legacy `motion-extension/` sheets remain in the source tree as visual references. They
+are not release assets and the renderer does not select them: their identities do not match
+the approved concept-state art closely enough for production use. The package task therefore
+excludes those sheets until replacement clips pass the motion visual gate.
+
+The renderer crops an approved clip into the fixed 64px viewport; the main process still owns
+desktop translation, safe zones, monitor changes, and Return Home.
 
 | Sheet | Cells (left → right) | Runtime use |
 | --- | --- | --- |
@@ -12,8 +15,13 @@ translation, safe zones, monitor changes, and Return Home.
 
 Warning, critical, reset, and unknown states continue to use the authored concept-state
 viewport so quota severity remains visible. Flux Blob uses the same action slots as a glide
-and never adds artificial legs. Missing sheets (including the bonus set) fall back to the
-concept art without changing the state engine or the interaction contract.
+and never adds artificial legs. Until an individual motion clip is approved, the concept art
+is the safe fallback without changing the state engine or the interaction contract.
+
+The Orbit Bot pilot contract is recorded in `assets/pets/orbit-bot/motion-pilot.json`: 15 clips,
+94 total frames, fixed pivot/runtime sizes, and reduced-motion requirements. The manifest is
+validated and packaged as metadata; final frame artwork is added only after each clip's
+keyframes and in-betweens are approved.
 
 The source images are generated from the approved concept sheets and
 `docs/motion_extension_reference_board_a.png`; the original concept PNGs are untouched.

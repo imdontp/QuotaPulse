@@ -35,6 +35,13 @@ export interface QpPetRoamTarget {
   x: number;
   y: number;
   kind: string;
+  commandId: number;
+  geometryVersion: number;
+}
+
+export interface QpPetHomeWarp {
+  x: number;
+  y: number;
 }
 
 const api = {
@@ -61,6 +68,17 @@ const api = {
     ipcRenderer.on('qp-pet-roam-target', listener);
     return () => ipcRenderer.removeListener('qp-pet-roam-target', listener);
   },
+  onCancelRoam: (cb: () => void): (() => void) => {
+    const listener = (): void => cb();
+    ipcRenderer.on('qp-pet-cancel-roam', listener);
+    return () => ipcRenderer.removeListener('qp-pet-cancel-roam', listener);
+  },
+  /** Explicit Return Home fallback when a safe animated route is unavailable. */
+  onHomeWarp: (cb: (target: QpPetHomeWarp) => void): (() => void) => {
+    const listener = (_event: unknown, target: QpPetHomeWarp): void => cb(target);
+    ipcRenderer.on('qp-pet-home-warp', listener);
+    return () => ipcRenderer.removeListener('qp-pet-home-warp', listener);
+  },
   hover: (over: boolean): void => ipcRenderer.send('qp-pet-hover', over),
   /** Left click opens the quota panel directly; `centerX` positions it over the pet. */
   click: (centerX: number): void => ipcRenderer.send('qp-pet-click', centerX),
@@ -76,7 +94,8 @@ const api = {
   /** The Pet reached a locally-chosen resting point (Wave 2 idle reposition). */
   moved: (x: number, y: number): void => ipcRenderer.send('qp-pet-moved', { x, y }),
   /** The Pet reached a main-planned roaming / Return Home target. */
-  roamed: (x: number, y: number): void => ipcRenderer.send('qp-pet-roamed', { x, y }),
+  roamed: (x: number, y: number, commandId?: number, geometryVersion?: number): void =>
+    ipcRenderer.send('qp-pet-roamed', { x, y, commandId, geometryVersion }),
   /** Mirror the renderer-owned facing direction so the engine can reason about turns. */
   facing: (direction: 'left' | 'right'): void => ipcRenderer.send('qp-pet-facing', direction),
 };

@@ -53,35 +53,31 @@ async function refreshPricingOnce(db: DB): Promise<PricingRefreshResult> {
     throw Object.assign(new Error(`models.dev returned HTTP ${response.status}`), { code: 'http' as const });
   }
 
-  const body = await response.text();
-  let catalog: Record<string, { models?: Record<string, { cost?: unknown }> }>;
+  let body: string;
   try {
-    catalog = JSON.parse(body) as typeof catalog;
+    body = await response.text();
+  } catch (error) {
+    throw Object.assign(new Error(`models.dev response could not be read: ${(error as Error).message}`), { code: 'network' as const });
+  }
+
+  let catalog: unknown;
+  try {
+    catalog = JSON.parse(body) as unknown;
   } catch (error) {
     throw Object.assign(new Error(`models.dev returned invalid JSON: ${(error as Error).message}`), { code: 'invalid-json' as const });
   }
-  const providers = Object.keys(catalog).length;
-  const models = Object.values(catalog).reduce(
-    (count, provider) => count + Object.keys(provider?.models ?? {}).length,
-    0,
-  );
-  if (!providers || !models) {
-    throw Object.assign(new Error('models.dev response contained no providers or models'), { code: 'empty' as const });
+
+  const validation = validateCatalog(catalog);
+  if (!validation.ok) {
+    throw Object.assign(new Error(validation.message), { code: validation.code });
   }
+  const { providers, models } = validation;
 
   mkdirSync(DATA_DIR, { recursive: true });
   const tempPath = `${CATALOG_PATH}.tmp-${process.pid}-${Date.now()}`;
   try {
     writeFileSync(tempPath, body, 'utf8');
-    try {
-      renameSync(tempPath, CATALOG_PATH);
-    } catch (error) {
-      // Node may refuse rename-over-existing on Windows. Keep the replacement scoped to
-      // this exact catalog path so a second Dashboard refresh does not silently fail.
-      if (!existsSync(CATALOG_PATH)) throw error;
-      unlinkSync(CATALOG_PATH);
-      renameSync(tempPath, CATALOG_PATH);
-    }
+    replaceCatalog(tempPath);
   } catch (error) {
     try {
       if (existsSync(tempPath)) unlinkSync(tempPath);
@@ -106,4 +102,67 @@ async function refreshPricingOnce(db: DB): Promise<PricingRefreshResult> {
     repriced,
     reclassified,
   };
+}
+
+type CatalogValidation =
+  | { ok: true; providers: number; models: number }
+  | { ok: false; code: 'empty' | 'invalid-json'; message: string };
+
+function record(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+/** Validate the parts the loader can safely interpret before touching the live catalog. */
+export function validateCatalog(raw: unknown): CatalogValidation {
+  if (!record(raw)) {
+    return { ok: false, code: 'invalid-json', message: 'models.dev response root must be an object' };
+  }
+  let providers = 0;
+  let models = 0;
+  for (const [providerId, provider] of Object.entries(raw)) {
+    if (!record(provider) || !record(provider.models)) {
+      return { ok: false, code: 'invalid-json', message: `models.dev provider ${providerId} has no valid models object` };
+    }
+    providers += 1;
+    for (const [modelId, model] of Object.entries(provider.models)) {
+      if (!record(model) || model.cost == null) continue;
+      const cost = model.cost;
+      if (!record(cost)) {
+        return { ok: false, code: 'invalid-json', message: `models.dev cost for ${providerId}/${modelId} must be an object` };
+      }
+      for (const key of ['input', 'output', 'cache_read', 'cache_write']) {
+        const value = cost[key];
+        if (value !== undefined && value !== null && (typeof value !== 'number' || !Number.isFinite(value) || value < 0)) {
+          return { ok: false, code: 'invalid-json', message: `models.dev rate ${providerId}/${modelId}/${key} must be a finite non-negative number` };
+        }
+      }
+      if (['input', 'output', 'cache_read', 'cache_write'].some((key) => typeof cost[key] === 'number')) models += 1;
+    }
+  }
+  if (!providers || !models) {
+    return { ok: false, code: 'empty', message: 'models.dev response contained no providers or usable model prices' };
+  }
+  return { ok: true, providers, models };
+}
+
+/** Replace the catalog while retaining a rollback copy if the final rename fails. */
+function replaceCatalog(tempPath: string): void {
+  const backupPath = `${CATALOG_PATH}.bak`;
+  let movedLive = false;
+  try {
+    if (existsSync(CATALOG_PATH)) {
+      if (existsSync(backupPath)) unlinkSync(backupPath);
+      renameSync(CATALOG_PATH, backupPath);
+      movedLive = true;
+    }
+    renameSync(tempPath, CATALOG_PATH);
+  } catch (error) {
+    try {
+      if (existsSync(CATALOG_PATH) && movedLive) unlinkSync(CATALOG_PATH);
+      if (movedLive && existsSync(backupPath) && !existsSync(CATALOG_PATH)) renameSync(backupPath, CATALOG_PATH);
+    } catch {
+      // Preserve the original write error; the backup remains available for manual recovery.
+    }
+    throw error;
+  }
 }
