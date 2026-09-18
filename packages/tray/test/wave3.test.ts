@@ -25,6 +25,7 @@ import {
   dockPointsFor,
   homeAnchor,
   isQuietHours,
+  motionDevelopmentEnabled,
   nearestValidPosition,
   parseClock,
   pathClear,
@@ -262,7 +263,7 @@ test('the overlay covers the union of every work area', () => {
   assert.deepEqual(overlay, { x: 0, y: 0, width: 3000, height: 1040 });
 });
 
-test('a saved placement on a secondary display is restored there', () => {
+test('a saved placement on a secondary display recovers to the primary display', () => {
   const placement: PetPlacement = {
     displayId: 'secondary',
     x: 2000,
@@ -272,10 +273,10 @@ test('a saved placement on a secondary display is restored there', () => {
     homeY: null,
     updatedAt: NOW,
   };
-  assert.equal(resolvePlacementDisplay(placement, [PRIMARY, SECONDARY])?.id, 'secondary');
+  assert.equal(resolvePlacementDisplay(placement, [PRIMARY, SECONDARY])?.id, 'primary');
   const recovered = recoverPlacement(placement, [PRIMARY, SECONDARY], SIZE, [], 16, NOW);
-  assert.equal(recovered.displayId, 'secondary');
-  assert.ok(validatePlacement(recovered.x, recovered.y, SIZE, SECONDARY, [], 0.85).valid);
+  assert.equal(recovered.displayId, 'primary');
+  assert.ok(validatePlacement(recovered.x, recovered.y, SIZE, PRIMARY, [], 0.85).valid);
 });
 
 test('a disconnected monitor moves the Pet to the primary without crashing', () => {
@@ -391,6 +392,14 @@ test('the roaming controller only fires after idle, then waits for the move to c
   assert.equal(controller.state, 'stationary');
   now += 1_000;
   assert.equal(controller.update(c, PRIMARY, SIZE), null, 'no immediate second burst');
+});
+
+test('motion tuning is explicit and never enabled in packaged builds', () => {
+  assert.equal(motionDevelopmentEnabled(false, undefined), false, 'normal npm start preserves production cadence');
+  assert.equal(motionDevelopmentEnabled(false, '1'), true, 'developers can opt into accelerated motion');
+  assert.equal(motionDevelopmentEnabled(false, '0'), false);
+  assert.equal(motionDevelopmentEnabled(true, undefined), false, 'packaged builds always preserve production cadence');
+  assert.equal(motionDevelopmentEnabled(true, '1'), false, 'environment variables cannot accelerate release builds');
 });
 
 test('Minimal mode never produces a movement command', () => {

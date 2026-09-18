@@ -231,6 +231,7 @@ export interface Overview {
   limits: Limit[];
   subscriptions: SubscriptionStatus[];
   harnesses: HarnessStatus[];
+  settings: AppSettings;
   /** Legacy alias for clients that still call this Account quota. */
   accounts: AccountStatus[];
   sources: Array<{ id: number; harness: string; profile: string; display_name: string; root_path: string }>;
@@ -258,6 +259,13 @@ export interface ModelRow extends Totals {
   effort: string;
   /** Who MADE the model, derived server-side -- not the gateway that routed it. */
   vendor: string;
+}
+
+export interface TodayUsage {
+  from: number;
+  to: number;
+  totals: Totals;
+  rows: ModelRow[];
 }
 
 /** One (project, source, vendor, model) combination over the requested window. */
@@ -308,6 +316,13 @@ export interface SessionRow {
   cost_usd: number;
   cost_unknown_calls: number;
   cost_estimated_calls: number;
+}
+
+export interface AppSettings {
+  pet_enabled: boolean;
+  tray_animation_enabled: boolean;
+  hidden_subscriptions: string[];
+  updated_at: number;
 }
 
 export interface CompareResult {
@@ -431,6 +446,8 @@ export const api = {
     `/api/pricing/coverage?from=${p.from}&to=${p.to}` + (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
   ),
   overview: () => get<Overview>('/api/overview'),
+  settings: () => get<AppSettings>('/api/settings'),
+  updateSettings: (patch: Partial<AppSettings>) => put<AppSettings>('/api/settings', patch),
   limits: () =>
     get<{
       now: number;
@@ -445,6 +462,7 @@ export const api = {
         (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
     ),
   models: (since: number) => get<{ models: ModelRow[] }>(`/api/models?since=${since}`),
+  today: () => get<TodayUsage>('/api/today'),
   projects: (p: { from: number; to: number; sourceId?: number }) =>
     get<{ from: number; to: number; rows: ProjectRow[] }>(
       `/api/projects?from=${p.from}&to=${p.to}` + (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
@@ -519,6 +537,11 @@ function openStream(): void {
   stream.addEventListener('data', () => {
     // Copied before iterating: a listener that unsubscribes itself while we are
     // notifying would otherwise mutate the set mid-loop.
+    for (const fn of [...listeners]) fn();
+  });
+  stream.addEventListener('settings', () => {
+    // Settings updates use the same refresh fan-out as ingest so every mounted
+    // consumer re-reads the single daemon-owned state immediately.
     for (const fn of [...listeners]) fn();
   });
 }

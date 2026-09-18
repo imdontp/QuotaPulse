@@ -446,3 +446,36 @@ test('an adapter failure is recorded where the Health page can see it', async ()
   await resolveSources(d, [adapter]);
   assert.deepEqual(health(d).errors, [], 'a departed source must not keep reporting errors');
 });
+
+test('independent account probes do not stack their wait time', async () => {
+  const d = db();
+  let active = 0;
+  let maxActive = 0;
+  const adapter: Adapter = {
+    id: 'parallel-account-probe',
+    displayName: 'Parallel account probe',
+    async detect() {
+      return ['one', 'two'].map((profile) => ({
+        profile,
+        rootPath: `/account/${profile}`,
+        displayName: profile,
+        sourceKind: 'account' as const,
+      }));
+    },
+    watchTargets() {
+      return [];
+    },
+    async ingest() {
+      active += 1;
+      maxActive = Math.max(maxActive, active);
+      await new Promise<void>((resolve) => setTimeout(resolve, 20));
+      active -= 1;
+    },
+  } as unknown as Adapter;
+
+  const sources = await resolveSources(d, [adapter]);
+  const results = await runPass(d, sources);
+  assert.equal(results.length, 2);
+  assert.equal(maxActive, 2, 'account adapters should wait concurrently, not serially');
+  d.close();
+});

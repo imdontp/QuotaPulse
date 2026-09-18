@@ -41,6 +41,34 @@ const MOVE_WEIGHTS: ReadonlyArray<{ kind: RoamMoveKind; weight: number }> = [
   { kind: 'home', weight: 10 },
 ];
 
+/** Dev-only cadence override (motion tuning); `null` keeps the frozen production values. */
+let devMinIdleMs: number | null = null;
+let devMaxIdleMs: number | null = null;
+let devIdleMoveWeight: number | null = null;
+
+/**
+ * Motion work needs a short feedback loop in an unpackaged build. It is enabled by default
+ * for development, can be disabled explicitly, and can never leak into a packaged release.
+ */
+export function motionDevelopmentEnabled(isPackaged: boolean, envValue?: string): boolean {
+  return !isPackaged && envValue === '1';
+}
+
+/** Shrink the roaming cadence for local motion development. Never call in production. */
+export function setRoamingCadence(tuning: { minIdleMs?: number; maxIdleMs?: number; idleMoveWeight?: number }): void {
+  if (tuning.minIdleMs != null) devMinIdleMs = Math.max(1_000, tuning.minIdleMs);
+  if (tuning.maxIdleMs != null) devMaxIdleMs = Math.max(devMinIdleMs ?? 1_000, tuning.maxIdleMs);
+  if (tuning.idleMoveWeight != null) devIdleMoveWeight = Math.max(0, tuning.idleMoveWeight);
+}
+
+function moveWeights(): ReadonlyArray<{ kind: RoamMoveKind; weight: number }> {
+  if (devIdleMoveWeight == null) return MOVE_WEIGHTS;
+  const idleWeight = devIdleMoveWeight;
+  return MOVE_WEIGHTS.map((entry) =>
+    entry.kind === 'idle' ? { kind: entry.kind, weight: idleWeight } : entry,
+  );
+}
+
 /** Roaming burst travel bands (spec §2): scaled down for small displays by the planner. */
 export const ROAM_SHORT_MIN_PX = 80;
 export const ROAM_SHORT_MAX_PX = 200;
@@ -64,9 +92,10 @@ export function canAutonomouslyMove(ctx: PetDesktopContext): boolean {
 
 /** Pick a move kind from the spec's weighted distribution. */
 export function chooseMoveKind(rng: () => number = Math.random): RoamMoveKind {
-  const total = MOVE_WEIGHTS.reduce((sum, entry) => sum + entry.weight, 0);
+  const weights = moveWeights();
+  const total = weights.reduce((sum, entry) => sum + entry.weight, 0);
   let roll = rng() * total;
-  for (const entry of MOVE_WEIGHTS) {
+  for (const entry of weights) {
     if (roll < entry.weight) return entry.kind;
     roll -= entry.weight;
   }
@@ -444,7 +473,9 @@ export function createRoamingController(options: RoamingControllerOptions = {}):
 
   function idleDelay(): number {
     // A short randomized ramp before the first decision; the steady-state window is the
-    // configured min/max idle (45-180s) and is applied once a burst completes.
+    // configured min/max idle (45-180s) and is applied once a burst completes. Dev tuning
+    // compresses the ramp instead, so a modified pet walks almost immediately.
+    if (devMinIdleMs != null) return devMinIdleMs + rng() * Math.max(0, (devMaxIdleMs ?? devMinIdleMs) - devMinIdleMs);
     return 20_000 + rng() * 40_000;
   }
 
@@ -552,6 +583,9 @@ export function createRoamingController(options: RoamingControllerOptions = {}):
 }
 
 function idleWindow(ctx: PetDesktopContext | null, rng: () => number): number {
+  if (devMinIdleMs != null && devMaxIdleMs != null) {
+    return devMinIdleMs + rng() * Math.max(0, devMaxIdleMs - devMinIdleMs);
+  }
   const min = ctx?.roaming.minIdleBeforeMoveMs ?? 45_000;
   const max = ctx?.roaming.maxIdleBeforeMoveMs ?? 180_000;
   return Math.max(min, min + rng() * Math.max(0, max - min));

@@ -31,24 +31,37 @@ test('pet strip pins to the work area bottom and is tall enough for bubbles', ()
   assert.ok(PET_WINDOW_HEIGHT > PET_STRIP_HEIGHT, 'the bubble area needs room above the pet band');
 });
 
-test('the popup opens above the pet and is clamped inside the work area', () => {
+test('the popup follows the actual pet rect and never overlaps it', () => {
   const workArea = { x: 0, y: 0, width: 1920, height: 1040 };
 
-  // Centred on the pet, bottom edge exactly at the top of the strip.
-  const mid = petPopupBounds(workArea, 960);
+  const middlePet = { x: 928, y: 700, width: 64, height: 64 };
+  const mid = petPopupBounds(workArea, middlePet);
   assert.equal(mid.x + mid.width / 2, 960);
-  assert.equal(mid.y + mid.height, workArea.height - PET_STRIP_HEIGHT);
+  assert.equal(mid.y + mid.height, middlePet.y - 8);
 
-  // Near the left edge it cannot run off screen.
-  const left = petPopupBounds(workArea, 10);
+  const left = petPopupBounds(workArea, { x: 0, y: 700, width: 64, height: 64 });
   assert.ok(left.x >= 0);
   assert.ok(left.x + left.width <= workArea.width);
 
-  // Near the right edge, ditto.
-  const right = petPopupBounds(workArea, 1910);
+  const right = petPopupBounds(workArea, { x: 1856, y: 700, width: 64, height: 64 });
   assert.ok(right.x >= 0);
   assert.ok(right.x + right.width <= workArea.width);
   assert.ok(right.y >= 0);
+});
+
+test('the popup moves below a pet near the top and shrinks on a constrained side', () => {
+  const workArea = { x: 100, y: 40, width: 800, height: 600 };
+  const topPet = { x: 468, y: 48, width: 64, height: 64 };
+  const below = petPopupBounds(workArea, topPet);
+  assert.equal(below.y, topPet.y + topPet.height + 8);
+  assert.ok(below.y + below.height <= workArea.y + workArea.height - 8);
+
+  const middlePet = { x: 468, y: 310, width: 64, height: 64 };
+  const constrained = petPopupBounds(workArea, middlePet);
+  assert.ok(
+    constrained.y + constrained.height <= middlePet.y - 8 ||
+      constrained.y >= middlePet.y + middlePet.height + 8,
+  );
 });
 
 test('roaming spans the union of every display at the primary baseline', () => {

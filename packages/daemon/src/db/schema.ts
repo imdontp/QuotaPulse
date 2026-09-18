@@ -195,6 +195,16 @@ CREATE TABLE IF NOT EXISTS notification_setting (
   updated_at   INTEGER NOT NULL
 );
 
+-- Settings shared by the dashboard and tray. The tray keeps its richer Pet appearance
+-- settings in pet-settings.json, but these process-wide switches must have one owner.
+CREATE TABLE IF NOT EXISTS app_setting (
+  id                       INTEGER PRIMARY KEY CHECK (id = 1),
+  pet_enabled              INTEGER NOT NULL DEFAULT 1,
+  tray_animation_enabled   INTEGER NOT NULL DEFAULT 1,
+  hidden_subscriptions     TEXT NOT NULL DEFAULT '[]',
+  updated_at               INTEGER NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS rollup_hourly (
   bucket_ts        INTEGER NOT NULL,
   source_id        INTEGER NOT NULL REFERENCES source(id),

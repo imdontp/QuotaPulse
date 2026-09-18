@@ -40,10 +40,10 @@ import {
   createRoamingController,
   createSceneQueue,
   defaultPlacement,
-  desktopOverlayBounds,
   displayForPoint,
   dockPoint,
   homeAnchor,
+  motionDevelopmentEnabled,
   rectAround,
   recoverPlacement,
   resolvePlacementDisplay,
@@ -55,6 +55,7 @@ import {
   sceneForEvent,
   scenesForEvents,
   setManualCooldown,
+  setRoamingCadence,
   snapToDock,
   DOCK_SNAP_THRESHOLD_PX,
   MANUAL_MOVE_COOLDOWN_MS,
@@ -88,7 +89,11 @@ import { DEFAULT_SKIN_ID, skinsForCharacter } from './pet/skins.js';
 import { loadPetSettings, savePetSettings } from './pet/settings.js';
 import { PetDiagnostics, isCrashLoop } from './pet/diagnostics.js';
 import { loadPlacement, savePlacement } from './pet/position.js';
-import { validateOrbitBotMotionPilot, type OrbitBotMotionPilotManifest } from './pet/orbit-motion.js';
+import {
+  orbitMotionRuntimeFramePaths,
+  validateOrbitBotMotionPilot,
+  type OrbitBotMotionPilotManifest,
+} from './pet/orbit-motion.js';
 import {
   collectExternalProcessSnapshot,
   createRuntimeDiagnosticsSession,
@@ -121,6 +126,13 @@ interface NotificationSettings {
   quiet_end: number | null;
 }
 
+interface AppSettings {
+  pet_enabled: boolean;
+  tray_animation_enabled: boolean;
+  hidden_subscriptions: string[];
+  updated_at: number;
+}
+
 const DATA_DIR =
   process.env.QUOTAPULSE_DATA_DIR ??
   join(process.env.LOCALAPPDATA ?? join(homedir(), '.local', 'share'), 'quotapulse');
@@ -141,12 +153,14 @@ let dashboardRecoveryAttempts = 0;
 let dashboardRecoveryInFlight = false;
 let dashboardRecoveryWatchdog: NodeJS.Timeout | null = null;
 let dashboardUnresponsiveTimer: NodeJS.Timeout | null = null;
+let dashboardRendererReady = false;
 let pet: BrowserWindow | null = null;
 let quotaPopup: BrowserWindow | null = null;
 let quotaPopupRecoveryAttempts = 0;
 let quotaPopupRecoveryInFlight = false;
 let quotaPopupRecoveryWatchdog: NodeJS.Timeout | null = null;
 let quotaPopupUnresponsiveTimer: NodeJS.Timeout | null = null;
+let quotaPopupRendererReady = false;
 let lock: Lock | null = null;
 let limits: Limit[] = [];
 let subscriptions: SubscriptionInfo[] = [];
@@ -159,8 +173,6 @@ let trayAnimFps = 0;
 let trayFrame = 0;
 /** Epoch ms of the last daemon ingest that actually recorded usage. Drives `working`. */
 let lastActivityAt = 0;
-/** Centre of the pet inside its strip, in CSS px; where the popup opens (pet-clicked). */
-let petCenterX: number | null = null;
 /** Aborts the SSE activity reader when the daemon (and so the token) changes. */
 let activityAbort: AbortController | null = null;
 let activityToken: string | null = null;
@@ -170,6 +182,11 @@ const alerted = new Map<string, AlertState>();
 /** Pet Mode v2 state: settings, presence events, and the interactive bubble. */
 const petSettingsLoadDiag = { corrupt: false, recoveredFromBackup: false };
 let petSettings: PetSettings = loadPetSettings(DATA_DIR, petSettingsLoadDiag);
+if (petSettings.allowCrossMonitor) {
+  petSettings = { ...petSettings, allowCrossMonitor: false };
+  savePetSettings(DATA_DIR, petSettings);
+  console.info('[pet] cross-monitor roaming disabled; Pet is anchored to the primary display');
+}
 if (petSettingsLoadDiag.corrupt || petSettingsLoadDiag.recoveredFromBackup) {
   console.warn(
     `[pet] settings recovery: primary=${petSettingsLoadDiag.corrupt ? 'corrupt' : 'ok'} ` +
@@ -191,6 +208,15 @@ let petDragging = false;
 let petUrgentInteractionActive = false;
 let petUrgentTimer: NodeJS.Timeout | null = null;
 /** Wave 3 roaming controller + notification-scene queue (dedupe lives in the queue). */
+// Dev-only motion tuning: fast cadence when explicitly requested.
+// Must run before the controller is constructed, which captures the first delay.
+// Set QUOTAPULSE_MOTION_DEV=1 only for focused motion development.
+const MOTION_DEV = motionDevelopmentEnabled(app.isPackaged, process.env.QUOTAPULSE_MOTION_DEV);
+if (MOTION_DEV) {
+  setRoamingCadence({ minIdleMs: 5_000, maxIdleMs: 15_000, idleMoveWeight: 5 });
+  setManualCooldown(3_000);
+  console.info('[pet] motion dev tuning ON: roam 5-15s, idle roll 5%, cooldown 3s');
+}
 const roamingController = createRoamingController();
 const sceneQueue = createSceneQueue();
 /** Last frame rendered, so hover/click can build a bubble without re-resolving everything. */
@@ -268,7 +294,6 @@ function ensureDaemon(): void {
 async function fetchLimits(): Promise<void> {
   lock = readLock();
   if (!lock) {
-    limits = [];
     if (activityAbort) {
       activityAbort.abort();
       activityAbort = null;
@@ -290,20 +315,33 @@ async function fetchLimits(): Promise<void> {
     // makes a small `ageSeconds` look active even when nobody is working).
     const res = await fetch(`http://127.0.0.1:${lock.port}/api/overview`, {
       headers: { 'x-quotapulse-token': lock.token },
+      signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) throw new Error(String(res.status));
-    const body = (await res.json()) as { limits: Limit[]; subscriptions?: SubscriptionInfo[] };
+    const body = (await res.json()) as {
+      limits: Limit[];
+      subscriptions?: SubscriptionInfo[];
+      settings?: AppSettings;
+    };
     limits = body.limits;
     subscriptions = body.subscriptions ?? [];
+    if (body.settings) {
+      if (body.settings.updated_at === 0) {
+        void updateSharedSettings({
+          pet_enabled: petEnabled,
+          tray_animation_enabled: trayAnimationEnabled,
+        });
+      } else {
+        applySharedSettings(body.settings);
+      }
+    }
     await refreshNotifSettings(lock);
     runPresenceEvents();
     // New daemons own threshold detection and persist it while the tray is closed. Keep
     // the in-memory helper as a compatibility fallback for an older daemon during upgrade.
     if (!(await deliverPendingAlerts(lock))) checkAlerts();
-  } catch {
-    limits = [];
-    subscriptions = [];
-    lastFrame = resolvePetFrame({ limits, subscriptions, settings: petSettings });
+  } catch (error) {
+    console.warn(`[tray] keeping last-known quota data after refresh failure: ${String(error)}`);
   }
   render();
 }
@@ -471,7 +509,8 @@ async function readActivityStream(current: Lock, signal: AbortSignal): Promise<v
           const line = frame.split('\n').find((l) => l.startsWith('data:'));
           if (line) {
             try {
-              const payload = JSON.parse(line.slice(5).trim()) as { newEvents?: number };
+              const payload = JSON.parse(line.slice(5).trim()) as { newEvents?: number; settings?: AppSettings };
+              if (payload.settings) applySharedSettings(payload.settings);
               if ((payload.newEvents ?? 0) > 0) {
                 lastActivityAt = Date.now();
                 pushPetState();
@@ -557,6 +596,43 @@ function inQuietHours(settings: NotificationSettings, now = new Date()): boolean
     : minute >= settings.quiet_start || minute < settings.quiet_end;
 }
 
+function applySharedSettings(settings: AppSettings): void {
+  const petChanged = petEnabled !== settings.pet_enabled;
+  const animationChanged = trayAnimationEnabled !== settings.tray_animation_enabled;
+  petEnabled = settings.pet_enabled;
+  trayAnimationEnabled = settings.tray_animation_enabled;
+  if (petSettings.enabled !== petEnabled) {
+    petSettings = { ...petSettings, enabled: petEnabled };
+    savePetSettings(DATA_DIR, petSettings);
+  }
+  if (petChanged) {
+    if (petEnabled) ensurePet();
+    else destroyPet();
+  }
+  if (animationChanged) trayAnimFps = -1;
+  if (petChanged || animationChanged) render();
+}
+
+async function updateSharedSettings(patch: Partial<AppSettings>): Promise<AppSettings | null> {
+  const current = lock ?? readLock();
+  if (!current) return null;
+  try {
+    const res = await fetch(`http://127.0.0.1:${current.port}/api/settings`, {
+      method: 'PUT',
+      headers: { 'x-quotapulse-token': current.token, 'content-type': 'application/json' },
+      body: JSON.stringify(patch),
+      signal: AbortSignal.timeout(5_000),
+    });
+    if (!res.ok) throw new Error(String(res.status));
+    const settings = (await res.json()) as AppSettings;
+    applySharedSettings(settings);
+    return settings;
+  } catch (error) {
+    console.warn(`[tray] shared settings update failed: ${String(error)}`);
+    return null;
+  }
+}
+
 function render(): void {
   if (!tray) return;
   const menuLimits = subscriptionLimits(limits);
@@ -635,6 +711,7 @@ function render(): void {
         click: (item) => {
           trayAnimationEnabled = item.checked;
           trayAnimFps = -1; // force the driver to restart the timer
+          void updateSharedSettings({ tray_animation_enabled: item.checked });
           render();
         },
       },
@@ -713,14 +790,13 @@ function primaryDisplayOf(displays: readonly PetDisplayInfo[]): PetDisplayInfo {
 }
 
 /**
- * The Pet window is one transparent overlay over the union of every display's work area
+ * The Pet window is one transparent overlay inside the primary display's work area.
  * (MULTI_MONITOR_SPEC.md §5). The sprite is positioned inside it in absolute desktop
- * coordinates, which is what makes drag, docking and multi-monitor roaming one mechanism.
+ * Keeping this boundary fixed prevents Companion/Roaming from escaping an invisible window.
  */
 function petBounds(): Rect {
   const displays = currentDisplays();
-  const fallback = primaryDisplayOf(displays).workArea;
-  return desktopOverlayBounds(displays, fallback, 'workArea');
+  return primaryDisplayOf(displays).workArea;
 }
 
 /** The pet's window rect, kept so absolute positions can be converted both ways. */
@@ -740,6 +816,10 @@ function popupPreloadPath(): string {
   return join(REPO_ROOT, 'packages', 'tray', 'dist-preload', 'popup-preload.js');
 }
 
+function dashboardPreloadPath(): string {
+  return join(REPO_ROOT, 'packages', 'tray', 'dist-preload', 'dashboard-preload.js');
+}
+
 function galleryHtmlPath(): string {
   return join(REPO_ROOT, 'packages', 'tray', 'src', 'gallery.html');
 }
@@ -754,13 +834,30 @@ function ensurePlacement(): PetPlacement {
   const primary = primaryDisplayOf(displays);
   if (!petPlacement) {
     const saved = loadPlacement(DATA_DIR);
-    petPlacement = saved
-      ? recoverPlacement(saved, displays, PET_SPRITE_SIZE, petExclusionZones, petSettings.safeMarginPx)
-      : defaultPlacement(primary, PET_SPRITE_SIZE, petSettings.safeMarginPx);
+    if (saved) {
+      const home = homeAnchor(saved, primary, PET_SPRITE_SIZE, petSettings.safeMarginPx);
+      const launchPlacement = {
+        ...saved,
+        displayId: primary.id,
+        x: home.x,
+        y: home.y,
+        updatedAt: Date.now(),
+      };
+      petPlacement = recoverPlacement(
+        launchPlacement,
+        [primary],
+        PET_SPRITE_SIZE,
+        petExclusionZones,
+        petSettings.safeMarginPx,
+      );
+      savePlacement(DATA_DIR, petPlacement);
+    } else {
+      petPlacement = defaultPlacement(primary, PET_SPRITE_SIZE, petSettings.safeMarginPx);
+    }
   } else {
     petPlacement = recoverPlacement(
       petPlacement,
-      displays,
+      [primary],
       PET_SPRITE_SIZE,
       petExclusionZones,
       petSettings.safeMarginPx,
@@ -771,8 +868,9 @@ function ensurePlacement(): PetPlacement {
 
 /** The full desktop context the roaming controller reasons about (Wave 3 runtime contract). */
 function petDesktopContext(): PetDesktopContext {
+  const primary = primaryDisplayOf(currentDisplays());
   return {
-    displays: currentDisplays(),
+    displays: [primary],
     exclusionZones: petExclusionZones,
     placement: ensurePlacement(),
     roaming: roamingConfigFor(petSettings),
@@ -899,9 +997,8 @@ function recoverPetRenderer(): void {
 }
 
 /**
- * The desktop pet: one transparent, always-on-top, click-through overlay covering the union
- * of every display's work area (never the taskbar itself). The sprite is placed at absolute
- * coordinates inside it, which is what makes drag, docking and multi-monitor roaming work.
+ * The desktop pet: one transparent, always-on-top, click-through overlay constrained to the
+ * primary display's work area (never the taskbar itself).
  * The window starts click-through; the renderer reports hover over the sprite so only the
  * pet itself becomes clickable -- the Shimeji-in-Electron pattern.
  */
@@ -959,6 +1056,8 @@ function ensurePet(): void {
     sendDesktop();
     sendPetPosition();
     pushPetState();
+    // Motion tuning (dev only): the renderer's idle scheduler reads this once.
+    if (MOTION_DEV && pet && !pet.isDestroyed()) pet.webContents.send('qp-pet-motion-dev', true);
   });
   pet.webContents.on('did-fail-load', (_event, errorCode, description, _url, isMainFrame) => {
     if (!isMainFrame || errorCode === -3) return;
@@ -1041,7 +1140,7 @@ function ensurePet(): void {
 function exitPetSafeMode(): void {
   petSafeMode = false;
   rendererCrashes = [];
-  petSettings = loadPetSettings(DATA_DIR);
+  petSettings = { ...loadPetSettings(DATA_DIR), allowCrossMonitor: false };
   roamingController.reset();
   destroyPet();
   ensurePet();
@@ -1081,7 +1180,8 @@ function applyPetBounds(): void {
 function sendDesktop(): void {
   if (!pet || pet.isDestroyed() || pet.webContents.isLoading()) return;
   const overlay = petWindowRect ?? petBounds();
-  const zones = currentDisplays()
+  const primary = primaryDisplayOf(currentDisplays());
+  const zones = [primary]
     .map((d) => safeRegionFor(d, petSettings.safeMarginPx))
     .filter((region): region is NonNullable<typeof region> => region != null)
     .map((region) => ({
@@ -1091,7 +1191,7 @@ function sendDesktop(): void {
       height: region.height,
     }));
   const blocked = petExclusionZones
-    .filter((zone) => zone.enabled)
+    .filter((zone) => zone.enabled && zone.displayId === primary.id)
     .map((zone) => ({
       x: zone.x - overlay.x,
       y: zone.y - overlay.y,
@@ -1099,6 +1199,7 @@ function sendDesktop(): void {
       height: zone.height,
     }));
   pet.webContents.send('qp-pet-desktop', {
+    activeDisplayId: primary.id,
     zones,
     blocked,
     lockPosition: petSettings.lockPosition,
@@ -1438,6 +1539,7 @@ function sendPopupSprite(): void {
 
 /** Load + validate the four character manifests (Next Handoff Pack Phase A). */
 function loadCharacterManifests(): void {
+  orbitMotionAssetsCache = undefined;
   for (const c of PET_CHARACTERS) {
     // Manifest ids are underscore (`orbit_bot`); asset folders are hyphen (`orbit-bot`).
     const path = join(ASSETS_DIR, 'pets', c.id.replace(/_/g, '-'), 'manifest.json');
@@ -1475,7 +1577,7 @@ function loadCharacterManifests(): void {
       return;
     }
     orbitMotionPilot = raw as OrbitBotMotionPilotManifest;
-    console.info(`[pet] Orbit Bot motion pilot contract loaded (${Object.keys(orbitMotionPilot.animations).length} clips; final art gated)`);
+    console.info(`[pet] Orbit Bot motion pilot contract loaded (${Object.keys(orbitMotionPilot.animations).length} clips; approved clips activate atomically)`);
   } catch (err) {
     console.error(`[pet] Orbit Bot motion pilot unreadable: ${String(err)}`);
   }
@@ -1483,8 +1585,24 @@ function loadCharacterManifests(): void {
 
 // HTTP popup images must be embedded; desktop/gallery share Chromium's local cache.
 const conceptDataUrls = new Map<PetCharacterId, string>();
+const ORBIT_CANONICAL_STILL = 'pets/orbit-bot/motion-pilot/runtime/512/idle_loop/idle_loop_001.png';
+let orbitMotionAssetsCache: PetFrame['motion'] | undefined;
+
+function renderCanonicalOrbitStill(mood: PetMood, href: string): string {
+  const safeHref = href.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  const color = MOOD_COLORS[mood];
+  const neutral = mood === 'unknown' ? ' style="filter:grayscale(1)"' : '';
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 512 512" ` +
+    `data-character="orbit_bot" data-concept-pose="${mood}">` +
+    `<ellipse cx="256" cy="456" rx="142" ry="22" fill="${color}" opacity="0.22"/>` +
+    `<image href="${safeHref}" width="512" height="512" preserveAspectRatio="xMidYMid meet"${neutral}/>` +
+    `</svg>`
+  );
+}
+
 function conceptSprite(character: PetCharacterId, mood: PetMood, embed = false): string | null {
-  const rel = conceptAssetPath(character);
+  const rel = character === 'orbit_bot' ? ORBIT_CANONICAL_STILL : conceptAssetPath(character);
   const file = join(ASSETS_DIR, rel);
   if (!existsSync(file)) return null;
   let href = `../assets/${rel}`;
@@ -1496,7 +1614,9 @@ function conceptSprite(character: PetCharacterId, mood: PetMood, embed = false):
     }
     href = cached;
   }
-  return renderConceptPet(character, mood, href);
+  return character === 'orbit_bot'
+    ? renderCanonicalOrbitStill(mood, href)
+    : renderConceptPet(character, mood, href);
 }
 
 /** Explicit home anchor. Dragging is temporary; only this action changes Return Home. */
@@ -1607,7 +1727,7 @@ function applyGalleryPatch(patch: unknown): GalleryUpdateResult {
   if (p.flags != null && typeof p.flags === 'object' && !Array.isArray(p.flags)) {
     for (const [key, value] of Object.entries(p.flags as Record<string, unknown>)) {
       if (typeof value !== 'boolean') continue;
-      if (key === 'speechBubbles' || key === 'eventNotifications' || key === 'reducedMotion' || key === 'lockPosition' || key === 'allowCrossMonitor' || key === 'stayNearCorner') {
+      if (key === 'speechBubbles' || key === 'eventNotifications' || key === 'reducedMotion' || key === 'lockPosition' || key === 'stayNearCorner') {
         (next as unknown as Record<string, unknown>)[key] = value;
       }
     }
@@ -1754,12 +1874,35 @@ function applyAnimation(frame: PetFrame): PetFrame {
  * bonus characters and older installs.
  */
 function motionAssetsForCharacter(character: PetCharacterId): PetFrame['motion'] {
-  // The legacy five-cell sheets are production references, not approved runtime
-  // animation clips. Keep the compatibility field in PetFrame for older test bridges,
-  // but never select those files from the main process. Orbit's pilot frame manifest
-  // will opt in only after every clip has passed its visual gate.
-  void character;
-  return null;
+  // The legacy five-cell sheets remain references only. Opt in a pilot clip atomically:
+  // one missing frame disables the whole sequence rather than flashing mixed artwork.
+  if (character !== 'orbit_bot' || !orbitMotionPilot) return null;
+  if (orbitMotionAssetsCache !== undefined) return orbitMotionAssetsCache;
+  const clips: NonNullable<NonNullable<PetFrame['motion']>['clips']> = {};
+  for (const clipId of ['idle_loop', 'walk_right', 'walk_left', 'turn_right', 'turn_left', 'stop', 'sit_down', 'sit_idle', 'lie_down', 'sleep_loop', 'wake_up', 'stretch', 'hover_react'] as const) {
+    const spec = orbitMotionPilot.animations[clipId];
+    const frames = orbitMotionRuntimeFramePaths(clipId, 256).map((path) => localAssetUrl(`/assets/${path}`));
+    // Activate each direction atomically so a partial export can never flash mixed art.
+    if (frames.some((frame) => frame == null)) continue;
+    clips[clipId] = {
+      frames: frames as string[],
+      fps: spec.fps,
+      loop: spec.loop,
+      pivot: orbitMotionPilot.pivot,
+    };
+  }
+  if (Object.keys(clips).length === 0) {
+    orbitMotionAssetsCache = null;
+    return orbitMotionAssetsCache;
+  }
+  orbitMotionAssetsCache = {
+    coreSheet: null,
+    actionSheet: null,
+    columns: 0,
+    source: 'orbit-motion-pilot',
+    clips,
+  };
+  return orbitMotionAssetsCache;
 }
 
 /**
@@ -1808,24 +1951,20 @@ function clearStatusBubble(): void {
   pushPetState();
 }
 
-/**
- * The popup anchors above the Pet. `petCenterX` is window-local, so it is converted to the
- * primary work area's coordinates first -- otherwise roaming (whose window starts at the
- * left-most monitor) would place the popup on the wrong screen.
- */
+/** Anchor the popup to the Pet's current absolute rectangle on its display. */
 function popupBoundsForPet(): Rect {
-  const overlay = petWindowRect ?? petBounds();
-  const absolute =
-    petCenterX != null
-      ? overlay.x + petCenterX
-      : petPlacement
-        ? petPlacement.x + PET_SPRITE_SIZE / 2
-        : null;
+  const placement = ensurePlacement();
+  const petRect = {
+    x: placement.x,
+    y: placement.y,
+    width: PET_SPRITE_SIZE,
+    height: PET_SPRITE_SIZE,
+  };
   const displays = currentDisplays();
   const display =
-    displayForPoint(displays, absolute ?? 0, petPlacement?.y ?? 0) ?? primaryDisplayOf(displays);
-  const workArea = display.workArea;
-  return petPopupBounds(workArea, absolute == null ? null : absolute - workArea.x);
+    displayForPoint(displays, petRect.x + petRect.width / 2, petRect.y + petRect.height / 2) ??
+    primaryDisplayOf(displays);
+  return petPopupBounds(display.workArea, petRect);
 }
 
 /**
@@ -1852,8 +1991,10 @@ function openQuotaPopup(): void {
   }
   if (quotaPopup && !quotaPopup.isDestroyed()) {
     quotaPopup.setBounds(popupBoundsForPet());
-    quotaPopup.show();
-    quotaPopup.focus();
+    if (quotaPopupRendererReady) {
+      quotaPopup.show();
+      quotaPopup.focus();
+    }
     return;
   }
   if (!existsSync(popupPreloadPath())) {
@@ -1863,6 +2004,7 @@ function openQuotaPopup(): void {
   const bounds = popupBoundsForPet();
   quotaPopupRecoveryAttempts = 0;
   quotaPopupRecoveryInFlight = false;
+  quotaPopupRendererReady = false;
   quotaPopup = new BrowserWindow({
     ...bounds,
     show: false,
@@ -1887,16 +2029,7 @@ function openQuotaPopup(): void {
   });
   quotaPopup.webContents.on('did-finish-load', () => {
     if (!quotaPopup || quotaPopup.isDestroyed()) return;
-    quotaPopupRecoveryInFlight = false;
-    quotaPopupRecoveryAttempts = 0;
-    if (quotaPopupRecoveryWatchdog) {
-      clearTimeout(quotaPopupRecoveryWatchdog);
-      quotaPopupRecoveryWatchdog = null;
-    }
     quotaPopup.setBounds(popupBoundsForPet());
-    quotaPopup.show();
-    quotaPopup.focus();
-    sendPopupSprite();
   });
   quotaPopup.webContents.on('did-fail-load', (_event, errorCode, description, _url, isMainFrame) => {
     if (!isMainFrame || errorCode === -3) return; // aborted navigations are not failures
@@ -1931,14 +2064,15 @@ function openQuotaPopup(): void {
     }
   });
   void quotaPopup.loadURL(`http://127.0.0.1:${lock.port}/?mode=popup`);
-  quotaPopup.once('ready-to-show', () => {
-    if (!quotaPopup || quotaPopup.isDestroyed()) return;
-    quotaPopup.show();
-    quotaPopup.focus();
-  });
+  quotaPopupRecoveryWatchdog = setTimeout(() => {
+    quotaPopupRecoveryWatchdog = null;
+    if (!quotaPopupRendererReady) recoverQuotaPopup();
+  }, 15_000);
+  quotaPopupRecoveryWatchdog.unref?.();
   quotaPopup.webContents.on('before-input-event', (_event, input) => {
     if (input.type === 'keyDown' && input.key === 'Escape') closeQuotaPopup();
   });
+  quotaPopup.on('blur', closeQuotaPopup);
   quotaPopup.on('closed', () => {
     if (quotaPopupUnresponsiveTimer) {
       clearTimeout(quotaPopupUnresponsiveTimer);
@@ -1950,6 +2084,7 @@ function openQuotaPopup(): void {
     }
     quotaPopupRecoveryInFlight = false;
     quotaPopupRecoveryAttempts = 0;
+    quotaPopupRendererReady = false;
     quotaPopup = null;
   });
 }
@@ -1970,6 +2105,7 @@ function recoverQuotaPopup(): void {
   }
   quotaPopupRecoveryAttempts += 1;
   quotaPopupRecoveryInFlight = true;
+  quotaPopupRendererReady = false;
   if (quotaPopupRecoveryWatchdog) clearTimeout(quotaPopupRecoveryWatchdog);
   quotaPopupRecoveryWatchdog = setTimeout(() => {
     quotaPopupRecoveryWatchdog = null;
@@ -2014,10 +2150,9 @@ function registerCompanionIpc(): void {
   });
   // Left click opens the details popup. Hovering already answers "how is this provider
   // doing?"; one click is the predictable escalation to the full quota panel.
-  ipcMain.on('qp-pet-click', (event, centerX: number) => {
+  ipcMain.on('qp-pet-click', (event) => {
     const sender = BrowserWindow.fromWebContents(event.sender);
     if (sender !== pet || !pet || pet.isDestroyed()) return;
-    if (typeof centerX === 'number' && Number.isFinite(centerX)) petCenterX = centerX;
     invalidateRoamCommand();
     pendingInteraction = 'click';
     lastUserInteractionAt = Date.now();
@@ -2041,6 +2176,7 @@ function registerCompanionIpc(): void {
   // only persist on release (DRAG_REPOSITION_SPEC.md §1).
   ipcMain.on('qp-pet-drag-start', () => {
     if (petSettings.lockPosition) return;
+    closeQuotaPopup();
     if (bubbleMode !== 'expanded') clearStatusBubble();
     invalidateRoamCommand();
     petDragging = true;
@@ -2072,7 +2208,10 @@ function registerCompanionIpc(): void {
     const action = payload?.action;
     const ownerKey = payload?.ownerKey ?? lastFrame?.focus?.key ?? null;
     if (action === 'details') openQuotaPopup();
-    if (action === 'open-dashboard') openDashboard();
+    if (action === 'open-dashboard') {
+      closeQuotaPopup();
+      openDashboard();
+    }
     if (action === 'snooze') void snoozeNotifications(60);
     if ((action === 'pin' || action === 'unpin') && ownerKey) {
       petSettings = {
@@ -2085,9 +2224,37 @@ function registerCompanionIpc(): void {
       render();
     }
   });
-  ipcMain.on('qp-popup-ready', () => sendPopupSprite());
+  ipcMain.on('qp-popup-ready', (event) => {
+    if (!quotaPopup || quotaPopup.isDestroyed() || event.sender !== quotaPopup.webContents) return;
+    quotaPopupRendererReady = true;
+    quotaPopupRecoveryInFlight = false;
+    quotaPopupRecoveryAttempts = 0;
+    if (quotaPopupRecoveryWatchdog) {
+      clearTimeout(quotaPopupRecoveryWatchdog);
+      quotaPopupRecoveryWatchdog = null;
+    }
+    quotaPopup.setBounds(popupBoundsForPet());
+    quotaPopup.show();
+    quotaPopup.focus();
+    sendPopupSprite();
+  });
+  ipcMain.on('qp-dashboard-ready', (event) => {
+    if (!popup || popup.isDestroyed() || event.sender !== popup.webContents) return;
+    dashboardRendererReady = true;
+    dashboardRecoveryInFlight = false;
+    dashboardRecoveryAttempts = 0;
+    if (dashboardRecoveryWatchdog) {
+      clearTimeout(dashboardRecoveryWatchdog);
+      dashboardRecoveryWatchdog = null;
+    }
+    popup.show();
+    popup.focus();
+  });
   ipcMain.on('qp-popup-refresh', () => void fetchLimits());
-  ipcMain.on('qp-popup-open-dashboard', () => openDashboard());
+  ipcMain.on('qp-popup-open-dashboard', () => {
+    closeQuotaPopup();
+    openDashboard();
+  });
   ipcMain.on('qp-popup-hide-pet', () => setPetEnabled(false));
   ipcMain.on('qp-popup-show-pet', () => setPetEnabled(true));
   ipcMain.on('qp-popup-close', () => closeQuotaPopup());
@@ -2098,6 +2265,7 @@ function setPetEnabled(enabled: boolean): void {
   petEnabled = enabled;
   petSettings = { ...petSettings, enabled };
   savePetSettings(DATA_DIR, petSettings);
+  void updateSharedSettings({ pet_enabled: enabled });
   if (enabled) ensurePet();
   else destroyPet();
   render();
@@ -2309,18 +2477,6 @@ function openPetMenu(): void {
         pushPetState();
       },
     },
-    {
-      label: 'Allow cross-monitor roaming',
-      type: 'checkbox',
-      checked: petSettings.allowCrossMonitor,
-      enabled: petSettings.movement === 'roaming',
-      click: (item) => {
-        petSettings = { ...petSettings, allowCrossMonitor: item.checked };
-        savePetSettings(DATA_DIR, petSettings);
-        invalidateRoamCommand();
-        roamingController.reset();
-      },
-    },
     { label: 'Quiet hours', submenu: quietItems },
     { type: 'separator' },
     {
@@ -2388,8 +2544,10 @@ function checkAlerts(): void {
 function openDashboard(): void {
   if (popup && !popup.isDestroyed()) {
     if (popup.isMinimized()) popup.restore();
-    if (!popup.isVisible()) popup.show();
-    popup.focus();
+    if (dashboardRendererReady) {
+      if (!popup.isVisible()) popup.show();
+      popup.focus();
+    }
     return;
   }
   createDashboardWindow();
@@ -2406,6 +2564,10 @@ function togglePopup(): void {
 
 function createDashboardWindow(): void {
   if (!lock) return;
+  if (!existsSync(dashboardPreloadPath())) {
+    console.error('dashboard preload missing; run: npm run build -w @quotapulse/tray');
+    return;
+  }
   popup = new BrowserWindow({
     width: PANEL_WIDTH,
     height: PANEL_HEIGHT,
@@ -2417,18 +2579,15 @@ function createDashboardWindow(): void {
     maximizable: true,
     skipTaskbar: false,
     title: 'QuotaPulse',
-    webPreferences: { nodeIntegration: false, contextIsolation: true },
+    webPreferences: {
+      preload: dashboardPreloadPath(),
+      nodeIntegration: false,
+      contextIsolation: true,
+    },
   });
   dashboardRecoveryAttempts = 0;
   dashboardRecoveryInFlight = false;
-  popup.webContents.on('did-finish-load', () => {
-    dashboardRecoveryInFlight = false;
-    dashboardRecoveryAttempts = 0;
-    if (dashboardRecoveryWatchdog) {
-      clearTimeout(dashboardRecoveryWatchdog);
-      dashboardRecoveryWatchdog = null;
-    }
-  });
+  dashboardRendererReady = false;
   popup.webContents.on('did-fail-load', (_event, errorCode, description, _url, isMainFrame) => {
     if (!isMainFrame || errorCode === -3) return;
     dashboardRecoveryInFlight = false;
@@ -2463,11 +2622,11 @@ function createDashboardWindow(): void {
   });
   // Reuses the dashboard rather than maintaining a second UI for the same numbers.
   void popup.loadURL(`http://127.0.0.1:${lock.port}/#live`);
-  popup.once('ready-to-show', () => {
-    if (!popup || popup.isDestroyed()) return;
-    popup.show();
-    popup.focus();
-  });
+  dashboardRecoveryWatchdog = setTimeout(() => {
+    dashboardRecoveryWatchdog = null;
+    if (!dashboardRendererReady) recoverDashboard();
+  }, 15_000);
+  dashboardRecoveryWatchdog.unref?.();
   popup.on('closed', () => {
     if (dashboardUnresponsiveTimer) {
       clearTimeout(dashboardUnresponsiveTimer);
@@ -2479,6 +2638,7 @@ function createDashboardWindow(): void {
     }
     dashboardRecoveryInFlight = false;
     dashboardRecoveryAttempts = 0;
+    dashboardRendererReady = false;
     popup = null;
   });
 }
@@ -2492,6 +2652,7 @@ function recoverDashboard(): void {
   }
   dashboardRecoveryAttempts += 1;
   dashboardRecoveryInFlight = true;
+  dashboardRendererReady = false;
   if (dashboardRecoveryWatchdog) clearTimeout(dashboardRecoveryWatchdog);
   dashboardRecoveryWatchdog = setTimeout(() => {
     dashboardRecoveryWatchdog = null;

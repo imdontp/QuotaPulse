@@ -77,7 +77,7 @@ export class Scheduler extends EventEmitter {
     const first = await this.pass('initial');
     this.attachWatchers();
 
-    const pollMs = this.opts.pollMs ?? 5000;
+    const pollMs = this.opts.pollMs ?? 30_000;
     this.pollTimer = setInterval(() => void this.trigger('poll'), pollMs);
     this.pollTimer.unref?.();
 
@@ -86,7 +86,7 @@ export class Scheduler extends EventEmitter {
      * used to happen once at startup, so a newly used tool stayed invisible -- and
      * unwatched -- until someone restarted the daemon. Re-detect on a slow cadence
      * instead: detect() touches the filesystem for every adapter, which is cheap but
-     * not free enough to do on the 5s ingest tick.
+     * not free enough to do on the ingest safety-net tick.
      */
     const detectMs = this.opts.detectMs ?? 60_000;
     this.detectTimer = setInterval(() => void this.redetect(), detectMs);

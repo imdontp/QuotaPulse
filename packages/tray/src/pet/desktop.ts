@@ -284,12 +284,12 @@ export function findDisplayById(displays: readonly PetDisplayInfo[], id: string 
   return displays.find((d) => d.id === id) ?? null;
 }
 
-/** The display a saved placement should be restored on (MULTI_MONITOR_SPEC.md §3). */
+/** Runtime policy: restore saved placements on the primary display only. */
 export function resolvePlacementDisplay(
-  placement: PetPlacement,
+  _placement: PetPlacement,
   displays: readonly PetDisplayInfo[],
 ): PetDisplayInfo | null {
-  return findDisplayById(displays, placement.displayId) ?? displays.find((d) => d.primary) ?? displays[0] ?? null;
+  return displays.find((d) => d.primary) ?? displays[0] ?? null;
 }
 
 /**

@@ -51,19 +51,33 @@ export function petWindowBounds(workArea: WorkArea): Rect {
  */
 export function petPopupBounds(
   workArea: WorkArea,
-  petCenterX: number | null,
+  petRect: Rect | null,
   width = PET_POPUP_WIDTH,
   height = PET_POPUP_HEIGHT,
+  gap = EDGE_MARGIN,
 ): Rect {
-  const w = Math.min(width, Math.max(280, workArea.width - EDGE_MARGIN * 2));
-  const h = Math.min(height, Math.max(320, workArea.height - PET_STRIP_HEIGHT - EDGE_MARGIN));
-  const desiredX = (petCenterX ?? workArea.x + workArea.width / 2) - w / 2;
+  const w = Math.min(width, Math.max(1, workArea.width - EDGE_MARGIN * 2));
+  if (!petRect) {
+    return {
+      x: Math.round(workArea.x + (workArea.width - w) / 2),
+      y: Math.round(workArea.y + EDGE_MARGIN),
+      width: w,
+      height: Math.min(height, Math.max(1, workArea.height - EDGE_MARGIN * 2)),
+    };
+  }
+
+  const desiredX = petRect.x + petRect.width / 2 - w / 2;
   const x = Math.round(
     Math.min(Math.max(desiredX, workArea.x + EDGE_MARGIN), workArea.x + workArea.width - w - EDGE_MARGIN),
   );
-  const y = Math.round(
-    Math.max(workArea.y + EDGE_MARGIN, workArea.y + workArea.height - PET_STRIP_HEIGHT - h),
+  const above = Math.max(0, petRect.y - gap - (workArea.y + EDGE_MARGIN));
+  const below = Math.max(
+    0,
+    workArea.y + workArea.height - EDGE_MARGIN - (petRect.y + petRect.height + gap),
   );
+  const placeAbove = above >= height || (below < height && above >= below);
+  const h = Math.min(height, Math.max(1, placeAbove ? above : below));
+  const y = Math.round(placeAbove ? petRect.y - gap - h : petRect.y + petRect.height + gap);
   return { x, y, width: w, height: h };
 }
 

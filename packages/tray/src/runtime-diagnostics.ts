@@ -14,6 +14,8 @@ export interface RuntimeProcessSample {
   privateBytes: number | null;
   cpuPercent: number | null;
   source: 'electron' | 'external';
+  /** Windows service identities hosted by this PID; never includes command-line data. */
+  serviceNames?: string[];
 }
 
 export interface RuntimeSample {
@@ -147,65 +149,77 @@ function numberOrNull(value: string | undefined): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-function parseCsvLine(line: string): string[] {
-  const fields: string[] = [];
-  let field = '';
-  let quoted = false;
-  for (let i = 0; i < line.length; i += 1) {
-    const char = line[i];
-    if (char === '"') {
-      if (quoted && line[i + 1] === '"') {
-        field += '"';
-        i += 1;
-      } else {
-        quoted = !quoted;
-      }
-    } else if (char === ',' && !quoted) {
-      fields.push(field);
-      field = '';
-    } else {
-      field += char;
-    }
+function arrayOf<T>(value: T | T[] | null | undefined): T[] {
+  if (value == null) return [];
+  return Array.isArray(value) ? value : [value];
+}
+
+interface WindowsProcessRow {
+  ProcessId?: number | string;
+  ParentProcessId?: number | string;
+  Name?: string;
+  ExecutablePath?: string | null;
+  WorkingSetSize?: number | string;
+}
+
+interface WindowsServiceRow {
+  ProcessId?: number | string;
+  Name?: string;
+  DisplayName?: string;
+}
+
+/** Parse the fixed, command-line-free CIM projection used by the Windows collector. */
+export function parseWindowsProcessSnapshot(raw: string): RuntimeProcessSample[] {
+  const parsed = JSON.parse(raw.replace(/^\uFEFF/, '').trim()) as {
+    processes?: WindowsProcessRow | WindowsProcessRow[];
+    services?: WindowsServiceRow | WindowsServiceRow[];
+  };
+  const servicesByPid = new Map<number, string[]>();
+  for (const service of arrayOf(parsed.services)) {
+    const pid = numberOrNull(String(service.ProcessId ?? ''));
+    if (pid == null || pid <= 0) continue;
+    const label = service.DisplayName || service.Name;
+    if (!label) continue;
+    const labels = servicesByPid.get(pid) ?? [];
+    if (!labels.includes(label)) labels.push(label);
+    servicesByPid.set(pid, labels);
   }
-  fields.push(field);
-  return fields.map((value) => value.trim());
+  return arrayOf(parsed.processes)
+    .map((row): RuntimeProcessSample | null => {
+      const pid = numberOrNull(String(row.ProcessId ?? ''));
+      if (pid == null) return null;
+      return {
+        pid,
+        parentPid: numberOrNull(String(row.ParentProcessId ?? '')),
+        name: row.Name || 'unknown',
+        executable: row.ExecutablePath || null,
+        workingSetBytes: numberOrNull(String(row.WorkingSetSize ?? '')),
+        privateBytes: null,
+        cpuPercent: null,
+        source: 'external',
+        ...(servicesByPid.has(pid) ? { serviceNames: servicesByPid.get(pid) } : {}),
+      };
+    })
+    .filter((item): item is RuntimeProcessSample => item != null)
+    .sort((a, b) => (b.workingSetBytes ?? 0) - (a.workingSetBytes ?? 0))
+    .slice(0, 200);
 }
 
 /** Read-only process list used to distinguish a Kafka/Java process from Electron. */
 export async function collectExternalProcessSnapshot(): Promise<RuntimeSample['external']> {
   try {
     if (process.platform === 'win32') {
-      const { stdout } = await execFileAsync('tasklist.exe', ['/FO', 'CSV', '/NH'], {
-        timeout: 5_000,
+      const script = [
+        "$p=Get-CimInstance Win32_Process | Select-Object ProcessId,ParentProcessId,Name,ExecutablePath,WorkingSetSize",
+        "$s=Get-CimInstance Win32_Service | Where-Object {$_.ProcessId -gt 0} | Select-Object ProcessId,Name,DisplayName",
+        "[pscustomobject]@{processes=$p;services=$s} | ConvertTo-Json -Compress -Depth 3",
+      ].join(';');
+      const { stdout } = await execFileAsync('powershell.exe', ['-NoLogo', '-NoProfile', '-NonInteractive', '-Command', script], {
+        timeout: 10_000,
         windowsHide: true,
-        maxBuffer: 4 * 1024 * 1024,
+        maxBuffer: 8 * 1024 * 1024,
       });
-      const processes = stdout
-        .split(/\r?\n/)
-        .map((line) => line.trim())
-        .filter(Boolean)
-        .map(parseCsvLine)
-        .map((fields): RuntimeProcessSample | null => {
-          const pid = numberOrNull(fields[1]);
-          const workingSetKb = numberOrNull(fields[4]?.replace(/\s*K$/i, ''));
-          if (pid == null) return null;
-          return {
-            pid,
-            parentPid: null,
-            name: fields[0] ?? 'unknown',
-            // `tasklist` exposes the image name but not the executable path; keep this
-            // explicit instead of presenting the basename as a path.
-            executable: null,
-            workingSetBytes: workingSetKb == null ? null : workingSetKb * 1024,
-            privateBytes: null,
-            cpuPercent: null,
-            source: 'external' as const,
-          } satisfies RuntimeProcessSample;
-        })
-        .filter((item): item is RuntimeProcessSample => item != null)
-        .sort((a, b) => (b.workingSetBytes ?? 0) - (a.workingSetBytes ?? 0))
-        .slice(0, 200);
-      return { processes };
+      return { processes: parseWindowsProcessSnapshot(stdout) };
     }
 
     const { stdout } = await execFileAsync('ps', ['-eo', 'pid=,ppid=,comm=,rss='], {

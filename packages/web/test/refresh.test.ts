@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   COALESCE_MS,
   FALLBACK_MS,
+  HEALTH_PROBE_MS,
   RefreshController,
   type RefreshContext,
   type RefreshHandler,
@@ -64,7 +65,11 @@ class FakeRuntime {
   }
 }
 
-function setup(handler: RefreshHandler, runtime = new FakeRuntime()) {
+function setup(
+  handler: RefreshHandler,
+  runtime = new FakeRuntime(),
+  probeHealth: () => Promise<unknown> = async () => ({ ok: true }),
+) {
   let data: (() => void) | null = null;
   let stream: ((state: StreamState) => void) | null = null;
   const controller = new RefreshController({
@@ -82,6 +87,7 @@ function setup(handler: RefreshHandler, runtime = new FakeRuntime()) {
         stream = null;
       };
     },
+    probeHealth,
   });
   const handle = controller.register({ current: handler });
   return {
@@ -175,9 +181,17 @@ test('a refresh arriving during a request queues exactly one follow-up', async (
 
 test('stream errors and handler failures are visible, then clear on recovery', async () => {
   let fail = false;
-  const state = setup(async () => {
-    if (fail) throw new Error('daemon down');
-  });
+  let healthFails = false;
+  const state = setup(
+    async () => {
+      if (fail) throw new Error('data refresh failed');
+    },
+    undefined,
+    async () => {
+      if (healthFails) throw new Error('daemon down');
+      return { ok: true };
+    },
+  );
 
   await state.handle.run({ live: false, reason: 'initial' });
   assert.equal(state.controller.snapshot().state, 'live');
@@ -188,8 +202,19 @@ test('stream errors and handler failures are visible, then clear on recovery', a
   state.emitData();
   state.runtime.advance(COALESCE_MS);
   await flush();
-  assert.equal(state.controller.snapshot().state, 'unavailable');
+  assert.equal(state.controller.snapshot().state, 'stale', 'one failed query keeps last-known data visible');
+
+  healthFails = true;
+  state.runtime.advance(0);
+  await flush();
+  state.runtime.advance(HEALTH_PROBE_MS);
+  await flush();
+  state.runtime.advance(HEALTH_PROBE_MS);
+  await flush();
+  assert.equal(state.controller.snapshot().state, 'unavailable', 'three failed health probes confirm outage');
+
   fail = false;
+  healthFails = false;
   state.emitStream('connected');
   state.emitData();
   state.runtime.advance(COALESCE_MS);

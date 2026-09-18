@@ -23,5 +23,29 @@ The Orbit Bot pilot contract is recorded in `assets/pets/orbit-bot/motion-pilot.
 validated and packaged as metadata; final frame artwork is added only after each clip's
 keyframes and in-betweens are approved.
 
+`idle_loop` is an approved eight-frame, 8 fps grounded breathing/blink loop. It runs only
+while Orbit Bot is quietly standing in a healthy or working mood. The renderer advances it
+with one frame-paced timer—not a permanent animation-frame loop—and resets it when walking,
+rest postures, hover, stretch, alerts, or reduced-motion take priority. Missing/incomplete
+assets keep the existing authored WebP/CSS fallback.
+
+The approved production set currently includes direction-specific `walk_right`, `walk_left`,
+`turn_right`, and `turn_left` clips plus the shared `stop` and `sit_down` transitions. Both
+turn clips are six-frame, 10 fps, non-looping transitions: desktop translation pauses until
+the turn finishes, then the matching walk clip starts. Each turn and walk direction is shipped
+as authored pixels and is never mirrored again by the renderer.
+
+`stop` is a four-frame, 8 fps, non-looping transition authored facing right and mirrored by the
+renderer when the completed walk faced left. Desktop translation has already stopped while it
+plays. Movement completion is reported, and the roaming idle cooldown begins, only after all
+four stop frames finish. Reduced motion, unavailable frames, and non-pilot moods keep the
+existing static/CSS fallback behavior.
+
+`sit_down` is a six-frame, 10 fps, non-looping rest transition. Its first frame is
+byte-identical to the approved final `stop` frame. After all six frames play, the renderer
+holds frame 6 as the seated posture until an interaction, alert, or movement wakes the Pet;
+this prevents a flash back to standing while `sit_idle` is still awaiting production. Reduced
+motion and unavailable-clip paths retain the existing static posture fallback.
+
 The source images are generated from the approved concept sheets and
 `docs/motion_extension_reference_board_a.png`; the original concept PNGs are untouched.

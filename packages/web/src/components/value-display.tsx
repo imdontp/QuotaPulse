@@ -21,7 +21,7 @@ export function ValueDisplay({ total, scope, label }: { total: ValueTotal; scope
   return <span className="inline-flex max-w-full flex-wrap items-center gap-1.5" data-pricing-state={state}>
     <Hint text={explanation}><span tabIndex={0} className="rounded" aria-label={`${formatValue(total, f.money)}. ${explanation}`} data-value-number>{formatValue(total, f.money)}</span></Hint>
     {state !== 'complete' && <span className="text-muted-foreground text-[10px] leading-snug font-normal">{t(`pricing.${state}`)}</span>}
-    {!!total.cost_estimated_calls && <span className="text-warn text-[10px] leading-snug font-normal">{t('pricing.estimated', { n: total.cost_estimated_calls })}</span>}
+    {!!total.cost_estimated_calls && <span className="text-warn text-[10px] leading-snug font-normal">{t('pricing.estimatedShort')}</span>}
     {scope && <button ref={trigger} type="button" aria-label={`${t('pricing.details')} — ${label ?? t('col.value')}`} aria-haspopup="dialog"
       className="text-brand inline-flex min-h-8 min-w-8 items-center justify-center rounded hover:bg-accent" onClick={() => setOpened({ ...scope })}><CircleHelp className="size-4" /></button>}
     {opened && createPortal(<PricingDetails scope={opened} label={label} onClose={() => { setOpened(null); trigger.current?.focus(); }} />, document.body)}

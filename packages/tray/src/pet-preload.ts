@@ -23,6 +23,7 @@ export interface QpPetPosition {
 }
 
 export interface QpPetDesktop {
+  activeDisplayId: string;
   zones: Array<{ x: number; y: number; width: number; height: number }>;
   /** Enabled exclusion zones, translated into overlay-local coordinates. */
   blocked: Array<{ x: number; y: number; width: number; height: number }>;
@@ -72,6 +73,12 @@ const api = {
     const listener = (): void => cb();
     ipcRenderer.on('qp-pet-cancel-roam', listener);
     return () => ipcRenderer.removeListener('qp-pet-cancel-roam', listener);
+  },
+  /** Dev-only motion tuning flag (QUOTAPULSE_MOTION_DEV=1); enables the fast idle scheduler. */
+  onMotionDev: (cb: (enabled: boolean) => void): (() => void) => {
+    const listener = (_event: unknown, enabled: boolean): void => cb(enabled);
+    ipcRenderer.on('qp-pet-motion-dev', listener);
+    return () => ipcRenderer.removeListener('qp-pet-motion-dev', listener);
   },
   /** Explicit Return Home fallback when a safe animated route is unavailable. */
   onHomeWarp: (cb: (target: QpPetHomeWarp) => void): (() => void) => {

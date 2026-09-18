@@ -92,6 +92,7 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       limits: withBurn(db, limits),
       subscriptions: q.subscriptionStatus(db),
       harnesses: q.harnessStatus(db),
+      settings: q.appSettings(db),
       // Legacy aliases kept while clients migrate from Account quota to Subscription.
       accounts: q.accountStatus(db),
       sources: q.listSources(db),
@@ -174,6 +175,30 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     });
   });
 
+  app.get('/api/settings', async () => q.appSettings(db));
+  app.put('/api/settings', async (req, reply) => {
+    if (req.body != null && (typeof req.body !== 'object' || Array.isArray(req.body))) {
+      return reply.code(400).send({ error: 'Settings must be a JSON object' });
+    }
+    const body = (req.body ?? {}) as Record<string, unknown>;
+    const validHidden = body.hidden_subscriptions === undefined || (
+      Array.isArray(body.hidden_subscriptions) &&
+      body.hidden_subscriptions.every((key) => typeof key === 'string' && key.trim() !== '')
+    );
+    if ((body.pet_enabled != null && typeof body.pet_enabled !== 'boolean') ||
+        (body.tray_animation_enabled != null && typeof body.tray_animation_enabled !== 'boolean') ||
+        !validHidden) {
+      return reply.code(400).send({ error: 'Invalid application settings' });
+    }
+    const settings = q.updateAppSettings(db, {
+      ...(body.pet_enabled == null ? {} : { pet_enabled: body.pet_enabled }),
+      ...(body.tray_animation_enabled == null ? {} : { tray_animation_enabled: body.tray_animation_enabled }),
+      ...(body.hidden_subscriptions === undefined ? {} : { hidden_subscriptions: body.hidden_subscriptions as string[] }),
+    });
+    scheduler.emit('settings', settings);
+    return settings;
+  });
+
   /**
    * Interactive refresh: ingest the current source cursors before the browser
    * re-queries its view. The scheduler serializes this with watch/poll passes, so
@@ -252,6 +277,17 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     const s = req.query as Record<string, string | undefined>;
     const since = s.since ? Number(s.since) : 0;
     return { since, models: q.modelBreakdown(db, since) };
+  });
+
+  app.get('/api/today', async () => {
+    const now = Date.now();
+    const from = startOfToday(now);
+    return {
+      from,
+      to: now,
+      totals: q.totalsBetween(db, from, now),
+      rows: q.modelBreakdownBetween(db, from, now),
+    };
   });
 
   /*
@@ -338,13 +374,18 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
         })}\n\n`,
       );
     };
+    const onSettings = (settings: q.AppSettings) => {
+      reply.raw.write(`event: settings\ndata: ${JSON.stringify({ settings })}\n\n`);
+    };
     scheduler.on('data', onData);
+    scheduler.on('settings', onSettings);
 
     // Keep intermediaries and idle sockets from dropping a quiet stream.
     const ping = setInterval(() => reply.raw.write(': ping\n\n'), 25_000);
     req.raw.on('close', () => {
       clearInterval(ping);
       scheduler.off('data', onData);
+      scheduler.off('settings', onSettings);
     });
     await new Promise(() => {}); // held open until the client disconnects
   });

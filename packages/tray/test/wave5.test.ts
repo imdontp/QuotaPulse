@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { isShippableCharacterDir } from '../scripts/package-assets.js';
+import { copyAllowedFile, isShippableCharacterDir } from '../scripts/package-assets.js';
 import { defaultPetSettings, loadPetSettings, savePetSettings, settingsPath } from '../src/pet/settings.js';
 
 // ---------------------------------------------------------------------------
@@ -34,6 +34,51 @@ test('packaging excludes experimental candidate directories outright (wave5 G16 
 test('packaging excludes unblessed junk directories from the production bundle', () => {
   assert.equal(isShippableCharacterDir('unused_concept'), false);
   assert.equal(isShippableCharacterDir('_shared_materials'), false);
+});
+
+test('packaging ships approved Orbit motion runtime frames but not review masters', () => {
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/idle_loop/idle_loop_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/idle_loop/idle_loop_008.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/walk_right/walk_right_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/walk_right/walk_right_008.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/walk_left/walk_left_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/walk_left/walk_left_008.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/turn_right/turn_right_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/turn_right/turn_right_006.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/turn_left/turn_left_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/turn_left/turn_left_006.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/stop/stop_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/stop/stop_004.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/sit_down/sit_down_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/sit_down/sit_down_006.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/sit_idle/sit_idle_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/sit_idle/sit_idle_006.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/lie_down/lie_down_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/lie_down/lie_down_006.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/sleep_loop/sleep_loop_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/sleep_loop/sleep_loop_008.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/stretch/stretch_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/stretch/stretch_006.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/hover_react/hover_react_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/hover_react/hover_react_004.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/wake_up/wake_up_001.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/512/wake_up/wake_up_006.png'), true);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/walk_left/walk_right_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/turn_right/turn_left_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/runtime/256/turn_left/turn_right_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/walk_right/walk_right_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/idle_loop/idle_loop_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/walk_left/walk_left_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/turn_right/turn_right_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/turn_left/turn_left_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/stop/stop_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/sit_down/sit_down_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/sit_idle/sit_idle_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/lie_down/lie_down_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/sleep_loop/sleep_loop_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/stretch/stretch_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/hover_react/hover_react_001.png'), false);
+  assert.equal(copyAllowedFile('pets/orbit-bot/motion-pilot/master/wake_up/wake_up_001.png'), false);
 });
 
 // ---------------------------------------------------------------------------

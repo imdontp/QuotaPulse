@@ -277,7 +277,20 @@ export interface PetMotionAssets {
   coreSheet: string | null;
   actionSheet: string | null;
   columns: number;
-  source: 'motion-extension';
+  source: 'motion-extension' | 'orbit-motion-pilot';
+  /** Pilot asset ids may be more specific than the resolved behavior state: `idle_loop`
+   * supplies the grounded standing base loop, `stop` is direction-neutral, `sit_down`
+   * enters the persistent `sit` state, `sit_idle`
+   * animates that state, `lie_down` enters the persistent `lie` state, `sleep_loop`
+   * animates persistent sleep, `wake_up` returns a seated Pet to standing, and `stretch`
+   * is a direction-neutral one-shot idle action. `hover_react` is an interaction-layer
+   * one-shot and does not change the locomotion state. */
+  clips?: Partial<Record<PetLocomotionId | 'idle_loop' | 'stop' | 'sit_down' | 'sit_idle' | 'lie_down' | 'sleep_loop' | 'wake_up' | 'hover_react', {
+    frames: string[];
+    fps: number;
+    loop: boolean;
+    pivot: { x: number; y: number };
+  }>>;
 }
 
 /** Everything the pet renderer needs for one frame. */

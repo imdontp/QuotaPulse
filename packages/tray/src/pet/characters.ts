@@ -31,8 +31,8 @@ export const PET_CHARACTERS: readonly PetCharacterDef[] = [
   {
     id: 'orbit_bot',
     name: 'Orbit Bot',
-    motionStyle: 'soft_mechanical',
-    anchors: ['chest_quota_ring', 'usage_bars', 'antenna_live_dot', 'screen_face'],
+    motionStyle: 'robotic_cat',
+    anchors: ['cat_ear_status_lights', 'cyan_headset_ring', 'screen_face', 'triangular_chest_mark'],
     art: 'raster',
   },
   {
@@ -204,28 +204,7 @@ function screenFace(mood: PetMood, x: number, y: number, w: number, h: number, c
 }
 
 function orbitBot(mood: PetMood, color: string, percent: number | null): string {
-  return (
-    shadow() +
-    `<g class="qp-sprite">` +
-    `<g class="qp-head">` +
-    `<g class="qp-antenna">` +
-    `<path d="M32 16V9" stroke="${BODY_EDGE}" stroke-width="2" stroke-linecap="round"/>` +
-    `<circle class="qp-live" cx="32" cy="7" r="3.2" fill="${color}"/>` +
-    `<circle cx="32" cy="7" r="5.4" fill="none" stroke="${color}" stroke-width="1" opacity="0.35"/>` +
-    `</g>` +
-    `<rect x="17" y="13" width="30" height="19" rx="9" fill="${BODY}" stroke="${BODY_EDGE}" stroke-width="1.6"/>` +
-    screenFace(mood, 22, 17, 20, 11, color) +
-    `</g>` +
-    `<g class="qp-body">` +
-    `<rect x="19" y="31" width="26" height="22" rx="10" fill="${BODY}" stroke="${BODY_EDGE}" stroke-width="1.6"/>` +
-    quotaRing(32, 41, 6.2, percent, color) +
-    `<rect x="12.5" y="33" width="6.5" height="13" rx="3.2" fill="${BODY_SHADE}" stroke="${BODY_EDGE}" stroke-width="1.3"/>` +
-    `<rect x="45" y="33" width="6.5" height="13" rx="3.2" fill="${BODY_SHADE}" stroke="${BODY_EDGE}" stroke-width="1.3"/>` +
-    `</g>` +
-    `<rect class="qp-leg qp-leg-l" x="23" y="50" width="8" height="7" rx="3" fill="${BODY_SHADE}" stroke="${BODY_EDGE}" stroke-width="1.3"/>` +
-    `<rect class="qp-leg qp-leg-r" x="33" y="50" width="8" height="7" rx="3" fill="${BODY_SHADE}" stroke="${BODY_EDGE}" stroke-width="1.3"/>` +
-    `</g>`
-  );
+  return capsuleCat(mood, color, percent);
 }
 
 function capsuleCat(mood: PetMood, color: string, percent: number | null): string {

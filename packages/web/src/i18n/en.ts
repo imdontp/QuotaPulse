@@ -12,6 +12,7 @@ export const en = {
   'pricing.complete': 'All calls valued',
   'pricing.coverage': '{known} of {calls} calls valued · {unknown} unpriced',
   'pricing.estimated': '{n} calls use another provider’s reference price',
+  'pricing.estimatedShort': 'reference price',
   'pricing.note': 'API list-price value, not your subscription bill. Coverage counts calls, not the accuracy of a monetary estimate.',
   'pricing.details': 'Pricing details',
   'pricing.close': 'Close pricing details',
@@ -88,6 +89,7 @@ export const en = {
   'app.refreshConnecting': 'connecting',
   'app.refreshLive': 'live',
   'app.refreshReconnecting': 'reconnecting',
+  'app.refreshStale': 'showing last update',
   'app.refreshUnavailable': 'daemon unavailable',
   'app.refreshNow': 'Refresh now',
   'app.lastRefresh': 'last refresh {time}',
@@ -133,6 +135,16 @@ export const en = {
 
   // settings popover
   'settings.title': 'Settings',
+  'settings.pageTitle': 'Settings',
+  'settings.pageBlurb': 'Control the shared tray experience and which subscription cards appear in the Live view.',
+  'settings.runtime': 'Runtime behavior',
+  'settings.runtimeBlurb': 'These switches are shared by the dashboard and tray and survive a restart.',
+  'settings.petMode': 'Desktop Pet',
+  'settings.petModeHelp': 'Show the companion on the desktop.',
+  'settings.trayAnimation': 'Tray animation',
+  'settings.trayAnimationHelp': 'Animate the tray icon according to quota severity.',
+  'settings.subscriptionHelp': 'Hidden subscriptions stay out of Live, alerts and the Pet popup; their data remains available in Limits.',
+  'settings.noSubscriptions': 'No subscriptions detected yet.',
   'settings.language': 'Language',
   'settings.currency': 'Currency',
   'settings.rate': 'Rate',
@@ -150,6 +162,7 @@ export const en = {
 
   // tabs
   'tab.live': 'Live',
+  'tab.today': 'Today',
   'tab.sources': 'Sources',
   'tab.limits': 'Limits',
   'tab.alerts': 'Alerts',
@@ -159,6 +172,20 @@ export const en = {
   'tab.projects': 'Projects',
   'tab.models': 'Models',
   'tab.health': 'Health',
+  'tab.settings': 'Settings',
+
+  // today
+  'today.title': 'Today usage',
+  'today.blurb': 'Token usage recorded since local midnight, grouped by harness and model.',
+  'today.window': 'since {time}',
+  'today.totalTokens': 'Total tokens',
+  'today.calls': 'API calls',
+  'today.breakdown': 'Harness and model breakdown',
+  'today.breakdownBlurb': 'Cache reads and writes are shown separately from fresh input and output.',
+  'today.harness': 'Harness',
+  'today.model': 'Model',
+  'today.all': 'All',
+  'today.none': 'No usage recorded today.',
 
   // live
   'live.tokensToday': 'Tokens today',

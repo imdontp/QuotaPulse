@@ -1,5 +1,14 @@
 # RC Readiness Report — Pet Mode v2 · 15 Sep 2026
 
+> **Historical report — superseded 16 Sep 2026.** The current tree is **NO-GO** for the
+> expanded Pet Mode scope until the Orbit Bot motion pilot has approved runtime clips and
+> a real overnight RAM capture is reviewed. Bonus pets Nova, Byte, Mochi and Kuro are now
+> selectable Beta entries, so the historical statements below about four packaged folders
+> and non-selectable bonus pets no longer describe the current product. The 16 Sep repair
+> pass added strict motion-contract validation, renderer-mounted readiness watchdogs,
+> cancellable Return Home warps and process-tree/service-aware Windows diagnostics; those
+> changes reduce risk but do not substitute for the two outstanding approval gates.
+
 Verdict: **RC1 = GO** (no open blocker; leakage paths fixed).
 
 ## Scope

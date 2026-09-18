@@ -18,6 +18,11 @@ interface QpPopupBridge {
   onSprite(cb: (svg: string | null) => void): () => void;
 }
 
+interface QpDashboardBridge {
+  ready(): void;
+}
+
 interface Window {
   qpPopup?: QpPopupBridge;
+  qpDashboard?: QpDashboardBridge;
 }

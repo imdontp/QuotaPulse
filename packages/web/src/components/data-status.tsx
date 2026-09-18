@@ -32,7 +32,7 @@ export function DataStatusStrip({ ov }: { ov: Overview }) {
   const quotaGap = active.some((s) => s.telemetry.gap);
   const quotaStale = active.some((s) => ['stale', 'expired', 'unknown', 'mixed'].includes(s.telemetry.freshness));
   const quotaTone: Tone = active.length === 0 || quotaGap || quotaStale ? 'warn' : 'ok';
-  const connectionTone: Tone = refresh.state === 'unavailable' ? 'crit' : refresh.state === 'reconnecting' ? 'warn' : refresh.state === 'live' ? 'ok' : 'muted';
+  const connectionTone: Tone = refresh.state === 'unavailable' ? 'crit' : refresh.state === 'reconnecting' || refresh.state === 'stale' ? 'warn' : refresh.state === 'live' ? 'ok' : 'muted';
   const pass = ov.lastPass;
   const ingestTone: Tone = pass == null ? 'muted' : 'ok';
   const priceTone: Tone = ov.today.calls === 0 ? 'muted' : ov.today.cost_unknown_calls > 0 ? 'warn' : 'ok';

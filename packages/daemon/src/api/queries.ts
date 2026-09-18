@@ -567,6 +567,79 @@ export const updateNotificationSettings = (
   return { ...next };
 };
 
+export interface AppSettings {
+  pet_enabled: boolean;
+  tray_animation_enabled: boolean;
+  hidden_subscriptions: string[];
+  updated_at: number;
+}
+
+const DEFAULT_APP_SETTINGS: AppSettings = {
+  pet_enabled: true,
+  tray_animation_enabled: true,
+  hidden_subscriptions: [],
+  updated_at: 0,
+};
+
+function normalizeHiddenSubscriptions(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value
+    .filter((key): key is string => typeof key === 'string' && key.trim() !== '')
+    .map((key) => key.trim()))];
+}
+
+export const appSettings = (db: DB): AppSettings => {
+  const row = db.prepare(
+    `SELECT pet_enabled, tray_animation_enabled, hidden_subscriptions, updated_at
+       FROM app_setting WHERE id = 1`,
+  ).get() as {
+    pet_enabled: number;
+    tray_animation_enabled: number;
+    hidden_subscriptions: string;
+    updated_at: number;
+  } | undefined;
+  if (!row) return { ...DEFAULT_APP_SETTINGS, hidden_subscriptions: [] };
+  let hidden: unknown = [];
+  try {
+    hidden = JSON.parse(row.hidden_subscriptions);
+  } catch {
+    hidden = [];
+  }
+  return {
+    pet_enabled: row.pet_enabled === 1,
+    tray_animation_enabled: row.tray_animation_enabled === 1,
+    hidden_subscriptions: normalizeHiddenSubscriptions(hidden),
+    updated_at: row.updated_at,
+  };
+};
+
+export const updateAppSettings = (
+  db: DB,
+  patch: Partial<Pick<AppSettings, 'pet_enabled' | 'tray_animation_enabled' | 'hidden_subscriptions'>>,
+): AppSettings => {
+  const current = appSettings(db);
+  const next: AppSettings = {
+    pet_enabled: patch.pet_enabled ?? current.pet_enabled,
+    tray_animation_enabled: patch.tray_animation_enabled ?? current.tray_animation_enabled,
+    hidden_subscriptions: patch.hidden_subscriptions === undefined
+      ? current.hidden_subscriptions
+      : normalizeHiddenSubscriptions(patch.hidden_subscriptions),
+    updated_at: Date.now(),
+  };
+  db.prepare(`INSERT INTO app_setting (id, pet_enabled, tray_animation_enabled, hidden_subscriptions, updated_at)
+    VALUES (1, @pet_enabled, @tray_animation_enabled, @hidden_subscriptions, @updated_at)
+    ON CONFLICT(id) DO UPDATE SET pet_enabled=excluded.pet_enabled,
+      tray_animation_enabled=excluded.tray_animation_enabled,
+      hidden_subscriptions=excluded.hidden_subscriptions,
+      updated_at=excluded.updated_at`).run({
+    pet_enabled: next.pet_enabled ? 1 : 0,
+    tray_animation_enabled: next.tray_animation_enabled ? 1 : 0,
+    hidden_subscriptions: JSON.stringify(next.hidden_subscriptions),
+    updated_at: next.updated_at,
+  });
+  return next;
+};
+
 export interface AccountOwner {
   harness: string;
   profile: string;
@@ -1092,6 +1165,9 @@ export function trend(
 }
 
 export const modelBreakdown = (db: DB, sinceMs: number) =>
+  modelBreakdownBetween(db, sinceMs, null);
+
+export const modelBreakdownBetween = (db: DB, fromMs: number, toMs: number | null) =>
   db
     .prepare(
       `SELECT COALESCE(u.model,'(unknown)') AS model,
@@ -1099,11 +1175,11 @@ export const modelBreakdown = (db: DB, sinceMs: number) =>
               ${vendorSqlCase('u.model', 'u.provider')} AS vendor,
               ${TOTALS_SELECT}
          FROM usage_event u JOIN source s ON s.id = u.source_id
-        WHERE u.ts >= ?
+        WHERE u.ts >= @from AND (@to IS NULL OR u.ts < @to)
         GROUP BY u.model, s.harness, u.effort, vendor
         ORDER BY total_tokens DESC`,
     )
-    .all(sinceMs) as Array<Totals & { model: string; harness: string; effort: string; vendor: string }>;
+    .all({ from: fromMs, to: toMs }) as Array<Totals & { model: string; harness: string; effort: string; vendor: string }>;
 
 export interface ProjectRow extends Totals {
   project: string;

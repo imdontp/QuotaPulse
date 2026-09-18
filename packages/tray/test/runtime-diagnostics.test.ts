@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import {
   collectExternalProcessSnapshot,
   createRuntimeDiagnosticsSession,
+  parseWindowsProcessSnapshot,
   type RuntimeSample,
 } from '../src/runtime-diagnostics.js';
 
@@ -49,6 +50,27 @@ test('RAM diagnostics are opt-in, JSONL, and bounded without retaining samples',
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test('Windows snapshot preserves process tree and service identity without command lines', () => {
+  const processes = parseWindowsProcessSnapshot(JSON.stringify({
+    processes: [
+      { ProcessId: 42, ParentProcessId: 7, Name: 'java.exe', ExecutablePath: 'C:\\Java\\bin\\java.exe', WorkingSetSize: '8589934592' },
+    ],
+    services: [{ ProcessId: 42, Name: 'Kafka', DisplayName: 'Apache Kafka' }],
+  }));
+  assert.deepEqual(processes, [{
+    pid: 42,
+    parentPid: 7,
+    name: 'java.exe',
+    executable: 'C:\\Java\\bin\\java.exe',
+    workingSetBytes: 8 * 1024 * 1024 * 1024,
+    privateBytes: null,
+    cpuPercent: null,
+    source: 'external',
+    serviceNames: ['Apache Kafka'],
+  }]);
+  assert.equal('commandLine' in processes[0]!, false);
 });
 
 test('external process snapshot never exposes command lines and fails closed', async () => {

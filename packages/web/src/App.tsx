@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   Activity,
   BellRing,
+  CalendarDays,
   Menu,
   X,
   Boxes,
@@ -14,6 +15,7 @@ import {
   Moon,
   Radio,
   RefreshCw,
+  Settings as SettingsIcon,
   Sun,
   TrendingUp,
 } from 'lucide-react';
@@ -40,9 +42,12 @@ import { useTheme } from '@/lib/use-theme';
 import { CommandPalette } from '@/components/command-palette';
 import { AlertsSection } from '@/sections/alerts';
 import { PetPopup } from '@/components/pet-popup';
+import { TodaySection } from '@/sections/today';
+import { SettingsSection } from '@/sections/settings';
 
 const TABS = [
   { id: 'live', key: 'tab.live', icon: Activity },
+  { id: 'today', key: 'tab.today', icon: CalendarDays },
   { id: 'limits', key: 'tab.limits', icon: Gauge },
   { id: 'alerts', key: 'tab.alerts', icon: BellRing },
   { id: 'trend', key: 'tab.trend', icon: TrendingUp },
@@ -52,6 +57,7 @@ const TABS = [
   { id: 'models', key: 'tab.models', icon: Boxes },
   { id: 'sources', key: 'tab.sources', icon: Radio },
   { id: 'health', key: 'tab.health', icon: HeartPulse },
+  { id: 'settings', key: 'tab.settings', icon: SettingsIcon },
 ] as const;
 
 type TabId = (typeof TABS)[number]['id'];
@@ -80,7 +86,7 @@ function useMediaQuery(query: string): boolean {
 
 function Dashboard() {
   const t = useT();
-  const { lang } = useI18n();
+  const { lang, syncHiddenSubscriptions } = useI18n();
   const [tab, setTabState] = useState<TabId>(
     () => (TABS.find((t) => t.id === location.hash.slice(1))?.id ?? 'live') as TabId,
   );
@@ -99,6 +105,14 @@ function Dashboard() {
     setTabState(next);
     drawer.current?.close();
   };
+
+  useEffect(() => {
+    window.qpDashboard?.ready();
+  }, []);
+
+  useEffect(() => {
+    if (ov) syncHiddenSubscriptions(ov.settings.hidden_subscriptions, ov.settings.updated_at);
+  }, [ov, syncHiddenSubscriptions]);
 
   useEffect(() => { if (!isMobile) drawer.current?.close(); }, [isMobile]);
 
@@ -144,6 +158,7 @@ function Dashboard() {
     connecting: t('app.refreshConnecting'),
     live: t('app.refreshLive'),
     reconnecting: t('app.refreshReconnecting'),
+    stale: t('app.refreshStale'),
     unavailable: t('app.refreshUnavailable'),
   }[refreshStatus.state];
   const lastSuccess = refreshStatus.lastSuccessAt
@@ -159,7 +174,7 @@ function Dashboard() {
   const statusTone =
     refreshStatus.state === 'live'
       ? 'border-ok/30 bg-ok/8 text-ok'
-      : refreshStatus.state === 'reconnecting'
+      : refreshStatus.state === 'reconnecting' || refreshStatus.state === 'stale'
         ? 'border-warn/30 bg-warn/8 text-warn'
         : refreshStatus.state === 'unavailable'
           ? 'border-crit/30 bg-crit/8 text-crit'
@@ -167,7 +182,7 @@ function Dashboard() {
   const statusColor =
     refreshStatus.state === 'live'
       ? 'var(--ok)'
-      : refreshStatus.state === 'reconnecting'
+      : refreshStatus.state === 'reconnecting' || refreshStatus.state === 'stale'
         ? 'var(--warn)'
         : refreshStatus.state === 'unavailable'
           ? 'var(--crit)'
@@ -314,6 +329,9 @@ function Dashboard() {
                 <TabsContent value="live" forceMount={tab === 'live' ? true : undefined}>
                   {tab === 'live' && (ov ? <LiveSection ov={ov} onOpenLimits={() => setTab('limits')} onOpenHealth={() => setTab('health')} onOpenCost={() => setTab('cost')} /> : <Loading />)}
                 </TabsContent>
+                <TabsContent value="today" forceMount={tab === 'today' ? true : undefined}>
+                  {tab === 'today' ? <TodaySection /> : <Loading />}
+                </TabsContent>
                 <TabsContent value="sources" forceMount={tab === 'sources' ? true : undefined}>
                   {tab === 'sources' && (ov ? <SourcesSection ov={ov} /> : <Loading />)}
                 </TabsContent>
@@ -340,6 +358,9 @@ function Dashboard() {
                 </TabsContent>
                 <TabsContent value="health" forceMount={tab === 'health' ? true : undefined}>
                   {tab === 'health' && <HealthSection />}
+                </TabsContent>
+                <TabsContent value="settings" forceMount={tab === 'settings' ? true : undefined}>
+                  {tab === 'settings' && <SettingsSection subscriptions={ov?.subscriptions ?? []} />}
                 </TabsContent>
               </motion.div>
             </AnimatePresence>

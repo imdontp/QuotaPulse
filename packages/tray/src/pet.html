@@ -45,15 +45,17 @@
   #pet {
     position: absolute;
     inset: 0;
-    background-image: url('../assets/pets/orbit-bot/sprite/pulsepet_states_sprite.png');
+    background-image: none;
     background-repeat: no-repeat;
-    background-size: 320px 64px;
+    background-size: contain;
     background-position: 0 0;
+    opacity: 0;
     cursor: pointer;
     will-change: transform;
     transform-origin: 50% 88%;
     filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
   }
+  #pet.art-ready { opacity: 1; }
   #pet-wrap.dragging #pet { cursor: grabbing; }
   #pet-wrap.position-locked #pet { cursor: default; }
 
@@ -99,7 +101,7 @@
   /* Idle actions (spec §32): low-distraction, one at a time, never during interaction. */
   #pet-wrap.look #pet { animation: lookAround 1.5s ease-in-out 1; }
   #pet-wrap.hop #pet { animation: hop 640ms ease-out 1; }
-  #pet-wrap.stretch #pet { animation: stretch 900ms ease-in-out 1; }
+  #pet-wrap.stretch:not(.pilot-stretching) #pet { animation: stretch 900ms ease-in-out 1; }
 
   @keyframes breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
   @keyframes warnBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
@@ -312,12 +314,12 @@
   #pet-wrap.look-right .qp-look { animation: qpLookRight 900ms ease-in-out 1; }
   #pet-wrap.idle-variant-1 .qp-sprite { animation: qpIdleV1 1600ms ease-in-out 1; }
   #pet-wrap.idle-variant-2 .qp-head { animation: qpIdleV2 1600ms ease-in-out 1; }
-  #pet-wrap:not(.concept-art).sit .qp-sprite { transform: translateY(3px) scaleY(0.92); }
-  #pet-wrap:not(.concept-art).lie .qp-sprite { transform: translateY(7px) scaleY(0.8); }
-  #pet-wrap:not(.concept-art).sleep .qp-sprite { transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
+  #pet-wrap:not(.concept-art).sit:not(.pilot-sitting) .qp-sprite { transform: translateY(3px) scaleY(0.92); }
+  #pet-wrap:not(.concept-art).lie:not(.pilot-lying) .qp-sprite { transform: translateY(7px) scaleY(0.8); }
+  #pet-wrap:not(.concept-art).sleep:not(.pilot-sleeping) .qp-sprite { transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
   #pet-wrap.sleep .qp-eye { animation: none; }
   #pet-wrap.wake .qp-sprite { animation: qpWake 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
-  #pet-wrap.stopping .qp-sprite { animation: qpStop 420ms ease-out 1; }
+  #pet-wrap.stopping:not(.pilot-stopping) .qp-sprite { animation: qpStop 420ms ease-out 1; }
   /* Flux Blob glides/morphs instead of stepping (Wave 2 handoff constraint). */
   #pet-wrap.walking.glide .qp-sprite { animation: qpGlide 900ms ease-in-out infinite; }
   #pet-wrap.walking.glide .qp-leg { animation: none; }
@@ -341,11 +343,11 @@
   /* Concept sheets are finished illustrations, not skeletal sprites. Do not squash or
      stretch the whole raster when a rest state is requested; motion assets can opt into
      posture-specific keys by omitting this class. */
-  #pet-wrap:not(.concept-art).sit #pet { animation: none; transform: translateY(3px) scaleY(0.92); }
-  #pet-wrap:not(.concept-art).lie #pet { animation: none; transform: translateY(7px) scaleY(0.8); }
-  #pet-wrap:not(.concept-art).sleep #pet { animation: none; transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
+  #pet-wrap:not(.concept-art).sit:not(.pilot-sitting) #pet { animation: none; transform: translateY(3px) scaleY(0.92); }
+  #pet-wrap:not(.concept-art).lie:not(.pilot-lying) #pet { animation: none; transform: translateY(7px) scaleY(0.8); }
+  #pet-wrap:not(.concept-art).sleep:not(.pilot-sleeping) #pet { animation: none; transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
   #pet-wrap.wake #pet { animation: qpWake 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
-  #pet-wrap.stopping #pet { animation: qpStop 420ms ease-out 1; }
+  #pet-wrap.stopping:not(.pilot-stopping) #pet { animation: qpStop 420ms ease-out 1; }
   #pet-wrap.look-left #pet { animation: qpLookLeftBody 900ms ease-in-out 1; }
   #pet-wrap.look-right #pet { animation: qpLookRightBody 900ms ease-in-out 1; }
   @keyframes qpLookLeftBody { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-6deg); } }
@@ -416,9 +418,9 @@
   var RANGE = { minimal: [0, 0], companion: [20, 150], roaming: [120, 520] };
   /* The pack names the healthy loop `idle`, not `healthy`; the map keeps that quirk in one
      place instead of string-building a filename that silently 404s to a blank sprite. */
-  var LOOP_ART = { healthy: 'idle/pulsepet_idle.webp', working: 'working/pulsepet_working.webp' };
   /* Raster asset root for the default Orbit Bot (asset spec §17 layout). */
   var ORBIT_ASSETS = '../assets/pets/orbit-bot/';
+  var ORBIT_FALLBACK = 'motion-pilot/runtime/256/idle_loop/idle_loop_001.png';
   /* Bubble button labels (spec §25). `details` opens the popup, which is also what a left
      click does, so the button keeps the label the spec's example bubble shows. */
   var ACTION_LABEL = {
@@ -438,6 +440,8 @@
     skinAccessory: null, skinAccentCss: null,
     layers: { mood: 'unknown', expression: 'none', locomotion: 'stationary', interaction: 'none', facing: 'right' }
   };
+  /* Dev-only motion tuning (pushed by main): fast idle scheduler. */
+  var motionDev = false;
   /*
    * Wave 3: the sprite is positioned at an absolute (x, y) inside the desktop overlay. The
    * main process owns the placement policy; the renderer animates toward targets and reports
@@ -453,6 +457,31 @@
   var targetX = x;
   var targetY = y;
   var walking = false;
+  var turning = false;
+  var turnSide = null;
+  var turnStartedAt = 0;
+  var stopping = false;
+  var stopStartedAt = 0;
+  var pendingStopCompletion = null;
+  var stopFallbackTimer = null;
+  var sittingDown = false;
+  var sitStartedAt = 0;
+  var sitIdleStartedAt = 0;
+  var sitIdleTimer = null;
+  var idleLoopStartedAt = 0;
+  var idleLoopTimer = null;
+  var lyingDown = false;
+  var lieStartedAt = 0;
+  var sleepLoopStartedAt = 0;
+  var sleepLoopTimer = null;
+  var sleepAfterLie = false;
+  var stretching = false;
+  var stretchStartedAt = 0;
+  var hoverReacting = false;
+  var hoverReactStartedAt = 0;
+  var standingUp = false;
+  var standStartedAt = 0;
+  var pendingStandWalk = null;
   /** True when the current walk is a main-planned roaming burst / Return Home travel. */
   var roaming = false;
   /** Main-process token for the active roam command; stale completions are ignored upstream. */
@@ -478,6 +507,9 @@
   var raf = null;
   var hoverOver = false;
   var clickTimer = null;
+  var homeWarpTimer = null;
+  var homeWarpFadeTimer = null;
+  var homeWarpVersion = 0;
   var bubbleKey = '';
   var bubbleHideTimer = null;
   var lastMood = 'idle';
@@ -491,6 +523,11 @@
   var lastAnimation = null;
   /* Last Motion Extension Pack crop injected into the body. */
   var lastMotionKey = null;
+  var walkStartedAt = performance.now();
+  var motionFrameCache = Object.create(null);
+  var motionClipCache = [];
+  var motionAssetKey = '';
+  var MAX_CACHED_MOTION_CLIPS = 5;
   /*
    * Wave 1 animation ids that add a one-shot expression class on top of the mood. Presence
    * is resolved in the tray; the renderer only maps the resolved id to motion (Phase C).
@@ -513,6 +550,12 @@
    */
   var lastInteractionAt = Date.now();
   var posture = null;
+  /* Dev motion review must surface each new rest transition at least once. Production
+     remains fully randomized according to the frozen idle tiers. */
+  var sitPreviewed = false;
+  var liePreviewed = false;
+  var sleepPreviewed = false;
+  var stretchPreviewed = false;
   var BODY_ACTION_MS = { look: 1500, 'look-left': 1200, 'look-right': 1200, hop: 1600, stretch: 1600, blink: 260 };
   /* Idle behavior id -> wrapper class. Kept here so the mapping has one home. */
   var CLASS_FOR_IDLE = {
@@ -586,11 +629,13 @@
   function applyAnimationClass() {
     if (frame.animation === lastAnimation) return;
     lastAnimation = frame.animation;
+    if (hoverReacting && frame.animation !== 'hover_react') finishPilotHoverReact(false);
     var cls = ONCE_ANIM_CLASS[frame.animation];
     if (!cls) return;
     if (reduced && (frame.animation === 'critical_intro' || frame.animation === 'warning_intro' || frame.animation === 'reset_celebrate')) return;
     // An alert/acknowledgement interrupts sleep or a resting posture (Wave 2 QA D).
     wake();
+    if (frame.animation === 'hover_react') startPilotHoverReact();
     wrap.classList.add(cls);
     setTimeout(function () { wrap.classList.remove(cls); }, ONCE_ANIM_MS[frame.animation] || 900);
   }
@@ -646,6 +691,448 @@
     return motion.coreSheet ? { src: motion.coreSheet, index: coreIndex } : null;
   }
 
+  function pilotWalkClip() {
+    if (reduced || !walking) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clipId = dir < 0 ? 'walk_left' : 'walk_right';
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips[clipId];
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 8 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: clipId, clip: clip };
+  }
+
+  function pilotIdleLoopClip() {
+    if (reduced || walking || turning || stopping || sittingDown || lyingDown || stretching || hoverReacting || standingUp || posture) return null;
+    if (hoverOver || interactionBlocked()) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    preloadMotionClip('idle_loop');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.idle_loop;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 8 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'idle_loop', clip: clip };
+  }
+
+  function pilotTurnClip() {
+    if (reduced || !turning || !turnSide) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clipId = 'turn_' + turnSide;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips[clipId];
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: clipId, clip: clip };
+  }
+
+  function pilotStopClip() {
+    if (reduced || !stopping) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.stop;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 4 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'stop', clip: clip };
+  }
+
+  function pilotSitDownClip() {
+    if (reduced || (!sittingDown && posture !== 'sit')) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.sit_down;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'sit_down', clip: clip };
+  }
+
+  function pilotSitIdleClip() {
+    if (reduced || sittingDown || posture !== 'sit') return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.sit_idle;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'sit_idle', clip: clip };
+  }
+
+  function pilotLieDownClip() {
+    if (reduced || (!lyingDown && posture !== 'lie')) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.lie_down;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'lie_down', clip: clip };
+  }
+
+  function pilotSleepLoopClip() {
+    if (reduced || lyingDown || posture !== 'sleep') return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.sleep_loop;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 8 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'sleep_loop', clip: clip };
+  }
+
+  function pilotWakeUpClip() {
+    if (reduced || !standingUp) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.wake_up;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'wake_up', clip: clip };
+  }
+
+  function pilotStretchClip() {
+    if (reduced || !stretching) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.stretch;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'stretch', clip: clip };
+  }
+
+  function pilotHoverReactClip() {
+    if (reduced || !hoverReacting) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.hover_react;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 4 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'hover_react', clip: clip };
+  }
+
+  function hasDirectionalPilotMotionAsset() {
+    if (!frame.motion || frame.motion.source !== 'orbit-motion-pilot' || !frame.motion.clips) return false;
+    var clipId = turning && turnSide ? 'turn_' + turnSide : walking ? (dir < 0 ? 'walk_left' : 'walk_right') : null;
+    if (!clipId) return false;
+    var clip = frame.motion.clips[clipId];
+    var expectedFrames = turning ? 6 : 8;
+    return !!(clip && Array.isArray(clip.frames) && clip.frames.length === expectedFrames);
+  }
+
+  function clearMotionCache() {
+    Object.keys(motionFrameCache).forEach(function (src) {
+      var entry = motionFrameCache[src];
+      if (entry && entry.image) {
+        entry.image.onload = null;
+        entry.image.onerror = null;
+        entry.image.src = '';
+      }
+      delete motionFrameCache[src];
+    });
+    motionClipCache = [];
+  }
+
+  function preloadMotionClip(clipId, sourceFrame) {
+    var source = sourceFrame || frame;
+    var clip = source && source.motion && source.motion.clips && source.motion.clips[clipId];
+    if (!clip || !Array.isArray(clip.frames)) return;
+    var existing = motionClipCache.indexOf(clipId);
+    if (existing >= 0) motionClipCache.splice(existing, 1);
+    motionClipCache.push(clipId);
+
+    clip.frames.forEach(function (src) {
+      if (motionFrameCache[src]) return;
+      var entry = { ready: false, failed: false, image: new Image(), clipId: clipId };
+      motionFrameCache[src] = entry;
+      entry.image.onload = function () {
+        entry.ready = true;
+        applyArt();
+      };
+      entry.image.onerror = function () { entry.failed = true; };
+      entry.image.src = src;
+    });
+
+    while (motionClipCache.length > MAX_CACHED_MOTION_CLIPS) {
+      var evicted = motionClipCache.shift();
+      Object.keys(motionFrameCache).forEach(function (src) {
+        var entry = motionFrameCache[src];
+        if (!entry || entry.clipId !== evicted) return;
+        entry.image.onload = null;
+        entry.image.onerror = null;
+        entry.image.src = '';
+        delete motionFrameCache[src];
+      });
+    }
+  }
+
+  function preloadMotionFrames(next) {
+    var key = next && next.motion ? String(next.character) + '|' + String(next.assetVersion || 0) : '';
+    if (key !== motionAssetKey) {
+      motionAssetKey = key;
+      clearMotionCache();
+    }
+    if (key) preloadMotionClip('idle_loop', next);
+  }
+
+  function renderPilotWalkFrame(now) {
+    var selected = pilotWalkClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - walkStartedAt);
+    var index = Math.floor(elapsed * clip.fps / 1000) % clip.frames.length;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotIdleLoopFrame(now) {
+    var selected = pilotIdleLoopClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    if (!idleLoopStartedAt) idleLoopStartedAt = now;
+    var elapsed = Math.max(0, now - idleLoopStartedAt);
+    var index = Math.floor(elapsed * clip.fps / 1000) % clip.frames.length;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    schedulePilotIdleLoopFrame(clip);
+    return true;
+  }
+
+  function renderPilotTurnFrame(now) {
+    var selected = pilotTurnClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - turnStartedAt);
+    var index = Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000));
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotStopFrame(now) {
+    var selected = pilotStopClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - stopStartedAt);
+    var index = Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000));
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotSitDownFrame(now) {
+    var selected = pilotSitDownClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - sitStartedAt);
+    var index = sittingDown
+      ? Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000))
+      : clip.frames.length - 1;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-sitting');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotSitIdleFrame(now) {
+    var selected = pilotSitIdleClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - sitIdleStartedAt);
+    var index = Math.floor(elapsed * clip.fps / 1000) % clip.frames.length;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-sitting');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotLieDownFrame(now) {
+    var selected = pilotLieDownClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - lieStartedAt);
+    var index = lyingDown
+      ? Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000))
+      : clip.frames.length - 1;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-lying');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotSleepLoopFrame(now) {
+    var selected = pilotSleepLoopClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - sleepLoopStartedAt);
+    var index = Math.floor(elapsed * clip.fps / 1000) % clip.frames.length;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-sleeping');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    schedulePilotSleepLoopFrame(clip);
+    return true;
+  }
+
+  function renderPilotWakeUpFrame(now) {
+    var selected = pilotWakeUpClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - standStartedAt);
+    var index = Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000));
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-standing');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotStretchFrame(now) {
+    var selected = pilotStretchClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - stretchStartedAt);
+    var index = Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000));
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-stretching');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotHoverReactFrame(now) {
+    var selected = pilotHoverReactClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - hoverReactStartedAt);
+    var index = Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000));
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-hover-reacting');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function schedulePilotSitIdleFrame(clip) {
+    if (document.hidden || sitIdleTimer || !clip) return;
+    sitIdleTimer = setTimeout(function () {
+      sitIdleTimer = null;
+      loop();
+    }, Math.max(16, 1000 / clip.fps));
+  }
+
+  function schedulePilotIdleLoopFrame(clip) {
+    if (document.hidden || idleLoopTimer || !clip) return;
+    idleLoopTimer = setTimeout(function () {
+      idleLoopTimer = null;
+      loop();
+    }, Math.max(16, 1000 / clip.fps));
+  }
+
+  function stopPilotIdleLoop() {
+    idleLoopStartedAt = 0;
+    if (idleLoopTimer) { clearTimeout(idleLoopTimer); idleLoopTimer = null; }
+  }
+
+
+  function schedulePilotSleepLoopFrame(clip) {
+    if (document.hidden || sleepLoopTimer || !clip) return;
+    sleepLoopTimer = setTimeout(function () {
+      sleepLoopTimer = null;
+      loop();
+    }, Math.max(16, 1000 / clip.fps));
+  }
+
   // ---- Expression layer (spec §28, §31) ------------------------------------
   /*
    * Healthy and working have looping artwork with blink and eye-scan, so the expression
@@ -660,6 +1147,9 @@
      * the renderer only swaps the markup when the key actually changes -- a repaint every
      * 15s must not restart the artwork. Raster mascots keep their sprite/WebP asset set.
      */
+    var pilotNow = performance.now();
+    if (reduced || walking || turning || stopping || sittingDown || lyingDown || stretching || hoverReacting || standingUp || posture || hoverOver || interactionBlocked() || (frame.mood !== 'healthy' && frame.mood !== 'working')) stopPilotIdleLoop();
+    if (renderPilotWakeUpFrame(pilotNow) || renderPilotHoverReactFrame(pilotNow) || renderPilotStretchFrame(pilotNow) || renderPilotSleepLoopFrame(pilotNow) || renderPilotSitIdleFrame(pilotNow) || renderPilotLieDownFrame(pilotNow) || renderPilotSitDownFrame(pilotNow) || renderPilotStopFrame(pilotNow) || renderPilotTurnFrame(pilotNow) || renderPilotWalkFrame(pilotNow) || renderPilotIdleLoopFrame(pilotNow)) return;
     var crop = motionCrop();
     if (crop) {
       var motionKey = crop.src + '|' + crop.index;
@@ -704,16 +1194,9 @@
       lastSvgKey = null;
       pet.innerHTML = '';
     }
-    var loop = reduced ? null : LOOP_ART[frame.mood];
-    if (loop) {
-      pet.style.backgroundImage = "url('" + ORBIT_ASSETS + loop + "')";
-      pet.style.backgroundSize = SIZE + 'px ' + SIZE + 'px';
-      pet.style.backgroundPosition = '0 0';
-      return;
-    }
-    pet.style.backgroundImage = "url('" + ORBIT_ASSETS + 'sprite/pulsepet_states_sprite.png' + "')";
-    pet.style.backgroundSize = SIZE * 5 + 'px ' + SIZE + 'px';
-    pet.style.backgroundPosition = '-' + ((frame.spriteIndex || 0) * SIZE) + 'px 0';
+    pet.style.backgroundImage = "url('" + ORBIT_ASSETS + ORBIT_FALLBACK + "')";
+    pet.style.backgroundSize = 'contain';
+    pet.style.backgroundPosition = 'center bottom';
   }
 
   /* The mascot mouths along while a bubble is visible (asset spec §4 talk). */
@@ -765,7 +1248,10 @@
   // ---- Positioning ----------------------------------------------------------
   function place() {
     // ONLY the desktop layer is transformed here; body animation lives on #pet.
-    wrap.style.transform = 'translate(' + x + 'px,' + y + 'px) scaleX(' + dir + ')';
+    // Legacy/vector art faces left by mirroring the wrapper. Orbit's pilot supplies a
+    // real direction-specific left clip, so mirroring it here would turn it right again.
+    var facingScale = hasDirectionalPilotMotionAsset() ? 1 : dir;
+    wrap.style.transform = 'translate(' + x + 'px,' + y + 'px) scaleX(' + facingScale + ')';
     var cx = x + SIZE / 2;
     if (badge.classList.contains('show')) {
       var half = badge.offsetWidth / 2;
@@ -855,24 +1341,61 @@
   /** A user action wakes any posture and restarts the idle clock (Motion Bible §3). */
   function userInteracted() {
     lastInteractionAt = Date.now();
+    stopPilotIdleLoop();
+    if (motionDev) { sitPreviewed = false; liePreviewed = false; sleepPreviewed = false; stretchPreviewed = false; }
     wake();
   }
 
   function setPosture(name) {
-    wake();
+    if (name === 'sleep' && posture === 'lie' && !lyingDown) {
+      enterSleepPosture();
+      return;
+    }
+    if (standingUp || wake()) return;
+    if (name === 'sleep') {
+      sleepAfterLie = true;
+      name = 'lie';
+    }
     posture = name;
+    if (name === 'sit') sitIdleStartedAt = performance.now();
+    if (motionDev && name === 'sit') sitPreviewed = true;
+    if (motionDev && name === 'lie') liePreviewed = true;
     wrap.classList.add(name);
-    applyArt();
-    actionTimer = setTimeout(function () { actionTimer = null; scheduleIdle(); }, 4_000);
+    var startedPilotSit = name === 'sit' && startPilotSitDown();
+    var startedPilotLie = name === 'lie' && startPilotLieDown();
+    if (sleepAfterLie && !startedPilotLie) {
+      sleepAfterLie = false;
+      enterSleepPosture();
+      return;
+    }
+    if (!startedPilotSit && !startedPilotLie) {
+      applyArt();
+      var selectedSitIdle = name === 'sit' && pilotSitIdleClip();
+      if (selectedSitIdle) schedulePilotSitIdleFrame(selectedSitIdle.clip);
+    }
+    if (!sleepAfterLie) actionTimer = setTimeout(function () { actionTimer = null; scheduleIdle(); }, 4_000);
   }
 
   function wake() {
-    if (!posture) return;
-    wrap.classList.remove(posture);
+    if (standingUp) return true;
+    if (hoverReacting) finishPilotHoverReact(false);
+    if (stretching) finishPilotStretch(false);
+    if (!posture && !sittingDown && !lyingDown) return false;
+    var wasPilotSit = posture === 'sit' || sittingDown;
+    if (posture) wrap.classList.remove(posture);
     posture = null;
+    sittingDown = false;
+    lyingDown = false;
+    sleepAfterLie = false;
+    sitIdleStartedAt = 0;
+    if (sitIdleTimer) { clearTimeout(sitIdleTimer); sitIdleTimer = null; }
+    if (sleepLoopTimer) { clearTimeout(sleepLoopTimer); sleepLoopTimer = null; }
+    wrap.classList.remove('pilot-sitting', 'pilot-lying', 'pilot-sleeping');
+    if (wasPilotSit && startPilotWakeUp()) return true;
     wrap.classList.add('wake');
     applyArt();
     setTimeout(function () { wrap.classList.remove('wake'); }, 700);
+    return false;
   }
 
   /**
@@ -882,19 +1405,19 @@
    * randomized so the Pet never fires on a fixed cadence.
    */
   function scheduleIdle() {
-    if (!frame.hasData || idleTimer || walking || actionTimer) return;
+    if (document.hidden || !frame.hasData || idleTimer || walking || sittingDown || lyingDown || stretching || hoverReacting || standingUp || posture === 'sleep' || actionTimer) return;
     idleTimer = setTimeout(function () {
       idleTimer = null;
       if (hoverOver || bubbleVisible() || interactionBlocked()) { scheduleIdle(); return; }
       // Reduced motion keeps a subtle blink and nothing more (Motion Bible §6).
       if (reduced) { playBodyAction('blink'); return; }
-      var idleMs = Date.now() - lastInteractionAt;
+      var idleMs = (Date.now() - lastInteractionAt) / (motionDev ? 0.125 : 1);
       var pick = pickIdle(idleMs);
       if (!pick) { scheduleIdle(); return; }
       if (pick === 'reposition') startWalk();
-      else if (pick === 'sit' || pick === 'lie_down' || pick === 'sleep_loop') setPosture(pick === 'lie_down' ? 'lie' : pick);
+      else if (pick === 'sit' || pick === 'lie_down' || pick === 'sleep_loop') setPosture(pick === 'lie_down' ? 'lie' : pick === 'sleep_loop' ? 'sleep' : pick);
       else playBodyAction(CLASS_FOR_IDLE[pick] || pick);
-    }, 6_000 + Math.random() * 12_000);
+    }, motionDev ? 1_500 + Math.random() * 2_500 : 6_000 + Math.random() * 12_000);
   }
 
   /** Weighted pick from the tiers, mirroring `pickIdleBehavior` in pet/wave2.ts. */
@@ -909,11 +1432,27 @@
     var pool = [];
     for (var i = 0; i < tiers.length; i++) if (idleMs >= tiers[i].after) pool = tiers[i].choices;
     if (pool.length === 0) return null;
+    if (motionDev && idleMs >= 35_000 && !stretchPreviewed) return 'stretch';
+    // The 60-120s production tier is only a short 7.5-15s window under accelerated dev
+    // timing. Guarantee one sit review per idle cycle so a valid clip cannot be missed by
+    // random selection; packaged builds never enter this branch.
+    if (motionDev && idleMs >= 60_000 && !sitPreviewed) {
+      sitPreviewed = true;
+      return 'sit';
+    }
+    // A seated Pet must stand before changing posture, so do not mark this preview complete
+    // until `setPosture('lie')` actually starts it. The scheduler retries after stand-up.
+    if (motionDev && idleMs >= 60_000 && !liePreviewed) return 'lie_down';
+    if (motionDev && idleMs >= 120_000 && liePreviewed && !sleepPreviewed) return 'sleep_loop';
     if (locomotionAllowedLocal()) pool = pool.concat(['reposition']);
     return pool[Math.floor(Math.random() * pool.length)];
   }
 
   function playBodyAction(name) {
+    if (name === 'stretch') {
+      if (motionDev) stretchPreviewed = true;
+      if (startPilotStretch()) return;
+    }
     // The mood class is on the wrapper and would be replaced by the next frame, so the
     // action class is added on top and removed by its own timer.
     wrap.classList.add(name);
@@ -948,26 +1487,10 @@
     }
   }
 
-  /** Start (or retarget) a walk toward an overlay-local point, turning first if needed. */
-  function beginWalkTo(tx, ty, isRoam) {
-    var clamped = clampToZones(tx, ty);
-    var safeZones = zones && zones.length ? zones : [{ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }];
-    if (!isAllowedPoint(clamped.x, clamped.y, safeZones)) return;
-    if (Math.hypot(clamped.x - x, clamped.y - y) < 1) return;
-    targetX = clamped.x;
-    targetY = clamped.y;
-    roaming = !!isRoam;
-    var prevDir = dir;
-    dir = targetX < x ? -1 : 1;
-    var side = dir < 0 ? 'left' : 'right';
-    if (dir !== prevDir) {
-      // Turn before walking (Wave 2 layering rules §4). The direction-specific class is
-      // the asset contract id (turn_left/right); `.turning` is the shared visual.
-      wrap.classList.add('turning', 'turn-' + side);
-      setTimeout(function () { wrap.classList.remove('turning', 'turn-left', 'turn-right'); applyArt(); }, 340);
-      // Mirror facing so the engine can reason about the next turn.
-      if (window.qpPet && window.qpPet.facing) window.qpPet.facing(side);
-    }
+  function beginWalking(side) {
+    preloadMotionClip('walk_' + side);
+    preloadMotionClip('stop');
+    if (!walking || walkSide !== side) walkStartedAt = performance.now();
     walking = true;
     walkSide = side;
     wrap.classList.add('walking', 'walking-' + side);
@@ -977,8 +1500,225 @@
     loop();
   }
 
+  function startPilotTurn(side) {
+    var clipId = 'turn_' + side;
+    preloadMotionClip(clipId);
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips[clipId];
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    turning = true;
+    turnSide = side;
+    turnStartedAt = performance.now();
+    wrap.classList.add('turning', 'turn-' + side);
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function reportMovementComplete(completion) {
+    if (!completion || !window.qpPet) return;
+    // A main-planned burst reports `roamed` (starts the idle cooldown there); a local
+    // reposition reports `moved` (persisted without touching the cadence).
+    if (completion.cameFromRoam && window.qpPet.roamed) {
+      window.qpPet.roamed(Math.round(x), Math.round(y), completion.commandId, completion.geometryVersion);
+    } else if (window.qpPet.moved) {
+      window.qpPet.moved(Math.round(x), Math.round(y));
+    }
+  }
+
+  function startPilotStop(completion) {
+    preloadMotionClip('stop');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.stop;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 4 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    stopping = true;
+    stopStartedAt = performance.now();
+    pendingStopCompletion = completion;
+    wrap.classList.add('stopping', 'pilot-stopping', 'stop-' + (walkSide || 'right'));
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function startPilotSitDown() {
+    preloadMotionClip('sit_down');
+    preloadMotionClip('sit_idle');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.sit_down;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    sittingDown = true;
+    sitStartedAt = performance.now();
+    sitIdleStartedAt = 0;
+    wrap.classList.add('pilot-sitting');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function startPilotLieDown() {
+    preloadMotionClip('lie_down');
+    preloadMotionClip('sleep_loop');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.lie_down;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    lyingDown = true;
+    lieStartedAt = performance.now();
+    wrap.classList.add('pilot-lying');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function startPilotSleepLoop() {
+    preloadMotionClip('sleep_loop');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.sleep_loop;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 8 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    sleepLoopStartedAt = performance.now();
+    wrap.classList.add('pilot-sleeping');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function startPilotStretch() {
+    preloadMotionClip('stretch');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.stretch;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    stretching = true;
+    stretchStartedAt = performance.now();
+    wrap.classList.add('stretch', 'pilot-stretching');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function finishPilotStretch(scheduleNext) {
+    stretching = false;
+    stretchStartedAt = 0;
+    wrap.classList.remove('stretch', 'pilot-stretching');
+    applyArt();
+    place();
+    if (scheduleNext) scheduleIdle();
+  }
+
+  function startPilotHoverReact() {
+    preloadMotionClip('hover_react');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.hover_react;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 4 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    hoverReacting = true;
+    hoverReactStartedAt = performance.now();
+    wrap.classList.add('pilot-hover-reacting');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function finishPilotHoverReact(scheduleNext) {
+    hoverReacting = false;
+    hoverReactStartedAt = 0;
+    wrap.classList.remove('pilot-hover-reacting');
+    applyArt();
+    place();
+    if (scheduleNext) scheduleIdle();
+  }
+
+  function enterSleepPosture() {
+    if (posture) wrap.classList.remove(posture);
+    posture = 'sleep';
+    lyingDown = false;
+    wrap.classList.remove('pilot-lying');
+    wrap.classList.add('sleep');
+    if (motionDev) sleepPreviewed = true;
+    if (!startPilotSleepLoop()) applyArt();
+  }
+
+  function startPilotWakeUp() {
+    preloadMotionClip('wake_up');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.wake_up;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    standingUp = true;
+    standStartedAt = performance.now();
+    wrap.classList.add('pilot-standing');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function finishPilotWakeUp() {
+    var queuedWalk = pendingStandWalk;
+    pendingStandWalk = null;
+    standingUp = false;
+    standStartedAt = 0;
+    wrap.classList.remove('pilot-standing');
+    applyArt();
+    place();
+    if (queuedWalk) beginWalkTo(queuedWalk.x, queuedWalk.y, queuedWalk.isRoam);
+    if (!walking && !turning && !stopping && activeRoamCommandId != null && window.qpPet && window.qpPet.roamed) {
+      window.qpPet.roamed(Math.round(x), Math.round(y), activeRoamCommandId, activeRoamGeometryVersion);
+      activeRoamCommandId = null;
+      activeRoamGeometryVersion = null;
+    }
+    if (!walking && !turning && !stopping) scheduleIdle();
+  }
+
+  /** Start (or retarget) a walk toward an overlay-local point, turning first if needed. */
+  function beginWalkTo(tx, ty, isRoam) {
+    var clamped = clampToZones(tx, ty);
+    var safeZones = zones && zones.length ? zones : [{ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }];
+    if (!isAllowedPoint(clamped.x, clamped.y, safeZones)) return;
+    if (Math.hypot(clamped.x - x, clamped.y - y) < 1) return;
+    if (stretching || hoverReacting) wake();
+    if (standingUp) {
+      pendingStandWalk = { x: clamped.x, y: clamped.y, isRoam: !!isRoam };
+      return;
+    }
+    if ((posture || sittingDown) && wake()) {
+      pendingStandWalk = { x: clamped.x, y: clamped.y, isRoam: !!isRoam };
+      return;
+    }
+    targetX = clamped.x;
+    targetY = clamped.y;
+    roaming = !!isRoam;
+    var prevDir = dir;
+    dir = targetX < x ? -1 : 1;
+    var side = dir < 0 ? 'left' : 'right';
+    if (dir !== prevDir) {
+      // Turn before walking (Wave 2 layering rules §4). The direction-specific class is
+      // the asset contract id (turn_left/right); `.turning` is the shared visual.
+      // Mirror facing so the engine can reason about the next turn.
+      if (window.qpPet && window.qpPet.facing) window.qpPet.facing(side);
+      if (startPilotTurn(side)) return;
+      wrap.classList.add('turning', 'turn-' + side);
+      setTimeout(function () { wrap.classList.remove('turning', 'turn-left', 'turn-right'); applyArt(); }, 340);
+    }
+    beginWalking(side);
+  }
+
   /** Stop any renderer walk without reporting a completion for a command that was cancelled. */
   function cancelWalkMotion() {
+    homeWarpVersion += 1;
+    if (homeWarpTimer) { clearTimeout(homeWarpTimer); homeWarpTimer = null; }
+    if (homeWarpFadeTimer) { clearTimeout(homeWarpFadeTimer); homeWarpFadeTimer = null; }
+    wrap.style.opacity = '';
+    wrap.style.transition = '';
+    turning = false;
+    turnSide = null;
+    stopping = false;
+    pendingStopCompletion = null;
+    pendingStandWalk = null;
+    if (stopFallbackTimer) { clearTimeout(stopFallbackTimer); stopFallbackTimer = null; }
     walking = false;
     roaming = false;
     activeRoamCommandId = null;
@@ -986,7 +1726,7 @@
     targetX = x;
     targetY = y;
     walkSide = null;
-    wrap.classList.remove('walking', 'walking-left', 'walking-right', 'glide', 'turning', 'turn-left', 'turn-right');
+    wrap.classList.remove('walking', 'walking-left', 'walking-right', 'glide', 'turning', 'turn-left', 'turn-right', 'stopping', 'pilot-stopping', 'stop-left', 'stop-right');
     applyArt();
     place();
   }
@@ -995,10 +1735,13 @@
   function warpHome(target) {
     if (!target || !Number.isFinite(target.x) || !Number.isFinite(target.y)) return;
     cancelWalkMotion();
+    var version = homeWarpVersion;
     var next = clampToZones(target.x, target.y);
     wrap.style.transition = 'opacity 180ms ease';
     wrap.style.opacity = '0';
-    setTimeout(function () {
+    homeWarpTimer = setTimeout(function () {
+      homeWarpTimer = null;
+      if (version !== homeWarpVersion) return;
       x = next.x;
       y = next.y;
       anchorX = x;
@@ -1007,21 +1750,206 @@
       targetY = y;
       place();
       requestAnimationFrame(function () {
+        if (version !== homeWarpVersion) return;
         wrap.style.opacity = '';
-        setTimeout(function () { wrap.style.transition = ''; }, 220);
+        homeWarpFadeTimer = setTimeout(function () {
+          homeWarpFadeTimer = null;
+          if (version === homeWarpVersion) wrap.style.transition = '';
+        }, 220);
       });
     }, 180);
   }
 
   function loop() {
-    if (raf == null) raf = requestAnimationFrame(tick);
+    if (!document.hidden && raf == null) raf = requestAnimationFrame(tick);
   }
 
   function tick(now) {
     raf = null;
     var dt = Math.min(0.1, (now - last) / 1000);
     last = now;
+    if (hoverReacting) {
+      var selectedHoverReact = pilotHoverReactClip();
+      if (!selectedHoverReact) {
+        finishPilotHoverReact(true);
+        return;
+      }
+      renderPilotHoverReactFrame(now);
+      var hoverReactDuration = selectedHoverReact.clip.frames.length * 1000 / selectedHoverReact.clip.fps;
+      place();
+      // Hold the byte-identical neutral final frame without a RAF loop until the animation
+      // resolver leaves hover_react. This prevents a brief flash of the legacy WebP fallback.
+      if (now - hoverReactStartedAt >= hoverReactDuration) return;
+      loop();
+      return;
+    }
+    if (stretching) {
+      var selectedStretch = pilotStretchClip();
+      if (!selectedStretch) {
+        finishPilotStretch(true);
+        return;
+      }
+      renderPilotStretchFrame(now);
+      var stretchDuration = selectedStretch.clip.frames.length * 1000 / selectedStretch.clip.fps;
+      if (now - stretchStartedAt >= stretchDuration) {
+        finishPilotStretch(true);
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
+    if (standingUp) {
+      var selectedWake = pilotWakeUpClip();
+      if (!selectedWake) {
+        finishPilotWakeUp();
+        return;
+      }
+      renderPilotWakeUpFrame(now);
+      var wakeDuration = selectedWake.clip.frames.length * 1000 / selectedWake.clip.fps;
+      if (now - standStartedAt >= wakeDuration) {
+        finishPilotWakeUp();
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
+    if (sittingDown) {
+      var selectedSit = pilotSitDownClip();
+      if (!selectedSit) {
+        sittingDown = false;
+        wrap.classList.remove('pilot-sitting');
+        applyArt();
+        place();
+        return;
+      }
+      renderPilotSitDownFrame(now);
+      var sitDuration = selectedSit.clip.frames.length * 1000 / selectedSit.clip.fps;
+      if (now - sitStartedAt >= sitDuration) {
+        sittingDown = false;
+        sitIdleStartedAt = now;
+        // The approved sit-idle loop starts from a byte-identical copy of this final frame.
+        applyArt();
+        place();
+        var selectedSitIdle = pilotSitIdleClip();
+        if (selectedSitIdle) schedulePilotSitIdleFrame(selectedSitIdle.clip);
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
+    if (lyingDown) {
+      var selectedLie = pilotLieDownClip();
+      if (!selectedLie) {
+        lyingDown = false;
+        wrap.classList.remove('pilot-lying');
+        if (sleepAfterLie) {
+          sleepAfterLie = false;
+          enterSleepPosture();
+          return;
+        }
+        applyArt();
+        place();
+        return;
+      }
+      renderPilotLieDownFrame(now);
+      var lieDuration = selectedLie.clip.frames.length * 1000 / selectedLie.clip.fps;
+      if (now - lieStartedAt >= lieDuration) {
+        lyingDown = false;
+        if (sleepAfterLie) {
+          sleepAfterLie = false;
+          enterSleepPosture();
+          return;
+        }
+        // The final awake lying frame remains selected until interaction clears the posture.
+        applyArt();
+        place();
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
+    var selectedSleepLoop = posture === 'sleep' && pilotSleepLoopClip();
+    if (selectedSleepLoop) {
+      renderPilotSleepLoopFrame(now);
+      place();
+      schedulePilotSleepLoopFrame(selectedSleepLoop.clip);
+      return;
+    }
+    var selectedSitIdle = posture === 'sit' && pilotSitIdleClip();
+    if (selectedSitIdle) {
+      renderPilotSitIdleFrame(now);
+      place();
+      schedulePilotSitIdleFrame(selectedSitIdle.clip);
+      return;
+    }
+    var selectedIdleLoop = pilotIdleLoopClip();
+    if (selectedIdleLoop) {
+      renderPilotIdleLoopFrame(now);
+      place();
+      schedulePilotIdleLoopFrame(selectedIdleLoop.clip);
+      return;
+    }
+    if (turning) {
+      var selectedTurn = pilotTurnClip();
+      if (!selectedTurn) {
+        var interruptedSide = turnSide;
+        turning = false;
+        turnSide = null;
+        wrap.classList.remove('turning', 'turn-left', 'turn-right');
+        if (interruptedSide) beginWalking(interruptedSide);
+        return;
+      }
+      renderPilotTurnFrame(now);
+      var turnDuration = selectedTurn.clip.frames.length * 1000 / selectedTurn.clip.fps;
+      if (now - turnStartedAt >= turnDuration) {
+        var completedSide = turnSide;
+        turning = false;
+        turnSide = null;
+        wrap.classList.remove('turning', 'turn-left', 'turn-right');
+        if (completedSide) beginWalking(completedSide);
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
+    if (stopping) {
+      var selectedStop = pilotStopClip();
+      if (!selectedStop) {
+        var interruptedStop = pendingStopCompletion;
+        stopping = false;
+        pendingStopCompletion = null;
+        walkSide = null;
+        wrap.classList.remove('stopping', 'pilot-stopping', 'stop-left', 'stop-right');
+        applyArt();
+        reportMovementComplete(interruptedStop);
+        scheduleIdle();
+        return;
+      }
+      renderPilotStopFrame(now);
+      var stopDuration = selectedStop.clip.frames.length * 1000 / selectedStop.clip.fps;
+      if (now - stopStartedAt >= stopDuration) {
+        var completedStop = pendingStopCompletion;
+        stopping = false;
+        pendingStopCompletion = null;
+        walkSide = null;
+        wrap.classList.remove('stopping', 'pilot-stopping', 'stop-left', 'stop-right');
+        applyArt();
+        place();
+        reportMovementComplete(completedStop);
+        scheduleIdle();
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
     if (walking) {
+      renderPilotWalkFrame(now);
       var speed = reduced ? 0 : (SPEED[frame.mood] || 0);
       if (speed <= 0) {
         /* Reduced motion and reset/idle states must pause in place. The old `speed === 0`
@@ -1057,27 +1985,33 @@
         wrap.classList.remove('glide');
         // A clean mechanical stop at the destination (Wave 2 layering rules §4). The
         // direction-specific class is the asset contract id (stop_left/right).
-        wrap.classList.add('stopping', 'stop-' + (walkSide || 'right'));
-        applyArt();
-        setTimeout(function () { wrap.classList.remove('stopping', 'stop-left', 'stop-right'); applyArt(); }, 420);
-        walkSide = null;
         anchorX = x;
         anchorY = y;
-        if (window.qpPet) {
-          // A main-planned burst reports `roamed` (starts the idle cooldown there); a local
-          // reposition reports `moved` (persisted without touching the cadence).
-          if (cameFromRoam && window.qpPet.roamed) {
-            window.qpPet.roamed(Math.round(x), Math.round(y), completedCommandId, completedGeometryVersion);
-          }
-          else if (window.qpPet.moved) window.qpPet.moved(Math.round(x), Math.round(y));
+        var completion = {
+          cameFromRoam: cameFromRoam,
+          commandId: completedCommandId,
+          geometryVersion: completedGeometryVersion
+        };
+        if (startPilotStop(completion)) {
+          place();
+          return;
         }
+        wrap.classList.add('stopping', 'stop-' + (walkSide || 'right'));
+        applyArt();
+        stopFallbackTimer = setTimeout(function () {
+          stopFallbackTimer = null;
+          wrap.classList.remove('stopping', 'stop-left', 'stop-right');
+          applyArt();
+        }, 420);
+        walkSide = null;
+        reportMovementComplete(completion);
       } else {
         x += (dx / distance) * step;
         y += (dy / distance) * step;
       }
       place();
     }
-    if (walking) loop();
+    if (walking || turning || stopping || sittingDown || lyingDown || stretching || hoverReacting || standingUp) loop();
     else scheduleIdle();
   }
 
@@ -1194,10 +2128,27 @@
     if (window.qpPet) window.qpPet.contextMenu();
   });
 
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      if (raf != null) { cancelAnimationFrame(raf); raf = null; }
+      if (idleTimer) { clearTimeout(idleTimer); idleTimer = null; }
+      if (idleLoopTimer) { clearTimeout(idleLoopTimer); idleLoopTimer = null; }
+      if (sitIdleTimer) { clearTimeout(sitIdleTimer); sitIdleTimer = null; }
+      if (sleepLoopTimer) { clearTimeout(sleepLoopTimer); sleepLoopTimer = null; }
+      return;
+    }
+    last = performance.now();
+    applyArt();
+    if (walking || turning || stopping || sittingDown || lyingDown || stretching || hoverReacting || standingUp || posture) loop();
+    else scheduleIdle();
+  });
+
   if (window.qpPet) window.qpPet.onState(function (next) {
     if (next && next.bubble && !frame.bubble) cancelWalkMotion();
+    preloadMotionFrames(next);
     frame = next;
     paint();
+    pet.classList.add('art-ready');
   });
   if (window.qpPet && window.qpPet.onPosition) {
     window.qpPet.onPosition(function (pos) {
@@ -1251,7 +2202,7 @@
       // A target can be rejected after clamping (for example, while the display topology is
       // being updated). Do not leave the main process waiting for a completion that cannot
       // arrive.
-      if (!walking && activeRoamCommandId != null && window.qpPet && window.qpPet.roamed) {
+      if (!walking && !turning && !stopping && (!standingUp || !pendingStandWalk) && activeRoamCommandId != null && window.qpPet && window.qpPet.roamed) {
         window.qpPet.roamed(Math.round(x), Math.round(y), activeRoamCommandId, activeRoamGeometryVersion);
         activeRoamCommandId = null;
         activeRoamGeometryVersion = null;
@@ -1260,6 +2211,14 @@
   }
   if (window.qpPet && window.qpPet.onCancelRoam) {
     window.qpPet.onCancelRoam(function () { cancelWalkMotion(); });
+  }
+  if (window.qpPet && window.qpPet.onMotionDev) {
+    window.qpPet.onMotionDev(function (enabled) {
+      motionDev = !!enabled;
+      // Kick the scheduler immediately so tuning is visible without waiting a cycle.
+      if (motionDev && idleTimer) { clearTimeout(idleTimer); idleTimer = null; }
+      if (motionDev) scheduleIdle();
+    });
   }
   if (window.qpPet && window.qpPet.onHomeWarp) {
     window.qpPet.onHomeWarp(function (target) { warpHome(target); });

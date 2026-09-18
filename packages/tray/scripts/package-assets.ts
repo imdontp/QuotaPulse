@@ -52,16 +52,18 @@ mkdirSync(destination, { recursive: true });
 let files = 0;
 let skipped = 0;
 
-function copyAllowedFile(file: string): boolean {
+export function copyAllowedFile(file: string): boolean {
+  const normalized = file.replace(/\\/g, '/');
   const name = file.replace(/\\/g, '/').split('/').pop() ?? '';
   if (EXCLUDED_BASENAMES.has(name)) return false;
   const isManifest = name === 'manifest.json' || name === 'motion-pilot.json';
   const isClip = /\.webp$/i.test(name);
   const isPreview = /^preview_\d+\.png$/i.test(name) || name === 'accessory.svg';
+  const isApprovedPilotFrame = /\/motion-pilot\/runtime\/(?:512|256)\/(idle_loop|walk_right|walk_left|turn_right|turn_left|stop|sit_down|sit_idle|lie_down|sleep_loop|wake_up|stretch|hover_react)\/\1_\d{3}\.png$/i.test(normalized);
   // The old five-cell Motion Extension Pack sheets are references only. They have
   // different character identities and must never enter a release package; pilot
-  // frame sequences are shipped as canonical WebP clips once individually approved.
-  return isManifest || isClip || isPreview || name === 'concept-states.png';
+  // frame sequences ship only from their approved 256/512 runtime directories.
+  return isManifest || isClip || isPreview || isApprovedPilotFrame || name === 'concept-states.png';
 }
 
 function walk(dir: string, relBase: string): void {
