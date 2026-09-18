@@ -10,6 +10,7 @@ import {
   subscriptionDefinitionFor,
   type HarnessDefinition,
 } from '../dashboard/catalog.js';
+import { type UsageBucket, type UsagePeriod } from './usage-period.js';
 
 /*
  * An account is the quota entitlement, not the process that happened to read it.
@@ -268,6 +269,21 @@ export const totalsBySource = (db: DB, sinceMs: number) =>
         GROUP BY s.id ORDER BY total_tokens DESC`,
     )
     .all(sinceMs) as Array<
+      Totals & { source_id: number; harness: string; profile: string; display_name: string; vendor: string }
+    >;
+
+export const totalsBySourceBetween = (db: DB, fromMs: number, toMs: number, sourceId?: number) =>
+  db
+    .prepare(
+      `SELECT s.id AS source_id, s.harness, s.profile, s.display_name,
+              ${harnessVendorSqlCase('s.harness')} AS vendor,
+              ${TOTALS_SELECT}
+         FROM usage_event u JOIN source s ON s.id = u.source_id
+        WHERE u.ts >= @from AND u.ts < @to
+          AND (@sourceId IS NULL OR u.source_id = @sourceId)
+        GROUP BY s.id ORDER BY total_tokens DESC`,
+    )
+    .all({ from: fromMs, to: toMs, sourceId: sourceId ?? null }) as Array<
       Totals & { source_id: number; harness: string; profile: string; display_name: string; vendor: string }
     >;
 
@@ -1101,8 +1117,23 @@ export function burnRate(db: DB, sourceId: number, windowKind: string, origin: s
   };
 }
 
-export type Bucket = 'hour' | 'day';
+export type Bucket = UsageBucket;
 export type GroupBy = 'harness' | 'model' | 'vendor' | 'project' | 'none';
+
+function calendarBucketKey(bucket: UsageBucket, alias = 'u'): string {
+  const seconds = `${alias}.ts / 1000.0`;
+  if (bucket === 'hour') return `strftime('%Y-%m-%d %H:00:00', ${seconds}, 'unixepoch', 'localtime')`;
+  if (bucket === 'day') return `strftime('%Y-%m-%d', ${seconds}, 'unixepoch', 'localtime')`;
+  if (bucket === 'month') return `strftime('%Y-%m-01', ${seconds}, 'unixepoch', 'localtime')`;
+  return `date(${seconds}, 'unixepoch', 'localtime', printf('-%d days', (CAST(strftime('%w', ${seconds}, 'unixepoch', 'localtime') AS INTEGER) + 6) % 7))`;
+}
+
+function calendarBucketStart(key: string, bucket: UsageBucket): number {
+  const [datePart, timePart] = key.split(' ');
+  const date = datePart!.split('-').map(Number);
+  const hour = bucket === 'hour' ? Number(timePart?.slice(0, 2) ?? 0) : 0;
+  return new Date(date[0]!, date[1]! - 1, date[2]!, hour).getTime();
+}
 
 /**
  * Bucketed time series straight off the fact table. No pre-aggregation: SQLite groups
@@ -1113,7 +1144,6 @@ export function trend(
   db: DB,
   opts: { from: number; to: number; bucket: Bucket; groupBy: GroupBy; sourceId?: number },
 ) {
-  const size = opts.bucket === 'hour' ? 3_600_000 : 86_400_000;
   const groupExpr =
     opts.groupBy === 'harness'
       ? `s.harness || '/' || s.profile`
@@ -1130,7 +1160,7 @@ export function trend(
 
   return db
     .prepare(
-      `SELECT (u.ts / ${size}) * ${size} AS bucket_ts,
+      `SELECT ${calendarBucketKey(opts.bucket)} AS bucket_key,
               ${groupExpr}                AS series,
               COALESCE(SUM(u.call_count),0) AS calls,
               COALESCE(SUM(u.input_tokens),0)        AS input_tokens,
@@ -1146,10 +1176,29 @@ export function trend(
          LEFT JOIN session sess ON sess.id = u.session_id
         WHERE u.ts >= @from AND u.ts < @to
           ${opts.sourceId ? 'AND u.source_id = @sourceId' : ''}
-        GROUP BY bucket_ts, series
-        ORDER BY bucket_ts ASC`,
+        GROUP BY bucket_key, series
+        ORDER BY bucket_key ASC`,
     )
-    .all({ from: opts.from, to: opts.to, sourceId: opts.sourceId ?? null }) as Array<{
+    .all({ from: opts.from, to: opts.to, sourceId: opts.sourceId ?? null })
+    .map((row) => {
+      const value = row as {
+        bucket_key: string;
+        series: string;
+        calls: number;
+        input_tokens: number;
+        cached_input_tokens: number;
+        cache_write_tokens: number;
+        output_tokens: number;
+        total_tokens: number;
+        cost_usd: number;
+        cost_unknown_calls: number;
+        cost_estimated_calls: number;
+      };
+      return {
+        ...value,
+        bucket_ts: calendarBucketStart(value.bucket_key, opts.bucket),
+      };
+    }) as Array<{
     bucket_ts: number;
     series: string;
     calls: number;
@@ -1167,7 +1216,7 @@ export function trend(
 export const modelBreakdown = (db: DB, sinceMs: number) =>
   modelBreakdownBetween(db, sinceMs, null);
 
-export const modelBreakdownBetween = (db: DB, fromMs: number, toMs: number | null) =>
+export const modelBreakdownBetween = (db: DB, fromMs: number, toMs: number | null, sourceId?: number) =>
   db
     .prepare(
       `SELECT COALESCE(u.model,'(unknown)') AS model,
@@ -1176,10 +1225,26 @@ export const modelBreakdownBetween = (db: DB, fromMs: number, toMs: number | nul
               ${TOTALS_SELECT}
          FROM usage_event u JOIN source s ON s.id = u.source_id
         WHERE u.ts >= @from AND (@to IS NULL OR u.ts < @to)
+          AND (@sourceId IS NULL OR u.source_id = @sourceId)
         GROUP BY u.model, s.harness, u.effort, vendor
         ORDER BY total_tokens DESC`,
     )
-    .all({ from: fromMs, to: toMs }) as Array<Totals & { model: string; harness: string; effort: string; vendor: string }>;
+    .all({ from: fromMs, to: toMs, sourceId: sourceId ?? null }) as Array<Totals & { model: string; harness: string; effort: string; vendor: string }>;
+
+export function usageSnapshot(db: DB, period: UsagePeriod, sourceId?: number) {
+  return {
+    range: period,
+    totals: totalsBetween(db, period.from, period.to, sourceId),
+    timeline: trend(db, {
+      from: period.from,
+      to: period.to,
+      bucket: period.bucket,
+      groupBy: 'none',
+      ...(sourceId == null ? {} : { sourceId }),
+    }),
+    bySource: totalsBySourceBetween(db, period.from, period.to, sourceId),
+  };
+}
 
 export interface ProjectRow extends Totals {
   project: string;

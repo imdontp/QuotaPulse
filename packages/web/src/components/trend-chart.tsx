@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
-import type { TrendRow } from '@/api';
+import type { TrendRow, UsageBucket } from '@/api';
 import { ChartContainer, type ChartConfig } from '@/components/ui/chart';
 import { VendorIcon, hasVendorMark } from '@/components/vendor-icon';
 import { Empty } from '@/components/primitives';
@@ -36,7 +36,7 @@ export function TrendChart({
 }: {
   rows: TrendRow[];
   metric: Metric;
-  bucket: 'hour' | 'day';
+  bucket: UsageBucket;
   groupBy: string;
 }) {
   const f = useFormat();
@@ -97,7 +97,7 @@ export function TrendChart({
     new Date(ts).toLocaleDateString(undefined, {
       month: 'short',
       day: 'numeric',
-      ...(bucket === 'hour' ? { hour: '2-digit' } : {}),
+    ...(bucket === 'hour' ? { hour: '2-digit' } : {}),
     });
 
   const toggle = (name: string) =>
@@ -244,7 +244,7 @@ interface TooltipProps {
   label?: number | string;
   config: ChartConfig;
   fmtValue: (v: number) => string;
-  bucket: 'hour' | 'day';
+  bucket: UsageBucket;
   groupBy: string;
   costMode: boolean;
   coverage?: Record<string, ValueTotal>;

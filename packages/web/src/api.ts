@@ -318,6 +318,24 @@ export interface SessionRow {
   cost_estimated_calls: number;
 }
 
+export type UsageRangeKey = 'today' | 'week' | 'month' | 'all' | 'custom';
+export type UsageBucket = 'hour' | 'day' | 'week' | 'month';
+
+export interface UsagePeriod {
+  range: UsageRangeKey;
+  from: number;
+  to: number;
+  timezone: string;
+  bucket: UsageBucket;
+}
+
+export interface UsageResponse {
+  range: UsagePeriod;
+  totals: Totals;
+  timeline: TrendRow[];
+  bySource: SourceTotals[];
+}
+
 export interface AppSettings {
   pet_enabled: boolean;
   tray_animation_enabled: boolean;
@@ -456,12 +474,27 @@ export const api = {
       harnesses: HarnessStatus[];
       accounts: AccountStatus[];
     }>('/api/limits'),
-  trend: (p: { bucket: 'hour' | 'day'; from: number; to: number; groupBy: string; sourceId?: number }) =>
+  usage: (p: { range: UsageRangeKey; from?: number; to?: number; bucket?: UsageBucket | 'auto'; sourceId?: number }) =>
+    get<UsageResponse>(
+      `/api/usage?range=${p.range}` +
+        (p.from == null ? '' : `&from=${p.from}`) +
+        (p.to == null ? '' : `&to=${p.to}`) +
+        (p.bucket == null ? '' : `&bucket=${p.bucket}`) +
+        (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
+    ),
+  trend: (p: { bucket: UsageBucket; from: number; to: number; groupBy: string; sourceId?: number }) =>
     get<{ bucket: string; from: number; to: number; rows: TrendRow[] }>(
       `/api/trend?bucket=${p.bucket}&from=${p.from}&to=${p.to}&group_by=${p.groupBy}` +
         (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
     ),
-  models: (since: number) => get<{ models: ModelRow[] }>(`/api/models?since=${since}`),
+  models: (p: number | { from: number; to?: number; sourceId?: number }) => {
+    const params = typeof p === 'number'
+      ? `since=${p}`
+      : `from=${p.from}` +
+        (p.to == null ? '' : `&to=${p.to}`) +
+        (p.sourceId == null ? '' : `&source_id=${p.sourceId}`);
+    return get<{ since: number; from: number; to: number | null; models: ModelRow[] }>(`/api/models?${params}`);
+  },
   today: () => get<TodayUsage>('/api/today'),
   projects: (p: { from: number; to: number; sourceId?: number }) =>
     get<{ from: number; to: number; rows: ProjectRow[] }>(

@@ -8,6 +8,7 @@ import * as q from '../api/queries.js';
 import { logger } from '../util/log.js';
 import { refreshPricing } from '../pricing/refresh.js';
 import { runtimeSnapshot } from '../runtime.js';
+import { resolveUsagePeriod, type UsageBucket, type UsageRangeKey } from './usage-period.js';
 
 const log = logger('api');
 
@@ -231,11 +232,42 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     accounts: q.accountStatus(db),
   }));
 
+  app.get('/api/usage', async (req, reply) => {
+    const s = req.query as Record<string, string | undefined>;
+    const range = s.range as UsageRangeKey | undefined;
+    const validRanges: UsageRangeKey[] = ['today', 'week', 'month', 'all', 'custom'];
+    const validBuckets: UsageBucket[] = ['hour', 'day', 'week', 'month'];
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    const from = s.from == null ? undefined : Number(s.from);
+    const to = s.to == null ? undefined : Number(s.to);
+    const bucket = s.bucket == null || s.bucket === 'auto' ? undefined : s.bucket as UsageBucket;
+    if ((range != null && !validRanges.includes(range)) ||
+        (bucket != null && !validBuckets.includes(bucket)) ||
+        (from != null && (!Number.isSafeInteger(from) || from < 0)) ||
+        (to != null && (!Number.isSafeInteger(to) || to < 0)) ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Invalid usage range, bucket, or source_id' });
+    }
+    try {
+      const period = resolveUsagePeriod({
+        range: range ?? 'today',
+        ...(from == null ? {} : { from }),
+        ...(to == null ? {} : { to }),
+        ...(bucket == null ? {} : { bucket }),
+      });
+      return q.usageSnapshot(db, period, sourceId);
+    } catch (error) {
+      return reply.code(400).send({ error: (error as Error).message });
+    }
+  });
+
   app.get('/api/trend', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
-    const bucket: q.Bucket = s.bucket === 'day' ? 'day' : 'hour';
+    const bucket: q.Bucket = (['hour', 'day', 'week', 'month'] as const).includes(s.bucket as q.Bucket)
+      ? s.bucket as q.Bucket
+      : 'hour';
     const to = s.to == null ? Date.now() : Number(s.to);
-    const defaultSpan = bucket === 'hour' ? 2 * DAY : 30 * DAY;
+    const defaultSpan = bucket === 'hour' ? 2 * DAY : bucket === 'day' ? 30 * DAY : bucket === 'week' ? 180 * DAY : 365 * DAY;
     const from = s.from == null ? to - defaultSpan : Number(s.from);
     const groupBy = (['harness', 'model', 'vendor', 'project', 'none'] as const).includes(
       s.group_by as q.GroupBy,
@@ -273,10 +305,18 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     return q.compareUsage(db, { from, to, previousFrom, previousTo, groupBy, ...(sourceId == null ? {} : { sourceId }) });
   });
 
-  app.get('/api/models', async (req) => {
+  app.get('/api/models', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
-    const since = s.since ? Number(s.since) : 0;
-    return { since, models: q.modelBreakdown(db, since) };
+    const since = s.since == null ? 0 : Number(s.since);
+    const from = s.from == null ? since : Number(s.from);
+    const to = s.to == null ? null : Number(s.to);
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    if (!Number.isSafeInteger(from) || from < 0 ||
+        (to != null && (!Number.isSafeInteger(to) || to <= from)) ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Invalid model range or source_id' });
+    }
+    return { since: from, from, to, models: q.modelBreakdownBetween(db, from, to, sourceId) };
   });
 
   app.get('/api/today', async () => {

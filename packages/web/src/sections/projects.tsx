@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useReducedMotion } from 'motion/react';
-import { api, type ProjectRow } from '@/api';
+import { api, type ProjectRow, type UsagePeriod } from '@/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select } from '@/components/ui/select';
 import {
@@ -142,7 +142,7 @@ function Cut({
   );
 }
 
-export function ProjectsSection({ sources = [] }: { sources?: Array<{ id: number; display_name: string }> }) {
+export function ProjectsSection({ sources = [], period, sourceId }: { sources?: Array<{ id: number; display_name: string }>; period?: UsagePeriod; sourceId?: number }) {
   const t = useT();
   const f = useFormat();
   const [metric, setMetric] = useState<BarMetric>('total_tokens');
@@ -154,11 +154,11 @@ export function ProjectsSection({ sources = [] }: { sources?: Array<{ id: number
   const [loaded, setLoaded] = useState(false);
 
   useLiveRefresh(() => {
-    const to = Date.now();
+    const to = period?.to ?? Date.now();
     // 0 days means everything: the first event predates any range we offer.
-    const from = days === 0 ? 0 : to - days * DAY;
+    const from = period?.from ?? (days === 0 ? 0 : to - days * DAY);
     return api
-      .projects({ from, to, sourceId: filters.sourceId })
+      .projects({ from, to, sourceId: period ? sourceId : filters.sourceId })
       .then((r) => {
         setRows(r.rows);
         setErr(null);
@@ -168,7 +168,7 @@ export function ProjectsSection({ sources = [] }: { sources?: Array<{ id: number
         setErr(String(e));
         throw e;
       });
-  }, [days, filters.sourceId]);
+  }, [days, filters.sourceId, period?.from, period?.to, sourceId]);
 
   /**
    * Level one: one bar per project, already segmented by harness. The question "which
@@ -285,7 +285,7 @@ export function ProjectsSection({ sources = [] }: { sources?: Array<{ id: number
 
   return (
     <div className="flex flex-col gap-3.5">
-    <AnalysisFilterBar filters={filters} sources={sources} allowAllTime onChange={setFilters} onClear={clearFilters} />
+    {!period && <AnalysisFilterBar filters={filters} sources={sources} allowAllTime onChange={setFilters} onClear={clearFilters} />}
     <Stagger className="flex flex-col gap-3.5">
       <StaggerItem>
         <div className="flex flex-wrap items-end justify-between gap-3">

@@ -2,13 +2,10 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   Activity,
+  BarChart3,
   BellRing,
-  CalendarDays,
   Menu,
   X,
-  Boxes,
-  Coins,
-  FolderGit2,
   Gauge,
   HeartPulse,
   MessagesSquare,
@@ -17,7 +14,6 @@ import {
   RefreshCw,
   Settings as SettingsIcon,
   Sun,
-  TrendingUp,
 } from 'lucide-react';
 import { api, type Overview } from '@/api';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -31,36 +27,41 @@ import { QuotaPulseMark, QuotaPulseWordmark } from '@/components/logo';
 import { LiveSection } from '@/sections/live';
 import { SourcesSection } from '@/sections/sources';
 import { LimitsSection } from '@/sections/limits';
-import { TrendSection } from '@/sections/trend';
-import { CostSection } from '@/sections/cost';
 import { SessionsSection } from '@/sections/sessions';
-import { ProjectsSection } from '@/sections/projects';
-import { ModelsSection } from '@/sections/models';
 import { HealthSection } from '@/sections/health';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import { CommandPalette } from '@/components/command-palette';
 import { AlertsSection } from '@/sections/alerts';
 import { PetPopup } from '@/components/pet-popup';
-import { TodaySection } from '@/sections/today';
 import { SettingsSection } from '@/sections/settings';
+import { UsageSection } from '@/sections/usage';
 
 const TABS = [
   { id: 'live', key: 'tab.live', icon: Activity },
-  { id: 'today', key: 'tab.today', icon: CalendarDays },
+  { id: 'usage', key: 'tab.usage', icon: BarChart3 },
+  { id: 'sessions', key: 'tab.sessions', icon: MessagesSquare },
   { id: 'limits', key: 'tab.limits', icon: Gauge },
   { id: 'alerts', key: 'tab.alerts', icon: BellRing },
-  { id: 'trend', key: 'tab.trend', icon: TrendingUp },
-  { id: 'cost', key: 'tab.cost', icon: Coins },
-  { id: 'sessions', key: 'tab.sessions', icon: MessagesSquare },
-  { id: 'projects', key: 'tab.projects', icon: FolderGit2 },
-  { id: 'models', key: 'tab.models', icon: Boxes },
   { id: 'sources', key: 'tab.sources', icon: Radio },
   { id: 'health', key: 'tab.health', icon: HeartPulse },
   { id: 'settings', key: 'tab.settings', icon: SettingsIcon },
 ] as const;
 
 type TabId = (typeof TABS)[number]['id'];
+
+const LEGACY_HASHES: Record<string, string> = {
+  today: '#usage?range=today&view=summary',
+  trend: '#usage?range=month&view=summary',
+  cost: '#usage?range=all&view=cost',
+  projects: '#usage?range=month&view=projects',
+  models: '#usage?range=month&view=models',
+};
+
+function tabFromHash(): TabId {
+  const raw = location.hash.slice(1).split('?')[0] ?? '';
+  return (TABS.some((tab) => tab.id === raw) ? raw : raw in LEGACY_HASHES ? 'usage' : 'live') as TabId;
+}
 
 /**
  * The sidebar collapses to icons below this width. The tray and Gallery windows share a
@@ -87,9 +88,7 @@ function useMediaQuery(query: string): boolean {
 function Dashboard() {
   const t = useT();
   const { lang, syncHiddenSubscriptions } = useI18n();
-  const [tab, setTabState] = useState<TabId>(
-    () => (TABS.find((t) => t.id === location.hash.slice(1))?.id ?? 'live') as TabId,
-  );
+  const [tab, setTabState] = useState<TabId>(tabFromHash);
   const [ov, setOv] = useState<Overview | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [theme, toggleTheme] = useTheme();
@@ -100,8 +99,20 @@ function Dashboard() {
   const drawer = useRef<HTMLDialogElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
   const isMobile = !useMediaQuery('(min-width: 640px)');
+  const navigateUsage = (view: 'summary' | 'cost' | 'projects' | 'models' = 'summary') => {
+    const current = new URLSearchParams(location.hash.includes('?') ? location.hash.split('?')[1] : '');
+    current.set('range', current.get('range') ?? 'today');
+    current.set('view', view);
+    location.hash = 'usage?' + current.toString();
+    setTabState('usage');
+    drawer.current?.close();
+  };
   const setTab = (next: TabId) => {
-    if (location.hash !== `#${next}`) location.hash = next;
+    if (next === 'usage') {
+      navigateUsage();
+      return;
+    }
+    if (location.hash !== '#' + next) location.hash = next;
     setTabState(next);
     drawer.current?.close();
   };
@@ -135,8 +146,10 @@ function Dashboard() {
 
   useEffect(() => {
     const sync = () => {
-      const next = TABS.find(t => t.id === location.hash.slice(1))?.id ?? 'live';
-      if (location.hash !== `#${next}`) history.replaceState(null, '', `#${next}`);
+      const raw = location.hash.slice(1).split('?')[0] ?? '';
+      const legacy = LEGACY_HASHES[raw];
+      if (legacy) history.replaceState(null, '', legacy);
+      const next = tabFromHash();
       setTabState(next);
       drawer.current?.close();
     };
@@ -237,7 +250,7 @@ function Dashboard() {
                 // Keep each sidebar group heading to one occurrence; Alerts belongs to
                 // monitoring but sits directly below Limits rather than starting a second
                 // "Monitor" section halfway down the rail.
-                const group = tb.id === 'live' ? 'nav.monitor' : tb.id === 'trend' ? 'nav.analyze' : tb.id === 'sources' ? 'nav.system' : null;
+                const group = tb.id === 'live' ? 'nav.monitor' : tb.id === 'usage' || tb.id === 'sessions' ? 'nav.analyze' : tb.id === 'sources' ? 'nav.system' : null;
                 return <Fragment key={tb.id}>
                   {group && <span className={collapsed ? 'mt-4' : 'text-muted-foreground/70 mt-5 mb-2 px-2.5 text-[10px] font-semibold uppercase tracking-widest'}>{!collapsed && t(group)}</span>}
                   {collapsed ? <Hint text={t(tb.key)}>{trigger}</Hint> : trigger}
@@ -295,7 +308,7 @@ function Dashboard() {
                 />
               )}
 
-               <CommandPalette items={TABS.map((item) => ({ id: item.id, label: t(item.key), group: item.id === 'live' || item.id === 'limits' || item.id === 'alerts' ? t('nav.monitor') : item.id === 'health' || item.id === 'sources' ? t('nav.system') : t('nav.analyze') }))} onSelect={(id) => { if (TABS.some((item) => item.id === id)) setTab(id as TabId); }} />
+              <CommandPalette items={TABS.map((item) => ({ id: item.id, label: t(item.key), group: item.id === 'live' || item.id === 'limits' || item.id === 'alerts' ? t('nav.monitor') : item.id === 'health' || item.id === 'sources' || item.id === 'settings' ? t('nav.system') : t('nav.analyze') }))} onSelect={(id) => { if (TABS.some((item) => item.id === id)) setTab(id as TabId); }} />
 
               <SettingsMenu subscriptions={ov?.subscriptions} onPricingUpdated={() => void refreshStatus.refreshNow()} />
 
@@ -327,10 +340,10 @@ function Dashboard() {
                 transition={{ duration: 0.18, ease: 'easeOut' }}
               >
                 <TabsContent value="live" forceMount={tab === 'live' ? true : undefined}>
-                  {tab === 'live' && (ov ? <LiveSection ov={ov} onOpenLimits={() => setTab('limits')} onOpenHealth={() => setTab('health')} onOpenCost={() => setTab('cost')} /> : <Loading />)}
+                  {tab === 'live' && (ov ? <LiveSection ov={ov} onOpenLimits={() => setTab('limits')} onOpenHealth={() => setTab('health')} onOpenCost={() => navigateUsage('cost')} /> : <Loading />)}
                 </TabsContent>
-                <TabsContent value="today" forceMount={tab === 'today' ? true : undefined}>
-                  {tab === 'today' ? <TodaySection /> : <Loading />}
+                <TabsContent value="usage" forceMount={tab === 'usage' ? true : undefined}>
+                  {tab === 'usage' && (ov ? <UsageSection ov={ov} sources={ov.sources} /> : <Loading />)}
                 </TabsContent>
                 <TabsContent value="sources" forceMount={tab === 'sources' ? true : undefined}>
                   {tab === 'sources' && (ov ? <SourcesSection ov={ov} /> : <Loading />)}
@@ -341,20 +354,8 @@ function Dashboard() {
                 <TabsContent value="alerts" forceMount={tab === 'alerts' ? true : undefined}>
                   {tab === 'alerts' && <AlertsSection />}
                 </TabsContent>
-                <TabsContent value="trend" forceMount={tab === 'trend' ? true : undefined}>
-                  {tab === 'trend' && <TrendSection sources={ov?.sources ?? []} />}
-                </TabsContent>
-                <TabsContent value="cost" forceMount={tab === 'cost' ? true : undefined}>
-                  {tab === 'cost' && (ov ? <CostSection ov={ov} /> : <Loading />)}
-                </TabsContent>
                 <TabsContent value="sessions" forceMount={tab === 'sessions' ? true : undefined}>
                   {tab === 'sessions' && <SessionsSection sources={ov?.sources ?? []} />}
-                </TabsContent>
-                <TabsContent value="projects" forceMount={tab === 'projects' ? true : undefined}>
-                  {tab === 'projects' && <ProjectsSection sources={ov?.sources ?? []} />}
-                </TabsContent>
-                <TabsContent value="models" forceMount={tab === 'models' ? true : undefined}>
-                  {tab === 'models' && <ModelsSection />}
                 </TabsContent>
                 <TabsContent value="health" forceMount={tab === 'health' ? true : undefined}>
                   {tab === 'health' && <HealthSection />}

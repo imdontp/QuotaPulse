@@ -1,6 +1,6 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { Coins, Layers, PiggyBank, CircleHelp } from 'lucide-react';
-import { api, type ModelRow, type Overview } from '@/api';
+import { api, type ModelRow, type Overview, type Totals, type UsagePeriod } from '@/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarList, Stagger, StaggerItem } from '@/components/primitives';
 import { SourceTable } from '@/sections/live';
@@ -22,13 +22,16 @@ import { cn } from '@/lib/utils';
 import { useLiveRefresh } from '@/lib/use-live';
 import { ValueDisplay } from '@/components/value-display';
 
-export function CostSection({ ov }: { ov: Overview }) {
+export function CostSection({ ov, period, totals, sourceId }: { ov: Overview; period?: UsagePeriod; totals?: Totals; sourceId?: number }) {
   const t = useT();
   const f = useFormat();
   const [models, setModels] = useState<ModelRow[]>([]);
   useLiveRefresh(() =>
-    api.models(0).then((r) => setModels(r.models)),
-  []);
+    api.models(period
+      ? { from: period.from, to: period.to, sourceId }
+      : 0,
+    ).then((r) => setModels(r.models)),
+  [period?.from, period?.to, sourceId]);
 
   const byModel = useMemo(() => {
     const m = new Map<string, { cost: number; unknown: number; estimated: number; calls: number; vendor: string }>();
@@ -43,8 +46,8 @@ export function CostSection({ ov }: { ov: Overview }) {
     return [...m.entries()].sort((a, b) => b[1].cost - a[1].cost);
   }, [models]);
 
-  const all = ov.allTime;
-  const pricingScope = { from: 0, to: ov.now };
+  const all = totals ?? ov.allTime;
+  const pricingScope = period ? { from: period.from, to: period.to } : { from: 0, to: ov.now };
 
   /*
    * One row per token bucket, each at its own rate. Cache read is the interesting line:
