@@ -41,6 +41,28 @@ test('POST /api/refresh requires the daemon token and returns a pass summary', a
   try {
     const unauthorized = await app.inject({ method: 'POST', url: '/api/refresh' });
     assert.equal(unauthorized.statusCode, 401);
+    const pricingUnauthorized = await app.inject({ method: 'POST', url: '/api/pricing/refresh' });
+    assert.equal(pricingUnauthorized.statusCode, 401);
+    const diagnosticsUnauthorized = await app.inject({ method: 'GET', url: '/api/diagnostics/runtime' });
+    assert.equal(diagnosticsUnauthorized.statusCode, 401);
+
+    const diagnostics = await app.inject({
+      method: 'GET',
+      url: '/api/diagnostics/runtime',
+      headers: { 'x-quotapulse-token': 'test-token' },
+    });
+    assert.equal(diagnostics.statusCode, 200);
+    const runtime = diagnostics.json() as {
+      schemaVersion: number;
+      pid: number;
+      memory: { rssBytes: number };
+      scheduler: { running: boolean; sourceCount: number };
+    };
+    assert.equal(runtime.schemaVersion, 1);
+    assert.equal(runtime.pid, process.pid);
+    assert.ok(runtime.memory.rssBytes > 0);
+    assert.equal(runtime.scheduler.running, false);
+    assert.equal(runtime.scheduler.sourceCount, 1);
 
     const response = await app.inject({
       method: 'POST',

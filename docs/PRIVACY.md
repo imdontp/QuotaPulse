@@ -2,9 +2,9 @@
 
 QuotaPulse reads files that contain some of the most sensitive material on the machine:
 every prompt you have typed, every response, and the contents of files you have edited. It is
-built so that none of that content is ever read, stored, or served. Hermes' own helper and
-the OpenCode Go quota helper may read their provider credential state internally, but only
-return sanitized quota fields to QuotaPulse.
+built so that none of that content is ever read, stored, or served. The OpenAI/Codex account
+reader, Claude OAuth quota helper, and OpenCode Go quota helper may read their provider
+credential state internally, but only return sanitized quota fields to QuotaPulse.
 
 ## What is read
 
@@ -21,12 +21,22 @@ Counters and metadata only:
 - tool inputs and outputs, file contents, diffs, patches
 - credentials of any kind in the QuotaPulse database, logs, API, or browser
 
+Optional headless quota events are read from `%LOCALAPPDATA%\\quotapulse\\events\\quota.jsonl`.
+The accepted fields are limited to subscription identity, execution mode, timestamps, quota
+percentages, reset times, and an optional opaque route key. The adapter ignores prompt,
+response, token-payload, and credential fields if they appear in an input line; it never
+serves them to the dashboard or stores them.
+
+The optional `scripts/claude-headless-bridge.mjs` forwards the existing Claude command's
+stdout/stderr and extracts rate-limit fields from structured JSON in memory. It writes no
+command arguments or output content to the event file.
+
 These files sit right beside the ones we do read, and are not opened directly by the
 QuotaPulse daemon. Provider auth files are handled only inside their dedicated helpers:
 
 ```
 ~/.codex/auth.json                    OAuth tokens
-~/.claude/.credentials.json           OAuth tokens
+~/.claude*/.credentials.json          OAuth tokens
 ~/.copilot/ide/*.lock                 live auth nonce
 ~/.gemini/google_accounts.json        account identifiers
 ~/.claude/history.jsonl               every prompt typed
@@ -47,16 +57,19 @@ probes are deliberate exceptions: they send only the authenticated provider quot
 needed to obtain the account limit; they never send prompts, responses, project data, or
 QuotaPulse history.
 
-When Hermes account quota monitoring is enabled (the default), QuotaPulse starts Hermes'
-own Python helper for each Hermes profile. Hermes reads and refreshes its own OAuth state,
-makes the provider's account-usage request, and returns only sanitized percentages and
-reset timestamps. For OpenCode Go, QuotaPulse starts its Node helper only when the local
-OpenCode auth file exists; the helper reads the key in memory, calls the official usage
-endpoint, and returns only the three quota windows and reset timestamps. QuotaPulse never
-receives or stores either bearer token, never logs it, and never writes into either tool's
-state. Set
+When Hermes account quota monitoring is enabled (the default), QuotaPulse starts its Python
+OpenAI/Codex account reader for each Hermes profile. The reader asks Hermes to resolve and
+refresh its OAuth state, then makes the provider's Codex usage request directly and returns only
+sanitized percentages and reset timestamps. Claude profiles use the same isolation boundary: QuotaPulse starts its
+Node helper, which reads `.credentials.json` in memory and requests the Claude OAuth usage
+endpoint, returning only the 5-hour and weekly percentages/reset timestamps. For OpenCode Go,
+QuotaPulse starts its Node helper only when the local OpenCode auth file exists; the helper
+reads the key in memory, calls the official usage endpoint, and returns only the three quota
+windows and reset timestamps. QuotaPulse never receives or stores a bearer token, never logs
+it, and never writes into any tool's state. Set
 `QUOTAPULSE_HERMES_ACCOUNT_QUOTA=off` to disable the Hermes path entirely, or
-`QUOTAPULSE_OPENCODE_GO_QUOTA=off` to disable the OpenCode Go reader.
+`QUOTAPULSE_CLAUDE_QUOTA=off` / `QUOTAPULSE_OPENCODE_GO_QUOTA=off` to disable the respective
+readers.
 
 The price catalog command is still opt-in and separate:
 
@@ -70,8 +83,10 @@ credentials, no usage data, no identifiers, and no query string** -- the request
 empty and the URL is constant, so the only thing the other end learns is that some IP asked
 for a public file. Skip it entirely and the tool works; costs read `--` until a catalog
 exists. `scripts/fetch-prices.mjs` is the whole implementation of this user-invoked price
-request. The OpenCode Go account request is similarly isolated in
-`scripts/opencode-go-usage.mjs`; both helpers keep credentials out of the daemon and logs.
+request. The OpenAI/Codex, Claude, and OpenCode Go account requests are similarly isolated in
+`scripts/hermes-account-usage.py`, `scripts/claude-oauth-usage.mjs`, and
+`scripts/opencode-go-usage.mjs`; all helpers keep
+credentials out of the daemon and logs.
 
 - Storage: `%LOCALAPPDATA%\quotapulse\usage.db`, a local SQLite file.
 - Serving: `127.0.0.1` only. Not `0.0.0.0` — nothing on your network can reach it.

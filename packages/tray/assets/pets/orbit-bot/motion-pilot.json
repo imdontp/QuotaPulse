@@ -1,0 +1,24 @@
+{
+  "characterId": "orbit_bot",
+  "pilot": true,
+  "assetContractVersion": 1,
+  "pivot": { "x": 0.5, "y": 0.92 },
+  "runtimeSizes": [512, 256],
+  "animations": {
+    "idle_loop": { "frames": 8, "fps": 8, "loop": true },
+    "walk_right": { "frames": 8, "fps": 12, "loop": true },
+    "walk_left": { "frames": 8, "fps": 12, "loop": true },
+    "turn_right": { "frames": 6, "fps": 10, "loop": false },
+    "turn_left": { "frames": 6, "fps": 10, "loop": false },
+    "stop": { "frames": 4, "fps": 8, "loop": false },
+    "sit_down": { "frames": 6, "fps": 10, "loop": false },
+    "sit_idle": { "frames": 6, "fps": 8, "loop": true },
+    "lie_down": { "frames": 6, "fps": 10, "loop": false },
+    "sleep_loop": { "frames": 8, "fps": 6, "loop": true },
+    "wake_up": { "frames": 6, "fps": 10, "loop": false },
+    "stretch": { "frames": 6, "fps": 10, "loop": false },
+    "hover_react": { "frames": 4, "fps": 10, "loop": false },
+    "click_react": { "frames": 4, "fps": 10, "loop": false },
+    "talk_loop": { "frames": 8, "fps": 8, "loop": true }
+  }
+}

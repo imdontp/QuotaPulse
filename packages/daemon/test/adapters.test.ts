@@ -10,6 +10,7 @@ import { DbSink } from '../src/ingest/sink.js';
 import { PriceResolver } from '../src/pricing/resolve.js';
 import { claudeCodeAdapter } from '../src/adapters/claude-code.js';
 import { codexAdapter } from '../src/adapters/codex.js';
+import { createQuotaEventsAdapter } from '../src/adapters/quota-events.js';
 import type { Adapter, Profile } from '../src/adapters/types.js';
 import { readJsonlDelta } from '../src/ingest/jsonl.js';
 import { tmpRoot, writeClaudeProfile, writeCodexProfile, jsonl } from './fixtures.js';
@@ -128,6 +129,106 @@ test('claude account state stays visible while inactive and reactivates from quo
     'utf8',
   );
   await ingestOnce(db, claudeCodeAdapter, profile, sourceId);
+  assert.equal(
+    (db.prepare(`SELECT account_state FROM source WHERE id = ?`).get(sourceId) as { account_state: string }).account_state,
+    'active',
+  );
+  db.close();
+});
+
+test('claude reads a profile-level statusline snapshot used by headless sessions', async () => {
+  const dir = tmpRoot();
+  const db = openDb(join(dir, 'claude-headless-snapshot.db'));
+  const root = join(dir, '.claude-company');
+  mkdirSync(root, { recursive: true });
+  const profile: Profile = {
+    profile: 'company',
+    rootPath: root,
+    displayName: 'Claude Code (company)',
+    account: { key: 'anthropic:claude:company', provider: 'anthropic', displayName: 'Claude Company' },
+  };
+  const sourceId = upsertSource(db, {
+    harness: 'claude-code',
+    profile: 'company',
+    rootPath: root,
+    displayName: profile.displayName,
+    account: profile.account,
+  });
+  const observedAt = '2026-09-11T07:20:00.000Z';
+  writeFileSync(
+    join(root, 'usage-snapshot.json'),
+    JSON.stringify({
+      updated_at: observedAt,
+      rate_limits: {
+        five_hour: { used_percentage: 63, resets_at: 1_800_000_000 },
+        seven_day: { used_percentage: 41, resets_at: 1_800_500_000 },
+      },
+    }),
+    'utf8',
+  );
+
+  await ingestOnce(db, claudeCodeAdapter, profile, sourceId);
+  assert.deepEqual(
+    db.prepare(`SELECT window_kind, used_percent, origin FROM limit_sample ORDER BY window_kind`).all(),
+    [
+      { window_kind: '5h', used_percent: 63, origin: 'statusline-snapshot' },
+      { window_kind: 'weekly', used_percent: 41, origin: 'statusline-snapshot' },
+    ],
+  );
+  db.close();
+});
+
+test('quota event bridge ingests sanitized headless rate limits without reading prompt data', async () => {
+  const dir = tmpRoot();
+  const db = openDb(join(dir, 'quota-events.db'));
+  const events = join(dir, 'quota.jsonl');
+  writeFileSync(
+    events,
+    jsonl([
+      {
+        schema: 1,
+        source: 'claude-code',
+        profile: 'company',
+        account: {
+          key: 'anthropic:claude:company',
+          provider: 'anthropic',
+          display_name: 'Claude Company Subscription',
+        },
+        execution_mode: 'headless',
+        observed_at: '2026-09-11T07:20:00.000Z',
+        windows: [
+          { window_kind: '5h', used_percent: 42, resets_at: 1_800_000_000_000 },
+          { window_kind: 'weekly', used_percent: 31, resets_at: 1_800_500_000_000 },
+        ],
+        prompt: 'must never be read',
+      },
+    ]),
+    'utf8',
+  );
+
+  const adapter = createQuotaEventsAdapter(events);
+  const profiles = await adapter.detect();
+  assert.equal(profiles.length, 1);
+  assert.equal(profiles[0]!.sourceKind, 'account');
+  assert.equal(profiles[0]!.account?.key, 'anthropic:claude:company');
+  const sourceId = upsertSource(db, {
+    harness: 'quota-events',
+    profile: profiles[0]!.profile,
+    rootPath: profiles[0]!.rootPath,
+    displayName: profiles[0]!.displayName,
+    account: profiles[0]!.account,
+    sourceKind: profiles[0]!.sourceKind,
+  });
+
+  const stats = await ingestOnce(db, adapter, profiles[0]!, sourceId);
+  assert.equal(stats.limitsInserted, 2);
+  assert.deepEqual(
+    db.prepare(`SELECT window_kind, used_percent, origin FROM limit_sample ORDER BY window_kind`).all(),
+    [
+      { window_kind: '5h', used_percent: 42, origin: 'quota-event:headless' },
+      { window_kind: 'weekly', used_percent: 31, origin: 'quota-event:headless' },
+    ],
+  );
   assert.equal(
     (db.prepare(`SELECT account_state FROM source WHERE id = ?`).get(sourceId) as { account_state: string }).account_state,
     'active',

@@ -29,6 +29,23 @@ const WINDOW_SPAN_MS: Record<string, number> = {
   session: 5 * 3_600_000,
 };
 
+const WINDOW_ORDER = ['5h', 'weekly', 'weekly_opus', 'weekly_sonnet', 'monthly'];
+const SHORT_WINDOW_LABEL: Record<string, string> = {
+  '5h': '5h',
+  weekly: 'wk',
+  weekly_opus: 'wk-opus',
+  weekly_sonnet: 'wk-sonnet',
+  monthly: 'mo',
+};
+
+const windowRank = (kind: string): number => {
+  const rank = WINDOW_ORDER.indexOf(kind);
+  return rank < 0 ? WINDOW_ORDER.length : rank;
+};
+
+const compareLimits = (a: Limit, b: Limit): number =>
+  a.display_name.localeCompare(b.display_name) || windowRank(a.window_kind) - windowRank(b.window_kind);
+
 /**
  * A reading is void when it can no longer describe the CURRENT window, for either of two
  * reasons:
@@ -78,14 +95,22 @@ export function currentLimits(all: Limit[], now = Date.now()): Limit[] {
     }
     if ((l.ageSeconds ?? Infinity) < (prev.ageSeconds ?? Infinity)) best.set(key, l);
   }
-  return [...best.values()].sort(
-    (a, b) =>
-      a.display_name.localeCompare(b.display_name) || a.window_kind.localeCompare(b.window_kind),
-  );
+  return [...best.values()].sort(compareLimits);
 }
 
 const ownerKey = (l: Limit): string =>
   l.subscription_key ?? l.account_key ?? `source:${l.source_id}`;
+
+/** The daemon stores hidden subscriptions by this same canonical owner key. */
+export function hiddenOwnerKey(l: Pick<Limit, 'source_id' | 'account_key' | 'subscription_key'>): string {
+  return l.subscription_key ?? l.account_key ?? `source:${l.source_id}`;
+}
+
+/** Apply the shared Settings visibility choice before any tray surface is resolved. */
+export function visibleLimits(all: Limit[], hiddenSubscriptions: readonly string[]): Limit[] {
+  const hidden = new Set(hiddenSubscriptions.filter(Boolean));
+  return all.filter((l) => !hidden.has(hiddenOwnerKey(l)));
+}
 
 const ownerName = (l: Limit): string =>
   l.subscription_display_name ?? l.account_display_name ?? l.display_name;
@@ -118,9 +143,7 @@ export function subscriptionLimits(all: Limit[], now = Date.now()): Limit[] {
     }
   }
 
-  return [...best.values()].sort(
-    (a, b) => a.display_name.localeCompare(b.display_name) || a.window_kind.localeCompare(b.window_kind),
-  );
+  return [...best.values()].sort(compareLimits);
 }
 
 /** The badge tracks the worst limit that is still live. */
@@ -129,9 +152,6 @@ export function worst(all: Limit[], now = Date.now()): Limit | null {
   if (usable.length === 0) return null;
   return usable.reduce((a, b) => ((b.used_percent ?? 0) > (a.used_percent ?? 0) ? b : a));
 }
-
-/** Windows caps a tray tooltip at 127 characters, so every line has to earn its width. */
-export const TOOLTIP_MAX = 127;
 
 export const shortAge = (s: number | null | undefined): string => {
   if (s == null) return '';
@@ -142,7 +162,7 @@ export const shortAge = (s: number | null | undefined): string => {
 };
 
 export const shortWindow = (kind: string): string =>
-  kind === '5h' ? '5h' : kind === 'weekly' ? 'wk' : kind === 'monthly' ? 'mo' : kind.replace('weekly_', 'wk-');
+  SHORT_WINDOW_LABEL[kind] ?? kind.replace('weekly_', 'wk-');
 
 export const shortSource = (name: string): string =>
   name
@@ -159,46 +179,10 @@ export const shortSource = (name: string): string =>
 export const clockAt = (ms: number | null): string =>
   ms == null ? '' : new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-export const sourceCount = (all: Limit[], now = Date.now()): number =>
-  new Set(subscriptionLimits(all, now).map((l) => l.display_name)).size;
+export type TrayConnectionStatus = 'connecting' | 'online' | 'offline';
 
-/** One line per subscription/source, with shared readers collapsed before the tooltip is built. */
-export function tooltipLines(all: Limit[], now = Date.now()): string[] {
-  const bySource = new Map<string, Limit[]>();
-  for (const l of subscriptionLimits(all, now)) {
-    if (!bySource.has(l.display_name)) bySource.set(l.display_name, []);
-    bySource.get(l.display_name)!.push(l);
-  }
-
-  const out: string[] = [];
-  for (const [name, group] of bySource) {
-    const parts = group.map((l) => {
-      // A rolled-over window shows a dash rather than a number that no longer applies.
-      const value = isExpired(l, now) ? '--' : `${Math.round(l.used_percent!)}%`;
-      return `${shortWindow(l.window_kind)} ${value}`;
-    });
-    // One age per line: within a source the readings share a publisher.
-    const oldest = group.reduce<number | null>(
-      (a, l) => (a == null ? (l.ageSeconds ?? null) : Math.max(a, l.ageSeconds ?? 0)),
-      null,
-    );
-    out.push(`${shortSource(name)} ${parts.join(' · ')}${shortAge(oldest)}`);
-  }
-  return out;
-}
-
-/** Assembled apart from the tray so it can be asserted without a GUI. */
-export function buildTooltip(all: Limit[], daemonUp: boolean, now = Date.now()): string {
-  const NL = '\n';
-  if (!daemonUp) return `QuotaPulse${NL}daemon not running`;
-  if (all.length === 0) return `QuotaPulse${NL}no quota data yet`;
-
-  const lines = tooltipLines(all, now);
-  let tip = ['QuotaPulse', ...lines].join(NL);
-  // Drop whole lines rather than letting Windows cut one mid-number.
-  while (tip.length > TOOLTIP_MAX && lines.length > 1) {
-    lines.pop();
-    tip = ['QuotaPulse', ...lines, `+${sourceCount(all, now) - lines.length} more`].join(NL);
-  }
-  return tip.length > TOOLTIP_MAX ? tip.slice(0, TOOLTIP_MAX) : tip;
+/** Keep the Windows hover affordance predictable: identity on line one, connection on line two. */
+export function buildTooltip(status: TrayConnectionStatus): string {
+  const label = status === 'online' ? 'Online' : status === 'connecting' ? 'Connecting' : 'Offline';
+  return `QuotaPulse\n${label}`;
 }

@@ -1,11 +1,15 @@
 import Fastify, { type FastifyInstance, type FastifyReply } from 'fastify';
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import { extname, join, normalize, resolve, sep } from 'node:path';
+import { Readable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
 import type { DB } from '../db/index.js';
 import type { Scheduler } from '../ingest/scheduler.js';
 import * as q from '../api/queries.js';
 import { logger } from '../util/log.js';
+import { refreshPricing } from '../pricing/refresh.js';
+import { runtimeSnapshot } from '../runtime.js';
+import { resolveUsagePeriod, type UsageBucket, type UsageRangeKey } from './usage-period.js';
 
 const log = logger('api');
 
@@ -21,6 +25,52 @@ const MIME: Record<string, string> = {
 };
 
 const DAY = 86_400_000;
+
+const USAGE_EXPORT_HEADERS = [
+  'event_id', 'timestamp_utc', 'timestamp_ms', 'call_count', 'source_id', 'harness', 'profile', 'source_name',
+  'provider', 'vendor', 'model', 'effort', 'service_tier', 'project', 'session_key', 'is_subagent',
+  'input_tokens', 'cached_input_tokens', 'cache_write_tokens', 'output_tokens', 'reasoning_tokens',
+  'total_tokens', 'duration_ms', 'cost_usd', 'cost_input_usd', 'cost_cached_input_usd',
+  'cost_cache_write_usd', 'cost_output_usd', 'cost_cache_saving_usd', 'cost_source', 'price_provider',
+] as const;
+
+function csvCell(value: unknown): string {
+  if (value == null) return '';
+  const text = String(value);
+  return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+function csvLine(values: readonly unknown[]): string {
+  return `${values.map(csvCell).join(',')}\r\n`;
+}
+
+function usageExportFilename(from: number, to: number): string {
+  const compact = (ms: number) => new Date(ms).toISOString().slice(0, 16).replace(/[-:]/g, '');
+  return `quotapulse-usage-${compact(from)}-${compact(to)}.csv`;
+}
+
+function usageTimestampUtc(timestampMs: number): string {
+  return new Date(timestampMs).toISOString();
+}
+
+function usageCsvStream(rows: Iterable<q.UsageExportRow>): Readable {
+  function* chunks(): Generator<string> {
+    // The BOM makes the UTF-8 CSV open cleanly in Excel while remaining valid CSV for AI tools.
+    yield `\uFEFF${csvLine(USAGE_EXPORT_HEADERS)}`;
+    for (const row of rows) {
+      yield csvLine([
+        row.event_id, usageTimestampUtc(row.timestamp_ms), row.timestamp_ms, row.call_count,
+        row.source_id, row.harness, row.profile, row.source_name, row.provider, row.vendor,
+        row.model, row.effort, row.service_tier, row.project, row.session_key, row.is_subagent,
+        row.input_tokens, row.cached_input_tokens, row.cache_write_tokens, row.output_tokens,
+        row.reasoning_tokens, row.total_tokens, row.duration_ms, row.cost_usd, row.cost_input_usd,
+        row.cost_cached_input_usd, row.cost_cache_write_usd, row.cost_output_usd,
+        row.cost_cache_saving_usd, row.cost_source, row.price_provider,
+      ]);
+    }
+  }
+  return Readable.from(chunks());
+}
 
 /**
  * Local midnight, so "today" means the calendar day the user is actually in.
@@ -72,6 +122,10 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     ...q.health(db),
   }));
 
+  // Opt-in local diagnostics endpoint. It contains process/scheduler counters only;
+  // usage rows, paths, prompts, and credentials stay outside this response.
+  app.get('/api/diagnostics/runtime', async () => runtimeSnapshot(scheduler));
+
   app.get('/api/overview', async () => {
     const now = Date.now();
     const limits = q.latestLimits(db);
@@ -86,6 +140,7 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       limits: withBurn(db, limits),
       subscriptions: q.subscriptionStatus(db),
       harnesses: q.harnessStatus(db),
+      settings: q.appSettings(db),
       // Legacy aliases kept while clients migrate from Account quota to Subscription.
       accounts: q.accountStatus(db),
       sources: q.listSources(db),
@@ -94,6 +149,102 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       sourceStatus: q.sourceStatus(db),
       lastPass: scheduler.status.lastPass,
     };
+  });
+
+  app.get('/api/pricing/coverage', async (req, reply) => {
+    const p = req.query as Record<string, string | undefined>;
+    const from = Number(p.from), to = Number(p.to);
+    const sourceId = p.source_id == null ? undefined : Number(p.source_id);
+    if (!p.from || !p.to || !Number.isSafeInteger(from) || !Number.isSafeInteger(to) ||
+        from < 0 || to < from || to > 8_640_000_000_000_000 ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Expected from/to epoch milliseconds and an optional positive source_id' });
+    }
+    return q.pricingCoverage(db, { from, to, ...(sourceId == null ? {} : { sourceId }) });
+  });
+
+  app.post('/api/pricing/refresh', async (_req, reply) => {
+    try {
+      return await refreshPricing(db);
+    } catch (error) {
+      const code = (error as { code?: string }).code;
+      log.error('pricing refresh failed', (error as Error).message);
+      return reply.code(code === 'network' || code === 'http' ? 502 : 422).send({
+        error: 'pricing refresh failed',
+        reason: (error as Error).message,
+      });
+    }
+  });
+
+  app.get('/api/alerts', async (req, reply) => {
+    const p = req.query as Record<string, string | undefined>;
+    const from = p.from == null ? undefined : Number(p.from);
+    const to = p.to == null ? undefined : Number(p.to);
+    const sourceId = p.source_id == null ? undefined : Number(p.source_id);
+    const limit = p.limit == null ? undefined : Number(p.limit);
+    if ((from != null && !Number.isSafeInteger(from)) ||
+        (to != null && !Number.isSafeInteger(to)) ||
+        (from != null && from < 0) || (to != null && to < 0) ||
+        (from != null && to != null && to < from) ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0)) ||
+        (limit != null && (!Number.isSafeInteger(limit) || limit < 1 || limit > 500))) {
+      return reply.code(400).send({ error: 'Invalid alert history range, source_id, or limit' });
+    }
+    return { events: q.alertHistory(db, {
+      ...(from == null ? {} : { from }), ...(to == null ? {} : { to }),
+      ...(sourceId == null ? {} : { sourceId }), ...(limit == null ? {} : { limit }),
+      pending: p.pending === '1',
+    }) };
+  });
+
+  app.post('/api/alerts/:id/delivered', async (req, reply) => {
+    const id = Number((req.params as { id: string }).id);
+    if (!Number.isSafeInteger(id) || id <= 0) return reply.code(400).send({ error: 'Invalid alert id' });
+    if (!q.markAlertDelivered(db, id)) return reply.code(404).send({ error: 'Alert not found' });
+    return { ok: true };
+  });
+
+  app.get('/api/notification-settings', async () => q.notificationSettings(db));
+  app.put('/api/notification-settings', async (req, reply) => {
+    if (req.body != null && (typeof req.body !== 'object' || Array.isArray(req.body))) {
+      return reply.code(400).send({ error: 'Notification settings must be a JSON object' });
+    }
+    const body = (req.body ?? {}) as Record<string, unknown>;
+    const validMinute = (value: unknown) => value == null || (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 && value < 1440);
+    const validSnooze = (value: unknown) => value == null || (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0);
+    if ((body.enabled != null && typeof body.enabled !== 'boolean') || !validMinute(body.quiet_start) || !validMinute(body.quiet_end) || !validSnooze(body.snooze_until)) {
+      return reply.code(400).send({ error: 'Invalid notification settings' });
+    }
+    return q.updateNotificationSettings(db, {
+      ...(body.enabled == null ? {} : { enabled: body.enabled }),
+      ...(body.snooze_until === undefined ? {} : { snooze_until: body.snooze_until as number | null }),
+      ...(body.quiet_start === undefined ? {} : { quiet_start: body.quiet_start as number | null }),
+      ...(body.quiet_end === undefined ? {} : { quiet_end: body.quiet_end as number | null }),
+    });
+  });
+
+  app.get('/api/settings', async () => q.appSettings(db));
+  app.put('/api/settings', async (req, reply) => {
+    if (req.body != null && (typeof req.body !== 'object' || Array.isArray(req.body))) {
+      return reply.code(400).send({ error: 'Settings must be a JSON object' });
+    }
+    const body = (req.body ?? {}) as Record<string, unknown>;
+    const validHidden = body.hidden_subscriptions === undefined || (
+      Array.isArray(body.hidden_subscriptions) &&
+      body.hidden_subscriptions.every((key) => typeof key === 'string' && key.trim() !== '')
+    );
+    if ((body.pet_enabled != null && typeof body.pet_enabled !== 'boolean') ||
+        (body.tray_animation_enabled != null && typeof body.tray_animation_enabled !== 'boolean') ||
+        !validHidden) {
+      return reply.code(400).send({ error: 'Invalid application settings' });
+    }
+    const settings = q.updateAppSettings(db, {
+      ...(body.pet_enabled == null ? {} : { pet_enabled: body.pet_enabled }),
+      ...(body.tray_animation_enabled == null ? {} : { tray_animation_enabled: body.tray_animation_enabled }),
+      ...(body.hidden_subscriptions === undefined ? {} : { hidden_subscriptions: body.hidden_subscriptions as string[] }),
+    });
+    scheduler.emit('settings', settings);
+    return settings;
   });
 
   /**
@@ -128,17 +279,72 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     accounts: q.accountStatus(db),
   }));
 
-  app.get('/api/trend', async (req) => {
+  app.get('/api/usage', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
-    const bucket: q.Bucket = s.bucket === 'day' ? 'day' : 'hour';
-    const to = s.to ? Number(s.to) : Date.now();
-    const defaultSpan = bucket === 'hour' ? 2 * DAY : 30 * DAY;
-    const from = s.from ? Number(s.from) : to - defaultSpan;
+    const range = s.range as UsageRangeKey | undefined;
+    const validRanges: UsageRangeKey[] = ['today', 'week', 'month', 'all', 'custom'];
+    const validBuckets: UsageBucket[] = ['hour', 'day', 'week', 'month'];
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    const from = s.from == null ? undefined : Number(s.from);
+    const to = s.to == null ? undefined : Number(s.to);
+    const bucket = s.bucket == null || s.bucket === 'auto' ? undefined : s.bucket as UsageBucket;
+    if ((range != null && !validRanges.includes(range)) ||
+        (bucket != null && !validBuckets.includes(bucket)) ||
+        (from != null && (!Number.isSafeInteger(from) || from < 0)) ||
+        (to != null && (!Number.isSafeInteger(to) || to < 0)) ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Invalid usage range, bucket, or source_id' });
+    }
+    try {
+      const period = resolveUsagePeriod({
+        range: range ?? 'today',
+        ...(from == null ? {} : { from }),
+        ...(to == null ? {} : { to }),
+        ...(bucket == null ? {} : { bucket }),
+      });
+      return q.usageSnapshot(db, period, sourceId);
+    } catch (error) {
+      return reply.code(400).send({ error: (error as Error).message });
+    }
+  });
+
+  app.get('/api/export/usage', async (req, reply) => {
+    const s = req.query as Record<string, string | undefined>;
+    const format = s.format ?? 'csv';
+    const from = Number(s.from);
+    const to = Number(s.to);
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    if (format !== 'csv' || !Number.isSafeInteger(from) || !Number.isSafeInteger(to) || from < 0 || to <= from ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Expected CSV format and a valid usage range' });
+    }
+    reply.header('Content-Type', 'text/csv; charset=utf-8');
+    reply.header('Content-Disposition', `attachment; filename="${usageExportFilename(from, to)}"`);
+    return reply.send(usageCsvStream(q.usageExportRows(db, {
+      from,
+      to,
+      ...(sourceId == null ? {} : { sourceId }),
+    })));
+  });
+
+  app.get('/api/trend', async (req, reply) => {
+    const s = req.query as Record<string, string | undefined>;
+    const bucket: q.Bucket = (['hour', 'day', 'week', 'month'] as const).includes(s.bucket as q.Bucket)
+      ? s.bucket as q.Bucket
+      : 'hour';
+    const to = s.to == null ? Date.now() : Number(s.to);
+    const defaultSpan = bucket === 'hour' ? 2 * DAY : bucket === 'day' ? 30 * DAY : bucket === 'week' ? 180 * DAY : 365 * DAY;
+    const from = s.from == null ? to - defaultSpan : Number(s.from);
     const groupBy = (['harness', 'model', 'vendor', 'project', 'none'] as const).includes(
       s.group_by as q.GroupBy,
     )
       ? (s.group_by as q.GroupBy)
       : 'harness';
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    if (!Number.isSafeInteger(from) || !Number.isSafeInteger(to) || from < 0 || to <= from ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Invalid trend range or source_id' });
+    }
     return {
       bucket,
       from,
@@ -149,15 +355,45 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
         to,
         bucket,
         groupBy,
-        ...(s.source_id ? { sourceId: Number(s.source_id) } : {}),
+        ...(sourceId == null ? {} : { sourceId }),
       }),
     };
   });
 
-  app.get('/api/models', async (req) => {
+  app.get('/api/compare', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
-    const since = s.since ? Number(s.since) : 0;
-    return { since, models: q.modelBreakdown(db, since) };
+    const from = Number(s.from), to = Number(s.to), previousFrom = Number(s.previous_from), previousTo = Number(s.previous_to);
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    const groupBy = (['harness', 'model', 'vendor', 'project', 'none'] as const).includes(s.group_by as q.GroupBy) ? s.group_by as q.GroupBy : 'harness';
+    if (![from, to, previousFrom, previousTo].every(Number.isSafeInteger) || from < 0 || to <= from || previousFrom < 0 || previousTo <= previousFrom || to - from !== previousTo - previousFrom || (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Expected equal-length current and previous ranges' });
+    }
+    return q.compareUsage(db, { from, to, previousFrom, previousTo, groupBy, ...(sourceId == null ? {} : { sourceId }) });
+  });
+
+  app.get('/api/models', async (req, reply) => {
+    const s = req.query as Record<string, string | undefined>;
+    const since = s.since == null ? 0 : Number(s.since);
+    const from = s.from == null ? since : Number(s.from);
+    const to = s.to == null ? null : Number(s.to);
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    if (!Number.isSafeInteger(from) || from < 0 ||
+        (to != null && (!Number.isSafeInteger(to) || to <= from)) ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Invalid model range or source_id' });
+    }
+    return { since: from, from, to, models: q.modelBreakdownBetween(db, from, to, sourceId) };
+  });
+
+  app.get('/api/today', async () => {
+    const now = Date.now();
+    const from = startOfToday(now);
+    return {
+      from,
+      to: now,
+      totals: q.totalsBetween(db, from, now),
+      rows: q.modelBreakdownBetween(db, from, now),
+    };
   });
 
   /*
@@ -165,31 +401,53 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
    * /projects/by-harness, /by-vendor and /by-model would ship the same rows three times
    * and let the three views disagree about a total.
    */
-  app.get('/api/projects', async (req) => {
+  app.get('/api/projects', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
-    const to = s.to ? Number(s.to) : Date.now();
+    const to = s.to == null ? Date.now() : Number(s.to);
     // Default 30 days, matching the Trend tab's default range.
-    const from = s.from ? Number(s.from) : to - 30 * 86_400_000;
-    return { from, to, rows: q.projectBreakdown(db, { from, to }) };
+    const from = s.from == null ? to - 30 * 86_400_000 : Number(s.from);
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    if (!Number.isSafeInteger(from) || !Number.isSafeInteger(to) || from < 0 || to <= from ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Invalid project range or source_id' });
+    }
+    return { from, to, rows: q.projectBreakdown(db, { from, to, ...(sourceId == null ? {} : { sourceId }) }) };
   });
 
-  app.get('/api/sessions', async (req) => {
+  app.get('/api/sessions', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
     const vendors = (s.vendor ?? '')
       .split(',')
       .map((v) => v.trim())
       .filter(Boolean);
+    const from = s.from == null ? undefined : Number(s.from);
+    const to = s.to == null ? undefined : Number(s.to);
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    const rawLimit = s.limit == null ? 50 : Number(s.limit);
+    const rawOffset = s.offset == null ? 0 : Number(s.offset);
+    if ((from != null && (!Number.isSafeInteger(from) || from < 0)) ||
+        (to != null && (!Number.isSafeInteger(to) || to < 0)) ||
+        (from != null && to != null && to <= from)) {
+      return reply.code(400).send({ error: 'Invalid session time range' });
+    }
+    if ((sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0)) ||
+        !Number.isSafeInteger(rawLimit) || rawLimit < 1 || rawLimit > 500 ||
+        !Number.isSafeInteger(rawOffset) || rawOffset < 0) {
+      return reply.code(400).send({ error: 'Invalid session pagination or source_id' });
+    }
     const opts = {
-      limit: Math.min(Math.max(Number(s.limit ?? 50), 1), 500),
-      offset: Math.max(Number(s.offset ?? 0), 0),
-      ...(s.source_id ? { sourceId: Number(s.source_id) } : {}),
+      limit: rawLimit,
+      offset: rawOffset,
+      ...(sourceId == null ? {} : { sourceId }),
+      ...(from == null ? {} : { from }),
+      ...(to == null ? {} : { to }),
       ...(vendors.length ? { vendors } : {}),
     };
     return {
       sessions: q.sessionList(db, opts),
       // The page control needs the filtered total, not just this page's length.
       total: q.sessionCount(db, opts),
-      vendors: q.sessionVendors(db),
+      vendors: q.sessionVendors(db, opts),
       limit: opts.limit,
       offset: opts.offset,
     };
@@ -222,13 +480,18 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
         })}\n\n`,
       );
     };
+    const onSettings = (settings: q.AppSettings) => {
+      reply.raw.write(`event: settings\ndata: ${JSON.stringify({ settings })}\n\n`);
+    };
     scheduler.on('data', onData);
+    scheduler.on('settings', onSettings);
 
     // Keep intermediaries and idle sockets from dropping a quiet stream.
     const ping = setInterval(() => reply.raw.write(': ping\n\n'), 25_000);
     req.raw.on('close', () => {
       clearInterval(ping);
       scheduler.off('data', onData);
+      scheduler.off('settings', onSettings);
     });
     await new Promise(() => {}); // held open until the client disconnects
   });
@@ -286,6 +549,7 @@ function withBurn(db: DB, limits: q.LimitRow[]) {
     ageSeconds: Math.round((now - Math.max(l.last_seen_at, l.source_fetched_at ?? 0)) / 1000),
     valueAgeSeconds: Math.round((now - l.observed_at) / 1000),
     burn: q.burnRate(db, l.source_id, l.window_kind, l.origin),
+    forecast: q.quotaForecast(db, l.source_id, l.window_kind, l.origin, now),
   }));
 }
 

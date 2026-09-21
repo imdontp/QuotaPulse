@@ -152,6 +152,48 @@ test('Codex and an account reader share one quota card while harness cards stay 
   assert.deepEqual(sourceStatus(d).map((source) => source.source_id), [codexSource.sourceId]);
 });
 
+test('telemetry reports usage newer than quota instead of presenting a fresh value', () => {
+  const d = db();
+  const account = {
+    key: 'anthropic:claude:company',
+    provider: 'anthropic',
+    displayName: 'Claude Company Subscription',
+  };
+  const sourceId = upsertSource(d, {
+    harness: 'claude-code',
+    profile: 'company',
+    rootPath: '/fake/claude-company',
+    displayName: 'Claude Code Company',
+    account,
+  });
+  const sink = new DbSink(d, sourceId, new PriceResolver(d));
+  const quotaAt = Date.now() - 30_000;
+  sink.limit({
+    windowKind: '5h',
+    usedPercent: 42,
+    resetsAt: Date.now() + 3_600_000,
+    observedAt: quotaAt,
+    sourceFetchedAt: quotaAt,
+    origin: 'statusline-snapshot',
+  });
+  sink.usage({
+    dedupKey: 'headless-call-1',
+    ts: Date.now(),
+    model: 'claude-opus-5',
+    provider: 'anthropic',
+    outputTokens: 100,
+  });
+
+  const source = sourceStatus(d).find((row) => row.source_id === sourceId)!;
+  assert.equal(source.telemetry.gap, true);
+  assert.equal(source.telemetry.reason, 'usage_newer_than_quota');
+  const subscription = subscriptionStatus(d).find((row) => row.subscription_key === account.key)!;
+  assert.equal(subscription.telemetry.gap, true);
+  assert.equal(subscription.telemetry.windows[0]!.window_kind, '5h');
+  assert.equal(subscription.telemetry.windows[0]!.reason, 'usage_newer_than_quota');
+  d.close();
+});
+
 test('stale quota does not keep a subscription active, and fresh quota reactivates it', () => {
   const d = db();
   const account = {
@@ -403,4 +445,37 @@ test('an adapter failure is recorded where the Health page can see it', async ()
   live = [];
   await resolveSources(d, [adapter]);
   assert.deepEqual(health(d).errors, [], 'a departed source must not keep reporting errors');
+});
+
+test('independent account probes do not stack their wait time', async () => {
+  const d = db();
+  let active = 0;
+  let maxActive = 0;
+  const adapter: Adapter = {
+    id: 'parallel-account-probe',
+    displayName: 'Parallel account probe',
+    async detect() {
+      return ['one', 'two'].map((profile) => ({
+        profile,
+        rootPath: `/account/${profile}`,
+        displayName: profile,
+        sourceKind: 'account' as const,
+      }));
+    },
+    watchTargets() {
+      return [];
+    },
+    async ingest() {
+      active += 1;
+      maxActive = Math.max(maxActive, active);
+      await new Promise<void>((resolve) => setTimeout(resolve, 20));
+      active -= 1;
+    },
+  } as unknown as Adapter;
+
+  const sources = await resolveSources(d, [adapter]);
+  const results = await runPass(d, sources);
+  assert.equal(results.length, 2);
+  assert.equal(maxActive, 2, 'account adapters should wait concurrently, not serially');
+  d.close();
 });

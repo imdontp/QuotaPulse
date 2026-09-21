@@ -18,6 +18,9 @@ import {
 export const COALESCE_MS = 1_200;
 /** Safety net for a missed SSE event while the page is visible. */
 export const FALLBACK_MS = 30_000;
+/** Health retries are deliberately quicker than data refreshes, but still bounded. */
+export const HEALTH_PROBE_MS = 5_000;
+export const UNAVAILABLE_AFTER_FAILURES = 3;
 
 export type RefreshReason =
   | 'initial'
@@ -28,7 +31,7 @@ export type RefreshReason =
   | 'online'
   | 'manual';
 
-export type RefreshConnectionState = 'connecting' | 'live' | 'reconnecting' | 'unavailable';
+export type RefreshConnectionState = 'connecting' | 'live' | 'reconnecting' | 'stale' | 'unavailable';
 
 export interface RefreshContext {
   /** Background refreshes keep existing tables and charts on screen. */
@@ -138,6 +141,7 @@ export class RefreshController {
   private readonly runtime: Runtime;
   private readonly subscribeData: (listener: () => void) => () => void;
   private readonly subscribeStream: (listener: (state: StreamState) => void) => () => void;
+  private readonly probeHealth: () => Promise<unknown>;
   private readonly handlers = new Set<Entry>();
   private readonly statusListeners = new Set<() => void>();
 
@@ -147,6 +151,9 @@ export class RefreshController {
   private stopOnline: (() => void) | null = null;
   private sseTimer: ReturnType<typeof setTimeout> | null = null;
   private fallbackTimer: ReturnType<typeof setTimeout> | null = null;
+  private healthProbeTimer: ReturnType<typeof setTimeout> | null = null;
+  private healthProbeRunning = false;
+  private consecutiveHealthFailures = 0;
   private streamState: StreamState = 'connecting';
   private pendingBatches: BatchJob[] = [];
   private drainingBatches = false;
@@ -154,7 +161,6 @@ export class RefreshController {
   private dirtyWhileHidden = false;
   private manualPromise: Promise<ManualRefreshOutcome> | null = null;
   private manualInProgress = false;
-  private lastProbeAt = 0;
   private lastSuccessAt: number | null = null;
   private lastError: string | null = null;
   private snapshotValue: RefreshStatus = this.makeSnapshot();
@@ -163,10 +169,12 @@ export class RefreshController {
     runtime?: Runtime;
     subscribeData?: (listener: () => void) => () => void;
     subscribeStream?: (listener: (state: StreamState) => void) => () => void;
+    probeHealth?: () => Promise<unknown>;
   } = {}) {
     this.runtime = options.runtime ?? browserRuntime();
     this.subscribeData = options.subscribeData ?? subscribe;
     this.subscribeStream = options.subscribeStream ?? subscribeStreamStatus;
+    this.probeHealth = options.probeHealth ?? api.health;
   }
 
   register(ref: MutableRefObject<RefreshHandler>): {
@@ -245,22 +253,21 @@ export class RefreshController {
     for (const job of this.pendingBatches.splice(0)) job.resolve({ ok: false, error: 'stopped' });
     this.streamState = 'connecting';
     this.lastError = null;
+    this.consecutiveHealthFailures = 0;
     this.publish();
   }
 
   private onStreamState(state: StreamState): void {
     this.streamState = state;
+    if (state === 'connected') {
+      this.consecutiveHealthFailures = 0;
+      this.clearHealthProbeTimer();
+    }
     this.publish();
 
     // EventSource reconnects itself. Probe the API at most once per fallback window
     // so a dead daemon is detected promptly without a reconnect storm.
-    if (state === 'reconnecting' && this.runtime.isVisible()) {
-      const now = this.runtime.now();
-      if (now - this.lastProbeAt >= FALLBACK_MS) {
-        this.lastProbeAt = now;
-        void this.request('sse');
-      }
-    }
+    if (state === 'reconnecting' && this.runtime.isVisible()) this.scheduleHealthProbe(0);
   }
 
   private onData(): void {
@@ -374,7 +381,42 @@ export class RefreshController {
   private clearTimers(): void {
     if (this.sseTimer) this.runtime.clearTimeout(this.sseTimer);
     this.clearFallbackTimer();
+    this.clearHealthProbeTimer();
     this.sseTimer = null;
+  }
+
+  private clearHealthProbeTimer(): void {
+    if (!this.healthProbeTimer) return;
+    this.runtime.clearTimeout(this.healthProbeTimer);
+    this.healthProbeTimer = null;
+  }
+
+  private scheduleHealthProbe(delay = HEALTH_PROBE_MS): void {
+    if (!this.started || !this.runtime.isVisible() || this.healthProbeRunning || this.healthProbeTimer) return;
+    this.healthProbeTimer = this.runtime.setTimeout(() => {
+      this.healthProbeTimer = null;
+      void this.runHealthProbe();
+    }, delay);
+  }
+
+  private async runHealthProbe(): Promise<void> {
+    if (!this.started || !this.runtime.isVisible() || this.healthProbeRunning) return;
+    this.healthProbeRunning = true;
+    let retry = false;
+    try {
+      await this.probeHealth();
+      this.consecutiveHealthFailures = 0;
+    } catch (error) {
+      this.consecutiveHealthFailures += 1;
+      if (this.consecutiveHealthFailures >= UNAVAILABLE_AFTER_FAILURES && this.lastError == null) {
+        this.lastError = String(error);
+      }
+      retry = this.consecutiveHealthFailures < UNAVAILABLE_AFTER_FAILURES;
+    } finally {
+      this.healthProbeRunning = false;
+      if (retry) this.scheduleHealthProbe();
+      this.publish();
+    }
   }
 
   private clearFallbackTimer(): void {
@@ -430,6 +472,8 @@ export class RefreshController {
   private noteSuccess(): void {
     this.lastSuccessAt = this.runtime.now();
     this.lastError = null;
+    this.consecutiveHealthFailures = 0;
+    this.clearHealthProbeTimer();
     try {
       sessionStorage.removeItem('quotapulse-token-reload-at');
     } catch {
@@ -441,12 +485,14 @@ export class RefreshController {
   private noteError(error: unknown): void {
     this.maybeReload(error);
     this.lastError = String(error);
+    this.scheduleHealthProbe(0);
     this.publish();
   }
 
   private makeSnapshot(): RefreshStatus {
     let state: RefreshConnectionState;
-    if (this.lastError != null) state = 'unavailable';
+    if (this.consecutiveHealthFailures >= UNAVAILABLE_AFTER_FAILURES) state = 'unavailable';
+    else if (this.lastError != null) state = 'stale';
     else if (this.streamState === 'connected') state = 'live';
     else if (this.streamState === 'reconnecting') state = 'reconnecting';
     else state = 'connecting';

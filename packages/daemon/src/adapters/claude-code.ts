@@ -327,9 +327,19 @@ function decodeSlug(file: string, projectsDir: string): string | null {
 
 interface Snapshot {
   updated_at?: string;
-  five_hour?: { used_percentage?: number | null; resets_at?: number | null };
-  seven_day?: { used_percentage?: number | null; resets_at?: number | null };
+  five_hour?: SnapshotWindow;
+  seven_day?: SnapshotWindow;
+  /** Official statusline payloads keep these windows under rate_limits. */
+  rate_limits?: {
+    five_hour?: SnapshotWindow;
+    seven_day?: SnapshotWindow;
+  };
   status?: string;
+}
+
+interface SnapshotWindow {
+  used_percentage?: number | null;
+  resets_at?: number | null;
 }
 
 interface UtilWindow {
@@ -364,46 +374,59 @@ function ingestLimits(ctx: IngestCtx): void {
   let published = false;
 
   const statuslineDir = join(ctx.profile.rootPath, 'statusline');
+  let best: { snap: Snapshot; at: Millis } | null = null;
+  const consider = (snap: Snapshot | null) => {
+    if (!snap) return;
+    const at = fromIso(snap.updated_at);
+    if (at == null) return;
+    const fiveHour = snapshotWindow(snap.five_hour, snap.rate_limits?.five_hour);
+    const sevenDay = snapshotWindow(snap.seven_day, snap.rate_limits?.seven_day);
+    const hasPct = fiveHour?.used_percentage != null || sevenDay?.used_percentage != null;
+    if (!hasPct) return;
+    if (!best || at > best.at) best = { snap, at };
+  };
+
   if (existsSync(statuslineDir)) {
-    let best: { snap: Snapshot; at: Millis } | null = null;
     for (const entry of readdirSync(statuslineDir, { withFileTypes: true })) {
       if (!entry.isDirectory()) continue;
       const snap = readJsonFile<Snapshot>(join(statuslineDir, entry.name, 'snapshot.json'));
-      if (!snap) continue;
-      const at = fromIso(snap.updated_at);
-      if (at == null) continue;
-      // Prefer the newest snapshot that actually carries a percentage; idle sessions
-      // write nulls and would otherwise mask a live reading.
-      const hasPct = snap.five_hour?.used_percentage != null || snap.seven_day?.used_percentage != null;
-      if (!hasPct) continue;
-      if (!best || at > best.at) best = { snap, at };
+      consider(snap);
     }
-    if (best) {
-      const { snap, at } = best;
-      if (snap.five_hour?.used_percentage != null || snap.five_hour?.resets_at != null) {
-        published = true;
-        ctx.sink.limit({
-          windowKind: '5h',
-          usedPercent: snap.five_hour?.used_percentage ?? null,
-          resetsAt: fromEpochAuto(snap.five_hour?.resets_at),
-          severity: snap.status ?? null,
-          observedAt: at,
-          sourceFetchedAt: at,
-          origin: 'statusline-snapshot',
-        });
-      }
-      if (snap.seven_day?.used_percentage != null || snap.seven_day?.resets_at != null) {
-        published = true;
-        ctx.sink.limit({
-          windowKind: 'weekly',
-          usedPercent: snap.seven_day?.used_percentage ?? null,
-          resetsAt: fromEpochAuto(snap.seven_day?.resets_at),
-          severity: snap.status ?? null,
-          observedAt: at,
-          sourceFetchedAt: at,
-          origin: 'statusline-snapshot',
-        });
-      }
+  }
+
+  // Some headless/statusline invocations do not provide a session id. The custom
+  // statusline then falls back to this profile-level snapshot instead of creating a
+  // statusline/<session>/snapshot.json file.
+  consider(readJsonFile<Snapshot>(join(ctx.profile.rootPath, 'usage-snapshot.json')));
+
+  const selected = best as { snap: Snapshot; at: Millis } | null;
+  if (selected) {
+    const { snap, at } = selected;
+    const fiveHour = snapshotWindow(snap.five_hour, snap.rate_limits?.five_hour);
+    const sevenDay = snapshotWindow(snap.seven_day, snap.rate_limits?.seven_day);
+    if (fiveHour?.used_percentage != null || fiveHour?.resets_at != null) {
+      published = true;
+      ctx.sink.limit({
+        windowKind: '5h',
+        usedPercent: fiveHour?.used_percentage ?? null,
+        resetsAt: fromEpochAuto(fiveHour?.resets_at),
+        severity: snap.status ?? null,
+        observedAt: at,
+        sourceFetchedAt: at,
+        origin: 'statusline-snapshot',
+      });
+    }
+    if (sevenDay?.used_percentage != null || sevenDay?.resets_at != null) {
+      published = true;
+      ctx.sink.limit({
+        windowKind: 'weekly',
+        usedPercent: sevenDay?.used_percentage ?? null,
+        resetsAt: fromEpochAuto(sevenDay?.resets_at),
+        severity: snap.status ?? null,
+        observedAt: at,
+        sourceFetchedAt: at,
+        origin: 'statusline-snapshot',
+      });
     }
   }
 
@@ -450,4 +473,10 @@ function ingestLimits(ctx: IngestCtx): void {
   if (cfg?.oauthAccount?.organizationType) {
     ctx.sink.accountState({ state: 'waiting', reason: 'quota-not-published', observedAt: now });
   }
+}
+
+function snapshotWindow(primary: SnapshotWindow | null | undefined, fallback: SnapshotWindow | null | undefined): SnapshotWindow | null {
+  if (primary?.used_percentage != null || primary?.resets_at != null) return primary;
+  if (fallback?.used_percentage != null || fallback?.resets_at != null) return fallback;
+  return primary ?? fallback ?? null;
 }

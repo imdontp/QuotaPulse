@@ -1,0 +1,2230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QuotaPulse PulsePet</title>
+<style>
+  :root {
+    --pet: #22d3a7;
+    --alert: #ffb020;
+    --pet-size: 64px;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: default;
+  }
+  #stage { position: relative; width: 100vw; height: 100vh; }
+
+  /*
+   * Two layers on purpose (spec §27, §30):
+   *   #pet-wrap  -- DESKTOP motion. Its transform is the walk position, set from JS only.
+   *   #pet       -- BODY motion. All CSS animation lives here so a breath or a bounce can
+   *                 never clobber the walk position the way a single element would.
+   */
+  /*
+   * Wave 3: the sprite lives at an absolute (x, y) inside the desktop overlay. `top/left:0`
+   * plus a translate keeps it on its own compositor layer, exactly as the old strip did.
+   */
+  #pet-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--pet-size);
+    height: var(--pet-size);
+    transform-origin: 50% 88%;
+    will-change: transform;
+  }
+  #pet {
+    position: absolute;
+    inset: 0;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 0 0;
+    opacity: 0;
+    cursor: pointer;
+    will-change: transform;
+    transform-origin: 50% 88%;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
+  }
+  #pet.art-ready { opacity: 1; }
+  #pet-wrap.dragging #pet { cursor: grabbing; }
+  #pet-wrap.position-locked #pet { cursor: default; }
+
+  /*
+   * Wave 3 skin layer (SKIN_THEME_ARCHITECTURE.md §3–§4): a decorative accent trim plus an
+   * optional accessory overlay from the active skin. Both are NON-semantic -- status colors
+   * (--pet/--alert) are never touched by the skin.
+   */
+  #accessory {
+    position: absolute;
+    left: 14px;
+    top: -12px;
+    width: 36px;
+    height: 24px;
+    display: none;
+    pointer-events: none;
+  }
+  #accessory.show { display: block; }
+  #accessory img { width: 100%; height: 100%; }
+  #skin-trim {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: -2px;
+    height: 4px;
+    display: none;
+    border-radius: 3px;
+    background: var(--skin-accent, var(--pet));
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  #pet-wrap.skin-applied #skin-trim { display: block; }
+
+  /* Body motion per mood (spec §31). */
+  #pet-wrap.healthy #pet { animation: breathe 3.4s ease-in-out infinite; }
+  #pet-wrap.working #pet { animation: breathe 1.5s ease-in-out infinite; }
+  #pet-wrap.warning #pet { animation: warnBob 2.6s ease-in-out infinite; }
+  #pet-wrap.critical #pet { animation: droop 4.5s ease-in-out infinite; }
+  #pet-wrap.reset #pet { animation: bounce 640ms cubic-bezier(0.34, 1.56, 0.64, 1) 4; }
+  #pet-wrap.idle #pet { opacity: 0.62; animation: breathe 5s ease-in-out infinite; }
+  /* A single short shake when the Pet ENTERS critical; it must not shake forever. */
+  #pet-wrap.shake-once #pet { animation: shakeOnce 240ms ease-in-out 2; }
+  /* Idle actions (spec §32): low-distraction, one at a time, never during interaction. */
+  #pet-wrap.look #pet { animation: lookAround 1.5s ease-in-out 1; }
+  #pet-wrap.hop #pet { animation: hop 640ms ease-out 1; }
+  #pet-wrap.stretch:not(.pilot-stretching) #pet { animation: stretch 900ms ease-in-out 1; }
+
+  @keyframes breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  @keyframes warnBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  @keyframes droop { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(2px) scaleY(0.98); } }
+  @keyframes bounce {
+    0% { transform: translateY(0) scale(1, 1); }
+    35% { transform: translateY(-14px) scale(0.96, 1.06); }
+    70% { transform: translateY(0) scale(1.06, 0.94); }
+    100% { transform: translateY(0) scale(1, 1); }
+  }
+  @keyframes shakeOnce {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+  }
+  @keyframes lookAround {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-5deg); }
+    60% { transform: rotate(5deg); }
+  }
+  @keyframes hop {
+    0% { transform: translateY(0) scale(1.04, 0.94); }
+    40% { transform: translateY(-16px) scale(0.96, 1.05); }
+    75% { transform: translateY(0) scale(1.05, 0.95); }
+    100% { transform: translateY(0) scale(1, 1); }
+  }
+  @keyframes stretch {
+    0%, 100% { transform: scale(1, 1); }
+    45% { transform: scale(0.94, 1.08); }
+    70% { transform: scale(1.03, 0.97); }
+  }
+
+  /* Reset sparkles: four brand ticks that flash outward once per bounce cycle. */
+  #sparkles { position: absolute; inset: 0; pointer-events: none; opacity: 0; }
+  #pet-wrap.reset #sparkles { animation: sparkle 640ms ease-out 4; }
+  #sparkles i { position: absolute; width: 2px; height: 7px; border-radius: 2px; background: var(--pet); }
+  #sparkles i:nth-child(1) { top: 4px; left: 6px; transform: rotate(-35deg); }
+  #sparkles i:nth-child(2) { top: 0; right: 10px; transform: rotate(25deg); }
+  #sparkles i:nth-child(3) { bottom: 10px; left: 0; transform: rotate(30deg); }
+  #sparkles i:nth-child(4) { bottom: 6px; right: 2px; transform: rotate(-25deg); }
+  @keyframes sparkle {
+    0% { opacity: 0; transform: scale(0.6); }
+    40% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(1.35); }
+  }
+
+  /* ---- Global risk indicator (spec §16) ------------------------------------ */
+  /* Separate from the mood: the Pet can be working happily while the system is critical. */
+  #halo {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    display: none;
+    pointer-events: none;
+  }
+  #halo.show { display: block; }
+  #halo span {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--alert);
+    box-shadow: 0 0 8px var(--alert);
+  }
+  #halo.crit span::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--alert);
+    animation: haloPing 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  @keyframes haloPing { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(2.4); opacity: 0; } }
+
+  /* ---- Reset badge --------------------------------------------------------- */
+  #badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(11, 15, 20, 0.92);
+    border: 1px solid var(--pet);
+    color: #e8edf3;
+    font: 600 12px/1.4 'Segoe UI', system-ui, sans-serif;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px -6px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+    transform: translate(-50%, -100%);
+  }
+  #badge.show { display: block; }
+
+  /* ---- Speech bubble (spec §21–§25) --------------------------------------- */
+  #bubble {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    max-width: 300px;
+    padding: 9px 11px 8px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(22, 43, 58, 0.98), rgba(11, 24, 36, 0.98));
+    border: 1px solid #385b6c;
+    color: #e8edf3;
+    font: 12px/1.45 'Segoe UI', system-ui, sans-serif;
+    box-shadow: 0 10px 26px -12px rgba(0, 0, 0, 0.85);
+    transform: translate(-50%, -100%);
+    -webkit-font-smoothing: antialiased;
+  }
+  #bubble.show { display: block; }
+  #bubble.tone-warn { border-color: #6a5320; }
+  #bubble.tone-crit { border-color: #6d2b2c; }
+  #bubble .b-title { font-weight: 650; font-size: 12.5px; margin-bottom: 3px; color: #b3f2f0; }
+  #bubble .b-line { color: #b9c3d0; white-space: nowrap; }
+  #bubble .b-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+  #bubble button {
+    /* Two per row: the spec's action list can reach four buttons, which will not fit on one
+       line inside a 300px bubble. */
+    flex: 1 1 calc(50% - 3px);
+    min-width: 88px;
+    background: #173544;
+    color: #e8edf3;
+    border: 1px solid #345869;
+    border-radius: 7px;
+    padding: 4px 8px;
+    font: 600 11px/1.3 'Segoe UI', system-ui, sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #bubble button:hover { background: #25313f; }
+
+  /*
+   * ---- Expression layer (asset spec §4, §11, §28) --------------------------
+   * Vector mascots expose stable part classes, so blink / scan / talk / tail / antenna /
+   * legs animate inside the artwork without re-resolving the frame. Body motion per mood
+   * already lives on #pet above; these target the SVG's own parts.
+   */
+  .qp-sprite, .qp-head, .qp-eye, .qp-look, .qp-mouth, .qp-tail, .qp-ear,
+  .qp-antenna, .qp-leg, .qp-live {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .qp-leg { transform-origin: center bottom; }
+  .qp-tail { transform-origin: 15% 85%; }
+  .qp-head { transform-origin: center bottom; }
+
+  #pet-wrap .qp-eye { animation: qpBlink 5.4s ease-in-out infinite; }
+  #pet-wrap .qp-tail { animation: qpTail 4.2s ease-in-out infinite; }
+  #pet-wrap .qp-antenna { animation: qpAntenna 3s ease-in-out infinite; }
+  #pet-wrap .qp-live { animation: qpLive 2.4s ease-in-out infinite; }
+
+  /* Working: focused eye scan + a faster live dot. */
+  #pet-wrap.working .qp-look { animation: qpScan 1.6s ease-in-out infinite; }
+  #pet-wrap.working .qp-live { animation-duration: 0.9s; }
+
+  /* Warning tilts its head; critical and reset keep their drawn expression still. */
+  #pet-wrap.warning .qp-head { animation: qpTilt 2.6s ease-in-out infinite; }
+  #pet-wrap.critical .qp-eye, #pet-wrap.reset .qp-eye { animation: none; }
+
+  /* Transient reactions (spec §26, §28). */
+  #pet-wrap.talking .qp-mouth { animation: qpTalk 300ms ease-in-out infinite; }
+  #pet-wrap.hovering .qp-sprite { animation: qpHover 600ms ease-out 1; }
+  #pet-wrap.clicked .qp-sprite { animation: qpClick 340ms cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
+  #pet-wrap.walking .qp-sprite { animation: qpWalkBob 420ms ease-in-out infinite; }
+  #pet-wrap.walking .qp-leg { animation: qpLeg 420ms ease-in-out infinite; }
+  #pet-wrap.walking .qp-leg-r { animation-delay: -210ms; }
+  #pet-wrap.turning .qp-sprite { animation: qpTurn 320ms ease-out 1; }
+
+  @keyframes qpBlink { 0%, 90%, 100% { transform: scaleY(1); } 94%, 96% { transform: scaleY(0.1); } }
+  @keyframes qpTail { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(7deg); } }
+  @keyframes qpAntenna { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+  @keyframes qpLive { 0%, 100% { opacity: 0.65; transform: scale(1); } 50% { opacity: 1; transform: scale(1.18); } }
+  @keyframes qpScan { 0%, 100% { transform: translateX(-1.2px); } 50% { transform: translateX(1.2px); } }
+  @keyframes qpTilt { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+  @keyframes qpTalk { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.45); } }
+  @keyframes qpHover { 0% { transform: translateY(0); } 40% { transform: translateY(-4px); } 100% { transform: translateY(0); } }
+  @keyframes qpClick { 0% { transform: scale(1, 1); } 40% { transform: scale(1.12, 0.88); } 100% { transform: scale(1, 1); } }
+  @keyframes qpWalkBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+  @keyframes qpLeg { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.5px); } }
+  @keyframes qpTurn { 0% { transform: scaleX(0.7); } 100% { transform: scaleX(1); } }
+
+  /* Wave 1 transient intros (Next Handoff Pack §4 state transitions). */
+  #pet-wrap.unknown #pet { opacity: 0.72; animation: breathe 5s ease-in-out infinite; }
+  #pet-wrap.intro-warning .qp-sprite { animation: qpWarnFlash 900ms ease-out 1; }
+  #pet-wrap.intro-critical .qp-sprite { animation: qpCritShake 900ms ease-out 1; }
+  #pet-wrap.celebrate .qp-sprite { animation: qpCelebrate 900ms ease-out 1; }
+  @keyframes qpWarnFlash {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.08) rotate(-3deg); }
+    100% { transform: scale(1); }
+  }
+  @keyframes qpCritShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-3px); }
+    40% { transform: translateX(3px); }
+    60% { transform: translateX(-2px); }
+    80% { transform: translateX(2px); }
+  }
+  @keyframes qpCelebrate {
+    0% { transform: translateY(0); }
+    35% { transform: translateY(-8px) scale(1.05); }
+    100% { transform: translateY(0); }
+  }
+
+  /* ---- Wave 2 micro-behaviors & long-idle (Motion Bible §1, §3) ------------ */
+  #pet-wrap.blink .qp-eye { animation: qpBlink 260ms ease-in-out 1; }
+  #pet-wrap.look-left .qp-look { animation: qpLookLeft 900ms ease-in-out 1; }
+  #pet-wrap.look-right .qp-look { animation: qpLookRight 900ms ease-in-out 1; }
+  #pet-wrap.idle-variant-1 .qp-sprite { animation: qpIdleV1 1600ms ease-in-out 1; }
+  #pet-wrap.idle-variant-2 .qp-head { animation: qpIdleV2 1600ms ease-in-out 1; }
+  #pet-wrap:not(.concept-art).sit:not(.pilot-sitting) .qp-sprite { transform: translateY(3px) scaleY(0.92); }
+  #pet-wrap:not(.concept-art).lie:not(.pilot-lying) .qp-sprite { transform: translateY(7px) scaleY(0.8); }
+  #pet-wrap:not(.concept-art).sleep:not(.pilot-sleeping) .qp-sprite { transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
+  #pet-wrap.sleep .qp-eye { animation: none; }
+  #pet-wrap.wake .qp-sprite { animation: qpWake 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
+  #pet-wrap.stopping:not(.pilot-stopping) .qp-sprite { animation: qpStop 420ms ease-out 1; }
+  /* Flux Blob glides/morphs instead of stepping (Wave 2 handoff constraint). */
+  #pet-wrap.walking.glide .qp-sprite { animation: qpGlide 900ms ease-in-out infinite; }
+  #pet-wrap.walking.glide .qp-leg { animation: none; }
+
+  @keyframes qpLookLeft { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-2.2px); } }
+  @keyframes qpLookRight { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(2.2px); } }
+  @keyframes qpIdleV1 { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-2.5px); } 70% { transform: translateY(0.5px); } }
+  @keyframes qpIdleV2 { 0%, 100% { transform: rotate(0deg); } 30% { transform: rotate(-4deg); } 70% { transform: rotate(3deg); } }
+  @keyframes qpWake {
+    0% { transform: translateY(6px) scaleY(0.84); }
+    60% { transform: translateY(-4px) scaleY(1.04); }
+    100% { transform: translateY(0) scaleY(1); }
+  }
+  @keyframes qpStop { 0% { transform: translateY(-2px) scale(1.04, 0.96); } 100% { transform: translateY(0) scale(1, 1); } }
+  @keyframes qpGlide { 0%, 100% { transform: translateY(0) scale(1, 1); } 50% { transform: translateY(-3px) scale(1.03, 0.97); } }
+
+  /*
+   * Wave 2 posture and look also drive the raster body (#pet), so they work for characters
+   * with no SVG parts. Declared after the mood rules so they win while active.
+   */
+  /* Concept sheets are finished illustrations, not skeletal sprites. Do not squash or
+     stretch the whole raster when a rest state is requested; motion assets can opt into
+     posture-specific keys by omitting this class. */
+  #pet-wrap:not(.concept-art).sit:not(.pilot-sitting) #pet { animation: none; transform: translateY(3px) scaleY(0.92); }
+  #pet-wrap:not(.concept-art).lie:not(.pilot-lying) #pet { animation: none; transform: translateY(7px) scaleY(0.8); }
+  #pet-wrap:not(.concept-art).sleep:not(.pilot-sleeping) #pet { animation: none; transform: translateY(8px) scaleY(0.78); opacity: 0.86; }
+  #pet-wrap.wake #pet { animation: qpWake 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
+  #pet-wrap.stopping:not(.pilot-stopping) #pet { animation: qpStop 420ms ease-out 1; }
+  #pet-wrap.look-left #pet { animation: qpLookLeftBody 900ms ease-in-out 1; }
+  #pet-wrap.look-right #pet { animation: qpLookRightBody 900ms ease-in-out 1; }
+  @keyframes qpLookLeftBody { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-6deg); } }
+  @keyframes qpLookRightBody { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(6deg); } }
+
+  /* Peek bubble: no action row, tighter padding (Wave 2 interaction spec §4). */
+  #bubble[data-mode="peek"] { padding: 7px 10px; }
+  #bubble[data-mode="peek"] .b-actions { display: none; }
+
+  /*
+   * Wave 2 personality differentiation (personality bibles): one motion language per
+   * character instead of one shared default.
+   */
+  #pet-wrap.char-orbit_bot .qp-antenna { animation-duration: 2.2s; }
+  #pet-wrap.char-pulse_fox .qp-tail { animation-duration: 3.2s; }
+  #pet-wrap.char-pulse_fox .qp-ear { animation: qpEarTwitch 4.6s ease-in-out infinite; }
+  #pet-wrap.char-capsule_cat .qp-tail { animation-duration: 5.4s; }
+  #pet-wrap.char-capsule_cat .qp-ear { animation: qpEarLed 2.6s ease-in-out infinite; }
+  #pet-wrap.char-flux_blob .qp-body { animation: qpBlobMorph 3.8s ease-in-out infinite; }
+  #pet-wrap.char-flux_blob .qp-leg { animation: none; }
+
+  @keyframes qpEarTwitch { 0%, 92%, 100% { transform: rotate(0deg); } 95% { transform: rotate(-8deg); } 97% { transform: rotate(6deg); } }
+  @keyframes qpEarLed { 0%, 100% { opacity: 0.72; } 50% { opacity: 1; } }
+  @keyframes qpBlobMorph { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.04, 0.96); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    #pet, #pet-wrap #pet, #pet-wrap #pet *, #sparkles, #halo span::after { animation: none !important; }
+    #sparkles { display: none; }
+  }
+  /* User-forced reduced motion, layered on top of the OS preference (spec §35). */
+  #pet-wrap.reduced-motion #pet,
+  #pet-wrap.reduced-motion #pet * { animation: none !important; }
+  /* Blink is the one behavior reduced motion keeps (Wave 2 Motion Bible §6). The selector
+     out-specifies the blanket animation:none rules above so the blink still plays. */
+  #pet-wrap.blink #pet .qp-eye { animation: qpBlink 260ms ease-in-out 1 !important; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="pet-wrap" class="idle" title="QuotaPulse">
+    <div id="pet"></div>
+    <div id="accessory" aria-hidden="true"></div>
+    <div id="skin-trim" aria-hidden="true"></div>
+    <div id="sparkles" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div id="halo" aria-hidden="true"><span></span></div>
+  </div>
+  <div id="badge"></div>
+  <div id="bubble" role="status">
+    <div class="b-title"></div>
+    <div class="b-lines"></div>
+    <div class="b-actions"></div>
+  </div>
+</div>
+<script>
+(function () {
+  var SIZE = 64;
+  var wrap = document.getElementById('pet-wrap');
+  var pet = document.getElementById('pet');
+  var badge = document.getElementById('badge');
+  var bubble = document.getElementById('bubble');
+  var halo = document.getElementById('halo');
+  var accessory = document.getElementById('accessory');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var SPEED = { healthy: 36, working: 90, warning: 55, critical: 22, reset: 0, idle: 0 };
+  /* Wave 2 local range (Motion Bible §4): Minimal never moves, Companion is 20–150px,
+     Roaming is the optional/later feature. Used only when no roaming zones were sent. */
+  var RANGE = { minimal: [0, 0], companion: [20, 150], roaming: [120, 520] };
+  /* The pack names the healthy loop `idle`, not `healthy`; the map keeps that quirk in one
+     place instead of string-building a filename that silently 404s to a blank sprite. */
+  /* Raster asset root for the default Orbit Bot (asset spec §17 layout). */
+  var ORBIT_ASSETS = '../assets/pets/orbit-bot/';
+  var ORBIT_FALLBACK = 'motion-pilot/runtime/256/idle_loop/idle_loop_001.png';
+  /* Bubble button labels (spec §25). `details` opens the popup, which is also what a left
+     click does, so the button keeps the label the spec's example bubble shows. */
+  var ACTION_LABEL = {
+    details: 'Details',
+    pin: 'Pin',
+    unpin: 'Unpin',
+    'open-dashboard': 'Dashboard',
+    snooze: 'Snooze 1h',
+  };
+
+  var frame = {
+    mood: 'idle', spriteIndex: 0, colorCss: '#8a939e', alertColorCss: '#8a939e',
+    showGlobalAlert: false, badge: null, bubble: null, movement: 'minimal',
+    hasData: false, reducedMotion: false, focus: null, providers: [],
+    character: 'orbit_bot', spriteSvg: null,
+    animation: 'healthy_idle', animationPlayback: 'loop', animationSrc: null,
+    skinAccessory: null, skinAccentCss: null,
+    layers: { mood: 'unknown', expression: 'none', locomotion: 'stationary', interaction: 'none', facing: 'right' }
+  };
+  /* Dev-only motion tuning (pushed by main): fast idle scheduler. */
+  var motionDev = false;
+  /*
+   * Wave 3: the sprite is positioned at an absolute (x, y) inside the desktop overlay. The
+   * main process owns the placement policy; the renderer animates toward targets and reports
+   * where it ended up.
+   */
+  var x = Math.max(0, Math.floor(window.innerWidth / 2 - SIZE / 2));
+  var y = Math.max(0, window.innerHeight - SIZE - 8);
+  var anchorX = x;
+  var anchorY = y;
+  var dir = 1;
+  /* Direction-specific locomotion classes, the Wave 2 asset contract (walk_left etc.). */
+  var walkSide = null;
+  var targetX = x;
+  var targetY = y;
+  var walking = false;
+  var turning = false;
+  var turnSide = null;
+  var turnStartedAt = 0;
+  var stopping = false;
+  var stopStartedAt = 0;
+  var pendingStopCompletion = null;
+  var stopFallbackTimer = null;
+  var sittingDown = false;
+  var sitStartedAt = 0;
+  var sitIdleStartedAt = 0;
+  var sitIdleTimer = null;
+  var idleLoopStartedAt = 0;
+  var idleLoopTimer = null;
+  var lyingDown = false;
+  var lieStartedAt = 0;
+  var sleepLoopStartedAt = 0;
+  var sleepLoopTimer = null;
+  var sleepAfterLie = false;
+  var stretching = false;
+  var stretchStartedAt = 0;
+  var hoverReacting = false;
+  var hoverReactStartedAt = 0;
+  var standingUp = false;
+  var standStartedAt = 0;
+  var pendingStandWalk = null;
+  /** True when the current walk is a main-planned roaming burst / Return Home travel. */
+  var roaming = false;
+  /** Main-process token for the active roam command; stale completions are ignored upstream. */
+  var activeRoamCommandId = null;
+  var activeRoamGeometryVersion = null;
+  /** Safe regions (overlay-local) from the main process; local movement is clamped to them. */
+  var zones = null;
+  /** Enabled exclusion zones (overlay-local) supplied by the main process. */
+  var blocked = null;
+  /** Overlay origin in screen coordinates, for converting local px to absolute px. */
+  var originX = 0;
+  var originY = 0;
+  /** Wave 3 drag state (click-vs-drag threshold lives in main's policy). */
+  var pointerDown = false;
+  var dragging = false;
+  var suppressClick = false;
+  var dragStartClient = null;
+  var dragStartSprite = null;
+  var locked = false;
+  var idleTimer = null;
+  var actionTimer = null;
+  var last = performance.now();
+  var raf = null;
+  var hoverOver = false;
+  var clickTimer = null;
+  var homeWarpTimer = null;
+  var homeWarpFadeTimer = null;
+  var homeWarpVersion = 0;
+  var bubbleKey = '';
+  var bubbleHideTimer = null;
+  var lastMood = 'idle';
+  /* Key of the currently injected vector mascot, so a repaint does not restart it. */
+  var lastSvgKey = null;
+  /* Last raster clip URL chosen from the manifest; avoids reloading the same clip. */
+  var lastRasterSrc = null;
+  /* Last skin accessory injected, so a repaint every poll does not restart the overlay. */
+  var lastAccessorySrc = null;
+  /* Last resolved animation id, so a `once` reaction retriggers only when it changes. */
+  var lastAnimation = null;
+  /* Last Motion Extension Pack crop injected into the body. */
+  var lastMotionKey = null;
+  var walkStartedAt = performance.now();
+  var motionFrameCache = Object.create(null);
+  var motionClipCache = [];
+  var motionAssetKey = '';
+  var MAX_CACHED_MOTION_CLIPS = 5;
+  /*
+   * Wave 1 animation ids that add a one-shot expression class on top of the mood. Presence
+   * is resolved in the tray; the renderer only maps the resolved id to motion (Phase C).
+   */
+  var ONCE_ANIM_CLASS = {
+    warning_intro: 'intro-warning',
+    critical_intro: 'intro-critical',
+    reset_celebrate: 'celebrate',
+    hover_react: 'hovering',
+    click_react: 'clicked'
+  };
+  var ONCE_ANIM_MS = {
+    warning_intro: 1100, critical_intro: 1000, reset_celebrate: 2800,
+    hover_react: 600, click_react: 750
+  };
+  /*
+   * Wave 2 behavior state (WAVE2_MOTION_BIBLE.md §3): idle tier is measured from the last
+   * user interaction, a posture (sit/lie/sleep) persists until interrupted, and the
+   * scheduler randomizes within the tier so the Pet never reads as a metronome.
+   */
+  var lastInteractionAt = Date.now();
+  var posture = null;
+  /* Dev motion review must surface each new rest transition at least once. Production
+     remains fully randomized according to the frozen idle tiers. */
+  var sitPreviewed = false;
+  var liePreviewed = false;
+  var sleepPreviewed = false;
+  var stretchPreviewed = false;
+  var BODY_ACTION_MS = { look: 1500, 'look-left': 1200, 'look-right': 1200, hop: 1600, stretch: 1600, blink: 260 };
+  /* Idle behavior id -> wrapper class. Kept here so the mapping has one home. */
+  var CLASS_FOR_IDLE = {
+    blink: 'blink', look_left: 'look-left', look_right: 'look-right',
+    idle_variant_1: 'idle-variant-1', idle_variant_2: 'idle-variant-2', stretch: 'stretch'
+  };
+  var CHAR_CLASSES = ['char-orbit_bot', 'char-pulse_fox', 'char-flux_blob', 'char-capsule_cat', 'char-nova', 'char-byte', 'char-mochi', 'char-kuro'];
+
+  // ---- Painting -------------------------------------------------------------
+  function paint() {
+    // Settings can force reduced motion on top of the OS preference (spec §35, §37).
+    reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches || !!frame.reducedMotion;
+    // Swap only the mood class: transient classes (hovering/walking/talking...) must survive
+    // a repaint, which happens on every poll.
+    var moodClass = frame.hasData ? frame.mood : 'idle';
+    if (!wrap.classList.contains(moodClass)) {
+      wrap.classList.remove('healthy', 'working', 'warning', 'critical', 'reset', 'idle', 'unknown');
+      wrap.classList.add(moodClass);
+    }
+    // Wave 2 personality: a stable class per character lets CSS tune motion language.
+    var charClass = 'char-' + frame.character;
+    if (!wrap.classList.contains(charClass)) {
+      for (var ci = 0; ci < CHAR_CLASSES.length; ci++) wrap.classList.remove(CHAR_CLASSES[ci]);
+      wrap.classList.add(charClass);
+    }
+    wrap.classList.toggle('reduced-motion', !!frame.reducedMotion);
+    // Wave 3 skin overlays: only the accessory/trim change; the mood class is untouched.
+    paintSkin();
+    applyAnimationClass();
+    wrap.style.setProperty('--pet', frame.colorCss);
+    badge.style.setProperty('--pet', frame.colorCss);
+    halo.style.setProperty('--alert', frame.alertColorCss);
+    halo.title = frame.showGlobalAlert ? 'Global quota alert: the highest-severity subscription is shown here.' : '';
+    applyArt();
+    wrap.classList.toggle('concept-art', !!frame.spriteSvg || !!frame.animationSrc);
+
+    // A single shake on entering critical, never a permanent one (spec §31).
+    if (frame.hasData && frame.mood === 'critical' && lastMood !== 'critical') {
+      wrap.classList.add('shake-once');
+      setTimeout(function () { wrap.classList.remove('shake-once'); }, 520);
+    }
+    lastMood = frame.hasData ? frame.mood : 'idle';
+
+    var focusLabel = frame.focus
+      ? frame.focus.name + (frame.focus.usedPercent != null ? ' · ' + Math.round(frame.focus.usedPercent) + '%' : '')
+      : 'no live quota';
+    wrap.title = 'QuotaPulse — ' + focusLabel + ' (click for details)';
+
+    var globalAlertLabel = frame.showGlobalAlert && frame.global
+      ? ' Global alert: ' + (frame.global.severity === 'crit' ? 'another subscription is critical.' : 'another subscription needs attention.')
+      : '';
+    wrap.title += globalAlertLabel;
+    halo.classList.toggle('show', !!frame.showGlobalAlert);
+    halo.classList.toggle('crit', !!(frame.global && frame.global.severity === 'crit'));
+
+    var badgeText = frame.badge ? frame.badge + ' to reset' : '';
+    badge.textContent = badgeText;
+    badge.classList.toggle('show', !!badgeText && frame.hasData);
+
+    paintBubble();
+    place();
+    scheduleIdle();
+  }
+
+  /*
+   * Map the tray-resolved Wave 1 animation id onto the expression layer. Only a change of
+   * id retriggers a one-shot, so a quota refresh that keeps the same base loop never
+   * restarts motion (Next Handoff Pack — restart suppression). Strong reactions are
+   * skipped under reduced motion; the manifest already downgraded them to a safe variant.
+   */
+  function applyAnimationClass() {
+    if (frame.animation === lastAnimation) return;
+    lastAnimation = frame.animation;
+    if (hoverReacting && frame.animation !== 'hover_react') finishPilotHoverReact(false);
+    var cls = ONCE_ANIM_CLASS[frame.animation];
+    if (!cls) return;
+    if (reduced && (frame.animation === 'critical_intro' || frame.animation === 'warning_intro' || frame.animation === 'reset_celebrate')) return;
+    // An alert/acknowledgement interrupts sleep or a resting posture (Wave 2 QA D).
+    wake();
+    if (frame.animation === 'hover_react') startPilotHoverReact();
+    wrap.classList.add(cls);
+    setTimeout(function () { wrap.classList.remove(cls); }, ONCE_ANIM_MS[frame.animation] || 900);
+  }
+
+  /*
+   * Wave 3 skin layer: inject the accessory overlay when the active skin ships one, and
+   * surface the decorative accent. Neither touches a status color.
+   */
+  function paintSkin() {
+    var accent = frame.skinAccentCss || frame.colorCss;
+    wrap.style.setProperty('--skin-accent', accent);
+    var framed = !!(frame.skinAccessory || (frame.skinAccentCss && frame.skinAccentCss !== frame.colorCss));
+    wrap.classList.toggle('skin-applied', framed);
+    if (frame.skinAccessory) {
+      if (lastAccessorySrc !== frame.skinAccessory) {
+        lastAccessorySrc = frame.skinAccessory;
+        accessory.innerHTML = "<img src='" + frame.skinAccessory + "' alt='' />";
+      }
+      accessory.classList.add('show');
+    } else {
+      if (lastAccessorySrc !== null) lastAccessorySrc = null;
+      accessory.innerHTML = '';
+      accessory.classList.remove('show');
+    }
+  }
+
+  function motionSvg(src, index) {
+    var width = 2172;
+    var height = 724;
+    var cell = width / 5;
+    var offset = cell * index;
+    var safe = String(src).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 ' + cell + ' ' + height + '"><g class="qp-sprite"><image href="' + safe + '" x="-' + offset + '" y="0" width="' + width + '" height="' + height + '" preserveAspectRatio="none"/></g></svg>';
+  }
+
+  function motionCrop() {
+    var motion = frame.motion;
+    if (!motion || (!motion.coreSheet && !motion.actionSheet)) return null;
+    /* The generated extension sheets are neutral/cyan. Warning, critical and reset keep
+       the authored concept states so semantic severity colours remain unmistakable. */
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var actionIndex = -1;
+    if (walking) actionIndex = dir < 0 ? 0 : 1;
+    else if (wrap.classList.contains('turning')) actionIndex = 2;
+    else if (wrap.classList.contains('stopping')) actionIndex = 3;
+    else if (posture === 'sleep' || posture === 'lie' || posture === 'sit') actionIndex = 4;
+    if (actionIndex >= 0 && motion.actionSheet) return { src: motion.actionSheet, index: actionIndex };
+    var coreIndex = 0;
+    if (wrap.classList.contains('blink')) coreIndex = 1;
+    else if (wrap.classList.contains('look-left')) coreIndex = 2;
+    else if (wrap.classList.contains('look-right')) coreIndex = 3;
+    else if (wrap.classList.contains('clicked') || wrap.classList.contains('hovering')) coreIndex = 4;
+    return motion.coreSheet ? { src: motion.coreSheet, index: coreIndex } : null;
+  }
+
+  function pilotWalkClip() {
+    if (reduced || !walking) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clipId = dir < 0 ? 'walk_left' : 'walk_right';
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips[clipId];
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 8 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: clipId, clip: clip };
+  }
+
+  function pilotIdleLoopClip() {
+    if (reduced || walking || turning || stopping || sittingDown || lyingDown || stretching || hoverReacting || standingUp || posture) return null;
+    if (hoverOver || interactionBlocked()) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    preloadMotionClip('idle_loop');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.idle_loop;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 8 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'idle_loop', clip: clip };
+  }
+
+  function pilotTurnClip() {
+    if (reduced || !turning || !turnSide) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clipId = 'turn_' + turnSide;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips[clipId];
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: clipId, clip: clip };
+  }
+
+  function pilotStopClip() {
+    if (reduced || !stopping) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.stop;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 4 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'stop', clip: clip };
+  }
+
+  function pilotSitDownClip() {
+    if (reduced || (!sittingDown && posture !== 'sit')) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.sit_down;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'sit_down', clip: clip };
+  }
+
+  function pilotSitIdleClip() {
+    if (reduced || sittingDown || posture !== 'sit') return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.sit_idle;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'sit_idle', clip: clip };
+  }
+
+  function pilotLieDownClip() {
+    if (reduced || (!lyingDown && posture !== 'lie')) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.lie_down;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'lie_down', clip: clip };
+  }
+
+  function pilotSleepLoopClip() {
+    if (reduced || lyingDown || posture !== 'sleep') return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.sleep_loop;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 8 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'sleep_loop', clip: clip };
+  }
+
+  function pilotWakeUpClip() {
+    if (reduced || !standingUp) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.wake_up;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'wake_up', clip: clip };
+  }
+
+  function pilotStretchClip() {
+    if (reduced || !stretching) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.stretch;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'stretch', clip: clip };
+  }
+
+  function pilotHoverReactClip() {
+    if (reduced || !hoverReacting) return null;
+    if (frame.mood !== 'healthy' && frame.mood !== 'working') return null;
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.hover_react;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 4 || !Number.isFinite(clip.fps) || clip.fps <= 0) return null;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return null;
+    return { id: 'hover_react', clip: clip };
+  }
+
+  function hasDirectionalPilotMotionAsset() {
+    if (!frame.motion || frame.motion.source !== 'orbit-motion-pilot' || !frame.motion.clips) return false;
+    var clipId = turning && turnSide ? 'turn_' + turnSide : walking ? (dir < 0 ? 'walk_left' : 'walk_right') : null;
+    if (!clipId) return false;
+    var clip = frame.motion.clips[clipId];
+    var expectedFrames = turning ? 6 : 8;
+    return !!(clip && Array.isArray(clip.frames) && clip.frames.length === expectedFrames);
+  }
+
+  function clearMotionCache() {
+    Object.keys(motionFrameCache).forEach(function (src) {
+      var entry = motionFrameCache[src];
+      if (entry && entry.image) {
+        entry.image.onload = null;
+        entry.image.onerror = null;
+        entry.image.src = '';
+      }
+      delete motionFrameCache[src];
+    });
+    motionClipCache = [];
+  }
+
+  function preloadMotionClip(clipId, sourceFrame) {
+    var source = sourceFrame || frame;
+    var clip = source && source.motion && source.motion.clips && source.motion.clips[clipId];
+    if (!clip || !Array.isArray(clip.frames)) return;
+    var existing = motionClipCache.indexOf(clipId);
+    if (existing >= 0) motionClipCache.splice(existing, 1);
+    motionClipCache.push(clipId);
+
+    clip.frames.forEach(function (src) {
+      if (motionFrameCache[src]) return;
+      var entry = { ready: false, failed: false, image: new Image(), clipId: clipId };
+      motionFrameCache[src] = entry;
+      entry.image.onload = function () {
+        entry.ready = true;
+        applyArt();
+      };
+      entry.image.onerror = function () { entry.failed = true; };
+      entry.image.src = src;
+    });
+
+    while (motionClipCache.length > MAX_CACHED_MOTION_CLIPS) {
+      var evicted = motionClipCache.shift();
+      Object.keys(motionFrameCache).forEach(function (src) {
+        var entry = motionFrameCache[src];
+        if (!entry || entry.clipId !== evicted) return;
+        entry.image.onload = null;
+        entry.image.onerror = null;
+        entry.image.src = '';
+        delete motionFrameCache[src];
+      });
+    }
+  }
+
+  function preloadMotionFrames(next) {
+    var key = next && next.motion ? String(next.character) + '|' + String(next.assetVersion || 0) : '';
+    if (key !== motionAssetKey) {
+      motionAssetKey = key;
+      clearMotionCache();
+    }
+    if (key) preloadMotionClip('idle_loop', next);
+  }
+
+  function renderPilotWalkFrame(now) {
+    var selected = pilotWalkClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - walkStartedAt);
+    var index = Math.floor(elapsed * clip.fps / 1000) % clip.frames.length;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotIdleLoopFrame(now) {
+    var selected = pilotIdleLoopClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    if (!idleLoopStartedAt) idleLoopStartedAt = now;
+    var elapsed = Math.max(0, now - idleLoopStartedAt);
+    var index = Math.floor(elapsed * clip.fps / 1000) % clip.frames.length;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    schedulePilotIdleLoopFrame(clip);
+    return true;
+  }
+
+  function renderPilotTurnFrame(now) {
+    var selected = pilotTurnClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - turnStartedAt);
+    var index = Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000));
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotStopFrame(now) {
+    var selected = pilotStopClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - stopStartedAt);
+    var index = Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000));
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotSitDownFrame(now) {
+    var selected = pilotSitDownClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - sitStartedAt);
+    var index = sittingDown
+      ? Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000))
+      : clip.frames.length - 1;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-sitting');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotSitIdleFrame(now) {
+    var selected = pilotSitIdleClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - sitIdleStartedAt);
+    var index = Math.floor(elapsed * clip.fps / 1000) % clip.frames.length;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-sitting');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotLieDownFrame(now) {
+    var selected = pilotLieDownClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - lieStartedAt);
+    var index = lyingDown
+      ? Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000))
+      : clip.frames.length - 1;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-lying');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotSleepLoopFrame(now) {
+    var selected = pilotSleepLoopClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - sleepLoopStartedAt);
+    var index = Math.floor(elapsed * clip.fps / 1000) % clip.frames.length;
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-sleeping');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    schedulePilotSleepLoopFrame(clip);
+    return true;
+  }
+
+  function renderPilotWakeUpFrame(now) {
+    var selected = pilotWakeUpClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - standStartedAt);
+    var index = Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000));
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-standing');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotStretchFrame(now) {
+    var selected = pilotStretchClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - stretchStartedAt);
+    var index = Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000));
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-stretching');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function renderPilotHoverReactFrame(now) {
+    var selected = pilotHoverReactClip();
+    if (!selected) return false;
+    var clip = selected.clip;
+    var elapsed = Math.max(0, now - hoverReactStartedAt);
+    var index = Math.min(clip.frames.length - 1, Math.floor(elapsed * clip.fps / 1000));
+    var src = clip.frames[index];
+    var motionKey = 'pilot|' + selected.id + '|' + index + '|' + src;
+    wrap.classList.add('pilot-hover-reacting');
+    if (motionKey !== lastMotionKey) {
+      lastMotionKey = motionKey;
+      lastRasterSrc = null;
+      lastSvgKey = null;
+      pet.innerHTML = '';
+      pet.style.backgroundImage = "url('" + src + "')";
+      pet.style.backgroundSize = 'contain';
+      pet.style.backgroundPosition = 'center bottom';
+      pet.style.backgroundRepeat = 'no-repeat';
+    }
+    return true;
+  }
+
+  function schedulePilotSitIdleFrame(clip) {
+    if (document.hidden || sitIdleTimer || !clip) return;
+    sitIdleTimer = setTimeout(function () {
+      sitIdleTimer = null;
+      loop();
+    }, Math.max(16, 1000 / clip.fps));
+  }
+
+  function schedulePilotIdleLoopFrame(clip) {
+    if (document.hidden || idleLoopTimer || !clip) return;
+    idleLoopTimer = setTimeout(function () {
+      idleLoopTimer = null;
+      loop();
+    }, Math.max(16, 1000 / clip.fps));
+  }
+
+  function stopPilotIdleLoop() {
+    idleLoopStartedAt = 0;
+    if (idleLoopTimer) { clearTimeout(idleLoopTimer); idleLoopTimer = null; }
+  }
+
+
+  function schedulePilotSleepLoopFrame(clip) {
+    if (document.hidden || sleepLoopTimer || !clip) return;
+    sleepLoopTimer = setTimeout(function () {
+      sleepLoopTimer = null;
+      loop();
+    }, Math.max(16, 1000 / clip.fps));
+  }
+
+  // ---- Expression layer (spec §28, §31) ------------------------------------
+  /*
+   * Healthy and working have looping artwork with blink and eye-scan, so the expression
+   * layer is a real animation rather than a CSS approximation. Warning, critical and reset
+   * have no looping art, so they keep the static sprite frames -- and every state falls
+   * back to the sprite under reduced motion, where a looping image would be exactly the
+   * motion §35 says to suppress.
+   */
+  function applyArt() {
+    /*
+     * Vector mascots arrive pre-resolved in the frame (engine owns mood/colour/ring), so
+     * the renderer only swaps the markup when the key actually changes -- a repaint every
+     * 15s must not restart the artwork. Raster mascots keep their sprite/WebP asset set.
+     */
+    var pilotNow = performance.now();
+    if (reduced || walking || turning || stopping || sittingDown || lyingDown || stretching || hoverReacting || standingUp || posture || hoverOver || interactionBlocked() || (frame.mood !== 'healthy' && frame.mood !== 'working')) stopPilotIdleLoop();
+    if (renderPilotWakeUpFrame(pilotNow) || renderPilotHoverReactFrame(pilotNow) || renderPilotStretchFrame(pilotNow) || renderPilotSleepLoopFrame(pilotNow) || renderPilotSitIdleFrame(pilotNow) || renderPilotLieDownFrame(pilotNow) || renderPilotSitDownFrame(pilotNow) || renderPilotStopFrame(pilotNow) || renderPilotTurnFrame(pilotNow) || renderPilotWalkFrame(pilotNow) || renderPilotIdleLoopFrame(pilotNow)) return;
+    var crop = motionCrop();
+    if (crop) {
+      var motionKey = crop.src + '|' + crop.index;
+      if (motionKey !== lastMotionKey) {
+        lastMotionKey = motionKey;
+        lastRasterSrc = null;
+        lastSvgKey = null;
+        pet.style.backgroundImage = 'none';
+        pet.innerHTML = motionSvg(crop.src, crop.index);
+      }
+      return;
+    }
+    if (lastMotionKey !== null) {
+      lastMotionKey = null;
+      pet.innerHTML = '';
+    }
+    // A real Wave 1 clip exists for this animation (Orbit Bot healthy/working today):
+    // prefer it over the placeholder art, reloading only when the clip changes.
+    if (frame.animationSrc) {
+      if (lastRasterSrc !== frame.animationSrc) {
+        lastRasterSrc = frame.animationSrc;
+        lastSvgKey = null;
+        pet.innerHTML = '';
+        pet.style.backgroundImage = "url('" + frame.animationSrc + "')";
+        pet.style.backgroundSize = 'contain';
+        pet.style.backgroundPosition = 'center bottom';
+      }
+      return;
+    }
+    if (lastRasterSrc !== null) lastRasterSrc = null;
+
+    if (frame.spriteSvg) {
+      var svgKey = frame.spriteSvg;
+      if (svgKey !== lastSvgKey) {
+        lastSvgKey = svgKey;
+        pet.innerHTML = frame.spriteSvg;
+      }
+      pet.style.backgroundImage = 'none';
+      return;
+    }
+    if (lastSvgKey !== null) {
+      lastSvgKey = null;
+      pet.innerHTML = '';
+    }
+    pet.style.backgroundImage = "url('" + ORBIT_ASSETS + ORBIT_FALLBACK + "')";
+    pet.style.backgroundSize = 'contain';
+    pet.style.backgroundPosition = 'center bottom';
+  }
+
+  /* The mascot mouths along while a bubble is visible (asset spec §4 talk). */
+  function setTalking() {
+    wrap.classList.toggle('talking', bubble.classList.contains('show'));
+  }
+
+  function paintBubble() {
+    var b = frame.bubble;
+    var key = b ? (b.kind + '|' + b.mode + '|' + b.title + '|' + b.lines.join('~') + '|' + b.actions.join(',')) : '';
+    if (key === bubbleKey) return;
+    bubbleKey = key;
+    if (bubbleHideTimer) { clearTimeout(bubbleHideTimer); bubbleHideTimer = null; }
+    if (!b) { bubble.classList.remove('show'); setTalking(); return; }
+    bubble.className = 'tone-' + b.tone;
+    // Peek vs expanded (Wave 2 interaction spec §4); the actions row is empty for peek.
+    bubble.setAttribute('data-mode', b.mode || 'expanded');
+    bubble.querySelector('.b-title').textContent = b.title;
+    bubble.querySelector('.b-lines').innerHTML = b.lines.map(function (line) {
+      return '<div class="b-line">' + escapeHtml(line) + '</div>';
+    }).join('');
+    var actions = bubble.querySelector('.b-actions');
+    actions.innerHTML = '';
+    b.actions.forEach(function (action) {
+      var btn = document.createElement('button');
+      btn.textContent = ACTION_LABEL[action] || action;
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (window.qpPet) window.qpPet.action(action, b.ownerKey);
+      });
+      actions.appendChild(btn);
+    });
+    bubble.classList.add('show');
+    setTalking();
+    if (b.until) {
+      bubbleHideTimer = setTimeout(function () {
+        bubble.classList.remove('show');
+        setTalking();
+      }, Math.max(0, b.until - Date.now()));
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  // ---- Positioning ----------------------------------------------------------
+  function place() {
+    // ONLY the desktop layer is transformed here; body animation lives on #pet.
+    // Legacy/vector art faces left by mirroring the wrapper. Orbit's pilot supplies a
+    // real direction-specific left clip, so mirroring it here would turn it right again.
+    var facingScale = hasDirectionalPilotMotionAsset() ? 1 : dir;
+    wrap.style.transform = 'translate(' + x + 'px,' + y + 'px) scaleX(' + facingScale + ')';
+    var cx = x + SIZE / 2;
+    if (badge.classList.contains('show')) {
+      var half = badge.offsetWidth / 2;
+      badge.style.left = Math.max(half + 4, Math.min(window.innerWidth - half - 4, cx)) + 'px';
+      badge.style.top = Math.max(badge.offsetHeight + 4, y - 4) + 'px';
+    }
+    if (bubble.classList.contains('show')) {
+      var bhalf = bubble.offsetWidth / 2;
+      bubble.style.left = Math.max(bhalf + 6, Math.min(window.innerWidth - bhalf - 6, cx)) + 'px';
+      bubble.style.top = Math.max(bubble.offsetHeight + 6, y - 8) + 'px';
+    }
+    // The pet can walk out from under a stationary cursor; re-read the pointer so the
+    // transparent overlay does not keep capturing clicks.
+    if (walking) syncHover();
+  }
+
+  // ---- Desktop motion + idle behaviour (spec §32–§34) ----------------------
+  function range() { return RANGE[frame.movement] || RANGE.minimal; }
+  function bubbleVisible() { return bubble.classList.contains('show'); }
+
+  /**
+   * Clamp a sprite position into the nearest safe region, so local movement never parks the
+   * Pet over a bezel gap or off the desktop (SAFE_ZONE_SPEC.md §5).
+   */
+  function clampToZones(px, py) {
+    var safeZones = zones && zones.length ? zones : [{ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }];
+    if (isAllowedPoint(px, py, safeZones)) return { x: px, y: py };
+    var best = null;
+    var bestDistance = Infinity;
+    for (var j = 0; j < safeZones.length; j++) {
+      var zone = safeZones[j];
+      var cx = Math.max(zone.x, Math.min(zone.x + zone.width - SIZE, px));
+      var cy = Math.max(zone.y, Math.min(zone.y + zone.height - SIZE, py));
+      if (!isAllowedPoint(cx, cy, safeZones)) continue;
+      var d = (cx - px) * (cx - px) + (cy - py) * (cy - py);
+      if (d < bestDistance) {
+        bestDistance = d;
+        best = { x: cx, y: cy };
+      }
+    }
+    if (best) return best;
+    /* An exclusion zone can cover the nearest edge. Probe outward before falling back to
+       the clamped point; this keeps drag and companion movement from parking in a no-go. */
+    for (var radius = 8; radius <= 256; radius += 8) {
+      for (var angle = 0; angle < Math.PI * 2; angle += Math.PI / 8) {
+        var candidate = { x: px + Math.cos(angle) * radius, y: py + Math.sin(angle) * radius };
+        if (isAllowedPoint(candidate.x, candidate.y, safeZones)) return candidate;
+      }
+    }
+    return { x: Math.max(0, Math.min(window.innerWidth - SIZE, px)), y: Math.max(0, Math.min(window.innerHeight - SIZE, py)) };
+  }
+
+  function overlaps(a, b) {
+    return a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
+  }
+
+  function isAllowedPoint(px, py, safeZones) {
+    var inside = false;
+    for (var i = 0; i < safeZones.length; i++) {
+      var z = safeZones[i];
+      if (px >= z.x && px + SIZE <= z.x + z.width && py >= z.y && py + SIZE <= z.y + z.height) {
+        inside = true;
+        break;
+      }
+    }
+    if (!inside) return false;
+    var body = { x: px, y: py, width: SIZE, height: SIZE };
+    for (var j = 0; blocked && j < blocked.length; j++) if (overlaps(body, blocked[j])) return false;
+    return true;
+  }
+
+  /** Wave 2: urgent intros/click suppress autonomous locomotion (Motion Bible §2). */
+  function interactionBlocked() {
+    var i = frame.layers && frame.layers.interaction;
+    return i === 'warning_intro' || i === 'critical_intro' || i === 'reset_celebrate' || i === 'click_react';
+  }
+
+  /** Whether the Pet may walk right now: mode, reduced motion, hover, bubble, intro. */
+  function locomotionAllowedLocal() {
+    if (reduced) return false;
+    if (range()[1] <= 0) return false;
+    if (hoverOver || bubbleVisible()) return false;
+    if (interactionBlocked()) return false;
+    return true;
+  }
+
+  /** A user action wakes any posture and restarts the idle clock (Motion Bible §3). */
+  function userInteracted() {
+    lastInteractionAt = Date.now();
+    stopPilotIdleLoop();
+    if (motionDev) { sitPreviewed = false; liePreviewed = false; sleepPreviewed = false; stretchPreviewed = false; }
+    wake();
+  }
+
+  function setPosture(name) {
+    if (name === 'sleep' && posture === 'lie' && !lyingDown) {
+      enterSleepPosture();
+      return;
+    }
+    if (standingUp || wake()) return;
+    if (name === 'sleep') {
+      sleepAfterLie = true;
+      name = 'lie';
+    }
+    posture = name;
+    if (name === 'sit') sitIdleStartedAt = performance.now();
+    if (motionDev && name === 'sit') sitPreviewed = true;
+    if (motionDev && name === 'lie') liePreviewed = true;
+    wrap.classList.add(name);
+    var startedPilotSit = name === 'sit' && startPilotSitDown();
+    var startedPilotLie = name === 'lie' && startPilotLieDown();
+    if (sleepAfterLie && !startedPilotLie) {
+      sleepAfterLie = false;
+      enterSleepPosture();
+      return;
+    }
+    if (!startedPilotSit && !startedPilotLie) {
+      applyArt();
+      var selectedSitIdle = name === 'sit' && pilotSitIdleClip();
+      if (selectedSitIdle) schedulePilotSitIdleFrame(selectedSitIdle.clip);
+    }
+    if (!sleepAfterLie) actionTimer = setTimeout(function () { actionTimer = null; scheduleIdle(); }, 4_000);
+  }
+
+  function wake() {
+    if (standingUp) return true;
+    if (hoverReacting) finishPilotHoverReact(false);
+    if (stretching) finishPilotStretch(false);
+    if (!posture && !sittingDown && !lyingDown) return false;
+    var wasPilotSit = posture === 'sit' || sittingDown;
+    if (posture) wrap.classList.remove(posture);
+    posture = null;
+    sittingDown = false;
+    lyingDown = false;
+    sleepAfterLie = false;
+    sitIdleStartedAt = 0;
+    if (sitIdleTimer) { clearTimeout(sitIdleTimer); sitIdleTimer = null; }
+    if (sleepLoopTimer) { clearTimeout(sleepLoopTimer); sleepLoopTimer = null; }
+    wrap.classList.remove('pilot-sitting', 'pilot-lying', 'pilot-sleeping');
+    if (wasPilotSit && startPilotWakeUp()) return true;
+    wrap.classList.add('wake');
+    applyArt();
+    setTimeout(function () { wrap.classList.remove('wake'); }, 700);
+    return false;
+  }
+
+  /**
+   * Wave 2 idle scheduler (Motion Bible §3): behaviors unlock in tiers measured from the
+   * last interaction (10s blink/look, 18s idle variants, 35s variants, 60s sit/lie, 120s
+   * sleep). Locomotion is only in the pool when the policy allows it, and the delay is
+   * randomized so the Pet never fires on a fixed cadence.
+   */
+  function scheduleIdle() {
+    if (document.hidden || !frame.hasData || idleTimer || walking || sittingDown || lyingDown || stretching || hoverReacting || standingUp || posture === 'sleep' || actionTimer) return;
+    idleTimer = setTimeout(function () {
+      idleTimer = null;
+      if (hoverOver || bubbleVisible() || interactionBlocked()) { scheduleIdle(); return; }
+      // Reduced motion keeps a subtle blink and nothing more (Motion Bible §6).
+      if (reduced) { playBodyAction('blink'); return; }
+      var idleMs = (Date.now() - lastInteractionAt) / (motionDev ? 0.125 : 1);
+      var pick = pickIdle(idleMs);
+      if (!pick) { scheduleIdle(); return; }
+      if (pick === 'reposition') startWalk();
+      else if (pick === 'sit' || pick === 'lie_down' || pick === 'sleep_loop') setPosture(pick === 'lie_down' ? 'lie' : pick === 'sleep_loop' ? 'sleep' : pick);
+      else playBodyAction(CLASS_FOR_IDLE[pick] || pick);
+    }, motionDev ? 1_500 + Math.random() * 2_500 : 6_000 + Math.random() * 12_000);
+  }
+
+  /** Weighted pick from the tiers, mirroring `pickIdleBehavior` in pet/wave2.ts. */
+  function pickIdle(idleMs) {
+    var tiers = [
+      { after: 10_000, choices: ['blink', 'look_left', 'look_right'] },
+      { after: 18_000, choices: ['blink', 'look_left', 'look_right', 'idle_variant_1', 'idle_variant_2'] },
+      { after: 35_000, choices: ['idle_variant_1', 'idle_variant_2', 'look_left', 'look_right', 'stretch'] },
+      { after: 60_000, choices: ['sit', 'lie_down', 'stretch', 'idle_variant_1'] },
+      { after: 120_000, choices: ['sleep_loop', 'lie_down'] }
+    ];
+    var pool = [];
+    for (var i = 0; i < tiers.length; i++) if (idleMs >= tiers[i].after) pool = tiers[i].choices;
+    if (pool.length === 0) return null;
+    if (motionDev && idleMs >= 35_000 && !stretchPreviewed) return 'stretch';
+    // The 60-120s production tier is only a short 7.5-15s window under accelerated dev
+    // timing. Guarantee one sit review per idle cycle so a valid clip cannot be missed by
+    // random selection; packaged builds never enter this branch.
+    if (motionDev && idleMs >= 60_000 && !sitPreviewed) {
+      sitPreviewed = true;
+      return 'sit';
+    }
+    // A seated Pet must stand before changing posture, so do not mark this preview complete
+    // until `setPosture('lie')` actually starts it. The scheduler retries after stand-up.
+    if (motionDev && idleMs >= 60_000 && !liePreviewed) return 'lie_down';
+    if (motionDev && idleMs >= 120_000 && liePreviewed && !sleepPreviewed) return 'sleep_loop';
+    if (locomotionAllowedLocal()) pool = pool.concat(['reposition']);
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  function playBodyAction(name) {
+    if (name === 'stretch') {
+      if (motionDev) stretchPreviewed = true;
+      if (startPilotStretch()) return;
+    }
+    // The mood class is on the wrapper and would be replaced by the next frame, so the
+    // action class is added on top and removed by its own timer.
+    wrap.classList.add(name);
+    applyArt();
+    actionTimer = setTimeout(function () {
+      actionTimer = null;
+      wrap.classList.remove(name);
+      applyArt();
+      scheduleIdle();
+    }, BODY_ACTION_MS[name] || 1_600);
+  }
+
+  /** A renderer-driven idle reposition inside the local range (Companion mode). */
+  function startWalk() {
+    if (!locomotionAllowedLocal()) return;
+    /* Roaming targets are planned by the main process. A second renderer timer used to
+       select an arbitrary point in the union of all monitors, causing giant jumps and
+       cross-monitor warps. */
+    if (frame.movement === 'roaming') return;
+    var r = range();
+    if (r[1] <= 0) return;
+    var safeZones = zones && zones.length ? zones : [{ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }];
+    for (var attempt = 0; attempt < 12; attempt++) {
+      var distance = r[0] + Math.random() * (r[1] - r[0]);
+      var angle = Math.random() * Math.PI * 2;
+      var raw = { x: x + Math.cos(angle) * distance, y: y + Math.sin(angle) * distance };
+      var target = clampToZones(raw.x, raw.y);
+      if (isAllowedPoint(target.x, target.y, safeZones)) {
+        beginWalkTo(target.x, target.y, false);
+        return;
+      }
+    }
+  }
+
+  function beginWalking(side) {
+    preloadMotionClip('walk_' + side);
+    preloadMotionClip('stop');
+    if (!walking || walkSide !== side) walkStartedAt = performance.now();
+    walking = true;
+    walkSide = side;
+    wrap.classList.add('walking', 'walking-' + side);
+    // Flux Blob glides/morphs rather than faking leg steps (Wave 2 handoff constraint).
+    if (frame.character === 'flux_blob') wrap.classList.add('glide');
+    applyArt();
+    loop();
+  }
+
+  function startPilotTurn(side) {
+    var clipId = 'turn_' + side;
+    preloadMotionClip(clipId);
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips[clipId];
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    turning = true;
+    turnSide = side;
+    turnStartedAt = performance.now();
+    wrap.classList.add('turning', 'turn-' + side);
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function reportMovementComplete(completion) {
+    if (!completion || !window.qpPet) return;
+    // A main-planned burst reports `roamed` (starts the idle cooldown there); a local
+    // reposition reports `moved` (persisted without touching the cadence).
+    if (completion.cameFromRoam && window.qpPet.roamed) {
+      window.qpPet.roamed(Math.round(x), Math.round(y), completion.commandId, completion.geometryVersion);
+    } else if (window.qpPet.moved) {
+      window.qpPet.moved(Math.round(x), Math.round(y));
+    }
+  }
+
+  function startPilotStop(completion) {
+    preloadMotionClip('stop');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.stop;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 4 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    stopping = true;
+    stopStartedAt = performance.now();
+    pendingStopCompletion = completion;
+    wrap.classList.add('stopping', 'pilot-stopping', 'stop-' + (walkSide || 'right'));
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function startPilotSitDown() {
+    preloadMotionClip('sit_down');
+    preloadMotionClip('sit_idle');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.sit_down;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    sittingDown = true;
+    sitStartedAt = performance.now();
+    sitIdleStartedAt = 0;
+    wrap.classList.add('pilot-sitting');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function startPilotLieDown() {
+    preloadMotionClip('lie_down');
+    preloadMotionClip('sleep_loop');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.lie_down;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    lyingDown = true;
+    lieStartedAt = performance.now();
+    wrap.classList.add('pilot-lying');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function startPilotSleepLoop() {
+    preloadMotionClip('sleep_loop');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.sleep_loop;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 8 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    sleepLoopStartedAt = performance.now();
+    wrap.classList.add('pilot-sleeping');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function startPilotStretch() {
+    preloadMotionClip('stretch');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.stretch;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    stretching = true;
+    stretchStartedAt = performance.now();
+    wrap.classList.add('stretch', 'pilot-stretching');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function finishPilotStretch(scheduleNext) {
+    stretching = false;
+    stretchStartedAt = 0;
+    wrap.classList.remove('stretch', 'pilot-stretching');
+    applyArt();
+    place();
+    if (scheduleNext) scheduleIdle();
+  }
+
+  function startPilotHoverReact() {
+    preloadMotionClip('hover_react');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.hover_react;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 4 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    hoverReacting = true;
+    hoverReactStartedAt = performance.now();
+    wrap.classList.add('pilot-hover-reacting');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function finishPilotHoverReact(scheduleNext) {
+    hoverReacting = false;
+    hoverReactStartedAt = 0;
+    wrap.classList.remove('pilot-hover-reacting');
+    applyArt();
+    place();
+    if (scheduleNext) scheduleIdle();
+  }
+
+  function enterSleepPosture() {
+    if (posture) wrap.classList.remove(posture);
+    posture = 'sleep';
+    lyingDown = false;
+    wrap.classList.remove('pilot-lying');
+    wrap.classList.add('sleep');
+    if (motionDev) sleepPreviewed = true;
+    if (!startPilotSleepLoop()) applyArt();
+  }
+
+  function startPilotWakeUp() {
+    preloadMotionClip('wake_up');
+    var clip = frame.motion && frame.motion.clips && frame.motion.clips.wake_up;
+    if (reduced || (frame.mood !== 'healthy' && frame.mood !== 'working')) return false;
+    if (!clip || !Array.isArray(clip.frames) || clip.frames.length !== 6 || !Number.isFinite(clip.fps) || clip.fps <= 0) return false;
+    if (!clip.frames.every(function (src) { return motionFrameCache[src] && motionFrameCache[src].ready; })) return false;
+    standingUp = true;
+    standStartedAt = performance.now();
+    wrap.classList.add('pilot-standing');
+    applyArt();
+    loop();
+    return true;
+  }
+
+  function finishPilotWakeUp() {
+    var queuedWalk = pendingStandWalk;
+    pendingStandWalk = null;
+    standingUp = false;
+    standStartedAt = 0;
+    wrap.classList.remove('pilot-standing');
+    applyArt();
+    place();
+    if (queuedWalk) beginWalkTo(queuedWalk.x, queuedWalk.y, queuedWalk.isRoam);
+    if (!walking && !turning && !stopping && activeRoamCommandId != null && window.qpPet && window.qpPet.roamed) {
+      window.qpPet.roamed(Math.round(x), Math.round(y), activeRoamCommandId, activeRoamGeometryVersion);
+      activeRoamCommandId = null;
+      activeRoamGeometryVersion = null;
+    }
+    if (!walking && !turning && !stopping) scheduleIdle();
+  }
+
+  /** Start (or retarget) a walk toward an overlay-local point, turning first if needed. */
+  function beginWalkTo(tx, ty, isRoam) {
+    var clamped = clampToZones(tx, ty);
+    var safeZones = zones && zones.length ? zones : [{ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }];
+    if (!isAllowedPoint(clamped.x, clamped.y, safeZones)) return;
+    if (Math.hypot(clamped.x - x, clamped.y - y) < 1) return;
+    if (stretching || hoverReacting) wake();
+    if (standingUp) {
+      pendingStandWalk = { x: clamped.x, y: clamped.y, isRoam: !!isRoam };
+      return;
+    }
+    if ((posture || sittingDown) && wake()) {
+      pendingStandWalk = { x: clamped.x, y: clamped.y, isRoam: !!isRoam };
+      return;
+    }
+    targetX = clamped.x;
+    targetY = clamped.y;
+    roaming = !!isRoam;
+    var prevDir = dir;
+    dir = targetX < x ? -1 : 1;
+    var side = dir < 0 ? 'left' : 'right';
+    if (dir !== prevDir) {
+      // Turn before walking (Wave 2 layering rules §4). The direction-specific class is
+      // the asset contract id (turn_left/right); `.turning` is the shared visual.
+      // Mirror facing so the engine can reason about the next turn.
+      if (window.qpPet && window.qpPet.facing) window.qpPet.facing(side);
+      if (startPilotTurn(side)) return;
+      wrap.classList.add('turning', 'turn-' + side);
+      setTimeout(function () { wrap.classList.remove('turning', 'turn-left', 'turn-right'); applyArt(); }, 340);
+    }
+    beginWalking(side);
+  }
+
+  /** Stop any renderer walk without reporting a completion for a command that was cancelled. */
+  function cancelWalkMotion() {
+    homeWarpVersion += 1;
+    if (homeWarpTimer) { clearTimeout(homeWarpTimer); homeWarpTimer = null; }
+    if (homeWarpFadeTimer) { clearTimeout(homeWarpFadeTimer); homeWarpFadeTimer = null; }
+    wrap.style.opacity = '';
+    wrap.style.transition = '';
+    turning = false;
+    turnSide = null;
+    stopping = false;
+    pendingStopCompletion = null;
+    pendingStandWalk = null;
+    if (stopFallbackTimer) { clearTimeout(stopFallbackTimer); stopFallbackTimer = null; }
+    walking = false;
+    roaming = false;
+    activeRoamCommandId = null;
+    activeRoamGeometryVersion = null;
+    targetX = x;
+    targetY = y;
+    walkSide = null;
+    wrap.classList.remove('walking', 'walking-left', 'walking-right', 'glide', 'turning', 'turn-left', 'turn-right', 'stopping', 'pilot-stopping', 'stop-left', 'stop-right');
+    applyArt();
+    place();
+  }
+
+  /** Explicit Return Home fallback when a safe walk cannot cross a monitor gap. */
+  function warpHome(target) {
+    if (!target || !Number.isFinite(target.x) || !Number.isFinite(target.y)) return;
+    cancelWalkMotion();
+    var version = homeWarpVersion;
+    var next = clampToZones(target.x, target.y);
+    wrap.style.transition = 'opacity 180ms ease';
+    wrap.style.opacity = '0';
+    homeWarpTimer = setTimeout(function () {
+      homeWarpTimer = null;
+      if (version !== homeWarpVersion) return;
+      x = next.x;
+      y = next.y;
+      anchorX = x;
+      anchorY = y;
+      targetX = x;
+      targetY = y;
+      place();
+      requestAnimationFrame(function () {
+        if (version !== homeWarpVersion) return;
+        wrap.style.opacity = '';
+        homeWarpFadeTimer = setTimeout(function () {
+          homeWarpFadeTimer = null;
+          if (version === homeWarpVersion) wrap.style.transition = '';
+        }, 220);
+      });
+    }, 180);
+  }
+
+  function loop() {
+    if (!document.hidden && raf == null) raf = requestAnimationFrame(tick);
+  }
+
+  function tick(now) {
+    raf = null;
+    var dt = Math.min(0.1, (now - last) / 1000);
+    last = now;
+    if (hoverReacting) {
+      var selectedHoverReact = pilotHoverReactClip();
+      if (!selectedHoverReact) {
+        finishPilotHoverReact(true);
+        return;
+      }
+      renderPilotHoverReactFrame(now);
+      var hoverReactDuration = selectedHoverReact.clip.frames.length * 1000 / selectedHoverReact.clip.fps;
+      place();
+      // Hold the byte-identical neutral final frame without a RAF loop until the animation
+      // resolver leaves hover_react. This prevents a brief flash of the legacy WebP fallback.
+      if (now - hoverReactStartedAt >= hoverReactDuration) return;
+      loop();
+      return;
+    }
+    if (stretching) {
+      var selectedStretch = pilotStretchClip();
+      if (!selectedStretch) {
+        finishPilotStretch(true);
+        return;
+      }
+      renderPilotStretchFrame(now);
+      var stretchDuration = selectedStretch.clip.frames.length * 1000 / selectedStretch.clip.fps;
+      if (now - stretchStartedAt >= stretchDuration) {
+        finishPilotStretch(true);
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
+    if (standingUp) {
+      var selectedWake = pilotWakeUpClip();
+      if (!selectedWake) {
+        finishPilotWakeUp();
+        return;
+      }
+      renderPilotWakeUpFrame(now);
+      var wakeDuration = selectedWake.clip.frames.length * 1000 / selectedWake.clip.fps;
+      if (now - standStartedAt >= wakeDuration) {
+        finishPilotWakeUp();
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
+    if (sittingDown) {
+      var selectedSit = pilotSitDownClip();
+      if (!selectedSit) {
+        sittingDown = false;
+        wrap.classList.remove('pilot-sitting');
+        applyArt();
+        place();
+        return;
+      }
+      renderPilotSitDownFrame(now);
+      var sitDuration = selectedSit.clip.frames.length * 1000 / selectedSit.clip.fps;
+      if (now - sitStartedAt >= sitDuration) {
+        sittingDown = false;
+        sitIdleStartedAt = now;
+        // The approved sit-idle loop starts from a byte-identical copy of this final frame.
+        applyArt();
+        place();
+        var selectedSitIdle = pilotSitIdleClip();
+        if (selectedSitIdle) schedulePilotSitIdleFrame(selectedSitIdle.clip);
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
+    if (lyingDown) {
+      var selectedLie = pilotLieDownClip();
+      if (!selectedLie) {
+        lyingDown = false;
+        wrap.classList.remove('pilot-lying');
+        if (sleepAfterLie) {
+          sleepAfterLie = false;
+          enterSleepPosture();
+          return;
+        }
+        applyArt();
+        place();
+        return;
+      }
+      renderPilotLieDownFrame(now);
+      var lieDuration = selectedLie.clip.frames.length * 1000 / selectedLie.clip.fps;
+      if (now - lieStartedAt >= lieDuration) {
+        lyingDown = false;
+        if (sleepAfterLie) {
+          sleepAfterLie = false;
+          enterSleepPosture();
+          return;
+        }
+        // The final awake lying frame remains selected until interaction clears the posture.
+        applyArt();
+        place();
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
+    var selectedSleepLoop = posture === 'sleep' && pilotSleepLoopClip();
+    if (selectedSleepLoop) {
+      renderPilotSleepLoopFrame(now);
+      place();
+      schedulePilotSleepLoopFrame(selectedSleepLoop.clip);
+      return;
+    }
+    var selectedSitIdle = posture === 'sit' && pilotSitIdleClip();
+    if (selectedSitIdle) {
+      renderPilotSitIdleFrame(now);
+      place();
+      schedulePilotSitIdleFrame(selectedSitIdle.clip);
+      return;
+    }
+    var selectedIdleLoop = pilotIdleLoopClip();
+    if (selectedIdleLoop) {
+      renderPilotIdleLoopFrame(now);
+      place();
+      schedulePilotIdleLoopFrame(selectedIdleLoop.clip);
+      return;
+    }
+    if (turning) {
+      var selectedTurn = pilotTurnClip();
+      if (!selectedTurn) {
+        var interruptedSide = turnSide;
+        turning = false;
+        turnSide = null;
+        wrap.classList.remove('turning', 'turn-left', 'turn-right');
+        if (interruptedSide) beginWalking(interruptedSide);
+        return;
+      }
+      renderPilotTurnFrame(now);
+      var turnDuration = selectedTurn.clip.frames.length * 1000 / selectedTurn.clip.fps;
+      if (now - turnStartedAt >= turnDuration) {
+        var completedSide = turnSide;
+        turning = false;
+        turnSide = null;
+        wrap.classList.remove('turning', 'turn-left', 'turn-right');
+        if (completedSide) beginWalking(completedSide);
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
+    if (stopping) {
+      var selectedStop = pilotStopClip();
+      if (!selectedStop) {
+        var interruptedStop = pendingStopCompletion;
+        stopping = false;
+        pendingStopCompletion = null;
+        walkSide = null;
+        wrap.classList.remove('stopping', 'pilot-stopping', 'stop-left', 'stop-right');
+        applyArt();
+        reportMovementComplete(interruptedStop);
+        scheduleIdle();
+        return;
+      }
+      renderPilotStopFrame(now);
+      var stopDuration = selectedStop.clip.frames.length * 1000 / selectedStop.clip.fps;
+      if (now - stopStartedAt >= stopDuration) {
+        var completedStop = pendingStopCompletion;
+        stopping = false;
+        pendingStopCompletion = null;
+        walkSide = null;
+        wrap.classList.remove('stopping', 'pilot-stopping', 'stop-left', 'stop-right');
+        applyArt();
+        place();
+        reportMovementComplete(completedStop);
+        scheduleIdle();
+        return;
+      }
+      place();
+      loop();
+      return;
+    }
+    if (walking) {
+      renderPilotWalkFrame(now);
+      var speed = reduced ? 0 : (SPEED[frame.mood] || 0);
+      if (speed <= 0) {
+        /* Reduced motion and reset/idle states must pause in place. The old `speed === 0`
+           branch assigned targetX/Y in one frame, which looked like a warp. */
+        walking = false;
+        roaming = false;
+        activeRoamCommandId = null;
+        activeRoamGeometryVersion = null;
+        targetX = x;
+        targetY = y;
+        wrap.classList.remove('walking', 'walking-left', 'walking-right', 'glide');
+        walkSide = null;
+        applyArt();
+        place();
+        scheduleIdle();
+        return;
+      }
+      var dx = targetX - x;
+      var dy = targetY - y;
+      var distance = Math.sqrt(dx * dx + dy * dy);
+      var step = speed * dt;
+      if (distance <= step) {
+        var cameFromRoam = roaming;
+        var completedCommandId = activeRoamCommandId;
+        var completedGeometryVersion = activeRoamGeometryVersion;
+        x = targetX;
+        y = targetY;
+        walking = false;
+        roaming = false;
+        activeRoamCommandId = null;
+        activeRoamGeometryVersion = null;
+        wrap.classList.remove('walking', 'walking-left', 'walking-right');
+        wrap.classList.remove('glide');
+        // A clean mechanical stop at the destination (Wave 2 layering rules §4). The
+        // direction-specific class is the asset contract id (stop_left/right).
+        anchorX = x;
+        anchorY = y;
+        var completion = {
+          cameFromRoam: cameFromRoam,
+          commandId: completedCommandId,
+          geometryVersion: completedGeometryVersion
+        };
+        if (startPilotStop(completion)) {
+          place();
+          return;
+        }
+        wrap.classList.add('stopping', 'stop-' + (walkSide || 'right'));
+        applyArt();
+        stopFallbackTimer = setTimeout(function () {
+          stopFallbackTimer = null;
+          wrap.classList.remove('stopping', 'stop-left', 'stop-right');
+          applyArt();
+        }, 420);
+        walkSide = null;
+        reportMovementComplete(completion);
+      } else {
+        x += (dx / distance) * step;
+        y += (dy / distance) * step;
+      }
+      place();
+    }
+    if (walking || turning || stopping || sittingDown || lyingDown || stretching || hoverReacting || standingUp) loop();
+    else scheduleIdle();
+  }
+
+  // ---- Interactions (spec §26) ---------------------------------------------
+  function interactiveAt(e) {
+    var el = document.elementFromPoint(e.clientX, e.clientY);
+    return !!(el && el.closest && el.closest('#pet-wrap, #bubble'));
+  }
+
+  var lastMouse = null;
+  function syncHover() {
+    if (!window.qpPet || !lastMouse) return;
+    var over = interactiveAt({ clientX: lastMouse.x, clientY: lastMouse.y });
+    if (over !== hoverOver) {
+      hoverOver = over;
+      // Curious/react pose while the pointer is on the mascot (asset spec §4 hover_react).
+      wrap.classList.toggle('hovering', over);
+      // Hovering wakes a resting Pet and pauses locomotion (Wave 2 interaction spec §2).
+      if (over) {
+        cancelWalkMotion();
+        userInteracted();
+      }
+      window.qpPet.hover(over);
+    }
+  }
+
+  document.addEventListener('mousemove', function (e) {
+    lastMouse = { x: e.clientX, y: e.clientY };
+    syncHover();
+  });
+
+  // Losing the pointer while interactive would leave the whole transparent strip capturing
+  // clicks, so the click-through state is reset the moment the cursor leaves.
+  document.addEventListener('mouseleave', function () {
+    lastMouse = null;
+    wrap.classList.remove('hovering');
+    if (hoverOver && window.qpPet) {
+      hoverOver = false;
+      window.qpPet.hover(false);
+    }
+  });
+
+  // ---- Wave 3 drag & reposition (DRAG_REPOSITION_SPEC.md) -------------------
+  /*
+   * A small pointer travel is a click, not a drag. The main process clamps/snaps/persists on
+   * release, so the renderer only moves its own sprite and reports the final point.
+   */
+  var DRAG_THRESHOLD = 6;
+  pet.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0 || locked) return;
+    pointerDown = true;
+    dragging = false;
+    suppressClick = false;
+    dragStartClient = { x: e.clientX, y: e.clientY };
+    dragStartSprite = { x: x, y: y };
+    try { pet.setPointerCapture(e.pointerId); } catch (err) { /* capture is optional */ }
+  });
+
+  document.addEventListener('pointermove', function (e) {
+    if (!pointerDown || !dragStartClient) return;
+    var dx = e.clientX - dragStartClient.x;
+    var dy = e.clientY - dragStartClient.y;
+    if (!dragging) {
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < DRAG_THRESHOLD) return;
+      dragging = true;
+      suppressClick = true;
+      wrap.classList.add('dragging');
+      if (window.qpPet && window.qpPet.dragStart) window.qpPet.dragStart();
+    }
+    var next = clampToZones(dragStartSprite.x + dx, dragStartSprite.y + dy);
+    x = next.x;
+    y = next.y;
+    place();
+  });
+
+  function endDrag(e) {
+    if (!pointerDown) return;
+    pointerDown = false;
+    if (dragging) {
+      dragging = false;
+      wrap.classList.remove('dragging');
+      if (window.qpPet && window.qpPet.dragEnd) window.qpPet.dragEnd(Math.round(x), Math.round(y));
+    }
+    dragStartClient = null;
+    dragStartSprite = null;
+    try { pet.releasePointerCapture(e.pointerId); } catch (err) { /* already released */ }
+  }
+  document.addEventListener('pointerup', endDrag);
+  document.addEventListener('pointercancel', endDrag);
+
+  pet.addEventListener('click', function (e) {
+    e.stopPropagation();
+    // A completed drag is not a click; swallow the synthetic click it produces.
+    if (suppressClick) { suppressClick = false; return; }
+    userInteracted();
+    // A quick squash acknowledges the press (asset spec §4 click_react).
+    wrap.classList.add('clicked');
+    setTimeout(function () { wrap.classList.remove('clicked'); }, 360);
+    // Wait out the double-click window so a dblclick does not also toggle the bubble.
+    if (clickTimer) return;
+    clickTimer = setTimeout(function () {
+      clickTimer = null;
+      if (window.qpPet) window.qpPet.click(x + SIZE / 2);
+    }, 220);
+  });
+
+  pet.addEventListener('dblclick', function () {
+    if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; }
+    if (window.qpPet) window.qpPet.openDashboard();
+  });
+
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+    if (window.qpPet) window.qpPet.contextMenu();
+  });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      if (raf != null) { cancelAnimationFrame(raf); raf = null; }
+      if (idleTimer) { clearTimeout(idleTimer); idleTimer = null; }
+      if (idleLoopTimer) { clearTimeout(idleLoopTimer); idleLoopTimer = null; }
+      if (sitIdleTimer) { clearTimeout(sitIdleTimer); sitIdleTimer = null; }
+      if (sleepLoopTimer) { clearTimeout(sleepLoopTimer); sleepLoopTimer = null; }
+      return;
+    }
+    last = performance.now();
+    applyArt();
+    if (walking || turning || stopping || sittingDown || lyingDown || stretching || hoverReacting || standingUp || posture) loop();
+    else scheduleIdle();
+  });
+
+  if (window.qpPet) window.qpPet.onState(function (next) {
+    if (next && next.bubble && !frame.bubble) cancelWalkMotion();
+    preloadMotionFrames(next);
+    frame = next;
+    paint();
+    pet.classList.add('art-ready');
+  });
+  if (window.qpPet && window.qpPet.onPosition) {
+    window.qpPet.onPosition(function (pos) {
+      if (!pos || !Number.isFinite(pos.x) || !Number.isFinite(pos.y)) return;
+      cancelWalkMotion();
+      originX = Number.isFinite(pos.originX) ? pos.originX : 0;
+      originY = Number.isFinite(pos.originY) ? pos.originY : 0;
+      var clamped = clampToZones(pos.x, pos.y);
+      x = clamped.x;
+      y = clamped.y;
+      anchorX = x;
+      anchorY = y;
+      targetX = x;
+      targetY = y;
+      walking = false;
+      place();
+    });
+  }
+  if (window.qpPet && window.qpPet.onDesktop) {
+    window.qpPet.onDesktop(function (desktop) {
+      if (!desktop) return;
+      cancelWalkMotion();
+      zones = desktop.zones && desktop.zones.length ? desktop.zones : null;
+      blocked = desktop.blocked && desktop.blocked.length ? desktop.blocked : null;
+      locked = !!desktop.lockPosition;
+      wrap.classList.toggle('position-locked', locked);
+      // Never leave the Pet parked where there is no screen under it.
+      var clamped = clampToZones(x, y);
+      if (clamped.x !== x || clamped.y !== y) {
+        x = clamped.x;
+        y = clamped.y;
+        anchorX = x;
+        anchorY = y;
+        targetX = x;
+        targetY = y;
+      }
+      place();
+    });
+  }
+  if (window.qpPet && window.qpPet.onRoamTarget) {
+    window.qpPet.onRoamTarget(function (target) {
+      if (!target || !Number.isFinite(target.x) || !Number.isFinite(target.y)) return;
+      var isHome = target.kind === 'home';
+      // Return Home is an explicit user command and may interrupt hover/rest; autonomous
+      // roaming still yields to interaction and speech.
+      if (locked || reduced || (!isHome && (hoverOver || bubbleVisible() || interactionBlocked()))) return;
+      if (isHome) wake();
+      activeRoamCommandId = Number.isFinite(target.commandId) ? target.commandId : null;
+      activeRoamGeometryVersion = Number.isFinite(target.geometryVersion) ? target.geometryVersion : null;
+      beginWalkTo(target.x, target.y, true);
+      // A target can be rejected after clamping (for example, while the display topology is
+      // being updated). Do not leave the main process waiting for a completion that cannot
+      // arrive.
+      if (!walking && !turning && !stopping && (!standingUp || !pendingStandWalk) && activeRoamCommandId != null && window.qpPet && window.qpPet.roamed) {
+        window.qpPet.roamed(Math.round(x), Math.round(y), activeRoamCommandId, activeRoamGeometryVersion);
+        activeRoamCommandId = null;
+        activeRoamGeometryVersion = null;
+      }
+    });
+  }
+  if (window.qpPet && window.qpPet.onCancelRoam) {
+    window.qpPet.onCancelRoam(function () { cancelWalkMotion(); });
+  }
+  if (window.qpPet && window.qpPet.onMotionDev) {
+    window.qpPet.onMotionDev(function (enabled) {
+      motionDev = !!enabled;
+      // Kick the scheduler immediately so tuning is visible without waiting a cycle.
+      if (motionDev && idleTimer) { clearTimeout(idleTimer); idleTimer = null; }
+      if (motionDev) scheduleIdle();
+    });
+  }
+  if (window.qpPet && window.qpPet.onHomeWarp) {
+    window.qpPet.onHomeWarp(function (target) { warpHome(target); });
+  }
+  paint();
+})();
+</script>
+</body>
+</html>

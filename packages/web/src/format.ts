@@ -79,6 +79,14 @@ export function windowLabel(kind: string): string {
   }
 }
 
+/** Provider windows have a semantic order; never let database/string order define it. */
+const WINDOW_ORDER = ['5h', 'weekly', 'weekly_opus', 'weekly_sonnet', 'monthly'];
+
+export function windowRank(kind: string): number {
+  const rank = WINDOW_ORDER.indexOf(kind);
+  return rank < 0 ? WINDOW_ORDER.length : rank;
+}
+
 /** How long each quota window covers. Mirrors the tray's rule; see packages/tray/src/limits.ts. */
 const WINDOW_SPAN_MS: Record<string, number> = {
   '5h': 5 * 3_600_000,
@@ -114,6 +122,7 @@ interface Readingish {
   subscription_key?: string | null;
   window_kind: string;
   origin: string;
+  used_percent?: number | null;
   resets_at: number | null;
   ageSeconds: number | null;
   burn?: { projectedFullAt: number | null } | null;
@@ -164,7 +173,13 @@ export function primaryLimits<T extends Readingish>(
     const [primary, ...superseded] = sorted;
     if (primary) out.push({ primary, superseded });
   }
-  return out;
+  return out.sort((a, b) => {
+    const windowOrder = windowRank(a.primary.window_kind) - windowRank(b.primary.window_kind);
+    if (windowOrder !== 0) return windowOrder;
+    const ownerA = a.primary.subscription_key ?? a.primary.account_key ?? `source:${a.primary.source_id}`;
+    const ownerB = b.primary.subscription_key ?? b.primary.account_key ?? `source:${b.primary.source_id}`;
+    return ownerA.localeCompare(ownerB);
+  });
 }
 
 /**
@@ -180,6 +195,23 @@ export function willExhaust(l: Readingish, now = Date.now()): boolean {
     l.resets_at != null &&
     l.burn.projectedFullAt < l.resets_at
   );
+}
+
+/** One high-usage alert per canonical subscription/window, even when several readers exist. */
+export function thresholdLimits<T extends Readingish>(
+  readings: T[],
+  now = Date.now(),
+  threshold = 80,
+): T[] {
+  return primaryLimits(readings, now)
+    .map((window) => window.primary)
+    .filter(
+      (limit) =>
+        !isExpired(limit, now) &&
+        (limit.ageSeconds == null || limit.ageSeconds < 3_600) &&
+        (limit.used_percent ?? -1) >= threshold &&
+        !willExhaust(limit, now),
+    );
 }
 
 export function severityOf(p: number | null | undefined): 'ok' | 'warn' | 'crit' {

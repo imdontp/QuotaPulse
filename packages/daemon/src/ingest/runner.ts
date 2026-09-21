@@ -91,68 +91,86 @@ export async function runPass(
   opts: { backfill?: boolean } = {},
 ): Promise<RunResult[]> {
   const prices = new PriceResolver(db);
+  const harnessSources = sources.filter((source) => source.profile.sourceKind !== 'account');
+  const accountSources = sources.filter((source) => source.profile.sourceKind === 'account');
   const results: RunResult[] = [];
 
-  for (const { adapter, profile, sourceId } of sources) {
-    const started = Date.now();
-    const cursors = new DbCursorStore(db, sourceId);
-    const sink = new DbSink(db, sourceId, prices);
-    let error: string | undefined;
+  // Local harness readers stay sequential because their synchronous SQLite writes are the
+  // fast path. Account adapters mostly wait on independent helper processes/network calls,
+  // so run those together rather than stacking several timeout windows end-to-end.
+  for (const source of harnessSources) {
+    results.push(await runSource(db, prices, source, opts.backfill ?? false));
+  }
+  results.push(
+    ...(await Promise.all(
+      accountSources.map((source) => runSource(db, prices, source, opts.backfill ?? false)),
+    )),
+  );
+  return results;
+}
 
-    try {
-      // No wrapping transaction: better-sqlite3 transactions are synchronous and
-      // adapters do async file IO, so one could not span a whole pass. Correctness
-      // comes from every write being idempotent (unique dedup keys) and from the
-      // cursor only advancing past lines already handed to the sink.
-      await adapter.ingest({
-        profile,
-        sourceId,
-        cursors,
-        sink,
-        backfill: opts.backfill ?? false,
-      });
-    } catch (err) {
-      error = (err as Error).message;
-      /*
-       * A source that is broken is broken on every pass, and a pass runs every five
-       * seconds -- a corrupt database would otherwise write the same line ~17k times a
-       * day and bury everything else. So the LOG is deduplicated: a given failure is
+async function runSource(
+  db: DB,
+  prices: PriceResolver,
+  { adapter, profile, sourceId }: ResolvedSource,
+  backfill: boolean,
+): Promise<RunResult> {
+  const started = Date.now();
+  const cursors = new DbCursorStore(db, sourceId);
+  const sink = new DbSink(db, sourceId, prices);
+  let error: string | undefined;
+
+  try {
+    // No wrapping transaction: better-sqlite3 transactions are synchronous and
+    // adapters do async file IO, so one could not span a whole pass. Correctness
+    // comes from every write being idempotent (unique dedup keys) and from the
+    // cursor only advancing past lines already handed to the sink.
+    await adapter.ingest({
+      profile,
+      sourceId,
+      cursors,
+      sink,
+      backfill,
+    });
+  } catch (err) {
+    error = (err as Error).message;
+    /*
+       * A source that is broken is broken on every pass, so a corrupt database could
+       * otherwise bury everything else. The LOG is deduplicated: a given failure is
        * printed once and again only when it changes.
        *
        * The count is not lost, because `recordError` below increments `error_count` on
        * every pass regardless. That distinction matters: an earlier version of this
        * comment claimed the health tab kept the true rate while nothing whatsoever
        * wrote to it, which made "no read errors" mean "we never looked".
-       */
-      const key = `${adapter.id}/${profile.profile}`;
-      if (lastError.get(key) !== error) {
-        log.error(`${key} failed`, error);
-        lastError.set(key, error);
-      }
-      /*
+     */
+    const key = `${adapter.id}/${profile.profile}`;
+    if (lastError.get(key) !== error) {
+      log.error(`${key} failed`, error);
+      lastError.set(key, error);
+    }
+    /*
        * A failure that escaped the adapter entirely belongs to no single file, so it is
        * recorded against the source itself. The parenthesised key cannot collide with a
        * real target, which is always a path or a `table:` name.
-       */
-      cursors.recordError(ADAPTER_TARGET, error);
-    }
-
-    if (!error && lastError.delete(`${adapter.id}/${profile.profile}`)) {
-      log.info(`${adapter.id}/${profile.profile} recovered`);
-      cursors.clearError(ADAPTER_TARGET);
-    }
-
-    results.push({
-      adapterId: adapter.id,
-      profile: profile.profile,
-      sourceId,
-      displayName: profile.displayName,
-      stats: sink.stats,
-      durationMs: Date.now() - started,
-      ...(error ? { error } : {}),
-    });
+     */
+    cursors.recordError(ADAPTER_TARGET, error);
   }
-  return results;
+
+  if (!error && lastError.delete(`${adapter.id}/${profile.profile}`)) {
+    log.info(`${adapter.id}/${profile.profile} recovered`);
+    cursors.clearError(ADAPTER_TARGET);
+  }
+
+  return {
+    adapterId: adapter.id,
+    profile: profile.profile,
+    sourceId,
+    displayName: profile.displayName,
+    stats: sink.stats,
+    durationMs: Date.now() - started,
+    ...(error ? { error } : {}),
+  };
 }
 
 export function summarize(r: RunResult): string {

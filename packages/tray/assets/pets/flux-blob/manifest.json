@@ -1,0 +1,90 @@
+{
+  "id": "flux_blob",
+  "displayName": "Flux Blob",
+  "personality": [
+    "calm",
+    "curious",
+    "playful",
+    "futuristic"
+  ],
+  "motionStyle": "float_squash_stretch",
+  "brandAnchors": [
+    "embedded_quota_ring",
+    "usage_bars",
+    "live_orb",
+    "fluid_body"
+  ],
+  "default": false,
+  "assetVersion": 1,
+  "pivot": {
+    "x": 0.5,
+    "y": 0.92
+  },
+  "supportedSizes": [
+    512,
+    256,
+    128
+  ],
+  "animations": {
+    "healthy_idle": {
+      "playback": "loop",
+      "fallback": "healthy_static",
+      "src": "/assets/pets/flux-blob/healthy_idle.webp",
+      "reducedMotionSrc": null
+    },
+    "working_loop": {
+      "playback": "loop",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/flux-blob/working_loop.webp",
+      "reducedMotionSrc": null
+    },
+    "warning_intro": {
+      "playback": "once",
+      "fallback": "warning_loop",
+      "src": "/assets/pets/flux-blob/warning_intro.webp",
+      "reducedMotionSrc": "/assets/pets/flux-blob/warning_intro_reduced.webp"
+    },
+    "warning_loop": {
+      "playback": "loop",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/flux-blob/warning_loop.webp",
+      "reducedMotionSrc": null
+    },
+    "critical_intro": {
+      "playback": "once",
+      "fallback": "critical_loop",
+      "src": "/assets/pets/flux-blob/critical_intro.webp",
+      "reducedMotionSrc": "/assets/pets/flux-blob/critical_intro_reduced.webp"
+    },
+    "critical_loop": {
+      "playback": "loop",
+      "fallback": "warning_loop",
+      "src": "/assets/pets/flux-blob/critical_loop.webp",
+      "reducedMotionSrc": null
+    },
+    "reset_celebrate": {
+      "playback": "once",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/flux-blob/reset_celebrate.webp",
+      "reducedMotionSrc": "/assets/pets/flux-blob/reset_celebrate_reduced.webp"
+    },
+    "talk_loop": {
+      "playback": "loop",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/flux-blob/talk_loop.webp",
+      "reducedMotionSrc": null
+    },
+    "hover_react": {
+      "playback": "once",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/flux-blob/hover_react.webp",
+      "reducedMotionSrc": null
+    },
+    "click_react": {
+      "playback": "once",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/flux-blob/click_react.webp",
+      "reducedMotionSrc": null
+    }
+  }
+}

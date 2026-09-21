@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildTooltip, currentLimits, shortWindow, subscriptionLimits, worst, isUsable, type Limit } from '../src/limits.js';
+import { buildTooltip, currentLimits, shortWindow, subscriptionLimits, visibleLimits, worst, isUsable, type Limit } from '../src/limits.js';
 
 // Pinned: a wall-clock-dependent test would pass or fail depending on the hour.
 const NOW = Date.parse('2026-09-02T12:00:00Z');
@@ -18,35 +18,19 @@ function limit(p: Partial<Limit> & { display_name: string; window_kind: string }
   };
 }
 
-/**
- * The regression this file exists for: the tooltip once applied a one-hour freshness
- * cutoff, which silently hid every harness except the one with a live session. Codex
- * only republishes quota when Codex is used, so its reading is routinely hours old and
- * still perfectly valid.
- */
-test('a reading hours old still appears, with its age shown', () => {
-  const tip = buildTooltip(
-    [
-      limit({ source_id: 1, display_name: 'Claude Code', window_kind: '5h', used_percent: 93, ageSeconds: 2 }),
-      limit({ source_id: 2, display_name: 'Claude Code (company)', window_kind: 'weekly', used_percent: 24, ageSeconds: 1.9 * 3600 }),
-      limit({ source_id: 3, display_name: 'Codex CLI', window_kind: 'weekly', used_percent: 4, ageSeconds: 9.4 * 3600, origin: 'rollout-token_count' }),
-    ],
-    true,
-    NOW,
-  );
-  assert.match(tip, /Claude 5h 93%/);
-  assert.match(tip, /Claude company wk 24% 2h/, 'the company profile must not be filtered out');
-  assert.match(tip, /Codex wk 4% 9h/, 'Codex must not be filtered out for being hours old');
+test('tray hover tooltip contains only app identity and connection state', () => {
+  assert.equal(buildTooltip('online'), 'QuotaPulse\nOnline');
+  assert.equal(buildTooltip('connecting'), 'QuotaPulse\nConnecting');
+  assert.equal(buildTooltip('offline'), 'QuotaPulse\nOffline');
 });
 
-test('a rolled-over window shows a dash, not its last percentage', () => {
-  const tip = buildTooltip(
-    [limit({ display_name: 'Codex CLI', window_kind: '5h', used_percent: 88, resets_at: NOW - HOUR })],
-    true,
-    NOW,
-  );
-  assert.match(tip, /Codex 5h --/);
-  assert.doesNotMatch(tip, /88/, 'a percentage for an ended window would be misleading');
+test('hidden subscriptions are removed before tray surfaces normalize quota rows', () => {
+  const rows = [
+    limit({ source_id: 1, subscription_key: 'openai', display_name: 'OpenAI', subscription_display_name: 'OpenAI', window_kind: '5h' }),
+    limit({ source_id: 2, subscription_key: 'claude', display_name: 'Claude', subscription_display_name: 'Claude', window_kind: '5h' }),
+  ];
+  assert.deepEqual(visibleLimits(rows, ['openai']).map((row) => row.subscription_key), ['claude']);
+  assert.deepEqual(subscriptionLimits(visibleLimits(rows, ['openai'])).map((row) => row.display_name), ['Claude']);
 });
 
 test('the freshest origin wins for a window, and both are not listed twice', () => {
@@ -98,15 +82,30 @@ test('shared quota readers collapse into one subscription row per window', () =>
       used_percent: 34,
       ageSeconds: 15,
     }),
+    limit({
+      source_id: 1,
+      display_name: 'Codex CLI',
+      subscription_key: 'openai:subscription',
+      subscription_display_name: 'OpenAI Subscription',
+      window_kind: 'monthly',
+      used_percent: 81,
+      ageSeconds: 60,
+    }),
+    limit({
+      source_id: 2,
+      display_name: 'OpenAI Subscription',
+      subscription_key: 'openai:subscription',
+      subscription_display_name: 'OpenAI Subscription',
+      window_kind: 'monthly',
+      used_percent: 81,
+      ageSeconds: 15,
+    }),
   ];
 
   const current = subscriptionLimits(rows, NOW);
-  assert.deepEqual(current.map((row) => row.window_kind), ['5h', 'weekly']);
-  assert.deepEqual(current.map((row) => row.display_name), ['OpenAI Subscription', 'OpenAI Subscription']);
-  assert.deepEqual(current.map((row) => row.source_id), [2, 2]);
-  const tip = buildTooltip(rows, true, NOW);
-  assert.match(tip, /OpenAI 5h 18% · wk 34%/);
-  assert.doesNotMatch(tip, /Codex/);
+  assert.deepEqual(current.map((row) => row.window_kind), ['5h', 'weekly', 'monthly']);
+  assert.deepEqual(current.map((row) => row.display_name), ['OpenAI Subscription', 'OpenAI Subscription', 'OpenAI Subscription']);
+  assert.deepEqual(current.map((row) => row.source_id), [2, 2, 2]);
 });
 
 test('a live window beats a rolled-over one even when the dead reading is fresher', () => {
@@ -129,22 +128,6 @@ test('the badge tracks the worst LIVE limit, ignoring expired ones', () => {
   assert.equal(rows.filter((r) => isUsable(r, NOW)).length, 2);
 });
 
-test('the tooltip stays inside the Windows 127-character cap', () => {
-  const many: Limit[] = [];
-  for (let i = 0; i < 8; i++) {
-    many.push(limit({ source_id: i, display_name: `Some Long Harness Name ${i}`, window_kind: '5h', used_percent: 42 }));
-    many.push(limit({ source_id: i, display_name: `Some Long Harness Name ${i}`, window_kind: 'weekly', used_percent: 17 }));
-  }
-  const tip = buildTooltip(many, true, NOW);
-  assert.ok(tip.length <= 127, `tooltip was ${tip.length} chars`);
-  assert.match(tip, /more$/, 'dropped sources are accounted for rather than silently lost');
-});
-
-test('daemon down and no-data states are distinguishable', () => {
-  assert.match(buildTooltip([], false, NOW), /daemon not running/);
-  assert.match(buildTooltip([], true, NOW), /no quota data yet/);
-});
-
 test('a reading older than the window it describes is void, even with no reset time', () => {
   // Claude's cached config fallback publishes a percentage with no reset timestamp.
   // Two days old, it cannot be a statement about a five-hour window.
@@ -160,7 +143,6 @@ test('a reading older than the window it describes is void, even with no reset t
     }),
   ];
   assert.equal(isUsable(rows[0]!, NOW), false);
-  assert.match(buildTooltip(rows, true, NOW), /Claude 5h --/);
 });
 
 test('a weekly reading hours old is still valid for its seven-day window', () => {
@@ -172,7 +154,6 @@ test('a weekly reading hours old is still valid for its seven-day window', () =>
     ageSeconds: 10 * 3600,
   });
   assert.equal(isUsable(row, NOW), true, '10h is well inside a 7-day window');
-  assert.match(buildTooltip([row], true, NOW), /Codex wk 4% 10h/);
 });
 
 test('a monthly reading has a distinct tray label and month-sized no-reset expiry', () => {
@@ -185,10 +166,50 @@ test('a monthly reading has a distinct tray label and month-sized no-reset expir
     used_percent: 64,
   });
   assert.equal(isUsable(row, NOW), true);
-  assert.match(buildTooltip([row], true, NOW), /OpenCode Go mo 64% 30d/);
   assert.equal(
     isUsable({ ...row, ageSeconds: 32 * 86400 }, NOW),
     false,
     'a no-reset monthly fallback is stale after the safety span',
+  );
+});
+
+test('OpenCode Go keeps weekly and monthly values attached to the right tray labels', () => {
+  const rows = [
+    limit({
+      display_name: 'OpenCode Go Subscription',
+      subscription_key: 'opencode:go',
+      subscription_display_name: 'OpenCode Go Subscription',
+      window_kind: 'monthly',
+      used_percent: 3,
+      resets_at: NOW + 30 * 86400_000,
+      origin: 'opencode-go-usage',
+    }),
+    limit({
+      display_name: 'OpenCode Go Subscription',
+      subscription_key: 'opencode:go',
+      subscription_display_name: 'OpenCode Go Subscription',
+      window_kind: 'weekly',
+      used_percent: 7,
+      resets_at: NOW + 2 * 86400_000,
+      origin: 'opencode-go-usage',
+    }),
+    limit({
+      display_name: 'OpenCode Go Subscription',
+      subscription_key: 'opencode:go',
+      subscription_display_name: 'OpenCode Go Subscription',
+      window_kind: '5h',
+      used_percent: 0,
+      resets_at: NOW + 3 * HOUR,
+      origin: 'opencode-go-usage',
+    }),
+  ];
+
+  assert.deepEqual(
+    subscriptionLimits(rows, NOW).map((row) => [row.window_kind, row.used_percent]),
+    [
+      ['5h', 0],
+      ['weekly', 7],
+      ['monthly', 3],
+    ],
   );
 });

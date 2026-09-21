@@ -16,7 +16,7 @@ import {
   shortSource,
   shortAge,
   clockAt,
-  TOOLTIP_MAX,
+  visibleLimits,
   type Limit,
 } from './limits.js';
 
@@ -28,20 +28,24 @@ const LOCK_PATH = join(DATA_DIR, 'daemon.lock');
 async function main() {
   if (!existsSync(LOCK_PATH)) {
     console.log('daemon not running (no lock file)');
-    console.log(buildTooltip([], false));
+    console.log(buildTooltip('offline'));
     return;
   }
   const lock = JSON.parse(readFileSync(LOCK_PATH, 'utf8')) as { port: number; token: string };
-  const res = await fetch(`http://127.0.0.1:${lock.port}/api/limits`, {
+  const res = await fetch(`http://127.0.0.1:${lock.port}/api/overview`, {
     headers: { 'x-quotapulse-token': lock.token },
   });
-  const { limits } = (await res.json()) as { limits: Limit[] };
+  const { limits, settings } = (await res.json()) as {
+    limits: Limit[];
+    settings?: { hidden_subscriptions?: string[] };
+  };
+  const visible = visibleLimits(limits, settings?.hidden_subscriptions ?? []);
 
-  const tip = buildTooltip(limits, true);
-  console.log(`\n=== TOOLTIP (${tip.length}/${TOOLTIP_MAX} chars) ===`);
+  const tip = buildTooltip('online');
+  console.log(`\n=== TOOLTIP (${tip.length} chars) ===`);
   for (const line of tip.split('\n')) console.log('  | ' + line);
 
-  const shown = subscriptionLimits(limits);
+  const shown = subscriptionLimits(visible);
   const w = worst(shown);
   console.log('\n=== CONTEXT MENU ===');
   console.log(
@@ -64,8 +68,9 @@ async function main() {
     console.log(`  ${shortSource(l.display_name)} · ${shortWindow(l.window_kind)} ${value} — ${when}${agePart}`);
   }
 
-  const hidden = limits.length - shown.length;
-  console.log(`\n  (${shown.length} shown, ${hidden} duplicate reader/origin rows hidden)`);
+  const hiddenBySettings = limits.length - visible.length;
+  const collapsedReaders = visible.length - shown.length;
+  console.log(`\n  (${shown.length} shown, ${hiddenBySettings} hidden by Settings, ${collapsedReaders} duplicate reader/origin rows collapsed)`);
 }
 
 main().catch((err) => {

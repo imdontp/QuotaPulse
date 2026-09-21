@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { api, type SessionRow } from '@/api';
+import { api, type SessionRow, type UsagePeriod } from '@/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -14,10 +14,12 @@ import { vendorLabel } from '@/format';
 import { useFormat } from '@/i18n/format';
 import { useT } from '@/i18n';
 import { useLiveRefresh } from '@/lib/use-live';
+import { ValueDisplay } from '@/components/value-display';
+import { UsageRangeBar, useUsageRoute } from '@/components/usage-range';
+import { SessionDetailDrawer } from '@/components/session-detail-drawer';
 
 const PAGE_SIZES = [25, 50, 100];
-
-export function SessionsSection() {
+export function SessionsSection({ sources = [] }: { sources?: Array<{ id: number; display_name: string }> }) {
   const t = useT();
   const f = useFormat();
   const [rows, setRows] = useState<SessionRow[]>([]);
@@ -29,6 +31,9 @@ export function SessionsSection() {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [loaded, setLoaded] = useState(false);
+  const [route, updateRoute] = useUsageRoute('sessions');
+  const [period, setPeriod] = useState<UsagePeriod | null>(null);
+  const [selectedSession, setSelectedSession] = useState<SessionRow | null>(null);
 
   const vendorKey = useMemo(() => [...selected].sort().join(','), [selected]);
 
@@ -37,9 +42,23 @@ export function SessionsSection() {
       // A live refresh keeps the current table on screen: a spinner every few seconds
       // while you are reading a page is worse than a row arriving a moment late.
       if (!live) setLoading(true);
-      return api
-        .sessions({ limit, offset, vendor: vendorKey })
-        .then((r) => {
+      return api.usage({
+        range: route.selection.range,
+        from: route.selection.from,
+        to: route.selection.to,
+        bucket: route.selection.bucket ?? 'auto',
+        sourceId: route.selection.sourceId,
+      }).then((window) => {
+        setPeriod(window.range);
+        return api.sessions({
+          limit,
+          offset,
+          vendor: vendorKey,
+          sourceId: route.selection.sourceId,
+          from: window.range.from,
+          to: window.range.to,
+        });
+      }).then((r) => {
           setRows(r.sessions);
           setTotal(r.total);
           setVendors(r.vendors.map((v) => ({ id: v.vendor, count: v.sessions })));
@@ -52,7 +71,7 @@ export function SessionsSection() {
         })
         .finally(() => setLoading(false));
     },
-    [limit, offset, vendorKey],
+    [limit, offset, vendorKey, route.selection.range, route.selection.from, route.selection.to, route.selection.bucket, route.selection.sourceId],
   );
 
   // Any filter or page-size change invalidates the current offset: page 6 of the old
@@ -71,6 +90,7 @@ export function SessionsSection() {
 
   return (
     <div className="flex flex-col gap-3.5">
+      <UsageRangeBar route={route} sources={sources} onChange={(next) => { setOffset(0); updateRoute(next); }} />
       <VendorFilter
         vendors={vendors}
         selected={selected}
@@ -81,6 +101,7 @@ export function SessionsSection() {
       <Card>
         <CardHeader>
           <CardTitle>{t('sessions.title')}</CardTitle>
+          {period && <span className="text-muted-foreground text-[11.5px]">{new Date(period.from).toLocaleDateString()} – {new Date(period.to).toLocaleDateString()}</span>}
           <span className="text-muted-foreground text-[11.5px]">
             {t('sessions.range', { from, to, total })}
           </span>
@@ -119,7 +140,7 @@ export function SessionsSection() {
             </TableHeader>
             <TableBody>
               {rows.map((s) => (
-                <TableRow key={s.id}>
+                <TableRow key={s.id} tabIndex={0} className="cursor-pointer" onClick={() => setSelectedSession(s)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setSelectedSession(s); } }} aria-label={t('sessions.detail')}>
                   <TableCell className="text-muted-foreground whitespace-nowrap">
                     {f.clock(s.last_seen_at)}
                   </TableCell>
@@ -155,7 +176,7 @@ export function SessionsSection() {
                     {f.tokens(s.total_tokens)}
                   </TableCell>
                   <TableCell className="tabular text-right font-mono">
-                    {f.money(s.cost_usd, s.cost_unknown_calls)}
+                    <ValueDisplay total={s} />
                   </TableCell>
                   <TableCell className="tabular text-muted-foreground text-right font-mono">
                     {s.native_cost_usd == null ? (
@@ -199,6 +220,7 @@ export function SessionsSection() {
           </CardContent>
         )}
       </Card>
+      <SessionDetailDrawer summary={selectedSession} onClose={() => setSelectedSession(null)} />
     </div>
   );
 }

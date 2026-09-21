@@ -105,14 +105,14 @@ export function StackedBars({
                       <span>
                         <strong>{s.label}</strong>
                         <br />
-                        {fmt(s.value)} &middot; {((s.value / row.total) * 100).toFixed(1)}% of{' '}
+                        {fmt(s.value)} &middot; {row.total > 0 ? ((s.value / row.total) * 100).toFixed(1) : '--'}% of{' '}
                         {row.label}
                       </span>
                     }
                   >
                     <div
                       className="h-full cursor-default transition-opacity hover:opacity-80"
-                      style={{ width: `${(s.value / row.total) * 100}%`, background: s.color }}
+                      style={{ width: `${row.total > 0 ? (s.value / row.total) * 100 : 0}%`, background: s.color }}
                     />
                   </Hint>
                 ))}

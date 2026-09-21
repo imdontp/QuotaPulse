@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QuotaPulse · Companion Studio</title>
+<link rel="stylesheet" href="gallery.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>Quota<span>Pulse</span></div>
+    <span class="top-label">COMPANION STUDIO</span>
+    <span class="local-pill"><i></i> Your desktop, your companion</span>
+  </header>
+  <main class="studio">
+    <div class="page-heading"><div><p class="eyebrow">A LITTLE COMPANY. A CLEARER DAY.</p><h1>Find your kind of companion<span>.</span></h1><p class="muted">Small presence. Thoughtful signals. Always in your flow.</p></div></div>
+    <div class="workspace">
+      <section class="collection" aria-label="Companion collection">
+        <div class="section-heading"><h2>The originals</h2><span>01 — 04</span></div>
+        <p class="section-copy">Four personalities. One shared pulse.</p>
+        <div class="cards" id="characters"></div>
+        <div class="section-heading bonus-heading"><h2>A little more personality</h2><span class="collection-badge">BONUS COLLECTION</span></div>
+        <p class="section-copy">Meet Nova, Byte, Mochi &amp; Kuro. Ready to keep you company.</p>
+        <div class="cards" id="experimental"></div>
+        <p class="collection-footnote">Bonus companions are in Beta. All eight can join your desktop.</p>
+      </section>
+      <aside class="companion-panel" aria-label="Selected companion">
+        <section class="hero-card">
+          <div class="hero-top"><span class="eyebrow" id="collectionLabel">YOUR COMPANION</span><span class="active-pill"><i></i> Selected companion</span></div>
+          <h2 id="selectedName">Your companion</h2>
+          <p class="hero-tagline" id="selectedTagline"></p>
+          <div class="pet-scene" id="petScene">
+            <span class="orbit orbit-one" aria-hidden="true"></span><span class="orbit orbit-two" aria-hidden="true"></span>
+            <div class="scene-message" id="sceneMessage">A little company for your day.</div>
+            <div id="previewArt" class="preview-stage" role="img" aria-label="Pet preview"></div>
+            <div class="ground-light" aria-hidden="true"></div>
+          </div>
+          <div class="traits" id="traits"></div>
+          <p class="description" id="selectedDescription"></p>
+          <div class="preview-heading"><h3>A mood for every moment</h3><span>PREVIEW ONLY</span></div>
+          <div class="state-tabs" id="preview"></div>
+          <div id="previewDetail" class="preview-detail" aria-live="polite"></div>
+        </section>
+        <section class="settings-card" aria-label="Companion preferences">
+          <div class="section-heading"><h2>Make it yours</h2><span class="save-state" id="saveState" role="status">Saved on this device</span></div>
+          <div class="setting-group"><h3>How we move</h3><div class="motion-choices" id="motion"></div></div>
+          <button class="toggle-row" data-toggle="reducedMotion" data-section="flags"></button>
+          <details><summary>Placement <span>Where your companion feels at home</span></summary><div class="detail-content">
+            <button id="returnHome" class="home-button">↗ Return home</button>
+            <button class="toggle-row" data-toggle="lockPosition" data-section="flags"></button>
+          </div></details>
+          <details><summary>Notifications <span>A gentle nudge when it matters</span></summary><div class="detail-content">
+            <button class="toggle-row" data-toggle="speechBubbles" data-section="flags"></button>
+            <button class="toggle-row" data-toggle="eventNotifications" data-section="flags"></button>
+            <button class="toggle-row" data-toggle="allowCritical" data-section="quiet"></button>
+          </div></details>
+        </section>
+      </aside>
+    </div>
+    <footer class="studio-footer"><span>MONITOR <b>·</b> UNDERSTAND <b>·</b> CREATE</span><span>A small companion for a brighter tomorrow.</span></footer>
+    <div class="error-message" id="errorMessage" role="alert" hidden></div>
+  </main>
+<script>
+'use strict';
+var api = window.qpGallery;
+var PREVIEW_STATES = ['Healthy', 'Working', 'Warning', 'Critical', 'Reset'];
+var STATE_COPY = {
+  healthy: ['All good. You’ve got this.', 'Relaxed and ready for what’s next.'],
+  working: ['In the zone. Right here with you.', 'A focused companion for your work session.'],
+  warning: ['Getting close. Let’s pace ourselves.', 'A gentle heads-up as usage approaches its limit.'],
+  critical: ['Time for a little breather.', 'An urgent signal when your quota is running low.'],
+  reset: ['A fresh start. Let’s go!', 'A little celebration for a renewed quota.']
+};
+var TOGGLES = {
+  reducedMotion: ['Reduced motion', 'Keep things calm and still'],
+  lockPosition: ['Stay right here', 'Lock your companion’s position'],
+  speechBubbles: ['Companion bubbles', 'A few words from your little friend'],
+  eventNotifications: ['Desktop notifications', 'Important updates outside the pet'],
+  allowCritical: ['Critical alerts in quiet hours', 'Let urgent quota alerts through']
+};
+var state, roster, busy = false, previewState = 'healthy', previewRequest = 0;
+function error(message) {
+  var el = document.getElementById('errorMessage'); el.textContent = message || ''; el.hidden = !message;
+}
+function selected() { return roster.entries.find(function (entry) { return entry.id === state.character; }); }
+function bonus(entry) { return entry.collection === 'bonus' || ['nova','byte','mochi','kuro'].includes(entry.id); }
+function renderRoster() {
+  document.getElementById('characters').textContent = '';
+  document.getElementById('experimental').textContent = '';
+  roster.entries.forEach(function (entry) {
+    var card = document.createElement('button'); card.type = 'button'; card.className = 'card';
+    card.dataset.focus = entry.id; card.dataset.character = entry.id;
+    card.classList.toggle('selected', entry.id === state.character);
+    card.setAttribute('aria-pressed', String(entry.id === state.character));
+    card.disabled = entry.selectable === false;
+    var badge = document.createElement('span'); badge.className = 'card-badge';
+    badge.textContent = entry.id === state.character ? '✓ Selected' : bonus(entry) ? 'Beta' : 'Companion';
+    var art = document.createElement('div'); art.className = 'card-art'; art.setAttribute('aria-hidden', 'true');
+    if (entry.previewSvg) art.innerHTML = entry.previewSvg;
+    var name = document.createElement('span'); name.className = 'name'; name.textContent = entry.displayName;
+    var desc = document.createElement('span'); desc.className = 'card-personality';
+    desc.textContent = (entry.personality || []).slice(0, 2).join(' · ');
+    card.append(badge, art, name, desc);
+    card.addEventListener('click', function () { if (entry.id !== state.character) update({ character: entry.id, skin: 'default' }); });
+    document.getElementById(bonus(entry) ? 'experimental' : 'characters').appendChild(card);
+  });
+}
+function renderHero() {
+  var entry = selected(); if (!entry) return;
+  document.getElementById('selectedName').textContent = entry.displayName;
+  document.getElementById('selectedTagline').textContent = entry.tagline || 'A little companion for your day.';
+  document.getElementById('selectedDescription').textContent = entry.description || '';
+  document.getElementById('collectionLabel').textContent = bonus(entry) ? 'BONUS COLLECTION · BETA' : 'THE ORIGINAL COLLECTION';
+  var traits = document.getElementById('traits'); traits.textContent = '';
+  (entry.personality || []).forEach(function (trait) { var el = document.createElement('span'); el.textContent = trait; traits.appendChild(el); });
+}
+function renderChoices() {
+  var row = document.getElementById('motion'); row.textContent = '';
+  var descriptions = { minimal: 'Quietly by your side', companion: 'A little room to wander', roaming: 'Explore your desktop' };
+  roster.movementModes.forEach(function (mode) {
+    var el = document.createElement('button'); el.dataset.focus = 'motion-' + mode;
+    el.setAttribute('aria-pressed', String(mode === state.movement));
+    var title = document.createElement('strong'); title.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+    var desc = document.createElement('span'); desc.textContent = descriptions[mode];
+    el.append(title, desc); el.addEventListener('click', function () { update({ movement: mode }); }); row.appendChild(el);
+  });
+}
+function renderToggles() {
+  document.querySelectorAll('[data-toggle]').forEach(function (el) {
+    var key = el.dataset.toggle, quiet = el.dataset.section === 'quiet';
+    var value = quiet ? !!state.quietHours[key] : !!state[key];
+    el.setAttribute('role', 'switch'); el.setAttribute('aria-checked', String(value));
+    el.setAttribute('aria-label', TOGGLES[key][0]);
+    el.textContent = '';
+    var copy = document.createElement('span'), title = document.createElement('strong'), desc = document.createElement('small');
+    title.textContent = TOGGLES[key][0]; desc.textContent = TOGGLES[key][1]; copy.append(title, desc);
+    var track = document.createElement('i'); track.className = 'switch'; track.setAttribute('aria-hidden', 'true'); el.append(copy, track);
+    if (el.dataset.bound) return;
+    el.dataset.bound = 'true';
+    el.addEventListener('click', function () {
+      var patch = {}; patch[key] = !(quiet ? state.quietHours[key] : state[key]);
+      update(quiet ? { quiet: patch } : { flags: patch });
+    });
+  });
+}
+function renderPreview() {
+  var row = document.getElementById('preview'); row.textContent = '';
+  PREVIEW_STATES.forEach(function (name) {
+    var key = name.toLowerCase(), el = document.createElement('button');
+    el.dataset.focus = 'preview-' + key; el.dataset.mood = key;
+    el.setAttribute('aria-pressed', String(key === previewState));
+    var dot = document.createElement('i'); dot.setAttribute('aria-hidden', 'true');
+    el.append(dot, document.createTextNode(name)); el.addEventListener('click', function () {
+      previewState = key; renderPreview(); restoreFocus('preview-' + key);
+    }); row.appendChild(el);
+  });
+  document.getElementById('petScene').dataset.mood = previewState;
+  document.getElementById('sceneMessage').textContent = STATE_COPY[previewState][0];
+  var request = ++previewRequest;
+  api.preview(previewState).then(function (info) {
+    if (request !== previewRequest) return;
+    var art = document.getElementById('previewArt'); art.textContent = '';
+    art.setAttribute('aria-label', state.character.replace(/_/g, ' ') + ' — ' + previewState);
+    if (info && info.svg) art.innerHTML = info.svg;
+    else if (info && info.src) { var img = document.createElement('img'); img.src = info.src; img.alt = previewState; art.appendChild(img); }
+    document.getElementById('previewDetail').textContent = info && (info.svg || info.src) ? STATE_COPY[previewState][1] : 'Preview unavailable';
+  }).catch(function () { if (request === previewRequest) error('Unable to load the preview. Please try again.'); });
+}
+function restoreFocus(key) {
+  if (!key) return;
+  var el = Array.from(document.querySelectorAll('[data-focus]')).find(function (el) { return el.dataset.focus === key; });
+  if (el) el.focus({ preventScroll: true });
+}
+function refreshPanels() { renderRoster(); renderHero(); renderChoices(); renderToggles(); renderPreview(); }
+async function update(patch) {
+  if (busy) return;
+  busy = true; error('');
+  var focus = document.activeElement && document.activeElement.dataset.focus;
+  document.getElementById('saveState').textContent = 'Saving…';
+  try {
+    var result = await api.update(patch);
+    if (result.error) throw new Error(result.error);
+    state = result.settings;
+    roster = await api.roster();
+    refreshPanels(); restoreFocus(focus);
+    document.getElementById('saveState').textContent = '✓ Saved on this device';
+  } catch (err) {
+    error(err.message || 'Unable to save. Please try again.');
+    document.getElementById('saveState').textContent = 'Not saved';
+  } finally { busy = false; }
+}
+document.getElementById('returnHome').addEventListener('click', function () { Promise.resolve(api.returnHome()).catch(function () { error('Unable to return home.'); }); });
+Promise.all([api.roster(), api.settings()]).then(function (loaded) {
+  roster = loaded[0]; state = loaded[1]; refreshPanels();
+}).catch(function () { error('Unable to load your companions. Please reopen the gallery.'); });
+</script>
+</body>
+</html>

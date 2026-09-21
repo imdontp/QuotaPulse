@@ -10,6 +10,7 @@ import {
   subscriptionDefinitionFor,
   type HarnessDefinition,
 } from '../dashboard/catalog.js';
+import { type UsageBucket, type UsagePeriod } from './usage-period.js';
 
 /*
  * An account is the quota entitlement, not the process that happened to read it.
@@ -47,6 +48,8 @@ const ACCOUNT_DISPLAY_SQL = `COALESCE(
  * entitlement with stale telemetry, not as proof that the subscription is active.
  */
 export const ACCOUNT_QUOTA_FRESHNESS_MS = 24 * 60 * 60 * 1000;
+/** A gap alert is actionable only while the related usage is still recent. */
+export const QUOTA_GAP_ACTIVITY_MS = 24 * 60 * 60 * 1000;
 
 export interface SourceRow {
   id: number;
@@ -54,6 +57,106 @@ export interface SourceRow {
   profile: string;
   display_name: string;
   root_path: string;
+}
+
+export type QuotaFreshness = 'live' | 'recent' | 'stale' | 'unknown' | 'expired' | 'mixed';
+
+export type QuotaTelemetryReason =
+  | 'usage_newer_than_quota'
+  | 'no_quota_observed'
+  | 'cached_only'
+  | 'reader_error'
+  | null;
+
+export interface QuotaWindowTelemetry {
+  window_kind: string;
+  freshness: QuotaFreshness;
+  latest_quota_at: number | null;
+  latest_source_fetched_at: number | null;
+  latest_usage_at: number | null;
+  gap: boolean;
+  reason: QuotaTelemetryReason;
+  origins: string[];
+}
+
+export interface QuotaTelemetry {
+  freshness: QuotaFreshness;
+  latest_quota_at: number | null;
+  latest_source_fetched_at: number | null;
+  latest_usage_at: number | null;
+  gap: boolean;
+  reason: QuotaTelemetryReason;
+  origins: string[];
+  windows: QuotaWindowTelemetry[];
+}
+
+function freshnessFor(
+  latestQuotaAt: number | null,
+  now: number,
+  resetAt: number | null = null,
+): QuotaFreshness {
+  if (latestQuotaAt == null) return 'unknown';
+  if (resetAt != null && resetAt <= now) return 'expired';
+  const age = now - latestQuotaAt;
+  if (age < 120_000) return 'live';
+  if (age < 3_600_000) return 'recent';
+  return 'stale';
+}
+
+function overallFreshness(windows: QuotaWindowTelemetry[]): QuotaFreshness {
+  if (windows.length === 0) return 'unknown';
+  const unique = new Set(windows.map((window) => window.freshness));
+  return unique.size === 1 ? windows[0]!.freshness : 'mixed';
+}
+
+function telemetryReason(
+  latestQuotaAt: number | null,
+  latestUsageAt: number | null,
+  origins: string[],
+  now: number,
+  readerError = false,
+): QuotaTelemetryReason {
+  if (readerError) return 'reader_error';
+  if (
+    latestUsageAt != null &&
+    now - latestUsageAt <= QUOTA_GAP_ACTIVITY_MS &&
+    (latestQuotaAt == null || latestUsageAt > latestQuotaAt)
+  ) {
+    return 'usage_newer_than_quota';
+  }
+  if (latestQuotaAt == null) return 'no_quota_observed';
+  if (origins.length > 0 && origins.every((origin) => origin === 'claude.json' || origin.includes('cached'))) {
+    return 'cached_only';
+  }
+  return null;
+}
+
+function summaryTelemetry(row: {
+  last_limit_at: number | null;
+  last_limit_source_fetched_at: number | null;
+  last_limit_reset_at: number | null;
+  last_event_ts: number | null;
+  limit_origins: string | null;
+  account_state?: AccountState;
+}, now: number): QuotaTelemetry {
+  const origins = row.limit_origins ? row.limit_origins.split(',').filter(Boolean) : [];
+  const reason = telemetryReason(
+    row.last_limit_at,
+    row.last_event_ts,
+    origins,
+    now,
+    row.account_state === 'unavailable',
+  );
+  return {
+    freshness: freshnessFor(row.last_limit_at, now, row.last_limit_reset_at),
+    latest_quota_at: row.last_limit_at,
+    latest_source_fetched_at: row.last_limit_source_fetched_at,
+    latest_usage_at: row.last_event_ts,
+    gap: reason === 'usage_newer_than_quota',
+    reason,
+    origins,
+    windows: [],
+  };
 }
 
 export const listSources = (db: DB): SourceRow[] =>
@@ -114,6 +217,47 @@ export const totalsSince = (db: DB, sinceMs: number, sourceId?: number): Totals 
     )
     .get(...(sourceId ? [sinceMs, sourceId] : [sinceMs])) as Totals;
 
+export const totalsBetween = (db: DB, fromMs: number, toMs: number, sourceId?: number): Totals =>
+  db.prepare(
+    `SELECT ${TOTALS_SELECT} FROM usage_event
+      WHERE ts >= @from AND ts < @to ${sourceId == null ? '' : 'AND source_id = @sourceId'}`,
+  ).get({ from: fromMs, to: toMs, sourceId: sourceId ?? null }) as Totals;
+
+/** Compare equal-length windows without mixing price coverage or call weights. */
+export function compareUsage(
+  db: DB,
+  opts: { from: number; to: number; previousFrom: number; previousTo: number; groupBy: GroupBy; sourceId?: number },
+) {
+  const groupExpr =
+    opts.groupBy === 'harness'
+      ? `s.harness || '/' || s.profile`
+      : opts.groupBy === 'model'
+        ? `COALESCE(u.model,'(unknown)')`
+        : opts.groupBy === 'vendor'
+          ? vendorSqlCase('u.model', 'u.provider')
+          : opts.groupBy === 'project'
+            ? `COALESCE(sess.project,'(none)')`
+            : `'all'`;
+  const grouped = db.prepare(
+    `SELECT ${groupExpr} AS series, ${TOTALS_SELECT}
+       FROM usage_event u JOIN source s ON s.id = u.source_id
+       LEFT JOIN session sess ON sess.id = u.session_id
+      WHERE u.ts >= @from AND u.ts < @to
+        AND (@sourceId IS NULL OR u.source_id = @sourceId)
+      GROUP BY series ORDER BY total_tokens DESC`,
+  );
+  const current = grouped.all({ from: opts.from, to: opts.to, sourceId: opts.sourceId ?? null }) as Array<Totals & { series: string }>;
+  const previous = grouped.all({ from: opts.previousFrom, to: opts.previousTo, sourceId: opts.sourceId ?? null }) as Array<Totals & { series: string }>;
+  const bySeries = new Map<string, { current: Totals | null; previous: Totals | null }>();
+  for (const row of current) bySeries.set(row.series, { current: row, previous: null });
+  for (const row of previous) bySeries.set(row.series, { ...(bySeries.get(row.series) ?? { current: null }), previous: row });
+  return {
+    current: totalsBetween(db, opts.from, opts.to, opts.sourceId),
+    previous: totalsBetween(db, opts.previousFrom, opts.previousTo, opts.sourceId),
+    series: [...bySeries.entries()].map(([series, pair]) => ({ series, ...pair })),
+  };
+}
+
 export const totalsBySource = (db: DB, sinceMs: number) =>
   db
     .prepare(
@@ -128,6 +272,21 @@ export const totalsBySource = (db: DB, sinceMs: number) =>
       Totals & { source_id: number; harness: string; profile: string; display_name: string; vendor: string }
     >;
 
+export const totalsBySourceBetween = (db: DB, fromMs: number, toMs: number, sourceId?: number) =>
+  db
+    .prepare(
+      `SELECT s.id AS source_id, s.harness, s.profile, s.display_name,
+              ${harnessVendorSqlCase('s.harness')} AS vendor,
+              ${TOTALS_SELECT}
+         FROM usage_event u JOIN source s ON s.id = u.source_id
+        WHERE u.ts >= @from AND u.ts < @to
+          AND (@sourceId IS NULL OR u.source_id = @sourceId)
+        GROUP BY s.id ORDER BY total_tokens DESC`,
+    )
+    .all({ from: fromMs, to: toMs, sourceId: sourceId ?? null }) as Array<
+      Totals & { source_id: number; harness: string; profile: string; display_name: string; vendor: string }
+    >;
+
 /**
  * Every source worth a card on Live with its lifetime footprint, whether or not it publishes
  * quota: the ones detected on this machine right now, plus any that once recorded usage and
@@ -137,14 +296,22 @@ export const totalsBySource = (db: DB, sinceMs: number) =>
  * usage sources publish no quota, while account-only readers belong in Account Quota.
  * A quota-driven list would otherwise leave those harnesses invisible.
  */
-export const sourceStatus = (db: DB) =>
-  db
+export const sourceStatus = (db: DB) => {
+  const now = Date.now();
+  const rows = db
     .prepare(
       `SELECT s.id AS source_id, s.harness, s.profile, s.display_name, s.root_path,
               ${harnessVendorSqlCase('s.harness')} AS vendor,
+              COALESCE(s.account_state, 'waiting') AS account_state,
               (SELECT COALESCE(SUM(u.call_count),0) FROM usage_event u WHERE u.source_id = s.id) AS calls,
               (SELECT COALESCE(SUM(u.total_tokens),0) FROM usage_event u WHERE u.source_id = s.id) AS total_tokens,
               (SELECT MAX(u.ts)     FROM usage_event u WHERE u.source_id = s.id) AS last_event_ts,
+              (SELECT MAX(l.last_seen_at) FROM limit_sample l WHERE l.source_id = s.id) AS last_limit_at,
+              (SELECT l.source_fetched_at FROM limit_sample l WHERE l.source_id = s.id
+                ORDER BY l.last_seen_at DESC, l.id DESC LIMIT 1) AS last_limit_source_fetched_at,
+              (SELECT l.resets_at FROM limit_sample l WHERE l.source_id = s.id
+                ORDER BY l.last_seen_at DESC, l.id DESC LIMIT 1) AS last_limit_reset_at,
+              (SELECT GROUP_CONCAT(DISTINCT l.origin) FROM limit_sample l WHERE l.source_id = s.id) AS limit_origins,
               (SELECT COUNT(*)      FROM limit_sample l WHERE l.source_id = s.id) AS limit_samples
          FROM source s
         WHERE s.source_kind = 'harness'
@@ -159,11 +326,21 @@ export const sourceStatus = (db: DB) =>
       display_name: string;
       root_path: string;
       vendor: string;
+      account_state: AccountState;
       calls: number;
       total_tokens: number;
       last_event_ts: number | null;
+      last_limit_at: number | null;
+      last_limit_source_fetched_at: number | null;
+      last_limit_reset_at: number | null;
+      limit_origins: string | null;
       limit_samples: number;
     }>;
+  return rows.map((row) => ({
+    ...row,
+    telemetry: summaryTelemetry(row, now),
+  }));
+};
 
 export interface LimitRow {
   source_id: number;
@@ -212,9 +389,272 @@ export const latestLimits = (db: DB): LimitRow[] =>
           AND t.origin = l.origin AND t.mx = l.observed_at
         WHERE s.enabled = 1
           AND (s.source_kind = 'harness' OR COALESCE(s.account_state, 'waiting') <> 'inactive')
-        ORDER BY s.harness, s.profile, l.window_kind`,
+        ORDER BY s.harness, s.profile,
+          CASE l.window_kind
+            WHEN '5h' THEN 0
+            WHEN 'weekly' THEN 1
+            WHEN 'weekly_opus' THEN 2
+            WHEN 'weekly_sonnet' THEN 3
+            WHEN 'monthly' THEN 4
+            ELSE 99
+          END,
+          l.window_kind`,
     )
-    .all() as LimitRow[];
+        .all() as LimitRow[];
+
+export interface AlertEventRow {
+  id: number;
+  kind: 'threshold';
+  source_id: number;
+  owner_key: string;
+  window_kind: string;
+  threshold: number;
+  used_percent: number;
+  resets_at: number | null;
+  detected_at: number;
+  delivered_at: number | null;
+  display_name: string;
+  subscription_display_name: string | null;
+  origin: string;
+}
+
+/**
+ * Record threshold crossings from the provider's quota samples. This is intentionally a
+ * daemon-side fact rather than a tray concern: the dashboard and tray can be closed while
+ * collection continues, and a process restart must not make a 80% reading look new.
+ *
+ * We only record a crossing when there is an earlier sample in the same reset period. The
+ * initial reading therefore establishes a baseline; it cannot manufacture a historical
+ * alert on the first daemon start. Reset jitter follows the same two-second rule as burn
+ * rate and tray deduplication.
+ */
+export const recordQuotaAlerts = (db: DB, now = Date.now()): AlertEventRow[] => {
+  const created: AlertEventRow[] = [];
+  const thresholds = [50, 80, 95] as const;
+  const sameReset = (a: number | null, b: number | null) =>
+    a == null || b == null ? a === b : Math.abs(a - b) <= RESET_TOLERANCE_MS;
+
+  return db.transaction(() => {
+    db.prepare('DELETE FROM alert_event WHERE detected_at < ?').run(now - 90 * 86_400_000);
+    const latest = db
+      .prepare(
+        `SELECT l.id, l.source_id, l.window_kind, l.used_percent, l.resets_at,
+                l.observed_at, l.origin, s.display_name,
+                COALESCE(${ACCOUNT_KEY_SQL}, 'source:' || s.id) AS owner_key,
+                ${ACCOUNT_DISPLAY_SQL} AS subscription_display_name
+           FROM limit_sample l JOIN source s ON s.id = l.source_id
+          WHERE l.used_percent IS NOT NULL AND s.enabled = 1
+            AND (s.source_kind = 'harness' OR COALESCE(s.account_state, 'waiting') <> 'inactive')
+            AND l.id = (SELECT l2.id FROM limit_sample l2
+                          WHERE l2.source_id = l.source_id
+                            AND l2.window_kind = l.window_kind
+                            AND l2.origin = l.origin
+                          ORDER BY l2.observed_at DESC, l2.id DESC LIMIT 1)`,
+      )
+      .all() as Array<{
+      id: number;
+      source_id: number;
+      window_kind: string;
+      used_percent: number;
+      resets_at: number | null;
+      observed_at: number;
+      origin: string;
+      display_name: string;
+      owner_key: string;
+      subscription_display_name: string | null;
+    }>;
+    const prior = db.prepare(
+      `SELECT used_percent, resets_at FROM limit_sample
+         WHERE source_id = ? AND window_kind = ? AND origin = ?
+           AND observed_at < ?
+         ORDER BY observed_at DESC, id DESC LIMIT 1`,
+    );
+    const insert = db.prepare(
+      `INSERT OR IGNORE INTO alert_event
+        (kind, source_id, owner_key, window_kind, threshold, used_percent, resets_at, detected_at, origin)
+       VALUES ('threshold', ?, ?, ?, ?, ?, ?, ?, ?)`,
+    );
+    const existing = db.prepare(
+      `SELECT resets_at FROM alert_event
+         WHERE kind = 'threshold' AND owner_key = ? AND window_kind = ? AND threshold = ?
+         ORDER BY detected_at DESC LIMIT 8`,
+    );
+    const rowById = db.prepare(
+      `SELECT e.*, s.display_name, ${ACCOUNT_DISPLAY_SQL} AS subscription_display_name,
+              COALESCE(NULLIF(e.origin, ''), (SELECT l.origin FROM limit_sample l
+                 WHERE l.source_id = e.source_id AND l.window_kind = e.window_kind
+                 ORDER BY l.observed_at DESC, l.id DESC LIMIT 1)) AS origin
+         FROM alert_event e JOIN source s ON s.id = e.source_id WHERE e.id = ?`,
+    );
+
+    for (const row of latest) {
+      const previous = prior.get(row.source_id, row.window_kind, row.origin, row.observed_at) as
+        | { used_percent: number; resets_at: number | null }
+        | undefined;
+      if (!previous || !sameReset(previous.resets_at, row.resets_at)) continue;
+      for (const threshold of thresholds) {
+        if (previous.used_percent >= threshold || row.used_percent < threshold) continue;
+        const priorEvents = existing.all(row.owner_key, row.window_kind, threshold) as Array<{ resets_at: number | null }>;
+        if (priorEvents.some((event) => sameReset(event.resets_at, row.resets_at))) continue;
+        const result = insert.run(
+          row.source_id,
+          row.owner_key,
+          row.window_kind,
+          threshold,
+          row.used_percent,
+          row.resets_at,
+          now,
+          row.origin,
+        );
+        if (result.changes === 0) continue;
+        const event = rowById.get(Number(result.lastInsertRowid)) as AlertEventRow | undefined;
+        if (event) created.push(event);
+      }
+    }
+    return created;
+  })();
+};
+
+export const alertHistory = (
+  db: DB,
+  opts: { from?: number; to?: number; limit?: number; pending?: boolean; sourceId?: number } = {},
+): AlertEventRow[] => {
+  const parts = ['1=1'];
+  const params: Record<string, number | null> = {
+    from: opts.from ?? null,
+    to: opts.to ?? null,
+    sourceId: opts.sourceId ?? null,
+    limit: Math.min(Math.max(Math.trunc(opts.limit ?? 100), 1), 500),
+  };
+  if (opts.from != null) parts.push('e.detected_at >= @from');
+  if (opts.to != null) parts.push('e.detected_at < @to');
+  if (opts.pending) parts.push('e.delivered_at IS NULL');
+  if (opts.sourceId != null) parts.push('e.source_id = @sourceId');
+  return db.prepare(
+    `SELECT e.id, e.kind, e.source_id, e.owner_key, e.window_kind, e.threshold,
+            e.used_percent, e.resets_at, e.detected_at, e.delivered_at,
+            s.display_name, ${ACCOUNT_DISPLAY_SQL} AS subscription_display_name,
+            COALESCE(NULLIF(e.origin, ''), (SELECT l.origin FROM limit_sample l
+                       WHERE l.source_id = e.source_id AND l.window_kind = e.window_kind
+                       ORDER BY l.observed_at DESC, l.id DESC LIMIT 1), '') AS origin
+       FROM alert_event e JOIN source s ON s.id = e.source_id
+      WHERE ${parts.join(' AND ')}
+      ORDER BY e.detected_at DESC, e.id DESC LIMIT @limit`,
+  ).all(params) as AlertEventRow[];
+};
+
+export const markAlertDelivered = (db: DB, id: number, at = Date.now()): boolean =>
+  db.prepare('UPDATE alert_event SET delivered_at = COALESCE(delivered_at, ?) WHERE id = ?').run(at, id).changes > 0;
+
+export interface NotificationSettings {
+  enabled: boolean;
+  snooze_until: number | null;
+  quiet_start: number | null;
+  quiet_end: number | null;
+  updated_at: number;
+}
+
+export const notificationSettings = (db: DB): NotificationSettings => {
+  const row = db.prepare('SELECT enabled, snooze_until, quiet_start, quiet_end, updated_at FROM notification_setting WHERE id = 1').get() as
+    | { enabled: number; snooze_until: number | null; quiet_start: number | null; quiet_end: number | null; updated_at: number }
+    | undefined;
+  return row ? { ...row, enabled: row.enabled === 1 } : { enabled: true, snooze_until: null, quiet_start: null, quiet_end: null, updated_at: 0 };
+};
+
+export const updateNotificationSettings = (
+  db: DB,
+  patch: Partial<Pick<NotificationSettings, 'enabled' | 'snooze_until' | 'quiet_start' | 'quiet_end'>>,
+): NotificationSettings => {
+  const current = notificationSettings(db);
+  const next = {
+    enabled: patch.enabled ?? current.enabled,
+    snooze_until: patch.snooze_until === undefined ? current.snooze_until : patch.snooze_until,
+    quiet_start: patch.quiet_start === undefined ? current.quiet_start : patch.quiet_start,
+    quiet_end: patch.quiet_end === undefined ? current.quiet_end : patch.quiet_end,
+    updated_at: Date.now(),
+  };
+  db.prepare(`INSERT INTO notification_setting (id, enabled, snooze_until, quiet_start, quiet_end, updated_at)
+    VALUES (1, @enabled, @snooze_until, @quiet_start, @quiet_end, @updated_at)
+    ON CONFLICT(id) DO UPDATE SET enabled=excluded.enabled, snooze_until=excluded.snooze_until,
+      quiet_start=excluded.quiet_start, quiet_end=excluded.quiet_end, updated_at=excluded.updated_at`).run({
+    ...next,
+    enabled: next.enabled ? 1 : 0,
+  });
+  return { ...next };
+};
+
+export interface AppSettings {
+  pet_enabled: boolean;
+  tray_animation_enabled: boolean;
+  hidden_subscriptions: string[];
+  updated_at: number;
+}
+
+const DEFAULT_APP_SETTINGS: AppSettings = {
+  pet_enabled: true,
+  tray_animation_enabled: true,
+  hidden_subscriptions: [],
+  updated_at: 0,
+};
+
+function normalizeHiddenSubscriptions(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value
+    .filter((key): key is string => typeof key === 'string' && key.trim() !== '')
+    .map((key) => key.trim()))];
+}
+
+export const appSettings = (db: DB): AppSettings => {
+  const row = db.prepare(
+    `SELECT pet_enabled, tray_animation_enabled, hidden_subscriptions, updated_at
+       FROM app_setting WHERE id = 1`,
+  ).get() as {
+    pet_enabled: number;
+    tray_animation_enabled: number;
+    hidden_subscriptions: string;
+    updated_at: number;
+  } | undefined;
+  if (!row) return { ...DEFAULT_APP_SETTINGS, hidden_subscriptions: [] };
+  let hidden: unknown = [];
+  try {
+    hidden = JSON.parse(row.hidden_subscriptions);
+  } catch {
+    hidden = [];
+  }
+  return {
+    pet_enabled: row.pet_enabled === 1,
+    tray_animation_enabled: row.tray_animation_enabled === 1,
+    hidden_subscriptions: normalizeHiddenSubscriptions(hidden),
+    updated_at: row.updated_at,
+  };
+};
+
+export const updateAppSettings = (
+  db: DB,
+  patch: Partial<Pick<AppSettings, 'pet_enabled' | 'tray_animation_enabled' | 'hidden_subscriptions'>>,
+): AppSettings => {
+  const current = appSettings(db);
+  const next: AppSettings = {
+    pet_enabled: patch.pet_enabled ?? current.pet_enabled,
+    tray_animation_enabled: patch.tray_animation_enabled ?? current.tray_animation_enabled,
+    hidden_subscriptions: patch.hidden_subscriptions === undefined
+      ? current.hidden_subscriptions
+      : normalizeHiddenSubscriptions(patch.hidden_subscriptions),
+    updated_at: Date.now(),
+  };
+  db.prepare(`INSERT INTO app_setting (id, pet_enabled, tray_animation_enabled, hidden_subscriptions, updated_at)
+    VALUES (1, @pet_enabled, @tray_animation_enabled, @hidden_subscriptions, @updated_at)
+    ON CONFLICT(id) DO UPDATE SET pet_enabled=excluded.pet_enabled,
+      tray_animation_enabled=excluded.tray_animation_enabled,
+      hidden_subscriptions=excluded.hidden_subscriptions,
+      updated_at=excluded.updated_at`).run({
+    pet_enabled: next.pet_enabled ? 1 : 0,
+    tray_animation_enabled: next.tray_animation_enabled ? 1 : 0,
+    hidden_subscriptions: JSON.stringify(next.hidden_subscriptions),
+    updated_at: next.updated_at,
+  });
+  return next;
+};
 
 export interface AccountOwner {
   harness: string;
@@ -353,6 +793,82 @@ export interface SubscriptionStatus extends AccountStatus {
   subscription_key: string;
   subscription_display_name: string;
   linked_harness_keys: string[];
+  telemetry: QuotaTelemetry;
+}
+
+function latestUsageBySubscription(db: DB): Map<string, number> {
+  const rows = db
+    .prepare(
+      `SELECT ${ACCOUNT_KEY_SQL} AS account_key, MAX(u.ts) AS latest_usage_at
+         FROM usage_event u
+         JOIN source s ON s.id = u.source_id
+        WHERE ${ACCOUNT_KEY_SQL} IS NOT NULL
+        GROUP BY account_key`,
+    )
+    .all() as Array<{ account_key: string | null; latest_usage_at: number | null }>;
+  return new Map(
+    rows
+      .filter((row): row is { account_key: string; latest_usage_at: number } =>
+        row.account_key != null && row.latest_usage_at != null,
+      )
+      .map((row) => [row.account_key, row.latest_usage_at]),
+  );
+}
+
+function telemetryForSubscription(
+  key: string,
+  limits: LimitRow[],
+  latestUsageAt: number | null,
+  now: number,
+): QuotaTelemetry {
+  const owned = limits.filter((limit) => limit.account_key === key);
+  const grouped = new Map<string, LimitRow[]>();
+  for (const limit of owned) {
+    const rows = grouped.get(limit.window_kind) ?? [];
+    rows.push(limit);
+    grouped.set(limit.window_kind, rows);
+  }
+
+  const windows: QuotaWindowTelemetry[] = [...grouped.entries()].map(([windowKind, rows]) => {
+    const latest = [...rows].sort((a, b) => b.last_seen_at - a.last_seen_at)[0]!;
+    const latestQuotaAt = latest.last_seen_at;
+    const origins = [...new Set(rows.map((row) => row.origin))];
+    const reason = telemetryReason(latestQuotaAt, latestUsageAt, origins, now);
+    return {
+      window_kind: windowKind,
+      freshness: freshnessFor(latestQuotaAt, now, latest.resets_at),
+      latest_quota_at: latestQuotaAt,
+      latest_source_fetched_at: latest.source_fetched_at,
+      latest_usage_at: latestUsageAt,
+      gap: reason === 'usage_newer_than_quota',
+      reason,
+      origins,
+    };
+  });
+
+  const latestQuotaAt = owned.reduce<number | null>(
+    (latest, row) => (latest == null || row.last_seen_at > latest ? row.last_seen_at : latest),
+    null,
+  );
+  const latestSourceFetchedAt = owned.reduce<number | null>(
+    (latest, row) =>
+      row.source_fetched_at != null && (latest == null || row.source_fetched_at > latest)
+        ? row.source_fetched_at
+        : latest,
+    null,
+  );
+  const origins = [...new Set(owned.map((row) => row.origin))];
+  const reason = telemetryReason(latestQuotaAt, latestUsageAt, origins, now);
+  return {
+    freshness: overallFreshness(windows),
+    latest_quota_at: latestQuotaAt,
+    latest_source_fetched_at: latestSourceFetchedAt,
+    latest_usage_at: latestUsageAt,
+    gap: windows.some((window) => window.gap),
+    reason,
+    origins,
+    windows,
+  };
 }
 
 /**
@@ -364,6 +880,9 @@ export interface SubscriptionStatus extends AccountStatus {
 export const subscriptionStatus = (db: DB): SubscriptionStatus[] => {
   const observed = accountStatus(db);
   const byKey = new Map(observed.map((entry) => [entry.account_key, entry]));
+  const limits = latestLimits(db);
+  const usageBySubscription = latestUsageBySubscription(db);
+  const now = Date.now();
   const linkedBySubscription = new Map<string, string[]>();
 
   for (const definition of HARNESS_CATALOG) {
@@ -395,6 +914,12 @@ export const subscriptionStatus = (db: DB): SubscriptionStatus[] => {
     }
     const state = current?.state ?? definition.stateWhenMissing;
     const displayName = definition.displayName;
+    const telemetry = telemetryForSubscription(
+      definition.key,
+      limits,
+      usageBySubscription.get(definition.key) ?? null,
+      now,
+    );
     result.push({
       account_key: definition.key,
       provider: current?.provider ?? definition.provider,
@@ -412,6 +937,7 @@ export const subscriptionStatus = (db: DB): SubscriptionStatus[] => {
       subscription_key: definition.key,
       subscription_display_name: displayName,
       linked_harness_keys: linkedBySubscription.get(definition.key) ?? [],
+      telemetry,
     });
   }
 
@@ -426,6 +952,12 @@ export const subscriptionStatus = (db: DB): SubscriptionStatus[] => {
       subscription_key: current.account_key,
       subscription_display_name: displayName,
       linked_harness_keys: linkedBySubscription.get(current.account_key) ?? [],
+      telemetry: telemetryForSubscription(
+        current.account_key,
+        limits,
+        usageBySubscription.get(current.account_key) ?? null,
+        now,
+      ),
     });
   }
 
@@ -536,9 +1068,11 @@ export interface BurnRate {
 
 /**
  * Burn rate from the provider's OWN percentage deltas, measured only within the
- * current window period (same resets_at). Comparing across a reset would read the
+ * current window period (resets_at within 2s of the latest reading). Comparing across a reset would read the
  * drop back to zero as negative burn.
  */
+export const RESET_TOLERANCE_MS = 2_000;
+
 export function burnRate(db: DB, sourceId: number, windowKind: string, origin: string): BurnRate | null {
   // Both endpoints use observed_at (when the VALUE appeared). Using last_seen_at would
   // compress the measured span whenever a source keeps confirming an unchanged reading.
@@ -558,7 +1092,7 @@ export function burnRate(db: DB, sourceId: number, windowKind: string, origin: s
       `SELECT used_percent, observed_at, COUNT(*) OVER () AS n FROM limit_sample
         WHERE source_id = ? AND window_kind = ? AND origin = ? AND used_percent IS NOT NULL
           AND observed_at < ?
-          AND ((resets_at IS NULL AND ? IS NULL) OR resets_at = ?)
+          AND ((resets_at IS NULL AND ? IS NULL) OR ABS(resets_at - ?) <= ${RESET_TOLERANCE_MS})
         ORDER BY observed_at ASC LIMIT 1`,
     )
     .get(sourceId, windowKind, origin, latest.observed_at, latest.resets_at, latest.resets_at) as
@@ -583,8 +1117,23 @@ export function burnRate(db: DB, sourceId: number, windowKind: string, origin: s
   };
 }
 
-export type Bucket = 'hour' | 'day';
+export type Bucket = UsageBucket;
 export type GroupBy = 'harness' | 'model' | 'vendor' | 'project' | 'none';
+
+function calendarBucketKey(bucket: UsageBucket, alias = 'u'): string {
+  const seconds = `${alias}.ts / 1000.0`;
+  if (bucket === 'hour') return `strftime('%Y-%m-%d %H:00:00', ${seconds}, 'unixepoch', 'localtime')`;
+  if (bucket === 'day') return `strftime('%Y-%m-%d', ${seconds}, 'unixepoch', 'localtime')`;
+  if (bucket === 'month') return `strftime('%Y-%m-01', ${seconds}, 'unixepoch', 'localtime')`;
+  return `date(${seconds}, 'unixepoch', 'localtime', printf('-%d days', (CAST(strftime('%w', ${seconds}, 'unixepoch', 'localtime') AS INTEGER) + 6) % 7))`;
+}
+
+function calendarBucketStart(key: string, bucket: UsageBucket): number {
+  const [datePart, timePart] = key.split(' ');
+  const date = datePart!.split('-').map(Number);
+  const hour = bucket === 'hour' ? Number(timePart?.slice(0, 2) ?? 0) : 0;
+  return new Date(date[0]!, date[1]! - 1, date[2]!, hour).getTime();
+}
 
 /**
  * Bucketed time series straight off the fact table. No pre-aggregation: SQLite groups
@@ -595,7 +1144,6 @@ export function trend(
   db: DB,
   opts: { from: number; to: number; bucket: Bucket; groupBy: GroupBy; sourceId?: number },
 ) {
-  const size = opts.bucket === 'hour' ? 3_600_000 : 86_400_000;
   const groupExpr =
     opts.groupBy === 'harness'
       ? `s.harness || '/' || s.profile`
@@ -612,7 +1160,7 @@ export function trend(
 
   return db
     .prepare(
-      `SELECT (u.ts / ${size}) * ${size} AS bucket_ts,
+      `SELECT ${calendarBucketKey(opts.bucket)} AS bucket_key,
               ${groupExpr}                AS series,
               COALESCE(SUM(u.call_count),0) AS calls,
               COALESCE(SUM(u.input_tokens),0)        AS input_tokens,
@@ -620,16 +1168,37 @@ export function trend(
               COALESCE(SUM(u.cache_write_tokens),0)  AS cache_write_tokens,
               COALESCE(SUM(u.output_tokens),0)       AS output_tokens,
               COALESCE(SUM(u.total_tokens),0)        AS total_tokens,
-              COALESCE(SUM(u.cost_usd),0)            AS cost_usd
+              COALESCE(SUM(u.cost_usd),0)            AS cost_usd,
+              COALESCE(SUM(CASE WHEN u.cost_source='unknown' THEN u.call_count ELSE 0 END),0) AS cost_unknown_calls,
+              COALESCE(SUM(CASE WHEN u.cost_source='estimated' THEN u.call_count ELSE 0 END),0) AS cost_estimated_calls
          FROM usage_event u
          JOIN source s ON s.id = u.source_id
          LEFT JOIN session sess ON sess.id = u.session_id
         WHERE u.ts >= @from AND u.ts < @to
           ${opts.sourceId ? 'AND u.source_id = @sourceId' : ''}
-        GROUP BY bucket_ts, series
-        ORDER BY bucket_ts ASC`,
+        GROUP BY bucket_key, series
+        ORDER BY bucket_key ASC`,
     )
-    .all({ from: opts.from, to: opts.to, sourceId: opts.sourceId ?? null }) as Array<{
+    .all({ from: opts.from, to: opts.to, sourceId: opts.sourceId ?? null })
+    .map((row) => {
+      const value = row as {
+        bucket_key: string;
+        series: string;
+        calls: number;
+        input_tokens: number;
+        cached_input_tokens: number;
+        cache_write_tokens: number;
+        output_tokens: number;
+        total_tokens: number;
+        cost_usd: number;
+        cost_unknown_calls: number;
+        cost_estimated_calls: number;
+      };
+      return {
+        ...value,
+        bucket_ts: calendarBucketStart(value.bucket_key, opts.bucket),
+      };
+    }) as Array<{
     bucket_ts: number;
     series: string;
     calls: number;
@@ -639,10 +1208,15 @@ export function trend(
     output_tokens: number;
     total_tokens: number;
     cost_usd: number;
+    cost_unknown_calls: number;
+    cost_estimated_calls: number;
   }>;
 }
 
 export const modelBreakdown = (db: DB, sinceMs: number) =>
+  modelBreakdownBetween(db, sinceMs, null);
+
+export const modelBreakdownBetween = (db: DB, fromMs: number, toMs: number | null, sourceId?: number) =>
   db
     .prepare(
       `SELECT COALESCE(u.model,'(unknown)') AS model,
@@ -650,11 +1224,106 @@ export const modelBreakdown = (db: DB, sinceMs: number) =>
               ${vendorSqlCase('u.model', 'u.provider')} AS vendor,
               ${TOTALS_SELECT}
          FROM usage_event u JOIN source s ON s.id = u.source_id
-        WHERE u.ts >= ?
+        WHERE u.ts >= @from AND (@to IS NULL OR u.ts < @to)
+          AND (@sourceId IS NULL OR u.source_id = @sourceId)
         GROUP BY u.model, s.harness, u.effort, vendor
         ORDER BY total_tokens DESC`,
     )
-    .all(sinceMs) as Array<Totals & { model: string; harness: string; effort: string; vendor: string }>;
+    .all({ from: fromMs, to: toMs, sourceId: sourceId ?? null }) as Array<Totals & { model: string; harness: string; effort: string; vendor: string }>;
+
+export function usageSnapshot(db: DB, period: UsagePeriod, sourceId?: number) {
+  return {
+    range: period,
+    totals: totalsBetween(db, period.from, period.to, sourceId),
+    timeline: trend(db, {
+      from: period.from,
+      to: period.to,
+      bucket: period.bucket,
+      groupBy: 'none',
+      ...(sourceId == null ? {} : { sourceId }),
+    }),
+    bySource: totalsBySourceBetween(db, period.from, period.to, sourceId),
+  };
+}
+
+export interface UsageExportRow {
+  event_id: number;
+  timestamp_ms: number;
+  call_count: number;
+  source_id: number;
+  harness: string;
+  profile: string;
+  source_name: string;
+  provider: string | null;
+  vendor: string;
+  model: string | null;
+  effort: string | null;
+  service_tier: string | null;
+  project: string | null;
+  session_key: number | null;
+  is_subagent: number | null;
+  input_tokens: number;
+  cached_input_tokens: number;
+  cache_write_tokens: number;
+  output_tokens: number;
+  reasoning_tokens: number;
+  total_tokens: number;
+  duration_ms: number | null;
+  cost_usd: number | null;
+  cost_input_usd: number | null;
+  cost_cached_input_usd: number | null;
+  cost_cache_write_usd: number | null;
+  cost_output_usd: number | null;
+  cost_cache_saving_usd: number | null;
+  cost_source: string;
+  price_provider: string | null;
+}
+
+/** Privacy-bounded usage facts for the CSV export. */
+export function* usageExportRows(
+  db: DB,
+  opts: { from: number; to: number; sourceId?: number },
+): Generator<UsageExportRow> {
+  const rows = db.prepare(
+    `SELECT u.id AS event_id,
+            u.ts AS timestamp_ms,
+            u.call_count,
+            u.source_id,
+            s.harness,
+            s.profile,
+            s.display_name AS source_name,
+            u.provider,
+            ${vendorSqlCase('u.model', 'u.provider')} AS vendor,
+            u.model,
+            u.effort,
+            u.service_tier,
+            sess.project,
+            sess.id AS session_key,
+            sess.is_subagent,
+            u.input_tokens,
+            u.cached_input_tokens,
+            u.cache_write_tokens,
+            u.output_tokens,
+            u.reasoning_tokens,
+            u.total_tokens,
+            u.duration_ms,
+            u.cost_usd,
+            u.cost_input_usd,
+            u.cost_cached_input_usd,
+            u.cost_cache_write_usd,
+            u.cost_output_usd,
+            u.cost_cache_saving_usd,
+            u.cost_source,
+            u.price_provider
+       FROM usage_event u
+       JOIN source s ON s.id = u.source_id
+       LEFT JOIN session sess ON sess.id = u.session_id
+      WHERE u.ts >= @from AND u.ts < @to
+        AND (@sourceId IS NULL OR u.source_id = @sourceId)
+      ORDER BY u.ts ASC, u.id ASC`,
+  ).iterate({ from: opts.from, to: opts.to, sourceId: opts.sourceId ?? null }) as Iterable<UsageExportRow>;
+  yield* rows;
+}
 
 export interface ProjectRow extends Totals {
   project: string;
@@ -683,7 +1352,7 @@ export interface ProjectRow extends Totals {
  * `cost_unknown_calls` rides along because a page that shows money must be able to tell
  * "nothing was spent" from "we have no price for this", and print a dash for the second.
  */
-export const projectBreakdown = (db: DB, opts: { from: number; to: number }) =>
+export const projectBreakdown = (db: DB, opts: { from: number; to: number; sourceId?: number }) =>
   db
     .prepare(
       `SELECT COALESCE(sess.project,'(none)') AS project,
@@ -697,15 +1366,19 @@ export const projectBreakdown = (db: DB, opts: { from: number; to: number }) =>
          JOIN source s ON s.id = u.source_id
          LEFT JOIN session sess ON sess.id = u.session_id
         WHERE u.ts >= @from AND u.ts < @to
+          AND (@sourceId IS NULL OR u.source_id = @sourceId)
         GROUP BY project, u.source_id, vendor, model
         ORDER BY total_tokens DESC`,
     )
-    .all({ from: opts.from, to: opts.to }) as ProjectRow[];
+    .all({ from: opts.from, to: opts.to, sourceId: opts.sourceId ?? null }) as ProjectRow[];
 
 export interface SessionQuery {
   limit: number;
   offset: number;
   sourceId?: number;
+  /** Restrict the session's usage rows to this half-open window. */
+  from?: number;
+  to?: number;
   /** Vendor ids to keep. Empty or omitted means every vendor. */
   vendors?: string[];
 }
@@ -716,13 +1389,22 @@ export interface SessionQuery {
  * always agrees with what the reader sees. A session that switched models mid-way is
  * therefore judged by its main one.
  */
-function sessionWhere(opts: SessionQuery): string {
+type SessionFilter = Pick<SessionQuery, 'sourceId' | 'from' | 'to' | 'vendors'>;
+
+function sessionWhere(opts: SessionFilter): string {
   const parts = ['1=1'];
-  if (opts.sourceId) parts.push('sess.source_id = @sourceId');
+  if (opts.sourceId != null) parts.push('sess.source_id = @sourceId');
   if (opts.vendors?.length) {
     const list = opts.vendors.map((v) => `'${v.replace(/'/g, "''")}'`).join(', ');
     parts.push(`${vendorSqlCase('sess.model_default', "''")} IN (${list})`);
   }
+  return parts.join(' AND ');
+}
+
+function sessionUsageJoin(opts: SessionFilter): string {
+  const parts = ['u.session_id = sess.id'];
+  if (opts.from != null) parts.push('u.ts >= @from');
+  if (opts.to != null) parts.push('u.ts < @to');
   return parts.join(' AND ');
 }
 
@@ -737,17 +1419,18 @@ export const sessionList = (db: DB, opts: SessionQuery) =>
               COALESCE(SUM(u.call_count),0)          AS calls,
               COALESCE(SUM(u.total_tokens),0)        AS total_tokens,
               COALESCE(SUM(u.cost_usd),0)            AS cost_usd,
-              COALESCE(SUM(CASE WHEN u.cost_source='unknown' THEN u.call_count ELSE 0 END),0) AS cost_unknown_calls
+              COALESCE(SUM(CASE WHEN u.cost_source='unknown' THEN u.call_count ELSE 0 END),0) AS cost_unknown_calls,
+              COALESCE(SUM(CASE WHEN u.cost_source='estimated' THEN u.call_count ELSE 0 END),0) AS cost_estimated_calls
          FROM session sess
          JOIN source s ON s.id = sess.source_id
-         LEFT JOIN usage_event u ON u.session_id = sess.id
+         LEFT JOIN usage_event u ON ${sessionUsageJoin(opts)}
         WHERE ${sessionWhere(opts)}
         GROUP BY sess.id
        HAVING calls > 0
         ORDER BY sess.last_seen_at DESC
         LIMIT @limit OFFSET @offset`,
     )
-    .all({ limit: opts.limit, offset: opts.offset, sourceId: opts.sourceId ?? null });
+     .all({ limit: opts.limit, offset: opts.offset, sourceId: opts.sourceId ?? null, from: opts.from ?? null, to: opts.to ?? null });
 
 /**
  * How many sessions the same filter matches, so the page control can say "1-50 of 457"
@@ -763,27 +1446,28 @@ export const sessionCount = (db: DB, opts: Omit<SessionQuery, 'limit' | 'offset'
              SELECT sess.id
                FROM session sess
                JOIN source s ON s.id = sess.source_id
-               LEFT JOIN usage_event u ON u.session_id = sess.id
-              WHERE ${sessionWhere({ ...opts, limit: 0, offset: 0 })}
+               LEFT JOIN usage_event u ON ${sessionUsageJoin(opts)}
+              WHERE ${sessionWhere(opts)}
               GROUP BY sess.id
              HAVING COUNT(u.id) > 0
            )`,
         )
-        .get({ sourceId: opts.sourceId ?? null }) as { n: number }
+         .get({ sourceId: opts.sourceId ?? null, from: opts.from ?? null, to: opts.to ?? null }) as { n: number }
     ).n,
   );
 
 /** Vendors present across sessions, for the filter chips. */
-export const sessionVendors = (db: DB) =>
+export const sessionVendors = (db: DB, opts: Omit<SessionQuery, 'limit' | 'offset'> = {}) =>
   db
     .prepare(
       `SELECT ${vendorSqlCase('sess.model_default', "''")} AS vendor,
               COUNT(DISTINCT sess.id) AS sessions
          FROM session sess
-         JOIN usage_event u ON u.session_id = sess.id
-        GROUP BY vendor ORDER BY sessions DESC`,
+         JOIN usage_event u ON ${sessionUsageJoin(opts)}
+        WHERE ${sessionWhere(opts)}
+         GROUP BY vendor ORDER BY sessions DESC`,
     )
-    .all() as Array<{ vendor: string; sessions: number }>;
+    .all({ sourceId: opts.sourceId ?? null, from: opts.from ?? null, to: opts.to ?? null }) as Array<{ vendor: string; sessions: number }>;
 
 export const sessionDetail = (db: DB, id: number) => {
   const head = db
@@ -802,6 +1486,65 @@ export const sessionDetail = (db: DB, id: number) => {
     .all(id);
   return { session: head, events };
 };
+
+/** File age is not load time: this describes the catalog file and the stored price table separately. */
+export function pricingCatalog(db: DB, catalogPath = findCatalog()) {
+  let catalogAgeMs: number | null = null;
+  if (catalogPath) {
+    try { catalogAgeMs = Date.now() - statSync(catalogPath).mtimeMs; } catch { /* file disappeared */ }
+  }
+  const row = db.prepare('SELECT COUNT(*) AS n, MAX(updated_at) AS loadedAt FROM price').get() as { n: number; loadedAt: number | null };
+  return { pricedModels: row.n, loadedAt: row.loadedAt, catalogAgeMs, catalogOwn: catalogPath?.startsWith(DATA_DIR) ?? false, catalogPresent: catalogPath != null };
+}
+
+export interface QuotaForecast {
+  status: 'ready' | 'insufficient' | 'flat' | 'reset';
+  samples: number;
+  fromAt: number | null;
+  toAt: number | null;
+  percentPerHour: number | null;
+  projectedFullAt: number | null;
+}
+
+/** Conservative forecast for UI guidance; burnRate remains the compatibility signal used by alerts. */
+export function quotaForecast(db: DB, sourceId: number, windowKind: string, origin: string, now = Date.now()): QuotaForecast {
+  const rows = db.prepare(
+    `SELECT used_percent, resets_at, observed_at FROM limit_sample
+       WHERE source_id = ? AND window_kind = ? AND origin = ? AND used_percent IS NOT NULL
+       ORDER BY observed_at DESC, id DESC LIMIT 12`,
+  ).all(sourceId, windowKind, origin) as Array<{ used_percent: number; resets_at: number | null; observed_at: number }>;
+  if (rows.length < 3) return { status: 'insufficient', samples: rows.length, fromAt: rows.at(-1)?.observed_at ?? null, toAt: rows[0]?.observed_at ?? null, percentPerHour: null, projectedFullAt: null };
+  const latest = rows[0]!;
+  if (latest.resets_at != null && latest.resets_at <= now) return { status: 'reset', samples: 0, fromAt: null, toAt: latest.observed_at, percentPerHour: null, projectedFullAt: null };
+  const samePeriod = rows.filter((row) => row.resets_at == null || latest.resets_at == null ? row.resets_at === latest.resets_at : Math.abs(row.resets_at - latest.resets_at) <= RESET_TOLERANCE_MS);
+  if (samePeriod.length < 3) return { status: 'reset', samples: samePeriod.length, fromAt: samePeriod.at(-1)?.observed_at ?? null, toAt: latest.observed_at, percentPerHour: null, projectedFullAt: null };
+  const first = samePeriod.at(-1)!;
+  const hours = (latest.observed_at - first.observed_at) / 3_600_000;
+  if (hours < 0.25) return { status: 'insufficient', samples: samePeriod.length, fromAt: first.observed_at, toAt: latest.observed_at, percentPerHour: null, projectedFullAt: null };
+  const rate = (latest.used_percent - first.used_percent) / hours;
+  if (rate <= 0.01) return { status: 'flat', samples: samePeriod.length, fromAt: first.observed_at, toAt: latest.observed_at, percentPerHour: rate, projectedFullAt: null };
+  return { status: 'ready', samples: samePeriod.length, fromAt: first.observed_at, toAt: latest.observed_at, percentPerHour: rate, projectedFullAt: now + Math.max(0, 100 - latest.used_percent) / rate * 3_600_000 };
+}
+
+export function pricingCoverage(db: DB, scope: { from: number; to: number; sourceId?: number }) {
+  const where = `u.ts >= @from AND u.ts < @to AND (@sourceId IS NULL OR u.source_id = @sourceId)`;
+  const params = { from: scope.from, to: scope.to, sourceId: scope.sourceId ?? null };
+  // The aggregates and affected models share one read snapshot, including during live ingest.
+  return db.transaction(() => {
+    const { hasHermes, ...totals } = db.prepare(`SELECT ${totalsSelect('u.')},
+      COALESCE(MAX(s.harness = 'hermes'),0) AS hasHermes
+      FROM usage_event u JOIN source s ON s.id = u.source_id WHERE ${where}`).get(params) as Totals & { hasHermes: number };
+    const models = db.prepare(`SELECT u.model, u.provider, u.price_provider, ${totalsSelect('u.')}
+      FROM usage_event u WHERE ${where}
+      GROUP BY u.model, u.provider, u.price_provider
+      HAVING cost_unknown_calls > 0 OR cost_estimated_calls > 0
+      ORDER BY cost_unknown_calls DESC, cost_estimated_calls DESC, u.model, u.provider, u.price_provider`).all(params);
+    const source = scope.sourceId == null ? null : db.prepare('SELECT display_name FROM source WHERE id = ?').get(scope.sourceId) as { display_name: string } | undefined;
+    return { from: scope.from, to: scope.to, source_id: scope.sourceId ?? null,
+      sourceName: source?.display_name ?? null, totals, models,
+      hasHermes: hasHermes === 1, catalog: pricingCatalog(db) };
+  }).deferred();
+}
 
 /** Per-source ingest health: cursors, errors, lag, and coverage against native cost. */
 export const health = (db: DB) => {

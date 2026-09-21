@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { api, type ModelRow } from '@/api';
+import { api, type ModelRow, type UsagePeriod } from '@/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select } from '@/components/ui/select';
@@ -13,10 +13,11 @@ import { useFormat } from '@/i18n/format';
 import { useT } from '@/i18n';
 import { useLiveRefresh } from '@/lib/use-live';
 import { cn } from '@/lib/utils';
+import { ValueDisplay } from '@/components/value-display';
 
 type Metric = 'total_tokens' | 'cost_usd' | 'calls';
 
-export function ModelsSection() {
+export function ModelsSection({ period, sourceId }: { period?: UsagePeriod; sourceId?: number }) {
   const t = useT();
   const f = useFormat();
   const [models, setModels] = useState<ModelRow[]>([]);
@@ -27,7 +28,7 @@ export function ModelsSection() {
 
   useLiveRefresh(() => {
     return api
-      .models(0)
+      .models(period ? { from: period.from, to: period.to, sourceId } : 0)
       .then((r) => {
         setModels(r.models);
         setLoaded(true);
@@ -37,7 +38,7 @@ export function ModelsSection() {
         setErr(String(error));
         throw error;
       });
-  }, []);
+  }, [period?.from, period?.to, sourceId]);
 
   /**
    * Vendors as the server derived them: who MADE the model, not which gateway routed it.
@@ -206,11 +207,7 @@ export function ModelsSection() {
                         {f.tokens(m.total_tokens)}
                       </TableCell>
                       <TableCell className="tabular text-right font-mono">
-                        {m.cost_unknown_calls === m.calls ? (
-                          <span className="text-muted-foreground/60">--</span>
-                        ) : (
-                          f.money(m.cost_usd, m.cost_unknown_calls)
-                        )}
+                        <ValueDisplay total={m} />
                       </TableCell>
                     </TableRow>
                   ))}

@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Coins, Layers, PiggyBank, CircleHelp } from 'lucide-react';
-import { api, type ModelRow, type Overview } from '@/api';
+import { api, type ModelRow, type Overview, type Totals, type UsagePeriod } from '@/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarList, Stagger, StaggerItem } from '@/components/primitives';
 import { SourceTable } from '@/sections/live';
@@ -20,28 +20,34 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import { useLiveRefresh } from '@/lib/use-live';
+import { ValueDisplay } from '@/components/value-display';
 
-export function CostSection({ ov }: { ov: Overview }) {
+export function CostSection({ ov, period, totals, sourceId }: { ov: Overview; period?: UsagePeriod; totals?: Totals; sourceId?: number }) {
   const t = useT();
   const f = useFormat();
   const [models, setModels] = useState<ModelRow[]>([]);
   useLiveRefresh(() =>
-    api.models(0).then((r) => setModels(r.models)),
-  []);
+    api.models(period
+      ? { from: period.from, to: period.to, sourceId }
+      : 0,
+    ).then((r) => setModels(r.models)),
+  [period?.from, period?.to, sourceId]);
 
   const byModel = useMemo(() => {
-    const m = new Map<string, { cost: number; unknown: number; calls: number; vendor: string }>();
+    const m = new Map<string, { cost: number; unknown: number; estimated: number; calls: number; vendor: string }>();
     for (const r of models) {
-      const cur = m.get(r.model) ?? { cost: 0, unknown: 0, calls: 0, vendor: r.vendor };
+      const cur = m.get(r.model) ?? { cost: 0, unknown: 0, estimated: 0, calls: 0, vendor: r.vendor };
       cur.cost += r.cost_usd;
       cur.unknown += r.cost_unknown_calls;
+      cur.estimated += r.cost_estimated_calls;
       cur.calls += r.calls;
       m.set(r.model, cur);
     }
     return [...m.entries()].sort((a, b) => b[1].cost - a[1].cost);
   }, [models]);
 
-  const all = ov.allTime;
+  const all = totals ?? ov.allTime;
+  const pricingScope = period ? { from: period.from, to: period.to } : { from: 0, to: ov.now };
 
   /*
    * One row per token bucket, each at its own rate. Cache read is the interesting line:
@@ -72,14 +78,14 @@ export function CostSection({ ov }: { ov: Overview }) {
   const stats: Array<{
     icon: typeof Coins;
     label: string;
-    value: string;
+    value: ReactNode;
     note: string;
     tone?: string;
   }> = [
     {
       icon: Coins,
       label: t('cost.allTimeValue'),
-      value: f.money(all.cost_usd, all.cost_unknown_calls),
+      value: <ValueDisplay total={all} scope={pricingScope} label={t('cost.allTimeValue')} />,
       note: t('cost.listPriceNote'),
     },
     {
@@ -152,7 +158,7 @@ export function CostSection({ ov }: { ov: Overview }) {
                 <TableRow key={b.key}>
                   <TableCell>{t(b.key)}</TableCell>
                   <TableCell className={numCell}>{f.tokens(b.tokens)}</TableCell>
-                  <TableCell className={numCell}>{f.money(b.usd)}</TableCell>
+                  <TableCell className={numCell}>{f.moneyTotal(b.usd, all.cost_unknown_calls, all.calls)}</TableCell>
                   <TableCell className={cn(numCell, 'text-muted-foreground')}>
                     {all.cost_usd > 0 ? `${((b.usd / all.cost_usd) * 100).toFixed(1)}%` : '--'}
                   </TableCell>
@@ -164,7 +170,7 @@ export function CostSection({ ov }: { ov: Overview }) {
                   {f.tokens(all.total_tokens)}
                 </TableCell>
                 <TableCell className={cn(numCell, 'font-medium')}>
-                  {f.money(all.cost_usd, all.cost_unknown_calls)}
+                  <ValueDisplay total={all} scope={pricingScope} label={t('cost.allTimeValue')} />
                 </TableCell>
                 <TableCell className={numCell} />
               </TableRow>
@@ -190,7 +196,7 @@ export function CostSection({ ov }: { ov: Overview }) {
             rows={byModel.slice(0, 14).map(([model, v]) => ({
               label: model,
               value: v.cost,
-              display: v.unknown === v.calls ? '--' : f.money(v.cost, v.unknown),
+              display: <ValueDisplay total={{ calls: v.calls, cost_usd: v.cost, cost_unknown_calls: v.unknown, cost_estimated_calls: v.estimated }} />,
               // The maker's colour, not a hash of the model name. Every Claude row is
               // Anthropic's orange here and on Trend, so the two pages agree.
               color: vendorColor(v.vendor),
@@ -204,7 +210,7 @@ export function CostSection({ ov }: { ov: Overview }) {
         <CardHeader>
           <CardTitle>{t('cost.allTimeByHarness')}</CardTitle>
         </CardHeader>
-        <SourceTable rows={ov.bySourceAll} empty={t('cost.noData')} />
+        <SourceTable rows={ov.bySourceAll} empty={t('cost.noData')} scope={pricingScope} />
       </Card>
     </div>
   );

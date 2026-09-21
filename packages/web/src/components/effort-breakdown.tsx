@@ -11,6 +11,8 @@ import {
 import { Legend, StackedBars, type BarMetric, type Row } from '@/components/stacked-bars';
 import { VendorIcon } from '@/components/vendor-icon';
 import { useT } from '@/i18n';
+import { useFormat } from '@/i18n/format';
+import { sumValues, formatValue } from '@/lib/pricing';
 
 type LegendItem = { label: string; color: string; icon?: ReactNode };
 
@@ -26,13 +28,14 @@ type Metric = BarMetric;
  */
 export function EffortByModel({ models, metric }: { models: ModelRow[]; metric: Metric }) {
   const t = useT();
+  const f = useFormat();
   const { rows, legend } = useMemo(() => {
     // Rank models globally first, so colours are assigned by size and the long tail
     // collapses into one neutral bucket instead of recycling a meaningful colour.
     const totals = new Map<string, number>();
     for (const m of models) {
       const v = Number(m[metric] ?? 0);
-      if (v > 0) totals.set(m.model, (totals.get(m.model) ?? 0) + v);
+      if (v > 0 || metric === 'cost_usd') totals.set(m.model, (totals.get(m.model) ?? 0) + v);
     }
     const ranked = [...totals.entries()].sort((a, b) => b[1] - a[1]).map(([n]) => n);
     const { colorOf, keep, hasOther } = palette(ranked);
@@ -41,7 +44,7 @@ export function EffortByModel({ models, metric }: { models: ModelRow[]; metric: 
     const byEffort = new Map<string, Map<string, number>>();
     for (const m of models) {
       const v = Number(m[metric] ?? 0);
-      if (v <= 0) continue;
+      if (v <= 0 && metric !== 'cost_usd') continue;
       const e = m.effort || '';
       if (!byEffort.has(e)) byEffort.set(e, new Map());
       const inner = byEffort.get(e)!;
@@ -57,6 +60,7 @@ export function EffortByModel({ models, metric }: { models: ModelRow[]; metric: 
         return {
           key: effort || 'none',
           label: effortLabel(effort),
+          ...(metric === 'cost_usd' ? { display: formatValue(sumValues(models.filter(m => (m.effort || '') === effort)), f.money) } : {}),
           total: segments.reduce((a, s) => a + s.value, 0),
           segments,
         };
@@ -87,7 +91,7 @@ export function EffortByModel({ models, metric }: { models: ModelRow[]; metric: 
       });
     }
     return { rows, legend };
-  }, [models, metric, t]);
+  }, [models, metric, t, f]);
 
   return (
     <>
@@ -99,13 +103,14 @@ export function EffortByModel({ models, metric }: { models: ModelRow[]; metric: 
 
 export function ModelByEffort({ models, metric }: { models: ModelRow[]; metric: Metric }) {
   const t = useT();
+  const f = useFormat();
   const { rows, legend } = useMemo(() => {
     const byModel = new Map<string, Map<string, number>>();
     const vendorOf = new Map<string, string>();
     for (const m of models) {
       vendorOf.set(m.model, m.vendor || 'unknown');
       const v = Number(m[metric] ?? 0);
-      if (v <= 0) continue;
+      if (v <= 0 && metric !== 'cost_usd') continue;
       if (!byModel.has(m.model)) byModel.set(m.model, new Map());
       const inner = byModel.get(m.model)!;
       const e = m.effort || '';
@@ -132,6 +137,7 @@ export function ModelByEffort({ models, metric }: { models: ModelRow[]; metric: 
         return {
           key: model,
           label: model,
+          ...(metric === 'cost_usd' ? { display: formatValue(sumValues(models.filter(m => m.model === model)), f.money) } : {}),
           total: segments.reduce((a, s) => a + s.value, 0),
           segments,
           icon: <VendorIcon vendor={vendor} label={vendorLabel(vendor)} />,
@@ -158,7 +164,7 @@ export function ModelByEffort({ models, metric }: { models: ModelRow[]; metric: 
       }));
 
     return { rows, legend };
-  }, [models, metric]);
+  }, [models, metric, f]);
 
   /** Worth calling out: a model appearing at two effort levels is the interesting case. */
   const multiEffort = rows.filter((r) => r.segments.length > 1).map((r) => r.label);

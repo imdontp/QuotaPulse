@@ -52,7 +52,7 @@ async function main() {
   repriceUnknown(db, resolver);
   reclassifyCosts(db, resolver);
 
-  const scheduler = new Scheduler(db, ALL_ADAPTERS, { debounceMs: 500, pollMs: 5000 });
+  const scheduler = new Scheduler(db, ALL_ADAPTERS, { debounceMs: 500, pollMs: 30_000 });
   const first = await scheduler.start();
   log.info(`initial pass: +${first.newEvents} events, +${first.newLimits} limits in ${first.durationMs}ms`);
 

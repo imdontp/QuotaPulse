@@ -1,17 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   Activity,
-  Boxes,
-  Coins,
-  FolderGit2,
+  BarChart3,
+  BellRing,
+  Menu,
+  X,
   Gauge,
   HeartPulse,
   MessagesSquare,
   Moon,
+  Radio,
   RefreshCw,
+  Settings as SettingsIcon,
   Sun,
-  TrendingUp,
 } from 'lucide-react';
 import { api, type Overview } from '@/api';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -23,32 +25,48 @@ import { Button } from '@/components/ui/button';
 import { Empty, ErrorBox } from '@/components/primitives';
 import { QuotaPulseMark, QuotaPulseWordmark } from '@/components/logo';
 import { LiveSection } from '@/sections/live';
+import { SourcesSection } from '@/sections/sources';
 import { LimitsSection } from '@/sections/limits';
-import { TrendSection } from '@/sections/trend';
-import { CostSection } from '@/sections/cost';
 import { SessionsSection } from '@/sections/sessions';
-import { ProjectsSection } from '@/sections/projects';
-import { ModelsSection } from '@/sections/models';
 import { HealthSection } from '@/sections/health';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
+import { useTheme } from '@/lib/use-theme';
+import { CommandPalette } from '@/components/command-palette';
+import { AlertsSection } from '@/sections/alerts';
+import { PetPopup } from '@/components/pet-popup';
+import { SettingsSection } from '@/sections/settings';
+import { UsageSection } from '@/sections/usage';
 
 const TABS = [
   { id: 'live', key: 'tab.live', icon: Activity },
-  { id: 'limits', key: 'tab.limits', icon: Gauge },
-  { id: 'trend', key: 'tab.trend', icon: TrendingUp },
-  { id: 'cost', key: 'tab.cost', icon: Coins },
+  { id: 'usage', key: 'tab.usage', icon: BarChart3 },
   { id: 'sessions', key: 'tab.sessions', icon: MessagesSquare },
-  { id: 'projects', key: 'tab.projects', icon: FolderGit2 },
-  { id: 'models', key: 'tab.models', icon: Boxes },
+  { id: 'limits', key: 'tab.limits', icon: Gauge },
+  { id: 'alerts', key: 'tab.alerts', icon: BellRing },
+  { id: 'sources', key: 'tab.sources', icon: Radio },
   { id: 'health', key: 'tab.health', icon: HeartPulse },
+  { id: 'settings', key: 'tab.settings', icon: SettingsIcon },
 ] as const;
 
 type TabId = (typeof TABS)[number]['id'];
-type Theme = 'light' | 'dark';
+
+const LEGACY_HASHES: Record<string, string> = {
+  today: '#usage?range=today&view=summary',
+  trend: '#usage?range=month&view=summary',
+  cost: '#usage?range=all&view=cost',
+  projects: '#usage?range=month&view=projects',
+  models: '#usage?range=month&view=models',
+};
+
+function tabFromHash(): TabId {
+  const raw = location.hash.slice(1).split('?')[0] ?? '';
+  return (TABS.some((tab) => tab.id === raw) ? raw : raw in LEGACY_HASHES ? 'usage' : 'live') as TabId;
+}
 
 /**
- * The sidebar collapses to icons below this width. The tray panel opens at 1280px, while
- * this breakpoint also keeps narrower browser windows usable. Kept in JS as well as CSS
+ * The sidebar collapses to icons below this width. The tray and Gallery windows share a
+ * compact native size, while this breakpoint also keeps narrower browser windows usable.
+ * Kept in JS as well as CSS
  * because the collapsed rail needs tooltips, and a tooltip cannot be turned on by a media
  * query alone.
  */
@@ -67,39 +85,10 @@ function useMediaQuery(query: string): boolean {
   return matches;
 }
 
-function useTheme(): [Theme, () => void] {
-  const [theme, setTheme] = useState<Theme>(() => {
-    try {
-      // 'plimsoll-theme' is the key from the previous name: read it once so a rename
-      // does not silently flip everyone back to their OS preference.
-      const saved =
-        localStorage.getItem('quotapulse-theme') ?? localStorage.getItem('plimsoll-theme');
-      if (saved === 'light' || saved === 'dark') return saved;
-    } catch {
-      /* private window or blocked storage: fall through to the OS preference */
-    }
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  });
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    document.documentElement.style.colorScheme = theme;
-    try {
-      localStorage.setItem('quotapulse-theme', theme);
-    } catch {
-      /* remembering the choice is a convenience, never a requirement */
-    }
-  }, [theme]);
-
-  return [theme, () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))];
-}
-
 function Dashboard() {
   const t = useT();
-  const { lang } = useI18n();
-  const [tab, setTab] = useState<TabId>(
-    () => (TABS.find((t) => t.id === location.hash.slice(1))?.id ?? 'live') as TabId,
-  );
+  const { lang, syncHiddenSubscriptions } = useI18n();
+  const [tab, setTabState] = useState<TabId>(tabFromHash);
   const [ov, setOv] = useState<Overview | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [theme, toggleTheme] = useTheme();
@@ -107,6 +96,36 @@ function Dashboard() {
   const collapsed = !useMediaQuery(WIDE);
   const refreshStatus = useRefreshStatus();
   const ovRef = useRef<Overview | null>(null);
+  const drawer = useRef<HTMLDialogElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const isMobile = !useMediaQuery('(min-width: 640px)');
+  const navigateUsage = (view: 'summary' | 'cost' | 'projects' | 'models' = 'summary') => {
+    const current = new URLSearchParams(location.hash.includes('?') ? location.hash.split('?')[1] : '');
+    current.set('range', current.get('range') ?? 'today');
+    current.set('view', view);
+    location.hash = 'usage?' + current.toString();
+    setTabState('usage');
+    drawer.current?.close();
+  };
+  const setTab = (next: TabId) => {
+    if (next === 'usage') {
+      navigateUsage();
+      return;
+    }
+    if (location.hash !== '#' + next) location.hash = next;
+    setTabState(next);
+    drawer.current?.close();
+  };
+
+  useEffect(() => {
+    window.qpDashboard?.ready();
+  }, []);
+
+  useEffect(() => {
+    if (ov) syncHiddenSubscriptions(ov.settings.hidden_subscriptions, ov.settings.updated_at);
+  }, [ov, syncHiddenSubscriptions]);
+
+  useEffect(() => { if (!isMobile) drawer.current?.close(); }, [isMobile]);
 
   useLiveRefresh(() =>
     api
@@ -126,8 +145,18 @@ function Dashboard() {
   );
 
   useEffect(() => {
-    location.hash = tab;
-  }, [tab]);
+    const sync = () => {
+      const raw = location.hash.slice(1).split('?')[0] ?? '';
+      const legacy = LEGACY_HASHES[raw];
+      if (legacy) history.replaceState(null, '', legacy);
+      const next = tabFromHash();
+      setTabState(next);
+      drawer.current?.close();
+    };
+    sync();
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
+  }, []);
 
   /*
    * Chrome picks its line-breaking dictionary from <html lang>. Thai has no spaces
@@ -142,6 +171,7 @@ function Dashboard() {
     connecting: t('app.refreshConnecting'),
     live: t('app.refreshLive'),
     reconnecting: t('app.refreshReconnecting'),
+    stale: t('app.refreshStale'),
     unavailable: t('app.refreshUnavailable'),
   }[refreshStatus.state];
   const lastSuccess = refreshStatus.lastSuccessAt
@@ -157,7 +187,7 @@ function Dashboard() {
   const statusTone =
     refreshStatus.state === 'live'
       ? 'border-ok/30 bg-ok/8 text-ok'
-      : refreshStatus.state === 'reconnecting'
+      : refreshStatus.state === 'reconnecting' || refreshStatus.state === 'stale'
         ? 'border-warn/30 bg-warn/8 text-warn'
         : refreshStatus.state === 'unavailable'
           ? 'border-crit/30 bg-crit/8 text-crit'
@@ -165,7 +195,7 @@ function Dashboard() {
   const statusColor =
     refreshStatus.state === 'live'
       ? 'var(--ok)'
-      : refreshStatus.state === 'reconnecting'
+      : refreshStatus.state === 'reconnecting' || refreshStatus.state === 'stale'
         ? 'var(--warn)'
         : refreshStatus.state === 'unavailable'
           ? 'var(--crit)'
@@ -178,10 +208,15 @@ function Dashboard() {
         value={tab}
         onValueChange={(v) => setTab(v as TabId)}
         orientation="vertical"
-        className="flex min-h-screen"
+        className="dashboard-shell flex min-h-screen"
       >
-        <aside className="bg-card/40 sticky top-0 flex h-screen w-[60px] shrink-0 flex-col border-r min-[900px]:w-[212px]">
-          <div className="flex h-[57px] shrink-0 items-center justify-center border-b min-[900px]:justify-start min-[900px]:px-4">
+        <dialog ref={drawer} aria-label={t('nav.open')} className="nav-drawer bg-card text-foreground" onClose={() => menuButton.current?.focus()} onClick={event => { if (event.target === event.currentTarget) drawer.current?.close(); }}>
+          <div className="flex items-center justify-between border-b p-5"><QuotaPulseWordmark /><Button size="icon" onClick={() => drawer.current?.close()} aria-label={t('nav.close')}><X className="size-4" /></Button></div>
+          <nav className="space-y-1 p-3">{TABS.map(tb => <button key={tb.id} onClick={() => setTab(tb.id)} aria-current={tab === tb.id ? 'page' : undefined} className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm ${tab === tb.id ? 'bg-secondary text-brand' : 'text-muted-foreground'}`}><tb.icon className="size-4" />{t(tb.key)}</button>)}</nav>
+          <div className="border-t p-4 text-sm text-muted-foreground">{statusLabel}<Button size="icon" className="ml-3" aria-label={t('app.refreshNow')} disabled={refreshStatus.refreshing} onClick={() => void refreshStatus.refreshNow()}><RefreshCw className="size-4" /></Button></div>
+        </dialog>
+        <aside className="dashboard-sidebar bg-card/40 sticky top-0 hidden h-screen w-[60px] shrink-0 flex-col border-r sm:flex min-[900px]:w-[212px]">
+          <div className="flex h-[64px] shrink-0 items-center justify-center border-b min-[900px]:justify-start min-[900px]:px-4">
             {/*
              * The tagline rides on the logo rather than sitting under it. The brand sheet
              * stacks the two in its logo lockup, but the sheet's OWN dashboard preview
@@ -212,20 +247,21 @@ function Dashboard() {
                   </TabsTrigger>
                 );
                 // Only worth a tooltip when the label is not on screen.
-                return collapsed ? (
-                  <Hint key={tb.id} text={t(tb.key)}>
-                    {trigger}
-                  </Hint>
-                ) : (
-                  trigger
-                );
+                // Keep each sidebar group heading to one occurrence; Alerts belongs to
+                // monitoring but sits directly below Limits rather than starting a second
+                // "Monitor" section halfway down the rail.
+                const group = tb.id === 'live' ? 'nav.monitor' : tb.id === 'usage' || tb.id === 'sessions' ? 'nav.analyze' : tb.id === 'sources' ? 'nav.system' : null;
+                return <Fragment key={tb.id}>
+                  {group && <span className={collapsed ? 'mt-4' : 'text-muted-foreground/70 mt-5 mb-2 px-2.5 text-[10px] font-semibold uppercase tracking-widest'}>{!collapsed && t(group)}</span>}
+                  {collapsed ? <Hint text={t(tb.key)}>{trigger}</Hint> : trigger}
+                </Fragment>;
               })}
             </TabsList>
           </nav>
 
           <div className="flex shrink-0 items-center gap-1 border-t p-2">
             <div
-              className={`${statusTone} flex min-w-0 flex-1 items-center justify-center gap-2 rounded-full border px-2.5 py-1 text-[11.5px] font-medium min-[900px]:justify-start`}
+              className={`${statusTone} flex min-w-0 flex-1 items-center justify-center gap-2 rounded-full border px-1 py-1 text-[11.5px] font-medium min-[900px]:justify-start min-[900px]:px-2.5`}
               title={statusTitle}
               aria-label={statusTitle}
               role="status"
@@ -253,27 +289,28 @@ function Dashboard() {
 
         {/* min-w-0 so a wide table scrolls inside the main column instead of stretching it. */}
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="bg-background/80 sticky top-0 z-40 border-b backdrop-blur-sm">
-            <div className="flex h-[57px] flex-wrap items-center gap-3 px-4 min-[900px]:px-6">
-              <span className="text-muted-foreground text-[12.5px]">
+          <header className="dashboard-topbar bg-background/80 sticky top-0 z-40 border-b backdrop-blur-sm">
+            <div className="flex min-h-[64px] items-center gap-2 px-4 min-[900px]:px-6">
+              <Button ref={menuButton} size="icon" className="shrink-0 sm:hidden" onClick={() => drawer.current?.showModal()} aria-label={t('nav.open')}><Menu className="size-4" /></Button>
+              <h1 className="min-w-0 truncate text-base font-semibold">{t(TABS.find(tb => tb.id === tab)!.key)}</h1>
+              <span className="text-muted-foreground ml-4 hidden text-xs lg:inline" title={ov?.lastPass ? t('app.lastPass', { ms: ov.lastPass.durationMs }) : undefined}>
                 {ov ? t('app.sources', { n: ov.sources.length }) : t('app.connecting')}
               </span>
-              {ov?.lastPass && (
-                <>
-                  <span className="text-muted-foreground/50 text-[12.5px]">&middot;</span>
-                  <span className="text-muted-foreground/70 tabular font-mono text-[12px]">
-                    {t('app.lastPass', { ms: ov.lastPass.durationMs })}
-                  </span>
-                </>
-              )}
 
               <div className="flex-1" />
 
               {ov && (
-                <AlertBell limits={ov.limits} now={ov.now} onOpenLimits={() => setTab('limits')} />
+                <AlertBell
+                  limits={ov.limits}
+                  subscriptions={ov.subscriptions}
+                  now={ov.now}
+                  onOpenLimits={() => setTab('limits')}
+                />
               )}
 
-              <SettingsMenu />
+              <CommandPalette items={TABS.map((item) => ({ id: item.id, label: t(item.key), group: item.id === 'live' || item.id === 'limits' || item.id === 'alerts' ? t('nav.monitor') : item.id === 'health' || item.id === 'sources' || item.id === 'settings' ? t('nav.system') : t('nav.analyze') }))} onSelect={(id) => { if (TABS.some((item) => item.id === id)) setTab(id as TabId); }} />
+
+              <SettingsMenu onOpenSettings={() => setTab('settings')} />
 
               <Button
                 size="icon"
@@ -290,7 +327,7 @@ function Dashboard() {
             </div>
           </header>
 
-          <main className="mx-auto w-full max-w-[1400px] px-4 pt-4 pb-16 min-[900px]:px-6">
+          <main className="dashboard-content mx-auto w-full max-w-[1400px] px-4 pt-6 pb-16 min-[900px]:px-6">
             {err && <ErrorBox>{err}</ErrorBox>}
 
             {/* Content cross-fades on tab change; the pill itself slides (see TabsTrigger). */}
@@ -303,28 +340,28 @@ function Dashboard() {
                 transition={{ duration: 0.18, ease: 'easeOut' }}
               >
                 <TabsContent value="live" forceMount={tab === 'live' ? true : undefined}>
-                  {tab === 'live' && (ov ? <LiveSection ov={ov} /> : <Loading />)}
+                  {tab === 'live' && (ov ? <LiveSection ov={ov} onOpenLimits={() => setTab('limits')} onOpenHealth={() => setTab('health')} onOpenCost={() => navigateUsage('cost')} /> : <Loading />)}
+                </TabsContent>
+                <TabsContent value="usage" forceMount={tab === 'usage' ? true : undefined}>
+                  {tab === 'usage' && (ov ? <UsageSection ov={ov} sources={ov.sources} /> : <Loading />)}
+                </TabsContent>
+                <TabsContent value="sources" forceMount={tab === 'sources' ? true : undefined}>
+                  {tab === 'sources' && (ov ? <SourcesSection ov={ov} /> : <Loading />)}
                 </TabsContent>
                 <TabsContent value="limits" forceMount={tab === 'limits' ? true : undefined}>
                   {tab === 'limits' && (ov ? <LimitsSection ov={ov} /> : <Loading />)}
                 </TabsContent>
-                <TabsContent value="trend" forceMount={tab === 'trend' ? true : undefined}>
-                  {tab === 'trend' && <TrendSection />}
-                </TabsContent>
-                <TabsContent value="cost" forceMount={tab === 'cost' ? true : undefined}>
-                  {tab === 'cost' && (ov ? <CostSection ov={ov} /> : <Loading />)}
+                <TabsContent value="alerts" forceMount={tab === 'alerts' ? true : undefined}>
+                  {tab === 'alerts' && <AlertsSection />}
                 </TabsContent>
                 <TabsContent value="sessions" forceMount={tab === 'sessions' ? true : undefined}>
-                  {tab === 'sessions' && <SessionsSection />}
-                </TabsContent>
-                <TabsContent value="projects" forceMount={tab === 'projects' ? true : undefined}>
-                  {tab === 'projects' && <ProjectsSection />}
-                </TabsContent>
-                <TabsContent value="models" forceMount={tab === 'models' ? true : undefined}>
-                  {tab === 'models' && <ModelsSection />}
+                  {tab === 'sessions' && <SessionsSection sources={ov?.sources ?? []} />}
                 </TabsContent>
                 <TabsContent value="health" forceMount={tab === 'health' ? true : undefined}>
                   {tab === 'health' && <HealthSection />}
+                </TabsContent>
+                <TabsContent value="settings" forceMount={tab === 'settings' ? true : undefined}>
+                  {tab === 'settings' && <SettingsSection subscriptions={ov?.subscriptions ?? []} onPricingUpdated={() => void refreshStatus.refreshNow()} />}
                 </TabsContent>
               </motion.div>
             </AnimatePresence>
@@ -348,9 +385,14 @@ function Loading() {
 }
 
 export default function App() {
+  // The PulsePet opens this app with ?mode=popup in a small frameless window. Same
+  // origin, same providers, same preferences -- only the layout differs.
+  const popupMode =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('mode') === 'popup';
   return (
     <I18nProvider>
-      <Dashboard />
+      {popupMode ? <PetPopup /> : <Dashboard />}
     </I18nProvider>
   );
 }

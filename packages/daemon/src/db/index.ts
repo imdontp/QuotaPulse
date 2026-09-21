@@ -203,6 +203,18 @@ const REPAIRS: Array<{ name: string; run: (db: DB) => void }> = [
       if (fixed > 0) log.info(`repaired: project name re-derived from cwd for ${fixed} sessions`);
     },
   },
+  {
+    name: 'alert_event.origin',
+    run: (db) => {
+      const cols = new Set(
+        (db.prepare(`PRAGMA table_info(alert_event)`).all() as Array<{ name: string }>).map((c) => c.name),
+      );
+      if (!cols.has('origin')) {
+        db.exec(`ALTER TABLE alert_event ADD COLUMN origin TEXT NOT NULL DEFAULT ''`);
+        log.info('repaired: added alert_event.origin');
+      }
+    },
+  },
 ];
 
 const MIGRATIONS: Array<{ to: number; run: (db: DB) => void }> = [

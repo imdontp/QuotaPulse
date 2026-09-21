@@ -1,9 +1,13 @@
 import type { Overview } from '@/api';
+import { useState } from 'react';
+import { quotaSummaries, type Readiness } from '@/lib/quota-summary';
+import { Gauge } from '@/components/gauge';
+import { Empty } from '@/components/primitives';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { FreshnessBadge } from '@/components/primitives';
 import { Badge } from '@/components/ui/badge';
-import { age, windowLabel } from '@/format';
+import { age } from '@/format';
 import { Hint } from '@/components/ui/tooltip';
 import { isExpired, pct, primaryLimits, severityOf, willExhaust } from '@/format';
 import { useFormat } from '@/i18n/format';
@@ -14,9 +18,41 @@ export function LimitsSection({ ov }: { ov: Overview }) {
   const t = useT();
   const f = useFormat();
   const now = ov.now;
+  const [subscription, setSubscription] = useState('all');
+  const [status, setStatus] = useState<Readiness | 'all'>('all');
+  const summaries = quotaSummaries(ov);
+  const statuses = new Map(summaries.map(s => [s.subscription.subscription_key, s.status]));
+  const rows = primaryLimits(ov.limits, now).filter(({ primary: l }) => {
+    const owner = l.subscription_key ?? l.account_key;
+    return (subscription === 'all' || owner === subscription) &&
+      (status === 'all' || ((owner ? statuses.get(owner) : undefined) ?? 'check') === status);
+  });
 
   return (
     <div className="flex flex-col gap-3.5">
+      <div className="flex flex-wrap gap-3">
+        <select aria-label={t('quota.allSubscriptions')} value={subscription} onChange={e => setSubscription(e.target.value)} className="bg-card border-input min-w-0 max-w-full rounded-xl border px-3 py-2.5 text-sm">
+          <option value="all">{t('quota.allSubscriptions')}</option>
+          {ov.subscriptions.map(s => <option key={s.subscription_key} value={s.subscription_key}>{s.subscription_display_name}</option>)}
+        </select>
+        <select aria-label={t('quota.all')} value={status} onChange={e => setStatus(e.target.value as Readiness | 'all')} className="bg-card border-input max-w-full rounded-xl border px-3 py-2.5 text-sm">
+          <option value="all">{t('quota.all')}</option>
+          {(['attention', 'available', 'check', 'inactive'] as const).map(s => <option key={s} value={s}>{t(`quota.${s}`)}</option>)}
+        </select>
+      </div>
+      {rows.length === 0 && <Empty>{t('quota.none')}</Empty>}
+      <div className="grid gap-4 md:hidden">
+        {rows.map(({ primary: l, superseded }) => <Card key={`${l.subscription_key ?? l.account_key ?? l.source_id}-${l.window_kind}`}>
+          <CardHeader><CardTitle>{l.subscription_display_name ?? l.account_display_name ?? l.display_name}</CardTitle></CardHeader>
+          <CardContent>
+            <Gauge limit={l} now={now} badge={<FreshnessBadge seconds={l.ageSeconds} />} />
+            <details className="mt-4 border-t pt-3 text-xs text-muted-foreground"><summary className="cursor-pointer rounded">{t('quota.readers')}</summary>
+              {[l, ...superseded].map(reader => <p className="mt-2 break-all" key={`${reader.source_id}-${reader.origin}`}>{reader.origin} · {pct(reader.used_percent)} · {age(reader.ageSeconds)}</p>)}
+            </details>
+          </CardContent>
+        </Card>)}
+      </div>
+      <div className="hidden min-w-0 md:block">
       <Card>
         <CardHeader className="flex-col items-start gap-1">
           <CardTitle>{t('limits.title')}</CardTitle>
@@ -43,15 +79,19 @@ export function LimitsSection({ ov }: { ov: Overview }) {
               * are also separate origins. The reading in force is shown; the ones it
               * supersedes are on the freshness chip.
               */}
-            {primaryLimits(ov.limits, now).map(({ primary: l, superseded }) => {
+            {rows.map(({ primary: l, superseded }) => {
               const expired = isExpired(l, now);
               const tone = severityOf(l.used_percent);
               const exhausts = willExhaust(l, now);
+              const forecast = l.forecast;
+              const forecastReady = forecast?.status === 'ready';
+              const rate = forecastReady ? forecast.percentPerHour : forecast == null ? l.burn?.percentPerHour : null;
+              const projected = forecastReady ? forecast.projectedFullAt : forecast == null ? l.burn?.projectedFullAt : null;
 
               return (
-                <TableRow key={`${l.account_key ?? `source:${l.source_id}`}-${l.window_kind}`}>
+                <TableRow key={`${l.subscription_key ?? l.account_key ?? `source:${l.source_id}`}-${l.window_kind}`}>
                   <TableCell>{l.subscription_display_name ?? l.account_display_name ?? l.display_name}</TableCell>
-                  <TableCell className="text-muted-foreground">{windowLabel(l.window_kind)}</TableCell>
+                  <TableCell className="text-muted-foreground">{f.window(l.window_kind)}</TableCell>
 
                   <TableCell className="tabular text-right font-mono font-semibold">
                     {expired ? (
@@ -102,7 +142,7 @@ export function LimitsSection({ ov }: { ov: Overview }) {
                   </TableCell>
 
                   <TableCell className="tabular text-muted-foreground text-right font-mono">
-                    {!expired && l.burn ? `${l.burn.percentPerHour.toFixed(1)}%/h` : '--'}
+                    {!expired && rate != null ? `${rate.toFixed(1)}%/h` : '--'}
                   </TableCell>
 
                   <TableCell
@@ -110,9 +150,13 @@ export function LimitsSection({ ov }: { ov: Overview }) {
                   >
                     {expired
                       ? t('limits.rolledOver')
-                      : l.burn?.projectedFullAt
-                        ? f.clock(l.burn.projectedFullAt)
-                        : t('limits.notBeforeReset')}
+                      : projected
+                        ? f.clock(projected)
+                        : forecast?.status === 'insufficient'
+                          ? t('limits.forecastNeed')
+                          : forecast?.status === 'flat'
+                            ? t('limits.forecastFlat')
+                            : t('limits.notBeforeReset')}
                   </TableCell>
 
                   <TableCell>
@@ -154,6 +198,7 @@ export function LimitsSection({ ov }: { ov: Overview }) {
           </p>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

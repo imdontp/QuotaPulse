@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { primaryLimits, willExhaust } from '../src/format.js';
+import { primaryLimits, thresholdLimits, willExhaust } from '../src/format.js';
 
 /**
  * `/api/limits` returns one row per (source, window, ORIGIN). Every surface that shows a
@@ -17,6 +17,7 @@ const reading = (o: {
   origin: string;
   window?: string;
   source?: number;
+  usedPercent?: number | null;
   ageSeconds?: number | null;
   resets_at?: number | null;
   full?: number | null;
@@ -24,6 +25,7 @@ const reading = (o: {
   source_id: o.source ?? 1,
   window_kind: o.window ?? '5h',
   origin: o.origin,
+  used_percent: o.usedPercent ?? null,
   resets_at: o.resets_at === undefined ? now + 2 * HOUR : o.resets_at,
   ageSeconds: o.ageSeconds ?? 60,
   burn: o.full === undefined ? null : { projectedFullAt: o.full },
@@ -68,11 +70,11 @@ test('different sources and windows are never merged', () => {
 test('readers with the same account key collapse to one account window', () => {
   const rows = [
     { ...reading({ origin: 'codex', source: 1, ageSeconds: 90 }), account_key: 'openai:subscription' },
-    { ...reading({ origin: 'hermes-account-usage', source: 2, ageSeconds: 30 }), account_key: 'openai:subscription' },
+    { ...reading({ origin: 'openai-codex-usage', source: 2, ageSeconds: 30 }), account_key: 'openai:subscription' },
   ];
   const out = primaryLimits(rows, now);
   assert.equal(out.length, 1);
-  assert.equal(out[0]!.primary.origin, 'hermes-account-usage');
+  assert.equal(out[0]!.primary.origin, 'openai-codex-usage');
   assert.equal(out[0]!.superseded[0]!.origin, 'codex');
 });
 
@@ -88,14 +90,31 @@ test('subscription key is the canonical owner when account compatibility fields 
 
 test('OpenCode Go monthly readings stay separate from its 5-hour and weekly windows', () => {
   const rows = [
-    { ...reading({ origin: 'opencode-go', window: '5h' }), subscription_key: 'opencode:go' },
-    { ...reading({ origin: 'opencode-go', window: 'weekly' }), subscription_key: 'opencode:go' },
-    { ...reading({ origin: 'opencode-go', window: 'monthly' }), subscription_key: 'opencode:go' },
+    {
+      ...reading({ origin: 'opencode-go', window: 'monthly', usedPercent: 81, resets_at: now + 30 * 86400_000 }),
+      subscription_key: 'opencode:go',
+    },
+    {
+      ...reading({ origin: 'opencode-go', window: 'weekly', usedPercent: 38, resets_at: now + 6 * 86400_000 }),
+      subscription_key: 'opencode:go',
+    },
+    {
+      ...reading({ origin: 'opencode-go', window: '5h', usedPercent: 12, resets_at: now + 4 * HOUR }),
+      subscription_key: 'opencode:go',
+    },
   ];
   const out = primaryLimits(rows, now);
   assert.deepEqual(
-    out.map((entry) => entry.primary.window_kind).sort(),
-    ['5h', 'monthly', 'weekly'],
+    out.map((entry) => entry.primary.window_kind),
+    ['5h', 'weekly', 'monthly'],
+  );
+  assert.deepEqual(
+    out.map(({ primary }) => [primary.window_kind, primary.used_percent, primary.resets_at]),
+    [
+      ['5h', 12, now + 4 * HOUR],
+      ['weekly', 38, now + 6 * 86400_000],
+      ['monthly', 81, now + 30 * 86400_000],
+    ],
   );
 });
 
@@ -140,4 +159,14 @@ test('willExhaust needs a projection that lands before the reset, on a live wind
     false,
     'an expired window cannot be projected forward',
   );
+});
+
+test('threshold alerts collapse reader duplicates and ignore projected burn duplicates', () => {
+  const rows = [
+    { ...reading({ origin: 'cached', usedPercent: 95, ageSeconds: 600 }), subscription_key: 'openai:subscription' },
+    { ...reading({ origin: 'live', usedPercent: 82, ageSeconds: 30 }), subscription_key: 'openai:subscription' },
+  ];
+  const alerts = thresholdLimits(rows, now);
+  assert.equal(alerts.length, 1);
+  assert.equal(alerts[0]!.origin, 'live');
 });

@@ -1,5 +1,8 @@
 node_modules/
 dist/
+dist-preload/
+dist-package/
+docs/quotapulse_pet_mode_v2_wave4_pack.zip
 *.tsbuildinfo
 .env
 .DS_Store
@@ -14,3 +17,14 @@ icon-preview/
 .claude/
 # editor local
 .vscode/
+# Pet Mode design inputs, deliberately not versioned. The archives are the single source
+# of truth for their contents -- nothing is extracted into the tree, so there is never a
+# second stale copy to reconcile. PET_MODE_V2_SPEC.md is the exception: it has no archive,
+# so it is the only copy that exists.
+docs/quotapulse_pulsepet_pack.zip
+docs/quotapulse_pet_mode_v2_starter_asset_pack.zip
+docs/quotapulse_pet_mode_v2_next_handoff_pack.zip
+docs/quotapulse_pet_mode_v2_wave2_pack.zip
+docs/quotapulse_pet_mode_v2_wave3_pack.zip
+docs/quotapulse_pet_mode_v2_wave5_pack.zip
+docs/PET_MODE_V2_SPEC.md

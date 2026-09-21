@@ -14,7 +14,10 @@ export class ApiError extends Error {
   }
 }
 
-const REQUEST_TIMEOUT_MS = 30_000;
+// Pricing downloads can legitimately take up to the daemon's 60s upstream timeout.
+// Keep a small client-side margin so the UI reports a real timeout instead of aborting
+// while the daemon is still safely validating the response.
+const REQUEST_TIMEOUT_MS = 75_000;
 
 async function request(path: string, init?: RequestInit): Promise<Response> {
   const controller = new AbortController();
@@ -44,6 +47,22 @@ async function post<T>(path: string): Promise<T> {
     headers: TOKEN ? { 'x-quotapulse-token': TOKEN } : {},
   });
   return (await res.json()) as T;
+}
+
+async function put<T>(path: string, body: unknown): Promise<T> {
+  const res = await request(path, {
+    method: 'PUT',
+    headers: { 'content-type': 'application/json', ...(TOKEN ? { 'x-quotapulse-token': TOKEN } : {}) },
+    body: JSON.stringify(body),
+  });
+  return (await res.json()) as T;
+}
+
+async function download(path: string): Promise<{ blob: Blob; filename: string | null }> {
+  const res = await request(path, { headers: TOKEN ? { 'x-quotapulse-token': TOKEN } : {} });
+  const disposition = res.headers.get('content-disposition');
+  const filename = disposition?.match(/filename="([^"]+)"/i)?.[1] ?? null;
+  return { blob: await res.blob(), filename };
 }
 
 export interface Totals {
@@ -83,6 +102,15 @@ export interface Burn {
   samples: number;
 }
 
+export interface QuotaForecast {
+  status: 'ready' | 'insufficient' | 'flat' | 'reset';
+  samples: number;
+  fromAt: number | null;
+  toAt: number | null;
+  percentPerHour: number | null;
+  projectedFullAt: number | null;
+}
+
 export interface Limit {
   source_id: number;
   harness: string;
@@ -108,9 +136,41 @@ export interface Limit {
   valueAgeSeconds: number | null;
   last_seen_at: number;
   burn: Burn | null;
+  forecast?: QuotaForecast;
 }
 
 export type AccountState = 'active' | 'stale' | 'inactive' | 'unavailable' | 'waiting';
+
+export type QuotaFreshness = 'live' | 'recent' | 'stale' | 'unknown' | 'expired' | 'mixed';
+
+export type QuotaTelemetryReason =
+  | 'usage_newer_than_quota'
+  | 'no_quota_observed'
+  | 'cached_only'
+  | 'reader_error'
+  | null;
+
+export interface QuotaWindowTelemetry {
+  window_kind: string;
+  freshness: QuotaFreshness;
+  latest_quota_at: number | null;
+  latest_source_fetched_at: number | null;
+  latest_usage_at: number | null;
+  gap: boolean;
+  reason: QuotaTelemetryReason;
+  origins: string[];
+}
+
+export interface QuotaTelemetry {
+  freshness: QuotaFreshness;
+  latest_quota_at: number | null;
+  latest_source_fetched_at: number | null;
+  latest_usage_at: number | null;
+  gap: boolean;
+  reason: QuotaTelemetryReason;
+  origins: string[];
+  windows: QuotaWindowTelemetry[];
+}
 
 export interface AccountStatus {
   account_key: string;
@@ -127,6 +187,7 @@ export interface SubscriptionStatus extends AccountStatus {
   subscription_key: string;
   subscription_display_name: string;
   linked_harness_keys: string[];
+  telemetry: QuotaTelemetry;
 }
 
 export interface HarnessStatus {
@@ -154,11 +215,17 @@ export interface SourceStatus {
   display_name: string;
   root_path: string;
   vendor: string;
+  account_state: AccountState;
   calls: number;
   total_tokens: number;
   last_event_ts: number | null;
+  last_limit_at: number | null;
+  last_limit_source_fetched_at: number | null;
+  last_limit_reset_at: number | null;
+  limit_origins: string | null;
   /** 0 means no quota reading is available -- the harness may publish none or auth may be unavailable. */
   limit_samples: number;
+  telemetry: QuotaTelemetry;
 }
 
 export interface Overview {
@@ -171,6 +238,7 @@ export interface Overview {
   limits: Limit[];
   subscriptions: SubscriptionStatus[];
   harnesses: HarnessStatus[];
+  settings: AppSettings;
   /** Legacy alias for clients that still call this Account quota. */
   accounts: AccountStatus[];
   sources: Array<{ id: number; harness: string; profile: string; display_name: string; root_path: string }>;
@@ -188,6 +256,8 @@ export interface TrendRow {
   output_tokens: number;
   total_tokens: number;
   cost_usd: number;
+  cost_unknown_calls: number;
+  cost_estimated_calls: number;
 }
 
 export interface ModelRow extends Totals {
@@ -196,6 +266,13 @@ export interface ModelRow extends Totals {
   effort: string;
   /** Who MADE the model, derived server-side -- not the gateway that routed it. */
   vendor: string;
+}
+
+export interface TodayUsage {
+  from: number;
+  to: number;
+  totals: Totals;
+  rows: ModelRow[];
 }
 
 /** One (project, source, vendor, model) combination over the requested window. */
@@ -221,6 +298,7 @@ export interface ProjectRow {
   total_tokens: number;
   cost_usd: number;
   cost_unknown_calls: number;
+  cost_estimated_calls: number;
   last_ts: number;
 }
 
@@ -244,6 +322,94 @@ export interface SessionRow {
   total_tokens: number;
   cost_usd: number;
   cost_unknown_calls: number;
+  cost_estimated_calls: number;
+}
+
+export type UsageRangeKey = 'today' | 'week' | 'month' | 'all' | 'custom';
+export type UsageBucket = 'hour' | 'day' | 'week' | 'month';
+
+export interface UsagePeriod {
+  range: UsageRangeKey;
+  from: number;
+  to: number;
+  timezone: string;
+  bucket: UsageBucket;
+}
+
+export interface UsageResponse {
+  range: UsagePeriod;
+  totals: Totals;
+  timeline: TrendRow[];
+  bySource: SourceTotals[];
+}
+
+export interface AppSettings {
+  pet_enabled: boolean;
+  tray_animation_enabled: boolean;
+  hidden_subscriptions: string[];
+  updated_at: number;
+}
+
+export interface CompareResult {
+  current: Totals;
+  previous: Totals;
+  series: Array<{ series: string; current: Totals | null; previous: Totals | null }>;
+}
+
+export interface SessionEvent {
+  ts: number;
+  model: string | null;
+  effort: string | null;
+  input_tokens: number;
+  cached_input_tokens: number;
+  cache_write_tokens: number;
+  output_tokens: number;
+  reasoning_tokens: number;
+  total_tokens: number;
+  cost_usd: number | null;
+  cost_source: 'known' | 'unknown' | 'estimated' | string;
+  duration_ms: number | null;
+}
+
+export interface SessionDetail {
+  session: SessionRow & Record<string, unknown>;
+  events: SessionEvent[];
+}
+
+export interface AlertEvent {
+  id: number;
+  kind: 'threshold' | string;
+  source_id: number;
+  owner_key: string;
+  window_kind: string;
+  threshold: number;
+  used_percent: number;
+  resets_at: number | null;
+  detected_at: number;
+  delivered_at: number | null;
+  display_name: string;
+  subscription_display_name: string | null;
+  origin: string;
+}
+
+export interface NotificationSettings {
+  enabled: boolean;
+  snooze_until: number | null;
+  quiet_start: number | null;
+  quiet_end: number | null;
+  updated_at: number;
+}
+
+export interface PricingScope { from: number; to: number; sourceId?: number }
+export interface PricingCoverage {
+  from: number;
+  to: number;
+  source_id: number | null;
+  sourceName: string | null;
+  totals: Totals;
+  models: Array<Totals & { model: string | null; provider: string | null; price_provider: string | null }>;
+  hasHermes: boolean;
+  catalog: { pricedModels: number; loadedAt: number | null; catalogAgeMs: number | null; catalogOwn: boolean; catalogPresent: boolean };
 }
 
 export interface Health {
@@ -290,8 +456,23 @@ export interface ManualRefresh {
   };
 }
 
+export interface PricingRefresh {
+  ok: true;
+  fetchedAt: number;
+  catalogPath: string;
+  providers: number;
+  models: number;
+  repriced: number;
+  reclassified: number;
+}
+
 export const api = {
+  pricingCoverage: (p: PricingScope) => get<PricingCoverage>(
+    `/api/pricing/coverage?from=${p.from}&to=${p.to}` + (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
+  ),
   overview: () => get<Overview>('/api/overview'),
+  settings: () => get<AppSettings>('/api/settings'),
+  updateSettings: (patch: Partial<AppSettings>) => put<AppSettings>('/api/settings', patch),
   limits: () =>
     get<{
       now: number;
@@ -300,16 +481,33 @@ export const api = {
       harnesses: HarnessStatus[];
       accounts: AccountStatus[];
     }>('/api/limits'),
-  trend: (p: { bucket: 'hour' | 'day'; from: number; to: number; groupBy: string }) =>
+  usage: (p: { range: UsageRangeKey; from?: number; to?: number; bucket?: UsageBucket | 'auto'; sourceId?: number }) =>
+    get<UsageResponse>(
+      `/api/usage?range=${p.range}` +
+        (p.from == null ? '' : `&from=${p.from}`) +
+        (p.to == null ? '' : `&to=${p.to}`) +
+        (p.bucket == null ? '' : `&bucket=${p.bucket}`) +
+        (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
+    ),
+  trend: (p: { bucket: UsageBucket; from: number; to: number; groupBy: string; sourceId?: number }) =>
     get<{ bucket: string; from: number; to: number; rows: TrendRow[] }>(
-      `/api/trend?bucket=${p.bucket}&from=${p.from}&to=${p.to}&group_by=${p.groupBy}`,
+      `/api/trend?bucket=${p.bucket}&from=${p.from}&to=${p.to}&group_by=${p.groupBy}` +
+        (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
     ),
-  models: (since: number) => get<{ models: ModelRow[] }>(`/api/models?since=${since}`),
-  projects: (p: { from: number; to: number }) =>
+  models: (p: number | { from: number; to?: number; sourceId?: number }) => {
+    const params = typeof p === 'number'
+      ? `since=${p}`
+      : `from=${p.from}` +
+        (p.to == null ? '' : `&to=${p.to}`) +
+        (p.sourceId == null ? '' : `&source_id=${p.sourceId}`);
+    return get<{ since: number; from: number; to: number | null; models: ModelRow[] }>(`/api/models?${params}`);
+  },
+  today: () => get<TodayUsage>('/api/today'),
+  projects: (p: { from: number; to: number; sourceId?: number }) =>
     get<{ from: number; to: number; rows: ProjectRow[] }>(
-      `/api/projects?from=${p.from}&to=${p.to}`,
+      `/api/projects?from=${p.from}&to=${p.to}` + (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
     ),
-  sessions: (p: { limit: number; offset: number; vendor?: string }) =>
+  sessions: (p: { limit: number; offset: number; vendor?: string; sourceId?: number; from?: number; to?: number }) =>
     get<{
       sessions: SessionRow[];
       total: number;
@@ -317,11 +515,34 @@ export const api = {
       limit: number;
       offset: number;
     }>(
-      `/api/sessions?limit=${p.limit}&offset=${p.offset}` +
-        (p.vendor ? `&vendor=${encodeURIComponent(p.vendor)}` : ''),
+        `/api/sessions?limit=${p.limit}&offset=${p.offset}` +
+        (p.vendor ? `&vendor=${encodeURIComponent(p.vendor)}` : '') +
+        (p.sourceId == null ? '' : `&source_id=${p.sourceId}`) +
+        (p.from == null ? '' : `&from=${p.from}`) +
+        (p.to == null ? '' : `&to=${p.to}`),
+  ),
+  sessionDetail: (id: number) => get<SessionDetail>(`/api/sessions/${id}`),
+  alerts: (p: { from?: number; to?: number; limit?: number; pending?: boolean } = {}) =>
+    get<{ events: AlertEvent[] }>(
+      `/api/alerts?limit=${p.limit ?? 100}` +
+        (p.from == null ? '' : `&from=${p.from}`) +
+        (p.to == null ? '' : `&to=${p.to}`) +
+        (p.pending ? '&pending=1' : ''),
+    ),
+  notificationSettings: () => get<NotificationSettings>('/api/notification-settings'),
+  updateNotificationSettings: (patch: Partial<NotificationSettings>) => put<NotificationSettings>('/api/notification-settings', patch),
+  compare: (p: { from: number; to: number; previousFrom: number; previousTo: number; groupBy: string; sourceId?: number }) =>
+    get<CompareResult>(
+      `/api/compare?from=${p.from}&to=${p.to}&previous_from=${p.previousFrom}&previous_to=${p.previousTo}&group_by=${p.groupBy}` +
+        (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
     ),
   health: () => get<Health>('/api/health'),
   refresh: () => post<ManualRefresh>('/api/refresh'),
+  refreshPricing: () => post<PricingRefresh>('/api/pricing/refresh'),
+  exportUsageCsv: (p: { from: number; to: number; sourceId?: number }) => download(
+    `/api/export/usage?format=csv&from=${p.from}&to=${p.to}` +
+      (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
+  ),
 };
 
 /*
@@ -360,6 +581,11 @@ function openStream(): void {
   stream.addEventListener('data', () => {
     // Copied before iterating: a listener that unsubscribes itself while we are
     // notifying would otherwise mutate the set mid-loop.
+    for (const fn of [...listeners]) fn();
+  });
+  stream.addEventListener('settings', () => {
+    // Settings updates use the same refresh fan-out as ingest so every mounted
+    // consumer re-reads the single daemon-owned state immediately.
     for (const fn of [...listeners]) fn();
   });
 }

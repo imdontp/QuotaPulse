@@ -1,0 +1,95 @@
+{
+  "id": "byte",
+  "displayName": "Byte",
+  "personality": [
+    "focused",
+    "productive",
+    "energetic"
+  ],
+  "motionStyle": "focused_mechanical",
+  "brandAnchors": [
+    "cyan_headphones",
+    "dark_cat_hood",
+    "screen_face"
+  ],
+  "default": false,
+  "assetVersion": 1,
+  "status": "beta",
+  "selectable": true,
+  "pivot": {
+    "x": 0.5,
+    "y": 0.92
+  },
+  "supportedSizes": [
+    128,
+    256,
+    512
+  ],
+  "presentation": {
+    "kind": "concept_sheet",
+    "src": "/assets/pets/byte/concept-states.png",
+    "note": "Static mood poses with renderer CSS motion; not authored frame animation."
+  },
+  "animations": {
+    "healthy_idle": {
+      "playback": "loop",
+      "fallback": "healthy_static",
+      "src": "/assets/pets/byte/concept-states.png",
+      "reducedMotionSrc": "/assets/pets/byte/concept-states.png"
+    },
+    "working_loop": {
+      "playback": "loop",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/byte/concept-states.png",
+      "reducedMotionSrc": "/assets/pets/byte/concept-states.png"
+    },
+    "warning_intro": {
+      "playback": "once",
+      "fallback": "warning_loop",
+      "src": "/assets/pets/byte/concept-states.png",
+      "reducedMotionSrc": "/assets/pets/byte/concept-states.png"
+    },
+    "warning_loop": {
+      "playback": "loop",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/byte/concept-states.png",
+      "reducedMotionSrc": "/assets/pets/byte/concept-states.png"
+    },
+    "critical_intro": {
+      "playback": "once",
+      "fallback": "critical_loop",
+      "src": "/assets/pets/byte/concept-states.png",
+      "reducedMotionSrc": "/assets/pets/byte/concept-states.png"
+    },
+    "critical_loop": {
+      "playback": "loop",
+      "fallback": "warning_loop",
+      "src": "/assets/pets/byte/concept-states.png",
+      "reducedMotionSrc": "/assets/pets/byte/concept-states.png"
+    },
+    "reset_celebrate": {
+      "playback": "once",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/byte/concept-states.png",
+      "reducedMotionSrc": "/assets/pets/byte/concept-states.png"
+    },
+    "talk_loop": {
+      "playback": "loop",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/byte/concept-states.png",
+      "reducedMotionSrc": "/assets/pets/byte/concept-states.png"
+    },
+    "hover_react": {
+      "playback": "once",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/byte/concept-states.png",
+      "reducedMotionSrc": "/assets/pets/byte/concept-states.png"
+    },
+    "click_react": {
+      "playback": "once",
+      "fallback": "healthy_idle",
+      "src": "/assets/pets/byte/concept-states.png",
+      "reducedMotionSrc": "/assets/pets/byte/concept-states.png"
+    }
+  }
+}

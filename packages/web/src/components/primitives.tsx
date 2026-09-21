@@ -136,7 +136,7 @@ export function BarList({
   rows: Array<{
     label: string;
     value: number;
-    display: string;
+    display: React.ReactNode;
     color?: string;
     sub?: string;
     icon?: React.ReactNode;

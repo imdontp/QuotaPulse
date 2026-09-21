@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Bell, TriangleAlert } from 'lucide-react';
-import type { Limit } from '@/api';
+import type { Limit, SubscriptionStatus } from '@/api';
 import { Button } from '@/components/ui/button';
-import { pct, primaryLimits, windowLabel, willExhaust } from '@/format';
+import { pct, primaryLimits, thresholdLimits, windowLabel, willExhaust } from '@/format';
 import { useFormat } from '@/i18n/format';
-import { useT } from '@/i18n';
+import { useI18n, useT } from '@/i18n';
 import { cn } from '@/lib/utils';
 
 /**
@@ -32,15 +32,36 @@ export function urgentLimits(limits: Limit[], now = Date.now()): Limit[] {
  * live behind a bell that is always reachable rather than as a banner on one tab. A
  * toast that never dismisses itself would be a toast used wrongly.
  */
-export function AlertBell({ limits, now, onOpenLimits }: { limits: Limit[]; now: number; onOpenLimits: () => void }) {
+export function AlertBell({
+  limits,
+  subscriptions = [],
+  now,
+  onOpenLimits,
+}: {
+  limits: Limit[];
+  subscriptions?: SubscriptionStatus[];
+  now: number;
+  onOpenLimits: () => void;
+}) {
   const t = useT();
   const f = useFormat();
+  const { hiddenSubscriptions } = useI18n();
   const reduced = useReducedMotion();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const urgent = urgentLimits(limits, now);
-  const count = urgent.length;
+  const visible = (key: string | null | undefined) =>
+    key == null || !hiddenSubscriptions.includes(key);
+  const visibleLimits = limits.filter((limit) =>
+    visible(limit.subscription_key ?? limit.account_key),
+  );
+  const urgent = urgentLimits(visibleLimits, now);
+  const thresholds = thresholdLimits(visibleLimits, now);
+  const gaps = subscriptions.filter(
+    (subscription) =>
+      visible(subscription.subscription_key) && subscription.telemetry.gap,
+  );
+  const count = urgent.length + thresholds.length + gaps.length;
 
   // Pulse only when the count GROWS -- a steady problem should not keep flashing.
   const [pulse, setPulse] = useState(false);
@@ -63,7 +84,17 @@ export function AlertBell({ limits, now, onOpenLimits }: { limits: Limit[]; now:
     const onDown = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
+    const panel = ref.current?.querySelector<HTMLElement>('[role="dialog"]');
+    panel?.querySelector<HTMLElement>('button')?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { e.preventDefault(); setOpen(false); ref.current?.querySelector('button')?.focus(); }
+      if (e.key === 'Tab' && panel) {
+        const controls = [...panel.querySelectorAll<HTMLElement>('button:not([disabled])')];
+        const first = controls[0], last = controls.at(-1);
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+    };
     document.addEventListener('mousedown', onDown);
     document.addEventListener('keydown', onKey);
     return () => {
@@ -101,7 +132,9 @@ export function AlertBell({ limits, now, onOpenLimits }: { limits: Limit[]; now:
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={reduced ? undefined : { opacity: 0, scale: 0.98, y: -4 }}
             transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-popover text-popover-foreground absolute right-0 z-50 mt-1.5 w-[22rem] origin-top-right rounded-lg border p-2 shadow-md"
+            role="dialog"
+            aria-label={t('alerts.title')}
+            className="bg-popover text-popover-foreground absolute right-0 z-50 mt-1.5 w-[22rem] max-w-[calc(100vw-8rem)] max-h-[70vh] overflow-y-auto origin-top-right rounded-xl border p-3 shadow-xl"
           >
             <div className="text-muted-foreground px-1.5 pt-1 pb-2 text-[11px] font-semibold tracking-wider uppercase">
               {t('alerts.title')}
@@ -145,6 +178,55 @@ export function AlertBell({ limits, now, onOpenLimits }: { limits: Limit[]; now:
                     )}
                   >
                     {pct(l.used_percent)}
+                  </span>
+                </motion.button>
+              ))}
+              {thresholds.map((l, i) => (
+                <motion.button
+                  key={`threshold-${l.source_id}-${l.window_kind}-${l.origin}`}
+                  initial={reduced ? false : { opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: reduced ? 0 : (urgent.length + i) * 0.05, duration: 0.2 }}
+                  onClick={() => {
+                    setOpen(false);
+                    onOpenLimits();
+                  }}
+                  className="hover:bg-accent/60 flex w-full items-start gap-2.5 rounded-md px-1.5 py-2 text-left transition-colors"
+                >
+                  <TriangleAlert className="text-warn mt-0.5 size-3.5 shrink-0" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[12.5px] font-medium">
+                      {l.display_name}
+                      <span className="text-muted-foreground font-normal"> · {windowLabel(l.window_kind)}</span>
+                    </span>
+                    <span className="text-muted-foreground mt-0.5 block text-[11.5px] leading-relaxed">
+                      {t('alerts.threshold', { pct: Math.round(l.used_percent ?? 0) })}{' '}
+                      {t('alerts.resets', { time: f.clock(l.resets_at) })}
+                    </span>
+                  </span>
+                  <span className="text-warn tabular shrink-0 font-mono text-[13px] font-semibold">
+                    {pct(l.used_percent)}
+                  </span>
+                </motion.button>
+              ))}
+              {gaps.map((subscription, i) => (
+                <motion.button
+                  key={`gap-${subscription.subscription_key}`}
+                  initial={reduced ? false : { opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: reduced ? 0 : (urgent.length + thresholds.length + i) * 0.05, duration: 0.2 }}
+                  onClick={() => {
+                    setOpen(false);
+                    onOpenLimits();
+                  }}
+                  className="hover:bg-accent/60 flex w-full items-start gap-2.5 rounded-md px-1.5 py-2 text-left transition-colors"
+                >
+                  <TriangleAlert className="text-warn mt-0.5 size-3.5 shrink-0" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[12.5px] font-medium">{subscription.subscription_display_name}</span>
+                    <span className="text-muted-foreground mt-0.5 block text-[11.5px] leading-relaxed">
+                      {t('alerts.quotaGap')}
+                    </span>
                   </span>
                 </motion.button>
               ))}
