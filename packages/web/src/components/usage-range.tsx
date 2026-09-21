@@ -106,10 +106,12 @@ export function UsageRangeBar({
   route,
   onChange,
   sources = [],
+  actions,
 }: {
   route: UsageRoute;
   onChange: (next: UsageRouteUpdate) => void;
   sources?: Array<{ id: number; display_name: string }>;
+  actions?: React.ReactNode;
 }) {
   const t = useT();
   const selection = route.selection;
@@ -159,6 +161,7 @@ export function UsageRangeBar({
         <option value="">{t('analysis.allSources')}</option>
         {sources.map((source) => <option key={source.id} value={source.id}>{source.display_name}</option>)}
       </Select>}
+      {actions && <div className="ml-auto flex items-center gap-2">{actions}</div>}
     </div>
   );
 }

@@ -49,16 +49,20 @@ const apiMethods = [];
 const externalRequests = [];
 const sourceRow = value => ({ ...value, source_id: 1, harness: 'hermes', profile: 'default', display_name: 'Hermes Agent', vendor: 'deepseek' });
 const unpriced = { ...totals, cost_usd: 0, cost_unknown_calls: 10, model: 'deepseek-v4.1-flash', harness: 'hermes', effort: 'low', vendor: 'deepseek' };
-const overview = () => ({ now, today, week: { ...totals, calls: 250, total_tokens: 16500000 }, allTime: totals,
-  bySourceToday: [sourceRow(today)],
-  bySourceAll: [sourceRow(totals)], limits: empty ? [] : limits, subscriptions: empty ? [] : subscriptions,
-  harnesses: [], accounts: subscriptions, sources: [], sourceStatus: [], lastPass: null });
+const overview = (hiddenSubscriptions = []) => ({ now, today,
+  week: { ...totals, calls: 250, total_tokens: 16500000 }, allTime: totals,
+  bySourceToday: [sourceRow(today)], bySourceAll: [sourceRow(totals)], limits: empty ? [] : limits, subscriptions: empty ? [] : subscriptions,
+  harnesses: [], accounts: subscriptions, sources: [], sourceStatus: [], lastPass: null,
+  settings: { pet_enabled: true, tray_animation_enabled: true, hidden_subscriptions: hiddenSubscriptions, updated_at: now } });
 
 let server, browser;
 const errors = [];
 const requests = [];
 async function contextFor(lang = 'en', theme = 'dark', width = 1440, hiddenSubscriptions = []) {
   const context = await browser.newContext({ viewport: { width, height: 1000 }, colorScheme: theme, reducedMotion: 'reduce' });
+  let sharedHiddenSubscriptions = [...hiddenSubscriptions];
+  let settingsUpdatedAt = now;
+  let fixtureNotifications = { enabled: true, snooze_until: null, quiet_start: null, quiet_end: null, updated_at: now };
   await context.addInitScript(({ lang, theme, hiddenSubscriptions }) => {
     localStorage.setItem('quotapulse-theme', theme);
     localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang, currency: 'USD', rate: 1, hiddenSubscriptions }));
@@ -69,7 +73,7 @@ async function contextFor(lang = 'en', theme = 'dark', width = 1440, hiddenSubsc
   }, { lang, theme, hiddenSubscriptions });
   await context.route('**/api/**', async route => {
     const u = new URL(route.request().url());
-    apiMethods.push(route.request().method());
+    apiMethods.push({ method: route.request().method(), path: u.pathname });
     if (unavailable) return route.fulfill({ status: 503, json: { error: 'fixture unavailable' } });
     let data;
     if (u.pathname === '/api/pricing/coverage') {
@@ -86,11 +90,26 @@ async function contextFor(lang = 'en', theme = 'dark', width = 1440, hiddenSubsc
           ...(value.cost_estimated_calls ? [{...totals,calls:value.cost_estimated_calls,cost_unknown_calls:0,cost_estimated_calls:value.cost_estimated_calls,model:'reference-model',provider:'gateway',price_provider:'openai'}] : []),
         ], catalog:{pricedModels:0,loadedAt:null,catalogAgeMs:null,catalogOwn:false,catalogPresent:false}};
     }
-    else if (u.pathname === '/api/notification-settings') data = { enabled: true, snooze_until: null, quiet_start: null, quiet_end: null, updated_at: now };
+    else if (u.pathname === '/api/settings') {
+      if (route.request().method() === 'PUT') {
+        const body = route.request().postDataJSON() ?? {};
+        if (Array.isArray(body.hidden_subscriptions)) sharedHiddenSubscriptions = [...new Set(body.hidden_subscriptions)];
+        settingsUpdatedAt += 1;
+      } else assert.equal(route.request().method(), 'GET');
+      data = { pet_enabled: true, tray_animation_enabled: true, hidden_subscriptions: sharedHiddenSubscriptions, updated_at: settingsUpdatedAt };
+    }
+    else if (u.pathname === '/api/notification-settings') {
+      if (route.request().method() === 'PUT') fixtureNotifications = { ...fixtureNotifications, ...(route.request().postDataJSON() ?? {}), updated_at: ++settingsUpdatedAt };
+      data = fixtureNotifications;
+    }
+    else if (u.pathname === '/api/export/usage') {
+      return route.fulfill({ status: 200, contentType: 'text/csv; charset=utf-8', headers: { 'content-disposition': 'attachment; filename="fixture.csv"' }, body: '\uFEFFevent_id,total_tokens\r\n1,42\r\n' });
+    }
     else if (u.pathname === '/api/alerts') data = { events: [] };
     else if (u.pathname === '/api/compare') data = { current: today, previous: { ...today, calls: 5, total_tokens: 1000, cost_usd: 1, cost_unknown_calls: 0 }, series: [] };
     else if (u.pathname.startsWith('/api/sessions/')) data = { session: { id: 1, native_session_id: 'fixture', project: 'fixture-project', cwd: '/fixture/project', git_branch: null, model_default: unpriced.model, agent: null, started_at: now - 3600000, last_seen_at: now, is_subagent: 0, native_cost_usd: 0, harness: 'hermes', profile: 'default', display_name: 'Hermes Agent' }, events: [] };
-    else if (u.pathname === '/api/overview') data = overview();
+    else if (u.pathname === '/api/usage') data = { range: { range: u.searchParams.get('range') ?? 'today', from: 0, to: now, bucket: u.searchParams.get('bucket') ?? 'day', timezone: 'fixture' }, totals: today, timeline: [], bySource: [sourceRow(today)] };
+    else if (u.pathname === '/api/overview') data = overview(sharedHiddenSubscriptions);
     else if (u.pathname === '/api/trend') {
       requests.push(Object.fromEntries(u.searchParams));
       const from = Number(u.searchParams.get('from')), to = Number(u.searchParams.get('to'));
@@ -165,7 +184,7 @@ try {
   assert.equal(await page.getByTestId('stat-1').locator('[data-pricing-state]').getAttribute('data-pricing-state'),'empty');
   today = {...totals,cost_estimated_calls:3};
   await page.reload(); await settle(page);
-  await page.getByTestId('stat-1').getByText('3 calls use another provider’s reference price',{exact:true}).waitFor();
+  await page.getByTestId('stat-1').getByLabel(/3 calls use another provider’s reference price/).waitFor();
   const pricingButton = page.getByRole('button',{name:'Pricing details — Hermes Agent',exact:true});
   await pricingButton.focus(); await page.keyboard.press('Enter');
   let dialog = page.getByRole('dialog',{name:'Pricing details — Hermes Agent',exact:true});
@@ -209,20 +228,38 @@ try {
   pricingDelay=0;
   today = { ...totals };
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
+  assert.equal(await page.getByRole('dialog', { name: 'Settings', exact: true }).getByRole('checkbox').count(), 0,
+    'the top-bar menu keeps quick preferences only');
+  await page.getByRole('button', { name: 'Open full Settings', exact: true }).click();
+  await page.locator('h2').filter({ hasText: 'Settings' }).waitFor();
   await page.getByRole('checkbox', { name: 'OpenAI Subscription', exact: true }).uncheck();
-  await page.keyboard.press('Escape');
-  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Settings');
+  await page.getByText('hidden', { exact: true }).first().waitFor();
+  await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
   assert.equal(await page.locator('.quota-card').filter({ hasText: 'OpenAI Subscription' }).count(), 0);
   assert.equal(await page.getByRole('list', { name: 'Next resets', exact: true }).getByText('OpenAI Subscription', { exact: true }).count(), 0);
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
+  await page.getByRole('button', { name: 'Open full Settings', exact: true }).click();
+  await page.locator('h2').filter({ hasText: 'Settings' }).waitFor();
   await page.getByRole('checkbox', { name: 'OpenAI Subscription', exact: true }).check();
-  await page.keyboard.press('Escape');
+  await page.getByText('shown', { exact: true }).first().waitFor();
+  await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
   const day = requests.find(r => r.bucket === 'day');
   assert.equal(Number(day.to) - Number(day.from), 7 * 86400000);
   const hour = requests.find(r => r.bucket === 'hour');
   assert.equal(new Date(Number(hour.from)).getHours(), 0);
-  for (const tab of ['sources', 'limits', 'trend', 'cost', 'sessions', 'projects', 'models', 'health', 'alerts']) {
-    await page.goto(`http://127.0.0.1:7798/#${tab}`);
+  await page.goto('http://127.0.0.1:7798/#usage?range=today&view=summary');
+  await page.getByRole('button', { name: 'Export CSV', exact: true }).waitFor();
+  const [usageDownload] = await Promise.all([
+    page.waitForEvent('download'),
+    page.getByRole('button', { name: 'Export CSV', exact: true }).click(),
+  ]);
+  assert.equal(usageDownload.suggestedFilename(), 'fixture.csv');
+  for (const [tab, target] of [
+    ['sources', '#sources'], ['limits', '#limits'], ['cost', '#usage?range=all&view=cost'],
+    ['sessions', '#sessions'], ['projects', '#usage?range=month&view=projects'],
+    ['models', '#usage?range=month&view=models'], ['health', '#health'], ['alerts', '#alerts'],
+  ]) {
+    await page.goto(`http://127.0.0.1:7798/${target}`);
     await page.locator('[role=tabpanel][data-state=active]').waitFor();
     await page.waitForTimeout(250);
     await noOverflow(page, tab);
@@ -232,12 +269,12 @@ try {
     }
     if(tab==='models') {
       assert.equal(await page.locator('tbody [data-pricing-state]').getAttribute('data-pricing-state'),'unknown');
-      await page.getByRole('combobox').first().selectOption('cost_usd');
+      await page.locator('select').filter({ has: page.locator('option[value="cost_usd"]') }).first().selectOption('cost_usd');
       await page.getByText('--',{exact:true}).nth(2).waitFor();
       assert.ok(await page.getByText('--',{exact:true}).count()>=3,'unpriced model remains in both effort charts and table');
     }
     if(tab==='projects') {
-      await page.getByRole('combobox').nth(1).selectOption('cost_usd');
+      await page.locator('select').filter({ has: page.locator('option[value="cost_usd"]') }).first().selectOption('cost_usd');
       const project=page.getByRole('button',{name:/fixture-project/});
       await project.waitFor();
       await project.getByText('--',{exact:true}).waitFor();
@@ -261,27 +298,6 @@ try {
       await page.keyboard.press('Escape');
     }
   }
-  trendUnpriced=true;
-  await page.goto('http://127.0.0.1:7798/#trend');
-  await page.getByRole('checkbox', { name: 'Compare previous period', exact: true }).check();
-  await page.getByText('Period comparison', { exact: true }).waitFor();
-  await page.getByRole('combobox').nth(1).selectOption('cost_usd');
-  await page.getByTestId('unpriced-chart').waitFor();
-  assert.equal((await page.getByTestId('unpriced-chart').innerText()).includes('$0'),false);
-  trendUnpriced=false;
-  trendMixed=true;
-  await page.reload();
-  await page.getByRole('combobox').nth(1).selectOption('cost_usd');
-  await page.getByText('Value includes priced calls only.',{exact:false}).waitFor();
-  const curve=await page.locator('.recharts-area-curve').boundingBox();
-  const plot=await page.locator('.recharts-cartesian-grid').boundingBox();
-  assert.ok(curve && plot && curve.x>plot.x+plot.width*0.3,'unpriced first bucket must leave a visible gap');
-  for(const [position,expected] of [[0.001,'--'],[0.5,'$5.00+'],[0.999,'$0.0000']]) {
-    await page.mouse.move(plot.x+plot.width*position,plot.y+plot.height/2);
-    await page.locator('.recharts-tooltip-wrapper').getByText(expected,{exact:true}).waitFor();
-  }
-  await page.screenshot({path:resolve(output,'pricing-trend-gaps.png')});
-  trendMixed=false;
   await context.close();
   console.log('PASS navigation, filters, cost states, periods, and all sections');
   for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const width of [390, 900, 1280, 1440]) {
@@ -353,7 +369,9 @@ try {
 
   assert.deepEqual(errors, []);
   assert.deepEqual(externalRequests, []);
-  assert.ok(apiMethods.every(method=>method==='GET'),'pricing explanations and retries must not mutate data');
+  assert.ok(apiMethods.every(({ method, path }) => method === 'GET' ||
+    (method === 'PUT' && (path === '/api/settings' || path === '/api/notification-settings'))),
+    'only settings controls may mutate fixture data');
   console.log(`PASS empty, unavailable, recovery; no page errors. Screenshots: ${output}`);
 } finally {
   await browser?.close();

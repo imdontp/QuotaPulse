@@ -1,6 +1,7 @@
 import Fastify, { type FastifyInstance, type FastifyReply } from 'fastify';
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import { extname, join, normalize, resolve, sep } from 'node:path';
+import { Readable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
 import type { DB } from '../db/index.js';
 import type { Scheduler } from '../ingest/scheduler.js';
@@ -24,6 +25,52 @@ const MIME: Record<string, string> = {
 };
 
 const DAY = 86_400_000;
+
+const USAGE_EXPORT_HEADERS = [
+  'event_id', 'timestamp_utc', 'timestamp_ms', 'call_count', 'source_id', 'harness', 'profile', 'source_name',
+  'provider', 'vendor', 'model', 'effort', 'service_tier', 'project', 'session_key', 'is_subagent',
+  'input_tokens', 'cached_input_tokens', 'cache_write_tokens', 'output_tokens', 'reasoning_tokens',
+  'total_tokens', 'duration_ms', 'cost_usd', 'cost_input_usd', 'cost_cached_input_usd',
+  'cost_cache_write_usd', 'cost_output_usd', 'cost_cache_saving_usd', 'cost_source', 'price_provider',
+] as const;
+
+function csvCell(value: unknown): string {
+  if (value == null) return '';
+  const text = String(value);
+  return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+function csvLine(values: readonly unknown[]): string {
+  return `${values.map(csvCell).join(',')}\r\n`;
+}
+
+function usageExportFilename(from: number, to: number): string {
+  const compact = (ms: number) => new Date(ms).toISOString().slice(0, 16).replace(/[-:]/g, '');
+  return `quotapulse-usage-${compact(from)}-${compact(to)}.csv`;
+}
+
+function usageTimestampUtc(timestampMs: number): string {
+  return new Date(timestampMs).toISOString();
+}
+
+function usageCsvStream(rows: Iterable<q.UsageExportRow>): Readable {
+  function* chunks(): Generator<string> {
+    // The BOM makes the UTF-8 CSV open cleanly in Excel while remaining valid CSV for AI tools.
+    yield `\uFEFF${csvLine(USAGE_EXPORT_HEADERS)}`;
+    for (const row of rows) {
+      yield csvLine([
+        row.event_id, usageTimestampUtc(row.timestamp_ms), row.timestamp_ms, row.call_count,
+        row.source_id, row.harness, row.profile, row.source_name, row.provider, row.vendor,
+        row.model, row.effort, row.service_tier, row.project, row.session_key, row.is_subagent,
+        row.input_tokens, row.cached_input_tokens, row.cache_write_tokens, row.output_tokens,
+        row.reasoning_tokens, row.total_tokens, row.duration_ms, row.cost_usd, row.cost_input_usd,
+        row.cost_cached_input_usd, row.cost_cache_write_usd, row.cost_output_usd,
+        row.cost_cache_saving_usd, row.cost_source, row.price_provider,
+      ]);
+    }
+  }
+  return Readable.from(chunks());
+}
 
 /**
  * Local midnight, so "today" means the calendar day the user is actually in.
@@ -259,6 +306,25 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     } catch (error) {
       return reply.code(400).send({ error: (error as Error).message });
     }
+  });
+
+  app.get('/api/export/usage', async (req, reply) => {
+    const s = req.query as Record<string, string | undefined>;
+    const format = s.format ?? 'csv';
+    const from = Number(s.from);
+    const to = Number(s.to);
+    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
+    if (format !== 'csv' || !Number.isSafeInteger(from) || !Number.isSafeInteger(to) || from < 0 || to <= from ||
+        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
+      return reply.code(400).send({ error: 'Expected CSV format and a valid usage range' });
+    }
+    reply.header('Content-Type', 'text/csv; charset=utf-8');
+    reply.header('Content-Disposition', `attachment; filename="${usageExportFilename(from, to)}"`);
+    return reply.send(usageCsvStream(q.usageExportRows(db, {
+      from,
+      to,
+      ...(sourceId == null ? {} : { sourceId }),
+    })));
   });
 
   app.get('/api/trend', async (req, reply) => {

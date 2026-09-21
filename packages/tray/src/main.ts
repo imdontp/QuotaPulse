@@ -9,6 +9,7 @@ import { petPopupBounds, PET_SPRITE_SIZE, type Rect } from './pet-state.js';
 import { thresholdAlerts, type AlertState } from './alerts.js';
 import {
   buildTooltip,
+  visibleLimits,
   subscriptionLimits,
   worst,
   isExpired,
@@ -16,6 +17,7 @@ import {
   shortWindow,
   shortAge,
   clockAt,
+  type TrayConnectionStatus,
   type Limit,
 } from './limits.js';
 import {
@@ -111,6 +113,7 @@ interface Lock {
 interface ServerAlert {
   id: number;
   display_name: string;
+  owner_key: string;
   subscription_display_name: string | null;
   threshold: number;
   used_percent: number;
@@ -164,6 +167,8 @@ let quotaPopupRendererReady = false;
 let lock: Lock | null = null;
 let limits: Limit[] = [];
 let subscriptions: SubscriptionInfo[] = [];
+let hiddenSubscriptions: string[] = [];
+let daemonStatus: TrayConnectionStatus = 'connecting';
 let alertsEnabled = true;
 /** RunCat-style tray animation + desktop pet, each independently toggleable. */
 let trayAnimationEnabled = true;
@@ -259,6 +264,19 @@ let bubbleMode: BubbleMode = 'peek';
 /** Auto-dismiss for the expanded bubble: it must not linger forever. */
 let bubbleDismissTimer: NodeJS.Timeout | null = null;
 
+function visibleTrayLimits(): Limit[] {
+  return visibleLimits(limits, hiddenSubscriptions);
+}
+
+function visibleTraySubscriptions(): SubscriptionInfo[] {
+  const hidden = new Set(hiddenSubscriptions);
+  return subscriptions.filter((subscription) => !hidden.has(subscription.subscription_key));
+}
+
+function sameStringList(a: readonly string[], b: readonly string[]): boolean {
+  return a.length === b.length && a.every((value, index) => value === b[index]);
+}
+
 function readLock(): Lock | null {
   if (!existsSync(LOCK_PATH)) return null;
   try {
@@ -294,6 +312,7 @@ function ensureDaemon(): void {
 async function fetchLimits(): Promise<void> {
   lock = readLock();
   if (!lock) {
+    daemonStatus = daemonChild && daemonChild.exitCode == null ? 'connecting' : 'offline';
     if (activityAbort) {
       activityAbort.abort();
       activityAbort = null;
@@ -304,10 +323,13 @@ async function fetchLimits(): Promise<void> {
   }
   // A restarted daemon mints a new token; the old stream would 401 forever.
   if (activityToken !== lock.token) {
+    daemonStatus = 'connecting';
     activityAbort?.abort();
     activityAbort = new AbortController();
     activityToken = lock.token;
     void readActivityStream(lock, activityAbort.signal);
+  } else if (daemonStatus === 'offline') {
+    daemonStatus = 'connecting';
   }
   try {
     // /api/overview carries the same limits plus per-subscription telemetry, which is the
@@ -318,6 +340,7 @@ async function fetchLimits(): Promise<void> {
       signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) throw new Error(String(res.status));
+    daemonStatus = 'online';
     const body = (await res.json()) as {
       limits: Limit[];
       subscriptions?: SubscriptionInfo[];
@@ -341,6 +364,7 @@ async function fetchLimits(): Promise<void> {
     // the in-memory helper as a compatibility fallback for an older daemon during upgrade.
     if (!(await deliverPendingAlerts(lock))) checkAlerts();
   } catch (error) {
+    daemonStatus = 'offline';
     console.warn(`[tray] keeping last-known quota data after refresh failure: ${String(error)}`);
   }
   render();
@@ -425,12 +449,14 @@ const URGENT_ONCE_KEY = {
  * every activity change are visible in the Pet but never raise a Windows notification.
  */
 function runPresenceEvents(): void {
+  const shownLimits = visibleTrayLimits();
+  const shownSubscriptions = visibleTraySubscriptions();
   const base = resolvePetFrame({
-    limits,
-    subscriptions,
+    limits: shownLimits,
+    subscriptions: shownSubscriptions,
     settings: petSettings,
     event: lastEvent,
-    activeOwnerKey: activeOwnerKey(subscriptions),
+    activeOwnerKey: activeOwnerKey(shownSubscriptions),
   });
   const events = presenceEvents.update(base.providers);
   if (events.length === 0) return;
@@ -564,7 +590,15 @@ async function deliverPendingAlerts(current: Lock): Promise<boolean> {
     });
     if (!res.ok) return false;
     const body = (await res.json()) as { events?: ServerAlert[] };
+    const hidden = new Set(hiddenSubscriptions);
     for (const event of body.events ?? []) {
+      if (event.owner_key && hidden.has(event.owner_key)) {
+        void fetch(`http://127.0.0.1:${current.port}/api/alerts/${event.id}/delivered`, {
+          method: 'POST',
+          headers: { 'x-quotapulse-token': current.token },
+        }).catch(() => undefined);
+        continue;
+      }
       if (event.detected_at != null && Date.now() - event.detected_at > 15 * 60_000) {
         void fetch(`http://127.0.0.1:${current.port}/api/alerts/${event.id}/delivered`, { method: 'POST', headers: { 'x-quotapulse-token': current.token } }).catch(() => undefined);
         continue;
@@ -599,8 +633,20 @@ function inQuietHours(settings: NotificationSettings, now = new Date()): boolean
 function applySharedSettings(settings: AppSettings): void {
   const petChanged = petEnabled !== settings.pet_enabled;
   const animationChanged = trayAnimationEnabled !== settings.tray_animation_enabled;
+  const nextHidden = [...new Set(
+    (Array.isArray(settings.hidden_subscriptions) ? settings.hidden_subscriptions : [])
+      .filter((key): key is string => typeof key === 'string' && key.length > 0),
+  )];
+  const hiddenChanged = !sameStringList(hiddenSubscriptions, nextHidden);
   petEnabled = settings.pet_enabled;
   trayAnimationEnabled = settings.tray_animation_enabled;
+  hiddenSubscriptions = nextHidden;
+  if (hiddenChanged && lastEvent?.ownerKey && nextHidden.includes(lastEvent.ownerKey)) {
+    lastEvent = null;
+    pendingAnimationEvents = [];
+    interactiveBubble = null;
+    sceneQueue.clear();
+  }
   if (petSettings.enabled !== petEnabled) {
     petSettings = { ...petSettings, enabled: petEnabled };
     savePetSettings(DATA_DIR, petSettings);
@@ -610,7 +656,7 @@ function applySharedSettings(settings: AppSettings): void {
     else destroyPet();
   }
   if (animationChanged) trayAnimFps = -1;
-  if (petChanged || animationChanged) render();
+  if (petChanged || animationChanged || hiddenChanged) render();
 }
 
 async function updateSharedSettings(patch: Partial<AppSettings>): Promise<AppSettings | null> {
@@ -635,12 +681,12 @@ async function updateSharedSettings(patch: Partial<AppSettings>): Promise<AppSet
 
 function render(): void {
   if (!tray) return;
-  const menuLimits = subscriptionLimits(limits);
+  const menuLimits = subscriptionLimits(visibleTrayLimits());
   const menuWorst = worst(menuLimits);
   const pct = menuWorst?.used_percent ?? null;
 
   tray.setImage(nativeImage.createFromBuffer(trayIconFor(pct)));
-  tray.setToolTip(buildTooltip(limits, lock != null));
+  tray.setToolTip(buildTooltip(daemonStatus));
   driveTrayAnimation(pct);
   pushPetState();
 
@@ -761,7 +807,7 @@ function driveTrayAnimation(pct: number | null): void {
       trayAnimTimer = setInterval(() => {
         if (!tray) return;
         trayFrame = (trayFrame + 1) % TRAY_FRAME_COUNT;
-        const menuWorst = worst(subscriptionLimits(limits));
+        const menuWorst = worst(subscriptionLimits(visibleTrayLimits()));
         tray.setImage(
           nativeImage.createFromBuffer(trayFrameFor(menuWorst?.used_percent ?? null, trayFrame)),
         );
@@ -1453,6 +1499,7 @@ function scenePolicyOptions(): {
 function bubbleEventForCurrent(): PresenceEvent | null {
   if (!lastEvent) return null;
   const provider = lastFrame?.providers.find((p) => p.key === lastEvent!.ownerKey);
+  if (!provider) return null;
   const scene = sceneForEvent(lastEvent, provider);
   if (!scene) return null;
   return resolveScenePolicy(scene, scenePolicyOptions()).showBubble ? lastEvent : null;
@@ -1496,12 +1543,14 @@ function pushPetState(): void {
   // Resolve regardless of whether the pet window is open: the tray menu summary, the
   // status bubble and the quota popup's mascot all read `lastFrame`.
   const hadBubble = !!lastFrame?.bubble;
+  const shownLimits = visibleTrayLimits();
+  const shownSubscriptions = visibleTraySubscriptions();
   lastFrame = resolvePetFrame({
-    limits,
-    subscriptions,
+    limits: shownLimits,
+    subscriptions: shownSubscriptions,
     settings: petSettings,
     event: lastEvent,
-    activeOwnerKey: activeOwnerKey(subscriptions),
+    activeOwnerKey: activeOwnerKey(shownSubscriptions),
     // Quiet hours suppresses the automatic bubble but not the mood/focus it represents.
     bubbleEvent: bubbleEventForCurrent(),
   });
@@ -2526,7 +2575,7 @@ function openPetMenu(): void {
 
 function checkAlerts(): void {
   if (!alertsEnabled) return;
-  for (const { limit: l, step } of thresholdAlerts(limits, alerted)) {
+  for (const { limit: l, step } of thresholdAlerts(visibleTrayLimits(), alerted)) {
     const pct = l.used_percent!;
     const when = l.resets_at
       ? `resets ${new Date(l.resets_at).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}`

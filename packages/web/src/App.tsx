@@ -310,7 +310,7 @@ function Dashboard() {
 
               <CommandPalette items={TABS.map((item) => ({ id: item.id, label: t(item.key), group: item.id === 'live' || item.id === 'limits' || item.id === 'alerts' ? t('nav.monitor') : item.id === 'health' || item.id === 'sources' || item.id === 'settings' ? t('nav.system') : t('nav.analyze') }))} onSelect={(id) => { if (TABS.some((item) => item.id === id)) setTab(id as TabId); }} />
 
-              <SettingsMenu subscriptions={ov?.subscriptions} onPricingUpdated={() => void refreshStatus.refreshNow()} />
+              <SettingsMenu onOpenSettings={() => setTab('settings')} />
 
               <Button
                 size="icon"
@@ -361,7 +361,7 @@ function Dashboard() {
                   {tab === 'health' && <HealthSection />}
                 </TabsContent>
                 <TabsContent value="settings" forceMount={tab === 'settings' ? true : undefined}>
-                  {tab === 'settings' && <SettingsSection subscriptions={ov?.subscriptions ?? []} />}
+                  {tab === 'settings' && <SettingsSection subscriptions={ov?.subscriptions ?? []} onPricingUpdated={() => void refreshStatus.refreshNow()} />}
                 </TabsContent>
               </motion.div>
             </AnimatePresence>

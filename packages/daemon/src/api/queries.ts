@@ -1246,6 +1246,85 @@ export function usageSnapshot(db: DB, period: UsagePeriod, sourceId?: number) {
   };
 }
 
+export interface UsageExportRow {
+  event_id: number;
+  timestamp_ms: number;
+  call_count: number;
+  source_id: number;
+  harness: string;
+  profile: string;
+  source_name: string;
+  provider: string | null;
+  vendor: string;
+  model: string | null;
+  effort: string | null;
+  service_tier: string | null;
+  project: string | null;
+  session_key: number | null;
+  is_subagent: number | null;
+  input_tokens: number;
+  cached_input_tokens: number;
+  cache_write_tokens: number;
+  output_tokens: number;
+  reasoning_tokens: number;
+  total_tokens: number;
+  duration_ms: number | null;
+  cost_usd: number | null;
+  cost_input_usd: number | null;
+  cost_cached_input_usd: number | null;
+  cost_cache_write_usd: number | null;
+  cost_output_usd: number | null;
+  cost_cache_saving_usd: number | null;
+  cost_source: string;
+  price_provider: string | null;
+}
+
+/** Privacy-bounded usage facts for the CSV export. */
+export function* usageExportRows(
+  db: DB,
+  opts: { from: number; to: number; sourceId?: number },
+): Generator<UsageExportRow> {
+  const rows = db.prepare(
+    `SELECT u.id AS event_id,
+            u.ts AS timestamp_ms,
+            u.call_count,
+            u.source_id,
+            s.harness,
+            s.profile,
+            s.display_name AS source_name,
+            u.provider,
+            ${vendorSqlCase('u.model', 'u.provider')} AS vendor,
+            u.model,
+            u.effort,
+            u.service_tier,
+            sess.project,
+            sess.id AS session_key,
+            sess.is_subagent,
+            u.input_tokens,
+            u.cached_input_tokens,
+            u.cache_write_tokens,
+            u.output_tokens,
+            u.reasoning_tokens,
+            u.total_tokens,
+            u.duration_ms,
+            u.cost_usd,
+            u.cost_input_usd,
+            u.cost_cached_input_usd,
+            u.cost_cache_write_usd,
+            u.cost_output_usd,
+            u.cost_cache_saving_usd,
+            u.cost_source,
+            u.price_provider
+       FROM usage_event u
+       JOIN source s ON s.id = u.source_id
+       LEFT JOIN session sess ON sess.id = u.session_id
+      WHERE u.ts >= @from AND u.ts < @to
+        AND (@sourceId IS NULL OR u.source_id = @sourceId)
+      ORDER BY u.ts ASC, u.id ASC`,
+  ).iterate({ from: opts.from, to: opts.to, sourceId: opts.sourceId ?? null }) as Iterable<UsageExportRow>;
+  yield* rows;
+}
+
 export interface ProjectRow extends Totals {
   project: string;
   source_id: number;

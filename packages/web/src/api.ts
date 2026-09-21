@@ -58,6 +58,13 @@ async function put<T>(path: string, body: unknown): Promise<T> {
   return (await res.json()) as T;
 }
 
+async function download(path: string): Promise<{ blob: Blob; filename: string | null }> {
+  const res = await request(path, { headers: TOKEN ? { 'x-quotapulse-token': TOKEN } : {} });
+  const disposition = res.headers.get('content-disposition');
+  const filename = disposition?.match(/filename="([^"]+)"/i)?.[1] ?? null;
+  return { blob: await res.blob(), filename };
+}
+
 export interface Totals {
   calls: number;
   input_tokens: number;
@@ -532,6 +539,10 @@ export const api = {
   health: () => get<Health>('/api/health'),
   refresh: () => post<ManualRefresh>('/api/refresh'),
   refreshPricing: () => post<PricingRefresh>('/api/pricing/refresh'),
+  exportUsageCsv: (p: { from: number; to: number; sourceId?: number }) => download(
+    `/api/export/usage?format=csv&from=${p.from}&to=${p.to}` +
+      (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
+  ),
 };
 
 /*

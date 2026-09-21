@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Activity, Coins, Database, Hash } from 'lucide-react';
+import { Activity, Coins, Database, Download, Hash } from 'lucide-react';
 import { api, type Overview, type UsageResponse } from '@/api';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Empty, ErrorBox, Stagger, StaggerItem } from '@/components/primitives';
 import { SourceTable } from '@/sections/live';
@@ -19,6 +20,7 @@ export function UsageSection({ ov, sources = [] }: { ov: Overview; sources?: Arr
   const [route, updateRoute] = useUsageRoute('usage');
   const [data, setData] = useState<UsageResponse | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
   const sourceId = route.selection.sourceId;
 
   useLiveRefresh(() => api.usage({
@@ -37,6 +39,30 @@ export function UsageSection({ ov, sources = [] }: { ov: Overview; sources?: Arr
 
   const view = route.view;
   const selectView = (next: UsageView) => updateRoute({ view: next });
+  const exportUsage = async () => {
+    if (!data || exporting) return;
+    setExporting(true);
+    try {
+      const result = await api.exportUsageCsv({
+        from: data.range.from,
+        to: data.range.to,
+        sourceId,
+      });
+      const url = URL.createObjectURL(result.blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = result.filename ?? 'quotapulse-usage.csv';
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 0);
+      setErr(null);
+    } catch (error) {
+      setErr(String(error));
+    } finally {
+      setExporting(false);
+    }
+  };
   return (
     <div className="flex flex-col gap-3.5">
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -46,7 +72,17 @@ export function UsageSection({ ov, sources = [] }: { ov: Overview; sources?: Arr
         </div>
         {data && <span className="text-muted-foreground text-xs">{data.range.timezone} · {new Date(data.range.from).toLocaleDateString()}</span>}
       </div>
-      <UsageRangeBar route={route} onChange={updateRoute} sources={sources} />
+      <UsageRangeBar
+        route={route}
+        onChange={updateRoute}
+        sources={sources}
+        actions={data ? (
+          <Button size="sm" onClick={() => void exportUsage()} disabled={exporting} className="gap-1.5">
+            <Download className={exporting ? 'size-3.5 animate-pulse' : 'size-3.5'} />
+            {exporting ? t('usage.exporting') : t('usage.exportCsv')}
+          </Button>
+        ) : undefined}
+      />
       <div className="flex flex-wrap gap-1 rounded-xl border border-border/70 bg-muted/10 p-1" role="tablist" aria-label={t('usage.title')}>
         {([
           ['summary', t('usage.summary')],

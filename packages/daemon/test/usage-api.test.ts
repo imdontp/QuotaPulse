@@ -83,6 +83,32 @@ test('usage endpoint returns normalized range, calendar timeline, and source tot
       headers: { 'x-quotapulse-token': 'usage-token' },
     });
     assert.equal(invalid.statusCode, 400);
+
+    const exported = await app.inject({
+      url: '/api/export/usage?format=csv&from=0&to=' + now,
+      headers: { 'x-quotapulse-token': 'usage-token' },
+    });
+    assert.equal(exported.statusCode, 200);
+    assert.equal(exported.headers['content-type'], 'text/csv; charset=utf-8');
+    assert.match(exported.headers['content-disposition'] ?? '', /attachment; filename="quotapulse-usage-/);
+    const csv = exported.body.replace(/^\uFEFF/, '').trimEnd().split('\r\n');
+    assert.equal(csv[0], 'event_id,timestamp_utc,timestamp_ms,call_count,source_id,harness,profile,source_name,provider,vendor,model,effort,service_tier,project,session_key,is_subagent,input_tokens,cached_input_tokens,cache_write_tokens,output_tokens,reasoning_tokens,total_tokens,duration_ms,cost_usd,cost_input_usd,cost_cached_input_usd,cost_cache_write_usd,cost_output_usd,cost_cache_saving_usd,cost_source,price_provider');
+    const headers = csv[0]!.split(',');
+    const cells = csv[1]!.split(',');
+    const row = Object.fromEntries(headers.map((header, index) => [header, cells[index]]));
+    assert.equal(row.timestamp_utc, new Date(now - 10_000).toISOString());
+    assert.equal(row.timestamp_ms, String(now - 10_000));
+    assert.deepEqual(
+      [row.call_count, row.source_id, row.harness, row.profile, row.source_name, row.provider, row.vendor],
+      ['2', '1', 'codex', 'default', 'Codex', 'openai', 'openai'],
+    );
+    assert.equal(row.total_tokens, '30');
+
+    const badExport = await app.inject({
+      url: '/api/export/usage?format=xlsx&from=0&to=' + now,
+      headers: { 'x-quotapulse-token': 'usage-token' },
+    });
+    assert.equal(badExport.statusCode, 400);
   } finally {
     await app.close();
     db.close();
