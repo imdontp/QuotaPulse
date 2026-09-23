@@ -36,6 +36,7 @@ import { AlertsSection } from '@/sections/alerts';
 import { PetPopup } from '@/components/pet-popup';
 import { SettingsSection } from '@/sections/settings';
 import { UsageSection } from '@/sections/usage';
+import { loadWindowSize } from '@/lib/utils';
 
 const TABS = [
   { id: 'live', key: 'tab.live', icon: Activity },
@@ -119,6 +120,21 @@ function Dashboard() {
 
   useEffect(() => {
     window.qpDashboard?.ready();
+  }, []);
+
+  useEffect(() => {
+    // Apply custom window size if running in a standalone window context
+    // This only works for popup windows or windows opened with window.open()
+    // due to browser security restrictions
+    try {
+      const windowSize = loadWindowSize();
+      // Check if we're in a window that can be resized (not a normal tab)
+      if (window.opener || window.location.search.includes('mode=popup')) {
+        window.resizeTo(windowSize.width, windowSize.height);
+      }
+    } catch {
+      // Silently fail if resizeTo is not allowed
+    }
   }, []);
 
   useEffect(() => {

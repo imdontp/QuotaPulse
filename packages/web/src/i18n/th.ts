@@ -97,6 +97,14 @@ export const th: Record<MessageKey, string> = {
   'settings.pricingFailed': 'อัปเดตราคาโมเดลไม่สำเร็จ',
   'settings.rateHelp':
     'ตัวเลขทั้งหมดคำนวณเป็น USD จากราคา list price ที่ประกาศไว้ อัตรานี้คุณตั้งเอง ใช้แสดงผลเท่านั้น ระบบไม่ได้ดึงอัตราจากที่ไหน',
+  'settings.windowSize': 'ขนาดหน้าต่าง',
+  'settings.windowSizeBlurb': 'ตั้งค่าขนาดหน้าต่าง dashboard (ใช้เมื่อเปิดเป็นหน้าต่างแยก)',
+  'settings.windowWidth': 'ความกว้าง (px)',
+  'settings.windowHeight': 'ความสูง (px)',
+  'settings.windowSizeHelp': 'ขั้นต่ำ: 540×640, สูงสุด: 2560×1440',
+  'settings.resetWindowSize': 'รีเซ็ตเป็นค่าเริ่มต้น',
+  'settings.windowSizeApplied': 'ใช้ขนาดหน้าต่างแล้ว',
+  'settings.windowSizeFailed': 'ใช้ขนาดหน้าต่างไม่สำเร็จ',
 
   'tab.live': 'สด',
   'tab.usage': 'การใช้งาน',

@@ -20,6 +20,7 @@ interface QpPopupBridge {
 
 interface QpDashboardBridge {
   ready(): void;
+  setWindowSize(size: { width: number; height: number }): Promise<boolean>;
 }
 
 interface Window {

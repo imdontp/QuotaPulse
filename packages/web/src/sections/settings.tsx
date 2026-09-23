@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Empty, ErrorBox, Stagger, StaggerItem } from '@/components/primitives';
 import { CURRENCIES, useI18n, useT, type CurrencyCode, type Lang } from '@/i18n';
 import { useLiveRefresh } from '@/lib/use-live';
+import { loadWindowSize, resetWindowSize, saveWindowSize, type WindowSize } from '@/lib/utils';
 
 const LANGS: Array<{ id: Lang; label: string }> = [
   { id: 'en', label: 'English' },
@@ -49,6 +50,8 @@ export function SettingsSection({
   const [pricingBusy, setPricingBusy] = useState(false);
   const [pricingMessage, setPricingMessage] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [windowSize, setWindowSize] = useState<WindowSize>(loadWindowSize());
+  const [windowSizeMessage, setWindowSizeMessage] = useState<string | null>(null);
 
   useEffect(() => setDraft(String(rate)), [rate]);
 
@@ -118,6 +121,44 @@ export function SettingsSection({
       setPricingMessage(t('settings.pricingFailed'));
     } finally {
       setPricingBusy(false);
+    }
+  };
+
+  const handleWindowSizeChange = async (field: keyof WindowSize, value: string) => {
+    const num = Number(value);
+    if (Number.isFinite(num) && num > 0) {
+      const updated = { ...windowSize, [field]: num };
+      setWindowSize(updated);
+      saveWindowSize(updated);
+      setWindowSizeMessage(null);
+      // Also send to Electron main process if available
+      if (typeof window !== 'undefined' && window.qpDashboard?.setWindowSize) {
+        try {
+          const success = await window.qpDashboard.setWindowSize(updated);
+          setWindowSizeMessage(success ? t('settings.windowSizeApplied') : t('settings.windowSizeFailed'));
+          setTimeout(() => setWindowSizeMessage(null), 3000);
+        } catch {
+          setWindowSizeMessage(t('settings.windowSizeFailed'));
+          setTimeout(() => setWindowSizeMessage(null), 3000);
+        }
+      }
+    }
+  };
+
+  const handleResetWindowSize = async () => {
+    const defaults = resetWindowSize();
+    setWindowSize(defaults);
+    setWindowSizeMessage(null);
+    // Also send to Electron main process if available
+    if (typeof window !== 'undefined' && window.qpDashboard?.setWindowSize) {
+      try {
+        const success = await window.qpDashboard.setWindowSize(defaults);
+        setWindowSizeMessage(success ? t('settings.windowSizeApplied') : t('settings.windowSizeFailed'));
+        setTimeout(() => setWindowSizeMessage(null), 3000);
+      } catch {
+        setWindowSizeMessage(t('settings.windowSizeFailed'));
+        setTimeout(() => setWindowSizeMessage(null), 3000);
+      }
     }
   };
 
@@ -195,6 +236,56 @@ export function SettingsSection({
               <Info className="mt-px size-3 shrink-0" />
               {t('settings.rateHelp')}
             </p>
+          </CardContent>
+        </Card>
+      </StaggerItem>
+
+      <StaggerItem>
+        <Card>
+          <CardHeader className="flex-col items-start gap-1">
+            <CardTitle>{t('settings.windowSize')}</CardTitle>
+            <CardDescription>{t('settings.windowSizeBlurb')}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <div className="text-muted-foreground mb-1.5 text-[11.5px]">{t('settings.windowWidth')}</div>
+                <input
+                  type="number"
+                  value={windowSize.width}
+                  onChange={(e) => handleWindowSizeChange('width', e.target.value)}
+                  min="540"
+                  max="2560"
+                  step="10"
+                  aria-label={t('settings.windowWidth')}
+                  className="border-input bg-card focus-visible:ring-ring/40 h-8 w-full rounded-md border px-2 text-right font-mono text-[12.5px] outline-none focus-visible:ring-[3px]"
+                />
+              </div>
+              <div>
+                <div className="text-muted-foreground mb-1.5 text-[11.5px]">{t('settings.windowHeight')}</div>
+                <input
+                  type="number"
+                  value={windowSize.height}
+                  onChange={(e) => handleWindowSizeChange('height', e.target.value)}
+                  min="640"
+                  max="1440"
+                  step="10"
+                  aria-label={t('settings.windowHeight')}
+                  className="border-input bg-card focus-visible:ring-ring/40 h-8 w-full rounded-md border px-2 text-right font-mono text-[12.5px] outline-none focus-visible:ring-[3px]"
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-muted-foreground/70 text-[11px] leading-relaxed">{t('settings.windowSizeHelp')}</p>
+                {windowSizeMessage && (
+                  <p className="text-muted-foreground text-[11px] leading-relaxed mt-1">{windowSizeMessage}</p>
+                )}
+              </div>
+              <Button size="sm" variant="outline" onClick={handleResetWindowSize}>
+                {t('settings.resetWindowSize')}
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </StaggerItem>

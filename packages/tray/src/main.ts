@@ -2307,6 +2307,21 @@ function registerCompanionIpc(): void {
   ipcMain.on('qp-popup-hide-pet', () => setPetEnabled(false));
   ipcMain.on('qp-popup-show-pet', () => setPetEnabled(true));
   ipcMain.on('qp-popup-close', () => closeQuotaPopup());
+  ipcMain.handle('qp-dashboard-set-window-size', (_event, size: { width: number; height: number }) => {
+    if (!size || typeof size.width !== 'number' || typeof size.height !== 'number') return false;
+    const width = Math.max(PANEL_MIN_WIDTH, Math.min(2560, size.width));
+    const height = Math.max(PANEL_MIN_HEIGHT, Math.min(1440, size.height));
+    if (popup && !popup.isDestroyed()) {
+      popup.setSize(width, height);
+    }
+    try {
+      const windowSizePath = join(DATA_DIR, 'window-size.json');
+      writeFileSync(windowSizePath, JSON.stringify({ width, height }), 'utf8');
+      return true;
+    } catch {
+      return false;
+    }
+  });
 }
 
 /** Enable/disable the Pet and remember the choice (spec §37). */
@@ -2617,9 +2632,26 @@ function createDashboardWindow(): void {
     console.error('dashboard preload missing; run: npm run build -w @quotapulse/tray');
     return;
   }
+  
+  // Load saved window size if available
+  let initialWidth = PANEL_WIDTH;
+  let initialHeight = PANEL_HEIGHT;
+  try {
+    const windowSizePath = join(DATA_DIR, 'window-size.json');
+    if (existsSync(windowSizePath)) {
+      const saved = JSON.parse(readFileSync(windowSizePath, 'utf8')) as { width?: number; height?: number };
+      if (typeof saved.width === 'number' && typeof saved.height === 'number') {
+        initialWidth = Math.max(PANEL_MIN_WIDTH, Math.min(2560, saved.width));
+        initialHeight = Math.max(PANEL_MIN_HEIGHT, Math.min(1440, saved.height));
+      }
+    }
+  } catch {
+    // Fall back to defaults if we can't read the saved size
+  }
+  
   popup = new BrowserWindow({
-    width: PANEL_WIDTH,
-    height: PANEL_HEIGHT,
+    width: initialWidth,
+    height: initialHeight,
     minWidth: PANEL_MIN_WIDTH,
     minHeight: PANEL_MIN_HEIGHT,
     show: false,

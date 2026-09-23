@@ -163,6 +163,14 @@ export const en = {
   'settings.pricingFailed': 'Could not update model prices',
   'settings.rateHelp':
     'Figures are computed in USD from published list prices. This rate is yours, applied for display only — nothing fetches it.',
+  'settings.windowSize': 'Window size',
+  'settings.windowSizeBlurb': 'Configure the dashboard window dimensions (applies when opening as a standalone window).',
+  'settings.windowWidth': 'Width (px)',
+  'settings.windowHeight': 'Height (px)',
+  'settings.windowSizeHelp': 'Minimum: 540×640, Maximum: 2560×1440',
+  'settings.resetWindowSize': 'Reset to defaults',
+  'settings.windowSizeApplied': 'Window size applied',
+  'settings.windowSizeFailed': 'Failed to apply window size',
 
   // tabs
   'tab.live': 'Live',
