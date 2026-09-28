@@ -541,6 +541,7 @@ export const en = {
   'pulse.eyebrow': 'Quota pulse',
   'pulse.legend': 'Tracked quota windows',
   'pulse.more': '+{n} more tracked',
+  'pulse.alsoResets': '{n} windows together',
   'pulse.moreTitle': '{n} further subscriptions are tracked and shown on the Limits tab.',
   'pulse.timeTrack': 'Thin outer track: how much of the window has passed, and where the current rate runs out.',
   'pulse.burnRate': '{rate}/h',

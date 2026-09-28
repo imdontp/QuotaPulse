@@ -14,6 +14,45 @@ import { RING_MAX, windowProgress, type RingWindow } from './quota-ring';
  */
 
 /**
+ * Group upcoming resets that land at the same moment.
+ *
+ * Proportional time layout is the wrong model for this data. Rolling five-hour windows
+ * mean several subscriptions routinely reset in the same minute, and a stop list laid out
+ * by raw gap then gives three zero-width columns and one enormous one -- the labels
+ * collide and the clustering that mattered is destroyed. Simultaneous resets are one
+ * event, so they are one stop.
+ */
+export function groupResets(
+  resets: ReadonlyArray<{ at: number }>,
+  toleranceMs = 60_000,
+): Array<{ at: number; members: number }> {
+  const groups: Array<{ at: number; members: number }> = [];
+  for (const reset of [...resets].sort((a, b) => a.at - b.at)) {
+    const last = groups.at(-1);
+    if (last && Math.abs(last.at - reset.at) <= toleranceMs) last.members += 1;
+    else groups.push({ at: reset.at, members: 1 });
+  }
+  return groups;
+}
+
+/**
+ * Column weights for those groups: how much of the strip each one occupies.
+ *
+ * Proportional to the time until the next group, then clamped. Without the clamp a
+ * 93-hour gap next to three simultaneous resets starves the others of any width at all;
+ * with it, a cluster stays visibly tighter than a distant event without any label ever
+ * losing enough room to be read.
+ */
+export function groupWeights(at: readonly number[]): number[] {
+  if (at.length === 0) return [];
+  const gaps: number[] = [];
+  for (let i = 0; i < at.length - 1; i += 1) gaps.push(Math.max(0, at[i + 1]! - at[i]!));
+  const mean = gaps.length > 0 ? gaps.reduce((a, b) => a + b, 0) / gaps.length : 0;
+  // The final group has no following gap, so it takes the neutral weight.
+  return at.map((_, i) => (i === gaps.length ? 1 : mean > 0 ? Math.min(3, Math.max(0.6, gaps[i]! / mean)) : 1));
+}
+
+/**
  * Tokens in the last three hourly buckets, taken as the maximum.
  *
  * The peak rather than the mean, deliberately: a single spike is the honest answer to

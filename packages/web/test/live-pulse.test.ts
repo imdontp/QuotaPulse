@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import type { Limit, Overview, SubscriptionStatus } from '../src/api';
-import { intensityOf, primaryReading, pulseModel, recentRate } from '../src/lib/live-pulse';
+import { groupResets, groupWeights, intensityOf, primaryReading, pulseModel, recentRate } from '../src/lib/live-pulse';
 import { RING_MAX } from '../src/lib/quota-ring';
 
 const now = 1_800_000_000_000;
@@ -146,6 +146,42 @@ test('the time track describes the leading window', () => {
   ));
   assert.equal(model.window?.elapsed, 0.4);
   assert.equal(model.window?.willRunOut, true);
+});
+
+test('resets in the same minute are one event on the timeline', () => {
+  const hour = 3_600_000;
+  // The shape that broke the first timeline: three rolling windows landing together, and
+  // one weekly window a long way out.
+  const simultaneous = groupResets([
+    { at: now + 3 * hour }, { at: now + 3 * hour }, { at: now + 3 * hour },
+  ]);
+  assert.deepEqual(simultaneous, [{ at: now + 3 * hour, members: 3 }]);
+  assert.deepEqual(
+    groupResets([{ at: now + 3 * hour }, { at: now + 3 * hour + 30_000 }, { at: now + 9 * hour }]),
+    [{ at: now + 3 * hour, members: 2 }, { at: now + 9 * hour, members: 1 }],
+  );
+  // Input order must not matter, and a group boundary is never split by a later arrival.
+  assert.deepEqual(groupResets([{ at: now + 9 * hour }, { at: now + 3 * hour }]), [
+    { at: now + 3 * hour, members: 1 }, { at: now + 9 * hour, members: 1 },
+  ]);
+  assert.deepEqual(groupResets([]), []);
+});
+
+test('timeline columns stay readable however lopsided the gaps are', () => {
+  assert.deepEqual(groupWeights([]), []);
+  assert.deepEqual(groupWeights([100]), [1], 'a lone stop takes the neutral weight');
+
+  const weights = groupWeights([0, 0, 0, 93]);
+  assert.equal(weights.length, 4);
+  // Proportional by raw hours this would be [0.5, 0.5, 0.5, 93] -- the first three would
+  // have had no room at all. Every stop must keep a usable share.
+  for (const w of weights) assert.ok(w >= 0.6, `weight ${w} leaves no room for a label`);
+  // The distant event still gets more room than the cluster, so the shape survives.
+  assert.ok(weights[3]! > weights[0]!);
+  // Evenly spaced stops come out even, which is the case that must not look arbitrary.
+  assert.deepEqual(groupWeights([0, 10, 20, 30]), [1, 1, 1, 1]);
+  // Identical timestamps cannot divide by zero.
+  assert.deepEqual(groupWeights([0, 0, 0]), [1, 1, 1]);
 });
 
 test('the backdrop answers to measured throughput, not a timer', () => {

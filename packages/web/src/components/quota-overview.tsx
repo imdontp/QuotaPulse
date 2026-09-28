@@ -1,12 +1,12 @@
 import { Clock3 } from 'lucide-react';
 import type { Overview } from '@/api';
-import { quotaSummaries, upcomingResets, type SubscriptionSummary } from '@/lib/quota-summary';
+import { quotaSummaries, type SubscriptionSummary } from '@/lib/quota-summary';
+import { primaryReading } from '@/lib/live-pulse';
 import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
-import { isExpired, pct, severityOf, thresholdLimits, willExhaust } from '@/format';
+import { isExpired, pct, severityOf, willExhaust } from '@/format';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { GaugeStack } from '@/components/gauge';
 import { FreshnessBadge } from '@/components/primitives';
 import { HarnessIcon } from '@/components/harness-icon';
@@ -15,7 +15,9 @@ export function SubscriptionCard({ item, now }: { item: SubscriptionSummary; now
   const { subscription: s, limits, status } = item;
   const t = useT();
   const f = useFormat();
-  const primary = limits.find(l => willExhaust(l, now)) ?? thresholdLimits(limits, now)[0] ?? limits[0];
+  // One rule, shared with the ring: a card that quoted a different window than the arc
+  // above it would be two answers to the same question on one screen.
+  const primary = primaryReading(limits, now);
   const valid = primary && !isExpired(primary, now) && primary.used_percent != null;
   const used = valid ? Math.min(100, Math.max(0, primary.used_percent!)) : null;
   const color = valid ? `var(--${severityOf(used)})` : 'var(--muted-foreground)';
@@ -63,36 +65,19 @@ export function SubscriptionCard({ item, now }: { item: SubscriptionSummary; now
 /**
  * Per-subscription quota detail, below the pulse hero.
  *
- * The marketing hero and its three count tiles used to live here. Both are gone: the count
- * of windows needing attention was already on the ring, and the tiles repeated the alert
- * bell and the attention panel a third time. What remains is the thing the ring cannot
- * show -- every window of every subscription, with the reading detail behind a disclosure.
+ * The marketing hero, its three count tiles and the "Next resets" list used to live here.
+ * All three are gone: the counts are on the ring, the alert bell already carried them, and
+ * the reset times are now in the hero's legend rows and the proportional strip. What
+ * remains is the one thing the ring cannot show -- every window of every subscription, with
+ * the reading detail behind a disclosure.
  */
-export function QuotaDetails({ ov, onOpenLimits }: { ov: Overview; onOpenLimits: () => void }) {
+export function QuotaDetails({ ov }: { ov: Overview }) {
   const { hiddenSubscriptions } = useI18n();
   const t = useT();
-  const f = useFormat();
   const items = quotaSummaries(ov, hiddenSubscriptions);
   const active = items.filter(s => s.status !== 'inactive');
   const inactive = items.filter(s => s.status === 'inactive');
-  const resets = upcomingResets(items, ov.now).slice(0, 5);
-  return <div className="space-y-5">
-    <Card className="min-w-0">
-      <CardHeader><Clock3 className="text-brand size-4" /><CardTitle>{t('quota.next')}</CardTitle></CardHeader>
-      <CardContent>
-        <p className="text-muted-foreground mb-4 text-xs">{t('quota.nextHelp')}</p>
-        {resets.length === 0 ? <p className="text-muted-foreground py-6 text-sm leading-relaxed">{t('quota.noResets')}</p> : <ol tabIndex={0} aria-label={t('quota.next')} className="max-h-64 overflow-y-auto divide-y pr-1">
-          {resets.map(l => <li key={`${l.subscription_key ?? l.account_key}-${l.window_kind}`} className="py-3 first:pt-0">
-            <div className="flex items-start justify-between gap-3">
-              <p className="min-w-0 text-sm font-medium leading-snug">{l.subscription_display_name ?? l.display_name}</p>
-              <span className="text-brand tabular shrink-0 text-sm font-semibold">{f.countdown(l.resets_at, ov.now)}</span>
-            </div>
-            <div className="text-muted-foreground mt-1.5 flex flex-wrap items-center gap-2 text-xs"><span>{f.window(l.window_kind)} · {f.clock(l.resets_at)}</span><FreshnessBadge seconds={l.ageSeconds} /></div>
-          </li>)}
-        </ol>}
-        <button onClick={onOpenLimits} className="text-brand mt-4 rounded text-sm font-medium">{t('quota.details')} →</button>
-      </CardContent>
-    </Card>
+  return <div className="space-y-4">
     <div className="flex flex-wrap items-baseline justify-between gap-2">
       <h2 className="text-lg font-semibold">{t('live.subscriptionGroup')}</h2>
       <p className="text-muted-foreground text-xs">{t('quota.availableHelp')}</p>

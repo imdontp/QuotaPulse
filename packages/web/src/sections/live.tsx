@@ -14,6 +14,8 @@ import { ValueDisplay } from '@/components/value-display';
 import { AttentionPanel, DataStatusStrip } from '@/components/data-status';
 import { PulseHero } from '@/components/pulse-hero';
 import { LiveTicker } from '@/components/live-ticker';
+import { ProgressionRail } from '@/components/progression-rail';
+import { ResetTimeline } from '@/components/reset-timeline';
 import { intensityOf, pulseModel, recentRate } from '@/lib/live-pulse';
 import { firstActivityHour } from '@/lib/progress';
 import { useProgress } from '@/lib/progress-store';
@@ -68,8 +70,12 @@ export function LiveSection({ ov, onOpenLimits, onOpenHealth, onOpenCost }: { ov
     <DataStatusStrip ov={ov} />
     <AttentionPanel ov={ov} onOpenLimits={onOpenLimits} onOpenHealth={onOpenHealth ?? onOpenLimits} onOpenCost={onOpenCost ?? onOpenLimits} />
     <PulseHero model={model} now={ov.now} intensity={intensity} progress={progress} onOpenLimits={onOpenLimits} />
+    <ProgressionRail progress={progress} />
     <LiveTicker ov={ov} scope={pricingScope} weekSeries={spark.week} cacheShare={cacheShare} />
-    <QuotaDetails ov={ov} onOpenLimits={onOpenLimits} />
+    <Card className="min-w-0 overflow-hidden py-0">
+      <ResetTimeline ov={ov} onOpenLimits={onOpenLimits} />
+    </Card>
+    <QuotaDetails ov={ov} />
     <Card className="min-w-0"><CardHeader><CardTitle>{t('live.activityToday')}</CardTitle><span className="text-muted-foreground text-xs">{t('live.byHarness')}</span></CardHeader><SourceTable rows={ov.bySourceToday} empty={t('live.noActivity')} scope={pricingScope} /></Card>
   </div>;
 }

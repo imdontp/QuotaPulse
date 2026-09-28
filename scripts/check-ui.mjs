@@ -236,7 +236,13 @@ try {
   await page.getByText('hidden', { exact: true }).first().waitFor();
   await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
   assert.equal(await page.locator('.quota-card').filter({ hasText: 'OpenAI Subscription' }).count(), 0);
-  assert.equal(await page.getByRole('list', { name: 'Next resets', exact: true }).getByText('OpenAI Subscription', { exact: true }).count(), 0);
+  const resets = page.getByRole('list', { name: 'Next resets', exact: true });
+  assert.equal(await resets.getByText('OpenAI Subscription', { exact: true }).count(), 0);
+  // Pair the above with its positive case, or the count of zero proves nothing: the strip
+  // groups simultaneous resets into one stop, so a hidden name must be gone from the group
+  // while its neighbours stay.
+  assert.ok(await resets.getByText('Claude Company Subscription', { exact: true }).count() > 0,
+    'a visible subscription is still listed under Next resets');
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   await page.getByRole('button', { name: 'Open full Settings', exact: true }).click();
   await page.locator('h2').filter({ hasText: 'Settings' }).waitFor();

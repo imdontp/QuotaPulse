@@ -22,9 +22,34 @@ efficiency plus remaining headroom. Pinned by a test.
 ### Phases
 1. **Done** — progression logic, persistence, strings, backdrop tokens.
 2. **Done** — quota ring, aurora field, ticker strip, old hero removed.
-3. Level rail and reset timeline (replaces the tall "Next resets" list).
+3. **Done** — level rail with badge shelf, reset timeline, one primary-reading rule.
 4. Demote `data-status.tsx` into a bottom disclosure; fold the subscription cards away.
 5. Remove dead code; regenerate all 16 screenshots.
+
+### Live phase 3 state
+- `components/progression-rail.tsx` — level dial, streak, cache share, badge shelf. The
+  scoring rule is stated on screen: "earned by caching more and leaving quota headroom, not
+  by spending more". A score the user cannot explain is one they stop trusting.
+- `components/reset-timeline.tsx` — replaces the four-row reset list.
+  **Proportional-by-time was the wrong model and it broke visibly.** Rolling five-hour
+  windows mean several subscriptions reset in the same minute, so the raw gaps were
+  [0, 0, 0, 93] hours: the first three columns collapsed to nothing and their labels
+  collided. Simultaneous resets are now one stop (`groupResets`), and column widths are
+  proportional-then-clamped (`groupWeights`) so a cluster stays visibly tighter than a
+  distant event without any label losing room to be read.
+- `SubscriptionCard` now calls `primaryReading()` instead of repeating the rule inline, so a
+  card cannot quote a different window than the arc above it.
+- Web tests 63 → 65. `check-ui.mjs` 19/19, with the hidden-subscription check now paired
+  with a positive case — the strip groups resets, so a count of zero on its own would have
+  passed whether or not the names were still rendered.
+
+### Still to do
+- `DataStatusStrip` and `AttentionPanel` are unchanged and still sit at the top, which is
+  the largest remaining redundancy: the sidebar already carries the connection state, and
+  the panel's three items overlap both the ring and the alert bell.
+- The subscription cards are the last big block. They carry the per-window `GaugeStack` and
+  the reading details, so they cannot simply be deleted — but they could become a
+  disclosure under the ring.
 
 ### Live phase 2 state
 - `lib/quota-ring.ts` — arc layout + the time track (where "now" sits in the window, and
@@ -45,14 +70,6 @@ efficiency plus remaining headroom. Pinned by a test.
 - Web tests 47 → 63. `check-ui.mjs` 19/19 with three new assertions (one arc per active
   subscription, an inactive subscription stays off the ring, and progression never hits the
   daemon).
-
-### Still to do
-- The tall "Next resets" list is now largely redundant with the countdown in each ring
-  legend row. Phase 3 turns it into a horizontal timeline and keeps the
-  `<ol aria-label="Next resets">` the tests select on.
-- `SubscriptionCard` still picks its own primary reading inline; it should call
-  `primaryReading()` from `lib/live-pulse.ts` so there is one rule, not two.
-- `DataStatusStrip` and `AttentionPanel` are unchanged and still sit at the top.
 
 ### Constraints the redesign must respect
 - `scripts/check-ui.mjs` pins Live's DOM: `stat-1` ValueDisplay, the `Data status` region,
