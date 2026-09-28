@@ -80,22 +80,50 @@ qualify it, resets, per-window reference, activity, then collection health.
 - `check-ui.mjs` updated for the two assertions that had to change, and both count-of-zero
   checks given a positive counterpart.
 
-### Live phase 3 state
-- `components/progression-rail.tsx` — level dial, streak, cache share, badge shelf. The
-  scoring rule is stated on screen: "earned by caching more and leaving quota headroom, not
-  by spending more". A score the user cannot explain is one they stop trusting.
-- `components/reset-timeline.tsx` — replaces the four-row reset list.
-  **Proportional-by-time was the wrong model and it broke visibly.** Rolling five-hour
-  windows mean several subscriptions reset in the same minute, so the raw gaps were
-  [0, 0, 0, 93] hours: the first three columns collapsed to nothing and their labels
-  collided. Simultaneous resets are now one stop (`groupResets`), and column widths are
-  proportional-then-clamped (`groupWeights`) so a cluster stays visibly tighter than a
-  distant event without any label losing room to be read.
-- `SubscriptionCard` now calls `primaryReading()` instead of repeating the rule inline, so a
-  card cannot quote a different window than the arc above it.
-- Web tests 63 → 65. `check-ui.mjs` 19/19, with the hidden-subscription check now paired
-  with a positive case — the strip groups resets, so a count of zero on its own would have
-  passed whether or not the names were still rendered.
+### Live phase 6/7 state — validated against the real database
+`scripts/shoot-real.mjs` copies the live `usage.db` to a scratch directory and points a
+throwaway daemon at the copy, so the page can be judged as a healthy install actually looks
+without writing a sample to real data. This exists because every other capture was either
+`shoot.mjs` (a scratch database, so the *no data* case) or the check-ui fixture (a crisis:
+88%, dead quota feed, incomplete pricing). Neither is the state a user spends 95% of their
+time in.
+
+**Three bugs came out of it that the fixture could never have shown**, all fixed in `103e4c3`:
+
+1. A red "will run out" arc on a healthy page, and the 1% account behind it promoted to the
+   hero headline. A weekly window at 1% with six days to reset carried a burn record
+   projecting it full within the hour. `willExhaust` now delegates to `credibleProjection`,
+   which believes a projection only if the observed rate could plausibly reach full in the
+   time claimed. Deliberately not a "must be half full" rule — a window at 20% genuinely on
+   pace to run out is exactly the case worth interrupting someone for.
+2. `primaryReading` fell back to `limits[0]`, which is the API's row order. Claude Company's
+   weekly 55% was hidden behind its five-hour 0% and the page opened on "1%". It now takes
+   the fullest live window.
+3. 0% and 1% drew a sub-pixel nub, so three tracked accounts rendered as one dark empty
+   ring. `MIN_ARC_FRACTION` keeps every window visible without inflating a small number.
+
+Four test fixtures had to change with them. Every one asserted a projection no rate could
+produce — one claimed a window full in a second at 10%/h, another paired 8%/h with a
+projection an hour away, two carried a burn with no rate and no sample count. Nothing
+checked that before, so the tests were asserting an impossibility.
+
+### Live phase 7 state — motion
+`scripts/shoot-motion.mjs` runs with `reducedMotion: 'no-preference'`, three timestamps, and
+both themes, then measures. Two measurement mistakes had to be corrected first, both of
+which would have reported a comfortable lie:
+
+- Sampling rAF measures the browser's vsync, not this loop, so it reported 60fps whether or
+  not a pixel was drawn. The canvas now counts real paints in `data-frames`.
+- The app shell owns its scroll container, so `window.scrollTo` moved nothing and the hero
+  never left the viewport. The script now finds the real scroller, moves it, and refuses to
+  measure if it did not.
+
+Result: **120 paints → 0 once the hero scrolls away (100% saving)** at 390px. At 1440px the
+saving is genuinely 0%, because the hero is ~550px tall and the whole page scrolls 512px —
+it never leaves the screen. That is the honest number, not a failure.
+
+Intensity is **1** on real data (224M tokens today), so the backdrop has been reviewed at
+full strength in both themes. Light mode does not blow out under additive compositing.
 
 ### Still to do
 One thing left alone on purpose: about 40 i18n keys (`tab.today`, `gauge.alsoVia`,

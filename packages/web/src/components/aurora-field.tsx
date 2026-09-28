@@ -181,6 +181,7 @@ export function AuroraField({ intensity, className }: { intensity: number; class
     let dpr = 1;
     let frame = 0;
     let running = true;
+    let paints = 0;
     let sprites: Array<HTMLCanvasElement | null> = [];
 
     const measure = () => {
@@ -241,21 +242,29 @@ export function AuroraField({ intensity, className }: { intensity: number; class
     const loop = (time: number) => {
       if (!running) return;
       draw(time);
+      // A count of real paints, because a frame-rate measurement taken with rAF measures
+      // the browser's vsync rather than this loop -- it reports a healthy 60fps whether or
+      // not a single pixel was drawn. Scripts compare this attribute across a scroll to
+      // show the loop actually stopped.
+      el.dataset.frames = String(++paints);
       frame = requestAnimationFrame(loop);
     };
 
-    const onVisibility = () => {
-      if (document.hidden) {
-        running = false;
-        cancelAnimationFrame(frame);
-      } else if (running === false && !reduced) {
-        running = true;
-        frame = requestAnimationFrame(loop);
-      }
+    /*
+     * Two independent reasons to stop, because a dashboard people leave open all day is the
+     * normal case, not the exception. `document.hidden` catches the tab being in the
+     * background. The intersection check catches the common one: the hero is off the top of
+     * the screen for most of a session, and animating a field nobody can see is pure waste.
+     */
+    const hidden = { tab: false, offscreen: false };
+    const sync = () => {
+      const shouldRun = !hidden.tab && !hidden.offscreen;
+      if (shouldRun === running) return;
+      running = shouldRun;
+      if (shouldRun && !reduced) frame = requestAnimationFrame(loop);
+      else cancelAnimationFrame(frame);
     };
 
-    // The theme is the only thing that can change a resolved colour, and it does it by
-    // toggling one class on <html>.
     const observer = new MutationObserver(() => {
       buildSprites();
       if (reduced) draw(0);
@@ -268,6 +277,22 @@ export function AuroraField({ intensity, className }: { intensity: number; class
     });
     resize.observe(el);
 
+    // An intersection observer is the only way to know the hero is off screen; a scroll
+    // listener would fire on every other section too.
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        hidden.offscreen = !entry?.isIntersecting;
+        sync();
+      },
+      { rootMargin: '80px' },
+    );
+    seen.observe(el);
+
+    const onVisibility = () => {
+      hidden.tab = document.hidden;
+      sync();
+    };
+
     measure();
     buildSprites();
 
@@ -275,6 +300,7 @@ export function AuroraField({ intensity, className }: { intensity: number; class
       // One frame, then nothing. `intensity` still changes the still image.
       draw(0);
     } else {
+      running = true;
       frame = requestAnimationFrame(loop);
       document.addEventListener('visibilitychange', onVisibility);
     }
@@ -284,9 +310,10 @@ export function AuroraField({ intensity, className }: { intensity: number; class
       cancelAnimationFrame(frame);
       observer.disconnect();
       resize.disconnect();
+      seen.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
     };
   }, [field, reduced, resolve]);
 
-  return <canvas ref={canvas} aria-hidden="true" className={cn('pointer-events-none absolute inset-0 size-full', className)} />;
+  return <canvas ref={canvas} aria-hidden="true" data-aurora="true" className={cn('pointer-events-none absolute inset-0 size-full', className)} />;
 }

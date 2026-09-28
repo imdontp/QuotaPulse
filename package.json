@@ -24,6 +24,8 @@
     "probe": "npm run probe -w @quotapulse/daemon",
     "test": "npm run test -w @quotapulse/daemon && npm run test -w @quotapulse/web && npm run test -w @quotapulse/tray",
     "shoot": "node scripts/shoot.mjs",
+    "shoot:real": "node scripts/shoot-real.mjs",
+    "shoot:motion": "node scripts/shoot-motion.mjs",
     "test:ui": "node scripts/check-ui.mjs",
     "prices:refresh": "node scripts/fetch-prices.mjs",
     "doctor": "node scripts/doctor.mjs"

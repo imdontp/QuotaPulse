@@ -57,6 +57,7 @@ export function PulseHero({
       style={{ '--pulse': intensity, '--halo': halo } as React.CSSProperties}
       aria-label={t('pulse.eyebrow')}
       data-testid="pulse-hero"
+      data-pulse={Number(intensity.toFixed(4))}
     >
       <AuroraField intensity={intensity} />
 
