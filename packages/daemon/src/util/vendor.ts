@@ -123,11 +123,20 @@ const MODEL_RULES: Array<[RegExp, string]> = [
  * These ids stay in `VENDORS` because a gateway is still a real brand elsewhere:
  * `vendorOfHarness` uses them to badge the SOURCE cards, where OpenCode genuinely is the
  * tool doing the work.
+ *
+ * `opencode-go` is OpenCode's metered gateway, alongside `opencode-free`, and `custom` is a
+ * user-configured endpoint. Both are listed for the same reason even though nothing
+ * consults them today: neither is in `VENDORS`, so both of the checks above skip them. That
+ * is exactly the state that lets a route quietly start answering with its own name the day
+ * someone adds it to `VENDORS` as a brand, and the whole point of this set is to make that
+ * day impossible.
  */
-const GATEWAYS = new Set(['opencode', 'opencode-free', 'openrouter', 'ollama', 'kilo']);
+export const GATEWAYS = new Set([
+  'opencode', 'opencode-free', 'opencode-go', 'openrouter', 'ollama', 'kilo', 'custom',
+]);
 
 /** A routing provider only decides the vendor when the model name itself said nothing. */
-const PROVIDER_FALLBACK: Record<string, string> = {
+export const PROVIDER_FALLBACK: Record<string, string> = {
   anthropic: 'anthropic',
   openai: 'openai',
   'openai-codex': 'openai',

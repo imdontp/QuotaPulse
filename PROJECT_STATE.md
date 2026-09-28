@@ -98,9 +98,10 @@ qualify it, resets, per-window reference, activity, then collection health.
   passed whether or not the names were still rendered.
 
 ### Still to do
-Nothing required. Two things left alone on purpose, both recorded above: the ~40 i18n keys
-that were already dead before this branch, and the daemon's pricing-catalog vendor test.
-If either should be cleaned up, that is a separate piece of work.
+One thing left alone on purpose: about 40 i18n keys (`tab.today`, `gauge.alsoVia`,
+`live.accountQuotas`, the Hermes delegate strings) were already dead before this branch
+started, per `git grep` against `3e5e4b1`. Removing them is unrelated cleanup, and a few may
+still be reachable through a dynamic key, so it should be its own change with its own review.
 
 ### Live phase 2 state
 - `lib/quota-ring.ts` — arc layout + the time track (where "now" sits in the window, and
@@ -166,17 +167,28 @@ Candidate flow: RC1 → bugfix → RC2 → Stable.
 - No cloud dependency / telemetry
 
 ## Validation status
-- `packages/tray` npm run test: green
-- `packages/daemon` npm run test: green **except one pre-existing failure, see below**
-- `packages/web` npm run test: green (47)
+- `packages/tray` npm run test: green (196)
+- `packages/daemon` npm run test: green (74)
+- `packages/web` npm run test: green (65); `npm run test:ui` (check-ui.mjs) 19/19
 - Packaging validation: run `npm run package` in `packages/tray` — validates asset tree, includes only allowed asset kinds, aborts on errors.
 
-### Known pre-existing failure (not caused by the Live redesign)
-`packages/daemon` test *"nothing in the live database falls to unknown except the known
-exceptions"* fails against the user's real refreshed pricing catalog: `omen-alpha` and
-`space-bunny-free` have no vendor rule. The test reads live `models.dev.json`, so it
-breaks whenever upstream adds a model. Needs either two rules in the daemon vendor table
-or an explicit allow-list. Unrelated to this track — fix separately.
+### Resolved: the pricing-catalog vendor test
+It used to fail on every machine whose `models.dev.json` had picked up a new upstream model.
+`omen-alpha` and `space-bunny-free` arrived via the `opencode-go` and `opencode` routes,
+neither of which was in the daemon's `GATEWAYS` set.
+
+The old fix would have been to add the two names to the test's allow-list — the wrong axis.
+The test allowed unknown **model names**, but these names say nothing about who built them and
+nothing on the machine could; they were unknown because the *route* was a gateway, not because
+a rule was missing. So the allow-list is now keyed on the route, and a new gateway model cannot
+re-break it. `opencode-go` and `custom` were added to `GATEWAYS` as well — behaviourally inert
+today, since neither is in `VENDORS`, but that inertness is the hazard: it is what lets a route
+start answering with its own name the day someone adds it to `VENDORS` as a brand.
+
+The guard still has teeth, and a test now pins that: a pair arriving through a route this
+install has never heard of (empty, `some-unheard-provider`, near-miss `kilo2`) and matching no
+family is still flagged. A maker route cannot produce an unknown at all, because
+`PROVIDER_FALLBACK` is consulted last and always answers.
 
 ## Next steps (RC2 candidates)
 - Electron-level smoke test where environment allows — if attempted and blocked by sandbox warnings, abort and record; do not force.
