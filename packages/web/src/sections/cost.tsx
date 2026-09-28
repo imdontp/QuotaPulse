@@ -2,8 +2,8 @@ import { useMemo, useState, type ReactNode } from 'react';
 import { Coins, Layers, PiggyBank, CircleHelp } from 'lucide-react';
 import { api, type ModelRow, type Overview, type Totals, type UsagePeriod } from '@/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarList, Stagger, StaggerItem } from '@/components/primitives';
-import { SourceTable } from '@/sections/live';
+import { BarList, Empty, Stagger, StaggerItem } from '@/components/primitives';
+import { SourceTable } from '@/components/source-table';
 import { vendorColor, vendorLabel } from '@/format';
 import { VendorIcon } from '@/components/vendor-icon';
 import { useFormat } from '@/i18n/format';
@@ -169,8 +169,18 @@ export function CostSection({ ov, period, totals, sourceId }: { ov: Overview; pe
                 <TableCell className={cn(numCell, 'font-medium')}>
                   {f.tokens(all.total_tokens)}
                 </TableCell>
+                {/*
+                  * Plain text, not a second ValueDisplay.
+
+                  * This used to render the same figure, the same scope, and its own copy of
+                  * the pricing modal as the headline card at the top of this page -- so the
+                  * all-time cost appeared twice, each copy independently clickable, and a
+                  * reader could reasonably wonder which one was authoritative. A table total
+                  * belongs in the table; the interactive figure belongs in the headline, and
+                  * the rows above are plain money for the same reason.
+                  */}
                 <TableCell className={cn(numCell, 'font-medium')}>
-                  <ValueDisplay total={all} scope={pricingScope} label={t('cost.allTimeValue')} />
+                  {f.moneyTotal(all.cost_usd, all.cost_unknown_calls, all.calls)}
                 </TableCell>
                 <TableCell className={numCell} />
               </TableRow>
@@ -192,17 +202,29 @@ export function CostSection({ ov, period, totals, sourceId }: { ov: Overview; pe
           )}
         </CardHeader>
         <CardContent>
-          <BarList
-            rows={byModel.slice(0, 14).map(([model, v]) => ({
-              label: model,
-              value: v.cost,
-              display: <ValueDisplay total={{ calls: v.calls, cost_usd: v.cost, cost_unknown_calls: v.unknown, cost_estimated_calls: v.estimated }} />,
-              // The maker's colour, not a hash of the model name. Every Claude row is
-              // Anthropic's orange here and on Trend, so the two pages agree.
-              color: vendorColor(v.vendor),
-              icon: <VendorIcon vendor={v.vendor} label={vendorLabel(v.vendor)} />,
-            }))}
-          />
+          {/*
+            * Was rendering an empty card on every visit: `models` starts empty and the card
+            * was unconditional, so the "by model" block appeared as a titled box with nothing
+            * in it until /api/models came back. Now the three states are told apart -- still
+            * loading, genuinely no usage, and the bars.
+            */}
+          {models.length === 0 ? (
+            <Empty>{all.calls === 0 ? t('cost.noData') : t('app.loading')}</Empty>
+          ) : byModel.length === 0 ? (
+            <Empty>{t('cost.noData')}</Empty>
+          ) : (
+            <BarList
+              rows={byModel.slice(0, 14).map(([model, v]) => ({
+                label: model,
+                value: v.cost,
+                display: <ValueDisplay total={{ calls: v.calls, cost_usd: v.cost, cost_unknown_calls: v.unknown, cost_estimated_calls: v.estimated }} />,
+                // The maker's colour, not a hash of the model name. Every Claude row is
+                // Anthropic's orange here and on Trend, so the two pages agree.
+                color: vendorColor(v.vendor),
+                icon: <VendorIcon vendor={v.vendor} label={vendorLabel(v.vendor)} />,
+              }))}
+            />
+          )}
         </CardContent>
       </Card>
 

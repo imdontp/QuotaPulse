@@ -4,7 +4,7 @@ import { api, type Overview, type UsageResponse } from '@/api';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Empty, ErrorBox, Stagger, StaggerItem } from '@/components/primitives';
-import { SourceTable } from '@/sections/live';
+import { SourceTable } from '@/components/source-table';
 import { TrendChart } from '@/components/trend-chart';
 import { ValueDisplay } from '@/components/value-display';
 import { useFormat } from '@/i18n/format';

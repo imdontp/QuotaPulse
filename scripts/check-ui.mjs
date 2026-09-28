@@ -321,6 +321,26 @@ try {
     await page.locator('[role=tabpanel][data-state=active]').waitFor();
     await page.waitForTimeout(250);
     await noOverflow(page, tab);
+    if(tab==='cost') {
+      /*
+       * The all-time cost used to be printed twice on this one view: once in the headline
+       * card and again in the breakdown table's total row, each with its own copy of the
+       * pricing modal, so a reader could not tell which was authoritative. The table total
+       * is plain text now; the headline keeps the interactive figure.
+       */
+      assert.equal(
+        await page.getByRole('button', { name: 'Pricing details — All-time value', exact: true }).count(),
+        1,
+        'exactly one interactive all-time figure: the headline',
+      );
+      assert.equal(
+        await page.locator('tbody tr.border-t-2 [data-value-number]').count(),
+        0,
+        'the breakdown total must not be a second interactive value',
+      );
+      // The total row still exists and still totals the column -- dedupe is not deletion.
+      assert.equal(await page.locator('tbody tr.border-t-2 td').count(), 4);
+    }
     if(tab==='sessions') {
       assert.equal(await page.locator('tbody [data-value-number]').innerText(),'--');
       assert.equal(await page.locator('tbody tr td').last().innerText(),'$0.0000','native cost stays separate');
