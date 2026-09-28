@@ -138,7 +138,7 @@ export function ModelsSection({ period, sourceId }: { period?: UsagePeriod; sour
           <StaggerItem>
             <Card>
               <CardHeader className="flex-col items-start gap-1">
-                <CardTitle>{t('models.effortByModel')}</CardTitle>
+                <CardTitle as="h2">{t('models.effortByModel')}</CardTitle>
                 <CardDescription>{t('models.effortByModelBlurb')}</CardDescription>
               </CardHeader>
               <CardContent>
@@ -150,7 +150,7 @@ export function ModelsSection({ period, sourceId }: { period?: UsagePeriod; sour
           <StaggerItem>
             <Card>
               <CardHeader className="flex-col items-start gap-1">
-                <CardTitle>{t('models.modelByEffort')}</CardTitle>
+                <CardTitle as="h2">{t('models.modelByEffort')}</CardTitle>
                 <CardDescription>{t('models.modelByEffortBlurb')}</CardDescription>
               </CardHeader>
               <CardContent>
@@ -162,7 +162,7 @@ export function ModelsSection({ period, sourceId }: { period?: UsagePeriod; sour
           <StaggerItem>
             <Card>
               <CardHeader>
-                <CardTitle>{t('models.detail')}</CardTitle>
+                <CardTitle as="h2">{t('models.detail')}</CardTitle>
               </CardHeader>
               <Table>
                 <TableHeader>

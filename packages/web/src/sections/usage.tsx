@@ -4,6 +4,7 @@ import { api, type Overview, type UsageResponse } from '@/api';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Empty, ErrorBox, Stagger, StaggerItem } from '@/components/primitives';
+import { PageHeader, StatTile, StatTileRow } from '@/components/page-parts';
 import { SourceTable } from '@/components/source-table';
 import { TrendChart } from '@/components/trend-chart';
 import { ValueDisplay } from '@/components/value-display';
@@ -65,13 +66,11 @@ export function UsageSection({ ov, sources = [] }: { ov: Overview; sources?: Arr
   };
   return (
     <div className="flex flex-col gap-3.5">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 className="text-[15px] font-semibold tracking-tight">{t('usage.title')}</h2>
-          <p className="text-muted-foreground note mt-1 text-[12.5px] leading-relaxed">{t('usage.blurb')}</p>
-        </div>
-        {data && <span className="text-muted-foreground text-xs">{data.range.timezone} · {new Date(data.range.from).toLocaleDateString()}</span>}
-      </div>
+      <PageHeader
+        title={t('usage.title')}
+        blurb={t('usage.blurb')}
+        context={data ? <span>{data.range.timezone} · {new Date(data.range.from).toLocaleDateString()}</span> : undefined}
+      />
       <UsageRangeBar
         route={route}
         onChange={updateRoute}
@@ -123,14 +122,20 @@ function UsageSummary({ data }: { data: UsageResponse }) {
   return (
     <Stagger className="flex flex-col gap-3.5">
       <StaggerItem>
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {stats.map((stat) => <Card key={stat.label}><CardContent className="pt-4"><div className="text-muted-foreground flex items-center gap-2 text-[11.5px] font-medium"><stat.icon className="size-3.5 opacity-70" />{stat.label}</div><p className="tabular mt-3 font-mono text-2xl font-semibold">{stat.value}</p></CardContent></Card>)}
-        </div>
+        {/*
+          Was a `Card` per figure, which made each tile a page region with no name. The tile
+          is a figure with a label, not a region, and `StatTile` says so structurally -- its
+          label is a label element, not a heading, so it is correctly absent from the page
+          outline while the sections around it are present.
+        */}
+        <StatTileRow>
+          {stats.map((stat) => <StatTile key={stat.label} label={stat.label} value={stat.value} icon={stat.icon} />)}
+        </StatTileRow>
       </StaggerItem>
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle>{t('usage.timeline')}</CardTitle>
+            <CardTitle as="h2">{t('usage.timeline')}</CardTitle>
             <CardDescription>{data.range.from === 0 ? t('usage.allTime') : new Date(data.range.from).toLocaleDateString() + ' – ' + new Date(data.range.to).toLocaleDateString()}</CardDescription>
           </CardHeader>
           <CardContent>
@@ -140,7 +145,7 @@ function UsageSummary({ data }: { data: UsageResponse }) {
       </StaggerItem>
       <StaggerItem>
         <Card>
-          <CardHeader><CardTitle>{t('usage.byHarness')}</CardTitle></CardHeader>
+          <CardHeader><CardTitle as="h2">{t('usage.byHarness')}</CardTitle></CardHeader>
           <SourceTable rows={data.bySource} empty={t('usage.noData')} scope={scope} />
         </Card>
       </StaggerItem>

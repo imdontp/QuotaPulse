@@ -3,7 +3,8 @@ import { Info, RefreshCw } from 'lucide-react';
 import { api, type AppSettings, type NotificationSettings, type SubscriptionStatus } from '@/api';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Empty, ErrorBox, Stagger, StaggerItem } from '@/components/primitives';
+import { Empty, ErrorBox, RetryableError, Stagger, StaggerItem } from '@/components/primitives';
+import { SkeletonLines } from '@/components/skeleton';
 import { CURRENCIES, useI18n, useT, type CurrencyCode, type Lang } from '@/i18n';
 import { useLiveRefresh } from '@/lib/use-live';
 import { loadWindowSize, resetWindowSize, saveWindowSize, type WindowSize } from '@/lib/utils';
@@ -45,6 +46,7 @@ export function SettingsSection({
   } = useI18n();
   const [settings, setSettings] = useState<AppSettings | null>(null);
   const [notifications, setNotifications] = useState<NotificationSettings | null>(null);
+  const [notificationsError, setNotificationsError] = useState<string | null>(null);
   const [draft, setDraft] = useState(String(rate));
   const [busy, setBusy] = useState<string | null>(null);
   const [pricingBusy, setPricingBusy] = useState(false);
@@ -60,7 +62,24 @@ export function SettingsSection({
       setSettings(next);
       syncHiddenSubscriptions(next.hidden_subscriptions, next.updated_at);
     }),
-    api.notificationSettings().then(setNotifications).catch(() => undefined),
+    /*
+     * Notification settings used to be fetched with `.catch(() => undefined)`, which is
+     * indistinguishable from "still loading" to everything downstream. A permanently
+     * failing endpoint therefore rendered this card as "loading…" for the rest of the
+     * session, next to four other cards that were fine -- a card that had given up looking
+     * like a card that was working. It also swallowed the failure from the shared error
+     * state, so nothing anywhere said so.
+     *
+     * Swallowing stays, deliberately: one optional endpoint must not make the whole refresh
+     * look broken. But the failure is now recorded, so the card can admit it and offer a
+     * retry.
+     */
+    api.notificationSettings()
+      .then((next) => {
+        setNotifications(next);
+        setNotificationsError(null);
+      })
+      .catch((error: unknown) => setNotificationsError(String(error))),
   ]).then(() => {
     setErr(null);
   }).catch((error) => {
@@ -93,6 +112,7 @@ export function SettingsSection({
     try {
       const next = await api.updateNotificationSettings(patch);
       setNotifications(next);
+      setNotificationsError(null);
       setErr(null);
     } catch (error) {
       setErr(String(error));
@@ -101,6 +121,27 @@ export function SettingsSection({
     } finally {
       setBusy(null);
     }
+  };
+
+  /**
+   * Ask for notification settings again, on their own.
+   *
+   * The shared refresh runs on every stream tick, so retrying through it would be a way of
+   * saying "please eventually" rather than "now" -- and the card that failed is the only
+   * part of this screen the reader is looking at.
+   */
+  const retryNotifications = async () => {
+    setNotificationsError(null);
+    const next = await api.notificationSettings()
+      .then((value) => {
+        setNotifications(value);
+        return true;
+      })
+      .catch((error: unknown) => {
+        setNotificationsError(String(error));
+        return false;
+      });
+    return next;
   };
 
   const commitRate = () => {
@@ -179,7 +220,7 @@ export function SettingsSection({
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle>{t('settings.display')}</CardTitle>
+            <CardTitle as="h2">{t('settings.display')}</CardTitle>
             <CardDescription>{t('settings.displayBlurb')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -243,7 +284,7 @@ export function SettingsSection({
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle>{t('settings.windowSize')}</CardTitle>
+            <CardTitle as="h2">{t('settings.windowSize')}</CardTitle>
             <CardDescription>{t('settings.windowSizeBlurb')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -293,7 +334,7 @@ export function SettingsSection({
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle>{t('settings.subscriptions')}</CardTitle>
+            <CardTitle as="h2">{t('settings.subscriptions')}</CardTitle>
             <CardDescription>{t('settings.subscriptionHelp')}</CardDescription>
           </CardHeader>
           <CardContent>
@@ -332,11 +373,23 @@ export function SettingsSection({
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle>{t('settings.notifications')}</CardTitle>
+            <CardTitle as="h2">{t('settings.notifications')}</CardTitle>
             <CardDescription>{t('settings.notificationsBlurb')}</CardDescription>
           </CardHeader>
           <CardContent>
-            {!notifications ? <Empty>{t('app.loading')}</Empty> : (
+            {/*
+              Three states, and the middle one used to be missing. `notificationsError` is
+              checked before `!notifications` because a failure leaves `notifications` null
+              -- so without this order the card would report that it is still waiting, for a
+              request that already came back and failed.
+            */}
+            {notificationsError && !notifications ? (
+              <RetryableError onRetry={() => void retryNotifications()} retryLabel={t('app.retry')}>
+                {t('app.couldNotLoad')}
+              </RetryableError>
+            ) : !notifications ? (
+              <SkeletonLines lines={3} />
+            ) : (
               <div className="divide-y">
                 <label className="flex cursor-pointer items-center justify-between gap-4 py-3">
                   <span><span className="block text-sm font-medium">{t('settings.notificationsEnabled')}</span></span>
@@ -368,7 +421,7 @@ export function SettingsSection({
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle>{t('settings.pricing')}</CardTitle>
+            <CardTitle as="h2">{t('settings.pricing')}</CardTitle>
             <CardDescription>{t('settings.pricingBlurb')}</CardDescription>
           </CardHeader>
           <CardContent>
@@ -384,7 +437,7 @@ export function SettingsSection({
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle>{t('settings.runtime')}</CardTitle>
+            <CardTitle as="h2">{t('settings.runtime')}</CardTitle>
             <CardDescription>{t('settings.runtimeBlurb')}</CardDescription>
           </CardHeader>
           <CardContent className="divide-y">

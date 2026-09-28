@@ -71,6 +71,7 @@ export function StatTile({
   value,
   icon: Icon,
   note,
+  tone,
   className,
 }: {
   label: string;
@@ -78,6 +79,13 @@ export function StatTile({
   value: React.ReactNode;
   icon?: LucideIcon;
   note?: string;
+  /**
+   * Colours the figure itself, using the same three tokens the gauges and badges use.
+   * Narrow on purpose: a tone on a figure is a claim that the number is wrong, and only
+   * the caller knows whether it is. Cost uses it on the one tile where the value is a
+   * caveat rather than a result.
+   */
+  tone?: 'ok' | 'warn' | 'crit';
   className?: string;
 }) {
   return (
@@ -86,11 +94,15 @@ export function StatTile({
         {Icon && <Icon className="size-3.5 opacity-70" />}
         {label}
       </div>
-      <div className="tabular mt-2.5 font-mono text-2xl leading-none font-semibold">{value}</div>
+      <div className={cn('tabular mt-2.5 font-mono text-2xl leading-none font-semibold', tone && TONE_CLASS[tone])}>
+        {value}
+      </div>
       {note && <div className="text-muted-foreground/80 mt-2 text-[11.5px]">{note}</div>}
     </div>
   );
 }
+
+const TONE_CLASS = { ok: 'text-ok', warn: 'text-warn', crit: 'text-crit' } as const;
 
 /** The four-up row, because "2 on mobile, 4 on desktop" was decided the same way four times. */
 export function StatTileRow({ children, className }: { children: React.ReactNode; className?: string }) {

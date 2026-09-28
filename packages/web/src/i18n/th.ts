@@ -55,8 +55,10 @@ export const th: Record<MessageKey, string> = {
   'quota.remaining': 'เหลือ {pct}',
   'quota.readers': 'รายละเอียดการอ่านข้อมูล',
   'quota.all': 'ทุกสถานะ',
+  'quota.statusFilter': 'สถานะ',
   'quota.allSubscriptions': 'ทุก subscription',
   'quota.none': 'ไม่มี subscription ที่ตรงกับตัวกรอง',
+  'quota.noneYet': 'ยังไม่มีการอ่านค่าโควตา',
   'quota.noSubscriptions': 'กำลังรอข้อมูล subscription ดูรายละเอียดการเชื่อมต่อได้ที่หน้าแหล่งข้อมูล',
   'quota.usage': 'ภาพรวมการใช้งานของคุณ',
   'quota.noReading': 'ยังไม่มีค่าปัจจุบัน',
@@ -76,6 +78,8 @@ export const th: Record<MessageKey, string> = {
   'app.refreshUnavailable': 'เชื่อมต่อ daemon ไม่ได้',
   'app.refreshNow': 'รีเฟรชตอนนี้',
   'app.lastRefresh': 'รีเฟรชล่าสุด {time}',
+  'app.couldNotLoad': 'โหลดส่วนนี้ไม่สำเร็จ',
+  'app.retry': 'ลองอีกครั้ง',
 
   'settings.title': 'การตั้งค่า',
   'settings.language': 'ภาษา',
@@ -430,6 +434,7 @@ export const th: Record<MessageKey, string> = {
   'health.coverageBlurb':
     'ถ้า harness ไหนประกาศตัวเลขค่าใช้จ่ายของตัวเอง เราจะเทียบกับค่านั้น ต่ำกว่า ~90% แปลว่า harness นั้นเรียก API บางส่วนโดยไม่เขียนลง transcript (การเรียก Haiku เบื้องหลังของ Claude เพื่อตั้งชื่อและสรุปเป็นแบบนี้) ตัวเลขของเราจึงเป็นขั้นต่ำ ไม่ใช่เพดาน',
   'health.noCoverage': 'ไม่มี harness ตัวไหนบนเครื่องนี้ที่ประกาศค่าใช้จ่ายของตัวเอง',
+  'health.noAdapters': 'ยังไม่พบ harness ตัวไหน',
   'health.sessionsCompared': 'เซสชันที่เทียบ',
   'health.harnessReports': 'harness รายงาน',
   'health.weDerived': 'เราคำนวณได้',

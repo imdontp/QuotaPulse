@@ -3,6 +3,7 @@ import { Coins, Layers, PiggyBank, CircleHelp } from 'lucide-react';
 import { api, type ModelRow, type Overview, type Totals, type UsagePeriod } from '@/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarList, Empty, Stagger, StaggerItem } from '@/components/primitives';
+import { StatTile } from '@/components/page-parts';
 import { SourceTable } from '@/components/source-table';
 import { vendorColor, vendorLabel } from '@/format';
 import { VendorIcon } from '@/components/vendor-icon';
@@ -122,25 +123,26 @@ export function CostSection({ ov, period, totals, sourceId }: { ov: Overview; pe
       <Stagger className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s) => (
           <StaggerItem key={s.label}>
-            <Card>
-              <CardContent className="pt-4">
-                <div className="text-muted-foreground mb-2 flex items-center gap-2 text-[11.5px] font-medium">
-                  <s.icon className="size-3.5 opacity-70" />
-                  {s.label}
-                </div>
-                <div className={`tabular font-mono text-[27px] leading-none font-semibold tracking-tight ${s.tone ?? ''}`}>
-                  {s.value}
-                </div>
-                <div className="text-muted-foreground/70 mt-2.5 text-[11.5px]">{s.note}</div>
-              </CardContent>
-            </Card>
+            {/*
+              Was a `Card` per figure, which made each tile a page region with no name. A
+              figure tile is a labelled number, not a region, and `StatTile` says so
+              structurally -- so the tiles are correctly absent from the page outline while
+              the three sections below them are present in it.
+            */}
+            <StatTile
+              label={s.label}
+              value={s.value}
+              icon={s.icon}
+              note={s.note}
+              tone={s.tone === 'text-warn' ? 'warn' : undefined}
+            />
           </StaggerItem>
         ))}
       </Stagger>
 
       <Card>
         <CardHeader className="flex-col items-start gap-1">
-          <CardTitle>{t('cost.breakdown')}</CardTitle>
+          <CardTitle as="h2">{t('cost.breakdown')}</CardTitle>
           <CardDescription className="note">{t('cost.breakdownBlurb')}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -191,7 +193,7 @@ export function CostSection({ ov, period, totals, sourceId }: { ov: Overview; pe
 
       <Card>
         <CardHeader className="flex-col items-start gap-1">
-          <CardTitle>{t('cost.byModel')}</CardTitle>
+          <CardTitle as="h2">{t('cost.byModel')}</CardTitle>
           <CardDescription className="note">{t('cost.byModelBlurb')}</CardDescription>
           {/* A converted figure has to declare its rate, or it reads as money actually
               billed rather than a display conversion the user configured. */}
@@ -230,7 +232,7 @@ export function CostSection({ ov, period, totals, sourceId }: { ov: Overview; pe
 
       <Card>
         <CardHeader>
-          <CardTitle>{t('cost.allTimeByHarness')}</CardTitle>
+          <CardTitle as="h2">{t('cost.allTimeByHarness')}</CardTitle>
         </CardHeader>
         <SourceTable rows={ov.bySourceAll} empty={t('cost.noData')} scope={pricingScope} />
       </Card>

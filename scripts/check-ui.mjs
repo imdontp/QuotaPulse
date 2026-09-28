@@ -247,7 +247,9 @@ try {
   await page.waitForFunction(() => document.querySelector('[role=tab][aria-selected=true]')?.textContent === 'Limits');
   await page.getByRole('combobox', { name: 'All subscriptions' }).selectOption('openai');
   assert.equal(await page.locator('tbody tr').count(), 2);
-  await page.getByRole('combobox', { name: 'All statuses' }).selectOption('available');
+  // The status filter used to borrow `quota.all` ("All statuses") as its accessible name,
+  // which named the control after its first option rather than after what it filters.
+  await page.getByRole('combobox', { name: 'Status', exact: true }).selectOption('available');
   await page.getByText('No subscriptions match these filters.').waitFor();
   await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
   for (const [cost, unknown, expected] of [[0, 10, '--'], [0, 0, '$0.0000'], [26.83, 2, '$26.83+'], [26.83, 0, '$26.83']]) {
@@ -572,6 +574,71 @@ try {
   await slowModels.context.close();
   modelsDelay = 0;
   console.log('PASS a loading view claims nothing about the data it is still waiting for');
+
+  /*
+   * Every tab must be reachable by heading.
+   *
+   * `CardTitle` drew a div, and it is the title primitive for every section card, so six of
+   * the eleven surfaces had no heading element anywhere in their subtree. That is invisible
+   * on screen and removes the page from a screen reader's heading list, from the rotor, and
+   * from jumping between sections by heading for everyone -- a navigation aid that needs no
+   * assistive technology at all. Asserting the outline rather than the presence of one
+   * heading is what makes this worth checking: a page with a single h1 and nothing under it
+   * is exactly the failure that looks like a pass.
+   */
+  for (const [tab, target] of [
+    ['live', '#live'], ['usage', '#usage?range=today&view=summary'], ['sessions', '#sessions'],
+    ['limits', '#limits'], ['alerts', '#alerts'], ['sources', '#sources'], ['health', '#health'],
+    ['settings', '#settings'],
+    // The four Usage sub-views are four surfaces, not one with tabs: each mounts its own
+    // panels, and each had its own missing headings.
+    ['usage/cost', '#usage?range=all&view=cost'],
+    ['usage/projects', '#usage?range=month&view=projects'],
+    ['usage/models', '#usage?range=month&view=models'],
+  ]) {
+    const { context, page } = await contextFor();
+    await page.goto(`http://127.0.0.1:7798/${target}`);
+    const panel = page.locator('[role=tabpanel][data-state=active]');
+    await panel.waitFor();
+    await page.waitForTimeout(300);
+    // h1 is the tab name in the topbar, outside the panel; the panel must add a level under it.
+    const levels = await panel.evaluate(node =>
+      [...node.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(h => Number(h.tagName[1])));
+    assert.ok(levels.length > 0, `${tab}: the page has no heading of its own under the tab title`);
+    assert.equal(levels.filter(l => l === 1).length, 0, `${tab}: must not introduce a second h1`);
+    assert.ok(levels.every(l => l >= 2), `${tab}: headings must sit below the page's h1, got ${levels.join(',')}`);
+    // No level may be skipped: an h4 straight under an h2 is an outline the reader cannot follow.
+    let previous = 1;
+    for (const level of levels) {
+      assert.ok(level <= previous + 1, `${tab}: heading level jumps from h${previous} to h${level}`);
+      previous = level;
+    }
+    /*
+     * The outline being non-empty is not the same as the outline being complete. A page with
+     * four regions where only one carries a heading satisfies the check above, and it is
+     * still three regions a reader cannot jump to. So this asserts the stronger property:
+     * every top-level card is a region, and every region has a name.
+     */
+    const unnamed = await panel.evaluate(node => {
+      // A card is a region of the page only if nothing above it already frames it. A card
+      // inside a card, inside a <details>, or inside a labelled <section> is part of that
+      // enclosing region -- the data-status strip is four tiles in one named group, and
+      // giving each its own heading would be four entries where a reader expects one.
+      const framed = element => {
+        for (let el = element.parentElement; el && el !== node; el = el.parentElement) {
+          if (el.matches('[data-slot=card], details, section[aria-label], [role=region]')) return true;
+        }
+        return false;
+      };
+      return [...node.querySelectorAll('[data-slot=card]')]
+        .filter(card => !framed(card))
+        .filter(card => !card.querySelector('h1,h2,h3,h4,h5,h6'))
+        .map(card => (card.textContent ?? '').trim().slice(0, 40));
+    });
+    assert.deepEqual(unnamed, [], `${tab}: every top-level region needs a heading, these have none`);
+    await context.close();
+  }
+  console.log('PASS every tab has a heading outline under its title, with no skipped levels');
   for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const width of [390, 900, 1280, 1440]) {
     const { context, page } = await contextFor(lang, theme, width);
     await page.goto('http://127.0.0.1:7798/#live'); await settle(page);

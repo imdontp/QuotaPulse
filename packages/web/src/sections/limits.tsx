@@ -2,10 +2,10 @@ import type { Overview } from '@/api';
 import { useState } from 'react';
 import { quotaSummaries, type Readiness } from '@/lib/quota-summary';
 import { Gauge } from '@/components/gauge';
-import { Empty } from '@/components/primitives';
+import { Empty, FreshnessBadge } from '@/components/primitives';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { FreshnessBadge } from '@/components/primitives';
 import { Badge } from '@/components/ui/badge';
 import { age } from '@/format';
 import { Hint } from '@/components/ui/tooltip';
@@ -22,7 +22,8 @@ export function LimitsSection({ ov }: { ov: Overview }) {
   const [status, setStatus] = useState<Readiness | 'all'>('all');
   const summaries = quotaSummaries(ov);
   const statuses = new Map(summaries.map(s => [s.subscription.subscription_key, s.status]));
-  const rows = primaryLimits(ov.limits, now).filter(({ primary: l }) => {
+  const allRows = primaryLimits(ov.limits, now);
+  const rows = allRows.filter(({ primary: l }) => {
     const owner = l.subscription_key ?? l.account_key;
     return (subscription === 'all' || owner === subscription) &&
       (status === 'all' || ((owner ? statuses.get(owner) : undefined) ?? 'check') === status);
@@ -30,20 +31,46 @@ export function LimitsSection({ ov }: { ov: Overview }) {
 
   return (
     <div className="flex flex-col gap-3.5">
-      <div className="flex flex-wrap gap-3">
-        <select aria-label={t('quota.allSubscriptions')} value={subscription} onChange={e => setSubscription(e.target.value)} className="bg-card border-input min-w-0 max-w-full rounded-xl border px-3 py-2.5 text-sm">
-          <option value="all">{t('quota.allSubscriptions')}</option>
-          {ov.subscriptions.map(s => <option key={s.subscription_key} value={s.subscription_key}>{s.subscription_display_name}</option>)}
-        </select>
-        <select aria-label={t('quota.all')} value={status} onChange={e => setStatus(e.target.value as Readiness | 'all')} className="bg-card border-input max-w-full rounded-xl border px-3 py-2.5 text-sm">
-          <option value="all">{t('quota.all')}</option>
-          {(['attention', 'available', 'check', 'inactive'] as const).map(s => <option key={s} value={s}>{t(`quota.${s}`)}</option>)}
-        </select>
-      </div>
-      {rows.length === 0 && <Empty>{t('quota.none')}</Empty>}
-      <div className="grid gap-4 md:hidden">
+      {/*
+        Three states, and the two empty ones used to be the same state rendered twice.
+
+        "Nothing has been read yet" and "your filter matched nothing" are different
+        sentences, and only one of them has a way out. The filter row stays mounted whenever
+        there is anything to filter, so a reader who narrows to zero can widen it again;
+        hiding the controls along with the results would strand them. With no readings at
+        all the filters are hidden, because filtering an empty set is not a choice.
+
+        The old version also rendered the empty message *and then* the mobile grid, the
+        eight-column desktop table and its footnote over a zero-row body -- so a reader with
+        no quota data was shown the full apparatus of a quota table with nothing in it.
+      */}
+      {allRows.length > 0 && (
+        <div className="flex flex-wrap gap-3">
+          <Select
+            label={t('quota.allSubscriptions')}
+            value={subscription}
+            onChange={e => setSubscription(e.target.value)}
+          >
+            <option value="all">{t('quota.allSubscriptions')}</option>
+            {ov.subscriptions.map(s => <option key={s.subscription_key} value={s.subscription_key}>{s.subscription_display_name}</option>)}
+          </Select>
+          <Select
+            label={t('quota.statusFilter')}
+            value={status}
+            onChange={e => setStatus(e.target.value as Readiness | 'all')}
+          >
+            <option value="all">{t('quota.all')}</option>
+            {(['attention', 'available', 'check', 'inactive'] as const).map(s => <option key={s} value={s}>{t(`quota.${s}`)}</option>)}
+          </Select>
+        </div>
+      )}
+      {rows.length === 0 ? (
+        <Empty>{allRows.length === 0 ? t('quota.noneYet') : t('quota.none')}</Empty>
+      ) : (
+        <>
+        <div className="grid gap-4 md:hidden">
         {rows.map(({ primary: l, superseded }) => <Card key={`${l.subscription_key ?? l.account_key ?? l.source_id}-${l.window_kind}`}>
-          <CardHeader><CardTitle>{l.subscription_display_name ?? l.account_display_name ?? l.display_name}</CardTitle></CardHeader>
+          <CardHeader><CardTitle as="h2">{l.subscription_display_name ?? l.account_display_name ?? l.display_name}</CardTitle></CardHeader>
           <CardContent>
             <Gauge limit={l} now={now} badge={<FreshnessBadge seconds={l.ageSeconds} />} />
             <details className="mt-4 border-t pt-3 text-xs text-muted-foreground"><summary className="cursor-pointer rounded">{t('quota.readers')}</summary>
@@ -55,7 +82,7 @@ export function LimitsSection({ ov }: { ov: Overview }) {
       <div className="hidden min-w-0 md:block">
       <Card>
         <CardHeader className="flex-col items-start gap-1">
-          <CardTitle>{t('limits.title')}</CardTitle>
+          <CardTitle as="h2">{t('limits.title')}</CardTitle>
           <CardDescription className="note">{t('limits.blurb')}</CardDescription>
         </CardHeader>
 
@@ -199,6 +226,8 @@ export function LimitsSection({ ov }: { ov: Overview }) {
         </CardContent>
       </Card>
       </div>
+        </>
+      )}
     </div>
   );
 }

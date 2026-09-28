@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'motion/react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Hint } from '@/components/ui/tooltip';
 import { age, freshness } from '@/format';
 import { useT } from '@/i18n';
@@ -210,3 +211,36 @@ export const ErrorBox = ({ children }: { children: React.ReactNode }) => (
     {children}
   </div>
 );
+
+/**
+ * A failed region, with the one thing that actually helps: a way to ask again.
+ *
+ * `ErrorBox` alone is a dead end. It tells the reader that something broke and leaves them
+ * there, which is why several surfaces ended up preferring a permanent "loading…" instead --
+ * Settings' notification card, for one, caught the failure and kept rendering as if the
+ * request were merely still in flight, so a permanently broken endpoint looked identical to
+ * a slow one and there was no version of the screen that admitted a problem.
+ *
+ * A failure that cannot be retried is a failure the reader has to reload the page to escape,
+ * so the retry belongs in the primitive rather than in each caller.
+ */
+export function RetryableError({
+  children,
+  onRetry,
+  retryLabel,
+  className,
+}: {
+  children: React.ReactNode;
+  onRetry: () => void;
+  retryLabel: string;
+  className?: string;
+}) {
+  return (
+    <div className={cn('border-crit/30 bg-crit/8 rounded-lg border px-3 py-2.5', className)}>
+      <div className="text-crit text-[13px]">{children}</div>
+      <Button size="sm" variant="outline" onClick={onRetry} className="mt-2">
+        {retryLabel}
+      </Button>
+    </div>
+  );
+}

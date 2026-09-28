@@ -66,8 +66,10 @@ export const en = {
   'quota.remaining': '{pct} remaining',
   'quota.readers': 'Reading details',
   'quota.all': 'All statuses',
+  'quota.statusFilter': 'Status',
   'quota.allSubscriptions': 'All subscriptions',
   'quota.none': 'No subscriptions match these filters.',
+  'quota.noneYet': 'No quota readings yet.',
   'quota.noSubscriptions': 'Waiting for subscription readings. Check Sources for connection details.',
   'quota.usage': 'Your usage, in context',
   'quota.noReading': 'No current reading',
@@ -88,6 +90,8 @@ export const en = {
   'app.refreshUnavailable': 'daemon unavailable',
   'app.refreshNow': 'Refresh now',
   'app.lastRefresh': 'last refresh {time}',
+  'app.couldNotLoad': 'This could not be loaded.',
+  'app.retry': 'Try again',
 
   // live data status and attention
   'status.title': 'Data status',
@@ -527,6 +531,7 @@ export const en = {
   'health.coverageBlurb':
     'Where a harness publishes its own cost figure we compare against it. Below ~90% means the harness makes API calls it never writes to its transcript (Claude’s background title and summary calls behave this way), so our figure is a floor, not a ceiling.',
   'health.noCoverage': 'no harness on this machine publishes its own cost',
+  'health.noAdapters': 'No harness has been discovered yet.',
   'health.sessionsCompared': 'Sessions compared',
   'health.harnessReports': 'Harness reports',
   'health.weDerived': 'We derived',

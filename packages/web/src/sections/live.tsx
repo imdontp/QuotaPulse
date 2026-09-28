@@ -78,7 +78,7 @@ export function LiveSection({ ov, onOpenLimits, onOpenHealth, onOpenCost }: { ov
       <ResetTimeline ov={ov} onOpenLimits={onOpenLimits} />
     </Card>
     <QuotaDetails ov={ov} />
-    <Card className="min-w-0"><CardHeader><CardTitle>{t('live.activityToday')}</CardTitle><span className="text-muted-foreground text-xs">{t('live.byHarness')}</span></CardHeader><SourceTable rows={ov.bySourceToday} empty={t('live.noActivity')} scope={pricingScope} /></Card>
+    <Card className="min-w-0"><CardHeader><CardTitle as="h2">{t('live.activityToday')}</CardTitle><span className="text-muted-foreground text-xs">{t('live.byHarness')}</span></CardHeader><SourceTable rows={ov.bySourceToday} empty={t('live.noActivity')} scope={pricingScope} /></Card>
     <DataHealthDisclosure ov={ov} onOpenLimits={onOpenLimits} onOpenHealth={onOpenHealth ?? onOpenLimits} onOpenCost={onOpenCost ?? onOpenLimits} />
   </div>;
 }

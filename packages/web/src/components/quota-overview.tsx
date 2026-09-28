@@ -24,7 +24,7 @@ export function SubscriptionCard({ item, now }: { item: SubscriptionSummary; now
   return <Card className={`quota-card min-w-0 h-full ${status === 'attention' ? 'border-warn/35' : ''}`}>
     <CardHeader className="items-start">
       <HarnessIcon harness="unknown" vendor={s.provider} label={s.subscription_display_name} className="mt-0.5 shrink-0 text-xl" />
-      <CardTitle className="min-w-0 break-words leading-snug">{s.subscription_display_name}</CardTitle>
+      <CardTitle as="h2" className="min-w-0 break-words leading-snug">{s.subscription_display_name}</CardTitle>
     </CardHeader>
     <CardContent>
       <Badge variant={status === 'available' ? 'ok' : status === 'inactive' ? 'outline' : 'warn'}>{t(`quota.${status}`)}</Badge>

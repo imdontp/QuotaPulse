@@ -66,7 +66,7 @@ function DelegateRoutes({ ov }: { ov: Overview }) {
   return (
     <Card>
       <CardHeader className="flex-col items-start gap-1">
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle as="h2" className="flex items-center gap-2">
           <GitBranch className="size-4 text-muted-foreground" />
           {t('sources.routesTitle')}
         </CardTitle>
@@ -269,8 +269,7 @@ function SourceGroup({ group, ov, now }: { group: SourceAccount; ov: Overview; n
         {/* Only worth saying when there is a choice to make; a lone reader is already one line. */}
         {group.members.length > 1 && (
           <span className="text-muted-foreground text-[11px]">{t('sources.readersN', { n: group.members.length })}</span>
-        )}
-        <span className="text-muted-foreground/70 font-mono text-[10.5px]">{group.key}</span>
+        )}        <span className="text-muted-foreground/70 font-mono text-[10.5px]">{group.key}</span>
         <div className="flex-1" />
         <span className="text-muted-foreground text-[11px]">
           {t('col.calls')} {group.calls.toLocaleString()}
@@ -300,7 +299,7 @@ export function SourcesSection({ ov }: { ov: Overview }) {
     <div className="flex flex-col gap-3.5">
       <Card data-testid="source-accounts">
         <CardHeader className="flex-col items-start gap-1">
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle as="h2" className="flex items-center gap-2">
             <Radio className="size-4 text-muted-foreground" />
             {t('sources.accounts')}
           </CardTitle>
@@ -327,7 +326,7 @@ export function SourcesSection({ ov }: { ov: Overview }) {
       {unbound.length > 0 && (
         <Card data-testid="source-unbound">
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle as="h2" className="flex items-center gap-2">
               <Unlink className="size-4 text-muted-foreground" />
               {t('sources.unbound')}
             </CardTitle>

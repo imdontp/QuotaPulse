@@ -219,6 +219,50 @@ surface**, then add one new idea per surface.
   and `StatTile`/`StatTileRow` (collapses four drifted stat grids).
 - **B started.** Models: the false empty state, plus the first real use of the new primitives.
 
+### Phase B — states and headings, per surface
+
+Deliberately done before any visual restyling. A page cannot be judged until it tells the
+truth in all four of its states, and a "competition screenshot" taken on a page that is
+quietly lying about its data is worth nothing.
+
+**Bugs fixed**
+
+- Settings' notification card now admits a failed endpoint and offers a retry, instead of
+  reading "loading…" for the rest of the session. The failure was still swallowed from the
+  shared error state, so nothing anywhere reported it.
+- Limits no longer renders the empty message *and then* the mobile grid, an eight-column
+  desktop table and its footnote over a zero-row body. The two empty cases are now distinct
+  sentences — "nothing read yet" and "your filter matched nothing" — and the filters stay
+  mounted in the second one so a reader can widen them again.
+- Health's Adapters table had no empty branch at all, so an install with no discovered
+  harness got a seven-column header over nothing. Same omission as Models, different costume.
+- The Limits status dropdown borrowed `quota.all` ("All statuses") as its accessible name —
+  it named the control after its first option rather than after what it filters. It is now
+  "Status", and it uses the `Select` primitive instead of a raw `<select>` that rendered at a
+  different size from every other filter in the app.
+
+**Headings**
+
+`CardTitle` drew a `div`, and it is the title primitive for every section card in the
+dashboard. So six of the eleven surfaces had no heading element anywhere in their subtree:
+absent from a screen reader's heading list, from the rotor, and from jumping between sections
+by heading — a navigation aid that needs no assistive technology at all.
+
+`CardTitle` takes `as` now, and the levels are set explicitly. Two related corrections fell
+out of doing it properly rather than spot-fixing six pages:
+
+- Figure tiles were `Card`s, which made each one a page region with no name. `StatTile`
+  says structurally that a tile is a labelled number, not a region, so tiles are correctly
+  absent from the outline while the sections around them are present.
+- Alerts wrapped its list in a card that had no title once the page header was added — a
+  second border and a second surface around a list that already draws its own. Removed.
+
+`check-ui.mjs` now asserts the outline of all eleven surfaces: a heading exists under the
+tab's h1, no second h1, no skipped levels, and **every top-level region is named**. That last
+clause is the one that matters — a page with four regions where one carries a heading
+satisfies a weaker check and is still three regions a reader cannot reach. Writing that
+assertion is what found the Live page's own unnamed cards, which the audit had missed.
+
 ## Post-Live track: the other sections (28 Sep 2026)
 
 Live is done and pushed. The remaining tabs were surveyed against the same rule Live was

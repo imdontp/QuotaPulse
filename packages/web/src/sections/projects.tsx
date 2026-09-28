@@ -318,7 +318,7 @@ export function ProjectsSection({ sources = [], period, sourceId }: { sources?: 
       <StaggerItem>
         <Card>
           <CardHeader>
-            <CardTitle>{t('projects.byProject')}</CardTitle>
+            <CardTitle as="h2">{t('projects.byProject')}</CardTitle>
             <CardDescription>{t('projects.byProjectBlurb')}</CardDescription>
           </CardHeader>
           <CardContent>
@@ -382,7 +382,7 @@ export function ProjectsSection({ sources = [], period, sourceId }: { sources?: 
           <StaggerItem>
             <Card>
               <CardHeader>
-                <CardTitle>{t('projects.detail')}</CardTitle>
+                <CardTitle as="h2">{t('projects.detail')}</CardTitle>
                 <CardDescription>{t('projects.detailBlurb')}</CardDescription>
               </CardHeader>
               <Table>

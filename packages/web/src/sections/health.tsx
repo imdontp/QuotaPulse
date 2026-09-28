@@ -3,6 +3,7 @@ import { api, type Health } from '@/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { BarList, Empty, ErrorBox } from '@/components/primitives';
+import { Skeleton, SkeletonRegion, SkeletonTable } from '@/components/skeleton';
 import { age, vendorColor, vendorLabel } from '@/format';
 import { VendorIcon } from '@/components/vendor-icon';
 import { useFormat } from '@/i18n/format';
@@ -30,15 +31,43 @@ export function HealthSection() {
   []);
 
   if (err && !h) return <ErrorBox>{err}</ErrorBox>;
-  if (!h) return <Empty>{t('app.loading')}</Empty>;
+  /*
+    A skeleton rather than a centred "loading…" line: this page is two tables and a set of
+    diagnostics, and a reader who opened it from the sidebar has to be told what is coming
+    in the shape it will arrive in, or the page visibly restructures itself.
+  */
+  if (!h) {
+    return (
+      <SkeletonRegion label={t('app.loading')} className="flex flex-col gap-3.5">
+        <Skeleton className="h-4 w-32" />
+        <Card>
+          <CardHeader className="flex-col items-start gap-1">
+          <CardTitle as="h2">{t('health.adapters')}</CardTitle>
+            <CardDescription className="note">{t('health.adaptersBlurb')}</CardDescription>
+          </CardHeader>
+          <CardContent><SkeletonTable rows={5} cols={4} /></CardContent>
+        </Card>
+      </SkeletonRegion>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-3.5">
       <Card>
         <CardHeader className="flex-col items-start gap-1">
-          <CardTitle>{t('health.adapters')}</CardTitle>
+          <CardTitle as="h2">{t('health.adapters')}</CardTitle>
           <CardDescription className="note">{t('health.adaptersBlurb')}</CardDescription>
         </CardHeader>
+        {/*
+          The coverage table below has always had an empty branch and this one never did, so
+          an install with no discovered harness was shown a seven-column header row over an
+          empty body -- the apparatus of an adapter report with nothing in it, and no
+          explanation of whether that was a problem or simply the first hour of a new
+          machine. It is the same omission the Models view had, in a different costume.
+        */}
+        {h.sources.length === 0 ? (
+          <Empty>{t('health.noAdapters')}</Empty>
+        ) : (
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
@@ -89,11 +118,12 @@ export function HealthSection() {
             ))}
           </TableBody>
         </Table>
+        )}
       </Card>
 
       <Card>
         <CardHeader className="flex-col items-start gap-1">
-          <CardTitle>{t('health.coverage')}</CardTitle>
+          <CardTitle as="h2">{t('health.coverage')}</CardTitle>
           <CardDescription className="note">{t('health.coverageBlurb')}</CardDescription>
         </CardHeader>
         {h.coverage.length === 0 ? (
@@ -161,7 +191,7 @@ export function HealthSection() {
           {h.unpriced.length > 0 && (
             <Card>
               <CardHeader className="flex-col items-start gap-1">
-                <CardTitle>{t('health.unpricedModels')}</CardTitle>
+                <CardTitle as="h3">{t('health.unpricedModels')}</CardTitle>
                 <CardDescription className="note">{t('health.unpricedBlurb')}</CardDescription>
                 <CardDescription>
                   {t('health.catalogCount', { n: h.pricedModels.toLocaleString() })}
@@ -196,7 +226,7 @@ export function HealthSection() {
           {h.errors.length > 0 && (
             <Card>
               <CardHeader className="flex-col items-start gap-1">
-                <CardTitle>{t('health.ingestErrors')}</CardTitle>
+                <CardTitle as="h3">{t('health.ingestErrors')}</CardTitle>
                 <CardDescription className="note">{t('health.errorsBlurb')}</CardDescription>
               </CardHeader>
               <Table>
@@ -229,7 +259,7 @@ export function HealthSection() {
       ) : (
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle>{t('health.clear')}</CardTitle>
+            <CardTitle as="h2">{t('health.clear')}</CardTitle>
             <CardDescription className="note">{t('health.clearBlurb')}</CardDescription>
           </CardHeader>
         </Card>
