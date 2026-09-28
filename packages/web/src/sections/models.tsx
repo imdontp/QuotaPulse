@@ -8,6 +8,8 @@ import { EffortByModel, ModelByEffort } from '@/components/effort-breakdown';
 import { VendorIcon } from '@/components/vendor-icon';
 import { VendorFilter, toggleIn } from '@/components/vendor-filter';
 import { Empty, ErrorBox, Stagger, StaggerItem } from '@/components/primitives';
+import { PageHeader } from '@/components/page-parts';
+import { Skeleton, SkeletonCard, SkeletonRegion, SkeletonTable } from '@/components/skeleton';
 import { effortColor, vendorLabel } from '@/format';
 import { useFormat } from '@/i18n/format';
 import { useT } from '@/i18n';
@@ -73,31 +75,51 @@ export function ModelsSection({ period, sourceId }: { period?: UsagePeriod; sour
   if (err && !loaded) return <ErrorBox>{err}</ErrorBox>;
   if (loaded && models.length === 0) return <Empty>{t('models.none')}</Empty>;
 
+  /*
+   * A cold open used to fall straight through to the "no models match your filters" branch
+   * below, because that branch tests `filtered.length === 0` and `filtered` is empty while
+   * the request is still in flight -- the same empty array that means "no data" and means
+   * "not yet". So the first thing on every cold open of this tab was a confident false
+   * statement about the user's own models, next to a call count of 0. Three states, three
+   * answers, and only the middle one was missing.
+   */
+  if (!loaded) {
+    return (
+      <SkeletonRegion label={t('app.loading')} className="flex flex-col gap-3.5">
+        <Skeleton className="h-4 w-40" />
+        <Skeleton className="h-8 w-full max-w-sm" />
+        <SkeletonCard lines={4} />
+        <SkeletonTable rows={6} cols={5} />
+      </SkeletonRegion>
+    );
+  }
+
+
   return (
     <Stagger className="flex flex-col gap-3.5">
       <StaggerItem>
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h2 className="text-[15px] font-semibold tracking-tight">{t('models.title')}</h2>
-            <p className="text-muted-foreground note mt-1 text-[12.5px] leading-relaxed">
-              {t('models.blurb')}
-            </p>
-          </div>
-          <div className="flex items-center gap-2.5">
-            <span className="text-muted-foreground/70 text-[11.5px]">
-              {t('live.calls', { n: totalCalls.toLocaleString() })}
-            </span>
-            <Select
-              label={t('models.measure')}
-              value={metric}
-              onChange={(e) => setMetric(e.target.value as Metric)}
-            >
-              <option value="total_tokens">{t('trend.metricTotal')}</option>
-              <option value="cost_usd">{t('trend.metricCost')}</option>
-              <option value="calls">{t('trend.metricCalls')}</option>
-            </Select>
-          </div>
-        </div>
+        <PageHeader
+          title={t('models.title')}
+          blurb={t('models.blurb')}
+          context={
+            // The wrapper carries the gap, not the Select: `className` on Select lands on
+            // the `<select>`, not on the label that wraps it.
+            <div className="flex items-center gap-2.5">
+              <span className="text-muted-foreground/70 text-[11.5px]">
+                {t('live.calls', { n: totalCalls.toLocaleString() })}
+              </span>
+              <Select
+                label={t('models.measure')}
+                value={metric}
+                onChange={(e) => setMetric(e.target.value as Metric)}
+              >
+                <option value="total_tokens">{t('trend.metricTotal')}</option>
+                <option value="cost_usd">{t('trend.metricCost')}</option>
+                <option value="calls">{t('trend.metricCalls')}</option>
+              </Select>
+            </div>
+          }
+        />
       </StaggerItem>
 
       <StaggerItem>

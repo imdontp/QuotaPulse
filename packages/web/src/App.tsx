@@ -305,7 +305,7 @@ function Dashboard() {
 
         {/* min-w-0 so a wide table scrolls inside the main column instead of stretching it. */}
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="dashboard-topbar bg-background/80 sticky top-0 z-40 border-b backdrop-blur-sm">
+          <header className="dashboard-topbar bg-background/80 border-b z-(--z-chrome) sticky top-0">
             <div className="flex min-h-[64px] items-center gap-2 px-4 min-[900px]:px-6">
               <Button ref={menuButton} size="icon" className="shrink-0 sm:hidden" onClick={() => drawer.current?.showModal()} aria-label={t('nav.open')}><Menu className="size-4" /></Button>
               <h1 className="min-w-0 truncate text-base font-semibold">{t(TABS.find(tb => tb.id === tab)!.key)}</h1>

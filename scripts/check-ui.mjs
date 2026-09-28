@@ -55,6 +55,7 @@ let unavailable = false;
 let pricingFailure = false;
 let pricingEmpty = false;
 let pricingDelay = 0;
+let modelsDelay = 0;
 let trendUnpriced = false;
 let trendMixed = false;
 const pricingRequests = [];
@@ -178,7 +179,17 @@ async function contextFor(lang = 'en', theme = 'dark', width = 1440, hiddenSubsc
           cost_unknown_calls:trendMixed ? [10,2,0][i] : trendUnpriced ? 10 : 2 });
       }
       data = { bucket: u.searchParams.get('bucket'), from, to, rows };
-    } else if (u.pathname === '/api/models') data = { models: [unpriced] };
+    } else if (u.pathname === '/api/models') {
+      /*
+       * Models is the one view whose loading and empty states were the same array, so it is
+       * the one that needs a slow response to be testable. Instant fixtures are why the bug
+       * survived: with no delay, `loaded` flips in the same tick the data lands and the
+       * false empty state is never on screen long enough to see. `modelsDelay` is what makes
+       * the window observable.
+       */
+      if (modelsDelay) await new Promise(resolve => setTimeout(resolve, modelsDelay));
+      data = { models: [unpriced] };
+    }
     else if (u.pathname === '/api/projects') data = { rows: [{...unpriced,source_id:1,display_name:'Hermes Agent',project:'fixture-project',harness_vendor:'unknown',last_ts:now}] };
     else if (u.pathname === '/api/sessions') data = { sessions: [{...unpriced,id:1,native_session_id:'fixture',project:'fixture-project',cwd:'/fixture/project',git_branch:null,model_default:unpriced.model,agent:null,started_at:now-3600000,last_seen_at:now,is_subagent:0,native_cost_usd:0,profile:'default',display_name:'Hermes Agent'}], total: 1, vendors: [{vendor:'deepseek',sessions:1}], limit: 50, offset: 0 };
     else if (u.pathname === '/api/health') data = { ok: true, now, pricedModels: 0,
@@ -510,6 +521,57 @@ try {
   }
   await context.close();
   console.log('PASS navigation, filters, cost states, periods, and all sections');
+
+  /*
+   * A view must never claim something about the user's data that it has not established yet.
+   *
+   * The Models tab guarded its "nothing here" branch on `loaded && models.length === 0` and
+   * then tested a second branch on `filtered.length === 0` -- which is the same empty array
+   * while the request is in flight. So every cold open showed "no models match your filters"
+   * beside a call count of 0, before a single byte of data had arrived. An instant fixture
+   * cannot catch that, because the loading state never survives long enough to be seen; the
+   * response is held open here to make the window observable.
+   */
+  modelsDelay = 2500;
+  const slowModels = await contextFor();
+  await slowModels.page.goto('http://127.0.0.1:7798/#usage?range=month&view=models');
+  await slowModels.page.locator('[role=tabpanel][data-state=active]').waitFor();
+  const modelTab = slowModels.page.locator('[role=tabpanel][data-state=active]');
+  /*
+   * A short wait is safe rather than flaky here, because the delay is a hard block inside
+   * the route handler: at 400ms into a 2500ms response the data cannot have arrived, so
+   * whatever is on screen is what the loading state decided to say. Waiting on the
+   * placeholder instead would make a regression fail as a bare timeout, which is a much
+   * worse thing to read than "it claimed the user has no models".
+   */
+  await modelTab.waitFor({ timeout: 5000 });
+  await slowModels.page.waitForTimeout(400);
+  assert.equal(
+    await modelTab.getByText('no models match this filter', { exact: false }).count(),
+    0,
+    'a view still loading must not report that the user has no models',
+  );
+  assert.equal(
+    await modelTab.getByText('no model usage recorded yet', { exact: false }).count(),
+    0,
+    'nor that there is nothing to track',
+  );
+  assert.equal(
+    await modelTab.locator('[data-slot=skeleton]').count() > 0,
+    true,
+    'and it says it is waiting, in the shape the data will arrive in',
+  );
+  // The promise, not just the absence of a wrong answer: once the data lands the same view
+  // must show it, so the placeholder is a loading state and not a permanent one.
+  await modelTab.locator('tbody').waitFor({ timeout: 10000 });
+  assert.equal(
+    await modelTab.locator('[aria-busy=true]').count(),
+    0,
+    'the placeholder clears once the data arrives',
+  );
+  await slowModels.context.close();
+  modelsDelay = 0;
+  console.log('PASS a loading view claims nothing about the data it is still waiting for');
   for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const width of [390, 900, 1280, 1440]) {
     const { context, page } = await contextFor(lang, theme, width);
     await page.goto('http://127.0.0.1:7798/#live'); await settle(page);

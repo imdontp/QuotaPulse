@@ -131,6 +131,94 @@ One thing left alone on purpose: about 40 i18n keys (`tab.today`, `gauge.alsoVia
 started, per `git grep` against `3e5e4b1`. Removing them is unrelated cleanup, and a few may
 still be reachable through a dynamic key, so it should be its own change with its own review.
 
+## Competition track: the whole-app visual pass (28 Sep 2026)
+
+### The finding that shapes everything
+
+The app does not have a taste problem. It has a **distribution** problem: every piece of
+craft it already has is quarantined.
+
+| What is good | Where it lives | Where it does not reach |
+|---|---|---|
+| Aurora backdrop, severity halo, measurement grid | `pulse-hero.tsx`, one file | the other 10 surfaces get flat `--card` |
+| Motion, and a genuine respect for reduced motion | 11 call sites, Live-led | no duration/easing token; the house curve was a literal 5× |
+| Playfulness, idle tiers, celebration | **100% in the Electron pet** | the web has a streak chip and 11 badges, and no shared grammar |
+| Loading | nothing | no Skeleton, no shimmer, `aria-busy` zero times, one centred "loading…" line |
+
+So the work is not "decorate more". It is **export Live's existing discipline to every
+surface**, then add one new idea per surface.
+
+### Locked direction
+
+- **Judged as:** data-viz / product craft. Not Awwwards-style novelty — pushing an eight-tab
+  dashboard with real numbers at visual novelty buys a screenshot and loses the product.
+- **Scope:** web first, tray after. The tray holds the most unused potential and the largest
+  bill (`main.ts` 2796 lines, `pet.html` 2230, `gallery.css` 95 hex literals).
+- **Playfulness:** the transitions and the acknowledgement, never the data. A quota
+  dashboard's job is to be right; the fun lives in movement, in being acknowledged, and in
+  the companion. A streak that flatters and a bar that lies are the same mistake.
+- **Theme:** dark and light are both first-class. The token system already supports it, so
+  there is no cost to doing it now and a large one to retrofitting.
+
+### Consolidated backlog
+
+**A — Bugs a user can see, independent of design**
+
+1. Models claimed "no models match this filter" on every cold open. `loaded` was false while
+   the request was in flight, and the fallback branch tested the same empty array. **Fixed**,
+   with a regression test that holds the response open — an instant fixture could not see it.
+2. Settings' Notifications card sits on "loading…" forever if that one endpoint fails
+   (`.catch(() => undefined)`, no retry, no error).
+3. Limits shows an empty 8-column table under its empty state; Health's Adapters table has
+   no empty branch at all.
+4. Seven surfaces render frozen data with no on-page indication after a failed refresh.
+5. Six of eleven surfaces have no heading element — `CardTitle` draws a `<div>` — so they are
+   missing from the screen-reader heading outline.
+6. Dates and numbers use the OS locale rather than the chosen language, at ~5 call sites.
+
+**B — Dead code, so there is less surface to redesign**
+
+7. `components/analysis-filters.tsx` in full, including the saved-views feature; all of
+   `sections/today.tsx`; `AnimatedNumber`; `ChartTooltip`/`ChartLegend`/`useChart`;
+   `api.today`/`compare`/`limits`; ~40 i18n keys. Each verified by import-site grep.
+
+**C — Duplication that makes a visual pass cost double**
+
+8. The language/currency/rate block exists twice (~70 lines). Section headers 5×, stat grids
+   4×, window-kind labels 3×, status→badge maps 4×, series-colour rules 4×, `numCell` used by
+   one table of seven, focus traps hand-written 3×, and two independent tab systems.
+
+**D — The design foundation, which is the actual work**
+
+9. No Skeleton primitive; 5 surfaces have no loading branch. **Started.**
+10. No motion tokens; 16 `transition-colors` at Tailwind's unnamed 150ms. **Done.**
+11. Interaction state barely exists: 1 `whileHover` in the codebase, 0 `whileTap`,
+    0 `whileInView`/`useScroll`.
+12. Four design systems, not one. `pet-popup.css` redeclares the same token *names* with
+    different values, so `--primary` means two things inside one bundle; `gallery.css` is
+    dark-only, Segoe UI, with visibly different warn/crit reds. The tray is English-only.
+13. Gallery clips every mascot (132px SVG in a 116px box), has no loading state, and its
+    "Make it yours" panel omits six settings that exist in the pet's context menu.
+
+### Progress
+
+**Phase A — the shared language** (so per-page work is not re-invented per page)
+
+- **A1 done.** Motion tokens (`--motion-*`, `--ease-*`, named duration utilities), a z-index
+  ladder, the first `@keyframes` in the app. Fixed three quiet bugs found on the way:
+  `rounded-2xl` was used in ten places and was never on the radius scale, so it silently fell
+  through to Tailwind's default; the card-lift rule matched `section[...]` while `Card` is a
+  `div` and so had never applied; the topbar carried two competing blur radii in one element.
+- **A2 done.** `lib/motion.ts` — one `useMotionPref()` replacing three hand-rolled
+  reduced-motion idioms, and named intents (`reveal`/`draw`/`snap`) instead of numbers.
+  `test/motion-tokens.test.ts` pins the CSS and TypeScript halves together, because a token
+  drifting from its twin is invisible by construction.
+- **A3 done.** `components/skeleton.tsx` — shimmer via CSS, shaped to the real layout,
+  `aria-busy` and a required label.
+- **A4 done.** `components/page-parts.tsx` — `PageHeader` (closes the missing-headings gap)
+  and `StatTile`/`StatTileRow` (collapses four drifted stat grids).
+- **B started.** Models: the false empty state, plus the first real use of the new primitives.
+
 ## Post-Live track: the other sections (28 Sep 2026)
 
 Live is done and pushed. The remaining tabs were surveyed against the same rule Live was

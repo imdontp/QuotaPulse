@@ -29,8 +29,40 @@
  * 3. --accent stays a neutral. It is shadcn's hover/active surface, used by every Radix
  *    menu, select and dropdown; pointing it at cyan turns every hover row cyan. The
  *    accent-led look in the brand sheet comes from --brand and --ring instead.
+ *
+ * 4. The motion scale below is duplicated in packages/web/src/lib/motion.ts for the
+ *    JS-driven half of the app, and `test/motion-tokens.test.ts` asserts the two agree.
+ *    Change a number in one and the test fails; that is deliberate, because the two halves
+ *    were previously free to drift (one curve repeated as a literal five times, and every
+ *    `transition-colors` sitting at Tailwind's unnamed 150ms default).
  */
 :root {
+  /*
+   * Durations. Five steps, named by how long they are allowed to be felt, not by number.
+   * `instant` is for hover/press feedback, `deliberate` is for a one-time reveal such as a
+   * bar filling in. Nothing between `slow` and `deliberate` exists on purpose.
+   */
+  --motion-instant: 120ms;
+  --motion-fast: 180ms;
+  --motion-base: 260ms;
+  --motion-slow: 420ms;
+  --motion-deliberate: 700ms;
+  /*
+   * Easings live in the `@theme` block below, not here, so that one declaration serves both
+   * the generated `ease-motion` utility and the `var()` the stylesheet itself needs.
+   */
+  /*
+   * Layer ladder. Tailwind v4 has no themeable z-index scale, so these are plain custom
+   * properties and the four or five call sites use them literally. The rule is one layer
+   * per step: nothing may jump the ladder, and anything that floats above content gets the
+   * next step up. This exists because the topbar was z-40 while the tooltip above it was
+   * z-50, with nothing written down about which was meant to win.
+   */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-chrome: 20;
+  --z-floating: 30;
+  --z-overlay: 40;
   --radius: 0.625rem;
 
   /* Neutrals carry a trace of the brand hue (chroma 0.002 to 0.006) so the light theme
@@ -147,12 +179,72 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /*
+   * `rounded-2xl` was used in ten places and was never on the scale, so it silently fell
+   * through to Tailwind's default 1rem. That put a second, competing radius system in the
+   * app -- the token scale at 6/8/10/14px and a 16px step nobody had declared. Declaring it
+   * here makes the value the design intends instead of the one Tailwind happened to have.
+   */
+  --radius-2xl: calc(var(--radius) + 6px);
 
   --font-sans: 'Geist Variable', Geist, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
+/*
+ * Motion theme, deliberately NOT `inline`.
+ *
+ * `inline` substitutes the value straight into the generated utility and does not emit the
+ * custom property, which would leave plain CSS with no way to name the curve. These need to
+ * be both: an `ease-motion` utility for class lists, and a `var(--ease-motion)` for the
+ * stylesheet itself (`--animate-shimmer` below is defined in terms of it).
+ */
+@theme {
+  --ease-motion: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /*
+   * The one animation this stylesheet owns. Everything expressive is JS-driven, which is
+   * the right call for anything driven by data -- but a loading placeholder is not data, it
+   * is chrome, and CSS is the honest place for it: no React work, no `useReducedMotion`
+   * branch, and the global clamp at the foot of this file already stops it. The sweep is a
+   * low-contrast translate rather than an opacity pulse, so a row of skeletons reads as one
+   * surface filling in rather than as N separate things blinking.
+   */
+  --animate-shimmer: qp-shimmer 1.6s var(--ease-motion) infinite;
+}
+
+/*
+ * The sweep itself. It translates a highlight across a bar that is otherwise a flat tint:
+ * no colour is animated, so it cannot wash out the `--foreground` contrast of whatever text
+ * eventually replaces it, and it never flashes at a frequency that reads as an alarm.
+ */
+@keyframes qp-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
 @layer components {
+  /*
+   * Duration utilities, named to match `--motion-*`.
+   *
+   * Tailwind's `duration-*` is a fixed numeric scale with no themeable hook, so `duration-200`
+   * meant 200ms -- a number adjacent to `--motion-fast` (180ms) and to neither of the other
+   * two steps the app actually used. These make the named scale reachable from a class list
+   * so a hover and a deliberate reveal are visibly different steps rather than two rounded
+   * guesses.
+   */
+  .motion-instant { transition-duration: var(--motion-instant); }
+  .motion-fast { transition-duration: var(--motion-fast); }
+  .motion-base { transition-duration: var(--motion-base); }
+  .motion-slow { transition-duration: var(--motion-slow); }
+  .motion-deliberate { transition-duration: var(--motion-deliberate); }
+
   /* Companion Studio visual language shared by every dashboard tab: deep navy/cyan in
      dark mode, the same geometry and restrained cyan ink in light mode. */
   .dashboard-shell {
@@ -165,6 +257,14 @@
     background: color-mix(in oklch, var(--card) 82%, transparent);
     backdrop-filter: blur(18px);
   }
+  /*
+   * The topbar carried `backdrop-blur-sm` (8px) in its class list as well as `blur(18px)`
+   * here, so which one actually applied came down to cascade order inside a single element
+   * -- two radii for one surface, one of them accidental. The 18px value is the one that
+   * matches the sidebar, and the class list has been corrected to match rather than being
+   * overridden from here: a rule that fights a utility is harder to read than a utility
+   * that was simply wrong.
+   */
   .dashboard-topbar {
     background: color-mix(in oklch, var(--background) 84%, transparent);
     backdrop-filter: blur(18px);
@@ -187,8 +287,15 @@
   .quota-card:hover {
     box-shadow: 0 8px 28px -16px color-mix(in oklch, var(--brand) 25%, transparent);
   }
-  /* Give the existing section cards the Gallery's quiet lift without rewriting every tab. */
-  .dashboard-content section[class*='rounded'][class*='border'] {
+  /*
+   * Give the existing section cards the Gallery's quiet lift without rewriting every tab.
+   *
+   * This was `section[class*='rounded'][class*='border']` and matched nothing, because
+   * `Card` renders a `div` -- the rule had been inert since it was written. Attribute
+   * selectors against a class list are also fragile in a way a data attribute is not, so
+   * the intent is now expressed as the thing it actually is: a card.
+   */
+  [data-slot='card'] {
     border-color: color-mix(in oklch, var(--border) 88%, var(--brand) 12%);
   }
   .nav-drawer {
