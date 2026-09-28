@@ -1,7 +1,7 @@
 import type { Limit, Overview } from '../api';
 import { isExpired, severityOf, thresholdLimits, willExhaust } from '../format';
 import { quotaSummaries, type Readiness } from './quota-summary';
-import { RING_MAX, windowProgress, type RingWindow } from './quota-ring';
+import { RING_MAX, credibleProjection, windowProgress, type RingWindow } from './quota-ring';
 
 /**
  * The data behind the Live pulse: which quota windows earn an arc, how urgent each one is,
@@ -80,9 +80,27 @@ export function intensityOf(rate: number): number {
   return 1 - Math.exp(-rate / BUSY_TOKENS_PER_HOUR);
 }
 
-/** The reading a card or arc should quote: the one that runs out, else the highest, else any. */
+/**
+ * The reading a card or arc should quote: the one that runs out, else the one at the
+ * threshold, else the FULLEST window.
+ *
+ * The last step used to be `limits[0]`, which is whatever order the API returned and has
+ * nothing to do with which window matters most. On a real database that hid a weekly
+ * window at 55% behind a five-hour window at 0%, and the page opened on "1%" while a
+ * majority-full quota was nowhere on screen. It is also the step most often reached, since
+ * a healthy install is under the threshold almost everywhere.
+ */
 export function primaryReading(limits: Limit[], now: number): Limit | undefined {
-  return limits.find((l) => willExhaust(l, now)) ?? thresholdLimits(limits, now)[0] ?? limits[0];
+  const exhausting = limits.find((l) => willExhaust(l, now));
+  if (exhausting) return exhausting;
+  const atThreshold = thresholdLimits(limits, now)[0];
+  if (atThreshold) return atThreshold;
+  let best: Limit | undefined;
+  for (const limit of limits) {
+    if (isExpired(limit, now)) continue;
+    if (best == null || (limit.used_percent ?? -1) > (best.used_percent ?? -1)) best = limit;
+  }
+  return best ?? limits[0];
 }
 
 export interface PulseItem {
@@ -128,11 +146,6 @@ export function pulseModel(ov: Overview, hidden: string[] = [], max = RING_MAX):
     const used = limit && !expired && limit.used_percent != null
       ? Math.min(100, Math.max(0, limit.used_percent))
       : null;
-    // The burn figure is only quoted once there are real samples behind it; below that a
-    // projection is arithmetic on noise, and a confident wrong ETA is worse than none.
-    const burnRate = limit?.burn && limit.burn.samples >= 3 && limit.burn.percentPerHour > 0
-      ? limit.burn.percentPerHour
-      : null;
     const item: PulseItem = {
       key: subscription.subscription_key,
       name: subscription.subscription_display_name,
@@ -142,8 +155,13 @@ export function pulseModel(ov: Overview, hidden: string[] = [], max = RING_MAX):
       urgent: limit ? willExhaust(limit, now) : false,
       resetsAt: limit?.resets_at ?? null,
       ageSeconds: limit?.ageSeconds ?? null,
-      burnRate,
-      projectedFullAt: burnRate != null ? (limit?.burn?.projectedFullAt ?? null) : null,
+      // Same credibility rule as the ring, so the headline and the arc cannot disagree
+      // about whether a projection counts. The rate itself still needs a positive slope.
+      burnRate:
+        limit?.burn && credibleProjection(limit, now) != null && limit.burn.percentPerHour > 0
+          ? limit.burn.percentPerHour
+          : null,
+      projectedFullAt: limit ? credibleProjection(limit, now) : null,
       tone: severityOf(used),
     };
     // The reading travels with its own item, so the time track is always computed from the

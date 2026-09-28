@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import type { Limit } from '../src/api';
-import { RING_MAX, fractionToAngle, ringArcs, windowProgress } from '../src/lib/quota-ring';
+import { RING_MAX, MIN_ARC_FRACTION, credibleProjection, fractionToAngle, ringArcs, windowProgress } from '../src/lib/quota-ring';
 
 const now = 1_800_000_000_000;
 const limit = (patch: Partial<Limit> = {}): Limit => ({
@@ -12,8 +12,8 @@ const limit = (patch: Partial<Limit> = {}): Limit => ({
   ageSeconds: 30, valueAgeSeconds: 30, last_seen_at: now, burn: null, ...patch,
 });
 
-const burn = (projectedFullAt: number, percentPerHour = 8) => ({
-  percentPerHour, projectedFullAt, fromPercent: 50, fromAt: now, samples: 12,
+const burn = (projectedFullAt: number, percentPerHour = 8, samples = 12) => ({
+  percentPerHour, projectedFullAt, fromPercent: 50, fromAt: now, samples,
 });
 
 test('arcs fill one fixed band however many subscriptions there are', () => {
@@ -66,15 +66,50 @@ test('the exhaustion marker distinguishes a window that will run out from one th
   const hour = 3_600_000;
   // 5h window, 3h to reset, so it began 2h ago and 70% of it is already behind us.
   const reset = now + 3 * hour;
-  const runsOut = windowProgress(limit({ resets_at: reset, burn: burn(now + 1.5 * hour) }), now);
+  const runsOut = windowProgress(limit({ used_percent: 88, resets_at: reset, burn: burn(now + 1.5 * hour) }), now);
   assert.equal(runsOut.elapsed, 0.4);
   assert.equal(runsOut.projected, 0.7, 'full at +1.5h is 3.5h into a window that started 2h ago');
   assert.equal(runsOut.willRunOut, true);
-  // Same reset, but the projection lands after it: the window survives.
-  const survives = windowProgress(limit({ resets_at: reset, burn: burn(now + 6 * hour) }), now);
+  // A projection that lands AFTER the reset means the window survives, so there is no
+  // exhaustion to mark. It used to pin to 1 and still draw a tick on the reset instant.
+  const survives = windowProgress(limit({ used_percent: 88, resets_at: reset, burn: burn(now + 6 * hour) }), now);
   assert.equal(survives.willRunOut, false);
-  assert.equal(survives.projected, 1, 'a projection past the reset is pinned to the reset');
+  assert.equal(survives.projected, null, 'a projection past the reset is not a projection at all');
   assert.equal(windowProgress(limit(), now).projected, null);
+});
+
+test('an unbelievable projection cannot raise an alarm', () => {
+  const hour = 3_600_000;
+  const reset = now + 6 * 24 * hour; // a healthy week, six days to go
+  const ghost = limit({ used_percent: 1, resets_at: reset, burn: burn(now + hour) });
+
+  // This is the record from the real database: 1% used, six days to reset, and a burn
+  // figure projecting it full anyway. Taken at face value it painted a red arc around
+  // two thirds of a healthy page.
+  assert.equal(windowProgress(ghost, now).willRunOut, false);
+  assert.equal(windowProgress(ghost, now).projected, null);
+  assert.equal(credibleProjection(ghost, now), null);
+
+  // Too few samples is not a rate.
+  assert.equal(
+    credibleProjection(limit({ used_percent: 90, resets_at: reset, burn: burn(now + hour, 8, 2) }), now),
+    null,
+  );
+  // A window that has already rolled over cannot run out.
+  assert.equal(
+    credibleProjection(limit({ used_percent: 90, resets_at: now - hour, burn: burn(now - 2 * hour) }), now),
+    null,
+  );
+  // No projection, no claim.
+  assert.equal(credibleProjection(limit({ used_percent: 90, resets_at: reset }), now), null);
+  // Corroboration, not a fullness threshold: a claim the observed rate cannot support is
+  // refused at any level, and a modest window that really is on pace still alerts.
+  assert.equal(credibleProjection(limit({ used_percent: 50, resets_at: reset, burn: burn(now + 6 * hour) }), now), now + 6 * hour);
+  assert.equal(
+    credibleProjection(limit({ used_percent: 95, resets_at: reset, burn: { ...burn(now + hour), percentPerHour: 0.5 } }), now),
+    null,
+    '0.5%/h cannot fill the last 5 points in an hour',
+  );
 });
 
 test('fractions map to clock angles, clamped at both ends', () => {

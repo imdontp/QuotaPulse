@@ -12,7 +12,15 @@ import { primaryLimits, thresholdLimits, willExhaust } from '../src/format.js';
 const HOUR = 3_600_000;
 const now = 1_800_000_000_000;
 
-/** A reading, with the fields the collapse rule actually looks at. */
+/**
+ * A reading, with the fields the collapse rule actually looks at.
+ *
+ * `full` produces a burn record that is internally consistent: a window with no stated
+ * usage reaching full in an hour needs a rate that could do it. A bare `projectedFullAt`
+ * with no rate or sample count is not a rate, and `willExhaust` now refuses to believe one
+ * -- which is what stops a stale record from inventing an alarm. Set `rate` to describe a
+ * window that really is being consumed fast.
+ */
 const reading = (o: {
   origin: string;
   window?: string;
@@ -21,6 +29,8 @@ const reading = (o: {
   ageSeconds?: number | null;
   resets_at?: number | null;
   full?: number | null;
+  rate?: number;
+  samples?: number;
 }) => ({
   source_id: o.source ?? 1,
   window_kind: o.window ?? '5h',
@@ -28,7 +38,11 @@ const reading = (o: {
   used_percent: o.usedPercent ?? null,
   resets_at: o.resets_at === undefined ? now + 2 * HOUR : o.resets_at,
   ageSeconds: o.ageSeconds ?? 60,
-  burn: o.full === undefined ? null : { projectedFullAt: o.full },
+  burn: o.full === undefined ? null : {
+    projectedFullAt: o.full,
+    percentPerHour: o.rate ?? 100,
+    samples: o.samples ?? 12,
+  },
 });
 
 test('a window reported by two origins collapses to one, freshest first', () => {

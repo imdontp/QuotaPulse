@@ -1,5 +1,5 @@
 import type { Limit } from '../api';
-import { WINDOW_SPAN_MS } from '../format';
+import { credibleProjection, WINDOW_SPAN_MS } from '../format';
 
 /**
  * Geometry for the Live quota ring.
@@ -22,6 +22,16 @@ export interface RingArc {
 }
 
 /**
+ * Shortest value arc the ring will draw, as a fraction of the circumference.
+ *
+ * A window at 0% or 1% is the normal case on a healthy install, and a true-to-scale arc
+ * there is a sub-pixel nub: three tracked accounts and one dark empty ring, which reads as
+ * a broken gauge rather than a quiet one. The floor keeps every arc visible without making
+ * a small number look like a large one.
+ */
+export const MIN_ARC_FRACTION = 1.5;
+
+/**
  * Spreads up to `RING_MAX` arcs across one fixed band, so the ring occupies the same
  * footprint with two subscriptions or four. Beyond that the inner radius would collapse
  * into the centre readout, so the caller folds the remainder into a count.
@@ -37,6 +47,12 @@ export function ringArcs(count: number): RingArc[] {
 }
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+
+// Re-exported so callers of this module have one import for everything about the ring,
+// while the judgement itself stays in `format.ts` beside `willExhaust` and `isExpired` --
+// it is a semantic rule, not geometry, and duplicating it is how the ring and the attention
+// panel came to disagree about the same window.
+export { MIN_BURN_SAMPLES, PROJECTION_RATE_MULTIPLE, credibleProjection } from '../format';
 
 export interface RingWindow {
   /** 0-1 through the current window, or null with no reset time to measure against. */
@@ -61,11 +77,13 @@ export function windowProgress(limit: Limit, now: number): RingWindow {
   const reset = limit.resets_at;
   if (span == null || span <= 0 || reset == null) return NO_WINDOW;
   const start = reset - span;
-  const fullAt = limit.burn?.projectedFullAt ?? null;
+  // The credible projection, not the stored one: an unbelievable record must not be able
+  // to paint a warning on the ring.
+  const fullAt = credibleProjection(limit, now);
   return {
     elapsed: clamp01((now - start) / span),
     projected: fullAt == null ? null : clamp01((fullAt - start) / span),
-    willRunOut: fullAt != null && fullAt < reset,
+    willRunOut: fullAt != null,
   };
 }
 

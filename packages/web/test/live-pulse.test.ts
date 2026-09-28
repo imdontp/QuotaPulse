@@ -29,8 +29,14 @@ const limit = (patch: Partial<Limit> = {}): Limit => ({
 const overview = (limits: Limit[], subs: SubscriptionStatus[]): Overview =>
   ({ now, limits, subscriptions: subs }) as Overview;
 
-const burn = (projectedFullAt: number, samples = 12) => ({
-  percentPerHour: 8, projectedFullAt, fromPercent: 50, fromAt: now - hour, samples,
+/**
+ * A burn record. `rate` is a parameter because a projection is only believable if the
+ * observed rate could actually reach full in the time it claims -- see
+ * `credibleProjection`. The old default paired 8%/h with a projection an hour away, which
+ * no rate could honour and which nothing checked until the real database did.
+ */
+const burn = (projectedFullAt: number, samples = 12, rate = 8) => ({
+  percentPerHour: rate, projectedFullAt, fromPercent: 50, fromAt: now - hour, samples,
 });
 
 test('the fullest window earns the outermost arc', () => {
@@ -56,7 +62,8 @@ test('a window about to run out leads regardless of how full it is', () => {
       limit({ subscription_key: 'survivor', subscription_display_name: 'survivor', used_percent: 79 }),
       limit({
         subscription_key: 'doomed', subscription_display_name: 'doomed', used_percent: 60,
-        burn: burn(now + hour),
+        // 60% used with 2h to reset: 40%/h reaches full in 2h, so the claim is corroborated.
+        burn: burn(now + hour, 12, 40),
       }),
     ],
     [subscription('survivor'), subscription('doomed')],
@@ -78,14 +85,17 @@ test('a window about to run out leads regardless of how full it is', () => {
 });
 
 test('a burn figure with too few samples is not quoted', () => {
+  // 50% used at 8%/h is 6.25h to full, so the window has to outlast that for the quote to
+  // mean anything at all.
+  const resets = now + 10 * 3_600_000;
   const thin = pulseModel(overview(
-    [limit({ subscription_key: 'a', burn: burn(now + hour, 2) })],
+    [limit({ subscription_key: 'a', resets_at: resets, burn: burn(now + 6.5 * 3_600_000, 2) })],
     [subscription('a')],
   ));
   assert.equal(thin.primary?.burnRate, null, 'two samples is a guess, not a rate');
   assert.equal(thin.primary?.projectedFullAt, null);
   const enough = pulseModel(overview(
-    [limit({ subscription_key: 'a', burn: burn(now + hour, 5) })],
+    [limit({ subscription_key: 'a', resets_at: resets, burn: burn(now + 6.5 * 3_600_000, 5) })],
     [subscription('a')],
   ));
   assert.equal(enough.primary?.burnRate, 8);

@@ -182,19 +182,77 @@ export function primaryLimits<T extends Readingish>(
   });
 }
 
+/** A burn projection needs this many samples before it is worth believing. */
+export const MIN_BURN_SAMPLES = 3;
+
+/**
+ * How much faster than the observed rate a projection may claim before it counts as
+ * nonsense. Generous, because a burst is real; the point is to reject the absurd, not to
+ * second-guess a trend.
+ */
+export const PROJECTION_RATE_MULTIPLE = 4;
+
+/**
+ * When a burn record is worth believing: the time it expects to run out, or null.
+ *
+ * The question is not "is the window high" but "is the projection corroborated". A record
+ * claiming a window will be full must be able to get there at a rate the machine has
+ * actually been sustaining.
+ *
+ * Found against a real database: a weekly window sitting at 1% with six days left to reset
+ * carried a burn record projecting it full within the hour. Taken at face value it did two
+ * kinds of damage -- it painted a red arc around two thirds of a healthy page, and because
+ * `willExhaust` also classified the account as needing attention, it promoted that 1%
+ * account to the front of the ring and onto the hero headline while a genuinely
+ * majority-full window sat further down. Consuming the remaining 99 points at the observed
+ * 8%/h takes twelve hours, so a claim of one hour is not a trend, it is arithmetic.
+ *
+ * Note this deliberately does NOT require the window to be half full. A window at 20% that
+ * is genuinely on pace to run out is exactly the case worth interrupting someone for, and
+ * an earlier draft of this guard refused it.
+ */
+export function credibleProjection(
+  l: {
+    burn?: {
+      projectedFullAt: number | null;
+      percentPerHour?: number;
+      samples?: number;
+    } | null;
+    resets_at: number | null;
+    used_percent?: number | null;
+    window_kind: string;
+    ageSeconds: number | null;
+  },
+  now = Date.now(),
+): number | null {
+  // A burn record with no sample count is not a rate, so a missing `samples` is treated as
+  // zero rather than trusted. `Readingish` carries the narrower burn shape on purpose.
+  if (!l.burn || (l.burn.samples ?? 0) < MIN_BURN_SAMPLES) return null;
+  const at = l.burn.projectedFullAt;
+  if (at == null || l.resets_at == null) return null;
+  if (isExpired(l, now)) return null;
+  const rate = l.burn.percentPerHour;
+  if (at > now && rate != null && rate > 0) {
+    const hoursLeft = (at - now) / 3_600_000;
+    const hoursNeeded = (100 - (l.used_percent ?? 0)) / rate;
+    if (hoursNeeded > hoursLeft * PROJECTION_RATE_MULTIPLE) return null;
+  }
+  return at < l.resets_at ? at : null;
+}
+
 /**
  * The one thing worth interrupting for: a window that runs out before it resets.
  *
  * Written out separately in three places before this existed, which is how the bell's
  * own docblock came to claim it was shared with the Limits table when it was not.
+ *
+ * Delegates the judgement on the projection to `credibleProjection`, because this predicate
+ * decides far more than a colour: it sets the attention status, the order of the ring, and
+ * whether anything is interrupted at all. A guard applied only at the point of drawing
+ * would silence the red arc while leaving a fabricated alarm at the top of the page.
  */
 export function willExhaust(l: Readingish, now = Date.now()): boolean {
-  return (
-    !isExpired(l, now) &&
-    l.burn?.projectedFullAt != null &&
-    l.resets_at != null &&
-    l.burn.projectedFullAt < l.resets_at
-  );
+  return credibleProjection(l, now) != null;
 }
 
 /** One high-usage alert per canonical subscription/window, even when several readers exist. */

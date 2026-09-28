@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react';
-import { fractionToAngle, ringArcs, type RingWindow } from '@/lib/quota-ring';
+import { MIN_ARC_FRACTION, fractionToAngle, ringArcs, type RingWindow } from '@/lib/quota-ring';
 import { severityOf } from '@/format';
 import { cn } from '@/lib/utils';
 
@@ -81,9 +81,10 @@ export function QuotaRing({
                 pathLength={100}
                 strokeDasharray="100 100"
                 /* A fixed 100-on/100-off dash means the spring animates one scalar, so the
-                   arc eases into a new reading instead of snapping on every SSE push. */
+                   arc eases into a new reading instead of snapping on every SSE push. The
+                   floor is why a 0% window still shows a mark instead of vanishing. */
                 initial={reduced ? false : { strokeDashoffset: 100 }}
-                animate={{ strokeDashoffset: 100 - used }}
+                animate={{ strokeDashoffset: 100 - Math.max(used, MIN_ARC_FRACTION) }}
                 transition={{ ...sweep, type: reduced ? undefined : 'spring', stiffness: 90, damping: 22 }}
                 transform={`rotate(-90 ${CX} ${CY})`}
               />

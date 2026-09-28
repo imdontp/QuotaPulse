@@ -42,7 +42,11 @@ test('account state and telemetry uncertainty cannot advertise availability', ()
 test('threshold and projected exhaustion retain the existing alert semantics', () => {
   assert.equal(quotaSummaries(overview([limit({ used_percent: 79 })]))[0]!.status, 'available');
   assert.equal(quotaSummaries(overview([limit({ used_percent: 80 })]))[0]!.status, 'attention');
-  assert.equal(quotaSummaries(overview([limit({ burn: { percentPerHour: 10, projectedFullAt: now + 1000, fromPercent: 10, fromAt: now - 1000, samples: 3 } })]))[0]!.status, 'attention');
+  // 20% used in a window that resets in an hour: 90%/h reaches full in 53 minutes, so the
+  // projection is corroborated and the window genuinely does run out. The old fixture
+  // claimed full in one second at 10%/h, which no rate could honour and which `willExhaust`
+  // now rightly refuses.
+  assert.equal(quotaSummaries(overview([limit({ burn: { percentPerHour: 90, projectedFullAt: now + 0.8 * 3_600_000, fromPercent: 20, fromAt: now - 3_600_000, samples: 3 } })]))[0]!.status, 'attention');
 });
 
 test('duplicate readers produce one reset; the freshest canonical reading wins', () => {
