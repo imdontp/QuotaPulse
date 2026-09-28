@@ -224,6 +224,65 @@
   .brand-gradient {
     background-image: linear-gradient(90deg, var(--brand), var(--brand-2));
   }
+
+  /*
+   * Backdrop for the Live quota stage.
+   *
+   * The static composition here is the finished look, not a degraded fallback. Every
+   * screenshot this project commits is captured with prefers-reduced-motion set
+   * (scripts/check-ui.mjs), so the reduced-motion frame is the one a reviewer actually
+   * sees. Motion layers on top of this; it never replaces it.
+   *
+   * --pulse is 0 at idle and 1 at full throughput, set from measured tokens-per-minute
+   * rather than a timer, so the background responds to real work instead of performing
+   * activity the user is not doing. It only scales colour weight -- layout, contrast and
+   * legibility are identical at every value, so a quiet day still looks deliberate.
+   */
+  .pulse-stage {
+    --pulse: 0.35;
+    position: relative;
+    overflow: hidden;
+    background:
+      /* Hairline measurement grid, echoing the bar-chart ground on the brand sheet. */
+      linear-gradient(to right, color-mix(in oklch, var(--border) 42%, transparent) 1px, transparent 1px) 0 0 / 44px 44px,
+      linear-gradient(to bottom, color-mix(in oklch, var(--border) 42%, transparent) 1px, transparent 1px) 0 0 / 44px 44px,
+      radial-gradient(58% 52% at 78% 14%, color-mix(in oklch, var(--brand) calc(7% + var(--pulse) * 17%), transparent), transparent 70%),
+      radial-gradient(52% 48% at 10% 86%, color-mix(in oklch, var(--brand-2) calc(6% + var(--pulse) * 13%), transparent), transparent 72%),
+      radial-gradient(78% 70% at 50% 50%, color-mix(in oklch, var(--chart-7) 7%, transparent), transparent 76%),
+      var(--card);
+  }
+  /* Softer grid on narrow screens, where 44px squares read as noise behind text. */
+  @media (max-width: 640px) {
+    .pulse-stage {
+      background-size: 30px 30px, 30px 30px, auto, auto, auto, auto;
+    }
+  }
+
+  /*
+   * Halo behind the quota ring. The single largest share of the stage's contrast, so it is
+   * the one element allowed to carry a wide blur; keeping it behind the arcs means the
+   * numerals stay at full contrast whatever the usage level.
+   */
+  .pulse-halo {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+  .pulse-halo::before {
+    content: '';
+    width: min(62%, 320px);
+    aspect-ratio: 1;
+    border-radius: 9999px;
+    background: radial-gradient(circle, color-mix(in oklch, var(--halo, var(--brand)) 26%, transparent), transparent 68%);
+    filter: blur(28px);
+  }
+
+  /* Shared by the ring, the level meter and the reset timeline so all three read as one set. */
+  .pulse-track {
+    background: var(--track);
+  }
 }
 
 @layer base {
@@ -245,5 +304,12 @@
   *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
+    /*
+     * An infinite animation clamped to 0.001ms does not stop -- it strobes, which is a
+     * far worse experience than the motion the user asked not to see. Every looping
+     * animation in this app is driven from JS through `useReducedMotion` instead; this
+     * line is the backstop for anything added to a stylesheet later.
+     */
+    animation-iteration-count: 1 !important;
   }
 }

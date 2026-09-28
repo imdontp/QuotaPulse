@@ -1,4 +1,54 @@
-# PROJECT_STATE — QuotaPulse Pet Mode v2
+# PROJECT_STATE — QuotaPulse
+
+## Active track: Live redesign "The Pulse" (started 28 Sep 2026)
+
+Branch: `feat/openai-subscription-quota`. **This track is a feature, and the Pet Mode RC
+below is under a bugfix-only freeze.** They coexist deliberately: the freeze protects the
+shipped Pet product, and the Live page is a separate surface. Treat the two releases as
+independent — nothing in this track may change Pet behaviour, the tray, or the daemon.
+
+### Why
+The Live page says the same thing three times over (topbar AlertBell → AttentionPanel →
+hero's three count tiles) plus a fourth status signal in the sidebar, and buries quota —
+the only thing that matters — in the third block behind a 330px marketing hero. The
+redesign makes quota the hero object and folds the rest into it.
+
+### Non-negotiable design rule
+**Never reward spending more quota.** A quota monitor that pays for burn trains the exact
+behaviour it exists to prevent. Nothing in `lib/progress.ts` reads `total_tokens` or
+`cost_usd`; volume is capped and worth almost nothing, and the multipliers are cache
+efficiency plus remaining headroom. Pinned by a test.
+
+### Phases
+1. **Done** — progression logic, persistence, strings, backdrop tokens.
+2. Quota ring (concentric SVG arcs, one per subscription) + ticker strip.
+3. Level rail and reset timeline.
+4. Demote `data-status.tsx` into a bottom disclosure; drop the old hero; compact table.
+5. Remove dead code; update `scripts/check-ui.mjs`; regenerate all 16 screenshots.
+
+### Live phase 1 state
+- `src/lib/progress.ts` — pure rules. `src/lib/progress-store.ts` — `useProgress`, localStorage.
+- `src/lib/badges.ts` — badge metadata, typed `Record<BadgeId, …>` so a blank tile cannot ship.
+- `index.css` — `.pulse-stage` (intensity driven by measured throughput), `.pulse-halo`.
+- Fixed a latent hazard: the reduced-motion block clamped `animation-duration` but not
+  `animation-iteration-count`, so any future infinite CSS animation would **strobe**. All
+  looping motion is driven from JS via `useReducedMotion`; the clamp is now a backstop.
+- Web tests 27 → 47. `tsc -b` and `vite build` green.
+
+### Constraints the redesign must respect
+- `scripts/check-ui.mjs` pins Live's DOM: `stat-1` ValueDisplay, the `Data status` region,
+  the `What needs your attention` string, exactly one `Pricing details — <name>` button,
+  `.quota-card`, and an `<ol aria-label="Next resets">`. Three assertions need updating
+  (see the plan); the rest the new design has to satisfy.
+- Every request must be a `GET` except `PUT /api/settings`. **This is why progression is
+  `localStorage` and not a daemon table.**
+- All 16 committed screenshots run with `reducedMotion: 'reduce'`, so the reduced-motion
+  frame is the one reviewed. The static composition is the finished look by design.
+- `noOverflow` at 390 / 900 / 1280 / 1440, in both themes and both languages.
+
+---
+
+## Previous track: QuotaPulse Pet Mode v2
 
 ## Current phase
 **Wave 5 — Release Candidate / Production Validation** (started 15 Sep 2026).
@@ -30,9 +80,16 @@ Candidate flow: RC1 → bugfix → RC2 → Stable.
 
 ## Validation status
 - `packages/tray` npm run test: green
-- `packages/daemon` npm run test: green
-- `packages/web` npm run test: green
+- `packages/daemon` npm run test: green **except one pre-existing failure, see below**
+- `packages/web` npm run test: green (47)
 - Packaging validation: run `npm run package` in `packages/tray` — validates asset tree, includes only allowed asset kinds, aborts on errors.
+
+### Known pre-existing failure (not caused by the Live redesign)
+`packages/daemon` test *"nothing in the live database falls to unknown except the known
+exceptions"* fails against the user's real refreshed pricing catalog: `omen-alpha` and
+`space-bunny-free` have no vendor rule. The test reads live `models.dev.json`, so it
+breaks whenever upstream adds a model. Needs either two rules in the daemon vendor table
+or an explicit allow-list. Unrelated to this track — fix separately.
 
 ## Next steps (RC2 candidates)
 - Electron-level smoke test where environment allows — if attempted and blocked by sandbox warnings, abort and record; do not force.
