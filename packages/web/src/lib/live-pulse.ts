@@ -123,14 +123,25 @@ export interface PulseItem {
 export interface PulseModel {
   /** Ranked most urgent first; already capped to the arcs the ring can actually draw. */
   items: PulseItem[];
-  /** Tracked subscriptions with nowhere to go on the ring. */
-  overflow: number;
+  /**
+   * Tracked subscriptions with a real reading that the cap pushed off the ring.
+   *
+   * Counted, not dropped: an account that is at 60% and does not appear anywhere because
+   * four quieter ones took the slots is a worse failure than a busy ring.
+   */
+  folded: number;
+  /**
+   * Subscriptions being tracked with no current reading. They are counted separately
+   * instead of being given an arc, because a dashed ring showing "--" is not information.
+   */
+  unmeasured: number;
+  /** The outermost arc's subscription. Always `items[0]`, so headline and ring agree. */
   primary: PulseItem | null;
   /** Time position of the primary window, for the outer track. */
   window: RingWindow | null;
 }
 
-const EMPTY: PulseModel = { items: [], overflow: 0, primary: null, window: null };
+const EMPTY: PulseModel = { items: [], folded: 0, unmeasured: 0, primary: null, window: null };
 
 /** Mirrors the ordering `quotaSummaries` already applies, as a number this module can sort on. */
 const STATUS_RANK: Record<Readiness, number> = { attention: 0, check: 1, available: 2, inactive: 3 };
@@ -178,10 +189,28 @@ export function pulseModel(ov: Overview, hidden: string[] = [], max = RING_MAX):
    */
   const ranked = [...entries].sort((a, b) =>
     a.rank - b.rank || (b.item.used ?? -1) - (a.item.used ?? -1));
-  const leader = ranked[0];
+
+  /*
+   * Arcs are only worth spending on a number. A subscription with no reading used to take
+   * a slot and render a dashed circle with "--" in it, which is not information and on a
+   * four-arc ring is a quarter of the picture spent on nothing -- the real database had one
+   * such account called `claude-code (company) quota events` with a NULL percentage.
+   *
+   * If NOTHING is measurable, the unmeasured ones take the ring after all: an empty dial
+   * would be worse than a dial that admits it has no numbers yet.
+   */
+  const measurable = ranked.filter((e) => e.item.used != null);
+  const blind = ranked.filter((e) => e.item.used == null);
+  const pool = measurable.length > 0 ? measurable : blind;
+  const shown = pool.slice(0, max);
+  const leader = shown[0];
+
   return {
-    items: ranked.slice(0, max).map((entry) => entry.item),
-    overflow: Math.max(0, ranked.length - max),
+    items: shown.map((entry) => entry.item),
+    folded: Math.max(0, pool.length - shown.length),
+    unmeasured: measurable.length > 0 ? blind.length : 0,
+    // Taken from the arc pool, not from every tracked account: the headline has to describe
+    // the outermost arc, and a leader that is not on the ring would be a second answer.
     primary: leader?.item ?? null,
     window: leader?.limit ? windowProgress(leader.limit, now) : null,
   };

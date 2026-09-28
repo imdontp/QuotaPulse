@@ -81,6 +81,7 @@ export function PulseHero({
                   expired: item.expired,
                 }))}
                 window={model.window ?? undefined}
+                folded={model.folded}
               />
             </div>
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
@@ -133,10 +134,28 @@ export function PulseHero({
                 </li>
               ))}
             </ul>
-            {model.overflow > 0 && (
-              <p className="text-muted-foreground mt-2 px-1.5 text-[11px]" title={t('pulse.moreTitle', { n: model.overflow })}>
-                {t('pulse.more', { n: model.overflow })}
-              </p>
+            {/*
+              * The two "there is more" lines. Folded accounts hold real readings that the
+              * ring had no room for; unmeasured ones are being tracked with nothing to show.
+              * Both are named rather than swallowed, because a quota you cannot see is
+              * worse than a ring that looks full.
+              */}
+            {(model.folded > 0 || model.unmeasured > 0) && (
+              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 px-1.5 text-[11px]">
+                {model.folded > 0 && (
+                  <span className="text-muted-foreground" title={t('pulse.moreTitle', { n: model.folded })}>
+                    <span className="text-brand tabular font-semibold" data-testid="pulse-folded">
+                      +{model.folded}
+                    </span>{' '}
+                    {t('pulse.moreTracked')}
+                  </span>
+                )}
+                {model.unmeasured > 0 && (
+                  <span className="text-muted-foreground" data-testid="pulse-unmeasured">
+                    {t('pulse.unmeasured', { n: model.unmeasured })}
+                  </span>
+                )}
+              </div>
             )}
           </div>
         </div>

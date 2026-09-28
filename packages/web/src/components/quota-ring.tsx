@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react';
-import { MIN_ARC_FRACTION, fractionToAngle, ringArcs, type RingWindow } from '@/lib/quota-ring';
+import { MIN_ARC_FRACTION, OVERFLOW_SWEEP, arcPath, fractionToAngle, overflowSlot, ringArcs, type RingWindow } from '@/lib/quota-ring';
 import { severityOf } from '@/format';
 import { cn } from '@/lib/utils';
 
@@ -32,15 +32,19 @@ function polar(radius: number, degrees: number) {
 export function QuotaRing({
   items,
   window: windowProgress,
+  folded = 0,
   className,
 }: {
   items: RingItem[];
   window?: RingWindow;
+  /** Real readings the arc cap pushed off the ring. Drawn as a marker, not an arc. */
+  folded?: number;
   className?: string;
 }) {
   const reduced = useReducedMotion();
   const arcs = ringArcs(items.length);
   const outer = arcs[0];
+  const overflow = folded > 0 ? overflowSlot(arcs) : null;
   const wedgeRadius = outer ? outer.radius + outer.strokeWidth / 2 + WEDGE : 0;
   const sweep = { duration: reduced ? 0 : 0.75, ease: [0.22, 1, 0.36, 1] as const };
 
@@ -94,10 +98,25 @@ export function QuotaRing({
       })}
 
       {/*
+        The "and N more" marker, on the ring rather than as a footnote under it. Partial on
+        purpose -- see `overflowSlot` for why this is not a fifth full circle.
+      */}
+      {overflow && (
+        <path
+          d={arcPath(CX, CY, overflow.radius, 90 - OVERFLOW_SWEEP / 2, 90 + OVERFLOW_SWEEP / 2)}
+          fill="none"
+          stroke="var(--muted-foreground)"
+          strokeOpacity={0.45}
+          strokeWidth={overflow.strokeWidth}
+          strokeLinecap="round"
+        />
+      )}
+
+      {/*
         The time track. Three bands, outermost in: how much of the window has gone, the
         slice it will burn through before the reset, and a tick at the projected 100%. The
-        middle band only appears when the projection lands before the reset, which is the
-        one case where the shape of the future is actually bad news.
+        middle band only appears when the projection is credible AND lands before the reset,
+        which is the one case where the shape of the future is actually bad news.
       */}
       {windowProgress?.elapsed != null && outer && (
         <g>

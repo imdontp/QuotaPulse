@@ -111,20 +111,35 @@ test('subscriptions past the arc limit are counted, not silently dropped', () =>
   }));
   const model = pulseModel(overview(limits, subs));
   assert.equal(model.items.length, RING_MAX);
-  assert.equal(model.overflow, 2);
+  assert.equal(model.folded, 2, 'two real readings are held back, and that is reported');
+  assert.equal(model.unmeasured, 0);
   assert.equal(model.items[0]!.key, 'f', 'the fullest of the truncated list still leads');
+  assert.equal(model.primary?.key, model.items[0]!.key, 'the headline always names the outermost arc');
 });
 
-test('a subscription with no reading keeps its slot and refuses to show a number', () => {
+test('a subscription with no reading is counted aside, not given an arc', () => {
+  // Reversed deliberately. A dashed circle reading "--" is not information, and on a
+  // four-arc ring it is a quarter of the picture spent on nothing. The real database had
+  // one such account, `claude-code (company) quota events`, with a NULL percentage.
   const model = pulseModel(overview(
     [limit({ subscription_key: 'a', used_percent: 40 })],
     [subscription('a'), subscription('silent')],
   ));
-  const silent = model.items.find((i) => i.key === 'silent');
-  assert.ok(silent, 'a tracked subscription with no reading is still shown');
-  assert.equal(silent.used, null);
-  assert.equal(silent.expired, true);
-  assert.equal(silent.windowKind, '');
+  assert.deepEqual(model.items.map((i) => i.key), ['a'], 'the unmeasured account takes no arc');
+  assert.equal(model.unmeasured, 1, 'but it is still counted, so nothing disappears quietly');
+  assert.equal(model.folded, 0);
+});
+
+test('with nothing measurable, the ring admits it rather than showing nothing', () => {
+  // An empty dial is worse than a dial that says it has no numbers yet.
+  const model = pulseModel(overview(
+    [limit({ subscription_key: 'a', used_percent: null })],
+    [subscription('a'), subscription('b')],
+  ));
+  assert.equal(model.items.length, 2, 'the unmeasured accounts fill the ring as a last resort');
+  assert.equal(model.unmeasured, 0, 'they are not double-counted as missing while being shown');
+  assert.equal(model.primary?.used, null);
+  assert.equal(model.folded, 0);
 });
 
 test('an expired reading is never quoted as a current percentage', () => {
@@ -145,7 +160,7 @@ test('hidden and inactive subscriptions leave the ring entirely', () => {
   ov.subscriptions[1]!.state = 'inactive';
   assert.deepEqual(pulseModel(ov, ['a']).items, []);
   assert.deepEqual(pulseModel(overview([], [])), {
-    items: [], overflow: 0, primary: null, window: null,
+    items: [], folded: 0, unmeasured: 0, primary: null, window: null,
   });
 });
 

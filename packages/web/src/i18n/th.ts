@@ -520,6 +520,8 @@ export const th: Record<MessageKey, string> = {
   'pulse.eyebrow': 'pulse ของโควตา',
   'pulse.legend': 'หน้าต่างโควตาที่ติดตามอยู่',
   'pulse.more': 'ติดตามอีก {n} รายการ',
+  'pulse.moreTracked': 'ที่ติดตามอยู่แต่ไม่ได้แสดงที่นี่',
+  'pulse.unmeasured': 'อีก {n} รายการยังไม่มีค่า',
   'pulse.alsoResets': 'รีเซ็ตพร้อมกัน {n} หน้าต่าง',
   'pulse.moreTitle': 'มี subscription อีก {n} รายการที่ติดตามอยู่ แสดงในแท็บ Limits',
   'pulse.timeTrack': 'เส้นวงแหวนบางด้านนอก: เวลาที่ผ่านไปของหน้าต่าง และจุดที่อัตราปัจจุบันจะใช้โควตาหมด',

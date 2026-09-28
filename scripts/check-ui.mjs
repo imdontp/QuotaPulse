@@ -14,11 +14,24 @@ const totals = { calls: 10, input_tokens: 100000, cached_input_tokens: 500000, c
   output_tokens: 50000, reasoning_tokens: 10000, total_tokens: 660000, cost_usd: 26.83,
   cost_input_usd: 5, cost_cached_input_usd: 5, cost_cache_write_usd: 1, cost_output_usd: 15.83,
   cost_cache_saving_usd: 20, cost_unknown_calls: 2, cost_estimated_calls: 0 };
+/*
+ * Six tracked subscriptions on purpose, so the arc cap is actually exercised.
+ *
+ * With three active ones the overflow path was unreachable: the ring had a spare slot and
+ * nothing could prove the cap, the "+N" marker, or the counted-elsewhere line ever worked.
+ * Two of these exist purely to be folded. `claude-personal` is inactive and
+ * `blind-reader` has no reading at all, so they also cover the two ways a subscription can
+ * stay off the ring without being dropped.
+ */
 const specs = [
   ['openai', 'OpenAI Subscription', 'openai', 'active', 88, 52],
   ['claude-company', 'Claude Company Subscription', 'anthropic', 'active', 32, 24],
   ['claude-personal', 'Claude Personal Subscription', 'anthropic', 'inactive', null, null],
   ['opencode-go', 'OpenCode Go Subscription', 'opencode', 'stale', 48, 60],
+  ['gemini-team', 'Gemini Team Subscription', 'google', 'active', 21, 15],
+  ['qwen-lab', 'Qwen Lab Subscription', 'qwen', 'active', 12, 8],
+  // Tracked, enabled, reporting nothing: must be counted, never given an arc.
+  ['blind-reader', 'Blind Reader Subscription', 'mistral', 'active', null, null],
 ];
 const subscriptions = specs.map(([key, name, provider, state]) => ({ account_key: key, subscription_key: key,
   provider, display_name: name, subscription_display_name: name, state, reason: null,
@@ -272,12 +285,23 @@ try {
   assert.equal(new Date(Number(hour.from)).getHours(), 0);
   assert.equal(await page.getByTestId('stat-1').count(), 1, 'the ticker owns the pinned value cell');
   assert.equal(await page.getByTestId('pulse-ring').count(), 1);
-  assert.equal(await page.locator('[data-pulse-arcs]').getAttribute('data-pulse-arcs'), '3',
-    'one arc per active subscription in the fixture');
-  // The fixture's 4th subscription is inactive, so it must not take a ring slot. It is still
-  // rendered further down the page inside the inactive disclosure, hence the scoped lookup.
+  /*
+   * Six tracked subscriptions, four of them reporting, and the ring draws four. The two that
+   * are held back must be *counted* rather than dropped: a quota you cannot see anywhere is
+   * worse than a busy ring. The seventh reports nothing at all and must not take a slot to
+   * render "--", so it is counted separately instead.
+   */
+  assert.equal(await page.locator('[data-pulse-arcs]').getAttribute('data-pulse-arcs'), '4',
+    'one arc per reporting subscription, capped');
+  assert.equal(await page.getByTestId('pulse-folded').innerText(), '+1',
+    'a reporting subscription the cap held back is counted, not dropped');
+  assert.equal(await page.getByTestId('pulse-unmeasured').innerText(), '1 without a reading yet');
+  // The inactive subscription must not take a ring slot either. It is still rendered further
+  // down the page inside the inactive disclosure, hence the scoped lookup.
   assert.equal(await page.getByTestId('pulse-hero').getByText('Claude Personal Subscription', { exact: true }).count(), 0,
     'an inactive subscription stays out of the hero');
+  assert.equal(await page.getByTestId('pulse-hero').getByText('Blind Reader Subscription', { exact: true }).count(), 0,
+    'a subscription with no reading does not take an arc either');
   // Progression is browser-local: the dashboard must not add an endpoint to write it.
   assert.ok(apiMethods.every(({ path }) => !path.includes('progress')),
     'progression persists to localStorage, never the daemon');

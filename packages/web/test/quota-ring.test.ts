@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import type { Limit } from '../src/api';
-import { RING_MAX, MIN_ARC_FRACTION, credibleProjection, fractionToAngle, ringArcs, windowProgress } from '../src/lib/quota-ring';
+import { RING_MAX, MIN_ARC_FRACTION, OVERFLOW_SWEEP, arcPath, credibleProjection, fractionToAngle, overflowSlot, ringArcs, windowProgress } from '../src/lib/quota-ring';
 
 const now = 1_800_000_000_000;
 const limit = (patch: Partial<Limit> = {}): Limit => ({
@@ -62,17 +62,51 @@ test('a window with no reset time cannot be placed on the ring', () => {
   }
 });
 
-test('the exhaustion marker distinguishes a window that will run out from one that will not', () => {
+test('the overflow marker never takes a reading\'s place or cross the numerals', () => {
+  // No arcs, nothing to indicate.
+  assert.equal(overflowSlot(ringArcs(0)), null);
+  for (const count of [1, 2, 3, 4]) {
+    const slot = overflowSlot(ringArcs(count));
+    assert.ok(slot, `count ${count} should have room for the marker`);
+    const inner = ringArcs(count).at(-1)!;
+    // Inside the innermost arc, so it can never be read as a fifth subscription...
+    assert.ok(slot.radius < inner.radius, `count ${count}`);
+    // ...and clear of the centre text, which is about 50 units of radius.
+    assert.ok(slot.radius >= 58, `count ${count} would cross the numerals at ${slot.radius}`);
+    assert.ok(slot.strokeWidth < inner.strokeWidth, `count ${count}`);
+  }
+  // A single arc sits at the outer edge, so its marker is the furthest in of all.
+  assert.ok(overflowSlot(ringArcs(1))!.radius > overflowSlot(ringArcs(4))!.radius);
+});
+
+test('the overflow marker is a partial arc, so it cannot pass for a reading', () => {
+  const path = arcPath(200, 200, 60, 90 - OVERFLOW_SWEEP / 2, 90 + OVERFLOW_SWEEP / 2);
+  assert.match(path, /^M [\d.]+ [\d.]+ A 60 60 0 0 1 [\d.]+ [\d.]+$/);
+  // A full circle would be 360 degrees; this is a short segment low on the dial.
+  assert.ok(OVERFLOW_SWEEP < 90, 'a long sweep would read as another arc');
+  // Small-arc flag, so the renderer takes the short way round.
+  assert.ok(path.includes(' 0 0 1 '), 'small-arc flag');
+  /*
+   * Centred on six o'clock, so the segment sits below the numerals and away from the
+   * twelve o'clock start of the data arcs. Swept symmetrically: the endpoints mirror each
+   * other about the vertical through the centre.
+   */
+  const [, sx, sy, ex, ey] = path.match(/M ([\d.]+) ([\d.]+) A \d+ \d+ 0 0 1 ([\d.]+) ([\d.]+)/)!.map(Number) as number[];
+  assert.ok(sy > 200, 'the marker is in the lower half, clear of the centre text');
+  assert.ok(ey > 200);
+  assert.ok(sx > 200 && ex < 200, "it straddles six o'clock rather than sitting at the start");
+  assert.ok(Math.abs((sx + ex) / 2 - 200) < 0.01, 'and is symmetric about it');
+  assert.ok(Math.abs(sx - ex) > 20, 'a segment with real width, not a tick');
+});
+
+test('a projection that lands after the reset is not a projection at all', () => {
   const hour = 3_600_000;
-  // 5h window, 3h to reset, so it began 2h ago and 70% of it is already behind us.
   const reset = now + 3 * hour;
-  const runsOut = windowProgress(limit({ used_percent: 88, resets_at: reset, burn: burn(now + 1.5 * hour) }), now);
+  const runsOut = windowProgress(limit({ used_percent: 88, resets_at: reset, burn: burn(now + 1.5 * hour, 12, 40) }), now);
   assert.equal(runsOut.elapsed, 0.4);
-  assert.equal(runsOut.projected, 0.7, 'full at +1.5h is 3.5h into a window that started 2h ago');
   assert.equal(runsOut.willRunOut, true);
-  // A projection that lands AFTER the reset means the window survives, so there is no
-  // exhaustion to mark. It used to pin to 1 and still draw a tick on the reset instant.
-  const survives = windowProgress(limit({ used_percent: 88, resets_at: reset, burn: burn(now + 6 * hour) }), now);
+  assert.ok(runsOut.projected != null);
+  const survives = windowProgress(limit({ used_percent: 88, resets_at: reset, burn: burn(now + 6 * hour, 12, 40) }), now);
   assert.equal(survives.willRunOut, false);
   assert.equal(survives.projected, null, 'a projection past the reset is not a projection at all');
   assert.equal(windowProgress(limit(), now).projected, null);

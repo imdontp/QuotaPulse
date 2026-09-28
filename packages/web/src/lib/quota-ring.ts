@@ -46,6 +46,44 @@ export function ringArcs(count: number): RingArc[] {
   }));
 }
 
+/** Degrees of the overflow marker, centred on six o'clock. */
+export const OVERFLOW_SWEEP = 46;
+const OVERFLOW_STROKE = 5;
+const OVERFLOW_INSET = 11;
+
+/**
+ * Where the "and N more" marker sits.
+ *
+ * A PARTIAL arc rather than a fifth full circle. A full thin ring inside four data arcs
+ * reads as a fifth subscription, and on a single-arc ring it would sit so close to the one
+ * real arc that the two look like one thick line. A short segment low on the dial cannot be
+ * mistaken for a reading, and it leaves the middle of the ring -- where the numerals are --
+ * completely clear at every arc count.
+ *
+ * Returns null when there is nothing to indicate, or no room for a marker inside the
+ * innermost arc.
+ */
+export function overflowSlot(arcs: RingArc[]): { radius: number; strokeWidth: number } | null {
+  const inner = arcs.at(-1);
+  if (!inner) return null;
+  const radius = inner.radius - OVERFLOW_INSET;
+  // The numerals are about 50 units of radius; a marker inside that would cross the text.
+  if (radius < 58) return null;
+  return { radius, strokeWidth: OVERFLOW_STROKE };
+}
+
+/** An SVG path for a clockwise arc between two degrees, zero being twelve o'clock. */
+export function arcPath(cx: number, cy: number, radius: number, fromDeg: number, toDeg: number): string {
+  const at = (deg: number) => {
+    const rad = (deg * Math.PI) / 180;
+    return { x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad) };
+  };
+  const a = at(fromDeg);
+  const b = at(toDeg);
+  const large = Math.abs(toDeg - fromDeg) > 180 ? 1 : 0;
+  return `M ${a.x.toFixed(2)} ${a.y.toFixed(2)} A ${radius} ${radius} 0 ${large} 1 ${b.x.toFixed(2)} ${b.y.toFixed(2)}`;
+}
+
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
 // Re-exported so callers of this module have one import for everything about the ring,
