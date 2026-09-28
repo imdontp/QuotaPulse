@@ -129,6 +129,17 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
   app.get('/api/overview', async () => {
     const now = Date.now();
     const limits = q.latestLimits(db);
+    /*
+     * Computed once and shared. `sourceStatus` is the costliest query in this handler (eight
+     * correlated subqueries per source row) and `harnessStatus` used to run it internally
+     * while the response asked for it again, so it was paid twice. `accountStatus` was paid
+     * twice for the same reason: once inside `subscriptionStatus`, once for the `accounts`
+     * alias below, which no client has read since the Account to Subscription migration --
+     * `git grep` finds zero references outside the fixtures, so it is gone rather than
+     * being kept in case.
+     */
+    const observed = q.accountStatus(db);
+    const sourceRows = q.sourceStatus(db);
     return {
       now,
       today: q.totalsSince(db, startOfToday(now)),
@@ -138,15 +149,13 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       bySourceToday: q.totalsBySource(db, startOfToday(now)),
       bySourceAll: q.totalsBySource(db, 0),
       limits: withBurn(db, limits),
-      subscriptions: q.subscriptionStatus(db),
-      harnesses: q.harnessStatus(db),
+      subscriptions: q.subscriptionStatus(db, observed),
+      harnesses: q.harnessStatus(db, sourceRows),
       settings: q.appSettings(db),
-      // Legacy aliases kept while clients migrate from Account quota to Subscription.
-      accounts: q.accountStatus(db),
       sources: q.listSources(db),
-      // Raw source rows remain useful to diagnostics and older clients; the dashboard
-      // renders the hierarchical harnesses field above.
-      sourceStatus: q.sourceStatus(db),
+      // Raw source rows remain useful to diagnostics; the dashboard renders the
+      // hierarchical harnesses field above.
+      sourceStatus: sourceRows,
       lastPass: scheduler.status.lastPass,
     };
   });

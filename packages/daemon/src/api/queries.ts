@@ -877,8 +877,10 @@ function telemetryForSubscription(
  * logged out, whereas optional subscriptions such as OpenCode Go appear only after a
  * source proves that the provider entitlement is available.
  */
-export const subscriptionStatus = (db: DB): SubscriptionStatus[] => {
-  const observed = accountStatus(db);
+export const subscriptionStatus = (
+  db: DB,
+  observed: AccountStatus[] = accountStatus(db),
+): SubscriptionStatus[] => {
   const byKey = new Map(observed.map((entry) => [entry.account_key, entry]));
   const limits = latestLimits(db);
   const usageBySubscription = latestUsageBySubscription(db);
@@ -1021,8 +1023,18 @@ function aggregateHarness(definition: HarnessDefinition, rows: ReturnType<typeof
 }
 
 /** Hierarchical Harness/Delegate cards, with source rows kept as the usage authority. */
-export const harnessStatus = (db: DB): HarnessStatus[] => {
-  const rows = sourceStatus(db);
+/**
+ * `rows` may be supplied by a caller that already has them.
+ *
+ * `sourceStatus` is the most expensive query in the overview (eight correlated subqueries
+ * per source row) and `/api/overview` needs the same rows for two different fields, so
+ * running it twice doubled its cost for no benefit. The default keeps every other caller
+ * and test working unchanged.
+ */
+export const harnessStatus = (
+  db: DB,
+  rows: ReturnType<typeof sourceStatus> = sourceStatus(db),
+): HarnessStatus[] => {
   const result: HarnessStatus[] = [];
   const representedSources = new Set<number>();
 
