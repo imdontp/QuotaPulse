@@ -15,8 +15,13 @@ screens/
 icon-preview/
 # local agent settings, not project config
 .claude/
+.commandcode/
 # editor local
 .vscode/
+# scratch reference packs an agent dropped in the tree. Same rule as the design inputs
+# below: they are inputs, not sources, so versioning them would create a second stale
+# copy to reconcile against the originals.
+tmp/
 # Pet Mode design inputs, deliberately not versioned. The archives are the single source
 # of truth for their contents -- nothing is extracted into the tree, so there is never a
 # second stale copy to reconcile. PET_MODE_V2_SPEC.md is the exception: it has no archive,
