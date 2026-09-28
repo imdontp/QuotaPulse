@@ -216,6 +216,22 @@ export interface SourceStatus {
   root_path: string;
   vendor: string;
   account_state: AccountState;
+  /**
+   * Whether collection is switched on for this source.
+   *
+   * Not the same as `account_state`: a source can be disabled and still carry usage history,
+   * so it is listed. Without this the page shows a disabled source indistinguishable from an
+   * active one that simply has nothing new to report.
+   */
+  enabled: boolean;
+  /**
+   * The account this reader belongs to, shared by every harness profile reading it.
+   *
+   * Null for a harness that has never bound to an account. This is the key the Sources page
+   * groups on: one account can be read by several profiles, and without it a single
+   * OpenAI account shows up as three rows with the same name and no way to tell them apart.
+   */
+  account_key: string | null;
   calls: number;
   total_tokens: number;
   last_event_ts: number | null;
@@ -239,8 +255,6 @@ export interface Overview {
   subscriptions: SubscriptionStatus[];
   harnesses: HarnessStatus[];
   settings: AppSettings;
-  /** Legacy alias for clients that still call this Account quota. */
-  accounts: AccountStatus[];
   sources: Array<{ id: number; harness: string; profile: string; display_name: string; root_path: string }>;
   sourceStatus: SourceStatus[];
   lastPass: { newEvents: number; newLimits: number; durationMs: number; trigger: string } | null;

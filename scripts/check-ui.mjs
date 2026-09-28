@@ -62,10 +62,53 @@ const apiMethods = [];
 const externalRequests = [];
 const sourceRow = value => ({ ...value, source_id: 1, harness: 'hermes', profile: 'default', display_name: 'Hermes Agent', vendor: 'deepseek' });
 const unpriced = { ...totals, cost_usd: 0, cost_unknown_calls: 10, model: 'deepseek-v4.1-flash', harness: 'hermes', effort: 'low', vendor: 'deepseek' };
+/*
+ * Sources are grouped by account, so the fixture has to be able to prove the grouping.
+ *
+ * `openai` is read by two profiles under the same display name, which is exactly the case
+ * that made the old one-row-per-source layout unreadable. `claude-company` has a single
+ * reader, which must stay one line instead of becoming a one-row table -- and since
+ * `groupSources` names a group after its busiest member, that reader's name is by
+ * construction the account name, so printing it again would be a duplicate. `hermes` has
+ * no account binding, and two unbound profiles, to prove the unbound section keeps every
+ * member visible instead of collapsing them into a single summary row.
+ */
+const telemetry = (freshness, reason = null, gap = false) => ({ freshness, reason, origins: ['fixture'], gap,
+  latest_quota_at: now - 15000, latest_source_fetched_at: now - 15000, latest_usage_at: now, windows: [] });
+const sourceStatus = [
+  // `gap` set: the feed badge already says "usage newer", so the detail line must not repeat it.
+  { source_id: 11, harness: 'codex', profile: 'default', display_name: 'OpenAI Subscription', root_path: '/fixture/codex', vendor: 'openai',
+    account_state: 'active', enabled: true, account_key: 'openai', calls: 120, total_tokens: 3000000, last_event_ts: now - 20000,
+    last_limit_at: now - 15000, last_limit_source_fetched_at: now - 15000, last_limit_reset_at: null, limit_origins: 'fixture',
+    limit_samples: 40, telemetry: telemetry('mixed', null, true) },
+  { source_id: 12, harness: 'claude-code', profile: 'work', display_name: 'OpenAI Subscription', root_path: '/fixture/claude-work', vendor: 'openai',
+    account_state: 'active', enabled: true, account_key: 'openai', calls: 30, total_tokens: 400000, last_event_ts: now - 60000,
+    last_limit_at: now - 15000, last_limit_source_fetched_at: now - 15000, last_limit_reset_at: null, limit_origins: 'fixture',
+    limit_samples: 12, telemetry: telemetry('stale', 'cached_only') },
+  { source_id: 13, harness: 'claude-code', profile: 'default', display_name: 'Claude Company Subscription', root_path: '/fixture/claude', vendor: 'anthropic',
+    account_state: 'active', enabled: true, account_key: 'claude-company', calls: 90, total_tokens: 2000000, last_event_ts: now - 30000,
+    last_limit_at: now - 15000, last_limit_source_fetched_at: now - 15000, last_limit_reset_at: null, limit_origins: 'fixture',
+    limit_samples: 25, telemetry: telemetry('stale', 'usage_newer_than_quota') },
+  { source_id: 14, harness: 'hermes', profile: 'default', display_name: 'Hermes Agent', root_path: '/fixture/hermes', vendor: 'deepseek',
+    account_state: 'waiting', enabled: true, account_key: null, calls: 60, total_tokens: 900000, last_event_ts: now - 300000,
+    last_limit_at: null, last_limit_source_fetched_at: null, last_limit_reset_at: null, limit_origins: null,
+    limit_samples: 0, telemetry: telemetry('unknown', 'no_quota_observed') },
+  { source_id: 15, harness: 'hermes', profile: 'lab', display_name: 'Hermes Lab', root_path: '/fixture/hermes-lab', vendor: 'deepseek',
+    account_state: 'waiting', enabled: false, account_key: null, calls: 5, total_tokens: 60000, last_event_ts: now - 900000,
+    last_limit_at: null, last_limit_source_fetched_at: null, last_limit_reset_at: null, limit_origins: null,
+    limit_samples: 0, telemetry: telemetry('unknown', 'no_quota_observed') },
+];
+const harness = (patch) => ({ harness_key: 'codex:default', harness: 'codex', vendor: 'openai', display_name: 'Codex CLI',
+  parent_harness_key: null, source_ids: [], subscription_keys: [], delegate_keys: [], detected: true, usage_attributed: true,
+  calls: 0, total_tokens: 0, last_event_ts: now, limit_samples: 0, ...patch });
 const overview = (hiddenSubscriptions = []) => ({ now, today,
   week: { ...totals, calls: 250, total_tokens: 16500000 }, allTime: totals,
   bySourceToday: [sourceRow(today)], bySourceAll: [sourceRow(totals)], limits: empty ? [] : limits, subscriptions: empty ? [] : subscriptions,
-  harnesses: [], accounts: subscriptions, sources: [], sourceStatus: [], lastPass: null,
+  // Only the two OpenAI readers are linked to a subscription, so the bound account resolves
+  // names and the unbound group does not -- which is what decides whether the readers table
+  // keeps its subscription column.
+  harnesses: empty ? [] : [harness({ source_ids: [11, 12], subscription_keys: ['openai'], calls: 150, total_tokens: 3400000 })],
+  sources: [], sourceStatus: empty ? [] : sourceStatus, lastPass: null,
   settings: { pet_enabled: true, tray_animation_enabled: true, hidden_subscriptions: hiddenSubscriptions, updated_at: now } });
 
 let server, browser;
@@ -321,6 +364,78 @@ try {
     await page.locator('[role=tabpanel][data-state=active]').waitFor();
     await page.waitForTimeout(250);
     await noOverflow(page, tab);
+    if(tab==='sources') {
+      /*
+       * The Sources page rendered one row per database source, so a single account read by
+       * two profiles appeared as two identically named rows with nothing to tell them apart.
+       * It now groups by account, which means the grouping itself is the behaviour worth
+       * asserting -- and that the two shapes the fixture covers really do differ, because a
+       * group with one reader would pass the same assertions as a group with two if the
+       * members were only ever counted and never rendered.
+       */
+      const groups = page.getByTestId('source-group');
+      assert.equal(await groups.count(), 3, 'two bound accounts and one unbound harness group');
+      assert.deepEqual(
+        await groups.evaluateAll(nodes => nodes.map(n => `${n.dataset.key}:${n.dataset.members}`)),
+        ['openai:2', 'claude-company:1', 'unbound:hermes:2'],
+        'readers collapse under their account, unbound harnesses group by harness',
+      );
+      const openai = page.locator('[data-testid="source-group"][data-key="openai"]');
+      // Two readers means a real table, and both profiles must be named in it.
+      assert.equal(await openai.locator('tbody tr').count(), 2, 'both readers of the account are listed');
+      assert.equal(await openai.getByText('claude-code/work', { exact: true }).count(), 1,
+        'the second reader is distinguishable by its profile');
+      // One reader means no table at all: a header row and a grid to say "one of these".
+      const claude = page.locator('[data-key="claude-company"]');
+      assert.equal(await claude.locator('table').count(), 0, 'a single reader does not get a table header');
+      // And the account name is not echoed back as the reader name, which is what made the
+      // old single-row layout read as the same string twice.
+      assert.equal(await claude.getByText('Claude Company Subscription', { exact: true }).count(), 1,
+        'the group is named once; the reader line adds profile, feed state and tokens instead');
+      assert.equal(await claude.getByText('claude-code/default', { exact: true }).count(), 1,
+        'the reader still identifies which harness profile did the reading');
+      /*
+       * `freshness: 'gap'` and `reason: 'usage_newer_than_quota'` are the same fact from two
+       * directions and the daemon sets both at once, so the badge and the detail line used to
+       * print the same sentence twice. A stale feed whose reason is the same is different: the
+       * badge says "stale" and the line is the only thing that says why.
+       */
+      assert.equal(await openai.getByText('usage newer', { exact: true }).count(), 1,
+        'a gap feed states the fact once');
+      assert.equal(await openai.getByText('usage is newer than quota', { exact: false }).count(), 0,
+        'and the detail line does not repeat it');
+      assert.equal(await claude.getByText('stale', { exact: true }).count(), 1, 'a stale feed keeps its badge');
+      assert.equal(await claude.getByText('usage is newer than quota', { exact: false }).count(), 1,
+        'and the reason the badge does not carry is still spelled out');
+      // Unbound profiles must all stay visible, not collapse into one summary line.
+      const unbound = page.getByTestId('source-unbound');
+      assert.equal(await unbound.getByText('Hermes Lab', { exact: false }).count() > 0, true,
+        'the quieter unbound profile is still shown');
+      /*
+       * A disabled source is still listed precisely because it has history, so the page
+       * cannot say "expired" about its feed and leave the reader hunting for a quota
+       * problem that does not exist.
+       */
+      assert.equal(await unbound.getByText('disabled', { exact: true }).count(), 1,
+        'the switched-off source says so next to its feed state');
+      assert.equal(await page.getByText('disabled', { exact: true }).count(), 1,
+        'and only the one that is actually switched off claims to be');
+      /*
+       * An unbound group is a table of readers with no subscription to name. Keeping the
+       * column makes it the widest thing on the page and fills it with em dashes.
+       */
+      assert.equal(await unbound.getByRole('columnheader', { name: 'Subscription', exact: true }).count(), 0,
+        'a table with no subscription in it drops the subscription column');
+      assert.equal(await unbound.getByRole('columnheader', { name: 'reader', exact: true }).count(), 1,
+        'and keeps the columns that do carry something');
+      // The other side of that rule: a group whose readers are linked to a subscription keeps it.
+      assert.equal(await openai.getByRole('columnheader', { name: 'Subscription', exact: true }).count(), 1,
+        'a group that is linked to a subscription keeps the column');
+      // Scoped to the column cells: the group header carries the same name, and counting the
+      // whole group would pass even if only one of the two readers resolved.
+      assert.equal(await openai.locator('tbody tr td:nth-child(2)').allInnerTexts().then(t => t.filter(v => v === 'OpenAI Subscription').length), 2,
+        'and both readers name the subscription they read');
+    }
     if(tab==='health') {
       /*
        * Unpriced models and ingest errors each used to render a card unconditionally, so a

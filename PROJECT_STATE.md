@@ -131,6 +131,77 @@ One thing left alone on purpose: about 40 i18n keys (`tab.today`, `gauge.alsoVia
 started, per `git grep` against `3e5e4b1`. Removing them is unrelated cleanup, and a few may
 still be reachable through a dynamic key, so it should be its own change with its own review.
 
+## Post-Live track: the other sections (28 Sep 2026)
+
+Live is done and pushed. The remaining tabs were surveyed against the same rule Live was
+built on — show the number once, and only show what changes a decision. Four phases, each
+committed on its own so a regression names its own change.
+
+### Phase 1–2 — duplication and dead structure (`d90bde9`)
+- `sections/trend.tsx` deleted. There is no Trend tab: `App.tsx` redirects `#trend` to
+  `#usage?range=month&view=summary`, and the day-trend sparkline is the last seven points of
+  a series the Usage page already holds.
+- `SourceTable` moved out of `sections/live.tsx` to `components/source-table.tsx` — two
+  sections used it, so it was never a Live component.
+- The all-time cost was printed twice on the cost view: once in the headline card, again in
+  the breakdown's total row, each with its own copy of the pricing modal. The table total is
+  plain text now; the headline keeps the one interactive figure.
+- By-model panels get explicit loading and no-data states.
+
+### Phase 3 — Health (`b152567`)
+- Unpriced models and ingest errors each rendered a titled card unconditionally, so a healthy
+  install showed two boxes whose entire content was "nothing to report". They now collapse
+  into one `Nothing to flag` line and only appear when they have something.
+- `health.allPriced` and `health.noErrors` removed — the emptiness flags were duplicating
+  what the card's presence already said.
+
+### Phase 4 — Sources identity
+The Sources page rendered one row per database source. That is not what a person thinks they
+are looking at: on a real install it was **16 rows for 5 accounts**, with one OpenAI account
+appearing three times under the same name and nothing to distinguish the rows.
+
+- `SourceStatus` now carries `account_key` and `enabled`, both additive query columns.
+  `enabled` was already filtering the `WHERE` clause, so a switched-off source with history
+  was listed but indistinguishable from an active one.
+- `lib/sources.ts` — `groupSources()` groups by `account_key`; sources with no binding go to
+  their own section under a synthetic `unbound:<harness>` key rather than being folded into
+  an invented account.
+- One component for both sections. Accounts and unbound groups are the same shape, and
+  rendering them separately is how the unbound section came to hide its members: a harness
+  with six unbound profiles showed one row and five of them were invisible.
+- A group with one reader gets a line, not a table. A six-column header above one line is a
+  header and a grid to say "one of these" — and since `groupSources` names a group after its
+  busiest member, a lone reader's name is by construction the account's name, so printing it
+  twice says nothing. The line adds what the header omits: which profile read, its feed
+  state, its subscription, its tokens.
+- The readers table drops its subscription column when no member has one. An unbound group is
+  a table of readers with no subscription, so the column is the widest thing on the page and
+  is entirely em dashes.
+- `freshness: 'gap'` and `reason: 'usage_newer_than_quota'` are one fact from two directions
+  and the daemon sets both. The badge and the detail line printed the same sentence twice;
+  the detail line is now suppressed when the badge already carries it, and still shows for a
+  stale feed whose reason the badge does not convey.
+- Freshness labels were hardcoded English in a bilingual app — a Thai build showed
+  "usage newer" beside translated everything else. Translated.
+- The unbound blurb claimed these harnesses "have never been linked to a subscription",
+  which the same page contradicts: a harness can be routed to a subscription without its
+  usage being attributed there. Reworded to say what unbound means.
+- `Overview.accounts` was still declared as a required field after the daemon stopped
+  sending it in the overview response. Removed; `/api/limits` still returns it and keeps its
+  type.
+
+### Sources validation
+- `lib/sources.ts` unit tests: grouping, worst-state, ordering, tie-breaks.
+- `scripts/check-ui.mjs` had **no** `sourceStatus` fixture at all (`sourceStatus: []`), so
+  this page had never been asserted on in a browser. It now has a fixture covering one
+  account with two readers, one with a single reader, and an unbound harness with two
+  profiles, and asserts the grouping, both rendering shapes, the dropped column, the disabled
+  badge, and the de-duplicated gap warning.
+- `scripts/shoot-real.mjs` takes a route and now captures Sources in EN/TH at 1440 and 390,
+  because Sources is the one page whose layout is decided by the shape of real bindings,
+  which a fixture can only invent.
+- Web tests 69 → 75, daemon 74, tray 196, all passing; `check-ui.mjs` 19/19.
+
 ### Live phase 2 state
 - `lib/quota-ring.ts` — arc layout + the time track (where "now" sits in the window, and
   where the current rate runs out). Pure and tested; the projected-exhaustion marker is a

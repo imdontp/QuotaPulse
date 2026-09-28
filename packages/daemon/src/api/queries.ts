@@ -303,6 +303,14 @@ export const sourceStatus = (db: DB) => {
       `SELECT s.id AS source_id, s.harness, s.profile, s.display_name, s.root_path,
               ${harnessVendorSqlCase('s.harness')} AS vendor,
               COALESCE(s.account_state, 'waiting') AS account_state,
+              -- Whether collection is switched on. The WHERE clause below already admits
+              -- disabled sources that have history, so a row here can be a source the user
+              -- has turned off; without this column the page cannot say so.
+              s.enabled AS enabled,
+              -- Several harness profiles can read one account's quota, so the Sources page
+              -- has to group by this to avoid showing one account as three identical rows.
+              -- It is the same key the rest of the quota layer is keyed on.
+              s.account_key AS account_key,
               (SELECT COALESCE(SUM(u.call_count),0) FROM usage_event u WHERE u.source_id = s.id) AS calls,
               (SELECT COALESCE(SUM(u.total_tokens),0) FROM usage_event u WHERE u.source_id = s.id) AS total_tokens,
               (SELECT MAX(u.ts)     FROM usage_event u WHERE u.source_id = s.id) AS last_event_ts,
@@ -327,6 +335,8 @@ export const sourceStatus = (db: DB) => {
       root_path: string;
       vendor: string;
       account_state: AccountState;
+      enabled: number;
+      account_key: string | null;
       calls: number;
       total_tokens: number;
       last_event_ts: number | null;

@@ -1,11 +1,14 @@
 /**
- * Screenshot the Live page from the REAL database, as a copy.
+ * Screenshot the app from the REAL database, as a copy.
  *
  * Why this exists. Every shot so far came from `shoot.mjs` (a scratch database, which
  * renders the "no data yet" case) or from the crisis fixture in `check-ui.mjs` (88% used,
  * a quota feed dead, pricing incomplete). Neither is what a user with a healthy install
  * actually looks at, and a healthy install is the overwhelming majority of the time. A
  * design can look excellent during a crisis and be dead weight the rest of the time.
+ *
+ * Sources is captured too, not just Live: it is the one page whose layout is decided by the
+ * shape of real account bindings, which a fixture can only invent.
  *
  * The database is COPIED, never opened in place. A daemon pointed at the live file would
  * hold a write lock and could add samples to it, which is the one thing a screenshot must
@@ -74,17 +77,24 @@ function seed(theme, lang) {
  * forms, so it is the one thing guaranteed at every width -- and it is the thing being
  * photographed.
  */
-async function settle(page) {
-  await page.waitForSelector('.pulse-stage', { timeout: 30_000 });
-  // The loading placeholder clears once /api/overview lands. A section that renders empty
-  // never shows it at all, so a timeout here is not a failure.
-  await page
-    .waitForFunction(() => !document.body.innerText.includes('loading'), { timeout: 15_000 })
-    .catch(() => {});
+async function settle(page, route) {
+  if (route === 'live') {
+    await page.waitForSelector('.pulse-stage', { timeout: 30_000 });
+    // The loading placeholder clears once /api/overview lands. A section that renders empty
+    // never shows it at all, so a timeout here is not a failure.
+    await page
+      .waitForFunction(() => !document.body.innerText.includes('loading'), { timeout: 15_000 })
+      .catch(() => {});
+  } else {
+    // A section route has no hero, so `.pulse-stage` never appears and waiting for it would
+    // time out on a page that rendered perfectly well. The mounted tabpanel is the thing
+    // that is actually being photographed.
+    await page.locator('[role=tabpanel][data-state=active]').waitFor({ timeout: 30_000 });
+  }
   await page.waitForTimeout(700);
 }
 
-async function shoot(browser, name, { width, height, theme, lang, motion = 'reduce' }) {
+async function shoot(browser, name, { width, height, theme, lang, route = 'live', motion = 'reduce' }) {
   const ctx = await browser.newContext({
     viewport: { width, height },
     colorScheme: theme,
@@ -100,9 +110,9 @@ async function shoot(browser, name, { width, height, theme, lang, motion = 'redu
     if (r.status() >= 400) problems.push(`http ${r.status()} ${r.url()}`);
   });
   await seed(theme, lang)(page);
-  await page.goto(`${BASE}/#live`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`${BASE}/#${route}`, { waitUntil: 'domcontentloaded' });
   try {
-    await settle(page);
+    await settle(page, route);
   } catch (err) {
     // Dump the state rather than leaving a bare timeout to guess at: "resolved to hidden"
     // says nothing about *why* it is hidden, and the first version of this script failed
@@ -181,6 +191,11 @@ try {
   await shoot(browser, 'real-light-1440', { width: 1440, height: 900, theme: 'light', lang: 'en' });
   await shoot(browser, 'real-dark-390', { width: 390, height: 844, theme: 'dark', lang: 'en' });
   await shoot(browser, 'real-th-dark-1440', { width: 1440, height: 900, theme: 'dark', lang: 'th' });
+  // Sources is grouped by account, so the layout has to be judged on the real bindings --
+  // how many accounts, how many readers each, and how much lands in the unbound section.
+  await shoot(browser, 'real-sources-1440', { width: 1440, height: 900, theme: 'dark', lang: 'en', route: 'sources' });
+  await shoot(browser, 'real-sources-th-1440', { width: 1440, height: 900, theme: 'dark', lang: 'th', route: 'sources' });
+  await shoot(browser, 'real-sources-390', { width: 390, height: 844, theme: 'dark', lang: 'en', route: 'sources' });
   console.log('\ndone');
 } finally {
   await browser?.close();
