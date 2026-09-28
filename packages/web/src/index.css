@@ -181,11 +181,6 @@
     pointer-events: none;
   }
 
-  .quota-hero {
-    position: relative;
-    overflow: hidden;
-    background-image: radial-gradient(ellipse at 100% 0%, color-mix(in oklch, var(--brand) 14%, transparent), transparent 65%);
-  }
   .quota-card {
     transition: border-color 180ms ease, box-shadow 180ms ease;
   }
@@ -277,11 +272,6 @@
     border-radius: 9999px;
     background: radial-gradient(circle, color-mix(in oklch, var(--halo, var(--brand)) 26%, transparent), transparent 68%);
     filter: blur(28px);
-  }
-
-  /* Shared by the ring, the level meter and the reset timeline so all three read as one set. */
-  .pulse-track {
-    background: var(--track);
   }
 }
 

@@ -24,7 +24,38 @@ efficiency plus remaining headroom. Pinned by a test.
 2. **Done** — quota ring, aurora field, ticker strip, old hero removed.
 3. **Done** — level rail with badge shelf, reset timeline, one primary-reading rule.
 4. **Done** — diagnostics folded to the foot of the page; subscription cards collapsed.
-5. Remove strings and imports left dead by the above; final verification.
+5. **Done** — dead strings and CSS removed. The redesign is complete.
+
+### Live phase 5 state
+Removed only what *this* work orphaned, and proved which that was rather than guessing:
+`git grep` against the pre-redesign baseline (3e5e4b1) separates keys this track killed from
+keys that were already dead.
+
+- 6 strings orphaned by the deletions: `quota.eyebrow`, `quota.title`, `quota.blurb` (the
+  marketing hero), `quota.availableHelp`, `quota.nextHelp`, `live.unpriced`.
+- 7 strings added during the redesign and then never used: `pulse.burnLabel`,
+  `pulse.active`, `pulse.since`, `progress.activeToday`, `progress.levelUp`,
+  `progress.newBadge`, `progress.quotaHealthy`.
+- CSS: `.quota-hero` (orphaned with the hero) and `.pulse-track` (added and never used — the
+  meters ended up using the `bg-track` utility instead).
+- **Deliberately left alone:** `quota.attention` / `check` / `available` and
+  `pricing.empty` / `partial` / `complete` look unused to a text scan but are built
+  dynamically as `` t(`quota.${status}`) ``. Deleting them would have broken the build
+  quietly at runtime. About 40 other unused keys (`tab.today`, `gauge.alsoVia`,
+  `live.accountQuotas`, the Hermes delegate strings) were already dead before this branch and
+  are not this track's business.
+- `noUnusedLocals` is off in `tsconfig.base.json`, so `tsc` will not catch an unused import.
+  Scanned the fourteen files this track touched instead; none.
+
+### Final validation
+| | before | after |
+|---|---|---|
+| web unit tests | 27 | **65** |
+| `check-ui.mjs` | 19/19 | **19/19** (3 new assertions) |
+| `tsc -b` / `vite build` | green | green |
+| tray | 196/196 | 196/196 (untouched) |
+| daemon | 71/72 | 71/72 (untouched, same catalog-drift failure) |
+| Live height at 1440px | ~1900px | **~1250px** |
 
 ### Live phase 4 state
 The page now opens on quota. Order is the argument: hero, progression, the figures that
@@ -67,9 +98,9 @@ qualify it, resets, per-window reference, activity, then collection health.
   passed whether or not the names were still rendered.
 
 ### Still to do
-- Strings and imports left dead by the removed hero and the collapsed blocks (phase 5).
-- Nothing above the hero but quota. The remaining click-through is the Limits tab, which is
-  the right place for per-subscription detail.
+Nothing required. Two things left alone on purpose, both recorded above: the ~40 i18n keys
+that were already dead before this branch, and the daemon's pricing-catalog vendor test.
+If either should be cleaned up, that is a separate piece of work.
 
 ### Live phase 2 state
 - `lib/quota-ring.ts` — arc layout + the time track (where "now" sits in the window, and
