@@ -244,9 +244,22 @@ try {
   await page.getByText('shown', { exact: true }).first().waitFor();
   await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
   const day = requests.find(r => r.bucket === 'day');
-  assert.equal(Number(day.to) - Number(day.from), 7 * 86400000);
+  // 30 daily buckets, not 7: the streak and the 30-day badge need month-scale history, and
+  // the week sparkline is the last seven points of the same series.
+  assert.equal(Number(day.to) - Number(day.from), 30 * 86400000);
   const hour = requests.find(r => r.bucket === 'hour');
   assert.equal(new Date(Number(hour.from)).getHours(), 0);
+  assert.equal(await page.getByTestId('stat-1').count(), 1, 'the ticker owns the pinned value cell');
+  assert.equal(await page.getByTestId('pulse-ring').count(), 1);
+  assert.equal(await page.locator('[data-pulse-arcs]').getAttribute('data-pulse-arcs'), '3',
+    'one arc per active subscription in the fixture');
+  // The fixture's 4th subscription is inactive, so it must not take a ring slot. It is still
+  // rendered further down the page inside the inactive disclosure, hence the scoped lookup.
+  assert.equal(await page.getByTestId('pulse-hero').getByText('Claude Personal Subscription', { exact: true }).count(), 0,
+    'an inactive subscription stays out of the hero');
+  // Progression is browser-local: the dashboard must not add an endpoint to write it.
+  assert.ok(apiMethods.every(({ path }) => !path.includes('progress')),
+    'progression persists to localStorage, never the daemon');
   await page.goto('http://127.0.0.1:7798/#usage?range=today&view=summary');
   await page.getByRole('button', { name: 'Export CSV', exact: true }).waitFor();
   const [usageDownload] = await Promise.all([

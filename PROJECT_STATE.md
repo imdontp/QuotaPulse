@@ -21,19 +21,38 @@ efficiency plus remaining headroom. Pinned by a test.
 
 ### Phases
 1. **Done** — progression logic, persistence, strings, backdrop tokens.
-2. Quota ring (concentric SVG arcs, one per subscription) + ticker strip.
-3. Level rail and reset timeline.
-4. Demote `data-status.tsx` into a bottom disclosure; drop the old hero; compact table.
-5. Remove dead code; update `scripts/check-ui.mjs`; regenerate all 16 screenshots.
+2. **Done** — quota ring, aurora field, ticker strip, old hero removed.
+3. Level rail and reset timeline (replaces the tall "Next resets" list).
+4. Demote `data-status.tsx` into a bottom disclosure; fold the subscription cards away.
+5. Remove dead code; regenerate all 16 screenshots.
 
-### Live phase 1 state
-- `src/lib/progress.ts` — pure rules. `src/lib/progress-store.ts` — `useProgress`, localStorage.
-- `src/lib/badges.ts` — badge metadata, typed `Record<BadgeId, …>` so a blank tile cannot ship.
-- `index.css` — `.pulse-stage` (intensity driven by measured throughput), `.pulse-halo`.
-- Fixed a latent hazard: the reduced-motion block clamped `animation-duration` but not
-  `animation-iteration-count`, so any future infinite CSS animation would **strobe**. All
-  looping motion is driven from JS via `useReducedMotion`; the clamp is now a backstop.
-- Web tests 27 → 47. `tsc -b` and `vite build` green.
+### Live phase 2 state
+- `lib/quota-ring.ts` — arc layout + the time track (where "now" sits in the window, and
+  where the current rate runs out). Pure and tested; the projected-exhaustion marker is a
+  claim about someone's quota, so its arithmetic is pinned.
+- `lib/live-pulse.ts` — which windows earn an arc, ranked; and the throughput→intensity
+  curve that drives the backdrop. Ranking rule: **the urgency band wins outright, fullness
+  only decides inside a band.** Sorting on usage alone put a 60% window about to run out
+  below a healthy 79% one.
+- `components/aurora-field.tsx` — canvas field. Seeded (so screenshots are byte-stable),
+  blobs pre-rendered to offscreen sprites, DPR capped, loop torn down when the tab hides.
+  One static frame under reduced motion.
+- `components/quota-ring.tsx`, `components/pulse-hero.tsx`, `components/live-ticker.tsx`.
+- `QuotaOverview` → `QuotaDetails`; the marketing hero and its three count tiles are gone
+  (the ring reports the same counts, and the alert bell already reported them too).
+- The day trend query widened 7d → 30d for streak history. The week sparkline is the last
+  seven points of that same series, so no extra round trip.
+- Web tests 47 → 63. `check-ui.mjs` 19/19 with three new assertions (one arc per active
+  subscription, an inactive subscription stays off the ring, and progression never hits the
+  daemon).
+
+### Still to do
+- The tall "Next resets" list is now largely redundant with the countdown in each ring
+  legend row. Phase 3 turns it into a horizontal timeline and keeps the
+  `<ol aria-label="Next resets">` the tests select on.
+- `SubscriptionCard` still picks its own primary reading inline; it should call
+  `primaryReading()` from `lib/live-pulse.ts` so there is one rule, not two.
+- `DataStatusStrip` and `AttentionPanel` are unchanged and still sit at the top.
 
 ### Constraints the redesign must respect
 - `scripts/check-ui.mjs` pins Live's DOM: `stat-1` ValueDisplay, the `Data status` region,

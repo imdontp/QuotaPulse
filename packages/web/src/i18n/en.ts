@@ -537,6 +537,19 @@ export const en = {
   'settings.quietStart': 'Quiet hours start',
   'settings.quietEnd': 'Quiet hours end',
 
+  // The Live pulse: quota as the hero object, everything else folded in around it.
+  'pulse.eyebrow': 'Quota pulse',
+  'pulse.legend': 'Tracked quota windows',
+  'pulse.more': '+{n} more tracked',
+  'pulse.moreTitle': '{n} further subscriptions are tracked and shown on the Limits tab.',
+  'pulse.timeTrack': 'Thin outer track: how much of the window has passed, and where the current rate runs out.',
+  'pulse.burnRate': '{rate}/h',
+  'pulse.burnLabel': 'burn rate',
+  'pulse.emptyTitle': 'No quota readings yet',
+  'pulse.emptyDetail': 'Nothing has reported a quota window. Usage is still being collected.',
+  'pulse.active': 'active',
+  'pulse.since': 'since {age}',
+
   // Live progression. Every award here is about consistency and efficiency, never volume:
   // see the rule at the top of src/lib/progress.ts.
   'progress.level': 'Level',

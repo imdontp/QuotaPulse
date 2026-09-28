@@ -88,7 +88,7 @@ export function windowRank(kind: string): number {
 }
 
 /** How long each quota window covers. Mirrors the tray's rule; see packages/tray/src/limits.ts. */
-const WINDOW_SPAN_MS: Record<string, number> = {
+export const WINDOW_SPAN_MS: Record<string, number> = {
   '5h': 5 * 3_600_000,
   weekly: 7 * 86_400_000,
   weekly_opus: 7 * 86_400_000,

@@ -1,4 +1,4 @@
-import { ArrowUpRight, Clock3, ShieldCheck, TriangleAlert, Radio } from 'lucide-react';
+import { Clock3 } from 'lucide-react';
 import type { Overview } from '@/api';
 import { quotaSummaries, upcomingResets, type SubscriptionSummary } from '@/lib/quota-summary';
 import { useI18n, useT } from '@/i18n';
@@ -60,7 +60,15 @@ export function SubscriptionCard({ item, now }: { item: SubscriptionSummary; now
   </Card>;
 }
 
-export function QuotaOverview({ ov, onOpenLimits }: { ov: Overview; onOpenLimits: () => void }) {
+/**
+ * Per-subscription quota detail, below the pulse hero.
+ *
+ * The marketing hero and its three count tiles used to live here. Both are gone: the count
+ * of windows needing attention was already on the ring, and the tiles repeated the alert
+ * bell and the attention panel a third time. What remains is the thing the ring cannot
+ * show -- every window of every subscription, with the reading detail behind a disclosure.
+ */
+export function QuotaDetails({ ov, onOpenLimits }: { ov: Overview; onOpenLimits: () => void }) {
   const { hiddenSubscriptions } = useI18n();
   const t = useT();
   const f = useFormat();
@@ -68,45 +76,23 @@ export function QuotaOverview({ ov, onOpenLimits }: { ov: Overview; onOpenLimits
   const active = items.filter(s => s.status !== 'inactive');
   const inactive = items.filter(s => s.status === 'inactive');
   const resets = upcomingResets(items, ov.now).slice(0, 5);
-  const metrics = [
-    { status: 'attention', icon: TriangleAlert, tone: 'text-warn' },
-    { status: 'available', icon: ShieldCheck, tone: 'text-ok' },
-    { status: 'check', icon: Radio, tone: 'text-muted-foreground' },
-  ] as const;
-  return <div className="space-y-6">
-    <div className="grid gap-5 xl:grid-cols-3">
-      <Card className="quota-hero min-w-0 xl:col-span-2">
-        <CardContent className="relative p-5 sm:p-6">
-          <p className="text-brand text-xs font-semibold tracking-[0.14em]">{t('quota.eyebrow')}</p>
-          <h2 className="mt-3 text-2xl leading-tight font-semibold tracking-tight sm:text-3xl">{t('quota.title')}</h2>
-          <p className="text-muted-foreground mt-2 max-w-lg text-sm leading-relaxed">{t('quota.blurb')}</p>
-          <div className="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
-            {metrics.map(({ status, icon: Icon, tone }) => <div key={status} className="min-w-0 rounded-xl border border-border/70 bg-background/50 p-3 sm:p-4">
-              <Icon className={`mb-3 size-4 ${tone}`} />
-              <p className="tabular text-3xl font-semibold">{items.filter(s => s.status === status).length}</p>
-              <p className={`mt-1 text-xs leading-relaxed ${tone}`}>{t(`quota.${status}`)}</p>
-            </div>)}
-          </div>
-          <Button className="mt-5 gap-2" onClick={onOpenLimits}>{t('quota.details')}<ArrowUpRight className="size-4" /></Button>
-        </CardContent>
-      </Card>
-      <Card className="min-w-0">
-        <CardHeader><Clock3 className="text-brand size-4" /><CardTitle>{t('quota.next')}</CardTitle></CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground mb-4 text-xs">{t('quota.nextHelp')}</p>
-          {resets.length === 0 ? <p className="text-muted-foreground py-6 text-sm leading-relaxed">{t('quota.noResets')}</p> : <ol tabIndex={0} aria-label={t('quota.next')} className="max-h-64 overflow-y-auto divide-y pr-1">
-            {resets.map(l => <li key={`${l.subscription_key ?? l.account_key}-${l.window_kind}`} className="py-3 first:pt-0">
-              <div className="flex items-start justify-between gap-3">
-                <p className="min-w-0 text-sm font-medium leading-snug">{l.subscription_display_name ?? l.display_name}</p>
-                <span className="text-brand tabular shrink-0 text-sm font-semibold">{f.countdown(l.resets_at, ov.now)}</span>
-              </div>
-              <div className="text-muted-foreground mt-1.5 flex flex-wrap items-center gap-2 text-xs"><span>{f.window(l.window_kind)} · {f.clock(l.resets_at)}</span><FreshnessBadge seconds={l.ageSeconds} /></div>
-            </li>)}
-          </ol>}
-          <button onClick={onOpenLimits} className="text-brand mt-4 rounded text-sm font-medium">{t('quota.details')} →</button>
-        </CardContent>
-      </Card>
-    </div>
+  return <div className="space-y-5">
+    <Card className="min-w-0">
+      <CardHeader><Clock3 className="text-brand size-4" /><CardTitle>{t('quota.next')}</CardTitle></CardHeader>
+      <CardContent>
+        <p className="text-muted-foreground mb-4 text-xs">{t('quota.nextHelp')}</p>
+        {resets.length === 0 ? <p className="text-muted-foreground py-6 text-sm leading-relaxed">{t('quota.noResets')}</p> : <ol tabIndex={0} aria-label={t('quota.next')} className="max-h-64 overflow-y-auto divide-y pr-1">
+          {resets.map(l => <li key={`${l.subscription_key ?? l.account_key}-${l.window_kind}`} className="py-3 first:pt-0">
+            <div className="flex items-start justify-between gap-3">
+              <p className="min-w-0 text-sm font-medium leading-snug">{l.subscription_display_name ?? l.display_name}</p>
+              <span className="text-brand tabular shrink-0 text-sm font-semibold">{f.countdown(l.resets_at, ov.now)}</span>
+            </div>
+            <div className="text-muted-foreground mt-1.5 flex flex-wrap items-center gap-2 text-xs"><span>{f.window(l.window_kind)} · {f.clock(l.resets_at)}</span><FreshnessBadge seconds={l.ageSeconds} /></div>
+          </li>)}
+        </ol>}
+        <button onClick={onOpenLimits} className="text-brand mt-4 rounded text-sm font-medium">{t('quota.details')} →</button>
+      </CardContent>
+    </Card>
     <div className="flex flex-wrap items-baseline justify-between gap-2">
       <h2 className="text-lg font-semibold">{t('live.subscriptionGroup')}</h2>
       <p className="text-muted-foreground text-xs">{t('quota.availableHelp')}</p>
