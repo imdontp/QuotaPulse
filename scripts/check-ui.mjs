@@ -152,6 +152,16 @@ try {
   browser = await chromium.launch({ channel: 'chrome', headless: true });
   const { context, page } = await contextFor();
   await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
+  /*
+   * The attention panel and the status strip are folded into a "Data health" disclosure at
+   * the foot of the page now, so both have to be opened before they can be asserted on. The
+   * summary line has to report health on its own, though: a disclosure that only says
+   * "details" would let a stale quota feed look like a clean page.
+   */
+  const health = page.getByTestId('data-health');
+  await health.getByText('All feeds reporting', { exact: false }).or(
+    health.getByText(/feed\(s\) to check/)).first().waitFor();
+  await health.locator('summary').click();
   await page.getByRole('region', { name: 'Data status' }).waitFor();
   await page.getByText('What needs your attention', { exact: true }).waitFor();
   await page.evaluate(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true })));
@@ -236,6 +246,11 @@ try {
   await page.getByText('hidden', { exact: true }).first().waitFor();
   await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
   assert.equal(await page.locator('.quota-card').filter({ hasText: 'OpenAI Subscription' }).count(), 0);
+  // The subscription cards are collapsed behind a disclosure now, so a count of zero has to
+  // be paired with a positive case or it proves nothing about the hidden preference.
+  assert.equal(await page.getByTestId('subscription-detail').count(), 1);
+  assert.equal(await page.locator('.quota-card').filter({ hasText: 'Claude Company Subscription' }).count(), 1,
+    'a visible subscription is still present in the collapsed detail');
   const resets = page.getByRole('list', { name: 'Next resets', exact: true });
   assert.equal(await resets.getByText('OpenAI Subscription', { exact: true }).count(), 0);
   // Pair the above with its positive case, or the count of zero proves nothing: the strip

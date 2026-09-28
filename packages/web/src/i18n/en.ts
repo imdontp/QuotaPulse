@@ -550,6 +550,11 @@ export const en = {
   'pulse.emptyDetail': 'Nothing has reported a quota window. Usage is still being collected.',
   'pulse.active': 'active',
   'pulse.since': 'since {age}',
+  'dataHealth.title': 'Data health',
+  'dataHealth.ok': 'All feeds reporting',
+  'dataHealth.attention': '{n} feed(s) to check',
+  'dataHealth.expand': 'Details',
+  'quota.detailSummary': '{n} tracked · per-window detail',
 
   // Live progression. Every award here is about consistency and efficiency, never volume:
   // see the rule at the top of src/lib/progress.ts.

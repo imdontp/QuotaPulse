@@ -1,4 +1,4 @@
-import { Clock3 } from 'lucide-react';
+import { ChevronDown, Clock3 } from 'lucide-react';
 import type { Overview } from '@/api';
 import { quotaSummaries, type SubscriptionSummary } from '@/lib/quota-summary';
 import { primaryReading } from '@/lib/live-pulse';
@@ -70,6 +70,12 @@ export function SubscriptionCard({ item, now }: { item: SubscriptionSummary; now
  * the reset times are now in the hero's legend rows and the proportional strip. What
  * remains is the one thing the ring cannot show -- every window of every subscription, with
  * the reading detail behind a disclosure.
+ *
+ * Collapsed by default. The ring already answers "how much room is left" for every
+ * subscription, and these cards only add the secondary windows and the raw reading
+ * provenance, which is reference rather than headline. The empty state is the exception and
+ * stays open: if nothing is being tracked at all, that is the one message on the page that
+ * must not be hidden behind a click.
  */
 export function QuotaDetails({ ov }: { ov: Overview }) {
   const { hiddenSubscriptions } = useI18n();
@@ -78,17 +84,25 @@ export function QuotaDetails({ ov }: { ov: Overview }) {
   const active = items.filter(s => s.status !== 'inactive');
   const inactive = items.filter(s => s.status === 'inactive');
   return <div className="space-y-4">
-    <div className="flex flex-wrap items-baseline justify-between gap-2">
-      <h2 className="text-lg font-semibold">{t('live.subscriptionGroup')}</h2>
-      <p className="text-muted-foreground text-xs">{t('quota.availableHelp')}</p>
-    </div>
-    {items.length === 0 && <Card><CardContent className="pt-5 text-sm text-muted-foreground">{ov.subscriptions.length === 0 ? t('quota.noSubscriptions') : t('live.allSubscriptionsHidden')}</CardContent></Card>}
-    <div className="grid min-w-0 gap-5 md:grid-cols-2 xl:grid-cols-3">
-      {active.map(item => <SubscriptionCard key={item.subscription.subscription_key} item={item} now={ov.now} />)}
-    </div>
-    {inactive.length > 0 && <details className="quota-details rounded-xl border bg-card/50 px-5 py-3">
-      <summary className="cursor-pointer rounded text-sm text-muted-foreground">{t('quota.inactive')} <span className="tabular">({inactive.length})</span></summary>
-      <div className="mt-4 grid gap-4 md:grid-cols-2">{inactive.map(item => <SubscriptionCard key={item.subscription.subscription_key} item={item} now={ov.now} />)}</div>
-    </details>}
+    {items.length === 0 ? (
+      <Card><CardContent className="pt-5 text-sm text-muted-foreground">{ov.subscriptions.length === 0 ? t('quota.noSubscriptions') : t('live.allSubscriptionsHidden')}</CardContent></Card>
+    ) : (
+      <details className="quota-details rounded-2xl border" data-testid="subscription-detail">
+        <summary className="group flex cursor-pointer list-none flex-wrap items-center gap-x-2.5 gap-y-1 rounded-2xl px-4 py-3">
+          <ChevronDown className="text-muted-foreground size-3.5 shrink-0 transition-transform duration-200 group-open:rotate-180" />
+          <span className="text-[13px] font-semibold">{t('live.subscriptionGroup')}</span>
+          <span className="text-muted-foreground text-[11.5px]">{t('quota.detailSummary', { n: items.length })}</span>
+        </summary>
+        <div className="space-y-4 px-3 pb-3">
+          <div className="grid min-w-0 gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {active.map(item => <SubscriptionCard key={item.subscription.subscription_key} item={item} now={ov.now} />)}
+          </div>
+          {inactive.length > 0 && <details className="quota-details rounded-xl border bg-card/50 px-5 py-3">
+            <summary className="cursor-pointer rounded text-sm text-muted-foreground">{t('quota.inactive')} <span className="tabular">({inactive.length})</span></summary>
+            <div className="mt-4 grid gap-4 md:grid-cols-2">{inactive.map(item => <SubscriptionCard key={item.subscription.subscription_key} item={item} now={ov.now} />)}</div>
+          </details>}
+        </div>
+      </details>
+    )}
   </div>;
 }

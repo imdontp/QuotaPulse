@@ -1,4 +1,4 @@
-import { AlertTriangle, CheckCircle2, CircleHelp, Database, Radio, WifiOff } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, ChevronDown, CircleHelp, Database, Radio, WifiOff } from 'lucide-react';
 import type { Overview } from '@/api';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -18,14 +18,34 @@ const toneClass: Record<Tone, string> = {
   muted: 'border-border/70 bg-muted/20 text-muted-foreground',
 };
 
-function StatusIcon({ tone, kind }: { tone: Tone; kind: 'connection' | 'ingest' | 'quota' | 'pricing' }) {
+function StatusIcon({ tone, kind }: { tone: Tone; kind: DataStatusItem['kind'] }) {
   const Icon = tone === 'crit' ? WifiOff : kind === 'quota' ? Radio : kind === 'pricing' ? CircleHelp : kind === 'ingest' ? Database : CheckCircle2;
   return <Icon className="size-3.5 shrink-0" />;
 }
 
-/** A compact explanation of transport, ingest, quota freshness and price coverage. */
-export function DataStatusStrip({ ov }: { ov: Overview }) {
-  const t = useT();
+type Translate = ReturnType<typeof useT>;
+
+export interface DataStatusItem {
+  key: 'connection' | 'ingest' | 'quota' | 'pricing';
+  kind: DataStatusItem['key'];
+  label: string;
+  value: string;
+  detail: string;
+  tone: Tone;
+}
+
+/**
+ * Transport, ingest, quota freshness and price coverage, as one list.
+ *
+ * Extracted so the collapsed summary of the disclosure and the expanded strip below it are
+ * two views of one computation. Derived separately, the closed page would have been
+ * reporting health from a second, quietly divergent copy of these rules.
+ *
+ * Named as a hook because it reads the refresh controller and the currency preference; the
+ * `t` argument is passed in rather than taken from `useT` so a caller can render one view
+ * of the list inside another component's existing translation context.
+ */
+export function useDataStatusItems(ov: Overview, t: Translate): DataStatusItem[] {
   const f = useFormat();
   const refresh = useRefreshStatus();
   const active = ov.sourceStatus ?? [];
@@ -41,13 +61,18 @@ export function DataStatusStrip({ ov }: { ov: Overview }) {
   const quotaLabel = active.length === 0 ? t('status.noQuota') : quotaGap ? t('status.quotaGap') : quotaStale ? t('status.quotaStale') : t('status.fresh');
   const pricingLabel = ov.today.calls === 0 ? t('status.noUsage') : ov.today.cost_unknown_calls > 0 ? t('status.pricingPartial', { n: ov.today.cost_unknown_calls }) : t('status.pricingComplete');
 
-  const items = [
-    { key: 'connection', kind: 'connection' as const, label: t('status.connection'), value: refresh.state === 'live' ? t('status.connected') : refresh.state, detail: last, tone: connectionTone },
-    { key: 'ingest', kind: 'ingest' as const, label: t('status.ingest'), value: ingestLabel, detail: pass ? t('status.passDetail', { events: pass.newEvents, limits: pass.newLimits }) : t('status.waiting'), tone: ingestTone },
-    { key: 'quota', kind: 'quota' as const, label: t('status.quota'), value: quotaLabel, detail: active.length ? t('status.sourceCount', { n: active.length }) : t('status.checkSources'), tone: quotaTone },
-    { key: 'pricing', kind: 'pricing' as const, label: t('status.pricing'), value: pricingLabel, detail: t('status.valueDetail'), tone: priceTone },
+  return [
+    { key: 'connection', kind: 'connection', label: t('status.connection'), value: refresh.state === 'live' ? t('status.connected') : refresh.state, detail: last, tone: connectionTone },
+    { key: 'ingest', kind: 'ingest', label: t('status.ingest'), value: ingestLabel, detail: pass ? t('status.passDetail', { events: pass.newEvents, limits: pass.newLimits }) : t('status.waiting'), tone: ingestTone },
+    { key: 'quota', kind: 'quota', label: t('status.quota'), value: quotaLabel, detail: active.length ? t('status.sourceCount', { n: active.length }) : t('status.checkSources'), tone: quotaTone },
+    { key: 'pricing', kind: 'pricing', label: t('status.pricing'), value: pricingLabel, detail: t('status.valueDetail'), tone: priceTone },
   ];
+}
 
+/** A compact explanation of transport, ingest, quota freshness and price coverage. */
+export function DataStatusStrip({ ov }: { ov: Overview }) {
+  const t = useT();
+  const items = useDataStatusItems(ov, t);
   return (
     <section aria-label={t('status.title')} className="grid min-w-0 gap-2 sm:grid-cols-2 xl:grid-cols-4">
       {items.map((item) => (
@@ -76,14 +101,12 @@ interface AttentionItem {
   action?: 'limits' | 'health' | 'cost';
 }
 
-function attentionItems(ov: Overview, t: ReturnType<typeof useT>): AttentionItem[] {
+function attentionItems(ov: Overview, t: Translate): AttentionItem[] {
   const items: AttentionItem[] = [];
   const primary = primaryLimits(ov.limits, ov.now).map((entry) => entry.primary);
-  const urgentOwners = new Set<string>();
   for (const limit of primary) {
     const owner = `${limit.subscription_key ?? limit.account_key ?? limit.source_id}:${limit.window_kind}`;
     if (willExhaust(limit, ov.now)) {
-      urgentOwners.add(owner);
       items.push({ id: `exhaust-${owner}`, tone: 'crit', action: 'limits', title: t('attention.exhaustTitle', { name: limit.subscription_display_name ?? limit.display_name }), detail: t('attention.exhaustDetail', { window: limit.window_kind }) });
     } else if ((limit.used_percent ?? 0) >= 80 && (limit.ageSeconds == null || limit.ageSeconds < 3600)) {
       items.push({ id: `high-${owner}`, tone: 'warn', action: 'limits', title: t('attention.highTitle', { name: limit.subscription_display_name ?? limit.display_name }), detail: t('attention.highDetail', { pct: Math.round(limit.used_percent ?? 0), window: limit.window_kind }) });
@@ -134,5 +157,61 @@ export function AttentionPanel({ ov, onOpenLimits, onOpenHealth, onOpenCost }: {
         )}
       </CardContent>
     </Card>
+  );
+}
+
+/**
+ * Everything about the *collection*, folded to the bottom of the page.
+ *
+ * This used to be the first thing on Live, and it was the wrong place. Connection state is
+ * already on the sidebar, the attention items overlap the ring and the alert bell, and the
+ * status strip is plumbing rather than quota -- so the page opened with four diagnostics
+ * cards before showing a single percentage.
+ *
+ * The collapsed line has to earn its keep, though: a disclosure that only says "more" tells
+ * the user nothing until they click, and a page that looks healthy while a quota feed has
+ * gone stale is exactly the failure this is here to prevent. So the summary carries the
+ * worst status, and a problem tone is enough reason to open it.
+ */
+export function DataHealthDisclosure({
+  ov,
+  onOpenLimits,
+  onOpenHealth,
+  onOpenCost,
+}: {
+  ov: Overview;
+  onOpenLimits: () => void;
+  onOpenHealth: () => void;
+  onOpenCost: () => void;
+}) {
+  const t = useT();
+  const items = useDataStatusItems(ov, t);
+  const problems = items.filter((item) => item.tone === 'warn' || item.tone === 'crit');
+  const worst: Tone = problems.some((p) => p.tone === 'crit') ? 'crit' : problems.length > 0 ? 'warn' : 'ok';
+  const dot = { ok: 'bg-ok', warn: 'bg-warn', crit: 'bg-crit', muted: 'bg-muted-foreground' }[worst];
+
+  return (
+    <details className="rounded-2xl border" data-testid="data-health">
+      <summary
+        className="group flex cursor-pointer list-none items-center gap-2.5 rounded-2xl px-4 py-3"
+        aria-label={t('dataHealth.title')}
+      >
+        <span aria-hidden="true" className={cn('size-2 shrink-0 rounded-full', dot)} />
+        <span className="text-[13px] font-semibold">{t('dataHealth.title')}</span>
+        <span className="text-muted-foreground min-w-0 flex-1 truncate text-[11.5px]">
+          {problems.length === 0
+            ? t('dataHealth.ok')
+            : t('dataHealth.attention', { n: problems.length })}
+        </span>
+        <span className="text-muted-foreground shrink-0 text-[11px]">{t('dataHealth.expand')}</span>
+        {/* A bordered bar with text and no arrow does not read as something to click, and
+            the whole point of moving this block is that it can be left closed. */}
+        <ChevronDown className="text-muted-foreground size-3.5 shrink-0 transition-transform duration-200 group-open:rotate-180" />
+      </summary>
+      <div className="space-y-3 px-3 pb-3">
+        <DataStatusStrip ov={ov} />
+        <AttentionPanel ov={ov} onOpenLimits={onOpenLimits} onOpenHealth={onOpenHealth} onOpenCost={onOpenCost} />
+      </div>
+    </details>
   );
 }

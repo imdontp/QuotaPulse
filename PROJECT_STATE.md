@@ -23,8 +23,31 @@ efficiency plus remaining headroom. Pinned by a test.
 1. **Done** — progression logic, persistence, strings, backdrop tokens.
 2. **Done** — quota ring, aurora field, ticker strip, old hero removed.
 3. **Done** — level rail with badge shelf, reset timeline, one primary-reading rule.
-4. Demote `data-status.tsx` into a bottom disclosure; fold the subscription cards away.
-5. Remove dead code; regenerate all 16 screenshots.
+4. **Done** — diagnostics folded to the foot of the page; subscription cards collapsed.
+5. Remove strings and imports left dead by the above; final verification.
+
+### Live phase 4 state
+The page now opens on quota. Order is the argument: hero, progression, the figures that
+qualify it, resets, per-window reference, activity, then collection health.
+
+- `DataHealthDisclosure` folds `DataStatusStrip` and `AttentionPanel` into one closed
+  disclosure at the bottom. **Its summary line has to report health on its own** — a
+  disclosure that only says "details" would let a stale quota feed look like a clean page,
+  which is the exact failure the block exists to catch. It carries the worst tone as a dot
+  plus a count.
+- `useDataStatusItems` extracted so the collapsed summary and the expanded strip are two
+  views of one computation; derived separately, the closed page would report health from a
+  second, quietly divergent copy of the rules. Removed a dead `urgentOwners` set found
+  alongside.
+- `QuotaDetails` is collapsed to "Subscription · N tracked · per-window detail". The ring
+  already answers "how much room is left" for every subscription, so the cards are
+  reference. **The empty state is the exception and stays open** — if nothing is tracked at
+  all, that must not hide behind a click.
+- Both summaries gained a rotating chevron. A bordered bar with text and no arrow does not
+  read as something to click, which is fatal for a block whose purpose is to be left closed.
+- Page height at 1440px: ~1900px → ~1250px.
+- `check-ui.mjs` updated for the two assertions that had to change, and both count-of-zero
+  checks given a positive counterpart.
 
 ### Live phase 3 state
 - `components/progression-rail.tsx` — level dial, streak, cache share, badge shelf. The
@@ -44,12 +67,9 @@ efficiency plus remaining headroom. Pinned by a test.
   passed whether or not the names were still rendered.
 
 ### Still to do
-- `DataStatusStrip` and `AttentionPanel` are unchanged and still sit at the top, which is
-  the largest remaining redundancy: the sidebar already carries the connection state, and
-  the panel's three items overlap both the ring and the alert bell.
-- The subscription cards are the last big block. They carry the per-window `GaugeStack` and
-  the reading details, so they cannot simply be deleted — but they could become a
-  disclosure under the ring.
+- Strings and imports left dead by the removed hero and the collapsed blocks (phase 5).
+- Nothing above the hero but quota. The remaining click-through is the Limits tab, which is
+  the right place for per-subscription detail.
 
 ### Live phase 2 state
 - `lib/quota-ring.ts` — arc layout + the time track (where "now" sits in the window, and

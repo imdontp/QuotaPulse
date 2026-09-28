@@ -11,7 +11,7 @@ import { useLiveRefresh } from '@/lib/use-live';
 import { statSeries } from '@/lib/quota-summary';
 import { QuotaDetails } from '@/components/quota-overview';
 import { ValueDisplay } from '@/components/value-display';
-import { AttentionPanel, DataStatusStrip } from '@/components/data-status';
+import { DataHealthDisclosure } from '@/components/data-status';
 import { PulseHero } from '@/components/pulse-hero';
 import { LiveTicker } from '@/components/live-ticker';
 import { ProgressionRail } from '@/components/progression-rail';
@@ -66,9 +66,14 @@ export function LiveSection({ ov, onOpenLimits, onOpenHealth, onOpenCost }: { ov
   const intensity = intensityOf(recentRate(spark.tokens));
   const progress = useProgress(ov, firstActivityHour(spark.tokens));
 
+  /*
+   * Order is the argument: quota first, then the figures that qualify it, then the
+   * per-window reference, then collection health last. Live used to open with four
+   * diagnostic cards and a "what needs your attention" panel before showing a single
+   * percentage -- and the panel's items were largely things the ring and the alert bell
+   * had already said.
+   */
   return <div className="space-y-5">
-    <DataStatusStrip ov={ov} />
-    <AttentionPanel ov={ov} onOpenLimits={onOpenLimits} onOpenHealth={onOpenHealth ?? onOpenLimits} onOpenCost={onOpenCost ?? onOpenLimits} />
     <PulseHero model={model} now={ov.now} intensity={intensity} progress={progress} onOpenLimits={onOpenLimits} />
     <ProgressionRail progress={progress} />
     <LiveTicker ov={ov} scope={pricingScope} weekSeries={spark.week} cacheShare={cacheShare} />
@@ -77,6 +82,7 @@ export function LiveSection({ ov, onOpenLimits, onOpenHealth, onOpenCost }: { ov
     </Card>
     <QuotaDetails ov={ov} />
     <Card className="min-w-0"><CardHeader><CardTitle>{t('live.activityToday')}</CardTitle><span className="text-muted-foreground text-xs">{t('live.byHarness')}</span></CardHeader><SourceTable rows={ov.bySourceToday} empty={t('live.noActivity')} scope={pricingScope} /></Card>
+    <DataHealthDisclosure ov={ov} onOpenLimits={onOpenLimits} onOpenHealth={onOpenHealth ?? onOpenLimits} onOpenCost={onOpenCost ?? onOpenLimits} />
   </div>;
 }
 
