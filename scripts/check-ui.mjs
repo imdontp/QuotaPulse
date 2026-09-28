@@ -321,6 +321,23 @@ try {
     await page.locator('[role=tabpanel][data-state=active]').waitFor();
     await page.waitForTimeout(250);
     await noOverflow(page, tab);
+    if(tab==='health') {
+      /*
+       * Unpriced models and ingest errors each used to render a card unconditionally, so a
+       * healthy install showed two titled boxes whose entire contents were "nothing to
+       * report". The fixture has neither, so this is exactly the state that was broken.
+       */
+      assert.equal(
+        await page.getByText('Nothing to flag', { exact: true }).count(),
+        1,
+        'a clean install gets one clear line, not two empty cards',
+      );
+      assert.equal(
+        await page.getByText('Ingest errors', { exact: true }).count(),
+        0,
+        'the ingest-errors card must not exist with no errors to list',
+      );
+    }
     if(tab==='cost') {
       /*
        * The all-time cost used to be printed twice on this one view: once in the headline

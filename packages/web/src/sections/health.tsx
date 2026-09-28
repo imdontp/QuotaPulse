@@ -138,79 +138,102 @@ export function HealthSection() {
         )}
       </Card>
 
-      <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-2">
-        <Card>
-          <CardHeader className="flex-col items-start gap-1">
-              <CardTitle>{t('health.unpricedModels')}</CardTitle>
-            <CardDescription className="note">{t('health.unpricedBlurb')}</CardDescription>
-            <CardDescription>
-              {t('health.catalogCount', { n: h.pricedModels.toLocaleString() })}
-              {h.catalogPath && (
-                <>
-                  {' · '}
-                  <span className={h.catalogAgeMs != null && h.catalogAgeMs > 30 * 86_400_000 ? 'text-warn' : undefined}>
-                    {h.catalogAgeMs != null
-                      ? t('health.catalogAge', { age: age(h.catalogAgeMs / 1000) })
-                      : t('health.catalogUnknownAge')}
-                  </span>
-                  {!h.catalogOwn && <> · {t('health.catalogBorrowed')}</>}
-                </>
-              )}
-              {!h.catalogPath && <> · {t('health.catalogMissing')}</>}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {h.unpriced.length === 0 ? (
-              <Empty>{t('health.allPriced')}</Empty>
-            ) : (
-              <BarList
-                rows={h.unpriced.map((u) => ({
-                  label: u.model,
-                  value: u.calls,
-                  display: t('health.callsN', { n: u.calls.toLocaleString() }),
-                  color: vendorColor(u.vendor ?? 'unknown'),
-                  icon: <VendorIcon vendor={u.vendor ?? 'unknown'} label={vendorLabel(u.vendor ?? 'unknown')} />,
-                }))}
-              />
-            )}
-          </CardContent>
-        </Card>
+      {/*
+        Diagnostics, in ONE card.
 
+        These were two cards that each rendered unconditionally, so a healthy install showed
+        two titled boxes whose entire contents were "nothing to report". That is a card
+        telling the user a thing is wrong when nothing is, which is worse than saying
+        nothing: it trains people to stop reading the card that would have mattered.
+
+        They were not duplicates of `DataStatusStrip`, either, and the survey called them
+        that. The strip is the summary -- "2 calls unpriced", "ingest ok" -- and this is the
+        detail: which models, how many calls each, which target failed. Summary and detail
+        are the same relationship the alert bell and the alert list already have, and the
+        detail is worth keeping. What is not worth keeping is paying for two empty boxes.
+
+        So: one card, both lists inside it, and a single line when there is nothing wrong.
+        No information is lost -- the empty branches said "all priced" and "no errors", which
+        the clear line also says.
+      */}
+      {(h.unpriced.length > 0 || h.errors.length > 0) ? (
+        <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-2">
+          {h.unpriced.length > 0 && (
+            <Card>
+              <CardHeader className="flex-col items-start gap-1">
+                <CardTitle>{t('health.unpricedModels')}</CardTitle>
+                <CardDescription className="note">{t('health.unpricedBlurb')}</CardDescription>
+                <CardDescription>
+                  {t('health.catalogCount', { n: h.pricedModels.toLocaleString() })}
+                  {h.catalogPath && (
+                    <>
+                      {' · '}
+                      <span className={h.catalogAgeMs != null && h.catalogAgeMs > 30 * 86_400_000 ? 'text-warn' : undefined}>
+                        {h.catalogAgeMs != null
+                          ? t('health.catalogAge', { age: age(h.catalogAgeMs / 1000) })
+                          : t('health.catalogUnknownAge')}
+                      </span>
+                      {!h.catalogOwn && <> · {t('health.catalogBorrowed')}</>}
+                    </>
+                  )}
+                  {!h.catalogPath && <> · {t('health.catalogMissing')}</>}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <BarList
+                  rows={h.unpriced.map((u) => ({
+                    label: u.model,
+                    value: u.calls,
+                    display: t('health.callsN', { n: u.calls.toLocaleString() }),
+                    color: vendorColor(u.vendor ?? 'unknown'),
+                    icon: <VendorIcon vendor={u.vendor ?? 'unknown'} label={vendorLabel(u.vendor ?? 'unknown')} />,
+                  }))}
+                />
+              </CardContent>
+            </Card>
+          )}
+
+          {h.errors.length > 0 && (
+            <Card>
+              <CardHeader className="flex-col items-start gap-1">
+                <CardTitle>{t('health.ingestErrors')}</CardTitle>
+                <CardDescription className="note">{t('health.errorsBlurb')}</CardDescription>
+              </CardHeader>
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead>{t('col.source')}</TableHead>
+                    <TableHead>{t('health.target')}</TableHead>
+                    <TableHead className="text-right">{t('health.count')}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {h.errors.map((e, i) => (
+                    <TableRow key={i}>
+                      <TableCell>
+                        {String(e.harness)}/{String(e.profile)}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground/70 font-mono text-[11px]">
+                        {String(e.target_key)}
+                      </TableCell>
+                      <TableCell className="tabular text-right font-mono">
+                        {Number(e.error_count)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Card>
+          )}
+        </div>
+      ) : (
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle>{t('health.ingestErrors')}</CardTitle>
-            <CardDescription className="note">{t('health.errorsBlurb')}</CardDescription>
+            <CardTitle>{t('health.clear')}</CardTitle>
+            <CardDescription className="note">{t('health.clearBlurb')}</CardDescription>
           </CardHeader>
-          {h.errors.length === 0 ? (
-            <Empty>{t('health.noErrors')}</Empty>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="hover:bg-transparent">
-                  <TableHead>{t('col.source')}</TableHead>
-                  <TableHead>{t('health.target')}</TableHead>
-                  <TableHead className="text-right">{t('health.count')}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {h.errors.map((e, i) => (
-                  <TableRow key={i}>
-                    <TableCell>
-                      {String(e.harness)}/{String(e.profile)}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground/70 font-mono text-[11px]">
-                      {String(e.target_key)}
-                    </TableCell>
-                    <TableCell className="tabular text-right font-mono">
-                      {Number(e.error_count)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
         </Card>
-      </div>
+      )}
     </div>
   );
 }

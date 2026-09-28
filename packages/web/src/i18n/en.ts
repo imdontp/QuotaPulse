@@ -510,11 +510,12 @@ export const en = {
   'health.catalogCount': '{n} models in the catalog',
   'health.unpricedBlurb':
     'Models we saw in use that carry no published price, so their calls cannot be valued. Those calls are excluded from every money figure in this app — never counted as zero — which is why a total that leaves some out is marked with a trailing +. A harness’s internal pseudo-models (Codex writes codex-auto-review for its own review runs) and locally-run models will never appear in a price catalog, so they stay here permanently.',
-  'health.allPriced': 'every observed model has a published price',
   'health.ingestErrors': 'Ingest errors',
+  'health.clear': 'Nothing to flag',
+  'health.clearBlurb':
+    'Every observed model has a published price, and no reader has reported an error. These two lists replace a pair of cards that used to render whether or not they had anything to say.',
   'health.errorsBlurb':
     'Reads that failed, one row per target. The count is how many passes in a row it has failed, not a lifetime total: it clears itself the moment the target reads cleanly again. A failure filed under (adapter) escaped before any single file could be blamed.',
-  'health.noErrors': 'no read errors',
   'health.target': 'Target',
   'health.count': 'Count',
   'health.callsN': '{n} calls',
