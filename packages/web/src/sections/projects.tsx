@@ -20,9 +20,7 @@ import { useFormat } from '@/i18n/format';
 import { useT } from '@/i18n';
 import { useLiveRefresh } from '@/lib/use-live';
 import { ValueDisplay } from '@/components/value-display';
-import { AnalysisFilterBar, useAnalysisFilters } from '@/components/analysis-filters';
 
-const DAY = 86_400_000;
 
 /** Turns a key -> vendor lookup into the icon renderer the bars ask for. */
 const markOf = (vendors: Map<string, string>) => (key: string) => {
@@ -142,12 +140,10 @@ function Cut({
   );
 }
 
-export function ProjectsSection({ sources = [], period, sourceId }: { sources?: Array<{ id: number; display_name: string }>; period?: UsagePeriod; sourceId?: number }) {
+export function ProjectsSection({ period, sourceId }: { period?: UsagePeriod; sourceId?: number }) {
   const t = useT();
   const f = useFormat();
   const [metric, setMetric] = useState<BarMetric>('total_tokens');
-  const [filters, setFilters, clearFilters] = useAnalysisFilters();
-  const days = filters.days;
   const [rows, setRows] = useState<ProjectRow[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -155,10 +151,13 @@ export function ProjectsSection({ sources = [], period, sourceId }: { sources?: 
 
   useLiveRefresh(() => {
     const to = period?.to ?? Date.now();
-    // 0 days means everything: the first event predates any range we offer.
-    const from = period?.from ?? (days === 0 ? 0 : to - days * DAY);
+    // `period` is optional in the signature so the section can be embedded, but the only
+    // caller always supplies it, so these defaults are a guard rather than a mode: without a
+    // period there is no range to ask for, and the previous behaviour -- a range built from
+    // filter state that could never be set -- would have silently queried all time.
+    const from = period?.from ?? 0;
     return api
-      .projects({ from, to, sourceId: period ? sourceId : filters.sourceId })
+      .projects({ from, to, sourceId })
       .then((r) => {
         setRows(r.rows);
         setErr(null);
@@ -168,7 +167,7 @@ export function ProjectsSection({ sources = [], period, sourceId }: { sources?: 
         setErr(String(e));
         throw e;
       });
-  }, [days, filters.sourceId, period?.from, period?.to, sourceId]);
+  }, [period?.from, period?.to, sourceId]);
 
   /**
    * Level one: one bar per project, already segmented by harness. The question "which
@@ -285,7 +284,19 @@ export function ProjectsSection({ sources = [], period, sourceId }: { sources?: 
 
   return (
     <div className="flex flex-col gap-3.5">
-    {!period && <AnalysisFilterBar filters={filters} sources={sources} allowAllTime onChange={setFilters} onClear={clearFilters} />}
+    {/*
+     * The analysis filter bar used to be here, behind `!period`.
+     *
+     * `ProjectsSection` is called from exactly one place -- `usage.tsx`, as a sub-view of the
+     * usage page -- and it always passes `period`. So this guard was never true, the bar never
+     * rendered, and with it the `filters.days` and `filters.sourceId` the hook existed to
+     * produce went unused too. The range the section shows comes from the usage range bar
+     * above it, which is live and is the better control for the same decision.
+     *
+     * Worth writing down because an audit called the whole module dead, which was wrong: it
+     * is imported. What is dead is the branch, and deleting the file on the strength of that
+     * report would have taken a feature off a working page.
+     */}
     <Stagger className="flex flex-col gap-3.5">
       <StaggerItem>
         <div className="flex flex-wrap items-end justify-between gap-3">

@@ -386,6 +386,38 @@ called from exactly one place and always passes a `period`, so the `!period` gua
 bar is never true, and with it the `filters.days` and `filters.sourceId` the hook was feeding
 it. Deleting on the audit's word would have removed a feature from a live page.
 
+### Phase E2–E5 — removing what is not reachable, and what is not true
+
+**Two files, 89 keys, one correction to the audit.** `sections/today.tsx` and `api.today` had
+no importers at all. `analysis-filters.tsx` did — the audit was wrong, and the real finding is
+narrower: the bar is behind a `!period` guard on a section that always receives a `period`, so
+it and the filter state feeding it are unreachable rather than the module being unused. With
+the bar gone, `ProjectsSection` no longer needs its `sources` prop or a fallback range.
+
+**`scripts/find-dead-i18n.mjs`**, because doing this by hand does not scale and does not
+survive. Its first version was **wrong in the dangerous direction**: it reported
+`quota.attention`, `quota.check` and `quota.available` as dead, because they are read as
+`t(\`quota.${status}\`)` and a literal search cannot see a template. Deleting them would have
+broken three status labels. It now treats any prefix that is interpolated at runtime as live
+and prints those prefixes, so "alive but unprovable" is visible instead of looking like a
+dead list. 89 keys went; the dictionary is 545 → 456, and the two dictionaries stayed in step
+because `DICTS` is typed `Record<Lang, Record<MessageKey, string>>` and `t()` takes a
+`MessageKey` — so a removed key still referenced by a literal cannot compile.
+
+It is a script and not a test on purpose. Keys get added ahead of the code that will read them,
+and a gate that fails the build for a forward reference teaches people to delete the key and
+re-add it later.
+
+**`scope="col"` in the table primitive**, not at eleven call sites. **`aria-sort` was
+deliberately not added**, which contradicts this file's own backlog: no table in this app has
+a sort control — every `.sort()` is a fixed ranking by cost or tokens — so `aria-sort` would
+advertise an affordance that does not exist. A test now checks both, so a future sort control
+has to add it and a future table cannot inherit a lie.
+
+One thing to know about the diff: the two dictionaries were committed with CRLF despite
+`.gitattributes` mandating `eol=lf`, so pruning them also normalises them and the raw diff
+looks like the whole file. `git diff --ignore-cr-at-eol` is the readable one.
+
 ## Post-Live track: the other sections (28 Sep 2026)
 
 Live is done and pushed. The remaining tabs were surveyed against the same rule Live was

@@ -799,6 +799,42 @@ try {
     assert.notEqual(thai, english, `${testid}: the two builds must not be identical`);
   }
   console.log('PASS dates follow the chosen language, not the operating system');
+
+  /*
+   * Every column header says what it heads.
+   *
+   * A `<th>` with no `scope` tells a screen reader that it is a header and nothing more, so
+   * the value under it is unassociated. Eleven tables had that, and the fix belongs in the
+   * primitive rather than at eleven call sites.
+   *
+   * The companion check is the one worth having: `aria-sort` must appear on no table in this
+   * app, because none of them have a sort control. It is the sort of accessibility attribute
+   * that gets added on principle and then promises a person can reorder a table that cannot
+   * be reordered.
+   */
+  {
+    const { context, page } = await contextFor();
+    const found = { total: 0, unscoped: 0, sorted: 0 };
+    for (const target of ['#limits', '#health', '#sources', '#sessions', '#usage?range=today&view=summary',
+      '#usage?range=month&view=models', '#usage?range=month&view=projects', '#live']) {
+      await page.goto(`http://127.0.0.1:7798/${target}`);
+      await page.locator('[role=tabpanel][data-state=active]').waitFor();
+      await page.waitForTimeout(200);
+      const heads = await page.locator('th').evaluateAll(nodes => nodes.map(node => ({
+        scope: node.getAttribute('scope'),
+        sort: node.getAttribute('aria-sort'),
+      })));
+      found.total += heads.length;
+      found.unscoped += heads.filter(head => !head.scope).length;
+      found.sorted += heads.filter(head => head.sort).length;
+    }
+    assert.ok(found.total > 20, `expected to find the tables' column headers, saw ${found.total}`);
+    assert.equal(found.unscoped, 0, `${found.unscoped} of ${found.total} column headers have no scope`);
+    assert.equal(found.sorted, 0,
+      'no table here has a sort control, so aria-sort would promise one that does not exist');
+    await context.close();
+  }
+  console.log('PASS every column header is scoped, and none claims to be sortable');
   for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const width of [390, 900, 1280, 1440]) {
     const { context, page } = await contextFor(lang, theme, width);
     await page.goto('http://127.0.0.1:7798/#live'); await settle(page);

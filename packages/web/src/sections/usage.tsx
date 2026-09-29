@@ -101,7 +101,7 @@ export function UsageSection({ ov, sources = [] }: { ov: Overview; sources?: Arr
       ) : view === 'cost' ? (
         <CostSection ov={ov} period={data.range} totals={data.totals} sourceId={sourceId} />
       ) : view === 'projects' ? (
-        <ProjectsSection sources={sources} period={data.range} sourceId={sourceId} />
+        <ProjectsSection period={data.range} sourceId={sourceId} />
       ) : (
         <ModelsSection period={data.range} sourceId={sourceId} />
       )}

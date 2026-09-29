@@ -282,13 +282,6 @@ export interface ModelRow extends Totals {
   vendor: string;
 }
 
-export interface TodayUsage {
-  from: number;
-  to: number;
-  totals: Totals;
-  rows: ModelRow[];
-}
-
 /** One (project, source, vendor, model) combination over the requested window. */
 export interface ProjectRow {
   project: string;
@@ -516,7 +509,6 @@ export const api = {
         (p.sourceId == null ? '' : `&source_id=${p.sourceId}`);
     return get<{ since: number; from: number; to: number | null; models: ModelRow[] }>(`/api/models?${params}`);
   },
-  today: () => get<TodayUsage>('/api/today'),
   projects: (p: { from: number; to: number; sourceId?: number }) =>
     get<{ from: number; to: number; rows: ProjectRow[] }>(
       `/api/projects?from=${p.from}&to=${p.to}` + (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
