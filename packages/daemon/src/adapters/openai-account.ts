@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Adapter, IngestCtx, LimitSample, Profile, WatchTarget } from './types.js';
 import { hermesAdapter, hermesHomeForProfile } from './hermes.js';
+import { resolvePythonTarget } from '../util/venv.js';
 import { home } from '../util/paths.js';
 import { logger } from '../util/log.js';
 
@@ -96,28 +97,45 @@ function hermesSource(): string {
   return process.env.QUOTAPULSE_HERMES_SOURCE?.trim() || join(HERMES_ROOT, 'hermes-agent');
 }
 
-function configuredPython(): { command: string; args: string[]; cwd?: string } {
-  const source = hermesSource();
+/**
+ * Which Python to run the helper with, and what has to go on `PYTHONPATH` for it to see the
+ * packages the environment provides.
+ *
+ * The Windows branch is the interesting one and the reason `util/venv.ts` exists. Hermes
+ * ships a virtual environment, and a Windows virtual environment's `Scripts/python.exe` is a
+ * launcher that starts a *second* process -- the real interpreter -- without carrying
+ * `CREATE_NO_WINDOW` across. That second process allocates a console, and because the daemon
+ * probes on a timer, several helpers at once, every pass flashed a black window that vanished
+ * immediately. `windowsHide: true` below is correct and was not enough: it only ever applied
+ * to the launcher.
+ *
+ * Resolving the launcher away means the process that does the work is the one `windowsHide`
+ * was passed to. The environment's packages are still found, because its `site-packages` is
+ * put on `PYTHONPATH`.
+ */
+function configuredPython(): { command: string; sitePackages: string | null; cwd?: string } {  const source = hermesSource();
   const cwd = existsSync(source) ? source : undefined;
   const configured = process.env.QUOTAPULSE_HERMES_PYTHON?.trim();
-  if (configured) return { command: configured, args: [], cwd };
+  if (configured) return { command: configured, sitePackages: null, cwd };
 
-  const bundled = join(source, 'venv', process.platform === 'win32' ? 'Scripts' : 'bin', process.platform === 'win32' ? 'python.exe' : 'python');
-  if (existsSync(bundled)) return { command: bundled, args: [], cwd };
+  const venvDir = join(source, 'venv');
+  const target = resolvePythonTarget(venvDir);
+  if (target) return { command: target.command, sitePackages: target.sitePackages, cwd };
 
-  return { command: process.platform === 'win32' ? 'python' : 'python3', args: [], cwd };
+  return { command: process.platform === 'win32' ? 'python' : 'python3', sitePackages: null, cwd };
 }
 
 function runHelper(hermesHome: string): Promise<string | null> {
   const python = configuredPython();
   const source = hermesSource();
-  const pythonPath = [existsSync(source) ? source : null, process.env.PYTHONPATH]
+  const separator = process.platform === 'win32' ? ';' : ':';
+  const pythonPath = [python.sitePackages, existsSync(source) ? source : null, process.env.PYTHONPATH]
     .filter((value): value is string => Boolean(value))
-    .join(process.platform === 'win32' ? ';' : ':');
+    .join(separator);
   return new Promise((resolve) => {
     execFile(
       python.command,
-      [...python.args, SCRIPT_PATH],
+      [SCRIPT_PATH],
       {
         cwd: python.cwd,
         env: {
