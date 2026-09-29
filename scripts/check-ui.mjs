@@ -180,6 +180,13 @@ async function contextFor(lang = 'en', theme = 'dark', width = 1440, hiddenSubsc
     else if (u.pathname === '/api/overview') data = overview(sharedHiddenSubscriptions);
     else if (u.pathname === '/api/trend') {
       requests.push(Object.fromEntries(u.searchParams));
+      if (u.searchParams.get('bucket') === 'minute') {
+        const end = Date.now();
+        data = { bucket: 'minute', from: end - 1800000, to: end, groupBy: 'none', measurement: 'recorded_tokens_per_minute',
+          rows: [{ bucket_ts: Math.floor((end - 60000) / 60000) * 60000, series: 'all', records: 1, calls: 2, total_tokens: 1200 }],
+          coverage: { includedRecords: 1, includedCalls: 2, excludedRecords: 1, excludedCalls: 15,
+            excludedSources: [{ source_id: 1, source_name: 'Hermes Agent', grain: 'session_aggregate', records: 1, calls: 15, last_observed_tokens: 900 }] } };
+      } else {
       const from = Number(u.searchParams.get('from')), to = Number(u.searchParams.get('to'));
       const size = u.searchParams.get('bucket') === 'hour' ? 3600000 : 86400000;
       const rows = [];
@@ -190,6 +197,7 @@ async function contextFor(lang = 'en', theme = 'dark', width = 1440, hiddenSubsc
           cost_unknown_calls:trendMixed ? [10,2,0][i] : trendUnpriced ? 10 : 2 });
       }
       data = { bucket: u.searchParams.get('bucket'), from, to, rows };
+      }
     } else if (u.pathname === '/api/models') {
       /*
        * Models is the one view whose loading and empty states were the same array, so it is

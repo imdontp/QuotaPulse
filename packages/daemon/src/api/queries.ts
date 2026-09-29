@@ -11,6 +11,7 @@ import {
   type HarnessDefinition,
 } from '../dashboard/catalog.js';
 import { type UsageBucket, type UsagePeriod } from './usage-period.js';
+import { usageWhere, USAGE_GRAIN_SQL, type UsageScope, type UsageGrain } from './usage-scope.js';
 
 /*
  * An account is the quota entitlement, not the process that happened to read it.
@@ -1301,13 +1302,8 @@ export interface UsageExportRow {
   price_provider: string | null;
 }
 
-/** Privacy-bounded usage facts for the CSV export. */
-export function* usageExportRows(
-  db: DB,
-  opts: { from: number; to: number; sourceId?: number },
-): Generator<UsageExportRow> {
-  const rows = db.prepare(
-    `SELECT u.id AS event_id,
+/** Shared privacy allowlist. Never select u.*, sess.* or reader paths. */
+const USAGE_FACT_SELECT = `SELECT u.id AS event_id,
             u.ts AS timestamp_ms,
             u.call_count,
             u.source_id,
@@ -1336,15 +1332,38 @@ export function* usageExportRows(
             u.cost_output_usd,
             u.cost_cache_saving_usd,
             u.cost_source,
-            u.price_provider
+            u.price_provider,
+            ${USAGE_GRAIN_SQL} AS grain
        FROM usage_event u
        JOIN source s ON s.id = u.source_id
-       LEFT JOIN session sess ON sess.id = u.session_id
-      WHERE u.ts >= @from AND u.ts < @to
-        AND (@sourceId IS NULL OR u.source_id = @sourceId)
-      ORDER BY u.ts ASC, u.id ASC`,
-  ).iterate({ from: opts.from, to: opts.to, sourceId: opts.sourceId ?? null }) as Iterable<UsageExportRow>;
+       LEFT JOIN session sess ON sess.id = u.session_id`;
+
+export type UsageEventRow = UsageExportRow & { grain: UsageGrain };
+
+/** Privacy-bounded usage facts; legacy CSV ordering remains ascending by default. */
+export function* usageExportRows(
+  db: DB,
+  opts: UsageScope & { order?: 'asc' | 'desc' },
+): Generator<UsageEventRow> {
+  const where = usageWhere(opts);
+  const direction = opts.order === 'desc' ? 'DESC' : 'ASC';
+  const rows = db.prepare(`${USAGE_FACT_SELECT} WHERE ${where.sql} ORDER BY u.ts ${direction}, u.id ${direction}`)
+    .iterate(where.params) as Iterable<UsageEventRow>;
   yield* rows;
+}
+
+/** Count and rows are from the same SQLite read snapshot; later pages are new reads. */
+export function usageEvents(db: DB, scope: UsageScope, pagination: { limit: number; offset: number }) {
+  const where = usageWhere(scope);
+  return db.transaction(() => {
+    const { total } = db.prepare(`SELECT COUNT(*) AS total FROM usage_event u
+      JOIN source s ON s.id = u.source_id LEFT JOIN session sess ON sess.id = u.session_id
+      WHERE ${where.sql}`).get(where.params) as { total: number };
+    const rows = db.prepare(`${USAGE_FACT_SELECT} WHERE ${where.sql}
+      ORDER BY u.ts DESC, u.id DESC LIMIT @limit OFFSET @offset`)
+      .all({ ...where.params, ...pagination }) as UsageEventRow[];
+    return { rows, total, ...pagination };
+  })();
 }
 
 export interface ProjectRow extends Totals {

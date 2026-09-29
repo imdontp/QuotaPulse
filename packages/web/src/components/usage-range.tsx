@@ -28,7 +28,7 @@ const BUCKET_KEYS: Array<UsageBucket | 'auto'> = ['auto', 'hour', 'day', 'week',
 const VIEW_KEYS: UsageView[] = ['summary', 'cost', 'projects', 'models'];
 const DAY = 86_400_000;
 
-function routeHash(scope: 'usage' | 'sessions', route: UsageRoute): string {
+function routeHash(scope: 'usage' | 'sessions' | 'history', route: UsageRoute): string {
   const params = new URLSearchParams();
   params.set('range', route.selection.range);
   if (route.selection.range === 'custom') {
@@ -41,7 +41,7 @@ function routeHash(scope: 'usage' | 'sessions', route: UsageRoute): string {
   return `#${scope}?${params.toString()}`;
 }
 
-function readRoute(scope: 'usage' | 'sessions'): UsageRoute {
+function readRoute(scope: 'usage' | 'sessions' | 'history'): UsageRoute {
   if (typeof window === 'undefined') return { selection: { range: 'today', bucket: 'auto' }, view: 'summary' };
   const [path, rawQuery = ''] = window.location.hash.slice(1).split('?');
   const params = new URLSearchParams(rawQuery);
@@ -66,7 +66,7 @@ function readRoute(scope: 'usage' | 'sessions'): UsageRoute {
   };
 }
 
-export function useUsageRoute(scope: 'usage' | 'sessions'): [UsageRoute, (next: UsageRouteUpdate) => void] {
+export function useUsageRoute(scope: 'usage' | 'sessions' | 'history'): [UsageRoute, (next: UsageRouteUpdate) => void] {
   const [route, setRoute] = React.useState<UsageRoute>(() => readRoute(scope));
   React.useEffect(() => {
     const sync = () => setRoute(readRoute(scope));
@@ -107,11 +107,13 @@ export function UsageRangeBar({
   onChange,
   sources = [],
   actions,
+  showBucket = true,
 }: {
   route: UsageRoute;
   onChange: (next: UsageRouteUpdate) => void;
   sources?: Array<{ id: number; display_name: string }>;
   actions?: React.ReactNode;
+  showBucket?: boolean;
 }) {
   const t = useT();
   const selection = route.selection;
@@ -150,13 +152,13 @@ export function UsageRangeBar({
           <input aria-label={t('usage.to')} type="date" value={dateValue((selection.to ?? customTo) - DAY)} onChange={(event) => updateCustom('to', event.target.value)} className="bg-card border-input h-8 rounded border px-2 text-xs text-foreground" />
         </label>
       </>}
-      <Select label={t('usage.bucket')} value={selection.bucket ?? 'auto'} onChange={(event) => onChange({ selection: { bucket: event.target.value as UsageBucket | 'auto' } })}>
+      {showBucket && <Select label={t('usage.bucket')} value={selection.bucket ?? 'auto'} onChange={(event) => onChange({ selection: { bucket: event.target.value as UsageBucket | 'auto' } })}>
         <option value="auto">{t('usage.autoBucket')}</option>
         <option value="hour">{t('usage.hour')}</option>
         <option value="day">{t('usage.day')}</option>
         <option value="week">{t('usage.week')}</option>
         <option value="month">{t('usage.month')}</option>
-      </Select>
+      </Select>}
       {sources.length > 0 && <Select label={t('analysis.source')} value={selection.sourceId ?? ''} onChange={(event) => onChange({ selection: { sourceId: event.target.value ? Number(event.target.value) : undefined } })}>
         <option value="">{t('analysis.allSources')}</option>
         {sources.map((source) => <option key={source.id} value={source.id}>{source.display_name}</option>)}

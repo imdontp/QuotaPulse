@@ -29,6 +29,7 @@ import { LiveSection } from '@/sections/live';
 import { SourcesSection } from '@/sections/sources';
 import { LimitsSection } from '@/sections/limits';
 import { SessionsSection } from '@/sections/sessions';
+import { HistorySection } from '@/sections/history';
 import { HealthSection } from '@/sections/health';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
@@ -43,6 +44,7 @@ const TABS = [
   { id: 'live', key: 'tab.live', icon: Activity },
   { id: 'usage', key: 'tab.usage', icon: BarChart3 },
   { id: 'sessions', key: 'tab.sessions', icon: MessagesSquare },
+  { id: 'history', key: 'history.title', icon: MessagesSquare },
   { id: 'limits', key: 'tab.limits', icon: Gauge },
   { id: 'alerts', key: 'tab.alerts', icon: BellRing },
   { id: 'sources', key: 'tab.sources', icon: Radio },
@@ -382,6 +384,9 @@ function Dashboard() {
                 </TabsContent>
                 <TabsContent value="sessions" forceMount={tab === 'sessions' ? true : undefined}>
                   {tab === 'sessions' && <SessionsSection sources={ov?.sources ?? []} />}
+                </TabsContent>
+                <TabsContent value="history" forceMount={tab === 'history' ? true : undefined}>
+                  {tab === 'history' && <HistorySection sources={ov?.sources ?? []} />}
                 </TabsContent>
                 <TabsContent value="health" forceMount={tab === 'health' ? true : undefined}>
                   {tab === 'health' && <HealthSection />}

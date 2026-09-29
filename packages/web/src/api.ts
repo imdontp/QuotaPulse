@@ -1,3 +1,21 @@
+import { usageEventParams, type UsageEventScope, type UsageEventsResponse } from '@/lib/usage-events';
+
+export interface MinuteTrendResponse {
+  bucket: 'minute';
+  from: number;
+  to: number;
+  groupBy: string;
+  measurement: 'recorded_tokens_per_minute';
+  rows: Array<{ bucket_ts: number; series: string; records: number; calls: number; total_tokens: number }>;
+  coverage: {
+    includedRecords: number;
+    includedCalls: number;
+    excludedRecords: number;
+    excludedCalls: number;
+    excludedSources: Array<{ source_id: number; source_name: string; grain: 'session_aggregate' | 'unknown'; records: number; calls: number; last_observed_tokens: number }>;
+  };
+}
+
 const TOKEN =
   typeof window === 'undefined'
     ? ''
@@ -474,6 +492,19 @@ export interface PricingRefresh {
 }
 
 export const api = {
+  minuteTrend: () => get<MinuteTrendResponse>('/api/trend?bucket=minute&group_by=none'),
+  usageEvents: (scope: UsageEventScope, pagination: { limit: number; offset: number }) => {
+    const params = usageEventParams(scope);
+    params.set('limit', String(pagination.limit));
+    params.set('offset', String(pagination.offset));
+    return get<UsageEventsResponse>(`/api/usage-events?${params}`);
+  },
+  exportUsageEvents: (scope: UsageEventScope) => {
+    const params = usageEventParams(scope);
+    params.set('order', 'desc');
+    params.set('include_grain', '1');
+    return download(`/api/export/usage?${params}`);
+  },
   pricingCoverage: (p: PricingScope) => get<PricingCoverage>(
     `/api/pricing/coverage?from=${p.from}&to=${p.to}` + (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
   ),

@@ -10,6 +10,8 @@ import { logger } from '../util/log.js';
 import { refreshPricing } from '../pricing/refresh.js';
 import { runtimeSnapshot } from '../runtime.js';
 import { resolveUsagePeriod, type UsageBucket, type UsageRangeKey } from './usage-period.js';
+import { parseUsagePagination, parseUsageScope, type UsageScope } from './usage-scope.js';
+import { minuteTrend, MINUTE_GROUPS, type MinuteGroup } from './minute-trend.js';
 
 const log = logger('api');
 
@@ -36,7 +38,10 @@ const USAGE_EXPORT_HEADERS = [
 
 function csvCell(value: unknown): string {
   if (value == null) return '';
-  const text = String(value);
+  const raw = String(value);
+  // Project/model/source metadata can come from local tools. Excel interprets a leading
+  // formula marker as code when the exported CSV is opened, even in a quoted cell.
+  const text = typeof value === 'string' && /^[\s\u0000-\u001f]*[=+\-@]/u.test(raw) ? `'${raw}` : raw;
   return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
 }
 
@@ -53,10 +58,10 @@ function usageTimestampUtc(timestampMs: number): string {
   return new Date(timestampMs).toISOString();
 }
 
-function usageCsvStream(rows: Iterable<q.UsageExportRow>): Readable {
+function usageCsvStream(rows: Iterable<q.UsageEventRow>, includeGrain = false): Readable {
   function* chunks(): Generator<string> {
     // The BOM makes the UTF-8 CSV open cleanly in Excel while remaining valid CSV for AI tools.
-    yield `\uFEFF${csvLine(USAGE_EXPORT_HEADERS)}`;
+    yield `\uFEFF${csvLine(includeGrain ? [...USAGE_EXPORT_HEADERS, 'grain'] : USAGE_EXPORT_HEADERS)}`;
     for (const row of rows) {
       yield csvLine([
         row.event_id, usageTimestampUtc(row.timestamp_ms), row.timestamp_ms, row.call_count,
@@ -66,6 +71,7 @@ function usageCsvStream(rows: Iterable<q.UsageExportRow>): Readable {
         row.reasoning_tokens, row.total_tokens, row.duration_ms, row.cost_usd, row.cost_input_usd,
         row.cost_cached_input_usd, row.cost_cache_write_usd, row.cost_output_usd,
         row.cost_cache_saving_usd, row.cost_source, row.price_provider,
+        ...(includeGrain ? [row.grain] : []),
       ]);
     }
   }
@@ -318,26 +324,55 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
   });
 
   app.get('/api/export/usage', async (req, reply) => {
-    const s = req.query as Record<string, string | undefined>;
-    const format = s.format ?? 'csv';
-    const from = Number(s.from);
-    const to = Number(s.to);
-    const sourceId = s.source_id == null ? undefined : Number(s.source_id);
-    if (format !== 'csv' || !Number.isSafeInteger(from) || !Number.isSafeInteger(to) || from < 0 || to <= from ||
-        (sourceId != null && (!Number.isSafeInteger(sourceId) || sourceId <= 0))) {
-      return reply.code(400).send({ error: 'Expected CSV format and a valid usage range' });
+    const s = req.query as Record<string, unknown>;
+    let scope: UsageScope;
+    try {
+      scope = parseUsageScope(s, Date.now(), { requireRange: true, extraKeys: ['format', 'order', 'include_grain'] });
+      if ((s.format !== undefined && s.format !== 'csv') ||
+          (s.order !== undefined && s.order !== 'asc' && s.order !== 'desc') ||
+          (s.include_grain !== undefined && s.include_grain !== '1')) throw new Error('Invalid CSV options');
+    } catch (error) {
+      return reply.code(400).send({ error: (error as Error).message });
     }
     reply.header('Content-Type', 'text/csv; charset=utf-8');
-    reply.header('Content-Disposition', `attachment; filename="${usageExportFilename(from, to)}"`);
+    reply.header('Content-Disposition', `attachment; filename="${usageExportFilename(scope.from, scope.to)}"`);
     return reply.send(usageCsvStream(q.usageExportRows(db, {
-      from,
-      to,
-      ...(sourceId == null ? {} : { sourceId }),
-    })));
+      ...scope, order: s.order === 'desc' ? 'desc' : 'asc',
+    }), s.include_grain === '1'));
+  });
+
+  app.get('/api/usage-events', async (req, reply) => {
+    const now = Date.now();
+    const s = req.query as Record<string, unknown>;
+    let scope: UsageScope;
+    let pagination: { limit: number; offset: number };
+    try {
+      scope = parseUsageScope(s, now, { extraKeys: ['limit', 'offset'] });
+      pagination = parseUsagePagination(s);
+    } catch (error) {
+      return reply.code(400).send({ error: (error as Error).message });
+    }
+    return { ...q.usageEvents(db, scope, pagination), scope, now };
   });
 
   app.get('/api/trend', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
+    if (s.bucket === 'minute') {
+      const now = Date.now();
+      let scope: UsageScope;
+      let groupBy: MinuteGroup;
+      try {
+        const rawTo = s.to === undefined ? now : s.to;
+        scope = parseUsageScope({ ...s, to: String(rawTo), from: s.from ?? String(Math.max(0, Number(rawTo) - 30 * 60000)) }, now, { extraKeys: ['bucket', 'group_by'] });
+        if (scope.to - scope.from > DAY) throw new Error('Minute trend range must not exceed 24 hours');
+        if (s.group_by !== undefined && !MINUTE_GROUPS.includes(s.group_by as MinuteGroup)) throw new Error('Invalid minute grouping');
+        groupBy = (s.group_by ?? 'none') as MinuteGroup;
+      } catch (error) {
+        return reply.code(400).send({ error: (error as Error).message });
+      }
+      return { bucket: 'minute', from: scope.from, to: scope.to, groupBy, scope, now,
+        measurement: 'recorded_tokens_per_minute', ...minuteTrend(db, scope, groupBy) };
+    }
     const bucket: q.Bucket = (['hour', 'day', 'week', 'month'] as const).includes(s.bucket as q.Bucket)
       ? s.bucket as q.Bucket
       : 'hour';

@@ -28,6 +28,7 @@
     "shoot:motion": "node scripts/shoot-motion.mjs",
     "test:ui": "node scripts/check-ui.mjs",
     "test:visual": "node scripts/check-redesign.mjs",
+    "test:history": "node --import tsx scripts/check-history.mts",
     "prices:refresh": "node scripts/fetch-prices.mjs",
     "doctor": "node scripts/doctor.mjs"
   },

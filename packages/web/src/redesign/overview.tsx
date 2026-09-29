@@ -26,15 +26,22 @@ function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: num
         <radialGradient id={`${id}-fill`}><stop stopColor="#225575" stopOpacity=".7"/><stop offset=".75" stopColor="#071f43" stopOpacity=".5"/><stop offset="1" stopColor="#32cdff" stopOpacity=".2"/></radialGradient>
         <linearGradient id={`${id}-arc`}><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
       </defs>
+      <g fill="none" stroke={`url(#${id}-arc)`} strokeWidth=".8" opacity=".45">
+        {[0, 1, 2].map(wave => <path key={wave} d={Array.from({ length: 73 }, (_, index) => {
+          const x = index * 5;
+          const y = 160 + Math.sin(index * .21 + wave * 1.8) * (18 + wave * 9);
+          return `${index === 0 ? 'M' : 'L'}${x} ${y.toFixed(2)}`;
+        }).join(' ')}/>)}
+      </g>
       <g className="qp-orbit" fill="none" stroke="#55baf3" strokeOpacity=".2">
         <ellipse cx="180" cy="160" rx="169" ry="73" transform="rotate(-26 180 160)"/>
         <ellipse cx="180" cy="160" rx="165" ry="96" transform="rotate(30 180 160)"/>
       </g>
       <circle cx="180" cy="160" r="117" fill={`url(#${id}-fill)`} stroke="#51b9ef" strokeOpacity=".4"/>
       <g fill="#48b7ff" opacity=".4">
-        {Array.from({ length: 180 }, (_, index) => {
+        {Array.from({ length: 400 }, (_, index) => {
           const angle = index * 2.399963;
-          const radius = 114 * Math.sqrt((index + .5) / 180);
+          const radius = 114 * Math.sqrt((index + .5) / 400);
           return <circle key={index} cx={180 + Math.cos(angle) * radius} cy={160 + Math.sin(angle) * radius} r={index % 7 === 0 ? 1.1 : .55}/>;
         })}
       </g>
@@ -43,6 +50,7 @@ function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: num
         {[38, 76].map(ry => <ellipse key={ry} cx="180" cy="160" rx="116" ry={ry}/>)}
       </g>
       <circle cx="180" cy="160" r="129" fill="none" stroke="#395175" strokeOpacity=".45" strokeWidth="5"/>
+      <circle className="qp-core-halo" cx="180" cy="160" r="120" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="2"/>
       {remaining !== null && <circle cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="5" strokeLinecap="round" strokeDasharray={`${remaining} 100`} transform="rotate(-90 180 160)"/>}
     </svg>
     <div className="qp-pulse-label"><span>{quota?.owner ?? '—'} · {quota?.window ?? '—'}</span><strong>{remaining === null ? '—' : `${remaining}%`}</strong><span>{t('redesign.remaining')}</span></div>
@@ -52,19 +60,19 @@ function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: num
 function RuntimeMap({ records, t, onInspect }: { records: readonly UsageRecord[]; t: Translate; onInspect: (dimension: Dimension, key: string | null) => void }) {
   const columns = dimensions.map(dimension => groupUsage(records, dimension));
   const maxRows = Math.max(1, ...columns.map(column => column.length));
-  const height = maxRows * 52;
+  const height = maxRows * 40;
   const edges = runtimeEdges(records);
   return <section className="qp-panel qp-runtime" id="runtime">
     <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.runtime')}</h2><p>{t('redesign.connections')}</p></div><span className="qp-chip">{t('redesign.records')} · {records.length}</span></div>
     {records.length === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
-      <div className="qp-map" style={{ height: height + 32 }}>
+      <div className="qp-map" style={{ height: height + 24 }}>
         <svg className="qp-map-edges" viewBox={`0 0 1000 ${height}`} preserveAspectRatio="none" aria-hidden="true">
           {edges.map(edge => {
             const fromIndex = columns[edge.column].findIndex(node => node.key === edge.from);
             const toIndex = columns[edge.column + 1].findIndex(node => node.key === edge.to);
             const x = edge.column * 250 + 195;
-            const y = fromIndex * 52 + 21;
-            const endY = toIndex * 52 + 21;
+            const y = fromIndex * 40 + 17;
+            const endY = toIndex * 40 + 17;
             return <path key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + 45} ${y}, ${x + 10} ${endY}, ${x + 55} ${endY}`} fill="none" stroke="currentColor" strokeWidth="2"/>;
           })}
         </svg>

@@ -13,6 +13,7 @@ import { PulseHero } from '@/components/pulse-hero';
 import { LiveTicker } from '@/components/live-ticker';
 import { ProgressionRail } from '@/components/progression-rail';
 import { ResetTimeline } from '@/components/reset-timeline';
+import { RecordedMinuteTrend } from '@/components/recorded-minute-trend';
 import { intensityOf, pulseModel, recentRate } from '@/lib/live-pulse';
 import { firstActivityHour } from '@/lib/progress';
 import { useProgress } from '@/lib/progress-store';
@@ -72,6 +73,7 @@ export function LiveSection({ ov, onOpenLimits, onOpenHealth, onOpenCost }: { ov
    */
   return <div className="space-y-5">
     <PulseHero model={model} now={ov.now} intensity={intensity} progress={progress} onOpenLimits={onOpenLimits} />
+    <RecordedMinuteTrend />
     <ProgressionRail progress={progress} />
     <LiveTicker ov={ov} scope={pricingScope} weekSeries={spark.week} cacheShare={cacheShare} />
     <Card className="min-w-0 overflow-hidden py-0">
