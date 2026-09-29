@@ -351,6 +351,41 @@ Two things worth recording:
   of exemptions is pinned by a test, because a second one is always added for a good reason
   and the reasons stop being good after the first.
 
+### Phase E1 — dates follow the chosen language
+
+Six call sites formatted dates with `toLocaleDateString()` and no locale, which means Intl
+used the **operating system's** language. Someone running the app in Thai on a machine set to
+English read English dates, and the trend chart's two axes ended up in different languages. In
+a bilingual app that is not a cosmetic slip: the reader has said which language they read in
+and one kind of value ignored it.
+
+`useFormat` now has a `day` formatter, sharing the locale choice `clock` already made, with
+the year shown only when the date is outside the current year — so a range crossing new year
+reads as six days rather than eight months.
+
+Two things about the test that needed a second and third attempt to be worth anything:
+
+- **Chromium is now launched with `--lang=en-US`.** Without it, "the OS is English" and "the
+  app passes the locale" produce the same result on this machine, so the test could not tell
+  the difference it existed to check.
+- **The fixture returned `from: 0` for every range**, which is the "all time" sentinel, so the
+  usage view short-circuited to a label before formatting anything. A `range=month` request
+  could not exercise the date code at all, and the test was passing on whichever call site
+  happened to still be correct while the others went unchecked. It returns a real range now.
+
+An earlier version of the assertion compared two whole pages and required them to differ —
+which is vacuous, because every label differs between a Thai and an English build. Scoping it
+to an element containing nothing but a date is what made it a real check: with the fix
+reverted it renders `8/30/2026 – 9/29/2026` in both languages and fails.
+
+### Still to do
+The dead-code sweep is not done, and the audit behind it needs re-checking rather than
+trusting: it called `components/analysis-filters.tsx` dead, but `projects.tsx` imports it. The
+precise finding is narrower — `AnalysisFilterBar` is unreachable, because `ProjectsSection` is
+called from exactly one place and always passes a `period`, so the `!period` guard around the
+bar is never true, and with it the `filters.days` and `filters.sourceId` the hook was feeding
+it. Deleting on the audit's word would have removed a feature from a live page.
+
 ## Post-Live track: the other sections (28 Sep 2026)
 
 Live is done and pushed. The remaining tabs were surveyed against the same rule Live was

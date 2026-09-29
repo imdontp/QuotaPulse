@@ -101,7 +101,7 @@ export function SessionsSection({ sources = [] }: { sources?: Array<{ id: number
       <Card>
         <CardHeader>
           <CardTitle as="h2">{t('sessions.title')}</CardTitle>
-          {period && <span className="text-muted-foreground text-[11.5px]">{new Date(period.from).toLocaleDateString()} – {new Date(period.to).toLocaleDateString()}</span>}
+          {period && <span className="text-muted-foreground text-[11.5px]">{f.day(period.from)} – {f.day(period.to)}</span>}
           <span className="text-muted-foreground text-[11.5px]">
             {t('sessions.range', { from, to, total })}
           </span>

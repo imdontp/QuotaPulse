@@ -18,6 +18,7 @@ import { ModelsSection } from '@/sections/models';
 
 export function UsageSection({ ov, sources = [] }: { ov: Overview; sources?: Array<{ id: number; display_name: string }> }) {
   const t = useT();
+  const f = useFormat();
   const [route, updateRoute] = useUsageRoute('usage');
   const [data, setData] = useState<UsageResponse | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -69,7 +70,7 @@ export function UsageSection({ ov, sources = [] }: { ov: Overview; sources?: Arr
       <PageHeader
         title={t('usage.title')}
         blurb={t('usage.blurb')}
-        context={data ? <span>{data.range.timezone} · {new Date(data.range.from).toLocaleDateString()}</span> : undefined}
+        context={data ? <span data-testid="usage-range-label">{data.range.timezone} · {f.day(data.range.from)}</span> : undefined}
       />
       <UsageRangeBar
         route={route}
@@ -149,7 +150,7 @@ function UsageSummary({ data }: { data: UsageResponse }) {
         <Card>
           <CardHeader className="flex-col items-start gap-1">
             <CardTitle as="h2">{t('usage.timeline')}</CardTitle>
-            <CardDescription>{data.range.from === 0 ? t('usage.allTime') : new Date(data.range.from).toLocaleDateString() + ' – ' + new Date(data.range.to).toLocaleDateString()}</CardDescription>
+            <CardDescription data-testid="usage-range">{data.range.from === 0 ? t('usage.allTime') : `${f.day(data.range.from)} – ${f.day(data.range.to)}`}</CardDescription>
           </CardHeader>
           <CardContent>
             <TrendChart rows={data.timeline} metric="total_tokens" bucket={data.range.bucket} groupBy="none" />

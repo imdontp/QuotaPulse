@@ -165,7 +165,18 @@ async function contextFor(lang = 'en', theme = 'dark', width = 1440, hiddenSubsc
     else if (u.pathname === '/api/alerts') data = { events: [] };
     else if (u.pathname === '/api/compare') data = { current: today, previous: { ...today, calls: 5, total_tokens: 1000, cost_usd: 1, cost_unknown_calls: 0 }, series: [] };
     else if (u.pathname.startsWith('/api/sessions/')) data = { session: { id: 1, native_session_id: 'fixture', project: 'fixture-project', cwd: '/fixture/project', git_branch: null, model_default: unpriced.model, agent: null, started_at: now - 3600000, last_seen_at: now, is_subagent: 0, native_cost_usd: 0, harness: 'hermes', profile: 'default', display_name: 'Hermes Agent' }, events: [] };
-    else if (u.pathname === '/api/usage') data = { range: { range: u.searchParams.get('range') ?? 'today', from: 0, to: now, bucket: u.searchParams.get('bucket') ?? 'day', timezone: 'fixture' }, totals: today, timeline: [], bySource: [sourceRow(today)] };
+    else if (u.pathname === '/api/usage') {
+      /*
+       * A real range, not always the epoch. `from: 0` is the "all time" sentinel, and with it
+       * the usage view short-circuits to the "all time" label before it ever formats a date
+       * -- so a month request in the fixture could not exercise the date code at all, and the
+       * test for "dates follow the language" was passing on the one call site that was
+       * still correct while the others went unchecked.
+       */
+      const range = u.searchParams.get('range') ?? 'today';
+      const from = range === 'all' ? 0 : range === 'week' ? now - 7 * 86400000 : now - 30 * 86400000;
+      data = { range: { range, from, to: now, bucket: u.searchParams.get('bucket') ?? 'day', timezone: 'fixture' }, totals: today, timeline: [], bySource: [sourceRow(today)] };
+    }
     else if (u.pathname === '/api/overview') data = overview(sharedHiddenSubscriptions);
     else if (u.pathname === '/api/trend') {
       requests.push(Object.fromEntries(u.searchParams));
@@ -216,7 +227,14 @@ async function noOverflow(page, label) {
 try {
   server = await createServer({ root: resolve(repo, 'packages/web'), server: { host: '127.0.0.1', port: 7798, strictPort: true } });
   await server.listen();
-  browser = await chromium.launch({ channel: 'chrome', headless: true });
+  /*
+   * `--lang=en-US` is not cosmetic. Six date call sites used to pass no locale to Intl,
+   * which means "the operating system's", and on a machine whose OS happens to be English
+   * that is indistinguishable from correct. Pinning the browser's language to English makes
+   * the Thai build have to work harder than the OS was already doing, which is the only
+   * way a test on an English CI machine can tell the difference.
+   */
+  browser = await chromium.launch({ channel: 'chrome', headless: true, args: ['--lang=en-US'] });
   const { context, page } = await contextFor();
   await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
   /*
@@ -737,6 +755,50 @@ try {
     await context.close();
   }
   console.log('PASS a figure that moved is highlighted, and one that merely drifted is not');
+
+  /*
+   * Dates follow the language the reader chose, not the one their machine is set to.
+   *
+   * Six call sites passed no locale to `toLocaleDateString()`, so Intl used the OS. That is
+   * invisible in a test that runs in one language and wrong for everyone: a Thai build on an
+   * English machine read English dates, and the trend chart's two axes ended up in different
+   * languages. The browser is launched with `--lang=en-US` for exactly this reason.
+   *
+   * The assertion compares the two renders against each other rather than against a literal
+   * month name, because the month depends on the fixture's range and hard-coding one turned
+   * this into a test of the fixture. What is being checked is the property: the same input
+   * formatted for two languages must come out different. If the OS locale were leaking
+   * through, both would be English and identical.
+   */
+  const ENGLISH_MONTHS = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/;
+  const rendered = async (lang, testid) => {
+    const { context, page } = await contextFor(lang, 'dark', 1440);
+    await page.goto('http://127.0.0.1:7798/#usage?range=month&view=summary');
+    const target = page.getByTestId(testid);
+    await target.waitFor({ timeout: 10000 });
+    await page.waitForTimeout(300);
+    const text = await target.innerText();
+    await context.close();
+    return text;
+  };
+  for (const testid of ['usage-range', 'usage-range-label']) {
+    const thai = await rendered('th', testid);
+    const english = await rendered('en', testid);
+    /*
+     * The Thai build must contain no English month at all, and the English build no Thai.
+     * This is the clause that catches the original bug, and it is deliberately not written
+     * as "the two renders differ" -- every label on the page differs between the two builds
+     * anyway, so that comparison would pass on a page whose dates were both in English.
+     */
+    assert.ok(!ENGLISH_MONTHS.test(thai),
+      `${testid}: a Thai build must not format dates in English, got ${JSON.stringify(thai)}`);
+    assert.ok(!/[ก-๙]/.test(english),
+      `${testid}: an English build must not format dates in Thai, got ${JSON.stringify(english)}`);
+    // And a real range, so the assertion is looking at formatted dates and not at the
+    // "all time" label, which formats nothing.
+    assert.notEqual(thai, english, `${testid}: the two builds must not be identical`);
+  }
+  console.log('PASS dates follow the chosen language, not the operating system');
   for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const width of [390, 900, 1280, 1440]) {
     const { context, page } = await contextFor(lang, theme, width);
     await page.goto('http://127.0.0.1:7798/#live'); await settle(page);

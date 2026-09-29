@@ -11,6 +11,20 @@ export interface Formatter {
   age: (seconds: number | null | undefined) => string;
   countdown: (toMs: number | null | undefined, now?: number) => string;
   clock: (ms: number | null | undefined) => string;
+  /**
+   * A date, in the language the reader chose.
+   *
+   * Six call sites were formatting dates with `toLocaleDateString()` and no locale, which
+   * means `Intl` used the *operating system's* language. Someone running the app in Thai on
+   * a machine set to English read English dates, and the reverse read Thai dates in an
+   * otherwise English page -- in a bilingual app that is not a cosmetic slip, because the
+   * reader has told us which language they read in and we ignored it for one kind of value.
+   *
+   * There is no year unless the date is not in the current year, matching the compact style
+   * the rest of the app uses for `clock`. A range crossing into another year has to show it,
+   * or "Dec 28 – Jan 3" reads as eight months rather than six days.
+   */
+  day: (ms: number | null | undefined) => string;
   window: (kind: string) => string;
 
   /** Converts from USD into the selected currency at the user's rate. */
@@ -37,6 +51,22 @@ export function useFormat(): Formatter {
   return useMemo<Formatter>(() => {
     const meta = CURRENCIES[currency];
     const isConverted = currency !== 'USD';
+    const locale = lang === 'th' ? 'th-TH' : 'en-US';
+
+    /**
+     * A date in the chosen language, with the year only when it is not the current one.
+     *
+     * `Intl.DateTimeFormat` instances are cached by the engine, and this is called once per
+     * rendered date across the page, so the formatter is built once per language rather than
+     * per call.
+     */
+    const dayFormatter = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric' });
+    const dayWithYear = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' });
+    const day = (ms: number | null | undefined): string => {
+      if (ms == null) return '--';
+      const date = new Date(ms);
+      return (date.getFullYear() === new Date().getFullYear() ? dayFormatter : dayWithYear).format(date);
+    };
 
     const money = (usd: number | null | undefined, unknownCalls = 0): string => {
       if (usd == null) return '--';
@@ -61,7 +91,8 @@ export function useFormat(): Formatter {
       pct: raw.pct,
       age: raw.age,
       countdown: raw.countdown,
-      clock: (ms) => ms == null ? '--' : new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(ms),
+      clock: (ms) => ms == null ? '--' : new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(ms),
+      day,
       window: (kind) => {
         const names: Record<string, string> = { '5h': t('gauge.5h'), weekly: t('gauge.weekly'), weekly_opus: t('gauge.weeklyOpus'), weekly_sonnet: t('gauge.weeklySonnet'), monthly: t('gauge.monthly') };
         return names[kind] ?? kind;

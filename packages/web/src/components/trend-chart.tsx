@@ -93,12 +93,16 @@ export function TrendChart({
   }, [rows, metric, groupBy]);
 
   const fmtValue = (v: number) => (metric === 'cost_usd' ? f.money(v) : f.tokens(v));
+  /*
+   * The x-axis labels in the *chosen* language.
+   *
+   * This one passed `undefined` as the locale, which asks Intl for the operating system's
+   * -- so a Thai build on an English machine charted a year in English months, with the two
+   * axes in different languages. The hourly case keeps its hour, which is the whole reason
+   * this is not just `f.day`.
+   */
   const fmtAxisDate = (ts: number) =>
-    new Date(ts).toLocaleDateString(undefined, {
-      month: 'short',
-      day: 'numeric',
-    ...(bucket === 'hour' ? { hour: '2-digit' } : {}),
-    });
+    bucket === 'hour' ? f.clock(ts) : f.day(ts);
 
   const toggle = (name: string) =>
     setHidden((prev) => {
