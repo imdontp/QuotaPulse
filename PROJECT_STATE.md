@@ -318,6 +318,39 @@ used, so the dead-feed guard did not exist. It also caught a test I had written 
 contradicted another test — the hidden-subscription case, where the two possible answers
 cannot both be right and one of them is a bug wherever it lives.
 
+Verified in both themes on real data. The wash reads as a faint tint rather than a colour in
+light, which is the right way round: on white a saturated wash reads as a rendering fault,
+where on near-black it reads as light.
+
+### Phase D5 — acknowledge: a figure that moved says so
+
+A dashboard that repaints about once a second has a real problem with numbers: almost every
+figure is always changing, so "this moved" is background noise. Both usual treatments are
+wrong. No signal and a working machine is indistinguishable from an idle one. A signal on
+every change and the page strobes, which is worse than silence.
+
+`useChangePulse` thresholds on a **fraction of the previous value** rather than an absolute
+count, because 10,000 more tokens means something very different on a figure showing 40,000
+than on one showing 40 million, with an absolute floor for figures near zero. Plus a 30s
+cooldown, without which a steadily climbing figure re-tints every couple of seconds and the
+page reads as broken. The visual is a background fade and nothing else — no transform, no
+counting number — so it is one paint, it cannot strobe, and it needs no entry in the motion
+vocabulary.
+
+Two things worth recording:
+
+- **The first draft watched the wrong value.** It inferred the number from the rendered
+  value, which by the time it reaches a tile is a string like `"660.0k"`. `typeof value ===
+  'number'` was never true, so the pulse silently never fired — and the browser test caught
+  it, because "the class lands on the element" is exactly what a unit test of a pure
+  threshold cannot see. The prop now takes the raw figure explicitly.
+- **It is exempt from the reduced-motion clamp**, which is the one exemption in the
+  stylesheet. A background fade is not movement, and since the number deliberately neither
+  counts up nor slides, it is the only remaining way to report that anything happened — a
+  reader who asked for less motion should not also be the one who never finds out. The count
+  of exemptions is pinned by a test, because a second one is always added for a good reason
+  and the reasons stop being good after the first.
+
 ## Post-Live track: the other sections (28 Sep 2026)
 
 Live is done and pushed. The remaining tabs were surveyed against the same rule Live was

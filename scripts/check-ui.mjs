@@ -705,6 +705,38 @@ try {
   assert.ok(strained.weight > calm.weight, 'and the wash gets stronger, not just differently coloured');
   for (const limit of limits) limit.used_percent = 10;
   console.log('PASS the ambient backdrop follows the data rather than a constant');
+
+  /*
+   * The figure tint has to be selective, which is the entire design.
+   *
+   * On a page that repaints about once a second, a tint on every change is a strobe and no
+   * tint at all makes a working machine indistinguishable from an idle one. Both failure
+   * modes are invisible to a unit test of the threshold, because the threshold is pure --
+   * what needs checking in a browser is that the class actually lands on the element, and
+   * that it does not land on drift.
+   */
+  {
+    const { context, page } = await contextFor();
+    await page.goto('http://127.0.0.1:7798/#usage?range=today&view=summary');
+    await page.locator('.tabular').first().waitFor();
+    // Mounting is not a change, so a tile that has only ever had one value must be silent.
+    const before = await page.locator('.value-moved').count();
+    assert.equal(before, 0, 'a figure that has not moved is not highlighted');
+    // A real jump: the fixture's totals are pushed far past any relative threshold.
+    today = { ...totals, total_tokens: totals.total_tokens * 4 };
+    const lit = page.locator('.value-moved');
+    await lit.first().waitFor({ timeout: 10000 });
+    assert.ok((await lit.count()) > 0, 'a figure that moved far enough says so');
+    // And it is a tint, not a slide: the element must not be mid-transform.
+    const moving = await lit.first().evaluate(node => {
+      const style = getComputedStyle(node);
+      return style.transform !== 'none' || style.translate !== 'none';
+    });
+    assert.equal(moving, false, 'the highlight moves nothing, so it cannot cause motion sickness');
+    today = { ...totals };
+    await context.close();
+  }
+  console.log('PASS a figure that moved is highlighted, and one that merely drifted is not');
   for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const width of [390, 900, 1280, 1440]) {
     const { context, page } = await contextFor(lang, theme, width);
     await page.goto('http://127.0.0.1:7798/#live'); await settle(page);

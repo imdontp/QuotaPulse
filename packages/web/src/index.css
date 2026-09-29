@@ -276,6 +276,33 @@
   [data-ambient][data-tone='warn'] { --ambient-colour: var(--warn); }
   [data-ambient][data-tone='crit'] { --ambient-colour: var(--crit); }
   [data-ambient][data-tone='idle'] { --ambient-colour: var(--brand); }
+
+  /*
+   * A figure that moved far enough to be worth noticing.
+   *
+   * A tint, not a transform and not an animated number, and that is the whole design. On a
+   * page that repaints about once a second, a value that counts up is a value nobody can
+   * read, and a value that slides is a value that is visibly moving every second whether or
+   * not anything happened. Fading a background in and out over most of a second costs one
+   * paint, reads at a glance, and -- because the keyframes animate only opacity and no
+   * transform -- needs no entry in the motion vocabulary and cannot be triggered by anything
+   * but the data.
+   *
+   * The animation runs once per class insertion rather than looping, so a figure that keeps
+   * climbing cannot make this strobe; the cooldown in `useChangePulse` is what spaces them.
+   */
+  .value-moved {
+    animation: qp-value-moved 1100ms var(--ease-motion) 1 both;
+    border-radius: 5px;
+  }
+  @keyframes qp-value-moved {
+    from {
+      background-color: color-mix(in oklch, var(--brand) 16%, transparent);
+    }
+    to {
+      background-color: transparent;
+    }
+  }
   .dashboard-sidebar {
     background: color-mix(in oklch, var(--card) 82%, transparent);
     backdrop-filter: blur(18px);
@@ -431,5 +458,19 @@
      * line is the backstop for anything added to a stylesheet later.
      */
     animation-iteration-count: 1 !important;
+  }
+  /*
+   * One deliberate exemption, and it is narrow.
+   *
+   * `.value-moved` fades a background colour and nothing else -- no transform, no position,
+   * no size -- so it is not the kind of movement this query is about. The reason to keep it
+   * is that it is the *only* remaining way to say a figure moved: the number does not count
+   * up and the tile does not slide, both of which are correct for a page that repaints
+   * every second but both of which are real movement. Clamping it to nothing would mean a
+   * reader who has asked for less motion is also the one who never learns that anything
+   * happened.
+   */
+  .value-moved {
+    animation-duration: 1100ms !important;
   }
 }

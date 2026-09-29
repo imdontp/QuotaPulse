@@ -72,6 +72,31 @@ test('the reduced-motion clamp still exists, and still pins iteration count', ()
   assert.match(css, /@keyframes qp-shimmer/);
 });
 
+test('the reduced-motion clamp has exactly one exemption, and it is the figure tint', () => {
+  /*
+   * Every `!important` override of the clamp is a hole in a promise made to someone who
+   * asked their operating system for less movement. So the number of holes is pinned, and so
+   * is which one: a background-colour fade on a number, which is the only remaining way to
+   * report that the number moved now that it neither counts up nor slides.
+   *
+   * A second exemption is the thing to watch for. It is always added for a good reason, and
+   * the reasons stop being good after the first one.
+   */
+  const clamp = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
+  const overrides = [...clamp.matchAll(/animation-duration:\s*[^;}]+!important/g)]
+    .map(match => match[0])
+    // The clamp itself sets two; everything after the closing brace of the universal rule is
+    // a targeted override of it.
+    .filter(declaration => !declaration.includes('0.001ms'));
+  assert.deepEqual(overrides, ['animation-duration: 1100ms !important'],
+    'one exemption only, and it is .value-moved');
+  // And it must genuinely be a colour fade: an exemption that let a transform through would
+  // be granting an exemption to exactly the thing the query exists to stop.
+  const keyframe = css.slice(css.indexOf('@keyframes qp-value-moved'));
+  assert.ok(!/transform|translate|scale/.test(keyframe.slice(0, keyframe.indexOf('}'))),
+    '.value-moved must animate nothing but colour');
+});
+
 /*
  * Reduced motion has to be a behaviour, not a duration.
  *

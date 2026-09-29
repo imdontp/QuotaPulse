@@ -114,10 +114,13 @@ function UsageSummary({ data }: { data: UsageResponse }) {
   const total = data.totals;
   const scope = { from: data.range.from, to: data.range.to };
   const stats = [
-    { label: t('usage.totalTokens'), value: f.tokens(total.total_tokens), icon: Activity },
-    { label: t('usage.calls'), value: total.calls.toLocaleString(), icon: Hash },
-    { label: t('usage.value'), value: <ValueDisplay total={total} scope={scope} label={t('usage.value')} />, icon: Coins },
-    { label: t('usage.cacheRead'), value: f.tokens(total.cached_input_tokens), icon: Database },
+    // Only the two running totals pulse. A call count and a cache figure are tallies that
+    // move on every request, so a change in them is not news; tokens are what a person opens
+    // this page to watch.
+    { label: t('usage.totalTokens'), value: f.tokens(total.total_tokens), icon: Activity, pulse: true },
+    { label: t('usage.calls'), value: total.calls.toLocaleString(), icon: Hash, pulse: false },
+    { label: t('usage.value'), value: <ValueDisplay total={total} scope={scope} label={t('usage.value')} />, icon: Coins, pulse: false },
+    { label: t('usage.cacheRead'), value: f.tokens(total.cached_input_tokens), icon: Database, pulse: false },
   ];
   return (
     <Stagger className="flex flex-col gap-3.5">
@@ -129,7 +132,17 @@ function UsageSummary({ data }: { data: UsageResponse }) {
           outline while the sections around it are present.
         */}
         <StatTileRow>
-          {stats.map((stat) => <StatTile key={stat.label} label={stat.label} value={stat.value} icon={stat.icon} />)}
+          {stats.map((stat) => (
+            <StatTile
+              key={stat.label}
+              label={stat.label}
+              value={stat.value}
+              icon={stat.icon}
+              // The raw figure, not the formatted one. See StatTile for why these are two
+              // arguments rather than one.
+              pulseOnChange={stat.pulse ? total.total_tokens : undefined}
+            />
+          ))}
         </StatTileRow>
       </StaggerItem>
       <StaggerItem>

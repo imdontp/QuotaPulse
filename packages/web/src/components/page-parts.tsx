@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
+import { useChangePulse } from '@/lib/use-change-pulse';
 import { cn } from '@/lib/utils';
 
 /**
@@ -73,6 +74,7 @@ export function StatTile({
   note,
   tone,
   className,
+  pulseOnChange,
 }: {
   label: string;
   /** A string, or a node -- `ValueDisplay` with its pricing dialog goes here. */
@@ -87,14 +89,76 @@ export function StatTile({
    */
   tone?: 'ok' | 'warn' | 'crit';
   className?: string;
+  /**
+   * The raw figure to watch, and tint the tile briefly when it moves far enough to be
+   * worth noticing. Omit to disable.
+   *
+   * The number is passed separately rather than inferred, because by the time a figure
+   * reaches a tile it has usually been formatted -- "660.0k", "$26.83", "12 of 11 badges"
+   * -- and there is no honest way back from those to a quantity. Inferring it from the
+   * rendered value silently watches nothing, which is what happened the first time.
+   *
+   * Opt-in because a moving number is only news in some places: true of "tokens today",
+   * not of a percentage of a quota, where movement is expected and telling.
+   */
+  pulseOnChange?: number;
 }) {
+  return (
+    <StatTileBody
+      label={label}
+      value={value}
+      icon={Icon}
+      note={note}
+      tone={tone}
+      className={className}
+      watched={pulseOnChange}
+    />
+  );
+}
+
+/**
+ * Split out so the pulse hook lives in a component that always calls it.
+ *
+ * The obvious shape -- `useChangePulse` inside `StatTile`, called conditionally -- breaks
+ * the rules of hooks the first time a caller passes a string instead of a number, which is
+ * the normal case for two of the four tiles on the page.
+ */
+function StatTileBody({
+  label,
+  value,
+  icon: Icon,
+  note,
+  tone,
+  className,
+  watched,
+}: {
+  label: string;
+  value: React.ReactNode;
+  icon?: LucideIcon;
+  note?: string;
+  tone?: 'ok' | 'warn' | 'crit';
+  className?: string;
+  watched?: number;
+}) {
+  const pulse = useChangePulse(watched ?? 0, { enabled: watched != null });
   return (
     <div className={cn('border-border/70 bg-card rounded-xl border px-4 py-3.5', className)}>
       <div className="text-muted-foreground flex items-center gap-2 text-[11.5px] font-medium">
         {Icon && <Icon className="size-3.5 opacity-70" />}
         {label}
       </div>
-      <div className={cn('tabular mt-2.5 font-mono text-2xl leading-none font-semibold', tone && TONE_CLASS[tone])}>
+      <div
+        // The key is what replays the one-shot animation: a new pulse is a new element, so
+        // the class is applied afresh instead of the browser deciding the animation already
+        // ran and doing nothing.
+        key={pulse}
+        data-pulse={pulse || undefined}
+        className={cn(
+          'tabular -mx-1.5 mt-2.5 px-1.5 font-mono text-2xl leading-none font-semibold',
+          tone && TONE_CLASS[tone],
+          pulse > 0 && 'value-moved',
+        )}
+      >
         {value}
       </div>
       {note && <div className="text-muted-foreground/80 mt-2 text-[11.5px]">{note}</div>}
