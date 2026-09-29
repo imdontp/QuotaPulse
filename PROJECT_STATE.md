@@ -263,6 +263,61 @@ clause is the one that matters — a page with four regions where one carries a 
 satisfies a weaker check and is still three regions a reader cannot reach. Writing that
 assertion is what found the Live page's own unnamed cards, which the audit had missed.
 
+### Phase C — motion behaviour, then interaction
+
+**Reduced motion is a behaviour, not a duration.** The stylesheet clamps
+`animation-duration` under `prefers-reduced-motion`, which is the right backstop and
+insufficient alone: every `motion` animation is JavaScript, so a component that animates
+without asking the preference moves regardless. The symptom is invisible — to everyone else
+the animation looks correct.
+
+Four components were in that state, and the worst of them was the sidebar's tab pill, since
+switching section is the most basic thing anyone does here. It still moves under reduced
+motion (removing it would leave the active tab unmarked) but arrives rather than springs.
+`StaggerItem` had no preference of its own at all: it relied on `Stagger` passing
+`initial={false}` down the variant chain, so it was correct exactly as often as it was used
+inside a `Stagger`. The house easing curve is now spelled out zero times in components, and
+`AnimatedNumber` — dead since before this branch, and the last user of the numeric spring —
+was deleted rather than migrated.
+
+Three hardcoded English strings surfaced in the same files and were translated: `'no data'`
+in both bar lists.
+
+**Interaction.** The app had 37 hover states, 17 focus rings and one pressed state. A button
+that tints on hover but does nothing when pushed reads as a label rather than a control, which
+on a dashboard feels like sluggishness. Press is a 3% squash on `--motion-instant`. Cards a
+person can act on say so with a shadow rather than a transform, since scaling a tall card
+would move its contents.
+
+### Phase D — the ambient backdrop
+
+The instinct was to put an aurora on every tab, since the technique works and the Live page
+proves it. That is the expensive wrong answer: a per-frame loop per surface on top of the one
+that exists, an ambient animation fighting a twelve-row chart, and a field of moving particles
+is the opposite of something meant to be felt. So it is **one element, one gradient, two
+custom properties** — composited by the browser, with no frame budget and nothing to measure.
+
+`lib/ambient.ts` is a pure function with eleven tests, because this is the one piece of
+decoration in the app that makes a claim about the data, and the rules are invisible in a
+screenshot — a backdrop that is subtly wrong looks like a backdrop:
+
+- The colour comes from `severityOf`, the same function the rings use, so the backdrop cannot
+  disagree with the rings. Crossing to warn and crit happens at 60% and 85%.
+- A reading that is expired, missing, or older than six hours may not colour the present.
+- A window that could not be measured is **idle, never calm**. Painting green because nothing
+  is wrong, when the truth is that nothing could be established, is the single most dishonest
+  thing this component could do — a calm backdrop is the one thing on screen a person is most
+  likely to trust without checking.
+- The worst window decides the mood, not the mean: one window in trouble is the answer.
+- Intensity is capped at 0.55, so a full ring and a full bar remain the loudest things on
+  screen.
+- Hidden subscriptions do not tint anything, and a fully hidden set is idle rather than blank.
+
+Writing the tests found a real bug in the first draft: a tone map was defined and never
+used, so the dead-feed guard did not exist. It also caught a test I had written that
+contradicted another test — the hidden-subscription case, where the two possible answers
+cannot both be right and one of them is a bug wherever it lives.
+
 ## Post-Live track: the other sections (28 Sep 2026)
 
 Live is done and pushed. The remaining tabs were surveyed against the same rule Live was

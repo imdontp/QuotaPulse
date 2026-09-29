@@ -639,6 +639,72 @@ try {
     await context.close();
   }
   console.log('PASS every tab has a heading outline under its title, with no skipped levels');
+
+  /*
+   * The ambient backdrop has to be everywhere, and it has to be a decision rather than a
+   * constant.
+   *
+   * "Everywhere" is the whole point -- the craft in this app used to live only on Live, the
+   * page a person sees for three seconds on launch. A per-tab test is the only way to catch
+   * someone adding it to one surface and considering the job done.
+   *
+   * "A decision" matters more: a backdrop that is always the same colour is wallpaper, and a
+   * backdrop that contradicts the rings is worse than none. So the fixture is pushed to
+   * states that must produce different tones, and the element has to report which one it
+   * decided on rather than leaving us to reverse-engineer a gradient.
+   */
+  const ambientTabs = [
+    ['#live'], ['#usage?range=today&view=summary'], ['#sessions'], ['#limits'],
+    ['#alerts'], ['#sources'], ['#health'], ['#settings'],
+  ];
+  for (const [target] of ambientTabs) {
+    const { context, page } = await contextFor();
+    await page.goto(`http://127.0.0.1:7798/${target}`);
+    const field = page.locator('[data-ambient]');
+    await field.waitFor({ timeout: 10000 });
+    const tone = await field.getAttribute('data-tone');
+    // One of the four states, not an empty string and not a fifth value.
+    assert.ok(['idle', 'ok', 'warn', 'crit'].includes(tone), `${target}: ambient tone is "${tone}"`);
+    // A weight that is a real number, so a NaN or undefined cannot pass as "zero intensity".
+    const weight = await field.evaluate(node => getComputedStyle(node).getPropertyValue('--ambient-weight').trim());
+    assert.match(weight, /^\d+(\.\d+)?%?$/, `${target}: ambient weight is "${weight}"`);
+    // It must not be painted over the content: the field is behind everything.
+    assert.equal(await field.evaluate(node => getComputedStyle(node).pointerEvents), 'none',
+      `${target}: the backdrop must not intercept clicks`);
+    await context.close();
+  }
+  console.log('PASS every tab carries a data-driven ambient backdrop');
+
+  /*
+   * ...and it has to actually respond to the data, which is the part a "is the element
+   * there" test cannot see. A backdrop that renders on every tab with a hardcoded colour
+   * passes everything above and is pure wallpaper.
+   *
+   * The fixture is pushed from a comfortable dashboard to a nearly-full one and the reported
+   * tone has to move with it. Checking the attribute rather than sampling a pixel is
+   * deliberate: the gradient is a `color-mix` of an OKLCH token, so its computed colour is a
+   * browser's interpretation of it, and asserting on that would be testing Chromium.
+   */
+  const toneAt = async (fill) => {
+    // Normalised first, because the standing fixture is the crisis scenario -- 88% used with
+    // a dead feed -- so "calm" has to be arranged rather than assumed.
+    for (const limit of limits) limit.used_percent = fill;
+    const { context, page } = await contextFor();
+    await page.goto('http://127.0.0.1:7798/#live');
+    const field = page.locator('[data-ambient]');
+    await field.waitFor({ timeout: 10000 });
+    const tone = await field.getAttribute('data-tone');
+    const weight = Number((await field.evaluate(node => getComputedStyle(node).getPropertyValue('--ambient-weight'))) || 0);
+    await context.close();
+    return { tone, weight, fill };
+  };
+  const calm = await toneAt(10);
+  const strained = await toneAt(92);
+  assert.equal(calm.tone, 'ok', 'a dashboard with quota to spare is calm');
+  assert.equal(strained.tone, 'crit', 'and one with every window past 85% is not');
+  assert.ok(strained.weight > calm.weight, 'and the wash gets stronger, not just differently coloured');
+  for (const limit of limits) limit.used_percent = 10;
+  console.log('PASS the ambient backdrop follows the data rather than a constant');
   for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const width of [390, 900, 1280, 1440]) {
     const { context, page } = await contextFor(lang, theme, width);
     await page.goto('http://127.0.0.1:7798/#live'); await settle(page);

@@ -19,6 +19,7 @@ import { api, type Overview } from '@/api';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SettingsMenu } from '@/components/settings-menu';
 import { I18nProvider, useI18n, useT } from '@/i18n';
+import { AmbientField, useAmbient } from '@/components/ambient-field';
 import { AlertBell } from '@/components/alert-bell';
 import { Hint, TooltipProvider } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
@@ -88,7 +89,7 @@ function useMediaQuery(query: string): boolean {
 
 function Dashboard() {
   const t = useT();
-  const { lang, syncHiddenSubscriptions } = useI18n();
+  const { lang, syncHiddenSubscriptions, hiddenSubscriptions } = useI18n();
   const [tab, setTabState] = useState<TabId>(tabFromHash);
   const [ov, setOv] = useState<Overview | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -100,6 +101,14 @@ function Dashboard() {
   const drawer = useRef<HTMLDialogElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
   const isMobile = !useMediaQuery('(min-width: 640px)');
+  /*
+   * One backdrop for the whole dashboard, derived from data the dashboard already has. It
+   * sits behind every tab rather than only Live, so the mood is a property of the machine
+   * rather than of whichever page happens to be open -- and it costs one gradient, no frame
+   * loop, and no second copy of the aurora. See `lib/ambient.ts` for what it is allowed to
+   * say, and why the rules are tested rather than trusted.
+   */
+  const ambient = useAmbient(ov, hiddenSubscriptions);
   const navigateUsage = (view: 'summary' | 'cost' | 'projects' | 'models' = 'summary') => {
     const current = new URLSearchParams(location.hash.includes('?') ? location.hash.split('?')[1] : '');
     current.set('range', current.get('range') ?? 'today');
@@ -226,6 +235,7 @@ function Dashboard() {
         orientation="vertical"
         className="dashboard-shell flex min-h-screen"
       >
+        <AmbientField ambient={ambient} />
         <dialog ref={drawer} aria-label={t('nav.open')} className="nav-drawer bg-card text-foreground" onClose={() => menuButton.current?.focus()} onClick={event => { if (event.target === event.currentTarget) drawer.current?.close(); }}>
           <div className="flex items-center justify-between border-b p-5"><QuotaPulseWordmark /><Button size="icon" onClick={() => drawer.current?.close()} aria-label={t('nav.close')}><X className="size-4" /></Button></div>
           <nav className="space-y-1 p-3">{TABS.map(tb => <button key={tb.id} onClick={() => setTab(tb.id)} aria-current={tab === tb.id ? 'page' : undefined} className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm ${tab === tb.id ? 'bg-secondary text-brand' : 'text-muted-foreground'}`}><tb.icon className="size-4" />{t(tb.key)}</button>)}</nav>

@@ -253,6 +253,29 @@
       radial-gradient(ellipse 55% 30% at 0% 100%, color-mix(in oklch, var(--brand-2) 7%, transparent), transparent 78%),
       var(--background);
   }
+  /*
+   * The ambient layer, on every tab.
+   *
+   * A single wide wash whose weight is `--ambient-weight` and whose colour comes from
+   * `data-tone` on the element. Deliberately one gradient, and deliberately behind
+   * everything: this is meant to be felt as the room the numbers sit in, not read as a
+   * panel. The Live page's aurora is the same idea with a lot more machinery, and it stays
+   * there, because on a page of charts a moving field is a moving field over a chart.
+   *
+   * `--ambient-weight` is a percentage of an already-capped intensity, so the cap lives in
+   * one place -- `MAX_INTENSITY` in `lib/ambient.ts` -- and the arithmetic here cannot make
+   * it louder than the data allowed.
+   */
+  [data-ambient] {
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 46% at 50% 108%, var(--ambient-colour) calc(var(--ambient-weight, 0) * 0.16%), transparent 70%);
+    transition: background var(--motion-slow) var(--ease-motion);
+  }
+  [data-ambient][data-tone='ok'] { --ambient-colour: var(--brand); }
+  [data-ambient][data-tone='warn'] { --ambient-colour: var(--warn); }
+  [data-ambient][data-tone='crit'] { --ambient-colour: var(--crit); }
+  [data-ambient][data-tone='idle'] { --ambient-colour: var(--brand); }
   .dashboard-sidebar {
     background: color-mix(in oklch, var(--card) 82%, transparent);
     backdrop-filter: blur(18px);
