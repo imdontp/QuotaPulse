@@ -1,7 +1,8 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { Activity, ArrowUpRight, BarChart3, BellRing, Box, CircleGauge, GitBranch, Layers, MessagesSquare, Moon, Radio, Settings, Sun, X } from 'lucide-react';
 import type { MessageKey } from '@/i18n/en';
-import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
+import type { QuotaHistoryResponse } from '@/api';
+import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
 import './overview.css';
 
 type Translate = (key: Extract<MessageKey, `redesign.${string}`>) => string;
@@ -20,6 +21,21 @@ interface OverviewProps {
   preview?: boolean;
   currency?: 'USD' | 'THB';
   rate?: number;
+  onQuotaSelect?: (id: string) => void;
+  quotaHistory?: QuotaHistoryResponse | null;
+  quotaHistoryError?: boolean;
+  recent?: readonly ActivityItem[];
+}
+
+export interface ActivityItem {
+  id: string | number;
+  timestamp: number;
+  harness: string;
+  provider: string | null;
+  model: string | null;
+  tokens: number;
+  grain: 'call' | 'session_aggregate' | 'unknown';
+  sessionKey: number | null;
 }
 
 function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: number; t: Translate }) {
@@ -83,7 +99,7 @@ function RuntimeMap({ nodes, edges, recordCount, t, onInspect }: { nodes: Runtim
         </svg>
         {dimensions.map((dimension, index) => <div className="qp-map-column" key={dimension}>
           <h3>{t(`redesign.${dimension}`)}</h3>
-          {columns[index].map(node => <button className="qp-map-node" key={JSON.stringify(node.key)} onClick={() => onInspect(dimension, node.key)}><span>{node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unavailable')}</span><small>{new Intl.NumberFormat(undefined, { notation: 'compact' }).format(node.tokens)}</small></button>)}
+          {columns[index].map(node => <button className="qp-map-node" key={JSON.stringify(node.key)} onClick={() => onInspect(dimension, node.key)}><span>{node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</span><small>{new Intl.NumberFormat(undefined, { notation: 'compact' }).format(node.tokens)}</small></button>)}
         </div>)}
       </div>
     </div>}
@@ -91,7 +107,39 @@ function RuntimeMap({ nodes, edges, recordCount, t, onInspect }: { nodes: Runtim
   </section>;
 }
 
-export function Overview({ records = [], graph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1 }: OverviewProps) {
+function QuotaRunway({ quota, now, t, language, preview, history, historyError }: { quota: QuotaWindow | undefined; now: number; t: Translate; language: 'en' | 'th'; preview: boolean; history?: QuotaHistoryResponse | null; historyError?: boolean }) {
+  const runway = runwayState(quota, now, preview ? 300000 : 3600000);
+  const decimal = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 1 }).format(value);
+  const date = (value: number) => new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(value);
+  const reason = runway.status === 'unavailable' ? ({ noQuota: 'redesign.runwayNoQuota', stale: 'redesign.runwayStale', noReset: 'redesign.runwayNoReset', reset: 'redesign.runwayReset', unknown: 'redesign.runwayUnknown' } as const)[runway.reason] : null;
+  const forecast = runway.status === 'ready' ? runway.projectedBeforeReset && runway.projectedFullAt !== null
+    ? `${t('redesign.projected')} ${date(runway.projectedFullAt)} · ${t('redesign.beforeReset')}`
+    : runway.projectedFullAt !== null ? t('redesign.afterReset')
+      : t(runway.forecastStatus === 'flat' ? 'redesign.forecastFlat' : runway.forecastStatus === 'reset' ? 'redesign.forecastReset' : 'redesign.forecastInsufficient') : null;
+  const marker = runway.status === 'ready' && runway.projectedBeforeReset && runway.projectedFullAt !== null
+    ? (runway.projectedFullAt - now) / (quota!.resetAt - now) * 100 : null;
+  return <section className="qp-panel qp-runway" data-testid="quota-runway">
+    <h2><CircleGauge size={18}/>{t('redesign.runway')}</h2>
+    <p className="qp-footnote">{quota ? `${quota.owner} · ${quota.window}` : t('redesign.unavailable')}</p>
+    {runway.status === 'unavailable' ? <p className="qp-runway-message" role="status">{t(reason!)}</p> : <>
+      <div className="qp-runway-labels"><span>{t('redesign.now')}</span><span>{t('redesign.resetIn')} {decimal(runway.hoursUntilReset)} {t('redesign.hours')}</span></div>
+      <div className="qp-runway-track" role="img" aria-label={forecast ?? t('redesign.runway')}>
+        {marker !== null && <span className="qp-runway-marker" style={{ left: `${marker}%` }}/>}</div>
+      <div className="qp-runway-stats"><span>{t('redesign.safePace')} <strong>{decimal(runway.safePace)}</strong> {t('redesign.pointsPerHour')}</span></div>
+      <p className="qp-footnote">{forecast}</p>
+    </>}
+    {!preview && <details className="qp-quota-history" data-testid="quota-history">
+      <summary>{t('redesign.observedHistory')}</summary>
+      {history?.reader && history.segments.length > 0 ? <>
+        <div className="qp-history-segments">{history.segments.slice(-3).map((segment, index) => <ol key={`${segment.resetAt}-${index}`} aria-label={`${t('redesign.resetPeriods')} ${index + 1}`}>
+          {segment.samples.slice(-8).map(sample => <li key={sample.observedAt} title={`${date(sample.observedAt)} · ${sample.usedPercent ?? '—'}%`} aria-label={`${date(sample.observedAt)} · ${sample.usedPercent ?? '—'}%`} style={{ height: `${Math.max(4, Math.min(100, sample.usedPercent ?? 0))}%` }}/>)}</ol>)}</div>
+        <p className="qp-footnote">{history.reader.origin} · {history.segments.length} {t('redesign.resetPeriods')} · {history.segments.reduce((sum, segment) => sum + segment.samples.length, 0)} {t('redesign.readings')}</p>
+      </> : <p className="qp-footnote">{historyError ? t('redesign.historyUnavailable') : history || !quota ? t('redesign.noHistory') : t('redesign.historyLoading')}</p>}
+    </details>}
+  </section>;
+}
+
+export function Overview({ records = [], graph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, recent }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -107,6 +155,10 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
   const detail: UsageNode | null = selection ? nodes[selection.dimension].find(node => node.key === selection.key) ?? null : null;
   const number = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 }).format(value);
   const money = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency }).format(currency === 'THB' ? value * rate : value);
+  const coverage = graph?.totals;
+  const inputTotal = coverage ? coverage.inputTokens + coverage.cachedInputTokens + coverage.cacheWriteTokens : 0;
+  const cacheShare = inputTotal > 0 && coverage ? coverage.cachedInputTokens / inputTotal * 100 : null;
+  const activities: readonly ActivityItem[] = recent ?? records.slice(0, 4).map((record, index) => ({ id: record.id, timestamp: now - index * 60_000, harness: record.harness, provider: record.provider, model: record.model, tokens: record.tokens, grain: record.grain === 'call' ? 'call' : 'session_aggregate', sessionKey: null }));
   useEffect(() => {
     if (selection && !dialog.current?.open) dialog.current?.showModal();
   }, [selection]);
@@ -155,12 +207,12 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
               <Metric label={t('redesign.sessions')} value={number(totals.sessions)}/>
               <Metric label={t('redesign.reported')} value={money(totals.reportedCost)}/>
               <Metric label={t('redesign.value')} value={money(totals.apiValue)}/>
-            </div><PulseCore quota={quota} now={now} t={t}/><section className="qp-top-models" id="model-usage"><h3>{t('redesign.models')}</h3>{models.map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span>{model.key ?? t('redesign.unavailable')}</span><strong>{number(model.tokens)}</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</section></div>
+            </div><PulseCore quota={quota} now={now} t={t}/><section className="qp-top-models" id="model-usage"><h3>{t('redesign.models')}</h3>{models.map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span>{model.key ?? t('redesign.unknownValue')}</span><strong>{number(model.tokens)}</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</section></div>
             <p className="qp-footnote">{t('redesign.scope')}</p>
           </section>
           <section className="qp-panel qp-quotas"><h2><CircleGauge size={18}/>{t('redesign.windows')}</h2>
             {quotas.length === 0 && <p className="qp-footnote">{t('redesign.unavailable')}</p>}
-            {quotas.map(item => { const reading = quotaState(item, now, preview ? 300000 : 3600000); return <button className="qp-quota" key={item.id} aria-pressed={quota?.id === item.id} onClick={() => setQuotaId(item.id)}>
+            {quotas.map(item => { const reading = quotaState(item, now, preview ? 300000 : 3600000); return <button className="qp-quota" key={item.id} aria-pressed={quota?.id === item.id} onClick={() => { setQuotaId(item.id); onQuotaSelect?.(item.id); }}>
               <span className="qp-quota-heading"><strong>{item.owner}</strong><span>{item.window}</span></span>
               <span className="qp-quota-number">{reading.remaining === null ? '—' : `${reading.remaining}%`} <small>{t('redesign.remaining')}</small></span>
               <span className="qp-bar"><span style={{ width: `${reading.remaining ?? 0}%` }}/></span>
@@ -171,12 +223,26 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
         </div>
         <RuntimeMap nodes={nodes} edges={edges} recordCount={totals.records} t={t} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
         <div className="qp-bottom-grid">
-          <section className="qp-panel"><h2><Box size={18}/>{t('redesign.detail')}</h2><div className="qp-coverage"><Metric label={t('redesign.calls')} value={number(totals.callRecords)}/><Metric label={t('redesign.aggregates')} value={number(totals.aggregateRecords)}/><Metric label={t('redesign.unknown')} value={number(totals.unknownCostRecords)}/></div><p className="qp-footnote">{t('redesign.coverage')}</p></section>
+          <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
+          <section className="qp-panel qp-insights" data-testid="usage-insights"><h2><Box size={18}/>{t('redesign.insights')}</h2>
+            <div className="qp-insight-grid"><Metric label={t('redesign.cacheShare')} value={cacheShare === null ? '—' : `${number(cacheShare)}%`}/><Metric label={t('redesign.cacheSaving')} value={coverage && coverage.cacheSavingKnownCalls > 0 ? money(coverage.cacheSavingKnownUsd) : '—'}/></div>
+            <p className="qp-footnote">{cacheShare === null ? t('redesign.noInput') : `${number(coverage!.cachedInputTokens)} / ${number(inputTotal)}`}. {coverage && coverage.cacheSavingKnownCalls > 0 ? `${number(coverage.cacheSavingKnownCalls)} ${t('redesign.knownCalls')}` : t('redesign.noCachePrice')}.</p>
+            <h3>{t('redesign.detail')}</h3><div className="qp-coverage"><Metric label={t('redesign.calls')} value={number(totals.callRecords)}/><Metric label={t('redesign.aggregates')} value={number(totals.aggregateRecords)}/><Metric label={t('redesign.unknown')} value={number(totals.unknownCostRecords)}/></div><p className="qp-footnote">{t('redesign.coverage')}</p>
+          </section>
         </div>
+        <section className="qp-panel qp-activity" data-testid="recent-activity">
+          <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.activity')}</h2>{!preview && <a href="#history?range=today">{t('redesign.openHistory')} <ArrowUpRight size={14}/></a>}</div>
+          {activities.length === 0 ? <p className="qp-footnote">{t('redesign.noRecent')}</p> : <div className="qp-activity-list">{activities.map(item => {
+            const content = <><strong>{item.harness}<time dateTime={new Date(item.timestamp).toISOString()}>{new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit' }).format(item.timestamp)}</time></strong><span>{item.provider ?? t('redesign.unknownValue')} · {item.model ?? t('redesign.unknownValue')}</span><small>{number(item.tokens)} {t('redesign.tokens')} · {t(item.grain === 'call' ? 'redesign.callRecord' : 'redesign.aggregateUpdate')}</small></>;
+            return preview ? <div className="qp-activity-item" key={item.id}>{content}</div>
+              : <a className="qp-activity-item" key={item.id} href={item.sessionKey !== null ? `#history?range=all&session_id=${item.sessionKey}` : '#history?range=today'} aria-label={`${item.harness} · ${item.model ?? t('redesign.unknownValue')} · ${t('redesign.openHistory')}`}>{content}</a>;
+          })}</div>}
+          <p className="qp-footnote">{t('redesign.activityCaveat')}</p>
+        </section>
       </main>
     </div>
     <dialog ref={dialog} className="qp-dialog" aria-labelledby="qp-detail-title" onClose={() => setSelection(null)}>
-      <div className="qp-section-heading"><h2 id="qp-detail-title">{selection?.key ?? t(selection?.dimension === 'project' ? 'redesign.unassigned' : 'redesign.unavailable')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X/></button></div>
+      <div className="qp-section-heading"><h2 id="qp-detail-title">{selection?.key ?? t(selection?.dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X/></button></div>
       <p>{selection && t(`redesign.${selection.dimension}`)}</p><div className="qp-detail-grid"><Metric label={t('redesign.tokens')} value={number(detail?.tokens ?? 0)}/><Metric label={t('redesign.sessions')} value={number(detail?.sessions ?? 0)}/><Metric label={t('redesign.calls')} value={number(detail?.callRecords ?? 0)}/><Metric label={t('redesign.aggregates')} value={number(detail?.aggregateRecords ?? 0)}/></div>
       <p className="qp-footnote">{t('redesign.coverage')}</p>
     </dialog>

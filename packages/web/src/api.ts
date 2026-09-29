@@ -130,6 +130,27 @@ export interface QuotaForecast {
   projectedFullAt: number | null;
 }
 
+export interface QuotaHistoryResponse {
+  now: number;
+  from: number;
+  to: number;
+  subscriptionKey: string;
+  windowKind: string;
+  available: boolean;
+  reader: {
+    sourceId: number;
+    origin: string;
+    observedAt: number;
+    lastSeenAt: number;
+    sourceFetchedAt: number | null;
+    resetAt: number | null;
+    ageSeconds: number;
+    freshness: 'live' | 'recent' | 'stale' | 'expired' | 'unknown';
+    forecast: QuotaForecast | (Omit<QuotaForecast, 'status'> & { status: 'stale' });
+  } | null;
+  segments: Array<{ resetAt: number | null; samples: Array<{ observedAt: number; lastSeenAt: number; usedPercent: number | null; resetAt: number | null }> }>;
+}
+
 export interface Limit {
   source_id: number;
   harness: string;
@@ -493,6 +514,12 @@ export interface PricingRefresh {
 }
 
 export const api = {
+  quotaHistory: (scope: { subscriptionKey: string; windowKind: string; from?: number; to?: number }) => {
+    const params = new URLSearchParams({ subscription_key: scope.subscriptionKey, window_kind: scope.windowKind });
+    if (scope.from !== undefined) params.set('from', String(scope.from));
+    if (scope.to !== undefined) params.set('to', String(scope.to));
+    return get<QuotaHistoryResponse>(`/api/quota-history?${params}`);
+  },
   runtimeMap: (scope: UsageEventScope) => get<RuntimeGraph>(`/api/runtime-map?${usageEventParams(scope)}`),
   minuteTrend: () => get<MinuteTrendResponse>('/api/trend?bucket=minute&group_by=none'),
   usageEvents: (scope: UsageEventScope, pagination: { limit: number; offset: number }) => {

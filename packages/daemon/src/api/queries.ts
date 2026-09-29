@@ -91,7 +91,7 @@ export interface QuotaTelemetry {
   windows: QuotaWindowTelemetry[];
 }
 
-function freshnessFor(
+export function freshnessFor(
   latestQuotaAt: number | null,
   now: number,
   resetAt: number | null = null,

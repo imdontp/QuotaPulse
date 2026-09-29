@@ -19,6 +19,8 @@ export function HistorySection({ sources }: { sources: Array<{ id: number; displ
   const f = useFormat();
   const { lang } = useI18n();
   const [route, updateRoute] = useUsageRoute('history');
+  const rawSessionId = new URLSearchParams(location.hash.split('?')[1] ?? '').get('session_id');
+  const sessionId = rawSessionId && /^\d+$/.test(rawSessionId) && Number.isSafeInteger(Number(rawSessionId)) && Number(rawSessionId) > 0 ? Number(rawSessionId) : undefined;
   const [draft, setDraft] = useState<Filters>({ grain: 'all' });
   const [filters, setFilters] = useState<Filters>({ grain: 'all' });
   const [offset, setOffset] = useState(0);
@@ -31,7 +33,7 @@ export function HistorySection({ sources }: { sources: Array<{ id: number; displ
   const [exporting, setExporting] = useState(false);
   const [selected, setSelected] = useState<UsageEventRow | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
-  const queryKey = JSON.stringify([route.selection, filters, offset]);
+  const queryKey = JSON.stringify([route.selection, filters, sessionId, offset]);
   const key = JSON.stringify([queryKey, paused]);
   const currentKey = useRef(key);
   currentKey.current = key;
@@ -47,7 +49,7 @@ export function HistorySection({ sources }: { sources: Array<{ id: number; displ
     try {
       const usage = await api.usage({ ...route.selection, bucket: route.selection.bucket ?? 'auto' });
       if (!current()) return;
-      const result = await api.usageEvents({ from: usage.range.from, to: usage.range.to, sourceId: route.selection.sourceId, ...filters }, { limit: 50, offset });
+      const result = await api.usageEvents({ from: usage.range.from, to: usage.range.to, sourceId: route.selection.sourceId, sessionId, ...filters }, { limit: 50, offset });
       if (!current()) return;
       if (result.total > 0 && offset >= result.total) { setOffset(0); return; }
       setSnapshot(result);
@@ -84,6 +86,7 @@ export function HistorySection({ sources }: { sources: Array<{ id: number; displ
   const basis = (row: UsageEventRow) => t(row.cost_usd === null || !['native', 'computed', 'estimated'].includes(row.cost_source) ? 'history.unknownCost' : `history.${row.cost_source as 'native' | 'computed' | 'estimated'}`);
   const canExport = !!snapshot && snapshotKey === queryKey && !paused && !loading && !exporting && !error;
   return <div className="flex min-w-0 flex-col gap-3.5" data-testid="usage-history">
+    {sessionId !== undefined && <div className="flex items-center gap-3 text-xs" role="status"><span>{t('history.session')} #{sessionId}</span><a className="underline" href="#history?range=all">{t('history.clearSession')}</a></div>}
     <fieldset disabled={paused} className="min-w-0 border-0 p-0"><UsageRangeBar route={route} sources={sources} showBucket={false} onChange={next => { setOffset(0); updateRoute(next); }}/></fieldset>
     <form onSubmit={event => { event.preventDefault(); setOffset(0); setFilters({ ...draft, project: draft.projectMissing ? undefined : draft.project }); }}>
       <fieldset disabled={paused} className="grid min-w-0 grid-cols-1 gap-3 rounded-lg border p-3 sm:grid-cols-2 xl:grid-cols-3">

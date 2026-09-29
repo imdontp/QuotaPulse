@@ -14,6 +14,9 @@ export interface UsageRecord {
 
 export interface QuotaWindow {
   id: string;
+  ownerKey?: string;
+  sourceId?: number;
+  origin?: string;
   owner: string;
   window: string;
   usedPercent: number | null;
@@ -22,6 +25,7 @@ export interface QuotaWindow {
   confirmedAt?: number;
   freshness?: 'live' | 'recent' | 'stale' | 'unknown' | 'expired' | 'mixed';
   projectedFullAt?: number | null;
+  forecastStatus?: 'ready' | 'insufficient' | 'flat' | 'reset';
 }
 
 export function quotaState(quota: QuotaWindow, now: number, staleAfterMs: number) {
@@ -48,6 +52,26 @@ export function defaultQuota(quotas: readonly QuotaWindow[], now: number, staleA
       JSON.stringify([a.owner, a.window, a.id]).localeCompare(JSON.stringify([b.owner, b.window, b.id])))[0];
 }
 
+export function runwayState(quota: QuotaWindow | undefined, now: number, staleAfterMs: number) {
+  if (!quota) return { status: 'unavailable' as const, reason: 'noQuota' as const };
+  if (!Number.isFinite(quota.resetAt) || quota.resetAt <= 0) return { status: 'unavailable' as const, reason: 'noReset' as const };
+  if (quota.resetAt <= now) return { status: 'unavailable' as const, reason: 'reset' as const };
+  const reading = quotaState(quota, now, staleAfterMs);
+  if (reading.stale) return { status: 'unavailable' as const, reason: 'stale' as const };
+  if (reading.remaining === null) return { status: 'unavailable' as const, reason: 'unknown' as const };
+  const hoursUntilReset = (quota.resetAt - now) / 3_600_000;
+  const projectedFullAt = quota.forecastStatus === 'ready' && quota.projectedFullAt != null &&
+    Number.isFinite(quota.projectedFullAt) && quota.projectedFullAt > now ? quota.projectedFullAt : null;
+  return {
+    status: 'ready' as const,
+    safePace: reading.remaining / hoursUntilReset,
+    hoursUntilReset,
+    projectedFullAt,
+    projectedBeforeReset: projectedFullAt !== null && projectedFullAt < quota.resetAt,
+    forecastStatus: quota.forecastStatus ?? 'insufficient',
+  };
+}
+
 export function summarize(records: readonly UsageRecord[]) {
   return {
     tokens: records.reduce((sum, row) => sum + row.tokens, 0),
@@ -64,9 +88,20 @@ export type Dimension = 'project' | 'harness' | 'provider' | 'model';
 export const dimensions: readonly Dimension[] = ['project', 'harness', 'provider', 'model'];
 export type UsageSummary = ReturnType<typeof summarize> & { records: number };
 export type UsageNode = UsageSummary & { key: string | null };
+export interface RuntimeCoverage {
+  inputTokens: number;
+  cachedInputTokens: number;
+  cacheWriteTokens: number;
+  cacheSavingKnownUsd: number;
+  cacheSavingKnownCalls: number;
+  nativeCalls: number;
+  computedCalls: number;
+  estimatedCalls: number;
+  unknownCalls: number;
+}
 export interface RuntimeGraph {
-  totals: UsageSummary;
-  nodes: Record<Dimension, UsageNode[]>;
+  totals: UsageSummary & RuntimeCoverage;
+  nodes: Record<Dimension, Array<UsageNode & RuntimeCoverage>>;
   edges: Array<{ column: number; from: string | null; to: string | null; tokens: number }>;
   now: number;
 }

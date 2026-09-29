@@ -45,6 +45,7 @@ test('usage-events and CSV share exact scope, grain and complete pagination', as
         ['&provider=openrouter&vendor=openai', [1]], ['&provider=openai', []],
         ['&harness=hermes&grain=session_aggregate', [2]], ['&grain=call', [1]],
         ['&grain=unknown', [3]], ['&source_id=1&model=gpt-test', [1]],
+        ['&session_id=1', [1]],
         ['&q=%27%20OR%201%3D1--', []],
       ] as const;
       for (const [scope, ids] of cases) {
@@ -59,7 +60,7 @@ test('usage-events and CSV share exact scope, grain and complete pagination', as
       }
     });
     await t.test('invalid supplied values fail rather than silently changing query meaning', async () => {
-      for (const query of ['limit=0', 'limit=501', 'limit=1.1', 'offset=-1', 'source_id=0', 'source_id=', 'grain=live', 'project_missing=0', 'project_missing=1&project=x', 'unknown=x', 'q=', 'q=a&q=b', 'from=1&from=2', 'from=200&to=100', 'to=999999999999999999']) {
+      for (const query of ['limit=0', 'limit=501', 'limit=1.1', 'offset=-1', 'source_id=0', 'source_id=', 'session_id=0', 'session_id=x', 'grain=live', 'project_missing=0', 'project_missing=1&project=x', 'unknown=x', 'q=', 'q=a&q=b', 'from=1&from=2', 'from=200&to=100', 'to=999999999999999999']) {
         const response = await app.inject({ url: '/api/usage-events?' + query, headers });
         assert.equal(response.statusCode, 400, query);
       }
@@ -111,6 +112,8 @@ test('usage-events and CSV share exact scope, grain and complete pagination', as
     });
     await t.test('runtime nodes and edges conserve scoped tokens and count sessions distinctly', async () => {
       insert.run(1, 1, 'second-model-same-session', 150, 'other-model', 'openrouter', 1);
+      db.prepare(`UPDATE usage_event SET input_tokens=4,cached_input_tokens=5,cache_write_tokens=1,
+        cost_usd=0.2,cost_source='computed',cost_cache_saving_usd=0.01 WHERE id=1`).run();
       const response = await app.inject({ url: '/api/runtime-map?from=0&to=200', headers });
       assert.equal(response.statusCode, 200);
       const body = response.json();
@@ -118,6 +121,9 @@ test('usage-events and CSV share exact scope, grain and complete pagination', as
       assert.equal(body.totals.sessions, 3);
       assert.equal(body.totals.tokens, 1029);
       assert.equal(body.totals.aggregateRecords, 1);
+      assert.equal(body.totals.inputTokens + body.totals.cachedInputTokens + body.totals.cacheWriteTokens, 10);
+      assert.equal(body.totals.cacheSavingKnownCalls, 1);
+      assert.equal(body.totals.cacheSavingKnownUsd, 0.01);
       assert.equal(body.nodes.project.find((node: { key: string }) => node.key === 'project_100%').sessions, 1);
       assert.equal(body.nodes.model.filter((node: { key: string }) => ['gpt-test', 'other-model'].includes(node.key)).reduce((sum: number, node: { sessions: number }) => sum + node.sessions, 0), 2);
       for (const dimension of ['project', 'harness', 'provider', 'model']) {

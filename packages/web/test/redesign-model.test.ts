@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { defaultQuota, groupUsage, quotaState, runtimeEdges, summarize } from '../src/redesign/model.ts';
+import { defaultQuota, groupUsage, quotaState, runtimeEdges, runwayState, summarize } from '../src/redesign/model.ts';
 import { fixtureNow, fixtureQuotas, fixtureRecords } from '../src/redesign/fixture.ts';
 
 test('usage preserves distinct sessions, record grain and separate money bases', () => {
@@ -43,4 +43,18 @@ test('default core picks the most used fresh window and stays unavailable when a
   const stale = fixtureQuotas.map(quota => ({ ...quota, confirmedAt: fixtureNow - 600000 }));
   assert.equal(defaultQuota(stale, fixtureNow, 300000), undefined);
   assert.equal(defaultQuota([{ ...fixtureQuotas[0]!, usedPercent: null }], fixtureNow, 300000), undefined);
+});
+
+test('runway uses percentage points of the selected window and suppresses stale projections', () => {
+  const quota = { ...fixtureQuotas[0]!, forecastStatus: 'ready' as const, projectedFullAt: fixtureNow + 3_600_000 };
+  assert.deepEqual(runwayState(quota, fixtureNow, 300000), {
+    status: 'ready', safePace: 31, hoursUntilReset: 2,
+    projectedFullAt: fixtureNow + 3_600_000, projectedBeforeReset: true, forecastStatus: 'ready',
+  });
+  assert.equal(runwayState({ ...quota, confirmedAt: fixtureNow - 600000 }, fixtureNow, 300000).reason, 'stale');
+  assert.equal(runwayState({ ...quota, resetAt: fixtureNow }, fixtureNow, 300000).reason, 'reset');
+  assert.equal(runwayState({ ...quota, resetAt: 0 }, fixtureNow, 300000).reason, 'noReset');
+  assert.equal(runwayState({ ...quota, usedPercent: null }, fixtureNow, 300000).reason, 'unknown');
+  assert.equal(runwayState(undefined, fixtureNow, 300000).reason, 'noQuota');
+  assert.equal(runwayState({ ...quota, forecastStatus: 'insufficient' }, fixtureNow, 300000).projectedFullAt, null);
 });

@@ -1,0 +1,25 @@
+{
+  "database": "in-memory synthetic",
+  "checks": [
+    "real authenticated API",
+    "53 records across pages",
+    "metadata details",
+    "pause suppresses fetch",
+    "pause ignores in-flight results",
+    "resume resets page",
+    "literal search",
+    "whole-range CSV",
+    "empty and unassigned",
+    "failed request retains snapshot and disables export",
+    "recovery",
+    "en/th, dark/light, 390/900/1440",
+    "currency preference",
+    "30-minute call-only chart with aggregate exclusion",
+    "production overview uses scoped graph",
+    "fresh reader and two quota-history segments",
+    "safe pace and cache insight",
+    "activity opens session-scoped History",
+    "no page errors"
+  ],
+  "requestCount": 34
+}

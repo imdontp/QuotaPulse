@@ -13,6 +13,7 @@ import { resolveUsagePeriod, type UsageBucket, type UsageRangeKey } from './usag
 import { parseUsagePagination, parseUsageScope, type UsageScope } from './usage-scope.js';
 import { minuteTrend, MINUTE_GROUPS, type MinuteGroup } from './minute-trend.js';
 import { runtimeMap } from './runtime-map.js';
+import { parseQuotaHistoryScope, quotaHistory } from './quota-history.js';
 
 const log = logger('api');
 
@@ -294,6 +295,18 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     harnesses: q.harnessStatus(db),
     accounts: q.accountStatus(db),
   }));
+
+  app.get('/api/quota-history', async (req, reply) => {
+    const now = Date.now();
+    try {
+      return quotaHistory(db, parseQuotaHistoryScope(req.query as Record<string, unknown>, now), now);
+    } catch (error) {
+      if (error instanceof Error && (error.message.startsWith('Invalid ') || error.message.startsWith('Unknown ') || error.message.startsWith('Quota-history range'))) {
+        return reply.code(400).send({ error: error.message });
+      }
+      throw error;
+    }
+  });
 
   app.get('/api/usage', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;

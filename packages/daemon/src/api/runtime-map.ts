@@ -16,7 +16,16 @@ const TOTALS = `COALESCE(SUM(u.total_tokens),0) AS tokens,
   COALESCE(SUM(CASE WHEN (${USAGE_GRAIN_SQL})='session_aggregate' THEN 1 ELSE 0 END),0) AS aggregateRecords,
   COALESCE(SUM(CASE WHEN u.cost_source='native' THEN u.cost_usd ELSE 0 END),0) AS reportedCost,
   COALESCE(SUM(CASE WHEN u.cost_source IN ('computed','estimated') THEN u.cost_usd ELSE 0 END),0) AS apiValue,
-  COALESCE(SUM(CASE WHEN u.cost_usd IS NULL OR u.cost_source='unknown' THEN 1 ELSE 0 END),0) AS unknownCostRecords`;
+  COALESCE(SUM(CASE WHEN u.cost_usd IS NULL OR u.cost_source='unknown' THEN 1 ELSE 0 END),0) AS unknownCostRecords,
+  COALESCE(SUM(u.input_tokens),0) AS inputTokens,
+  COALESCE(SUM(u.cached_input_tokens),0) AS cachedInputTokens,
+  COALESCE(SUM(u.cache_write_tokens),0) AS cacheWriteTokens,
+  COALESCE(SUM(CASE WHEN u.cost_cache_saving_usd IS NOT NULL THEN u.cost_cache_saving_usd ELSE 0 END),0) AS cacheSavingKnownUsd,
+  COALESCE(SUM(CASE WHEN u.cost_cache_saving_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS cacheSavingKnownCalls,
+  COALESCE(SUM(CASE WHEN u.cost_source='native' THEN u.call_count ELSE 0 END),0) AS nativeCalls,
+  COALESCE(SUM(CASE WHEN u.cost_source='computed' THEN u.call_count ELSE 0 END),0) AS computedCalls,
+  COALESCE(SUM(CASE WHEN u.cost_source='estimated' THEN u.call_count ELSE 0 END),0) AS estimatedCalls,
+  COALESCE(SUM(CASE WHEN u.cost_source='unknown' OR u.cost_usd IS NULL THEN u.call_count ELSE 0 END),0) AS unknownCalls`;
 
 /** Read-only graph facts. Every node calculates DISTINCT sessions in its own scope. */
 export function runtimeMap(db: DB, scope: UsageScope) {
@@ -27,6 +36,9 @@ export function runtimeMap(db: DB, scope: UsageScope) {
     const totals = db.prepare(`SELECT ${TOTALS} ${from}`).get(where.params) as {
       tokens: number; records: number; sessions: number; callRecords: number;
       aggregateRecords: number; reportedCost: number; apiValue: number; unknownCostRecords: number;
+      inputTokens: number; cachedInputTokens: number; cacheWriteTokens: number;
+      cacheSavingKnownUsd: number; cacheSavingKnownCalls: number;
+      nativeCalls: number; computedCalls: number; estimatedCalls: number; unknownCalls: number;
     };
     const nodes = {} as Record<Dimension, Array<typeof totals & { key: string | null }>>;
     for (const dimension of ORDER) {

@@ -5,6 +5,7 @@ export interface UsageScope {
   from: number;
   to: number;
   sourceId?: number;
+  sessionId?: number;
   project?: string;
   projectMissing?: boolean;
   harness?: string;
@@ -20,7 +21,7 @@ export const USAGE_GRAIN_SQL = `CASE WHEN s.harness = 'hermes' THEN 'session_agg
   WHEN s.harness IN ('codex', 'claude-code', 'opencode') THEN 'call' ELSE 'unknown' END`;
 
 export function parseUsageScope(query: Record<string, unknown>, now: number, options: { requireRange?: boolean; extraKeys?: string[] } = {}): UsageScope {
-  const allowed = new Set(['from', 'to', 'source_id', 'project', 'project_missing', 'harness', 'provider', 'vendor', 'model', 'q', 'grain', ...(options.extraKeys ?? [])]);
+  const allowed = new Set(['from', 'to', 'source_id', 'session_id', 'project', 'project_missing', 'harness', 'provider', 'vendor', 'model', 'q', 'grain', ...(options.extraKeys ?? [])]);
   for (const [key, value] of Object.entries(query)) {
     if (!allowed.has(key) || typeof value !== 'string') throw new Error(`Invalid query parameter: ${key}`);
   }
@@ -40,6 +41,10 @@ export function parseUsageScope(query: Record<string, unknown>, now: number, opt
   if (query.source_id !== undefined) {
     scope.sourceId = integer('source_id');
     if (scope.sourceId < 1) throw new Error('Invalid source_id');
+  }
+  if (query.session_id !== undefined) {
+    scope.sessionId = integer('session_id');
+    if (scope.sessionId < 1) throw new Error('Invalid session_id');
   }
   if (query.project_missing !== undefined) {
     if (query.project_missing !== '1' || query.project !== undefined) throw new Error('project_missing=1 is exclusive with project');
@@ -65,6 +70,7 @@ export function usageWhere(scope: UsageScope) {
   const clauses = ['u.ts >= @from', 'u.ts < @to'];
   const params: Record<string, string | number> = { from: scope.from, to: scope.to };
   if (scope.sourceId !== undefined) { clauses.push('u.source_id = @sourceId'); params.sourceId = scope.sourceId; }
+  if (scope.sessionId !== undefined) { clauses.push('u.session_id = @sessionId'); params.sessionId = scope.sessionId; }
   if (scope.projectMissing) clauses.push('sess.project IS NULL');
   for (const [key, column] of [
     ['project', 'sess.project'], ['harness', 's.harness'], ['provider', 'u.provider'],

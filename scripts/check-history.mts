@@ -21,6 +21,10 @@ db.prepare(`UPDATE source SET account_key='openai:subscription', account_provide
   account_display_name='OpenAI Test Subscription', account_state='active', account_last_success_at=? WHERE id=1`).run(now - 15000);
 db.prepare(`INSERT INTO limit_sample(source_id,window_kind,used_percent,resets_at,observed_at,last_seen_at,source_fetched_at,origin)
   VALUES (1,'5h',38,?,?,?,?,?)`).run(now + 7200000, now - 15000, now - 15000, now - 15000, 'live-synthetic');
+for (const [used, observed, reset] of [[80, now - 10800000, now - 7200000], [10, now - 2400000, now + 7200000], [20, now - 1200000, now + 7200000]]) {
+  db.prepare(`INSERT INTO limit_sample(source_id,window_kind,used_percent,resets_at,observed_at,last_seen_at,source_fetched_at,origin)
+    VALUES (1,'5h',?,?,?,?,?,?)`).run(used, reset, observed, observed, observed, 'live-synthetic');
+}
 db.prepare(`INSERT INTO limit_sample(source_id,window_kind,used_percent,resets_at,observed_at,last_seen_at,source_fetched_at,origin)
   VALUES (1,'5h',92,?,?,?,?,?)`).run(now + 7200000, now - 7200000, now - 7200000, now - 7200000, 'old-fallback');
 const insert = db.prepare(`INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,total_tokens,call_count,cost_usd,cost_source)
@@ -29,6 +33,8 @@ db.transaction(() => {
   for (let i = 0; i < 52; i++) insert.run(1, 1, `test-${i}`, now - 1000 - i, 'gpt-test', 'openrouter', 100 + i);
   insert.run(2, 2, 'aggregate', now - 2000, 'claude-test', 'anthropic', 999);
 })();
+db.prepare(`UPDATE usage_event SET input_tokens=40,cached_input_tokens=20,
+  output_tokens=total_tokens-60,cost_cache_saving_usd=0.03 WHERE source_id=1`).run();
 const daemon = buildServer(db, new Scheduler(db, [], { pollMs: 1000000, detectMs: 1000000 }), { token: 'history-test', port: 7800, webRoot: resolve(root, 'packages/web/dist') });
 const vite = await createServer({ root: resolve(root, 'packages/web'), server: { host: '127.0.0.1', port: 7801, strictPort: true, proxy: { '/api': { target: 'http://127.0.0.1:7800', changeOrigin: true } } } });
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
@@ -151,6 +157,12 @@ try {
   assert.equal(await overview.locator('.qp-pulse-label strong').textContent(), '62%');
   assert.equal(await overview.locator('.qp-metrics strong').nth(1).textContent(), '2');
   assert.match(await overview.locator('.qp-metrics strong').nth(3).textContent() ?? '', /฿|THB/);
+  await overview.getByTestId('quota-history').locator('summary').click();
+  await overview.getByTestId('quota-history').locator('.qp-history-segments ol').first().waitFor();
+  assert.equal(await overview.getByTestId('quota-history').locator('.qp-history-segments ol').count(), 2);
+  await overview.getByTestId('quota-history').locator('summary').click();
+  assert.match(await overview.getByTestId('quota-runway').innerText(), /31/);
+  assert.match(await overview.getByTestId('usage-insights').innerText(), /33%/);
   assert.equal(await overview.getByText('ตัวอย่างดีไซน์', { exact: false }).count(), 0);
   await overview.locator('.qp-map-node').filter({ hasText: 'alpha_100%' }).click();
   await page.getByRole('dialog').waitFor();
@@ -159,7 +171,7 @@ try {
   for (const width of [390, 900, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `overview overflow at ${width}`);
-    await page.screenshot({ path: resolve(output, `overview-real-th-light-${width}.png`) });
+    await page.screenshot({ path: resolve(output, `overview-real-th-light-${width}.png`), fullPage: true });
   }
   await page.evaluate(() => {
     localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'en', currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
@@ -168,14 +180,17 @@ try {
   await page.reload();
   await overview.locator('.qp-metrics strong').first().getByText('7,525').waitFor();
   assert.equal(await overview.getAttribute('data-theme'), 'dark');
-  await page.screenshot({ path: resolve(output, 'overview-real-en-dark-1440.png') });
-  await overview.getByRole('link', { name: 'History', exact: true }).click();
-  await page.waitForURL('**/#history');
+  await page.screenshot({ path: resolve(output, 'overview-real-en-dark-1440.png'), fullPage: true });
+  await overview.getByTestId('recent-activity').locator('a.qp-activity-item').first().click();
+  await page.waitForURL('**/#history?range=all&session_id=1');
   await page.getByRole('heading', { name: 'Usage records', exact: true }).waitFor();
+  await page.getByTestId('usage-history').getByText('1–50 of 52 records', { exact: true }).waitFor();
+  await page.getByTestId('usage-history').getByRole('link', { name: 'Show all sessions', exact: true }).click();
+  await page.getByTestId('usage-history').getByText('1–50 of 53 records', { exact: true }).waitFor();
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th × dark/light × 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph and routes back to History', 'no page errors'], requestCount: requests.length }, null, 2));
-  console.log('History E2E passed: real HTTP and in-memory SQLite, pagination, filters, pause, CSV, responsive layout.');
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'no page errors'], requestCount: requests.length }, null, 2));
+  console.log('History/Overview E2E passed: authenticated HTTP and in-memory SQLite, pagination, filters, quota runway, activity, responsive layout.');
 } finally {
   await browser?.close();
   await vite.close();

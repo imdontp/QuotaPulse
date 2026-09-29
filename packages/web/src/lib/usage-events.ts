@@ -3,6 +3,7 @@ export interface UsageEventScope {
   from: number;
   to: number;
   sourceId?: number;
+  sessionId?: number;
   project?: string;
   projectMissing?: boolean;
   harness?: string;
@@ -17,6 +18,7 @@ export interface UsageEventScope {
 export function usageEventParams(scope: UsageEventScope): URLSearchParams {
   const params = new URLSearchParams({ from: String(scope.from), to: String(scope.to) });
   if (scope.sourceId !== undefined) params.set('source_id', String(scope.sourceId));
+  if (scope.sessionId !== undefined) params.set('session_id', String(scope.sessionId));
   if (scope.projectMissing) params.set('project_missing', '1');
   for (const key of ['project', 'harness', 'provider', 'vendor', 'model', 'q', 'grain'] as const) {
     if (scope[key] !== undefined) params.set(key, scope[key]!);
