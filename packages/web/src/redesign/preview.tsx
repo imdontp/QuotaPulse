@@ -16,5 +16,5 @@ export default function Preview() {
     usedPercent: scenario === 'critical' ? 97 : quota.usedPercent,
     observedAt: scenario === 'stale' ? fixtureNow - 600000 : quota.observedAt,
   }));
-  return <Overview records={records} quotas={quotas} now={fixtureNow} language={language} onLanguage={() => setLanguage(language === 'en' ? 'th' : 'en')} t={key => messages[key]}/>;
+  return <Overview preview records={records} quotas={quotas} now={fixtureNow} language={language} onLanguage={() => setLanguage(language === 'en' ? 'th' : 'en')} t={key => messages[key]}/>;
 }

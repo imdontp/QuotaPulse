@@ -19,18 +19,33 @@ export interface QuotaWindow {
   usedPercent: number | null;
   observedAt: number;
   resetAt: number;
+  confirmedAt?: number;
+  freshness?: 'live' | 'recent' | 'stale' | 'unknown' | 'expired' | 'mixed';
+  projectedFullAt?: number | null;
 }
 
 export function quotaState(quota: QuotaWindow, now: number, staleAfterMs: number) {
-  const stale = !Number.isFinite(quota.observedAt) || quota.observedAt > now ||
-    now - quota.observedAt > staleAfterMs || !Number.isFinite(quota.resetAt) || quota.resetAt <= now;
+  const confirmedAt = quota.confirmedAt ?? quota.observedAt;
+  const stale = !Number.isFinite(confirmedAt) || confirmedAt > now ||
+    now - confirmedAt > staleAfterMs || !Number.isFinite(quota.resetAt) || quota.resetAt <= now ||
+    (quota.freshness != null && !['live', 'recent'].includes(quota.freshness));
   const used = quota.usedPercent;
-  const known = used !== null && Number.isFinite(used) && used >= 0 && used <= 100;
+  const known = used !== null && Number.isFinite(used) && used >= 0;
   return {
     stale,
-    remaining: known ? 100 - used : null,
-    risk: stale || !known ? 'unknown' : used >= 95 ? 'critical' : used >= 80 ? 'warning' : 'normal',
+    remaining: known ? Math.max(0, 100 - used) : null,
+    risk: stale || !known ? 'unknown' : used >= 95 ||
+      (quota.projectedFullAt != null && quota.projectedFullAt > now && quota.projectedFullAt < quota.resetAt)
+      ? 'critical' : used >= 80 ? 'warning' : 'normal',
   } as const;
+}
+
+/** Choose the most used currently reliable window; never imply a stale default is live. */
+export function defaultQuota(quotas: readonly QuotaWindow[], now: number, staleAfterMs: number) {
+  return quotas.filter(quota => !quotaState(quota, now, staleAfterMs).stale &&
+    quotaState(quota, now, staleAfterMs).remaining !== null)
+    .sort((a, b) => (b.usedPercent ?? 0) - (a.usedPercent ?? 0) ||
+      JSON.stringify([a.owner, a.window, a.id]).localeCompare(JSON.stringify([b.owner, b.window, b.id])))[0];
 }
 
 export function summarize(records: readonly UsageRecord[]) {
@@ -47,6 +62,14 @@ export function summarize(records: readonly UsageRecord[]) {
 
 export type Dimension = 'project' | 'harness' | 'provider' | 'model';
 export const dimensions: readonly Dimension[] = ['project', 'harness', 'provider', 'model'];
+export type UsageSummary = ReturnType<typeof summarize> & { records: number };
+export type UsageNode = UsageSummary & { key: string | null };
+export interface RuntimeGraph {
+  totals: UsageSummary;
+  nodes: Record<Dimension, UsageNode[]>;
+  edges: Array<{ column: number; from: string | null; to: string | null; tokens: number }>;
+  now: number;
+}
 
 export function groupUsage(records: readonly UsageRecord[], dimension: Dimension) {
   const groups = new Map<string | null, UsageRecord[]>();
@@ -56,7 +79,7 @@ export function groupUsage(records: readonly UsageRecord[], dimension: Dimension
     rows.push(record);
     groups.set(key, rows);
   }
-  return [...groups].map(([key, rows]) => ({ key, ...summarize(rows) }))
+  return [...groups].map(([key, rows]) => ({ key, ...summarize(rows), records: rows.length }))
     .sort((a, b) => b.tokens - a.tokens || String(a.key).localeCompare(String(b.key)));
 }
 

@@ -94,7 +94,7 @@ try {
   assert.deepEqual(forbidden, [], 'scenario daemon or external requests');
   const assets = resolve(repo, 'packages/web/dist/assets');
   const productionJs = readdirSync(assets).filter(name => name.endsWith('.js')).map(name => readFileSync(resolve(assets, name), 'utf8')).join('\n');
-  for (const marker of ['sample-1', 'openai-primary', 'qp-pulse-label', 'redesign-preview']) assert.equal(productionJs.includes(marker), false, `preview leaked into production: ${marker}`);
+  for (const marker of ['sample-1', 'openai-primary', 'anthropic-weekly']) assert.equal(productionJs.includes(marker), false, `preview fixture leaked into production: ${marker}`);
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ checks: ['quota selection', 'node details', 'dialog focus restore', 'en/th × dark/light × 4 widths', 'no page overflow', 'reduced motion', 'no preference writes', 'no daemon/external requests', 'no browser errors', 'production preview exclusion', 'empty/stale/critical/long-name scenarios'], profile: { initialReadyMs, initialRequests, mode: 'Vite development, headless Chrome; not a production performance score' }, measurements, screenshots, visualApproval: 'pending' }, null, 2));
   console.log(`Redesign pilot: all checks passed; ${screenshots.length} screenshots saved to screens/redesign-foundation.`);
 } finally {

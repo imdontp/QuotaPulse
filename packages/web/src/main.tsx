@@ -1,6 +1,8 @@
-import { StrictMode } from 'react';
+import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from '@/App';
+import { I18nProvider } from '@/i18n';
+import { ProductionOverview } from '@/redesign/production';
 /*
  * Fonts are bundled, not fetched. index.html used to pull Geist from fonts.googleapis.com
  * on every page load, which quietly broke the promise made in four places in the README
@@ -14,11 +16,20 @@ import '@fontsource-variable/geist-mono/wght.css';
 import '@/index.css';
 
 const root = createRoot(document.getElementById('root')!);
+function RoutedApp() {
+  const [overview, setOverview] = useState(() => location.hash.slice(1).split('?')[0] === 'overview');
+  useEffect(() => {
+    const onHash = () => setOverview(location.hash.slice(1).split('?')[0] === 'overview');
+    addEventListener('hashchange', onHash);
+    return () => removeEventListener('hashchange', onHash);
+  }, []);
+  return overview ? <I18nProvider><ProductionOverview /></I18nProvider> : <App />;
+}
 // The fixture and preview UI are excluded from production builds by Vite.
 if (import.meta.env.DEV && new URLSearchParams(location.search).get('mode') === 'redesign-preview') {
   void import('@/redesign/preview').then(({ default: Preview }) => {
     root.render(<StrictMode><Preview /></StrictMode>);
   });
 } else {
-  root.render(<StrictMode><App /></StrictMode>);
+  root.render(<StrictMode><RoutedApp /></StrictMode>);
 }

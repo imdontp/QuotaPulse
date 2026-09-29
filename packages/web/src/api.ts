@@ -1,4 +1,5 @@
 import { usageEventParams, type UsageEventScope, type UsageEventsResponse } from '@/lib/usage-events';
+import type { RuntimeGraph } from '@/redesign/model';
 
 export interface MinuteTrendResponse {
   bucket: 'minute';
@@ -492,6 +493,7 @@ export interface PricingRefresh {
 }
 
 export const api = {
+  runtimeMap: (scope: UsageEventScope) => get<RuntimeGraph>(`/api/runtime-map?${usageEventParams(scope)}`),
   minuteTrend: () => get<MinuteTrendResponse>('/api/trend?bucket=minute&group_by=none'),
   usageEvents: (scope: UsageEventScope, pagination: { limit: number; offset: number }) => {
     const params = usageEventParams(scope);

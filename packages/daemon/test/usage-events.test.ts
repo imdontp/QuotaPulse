@@ -109,6 +109,26 @@ test('usage-events and CSV share exact scope, grain and complete pagination', as
       assert.equal((await get('&project=%3D1%2B1')).json().rows[0].project, '=1+1');
       db.prepare("UPDATE session SET project='project_100%' WHERE id=1").run();
     });
+    await t.test('runtime nodes and edges conserve scoped tokens and count sessions distinctly', async () => {
+      insert.run(1, 1, 'second-model-same-session', 150, 'other-model', 'openrouter', 1);
+      const response = await app.inject({ url: '/api/runtime-map?from=0&to=200', headers });
+      assert.equal(response.statusCode, 200);
+      const body = response.json();
+      assert.equal(body.totals.records, 4);
+      assert.equal(body.totals.sessions, 3);
+      assert.equal(body.totals.tokens, 1029);
+      assert.equal(body.totals.aggregateRecords, 1);
+      assert.equal(body.nodes.project.find((node: { key: string }) => node.key === 'project_100%').sessions, 1);
+      assert.equal(body.nodes.model.filter((node: { key: string }) => ['gpt-test', 'other-model'].includes(node.key)).reduce((sum: number, node: { sessions: number }) => sum + node.sessions, 0), 2);
+      for (const dimension of ['project', 'harness', 'provider', 'model']) {
+        assert.equal(body.nodes[dimension].reduce((sum: number, node: { tokens: number }) => sum + node.tokens, 0), body.totals.tokens, dimension);
+      }
+      for (const column of [0, 1, 2]) assert.equal(body.edges.filter((edge: { column: number }) => edge.column === column).reduce((sum: number, edge: { tokens: number }) => sum + edge.tokens, 0), body.totals.tokens);
+      assert.equal((await app.inject({ url: '/api/runtime-map?from=0&to=200&project_missing=1', headers })).json().totals.records, 1);
+      assert.equal((await app.inject({ url: '/api/runtime-map?from=0&to=200&provider=openrouter', headers })).json().totals.sessions, 1);
+      assert.equal((await app.inject('/api/runtime-map')).statusCode, 401);
+      assert.equal((await app.inject({ url: '/api/runtime-map?project_missing=0', headers })).statusCode, 400);
+    });
     await t.test('pagination and whole-range export exceed the old 2000-row detail cap', async () => {
       db.transaction(() => { for (let index = 0; index < 2005; index++) insert.run(1, 1, `bulk-${index}`, 101, 'bulk-model', 'openai', 1); })();
       const response = (await get('&model=bulk-model&offset=2000&limit=500')).json();

@@ -6,6 +6,13 @@
  * `{placeholders}` are substituted by `t(key, vars)`.
  */
 export const en = {
+  'redesign.live': "Live",
+  'redesign.cost': "Cost",
+  'redesign.history': "History",
+  'redesign.alerts': "Alerts",
+  'redesign.settings': "Settings",
+  'redesign.staleSnapshot': "Showing the last successful overview. Refresh is retrying.",
+  'redesign.topNodes': "Top 8 per column; open History for the full range.",
   'minute.values': "View minute values",
   'minute.lastGood': "Showing the last successful minute snapshot",
   'minute.title': "Recorded tokens / min",

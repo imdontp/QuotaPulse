@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { groupUsage, quotaState, runtimeEdges, summarize } from '../src/redesign/model.ts';
+import { defaultQuota, groupUsage, quotaState, runtimeEdges, summarize } from '../src/redesign/model.ts';
 import { fixtureNow, fixtureQuotas, fixtureRecords } from '../src/redesign/fixture.ts';
 
 test('usage preserves distinct sessions, record grain and separate money bases', () => {
@@ -24,11 +24,23 @@ test('quota risk belongs to one fresh owner/window, invalid values are not norma
   assert.deepEqual(quotaState(quota, fixtureNow, 300000), { stale: false, remaining: 62, risk: 'normal' });
   assert.equal(quotaState(fixtureQuotas[1], fixtureNow, 300000).risk, 'warning');
   assert.equal(quotaState({ ...quota, usedPercent: 95 }, fixtureNow, 300000).risk, 'critical');
+  assert.equal(quotaState({ ...quota, usedPercent: 101 }, fixtureNow, 300000).remaining, 0);
+  assert.equal(quotaState({ ...quota, usedPercent: 101 }, fixtureNow, 300000).risk, 'critical');
+  assert.equal(quotaState({ ...quota, usedPercent: 60, projectedFullAt: fixtureNow + 60000 }, fixtureNow, 300000).risk, 'critical');
+  assert.equal(quotaState({ ...quota, freshness: 'stale' }, fixtureNow, 300000).risk, 'unknown');
+  assert.equal(quotaState({ ...quota, observedAt: fixtureNow - 600000, confirmedAt: fixtureNow - 60000 }, fixtureNow, 300000).risk, 'normal');
   assert.equal(quotaState({ ...quota, observedAt: fixtureNow - 300001 }, fixtureNow, 300000).risk, 'unknown');
   assert.equal(quotaState({ ...quota, resetAt: fixtureNow }, fixtureNow, 300000).risk, 'unknown');
   assert.equal(quotaState({ ...quota, observedAt: fixtureNow + 1 }, fixtureNow, 300000).risk, 'unknown');
-  for (const usedPercent of [null, -1, 101, NaN, Infinity]) {
+  for (const usedPercent of [null, -1, NaN, Infinity]) {
     assert.equal(quotaState({ ...quota, usedPercent }, fixtureNow, 300000).remaining, null);
     assert.equal(quotaState({ ...quota, usedPercent }, fixtureNow, 300000).risk, 'unknown');
   }
+});
+
+test('default core picks the most used fresh window and stays unavailable when all are stale', () => {
+  assert.equal(defaultQuota(fixtureQuotas, fixtureNow, 300000)?.id, 'anthropic-weekly');
+  const stale = fixtureQuotas.map(quota => ({ ...quota, confirmedAt: fixtureNow - 600000 }));
+  assert.equal(defaultQuota(stale, fixtureNow, 300000), undefined);
+  assert.equal(defaultQuota([{ ...fixtureQuotas[0]!, usedPercent: null }], fixtureNow, 300000), undefined);
 });

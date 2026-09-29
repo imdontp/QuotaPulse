@@ -41,6 +41,7 @@ import { UsageSection } from '@/sections/usage';
 import { loadWindowSize } from '@/lib/utils';
 
 const TABS = [
+  { id: 'overview', key: 'redesign.overview', icon: Gauge },
   { id: 'live', key: 'tab.live', icon: Activity },
   { id: 'usage', key: 'tab.usage', icon: BarChart3 },
   { id: 'sessions', key: 'tab.sessions', icon: MessagesSquare },

@@ -12,6 +12,7 @@ import { runtimeSnapshot } from '../runtime.js';
 import { resolveUsagePeriod, type UsageBucket, type UsageRangeKey } from './usage-period.js';
 import { parseUsagePagination, parseUsageScope, type UsageScope } from './usage-scope.js';
 import { minuteTrend, MINUTE_GROUPS, type MinuteGroup } from './minute-trend.js';
+import { runtimeMap } from './runtime-map.js';
 
 const log = logger('api');
 
@@ -353,6 +354,14 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       return reply.code(400).send({ error: (error as Error).message });
     }
     return { ...q.usageEvents(db, scope, pagination), scope, now };
+  });
+
+  app.get('/api/runtime-map', async (req, reply) => {
+    const now = Date.now();
+    let scope: UsageScope;
+    try { scope = parseUsageScope(req.query as Record<string, unknown>, now); }
+    catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
+    return { ...runtimeMap(db, scope), scope, now };
   });
 
   app.get('/api/trend', async (req, reply) => {

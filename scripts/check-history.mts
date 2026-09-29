@@ -17,6 +17,12 @@ const now = Date.now();
 db.exec(`INSERT INTO source(id,harness,profile,root_path,display_name,detected_at) VALUES
   (1,'codex','test','/synthetic/nonexistent','Codex test',0), (2,'hermes','test','/synthetic/nonexistent','Hermes test',0);
   INSERT INTO session(id,source_id,native_session_id,project) VALUES (1,1,'synthetic-session','alpha_100%'), (2,2,'aggregate-session',NULL);`);
+db.prepare(`UPDATE source SET account_key='openai:subscription', account_provider='openai',
+  account_display_name='OpenAI Test Subscription', account_state='active', account_last_success_at=? WHERE id=1`).run(now - 15000);
+db.prepare(`INSERT INTO limit_sample(source_id,window_kind,used_percent,resets_at,observed_at,last_seen_at,source_fetched_at,origin)
+  VALUES (1,'5h',38,?,?,?,?,?)`).run(now + 7200000, now - 15000, now - 15000, now - 15000, 'live-synthetic');
+db.prepare(`INSERT INTO limit_sample(source_id,window_kind,used_percent,resets_at,observed_at,last_seen_at,source_fetched_at,origin)
+  VALUES (1,'5h',92,?,?,?,?,?)`).run(now + 7200000, now - 7200000, now - 7200000, now - 7200000, 'old-fallback');
 const insert = db.prepare(`INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,total_tokens,call_count,cost_usd,cost_source)
   VALUES (?,?,?,?,?,?,?,1,0.2,'computed')`);
 db.transaction(() => {
@@ -139,9 +145,36 @@ try {
   assert.match(await chart.innerText(), /52 ครั้ง/);
   assert.equal(await chart.locator('[role=img] > span').count() >= 30, true);
   await page.screenshot({ path: resolve(output, 'live-minute-th-light.png') });
+  await page.goto('http://127.0.0.1:7801/#overview');
+  const overview = page.getByTestId('production-overview');
+  await overview.locator('.qp-metrics strong').first().getByText('7,525').waitFor();
+  assert.equal(await overview.locator('.qp-pulse-label strong').textContent(), '62%');
+  assert.equal(await overview.locator('.qp-metrics strong').nth(1).textContent(), '2');
+  assert.match(await overview.locator('.qp-metrics strong').nth(3).textContent() ?? '', /฿|THB/);
+  assert.equal(await overview.getByText('ตัวอย่างดีไซน์', { exact: false }).count(), 0);
+  await overview.locator('.qp-map-node').filter({ hasText: 'alpha_100%' }).click();
+  await page.getByRole('dialog').waitFor();
+  assert.match(await page.getByRole('dialog').innerText(), /6,526/);
+  await page.keyboard.press('Escape');
+  for (const width of [390, 900, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `overview overflow at ${width}`);
+    await page.screenshot({ path: resolve(output, `overview-real-th-light-${width}.png`) });
+  }
+  await page.evaluate(() => {
+    localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'en', currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
+    localStorage.setItem('quotapulse-theme', 'dark');
+  });
+  await page.reload();
+  await overview.locator('.qp-metrics strong').first().getByText('7,525').waitFor();
+  assert.equal(await overview.getAttribute('data-theme'), 'dark');
+  await page.screenshot({ path: resolve(output, 'overview-real-en-dark-1440.png') });
+  await overview.getByRole('link', { name: 'History', exact: true }).click();
+  await page.waitForURL('**/#history');
+  await page.getByRole('heading', { name: 'Usage records', exact: true }).waitFor();
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th × dark/light × 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'no page errors'], requestCount: requests.length }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th × dark/light × 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph and routes back to History', 'no page errors'], requestCount: requests.length }, null, 2));
   console.log('History E2E passed: real HTTP and in-memory SQLite, pagination, filters, pause, CSV, responsive layout.');
 } finally {
   await browser?.close();

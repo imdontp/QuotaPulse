@@ -10,6 +10,13 @@ import type { MessageKey } from './en';
  * tools it is describing.
  */
 export const th: Record<MessageKey, string> = {
+  'redesign.live': "สด",
+  'redesign.cost': "ค่าใช้จ่าย",
+  'redesign.history': "ประวัติ",
+  'redesign.alerts': "การแจ้งเตือน",
+  'redesign.settings': "ตั้งค่า",
+  'redesign.staleSnapshot': "กำลังแสดงภาพรวมที่โหลดสำเร็จล่าสุด และพยายามอัปเดตใหม่",
+  'redesign.topNodes': "แสดง 8 อันดับแรกต่อคอลัมน์ ดูรายการทั้งหมดในประวัติ",
   'minute.values': "ดูค่ารายนาที",
   'minute.lastGood': "กำลังแสดงข้อมูลรายนาทีที่โหลดสำเร็จล่าสุด",
   'minute.title': "โทเคนที่บันทึก / นาที",
