@@ -27,6 +27,7 @@
     "shoot:real": "node scripts/shoot-real.mjs",
     "shoot:motion": "node scripts/shoot-motion.mjs",
     "test:ui": "node scripts/check-ui.mjs",
+    "test:visual": "node scripts/check-redesign.mjs",
     "prices:refresh": "node scripts/fetch-prices.mjs",
     "doctor": "node scripts/doctor.mjs"
   },
