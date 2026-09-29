@@ -92,6 +92,7 @@ export const en = {
   'app.lastRefresh': 'last refresh {time}',
   'app.couldNotLoad': 'This could not be loaded.',
   'app.retry': 'Try again',
+  'barList.noData': 'nothing to rank',
 
   // live data status and attention
   'status.title': 'Data status',

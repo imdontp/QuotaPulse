@@ -3,7 +3,9 @@ import { motion } from 'motion/react';
 import { Hint } from '@/components/ui/tooltip';
 import { Empty } from '@/components/primitives';
 import { useFormat } from '@/i18n/format';
+import { useT } from '@/i18n';
 import { tokens } from '@/format';
+import { useMotionPref } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 export type BarMetric = 'total_tokens' | 'cost_usd' | 'calls';
@@ -69,8 +71,12 @@ export function StackedBars({
   empty?: string;
 }) {
   const fmt = useBarFormat(metric);
+  const t = useT();
+  const pref = useMotionPref();
   const max = Math.max(1, ...rows.map((r) => r.total));
-  if (rows.length === 0) return <Empty>{empty ?? 'no data'}</Empty>;
+  // A hardcoded English default in a bilingual app. Callers that pass `empty` were fine;
+  // the two that did not were showing English inside a translated page.
+  if (rows.length === 0) return <Empty>{empty ?? t('barList.noData')}</Empty>;
 
   return (
     <div className="flex flex-col gap-2">
@@ -96,7 +102,9 @@ export function StackedBars({
                 className="flex h-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${(row.total / max) * 100}%` }}
-                transition={{ duration: 0.6, delay: i * 0.03, ease: [0.22, 1, 0.36, 1] }}
+                // No reduced-motion check previously, for the same reason as `BarList` --
+                // a JS animation, so the stylesheet's clamp never reached it.
+                transition={pref.reveal('slow', 'motion', i * 0.03)}
               >
                 {row.segments.map((s) => (
                   <Hint

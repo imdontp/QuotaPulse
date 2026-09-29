@@ -1,38 +1,12 @@
 import * as React from 'react';
-import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Hint } from '@/components/ui/tooltip';
 import { age, freshness } from '@/format';
 import { useT } from '@/i18n';
+import { useMotionPref } from '@/lib/motion';
 import { cn } from '@/lib/utils';
-
-/**
- * Counts to a new value instead of snapping. On a dashboard that repaints itself
- * every few seconds this is what tells you a number MOVED rather than the page
- * having redrawn -- so it is animation carrying information, not decoration.
- */
-export function AnimatedNumber({
-  value,
-  format,
-  className,
-}: {
-  value: number;
-  format: (n: number) => string;
-  className?: string;
-}) {
-  const reduced = useReducedMotion();
-  const mv = useMotionValue(value);
-  const spring = useSpring(mv, { stiffness: 90, damping: 20, mass: 0.6 });
-  const text = useTransform(spring, (v) => format(v));
-
-  React.useEffect(() => {
-    if (reduced) mv.jump(value);
-    else mv.set(value);
-  }, [value, mv, reduced]);
-
-  return <motion.span className={className}>{reduced ? format(value) : text}</motion.span>;
-}
 
 /** Tiny trend line for a stat card. Pure SVG: no library for nine points. */
 export function Sparkline({
@@ -49,6 +23,7 @@ export function Sparkline({
   /* Hooks run before the early return: a sparkline with too few points still has to
      take the same number of hooks as one that renders. */
   const grad = `qp-spark-${React.useId().replace(/:/g, '')}`;
+  const pref = useMotionPref();
   if (points.length < 2) return null;
   const max = Math.max(...points);
   const min = Math.min(...points);
@@ -84,9 +59,15 @@ export function Sparkline({
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        initial={{ pathLength: 0, opacity: 0 }}
+        initial={pref.enter({ pathLength: 0, opacity: 0 })}
         animate={{ pathLength: 1, opacity: 0.9 }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
+        /*
+         * The draw-on was the one motion primitive in this file with no reduced-motion
+         * check, and the stylesheet's clamp could not reach it: a `motion` animation is JS,
+         * not CSS, so `prefers-reduced-motion` never touched it. Someone who asked the OS
+         * for less movement still got a line drawing itself across on every mount.
+         */
+        transition={pref.reveal('deliberate')}
       />
     </svg>
   );
@@ -144,8 +125,12 @@ export function BarList({
   }>;
   className?: string;
 }) {
+  const t = useT();
   const max = Math.max(1, ...rows.map((r) => r.value));
-  if (rows.length === 0) return <div className="text-muted-foreground py-6 text-center text-[13px]">no data</div>;
+  const pref = useMotionPref();
+  // This was a hardcoded English "no data" in a bilingual app, rendered inside an `Empty`
+  // that everything else in the same position had already translated.
+  if (rows.length === 0) return <Empty>{t('barList.noData')}</Empty>;
 
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
@@ -165,7 +150,9 @@ export function BarList({
               style={{ background: r.color ?? 'var(--brand)' }}
               initial={{ width: 0 }}
               animate={{ width: `${(r.value / max) * 100}%` }}
-              transition={{ duration: 0.55, delay: i * 0.025, ease: [0.22, 1, 0.36, 1] }}
+              // No reduced-motion check previously: twenty-odd bars sweeping open on a
+              // monitor page, on every mount, for a reader who asked the OS not to.
+              transition={pref.reveal('slow', 'motion', i * 0.025)}
             />
           </div>
           <div className="tabular w-24 shrink-0 text-right font-mono text-[12.5px]">{r.display}</div>
@@ -177,11 +164,11 @@ export function BarList({
 
 /** Staggered entrance for a group of cards; skipped when the OS asks for less motion. */
 export function Stagger({ children, className }: { children: React.ReactNode; className?: string }) {
-  const reduced = useReducedMotion();
+  const pref = useMotionPref();
   return (
     <motion.div
       className={className}
-      initial={reduced ? false : 'hidden'}
+      initial={pref.enter('hidden')}
       animate="show"
       variants={{ hidden: {}, show: { transition: { staggerChildren: 0.045 } } }}
     >
@@ -190,17 +177,30 @@ export function Stagger({ children, className }: { children: React.ReactNode; cl
   );
 }
 
-export const StaggerItem = ({ children, className }: { children: React.ReactNode; className?: string }) => (
-  <motion.div
-    className={className}
-    variants={{
-      hidden: { opacity: 0, y: 8 },
-      show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
-    }}
-  >
-    {children}
-  </motion.div>
-);
+/**
+ * The item half of the pair, which used to have no motion preference of its own.
+ *
+ * It relied on `Stagger` passing `initial={false}` down through the variant chain, so it
+ * was correct exactly as often as it was used inside a `Stagger` -- and animated a slide-up
+ * for everyone else. `useMotionPref` is one line and removes the coupling, which matters
+ * because the failure mode is invisible: nothing looks wrong, it just moves when it was told
+ * not to.
+ */
+export function StaggerItem({ children, className }: { children: React.ReactNode; className?: string }) {
+  const pref = useMotionPref();
+  return (
+    <motion.div
+      className={className}
+      initial={pref.enter({ opacity: 0, y: 8 })}
+      variants={{
+        hidden: { opacity: 0, y: 8 },
+        show: { opacity: 1, y: 0, transition: pref.reveal('fast') },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export const Empty = ({ children }: { children: React.ReactNode }) => (
   <div className="text-muted-foreground py-8 text-center text-[13px]">{children}</div>

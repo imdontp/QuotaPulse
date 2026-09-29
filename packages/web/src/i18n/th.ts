@@ -80,6 +80,7 @@ export const th: Record<MessageKey, string> = {
   'app.lastRefresh': 'รีเฟรชล่าสุด {time}',
   'app.couldNotLoad': 'โหลดส่วนนี้ไม่สำเร็จ',
   'app.retry': 'ลองอีกครั้ง',
+  'barList.noData': 'ไม่มีอะไรให้จัดอันดับ',
 
   'settings.title': 'การตั้งค่า',
   'settings.language': 'ภาษา',

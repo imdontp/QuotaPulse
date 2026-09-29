@@ -21,7 +21,7 @@ export function SubscriptionCard({ item, now }: { item: SubscriptionSummary; now
   const valid = primary && !isExpired(primary, now) && primary.used_percent != null;
   const used = valid ? Math.min(100, Math.max(0, primary.used_percent!)) : null;
   const color = valid ? `var(--${severityOf(used)})` : 'var(--muted-foreground)';
-  return <Card className={`quota-card min-w-0 h-full ${status === 'attention' ? 'border-warn/35' : ''}`}>
+  return <Card interactive className={`quota-card min-w-0 h-full ${status === 'attention' ? 'border-warn/35' : ''}`}>
     <CardHeader className="items-start">
       <HarnessIcon harness="unknown" vendor={s.provider} label={s.subscription_display_name} className="mt-0.5 shrink-0 text-xl" />
       <CardTitle as="h2" className="min-w-0 break-words leading-snug">{s.subscription_display_name}</CardTitle>

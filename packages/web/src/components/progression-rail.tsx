@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
 import {
   Activity, Anchor, CalendarDays, Database, Flame, Moon, ShieldCheck, Sunrise, Trophy, Wallet, Zap,
   type LucideIcon,
@@ -7,6 +7,7 @@ import { BADGE_META, badgeShelf } from '@/lib/badges';
 import type { BadgeId, Progress } from '@/lib/progress';
 import { Hint } from '@/components/ui/tooltip';
 import { useT } from '@/i18n';
+import { useMotionPref } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 const BADGE_ICON: Record<BadgeId, LucideIcon> = {
@@ -123,7 +124,7 @@ function Stat({ icon: Icon, label, value, tone }: { icon: LucideIcon; label: str
 
 /** A small echo of the quota ring, so the level reads as the same family of object. */
 function LevelDial({ progress }: { progress: Progress }) {
-  const reduced = useReducedMotion();
+  const pref = useMotionPref();
   const t = useT();
   const radius = 17;
   const circumference = 2 * Math.PI * radius;
@@ -139,9 +140,9 @@ function LevelDial({ progress }: { progress: Progress }) {
           stroke="var(--brand)"
           strokeWidth="3"
           strokeLinecap="round"
-          initial={reduced ? false : { strokeDasharray: `0 ${circumference}` }}
+          initial={pref.enter({ strokeDasharray: `0 ${circumference}` })}
           animate={{ strokeDasharray: `${(progress.levelPct / 100) * circumference} ${circumference}` }}
-          transition={{ duration: reduced ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={pref.reveal('deliberate')}
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">

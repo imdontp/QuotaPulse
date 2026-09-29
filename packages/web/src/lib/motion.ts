@@ -1,4 +1,4 @@
-import type { Transition } from 'motion/react';
+import type { TargetAndTransition, Transition, VariantLabels } from 'motion/react';
 import { useReducedMotion } from 'motion/react';
 
 /**
@@ -72,14 +72,14 @@ export interface MotionPref {
   /** Easing curve, by name. */
   ease: (name?: EasingName) => number[];
   /** A transition for a reveal: named duration and the house curve. */
-  reveal: (intent?: MotionIntent, name?: EasingName) => Transition;
+  reveal: (intent?: MotionIntent, name?: EasingName, delay?: number) => Transition;
   /** A spring for a value that should arrive rather than travel. */
   spring: (kind?: keyof typeof SPRING) => Transition;
   /**
    * `initial` for an entrance. `false` under reduced motion, which is what tells `motion`
    * to skip the enter phase entirely instead of running it at zero duration.
    */
-  enter: (from: object) => object | false;
+  enter: (from: TargetAndTransition | VariantLabels) => TargetAndTransition | VariantLabels | false;
 }
 
 /**
@@ -97,9 +97,13 @@ export function useMotionPref(): MotionPref {
     reduced,
     dur: (intent) => (reduced ? 0 : DURATION[intent]),
     ease: (name = 'motion') => [...EASE[name]],
-    reveal: (intent = 'base', name = 'motion') => ({
+    reveal: (intent = 'base', name = 'motion', delay = 0) => ({
       duration: reduced ? 0 : DURATION[intent],
       ease: [...EASE[name]],
+      // A stagger is motion too. Under reduced motion the delay is dropped as well as the
+      // duration, because holding each item back and then snapping it is not a quieter
+      // version of a stagger -- it is the same waiting, with the movement taken out.
+      ...(delay > 0 && !reduced ? { delay } : {}),
     }),
     spring: (kind = 'read') => (reduced ? { duration: 0 } : { ...SPRING[kind] }),
     enter: (from) => (reduced ? false : from),

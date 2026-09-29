@@ -1,16 +1,36 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 
-export const Card = React.forwardRef<HTMLDivElement, React.ComponentProps<'div'>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      data-slot="card"
-      className={cn('bg-card text-card-foreground min-w-0 rounded-2xl border shadow-xs', className)}
-      {...props}
-    />
-  ),
-);
+/**
+ * A section surface.
+ *
+ * `interactive` is for cards a person can act on -- a session row, a project bar, a quota
+ * card that opens something. Those cards need to say so before they are clicked, and there
+ * were two competing ways of saying it: one bespoke `.quota-card:hover` rule with its own
+ * shadow, and nothing at all everywhere else. So a card that behaved like a control and a
+ * card that was a label looked the same until the pointer arrived.
+ *
+ * The lift is a border and shadow, not a transform. A card can be tall, and scaling one
+ * would move its contents; a shadow says "this is above" without moving anything. The
+ * press is the same 3% squash the buttons use, so the two agree.
+ */
+export const Card = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<'div'> & { interactive?: boolean }
+>(({ className, interactive = false, ...props }, ref) => (
+  <div
+    ref={ref}
+    data-slot="card"
+    data-interactive={interactive ? '' : undefined}
+    className={cn(
+      'bg-card text-card-foreground min-w-0 rounded-2xl border shadow-xs',
+      interactive &&
+        'hover:shadow-md focus-within:shadow-md motion-base cursor-pointer transition-[box-shadow,border-color,transform] active:scale-[0.99]',
+      className,
+    )}
+    {...props}
+  />
+));
 Card.displayName = 'Card';
 
 export const CardHeader = ({ className, ...props }: React.ComponentProps<'div'>) => (

@@ -71,3 +71,43 @@ test('the reduced-motion clamp still exists, and still pins iteration count', ()
   assert.match(css, /--animate-shimmer:\s*qp-shimmer[^;]*infinite/);
   assert.match(css, /@keyframes qp-shimmer/);
 });
+
+/*
+ * Reduced motion has to be a behaviour, not a duration.
+ *
+ * The stylesheet's clamp only reaches CSS. Every `motion` animation is JavaScript, so a
+ * component that animates without asking `useMotionPref` moves regardless of what the reader
+ * asked the operating system for -- and the symptom is invisible, because the animation still
+ * looks correct to everyone else. Four such components existed: the sparkline's draw-on, both
+ * bar lists, and the sidebar's tab pill.
+ *
+ * This is a source-level assertion on purpose. A behavioural test would have to measure
+ * interpolation frames, which is exactly the kind of test that passes because the harness
+ * cannot see the difference. The property being protected is "does this file consult the
+ * motion preference at all", and grep can check that honestly.
+ */
+const ANIMATING = [
+  'src/components/primitives.tsx',
+  'src/components/stacked-bars.tsx',
+  'src/components/quota-ring.tsx',
+  'src/components/gauge.tsx',
+  'src/components/progression-rail.tsx',
+  'src/components/alert-bell.tsx',
+  'src/components/pet-popup.tsx',
+  'src/components/ui/tabs.tsx',
+];
+
+for (const file of ANIMATING) {
+  test(`${file} honours the motion preference`, () => {
+    const source = readFileSync(join(import.meta.dirname, '..', file), 'utf8');
+    assert.match(
+      source,
+      /useMotionPref\(\)|useReducedMotion\(\)/,
+      `${file} animates but never asks what the motion preference is`,
+    );
+    // The house curve, spelled out. If this count goes up, someone is reaching past the
+    // token for the literal again, and a change to the curve will not reach their code.
+    const literals = [...source.matchAll(/\[0\.22,\s*1,\s*0\.36,\s*1\]/g)];
+    assert.equal(literals.length, 0, `${file} still hardcodes the house easing curve`);
+  });
+}

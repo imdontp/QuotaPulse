@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { useMotionPref } from '@/lib/motion';
 import { Bell, TriangleAlert } from 'lucide-react';
 import type { Limit, SubscriptionStatus } from '@/api';
 import { Button } from '@/components/ui/button';
@@ -47,6 +48,7 @@ export function AlertBell({
   const f = useFormat();
   const { hiddenSubscriptions } = useI18n();
   const reduced = useReducedMotion();
+  const pref = useMotionPref();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -128,10 +130,10 @@ export function AlertBell({
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={reduced ? false : { opacity: 0, scale: 0.96, y: -4 }}
+            initial={pref.enter({ opacity: 0, scale: 0.96, y: -4 })}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={reduced ? undefined : { opacity: 0, scale: 0.98, y: -4 }}
-            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            exit={pref.reduced ? undefined : { opacity: 0, scale: 0.98, y: -4 }}
+            transition={pref.reveal('instant')}
             role="dialog"
             aria-label={t('alerts.title')}
             className="bg-popover text-popover-foreground absolute right-0 z-50 mt-1.5 w-[22rem] max-w-[calc(100vw-8rem)] max-h-[70vh] overflow-y-auto origin-top-right rounded-xl border p-3 shadow-xl"
@@ -144,9 +146,9 @@ export function AlertBell({
               {urgent.map((l, i) => (
                 <motion.button
                   key={`${l.source_id}-${l.window_kind}-${l.origin}`}
-                  initial={reduced ? false : { opacity: 0, x: -6 }}
+                  initial={pref.enter({ opacity: 0, x: -6 })}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: reduced ? 0 : i * 0.05, duration: 0.2 }}
+                  transition={pref.reveal('fast', 'motion', i * 0.05)}
                   onClick={() => {
                     setOpen(false);
                     onOpenLimits();
@@ -184,9 +186,9 @@ export function AlertBell({
               {thresholds.map((l, i) => (
                 <motion.button
                   key={`threshold-${l.source_id}-${l.window_kind}-${l.origin}`}
-                  initial={reduced ? false : { opacity: 0, x: -6 }}
+                  initial={pref.enter({ opacity: 0, x: -6 })}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: reduced ? 0 : (urgent.length + i) * 0.05, duration: 0.2 }}
+                  transition={pref.reveal('fast', 'motion', (urgent.length + i) * 0.05)}
                   onClick={() => {
                     setOpen(false);
                     onOpenLimits();
@@ -212,9 +214,9 @@ export function AlertBell({
               {gaps.map((subscription, i) => (
                 <motion.button
                   key={`gap-${subscription.subscription_key}`}
-                  initial={reduced ? false : { opacity: 0, x: -6 }}
+                  initial={pref.enter({ opacity: 0, x: -6 })}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: reduced ? 0 : (urgent.length + thresholds.length + i) * 0.05, duration: 0.2 }}
+                  transition={pref.reveal('fast', 'motion', (urgent.length + thresholds.length + i) * 0.05)}
                   onClick={() => {
                     setOpen(false);
                     onOpenLimits();

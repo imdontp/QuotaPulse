@@ -1,10 +1,11 @@
-import { motion, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
 import { Clock, TrendingUp, RotateCcw } from 'lucide-react';
 import type { Limit } from '@/api';
 import { FreshnessBadge } from '@/components/primitives';
 import { isExpired, pct, primaryLimits, severityOf, willExhaust } from '@/format';
 import { useFormat } from '@/i18n/format';
 import { useT, type MessageKey } from '@/i18n';
+import { useMotionPref } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 const TONE = {
@@ -23,7 +24,7 @@ const WINDOW_KEY: Record<string, MessageKey> = {
 
 export function Gauge({ limit, now, badge }: { limit: Limit; now: number; badge?: React.ReactNode }) {
   const t = useT();
-  const reduced = useReducedMotion();
+  const pref = useMotionPref();
   const f = useFormat();
   const windowName = WINDOW_KEY[limit.window_kind] ? t(WINDOW_KEY[limit.window_kind]!) : limit.window_kind;
   const expired = isExpired(limit, now);
@@ -53,9 +54,9 @@ export function Gauge({ limit, now, badge }: { limit: Limit; now: number; badge?
         {!expired && (
           <motion.div
             className={cn('h-full rounded', tone.bar)}
-            initial={reduced ? false : { width: 0 }}
+            initial={pref.enter({ width: 0 })}
             animate={{ width: `${Math.min(100, Math.max(0, p ?? 0))}%` }}
-            transition={{ duration: reduced ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={pref.reveal('slow')}
           />
         )}
       </div>

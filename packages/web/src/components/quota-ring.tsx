@@ -1,6 +1,7 @@
-import { motion, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
 import { MIN_ARC_FRACTION, OVERFLOW_SWEEP, arcPath, fractionToAngle, overflowSlot, ringArcs, type RingWindow } from '@/lib/quota-ring';
 import { severityOf } from '@/format';
+import { useMotionPref } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 /**
@@ -41,12 +42,12 @@ export function QuotaRing({
   folded?: number;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
+  const pref = useMotionPref();
   const arcs = ringArcs(items.length);
   const outer = arcs[0];
   const overflow = folded > 0 ? overflowSlot(arcs) : null;
   const wedgeRadius = outer ? outer.radius + outer.strokeWidth / 2 + WEDGE : 0;
-  const sweep = { duration: reduced ? 0 : 0.75, ease: [0.22, 1, 0.36, 1] as const };
+  const sweep = pref.reveal('deliberate');
 
   return (
     <svg
@@ -87,9 +88,9 @@ export function QuotaRing({
                 /* A fixed 100-on/100-off dash means the spring animates one scalar, so the
                    arc eases into a new reading instead of snapping on every SSE push. The
                    floor is why a 0% window still shows a mark instead of vanishing. */
-                initial={reduced ? false : { strokeDashoffset: 100 }}
+                initial={pref.enter({ strokeDashoffset: 100 })}
                 animate={{ strokeDashoffset: 100 - Math.max(used, MIN_ARC_FRACTION) }}
-                transition={{ ...sweep, type: reduced ? undefined : 'spring', stiffness: 90, damping: 22 }}
+                transition={pref.spring('read')}
                 transform={`rotate(-90 ${CX} ${CY})`}
               />
             )}
@@ -138,7 +139,7 @@ export function QuotaRing({
             strokeLinecap="round"
             pathLength={100}
             strokeDasharray="100 100"
-            initial={reduced ? false : { strokeDashoffset: 100 }}
+            initial={pref.enter({ strokeDashoffset: 100 })}
             animate={{ strokeDashoffset: 100 - windowProgress.elapsed * 100 }}
             transition={sweep}
             transform={`rotate(-90 ${CX} ${CY})`}
@@ -155,7 +156,7 @@ export function QuotaRing({
               strokeLinecap="round"
               pathLength={100}
               strokeDasharray="100 100"
-              initial={reduced ? false : { strokeDashoffset: 100 }}
+              initial={pref.enter({ strokeDashoffset: 100 })}
               animate={{
                 strokeDashoffset: 100 - (windowProgress.projected - windowProgress.elapsed) * 100,
               }}

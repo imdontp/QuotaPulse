@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { motion } from 'motion/react';
+import { useMotionPref } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 export const Tabs = TabsPrimitive.Root;
@@ -41,34 +42,44 @@ export const TabsTrigger = ({
   active: boolean;
   icon?: React.ComponentType<{ className?: string }>;
   collapsed?: boolean;
-}) => (
-  <TabsPrimitive.Trigger
-    value={value}
-    className={cn(
-      'text-muted-foreground hover:text-foreground focus-visible:ring-ring/40 relative flex w-full items-center gap-2.5 rounded-[7px] py-2 text-[13px] font-medium transition-colors outline-none focus-visible:ring-[3px]',
-      collapsed ? 'justify-center px-0' : 'px-2.5',
-      'data-[state=active]:text-foreground',
-      className,
-    )}
-    {...props}
-  >
-    {active && (
-      <motion.span
-        layoutId="tab-pill"
-        className="bg-secondary absolute inset-0 rounded-[7px] shadow-xs"
-        transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-      />
-    )}
-    {Icon && (
-      <Icon
-        className={cn(
-          'relative z-10 size-[15px] shrink-0 transition-colors',
-          active ? 'text-brand' : 'opacity-70',
-        )}
-      />
-    )}
-    <span className={cn('relative z-10 truncate', collapsed && 'sr-only')}>{children}</span>
-  </TabsPrimitive.Trigger>
-);
+}) => {
+  const pref = useMotionPref();
+  return (
+    <TabsPrimitive.Trigger
+      value={value}
+      className={cn(
+        'text-muted-foreground hover:text-foreground focus-visible:ring-ring/40 relative flex w-full items-center gap-2.5 rounded-[7px] py-2 text-[13px] font-medium transition-colors outline-none focus-visible:ring-[3px]',
+        collapsed ? 'justify-center px-0' : 'px-2.5',
+        'data-[state=active]:text-foreground',
+        className,
+      )}
+      {...props}
+    >
+      {active && (
+        <motion.span
+          layoutId="tab-pill"
+          className="bg-secondary absolute inset-0 rounded-[7px] shadow-xs"
+          /*
+           * The pill springs between tabs and had no reduced-motion check -- the one motion
+           * in the app's navigation that a reader who asked the OS for less movement could
+           * not avoid, since switching tab is the most basic thing they do. Under reduced
+           * motion the pill still moves, because removing it would leave the active tab
+           * unmarked, but it arrives instantly rather than springing.
+           */
+          transition={pref.spring('snap')}
+        />
+      )}
+      {Icon && (
+        <Icon
+          className={cn(
+            'relative z-10 size-[15px] shrink-0 transition-colors',
+            active ? 'text-brand' : 'opacity-70',
+          )}
+        />
+      )}
+      <span className={cn('relative z-10 truncate', collapsed && 'sr-only')}>{children}</span>
+    </TabsPrimitive.Trigger>
+  );
+};
 
 export const TabsContent = TabsPrimitive.Content;
