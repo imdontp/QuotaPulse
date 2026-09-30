@@ -151,6 +151,53 @@ export interface QuotaHistoryResponse {
   segments: Array<{ resetAt: number | null; samples: Array<{ observedAt: number; lastSeenAt: number; usedPercent: number | null; resetAt: number | null }> }>;
 }
 
+export interface DetailedFacts {
+  records: number;
+  calls: number;
+  sessions: number;
+  inputTokens: number;
+  cachedInputTokens: number;
+  cacheWriteTokens: number;
+  outputTokens: number;
+  tokens: number;
+  reported_native_usd: number;
+  api_value_usd: number;
+  native_calls: number;
+  computed_calls: number;
+  estimated_calls: number;
+  unknown_calls: number;
+  cache_saving_known_usd: number;
+  cache_saving_known_calls: number;
+  lastObservedAt: number | null;
+}
+export interface DetailedProjectResponse {
+  now: number;
+  scope: UsageEventScope;
+  totals: DetailedFacts;
+  groups: Array<DetailedFacts & { key: string | null }>;
+  rows: Array<DetailedFacts & { project: string | null; sourceId: number; harness: string; sourceName: string; provider: string | null; model: string | null; vendor: string }>;
+}
+export interface DetailedModelResponse {
+  now: number;
+  scope: UsageEventScope;
+  totals: DetailedFacts;
+  groups: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string }>;
+  rows: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string; sourceId: number; harness: string; sourceName: string; effort: string | null }>;
+}
+export interface ProjectDetailResponse {
+  now: number;
+  scope: UsageEventScope;
+  bucketMs: number;
+  points: Array<{ start: number; tokens: number; calls: number; records: number }>;
+  sessions: {
+    total: number;
+    limit: number;
+    offset: number;
+    rows: Array<{ sessionKey: number; nativeSessionId: string; cwd: string | null; gitBranch: string | null; harness: string; sourceName: string; tokens: number; calls: number; lastObservedAt: number }>;
+  };
+  recent: Array<{ eventId: number; timestamp: number; tokens: number; calls: number; model: string | null; provider: string | null; harness: string; sessionKey: number | null }>;
+}
+
 export interface Limit {
   source_id: number;
   harness: string;
@@ -514,6 +561,9 @@ export interface PricingRefresh {
 }
 
 export const api = {
+  detailedProjects: (scope: UsageEventScope) => get<DetailedProjectResponse>(`/api/projects?detailed=1&${usageEventParams(scope)}`),
+  projectDetail: (scope: UsageEventScope, offset = 0) => get<ProjectDetailResponse>(`/api/project-detail?${usageEventParams(scope)}&limit=20&offset=${offset}`),
+  detailedModels: (scope: UsageEventScope) => get<DetailedModelResponse>(`/api/models?detailed=1&${usageEventParams(scope)}`),
   quotaHistory: (scope: { subscriptionKey: string; windowKind: string; from?: number; to?: number }) => {
     const params = new URLSearchParams({ subscription_key: scope.subscriptionKey, window_kind: scope.windowKind });
     if (scope.from !== undefined) params.set('from', String(scope.from));

@@ -1,11 +1,10 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { Activity, ArrowUpRight, BarChart3, BellRing, Box, CircleGauge, GitBranch, Layers, MessagesSquare, Moon, Radio, Settings, Sun, X } from 'lucide-react';
-import type { MessageKey } from '@/i18n/en';
+import { Activity, ArrowUpRight, Box, CircleGauge, GitBranch, X } from 'lucide-react';
 import type { QuotaHistoryResponse } from '@/api';
 import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
-import './overview.css';
+import { RedesignShell, type RedesignTranslate } from './shell';
 
-type Translate = (key: Extract<MessageKey, `redesign.${string}`>) => string;
+type Translate = RedesignTranslate;
 const riskLabel = (state: ReturnType<typeof quotaState> | null) =>
   !state ? 'redesign.unavailable' : state.stale ? 'redesign.stale' : state.risk === 'unknown' ? 'redesign.unavailable' : `redesign.${state.risk}` as const;
 interface OverviewProps {
@@ -173,31 +172,7 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
     update();
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', update); };
   }, []);
-  return <div ref={shell} className="qp-redesign" data-theme={theme} lang={language} data-testid={preview ? 'redesign-preview' : 'production-overview'}>
-    <aside className="qp-sidebar">
-      <a className="qp-brand" href="#overview" aria-label="QuotaPulse"><Activity/><span>QuotaPulse<small>MISSION CONTROL</small></span></a>
-      <nav aria-label={t('redesign.overview')}>
-        {preview ? <>
-          <a href="#overview" className="qp-nav-active" aria-label={t('redesign.overview')}><CircleGauge/><span>{t('redesign.overview')}</span></a>
-          <a href="#runtime" aria-label={t('redesign.runtime')}><GitBranch/><span>{t('redesign.runtime')}</span></a>
-          <a href="#model-usage" aria-label={t('redesign.models')}><Layers/><span>{t('redesign.models')}</span></a>
-        </> : [
-          { href: '#overview', label: 'redesign.overview', icon: CircleGauge },
-          { href: '#live', label: 'redesign.live', icon: Activity },
-          { href: '#usage?view=projects', label: 'redesign.project', icon: Box },
-          { href: '#sources', label: 'redesign.provider', icon: Radio },
-          { href: '#usage?view=models', label: 'redesign.models', icon: Layers },
-          { href: '#usage?view=cost', label: 'redesign.cost', icon: BarChart3 },
-          { href: '#history', label: 'redesign.history', icon: MessagesSquare },
-          { href: '#alerts', label: 'redesign.alerts', icon: BellRing },
-          { href: '#settings', label: 'redesign.settings', icon: Settings },
-        ].map(({ href, label, icon: Icon }) => <a key={href} href={href} aria-label={t(label as Extract<MessageKey, `redesign.${string}`>)} className={href === '#overview' ? 'qp-nav-active' : undefined}><Icon/><span>{t(label as Extract<MessageKey, `redesign.${string}`>)}</span></a>)}
-      </nav>
-      {preview && <a className="qp-exit" href="./#overview" aria-label={t('redesign.dashboard')}><ArrowUpRight/><span>{t('redesign.dashboard')}</span></a>}
-    </aside>
-    <div className="qp-workspace">
-      <header className="qp-topbar"><span className="qp-preview-badge">{t(preview ? 'redesign.preview' : 'redesign.overview')}</span><div className="qp-tools"><button onClick={onLanguage} aria-label={t('redesign.language')}>{language === 'en' ? 'ไทย' : 'EN'}</button><button onClick={() => onTheme ? onTheme() : setLocalTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={t('redesign.theme')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button></div></header>
-      <main id="overview">
+  return <RedesignShell active="overview" rootRef={shell} theme={theme} language={language} onLanguage={onLanguage} onTheme={() => onTheme ? onTheme() : setLocalTheme(theme === 'dark' ? 'light' : 'dark')} t={t} preview={preview} testId={preview ? 'redesign-preview' : 'production-overview'}>
         <div className="qp-page-heading"><h1>{t('redesign.title')}</h1><span className="qp-chip">{new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(now)}</span></div>
         <div className="qp-hero-grid">
           <section className="qp-panel qp-hero">
@@ -239,14 +214,12 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
           })}</div>}
           <p className="qp-footnote">{t('redesign.activityCaveat')}</p>
         </section>
-      </main>
-    </div>
     <dialog ref={dialog} className="qp-dialog" aria-labelledby="qp-detail-title" onClose={() => setSelection(null)}>
       <div className="qp-section-heading"><h2 id="qp-detail-title">{selection?.key ?? t(selection?.dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X/></button></div>
       <p>{selection && t(`redesign.${selection.dimension}`)}</p><div className="qp-detail-grid"><Metric label={t('redesign.tokens')} value={number(detail?.tokens ?? 0)}/><Metric label={t('redesign.sessions')} value={number(detail?.sessions ?? 0)}/><Metric label={t('redesign.calls')} value={number(detail?.callRecords ?? 0)}/><Metric label={t('redesign.aggregates')} value={number(detail?.aggregateRecords ?? 0)}/></div>
       <p className="qp-footnote">{t('redesign.coverage')}</p>
     </dialog>
-  </div>;
+  </RedesignShell>;
 }
 
 function Metric({ label, value }: { label: string; value: string }) {

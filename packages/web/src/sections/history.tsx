@@ -13,6 +13,16 @@ import { Empty, ErrorBox } from '@/components/primitives';
 
 type Filters = Pick<UsageEventScope, 'q' | 'project' | 'projectMissing' | 'provider' | 'vendor' | 'model' | 'harness' | 'grain'>;
 const FILTER_FIELDS = ['q', 'project', 'provider', 'vendor', 'model', 'harness'] as const;
+function routeFilters(): Filters {
+  const params = new URLSearchParams(location.hash.split('?')[1] ?? '');
+  const filters: Filters = { grain: 'all' };
+  for (const field of FILTER_FIELDS) {
+    if (params.has(field)) filters[field] = params.get(field)!;
+  }
+  if (params.get('project_missing') === '1') { filters.projectMissing = true; delete filters.project; }
+  if (['call', 'session_aggregate', 'unknown'].includes(params.get('grain') ?? '')) filters.grain = params.get('grain') as UsageGrain;
+  return filters;
+}
 
 export function HistorySection({ sources }: { sources: Array<{ id: number; display_name: string }> }) {
   const t = useT();
@@ -21,8 +31,8 @@ export function HistorySection({ sources }: { sources: Array<{ id: number; displ
   const [route, updateRoute] = useUsageRoute('history');
   const rawSessionId = new URLSearchParams(location.hash.split('?')[1] ?? '').get('session_id');
   const sessionId = rawSessionId && /^\d+$/.test(rawSessionId) && Number.isSafeInteger(Number(rawSessionId)) && Number(rawSessionId) > 0 ? Number(rawSessionId) : undefined;
-  const [draft, setDraft] = useState<Filters>({ grain: 'all' });
-  const [filters, setFilters] = useState<Filters>({ grain: 'all' });
+  const [draft, setDraft] = useState<Filters>(routeFilters);
+  const [filters, setFilters] = useState<Filters>(routeFilters);
   const [offset, setOffset] = useState(0);
   const [paused, setPaused] = useState(false);
   const pausedRef = useRef(false);
@@ -40,6 +50,20 @@ export function HistorySection({ sources }: { sources: Array<{ id: number; displ
   const mounted = useRef(true);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   useEffect(() => { if (selected && !dialog.current?.open) dialog.current?.showModal(); }, [selected]);
+  useEffect(() => {
+    if (location.hash.slice(1).split('?')[0] !== 'history') return;
+    const params = new URLSearchParams(location.hash.split('?')[1] ?? '');
+    for (const field of FILTER_FIELDS) {
+      params.delete(field);
+      if (filters[field] !== undefined) params.set(field, filters[field]!);
+    }
+    params.delete('project_missing');
+    if (filters.projectMissing) { params.delete('project'); params.set('project_missing', '1'); }
+    params.delete('grain');
+    if (filters.grain && filters.grain !== 'all') params.set('grain', filters.grain);
+    const next = `#history?${params}`;
+    if (location.hash !== next) history.replaceState(null, '', `${location.pathname}${location.search}${next}`);
+  }, [filters, route]);
 
   useLiveRefresh(async ({ live }) => {
     if (pausedRef.current) return;

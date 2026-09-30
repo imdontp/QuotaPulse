@@ -22,10 +22,10 @@ const TOTALS = `COALESCE(SUM(u.total_tokens),0) AS tokens,
   COALESCE(SUM(u.cache_write_tokens),0) AS cacheWriteTokens,
   COALESCE(SUM(CASE WHEN u.cost_cache_saving_usd IS NOT NULL THEN u.cost_cache_saving_usd ELSE 0 END),0) AS cacheSavingKnownUsd,
   COALESCE(SUM(CASE WHEN u.cost_cache_saving_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS cacheSavingKnownCalls,
-  COALESCE(SUM(CASE WHEN u.cost_source='native' THEN u.call_count ELSE 0 END),0) AS nativeCalls,
-  COALESCE(SUM(CASE WHEN u.cost_source='computed' THEN u.call_count ELSE 0 END),0) AS computedCalls,
-  COALESCE(SUM(CASE WHEN u.cost_source='estimated' THEN u.call_count ELSE 0 END),0) AS estimatedCalls,
-  COALESCE(SUM(CASE WHEN u.cost_source='unknown' OR u.cost_usd IS NULL THEN u.call_count ELSE 0 END),0) AS unknownCalls`;
+  COALESCE(SUM(CASE WHEN u.cost_source='native' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS nativeCalls,
+  COALESCE(SUM(CASE WHEN u.cost_source='computed' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS computedCalls,
+  COALESCE(SUM(CASE WHEN u.cost_source='estimated' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS estimatedCalls,
+  COALESCE(SUM(CASE WHEN u.cost_usd IS NULL OR u.cost_source NOT IN ('native','computed','estimated') THEN u.call_count ELSE 0 END),0) AS unknownCalls`;
 
 /** Read-only graph facts. Every node calculates DISTINCT sessions in its own scope. */
 export function runtimeMap(db: DB, scope: UsageScope) {

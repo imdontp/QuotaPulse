@@ -54,7 +54,8 @@ export function parseUsageScope(query: Record<string, unknown>, now: number, opt
     const value = query[key];
     if (typeof value === 'string') {
       // Preserve exact metadata strings, including leading/trailing spaces.
-      if (value.length === 0 || value.length > (key === 'q' ? 256 : 4096)) throw new Error(`Invalid ${key}`);
+      // An empty stored project is a real identity, distinct from NULL/unassigned.
+      if ((key !== 'project' && value.length === 0) || value.length > (key === 'q' ? 256 : 4096)) throw new Error(`Invalid ${key}`);
       scope[key] = value;
     }
   }

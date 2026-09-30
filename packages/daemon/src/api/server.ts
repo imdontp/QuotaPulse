@@ -14,6 +14,8 @@ import { parseUsagePagination, parseUsageScope, type UsageScope } from './usage-
 import { minuteTrend, MINUTE_GROUPS, type MinuteGroup } from './minute-trend.js';
 import { runtimeMap } from './runtime-map.js';
 import { parseQuotaHistoryScope, quotaHistory } from './quota-history.js';
+import { detailedAggregates } from './detailed-aggregates.js';
+import { projectDetail } from './project-detail.js';
 
 const log = logger('api');
 
@@ -439,6 +441,14 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
 
   app.get('/api/models', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
+    if (s.detailed !== undefined) {
+      if (s.detailed !== '1') return reply.code(400).send({ error: 'Invalid detailed mode' });
+      const now = Date.now();
+      try {
+        const scope = parseUsageScope(req.query as Record<string, unknown>, now, { extraKeys: ['detailed'] });
+        return { now, scope, ...detailedAggregates(db, scope, 'model') };
+      } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
+    }
     const since = s.since == null ? 0 : Number(s.since);
     const from = s.from == null ? since : Number(s.from);
     const to = s.to == null ? null : Number(s.to);
@@ -469,6 +479,14 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
    */
   app.get('/api/projects', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
+    if (s.detailed !== undefined) {
+      if (s.detailed !== '1') return reply.code(400).send({ error: 'Invalid detailed mode' });
+      const now = Date.now();
+      try {
+        const scope = parseUsageScope(req.query as Record<string, unknown>, now, { extraKeys: ['detailed'] });
+        return { now, scope, ...detailedAggregates(db, scope, 'project') };
+      } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
+    }
     const to = s.to == null ? Date.now() : Number(s.to);
     // Default 30 days, matching the Trend tab's default range.
     const from = s.from == null ? to - 30 * 86_400_000 : Number(s.from);
@@ -478,6 +496,17 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       return reply.code(400).send({ error: 'Invalid project range or source_id' });
     }
     return { from, to, rows: q.projectBreakdown(db, { from, to, ...(sourceId == null ? {} : { sourceId }) }) };
+  });
+
+  app.get('/api/project-detail', async (req, reply) => {
+    const now = Date.now();
+    const query = req.query as Record<string, unknown>;
+    try {
+      const scope = parseUsageScope(query, now, { requireRange: true, extraKeys: ['limit', 'offset'] });
+      if (scope.project === undefined && !scope.projectMissing) throw new Error('Expected exact project or project_missing=1');
+      const pagination = parseUsagePagination(query);
+      return { now, scope, ...projectDetail(db, scope, pagination) };
+    } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
   });
 
   app.get('/api/sessions', async (req, reply) => {

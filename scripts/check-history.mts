@@ -143,7 +143,11 @@ try {
   }
   await page.goto('http://127.0.0.1:7801/#live');
   const chart = page.getByTestId('recorded-minute-trend');
-  await chart.getByRole('img').waitFor();
+  await chart.getByRole('img').waitFor().catch(async error => {
+    console.error('Live chart diagnostic', page.url(), errors, (await page.locator('body').innerText()).slice(0, 1800));
+    await page.screenshot({ path: resolve(output, 'live-failure-diagnostic.png'), fullPage: true });
+    throw error;
+  });
   await chart.getByText('ดูค่ารายนาที', { exact: true }).click();
   assert.equal(await chart.locator('details li').count() >= 30, true);
   await chart.getByText('ดูค่ารายนาที', { exact: true }).click();
@@ -187,10 +191,55 @@ try {
   await page.getByTestId('usage-history').getByText('1–50 of 52 records', { exact: true }).waitFor();
   await page.getByTestId('usage-history').getByRole('link', { name: 'Show all sessions', exact: true }).click();
   await page.getByTestId('usage-history').getByText('1–50 of 53 records', { exact: true }).waitFor();
+  await page.goto('http://127.0.0.1:7801/#projects?range=all');
+  const projects = page.getByTestId('production-projects');
+  await projects.getByRole('heading', { name: 'Projects', exact: true }).waitFor();
+  await projects.locator('.qp-project-card').first().waitFor();
+  assert.equal(await projects.locator('.qp-project-card').count(), 2);
+  assert.match(await projects.locator('.qp-project-detail').innerText(), /6,526/);
+  await projects.locator('.qp-project-money').getByText('Not reported', { exact: true }).waitFor();
+  await projects.locator('.qp-project-trend').waitFor();
+  assert.equal(await projects.locator('.qp-project-trend span').count() > 1, true);
+  await projects.getByRole('button', { name: 'Sessions', exact: true }).click();
+  await projects.locator('.qp-project-breakdown a').first().waitFor();
+  assert.match(await projects.locator('.qp-project-breakdown').innerText(), /synthetic-session/);
+  await projects.getByRole('button', { name: 'Usage', exact: true }).click();
+  await projects.getByRole('link', { name: 'Open filtered History' }).click();
+  await page.waitForURL(/#history\?range=custom.*project=alpha_100%25/);
+  await page.getByTestId('usage-history').getByText('1–50 of 52 records', { exact: true }).waitFor();
+  await page.goto('http://127.0.0.1:7801/#projects?range=all');
+  await projects.locator('.qp-project-card').first().waitFor();
+  await projects.getByRole('button', { name: 'Unassigned', exact: true }).click();
+  assert.equal(await projects.locator('.qp-project-card').count(), 1);
+  await projects.getByRole('button', { name: 'All projects', exact: true }).click();
+  await projects.getByRole('combobox', { name: /Harness/ }).selectOption('codex');
+  await projects.locator('.qp-project-card').first().waitFor();
+  assert.equal(await projects.locator('.qp-project-card').count(), 1);
+  await projects.getByRole('combobox', { name: /Harness/ }).selectOption('');
+  await projects.locator('.qp-project-card').first().waitFor();
+  await projects.getByPlaceholder('Search project metadata').fill('Codex test');
+  assert.equal(await projects.locator('.qp-project-card').count(), 1);
+  await projects.getByPlaceholder('Search project metadata').fill('nothing-matches');
+  await projects.locator('.qp-project-cards').getByText('No projects match this scope', { exact: true }).waitFor();
+  await projects.getByPlaceholder('Search project metadata').fill('');
+  for (const width of [390, 900, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `projects overflow at ${width}`);
+  }
+  await page.screenshot({ path: resolve(output, 'projects-real-en-dark-1440.png'), fullPage: true });
+  await page.evaluate(() => {
+    localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'th', currency: 'THB', rate: 35, hiddenSubscriptions: [] }));
+    localStorage.setItem('quotapulse-theme', 'light');
+  });
+  await page.setViewportSize({ width: 390, height: 1000 });
+  await page.reload();
+  await projects.locator('.qp-project-card').first().waitFor();
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Thai projects mobile overflow');
+  await page.screenshot({ path: resolve(output, 'projects-real-th-light-390.png'), fullPage: true });
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'no page errors'], requestCount: requests.length }, null, 2));
-  console.log('History/Overview E2E passed: authenticated HTTP and in-memory SQLite, pagination, filters, quota runway, activity, responsive layout.');
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'no page errors'], requestCount: requests.length }, null, 2));
+  console.log('History/Overview/Projects E2E passed: authenticated HTTP and in-memory SQLite, scopes, pagination, quota runway, drill-down, responsive layout.');
 } finally {
   await browser?.close();
   await vite.close();
