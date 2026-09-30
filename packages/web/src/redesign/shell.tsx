@@ -4,11 +4,11 @@ import type { MessageKey } from '@/i18n/en';
 import './overview.css';
 
 export type RedesignTranslate = (key: Extract<MessageKey, `redesign.${string}`>) => string;
-type Page = 'overview' | 'projects';
+type Page = 'overview' | 'live' | 'projects';
 
 const NAV = [
   { id: 'overview', href: '#overview', label: 'redesign.overview', icon: CircleGauge },
-  { id: 'live', href: '#live', label: 'redesign.live', icon: Activity },
+  { id: 'live', href: '#live?mode=redesign', label: 'redesign.live', icon: Activity },
   { id: 'projects', href: '#projects', label: 'redesign.project', icon: Box },
   { id: 'providers', href: '#sources', label: 'redesign.provider', icon: Radio },
   { id: 'models', href: '#usage?view=models', label: 'redesign.models', icon: Layers },
@@ -44,7 +44,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
       {preview && <a className="qp-exit" href="./#overview" aria-label={t('redesign.dashboard')}><ArrowUpRight/><span>{t('redesign.dashboard')}</span></a>}
     </aside>
     <div className="qp-workspace">
-      <header className="qp-topbar"><span className="qp-preview-badge">{t(preview ? 'redesign.preview' : active === 'overview' ? 'redesign.overview' : 'redesign.project')}</span><div className="qp-tools"><button onClick={onLanguage} aria-label={t('redesign.language')}>{language === 'en' ? 'ไทย' : 'EN'}</button><button onClick={onTheme} aria-label={t('redesign.theme')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button></div></header>
+      <header className="qp-topbar"><span className="qp-preview-badge">{t(preview ? 'redesign.preview' : active === 'overview' ? 'redesign.overview' : active === 'live' ? 'redesign.live' : 'redesign.project')}</span><div className="qp-tools"><button onClick={onLanguage} aria-label={t('redesign.language')}>{language === 'en' ? 'ไทย' : 'EN'}</button><button onClick={onTheme} aria-label={t('redesign.theme')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button></div></header>
       <main id={active}>{children}</main>
     </div>
     {overlay}

@@ -16,6 +16,7 @@ import { runtimeMap } from './runtime-map.js';
 import { parseQuotaHistoryScope, quotaHistory } from './quota-history.js';
 import { detailedAggregates } from './detailed-aggregates.js';
 import { projectDetail } from './project-detail.js';
+import { liveSessions, type LiveSessionMode } from './live-sessions.js';
 
 const log = logger('api');
 
@@ -369,6 +370,18 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       return reply.code(400).send({ error: (error as Error).message });
     }
     return { ...q.usageEvents(db, scope, pagination), scope, now };
+  });
+
+  app.get('/api/live-sessions', async (req, reply) => {
+    const now = Date.now();
+    const query = req.query as Record<string, unknown>;
+    try {
+      const scope = parseUsageScope(query, now, { requireRange: true, extraKeys: ['mode', 'limit', 'offset'] });
+      if (query.mode !== undefined && query.mode !== 'recent' && query.mode !== 'all') throw new Error('Invalid session mode');
+      const mode = (query.mode ?? 'recent') as LiveSessionMode;
+      const pagination = parseUsagePagination(query);
+      return { now, scope, ...liveSessions(db, scope, now, mode, pagination) };
+    } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
   });
 
   app.get('/api/runtime-map', async (req, reply) => {

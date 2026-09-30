@@ -197,6 +197,21 @@ export interface ProjectDetailResponse {
   };
   recent: Array<{ eventId: number; timestamp: number; tokens: number; calls: number; model: string | null; provider: string | null; harness: string; sessionKey: number | null }>;
 }
+export interface LiveSessionsResponse {
+  now: number;
+  scope: UsageEventScope;
+  mode: 'recent' | 'all';
+  allCount: number;
+  recentCount: number;
+  total: number;
+  limit: number;
+  offset: number;
+  rows: Array<{
+    sessionKey: number; nativeSessionId: string; project: string | null; cwd: string | null;
+    gitBranch: string | null; lastSeenAt: number | null; harness: string; sourceName: string;
+    records: number; calls: number; tokens: number; lastObservedAt: number;
+  }>;
+}
 
 export interface Limit {
   source_id: number;
@@ -563,6 +578,7 @@ export interface PricingRefresh {
 export const api = {
   detailedProjects: (scope: UsageEventScope) => get<DetailedProjectResponse>(`/api/projects?detailed=1&${usageEventParams(scope)}`),
   projectDetail: (scope: UsageEventScope, offset = 0) => get<ProjectDetailResponse>(`/api/project-detail?${usageEventParams(scope)}&limit=20&offset=${offset}`),
+  liveSessions: (scope: UsageEventScope, mode: 'recent' | 'all', offset = 0) => get<LiveSessionsResponse>(`/api/live-sessions?${usageEventParams(scope)}&mode=${mode}&limit=10&offset=${offset}`),
   detailedModels: (scope: UsageEventScope) => get<DetailedModelResponse>(`/api/models?detailed=1&${usageEventParams(scope)}`),
   quotaHistory: (scope: { subscriptionKey: string; windowKind: string; from?: number; to?: number }) => {
     const params = new URLSearchParams({ subscription_key: scope.subscriptionKey, window_kind: scope.windowKind });
@@ -571,7 +587,7 @@ export const api = {
     return get<QuotaHistoryResponse>(`/api/quota-history?${params}`);
   },
   runtimeMap: (scope: UsageEventScope) => get<RuntimeGraph>(`/api/runtime-map?${usageEventParams(scope)}`),
-  minuteTrend: () => get<MinuteTrendResponse>('/api/trend?bucket=minute&group_by=none'),
+  minuteTrend: (scope?: UsageEventScope) => get<MinuteTrendResponse>(`/api/trend?bucket=minute&group_by=none${scope ? `&${usageEventParams(scope)}` : ''}`),
   usageEvents: (scope: UsageEventScope, pagination: { limit: number; offset: number }) => {
     const params = usageEventParams(scope);
     params.set('limit', String(pagination.limit));

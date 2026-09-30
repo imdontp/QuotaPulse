@@ -16,7 +16,7 @@ const db = openDb(':memory:');
 const now = Date.now();
 db.exec(`INSERT INTO source(id,harness,profile,root_path,display_name,detected_at) VALUES
   (1,'codex','test','/synthetic/nonexistent','Codex test',0), (2,'hermes','test','/synthetic/nonexistent','Hermes test',0);
-  INSERT INTO session(id,source_id,native_session_id,project) VALUES (1,1,'synthetic-session','alpha_100%'), (2,2,'aggregate-session',NULL);`);
+  INSERT INTO session(id,source_id,native_session_id,project,last_seen_at) VALUES (1,1,'synthetic-session','alpha_100%',${now - 1000}), (2,2,'aggregate-session',NULL,NULL);`);
 db.prepare(`UPDATE source SET account_key='openai:subscription', account_provider='openai',
   account_display_name='OpenAI Test Subscription', account_state='active', account_last_success_at=? WHERE id=1`).run(now - 15000);
 db.prepare(`INSERT INTO limit_sample(source_id,window_kind,used_percent,resets_at,observed_at,last_seen_at,source_fetched_at,origin)
@@ -46,8 +46,9 @@ try {
   await page.addInitScript(() => { (window as unknown as { __QUOTAPULSE_TOKEN__: string }).__QUOTAPULSE_TOKEN__ = 'history-test'; });
   const errors: string[] = [];
   const requests: string[] = [];
+  const liveRequests: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
-  page.on('request', request => { if (request.url().includes('/api/usage-events')) requests.push(request.url()); });
+  page.on('request', request => { if (request.url().includes('/api/usage-events')) requests.push(request.url()); if (request.url().includes('/api/live-sessions')) liveRequests.push(request.url()); });
   await page.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
   await page.goto('http://127.0.0.1:7801/#history?range=all');
   const history = page.getByTestId('usage-history');
@@ -236,10 +237,47 @@ try {
   await projects.locator('.qp-project-card').first().waitFor();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Thai projects mobile overflow');
   await page.screenshot({ path: resolve(output, 'projects-real-th-light-390.png'), fullPage: true });
+  await page.goto('http://127.0.0.1:7801/#live?mode=redesign');
+  const live = page.getByTestId('production-live');
+  await live.getByRole('heading', { name: 'ติดตามการใช้งานสด', exact: true }).waitFor();
+  await live.getByRole('img', { name: /โทเคนที่บันทึกต่อนาที/ }).waitFor();
+  assert.match(await live.innerText(), /ข้อมูลสะสมที่อัปเดต/);
+  assert.match(await live.innerText(), /synthetic-session/);
+  await live.getByRole('button', { name: 'ทั้งหมดที่ตรวจพบ', exact: true }).click();
+  await live.getByRole('button', { name: 'aggregate-session', exact: true }).waitFor();
+  await live.getByRole('button', { name: 'aggregate-session', exact: true }).click();
+  await page.getByRole('dialog').waitFor();
+  await page.keyboard.press('Escape');
+  await live.locator('.qp-live-matrix button').first().click();
+  await page.waitForURL(/provider=openrouter.*model=gpt-test/);
+  await live.getByRole('button', { name: 'aggregate-session', exact: true }).waitFor({ state: 'hidden' });
+  await live.getByRole('button', { name: 'ล้างตัวกรองผู้ให้บริการและโมเดล', exact: true }).click();
+  await live.getByRole('button', { name: 'aggregate-session', exact: true }).waitFor();
+  const beforePause = liveRequests.length;
+  await live.getByRole('button', { name: 'หยุดภาพชั่วคราว', exact: true }).click();
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));
+  await page.waitForTimeout(1600);
+  assert.equal(liveRequests.length, beforePause, 'paused Live queried sessions');
+  await live.getByRole('button', { name: 'กลับสู่ข้อมูลล่าสุด', exact: true }).click();
+  await live.getByRole('button', { name: 'หยุดภาพชั่วคราว', exact: true }).waitFor();
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Live desktop overflow');
+  await page.screenshot({ path: resolve(output, 'live-real-th-light-1440.png'), fullPage: true });
+  await page.setViewportSize({ width: 390, height: 1000 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Live mobile overflow');
+  await page.screenshot({ path: resolve(output, 'live-real-th-light-390.png'), fullPage: true });
+  await page.evaluate(() => {
+    localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'en', currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
+    localStorage.setItem('quotapulse-theme', 'dark');
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.reload();
+  await live.getByRole('heading', { name: 'Live monitoring', exact: true }).waitFor();
+  await page.screenshot({ path: resolve(output, 'live-real-en-dark-1440.png'), fullPage: true });
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'no page errors'], requestCount: requests.length }, null, 2));
-  console.log('History/Overview/Projects E2E passed: authenticated HTTP and in-memory SQLite, scopes, pagination, quota runway, drill-down, responsive layout.');
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));
+  console.log('History/Overview/Projects/Live E2E passed: authenticated HTTP and in-memory SQLite, scopes, pagination, pause, quota runway, drill-down, responsive layout.');
 } finally {
   await browser?.close();
   await vite.close();

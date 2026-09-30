@@ -4,6 +4,7 @@ import App from '@/App';
 import { I18nProvider } from '@/i18n';
 import { ProductionOverview } from '@/redesign/production';
 import { ProductionProjects } from '@/redesign/projects';
+import { ProductionLive } from '@/redesign/live';
 /*
  * Fonts are bundled, not fetched. index.html used to pull Geist from fonts.googleapis.com
  * on every page load, which quietly broke the promise made in four places in the README
@@ -18,14 +19,15 @@ import '@/index.css';
 
 const root = createRoot(document.getElementById('root')!);
 function RoutedApp() {
-  const currentRoute = () => location.hash.slice(1).split('?')[0];
-  const [route, setRoute] = useState(currentRoute);
+  const [hash, setHash] = useState(() => location.hash);
   useEffect(() => {
-    const onHash = () => setRoute(currentRoute());
+    const onHash = () => setHash(location.hash);
     addEventListener('hashchange', onHash);
     return () => removeEventListener('hashchange', onHash);
   }, []);
-  if (route === 'overview' || route === 'projects') return <I18nProvider>{route === 'overview' ? <ProductionOverview /> : <ProductionProjects />}</I18nProvider>;
+  const route = hash.slice(1).split('?')[0];
+  if (route === 'overview' || route === 'projects' || (route === 'live' && new URLSearchParams(hash.split('?')[1] ?? '').get('mode') === 'redesign'))
+    return <I18nProvider>{route === 'overview' ? <ProductionOverview /> : route === 'projects' ? <ProductionProjects /> : <ProductionLive />}</I18nProvider>;
   return <App />;
 }
 // The fixture and preview UI are excluded from production builds by Vite.
