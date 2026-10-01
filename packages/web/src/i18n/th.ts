@@ -15,6 +15,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.history': "ประวัติ",
   'redesign.alerts': "การแจ้งเตือน",
   'redesign.settings': "ตั้งค่า",
+  'redesign.machineScope': 'เครื่องนี้',
   'redesign.staleSnapshot': "กำลังแสดงภาพรวมที่โหลดสำเร็จล่าสุด และพยายามอัปเดตใหม่",
   'redesign.topNodes': "แสดง 8 อันดับแรกต่อคอลัมน์ ดูรายการทั้งหมดในประวัติ",
   'minute.values': "ดูค่ารายนาที",

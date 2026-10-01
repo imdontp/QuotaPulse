@@ -131,6 +131,24 @@
   font-size:12px;
   color:var(--qp-accent);
 }
+.qp-topbar-context,.qp-topbar-actions {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+.qp-machine-scope {
+  color:var(--qp-muted);
+  font-size:11px;
+  white-space:nowrap;
+  border-left:1px solid var(--qp-border);
+  padding-left:12px;
+}
+.qp-topbar-actions>button {
+  background:var(--qp-panel);
+  border:1px solid var(--qp-border);
+  color:var(--qp-text);
+}
 .qp-tools {
   display:flex;
   gap:8px;
@@ -656,6 +674,9 @@
   }
 }
 @media(max-width:500px) {
+  .qp-machine-scope {
+    display:none;
+  }
   .qp-top-models {
     grid-template-columns:1fr;
   }

@@ -46,6 +46,7 @@ main-bundle size warning.
 
 ## Remaining work
 
-Settings redesign, canonical Live/Alerts route migration, full concept
-geometry/SSIM review, hardening and RC gates remain. `visualApproval` is
-still `pending`.
+The blueprint has no Settings concept; its existing preferences must remain
+functional. Shared-shell hardening continues in [checkpoint 1.1](REDESIGN-HARDENING-V1.1.md).
+Canonical Live/Alerts route migration, full concept geometry/SSIM review,
+hardening and RC gates remain. `visualApproval` is still `pending`.

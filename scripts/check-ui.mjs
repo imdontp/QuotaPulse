@@ -750,6 +750,9 @@ try {
     assert.equal(before, 0, 'a figure that has not moved is not highlighted');
     // A real jump: the fixture's totals are pushed far past any relative threshold.
     today = { ...totals, total_tokens: totals.total_tokens * 4 };
+    // The fixture has no daemon. Publish the same data event a real ingest pass sends;
+    // waiting for the 30-second fallback made this assertion depend on test timing.
+    await page.evaluate(() => window.__quotaStreams.forEach(stream => stream.dispatchEvent(new MessageEvent('data', { data: '{}' }))));
     const lit = page.locator('.value-moved');
     await lit.first().waitFor({ timeout: 10000 });
     assert.ok((await lit.count()) > 0, 'a figure that moved far enough says so');
