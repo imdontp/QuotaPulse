@@ -4,7 +4,7 @@ import type { MessageKey } from '@/i18n/en';
 import './overview.css';
 
 export type RedesignTranslate = (key: Extract<MessageKey, `redesign.${string}`>) => string;
-type Page = 'overview' | 'live' | 'projects' | 'providers' | 'models';
+type Page = 'overview' | 'live' | 'projects' | 'providers' | 'models' | 'cost';
 
 const NAV = [
   { id: 'overview', href: '#overview', label: 'redesign.overview', icon: CircleGauge },
@@ -12,7 +12,7 @@ const NAV = [
   { id: 'projects', href: '#projects', label: 'redesign.project', icon: Box },
   { id: 'providers', href: '#providers', label: 'redesign.provider', icon: Radio },
   { id: 'models', href: '#models', label: 'redesign.models', icon: Layers },
-  { id: 'cost', href: '#usage?view=cost', label: 'redesign.cost', icon: BarChart3 },
+  { id: 'cost', href: '#cost', label: 'redesign.cost', icon: BarChart3 },
   { id: 'history', href: '#history', label: 'redesign.history', icon: MessagesSquare },
   { id: 'alerts', href: '#alerts', label: 'redesign.alerts', icon: BellRing },
   { id: 'settings', href: '#settings', label: 'redesign.settings', icon: Settings },
@@ -44,7 +44,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
       {preview && <a className="qp-exit" href="./#overview" aria-label={t('redesign.dashboard')}><ArrowUpRight/><span>{t('redesign.dashboard')}</span></a>}
     </aside>
     <div className="qp-workspace">
-      <header className="qp-topbar"><span className="qp-preview-badge">{t(preview ? 'redesign.preview' : active === 'overview' ? 'redesign.overview' : active === 'live' ? 'redesign.live' : active === 'providers' ? 'redesign.provider' : active === 'models' ? 'redesign.models' : 'redesign.project')}</span><div className="qp-tools"><button onClick={onLanguage} aria-label={t('redesign.language')}>{language === 'en' ? 'ไทย' : 'EN'}</button><button onClick={onTheme} aria-label={t('redesign.theme')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button></div></header>
+      <header className="qp-topbar"><span className="qp-preview-badge">{t(preview ? 'redesign.preview' : active === 'overview' ? 'redesign.overview' : active === 'live' ? 'redesign.live' : active === 'providers' ? 'redesign.provider' : active === 'models' ? 'redesign.models' : active === 'cost' ? 'redesign.cost' : 'redesign.project')}</span><div className="qp-tools"><button onClick={onLanguage} aria-label={t('redesign.language')}>{language === 'en' ? 'ไทย' : 'EN'}</button><button onClick={onTheme} aria-label={t('redesign.theme')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button></div></header>
       <main id={active}>{children}</main>
     </div>
     {overlay}

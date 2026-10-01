@@ -87,6 +87,22 @@ test('opt-in project/model aggregates preserve identity, sessions and money cove
     assert.equal((await get('projects', '&source_id=2')).totals.tokens, 300);
     assert.equal((await get('projects', '&session_id=1')).totals.sessions, 1);
 
+    const apiCost = await app.inject({ url: '/api/cost-analysis?basis=api&from=0&to=200', headers });
+    assert.equal(apiCost.statusCode, 200);
+    assert.equal(apiCost.json().totals.amount, 0.9);
+    assert.equal(apiCost.json().totals.pricedCalls, 3);
+    assert.equal(apiCost.json().totals.unknownCalls, 2);
+    assert.equal(apiCost.json().points.reduce((sum: number, point: { amount: number }) => sum + point.amount, 0), 0.9);
+    assert.deepEqual(apiCost.json().sessions.map((row: { sessionKey: number }) => row.sessionKey), [2, 1, 4]);
+    assert.equal(apiCost.json().providers.find((row: { provider: string }) => row.provider === 'openrouter').amount, 0.30000000000000004);
+    const nativeCost = await app.inject({ url: '/api/cost-analysis?basis=native&from=0&to=200', headers });
+    assert.equal(nativeCost.json().totals.amount, 0.4);
+    assert.equal(nativeCost.json().totals.pricedCalls, 2);
+    assert.deepEqual(nativeCost.json().sessions.map((row: { sessionKey: number }) => row.sessionKey), [1]);
+    assert.equal((await app.inject({ url: '/api/cost-analysis?basis=api&from=110&to=120', headers })).json().totals.amount, 0);
+    assert.equal((await app.inject({ url: '/api/cost-analysis?basis=mixed&from=0&to=200', headers })).statusCode, 400);
+    assert.equal((await app.inject('/api/cost-analysis?basis=api&from=0&to=200')).statusCode, 401);
+
     for (const dimension of ['projects', 'models'] as const) {
       const legacy = await app.inject({ url: `/api/${dimension}?from=0&to=200`, headers });
       assert.equal(legacy.statusCode, 200);
@@ -101,6 +117,12 @@ test('opt-in project/model aggregates preserve identity, sessions and money cove
     assert.equal((await app.inject({ url: '/api/project-detail?from=0&to=200&project=', headers })).json().sessions.total, 1);
     insert.run(1, 4, 'empty-model', 160, '', '', 25, 1, null, 'unknown', null);
     assert.equal((await app.inject({ url: '/api/model-detail?from=0&to=200&model_empty=1&provider_empty=1', headers })).json().points[0].tokens, 25);
+    insert.run(1, 4, 'priced-zero', 170, 'zero', 'openai', 25, 1, 0, 'native', null);
+    const zeroCost = (await app.inject({ url: '/api/cost-analysis?basis=native&from=170&to=171', headers })).json();
+    assert.equal(zeroCost.totals.amount, 0);
+    assert.equal(zeroCost.totals.pricedCalls, 1);
+    assert.equal(zeroCost.sessions.length, 1);
+    assert.equal(zeroCost.sessions[0].amount, 0);
   } finally {
     await app.close();
     db.close();

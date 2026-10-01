@@ -1,0 +1,44 @@
+.qp-cost-header,.qp-cost-toolbar,.qp-cost-summary,.qp-cost-upper,.qp-cost-lower,.qp-cost-section-head { display:grid; gap:12px; }
+.qp-cost-header { grid-template-columns:minmax(0,1fr) auto; align-items:start; }
+.qp-cost-header h1 { display:flex; align-items:center; gap:9px; font-size:22px; }
+.qp-cost-header h1 svg { color:var(--qp-accent); }
+.qp-cost-header p,.qp-cost-summary small,.qp-cost-insights small { color:var(--qp-muted); font-size:11px; }
+.qp-cost-header button,.qp-cost-toolbar select { border:1px solid var(--qp-border); border-radius:7px; padding:8px 10px; background:var(--qp-panel); color:var(--qp-text); font-size:11px; }
+.qp-cost-header button { display:flex; align-items:center; gap:6px; }
+.qp-cost-header button:disabled { opacity:.5; }
+.qp-cost-toolbar { grid-template-columns:repeat(2,minmax(0,220px)); }
+.qp-cost-toolbar label { display:grid; gap:5px; color:var(--qp-muted); font-size:11px; }
+.qp-cost-summary { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.qp-cost-summary article { display:grid; gap:8px; min-width:0; }
+.qp-cost-summary article span { color:var(--qp-muted); font-size:11px; }
+.qp-cost-summary article strong { font-size:21px; overflow-wrap:anywhere; }
+.qp-cost-summary article small { line-height:1.4; }
+.qp-cost-upper { grid-template-columns:minmax(0,1.7fr) minmax(280px,1fr); align-items:start; }
+.qp-cost-lower { grid-template-columns:repeat(2,minmax(0,1fr)); align-items:start; }
+.qp-cost-upper .qp-panel,.qp-cost-lower .qp-panel { display:grid; gap:13px; min-width:0; }
+.qp-cost-upper h2,.qp-cost-lower h2 { font-size:16px; }
+.qp-cost-section-head { grid-template-columns:minmax(0,1fr) auto; align-items:center; }
+.qp-cost-section-head a,.qp-cost-table a,.qp-cost-insights a { color:var(--qp-accent); text-decoration:none; font-size:11px; }
+.qp-cost-chart { display:flex; align-items:end; gap:4px; height:175px; padding:10px 0; border-bottom:1px solid var(--qp-border); }
+.qp-cost-chart>div { position:relative; flex:1; height:100%; min-width:2px; display:flex; align-items:end; }
+.qp-cost-column { display:block; width:100%; border-radius:3px 3px 0 0; background:linear-gradient(#2bb8ef,#4c6df2); }
+.qp-cost-chart i { position:absolute; left:0; right:0; height:3px; border-radius:3px; background:#a873f9; }
+.qp-cost-donut { width:138px; height:138px; margin:auto; border-radius:50%; display:grid; place-items:center; }
+.qp-cost-donut[data-zero=true] { background:var(--qp-border)!important; }
+.qp-cost-donut span { width:94px; height:94px; border-radius:50%; background:var(--qp-panel); display:grid; place-items:center; font-size:15px; font-weight:700; }
+.qp-cost-providers ol { display:grid; gap:9px; list-style:none; padding:0; margin:0; }
+.qp-cost-providers li { display:grid; grid-template-columns:8px minmax(0,1fr) auto; align-items:center; gap:7px; font-size:11px; }
+.qp-cost-providers li i { width:8px; height:8px; border-radius:50%; }
+.qp-cost-providers li strong { font-size:11px; }
+.qp-cost-table { overflow-x:auto; }
+.qp-cost-table table { width:100%; border-collapse:collapse; font-size:11px; }
+.qp-cost-table th,.qp-cost-table td { padding:8px 5px; text-align:left; border-bottom:1px solid var(--qp-border); vertical-align:top; overflow-wrap:anywhere; }
+.qp-cost-table th { color:var(--qp-muted); }
+.qp-cost-table td:last-child { white-space:nowrap; }
+.qp-cost-insights>div { display:grid; gap:5px; padding:10px; border:1px solid var(--qp-border); border-radius:7px; }
+.qp-cost-insights span { color:var(--qp-muted); font-size:11px; }
+.qp-cost-insights strong { font-size:16px; }
+.qp-cost-error { color:#e6a66c; font-size:11px; }
+@media(max-width:1200px) { .qp-cost-upper { grid-template-columns:1fr; } .qp-cost-summary { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:730px) { .qp-cost-header { grid-template-columns:1fr; } .qp-cost-lower { grid-template-columns:1fr; } }
+@media(max-width:450px) { .qp-cost-toolbar { grid-template-columns:1fr; } .qp-cost-providers li { grid-template-columns:8px minmax(0,1fr); } .qp-cost-providers li strong { grid-column:2; } }

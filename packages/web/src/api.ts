@@ -196,6 +196,20 @@ export interface ModelDetailResponse {
   efforts: Array<{ effort: string | null; tokens: number; calls: number; sessions: number }>;
   observedContext: { window: number | null; at: number | null; origin: string };
 }
+export interface CostAnalysisResponse {
+  now: number;
+  scope: UsageEventScope;
+  basis: 'api' | 'native';
+  totals: { amount: number; pricedCalls: number; pricedTokens: number; allCalls: number; allTokens: number; sessions: number;
+    unknownCalls: number; estimatedCalls: number; nonCallCalls: number; knownCacheSavingUsd: number; knownCacheSavingCalls: number };
+  bucketMs: number;
+  points: Array<{ start: number; amount: number; pricedCalls: number; pricedTokens: number; allCalls: number; allTokens: number }>;
+  providers: Array<{ provider: string | null; amount: number; pricedCalls: number; pricedTokens: number; allCalls: number; allTokens: number; sessions: number }>;
+  models: Array<{ model: string | null; provider: string | null; vendor: string; amount: number; pricedCalls: number; pricedTokens: number; allCalls: number; allTokens: number; sessions: number }>;
+  projects: Array<{ project: string | null; amount: number; pricedCalls: number; pricedTokens: number; allCalls: number; allTokens: number; sessions: number }>;
+  sessions: Array<{ sessionKey: number; nativeSessionId: string; project: string | null; harness: string; sourceName: string; lastObservedAt: number;
+    amount: number; pricedCalls: number; pricedTokens: number; allCalls: number; allTokens: number; sessions: number }>;
+}
 export interface ProjectDetailResponse {
   now: number;
   scope: UsageEventScope;
@@ -598,6 +612,7 @@ export const api = {
     if (identity.provider === null) params.set('provider_missing', '1'); else if (identity.provider === '') params.set('provider_empty', '1'); else params.set('provider', identity.provider);
     return get<ModelDetailResponse>(`/api/model-detail?${params}`);
   },
+  costAnalysis: (scope: UsageEventScope, basis: 'api' | 'native') => get<CostAnalysisResponse>(`/api/cost-analysis?basis=${basis}&${usageEventParams(scope)}`),
   quotaHistory: (scope: { subscriptionKey: string; windowKind: string; from?: number; to?: number }) => {
     const params = new URLSearchParams({ subscription_key: scope.subscriptionKey, window_kind: scope.windowKind });
     if (scope.from !== undefined) params.set('from', String(scope.from));

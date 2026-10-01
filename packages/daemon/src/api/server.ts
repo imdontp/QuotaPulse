@@ -17,6 +17,7 @@ import { parseQuotaHistoryScope, quotaHistory } from './quota-history.js';
 import { detailedAggregates } from './detailed-aggregates.js';
 import { projectDetail } from './project-detail.js';
 import { modelDetail } from './model-detail.js';
+import { costAnalysis, type CostBasis } from './cost-analysis.js';
 import { liveSessions, type LiveSessionMode } from './live-sessions.js';
 
 const log = logger('api');
@@ -539,6 +540,16 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       }
       return { now, scope, modelMissing, providerMissing, modelEmpty, providerEmpty,
         ...modelDetail(db, scope, { modelMissing, providerMissing, modelEmpty, providerEmpty }) };
+    } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
+  });
+
+  app.get('/api/cost-analysis', async (req, reply) => {
+    const now = Date.now();
+    const query = req.query as Record<string, unknown>;
+    try {
+      const scope = parseUsageScope(query, now, { requireRange: true, extraKeys: ['basis'] });
+      if (query.basis !== 'api' && query.basis !== 'native') throw new Error('Expected api or native basis');
+      return { now, scope, basis: query.basis, ...costAnalysis(db, scope, query.basis as CostBasis) };
     } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
   });
 

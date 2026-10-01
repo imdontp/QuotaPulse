@@ -336,10 +336,43 @@ try {
   await models.locator('.qp-model-table-wrap tbody tr').first().waitFor();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Models mobile overflow');
   await page.screenshot({ path: resolve(output, 'models-real-th-light-390.png'), fullPage: true });
+  await page.evaluate(() => {
+    localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'en', currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
+    localStorage.setItem('quotapulse-theme', 'dark');
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('http://127.0.0.1:7801/#cost');
+  await page.reload();
+  const cost = page.getByTestId('production-cost');
+  await cost.getByRole('heading', { name: 'Cost analysis', exact: true }).waitFor();
+  await cost.locator('.qp-cost-summary strong').first().waitFor();
+  assert.match(await cost.locator('.qp-cost-summary').innerText(), /\$10\.60/);
+  await cost.locator('.qp-cost-sessions tbody tr').first().waitFor();
+  assert.match(await cost.locator('.qp-cost-sessions tbody tr').first().innerText(), /synthetic-session/);
+  await page.screenshot({ path: resolve(output, 'cost-real-en-dark-1440.png'), fullPage: true });
+  await cost.getByRole('combobox', { name: 'Monetary basis' }).selectOption('native');
+  await cost.getByText('No value on the selected basis').first().waitFor();
+  await cost.getByRole('combobox', { name: 'Monetary basis' }).selectOption('api');
+  await cost.locator('.qp-cost-sessions tbody tr').first().waitFor();
+  await cost.locator('.qp-cost-sessions tbody tr').first().getByRole('link').click();
+  await page.waitForURL(/#history\?/);
+  assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('session_id'), '1');
+  await page.evaluate(() => {
+    localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'th', currency: 'THB', rate: 35, hiddenSubscriptions: [] }));
+    localStorage.setItem('quotapulse-theme', 'light');
+  });
+  await page.setViewportSize({ width: 390, height: 1000 });
+  await page.goto('http://127.0.0.1:7801/#cost');
+  await page.reload();
+  if (await cost.getAttribute('lang') !== 'th') await cost.locator('.qp-tools button').first().click();
+  await cost.getByRole('heading', { name: 'วิเคราะห์ต้นทุน', exact: true }).waitFor();
+  await cost.locator('.qp-cost-summary strong').first().waitFor();
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Cost mobile overflow');
+  await page.screenshot({ path: resolve(output, 'cost-real-th-light-390.png'), fullPage: true });
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));
-  console.log('History/Overview/Projects/Live/Providers/Models E2E passed: authenticated HTTP and in-memory SQLite, scopes, pagination, pause, quota runway, drill-down, responsive layout.');
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'Cost API/native basis separation and missing native value', 'Cost server-ranked sessions and exact History scope', 'Cost English dark desktop and Thai light mobile', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));
+  console.log('History/Overview/Projects/Live/Providers/Models/Cost E2E passed: authenticated HTTP and in-memory SQLite, scopes, pagination, pause, quota runway, drill-down, responsive layout.');
 } finally {
   await browser?.close();
   await vite.close();
