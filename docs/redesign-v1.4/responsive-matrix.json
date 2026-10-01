@@ -1,0 +1,1022 @@
+{
+  "browser": "153.0.8010.53",
+  "checks": [
+    "loaded production page",
+    "language and theme",
+    "nine destinations and current page",
+    "one main heading",
+    "no page overflow",
+    "visible keyboard focus",
+    "at most one active SSE listener after navigation"
+  ],
+  "cases": [
+    {
+      "destination": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "en",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "en",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "en",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "en",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "en",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "streams": 1
+    },
+    {
+      "destination": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "live",
+      "lang": "th",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "projects",
+      "lang": "th",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "providers",
+      "lang": "th",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "models",
+      "lang": "th",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "cost",
+      "lang": "th",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    },
+    {
+      "destination": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1440,
+      "streams": 1
+    }
+  ]
+}

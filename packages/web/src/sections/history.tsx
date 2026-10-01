@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { api, type HistorySummaryResponse } from '@/api';
 import { HistoryTimeline } from '@/redesign/history-timeline';
+import { HistoryRecordDetails } from '@/redesign/history-record-details';
 import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
 import { useLiveRefresh } from '@/lib/use-live';
@@ -140,7 +141,7 @@ export function HistorySection({ sources, redesign = false }: { sources: Array<{
   })();
   return <div className="flex min-w-0 flex-col gap-3.5" data-testid="usage-history">
     {sessionId !== undefined && <div className="flex items-center gap-3 text-xs" role="status"><span>{t('history.session')} #{sessionId}</span><a className="underline" href="#history?range=all">{t('history.clearSession')}</a></div>}
-    <fieldset disabled={paused} className="min-w-0 border-0 p-0"><UsageRangeBar route={route} sources={sources} showBucket={false} onChange={next => { setOffset(0); updateRoute(next); }}/></fieldset>
+    <fieldset disabled={paused} className="min-w-0 border-0 p-0"><UsageRangeBar route={route} sources={sources} showBucket={false} showHeading={!redesign} onChange={next => { setOffset(0); updateRoute(next); }}/></fieldset>
     {summary && <HistoryTimeline data={summary}/>}
     <form onSubmit={event => { event.preventDefault(); setOffset(0); setFilters({ ...draft, project: draft.projectMissing ? undefined : draft.project }); }}>
       <fieldset disabled={paused} className="grid min-w-0 grid-cols-1 gap-3 rounded-lg border p-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -166,7 +167,8 @@ export function HistorySection({ sources, redesign = false }: { sources: Array<{
     <dialog ref={dialog} onClose={() => { setSelected(null); returnFocus.current?.focus(); }} aria-labelledby="history-detail-title" className="m-auto max-h-[85vh] w-[min(640px,92vw)] overflow-auto rounded-xl border bg-background p-5 text-foreground backdrop:bg-black/60">
       <div className="flex items-center justify-between gap-3"><h2 id="history-detail-title">{t('history.detail')} #{selected?.event_id}</h2><Button autoFocus onClick={() => dialog.current?.close()}>{t('history.close')}</Button></div>
       <p className="my-3 text-xs text-muted-foreground">{t('history.coverage')}</p>
-      {selected && <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">{[
+      {selected && redesign && <HistoryRecordDetails row={selected} basis={basis(selected)} date={date(selected.timestamp_ms)}/>}
+      {selected && !redesign && <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">{[
         [t('history.recordedAt'), date(selected.timestamp_ms)], [t('history.kind'), t(`history.${selected.grain}`)],
         [t('col.source'), selected.source_name], [t('history.session'), selected.session_key ?? '—'],
         [t('col.project'), selected.project ?? t('redesign.unassigned')], [t('history.provider'), selected.provider ?? '—'],
@@ -179,7 +181,7 @@ export function HistorySection({ sources, redesign = false }: { sources: Array<{
         [t('col.output'), selected.output_tokens.toLocaleString(lang)], [t('col.reasoning'), selected.reasoning_tokens.toLocaleString(lang)],
         [t('history.basis'), basis(selected)], [t('col.value'), selected.cost_usd !== null && ['native', 'computed', 'estimated'].includes(selected.cost_source) ? f.money(selected.cost_usd) : '—'],
       ].map(([label, value]) => <div key={String(label)}><dt className="text-xs text-muted-foreground">{label}</dt><dd className="break-all text-sm">{value}</dd></div>)}</dl>}
-      {redesign && <div className="mt-4 flex flex-wrap items-center gap-3 text-sm"><Button onClick={() => void copyMetadata()}>{t('history.copyMetadata')}</Button>{copyState !== 'idle' && <span role="status">{t(copyState === 'copied' ? 'history.copied' : 'history.copyFailed')}</span>}{relatedSession && <a className="underline" href={relatedSession} onClick={() => dialog.current?.close()}>{t('history.relatedSession')}</a>}</div>}
+      {redesign && <section className="qp-history-detail-actions" aria-label={t('history.relatedRecords')}><h3>{t('history.relatedRecords')}</h3><Button onClick={() => void copyMetadata()}>{t('history.copyMetadata')}</Button>{copyState !== 'idle' && <span role="status">{t(copyState === 'copied' ? 'history.copied' : 'history.copyFailed')}</span>}{relatedSession && <a className="underline" href={relatedSession} onClick={() => dialog.current?.close()}>{t('history.relatedSession')}</a>}</section>}
     </dialog>
   </div>;
 }

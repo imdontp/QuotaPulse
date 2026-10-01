@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import type { HistorySummaryResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
@@ -7,6 +8,15 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
   const t = useT();
   const f = useFormat();
   const { lang } = useI18n();
+  const chart = useRef<SVGSVGElement>(null);
+  const [width, setWidth] = useState(1000);
+  useEffect(() => {
+    const node = chart.current;
+    if (!node) return;
+    const observer = new ResizeObserver(([entry]) => setWidth(Math.max(240, Math.round(entry.contentRect.width))));
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
   const totals = data.totals;
   const count = (value: number) => value.toLocaleString(lang);
   const entries = new Map(data.timeline.map(row => [row.at, row]));
@@ -15,8 +25,10 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
     return { at, inputTokens: entries.get(at)?.inputTokens ?? 0, outputTokens: entries.get(at)?.outputTokens ?? 0 };
   });
   const max = Math.max(1, ...buckets.flatMap(row => [row.inputTokens, row.outputTokens]));
-  const x = (index: number) => 40 + 920 * index / Math.max(1, buckets.length - 1);
-  const y = (value: number) => 174 - 144 * value / max;
+  const left = 44;
+  const right = width - 12;
+  const x = (index: number) => left + (right - left) * index / Math.max(1, buckets.length - 1);
+  const y = (value: number) => 120 - 104 * value / max;
   const points = (key: 'inputTokens' | 'outputTokens') => buckets.map((row, index) => `${x(index)},${y(row[key])}`).join(' ');
   const date = (at: number) => new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(at);
   const priced = totals.computed_calls + totals.estimated_calls;
@@ -31,12 +43,12 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
       <article><span>{t('history.effortDistribution')}</span><ul>{data.effort.map(row => <li key={JSON.stringify(row.effort)}>{row.effort ?? t('redesign.unknownValue')}: {count(row.calls)}</li>)}</ul>{!data.effort.length && <strong>—</strong>}</article>
     </div>
     <div className="qp-history-legend"><span>{t('history.inputCombined')}</span><span>{t('col.output')}</span></div>
-    <svg viewBox="0 0 1000 208" role="img" aria-label={`${t('history.timeline')}: ${count(totals.tokens)}`}>
-      {[0, .5, 1].map(fraction => <g key={fraction}><line x1="40" x2="960" y1={y(max * fraction)} y2={y(max * fraction)} stroke="currentColor" opacity=".15"/><text x="0" y={y(max * fraction)} fill="currentColor" fontSize="11">{f.tokens(max * fraction)}</text></g>)}
+    <svg ref={chart} viewBox={`0 0 ${width} 148`} role="img" aria-label={`${t('history.timeline')}: ${count(totals.tokens)}`}>
+      {[0, .5, 1].map(fraction => <g key={fraction}><line x1={left} x2={right} y1={y(max * fraction)} y2={y(max * fraction)} stroke="currentColor" opacity=".15"/><text x="0" y={y(max * fraction)} fill="currentColor" fontSize="11">{f.tokens(max * fraction)}</text></g>)}
       <polyline points={points('inputTokens')} fill="none" stroke="var(--history-input)" strokeWidth="2"/>
       <polyline points={points('outputTokens')} fill="none" stroke="var(--history-output)" strokeWidth="2"/>
       {buckets.map((row, index) => <g key={row.at}><title>{date(row.at)} · {t('history.inputCombined')}: {count(row.inputTokens)} · {t('col.output')}: {count(row.outputTokens)}</title><circle cx={x(index)} cy={y(row.inputTokens)} r="2" fill="var(--history-input)"/><circle cx={x(index)} cy={y(row.outputTokens)} r="2" fill="var(--history-output)"/></g>)}
-      <text x="40" y="202" fill="currentColor" fontSize="11">{date(data.scope.from)}</text><text x="960" y="202" textAnchor="end" fill="currentColor" fontSize="11">{date(data.scope.to)}</text>
+      <text x={left} y="144" fill="currentColor" fontSize="11">{date(data.scope.from)}</text><text x={right} y="144" textAnchor="end" fill="currentColor" fontSize="11">{date(data.scope.to)}</text>
     </svg>
     {totals.tokens !== totals.inputTokens + totals.cachedInputTokens + totals.cacheWriteTokens + totals.outputTokens && <p className="qp-footnote">{t('history.partialBreakdown')}</p>}
   </section>;

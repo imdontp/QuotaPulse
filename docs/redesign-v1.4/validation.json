@@ -1,0 +1,134 @@
+{
+    "checks":  [
+                   {
+                       "result":  "passed; existing legacy chunk warning",
+                       "command":  "npm run build -w @quotapulse/web"
+                   },
+                   {
+                       "tests":  122,
+                       "command":  "npm run test -w @quotapulse/web",
+                       "result":  "passed"
+                   },
+                   {
+                       "command":  "npm run test:history",
+                       "matrixCases":  144,
+                       "result":  "passed"
+                   },
+                   {
+                       "syntheticRecords":  5000,
+                       "command":  "npm run test:runtime",
+                       "result":  "passed"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "npm run build -w @quotapulse/tray"
+                   },
+                   {
+                       "result":  "passed; isolated fixture main and real compiled preloads",
+                       "command":  "npm run test:desktop"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "v1.3 detached web build and runtime with QP_RUNTIME_WEB_ROOT override"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "git diff --check"
+                   }
+               ],
+    "branch":  "design/redesign-foundation",
+    "artifacts":  [
+                      {
+                          "sha256":  "bf878afd3d4f7a8cc928370ade02253b0fcf270e2c2e5c34da745cd4e624c048",
+                          "file":  "alerts-concept-size.png",
+                          "bytes":  317553
+                      },
+                      {
+                          "sha256":  "4a43fc0aadda4b87737bfe0655057c8c61ffc94b95a316c3f6e743cc28c7d66b",
+                          "file":  "cost-concept-size.png",
+                          "bytes":  333016
+                      },
+                      {
+                          "sha256":  "c84944efd958d631b8d06c15a42cfdc003e0a606997c0d427afd9312813e3e64",
+                          "file":  "dashboard-production.png",
+                          "bytes":  482036
+                      },
+                      {
+                          "sha256":  "77585309d01472b939cc2737a0049bedd267d8606f9ba3c2f0673e4a3387f2fd",
+                          "file":  "desktop-runtime.json",
+                          "bytes":  3078
+                      },
+                      {
+                          "sha256":  "48b16f8655626d95e6f1860ab0421194ab69c66e356532b3d19aea2de6167fe4",
+                          "file":  "history-concept-size.png",
+                          "bytes":  343239
+                      },
+                      {
+                          "sha256":  "924500fbd10dcfbdb68a580b364908f33cee2ef645907cadba83f87a02273897",
+                          "file":  "history-detail-open-en-light-1440.png",
+                          "bytes":  290611
+                      },
+                      {
+                          "sha256":  "cac9e13589b9de0f1baa963775e772724ebabbfc16778a2348ff367575e24925",
+                          "file":  "live-concept-size.png",
+                          "bytes":  344309
+                      },
+                      {
+                          "sha256":  "bf96c737b8b21a2ffd2d94c86a31ff593ddbb3ab63804220953e9a3dcb043088",
+                          "file":  "models-concept-size.png",
+                          "bytes":  412650
+                      },
+                      {
+                          "sha256":  "89226888c4434e9d07aaef4fed031aced8670e35541e252b592c3139d7a6035f",
+                          "file":  "overview-concept-size.png",
+                          "bytes":  458357
+                      },
+                      {
+                          "sha256":  "73ecd4fb7d54ff940b0664743f37cae2e6e4448232b97ee135e791966f086a75",
+                          "file":  "popup-production.png",
+                          "bytes":  97665
+                      },
+                      {
+                          "sha256":  "aa8321a69a5eda058d6ab1de7b56626853056f3983c122d9e13cb3e119fdf776",
+                          "file":  "production-runtime.json",
+                          "bytes":  101335
+                      },
+                      {
+                          "sha256":  "5c082eea0ac06f6d56b61f3f0541ca14391e46bb85c5c34bb6f3a8a794f328f0",
+                          "file":  "projects-concept-size.png",
+                          "bytes":  369433
+                      },
+                      {
+                          "sha256":  "0662a6c81aabe3a297071aa983fb358553cc789798b3d8b3164a297cccf39bbb",
+                          "file":  "providers-concept-size.png",
+                          "bytes":  340475
+                      },
+                      {
+                          "sha256":  "8c3136881ab79b610496332fda511518a7db59043546b4db97bc23b9e8670337",
+                          "file":  "responsive-matrix.json",
+                          "bytes":  18683
+                      },
+                      {
+                          "sha256":  "9bd10c597aba652a6d5a94c5ed7b5784c38632fb3c290f97ed829901c9940059",
+                          "file":  "review-candidates.json",
+                          "bytes":  4901
+                      },
+                      {
+                          "sha256":  "c3f691fbba93ca51d349fadbd91d447acccc90370520d51c78065b5b5a83bcf8",
+                          "file":  "rollback-runtime.json",
+                          "bytes":  99809
+                      }
+                  ],
+    "visualApproval":  "pending",
+    "parentCommit":  "997eaa4f0d7259eef93f207e3d8d5a6594238fc3",
+    "date":  "2026-10-01T09:16:08.7543387Z",
+    "tag":  "redesign-refinement-runtime-v1.4.0",
+    "remaining":  [
+                      "eight-screen geometry and typography refinement",
+                      "deterministic reviewed visual baseline, SSIM and regional checks",
+                      "complete accessibility audit",
+                      "packaged tray and installer recovery checks",
+                      "RC sign-off"
+                  ],
+    "status":  "Validated checkpoint; redesign release incomplete"
+}

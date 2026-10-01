@@ -36,6 +36,8 @@ db.transaction(() => {
 })();
 db.prepare(`UPDATE usage_event SET input_tokens=40,cached_input_tokens=20,
   output_tokens=total_tokens-60,cost_cache_saving_usd=0.03 WHERE source_id=1`).run();
+db.prepare(`UPDATE usage_event SET cache_write_tokens=7,duration_ms=1234,service_tier='test-tier',price_provider='anthropic' WHERE id=53`).run();
+db.prepare(`UPDATE session SET is_subagent=1 WHERE id=2`).run();
 const scheduler = new Scheduler(db, [], { pollMs: 1000000, detectMs: 1000000 });
 const daemon = buildServer(db, scheduler, { token: 'history-test', port: 7800, webRoot: resolve(root, 'packages/web/dist') });
 const vite = await createServer({ root: resolve(root, 'packages/web'), server: { host: '127.0.0.1', port: 7801, strictPort: true, proxy: { '/api': { target: 'http://127.0.0.1:7800', changeOrigin: true, configure: proxy => {
@@ -81,6 +83,16 @@ try {
   await history.getByRole('button', { name: 'Record details 53', exact: true }).click();
   await page.getByRole('dialog').waitFor();
   assert.match(await page.getByRole('dialog').innerText(), /Session aggregate|session_aggregate/);
+  for (const name of ['Event summary', 'Token breakdown', 'Pricing source', 'Runtime metadata', 'Related records and metadata']) {
+    await page.getByRole('dialog').getByRole('heading', { name, exact: true }).waitFor();
+  }
+  await page.getByRole('dialog').getByText('Cache write', { exact: true }).waitFor();
+  await page.getByRole('dialog').getByText('Subagent', { exact: true }).waitFor();
+  assert.match(await page.getByRole('dialog').getByRole('region', { name: 'Token breakdown' }).innerText(), /Cache write\s+7/);
+  assert.match(await page.getByRole('dialog').getByRole('region', { name: 'Runtime metadata' }).innerText(), /Subagent\s+Yes/);
+  assert.match(await page.getByRole('dialog').getByRole('region', { name: 'Runtime metadata' }).innerText(), /1,234 ms/);
+  const openTheme = await page.getByTestId('production-history').getAttribute('data-theme');
+  await page.screenshot({ path: resolve(output, `history-detail-open-en-${openTheme}-1440.png`) });
   await page.getByRole('dialog').getByRole('button', { name: 'Copy safe metadata', exact: true }).click();
   await page.getByRole('dialog').getByText('Metadata copied', { exact: true }).waitFor();
   const copied = JSON.parse(await page.evaluate(() => navigator.clipboard.readText()));
@@ -554,6 +566,17 @@ try {
     await page.reload();
     await page.getByTestId(`production-${destination}`).locator(ready).first().waitFor();
     await page.evaluate(() => document.fonts.ready);
+    if (destination === 'history') {
+      const geometry = await page.getByTestId('history-timeline').evaluate(element => {
+        const svg = element.querySelector('svg')!;
+        const line = svg.querySelector('line')!;
+        const table = document.querySelector('[data-testid="usage-history"] tbody tr')!;
+        return { timelineHeight: element.getBoundingClientRect().height, chartWidth: svg.getBoundingClientRect().width, plotWidth: Number(line.getAttribute('x2')) - Number(line.getAttribute('x1')), firstRowBottom: table.getBoundingClientRect().bottom };
+      });
+      assert.ok(geometry.timelineHeight < 390, `History timeline too tall: ${geometry.timelineHeight}`);
+      assert.ok(geometry.plotWidth > geometry.chartWidth * .9, 'History plot does not use available width');
+      assert.ok(geometry.firstRowBottom < viewport.height, 'History first record is outside concept viewport');
+    }
     const regions = await page.evaluate(() => Object.fromEntries(['.qp-sidebar', '.qp-topbar', '.qp-workspace main'].map(selector => {
       const { x, y, width, height } = document.querySelector(selector)!.getBoundingClientRect();
       return [selector, { x, y, width, height }];

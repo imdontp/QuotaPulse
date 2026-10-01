@@ -108,12 +108,14 @@ export function UsageRangeBar({
   sources = [],
   actions,
   showBucket = true,
+  showHeading = true,
 }: {
   route: UsageRoute;
   onChange: (next: UsageRouteUpdate) => void;
   sources?: Array<{ id: number; display_name: string }>;
   actions?: React.ReactNode;
   showBucket?: boolean;
+  showHeading?: boolean;
 }) {
   const t = useT();
   const selection = route.selection;
@@ -127,7 +129,7 @@ export function UsageRangeBar({
   };
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border/70 bg-muted/15 px-3 py-2.5" aria-label={t('usage.rangeLabel')}>
-      <span className="text-muted-foreground text-xs font-medium">{t('usage.rangeLabel')}</span>
+      {showHeading && <span className="text-muted-foreground text-xs font-medium">{t('usage.rangeLabel')}</span>}
       <Select label={t('usage.rangeLabel')} value={selection.range} onChange={(event) => {
         const value = event.target.value as UsageRangeKey;
         if (value === 'custom') {

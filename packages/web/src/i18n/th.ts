@@ -863,4 +863,12 @@ export const th: Record<MessageKey, string> = {
   'history.nativeTotal': 'ค่าใช้จ่ายที่ต้นทางรายงาน',
   'history.apiTotal': 'มูลค่า API ที่คำนวณ / ประมาณ',
   'history.inputCombined': 'Input รวม cache',
+  'history.eventSummary': 'สรุปเหตุการณ์',
+  'history.tokenBreakdown': 'รายละเอียด tokens',
+  'history.pricingSource': 'แหล่งข้อมูลราคา',
+  'history.runtimeMetadata': 'Metadata ขณะทำงาน',
+  'history.relatedRecords': 'บันทึกที่เกี่ยวข้องและ metadata',
+  'history.subagent': 'Subagent',
+  'history.yes': 'ใช่',
+  'history.no': 'ไม่ใช่',
 };
