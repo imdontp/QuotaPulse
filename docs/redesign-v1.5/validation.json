@@ -1,0 +1,89 @@
+{
+    "checks":  [
+                   {
+                       "result":  "passed; existing legacy chunk warning",
+                       "command":  "npm run build -w @quotapulse/web"
+                   },
+                   {
+                       "tests":  122,
+                       "command":  "npm run test -w @quotapulse/web",
+                       "result":  "passed"
+                   },
+                   {
+                       "newChecks":  [
+                                         "Overview first record in viewport",
+                                         "Providers comparison/health in viewport",
+                                         "Models providers and full detail rail in viewport",
+                                         "Models hidden search label on direct load",
+                                         "Providers published future reset displayed"
+                                     ],
+                       "command":  "npm run test:history",
+                       "matrixCases":  144,
+                       "result":  "passed"
+                   },
+                   {
+                       "captures":  21,
+                       "command":  "npm run test:visual",
+                       "result":  "passed"
+                   },
+                   {
+                       "syntheticRecords":  5000,
+                       "command":  "npm run test:runtime",
+                       "result":  "passed"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "git diff --check"
+                   }
+               ],
+    "branch":  "design/redesign-foundation",
+    "artifacts":  [
+                      {
+                          "sha256":  "3740c3d325a8de0e443052be38c99a11a2ccd491cbefe85c1dd21501c47c8646",
+                          "file":  "models-concept-size.png",
+                          "bytes":  338235
+                      },
+                      {
+                          "sha256":  "ab1bdd184716ff64269d95c00acf0849780ddd82c2bb6e8df55c31a4590e3219",
+                          "file":  "overview-concept-size.png",
+                          "bytes":  436108
+                      },
+                      {
+                          "sha256":  "006a34292ee66bda1e0f6d4286bb7ba89d9b5ef114d7125ee9e267ec97b05957",
+                          "file":  "preview-verification.json",
+                          "bytes":  12917
+                      },
+                      {
+                          "sha256":  "af4dd3fd52e8d827e6107991bfe6d65345e458733a692fd38fe03684866c24c6",
+                          "file":  "production-runtime.json",
+                          "bytes":  100304
+                      },
+                      {
+                          "sha256":  "1b10c222c6978e4b2a95479adc041a911adfffca40f6614bb49111734ee53c4c",
+                          "file":  "providers-concept-size.png",
+                          "bytes":  305335
+                      },
+                      {
+                          "sha256":  "8c3136881ab79b610496332fda511518a7db59043546b4db97bc23b9e8670337",
+                          "file":  "responsive-matrix.json",
+                          "bytes":  18683
+                      },
+                      {
+                          "sha256":  "d66bff3c03510588a91e3035f5635c27ab51a7532997c0fcec25494bc1582341",
+                          "file":  "review-candidates.json",
+                          "bytes":  10108
+                      }
+                  ],
+    "visualApproval":  "pending",
+    "parentCommit":  "80f97f7c4c02a51cf1bf41994781b844d6f66b54",
+    "date":  "2026-10-01T10:02:28.7432894Z",
+    "tag":  "redesign-layout-refinement-v1.5.0",
+    "remaining":  [
+                      "coverage-aware monetary unknown/partial labels",
+                      "remaining concept refinements and richer fixtures",
+                      "deterministic reviewed baselines and SSIM",
+                      "complete accessibility audit",
+                      "packaged tray and RC gates"
+                  ],
+    "status":  "Validated layout checkpoint; redesign release incomplete"
+}

@@ -673,6 +673,22 @@
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
+@media(min-width:1280px) {
+  [data-testid=production-overview] main { gap:12px; }
+  [data-testid=production-overview] .qp-core-grid { min-height:270px; }
+  [data-testid=production-overview] .qp-pulse { max-width:300px; }
+  [data-testid=production-overview] .qp-metrics { gap:14px; }
+  [data-testid=production-overview] .qp-runtime { padding:12px; }
+  [data-testid=production-overview] .qp-bottom-grid { gap:12px; }
+  [data-testid=production-overview] .qp-runway,
+  [data-testid=production-overview] .qp-insights { padding:14px; gap:8px; }
+  [data-testid=production-overview] .qp-insights .qp-metric strong { font-size:21px; }
+  [data-testid=production-overview] .qp-insights .qp-coverage { margin:0; gap:10px; }
+  [data-testid=production-overview] .qp-insights .qp-footnote { line-height:1.4; }
+  [data-testid=production-overview] .qp-activity { padding:8px 14px; gap:6px; }
+  [data-testid=production-overview] .qp-activity-item { padding:4px 8px; gap:2px; }
+  [data-testid=production-overview] .qp-activity-item strong { font-size:11px; }
+}
 @media(max-width:500px) {
   .qp-machine-scope {
     display:none;
@@ -759,4 +775,16 @@
   .qp-orbit {
     animation:none;
   }
+}
+
+.qp-visually-hidden {
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
 }

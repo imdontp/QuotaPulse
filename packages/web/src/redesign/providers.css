@@ -40,5 +40,15 @@
 .qp-provider-table table { width:100%; border-collapse:collapse; font-size:11px; }
 .qp-provider-table th,.qp-provider-table td { padding:8px; text-align:left; border-bottom:1px solid var(--qp-border); vertical-align:top; }
 .qp-provider-table small { display:block; color:var(--qp-muted); }
+@media(min-width:1280px) {
+  .qp-provider-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .qp-provider-card { padding:14px; gap:12px; align-content:start; }
+  .qp-provider-card-head { align-items:start; gap:8px; }
+  .qp-provider-card-head button { font-size:14px; }
+  .qp-provider-detail { padding:14px; gap:10px; }
+  .qp-provider-detail-windows>div { padding:10px; }
+  .qp-provider-detail-windows dl { gap:6px 12px; margin:8px 0; }
+  .qp-provider-detail-windows:has(>div:only-child) dl { grid-template-columns:100px minmax(0,1fr) 100px minmax(0,1fr); }
+}
 @media(max-width:1200px) { .qp-provider-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .qp-provider-bottom { grid-template-columns:1fr; } }
 @media(max-width:730px) { .qp-provider-grid { grid-template-columns:1fr; } .qp-provider-header { align-items:start; flex-direction:column; } }

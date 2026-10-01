@@ -204,7 +204,7 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
           <section className="qp-panel qp-insights" data-testid="usage-insights"><h2><Box size={18}/>{t('redesign.insights')}</h2>
             <div className="qp-insight-grid"><Metric label={t('redesign.cacheShare')} value={cacheShare === null ? '—' : `${number(cacheShare)}%`}/><Metric label={t('redesign.cacheSaving')} value={coverage && coverage.cacheSavingKnownCalls > 0 ? money(coverage.cacheSavingKnownUsd) : '—'}/></div>
             <p className="qp-footnote">{cacheShare === null ? t('redesign.noInput') : `${number(coverage!.cachedInputTokens)} / ${number(inputTotal)}`}. {coverage && coverage.cacheSavingKnownCalls > 0 ? `${number(coverage.cacheSavingKnownCalls)} ${t('redesign.knownCalls')}` : t('redesign.noCachePrice')}.</p>
-            <h3>{t('redesign.detail')}</h3><div className="qp-coverage"><Metric label={t('redesign.calls')} value={number(totals.callRecords)}/><Metric label={t('redesign.aggregates')} value={number(totals.aggregateRecords)}/><Metric label={t('redesign.unknown')} value={number(totals.unknownCostRecords)}/></div><p className="qp-footnote">{t('redesign.coverage')}</p>
+            <h3 className={preview ? undefined : 'qp-visually-hidden'}>{t('redesign.detail')}</h3><div className="qp-coverage"><Metric label={t('redesign.calls')} value={number(totals.callRecords)}/><Metric label={t('redesign.aggregates')} value={number(totals.aggregateRecords)}/><Metric label={t('redesign.unknown')} value={number(totals.unknownCostRecords)}/></div><p className="qp-footnote">{t('redesign.coverage')}</p>
           </section>
         </div>
         <section className="qp-panel qp-activity" data-testid="recent-activity">

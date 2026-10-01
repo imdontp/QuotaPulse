@@ -5,6 +5,12 @@ blueprint v1.1 archive. Candidate set: `redesign-v1.3/*-concept-size.png`, captu
 at 1586 × 992 for Overview and 1672 × 941 for the other seven pages, DPR 1.
 All eight pairs were inspected visually. These are not approved baselines.
 
+Follow-up: [Layout 1.5](REDESIGN-LAYOUT-REFINEMENT-V1.5.md) addresses the initial
+Overview activity visibility, Providers comparison/health visibility and Models
+provider-summary/detail-rail placement findings below. Its three new captures
+were inspected and pass named regional gates. Richer occupied layouts and the
+remaining styling/baseline/release checks still need review.
+
 ## Shared shell
 
 The implementation uses a 210 px sidebar and a 64 px topbar. The concepts have a
@@ -18,7 +24,7 @@ concept's constant “All Systems Operational”, workspace account or avatar.
 
 ## Screen review
 
-| Screen | Preserved structure and intentional factual changes | Visual refinement still needed |
+| Screen | Preserved structure and intentional factual changes | Findings at initial v1.3 review; see follow-up above |
 | --- | --- | --- |
 | Overview | Pulse Core, quota rail, observed relationship graph, runway, usage insights, activity. Real quota owner/window and cache metrics replace fictitious token allowance and ROI. | Hero and runway/insights regions are taller; activity falls below the concept viewport. Compact the lower regions and review text hierarchy and graph treatment. |
 | Live | Summary, sessions, token chart, record feed, advisory/activity rail. Recent/reporting/stale/error counts replace unsupported lifecycle states; provider activity is not service health. | Header/summary/search spacing is larger; record feed starts at the viewport bottom. Review compact table and chart density. Sparse synthetic series must remain sparse. |

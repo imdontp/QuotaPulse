@@ -361,6 +361,8 @@ try {
   await providers.locator('.qp-provider-card').first().waitFor();
   assert.equal(await providers.locator('.qp-provider-card').count(), 4);
   assert.match(await providers.locator('.qp-provider-comparison').innerText(), /3 Owners without a comparable reading/);
+  const publishedReset = providers.locator('.qp-provider-detail-windows dt').filter({ hasText: /^Reset$/ }).locator('xpath=following-sibling::dd[1]');
+  assert.notEqual(await publishedReset.innerText(), 'Unknown', 'published future quota reset was hidden');
   await providers.locator('.qp-provider-card').filter({ hasText: 'Hermes test' }).getByRole('button', { name: 'Hermes test' }).click();
   await providers.locator('.qp-provider-detail').getByText('No quota percentage published').waitFor();
   await page.screenshot({ path: resolve(output, 'providers-real-en-dark-1440.png'), fullPage: true });
@@ -577,10 +579,27 @@ try {
       assert.ok(geometry.plotWidth > geometry.chartWidth * .9, 'History plot does not use available width');
       assert.ok(geometry.firstRowBottom < viewport.height, 'History first record is outside concept viewport');
     }
-    const regions = await page.evaluate(() => Object.fromEntries(['.qp-sidebar', '.qp-topbar', '.qp-workspace main'].map(selector => {
+    const densitySelectors: Record<string, string[]> = {
+      overview: ['.qp-hero-grid', '.qp-bottom-grid', '.qp-activity', '.qp-activity-item'],
+      providers: ['.qp-provider-grid', '.qp-provider-detail', '.qp-provider-bottom'],
+      models: ['.qp-model-summary', '.qp-model-providers', '.qp-model-detail'],
+    };
+    if (destination === 'models') await page.locator('.qp-model-trend span').first().waitFor();
+    const regions = await page.evaluate(selectors => Object.fromEntries(selectors.map(selector => {
       const { x, y, width, height } = document.querySelector(selector)!.getBoundingClientRect();
       return [selector, { x, y, width, height }];
-    })));
+    })), ['.qp-sidebar', '.qp-topbar', '.qp-workspace main', ...(densitySelectors[destination] ?? [])]);
+    const bottom = (selector: string) => regions[selector].y + regions[selector].height;
+    if (destination === 'overview') {
+      await page.screenshot({ path: resolve(output, 'overview-density-gate.png') });
+      assert.ok(bottom('.qp-activity-item') < viewport.height, `Overview first activity record is outside concept viewport: ${JSON.stringify(regions)}`);
+    }
+    if (destination === 'providers') assert.ok(bottom('.qp-provider-bottom') < viewport.height, 'Providers comparison/health region is outside concept viewport');
+    if (destination === 'models') {
+      assert.ok(bottom('.qp-model-providers') < viewport.height, 'Models provider summary is outside concept viewport');
+      assert.ok(bottom('.qp-model-detail') < viewport.height, 'Models detail rail is outside concept viewport');
+      assert.equal(await page.locator('.qp-model-search .qp-visually-hidden').evaluate(node => node.getBoundingClientRect().width), 1, 'Models search label was visible on direct load');
+    }
     const filename = `${destination}-concept-size.png`;
     await page.screenshot({ path: resolve(output, filename), animations: 'disabled' });
     reviewCaptures.push({ destination, viewport, filename, regions });
