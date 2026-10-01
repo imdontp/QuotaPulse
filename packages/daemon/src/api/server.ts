@@ -20,6 +20,7 @@ import { projectDetail } from './project-detail.js';
 import { modelDetail } from './model-detail.js';
 import { costAnalysis, type CostBasis } from './cost-analysis.js';
 import { liveSessions, type LiveSessionMode } from './live-sessions.js';
+import { historySummary } from './history-summary.js';
 
 const log = logger('api');
 
@@ -377,6 +378,14 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       return reply.code(400).send({ error: (error as Error).message });
     }
     return { ...q.usageEvents(db, scope, pagination), scope, now };
+  });
+
+  app.get('/api/history-summary', async (req, reply) => {
+    const now = Date.now();
+    try {
+      const scope = parseUsageScope(req.query as Record<string, unknown>, now, { requireRange: true });
+      return { now, scope, ...historySummary(db, scope) };
+    } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
   });
 
   app.get('/api/live-sessions', async (req, reply) => {

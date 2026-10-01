@@ -1,0 +1,103 @@
+﻿{
+    "date":  "2026-10-01",
+    "baseCommit":  "867d495499d1c912f195fca6867d686614d32b69",
+    "status":  "Validated implementation checkpoint; visual and RC gates pending",
+    "checks":  [
+                   {
+                       "result":  "passed: daemon 88, web 122, tray 196",
+                       "command":  "npm test"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "npm run build -w @quotapulse/daemon"
+                   },
+                   {
+                       "result":  "passed; legacy App chunk warning remains",
+                       "command":  "npm run build -w @quotapulse/web"
+                   },
+                   {
+                       "result":  "passed and exited 0: timeline totals across pages, safe clipboard, related-session scope, focus restore, pause/export/error checks and final responsive matrix144",
+                       "command":  "npm run test:history"
+                   },
+                   {
+                       "result":  "passed: legacy dashboard, Settings and popup",
+                       "command":  "npm run test:ui"
+                   },
+                   {
+                       "result":  "passed: 21 captures, preview isolation, reduced motion, real offscreen pause/resume",
+                       "command":  "npm run test:visual"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "git diff --check"
+                   }
+               ],
+    "matrix":  {
+                   "environment":  "Vite development, real authenticated in-memory daemon, headless Chrome 153.0.8010.53",
+                   "serverStreams":  1,
+                   "cases":  144
+               },
+    "visualApproval":  "pending",
+    "artifacts":  [
+                      {
+                          "sha256":  "2081e15fe3ee2862acab27620714601a9e8dced79ae02fbb8fa91d4cff848a24",
+                          "name":  "alerts-concept-size.png"
+                      },
+                      {
+                          "sha256":  "4a43fc0aadda4b87737bfe0655057c8c61ffc94b95a316c3f6e743cc28c7d66b",
+                          "name":  "cost-concept-size.png"
+                      },
+                      {
+                          "sha256":  "503bbed955eabb4287259d91982a5dc40ea8fcab22b257024c707cca6020e97d",
+                          "name":  "history-concept-size.png"
+                      },
+                      {
+                          "sha256":  "bc63fc36fa0b1a7678b425c3ff34698730fdce0dedec9d8e075a8353cd22dea3",
+                          "name":  "history-detail-en-light-1440.png"
+                      },
+                      {
+                          "sha256":  "cb91a03dc4231b1263985cf08a97203447b38538fffd0c41b421e9326c644516",
+                          "name":  "history-en-dark-1440.png"
+                      },
+                      {
+                          "sha256":  "87355f1756d23aa2963d6d90b3a61b0668b030926cc9d3f223efd747b6773613",
+                          "name":  "history-th-light-390.png"
+                      },
+                      {
+                          "sha256":  "072c75113abdd9b8482202c277fb1f55a3fd4acbdb972611cd939179d24f6db3",
+                          "name":  "live-concept-size.png"
+                      },
+                      {
+                          "sha256":  "55f46e5c4da6b3f7f3b3931b315bb0708c0bc5b8707542f3a2cbe0b83afdf46e",
+                          "name":  "models-concept-size.png"
+                      },
+                      {
+                          "sha256":  "71f04de269ec7461ba39148801ad9a4df184d65e7e533b78c148911d19c4648d",
+                          "name":  "overview-concept-size.png"
+                      },
+                      {
+                          "sha256":  "f8ce64c2167458e7e4cc39ea2ae6aeaa2c738aec7d33c75dbe9df5f95414eda5",
+                          "name":  "preview-verification.json"
+                      },
+                      {
+                          "sha256":  "f41426ed8ea89cd5000c7a6ae66bf3888ef461ec7987cfdd1f1db637fc8d7911",
+                          "name":  "projects-concept-size.png"
+                      },
+                      {
+                          "sha256":  "998eb77f2b98d84849a74c98d9ff6fea55dfab16ceb9bc912980d3cdd7b4a783",
+                          "name":  "providers-concept-size.png"
+                      },
+                      {
+                          "sha256":  "8c3136881ab79b610496332fda511518a7db59043546b4db97bc23b9e8670337",
+                          "name":  "responsive-matrix.json"
+                      },
+                      {
+                          "sha256":  "9c9e528fd45c8ab2a14a9b73a219148f391202229c9e21580ca8ec709236d064",
+                          "name":  "review-candidates.json"
+                      },
+                      {
+                          "sha256":  "934ac00c0c435b7b99e28f663f974e1660fe8dae6682ea19e6ddc5dfef8f9cc5",
+                          "name":  "verification.json"
+                      }
+                  ]
+}

@@ -169,7 +169,7 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
     let intersecting = true;
     const update = () => { node.dataset.paused = String(document.hidden || !intersecting); };
     const observer = new IntersectionObserver(([entry]) => { intersecting = entry.isIntersecting; update(); });
-    observer.observe(node);
+    observer.observe(node.querySelector('.qp-pulse') ?? node);
     document.addEventListener('visibilitychange', update);
     update();
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', update); };

@@ -177,6 +177,14 @@ export interface DetailedProjectResponse {
   groups: Array<DetailedFacts & { key: string | null }>;
   rows: Array<DetailedFacts & { project: string | null; sourceId: number; harness: string; sourceName: string; provider: string | null; model: string | null; vendor: string }>;
 }
+export interface HistorySummaryResponse {
+  now: number;
+  scope: UsageEventScope;
+  totals: DetailedFacts;
+  bucketMs: number;
+  timeline: Array<{ at: number; records: number; calls: number; inputTokens: number; outputTokens: number; tokens: number }>;
+  effort: Array<{ effort: string | null; records: number; calls: number }>;
+}
 export interface DetailedModelResponse {
   now: number;
   scope: UsageEventScope;
@@ -627,6 +635,7 @@ export const api = {
     params.set('offset', String(pagination.offset));
     return get<UsageEventsResponse>(`/api/usage-events?${params}`);
   },
+  historySummary: (scope: UsageEventScope) => get<HistorySummaryResponse>(`/api/history-summary?${usageEventParams(scope)}`),
   exportUsageEvents: (scope: UsageEventScope) => {
     const params = usageEventParams(scope);
     params.set('order', 'desc');

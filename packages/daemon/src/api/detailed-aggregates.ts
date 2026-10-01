@@ -3,7 +3,7 @@ import { vendorSqlCase } from '../util/vendor.js';
 import { usageWhere, type UsageScope } from './usage-scope.js';
 
 export type AggregateDimension = 'project' | 'model';
-const FACTS = `COUNT(*) AS records,
+export const FACTS = `COUNT(*) AS records,
   COALESCE(SUM(u.call_count),0) AS calls,
   COUNT(DISTINCT sess.id) AS sessions,
   COALESCE(SUM(u.input_tokens),0) AS inputTokens,

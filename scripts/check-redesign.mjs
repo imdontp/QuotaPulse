@@ -91,6 +91,17 @@ try {
     screenshots.push(`${scenario}-390.png`);
   }
   assert.deepEqual(errors, [], 'scenario browser errors');
+  await page.goto('http://127.0.0.1:7797/?mode=redesign-preview');
+  await page.setViewportSize({ width: 390, height: 700 });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.locator('.qp-pulse').scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector('.qp-redesign')?.getAttribute('data-paused') === 'false');
+  assert.equal(await page.locator('.qp-orbit').evaluate(element => getComputedStyle(element).animationPlayState), 'running');
+  await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+  await page.waitForFunction(() => document.querySelector('.qp-redesign')?.getAttribute('data-paused') === 'true');
+  assert.equal(await page.locator('.qp-orbit').evaluate(element => getComputedStyle(element).animationPlayState), 'paused', 'offscreen core kept animating');
+  await page.locator('.qp-pulse').scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector('.qp-redesign')?.getAttribute('data-paused') === 'false');
   assert.deepEqual(forbidden, [], 'scenario daemon or external requests');
   const assets = resolve(repo, 'packages/web/dist/assets');
   const productionJs = readdirSync(assets).filter(name => name.endsWith('.js')).map(name => readFileSync(resolve(assets, name), 'utf8')).join('\n');

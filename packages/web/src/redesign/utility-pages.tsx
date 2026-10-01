@@ -31,7 +31,7 @@ export function ProductionUtilityPage({ page }: { page: 'history' | 'settings' }
   return <RedesignShell active={page} theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId={`production-${page}`}>
     <h1 className="text-xl font-semibold">{t(page === 'history' ? 'history.title' : 'settings.pageTitle')}</h1>
     {error && <p role="status">{t('app.couldNotLoad')}: {error}</p>}
-    {page === 'history' ? <HistorySection sources={overview?.sources ?? []}/> : <>
+    {page === 'history' ? <HistorySection redesign sources={overview?.sources ?? []}/> : <>
       <nav className="flex gap-4" aria-label={t('settings.pageTitle')}>
         <a href="#settings" aria-current={!diagnostics ? 'page' : undefined}>{t('settings.pageTitle')}</a>
         <a href="#settings?section=diagnostics" aria-current={diagnostics ? 'page' : undefined}>{t('tab.health')}</a>

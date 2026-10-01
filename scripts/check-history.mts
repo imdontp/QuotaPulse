@@ -36,15 +36,33 @@ db.transaction(() => {
 })();
 db.prepare(`UPDATE usage_event SET input_tokens=40,cached_input_tokens=20,
   output_tokens=total_tokens-60,cost_cache_saving_usd=0.03 WHERE source_id=1`).run();
-const daemon = buildServer(db, new Scheduler(db, [], { pollMs: 1000000, detectMs: 1000000 }), { token: 'history-test', port: 7800, webRoot: resolve(root, 'packages/web/dist') });
-const vite = await createServer({ root: resolve(root, 'packages/web'), server: { host: '127.0.0.1', port: 7801, strictPort: true, proxy: { '/api': { target: 'http://127.0.0.1:7800', changeOrigin: true } } } });
+const scheduler = new Scheduler(db, [], { pollMs: 1000000, detectMs: 1000000 });
+const daemon = buildServer(db, scheduler, { token: 'history-test', port: 7800, webRoot: resolve(root, 'packages/web/dist') });
+const vite = await createServer({ root: resolve(root, 'packages/web'), server: { host: '127.0.0.1', port: 7801, strictPort: true, proxy: { '/api': { target: 'http://127.0.0.1:7800', changeOrigin: true, configure: proxy => {
+  // Vite installs response-close cleanup only after upstream headers arrive.
+  // StrictMode/reload can cancel SSE before that point; bind cleanup earlier.
+  proxy.on('proxyReq', (upstream, request, response) => {
+    if (!request.url?.startsWith('/api/events/stream')) return;
+    response.once('close', () => upstream.destroy());
+    if (response.destroyed) upstream.destroy();
+  });
+} } } } });
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 try {
   await daemon.listen({ host: '127.0.0.1', port: 7800 });
   await vite.listen();
   browser = await chromium.launch({ channel: 'chrome', headless: true });
-  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce', deviceScaleFactor: 1, timezoneId: 'Asia/Bangkok' });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce', deviceScaleFactor: 1, timezoneId: 'Asia/Bangkok', permissions: ['clipboard-read', 'clipboard-write'] });
   await page.addInitScript(() => { (window as unknown as { __QUOTAPULSE_TOKEN__: string }).__QUOTAPULSE_TOKEN__ = 'history-test'; });
+  await page.addInitScript(() => {
+    const Original = window.EventSource;
+    const state = { opened: 0, closed: 0 };
+    (window as unknown as { __streamCounts: typeof state }).__streamCounts = state;
+    window.EventSource = class extends Original {
+      constructor(url: string | URL, options?: EventSourceInit) { super(url, options); state.opened++; }
+      close() { state.closed++; super.close(); }
+    };
+  });
   const errors: string[] = [];
   const requests: string[] = [];
   const liveRequests: string[] = [];
@@ -56,12 +74,24 @@ try {
   await page.goto('http://127.0.0.1:7801/#history?range=all');
   const history = page.getByTestId('usage-history');
   await history.getByText('1–50 of 53 records', { exact: true }).waitFor();
+  await history.getByTestId('history-total-tokens').getByText('7,525', { exact: true }).waitFor();
   await history.getByRole('button', { name: 'Next page', exact: true }).click();
   await history.getByText('51–53 of 53 records', { exact: true }).waitFor();
+  assert.equal(await history.getByTestId('history-total-tokens').innerText(), '7,525', 'timeline total changed with pagination');
   await history.getByRole('button', { name: 'Record details 53', exact: true }).click();
   await page.getByRole('dialog').waitFor();
   assert.match(await page.getByRole('dialog').innerText(), /Session aggregate|session_aggregate/);
+  await page.getByRole('dialog').getByRole('button', { name: 'Copy safe metadata', exact: true }).click();
+  await page.getByRole('dialog').getByText('Metadata copied', { exact: true }).waitFor();
+  const copied = JSON.parse(await page.evaluate(() => navigator.clipboard.readText()));
+  assert.equal(copied.event_id, 53);
+  for (const field of ['root_path', 'cwd', 'native_session_id', 'request_id', 'dedup_key']) assert.equal(field in copied, false);
+  const relatedParams = new URLSearchParams((await page.getByRole('dialog').getByRole('link', { name: 'Open related session records' }).getAttribute('href'))!.split('?')[1]);
+  assert.equal(relatedParams.get('session_id'), '2');
+  const detailTheme = await page.getByTestId('production-history').getAttribute('data-theme');
+  await page.screenshot({ path: resolve(output, `history-detail-en-${detailTheme}-1440.png`) });
   await page.keyboard.press('Escape');
+  assert.equal(await history.getByRole('button', { name: 'Record details 53', exact: true }).evaluate(element => element === document.activeElement), true);
   await history.getByRole('button', { name: 'Pause view', exact: true }).click();
   assert.equal(await history.getByRole('button', { name: 'Export matching records', exact: true }).isDisabled(), true);
   const atPause = requests.length;
@@ -538,6 +568,46 @@ try {
     browserClock: now, daemonClock: 'real clock; synthetic data seeded at browserClock',
     captures: reviewCaptures,
   }, null, 2));
+  const matrix = [];
+  for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const width of [390, 900, 1280, 1440]) {
+    await page.evaluate(({ lang, theme }) => {
+      localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang, currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
+      localStorage.setItem('quotapulse-theme', theme);
+    }, { lang, theme });
+    await page.setViewportSize({ width, height: 1000 });
+    await page.reload();
+    for (const [destination, ready] of [
+      ['overview', '.qp-metrics strong'], ['live', '.qp-live-chart'],
+      ['projects', '.qp-project-cards'], ['providers', '.qp-provider-grid'],
+      ['models', '.qp-model-summary'], ['cost', '.qp-cost-summary'],
+      ['history', '[data-testid="history-total-tokens"]'], ['alerts', '.qp-alert-history li'],
+      ['settings', 'main input'],
+    ]) {
+      await page.goto(`http://127.0.0.1:7801/#${destination}`);
+      const screen = page.getByTestId(`production-${destination}`);
+      await screen.locator(ready).first().waitFor();
+      await page.evaluate(() => document.fonts.ready);
+      assert.equal(await screen.getAttribute('lang'), lang);
+      assert.equal(await screen.getAttribute('data-theme'), theme);
+      assert.equal(await screen.locator('.qp-sidebar nav a').count(), 9);
+      assert.equal(await screen.locator('.qp-sidebar nav a[aria-current="page"]').count(), 1);
+      assert.equal(await screen.locator('main h1').count(), 1);
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${destination}/${lang}/${theme}/${width} overflow`);
+      const link = screen.locator('.qp-sidebar nav a').first();
+      await link.focus();
+      assert.equal(await link.evaluate(element => getComputedStyle(element).outlineStyle), 'solid', 'missing keyboard focus');
+      await page.waitForTimeout(100);
+      // The previous HTTP stream can still be closing after a document reload.
+      // Bound transport cleanup separately from the synchronous client count.
+      for (let retry = 0; retry < 20 && scheduler.listenerCount('data') > 1; retry++) await page.waitForTimeout(50);
+      const clientStreams = await page.evaluate(() => (window as unknown as { __streamCounts: { opened: number; closed: number } }).__streamCounts);
+      assert.equal(clientStreams.opened - clientStreams.closed, 1, `${destination}: duplicate client EventSources`);
+      assert.ok(scheduler.listenerCount('data') <= 1, `${destination}: server streams=${scheduler.listenerCount('data')}, client=${JSON.stringify(clientStreams)}`);
+      matrix.push({ destination, lang, theme, width, streams: scheduler.listenerCount('data') });
+    }
+    console.log(`PASS redesigned matrix: ${lang}/${theme}/${width}, nine pages`);
+  }
+  writeFileSync(resolve(output, 'responsive-matrix.json'), JSON.stringify({ browser: browser.version(), checks: ['loaded production page', 'language and theme', 'nine destinations and current page', 'one main heading', 'no page overflow', 'visible keyboard focus', 'at most one active SSE listener after navigation'], cases: matrix }, null, 2));
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'shared shell shows machine scope', 'shared command palette opens Settings and supports Ctrl+K to Providers', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'Cost API/native basis separation and missing native value', 'Cost server-ranked sessions and exact History scope', 'Cost English dark desktop and Thai light mobile', 'Alerts threshold facts remain after current risk recovers', 'Alerts notification delivery toggle and reader advisory', 'Alerts English dark desktop and Thai light mobile', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));
