@@ -310,6 +310,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.costProjectionUnavailable': 'ยังยืนยันข้อมูลรายวันตั้งแต่ต้นเดือนที่ครบ สด และเป็นคำขอรายครั้งไม่ได้',
   'redesign.costNativeProjection': 'ค่าที่ต้นทางรายงานใช้คาดการณ์ยอดเรียกเก็บไม่ได้',
   'redesign.costPerThousand': 'ต่อโทเค็นที่มีราคา 1,000 หน่วย',
+  'redesign.costPricedTokens': 'โทเคนที่มีราคา',
   'redesign.costAllTokens': 'โทเค็นที่บันทึกทั้งหมด',
   'redesign.costCoverage': 'คำขอที่มีราคา / คำขอทั้งหมด',
   'redesign.costOtherBasis': 'คำขออีกฐานหรือไม่ทราบราคาที่ไม่รวม',

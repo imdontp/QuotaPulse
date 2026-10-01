@@ -30,6 +30,14 @@ card decoration, chart axes/value accessibility and final styling remain pending
 
 ## Shared shell
 
+[Cost layout 1.9](REDESIGN-COST-LAYOUT-V1.9.md) moves provider distribution beside
+summary, models beside the trend, and projects/sessions/insights into a bottom row.
+Its occupied fixture checks complete desktop panels, both languages/themes,
+mobile overflow and exact History links. Breakdown values now expose weighted
+price coverage; zero-value buckets no longer get nonzero bars. Localized series
+scales and bucket descriptions improve chart labeling; full axis treatment,
+contrast/screen-reader review and approved visual baselines remain pending.
+
 The implementation uses a 210 px sidebar and a 64 px topbar. The concepts have a
 roughly 226 px sidebar (Overview differs), a roughly 60 px topbar spanning the
 brand, and denser navigation. The nine consistent destinations, machine scope,

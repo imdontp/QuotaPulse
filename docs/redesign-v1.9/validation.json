@@ -1,0 +1,97 @@
+{
+    "branch":  "design/redesign-foundation",
+    "status":  "validated checkpoint; overall release pending",
+    "checks":  [
+                   {
+                       "tests":  124,
+                       "command":  "npm run test -w @quotapulse/web",
+                       "result":  "passed"
+                   },
+                   {
+                       "result":  "passed; existing legacy App chunk warning",
+                       "command":  "npm run build -w @quotapulse/web"
+                   },
+                   {
+                       "occupiedCostLanguageThemeCases":  4,
+                       "occupiedLiveLanguageThemeCases":  4,
+                       "command":  "npm run test:history",
+                       "result":  "passed",
+                       "matrixCases":  144,
+                       "priceCases":  4,
+                       "occupiedProjectsLanguageThemeCases":  4
+                   },
+                   {
+                       "syntheticRecords":  5000,
+                       "command":  "npm run test:runtime",
+                       "routes":  9,
+                       "result":  "passed"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "git diff --check"
+                   }
+               ],
+    "artifacts":  [
+                      {
+                          "sha256":  "f04e8a51296e82d63252fb8740928400b985aac8796a73acb540256dedce4e17",
+                          "file":  "cost-concept-size.png",
+                          "bytes":  373629
+                      },
+                      {
+                          "sha256":  "3a8186c1f16fdf274b7060c522c51e180c4a49f6cd4b9497517ca7d0cf83de43",
+                          "file":  "cost-occupied-en-dark.png",
+                          "bytes":  398193
+                      },
+                      {
+                          "sha256":  "bf4dd991290bdf683e9756fd4b6e6c3eaf549d53e8bf1546bb72b12166eb8e15",
+                          "file":  "cost-occupied-en-light.png",
+                          "bytes":  429861
+                      },
+                      {
+                          "sha256":  "7689538f35cb9279b088b59a30e0ca6b40e8f4b5f66c8212b8926c7a050612eb",
+                          "file":  "cost-occupied-layout.json",
+                          "bytes":  6461
+                      },
+                      {
+                          "sha256":  "c1f9ae612f50a55b588b728bf64f5db9372abe16c408fa04e15dd191c621e50f",
+                          "file":  "cost-occupied-th-dark.png",
+                          "bytes":  377717
+                      },
+                      {
+                          "sha256":  "3c086a80469758d67f52b54589d5b5d2e2f1072f82628c44b3a58ed0b75e279e",
+                          "file":  "cost-occupied-th-light.png",
+                          "bytes":  407459
+                      },
+                      {
+                          "sha256":  "8e2c23241723fcc74060c5c8d6d7d4f44e210331b5b26f1370c94e5daef515ef",
+                          "file":  "cost-occupied-th-light-390-long.png",
+                          "bytes":  346210
+                      },
+                      {
+                          "sha256":  "45ac2d03020a2a607fce22e0d65132c6cd208cf0f481a18b4f36de1bce25571d",
+                          "file":  "cost-semantics.json",
+                          "bytes":  836
+                      },
+                      {
+                          "sha256":  "b56eac54f45676fa4ea818a0a6fd50935ebe46e633ce869e0b1c0d5cce92723e",
+                          "file":  "production-runtime.json",
+                          "bytes":  102108
+                      },
+                      {
+                          "sha256":  "8c3136881ab79b610496332fda511518a7db59043546b4db97bc23b9e8670337",
+                          "file":  "responsive-matrix.json",
+                          "bytes":  18683
+                      },
+                      {
+                          "sha256":  "50cb933f08354b011caff76d2a666d28301ddb2c068e6b6ce7dce2302eca6577",
+                          "file":  "review-candidates.json",
+                          "bytes":  7738
+                      },
+                      {
+                          "sha256":  "c1dabd19323be01583086578d604cffa9140eb8f9163ddaebb66f7e494d90b40",
+                          "file":  "verification.json",
+                          "bytes":  2186
+                      }
+                  ],
+    "tag":  "redesign-cost-layout-v1.9.0"
+}

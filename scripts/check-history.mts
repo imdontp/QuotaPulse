@@ -694,9 +694,26 @@ try {
         assert.equal(await selectedValue.textContent(), entry.api, `${entry.name}: selected model API`);
         assert.equal(await page.locator('.qp-model-table-wrap tbody tr').first().locator('td').last().locator('span > span').first().textContent(), entry.api, `${entry.name}: table API`);
       }
+      for (const basis of ['api', 'native']) {
+        await page.goto(`http://127.0.0.1:7801/#cost?range=custom&from=${now - 30 * 86400000}&to=${now + 1}&basis=${basis}${entry.suffix ?? ''}`);
+        await page.reload();
+        const screen = page.getByTestId('production-cost');
+        const value = screen.locator('.qp-cost-summary article').first().locator('.qp-cost-value');
+        await value.waitFor();
+        assert.equal(await value.locator('span').first().textContent(), entry[basis as 'api' | 'native'], `${entry.name}: Cost ${basis}`);
+        if (entry.name === 'known zero' && basis === 'api') {
+          assert.ok(await screen.locator('.qp-cost-column').evaluateAll(nodes => nodes.every(node => node.getBoundingClientRect().height === 0)), 'Known zero has a nonzero chart bar');
+          assert.equal(await screen.locator('.qp-cost-donut').getAttribute('data-zero'), 'true');
+        }
+        if (entry.name === 'mixed weighted bases') {
+          assert.match(await screen.locator('.qp-cost-models tbody .qp-cost-value').first().getAttribute('title') ?? '', new RegExp(basis === 'api' ? '50 / 109' : '10 / 109'));
+          assert.equal(await screen.locator('.qp-cost-models tbody .qp-cost-value > span').first().textContent(), entry[basis as 'api' | 'native']);
+        }
+        if (entry.name === 'missing prices' || (entry.name === 'known zero' && basis === 'native')) assert.equal(await screen.locator('.qp-cost-chart').count(), 0);
+      }
     }
   } finally { db.exec("UPDATE usage_event SET cost_usd=0.2,cost_source='computed',call_count=1"); }
-  writeFileSync(resolve(output, 'cost-semantics.json'), JSON.stringify({ database: 'in-memory synthetic', cases: costCases.map(({ name, native, api, coverage }) => ({ name, native, api, coverage })), checks: ['Overview and Models summary', 'Models comparison and selected model', 'weighted call counts', 'separate native and API bases', 'accessible coverage explanation'] }, null, 2));
+  writeFileSync(resolve(output, 'cost-semantics.json'), JSON.stringify({ database: 'in-memory synthetic', cases: costCases.map(({ name, native, api, coverage }) => ({ name, native, api, coverage })), checks: ['Overview, Models and Cost summary', 'Models comparison and selected model', 'weighted call counts', 'separate native and API bases', 'accessible coverage explanation', 'Cost zero bars and neutral zero donut', 'Cost model weighted coverage'] }, null, 2));
   // Occupied Live layouts and pagination get a separate synthetic fixture after
   // the baseline flow, so its original totals and captured reference values stay intact.
   await page.close();
@@ -888,6 +905,91 @@ try {
     })();
   }
   writeFileSync(resolve(output, 'projects-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { projects: 8, addedSessions: 30, selectedProjectSessions: 25, selectedProjectCalls: 76, selectedProjectRoutes: 3 }, checks: ['ranking below details in same column', 'first six cards and complete rail in concept viewport', 'en/th and dark/light', 'weighted native and API monetary coverage', 'ranking selects project', '20/5 session pagination', '390/900/1280 overflow', 'exact source/harness/project/session History scope', 'long Thai identity and observed paths', 'empty filtered cards and ranking'], captures: projectCaptures }, null, 2));
+  // Occupied Cost: five recorded providers, nine models (top eight), seven projects,
+  // twelve sessions (top ten), with values distributed through a 30-day scope.
+  const costCaptures: unknown[] = [];
+  const costFrom = now - 30 * 86400000;
+  const costTo = now + 1;
+  const addCostSession = db.prepare('INSERT INTO session(id,source_id,native_session_id,project,last_seen_at) VALUES (?,1,?,?,?)');
+  const addCostUsage = db.prepare("INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,total_tokens,call_count,cost_usd,cost_source) VALUES (1,?,?,?,?,?,?,1,?,'computed')");
+  db.transaction(() => {
+    for (let index = 0; index < 10; index++) {
+      addCostSession.run(300 + index, `cost-session-${index}`, `Cost project ${index % 5}`, now - 100);
+      addCostUsage.run(300 + index, `cost-layout-${index}`, now - index * 3 * 86400000, `cost-model-${index % 7}`, ['openrouter', 'anthropic', 'provider-a', 'provider-b', 'provider-c'][index % 5], 1000 * (index + 1), index + 1);
+    }
+  })();
+  try {
+    for (const lang of ['en', 'th'] as const) for (const theme of ['dark', 'light'] as const) {
+      const messages = lang === 'en' ? englishMessages : thaiMessages;
+      const candidate = await browser.newPage({ viewport: { width: 1672, height: 941 }, reducedMotion: 'reduce', deviceScaleFactor: 1, timezoneId: 'Asia/Bangkok' });
+      try {
+        candidate.on('pageerror', error => errors.push(error.message));
+        await candidate.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
+        await candidate.addInitScript(({ lang, theme }) => {
+          (window as unknown as { __QUOTAPULSE_TOKEN__: string }).__QUOTAPULSE_TOKEN__ = 'history-test';
+          localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang, currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
+          localStorage.setItem('quotapulse-theme', theme);
+        }, { lang, theme });
+        await candidate.clock.setFixedTime(now);
+        const costUrl = `http://127.0.0.1:7801/#cost?range=custom&from=${costFrom}&to=${costTo}&source=1`;
+        await candidate.goto(costUrl);
+        const screen = candidate.getByTestId('production-cost');
+        await screen.getByRole('heading', { name: messages['redesign.costHeading'], exact: true }).waitFor();
+        await screen.locator('.qp-cost-sessions tbody tr').nth(9).waitFor();
+        await candidate.evaluate(() => document.fonts.ready);
+        const money = (amount: number) => new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        assert.equal(await screen.locator('.qp-cost-summary .qp-cost-value > span').first().textContent(), money(65.4));
+        assert.equal(await screen.locator('.qp-cost-providers li').count(), 5);
+        assert.equal(await screen.locator('.qp-cost-models tbody tr').count(), 8);
+        assert.equal(await screen.locator('.qp-cost-projects tbody tr').count(), 6);
+        assert.equal(await screen.locator('.qp-cost-sessions tbody tr').count(), 10);
+        assert.ok(await screen.locator('.qp-cost-column').evaluateAll(nodes => nodes.some(node => node.getBoundingClientRect().height === 0)), 'Empty Cost buckets show nonzero bars');
+        assert.ok((await screen.locator('.qp-cost-chart').getAttribute('aria-label'))?.includes(messages['redesign.costPricedTokens']));
+        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-cost-summary', '.qp-cost-providers', '.qp-cost-trend', '.qp-cost-models', '.qp-cost-projects', '.qp-cost-sessions', '.qp-cost-insights'].map(selector => {
+          const { x, y, width, height, bottom } = node.querySelector(selector)!.getBoundingClientRect();
+          return [selector, { x, y, width, height, bottom }];
+        })));
+        assert.equal(regions['.qp-cost-summary'].y, regions['.qp-cost-providers'].y, 'Cost provider breakdown is below the summary');
+        assert.ok(regions['.qp-cost-providers'].x >= regions['.qp-cost-summary'].x + regions['.qp-cost-summary'].width, 'Provider panel overlaps summary');
+        assert.equal(regions['.qp-cost-trend'].y, regions['.qp-cost-models'].y, 'Cost models do not share the trend row');
+        for (const selector of ['.qp-cost-projects', '.qp-cost-sessions', '.qp-cost-insights']) assert.ok(regions[selector].bottom < 941, `${lang}/${theme}: Cost outside viewport: ${JSON.stringify(regions)}`);
+        const filename = `cost-occupied-${lang}-${theme}.png`;
+        await candidate.screenshot({ path: resolve(output, filename), animations: 'disabled' });
+        costCaptures.push({ lang, theme, filename, viewport: { width: 1672, height: 941 }, regions });
+        for (const width of [390, 900, 1280]) {
+          await candidate.setViewportSize({ width, height: 941 });
+          assert.equal(await candidate.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${lang}/${theme}/${width}: occupied Cost overflow`);
+        }
+        // Exact model + provider drilldown, not a display-name search.
+        await screen.locator('.qp-cost-models tbody tr').filter({ hasText: 'cost-model-2' }).getByRole('link').click();
+        await candidate.waitForURL(/#history\?/);
+        const modelScope = new URLSearchParams(new URL(candidate.url()).hash.split('?')[1]);
+        assert.equal(modelScope.get('from'), String(costFrom)); assert.equal(modelScope.get('to'), String(costTo));
+        assert.equal(modelScope.get('source'), '1'); assert.equal(modelScope.get('model'), 'cost-model-2'); assert.equal(modelScope.get('provider'), 'provider-c');
+        await candidate.getByTestId('usage-history').locator('tbody tr').first().waitFor();
+        assert.equal(await candidate.getByTestId('usage-history').locator('tbody tr').count(), 1);
+        await candidate.goto(costUrl);
+        await screen.locator('.qp-cost-projects tbody tr').first().waitFor();
+        await screen.locator('.qp-cost-projects tbody tr').filter({ hasText: 'Cost project 4' }).getByRole('link').click();
+        await candidate.waitForURL(/#history\?/);
+        assert.equal(new URLSearchParams(new URL(candidate.url()).hash.split('?')[1]).get('project'), 'Cost project 4');
+        await candidate.getByTestId('usage-history').locator('tbody tr').nth(1).waitFor();
+        assert.equal(await candidate.getByTestId('usage-history').locator('tbody tr').count(), 2);
+        if (lang === 'th' && theme === 'light') {
+          await candidate.setViewportSize({ width: 390, height: 941 });
+          db.prepare('UPDATE session SET project=?,native_session_id=? WHERE id=309').run('โครงการยาว '.repeat(18), 'cost-session-long-'.repeat(18));
+          await candidate.goto(costUrl); await candidate.reload();
+          await screen.locator('.qp-cost-sessions tbody tr').filter({ hasText: 'cost-session-long-' }).waitFor();
+          assert.equal(await candidate.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Long Cost identity overflows mobile');
+          await candidate.screenshot({ path: resolve(output, 'cost-occupied-th-light-390-long.png'), fullPage: true });
+          db.prepare('UPDATE session SET project=?,native_session_id=? WHERE id=309').run('Cost project 4', 'cost-session-9');
+        }
+      } finally { await candidate.close(); }
+    }
+  } finally {
+    db.exec("DELETE FROM usage_event WHERE dedup_key LIKE 'cost-layout-%'; DELETE FROM session WHERE id BETWEEN 300 AND 309;");
+  }
+  writeFileSync(resolve(output, 'cost-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { source: 1, addedSessions: 10, providers: 5, displayedModels: 8, displayedProjects: 6, displayedSessions: 10, apiValue: 65.4 }, checks: ['provider beside summary without overlap', 'models beside trend', 'complete occupied bottom panels in concept viewport', 'en/th and dark/light', '390/900/1280 overflow', 'exact model/provider/project History scope', 'zero empty-bucket bars', 'long Thai identities'], captures: costCaptures }, null, 2));
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'shared shell shows machine scope', 'shared command palette opens Settings and supports Ctrl+K to Providers', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'Cost API/native basis separation and missing native value', 'Cost server-ranked sessions and exact History scope', 'Cost English dark desktop and Thai light mobile', 'Alerts threshold facts remain after current risk recovers', 'Alerts notification delivery toggle and reader advisory', 'Alerts English dark desktop and Thai light mobile', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));

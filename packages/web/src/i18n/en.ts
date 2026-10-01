@@ -306,6 +306,7 @@ export const en = {
   'redesign.costProjectionUnavailable': 'Complete fresh call-grain month-to-date series cannot be verified',
   'redesign.costNativeProjection': 'Native reports are not a billed-spend forecast',
   'redesign.costPerThousand': 'Per 1K priced tokens',
+  'redesign.costPricedTokens': 'Priced tokens',
   'redesign.costAllTokens': 'All recorded tokens',
   'redesign.costCoverage': 'Priced calls / all calls',
   'redesign.costOtherBasis': 'Other basis or unknown calls excluded',
