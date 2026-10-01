@@ -9,6 +9,8 @@ import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
+import { en as englishMessages } from '../packages/web/src/i18n/en.ts';
+import { th as thaiMessages } from '../packages/web/src/i18n/th.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const output = resolve(root, 'screens/history');
@@ -582,10 +584,12 @@ try {
     const densitySelectors: Record<string, string[]> = {
       overview: ['.qp-hero-grid', '.qp-bottom-grid', '.qp-activity', '.qp-activity-item'],
       live: ['.qp-live-metrics', '.qp-live-sessions', '.qp-live-trend', '.qp-live-records', '.qp-live-feed li', '.qp-live-rail'],
+      projects: ['.qp-project-cards', '.qp-project-detail', '.qp-project-top', '.qp-project-rail'],
       providers: ['.qp-provider-grid', '.qp-provider-detail', '.qp-provider-bottom'],
       models: ['.qp-model-summary', '.qp-model-providers', '.qp-model-detail'],
     };
     if (destination === 'models') await page.locator('.qp-model-trend span').first().waitFor();
+    if (destination === 'projects') await page.locator('.qp-project-trend').waitFor();
     const regions = await page.evaluate(selectors => Object.fromEntries(selectors.map(selector => {
       const { x, y, width, height } = document.querySelector(selector)!.getBoundingClientRect();
       return [selector, { x, y, width, height }];
@@ -597,6 +601,11 @@ try {
     }
     if (destination === 'providers') assert.ok(bottom('.qp-provider-bottom') < viewport.height, 'Providers comparison/health region is outside concept viewport');
     if (destination === 'live') assert.ok(bottom('.qp-live-feed li') < viewport.height, 'Live first usage record is outside concept viewport');
+    if (destination === 'projects') {
+      assert.ok(regions['.qp-project-top'].y >= bottom('.qp-project-detail'), 'Projects ranking is not below selected details');
+      assert.equal(regions['.qp-project-top'].x, regions['.qp-project-detail'].x, 'Projects ranking is outside detail column');
+      assert.ok(bottom('.qp-project-rail') < viewport.height, 'Projects detail and ranking are outside concept viewport');
+    }
     if (destination === 'models') {
       assert.ok(bottom('.qp-model-providers') < viewport.height, 'Models provider summary is outside concept viewport');
       assert.ok(bottom('.qp-model-detail') < viewport.height, 'Models detail rail is outside concept viewport');
@@ -774,6 +783,111 @@ try {
     })();
   }
   writeFileSync(resolve(output, 'live-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { addedSessions: 12, recentSessions: 13, observedSessions: 14, sessionPageRows: 10, feedPageRows: 8, matrixRows: 12 }, checks: ['first feed record and complete rail in concept viewport', 'en/th and dark/light', 'session pagination without missing rows', '390/900/1280 overflow', 'long Thai session/project names', 'dialog focus restore', 'empty filtered sessions/feed'], captures: occupiedCaptures }, null, 2));
+  const projectCaptures: unknown[] = [];
+  db.transaction(() => {
+    const addSession = db.prepare('INSERT INTO session(id,source_id,native_session_id,project,last_seen_at,cwd) VALUES (?,1,?,?,?,?)');
+    const addUsage = db.prepare("INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,total_tokens,call_count,cost_usd,cost_source) VALUES (1,?,?,?,?,'openrouter',?,?,?,?)");
+    for (let index = 0; index < 30; index++) {
+      const project = index < 25 ? 'Project 6' : `Project ${index - 24}`;
+      addSession.run(200 + index, `project-session-${index}`, project, Date.now() - 100, `/synthetic/${project}/path-${index % 2}`);
+      addUsage.run(200 + index, `project-layout-${index}`, now - 2000, `project-model-${index % 3}`, index < 25 ? 1000 + index * 100 : (index - 24) * 1000, [4, 2, 3][index % 3], [.1, .2, .2][index % 3], ['native', 'computed', 'estimated'][index % 3]);
+    }
+  })();
+  try {
+    for (const lang of ['en', 'th'] as const) for (const theme of ['dark', 'light'] as const) {
+      const messages = lang === 'en' ? englishMessages : thaiMessages;
+      const occupied = await browser.newPage({ viewport: { width: 1672, height: 941 }, reducedMotion: 'reduce', deviceScaleFactor: 1, timezoneId: 'Asia/Bangkok' });
+      try {
+        occupied.on('pageerror', error => errors.push(error.message));
+        await occupied.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
+        await occupied.addInitScript(({ lang, theme }) => {
+          (window as unknown as { __QUOTAPULSE_TOKEN__: string }).__QUOTAPULSE_TOKEN__ = 'history-test';
+          localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang, currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
+          localStorage.setItem('quotapulse-theme', theme);
+        }, { lang, theme });
+        await occupied.clock.setFixedTime(now);
+        await occupied.goto('http://127.0.0.1:7801/#projects?range=all');
+        const screen = occupied.getByTestId('production-projects');
+        await screen.getByRole('heading', { name: messages['redesign.projectHeading'], exact: true }).waitFor();
+        await screen.locator('.qp-project-card').nth(7).waitFor();
+        await screen.locator('.qp-project-trend').waitFor();
+        await occupied.evaluate(() => document.fonts.ready);
+        assert.equal(await screen.locator('.qp-project-card').count(), 8);
+        assert.equal(await screen.locator('.qp-project-detail h2').textContent(), 'Project 6');
+        assert.equal(await screen.locator('.qp-project-top li').count(), 5);
+        assert.ok(await screen.locator('.qp-project-top button').evaluateAll(nodes => nodes.every(node => node.getBoundingClientRect().height >= 24 && node.getBoundingClientRect().width >= 24)), 'Project ranking targets are smaller than 24 px');
+        assert.equal(await screen.locator('.qp-project-detail > .qp-project-breakdown li').count(), 3);
+        const native = screen.locator('.qp-project-money > div').first().locator('.qp-cost-value');
+        const apiValue = screen.locator('.qp-project-money > div').last().locator('.qp-cost-value');
+        const expectedMoney = (amount: number) => new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        assert.equal(await native.locator('span').first().textContent(), `${expectedMoney(.9)}+`);
+        assert.equal(await apiValue.locator('span').first().textContent(), `${expectedMoney(3.2)}+`);
+        assert.equal(await screen.locator('.qp-project-detail-metrics > div').nth(2).locator('small').textContent(), messages['redesign.modelsCalls']);
+        assert.equal(await screen.locator('.qp-project-detail-metrics > div').nth(2).locator('strong').textContent(), '76');
+        assert.match(await native.getAttribute('title') ?? '', /36 \/ 76/);
+        assert.match(await apiValue.getAttribute('title') ?? '', /40 \/ 76/);
+        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-project-cards', '.qp-project-card:nth-child(6)', '.qp-project-detail', '.qp-project-top', '.qp-project-rail'].map(selector => {
+          const { x, y, width, height, bottom } = node.querySelector(selector)!.getBoundingClientRect();
+          return [selector, { x, y, width, height, bottom }];
+        })));
+        assert.equal(regions['.qp-project-top'].x, regions['.qp-project-detail'].x, 'Occupied ranking is outside detail column');
+        assert.ok(regions['.qp-project-top'].y >= regions['.qp-project-detail'].bottom, 'Occupied ranking is above detail');
+        assert.ok(regions['.qp-project-rail'].bottom < 941, `${lang}/${theme}: Projects rail outside viewport: ${JSON.stringify(regions)}`);
+        assert.ok(regions['.qp-project-card:nth-child(6)'].bottom < 941, `${lang}/${theme}: first six project cards outside viewport`);
+        const filename = `projects-occupied-${lang}-${theme}.png`;
+        await occupied.screenshot({ path: resolve(output, filename), animations: 'disabled' });
+        projectCaptures.push({ lang, theme, viewport: { width: 1672, height: 941 }, filename, regions });
+        await screen.locator('.qp-project-top button').filter({ hasText: 'Project 3' }).click();
+        await screen.locator('.qp-project-detail h2').getByText('Project 3', { exact: true }).waitFor();
+        assert.equal(await screen.locator('.qp-project-card[aria-pressed=true] .qp-project-card-heading strong').textContent(), 'Project 3');
+        await screen.locator('.qp-project-top button').filter({ hasText: 'Project 6' }).click();
+        await screen.getByRole('button', { name: messages['redesign.projectSessionsTab'], exact: true }).click();
+        await screen.locator('.qp-project-breakdown li').nth(19).waitFor();
+        await screen.locator('.qp-project-pagination button').last().click();
+        await screen.getByRole('link').filter({ hasText: 'project-session-0' }).waitFor();
+        assert.equal(await screen.locator('.qp-project-breakdown li').count(), 5);
+        assert.equal(await screen.locator('.qp-project-pagination button').last().isDisabled(), true);
+        await screen.locator('.qp-project-pagination button').first().click();
+        await screen.getByRole('link').filter({ hasText: 'project-session-24' }).waitFor();
+        assert.equal(await screen.locator('.qp-project-breakdown li').count(), 20);
+        for (const width of [390, 900, 1280]) {
+          await occupied.setViewportSize({ width, height: 1000 });
+          assert.ok(await occupied.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${lang}/${theme}: occupied Projects overflow at ${width}`);
+        }
+        if (lang === 'en' && theme === 'dark') {
+          const scope = new URLSearchParams({ range: 'custom', from: String(now - 60000), to: String(now + 1), source: '1', harness: 'codex', project: 'Project 6', detail: 'sessions' });
+          await occupied.goto(`http://127.0.0.1:7801/#projects?${scope}`);
+          await screen.getByRole('link').filter({ hasText: 'project-session-24' }).click();
+          await occupied.getByTestId('usage-history').locator('tbody tr').first().waitFor();
+          const historyScope = new URLSearchParams(new URL(occupied.url()).hash.split('?')[1]);
+          for (const key of ['range', 'from', 'to', 'source', 'harness', 'project']) assert.equal(historyScope.get(key), scope.get(key), `Projects session History lost ${key}`);
+          assert.equal(historyScope.get('session_id'), '224');
+          assert.equal(await occupied.getByTestId('usage-history').locator('tbody tr').count(), 1);
+        }
+        if (lang === 'th' && theme === 'light') {
+          const longProject = `project-long-${'ชื่อโครงการภาษาไทย'.repeat(12)}`;
+          db.prepare('UPDATE session SET project=? WHERE id BETWEEN 200 AND 224').run(longProject);
+          await occupied.setViewportSize({ width: 390, height: 1000 });
+          await occupied.goto(`http://127.0.0.1:7801/#projects?${new URLSearchParams({ range: 'all', project: longProject, detail: 'details' })}`);
+          await occupied.reload();
+          await screen.locator('.qp-project-detail h2').getByText(longProject, { exact: true }).waitFor();
+          await screen.locator('.qp-project-paths li').first().waitFor();
+          assert.match(await screen.locator('.qp-project-paths').innerText(), /\/synthetic\/Project 6\/path-/);
+          assert.ok(await occupied.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'long Thai Projects identity overflows mobile');
+          await occupied.screenshot({ path: resolve(output, 'projects-occupied-th-light-390-long.png'), fullPage: true });
+          await screen.locator('.qp-project-search input').fill('no-project-layout-match');
+          await screen.locator('.qp-project-cards').getByText(messages['redesign.noProjects'], { exact: true }).waitFor();
+          assert.equal(await screen.locator('.qp-project-card').count(), 0);
+          assert.equal(await screen.locator('.qp-project-top').count(), 0);
+        }
+      } finally { await occupied.close(); }
+    }
+  } finally {
+    db.transaction(() => {
+      db.exec('DELETE FROM usage_event WHERE session_id BETWEEN 200 AND 229; DELETE FROM session WHERE id BETWEEN 200 AND 229;');
+    })();
+  }
+  writeFileSync(resolve(output, 'projects-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { projects: 8, addedSessions: 30, selectedProjectSessions: 25, selectedProjectCalls: 76, selectedProjectRoutes: 3 }, checks: ['ranking below details in same column', 'first six cards and complete rail in concept viewport', 'en/th and dark/light', 'weighted native and API monetary coverage', 'ranking selects project', '20/5 session pagination', '390/900/1280 overflow', 'exact source/harness/project/session History scope', 'long Thai identity and observed paths', 'empty filtered cards and ranking'], captures: projectCaptures }, null, 2));
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'shared shell shows machine scope', 'shared command palette opens Settings and supports Ctrl+K to Providers', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'Cost API/native basis separation and missing native value', 'Cost server-ranked sessions and exact History scope', 'Cost English dark desktop and Thai light mobile', 'Alerts threshold facts remain after current risk recovers', 'Alerts notification delivery toggle and reader advisory', 'Alerts English dark desktop and Thai light mobile', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));

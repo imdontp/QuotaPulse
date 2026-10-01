@@ -1,0 +1,208 @@
+{
+  "database": "in-memory synthetic",
+  "fixture": {
+    "projects": 8,
+    "addedSessions": 30,
+    "selectedProjectSessions": 25,
+    "selectedProjectCalls": 76,
+    "selectedProjectRoutes": 3
+  },
+  "checks": [
+    "ranking below details in same column",
+    "first six cards and complete rail in concept viewport",
+    "en/th and dark/light",
+    "weighted native and API monetary coverage",
+    "ranking selects project",
+    "20/5 session pagination",
+    "390/900/1280 overflow",
+    "exact source/harness/project/session History scope",
+    "long Thai identity and observed paths",
+    "empty filtered cards and ranking"
+  ],
+  "captures": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "projects-occupied-en-dark.png",
+      "regions": {
+        ".qp-project-cards": {
+          "x": 226,
+          "y": 197,
+          "width": 892.8125,
+          "height": 714,
+          "bottom": 911
+        },
+        ".qp-project-card:nth-child(6)": {
+          "x": 678.40625,
+          "y": 560,
+          "width": 440.40625,
+          "height": 169.5,
+          "bottom": 729.5
+        },
+        ".qp-project-detail": {
+          "x": 1130.8125,
+          "y": 197,
+          "width": 525.1875,
+          "height": 535.953125,
+          "bottom": 732.953125
+        },
+        ".qp-project-top": {
+          "x": 1130.8125,
+          "y": 744.953125,
+          "width": 525.1875,
+          "height": 192.890625,
+          "bottom": 937.84375
+        },
+        ".qp-project-rail": {
+          "x": 1130.8125,
+          "y": 197,
+          "width": 525.1875,
+          "height": 740.84375,
+          "bottom": 937.84375
+        }
+      }
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "projects-occupied-en-light.png",
+      "regions": {
+        ".qp-project-cards": {
+          "x": 226,
+          "y": 197,
+          "width": 892.8125,
+          "height": 714,
+          "bottom": 911
+        },
+        ".qp-project-card:nth-child(6)": {
+          "x": 678.40625,
+          "y": 560,
+          "width": 440.40625,
+          "height": 169.5,
+          "bottom": 729.5
+        },
+        ".qp-project-detail": {
+          "x": 1130.8125,
+          "y": 197,
+          "width": 525.1875,
+          "height": 535.953125,
+          "bottom": 732.953125
+        },
+        ".qp-project-top": {
+          "x": 1130.8125,
+          "y": 744.953125,
+          "width": 525.1875,
+          "height": 192.890625,
+          "bottom": 937.84375
+        },
+        ".qp-project-rail": {
+          "x": 1130.8125,
+          "y": 197,
+          "width": 525.1875,
+          "height": 740.84375,
+          "bottom": 937.84375
+        }
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "projects-occupied-th-dark.png",
+      "regions": {
+        ".qp-project-cards": {
+          "x": 226,
+          "y": 197,
+          "width": 892.8125,
+          "height": 714,
+          "bottom": 911
+        },
+        ".qp-project-card:nth-child(6)": {
+          "x": 678.40625,
+          "y": 560,
+          "width": 440.40625,
+          "height": 169.5,
+          "bottom": 729.5
+        },
+        ".qp-project-detail": {
+          "x": 1130.8125,
+          "y": 197,
+          "width": 525.1875,
+          "height": 535.953125,
+          "bottom": 732.953125
+        },
+        ".qp-project-top": {
+          "x": 1130.8125,
+          "y": 744.953125,
+          "width": 525.1875,
+          "height": 192.890625,
+          "bottom": 937.84375
+        },
+        ".qp-project-rail": {
+          "x": 1130.8125,
+          "y": 197,
+          "width": 525.1875,
+          "height": 740.84375,
+          "bottom": 937.84375
+        }
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "projects-occupied-th-light.png",
+      "regions": {
+        ".qp-project-cards": {
+          "x": 226,
+          "y": 197,
+          "width": 892.8125,
+          "height": 714,
+          "bottom": 911
+        },
+        ".qp-project-card:nth-child(6)": {
+          "x": 678.40625,
+          "y": 560,
+          "width": 440.40625,
+          "height": 169.5,
+          "bottom": 729.5
+        },
+        ".qp-project-detail": {
+          "x": 1130.8125,
+          "y": 197,
+          "width": 525.1875,
+          "height": 535.953125,
+          "bottom": 732.953125
+        },
+        ".qp-project-top": {
+          "x": 1130.8125,
+          "y": 744.953125,
+          "width": 525.1875,
+          "height": 192.890625,
+          "bottom": 937.84375
+        },
+        ".qp-project-rail": {
+          "x": 1130.8125,
+          "y": 197,
+          "width": 525.1875,
+          "height": 740.84375,
+          "bottom": 937.84375
+        }
+      }
+    }
+  ]
+}

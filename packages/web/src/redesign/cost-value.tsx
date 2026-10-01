@@ -16,6 +16,6 @@ export function CostValue({ amount, priced, total, money, t, unit = 'calls' }: {
   amount: number; priced: number; total: number; money: (amount: number) => string;
   t: RedesignTranslate; unit?: 'calls' | 'records';
 }) {
-  const description = `${t('redesign.pricedCoverage')}: ${priced} / ${total} ${t(unit === 'calls' ? 'redesign.calls' : 'redesign.records')}. ${t('redesign.partialCostNote')}`;
+  const description = `${t('redesign.pricedCoverage')}: ${priced} / ${total} ${t(unit === 'calls' ? 'redesign.modelsCalls' : 'redesign.records')}. ${t('redesign.partialCostNote')}`;
   return <span className="qp-cost-value" title={description}><span>{costValue(amount, priced, total, money, t('redesign.unknownValue'))}</span><span className="qp-visually-hidden"> ({description})</span></span>;
 }

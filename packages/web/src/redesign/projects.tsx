@@ -8,6 +8,7 @@ import { RedesignShell } from './shell';
 import { readScope, selectedScope, writeScope, type ScopeSelection, type ScopeRange } from './scope';
 import { ScopeNotice } from './scope-notice';
 import './projects.css';
+import { CostValue } from './cost-value';
 
 type Range = ScopeRange;
 type Tab = 'all' | 'recent' | 'unassigned';
@@ -158,22 +159,19 @@ export function ProductionProjects() {
             <span className="qp-project-card-meta">{t('redesign.sortRecent')} · {date(group.lastObservedAt)}</span>
             <span className="qp-project-card-tokens"><strong>{number(group.tokens)}</strong><small>{number(share)}% {t('redesign.projectShare')}</small></span>
             <span className="qp-bar"><span style={{ width: `${share}%` }}/></span>
-            <span className="qp-project-card-facts"><span>{number(group.sessions)} {t('redesign.sessions')}</span><span>{number(group.calls)} {t('redesign.calls')}</span><span>{new Set(rows.map(row => row.harness)).size} {t('redesign.harnessesUsed')}</span></span>
+            <span className="qp-project-card-facts"><span>{number(group.sessions)} {t('redesign.sessions')}</span><span>{number(group.calls)} {t('redesign.modelsCalls')}</span><span>{new Set(rows.map(row => row.harness)).size} {t('redesign.harnessesUsed')}</span></span>
           </button>;
         })}
-        {visible.length > 0 && <div className="qp-panel qp-project-top"><h3>{t('redesign.projectTop')}</h3><ol>{[...visible].sort((a, b) => b.tokens - a.tokens).slice(0, 5).map((group, index) =>
-          <li key={JSON.stringify(group.key)}><span>{index + 1}. {projectName(group.key)}</span><span className="qp-bar"><span style={{ width: `${data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0}%` }}/></span><strong>{number(group.tokens)}</strong></li>)}</ol></div>}
       </section>
-      <aside className="qp-panel qp-project-detail" aria-label={t('redesign.projectDetails')}>
+      <div className="qp-project-rail"><aside className="qp-panel qp-project-detail" aria-label={t('redesign.projectDetails')}>
         {selected ? <>
           <h2><Folder size={20}/>{projectName(selected.key)}</h2>
-          <p className="qp-project-identity">{selected.key ?? t('redesign.unassigned')}</p>
           <nav className="qp-project-detail-tabs" aria-label={t('redesign.projectDetails')}>{(['overview', 'sessions', 'usage', 'details'] as const).map(tab =>
             <button key={tab} aria-current={route.detail === tab ? 'page' : undefined} onClick={() => update({ detail: tab, offset: 0 })}>{t(tab === 'overview' ? 'redesign.projectOverviewTab' : tab === 'sessions' ? 'redesign.projectSessionsTab' : tab === 'usage' ? 'redesign.projectUsageTab' : 'redesign.projectMetadataTab')}</button>)}</nav>
           {detailError && <p role="status" className="qp-project-error">{detailError}</p>}
           {route.detail === 'overview' && <>
-          <div className="qp-project-detail-metrics"><div><small>{t('redesign.tokens')}</small><strong>{number(selected.tokens)}</strong></div><div><small>{t('redesign.sessions')}</small><strong>{number(selected.sessions)}</strong></div><div><small>{t('redesign.calls')}</small><strong>{number(selected.calls)}</strong></div><div><small>{t('redesign.providersUsed')}</small><strong>{new Set(detailRows.map(row => row.provider).filter(Boolean)).size}</strong></div></div>
-          <div className="qp-project-money"><div><small>{t('redesign.reported')}</small><strong>{selected.native_calls > 0 ? money(selected.reported_native_usd) : t('redesign.projectCostNotReported')}</strong></div><div><small>{t('redesign.value')}</small><strong>{selected.computed_calls + selected.estimated_calls > 0 ? money(selected.api_value_usd) : t('redesign.projectValueUnavailable')}</strong></div></div>
+          <div className="qp-project-detail-metrics"><div><small>{t('redesign.tokens')}</small><strong>{number(selected.tokens)}</strong></div><div><small>{t('redesign.sessions')}</small><strong>{number(selected.sessions)}</strong></div><div><small>{t('redesign.modelsCalls')}</small><strong>{number(selected.calls)}</strong></div><div><small>{t('redesign.providersUsed')}</small><strong>{new Set(detailRows.map(row => row.provider).filter(Boolean)).size}</strong></div></div>
+          <div className="qp-project-money"><div><small>{t('redesign.reported')}</small><strong>{selected.native_calls > 0 ? <CostValue amount={selected.reported_native_usd} priced={selected.native_calls} total={selected.calls} money={money} t={t}/> : t('redesign.projectCostNotReported')}</strong></div><div><small>{t('redesign.value')}</small><strong>{selected.computed_calls + selected.estimated_calls > 0 ? <CostValue amount={selected.api_value_usd} priced={selected.computed_calls + selected.estimated_calls} total={selected.calls} money={money} t={t}/> : t('redesign.projectValueUnavailable')}</strong></div></div>
           {(selected.unknown_calls > 0 || selected.estimated_calls > 0) && <p className="qp-footnote">{number(selected.unknown_calls)} {t('redesign.projectUnpriced')} · {number(selected.estimated_calls)} {t('redesign.projectEstimated')}</p>}
           <h3>{t('redesign.projectTrend')}</h3>
           {detail ? detail.points.length ? <div className="qp-project-trend" role="img" aria-label={t('redesign.projectTrend')}>
@@ -203,6 +201,9 @@ export function ProductionProjects() {
           </>}
         </> : <p>{t('redesign.noProjects')}</p>}
       </aside>
+        {visible.length > 0 && <div className="qp-panel qp-project-top"><h3>{t('redesign.projectTop')}</h3><ol>{[...visible].sort((a, b) => b.tokens - a.tokens).slice(0, 5).map((group, index) =>
+          <li key={JSON.stringify(group.key)}><button aria-pressed={selected?.key === group.key} onClick={() => update({ project: group.key, offset: 0 })}>{index + 1}. {projectName(group.key)}</button><span className="qp-bar"><span style={{ width: `${data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0}%` }}/></span><strong>{number(group.tokens)}</strong></li>)}</ol></div>}
+      </div>
     </div>}
   </RedesignShell>;
 }

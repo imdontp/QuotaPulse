@@ -1,0 +1,101 @@
+{
+    "branch":  "design/redesign-foundation",
+    "status":  "validated checkpoint; overall release pending",
+    "checks":  [
+                   {
+                       "tests":  124,
+                       "command":  "npm run test -w @quotapulse/web",
+                       "result":  "passed"
+                   },
+                   {
+                       "result":  "passed; existing legacy App chunk warning",
+                       "command":  "npm run build -w @quotapulse/web"
+                   },
+                   {
+                       "occupiedProjectsLanguageThemeCases":  4,
+                       "rankingTargetsMinimumPixels":  24,
+                       "occupiedLiveLanguageThemeCases":  4,
+                       "command":  "npm run test:history",
+                       "result":  "passed",
+                       "matrixCases":  144,
+                       "priceCases":  4
+                   },
+                   {
+                       "syntheticRecords":  5000,
+                       "command":  "npm run test:runtime",
+                       "result":  "passed"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "git diff --check"
+                   }
+               ],
+    "artifacts":  [
+                      {
+                          "sha256":  "65d24da6b9919458142f26305d20a45fc9908eb1d4be0aa04253f53ad81569d0",
+                          "file":  "cost-semantics.json",
+                          "bytes":  749
+                      },
+                      {
+                          "sha256":  "82dd2ce69882cf4e33acd3e57e5c8f279d1f30c6700ac73c1de7efb716cd3884",
+                          "file":  "functional-verification.json",
+                          "bytes":  2186
+                      },
+                      {
+                          "sha256":  "4a0d4c3c00197b844e7a1e2c0a511d0c05523bd0cec89c0b5fc0ee2acaf7daed",
+                          "file":  "live-occupied-layout.json",
+                          "bytes":  4905
+                      },
+                      {
+                          "sha256":  "0b2c7bbc08a0b5e27127b50d1e0963ee8cb7f7c14faf386d77eecbe38105f7ea",
+                          "file":  "production-runtime.json",
+                          "bytes":  102073
+                      },
+                      {
+                          "sha256":  "98b3696e3c9101b3e1a27fc23945885fe3cb118e3d61fd14e2679cf9b8329cfa",
+                          "file":  "projects-concept-size.png",
+                          "bytes":  397126
+                      },
+                      {
+                          "sha256":  "644d56a9de8741f351a6549907e21813d54934745c82174818c04ed2ae3f80fd",
+                          "file":  "projects-occupied-en-dark.png",
+                          "bytes":  360698
+                      },
+                      {
+                          "sha256":  "b55f412464ad7e23e8d3b4c813e2ae6eaeab51099a307754f5d1f38d4acbc175",
+                          "file":  "projects-occupied-en-light.png",
+                          "bytes":  387251
+                      },
+                      {
+                          "sha256":  "faedc831f446193044fa190ac4ad30c947493add9c932911acb339a1a327bc2c",
+                          "file":  "projects-occupied-layout.json",
+                          "bytes":  5027
+                      },
+                      {
+                          "sha256":  "cbd0fcc03d1cbf80f0ac61f0b33aac93f03b34815abb02c0ff7faecc4c00aa58",
+                          "file":  "projects-occupied-th-dark.png",
+                          "bytes":  330531
+                      },
+                      {
+                          "sha256":  "af78531584207e37193c099b8c58e17a1baac2bb7ba08d1289fa68402909e781",
+                          "file":  "projects-occupied-th-light.png",
+                          "bytes":  355238
+                      },
+                      {
+                          "sha256":  "0d0d9d519a2c133e48f3ce12d133c397815e497955e1f0b9396bfa5f6cb95224",
+                          "file":  "projects-occupied-th-light-390-long.png",
+                          "bytes":  320431
+                      },
+                      {
+                          "sha256":  "8c3136881ab79b610496332fda511518a7db59043546b4db97bc23b9e8670337",
+                          "file":  "responsive-matrix.json",
+                          "bytes":  18683
+                      },
+                      {
+                          "sha256":  "3ff14d5bc938349c2006db77192dc4e0ca31be5da3466fe7fe11c730c75c3af2",
+                          "file":  "review-candidates.json",
+                          "bytes":  7747
+                      }
+                  ],
+    "tag":  "redesign-projects-layout-v1.8.0"
+}

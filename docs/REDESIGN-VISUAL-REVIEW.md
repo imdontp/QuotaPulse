@@ -21,6 +21,13 @@ record and complete rail at concept size across both languages/themes, plus
 pagination, mobile overflow, long metadata and empty filtered results. Full feed
 visibility, chart axes/value accessibility and final styling remain under review.
 
+[Projects layout 1.8](REDESIGN-PROJECTS-LAYOUT-V1.8.md) moves ranking below the
+selected detail panel, compacts desktop summaries and makes ranking selectable.
+An eight-project fixture checks the complete overview/ranking rail, weighted
+monetary coverage, session pagination and exact History scope across both languages
+and themes. Long identities and other tabs can still need vertical scrolling;
+card decoration, chart axes/value accessibility and final styling remain pending.
+
 ## Shared shell
 
 The implementation uses a 210 px sidebar and a 64 px topbar. The concepts have a
