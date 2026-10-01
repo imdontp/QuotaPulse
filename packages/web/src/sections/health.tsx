@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api, type Health } from '@/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -29,6 +29,12 @@ export function HealthSection() {
         throw e;
       }),
   []);
+
+  useEffect(() => {
+    if (!h || location.hash.slice(1).split('?')[0] !== 'health') return;
+    const sourceId = new URLSearchParams(location.hash.split('?')[1] ?? '').get('source_id');
+    if (sourceId && /^\d+$/.test(sourceId)) document.getElementById(`health-source-${sourceId}`)?.scrollIntoView({ block: 'center' });
+  }, [h]);
 
   if (err && !h) return <ErrorBox>{err}</ErrorBox>;
   /*
@@ -82,7 +88,7 @@ export function HealthSection() {
           </TableHeader>
           <TableBody>
             {h.sources.map((s) => (
-              <TableRow key={String(s.source_id)}>
+              <TableRow key={String(s.source_id)} id={`health-source-${s.source_id}`}>
                 <TableCell>
                   <div>{String(s.display_name)}</div>
                   <div className="text-muted-foreground/60 font-mono text-[10.5px]">

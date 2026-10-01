@@ -1,0 +1,44 @@
+.qp-provider-header,.qp-provider-card-head,.qp-provider-section-head,.qp-provider-card footer { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.qp-provider-header h1 { display:flex; align-items:center; gap:9px; font-size:22px; }
+.qp-provider-header h1 svg { color:var(--qp-accent); }
+.qp-provider-header p,.qp-provider-linked,.qp-provider-hidden,.qp-provider-detail p,.qp-provider-windows small { color:var(--qp-muted); font-size:11px; }
+.qp-provider-header button,.qp-provider-section-head select { display:flex; align-items:center; gap:6px; padding:8px 10px; border:1px solid var(--qp-border); border-radius:7px; color:var(--qp-text); background:var(--qp-panel); font-size:11px; }
+.qp-provider-header button:disabled { opacity:.5; }
+.qp-provider-error { padding:9px; border:1px solid #c77b33; border-radius:8px; color:#e6a66c; }
+.qp-provider-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.qp-provider-card { display:grid; gap:15px; min-width:0; }
+.qp-provider-card[data-selected=true] { border-color:var(--qp-accent); box-shadow:0 0 0 1px var(--qp-accent); }
+.qp-provider-card-head button { display:flex; align-items:center; gap:8px; min-width:0; text-align:left; color:var(--qp-text); font-size:16px; font-weight:600; }
+.qp-provider-card-head button span { overflow-wrap:anywhere; }
+.qp-provider-card-head svg { flex:none; color:var(--qp-accent); }
+.qp-provider-state { color:var(--qp-accent); font-size:11px; white-space:nowrap; }
+.qp-provider-hidden { color:#e6a66c; }
+.qp-provider-windows { display:grid; gap:11px; }
+.qp-provider-windows>div { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 10px; font-size:11px; }
+.qp-provider-windows .qp-bar { grid-column:1/-1; }
+.qp-provider-windows small { grid-column:1/-1; }
+.qp-provider-card footer { border-top:1px solid var(--qp-border); padding-top:10px; font-size:11px; }
+.qp-provider-card a,.qp-provider-section-head a { color:var(--qp-accent); text-decoration:none; font-size:11px; }
+.qp-provider-detail { display:grid; gap:13px; }
+.qp-provider-detail h2,.qp-provider-bottom h2 { font-size:16px; }
+.qp-provider-detail-windows { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+.qp-provider-detail-windows>div { border:1px solid var(--qp-border); border-radius:8px; padding:12px; min-width:0; }
+.qp-provider-detail-windows h3 { font-size:12px; }
+.qp-provider-detail-windows dl { display:grid; grid-template-columns:100px minmax(0,1fr); gap:7px; font-size:11px; }
+.qp-provider-detail-windows dt { color:var(--qp-muted); }
+.qp-provider-detail-windows dd { margin:0; overflow-wrap:anywhere; }
+.qp-provider-detail-windows details { font-size:11px; }
+.qp-provider-detail-windows summary { cursor:pointer; }
+.qp-provider-detail-windows ul { padding-left:16px; }
+.qp-provider-bottom { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); align-items:start; gap:14px; }
+.qp-provider-comparison,.qp-provider-health { display:grid; gap:13px; min-width:0; }
+.qp-provider-comparison label { display:flex; align-items:center; gap:7px; font-size:11px; }
+.qp-provider-comparison ol { display:grid; gap:11px; padding:0; margin:0; list-style:none; }
+.qp-provider-comparison li { display:grid; grid-template-columns:minmax(90px,1fr) minmax(70px,1fr) auto; align-items:center; gap:9px; font-size:11px; }
+.qp-provider-comparison li span:first-child { overflow-wrap:anywhere; }
+.qp-provider-table { overflow-x:auto; }
+.qp-provider-table table { width:100%; border-collapse:collapse; font-size:11px; }
+.qp-provider-table th,.qp-provider-table td { padding:8px; text-align:left; border-bottom:1px solid var(--qp-border); vertical-align:top; }
+.qp-provider-table small { display:block; color:var(--qp-muted); }
+@media(max-width:1200px) { .qp-provider-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .qp-provider-bottom { grid-template-columns:1fr; } }
+@media(max-width:730px) { .qp-provider-grid { grid-template-columns:1fr; } .qp-provider-header { align-items:start; flex-direction:column; } }

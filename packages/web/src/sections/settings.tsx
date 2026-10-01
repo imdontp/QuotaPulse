@@ -57,6 +57,14 @@ export function SettingsSection({
 
   useEffect(() => setDraft(String(rate)), [rate]);
 
+  useEffect(() => {
+    if (!subscriptions.length || location.hash.slice(1).split('?')[0] !== 'settings') return;
+    const key = new URLSearchParams(location.hash.split('?')[1] ?? '').get('subscription');
+    if (!key) return;
+    const row = document.getElementById(`subscription-${encodeURIComponent(key)}`);
+    row?.scrollIntoView({ block: 'center' });
+  }, [subscriptions]);
+
   useLiveRefresh(() => Promise.all([
     api.settings().then((next) => {
       setSettings(next);
@@ -343,7 +351,7 @@ export function SettingsSection({
                 {subscriptions.map((subscription) => {
                   const visible = !hiddenSubscriptions.includes(subscription.subscription_key);
                   return (
-                    <label key={subscription.subscription_key} className="flex cursor-pointer items-center justify-between gap-4 py-3">
+                    <label key={subscription.subscription_key} id={`subscription-${encodeURIComponent(subscription.subscription_key)}`} className="flex cursor-pointer items-center justify-between gap-4 py-3">
                       <span className="min-w-0"><span className="block truncate text-sm font-medium">{subscription.subscription_display_name}</span><span className="text-muted-foreground text-xs">{visible ? t('settings.visible') : t('settings.hidden')}</span></span>
                       <input
                         type="checkbox"
