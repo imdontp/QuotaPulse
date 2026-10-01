@@ -125,6 +125,8 @@ export const en = {
   'redesign.historyLoading': 'Loading quota readings',
   'redesign.historyUnavailable': 'Quota history is unavailable',
   'redesign.noHistory': 'No readings in this range',
+  'redesign.pricedCoverage': 'Priced coverage',
+  'redesign.partialCostNote': '+ marks a subtotal. Native and API price bases are separate.',
   'redesign.unknownValue': 'Unknown',
   'redesign.activity': 'Recent usage records',
   'redesign.noRecent': 'No recent records',

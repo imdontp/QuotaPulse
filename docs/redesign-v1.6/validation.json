@@ -1,0 +1,78 @@
+{
+    "branch":  "design/redesign-foundation",
+    "status":  "validated checkpoint; overall release pending",
+    "checks":  [
+                   {
+                       "tests":  124,
+                       "command":  "npm run test -w @quotapulse/web",
+                       "result":  "passed"
+                   },
+                   {
+                       "result":  "passed; existing legacy App chunk warning",
+                       "command":  "npm run build -w @quotapulse/web"
+                   },
+                   {
+                       "priceCases":  4,
+                       "command":  "npm run test:history",
+                       "matrixCases":  144,
+                       "result":  "passed"
+                   },
+                   {
+                       "captures":  21,
+                       "command":  "npm run test:visual",
+                       "result":  "passed"
+                   },
+                   {
+                       "syntheticRecords":  5000,
+                       "command":  "npm run test:runtime",
+                       "result":  "passed"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "git diff --check"
+                   }
+               ],
+    "artifacts":  [
+                      {
+                          "sha256":  "65d24da6b9919458142f26305d20a45fc9908eb1d4be0aa04253f53ad81569d0",
+                          "file":  "cost-semantics.json",
+                          "bytes":  749
+                      },
+                      {
+                          "sha256":  "7cd8a6fcc13e9cef156a587933a79253929266b3afdbd827da34c4936ff66b9d",
+                          "file":  "functional-verification.json",
+                          "bytes":  2186
+                      },
+                      {
+                          "sha256":  "66f6d4bbb77aef469ae7db1fe6320a103c3d3f4f0acf094654a10551402d79f5",
+                          "file":  "models-concept-size.png",
+                          "bytes":  338189
+                      },
+                      {
+                          "sha256":  "89cad48f5e3882a1f9042685e480a6b29bc44612ade64ff967a568c555a8914a",
+                          "file":  "overview-concept-size.png",
+                          "bytes":  435815
+                      },
+                      {
+                          "sha256":  "1217f99159a64f2808df80990f809526da47c5f7bd7b508e768ca9396d23cdc0",
+                          "file":  "preview-verification.json",
+                          "bytes":  12917
+                      },
+                      {
+                          "sha256":  "1251c8478f5d85ab69e2b8edbb67e6d239af3fa0beab8b5c823da6f1f25e306b",
+                          "file":  "production-runtime.json",
+                          "bytes":  102456
+                      },
+                      {
+                          "sha256":  "8c3136881ab79b610496332fda511518a7db59043546b4db97bc23b9e8670337",
+                          "file":  "responsive-matrix.json",
+                          "bytes":  18683
+                      },
+                      {
+                          "sha256":  "ccb4f62170f7e7a05f8d092ca9c8077b95d738f03fc21141cb14676601c8a715",
+                          "file":  "review-candidates.json",
+                          "bytes":  6290
+                      }
+                  ],
+    "tag":  "redesign-cost-coverage-v1.6.0"
+}

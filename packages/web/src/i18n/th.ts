@@ -129,6 +129,8 @@ export const th: Record<MessageKey, string> = {
   'redesign.historyLoading': 'กำลังโหลดข้อมูลโควตา',
   'redesign.historyUnavailable': 'โหลดประวัติโควตาไม่ได้',
   'redesign.noHistory': 'ไม่มีข้อมูลโควตาในช่วงนี้',
+  'redesign.pricedCoverage': 'ข้อมูลที่มีราคา',
+  'redesign.partialCostNote': '+ หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API',
   'redesign.unknownValue': 'ไม่ทราบ',
   'redesign.activity': 'รายการใช้งานล่าสุด',
   'redesign.noRecent': 'ไม่มีรายการล่าสุด',

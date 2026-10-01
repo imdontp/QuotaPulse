@@ -777,6 +777,9 @@
   }
 }
 
+.qp-redesign .qp-cost-value { position:relative; }
+.qp-redesign .qp-cost-value,.qp-redesign .qp-cost-value > span { color:inherit; font-size:inherit; }
+
 .qp-visually-hidden {
   position:absolute;
   width:1px;

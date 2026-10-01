@@ -650,6 +650,42 @@ try {
     console.log(`PASS redesigned matrix: ${lang}/${theme}/${width}, nine pages`);
   }
   writeFileSync(resolve(output, 'responsive-matrix.json'), JSON.stringify({ browser: browser.version(), checks: ['loaded production page', 'language and theme', 'nine destinations and current page', 'one main heading', 'no page overflow', 'visible keyboard focus', 'at most one active SSE listener after navigation'], cases: matrix }, null, 2));
+  // Price semantics use real HTTP and weighted call_count; restore the fixture afterwards.
+  const costCases: Array<{ name: string; setup: () => void; native: string; api: string; coverage: string; suffix?: string }> = [
+    { name: 'missing prices', setup: () => { db.exec("UPDATE usage_event SET cost_usd=NULL,cost_source='unknown',call_count=1"); }, native: 'Unknown', api: 'Unknown', coverage: '0 / 53' },
+    { name: 'known zero', setup: () => { db.exec("UPDATE usage_event SET cost_usd=0,cost_source='computed',call_count=1"); }, native: 'Unknown', api: '$0.00', coverage: '53 / 53' },
+    { name: 'mixed weighted bases', setup: () => {
+      db.exec("UPDATE usage_event SET cost_usd=NULL,cost_source='unknown',call_count=1");
+      db.exec("UPDATE usage_event SET cost_usd=0.1,cost_source='native',call_count=10 WHERE id=1; UPDATE usage_event SET cost_usd=0.2,cost_source='computed',call_count=20 WHERE id=2; UPDATE usage_event SET cost_usd=0.3,cost_source='estimated',call_count=30 WHERE id=3;");
+    }, native: '$0.10+', api: '$0.50+', coverage: '50 / 110' },
+    { name: 'empty source scope', setup: () => {}, native: '$0.00', api: '$0.00', coverage: '0 / 0', suffix: '&source=999' },
+  ];
+  try {
+    await page.evaluate(() => localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'en', currency: 'USD', rate: 1, hiddenSubscriptions: [] })));
+    for (const entry of costCases) {
+      entry.setup();
+      await page.goto(`http://127.0.0.1:7801/#overview?range=all${entry.suffix ?? ''}`);
+      await page.reload();
+      const metrics = page.getByTestId('production-overview').locator('.qp-metrics strong');
+      await metrics.first().waitFor();
+      assert.equal(await metrics.nth(2).locator('span > span').first().textContent(), entry.native, `${entry.name}: Overview native`);
+      assert.equal(await metrics.nth(3).locator('span > span').first().textContent(), entry.api, `${entry.name}: Overview API`);
+      assert.match(await metrics.nth(3).locator('[title]').getAttribute('title') ?? '', new RegExp(entry.coverage));
+      await page.goto(`http://127.0.0.1:7801/#models?range=all${entry.suffix ?? ''}`);
+      await page.reload();
+      const summary = page.getByTestId('production-models').locator('.qp-model-summary article').last();
+      await summary.waitFor();
+      assert.equal(await summary.locator('strong span > span').first().textContent(), entry.api, `${entry.name}: Models API`);
+      assert.equal(await summary.locator('small span > span').first().textContent(), entry.native, `${entry.name}: Models native`);
+      assert.match(await summary.locator('strong [title]').getAttribute('title') ?? '', new RegExp(entry.coverage));
+      if (!entry.suffix) {
+        const selectedValue = page.locator('.qp-model-detail-stats > div').last().locator('strong span > span').first();
+        assert.equal(await selectedValue.textContent(), entry.api, `${entry.name}: selected model API`);
+        assert.equal(await page.locator('.qp-model-table-wrap tbody tr').first().locator('td').last().locator('span > span').first().textContent(), entry.api, `${entry.name}: table API`);
+      }
+    }
+  } finally { db.exec("UPDATE usage_event SET cost_usd=0.2,cost_source='computed',call_count=1"); }
+  writeFileSync(resolve(output, 'cost-semantics.json'), JSON.stringify({ database: 'in-memory synthetic', cases: costCases.map(({ name, native, api, coverage }) => ({ name, native, api, coverage })), checks: ['Overview and Models summary', 'Models comparison and selected model', 'weighted call counts', 'separate native and API bases', 'accessible coverage explanation'] }, null, 2));
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'shared shell shows machine scope', 'shared command palette opens Settings and supports Ctrl+K to Providers', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'Cost API/native basis separation and missing native value', 'Cost server-ranked sessions and exact History scope', 'Cost English dark desktop and Thai light mobile', 'Alerts threshold facts remain after current risk recovers', 'Alerts notification delivery toggle and reader advisory', 'Alerts English dark desktop and Thai light mobile', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));

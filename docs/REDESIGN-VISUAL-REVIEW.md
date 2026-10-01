@@ -11,6 +11,10 @@ provider-summary/detail-rail placement findings below. Its three new captures
 were inspected and pass named regional gates. Richer occupied layouts and the
 remaining styling/baseline/release checks still need review.
 
+[Monetary coverage 1.6](REDESIGN-COST-COVERAGE-V1.6.md) corrects Overview and
+Models' absent-price zero labels and partial monetary coverage. The new captures
+retain the regional layout gates; reviewed deterministic baselines remain pending.
+
 ## Shared shell
 
 The implementation uses a 210 px sidebar and a 64 px topbar. The concepts have a

@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { Activity, ArrowUpRight, Box, CircleGauge, GitBranch, X } from 'lucide-react';
 import type { QuotaHistoryResponse } from '@/api';
+import { CostValue, recordCostCoverage } from './cost-value';
 import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
 import { RedesignShell, type RedesignTranslate } from './shell';
 
@@ -157,6 +158,7 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
   const number = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 }).format(value);
   const money = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency }).format(currency === 'THB' ? value * rate : value);
   const coverage = graph?.totals;
+  const prices = coverage ? { native: coverage.nativeCalls, api: coverage.computedCalls + coverage.estimatedCalls, total: coverage.nativeCalls + coverage.computedCalls + coverage.estimatedCalls + coverage.unknownCalls } : recordCostCoverage(records);
   const inputTotal = coverage ? coverage.inputTokens + coverage.cachedInputTokens + coverage.cacheWriteTokens : 0;
   const cacheShare = inputTotal > 0 && coverage ? coverage.cachedInputTokens / inputTotal * 100 : null;
   const activities: readonly ActivityItem[] = recent ?? records.slice(0, 4).map((record, index) => ({ id: record.id, timestamp: now - index * 60_000, harness: record.harness, provider: record.provider, model: record.model, tokens: record.tokens, grain: record.grain === 'call' ? 'call' : 'session_aggregate', sessionKey: null }));
@@ -182,8 +184,8 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
             <div className="qp-core-grid"><div className="qp-metrics">
               <Metric label={t('redesign.tokens')} value={number(totals.tokens)}/>
               <Metric label={t('redesign.sessions')} value={number(totals.sessions)}/>
-              <Metric label={t('redesign.reported')} value={money(totals.reportedCost)}/>
-              <Metric label={t('redesign.value')} value={money(totals.apiValue)}/>
+              <Metric label={t('redesign.reported')} value={<CostValue amount={totals.reportedCost} priced={prices.native} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
+              <Metric label={t('redesign.value')} value={<CostValue amount={totals.apiValue} priced={prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
             </div><PulseCore quota={quota} now={now} t={t}/><section className="qp-top-models" id="model-usage"><h3>{t('redesign.models')}</h3>{models.map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span>{model.key ?? t('redesign.unknownValue')}</span><strong>{number(model.tokens)}</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</section></div>
             <p className="qp-footnote">{t('redesign.scope')}</p>
           </section>
@@ -224,6 +226,6 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
   </RedesignShell>;
 }
 
-function Metric({ label, value }: { label: string; value: string }) {
+function Metric({ label, value }: { label: string; value: React.ReactNode }) {
   return <div className="qp-metric"><span>{label}</span><strong>{value}</strong></div>;
 }
