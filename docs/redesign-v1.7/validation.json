@@ -1,0 +1,94 @@
+{
+    "branch":  "design/redesign-foundation",
+    "status":  "validated checkpoint; overall release pending",
+    "checks":  [
+                   {
+                       "tests":  124,
+                       "command":  "npm run test -w @quotapulse/web",
+                       "result":  "passed"
+                   },
+                   {
+                       "result":  "passed; existing legacy App chunk warning",
+                       "command":  "npm run build -w @quotapulse/web"
+                   },
+                   {
+                       "priceCases":  4,
+                       "command":  "npm run test:history",
+                       "matrixCases":  144,
+                       "result":  "passed",
+                       "occupiedLiveLanguageThemeCases":  4
+                   },
+                   {
+                       "syntheticRecords":  5000,
+                       "command":  "npm run test:runtime",
+                       "result":  "passed"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "git diff --check"
+                   }
+               ],
+    "artifacts":  [
+                      {
+                          "sha256":  "65d24da6b9919458142f26305d20a45fc9908eb1d4be0aa04253f53ad81569d0",
+                          "file":  "cost-semantics.json",
+                          "bytes":  749
+                      },
+                      {
+                          "sha256":  "faae7ea09848f0aa49460582d6dca8147f6a556ac5c4eb7d5b5be700c91323fa",
+                          "file":  "functional-verification.json",
+                          "bytes":  2186
+                      },
+                      {
+                          "sha256":  "0f76b8d7ea49736b7095624210a4ebb98f930c05651d3613e0107d7948419eb1",
+                          "file":  "live-concept-size.png",
+                          "bytes":  331682
+                      },
+                      {
+                          "sha256":  "1e143dffb7daddaac758452628b92d2cd90c4bfd85c37437c990ce3dcfbc6e8e",
+                          "file":  "live-occupied-en-dark.png",
+                          "bytes":  363592
+                      },
+                      {
+                          "sha256":  "fe72df8324bf54dbf230ba30276ae6fb52ef07e07618941e26cd83c6d33a0525",
+                          "file":  "live-occupied-en-light.png",
+                          "bytes":  405701
+                      },
+                      {
+                          "sha256":  "4a0d4c3c00197b844e7a1e2c0a511d0c05523bd0cec89c0b5fc0ee2acaf7daed",
+                          "file":  "live-occupied-layout.json",
+                          "bytes":  4905
+                      },
+                      {
+                          "sha256":  "f12525bc81c3fd5649f8d35e623e4b06eacba5000f5b5ae64f96188436dc043a",
+                          "file":  "live-occupied-th-dark.png",
+                          "bytes":  335472
+                      },
+                      {
+                          "sha256":  "9e4a90256c6624324649b66dd06b2a65a077e977137e6674d9ec7621f17bda1a",
+                          "file":  "live-occupied-th-light.png",
+                          "bytes":  377587
+                      },
+                      {
+                          "sha256":  "c703361ca361ba0acb17921fc2a12fdaca343e92c65a0fbe7ad6ca489320048f",
+                          "file":  "live-occupied-th-light-390-long.png",
+                          "bytes":  335082
+                      },
+                      {
+                          "sha256":  "1a67b3104bb9e7f14946e82f68e3971c4fdfd20c358739d381ff7c36edfca0be",
+                          "file":  "production-runtime.json",
+                          "bytes":  102239
+                      },
+                      {
+                          "sha256":  "8c3136881ab79b610496332fda511518a7db59043546b4db97bc23b9e8670337",
+                          "file":  "responsive-matrix.json",
+                          "bytes":  18683
+                      },
+                      {
+                          "sha256":  "1559389f267b370aae14a929bc4ba74c7eb8370a742cb100fe5ae49dc0677e9a",
+                          "file":  "review-candidates.json",
+                          "bytes":  7162
+                      }
+                  ],
+    "tag":  "redesign-live-layout-v1.7.0"
+}

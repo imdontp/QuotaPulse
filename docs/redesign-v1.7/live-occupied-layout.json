@@ -1,0 +1,206 @@
+{
+  "database": "in-memory synthetic",
+  "fixture": {
+    "addedSessions": 12,
+    "recentSessions": 13,
+    "observedSessions": 14,
+    "sessionPageRows": 10,
+    "feedPageRows": 8,
+    "matrixRows": 12
+  },
+  "checks": [
+    "first feed record and complete rail in concept viewport",
+    "en/th and dark/light",
+    "session pagination without missing rows",
+    "390/900/1280 overflow",
+    "long Thai session/project names",
+    "dialog focus restore",
+    "empty filtered sessions/feed"
+  ],
+  "captures": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "live-occupied-en-dark.png",
+      "regions": {
+        ".qp-live-sessions": {
+          "x": 226,
+          "y": 259.078125,
+          "width": 1024.109375,
+          "height": 391.5,
+          "bottom": 650.578125
+        },
+        ".qp-live-trend": {
+          "x": 226,
+          "y": 662.578125,
+          "width": 1024.109375,
+          "height": 187.5,
+          "bottom": 850.078125
+        },
+        ".qp-live-records": {
+          "x": 226,
+          "y": 862.078125,
+          "width": 1024.109375,
+          "height": 330.5,
+          "bottom": 1192.578125
+        },
+        ".qp-live-feed li": {
+          "x": 239,
+          "y": 907.078125,
+          "width": 998.109375,
+          "height": 23.5,
+          "bottom": 930.578125
+        },
+        ".qp-live-rail": {
+          "x": 1262.109375,
+          "y": 259.078125,
+          "width": 393.875,
+          "height": 642.28125,
+          "bottom": 901.359375
+        }
+      }
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "live-occupied-en-light.png",
+      "regions": {
+        ".qp-live-sessions": {
+          "x": 226,
+          "y": 259.078125,
+          "width": 1024.109375,
+          "height": 391.5,
+          "bottom": 650.578125
+        },
+        ".qp-live-trend": {
+          "x": 226,
+          "y": 662.578125,
+          "width": 1024.109375,
+          "height": 187.5,
+          "bottom": 850.078125
+        },
+        ".qp-live-records": {
+          "x": 226,
+          "y": 862.078125,
+          "width": 1024.109375,
+          "height": 330.5,
+          "bottom": 1192.578125
+        },
+        ".qp-live-feed li": {
+          "x": 239,
+          "y": 907.078125,
+          "width": 998.109375,
+          "height": 23.5,
+          "bottom": 930.578125
+        },
+        ".qp-live-rail": {
+          "x": 1262.109375,
+          "y": 259.078125,
+          "width": 393.875,
+          "height": 642.28125,
+          "bottom": 901.359375
+        }
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "live-occupied-th-dark.png",
+      "regions": {
+        ".qp-live-sessions": {
+          "x": 226,
+          "y": 259.078125,
+          "width": 1024.109375,
+          "height": 391.5,
+          "bottom": 650.578125
+        },
+        ".qp-live-trend": {
+          "x": 226,
+          "y": 662.578125,
+          "width": 1024.109375,
+          "height": 187.5,
+          "bottom": 850.078125
+        },
+        ".qp-live-records": {
+          "x": 226,
+          "y": 862.078125,
+          "width": 1024.109375,
+          "height": 330.5,
+          "bottom": 1192.578125
+        },
+        ".qp-live-feed li": {
+          "x": 239,
+          "y": 907.078125,
+          "width": 998.109375,
+          "height": 23.5,
+          "bottom": 930.578125
+        },
+        ".qp-live-rail": {
+          "x": 1262.109375,
+          "y": 259.078125,
+          "width": 393.875,
+          "height": 642.28125,
+          "bottom": 901.359375
+        }
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "live-occupied-th-light.png",
+      "regions": {
+        ".qp-live-sessions": {
+          "x": 226,
+          "y": 259.078125,
+          "width": 1024.109375,
+          "height": 391.5,
+          "bottom": 650.578125
+        },
+        ".qp-live-trend": {
+          "x": 226,
+          "y": 662.578125,
+          "width": 1024.109375,
+          "height": 187.5,
+          "bottom": 850.078125
+        },
+        ".qp-live-records": {
+          "x": 226,
+          "y": 862.078125,
+          "width": 1024.109375,
+          "height": 330.5,
+          "bottom": 1192.578125
+        },
+        ".qp-live-feed li": {
+          "x": 239,
+          "y": 907.078125,
+          "width": 998.109375,
+          "height": 23.5,
+          "bottom": 930.578125
+        },
+        ".qp-live-rail": {
+          "x": 1262.109375,
+          "y": 259.078125,
+          "width": 393.875,
+          "height": 642.28125,
+          "bottom": 901.359375
+        }
+      }
+    }
+  ]
+}

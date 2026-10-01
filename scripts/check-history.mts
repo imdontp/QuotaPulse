@@ -581,6 +581,7 @@ try {
     }
     const densitySelectors: Record<string, string[]> = {
       overview: ['.qp-hero-grid', '.qp-bottom-grid', '.qp-activity', '.qp-activity-item'],
+      live: ['.qp-live-metrics', '.qp-live-sessions', '.qp-live-trend', '.qp-live-records', '.qp-live-feed li', '.qp-live-rail'],
       providers: ['.qp-provider-grid', '.qp-provider-detail', '.qp-provider-bottom'],
       models: ['.qp-model-summary', '.qp-model-providers', '.qp-model-detail'],
     };
@@ -595,6 +596,7 @@ try {
       assert.ok(bottom('.qp-activity-item') < viewport.height, `Overview first activity record is outside concept viewport: ${JSON.stringify(regions)}`);
     }
     if (destination === 'providers') assert.ok(bottom('.qp-provider-bottom') < viewport.height, 'Providers comparison/health region is outside concept viewport');
+    if (destination === 'live') assert.ok(bottom('.qp-live-feed li') < viewport.height, 'Live first usage record is outside concept viewport');
     if (destination === 'models') {
       assert.ok(bottom('.qp-model-providers') < viewport.height, 'Models provider summary is outside concept viewport');
       assert.ok(bottom('.qp-model-detail') < viewport.height, 'Models detail rail is outside concept viewport');
@@ -686,6 +688,92 @@ try {
     }
   } finally { db.exec("UPDATE usage_event SET cost_usd=0.2,cost_source='computed',call_count=1"); }
   writeFileSync(resolve(output, 'cost-semantics.json'), JSON.stringify({ database: 'in-memory synthetic', cases: costCases.map(({ name, native, api, coverage }) => ({ name, native, api, coverage })), checks: ['Overview and Models summary', 'Models comparison and selected model', 'weighted call counts', 'separate native and API bases', 'accessible coverage explanation'] }, null, 2));
+  // Occupied Live layouts and pagination get a separate synthetic fixture after
+  // the baseline flow, so its original totals and captured reference values stay intact.
+  await page.close();
+  const occupiedCaptures: unknown[] = [];
+  const occupiedNow = Date.now();
+  const originalRecentAt = (db.prepare('SELECT last_seen_at FROM session WHERE id=1').get() as { last_seen_at: number | null }).last_seen_at;
+  db.transaction(() => {
+    db.prepare('UPDATE session SET last_seen_at=? WHERE id=1').run(occupiedNow - 100);
+    const addSession = db.prepare('INSERT INTO session(id,source_id,native_session_id,project,last_seen_at) VALUES (?,1,?,?,?)');
+    const addUsage = db.prepare("INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,total_tokens,call_count,cost_usd,cost_source) VALUES (1,?,?,?,?,'openrouter',?,1,0.1,'computed')");
+    for (let index = 0; index < 12; index++) {
+      addSession.run(100 + index, `layout-session-${index}`, `Project ${index}`, occupiedNow - 100);
+      addUsage.run(100 + index, `layout-${index}`, now - 100, `layout-model-${index}`, 300 + index * 100);
+    }
+  })();
+  try {
+    for (const lang of ['en', 'th'] as const) for (const theme of ['dark', 'light'] as const) {
+      const occupied = await browser.newPage({ viewport: { width: 1672, height: 941 }, reducedMotion: 'reduce', deviceScaleFactor: 1, timezoneId: 'Asia/Bangkok' });
+      try {
+        occupied.on('pageerror', error => errors.push(error.message));
+        await occupied.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
+        await occupied.addInitScript(({ lang, theme }) => {
+          (window as unknown as { __QUOTAPULSE_TOKEN__: string }).__QUOTAPULSE_TOKEN__ = 'history-test';
+          localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang, currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
+          localStorage.setItem('quotapulse-theme', theme);
+        }, { lang, theme });
+        await occupied.clock.setFixedTime(now);
+        await occupied.goto('http://127.0.0.1:7801/#live');
+        const screen = occupied.getByTestId('production-live');
+        await screen.getByRole('heading', { name: lang === 'en' ? 'Live monitoring' : 'ติดตามการใช้งานสด', exact: true }).waitFor();
+        await screen.locator('.qp-live-table tbody tr').nth(9).waitFor();
+        await occupied.evaluate(() => document.fonts.ready);
+        assert.equal(await screen.locator('.qp-live-metrics strong').first().textContent(), '13');
+        assert.equal(await screen.locator('.qp-live-matrix li').count(), 12);
+        assert.equal(await screen.locator('.qp-live-feed li').count(), 8);
+        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-live-sessions', '.qp-live-trend', '.qp-live-records', '.qp-live-feed li', '.qp-live-rail'].map(selector => {
+          const { x, y, width, height, bottom } = node.querySelector(selector)!.getBoundingClientRect();
+          return [selector, { x, y, width, height, bottom }];
+        })));
+        assert.ok(regions['.qp-live-feed li'].bottom < 941, `${lang}/${theme}: occupied Live first feed record outside viewport: ${JSON.stringify(regions)}`);
+        assert.ok(regions['.qp-live-rail'].bottom < 941, `${lang}/${theme}: occupied Live rail outside viewport: ${JSON.stringify(regions)}`);
+        const filename = `live-occupied-${lang}-${theme}.png`;
+        await occupied.screenshot({ path: resolve(output, filename), animations: 'disabled' });
+        occupiedCaptures.push({ lang, theme, viewport: { width: 1672, height: 941 }, filename, regions });
+        const sessionControls = screen.locator('.qp-live-sessions .qp-live-pagination button');
+        await sessionControls.last().click();
+        await occupied.waitForURL(/session_offset=10/);
+        await screen.getByRole('button', { name: 'synthetic-session', exact: true }).waitFor();
+        assert.equal(await screen.locator('.qp-live-table tbody tr').count(), 3);
+        assert.equal(await sessionControls.last().isDisabled(), true);
+        await sessionControls.first().click();
+        await screen.getByRole('button', { name: 'layout-session-11', exact: true }).waitFor();
+        assert.equal(await screen.locator('.qp-live-table tbody tr').count(), 10);
+        for (const width of [390, 900, 1280]) {
+          await occupied.setViewportSize({ width, height: 1000 });
+          assert.ok(await occupied.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${lang}/${theme}: occupied Live overflow at ${width}`);
+        }
+        if (lang === 'th' && theme === 'light') {
+          const longName = `layout-long-${'รายละเอียดเซสชัน'.repeat(12)}`;
+          db.prepare('UPDATE session SET native_session_id=?,project=? WHERE id=111').run(longName, 'โครงการที่มีชื่อยาวมาก'.repeat(10));
+          await occupied.setViewportSize({ width: 390, height: 1000 });
+          await occupied.reload();
+          const sessionButton = screen.getByRole('button', { name: longName, exact: true });
+          await sessionButton.waitFor();
+          assert.ok(await occupied.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'long Thai Live metadata overflows mobile');
+          await sessionButton.click();
+          await occupied.getByRole('dialog').waitFor();
+          await occupied.keyboard.press('Escape');
+          assert.equal(await sessionButton.evaluate(node => node === document.activeElement), true, 'Live dialog did not restore focus');
+          await occupied.screenshot({ path: resolve(output, 'live-occupied-th-light-390-long.png'), fullPage: true });
+          const search = screen.locator('.qp-live-search input');
+          await search.fill('no-live-layout-match');
+          await screen.locator('.qp-live-search button').click();
+          await screen.getByText('ไม่มีเซสชันตรงกับตัวกรอง', { exact: true }).waitFor();
+          assert.equal(await screen.locator('.qp-live-table tbody tr').count(), 0);
+          assert.equal(await screen.locator('.qp-live-feed li').count(), 0);
+        }
+      } finally { await occupied.close(); }
+    }
+  } finally {
+    db.transaction(() => {
+      db.exec('DELETE FROM usage_event WHERE session_id BETWEEN 100 AND 111; DELETE FROM session WHERE id BETWEEN 100 AND 111;');
+      db.prepare('UPDATE session SET last_seen_at=? WHERE id=1').run(originalRecentAt);
+    })();
+  }
+  writeFileSync(resolve(output, 'live-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { addedSessions: 12, recentSessions: 13, observedSessions: 14, sessionPageRows: 10, feedPageRows: 8, matrixRows: 12 }, checks: ['first feed record and complete rail in concept viewport', 'en/th and dark/light', 'session pagination without missing rows', '390/900/1280 overflow', 'long Thai session/project names', 'dialog focus restore', 'empty filtered sessions/feed'], captures: occupiedCaptures }, null, 2));
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'shared shell shows machine scope', 'shared command palette opens Settings and supports Ctrl+K to Providers', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'Cost API/native basis separation and missing native value', 'Cost server-ranked sessions and exact History scope', 'Cost English dark desktop and Thai light mobile', 'Alerts threshold facts remain after current risk recovers', 'Alerts notification delivery toggle and reader advisory', 'Alerts English dark desktop and Thai light mobile', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));

@@ -15,6 +15,12 @@ remaining styling/baseline/release checks still need review.
 Models' absent-price zero labels and partial monetary coverage. The new captures
 retain the regional layout gates; reviewed deterministic baselines remain pending.
 
+[Live layout 1.7](REDESIGN-LIVE-LAYOUT-V1.7.md) compacts the session toolbar,
+summary and observed activity rail. Its occupied fixture verifies the first feed
+record and complete rail at concept size across both languages/themes, plus
+pagination, mobile overflow, long metadata and empty filtered results. Full feed
+visibility, chart axes/value accessibility and final styling remain under review.
+
 ## Shared shell
 
 The implementation uses a 210 px sidebar and a 64 px topbar. The concepts have a

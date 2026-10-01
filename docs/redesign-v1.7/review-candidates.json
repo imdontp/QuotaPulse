@@ -1,0 +1,333 @@
+{
+  "status": "review candidates; not approved visual baselines",
+  "browser": "153.0.8010.53",
+  "timezone": "Asia/Bangkok",
+  "dpr": 1,
+  "language": "en",
+  "theme": "dark",
+  "reducedMotion": true,
+  "browserClock": 1790851466796,
+  "daemonClock": "real clock; synthetic data seeded at browserClock",
+  "captures": [
+    {
+      "destination": "overview",
+      "viewport": {
+        "width": 1586,
+        "height": 992
+      },
+      "filename": "overview-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 1037.65625
+        },
+        ".qp-topbar": {
+          "x": 210,
+          "y": 0,
+          "width": 1376,
+          "height": 64
+        },
+        ".qp-workspace main": {
+          "x": 210,
+          "y": 64,
+          "width": 1376,
+          "height": 973.65625
+        },
+        ".qp-hero-grid": {
+          "x": 226,
+          "y": 80,
+          "width": 1344,
+          "height": 363.1875
+        },
+        ".qp-bottom-grid": {
+          "x": 226,
+          "y": 653.6875,
+          "width": 1344,
+          "height": 221.28125
+        },
+        ".qp-activity": {
+          "x": 226,
+          "y": 886.96875,
+          "width": 1344,
+          "height": 134.6875
+        },
+        ".qp-activity-item": {
+          "x": 241,
+          "y": 924.46875,
+          "width": 321,
+          "height": 63.5
+        }
+      }
+    },
+    {
+      "destination": "live",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "live-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 979.078125
+        },
+        ".qp-topbar": {
+          "x": 210,
+          "y": 0,
+          "width": 1462,
+          "height": 64
+        },
+        ".qp-workspace main": {
+          "x": 210,
+          "y": 64,
+          "width": 1462,
+          "height": 915.078125
+        },
+        ".qp-live-metrics": {
+          "x": 226,
+          "y": 141.5,
+          "width": 1430,
+          "height": 74.890625
+        },
+        ".qp-live-sessions": {
+          "x": 226,
+          "y": 259.078125,
+          "width": 1024.109375,
+          "height": 162
+        },
+        ".qp-live-trend": {
+          "x": 226,
+          "y": 433.078125,
+          "width": 1024.109375,
+          "height": 187.5
+        },
+        ".qp-live-records": {
+          "x": 226,
+          "y": 632.578125,
+          "width": 1024.109375,
+          "height": 330.5
+        },
+        ".qp-live-feed li": {
+          "x": 239,
+          "y": 677.578125,
+          "width": 998.109375,
+          "height": 23.5
+        },
+        ".qp-live-rail": {
+          "x": 1262.109375,
+          "y": 259.078125,
+          "width": 393.875,
+          "height": 247.28125
+        }
+      }
+    },
+    {
+      "destination": "projects",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "projects-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 941
+        },
+        ".qp-topbar": {
+          "x": 210,
+          "y": 0,
+          "width": 1462,
+          "height": 64
+        },
+        ".qp-workspace main": {
+          "x": 210,
+          "y": 64,
+          "width": 1462,
+          "height": 810.875
+        }
+      }
+    },
+    {
+      "destination": "providers",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "providers-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 941
+        },
+        ".qp-topbar": {
+          "x": 210,
+          "y": 0,
+          "width": 1462,
+          "height": 64
+        },
+        ".qp-workspace main": {
+          "x": 210,
+          "y": 64,
+          "width": 1462,
+          "height": 768.6875
+        },
+        ".qp-provider-grid": {
+          "x": 226,
+          "y": 149.5,
+          "width": 1430,
+          "height": 181
+        },
+        ".qp-provider-detail": {
+          "x": 226,
+          "y": 350.5,
+          "width": 1430,
+          "height": 202
+        },
+        ".qp-provider-bottom": {
+          "x": 226,
+          "y": 572.5,
+          "width": 1430,
+          "height": 244.1875
+        }
+      }
+    },
+    {
+      "destination": "models",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "models-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 949.46875
+        },
+        ".qp-topbar": {
+          "x": 210,
+          "y": 0,
+          "width": 1462,
+          "height": 64
+        },
+        ".qp-workspace main": {
+          "x": 210,
+          "y": 64,
+          "width": 1462,
+          "height": 885.46875
+        },
+        ".qp-model-summary": {
+          "x": 226,
+          "y": 208,
+          "width": 1430,
+          "height": 96.1875
+        },
+        ".qp-model-providers": {
+          "x": 226,
+          "y": 508.1875,
+          "width": 1024.109375,
+          "height": 152
+        },
+        ".qp-model-detail": {
+          "x": 1262.109375,
+          "y": 316.1875,
+          "width": 393.875,
+          "height": 617.28125
+        }
+      }
+    },
+    {
+      "destination": "cost",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "cost-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 1305.65625
+        },
+        ".qp-topbar": {
+          "x": 210,
+          "y": 0,
+          "width": 1462,
+          "height": 64
+        },
+        ".qp-workspace main": {
+          "x": 210,
+          "y": 64,
+          "width": 1462,
+          "height": 1241.65625
+        }
+      }
+    },
+    {
+      "destination": "history",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "history-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 3624.140625
+        },
+        ".qp-topbar": {
+          "x": 210,
+          "y": 0,
+          "width": 1462,
+          "height": 64
+        },
+        ".qp-workspace main": {
+          "x": 210,
+          "y": 64,
+          "width": 1462,
+          "height": 3560.140625
+        }
+      }
+    },
+    {
+      "destination": "alerts",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "alerts-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 969.0625
+        },
+        ".qp-topbar": {
+          "x": 210,
+          "y": 0,
+          "width": 1462,
+          "height": 64
+        },
+        ".qp-workspace main": {
+          "x": 210,
+          "y": 64,
+          "width": 1462,
+          "height": 905.0625
+        }
+      }
+    }
+  ]
+}
