@@ -184,6 +184,18 @@ export interface DetailedModelResponse {
   groups: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string }>;
   rows: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string; sourceId: number; harness: string; sourceName: string; effort: string | null }>;
 }
+export interface ModelDetailResponse {
+  now: number;
+  scope: UsageEventScope;
+  modelMissing: boolean;
+  providerMissing: boolean;
+  modelEmpty: boolean;
+  providerEmpty: boolean;
+  bucketMs: number;
+  points: Array<{ start: number; tokens: number; calls: number; records: number }>;
+  efforts: Array<{ effort: string | null; tokens: number; calls: number; sessions: number }>;
+  observedContext: { window: number | null; at: number | null; origin: string };
+}
 export interface ProjectDetailResponse {
   now: number;
   scope: UsageEventScope;
@@ -580,6 +592,12 @@ export const api = {
   projectDetail: (scope: UsageEventScope, offset = 0) => get<ProjectDetailResponse>(`/api/project-detail?${usageEventParams(scope)}&limit=20&offset=${offset}`),
   liveSessions: (scope: UsageEventScope, mode: 'recent' | 'all', offset = 0) => get<LiveSessionsResponse>(`/api/live-sessions?${usageEventParams(scope)}&mode=${mode}&limit=10&offset=${offset}`),
   detailedModels: (scope: UsageEventScope) => get<DetailedModelResponse>(`/api/models?detailed=1&${usageEventParams(scope)}`),
+  modelDetail: (scope: UsageEventScope, identity: { model: string | null; provider: string | null }) => {
+    const params = usageEventParams(scope);
+    if (identity.model === null) params.set('model_missing', '1'); else if (identity.model === '') params.set('model_empty', '1'); else params.set('model', identity.model);
+    if (identity.provider === null) params.set('provider_missing', '1'); else if (identity.provider === '') params.set('provider_empty', '1'); else params.set('provider', identity.provider);
+    return get<ModelDetailResponse>(`/api/model-detail?${params}`);
+  },
   quotaHistory: (scope: { subscriptionKey: string; windowKind: string; from?: number; to?: number }) => {
     const params = new URLSearchParams({ subscription_key: scope.subscriptionKey, window_kind: scope.windowKind });
     if (scope.from !== undefined) params.set('from', String(scope.from));

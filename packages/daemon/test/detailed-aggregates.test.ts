@@ -73,6 +73,17 @@ test('opt-in project/model aggregates preserve identity, sessions and money cove
     assert.equal(models.rows.find((row: { provider: string }) => row.provider === 'openrouter').sessions, 2);
     assert.equal(models.groups.find((group: { provider: string }) => group.provider === 'openrouter').sessions, 2);
     assert.equal((await get('models', '&provider=anthropic')).totals.tokens, 200);
+    db.prepare("UPDATE usage_event SET context_window=200000 WHERE dedup_key='one'").run();
+    const modelDetail = await app.inject({ url: '/api/model-detail?from=0&to=200&model=gpt-a&provider=openrouter', headers });
+    assert.equal(modelDetail.statusCode, 200);
+    assert.equal(modelDetail.json().points.reduce((sum: number, point: { tokens: number }) => sum + point.tokens, 0), 220);
+    assert.equal(modelDetail.json().efforts.reduce((sum: number, row: { calls: number }) => sum + row.calls, 0), 3);
+    assert.deepEqual(modelDetail.json().observedContext, { window: 200000, at: 100, origin: 'recorded usage event' });
+    const missingModel = await app.inject({ url: '/api/model-detail?from=0&to=200&model_missing=1&provider_missing=1', headers });
+    assert.equal(missingModel.json().points[0].tokens, 400);
+    assert.equal((await app.inject({ url: '/api/model-detail?from=0&to=200&model=gpt-a', headers })).statusCode, 400);
+    assert.equal((await app.inject({ url: '/api/model-detail?from=0&to=200&model=gpt-a&provider=openrouter&provider_missing=1', headers })).statusCode, 400);
+    assert.equal((await app.inject('/api/model-detail?from=0&to=200&model=gpt-a&provider=openrouter')).statusCode, 401);
     assert.equal((await get('projects', '&source_id=2')).totals.tokens, 300);
     assert.equal((await get('projects', '&session_id=1')).totals.sessions, 1);
 
@@ -88,6 +99,8 @@ test('opt-in project/model aggregates preserve identity, sessions and money cove
     db.prepare("UPDATE session SET project='' WHERE id=4").run();
     assert.equal((await get('projects', '&project=')).totals.tokens, 50);
     assert.equal((await app.inject({ url: '/api/project-detail?from=0&to=200&project=', headers })).json().sessions.total, 1);
+    insert.run(1, 4, 'empty-model', 160, '', '', 25, 1, null, 'unknown', null);
+    assert.equal((await app.inject({ url: '/api/model-detail?from=0&to=200&model_empty=1&provider_empty=1', headers })).json().points[0].tokens, 25);
   } finally {
     await app.close();
     db.close();

@@ -301,10 +301,45 @@ try {
   await providers.locator('.qp-provider-card').first().waitFor();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Providers mobile overflow');
   await page.screenshot({ path: resolve(output, 'providers-real-th-light-390.png'), fullPage: true });
+  await page.evaluate(() => {
+    localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'en', currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
+    localStorage.setItem('quotapulse-theme', 'dark');
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('http://127.0.0.1:7801/#models');
+  await page.reload();
+  const models = page.getByTestId('production-models');
+  await models.getByRole('heading', { name: 'Model usage', exact: true }).waitFor();
+  await models.locator('.qp-model-table-wrap tbody tr').first().waitFor();
+  assert.equal(await models.locator('.qp-model-table-wrap tbody tr').count(), 2);
+  await models.locator('.qp-model-detail').getByText('gpt-test', { exact: true }).waitFor();
+  await models.locator('.qp-model-trend span').first().waitFor();
+  assert.match(await models.locator('.qp-model-summary').innerText(), /Model and route pairs\s+2/);
+  assert.match(await models.locator('.qp-model-comparison').innerText(), /openrouter/);
+  await page.screenshot({ path: resolve(output, 'models-real-en-dark-1440.png'), fullPage: true });
+  await models.locator('.qp-model-providers button').filter({ hasText: 'openrouter' }).click();
+  await page.waitForURL(/provider=openrouter/);
+  await models.locator('.qp-model-table-wrap tbody tr').first().waitFor();
+  assert.equal(await models.locator('.qp-model-table-wrap tbody tr').count(), 1);
+  await models.getByRole('link', { name: 'Open scoped History' }).click();
+  await page.waitForURL(/#history\?/);
+  const modelHistory = new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
+  assert.equal(modelHistory.get('model'), 'gpt-test');
+  assert.equal(modelHistory.get('provider'), 'openrouter');
+  await page.evaluate(() => {
+    localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'th', currency: 'THB', rate: 35, hiddenSubscriptions: [] }));
+    localStorage.setItem('quotapulse-theme', 'light');
+  });
+  await page.setViewportSize({ width: 390, height: 1000 });
+  await page.goto('http://127.0.0.1:7801/#models');
+  await page.reload();
+  await models.locator('.qp-model-table-wrap tbody tr').first().waitFor();
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Models mobile overflow');
+  await page.screenshot({ path: resolve(output, 'models-real-th-light-390.png'), fullPage: true });
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));
-  console.log('History/Overview/Projects/Live/Providers E2E passed: authenticated HTTP and in-memory SQLite, scopes, pagination, pause, quota runway, drill-down, responsive layout.');
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));
+  console.log('History/Overview/Projects/Live/Providers/Models E2E passed: authenticated HTTP and in-memory SQLite, scopes, pagination, pause, quota runway, drill-down, responsive layout.');
 } finally {
   await browser?.close();
   await vite.close();

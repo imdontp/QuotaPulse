@@ -16,6 +16,7 @@ import { runtimeMap } from './runtime-map.js';
 import { parseQuotaHistoryScope, quotaHistory } from './quota-history.js';
 import { detailedAggregates } from './detailed-aggregates.js';
 import { projectDetail } from './project-detail.js';
+import { modelDetail } from './model-detail.js';
 import { liveSessions, type LiveSessionMode } from './live-sessions.js';
 
 const log = logger('api');
@@ -519,6 +520,25 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       if (scope.project === undefined && !scope.projectMissing) throw new Error('Expected exact project or project_missing=1');
       const pagination = parseUsagePagination(query);
       return { now, scope, ...projectDetail(db, scope, pagination) };
+    } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
+  });
+
+  app.get('/api/model-detail', async (req, reply) => {
+    const now = Date.now();
+    const query = req.query as Record<string, unknown>;
+    try {
+      const scope = parseUsageScope(query, now, { requireRange: true, extraKeys: ['model_missing', 'provider_missing', 'model_empty', 'provider_empty'] });
+      const modelMissing = query.model_missing === '1';
+      const providerMissing = query.provider_missing === '1';
+      const modelEmpty = query.model_empty === '1';
+      const providerEmpty = query.provider_empty === '1';
+      if ([query.model_missing, query.provider_missing, query.model_empty, query.provider_empty].some(flag => flag !== undefined && flag !== '1') ||
+          Number(scope.model !== undefined) + Number(modelMissing) + Number(modelEmpty) !== 1 ||
+          Number(scope.provider !== undefined) + Number(providerMissing) + Number(providerEmpty) !== 1) {
+        throw new Error('Expected exact model and provider or their missing flags');
+      }
+      return { now, scope, modelMissing, providerMissing, modelEmpty, providerEmpty,
+        ...modelDetail(db, scope, { modelMissing, providerMissing, modelEmpty, providerEmpty }) };
     } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
   });
 
