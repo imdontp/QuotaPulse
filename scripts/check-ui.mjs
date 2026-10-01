@@ -244,7 +244,7 @@ try {
    */
   browser = await chromium.launch({ channel: 'chrome', headless: true, args: ['--lang=en-US'] });
   const { context, page } = await contextFor();
-  await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
+  await page.goto('http://127.0.0.1:7798/?mode=legacy#live'); await settle(page);
   /*
    * The attention panel and the status strip are folded into a "Data health" disclosure at
    * the foot of the page now, so both have to be opened before they can be asserted on. The
@@ -262,11 +262,11 @@ try {
   await palette.waitFor();
   await palette.locator('input').fill('Alerts');
   await palette.locator('button').filter({ hasText: 'Alerts' }).first().click();
-  await page.waitForURL('**/#alerts');
+  await page.waitForURL(/#alerts$/);
   await page.getByText('Alert history', { exact: true }).waitFor();
-  await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
+  await page.goto('http://127.0.0.1:7798/?mode=legacy#live'); await settle(page);
   await page.getByRole('tab', { name: 'Limits', exact: true }).click();
-  await page.waitForURL('**/#limits');
+  await page.waitForURL(/#limits$/);
   await page.goBack();
   await page.waitForFunction(() => document.querySelector('[role=tab][aria-selected=true]')?.textContent === 'Live');
   await page.goForward();
@@ -277,7 +277,7 @@ try {
   // which named the control after its first option rather than after what it filters.
   await page.getByRole('combobox', { name: 'Status', exact: true }).selectOption('available');
   await page.getByText('No subscriptions match these filters.').waitFor();
-  await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
+  await page.goto('http://127.0.0.1:7798/?mode=legacy#live'); await settle(page);
   for (const [cost, unknown, expected] of [[0, 10, '--'], [0, 0, '$0.0000'], [26.83, 2, '$26.83+'], [26.83, 0, '$26.83']]) {
     today = { ...totals, cost_usd: cost, cost_unknown_calls: unknown };
     await page.reload(); await settle(page);
@@ -339,7 +339,7 @@ try {
   await page.locator('h2').filter({ hasText: 'Settings' }).waitFor();
   await page.getByRole('checkbox', { name: 'OpenAI Subscription', exact: true }).uncheck();
   await page.getByText('hidden', { exact: true }).first().waitFor();
-  await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
+  await page.goto('http://127.0.0.1:7798/?mode=legacy#live'); await settle(page);
   assert.equal(await page.locator('.quota-card').filter({ hasText: 'OpenAI Subscription' }).count(), 0);
   // The subscription cards are collapsed behind a disclosure now, so a count of zero has to
   // be paired with a positive case or it proves nothing about the hidden preference.
@@ -358,7 +358,7 @@ try {
   await page.locator('h2').filter({ hasText: 'Settings' }).waitFor();
   await page.getByRole('checkbox', { name: 'OpenAI Subscription', exact: true }).check();
   await page.getByText('shown', { exact: true }).first().waitFor();
-  await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
+  await page.goto('http://127.0.0.1:7798/?mode=legacy#live'); await settle(page);
   const day = requests.find(r => r.bucket === 'day');
   // 30 daily buckets, not 7: the streak and the 30-day badge need month-scale history, and
   // the week sparkline is the last seven points of the same series.
@@ -387,7 +387,7 @@ try {
   // Progression is browser-local: the dashboard must not add an endpoint to write it.
   assert.ok(apiMethods.every(({ path }) => !path.includes('progress')),
     'progression persists to localStorage, never the daemon');
-  await page.goto('http://127.0.0.1:7798/#usage?range=today&view=summary');
+  await page.goto('http://127.0.0.1:7798/?mode=legacy#usage?range=today&view=summary');
   await page.getByRole('button', { name: 'Export CSV', exact: true }).waitFor();
   const [usageDownload] = await Promise.all([
     page.waitForEvent('download'),
@@ -399,7 +399,7 @@ try {
     ['sessions', '#sessions'], ['projects', '#usage?range=month&view=projects'],
     ['models', '#usage?range=month&view=models'], ['health', '#health'], ['alerts', '#alerts'],
   ]) {
-    await page.goto(`http://127.0.0.1:7798/${target}`);
+    await page.goto(`http://127.0.0.1:7798/?mode=legacy${target}`);
     await page.locator('[role=tabpanel][data-state=active]').waitFor();
     await page.waitForTimeout(250);
     await noOverflow(page, tab);
@@ -562,7 +562,7 @@ try {
    */
   modelsDelay = 2500;
   const slowModels = await contextFor();
-  await slowModels.page.goto('http://127.0.0.1:7798/#usage?range=month&view=models');
+  await slowModels.page.goto('http://127.0.0.1:7798/?mode=legacy#usage?range=month&view=models');
   await slowModels.page.locator('[role=tabpanel][data-state=active]').waitFor();
   const modelTab = slowModels.page.locator('[role=tabpanel][data-state=active]');
   /*
@@ -623,7 +623,7 @@ try {
     ['usage/models', '#usage?range=month&view=models'],
   ]) {
     const { context, page } = await contextFor();
-    await page.goto(`http://127.0.0.1:7798/${target}`);
+    await page.goto(`http://127.0.0.1:7798/?mode=legacy${target}`);
     const panel = page.locator('[role=tabpanel][data-state=active]');
     await panel.waitFor();
     await page.waitForTimeout(300);
@@ -685,7 +685,7 @@ try {
   ];
   for (const [target] of ambientTabs) {
     const { context, page } = await contextFor();
-    await page.goto(`http://127.0.0.1:7798/${target}`);
+    await page.goto(`http://127.0.0.1:7798/?mode=legacy${target}`);
     const field = page.locator('[data-ambient]');
     await field.waitFor({ timeout: 10000 });
     const tone = await field.getAttribute('data-tone');
@@ -716,7 +716,7 @@ try {
     // a dead feed -- so "calm" has to be arranged rather than assumed.
     for (const limit of limits) limit.used_percent = fill;
     const { context, page } = await contextFor();
-    await page.goto('http://127.0.0.1:7798/#live');
+    await page.goto('http://127.0.0.1:7798/?mode=legacy#live');
     const field = page.locator('[data-ambient]');
     await field.waitFor({ timeout: 10000 });
     const tone = await field.getAttribute('data-tone');
@@ -743,7 +743,7 @@ try {
    */
   {
     const { context, page } = await contextFor();
-    await page.goto('http://127.0.0.1:7798/#usage?range=today&view=summary');
+    await page.goto('http://127.0.0.1:7798/?mode=legacy#usage?range=today&view=summary');
     await page.locator('.tabular').first().waitFor();
     // Mounting is not a change, so a tile that has only ever had one value must be silent.
     const before = await page.locator('.value-moved').count();
@@ -784,7 +784,7 @@ try {
   const ENGLISH_MONTHS = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/;
   const rendered = async (lang, testid) => {
     const { context, page } = await contextFor(lang, 'dark', 1440);
-    await page.goto('http://127.0.0.1:7798/#usage?range=month&view=summary');
+    await page.goto('http://127.0.0.1:7798/?mode=legacy#usage?range=month&view=summary');
     const target = page.getByTestId(testid);
     await target.waitFor({ timeout: 10000 });
     await page.waitForTimeout(300);
@@ -828,7 +828,7 @@ try {
     const found = { total: 0, unscoped: 0, sorted: 0 };
     for (const target of ['#limits', '#health', '#sources', '#sessions', '#usage?range=today&view=summary',
       '#usage?range=month&view=models', '#usage?range=month&view=projects', '#live']) {
-      await page.goto(`http://127.0.0.1:7798/${target}`);
+      await page.goto(`http://127.0.0.1:7798/?mode=legacy${target}`);
       await page.locator('[role=tabpanel][data-state=active]').waitFor();
       await page.waitForTimeout(200);
       const heads = await page.locator('th').evaluateAll(nodes => nodes.map(node => ({
@@ -848,7 +848,7 @@ try {
   console.log('PASS every column header is scoped, and none claims to be sortable');
   for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const width of [390, 900, 1280, 1440]) {
     const { context, page } = await contextFor(lang, theme, width);
-    await page.goto('http://127.0.0.1:7798/#live'); await settle(page);
+    await page.goto('http://127.0.0.1:7798/?mode=legacy#live'); await settle(page);
     await noOverflow(page, `${lang}-${theme}-${width}`);
     assert.equal(await page.locator('html').getAttribute('lang'), lang);
     assert.equal(await page.locator('html').evaluate(el => el.classList.contains('dark')), theme === 'dark');
@@ -868,9 +868,9 @@ try {
     if (width === 390 && lang === 'en') {
       await page.getByRole('button', { name: 'Open navigation' }).click();
       await page.getByRole('dialog', { name: 'Open navigation' }).getByRole('button', { name: 'Limits', exact: true }).click();
-      await page.waitForURL('**/#limits');
+      await page.waitForURL(/#limits$/);
       assert.equal(await page.locator('dialog').evaluate(el => el.open), false);
-    } else await page.goto('http://127.0.0.1:7798/#limits');
+    } else await page.goto('http://127.0.0.1:7798/?mode=legacy#limits');
     await page.getByRole('combobox').first().waitFor();
     await noOverflow(page, `limits-${lang}-${theme}-${width}`);
     await page.screenshot({ path: resolve(output, `limits-${lang}-${theme}-${width}.png`), fullPage: true });
@@ -879,7 +879,7 @@ try {
   }
   const last = await contextFor();
   empty = true;
-  await last.page.goto('http://127.0.0.1:7798/#live'); await settle(last.page);
+  await last.page.goto('http://127.0.0.1:7798/?mode=legacy#live'); await settle(last.page);
   await last.page.getByText('Waiting for subscription readings.', { exact: false }).waitFor();
   await last.page.getByText('No upcoming reset time has been reported.').waitFor();
   unavailable = true;
@@ -895,7 +895,7 @@ try {
    * it is not a second UI, and hiding a subscription in Settings hides it here too.
    */
   const pet = await contextFor();
-  await pet.page.goto('http://127.0.0.1:7798/?mode=popup');
+  await pet.page.goto('http://127.0.0.1:7798/?mode=popup#overview');
   await pet.page.getByRole('heading', { name: 'Quotas', exact: true }).waitFor();
   await pet.page.getByText('OpenAI Subscription', { exact: true }).waitFor();
   assert.equal(await pet.page.getByText('Claude Personal Subscription', { exact: true }).count(), 1);

@@ -49,6 +49,15 @@ export function HistorySection({ sources }: { sources: Array<{ id: number; displ
   currentKey.current = key;
   const mounted = useRef(true);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+  useEffect(() => {
+    const sync = () => {
+      if (location.hash.slice(1).split('?')[0] !== 'history') return;
+      const next = routeFilters();
+      setDraft(next); setFilters(next); setOffset(0);
+    };
+    addEventListener('hashchange', sync);
+    return () => removeEventListener('hashchange', sync);
+  }, []);
   useEffect(() => { if (selected && !dialog.current?.open) dialog.current?.showModal(); }, [selected]);
   useEffect(() => {
     if (location.hash.slice(1).split('?')[0] !== 'history') return;

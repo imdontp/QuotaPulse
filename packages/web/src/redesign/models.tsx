@@ -6,25 +6,26 @@ import { useFormat } from '@/i18n/format';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import { RedesignShell } from './shell';
+import { readScope, selectedScope, writeScope, type ScopeSelection, type ScopeRange } from './scope';
+import { ScopeNotice } from './scope-notice';
 import './models.css';
 
-type Range = 'today' | 'week' | 'month' | 'all';
+type Range = ScopeRange;
 type Metric = 'tokens' | 'calls' | 'api_value_usd';
 type Group = DetailedModelResponse['groups'][number];
-interface Route { range: Range; provider: string | null; vendor: string | null; metric: Metric; model: string | null | undefined; selectedProvider: string | null | undefined }
+interface Route extends ScopeSelection { provider: string | null; vendor: string | null; metric: Metric; model: string | null | undefined; selectedProvider: string | null | undefined }
 const identityKey = (group: { model: string | null; provider: string | null }) => JSON.stringify([group.model, group.provider]);
 function readRoute(): Route {
   const p = new URLSearchParams(location.hash.split('?')[1] ?? '');
-  const range = p.get('range');
   const metric = p.get('metric');
-  return { range: range === 'today' || range === 'week' || range === 'all' ? range : 'week',
+  return { ...readScope(p, 'month'),
     provider: p.get('provider'), vendor: p.get('vendor'),
     metric: metric === 'calls' || metric === 'api_value_usd' ? metric : 'tokens',
     model: p.get('model_missing') === '1' ? null : p.has('model') ? p.get('model') : undefined,
     selectedProvider: p.get('selected_provider_missing') === '1' ? null : p.has('selected_provider') ? p.get('selected_provider') : undefined };
 }
 function routeHash(route: Route) {
-  const p = new URLSearchParams({ range: route.range });
+  const p = writeScope(new URLSearchParams(), route);
   if (route.provider) p.set('provider', route.provider);
   if (route.vendor) p.set('vendor', route.vendor);
   if (route.metric !== 'tokens') p.set('metric', route.metric);
@@ -32,14 +33,6 @@ function routeHash(route: Route) {
   if (route.selectedProvider === null) p.set('selected_provider_missing', '1'); else if (route.selectedProvider !== undefined) p.set('selected_provider', route.selectedProvider);
   return `#models?${p}`;
 }
-function rangeScope(range: Range, now: number) {
-  if (range === 'all') return { from: 0, to: now + 1 };
-  if (range === 'week') return { from: now - 7 * 86_400_000, to: now + 1 };
-  if (range === 'month') return { from: now - 30 * 86_400_000, to: now + 1 };
-  const start = new Date(now); start.setHours(0, 0, 0, 0);
-  return { from: start.getTime(), to: now + 1 };
-}
-
 export function ProductionModels() {
   const t = useT();
   const f = useFormat();
@@ -52,7 +45,7 @@ export function ProductionModels() {
   const [error, setError] = useState<string | null>(null);
   const [detailError, setDetailError] = useState<string | null>(null);
   const refresh = useRefreshStatus();
-  const requestKey = JSON.stringify([route.range, route.provider, route.vendor]);
+  const requestKey = JSON.stringify([route.range, route.from, route.to, route.sourceId, route.provider, route.vendor]);
   const currentKey = useRef(requestKey);
   currentKey.current = requestKey;
   useEffect(() => {
@@ -67,14 +60,14 @@ export function ProductionModels() {
   };
   useLiveRefresh(async () => {
     const key = requestKey;
-    const range = rangeScope(route.range, Date.now());
+    const range = selectedScope(route, Date.now());
     try {
       const basePromise = api.detailedModels(range);
       const dataPromise = route.provider || route.vendor ? api.detailedModels({ ...range, ...(route.provider ? { provider: route.provider } : {}), ...(route.vendor ? { vendor: route.vendor } : {}) }) : basePromise;
       const [base, data] = await Promise.all([basePromise, dataPromise]);
       if (currentKey.current === key) { setSnapshot({ key, base, data }); setError(null); }
     } catch (cause) { if (currentKey.current === key) setError(String(cause)); throw cause; }
-  }, [route.range, route.provider, route.vendor]);
+  }, [requestKey]);
 
   const current = snapshot?.key === requestKey ? snapshot : null;
   const data = current?.data;
@@ -121,17 +114,18 @@ export function ProductionModels() {
   const name = (value: string | null) => value || t('redesign.modelsUnspecified');
   const coverage = (group: Group) => group.calls > 0 ? (group.native_calls + group.computed_calls + group.estimated_calls) / group.calls * 100 : null;
   const cacheShare = (group: Group) => group.inputTokens + group.cachedInputTokens + group.cacheWriteTokens > 0 ? group.cachedInputTokens / (group.inputTokens + group.cachedInputTokens + group.cacheWriteTokens) * 100 : null;
-  const historyHref = selected && data && selected.model && selected.provider ? `#history?${new URLSearchParams({ range: 'custom', from: String(data.scope.from), to: String(data.scope.to), model: selected.model, provider: selected.provider, ...(data.scope.vendor ? { vendor: data.scope.vendor } : {}) })}` : null;
+  const historyHref = selected && data && selected.model && selected.provider ? `#history?${new URLSearchParams({ range: 'custom', from: String(data.scope.from), to: String(data.scope.to), model: selected.model, provider: selected.provider, ...(data.scope.vendor ? { vendor: data.scope.vendor } : {}), ...(data.scope.sourceId ? { source: String(data.scope.sourceId) } : {}) })}` : null;
 
   return <RedesignShell active="models" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-models">
     <header className="qp-model-header"><div><h1><Layers size={24}/>{t('redesign.modelsHeading')}</h1><p>{t('redesign.modelsSubtitle')}</p></div><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
     {error && <p className="qp-model-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     <div className="qp-model-toolbar"><label className="qp-model-search"><Search size={15}/><span className="qp-visually-hidden">{t('redesign.modelsSearch')}</span><input value={search} onChange={event => setSearch(event.target.value)} placeholder={t('redesign.modelsSearch')} maxLength={256}/></label>
-      <label>{t('redesign.projectRange')}<select value={route.range} onChange={event => update({ range: event.target.value as Range, model: undefined, selectedProvider: undefined })}><option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.last7')}</option><option value="month">{t('redesign.last30')}</option><option value="all">{t('redesign.allTime')}</option></select></label>
+      <label>{t('redesign.projectRange')}<select value={route.range} onChange={event => update({ range: event.target.value as Range, model: undefined, selectedProvider: undefined })}><option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.thisWeek')}</option><option value="month">{t('redesign.thisMonth')}</option><option value="all">{t('redesign.allTime')}</option>{route.range === 'custom' && <option value="custom">{t('usage.custom')}</option>}</select></label>
       <label>{t('redesign.modelsProvider')}<select value={route.provider ?? ''} onChange={event => update({ provider: event.target.value || null, model: undefined, selectedProvider: undefined })}><option value="">{t('redesign.modelsAllProviders')}</option>{providers.map(provider => <option key={provider} value={provider}>{provider}</option>)}</select></label>
       <label>{t('redesign.modelsVendor')}<select value={route.vendor ?? ''} onChange={event => update({ vendor: event.target.value || null, model: undefined, selectedProvider: undefined })}><option value="">{t('redesign.modelsAllVendors')}</option>{vendors.map(vendor => <option key={vendor} value={vendor}>{vendor}</option>)}</select></label>
       <label>{t('redesign.modelsMetric')}<select value={route.metric} onChange={event => update({ metric: event.target.value as Metric })}><option value="tokens">{t('redesign.modelsTokens')}</option><option value="calls">{t('redesign.modelsCalls')}</option><option value="api_value_usd">{t('redesign.modelsValue')}</option></select></label>
     </div>
+    <ScopeNotice scope={route}/>
     {!current ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : <>
       <section className="qp-model-summary" aria-label={t('redesign.modelsHeading')}>
         <article className="qp-panel"><span>{t('redesign.modelsCount')}</span><strong>{number(groups.length)}</strong></article>

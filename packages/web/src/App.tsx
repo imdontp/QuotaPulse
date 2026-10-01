@@ -368,6 +368,9 @@ function Dashboard() {
                 exit={reduced ? undefined : { opacity: 0, y: -4 }}
                 transition={{ duration: 0.18, ease: 'easeOut' }}
               >
+                <TabsContent value="overview" forceMount={tab === 'overview' ? true : undefined}>
+                  {tab === 'overview' && (ov ? <UsageSection ov={ov} sources={ov.sources} /> : <Loading />)}
+                </TabsContent>
                 <TabsContent value="live" forceMount={tab === 'live' ? true : undefined}>
                   {tab === 'live' && (ov ? <LiveSection ov={ov} onOpenLimits={() => setTab('limits')} onOpenHealth={() => setTab('health')} onOpenCost={() => navigateUsage('cost')} /> : <Loading />)}
                 </TabsContent>

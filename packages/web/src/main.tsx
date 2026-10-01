@@ -1,6 +1,7 @@
 import { StrictMode, Suspense, lazy, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { I18nProvider } from '@/i18n';
+import { canonicalHash } from '@/redesign/routes';
 const App = lazy(() => import('@/App'));
 const ProductionOverview = lazy(() => import('@/redesign/production').then(module => ({ default: module.ProductionOverview })));
 const ProductionProjects = lazy(() => import('@/redesign/projects').then(module => ({ default: module.ProductionProjects })));
@@ -9,6 +10,7 @@ const ProductionProviders = lazy(() => import('@/redesign/providers').then(modul
 const ProductionModels = lazy(() => import('@/redesign/models').then(module => ({ default: module.ProductionModels })));
 const ProductionCost = lazy(() => import('@/redesign/cost').then(module => ({ default: module.ProductionCost })));
 const ProductionAlerts = lazy(() => import('@/redesign/alerts').then(module => ({ default: module.ProductionAlerts })));
+const ProductionUtilityPage = lazy(() => import('@/redesign/utility-pages').then(module => ({ default: module.ProductionUtilityPage })));
 /*
  * Fonts are bundled, not fetched. index.html used to pull Geist from fonts.googleapis.com
  * on every page load, which quietly broke the promise made in four places in the README
@@ -22,17 +24,24 @@ import '@fontsource-variable/geist-mono/wght.css';
 import '@/index.css';
 
 const root = createRoot(document.getElementById('root')!);
+function routedHash() {
+  const mode = new URLSearchParams(location.search).get('mode');
+  if (mode === 'popup' || mode === 'legacy') return location.hash;
+  const next = canonicalHash(location.hash);
+  if (next !== location.hash) history.replaceState(null, '', `${location.pathname}${location.search}${next}`);
+  return next;
+}
 function RoutedApp() {
-  const [hash, setHash] = useState(() => location.hash);
+  const [hash, setHash] = useState(routedHash);
   useEffect(() => {
-    const onHash = () => setHash(location.hash);
+    const onHash = () => setHash(routedHash());
     addEventListener('hashchange', onHash);
     return () => removeEventListener('hashchange', onHash);
   }, []);
   const route = hash.slice(1).split('?')[0];
-  if (route === 'overview' || route === 'projects' || route === 'providers' || route === 'models' || route === 'cost' || ((route === 'alerts' || route === 'live') && new URLSearchParams(hash.split('?')[1] ?? '').get('mode') === 'redesign'))
-    return <Suspense fallback={<div role="status">Loading…</div>}><I18nProvider>{route === 'overview' ? <ProductionOverview /> : route === 'projects' ? <ProductionProjects /> : route === 'providers' ? <ProductionProviders /> : route === 'models' ? <ProductionModels /> : route === 'cost' ? <ProductionCost /> : route === 'alerts' ? <ProductionAlerts /> : <ProductionLive />}</I18nProvider></Suspense>;
-  return <Suspense fallback={<div role="status">Loading…</div>}><App /></Suspense>;
+  const mode = new URLSearchParams(location.search).get('mode');
+  if (mode === 'popup' || mode === 'legacy') return <Suspense fallback={<div role="status">Loading…</div>}><App /></Suspense>;
+  return <Suspense fallback={<div role="status">Loading…</div>}><I18nProvider>{route === 'overview' ? <ProductionOverview /> : route === 'projects' ? <ProductionProjects /> : route === 'providers' ? <ProductionProviders /> : route === 'models' ? <ProductionModels /> : route === 'cost' ? <ProductionCost /> : route === 'alerts' ? <ProductionAlerts /> : route === 'live' ? <ProductionLive /> : <ProductionUtilityPage page={route === 'history' ? 'history' : 'settings'}/>}</I18nProvider></Suspense>;
 }
 // The fixture and preview UI are excluded from production builds by Vite.
 if (import.meta.env.DEV && new URLSearchParams(location.search).get('mode') === 'redesign-preview') {

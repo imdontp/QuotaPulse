@@ -21,7 +21,8 @@ interface OwnerCard {
 }
 function routeState() {
   const params = new URLSearchParams(location.hash.split('?')[1] ?? '');
-  return { owner: params.get('owner'), window: params.get('window') };
+  const source = Number(params.get('source') ?? params.get('source_id'));
+  return { owner: params.get('owner'), window: params.get('window'), section: params.get('section'), source: Number.isSafeInteger(source) && source > 0 ? source : null };
 }
 function ownerKey(limit: Limit) { return limit.subscription_key ?? limit.account_key ?? `source:${limit.source_id}`; }
 
@@ -44,6 +45,8 @@ export function ProductionProviders() {
     const params = new URLSearchParams();
     if (next.owner) params.set('owner', next.owner);
     if (next.window) params.set('window', next.window);
+    if (next.section) params.set('section', next.section);
+    if (next.source) params.set('source', String(next.source));
     history.replaceState(null, '', `${location.pathname}${location.search}#providers${params.size ? `?${params}` : ''}`);
     setRoute(next);
   };
@@ -68,7 +71,11 @@ export function ProductionProviders() {
       readings: allReadings.filter(({ primary }) => ownerKey(primary) === `source:${source.source_id}`), hidden: false,
     })),
   ] : [];
-  const selected = cards.find(card => card.key === route.owner) ?? cards[0];
+  const selected = cards.find(card => card.key === route.owner) ?? cards.find(card => card.sources.some(source => source.source_id === route.source)) ?? cards[0];
+  const loaded = overview !== null;
+  useEffect(() => {
+    if (loaded && route.section === 'quotas') document.getElementById('provider-quotas')?.scrollIntoView({ block: 'start' });
+  }, [loaded, route.section]);
   const kinds = [...new Set(allReadings.map(({ primary }) => primary.window_kind))].sort((a, b) => windowRank(a) - windowRank(b));
   const kind = route.window && kinds.includes(route.window) ? route.window : kinds[0];
   const comparable = cards.map(card => ({ card, reading: card.readings.find(({ primary }) => primary.window_kind === kind)?.primary })).filter(({ reading }) =>
@@ -79,7 +86,7 @@ export function ProductionProviders() {
   const age = (at: number | null) => at === null || at > now ? t('redesign.unknownValue') : f.age((now - at) / 1000);
   const date = (at: number | null) => at === null || at > now ? t('redesign.unknownValue') : f.clock(at);
   const used = (reading: Limit) => reading.used_percent === null || isExpired(reading, now) || reading.last_seen_at > now ? null : reading.used_percent;
-  const manageHref = (card: OwnerCard) => card.subscription ? `#settings?subscription=${encodeURIComponent(card.key)}` : `#health?source_id=${card.sources[0]?.source_id ?? ''}`;
+  const manageHref = (card: OwnerCard) => card.subscription ? `#settings?subscription=${encodeURIComponent(card.key)}` : `#settings?section=diagnostics&source=${card.sources[0]?.source_id ?? ''}`;
 
   return <RedesignShell active="providers" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-providers">
     <header className="qp-provider-header"><div><h1><Cloud size={24}/>{t('redesign.providerHeading')}</h1><p>{t('redesign.providerSubtitle')}</p></div><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
@@ -100,7 +107,7 @@ export function ProductionProviders() {
         {selected.readings.length === 0 ? <p>{t('redesign.providerNoQuota')}</p> : <div className="qp-provider-detail-windows">{selected.readings.map(({ primary, superseded }) => <div key={primary.window_kind}><h3>{f.window(primary.window_kind)} · {used(primary) === null ? t('redesign.providerUnavailable') : f.pct(used(primary))}</h3><dl><dt>{t('redesign.providerOrigin')}</dt><dd>{primary.origin}</dd><dt>{t('redesign.providerObserved')}</dt><dd>{date(primary.observed_at)} · {age(primary.observed_at)}</dd><dt>{t('redesign.providerConfirmed')}</dt><dd>{date(primary.last_seen_at)} · {age(primary.last_seen_at)}</dd><dt>{t('redesign.providerReset')}</dt><dd>{date(primary.resets_at)}</dd></dl>{superseded.length > 0 && <details><summary>{t('redesign.providerOtherReaders')} ({superseded.length})</summary><ul>{superseded.map(reader => <li key={`${reader.source_id}-${reader.origin}`}>{reader.display_name} · {reader.origin} · {date(reader.observed_at)}</li>)}</ul></details>}</div>)}</div>}
       </section>}
       <div className="qp-provider-bottom">
-        <section className="qp-panel qp-provider-comparison"><div className="qp-provider-section-head"><h2>{t('redesign.providerComparison')}</h2>{kinds.length > 0 && <label>{t('redesign.projectRange')}<select value={kind} onChange={event => update({ window: event.target.value })}>{kinds.map(value => <option key={value} value={value}>{f.window(value)}</option>)}</select></label>}</div><p className="qp-footnote">{t('redesign.providerComparisonNote')}</p>
+        <section id="provider-quotas" className="qp-panel qp-provider-comparison"><div className="qp-provider-section-head"><h2>{t('redesign.providerComparison')}</h2>{kinds.length > 0 && <label>{t('redesign.projectRange')}<select value={kind} onChange={event => update({ window: event.target.value })}>{kinds.map(value => <option key={value} value={value}>{f.window(value)}</option>)}</select></label>}</div><p className="qp-footnote">{t('redesign.providerComparisonNote')}</p>
           {comparable.length === 0 ? <p>{t('redesign.providerNoComparison')}</p> : <ol>{comparable.map(({ card, reading }) => <li key={card.key}><span>{card.title}</span><span className="qp-bar"><span style={{ width: `${Math.max(0, Math.min(100, reading.used_percent ?? 0))}%` }}/></span><strong>{f.pct(reading.used_percent)}</strong></li>)}</ol>}
           <p className="qp-footnote">{excluded} {t('redesign.providerExcluded')}</p>
         </section>

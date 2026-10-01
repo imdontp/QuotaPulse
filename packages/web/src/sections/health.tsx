@@ -31,9 +31,17 @@ export function HealthSection() {
   []);
 
   useEffect(() => {
-    if (!h || location.hash.slice(1).split('?')[0] !== 'health') return;
-    const sourceId = new URLSearchParams(location.hash.split('?')[1] ?? '').get('source_id');
+    if (!h) return;
+    const scrollToSource = () => {
+    const route = location.hash.slice(1).split('?')[0];
+    const params = new URLSearchParams(location.hash.split('?')[1] ?? '');
+    if (route !== 'health' && !(route === 'settings' && params.get('section') === 'diagnostics')) return;
+    const sourceId = params.get('source') ?? params.get('source_id');
     if (sourceId && /^\d+$/.test(sourceId)) document.getElementById(`health-source-${sourceId}`)?.scrollIntoView({ block: 'center' });
+    };
+    scrollToSource();
+    addEventListener('hashchange', scrollToSource);
+    return () => removeEventListener('hashchange', scrollToSource);
   }, [h]);
 
   if (err && !h) return <ErrorBox>{err}</ErrorBox>;

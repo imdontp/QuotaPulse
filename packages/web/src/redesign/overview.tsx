@@ -24,6 +24,8 @@ interface OverviewProps {
   quotaHistory?: QuotaHistoryResponse | null;
   quotaHistoryError?: boolean;
   recent?: readonly ActivityItem[];
+  period?: string;
+  historyHref?: string;
 }
 
 export interface ActivityItem {
@@ -138,7 +140,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ records = [], graph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, recent }: OverviewProps) {
+export function Overview({ records = [], graph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, recent, period, historyHref = '#history?range=today' }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -173,10 +175,10 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', update); };
   }, []);
   return <RedesignShell active="overview" rootRef={shell} theme={theme} language={language} onLanguage={onLanguage} onTheme={() => onTheme ? onTheme() : setLocalTheme(theme === 'dark' ? 'light' : 'dark')} t={t} preview={preview} testId={preview ? 'redesign-preview' : 'production-overview'}>
-        <div className="qp-page-heading"><h1>{t('redesign.title')}</h1><span className="qp-chip">{new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(now)}</span></div>
+        <div className="qp-page-heading"><h1>{t('redesign.title')}</h1><span className="qp-chip">{period ?? new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(now)}</span></div>
         <div className="qp-hero-grid">
           <section className="qp-panel qp-hero">
-            <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.core')}</h2><span className="qp-status" data-risk={state?.risk ?? 'unknown'}>{t(riskLabel(state))}</span></div>
+            <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.core')}</h2>{period && <span className="qp-chip">{period}</span>}<span className="qp-status" data-risk={state?.risk ?? 'unknown'}>{t(riskLabel(state))}</span></div>
             <div className="qp-core-grid"><div className="qp-metrics">
               <Metric label={t('redesign.tokens')} value={number(totals.tokens)}/>
               <Metric label={t('redesign.sessions')} value={number(totals.sessions)}/>
@@ -206,7 +208,7 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
           </section>
         </div>
         <section className="qp-panel qp-activity" data-testid="recent-activity">
-          <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.activity')}</h2>{!preview && <a href="#history?range=today">{t('redesign.openHistory')} <ArrowUpRight size={14}/></a>}</div>
+          <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.activity')}</h2>{!preview && <a href={historyHref}>{t('redesign.openHistory')} <ArrowUpRight size={14}/></a>}</div>
           {activities.length === 0 ? <p className="qp-footnote">{t('redesign.noRecent')}</p> : <div className="qp-activity-list">{activities.map(item => {
             const content = <><strong>{item.harness}<time dateTime={new Date(item.timestamp).toISOString()}>{new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit' }).format(item.timestamp)}</time></strong><span>{item.provider ?? t('redesign.unknownValue')} · {item.model ?? t('redesign.unknownValue')}</span><small>{number(item.tokens)} {t('redesign.tokens')} · {t(item.grain === 'call' ? 'redesign.callRecord' : 'redesign.aggregateUpdate')}</small></>;
             return preview ? <div className="qp-activity-item" key={item.id}>{content}</div>

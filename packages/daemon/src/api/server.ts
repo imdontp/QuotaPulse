@@ -2,6 +2,7 @@ import Fastify, { type FastifyInstance, type FastifyReply } from 'fastify';
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import { extname, join, normalize, resolve, sep } from 'node:path';
 import { Readable } from 'node:stream';
+import type { ServerResponse } from 'node:http';
 import { fileURLToPath } from 'node:url';
 import type { DB } from '../db/index.js';
 import type { Scheduler } from '../ingest/scheduler.js';
@@ -110,6 +111,10 @@ export interface ServerOptions {
 
 export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): FastifyInstance {
   const app = Fastify({ logger: false, bodyLimit: 1 << 20 });
+  const eventStreams = new Set<ServerResponse>();
+  app.addHook('preClose', async () => {
+    for (const stream of eventStreams) stream.end();
+  });
 
   const webRoot =
     opts.webRoot ??
@@ -602,6 +607,10 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
   // Server-sent events: the dashboard updates immediately when ingest produces rows;
   // the client also has a local fallback query for quiet or interrupted streams.
   app.get('/api/events/stream', async (req, reply) => {
+    // The response owns the stream lifetime. A request close is not an SSE
+    // disconnect, and an unresolved handler prevents graceful shutdown.
+    reply.hijack();
+    eventStreams.add(reply.raw);
     reply.raw.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache, no-transform',
@@ -627,12 +636,12 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
 
     // Keep intermediaries and idle sockets from dropping a quiet stream.
     const ping = setInterval(() => reply.raw.write(': ping\n\n'), 25_000);
-    req.raw.on('close', () => {
+    reply.raw.once('close', () => {
       clearInterval(ping);
       scheduler.off('data', onData);
       scheduler.off('settings', onSettings);
+      eventStreams.delete(reply.raw);
     });
-    await new Promise(() => {}); // held open until the client disconnects
   });
 
   // Static dashboard. Hand-rolled rather than @fastify/static: the whitelist below is

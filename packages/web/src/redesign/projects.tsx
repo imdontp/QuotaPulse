@@ -5,23 +5,24 @@ import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import { RedesignShell } from './shell';
+import { readScope, selectedScope, writeScope, type ScopeSelection, type ScopeRange } from './scope';
+import { ScopeNotice } from './scope-notice';
 import './projects.css';
 
-type Range = 'today' | 'week' | 'month' | 'all';
+type Range = ScopeRange;
 type Tab = 'all' | 'recent' | 'unassigned';
 type Sort = 'tokens' | 'recent' | 'value';
 type DetailTab = 'overview' | 'sessions' | 'usage' | 'details';
-interface Route { range: Range; tab: Tab; sort: Sort; harness: string | null; project: string | null | undefined; detail: DetailTab; offset: number }
+interface Route extends ScopeSelection { tab: Tab; sort: Sort; harness: string | null; project: string | null | undefined; detail: DetailTab; offset: number }
 
 function readRoute(): Route {
   const params = new URLSearchParams(location.hash.split('?')[1] ?? '');
-  const range = params.get('range');
   const tab = params.get('tab');
   const sort = params.get('sort');
   const detail = params.get('detail');
   const offset = Number(params.get('offset'));
   return {
-    range: range === 'today' || range === 'week' || range === 'all' ? range : 'month',
+    ...readScope(params, 'month'),
     tab: tab === 'recent' || tab === 'unassigned' ? tab : 'all',
     sort: sort === 'recent' || sort === 'value' ? sort : 'tokens',
     harness: params.get('harness'),
@@ -32,7 +33,7 @@ function readRoute(): Route {
 }
 
 function routeHash(route: Route) {
-  const params = new URLSearchParams({ range: route.range });
+  const params = writeScope(new URLSearchParams(), route);
   if (route.tab !== 'all') params.set('tab', route.tab);
   if (route.sort !== 'tokens') params.set('sort', route.sort);
   if (route.harness) params.set('harness', route.harness);
@@ -41,15 +42,6 @@ function routeHash(route: Route) {
   if (route.detail !== 'overview') params.set('detail', route.detail);
   if (route.offset > 0) params.set('offset', String(route.offset));
   return `#projects?${params}`;
-}
-
-function rangeScope(range: Range, now: number) {
-  if (range === 'all') return { from: 0, to: now + 1 };
-  if (range === 'week') return { from: now - 7 * 86_400_000, to: now + 1 };
-  if (range === 'month') return { from: now - 30 * 86_400_000, to: now + 1 };
-  const start = new Date(now);
-  start.setHours(0, 0, 0, 0);
-  return { from: start.getTime(), to: now + 1 };
 }
 
 export function ProductionProjects() {
@@ -63,7 +55,7 @@ export function ProductionProjects() {
   const [detailError, setDetailError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const refresh = useRefreshStatus();
-  const requestKey = JSON.stringify([route.range, route.harness]);
+  const requestKey = JSON.stringify([route.range, route.from, route.to, route.sourceId, route.harness]);
   const currentKey = useRef(requestKey);
   currentKey.current = requestKey;
   useEffect(() => {
@@ -80,14 +72,14 @@ export function ProductionProjects() {
   useLiveRefresh(async () => {
     const requestedKey = requestKey;
     try {
-      const scope = { ...rangeScope(route.range, Date.now()), ...(route.harness ? { harness: route.harness } : {}) };
+      const scope = { ...selectedScope(route, Date.now()), ...(route.harness ? { harness: route.harness } : {}) };
       const [data, overview] = await Promise.all([api.detailedProjects(scope), api.overview()]);
       if (currentKey.current === requestedKey) { setSnapshot({ key: requestedKey, data, overview }); setError(null); }
     } catch (cause) {
       if (currentKey.current === requestedKey) setError(String(cause));
       throw cause;
     }
-  }, [route.range, route.harness]);
+  }, [requestKey]);
 
   const currentSnapshot = snapshot?.key === requestKey ? snapshot : null;
   const groups = currentSnapshot?.data.groups ?? [];
@@ -134,6 +126,7 @@ export function ProductionProjects() {
     if (detailScope.projectMissing) params.set('project_missing', '1');
     else params.set('project', detailScope.project!);
     if (detailScope.harness) params.set('harness', detailScope.harness);
+    if (detailScope.sourceId) params.set('source', String(detailScope.sourceId));
     if (sessionId !== undefined) params.set('session_id', String(sessionId));
     return `#history?${params}`;
   };
@@ -149,10 +142,11 @@ export function ProductionProjects() {
     <div className="qp-project-toolbar">
       <div className="qp-project-tabs" role="group" aria-label={t('redesign.projectHeading')}>{(['all', 'recent', 'unassigned'] as const).map(tab => <button key={tab} aria-pressed={route.tab === tab} onClick={() => update({ tab, project: undefined, offset: 0 })}>{t(tab === 'all' ? 'redesign.allProjects' : tab === 'recent' ? 'redesign.recentProjects' : 'redesign.unassignedProjects')}</button>)}</div>
       <label className="qp-project-search"><Search size={16}/><span className="qp-visually-hidden">{t('redesign.searchProjects')}</span><input value={search} onChange={event => setSearch(event.target.value)} placeholder={t('redesign.searchProjects')} maxLength={4096}/></label>
-      <label>{t('redesign.projectRange')}<select value={route.range} onChange={event => update({ range: event.target.value as Range, project: undefined, offset: 0 })}><option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.last7')}</option><option value="month">{t('redesign.last30')}</option><option value="all">{t('redesign.allTime')}</option></select></label>
+      <label>{t('redesign.projectRange')}<select value={route.range} onChange={event => update({ range: event.target.value as Range, project: undefined, offset: 0 })}><option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.thisWeek')}</option><option value="month">{t('redesign.thisMonth')}</option><option value="all">{t('redesign.allTime')}</option>{route.range === 'custom' && <option value="custom">{t('usage.custom')}</option>}</select></label>
       <label>{t('redesign.projectHarness')}<select value={route.harness ?? ''} onChange={event => update({ harness: event.target.value || null, project: undefined, offset: 0 })}><option value="">{t('redesign.allHarnesses')}</option>{harnesses.map(harness => <option key={harness} value={harness}>{harness}</option>)}</select></label>
       <label><ArrowDownUp size={15}/>{t('redesign.projectSort')}<select value={route.sort} onChange={event => update({ sort: event.target.value as Sort })}><option value="tokens">{t('redesign.sortTokens')}</option><option value="recent">{t('redesign.sortRecent')}</option><option value="value">{t('redesign.sortValue')}</option></select></label>
     </div>
+    <ScopeNotice scope={route}/>
     {!currentSnapshot ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : <div className="qp-project-layout">
       <section className="qp-project-cards" aria-label={t('redesign.allProjects')}>
         {visible.length === 0 && <p className="qp-panel">{t('redesign.noProjects')}</p>}

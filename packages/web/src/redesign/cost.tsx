@@ -6,23 +6,15 @@ import { useFormat } from '@/i18n/format';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import { RedesignShell } from './shell';
+import { readScope, selectedScope, writeScope, type ScopeRange } from './scope';
+import { ScopeNotice } from './scope-notice';
 import './cost.css';
 
-type Range = 'today' | 'week' | 'month' | 'last30' | 'all';
+type Range = ScopeRange;
 type Basis = 'api' | 'native';
 function readRoute() {
   const p = new URLSearchParams(location.hash.split('?')[1] ?? '');
-  const range = p.get('range');
-  return { range: (['today', 'week', 'last30', 'all'] as string[]).includes(range ?? '') ? range as Range : 'month', basis: p.get('basis') === 'native' ? 'native' as Basis : 'api' as Basis };
-}
-function rangeScope(range: Range, now: number) {
-  if (range === 'all') return { from: 0, to: now + 1 };
-  if (range === 'week') return { from: now - 7 * 86_400_000, to: now + 1 };
-  if (range === 'last30') return { from: now - 30 * 86_400_000, to: now + 1 };
-  const start = new Date(now);
-  if (range === 'today') start.setHours(0, 0, 0, 0);
-  else { start.setDate(1); start.setHours(0, 0, 0, 0); }
-  return { from: start.getTime(), to: now + 1 };
+  return { ...readScope(p, 'all', true), basis: p.get('basis') === 'native' ? 'native' as Basis : 'api' as Basis };
 }
 const colors = ['#2bb8ef', '#775cf6', '#18cfa9', '#f58e43', '#8796ae', '#d364e9'];
 
@@ -35,7 +27,7 @@ export function ProductionCost() {
   const [snapshot, setSnapshot] = useState<{ key: string; data: CostAnalysisResponse } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const refresh = useRefreshStatus();
-  const key = `${route.range}:${route.basis}`;
+  const key = JSON.stringify([route.range, route.from, route.to, route.sourceId, route.basis]);
   const currentKey = useRef(key); currentKey.current = key;
   useEffect(() => {
     const sync = () => { if (location.hash.slice(1).split('?')[0] === 'cost') setRoute(readRoute()); };
@@ -44,24 +36,24 @@ export function ProductionCost() {
   }, []);
   const update = (patch: Partial<typeof route>) => {
     const next = { ...route, ...patch };
-    const p = new URLSearchParams({ range: next.range, basis: next.basis });
+    const p = writeScope(new URLSearchParams({ basis: next.basis }), next);
     history.replaceState(null, '', `${location.pathname}${location.search}#cost?${p}`);
     setRoute(next);
   };
   useLiveRefresh(async () => {
     const requestKey = key;
     try {
-      const data = await api.costAnalysis(rangeScope(route.range, Date.now()), route.basis);
+      const data = await api.costAnalysis(selectedScope(route, Date.now()), route.basis);
       if (currentKey.current === requestKey) { setSnapshot({ key: requestKey, data }); setError(null); }
     } catch (cause) { if (currentKey.current === requestKey) setError(String(cause)); throw cause; }
-  }, [route.range, route.basis]);
+  }, [key]);
   const data = snapshot?.key === key ? snapshot.data : null;
   const total = data?.totals;
   const number = (value: number) => new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 }).format(value);
   const money = (usd: number) => new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency }).format(currency === 'THB' ? usd * rate : usd);
   const percent = (value: number) => new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'percent', maximumFractionDigits: 1 }).format(value);
   const displayValue = (amount: number, pricedCalls: number, allCalls: number) => allCalls === 0 ? money(0) : pricedCalls === 0 ? t('redesign.unknownValue') : `${money(amount)}${pricedCalls < allCalls ? '+' : ''}`;
-  const historyHref = (extra: Record<string, string> = {}) => data ? `#history?${new URLSearchParams({ range: 'custom', from: String(data.scope.from), to: String(data.scope.to), ...extra })}` : '#history';
+  const historyHref = (extra: Record<string, string> = {}) => data ? `#history?${new URLSearchParams({ range: 'custom', from: String(data.scope.from), to: String(data.scope.to), ...(data.scope.sourceId ? { source: String(data.scope.sourceId) } : {}), ...extra })}` : '#history';
   const elapsedDays = data ? (data.scope.to - data.scope.from) / 86_400_000 : 0;
   const fullDays = Math.floor(elapsedDays);
   const trend = data ? Array.from({ length: Math.ceil((data.scope.to - data.scope.from) / data.bucketMs) }, (_, index) => {
@@ -80,7 +72,8 @@ export function ProductionCost() {
 
   return <RedesignShell active="cost" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-cost">
     <header className="qp-cost-header"><div><h1><BarChart3 size={24}/>{t('redesign.costHeading')}</h1><p>{t('redesign.costSubtitle')}</p></div><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
-    <div className="qp-cost-toolbar"><label>{t('redesign.projectRange')}<select value={route.range} onChange={event => update({ range: event.target.value as Range })}><option value="month">{t('redesign.costMonthToDate')}</option><option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.last7')}</option><option value="last30">{t('redesign.last30')}</option><option value="all">{t('redesign.allTime')}</option></select></label><label>{t('redesign.costBasis')}<select value={route.basis} onChange={event => update({ basis: event.target.value as Basis })}><option value="api">{t('redesign.costApiBasis')}</option><option value="native">{t('redesign.costNativeBasis')}</option></select></label></div>
+    <div className="qp-cost-toolbar"><label>{t('redesign.projectRange')}<select value={route.range} onChange={event => update({ range: event.target.value as Range })}><option value="month">{t('redesign.costMonthToDate')}</option><option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.thisWeek')}</option><option value="last30">{t('redesign.last30')}</option><option value="all">{t('redesign.allTime')}</option>{route.range === 'custom' && <option value="custom">{t('usage.custom')}</option>}</select></label><label>{t('redesign.costBasis')}<select value={route.basis} onChange={event => update({ basis: event.target.value as Basis })}><option value="api">{t('redesign.costApiBasis')}</option><option value="native">{t('redesign.costNativeBasis')}</option></select></label></div>
+    <ScopeNotice scope={route}/>
     {error && <p className="qp-cost-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     {!data ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : <>
       <section className="qp-cost-summary" aria-label={t('redesign.costHeading')}><article className="qp-panel"><span>{t('redesign.costTotal')}</span><strong>{displayValue(total!.amount, total!.pricedCalls, total!.allCalls)}</strong><small>{route.basis === 'api' ? t('redesign.costApiBasis') : t('redesign.costNativeBasis')}</small></article><article className="qp-panel"><span>{t('redesign.costDaily')}</span><strong>{fullDays > 0 && total!.pricedCalls > 0 ? money(total!.amount / elapsedDays) : t('redesign.unknownValue')}</strong><small>{fullDays} {t('redesign.costDays')}</small></article><article className="qp-panel"><span>{t('redesign.costProjection')}</span><strong>{t('redesign.unknownValue')}</strong><small>{t(route.basis === 'api' ? 'redesign.costProjectionUnavailable' : 'redesign.costNativeProjection')}</small></article><article className="qp-panel"><span>{t('redesign.costPerThousand')}</span><strong>{total!.pricedTokens > 0 ? money(total!.amount / total!.pricedTokens * 1000) : t('redesign.unknownValue')}</strong><small>{t('redesign.costAllTokens')}: {f.tokens(total!.allTokens)}</small></article></section>

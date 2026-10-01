@@ -739,6 +739,9 @@
   .qp-hero>.qp-section-heading {
     flex-wrap:wrap;
   }
+  .qp-hero>.qp-section-heading>.qp-chip {
+    display:block;
+  }
   .qp-model-row {
     grid-template-columns:minmax(0,1fr) 55px;
   }

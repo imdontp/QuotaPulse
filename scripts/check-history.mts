@@ -43,13 +43,15 @@ try {
   await daemon.listen({ host: '127.0.0.1', port: 7800 });
   await vite.listen();
   browser = await chromium.launch({ channel: 'chrome', headless: true });
-  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce', deviceScaleFactor: 1, timezoneId: 'Asia/Bangkok' });
   await page.addInitScript(() => { (window as unknown as { __QUOTAPULSE_TOKEN__: string }).__QUOTAPULSE_TOKEN__ = 'history-test'; });
   const errors: string[] = [];
   const requests: string[] = [];
   const liveRequests: string[] = [];
+  const modelRequests: string[] = [];
+  const costRequests: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
-  page.on('request', request => { if (request.url().includes('/api/usage-events')) requests.push(request.url()); if (request.url().includes('/api/live-sessions')) liveRequests.push(request.url()); });
+  page.on('request', request => { if (request.url().includes('/api/usage-events')) requests.push(request.url()); if (request.url().includes('/api/live-sessions')) liveRequests.push(request.url()); if (request.url().includes('/api/models?detailed=1')) modelRequests.push(request.url()); if (request.url().includes('/api/cost-analysis?')) costRequests.push(request.url()); });
   await page.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
   await page.goto('http://127.0.0.1:7801/#history?range=all');
   const history = page.getByTestId('usage-history');
@@ -143,7 +145,7 @@ try {
       }
     }
   }
-  await page.goto('http://127.0.0.1:7801/#live');
+  await page.goto('http://127.0.0.1:7801/?mode=legacy#live');
   const chart = page.getByTestId('recorded-minute-trend');
   await chart.getByRole('img').waitFor().catch(async error => {
     console.error('Live chart diagnostic', page.url(), errors, (await page.locator('body').innerText()).slice(0, 1800));
@@ -186,13 +188,35 @@ try {
   await page.reload();
   await overview.locator('.qp-metrics strong').first().getByText('7,525').waitFor();
   assert.equal(await overview.getAttribute('data-theme'), 'dark');
+  const overviewFrom = now - 60_000;
+  const overviewTo = Date.now() + 1;
+  await page.goto(`http://127.0.0.1:7801/#overview?range=custom&from=${overviewFrom}&to=${overviewTo}&source=2`);
+  await overview.locator('.qp-metrics strong').first().getByText('999', { exact: true }).waitFor();
+  assert.equal(await overview.locator('.qp-hero .qp-chip').isVisible(), true);
+  assert.match(await overview.getByTestId('recent-activity').innerText(), /hermes/);
+  await overview.getByTestId('recent-activity').getByRole('link', { name: 'Open History', exact: true }).click();
+  const scopedOverviewHistory = new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
+  assert.equal(scopedOverviewHistory.get('source'), '2');
+  assert.equal(scopedOverviewHistory.get('from'), String(overviewFrom));
+  assert.equal(scopedOverviewHistory.get('to'), String(overviewTo));
+  await page.getByTestId('usage-history').getByText('1–1 of 1 records', { exact: true }).waitFor();
+  await page.goto('http://127.0.0.1:7801/#overview');
+  await overview.locator('.qp-metrics strong').first().getByText('7,525').waitFor();
   await page.screenshot({ path: resolve(output, 'overview-real-en-dark-1440.png'), fullPage: true });
   assert.equal(await overview.locator('.qp-machine-scope').innerText(), 'This machine');
   await overview.getByRole('button', { name: 'Go to' }).click();
   const palette = page.getByRole('dialog', { name: 'Command palette' });
+  await palette.locator('input').focus();
+  await page.keyboard.press('Shift+Tab');
+  assert.equal(await palette.locator('button').last().evaluate(element => element === document.activeElement), true);
+  await page.keyboard.press('Tab');
+  assert.equal(await palette.locator('input').evaluate(element => element === document.activeElement), true);
+  await page.keyboard.press('Escape');
+  assert.equal(await overview.getByRole('button', { name: 'Go to' }).evaluate(element => element === document.activeElement), true);
+  await overview.getByRole('button', { name: 'Go to' }).click();
   await palette.getByRole('button', { name: 'Settings' }).click();
   await page.waitForURL('**/#settings');
-  await page.getByRole('heading', { name: 'Settings', exact: true }).waitFor();
+  await page.getByRole('heading', { name: 'Settings', exact: true, level: 1 }).waitFor();
   await page.goto('http://127.0.0.1:7801/#overview');
   await overview.locator('.qp-metrics strong').first().getByText('7,525').waitFor();
   await page.keyboard.press('Control+k');
@@ -252,7 +276,7 @@ try {
   await projects.locator('.qp-project-card').first().waitFor();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Thai projects mobile overflow');
   await page.screenshot({ path: resolve(output, 'projects-real-th-light-390.png'), fullPage: true });
-  await page.goto('http://127.0.0.1:7801/#live?mode=redesign');
+  await page.goto('http://127.0.0.1:7801/#live');
   const live = page.getByTestId('production-live');
   await live.getByRole('heading', { name: 'ติดตามการใช้งานสด', exact: true }).waitFor();
   await live.getByRole('img', { name: /โทเคนที่บันทึกต่อนาที/ }).waitFor();
@@ -299,7 +323,7 @@ try {
   await providers.locator('.qp-provider-detail').getByText('No quota percentage published').waitFor();
   await page.screenshot({ path: resolve(output, 'providers-real-en-dark-1440.png'), fullPage: true });
   await providers.locator('.qp-provider-card').filter({ hasText: 'Hermes test' }).getByRole('link', { name: 'Open diagnostics' }).click();
-  await page.waitForURL(/#health\?source_id=2/);
+  await page.waitForURL(/#settings\?.*section=diagnostics/);
   await page.locator('#health-source-2').waitFor();
   await page.goto('http://127.0.0.1:7801/#providers');
   await providers.locator('.qp-provider-card').filter({ hasText: 'OpenAI Subscription' }).getByRole('link', { name: 'Manage in Settings' }).click();
@@ -326,6 +350,9 @@ try {
   const models = page.getByTestId('production-models');
   await models.getByRole('heading', { name: 'Model usage', exact: true }).waitFor();
   await models.locator('.qp-model-table-wrap tbody tr').first().waitFor();
+  const modelDefaultFrom = Number(new URL(modelRequests.at(-1)!).searchParams.get('from'));
+  const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
+  assert.equal(modelDefaultFrom, monthStart.getTime(), 'Models default scope must be the calendar month');
   assert.equal(await models.locator('.qp-model-table-wrap tbody tr').count(), 2);
   await models.locator('.qp-model-detail').getByText('gpt-test', { exact: true }).waitFor();
   await models.locator('.qp-model-trend span').first().waitFor();
@@ -361,6 +388,13 @@ try {
   const cost = page.getByTestId('production-cost');
   await cost.getByRole('heading', { name: 'Cost analysis', exact: true }).waitFor();
   await cost.locator('.qp-cost-summary strong').first().waitFor();
+  assert.equal(new URL(costRequests.at(-1)!).searchParams.get('from'), '0', 'Cost default scope must be all time');
+  await cost.getByRole('combobox', { name: 'Period' }).selectOption('month');
+  await page.waitForFunction(() => (document.querySelector('.qp-cost-toolbar select') as HTMLSelectElement)?.value === 'month');
+  await cost.locator('.qp-cost-sessions tbody tr').first().waitFor();
+  assert.equal(Number(new URL(costRequests.at(-1)!).searchParams.get('from')), monthStart.getTime(), 'Cost explicit month must retain its calendar scope');
+  await cost.getByRole('combobox', { name: 'Period' }).selectOption('all');
+  await cost.locator('.qp-cost-sessions tbody tr').first().waitFor();
   assert.match(await cost.locator('.qp-cost-summary').innerText(), /\$10\.60/);
   await cost.locator('.qp-cost-sessions tbody tr').first().waitFor();
   assert.match(await cost.locator('.qp-cost-sessions tbody tr').first().innerText(), /synthetic-session/);
@@ -384,6 +418,26 @@ try {
   await cost.locator('.qp-cost-summary strong').first().waitFor();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Cost mobile overflow');
   await page.screenshot({ path: resolve(output, 'cost-real-th-light-390.png'), fullPage: true });
+  await page.evaluate(() => {
+    localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'en', currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
+    localStorage.setItem('quotapulse-theme', 'dark');
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  for (const destination of ['projects', 'models', 'cost']) {
+    await page.goto(`http://127.0.0.1:7801/#${destination}?range=custom&from=${overviewFrom}&to=${overviewTo}&source=1`);
+    await page.reload();
+    const scoped = page.getByTestId(`production-${destination}`);
+    await scoped.getByTestId('scope-notice').getByText(/Source #1/).waitFor();
+    if (destination === 'projects') await scoped.getByRole('button', { name: 'Usage', exact: true }).click();
+    const label = destination === 'projects' ? 'Open filtered History' : 'Open scoped History';
+    const link = scoped.getByRole('link', { name: label, exact: true }).first();
+    await link.waitFor();
+    const params = new URLSearchParams((await link.getAttribute('href'))!.split('?')[1]);
+    assert.equal(params.get('source'), '1', `${destination} lost source in History`);
+    assert.equal(params.get('from'), String(overviewFrom));
+    assert.equal(params.get('to'), String(overviewTo));
+    assert.equal(await scoped.getByRole('combobox', { name: 'Period', exact: true }).inputValue(), 'custom');
+  }
   const alertAt = Date.now() - 1000;
   db.prepare(`INSERT INTO limit_sample(source_id,window_kind,used_percent,resets_at,observed_at,last_seen_at,source_fetched_at,origin)
     VALUES (1,'5h',97,?,?,?,?,?)`).run(now + 7200000, alertAt, alertAt, alertAt, 'live-synthetic');
@@ -393,7 +447,7 @@ try {
     localStorage.setItem('quotapulse-theme', 'dark');
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto('http://127.0.0.1:7801/#alerts?mode=redesign');
+  await page.goto('http://127.0.0.1:7801/#alerts');
   await page.reload();
   const alerts = page.getByTestId('production-alerts');
   if (await alerts.getAttribute('lang') !== 'en') await alerts.locator('.qp-tools button').first().click();
@@ -424,13 +478,77 @@ try {
   db.prepare("UPDATE source SET account_state='unavailable' WHERE id=2").run();
   await page.reload();
   await alerts.locator('.qp-alert-risk li').filter({ hasText: 'Hermes test' }).waitFor();
+  await page.evaluate(() => localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'en', currency: 'USD', rate: 1, hiddenSubscriptions: [] })));
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const aliases = [
+    ['#today', '#overview?range=today', 'overview'],
+    ['#trend', '#overview?range=month', 'overview'],
+    ['#usage?view=models', '#models?range=month', 'models'],
+    ['#usage?view=cost', '#cost?range=all', 'cost'],
+    ['#sources', '#providers', 'providers'],
+    ['#limits', '#providers?section=quotas', 'providers'],
+    ['#health?source=2', '#settings?source=2&section=diagnostics', 'settings'],
+    ['#sessions?range=all&source=2', '#history?range=all&source=2', 'history'],
+  ];
+  for (const [alias, canonical, destination] of aliases) {
+    await page.goto(`http://127.0.0.1:7801/${alias}`);
+    await page.reload();
+    await page.getByTestId(`production-${destination}`).waitFor();
+    assert.equal(new URL(page.url()).hash, canonical, `alias ${alias}`);
+  }
+  await page.goto('http://127.0.0.1:7801/#overview');
+  await page.getByTestId('production-overview').waitFor();
+  await page.evaluate(() => { location.hash = '#usage?view=models'; });
+  await page.getByTestId('production-models').waitFor();
+  await page.goBack();
+  await page.getByTestId('production-overview').waitFor();
+  assert.equal(new URL(page.url()).hash, '#overview');
+  await page.goForward();
+  await page.getByTestId('production-models').waitFor();
+  assert.equal(new URL(page.url()).hash, '#models?range=month');
+  await page.goto('http://127.0.0.1:7801/#settings');
+  await page.getByTestId('production-settings').getByRole('heading', { level: 1 }).waitFor();
+  await page.screenshot({ path: resolve(output, 'settings-real-en-light-1440.png'), fullPage: true });
+  await page.clock.setFixedTime(now);
+  await page.evaluate(() => localStorage.setItem('quotapulse-theme', 'dark'));
+  const reviewCaptures = [];
+  for (const [destination, ready] of [
+    ['overview', '.qp-metrics strong'], ['live', '.qp-live-chart'],
+    ['projects', '.qp-project-cards'], ['providers', '.qp-provider-grid'],
+    ['models', '.qp-model-summary'], ['cost', '.qp-cost-summary'],
+    ['history', '[data-testid="usage-history"] tbody tr'], ['alerts', '.qp-alert-history li'],
+  ]) {
+    const viewport = destination === 'overview' ? { width: 1586, height: 992 } : { width: 1672, height: 941 };
+    await page.setViewportSize(viewport);
+    await page.goto(`http://127.0.0.1:7801/#${destination}`);
+    await page.reload();
+    await page.getByTestId(`production-${destination}`).locator(ready).first().waitFor();
+    await page.evaluate(() => document.fonts.ready);
+    const regions = await page.evaluate(() => Object.fromEntries(['.qp-sidebar', '.qp-topbar', '.qp-workspace main'].map(selector => {
+      const { x, y, width, height } = document.querySelector(selector)!.getBoundingClientRect();
+      return [selector, { x, y, width, height }];
+    })));
+    const filename = `${destination}-concept-size.png`;
+    await page.screenshot({ path: resolve(output, filename), animations: 'disabled' });
+    reviewCaptures.push({ destination, viewport, filename, regions });
+  }
+  writeFileSync(resolve(output, 'review-candidates.json'), JSON.stringify({
+    status: 'review candidates; not approved visual baselines', browser: browser.version(),
+    timezone: 'Asia/Bangkok', dpr: 1, language: 'en', theme: 'dark', reducedMotion: true,
+    browserClock: now, daemonClock: 'real clock; synthetic data seeded at browserClock',
+    captures: reviewCaptures,
+  }, null, 2));
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'shared shell shows machine scope', 'shared command palette opens Settings and supports Ctrl+K to Providers', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'Cost API/native basis separation and missing native value', 'Cost server-ranked sessions and exact History scope', 'Cost English dark desktop and Thai light mobile', 'Alerts threshold facts remain after current risk recovers', 'Alerts notification delivery toggle and reader advisory', 'Alerts English dark desktop and Thai light mobile', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));
   console.log('History/Overview/Projects/Live/Providers/Models/Cost/Alerts E2E passed: authenticated HTTP and in-memory SQLite, scopes, pagination, pause, quota runway, drill-down, responsive layout.');
 } finally {
   await browser?.close();
+  console.log('History teardown: browser closed');
   await vite.close();
+  console.log('History teardown: Vite closed');
   await daemon.close();
+  console.log('History teardown: daemon closed');
   db.close();
+  console.log('History teardown: database closed');
 }

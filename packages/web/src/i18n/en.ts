@@ -141,6 +141,8 @@ export const en = {
   'redesign.projectRange': 'Period',
   'redesign.today': 'Today',
   'redesign.last7': 'Last 7 days',
+  'redesign.thisWeek': 'This week',
+  'redesign.thisMonth': 'This month',
   'redesign.last30': 'Last 30 days',
   'redesign.allTime': 'All time',
   'redesign.projectHarness': 'Harness',

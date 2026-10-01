@@ -145,6 +145,8 @@ export const th: Record<MessageKey, string> = {
   'redesign.projectRange': 'ช่วงเวลา',
   'redesign.today': 'วันนี้',
   'redesign.last7': '7 วันล่าสุด',
+  'redesign.thisWeek': 'สัปดาห์นี้',
+  'redesign.thisMonth': 'เดือนนี้',
   'redesign.last30': '30 วันล่าสุด',
   'redesign.allTime': 'ทั้งหมด',
   'redesign.projectHarness': 'เครื่องมือ',

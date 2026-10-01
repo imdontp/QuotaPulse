@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api, type Overview as OverviewData, type QuotaHistoryResponse } from '@/api';
 import { isExpired, primaryLimits } from '@/format';
 import { useI18n, useT } from '@/i18n';
@@ -7,32 +7,45 @@ import { useTheme } from '@/lib/use-theme';
 import { Overview } from './overview';
 import type { ActivityItem } from './overview';
 import { defaultQuota, type QuotaWindow, type RuntimeGraph } from './model';
+import { readScope, selectedScope, writeScope } from './scope';
+
+function readRoute() {
+  return readScope(new URLSearchParams(location.hash.split('?')[1] ?? ''), 'today');
+}
 
 export function ProductionOverview() {
   const t = useT();
   const { lang, setLang, currency, rate } = useI18n();
   const [theme, toggleTheme] = useTheme();
-  const [snapshot, setSnapshot] = useState<{ overview: OverviewData; graph: RuntimeGraph; recent: ActivityItem[] } | null>(null);
+  const [route, setRoute] = useState(readRoute);
+  const routeKey = JSON.stringify(route);
+  const currentKey = useRef(routeKey);
+  currentKey.current = routeKey;
+  const [snapshot, setSnapshot] = useState<{ key: string; overview: OverviewData; graph: RuntimeGraph; recent: ActivityItem[] } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedQuotaId, setSelectedQuotaId] = useState<string | null>(null);
   const [history, setHistory] = useState<QuotaHistoryResponse | null>(null);
   const [historyError, setHistoryError] = useState(false);
+  useEffect(() => {
+    const sync = () => { if (location.hash.slice(1).split('?')[0] === 'overview') { setRoute(readRoute()); setError(null); } };
+    addEventListener('hashchange', sync);
+    return () => removeEventListener('hashchange', sync);
+  }, []);
   useLiveRefresh(async () => {
+    const key = routeKey;
     try {
       const overview = await api.overview();
-      const start = new Date(overview.now);
-      start.setHours(0, 0, 0, 0);
-      const scope = { from: start.getTime(), to: overview.now + 1 };
+      const scope = selectedScope(route, overview.now);
       const [graph, usage] = await Promise.all([api.runtimeMap(scope), api.usageEvents(scope, { limit: 4, offset: 0 })]);
       const recent: ActivityItem[] = usage.rows.map(row => ({ id: row.event_id, timestamp: row.timestamp_ms, harness: row.harness, provider: row.provider, model: row.model, tokens: row.total_tokens, grain: row.grain, sessionKey: row.session_key }));
-      setSnapshot({ overview, graph, recent });
-      setError(null);
+      if (currentKey.current === key) { setSnapshot({ key, overview, graph, recent }); setError(null); }
     } catch (cause) {
-      setError(String(cause));
+      if (currentKey.current === key) setError(String(cause));
       throw cause;
     }
-  }, []);
-  const overview = snapshot?.overview;
+  }, [routeKey]);
+  const current = snapshot?.key === routeKey ? snapshot : null;
+  const overview = current?.overview;
   const selected = overview ? primaryLimits(overview.limits, overview.now).map(({ primary }) => primary) : [];
   const quotas: QuotaWindow[] = selected.filter(limit => {
     const key = limit.subscription_key ?? limit.account_key;
@@ -76,10 +89,15 @@ export function ProductionOverview() {
     }).catch(() => { if (current) setHistoryError(true); });
     return () => { current = false; };
   }, [activeQuota?.id, overview?.now]);
-  if (!snapshot) return <main className="p-6" role="status">{error ?? t('app.loading')}</main>;
-  const { graph, recent } = snapshot;
+  if (!current) return <main className="p-6" role="status">{error ?? t('app.loading')}</main>;
+  const { graph, recent } = current;
+  const period = route.range === 'custom'
+    ? `${new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(route.from!)} – ${new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(route.to!)}`
+    : t(route.range === 'today' ? 'redesign.today' : route.range === 'week' ? 'redesign.thisWeek' : route.range === 'month' ? 'redesign.thisMonth' : 'redesign.allTime');
+  const historyParams = writeScope(new URLSearchParams(), route);
+  const scopeLabel = route.sourceId ? `${period} · ${t('analysis.source')} #${route.sourceId}` : period;
   return <>
     {error && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
-    <Overview graph={graph} quotas={quotas} recent={recent} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
+    <Overview graph={graph} quotas={quotas} recent={recent} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
   </>;
 }

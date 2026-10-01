@@ -19,14 +19,14 @@ function readRoute(): LiveRoute {
     provider: p.get('provider'), model: p.get('model'), sessionOffset: offset('session_offset'), feedOffset: offset('feed_offset') };
 }
 function routeHash(route: LiveRoute) {
-  const p = new URLSearchParams({ mode: 'redesign' });
+  const p = new URLSearchParams();
   if (route.sessions === 'all') p.set('sessions', 'all');
   if (route.q) p.set('q', route.q);
   if (route.provider) p.set('provider', route.provider);
   if (route.model) p.set('model', route.model);
   if (route.sessionOffset) p.set('session_offset', String(route.sessionOffset));
   if (route.feedOffset) p.set('feed_offset', String(route.feedOffset));
-  return `#live?${p}`;
+  return `#live${p.size ? `?${p}` : ''}`;
 }
 interface Snapshot { key: string; overview: Overview; scope: UsageEventScope; trend: MinuteTrendResponse;
   feed: UsageEventsResponse; models: DetailedModelResponse; sessions: LiveSessionsResponse }
@@ -49,7 +49,7 @@ export function ProductionLive() {
   const currentKey = useRef(dataKey);
   currentKey.current = dataKey;
   useEffect(() => {
-    const sync = () => { if (location.hash.startsWith('#live?mode=redesign')) { setRoute(readRoute()); setDraft(readRoute().q); } };
+    const sync = () => { if (location.hash.slice(1).split('?')[0] === 'live') { setRoute(readRoute()); setDraft(readRoute().q); } };
     addEventListener('hashchange', sync);
     return () => removeEventListener('hashchange', sync);
   }, []);
@@ -146,7 +146,7 @@ export function ProductionLive() {
           </section>
         </div>
         <aside className="qp-live-rail">
-          <section className="qp-panel qp-live-section"><h2>{t('redesign.liveAdvisory')}</h2>{advisories.length === 0 ? <p>{t('redesign.liveNoAdvisory')}</p> : <ol>{advisories.map(source => <li key={source.source_id}><AlertTriangle size={15}/><span>{source.display_name} · {t(source.telemetry.reason === 'usage_newer_than_quota' ? 'redesign.liveUsageAheadQuota' : source.telemetry.reason === 'reader_error' ? 'redesign.liveReaderErrorNote' : 'redesign.liveQuotaReview')}</span><a href="#health">{t('redesign.liveDiagnostics')}</a></li>)}</ol>}</section>
+          <section className="qp-panel qp-live-section"><h2>{t('redesign.liveAdvisory')}</h2>{advisories.length === 0 ? <p>{t('redesign.liveNoAdvisory')}</p> : <ol>{advisories.map(source => <li key={source.source_id}><AlertTriangle size={15}/><span>{source.display_name} · {t(source.telemetry.reason === 'usage_newer_than_quota' ? 'redesign.liveUsageAheadQuota' : source.telemetry.reason === 'reader_error' ? 'redesign.liveReaderErrorNote' : 'redesign.liveQuotaReview')}</span><a href="#settings?section=diagnostics">{t('redesign.liveDiagnostics')}</a></li>)}</ol>}</section>
           <section className="qp-panel qp-live-section"><h2>{t('redesign.liveMatrix')}</h2><p className="qp-footnote">{t('redesign.liveMatrixNote')} {t('redesign.liveMatrixTop')}</p>{(route.provider || route.model) && <button disabled={paused} className="qp-live-clear" onClick={() => update({ provider: null, model: null, feedOffset: 0, sessionOffset: 0 })}>{t('redesign.liveClearMatrix')}</button>}
             <ol className="qp-live-matrix">{display.models.groups.slice(0, 12).map((group, index) => <li key={JSON.stringify([group.provider, group.model, index])}>{group.provider && group.model ? <button disabled={paused} aria-pressed={route.provider === group.provider && route.model === group.model} onClick={() => update({ provider: group.provider, model: group.model, feedOffset: 0, sessionOffset: 0 })}><span>{group.provider} · {group.model}</span><strong>{number(group.tokens)}</strong></button> : <span>{group.provider ?? t('redesign.unknownValue')} · {group.model ?? t('redesign.unknownValue')}<strong>{number(group.tokens)}</strong></span>}</li>)}</ol>
           </section>

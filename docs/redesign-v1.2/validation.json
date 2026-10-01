@@ -1,0 +1,86 @@
+﻿{
+    "date":  "2026-10-01",
+    "baseCommit":  "d5cad369994c3be0d03f39ef683d1568d98709e4",
+    "status":  "Validated checkpoint; application visual and RC gates pending",
+    "checks":  [
+                   {
+                       "result":  "passed: daemon 86, web 122, tray 196 before SSE fix",
+                       "command":  "npm test"
+                   },
+                   {
+                       "result":  "passed: 87 after SSE lifecycle fix",
+                       "command":  "npm run test -w @quotapulse/daemon"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "npm run build -w @quotapulse/daemon"
+                   },
+                   {
+                       "result":  "passed; legacy App chunk 555.60 KB warning remains",
+                       "command":  "npm run build -w @quotapulse/web"
+                   },
+                   {
+                       "result":  "passed and exited 0 after SSE fix; authenticated in-memory HTTP, custom source scope, calendar defaults, aliases, Back/Forward, keyboard focus and eight concept-size captures",
+                       "command":  "npm run test:history"
+                   },
+                   {
+                       "result":  "passed; legacy controls, language/theme, responsive and popup hash priority",
+                       "command":  "npm run test:ui"
+                   },
+                   {
+                       "result":  "passed; 21 preview captures, isolation and reduced motion",
+                       "command":  "npm run test:visual"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "git diff --check"
+                   }
+               ],
+    "visualApproval":  "pending",
+    "artifacts":  [
+                      {
+                          "sha256":  "ae53e29d1b6da46c963db46d9dcf36b62b2fa3e147f6f8779fdf491b44570d79",
+                          "name":  "alerts-concept-size.png"
+                      },
+                      {
+                          "sha256":  "4a43fc0aadda4b87737bfe0655057c8c61ffc94b95a316c3f6e743cc28c7d66b",
+                          "name":  "cost-concept-size.png"
+                      },
+                      {
+                          "sha256":  "a8234e38cc0bfa7a823d9ea4cb90ba961de22396d3805a2335b75d75464feee9",
+                          "name":  "history-concept-size.png"
+                      },
+                      {
+                          "sha256":  "757076991b199fd429156b816d5c38531ce8a4c4aaa7a7d043108ca349085abb",
+                          "name":  "live-concept-size.png"
+                      },
+                      {
+                          "sha256":  "55f46e5c4da6b3f7f3b3931b315bb0708c0bc5b8707542f3a2cbe0b83afdf46e",
+                          "name":  "models-concept-size.png"
+                      },
+                      {
+                          "sha256":  "eb6d3969ee6c76c68f57041c23c22fc93900dd3db92e3e033bc71799f6411a8b",
+                          "name":  "overview-concept-size.png"
+                      },
+                      {
+                          "sha256":  "b42abe63bb92a98c94a0b14d7249a5b7d2a272bd47453f7d437fb5b6aaa4ca01",
+                          "name":  "projects-concept-size.png"
+                      },
+                      {
+                          "sha256":  "66d69e8f00da652f4e978ce5a00b9995ad589f465e914c74819afaf3be58345a",
+                          "name":  "providers-concept-size.png"
+                      },
+                      {
+                          "sha256":  "5fbf2e8ba0ea7c1cee4e9430bae005d7df2908d80b6e07dae4e110f085b1035c",
+                          "name":  "review-candidates.json"
+                      },
+                      {
+                          "sha256":  "7835bc086cdff974ce50843a6069143216afae7f19e2513aab819b90618dd8e4",
+                          "name":  "settings-real-en-light-1440.png"
+                      },
+                      {
+                          "sha256":  "1c166a1d73367b063995105aa021884e51503737bae0c58f2a990f8498853bd9",
+                          "name":  "verification.json"
+                      }
+                  ]
+}
