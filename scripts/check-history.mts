@@ -7,6 +7,7 @@ import { createServer } from 'vite';
 import { chromium } from 'playwright';
 import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
+import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
@@ -369,10 +370,50 @@ try {
   await cost.locator('.qp-cost-summary strong').first().waitFor();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Cost mobile overflow');
   await page.screenshot({ path: resolve(output, 'cost-real-th-light-390.png'), fullPage: true });
+  const alertAt = Date.now() - 1000;
+  db.prepare(`INSERT INTO limit_sample(source_id,window_kind,used_percent,resets_at,observed_at,last_seen_at,source_fetched_at,origin)
+    VALUES (1,'5h',97,?,?,?,?,?)`).run(now + 7200000, alertAt, alertAt, alertAt, 'live-synthetic');
+  assert.equal(recordQuotaAlerts(db, alertAt).length, 3);
+  await page.evaluate(() => {
+    localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang: 'en', currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
+    localStorage.setItem('quotapulse-theme', 'dark');
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('http://127.0.0.1:7801/#alerts?mode=redesign');
+  await page.reload();
+  const alerts = page.getByTestId('production-alerts');
+  if (await alerts.getAttribute('lang') !== 'en') await alerts.locator('.qp-tools button').first().click();
+  await alerts.getByRole('heading', { name: 'Alerts and quota guard', exact: true }).waitFor();
+  await alerts.locator('.qp-alert-risk li').first().waitFor();
+  assert.equal(await alerts.locator('.qp-alert-risk li').count(), 1);
+  assert.equal(await alerts.locator('.qp-alert-history li').count(), 3);
+  await alerts.locator('.qp-alert-segments span').last().waitFor();
+  const notificationToggle = alerts.getByRole('checkbox', { name: 'Desktop notifications' });
+  await notificationToggle.click();
+  await page.waitForFunction(() => !(document.querySelector('[data-testid="production-alerts"] input[type="checkbox"]') as HTMLInputElement).checked);
+  await notificationToggle.click();
+  await page.waitForFunction(() => (document.querySelector('[data-testid="production-alerts"] input[type="checkbox"]') as HTMLInputElement).checked);
+  await page.screenshot({ path: resolve(output, 'alerts-real-en-dark-1440.png'), fullPage: true });
+  await page.evaluate(() => localStorage.setItem('quotapulse-theme', 'light'));
+  await page.setViewportSize({ width: 390, height: 1000 });
+  await page.reload();
+  if (await alerts.getAttribute('lang') !== 'th') await alerts.locator('.qp-tools button').first().click();
+  await alerts.getByRole('heading', { name: 'การแจ้งเตือนและเฝ้าโควตา', exact: true }).waitFor();
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Alerts mobile overflow');
+  await page.screenshot({ path: resolve(output, 'alerts-real-th-light-390.png'), fullPage: true });
+  const recoveredAt = Date.now();
+  db.prepare(`INSERT INTO limit_sample(source_id,window_kind,used_percent,resets_at,observed_at,last_seen_at,source_fetched_at,origin)
+    VALUES (1,'5h',20,?,?,?,?,?)`).run(now + 7200000, recoveredAt, recoveredAt, recoveredAt, 'live-synthetic');
+  await page.reload();
+  await alerts.getByText('ค่าที่สดยังไม่พบความเสี่ยงปัจจุบัน').waitFor();
+  assert.equal(await alerts.locator('.qp-alert-history li').count(), 3);
+  db.prepare("UPDATE source SET account_state='unavailable' WHERE id=2").run();
+  await page.reload();
+  await alerts.locator('.qp-alert-risk li').filter({ hasText: 'Hermes test' }).waitFor();
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'Cost API/native basis separation and missing native value', 'Cost server-ranked sessions and exact History scope', 'Cost English dark desktop and Thai light mobile', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));
-  console.log('History/Overview/Projects/Live/Providers/Models/Cost E2E passed: authenticated HTTP and in-memory SQLite, scopes, pagination, pause, quota runway, drill-down, responsive layout.');
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'Cost API/native basis separation and missing native value', 'Cost server-ranked sessions and exact History scope', 'Cost English dark desktop and Thai light mobile', 'Alerts threshold facts remain after current risk recovers', 'Alerts notification delivery toggle and reader advisory', 'Alerts English dark desktop and Thai light mobile', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));
+  console.log('History/Overview/Projects/Live/Providers/Models/Cost/Alerts E2E passed: authenticated HTTP and in-memory SQLite, scopes, pagination, pause, quota runway, drill-down, responsive layout.');
 } finally {
   await browser?.close();
   await vite.close();
