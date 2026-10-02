@@ -75,15 +75,19 @@ Remove with `./scripts/uninstall-task.ps1 -StopRunning`.
 Build the daemon, web and tray in the review checkout first. Preview the task definitions:
 
 ```powershell
-./scripts/install-task.ps1 -InstanceName quotapulse-redesign -DataDir C:\QuotaPulse-review-data -Port 7805 -WhatIf
+./scripts/install-task.ps1 -InstanceName quotapulse-redesign -DataDir C:\QuotaPulse-review-data -Port 7805 -NoReaders -WhatIf
 ```
 
 Remove `-WhatIf` when ready to register `quotapulse-redesign-daemon` and
-`quotapulse-redesign-tray`. Registration does not start tasks. The task runner passes the
-port and data directory to its child process; it does not write persistent environment
-variables. A named instance requires an absolute separate data directory and a port other
+`quotapulse-redesign-tray`. Registration does not start tasks. Each task opens Node or
+Electron directly through `scripts/task-entry.cjs`, which sets the instance environment
+inside that process; it does not write persistent environment variables. A named
+instance requires an absolute separate data directory and a port other
 than 7676. The directory must not overlap the default or legacy data directories.
 Both Electron settings and session storage live under `<DataDir>\electron`.
+`-NoReaders` sets `QUOTAPULSE_READERS=off`: the daemon skips harness detection,
+account probes and cached price-catalog imports. New review databases therefore stay
+empty unless explicitly seeded. Omit this option to enable normal collection.
 
 Existing definitions require `-Replace`; a failed registration restores replaced XML
 definitions and removes newly registered definitions when rollback succeeds. The default
@@ -96,12 +100,25 @@ port still needs to be available before starting the instance.
 
 Uninstall targets only that instance's root-folder task definitions. `-StopRunning` stops
 the tray task before the daemon task. Manually launched processes, data and lock files are
-retained; no process-wide Electron search or PID-based kill is performed. Actual scheduled
-task and child-process shutdown still require a manual Windows lifecycle check before release.
+retained; a tray-spawned detached collector is also outside daemon-task ownership and
+continues running. No process-wide Electron search or PID-based kill is performed. The real Windows
+on-demand lifecycle check verifies Node/Electron parent termination and daemon restart;
+logon-trigger behavior and renderer recovery remain separate checks. Tray fallback uses
+the Node executable resolved during installation, avoiding Electron's SQLite ABI mismatch.
+Manual tray launches use `QUOTAPULSE_NODE_EXE` or `node` on PATH for that fallback.
 
 Run `powershell -NoProfile -File scripts/check-task-isolation.ps1` for synthetic task
 definition, rollback and runner checks. This harness mocks every ScheduledTask cmdlet and
 does not query or change real tasks.
+
+`powershell -NoProfile -File scripts/check-windows-task-lifecycle.ps1` creates and
+starts real uniquely named tasks with readers disabled, tests stop/restart/removal,
+then removes those test definitions. It retains its fresh data under
+`tmp/windows-lifecycle`. Run it only when real task testing is intended. The older
+`run-task.ps1` remains a manual launch helper; scheduled actions use the direct entry.
+Add `-TrayFirst` to verify tray-spawned collector ownership. That scenario explicitly
+stops its own detached test collector during teardown after proving normal uninstall
+retains it; it does not change the production uninstall policy.
 
 ## Running your own copy
 

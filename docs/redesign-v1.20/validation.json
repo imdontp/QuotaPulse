@@ -1,0 +1,34 @@
+{
+    "status":  "validated-checkpoint",
+    "version":  "v1.20",
+    "daemonBuild":  "passed",
+    "trayAndPreloadBuild":  "passed",
+    "targetedTests":  {
+                          "passed":  12,
+                          "failed":  0
+                      },
+    "syntheticTaskGroups":  {
+                                "passed":  9,
+                                "actualTaskCmdlets":  false
+                            },
+    "realTaskManagedChecks":  {
+                                  "passed":  9,
+                                  "cleanupFallback":  false
+                              },
+    "realTrayFirstChecks":  {
+                                "ownedProcessesAliveAfterCleanup":  0,
+                                "detachedTestCollectorStoppedExplicitly":  true,
+                                "cleanupFallback":  false,
+                                "passed":  8
+                            },
+    "originalTaskDefinitions":  "hashes unchanged in real lifecycle runs",
+    "sourceDependencyManifestsChanged":  false,
+    "sharedNativeBinaryRebuilt":  false,
+    "remaining":  [
+                      "actual logon trigger",
+                      "real tray renderer/recovery",
+                      "packaging/installer recovery",
+                      "screen-reader/typography review",
+                      "approved concept baseline/SSIM and release sign-off"
+                  ]
+}

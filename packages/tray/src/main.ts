@@ -303,10 +303,14 @@ function ensureDaemon(): void {
     console.error(`daemon build not found at ${entry}; run: npm run daemon:build`);
     return;
   }
-  daemonChild = spawn(process.execPath, [entry], {
+  daemonChild = spawn(process.env.QUOTAPULSE_NODE_EXE ?? 'node', [entry], {
     detached: true,
     stdio: 'ignore',
-    env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' },
+    env: { ...process.env, ELECTRON_RUN_AS_NODE: undefined },
+  });
+  daemonChild.on('error', (error) => {
+    console.error(`daemon launch failed: ${error.message}`);
+    daemonChild = null;
   });
   daemonChild.unref();
 }

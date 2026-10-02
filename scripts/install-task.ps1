@@ -7,6 +7,7 @@
 [CmdletBinding(SupportsShouldProcess)]
 param(
   [switch]$NoTray,
+  [switch]$NoReaders,
   [ValidateRange(1024,65535)][int]$Port = 7676,
   [ValidatePattern('^quotapulse(?:-[a-zA-Z0-9][a-zA-Z0-9-]{0,39})?$')][string]$InstanceName = 'quotapulse',
   [string]$DataDir,
@@ -27,8 +28,8 @@ if ($DataDir) {
   }
 }
 $node = (Get-Command node -ErrorAction Stop).Source
-$powershell = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
-$runner = Join-Path $PSScriptRoot 'run-task.ps1'
+$entry = Join-Path $PSScriptRoot 'task-entry.cjs'
+if (-not (Test-Path -LiteralPath $entry)) { throw 'Task entry missing.' }
 if (-not (Test-Path -LiteralPath (Join-Path $repo 'packages\daemon\dist\index.js'))) { throw 'Build the daemon before installing tasks.' }
 if (-not $NoTray) {
   if (-not (Test-Path -LiteralPath (Join-Path $repo 'packages\tray\dist\main.js'))) { throw 'Build the tray before installing tasks.' }
@@ -41,9 +42,12 @@ $plan = foreach ($role in $roles) {
   $name = "$InstanceName-$role"
   $existing = Get-ScheduledTask -TaskPath '\' -TaskName $name -ErrorAction SilentlyContinue
   if ($existing -and -not $Replace) { throw "Task $name exists; use -Replace to replace its definition." }
-  $arguments = '-NoProfile -NonInteractive -WindowStyle Hidden -File "' + $runner + '" -Role ' + $role + ' -Port ' + $Port
-  if ($DataDir) { $arguments += ' -DataDir "' + $DataDir + '"' }
-  [pscustomobject]@{ Name=$name; Arguments=$arguments; Existing=$existing }
+  $arguments = '"' + $entry + '" --role ' + $role + ' --port ' + $Port
+  if ($DataDir) { $arguments += ' --data-dir "' + $DataDir + '"' }
+  if ($NoReaders) { $arguments += ' --no-readers' }
+  if ($role -eq 'tray') { $arguments += ' --node-exe "' + $node + '"' }
+  $execute = if ($role -eq 'daemon') { $node } else { $electron }
+  [pscustomobject]@{ Name=$name; Execute=$execute; Arguments=$arguments; Existing=$existing }
 }
 if ($InstanceName -eq 'quotapulse') {
   foreach ($old in @('plimsoll-daemon','plimsoll-tray','usage-trend-daemon','usage-trend-tray')) {
@@ -55,7 +59,7 @@ try {
   foreach ($item in $plan) {
     if (-not $PSCmdlet.ShouldProcess($item.Name, 'Register QuotaPulse logon task')) { continue }
     $xml = if ($item.Existing) { Export-ScheduledTask -TaskPath '\' -TaskName $item.Name } else { $null }
-    $action = New-ScheduledTaskAction -Execute $powershell -Argument $item.Arguments -WorkingDirectory $repo
+    $action = New-ScheduledTaskAction -Execute $item.Execute -Argument $item.Arguments -WorkingDirectory $repo
     $trigger = New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME
     $trigger.Delay = 'PT20S'
     $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited

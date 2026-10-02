@@ -33,6 +33,12 @@ function checkExistingInstance(): LockFile | null {
 }
 
 async function main() {
+  const readers = process.env.QUOTAPULSE_READERS;
+  if (readers !== undefined && readers !== 'on' && readers !== 'off') {
+    throw new Error('QUOTAPULSE_READERS must be on or off');
+  }
+  const readersEnabled = readers !== 'off';
+  if (!readersEnabled) log.warn('readers disabled: no harness detection, account probes or external price caches');
   const existing = checkExistingInstance();
   if (existing) {
     log.error(
@@ -43,7 +49,7 @@ async function main() {
   }
 
   const db = openDb();
-  const priced = loadPrices(db);
+  const priced = readersEnabled ? loadPrices(db) : { models: 0, providers: 0 };
   log.info(`pricing: ${priced.models} models from ${priced.providers} providers`);
 
   // Now that prices exist, fill in any event that could not be priced when it was
@@ -52,7 +58,7 @@ async function main() {
   repriceUnknown(db, resolver);
   reclassifyCosts(db, resolver);
 
-  const scheduler = new Scheduler(db, ALL_ADAPTERS, { debounceMs: 500, pollMs: 30_000 });
+  const scheduler = new Scheduler(db, readersEnabled ? ALL_ADAPTERS : [], { debounceMs: 500, pollMs: 30_000 });
   const first = await scheduler.start();
   log.info(`initial pass: +${first.newEvents} events, +${first.newLimits} limits in ${first.durationMs}ms`);
 

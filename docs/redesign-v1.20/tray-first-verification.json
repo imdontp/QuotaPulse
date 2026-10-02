@@ -1,0 +1,28 @@
+{
+    "checks":  [
+                   "real installer WhatIf creates no task",
+                   "real named task registration preserves selected port/data/readers configuration",
+                   "real tray/main starts its detached daemon with inherited reader opt-out and zero sources",
+                   "real tray/main stays running with isolated profile and reuses this instance daemon",
+                   "stopping tray task terminates its Electron parent and retains independently managed daemon",
+                   "task uninstall retains tray-spawned collector owned outside daemon task; test teardown stops it explicitly",
+                   "real scoped uninstall removes task definitions and retains instance database/sentinel",
+                   "original and legacy task definition hashes unchanged"
+               ],
+    "scenario":  "tray-spawned detached collector",
+    "failure":  null,
+    "dataDirectory":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\windows-lifecycle\\quotapulse-lifecycle-fb366d740f2a",
+    "port":  52043,
+    "instance":  "quotapulse-lifecycle-fb366d740f2a",
+    "ownedProcessIds":  [
+                            31588,
+                            41996
+                        ],
+    "limitations":  [
+                        "Manual on-demand task start; logon trigger not exercised",
+                        "Tray renderer/recovery requires separate checks",
+                        "No live harness readers or provider probes enabled"
+                    ],
+    "status":  "passed",
+    "cleanupFallback":  false
+}

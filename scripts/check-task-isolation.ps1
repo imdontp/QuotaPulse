@@ -9,9 +9,9 @@ Remove-Item -LiteralPath (Join-Path $output 'verification.json') -Force -ErrorAc
 $fixture = Join-Path $repo ('tmp\task isolation-' + [guid]::NewGuid().ToString('N'))
 $scripts = Join-Path $fixture 'scripts'
 New-Item -ItemType Directory -Path $scripts -Force | Out-Null
-foreach ($name in @('install-task.ps1','uninstall-task.ps1','run-task.ps1')) { Copy-Item -LiteralPath (Join-Path $PSScriptRoot $name) -Destination $scripts }
+foreach ($name in @('install-task.ps1','uninstall-task.ps1','run-task.ps1','task-entry.cjs')) { Copy-Item -LiteralPath (Join-Path $PSScriptRoot $name) -Destination $scripts }
 foreach ($role in @('daemon','tray')) { New-Item -ItemType Directory -Path (Join-Path $fixture "packages\$role\dist") -Force | Out-Null }
-[IO.File]::WriteAllText((Join-Path $fixture 'packages\daemon\dist\index.js'), 'console.log(JSON.stringify({port:process.env.QUOTAPULSE_PORT,dataDir:process.env.QUOTAPULSE_DATA_DIR}))')
+[IO.File]::WriteAllText((Join-Path $fixture 'packages\daemon\dist\index.js'), 'console.log(JSON.stringify({port:process.env.QUOTAPULSE_PORT,dataDir:process.env.QUOTAPULSE_DATA_DIR,readers:process.env.QUOTAPULSE_READERS}))')
 [IO.File]::WriteAllText((Join-Path $fixture 'packages\tray\dist\main.js'), '// synthetic build marker; never launched')
 $install = Join-Path $scripts 'install-task.ps1'
 $uninstall = Join-Path $scripts 'uninstall-task.ps1'
@@ -72,12 +72,15 @@ foreach ($arguments in @(
 )) { Reject $arguments }
 Reject @{Replace=$true;NoTray=$true}
 $global:qpMockChecks.Add('invalid or shared paths and default-port collisions rejected before mutation')
-& $install -InstanceName quotapulse-review -DataDir $data -Port 7805
+& $install -InstanceName quotapulse-review -DataDir $data -Port 7805 -NoReaders
 foreach ($role in @('daemon','tray')) {
   $action = $global:qpMockTasks["quotapulse-review-$role"].Action
-  Assert ($action.Arguments.Contains('-Port 7805')) 'Port missing from action'
-  Assert ($action.Arguments.Contains('-DataDir "' + $data + '"')) 'Data directory not quoted'
-  Assert ($action.Arguments.Contains('-File "' + (Join-Path $scripts 'run-task.ps1') + '"')) 'Runner not quoted'
+  Assert ($action.Arguments.Contains('--port 7805')) 'Port missing from action'
+  Assert ($action.Arguments.Contains('--no-readers')) 'Reader opt-out missing from action'
+  Assert ($action.Arguments.Contains('--data-dir "' + $data + '"')) 'Data directory not quoted'
+  Assert ($action.Arguments.Contains('"' + (Join-Path $scripts 'task-entry.cjs') + '"')) 'Entry not quoted'
+  Assert (-not $action.Execute.EndsWith('powershell.exe')) 'Task must own the application process directly'
+  if ($role -eq 'tray') { Assert ($action.Arguments.Contains('--node-exe "' + (Get-Command node).Source + '"')) 'Tray task lost native Node executable' }
   Assert ($action.WorkingDirectory -eq $fixture) 'Action points to another checkout'
 }
 PreserveOriginals
@@ -105,13 +108,21 @@ try { & $install -InstanceName quotapulse-review -DataDir $data -Port 7805 -Repl
 foreach ($role in @('daemon','tray')) { Assert ($global:qpMockTasks["quotapulse-review-$role"].Xml -eq "backup:$role") 'Replacement rollback incomplete' }
 PreserveOriginals
 $global:qpMockChecks.Add('partial registration rollback removes new tasks and restores replaced XML definitions')
+# Execute the copied direct entry against only the synthetic daemon module.
+$node=(Get-Command node).Source
+$result=& $node (Join-Path $scripts 'task-entry.cjs') --role daemon --port 7805 --data-dir $data --no-readers
+Assert ($LASTEXITCODE -eq 0) 'Direct task entry failed'
+$runtime=$result | ConvertFrom-Json
+Assert ($runtime.port -eq '7805' -and $runtime.dataDir -eq $data -and $runtime.readers -eq 'off') 'Direct entry environment mismatch'
+$global:qpMockChecks.Add('direct task entry forwards instance settings through paths with spaces and Thai')
 # Run only the copied runner against a synthetic JS entry, never the daemon/tray.
 $ps = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
 $previousPort=$env:QUOTAPULSE_PORT; $previousData=$env:QUOTAPULSE_DATA_DIR
-$result = & $ps -NoProfile -NonInteractive -File (Join-Path $scripts 'run-task.ps1') -Role daemon -Port 7805 -DataDir $data
+$result = & $ps -NoProfile -NonInteractive -File (Join-Path $scripts 'run-task.ps1') -Role daemon -Port 7805 -DataDir $data -NoReaders
 Assert ($LASTEXITCODE -eq 0) 'Synthetic runner failed'
 $runtime = $result | ConvertFrom-Json
 Assert ($runtime.port -eq '7805' -and $runtime.dataDir -eq $data) 'Runtime environment mismatch'
+Assert ($runtime.readers -eq 'off') 'Daemon reader opt-out missing'
 Assert ($env:QUOTAPULSE_PORT -eq $previousPort -and $env:QUOTAPULSE_DATA_DIR -eq $previousData) 'Parent environment changed'
 $global:qpMockChecks.Add('copied runner forwards port/data directory only to child environment')
 # The tray runner resolves Electron but its launch is replaced by a local function.
@@ -121,10 +132,10 @@ param($Runner,$DataDir)
 $env:ELECTRON_RUN_AS_NODE='synthetic-parent-value'
 function Start-Process {
   [CmdletBinding()]param($FilePath,$ArgumentList,$WorkingDirectory,$WindowStyle,[switch]$Wait,[switch]$PassThru)
-  [Console]::WriteLine((@{file=$FilePath;arguments=$ArgumentList;workingDirectory=$WorkingDirectory;windowStyle=$WindowStyle;wait=[bool]$Wait;passThru=[bool]$PassThru;port=$env:QUOTAPULSE_PORT;dataDir=$env:QUOTAPULSE_DATA_DIR;runAsNode=$env:ELECTRON_RUN_AS_NODE} | ConvertTo-Json -Compress))
+  [Console]::WriteLine((@{file=$FilePath;arguments=$ArgumentList;workingDirectory=$WorkingDirectory;windowStyle=$WindowStyle;wait=[bool]$Wait;passThru=[bool]$PassThru;port=$env:QUOTAPULSE_PORT;dataDir=$env:QUOTAPULSE_DATA_DIR;readers=$env:QUOTAPULSE_READERS;runAsNode=$env:ELECTRON_RUN_AS_NODE} | ConvertTo-Json -Compress))
   return [pscustomobject]@{ExitCode=23}
 }
-& $Runner -Role tray -Port 7805 -DataDir $DataDir
+& $Runner -Role tray -Port 7805 -DataDir $DataDir -NoReaders
 exit $LASTEXITCODE
 '@
 [IO.File]::WriteAllText($bootstrap, $bootstrapCode)
@@ -132,6 +143,7 @@ $result = & $ps -NoProfile -NonInteractive -File $bootstrap -Runner (Join-Path $
 Assert ($LASTEXITCODE -eq 23) 'Tray runner did not propagate synthetic exit code'
 $runtime = $result | ConvertFrom-Json
 Assert ($runtime.port -eq '7805' -and $runtime.dataDir -eq $data -and -not $runtime.runAsNode) 'Tray child environment mismatch'
+Assert ($runtime.readers -eq 'off') 'Tray reader opt-out missing'
 Assert ($runtime.windowStyle -eq 'Hidden' -and $runtime.wait -and $runtime.passThru) 'Tray runner launch options mismatch'
 Assert ($runtime.arguments -eq ('"' + (Join-Path $fixture 'packages\tray\dist\main.js') + '"')) 'Tray entry not quoted'
 Assert ($runtime.workingDirectory -eq $fixture -and (Test-Path -LiteralPath $runtime.file)) 'Tray executable/working directory mismatch'

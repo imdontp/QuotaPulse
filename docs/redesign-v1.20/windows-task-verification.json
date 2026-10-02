@@ -1,0 +1,29 @@
+{
+    "checks":  [
+                   "real installer WhatIf creates no task",
+                   "real named task registration preserves selected port/data/readers configuration",
+                   "real daemon entry starts via Scheduled Task with zero detected sources",
+                   "real tray/main stays running with isolated profile and reuses this instance daemon",
+                   "stopping tray task terminates its Electron parent and retains independently managed daemon",
+                   "stopping daemon task terminates its owned Node child",
+                   "task restart recovers retained data and any stale lock",
+                   "real scoped uninstall removes definitions/processes and retains instance database/sentinel",
+                   "original and legacy task definition hashes unchanged"
+               ],
+    "failure":  null,
+    "dataDirectory":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\windows-lifecycle\\quotapulse-lifecycle-f7c437acf3c7",
+    "port":  51515,
+    "instance":  "quotapulse-lifecycle-f7c437acf3c7",
+    "ownedProcessIds":  [
+                            47068,
+                            37192,
+                            33088
+                        ],
+    "limitations":  [
+                        "Manual on-demand task start; logon trigger not exercised",
+                        "Tray renderer/recovery and detached tray-spawned daemon ownership require separate checks",
+                        "No live harness readers or provider probes enabled"
+                    ],
+    "status":  "passed",
+    "cleanupFallback":  false
+}
