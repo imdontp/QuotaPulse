@@ -1,0 +1,264 @@
+{
+  "database": "in-memory synthetic",
+  "fixture": {
+    "source": 1,
+    "addedSessions": 10,
+    "providers": 5,
+    "displayedModels": 8,
+    "displayedProjects": 6,
+    "displayedSessions": 10,
+    "apiValue": 65.4
+  },
+  "checks": [
+    "provider beside summary without overlap",
+    "models beside trend",
+    "complete occupied bottom panels in concept viewport",
+    "en/th and dark/light",
+    "390/900/1280 overflow",
+    "exact model/provider/project History scope",
+    "zero empty-bucket bars",
+    "long Thai identities"
+  ],
+  "captures": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "filename": "cost-occupied-en-dark.png",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "regions": {
+        ".qp-cost-summary": {
+          "x": 242,
+          "y": 174.1875,
+          "width": 938.65625,
+          "height": 120.78125,
+          "bottom": 294.96875
+        },
+        ".qp-cost-providers": {
+          "x": 1192.65625,
+          "y": 174.1875,
+          "width": 463.34375,
+          "height": 164.796875,
+          "bottom": 338.984375
+        },
+        ".qp-cost-trend": {
+          "x": 242,
+          "y": 350.984375,
+          "width": 701,
+          "height": 257.484375,
+          "bottom": 608.46875
+        },
+        ".qp-cost-models": {
+          "x": 955,
+          "y": 350.984375,
+          "width": 701,
+          "height": 255.46875,
+          "bottom": 606.453125
+        },
+        ".qp-cost-projects": {
+          "x": 242,
+          "y": 620.46875,
+          "width": 463.328125,
+          "height": 209.875,
+          "bottom": 830.34375
+        },
+        ".qp-cost-sessions": {
+          "x": 717.328125,
+          "y": 620.46875,
+          "width": 463.328125,
+          "height": 295.0625,
+          "bottom": 915.53125
+        },
+        ".qp-cost-insights": {
+          "x": 1192.65625,
+          "y": 620.46875,
+          "width": 463.34375,
+          "height": 301.53125,
+          "bottom": 922
+        }
+      }
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "filename": "cost-occupied-en-light.png",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "regions": {
+        ".qp-cost-summary": {
+          "x": 242,
+          "y": 174.1875,
+          "width": 938.65625,
+          "height": 120.78125,
+          "bottom": 294.96875
+        },
+        ".qp-cost-providers": {
+          "x": 1192.65625,
+          "y": 174.1875,
+          "width": 463.34375,
+          "height": 164.796875,
+          "bottom": 338.984375
+        },
+        ".qp-cost-trend": {
+          "x": 242,
+          "y": 350.984375,
+          "width": 701,
+          "height": 257.484375,
+          "bottom": 608.46875
+        },
+        ".qp-cost-models": {
+          "x": 955,
+          "y": 350.984375,
+          "width": 701,
+          "height": 255.46875,
+          "bottom": 606.453125
+        },
+        ".qp-cost-projects": {
+          "x": 242,
+          "y": 620.46875,
+          "width": 463.328125,
+          "height": 209.875,
+          "bottom": 830.34375
+        },
+        ".qp-cost-sessions": {
+          "x": 717.328125,
+          "y": 620.46875,
+          "width": 463.328125,
+          "height": 295.0625,
+          "bottom": 915.53125
+        },
+        ".qp-cost-insights": {
+          "x": 1192.65625,
+          "y": 620.46875,
+          "width": 463.34375,
+          "height": 301.53125,
+          "bottom": 922
+        }
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "filename": "cost-occupied-th-dark.png",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "regions": {
+        ".qp-cost-summary": {
+          "x": 242,
+          "y": 174.1875,
+          "width": 938.65625,
+          "height": 120.78125,
+          "bottom": 294.96875
+        },
+        ".qp-cost-providers": {
+          "x": 1192.65625,
+          "y": 174.1875,
+          "width": 463.34375,
+          "height": 164.796875,
+          "bottom": 338.984375
+        },
+        ".qp-cost-trend": {
+          "x": 242,
+          "y": 350.984375,
+          "width": 701,
+          "height": 257.484375,
+          "bottom": 608.46875
+        },
+        ".qp-cost-models": {
+          "x": 955,
+          "y": 350.984375,
+          "width": 701,
+          "height": 255.46875,
+          "bottom": 606.453125
+        },
+        ".qp-cost-projects": {
+          "x": 242,
+          "y": 620.46875,
+          "width": 463.328125,
+          "height": 209.875,
+          "bottom": 830.34375
+        },
+        ".qp-cost-sessions": {
+          "x": 717.328125,
+          "y": 620.46875,
+          "width": 463.328125,
+          "height": 295.0625,
+          "bottom": 915.53125
+        },
+        ".qp-cost-insights": {
+          "x": 1192.65625,
+          "y": 620.46875,
+          "width": 463.34375,
+          "height": 301.53125,
+          "bottom": 922
+        }
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "filename": "cost-occupied-th-light.png",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "regions": {
+        ".qp-cost-summary": {
+          "x": 242,
+          "y": 174.1875,
+          "width": 938.65625,
+          "height": 120.78125,
+          "bottom": 294.96875
+        },
+        ".qp-cost-providers": {
+          "x": 1192.65625,
+          "y": 174.1875,
+          "width": 463.34375,
+          "height": 164.796875,
+          "bottom": 338.984375
+        },
+        ".qp-cost-trend": {
+          "x": 242,
+          "y": 350.984375,
+          "width": 701,
+          "height": 257.484375,
+          "bottom": 608.46875
+        },
+        ".qp-cost-models": {
+          "x": 955,
+          "y": 350.984375,
+          "width": 701,
+          "height": 255.46875,
+          "bottom": 606.453125
+        },
+        ".qp-cost-projects": {
+          "x": 242,
+          "y": 620.46875,
+          "width": 463.328125,
+          "height": 209.875,
+          "bottom": 830.34375
+        },
+        ".qp-cost-sessions": {
+          "x": 717.328125,
+          "y": 620.46875,
+          "width": 463.328125,
+          "height": 295.0625,
+          "bottom": 915.53125
+        },
+        ".qp-cost-insights": {
+          "x": 1192.65625,
+          "y": 620.46875,
+          "width": 463.34375,
+          "height": 301.53125,
+          "bottom": 922
+        }
+      }
+    }
+  ]
+}

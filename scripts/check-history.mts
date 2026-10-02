@@ -402,7 +402,7 @@ try {
   assert.equal(modelDefaultFrom, monthStart.getTime(), 'Models default scope must be the calendar month');
   assert.equal(await models.locator('.qp-model-table-wrap tbody tr').count(), 2);
   await models.locator('.qp-model-detail').getByText('gpt-test', { exact: true }).waitFor();
-  await models.locator('.qp-model-trend span').first().waitFor();
+  await models.locator('.qp-model-trend span').first().waitFor({ state: 'attached' });
   assert.match(await models.locator('.qp-model-summary').innerText(), /Model and route pairs\s+2/);
   assert.match(await models.locator('.qp-model-comparison').innerText(), /openrouter/);
   await page.screenshot({ path: resolve(output, 'models-real-en-dark-1440.png'), fullPage: true });
@@ -589,7 +589,7 @@ try {
       providers: ['.qp-provider-grid', '.qp-provider-detail', '.qp-provider-bottom'],
       models: ['.qp-model-summary', '.qp-model-providers', '.qp-model-detail'],
     };
-    if (destination === 'models') await page.locator('.qp-model-trend span').first().waitFor();
+    if (destination === 'models') await page.locator('.qp-model-trend span').first().waitFor({ state: 'attached' });
     if (destination === 'projects') await page.locator('.qp-project-trend').waitFor();
     const regions = await page.evaluate(selectors => Object.fromEntries(selectors.map(selector => {
       const { x, y, width, height } = document.querySelector(selector)!.getBoundingClientRect();

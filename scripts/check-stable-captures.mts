@@ -9,7 +9,7 @@ import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
-import type { MinuteTrendResponse, ProjectDetailResponse } from '../packages/web/src/api.js';
+import type { MinuteTrendResponse, ProjectDetailResponse, ModelDetailResponse, CostAnalysisResponse } from '../packages/web/src/api.js';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
@@ -54,13 +54,14 @@ let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 const errors: string[] = [];
 const forbidden: string[] = [];
 const chartChecks: Array<{ page: string; lang: string; theme: string; buckets: number; tokens: number }> = [];
+const modelCostChecks: Array<{ route: string; lang: string; theme: string; buckets: number; collapsedBottom: number }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const rendererArgs = ['--disable-gpu', '--deterministic-mode', '--disable-skia-runtime-opts', '--force-color-profile=srgb'];
 const pages = [
   ['overview', '.qp-activity-item'], ['live', '.qp-live-chart'],
   ['projects', '.qp-project-trend'], ['providers', '.qp-provider-health tbody tr'],
-  ['models', '.qp-model-detail-stats'], ['cost', '.qp-cost-chart'],
+  ['models', '.qp-model-trend'], ['cost', '.qp-cost-chart'],
   ['history', '[data-testid="usage-history"] tbody tr'], ['alerts', '.qp-quota-point'],
 ] as const;
 
@@ -114,7 +115,7 @@ async function semanticContrast(page: Page) {
     const root = document.querySelector('.qp-redesign')!; const style = getComputedStyle(root);
     const colors = Object.fromEntries(['danger', 'warning', 'series', 'success', 'muted'].map(role => [role, style.getPropertyValue(`--qp-${role}`).trim()]));
     const backgrounds = [style.backgroundColor, style.getPropertyValue('--qp-panel').trim(), style.backgroundImage.match(/rgb\([^)]+\)/)![0]];
-    const samples = [['danger', '.qp-alert-level[data-level=critical]'], ['warning', '.qp-alert-level[data-level=warning]'], ['series', '.qp-cost-chart-labels span:last-child'], ['success', '.qp-daemon-badge[data-state=live]'], ['muted', '.qp-chart-scale>span']].flatMap(([role, selector]) => {
+    const samples = [['danger', '.qp-alert-level[data-level=critical]'], ['warning', '.qp-alert-level[data-level=warning]'], ['series', '.qp-cost-chart-labels>span:nth-child(2)'], ['success', '.qp-daemon-badge[data-state=live]'], ['muted', '.qp-chart-scale>span']].flatMap(([role, selector]) => {
       const element = root.querySelector(selector); return element ? [{ role, selector, color: getComputedStyle(element).color }] : [];
     });
     return { colors, backgrounds, samples };
@@ -146,7 +147,7 @@ async function checkChartAccess(page: Page, destination: 'live' | 'projects', la
   await summary.focus(); await page.keyboard.press('Enter');
   assert.equal(await disclosure.getAttribute('open'), '');
   assert.equal(await disclosure.locator('table').isVisible(), true);
-  const rows = await disclosure.locator('tbody tr').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), tokens: Number(element.getAttribute('data-tokens')), text: element.querySelector('td:last-child')!.textContent, stamp: element.querySelector('td:first-child')!.textContent, iso: element.querySelector('time')!.getAttribute('datetime') })));
+  const rows = await disclosure.locator('tbody tr').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), tokens: Number(element.getAttribute('data-value')), text: element.querySelector('td:last-child')!.textContent, stamp: element.querySelector('td:first-child')!.textContent, iso: element.querySelector('time')!.getAttribute('datetime') })));
   assert.deepEqual(rows.map(({ at, tokens }) => ({ at, tokens })), expected);
   const format = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US');
   for (const row of rows) { assert.equal(row.text, format.format(row.tokens)); assert.equal(row.iso, new Date(row.at).toISOString()); assert.equal(row.stamp, new Date(row.at).toLocaleString(lang === 'th' ? 'th-TH' : 'en-US')); }
@@ -161,6 +162,79 @@ async function checkChartAccess(page: Page, destination: 'live' | 'projects', la
   }
   await summary.focus(); await page.keyboard.press('Enter'); assert.equal(await disclosure.getAttribute('open'), null);
   chartChecks.push({ page: destination, lang, theme, buckets: expected.length, tokens: expected.reduce((sum, point) => sum + point.tokens, 0) });
+}
+
+async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', lang: string, theme: string, pending: Set<Request>) {
+  const routes = destination === 'models'
+    ? ['models?metric=tokens', 'models?metric=calls', 'models?metric=api_value_usd']
+    : ['cost?basis=api&range=month', 'cost?basis=native&range=month', 'cost?basis=native&range=month&source=2'];
+  const locale = lang === 'th' ? 'th-TH' : 'en-US';
+  const number = new Intl.NumberFormat(locale);
+  const money = new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' });
+  for (const route of routes) {
+    await page.setViewportSize({ width: 1672, height: 941 });
+    const responsePromise = page.waitForResponse(response => response.url().includes(destination === 'models' ? '/api/model-detail?' : '/api/cost-analysis?') && response.status() === 200);
+    await page.goto(`http://127.0.0.1:7804/?chart-access=${encodeURIComponent(route)}#${route}`, { waitUntil: 'domcontentloaded' });
+    const response = await responsePromise;
+    // Query the daemon independently using the precise scope/identity requested by the UI.
+    const result = await daemon.inject({ method: 'GET', url: new URL(response.url()).pathname + new URL(response.url()).search, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+    assert.equal(result.statusCode, 200);
+    const data = result.json<ModelDetailResponse | CostAnalysisResponse>();
+    await page.locator('.qp-chart-data').waitFor(); await settled(page, pending);
+    const collapsedBottom = await page.locator(destination === 'models' ? '.qp-model-detail' : '.qp-cost-layout').evaluate(element => element.getBoundingClientRect().bottom);
+    assert.ok(collapsedBottom < 941, `${route}: collapsed detail outside viewport (${collapsedBottom})`);
+    const disclosure = page.locator('.qp-chart-data'); const summary = disclosure.locator('summary');
+    await summary.focus(); await page.keyboard.press('Enter');
+    assert.equal(await disclosure.getAttribute('open'), '');
+    const starts = Array.from({ length: Math.ceil((data.scope.to - data.scope.from) / data.bucketMs) }, (_, index) => data.scope.from + index * data.bucketMs);
+    const rows = disclosure.locator('tbody tr'); assert.equal(await rows.count(), starts.length);
+    const calls = route.includes('metric=calls');
+    const values: number[] = [];
+    for (const [index, start] of starts.entries()) {
+      const row = rows.nth(index);
+      assert.equal(await row.getAttribute('data-at'), String(start));
+      assert.equal(await row.locator('time').getAttribute('datetime'), new Date(start).toISOString());
+      assert.equal(await row.locator('time').textContent(), new Date(start).toLocaleString(locale));
+      if (destination === 'models') {
+        const point = (data as ModelDetailResponse).points.find(point => point.start === start);
+        const value = (calls ? point?.calls : point?.tokens) ?? 0; values.push(value);
+        assert.equal(await row.getAttribute('data-value'), String(value));
+        assert.equal(await row.locator('td').nth(1).textContent(), number.format(value));
+      } else {
+        const point = (data as CostAnalysisResponse).points.find(point => point.start === start) ?? { amount: 0, pricedTokens: 0, pricedCalls: 0, allCalls: 0 };
+        for (const [attribute, value] of Object.entries({ amount: point.amount, 'priced-tokens': point.pricedTokens, 'priced-calls': point.pricedCalls, 'all-calls': point.allCalls })) assert.equal(await row.getAttribute(`data-${attribute}`), String(value));
+        const expected = point.allCalls === 0 ? money.format(0) : point.pricedCalls === 0 ? (lang === 'th' ? 'ไม่ทราบ' : 'Unknown') : money.format(point.amount) + (point.pricedCalls < point.allCalls ? '+' : '');
+        assert.equal(await row.locator('.qp-cost-value>span').first().textContent(), expected);
+        assert.equal(await row.locator('td').nth(2).textContent(), number.format(point.pricedTokens));
+        assert.equal(await row.locator('td').nth(3).textContent(), `${number.format(point.pricedCalls)} / ${number.format(point.allCalls)} ${lang === 'th' ? 'คำขอ' : 'Calls'}`);
+      }
+    }
+    if (destination === 'models') {
+      assert.ok(values.includes(0), 'Zero model buckets must remain zero');
+      if (!route.includes('api_value_usd')) assert.ok(values.includes(1), 'Tiny model bucket fixture is missing');
+      const heights = await page.locator('.qp-model-trend>span').evaluateAll(elements => elements.map(element => parseFloat((element as HTMLElement).style.height)));
+      const maximum = Math.max(0, ...values);
+      heights.forEach((height, index) => assert.ok(Math.abs(height - values[index] / (maximum || 1) * 100) < 0.0001));
+      assert.equal(heights.length, values.length);
+      const header = await disclosure.locator('th').nth(1).textContent();
+      assert.equal(header, lang === 'th' ? (calls ? 'คำขอ' : 'โทเค็นที่บันทึก') : (calls ? 'Calls' : 'Recorded tokens'));
+    } else {
+      const cost = data as CostAnalysisResponse;
+      assert.equal(await disclosure.getAttribute('data-basis'), cost.basis);
+      if (route.includes('source=2')) {
+        assert.ok(cost.totals.allCalls > 0); assert.equal(cost.totals.pricedCalls, 0);
+      } else if (cost.basis === 'api') {
+        assert.ok(cost.points.some(point => point.pricedCalls > 0 && point.amount === 0), 'Known-zero price bucket fixture is missing');
+        assert.ok(cost.points.some(point => point.pricedCalls > 0 && point.pricedCalls < point.allCalls), 'Partial price bucket fixture is missing');
+      } else assert.ok(cost.points.some(point => point.allCalls > 0 && point.pricedCalls === 0), 'Unknown native bucket fixture is missing');
+    }
+    for (const width of [390, 900, 1280]) {
+      await page.setViewportSize({ width, height: 941 });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${route}: expanded table overflow at ${width}`);
+    }
+    await summary.focus(); await page.keyboard.press('Enter'); assert.equal(await disclosure.getAttribute('open'), null);
+    modelCostChecks.push({ route, lang, theme, buckets: starts.length, collapsedBottom });
+  }
 }
 
 try {
@@ -214,13 +288,14 @@ try {
             assert.ok(difference.maxChannelDelta <= 2 && difference.changedPixels / difference.pixelCount <= 0.0001, `${filename}: capture differs beyond raster tolerance (${JSON.stringify(difference)})`);
           }
           if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme);
+          if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
         }
       } finally { await page.close(); await browser.close(); }
       console.log(`Stable capture pass ${pass + 1}: ${lang}/${theme}, eight pages`);
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, modelCostChecks, cases }, null, 2));
   console.log(`Stable captures passed: 32 pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

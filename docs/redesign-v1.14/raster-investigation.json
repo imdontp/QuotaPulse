@@ -1,0 +1,50 @@
+{
+    "symptom":  {
+                    "changedPixels":  63,
+                    "maxChannelDelta":  13,
+                    "bounds":  [
+                                   255,
+                                   82,
+                                   262,
+                                   179
+                               ],
+                    "regions":  [
+                                    "heading SVG",
+                                    "search SVG"
+                                ]
+                },
+    "observations":  [
+                         "Identical SVG markup, boxes and all computed styles in pre-change Models-only reproduction",
+                         "Fresh browser per route did not remove the failure",
+                         "geometricPrecision scoped to the heading/search icons passes the Models-only reproduction"
+                     ],
+    "diagnosticPairs":  4,
+    "diagnosticCases":  [
+                            {
+                                "lang":  "en",
+                                "theme":  "dark",
+                                "changedPixels":  14,
+                                "maxChannelDelta":  1
+                            },
+                            {
+                                "lang":  "en",
+                                "theme":  "light",
+                                "changedPixels":  0,
+                                "maxChannelDelta":  0
+                            },
+                            {
+                                "lang":  "th",
+                                "theme":  "dark",
+                                "changedPixels":  0,
+                                "maxChannelDelta":  0
+                            },
+                            {
+                                "lang":  "th",
+                                "theme":  "light",
+                                "changedPixels":  0,
+                                "maxChannelDelta":  0
+                            }
+                        ],
+    "internalRendererCause":  "Not established",
+    "originalCaptureWorkflowRestored":  true
+}
