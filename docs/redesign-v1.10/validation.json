@@ -1,0 +1,174 @@
+{
+    "branch":  "design/redesign-foundation",
+    "status":  "validated checkpoint; overall release pending",
+    "checks":  [
+                   {
+                       "tests":  124,
+                       "command":  "npm run test -w @quotapulse/web",
+                       "result":  "passed"
+                   },
+                   {
+                       "environment":  "isolated QUOTAPULSE_DATA_DIR",
+                       "command":  "npm run test -w @quotapulse/daemon",
+                       "skipped":  2,
+                       "reason":  "live-database vendor checks excluded",
+                       "passed":  88
+                   },
+                   {
+                       "result":  "passed; existing legacy App chunk warning",
+                       "command":  "npm run build -w @quotapulse/web; npm run build -w @quotapulse/daemon"
+                   },
+                   {
+                       "command":  "npm run test:history",
+                       "matrixCases":  144,
+                       "result":  "passed",
+                       "occupiedAlertsLanguageThemeCases":  4
+                   },
+                   {
+                       "command":  "focused occupied Alerts",
+                       "result":  "passed",
+                       "checks":  [
+                                      "skip link preserves route and focuses main",
+                                      "summary outage/recovery",
+                                      "same-owner SSE update"
+                                  ]
+                   },
+                   {
+                       "captures":  21,
+                       "command":  "npm run test:visual",
+                       "result":  "passed"
+                   },
+                   {
+                       "syntheticRecords":  5000,
+                       "command":  "npm run test:runtime",
+                       "routes":  9,
+                       "result":  "passed"
+                   },
+                   {
+                       "result":  "passed; isolated Electron only",
+                       "command":  "npm run test:desktop"
+                   },
+                   {
+                       "result":  "passed",
+                       "command":  "git diff --check"
+                   }
+               ],
+    "artifacts":  [
+                      {
+                          "sha256":  "bfddc5332616c410a1269654b0be193facac65628a248e1483c9ccfe15c39397",
+                          "file":  "alerts-concept-size.png",
+                          "bytes":  353395
+                      },
+                      {
+                          "sha256":  "c65ba91cc8762d5bf13ac7fdbff4c5bb0f95ad62392a531955afe8c72f72b20c",
+                          "file":  "alerts-occupied-en-dark.png",
+                          "bytes":  376118
+                      },
+                      {
+                          "sha256":  "464cb6949c157813e0830d775eb38ad29718cec60f40d52e1dba67f8f4fcae18",
+                          "file":  "alerts-occupied-en-light.png",
+                          "bytes":  411872
+                      },
+                      {
+                          "sha256":  "9694c730c7edf4cdde783f3b50f9999a62da25531380f35d46e29b9e050ce994",
+                          "file":  "alerts-occupied-layout.json",
+                          "bytes":  7537
+                      },
+                      {
+                          "sha256":  "d61a9b4298c1e68a805bdd5e381c321b44267380a22bfc4e0ab3ba8e5b839eca",
+                          "file":  "alerts-occupied-th-dark.png",
+                          "bytes":  330575
+                      },
+                      {
+                          "sha256":  "7681a436397dbdd1cf17a04cd3780c8c90a142f5610b653fc869102e3ac444e3",
+                          "file":  "alerts-occupied-th-light.png",
+                          "bytes":  365001
+                      },
+                      {
+                          "sha256":  "76c2530ef545b1495214145ea499a84e3661eada1f2c66374ca38a3d9309ae12",
+                          "file":  "alerts-unknown-th-light-390.png",
+                          "bytes":  230995
+                      },
+                      {
+                          "sha256":  "6757591ecf0ebecc816a38dd3985804b2383f6bfc4b2bca7075dce03d2a50fdd",
+                          "file":  "cost-concept-size.png",
+                          "bytes":  398241
+                      },
+                      {
+                          "sha256":  "c35f72316aaa3b51a69b06bbc7c5a2ba44c8bd1795f03b69f754e426ee700a80",
+                          "file":  "daemon-tests.log",
+                          "bytes":  25108
+                      },
+                      {
+                          "sha256":  "9860d1c76935c0c037516fce9d7ea5a58f0039c53c5698b6adeef3b19b50ac71",
+                          "file":  "desktop-runtime.json",
+                          "bytes":  3078
+                      },
+                      {
+                          "sha256":  "e8a5aa381c9f3ae47cc6138b590c07524d88fd383c2d4dd56b13a9bfaf6853f8",
+                          "file":  "history-concept-size.png",
+                          "bytes":  376498
+                      },
+                      {
+                          "sha256":  "f8ba643e07f5e5f4201bee51a05c10f9811fa92bc496f925d23b9dd950251a41",
+                          "file":  "live-concept-size.png",
+                          "bytes":  363234
+                      },
+                      {
+                          "sha256":  "455667f5f075f1b424a7f8ccf5c91046393e54b83b3a86662a23e670be1f1261",
+                          "file":  "models-concept-size.png",
+                          "bytes":  372912
+                      },
+                      {
+                          "sha256":  "52cf800d1a95dd4d521dd74bf46ba52d9e9eae3ebbb9f37097a66e525ab125f4",
+                          "file":  "overview-concept-size.png",
+                          "bytes":  467910
+                      },
+                      {
+                          "sha256":  "c5c32079ec9b4086fec6228ea3b06131ff77f4101145ee1928ac5dd1ec42a268",
+                          "file":  "preview-validation.json",
+                          "bytes":  12893
+                      },
+                      {
+                          "sha256":  "3891193e331e43fa2b5b1297cd08471ef235b81694d0c24d7b338dccfd8abe6a",
+                          "file":  "production-runtime.json",
+                          "bytes":  110772
+                      },
+                      {
+                          "sha256":  "a9076a9209b5ca9b95dd3f26b364ac4bd844d529eea1db55d5d8d512118e941b",
+                          "file":  "projects-concept-size.png",
+                          "bytes":  431711
+                      },
+                      {
+                          "sha256":  "177ee8b6510ec91400747af45412f838d19bf6cb42c842de6e843ed43a2774d3",
+                          "file":  "providers-concept-size.png",
+                          "bytes":  333538
+                      },
+                      {
+                          "sha256":  "8c3136881ab79b610496332fda511518a7db59043546b4db97bc23b9e8670337",
+                          "file":  "responsive-matrix.json",
+                          "bytes":  18683
+                      },
+                      {
+                          "sha256":  "94175cc33b22d34fdea7876f9badc89a1cc7b9516c83d3f6b3c65ae0182f4812",
+                          "file":  "review-candidates.json",
+                          "bytes":  7726
+                      },
+                      {
+                          "sha256":  "c1dabd19323be01583086578d604cffa9140eb8f9163ddaebb66f7e494d90b40",
+                          "file":  "verification.json",
+                          "bytes":  2186
+                      },
+                      {
+                          "sha256":  "31d3933cfe32dad94fdc4c983cd8af1af490e4c6fc26db6eb531a7a63c9a0edf",
+                          "file":  "web-build.log",
+                          "bytes":  4416
+                      },
+                      {
+                          "sha256":  "d6b61cc7386aec23ac587309cef854daffcf8b3a66f6d4b8fa720f8c1ab858d7",
+                          "file":  "web-tests.log",
+                          "bytes":  22654
+                      }
+                  ],
+    "tag":  "redesign-alerts-shell-v1.10.0"
+}

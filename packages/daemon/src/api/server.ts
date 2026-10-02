@@ -21,6 +21,7 @@ import { modelDetail } from './model-detail.js';
 import { costAnalysis, type CostBasis } from './cost-analysis.js';
 import { liveSessions, type LiveSessionMode } from './live-sessions.js';
 import { historySummary } from './history-summary.js';
+import { runtimeSummary } from './runtime-summary.js';
 
 const log = logger('api');
 
@@ -144,6 +145,11 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
   // Opt-in local diagnostics endpoint. It contains process/scheduler counters only;
   // usage rows, paths, prompts, and credentials stay outside this response.
   app.get('/api/diagnostics/runtime', async () => runtimeSnapshot(scheduler));
+
+  app.get('/api/runtime-summary', async (req, reply) => {
+    if (Object.keys(req.query as Record<string, unknown>).length) return reply.code(400).send({ error: 'Runtime summary has machine-wide scope' });
+    return runtimeSummary(db, Date.now());
+  });
 
   app.get('/api/overview', async () => {
     const now = Date.now();

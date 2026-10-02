@@ -396,6 +396,15 @@ export interface Overview {
   lastPass: { newEvents: number; newLimits: number; durationMs: number; trigger: string } | null;
 }
 
+export interface RuntimeSummary {
+  now: number;
+  recentFrom: number;
+  namedProjects: number;
+  models: number;
+  providers: number;
+  recentSessions: number;
+}
+
 export interface TrendRow {
   bucket_ts: number;
   series: string;
@@ -646,6 +655,7 @@ export const api = {
     `/api/pricing/coverage?from=${p.from}&to=${p.to}` + (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
   ),
   overview: () => get<Overview>('/api/overview'),
+  runtimeSummary: () => get<RuntimeSummary>('/api/runtime-summary'),
   settings: () => get<AppSettings>('/api/settings'),
   updateSettings: (patch: Partial<AppSettings>) => put<AppSettings>('/api/settings', patch),
   limits: () =>

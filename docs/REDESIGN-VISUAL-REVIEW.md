@@ -38,12 +38,15 @@ price coverage; zero-value buckets no longer get nonzero bars. Localized series
 scales and bucket descriptions improve chart labeling; full axis treatment,
 contrast/screen-reader review and approved visual baselines remain pending.
 
-The implementation uses a 210 px sidebar and a 64 px topbar. The concepts have a
-roughly 226 px sidebar (Overview differs), a roughly 60 px topbar spanning the
-brand, and denser navigation. The nine consistent destinations, machine scope,
-language/theme controls and command palette follow the blueprint overrides.
-The missing Quick Stats panel and flatter background/glow treatment are still
-visual differences; their omission has not been approved as visual parity.
+[Alerts and shared shell 1.10](REDESIGN-ALERTS-SHELL-V1.10.md) changes desktop
+sidebar/topbar to 226/60 px, compacts navigation and adds factual machine-wide
+Quick Stats plus actual daemon connection state. Alerts forecast now shares the
+summary row; its observed chart exposes timestamp/percentage axes and a keyboard
+sample table. Occupied rules/history geometry and unknown/zero/SSE refresh pass.
+The concepts' brand spanning the topbar, typography and glow/decorative treatment
+still differ. The nine consistent destinations, machine scope, language/theme
+controls and command palette follow blueprint overrides. Stable reviewed visual
+baselines remain pending.
 Keep connection state separate from source freshness. Do not restore the
 concept's constant “All Systems Operational”, workspace account or avatar.
 

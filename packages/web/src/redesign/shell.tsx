@@ -3,6 +3,7 @@ import { Activity, ArrowUpRight, BarChart3, BellRing, Box, CircleGauge, GitBranc
 import type { MessageKey } from '@/i18n/en';
 import { CommandPalette } from '@/components/command-palette';
 import { useT } from '@/i18n';
+import { DaemonConnection, QuickStats } from './quick-stats';
 import './overview.css';
 
 export type RedesignTranslate = (key: Extract<MessageKey, `redesign.${string}`>) => string;
@@ -44,8 +45,9 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
   useEffect(() => { if (!preview) window.qpDashboard?.ready(); }, [preview]);
   useEffect(() => { if (!preview) document.documentElement.lang = language; }, [language, preview]);
   return <div ref={rootRef} className="qp-redesign" data-theme={theme} lang={language} data-testid={testId}>
+    <a className="qp-skip" href={`#${active}`} onClick={event => { event.preventDefault(); document.getElementById(active)?.focus(); }}>{t('redesign.skipContent')}</a>
     <aside className="qp-sidebar">
-      <a className="qp-brand" href="#overview" aria-label="QuotaPulse"><Activity/><span>QuotaPulse<small>MISSION CONTROL</small></span></a>
+      <a className="qp-brand" href="#overview" aria-label="QuotaPulse"><Activity/><span>Quota<strong>Pulse</strong><small>MISSION CONTROL</small></span></a>
       <nav aria-label={t('redesign.overview')}>
         {preview ? <>
           <a href="#overview" className="qp-nav-active" aria-label={t('redesign.overview')}><CircleGauge/><span>{t('redesign.overview')}</span></a>
@@ -53,11 +55,12 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
           <a href="#model-usage" aria-label={t('redesign.models')}><Layers/><span>{t('redesign.models')}</span></a>
         </> : NAV.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined}><Icon/><span>{t(label)}</span></a>)}
       </nav>
+      {!preview && <QuickStats t={t} language={language}/>}
       {preview && <a className="qp-exit" href="./#overview" aria-label={t('redesign.dashboard')}><ArrowUpRight/><span>{t('redesign.dashboard')}</span></a>}
     </aside>
     <div className="qp-workspace">
-      <header className="qp-topbar"><div className="qp-topbar-context"><span className="qp-preview-badge">{t(preview ? 'redesign.preview' : NAV.find(item => item.id === active)!.label)}</span>{!preview && <span className="qp-machine-scope">{t('redesign.machineScope')}</span>}</div><div className="qp-topbar-actions">{!preview && <RedesignNavigator/>}<div className="qp-tools"><button onClick={onLanguage} aria-label={t('redesign.language')}>{language === 'en' ? 'ไทย' : 'EN'}</button><button onClick={onTheme} aria-label={t('redesign.theme')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button></div></div></header>
-      <main id={active}>{children}</main>
+      <header className="qp-topbar"><div className="qp-topbar-context">{!preview && <DaemonConnection/>}<span className="qp-preview-badge">{t(preview ? 'redesign.preview' : NAV.find(item => item.id === active)!.label)}</span>{!preview && <span className="qp-machine-scope">{t('redesign.machineScope')}</span>}</div><div className="qp-topbar-actions">{!preview && <RedesignNavigator/>}<div className="qp-tools"><button onClick={onLanguage} aria-label={t('redesign.language')}>{language === 'en' ? 'ไทย' : 'EN'}</button><button onClick={onTheme} aria-label={t('redesign.theme')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button></div></div></header>
+      <main id={active} tabIndex={-1}>{children}</main>
     </div>
     {overlay}
   </div>;

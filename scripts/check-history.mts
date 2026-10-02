@@ -11,6 +11,7 @@ import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { en as englishMessages } from '../packages/web/src/i18n/en.ts';
 import { th as thaiMessages } from '../packages/web/src/i18n/th.ts';
+import { checkAlertsLayout } from './check-alerts-layout.mts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const output = resolve(root, 'screens/history');
@@ -501,7 +502,7 @@ try {
   await alerts.locator('.qp-alert-risk li').first().waitFor();
   assert.equal(await alerts.locator('.qp-alert-risk li').count(), 1);
   assert.equal(await alerts.locator('.qp-alert-history li').count(), 3);
-  await alerts.locator('.qp-alert-segments span').last().waitFor();
+  await alerts.locator('.qp-quota-point').last().waitFor();
   const notificationToggle = alerts.getByRole('checkbox', { name: 'Desktop notifications' });
   await notificationToggle.click();
   await page.waitForFunction(() => !(document.querySelector('[data-testid="production-alerts"] input[type="checkbox"]') as HTMLInputElement).checked);
@@ -990,6 +991,7 @@ try {
     db.exec("DELETE FROM usage_event WHERE dedup_key LIKE 'cost-layout-%'; DELETE FROM session WHERE id BETWEEN 300 AND 309;");
   }
   writeFileSync(resolve(output, 'cost-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { source: 1, addedSessions: 10, providers: 5, displayedModels: 8, displayedProjects: 6, displayedSessions: 10, apiValue: 65.4 }, checks: ['provider beside summary without overlap', 'models beside trend', 'complete occupied bottom panels in concept viewport', 'en/th and dark/light', '390/900/1280 overflow', 'exact model/provider/project History scope', 'zero empty-bucket bars', 'long Thai identities'], captures: costCaptures }, null, 2));
+  await checkAlertsLayout(browser, db, output, errors, scheduler);
   assert.deepEqual(errors, []);
   assert.equal(requests.some(url => new URL(url).searchParams.get('offset') === '50'), true);
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['real authenticated API', '53 records across pages', 'metadata details', 'pause suppresses fetch', 'pause ignores in-flight results', 'resume resets page', 'literal search', 'whole-range CSV', 'empty and unassigned', 'failed request retains snapshot and disables export', 'recovery', 'en/th, dark/light, 390/900/1440', 'currency preference', '30-minute call-only chart with aggregate exclusion', 'production overview uses scoped graph', 'fresh reader and two quota-history segments', 'safe pace and cache insight', 'activity opens session-scoped History', 'shared shell shows machine scope', 'shared command palette opens Settings and supports Ctrl+K to Providers', 'Projects grouped by exact project and filtered by harness, tab, metadata search', 'Projects trend and server-scoped Sessions tab', 'Projects opens exact scoped History', 'Projects responsive in English and Thai', 'Live call-only trend and aggregate exclusion', 'Live source-time sessions and metadata dialog', 'Live matrix scope and pause/resume', 'Live responsive in English and Thai', 'Providers retain known inactive catalog subscriptions and unbound sources', 'Providers compare one actual quota window and disclose exclusions', 'Providers link to scoped Settings and Health diagnostics', 'Providers responsive in English dark and Thai light', 'Models preserve model and recorded provider identity', 'Models show selected detail trend and priced-call coverage', 'Models provider filter and exact scoped History navigation', 'Models responsive in English dark and Thai light', 'Cost API/native basis separation and missing native value', 'Cost server-ranked sessions and exact History scope', 'Cost English dark desktop and Thai light mobile', 'Alerts threshold facts remain after current risk recovers', 'Alerts notification delivery toggle and reader advisory', 'Alerts English dark desktop and Thai light mobile', 'no page errors'], requestCount: requests.length, liveSessionRequests: liveRequests.length }, null, 2));
