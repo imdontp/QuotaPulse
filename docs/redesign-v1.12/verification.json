@@ -1,0 +1,1174 @@
+{
+  "status": "repeatable within recorded raster tolerance; review candidates, not approved visual baselines",
+  "clock": 1779025320000,
+  "isoClock": "2026-05-17T13:42:00.000Z",
+  "browser": "153.0.8010.53",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "timezone": "Asia/Bangkok",
+  "dpr": 1,
+  "reducedMotion": true,
+  "tolerance": {
+    "maxChannelDelta": 2,
+    "maxChangedPixelFraction": 0.0001,
+    "masks": false
+  },
+  "productionIndexSha256": "281f6da60383e475ecb982b27bdce6ab4b7eec2432ed69b151e2deee7605fc99",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "sessions": 12,
+    "namedProjects": 8,
+    "models": 8,
+    "providers": 4,
+    "records": 36
+  },
+  "checks": [
+    "frozen daemon and browser Date",
+    "64 screenshots / 32 pairs within raster tolerance",
+    "independent browser process per language/theme set",
+    "fresh document per route",
+    "production web without Vite",
+    "fonts ready and API settled",
+    "no page overflow",
+    "no external or write requests",
+    "no browser errors"
+  ],
+  "cases": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "overview-en-dark.png",
+      "sha256": "32991d879033ba9b2d852d5b0523edf65ee63362209e36542573f59e4a7c0a7b",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "32991d879033ba9b2d852d5b0523edf65ee63362209e36542573f59e4a7c0a7b",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "live-en-dark.png",
+      "sha256": "14aaba97fdbb6fff42dfc8b09693ca87c3c6d68c7992f347ef9a7b7b3e06c00c",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "14aaba97fdbb6fff42dfc8b09693ca87c3c6d68c7992f347ef9a7b7b3e06c00c",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "projects-en-dark.png",
+      "sha256": "9437863355b7ece8b967b9ee6b5d1a210ef43b800988e856dd13284fd5720ba0",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "9437863355b7ece8b967b9ee6b5d1a210ef43b800988e856dd13284fd5720ba0",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "providers-en-dark.png",
+      "sha256": "19b33319ee7a2d25e43421d4bcd21ea926d57aeee658b862bd422ef80080ad20",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "19b33319ee7a2d25e43421d4bcd21ea926d57aeee658b862bd422ef80080ad20",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "models-en-dark.png",
+      "sha256": "34139caf15486bffd5590090a9f1bb0903ce89f3b286179bdcee4a0cbb551fd7",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "34139caf15486bffd5590090a9f1bb0903ce89f3b286179bdcee4a0cbb551fd7",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "cost-en-dark.png",
+      "sha256": "6096659092cca287153a26c66fbd2c1d8df4d900b8891550e4214a72f0a39b41",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-cost-chart-labels span:last-child",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "6096659092cca287153a26c66fbd2c1d8df4d900b8891550e4214a72f0a39b41",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "history-en-dark.png",
+      "sha256": "e834ee6bfbfd9283afc578a776661a3075f6ca09a1b689718328e5e272ddc19a",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "e834ee6bfbfd9283afc578a776661a3075f6ca09a1b689718328e5e272ddc19a",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "alerts-en-dark.png",
+      "sha256": "f30a16b7b89205e66b0cc50457b09af140a99dd661a08a63b794ab4d859ccb49",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "f30a16b7b89205e66b0cc50457b09af140a99dd661a08a63b794ab4d859ccb49",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "filename": "overview-en-light.png",
+      "sha256": "333b77539684285046af83cf221d9e3966b1b06d7176ed7211acd23bc8a1d3f1",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "333b77539684285046af83cf221d9e3966b1b06d7176ed7211acd23bc8a1d3f1",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "filename": "live-en-light.png",
+      "sha256": "22f8015baacfa2d124f8433f2315523936a36bb33d1a46077843f5c98c7fda53",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "22f8015baacfa2d124f8433f2315523936a36bb33d1a46077843f5c98c7fda53",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "filename": "projects-en-light.png",
+      "sha256": "309997fdeec4a9ef869a83e312c9795457a32c48a8cf06e9ddb7009dcfd9884a",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "309997fdeec4a9ef869a83e312c9795457a32c48a8cf06e9ddb7009dcfd9884a",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "light",
+      "filename": "providers-en-light.png",
+      "sha256": "1fdb4f3d9b1f1d94dbd62a1eaa03163b2e8f3f5197695c56aa30e203ae46ade1",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "1fdb4f3d9b1f1d94dbd62a1eaa03163b2e8f3f5197695c56aa30e203ae46ade1",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "filename": "models-en-light.png",
+      "sha256": "8b057f430883048082a00e4c95ce39e32ec16a4bd31df8d5b974b729cf2e8172",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "8b057f430883048082a00e4c95ce39e32ec16a4bd31df8d5b974b729cf2e8172",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "light",
+      "filename": "cost-en-light.png",
+      "sha256": "58f54d143eacd9b7dd8ca2f4ff503dd4cc3bdbd99280b8ff40bee379602a2456",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-cost-chart-labels span:last-child",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "58f54d143eacd9b7dd8ca2f4ff503dd4cc3bdbd99280b8ff40bee379602a2456",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "filename": "history-en-light.png",
+      "sha256": "67424bf6691c9d5accb5e0389ef0ad86e8b4d3bea2e77f817a36dd45bd90e325",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "67424bf6691c9d5accb5e0389ef0ad86e8b4d3bea2e77f817a36dd45bd90e325",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "filename": "alerts-en-light.png",
+      "sha256": "c6ba1446266678bf7bbecc60d5f37266bcbd044994f8407a8f1d13a692576794",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "c6ba1446266678bf7bbecc60d5f37266bcbd044994f8407a8f1d13a692576794",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "overview-th-dark.png",
+      "sha256": "ad391fdc81af4e613922dd84b3281e59ae3dbe8419f8e147c0377bfe1f63fc99",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "ad391fdc81af4e613922dd84b3281e59ae3dbe8419f8e147c0377bfe1f63fc99",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "live-th-dark.png",
+      "sha256": "9734cee696d955508c83913d1e2a32db81ba08572b36efba35ae9ba6cae3e4ad",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "9734cee696d955508c83913d1e2a32db81ba08572b36efba35ae9ba6cae3e4ad",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "projects-th-dark.png",
+      "sha256": "fb5a370b1519ba0157d1663fd44621211b7714e41d6fa6da62205732e3e73fc3",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "fb5a370b1519ba0157d1663fd44621211b7714e41d6fa6da62205732e3e73fc3",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "providers-th-dark.png",
+      "sha256": "7896155cb6c61e3f056393c0d5eecda5fbe623e59e27ba4ee30648ac549cc051",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "7896155cb6c61e3f056393c0d5eecda5fbe623e59e27ba4ee30648ac549cc051",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "models-th-dark.png",
+      "sha256": "4876cfa56457bad314dfbfd3d07ffbb67578cf0d963c780af222c8fe57619b21",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "4876cfa56457bad314dfbfd3d07ffbb67578cf0d963c780af222c8fe57619b21",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "cost-th-dark.png",
+      "sha256": "44a7f0fe710562dfed186740729ddee63be9f9beca86ad422bf4ececb08e09ee",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-cost-chart-labels span:last-child",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "44a7f0fe710562dfed186740729ddee63be9f9beca86ad422bf4ececb08e09ee",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "history-th-dark.png",
+      "sha256": "f77f3d829bc9ccdecafa251e4df7dd1039fcbe183ed245a3e449916973b96a79",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "f77f3d829bc9ccdecafa251e4df7dd1039fcbe183ed245a3e449916973b96a79",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "alerts-th-dark.png",
+      "sha256": "ca0ba03b926f716cf29f1d04b66aa74dab6b13335229039dff5e7559fb0c9183",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "ca0ba03b926f716cf29f1d04b66aa74dab6b13335229039dff5e7559fb0c9183",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "filename": "overview-th-light.png",
+      "sha256": "ccd56976bb428a41346da740122acaf6a779fe38ca8e40bdd71a380d50f85f5a",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "ccd56976bb428a41346da740122acaf6a779fe38ca8e40bdd71a380d50f85f5a",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "filename": "live-th-light.png",
+      "sha256": "7a12ee7e9070ade8bc5f9db95c6d459d4675cc1d582c3ddfb38f042e70bacba6",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "7a12ee7e9070ade8bc5f9db95c6d459d4675cc1d582c3ddfb38f042e70bacba6",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "filename": "projects-th-light.png",
+      "sha256": "25d12c6a27876779d32ae7fd121c09835e8300dfc7051bbb251918b53e780e20",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "25d12c6a27876779d32ae7fd121c09835e8300dfc7051bbb251918b53e780e20",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "light",
+      "filename": "providers-th-light.png",
+      "sha256": "792c062707700d5d9f2346fa9a54fb528ba21e64ca5402d92aea4484bf354159",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "792c062707700d5d9f2346fa9a54fb528ba21e64ca5402d92aea4484bf354159",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "filename": "models-th-light.png",
+      "sha256": "061fcefa9345938bf20e8267c7dddfaec4dd7dd7193a4aa10086ed8c9898cd74",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "061fcefa9345938bf20e8267c7dddfaec4dd7dd7193a4aa10086ed8c9898cd74",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "light",
+      "filename": "cost-th-light.png",
+      "sha256": "f1df847773bee5ba3ff3821148f859a301644e875403b8b4395e9776add3fdf5",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-cost-chart-labels span:last-child",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "f1df847773bee5ba3ff3821148f859a301644e875403b8b4395e9776add3fdf5",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "filename": "history-th-light.png",
+      "sha256": "f92a0109aeab6fe19183173172e3965ffdb3a1dc1a3f9545d0472a619bc4646c",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "f92a0109aeab6fe19183173172e3965ffdb3a1dc1a3f9545d0472a619bc4646c",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "filename": "alerts-th-light.png",
+      "sha256": "b14a18e5e2f121a08a1c13977f2ba578c90933be040a4b31587f485a6f5b2327",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "b14a18e5e2f121a08a1c13977f2ba578c90933be040a4b31587f485a6f5b2327",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    }
+  ]
+}

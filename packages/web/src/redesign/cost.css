@@ -22,7 +22,7 @@
 .qp-cost-chart { display:flex; align-items:end; gap:4px; height:175px; padding:10px 0; border-bottom:1px solid var(--qp-border); }
 .qp-cost-chart>div { position:relative; flex:1; height:100%; min-width:2px; display:flex; align-items:end; }
 .qp-cost-column { display:block; width:100%; border-radius:3px 3px 0 0; background:linear-gradient(#2bb8ef,#4c6df2); }
-.qp-cost-chart i { position:absolute; left:0; right:0; height:3px; border-radius:3px; background:#a873f9; }
+.qp-cost-chart i { position:absolute; left:0; right:0; height:3px; border-radius:3px; background:var(--qp-series); }
 .qp-cost-donut { width:138px; height:138px; margin:auto; border-radius:50%; display:grid; place-items:center; }
 .qp-cost-donut[data-zero=true] { background:var(--qp-border)!important; }
 .qp-cost-donut>span { width:94px; height:94px; border-radius:50%; background:var(--qp-panel); display:grid; place-items:center; font-size:15px; font-weight:700; }
@@ -38,7 +38,7 @@
 .qp-cost-insights>div { display:grid; gap:5px; padding:10px; border:1px solid var(--qp-border); border-radius:7px; }
 .qp-cost-insights span { color:var(--qp-muted); font-size:11px; }
 .qp-cost-insights strong { font-size:16px; }
-.qp-cost-error { color:#e6a66c; font-size:11px; }
+.qp-cost-error { color:var(--qp-warning); font-size:11px; }
 @media(max-width:1200px) { .qp-cost-upper { grid-template-columns:1fr; } .qp-cost-summary { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:730px) { .qp-cost-header { grid-template-columns:1fr; } .qp-cost-lower { grid-template-columns:1fr; } }
 @media(max-width:450px) { .qp-cost-toolbar { grid-template-columns:1fr; } .qp-cost-providers li { grid-template-columns:8px minmax(0,1fr); } .qp-cost-providers li strong { grid-column:2; } }
@@ -50,7 +50,7 @@
 .qp-cost-lower { grid-template-columns:repeat(3,minmax(0,1fr)); }
 @media(max-width:1200px) { .qp-cost-lower { grid-template-columns:1fr; } }
 .qp-cost-chart-labels { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; font-size:11px; color:var(--qp-accent); }
-.qp-cost-chart-labels span:last-child { color:#a873f9; }
+.qp-cost-chart-labels span:last-child { color:var(--qp-series); }
 @media(min-width:1280px) {
   [data-testid=production-cost] main { gap:12px; }
   .qp-cost-top { grid-template-columns:minmax(0,1fr) auto; align-items:center; }

@@ -35,7 +35,7 @@
   border:1px solid #c77b33;
   border-radius:8px;
   padding:10px;
-  color:#e6a66c;
+  color:var(--qp-warning);
 }
 .qp-project-toolbar {
   display:flex;

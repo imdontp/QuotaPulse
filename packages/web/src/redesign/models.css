@@ -50,7 +50,7 @@
 .qp-model-providers button[aria-pressed=true] { border-color:var(--qp-accent); }
 .qp-model-providers button:disabled { cursor:default; opacity:.65; }
 .qp-model-providers button span:not(.qp-bar) { color:var(--qp-muted); }
-.qp-model-error { color:#e6a66c; font-size:11px; }
+.qp-model-error { color:var(--qp-warning); font-size:11px; }
 @media(min-width:1280px) {
   [data-testid=production-models] main { gap:12px; }
   .qp-model-summary article,.qp-model-detail .qp-panel { padding:12px; gap:6px; }

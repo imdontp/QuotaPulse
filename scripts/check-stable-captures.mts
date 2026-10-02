@@ -41,14 +41,14 @@ const quota = db.prepare("INSERT INTO limit_sample(source_id,window_kind,used_pe
 for (const [percent, minutes] of [[0, 50], [10, 35], [20, 20], [38, 5], [97, 1]]) {
   const at = fixedNow - minutes * 60_000; quota.run(1, percent, fixedNow + 7_200_000, at, at, at);
 }
-quota.run(2, 65, fixedNow + 7_200_000, fixedNow - 30_000, fixedNow - 30_000, fixedNow - 30_000);
+quota.run(2, 85, fixedNow + 7_200_000, fixedNow - 30_000, fixedNow - 30_000, fixedNow - 30_000);
 recordQuotaAlerts(db, fixedNow);
 const scheduler = new Scheduler(db, [], { pollMs: 1_000_000, detectMs: 1_000_000 });
 const daemon = buildServer(db, scheduler, { token: 'stable-capture-test', port: 7804, webRoot: resolve(root, 'packages/web/dist') });
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 const errors: string[] = [];
 const forbidden: string[] = [];
-const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number }> = [];
+const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const rendererArgs = ['--disable-gpu', '--deterministic-mode', '--disable-skia-runtime-opts', '--force-color-profile=srgb'];
 const pages = [
@@ -97,6 +97,28 @@ async function comparePixels(page: Page, first: Buffer, second: Buffer) {
   }, { first: first.toString('base64'), second: second.toString('base64') });
 }
 
+// WCAG relative luminance. Check computed CSS colors, rather than antialiased glyphs.
+const rgb = (color: string) => color.startsWith('#') ? (color.length === 4 ? color.slice(1).split('').map(value => value + value).join('') : color.slice(1)).match(/../g)!.map(value => parseInt(value, 16)) : color.match(/[\d.]+/g)!.slice(0, 3).map(Number);
+const luminance = (color: string) => rgb(color).map(value => value / 255).map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4).reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
+const contrast = (foreground: string, background: string) => (Math.max(luminance(foreground), luminance(background)) + 0.05) / (Math.min(luminance(foreground), luminance(background)) + 0.05);
+assert.deepEqual(rgb('#fff'), rgb('rgb(255, 255, 255)'));
+assert.equal(contrast('#000', '#fff'), 21);
+async function semanticContrast(page: Page) {
+  const result = await page.evaluate(() => {
+    const root = document.querySelector('.qp-redesign')!; const style = getComputedStyle(root);
+    const colors = Object.fromEntries(['danger', 'warning', 'series', 'success'].map(role => [role, style.getPropertyValue(`--qp-${role}`).trim()]));
+    const backgrounds = [style.backgroundColor, style.getPropertyValue('--qp-panel').trim(), style.backgroundImage.match(/rgb\([^)]+\)/)![0]];
+    const samples = [['danger', '.qp-alert-level[data-level=critical]'], ['warning', '.qp-alert-level[data-level=warning]'], ['series', '.qp-cost-chart-labels span:last-child'], ['success', '.qp-daemon-badge[data-state=live]']].flatMap(([role, selector]) => {
+      const element = root.querySelector(selector); return element ? [{ role, selector, color: getComputedStyle(element).color }] : [];
+    });
+    return { colors, backgrounds, samples };
+  });
+  const semanticContrasts = Object.entries(result.colors).map(([role, color]) => ({ role, color, minimumRatio: Math.min(...result.backgrounds.map(background => contrast(color, background))) }));
+  for (const item of semanticContrasts) assert.ok(item.minimumRatio >= 4.5, `${item.role}: insufficient text contrast (${item.minimumRatio})`);
+  for (const sample of result.samples) assert.deepEqual(rgb(sample.color), rgb(result.colors[sample.role]), `${sample.selector}: semantic color was overridden`);
+  return { semanticContrasts, checkedElements: result.samples.map(sample => sample.selector) };
+}
+
 try {
   await daemon.listen({ host: '127.0.0.1', port: 7804 });
   assert.equal((await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json().now, fixedNow);
@@ -134,9 +156,10 @@ try {
           await settled(page, pending);
           assert.equal(await page.evaluate(() => Date.now()), fixedNow);
           assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+          const contrastEvidence = await semanticContrast(page);
           const filename = `${destination}-${lang}-${theme}.png`;
           const screenshot = await page.screenshot({ path: resolve(output, pass === 0 ? filename : `repeat-${filename}`), animations: 'disabled' });
-          if (pass === 0) cases.push({ page: destination, lang, theme, filename, sha256: sha(screenshot) });
+          if (pass === 0) cases.push({ page: destination, lang, theme, filename, sha256: sha(screenshot), ...contrastEvidence });
           else {
             const item = cases.find(item => item.filename === filename)!;
             item.repeatSha256 = sha(screenshot);

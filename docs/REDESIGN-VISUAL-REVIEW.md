@@ -50,6 +50,13 @@ baselines remain pending.
 Keep connection state separate from source freshness. Do not restore the
 concept's constant “All Systems Operational”, workspace account or avatar.
 
+[Semantic text contrast 1.12](REDESIGN-SEMANTIC-CONTRAST-V1.12.md) adds theme-aware
+danger/warning/secondary-series/success colors. Computed semantic foregrounds pass
+the targeted 4.5:1 text gate against panel/root background ranges in both themes;
+visible Alerts badges, Cost labels and daemon status use the expected colors.
+Its final 32 capture pairs are byte-identical. Full text/state/non-text contrast,
+Thai font portability and keyboard/screen-reader review remain pending.
+
 ## Screen review
 
 | Screen | Preserved structure and intentional factual changes | Findings at initial v1.3 review; see follow-up above |
