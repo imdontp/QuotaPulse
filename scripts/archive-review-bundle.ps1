@@ -8,6 +8,11 @@ $bundle=[IO.Path]::GetFullPath($built.bundle)
 $boundary=[IO.Path]::GetFullPath((Join-Path $root 'tmp\review-bundles'))+[IO.Path]::DirectorySeparatorChar
 if (-not $bundle.StartsWith($boundary,[StringComparison]::OrdinalIgnoreCase)) { throw 'Bundle is outside the review output directory.' }
 if (Test-Path -LiteralPath (Join-Path $bundle 'review-data')) { throw 'Do not archive a used review profile.' }
+foreach ($script in @('task-entry.cjs','start-review.ps1','stop-review.ps1','review-profile.ps1','install-review.ps1')) {
+  $source=Join-Path $PSScriptRoot $script
+  $copied=Join-Path (Join-Path $bundle 'scripts') $script
+  if ((Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $copied -Algorithm SHA256).Hash) { throw "Bundle script is stale: $script" }
+}
 $files=@(Get-ChildItem -LiteralPath $bundle -File -Recurse -Force)
 $links=@(Get-ChildItem -LiteralPath $bundle -Recurse -Force | Where-Object { $_.Attributes -band [IO.FileAttributes]::ReparsePoint })
 if ($links.Count) { throw 'Linked files are not allowed in the review archive.' }

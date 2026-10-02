@@ -1,0 +1,26 @@
+{
+    "readersDisabled":  true,
+    "archiveSha256":  "3bfec2f507fff8fbefd3a286f949ea84cc9ab56c23dc9ae79666680a987f7450",
+    "destination":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-install-614e0b28319746479ec490931df28d31\\review isolated",
+    "status":  "passed",
+    "fixture":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-install-614e0b28319746479ec490931df28d31",
+    "limitations":  [
+                        "unsigned PowerShell review installer, not signed MSI/EXE",
+                        "upgrade/rollback variants modify manifest only; no different-version DB migration certified",
+                        "no actual Windows logon or physical tray-click check"
+                    ],
+    "checks":  [
+                   "install WhatIf verifies ZIP without creating the destination",
+                   "incorrect archive checksum fails before destination mutation",
+                   "ZIP traversal is rejected before extraction",
+                   "nonempty unowned destination remains unchanged",
+                   "actual ZIP installs inactive processes with immutable release and previewable start wrapper",
+                   "installation lock prevents start without creating app data or invoking process cleanup",
+                   "installed real daemon/tray starts with readers off; running upgrades/rollback rejected; scoped stop succeeds",
+                   "exclusive installation lock rejects competing upgrade and retains active pointer",
+                   "upgrade retains prior runtime and the same database sentinel; upgraded real daemon/tray starts",
+                   "rollback WhatIf is inert; actual rollback starts retained runtime and preserves database sentinel",
+                   "real atomic pointer failure preserves active release/data; staged payload can be retried and starts successfully"
+               ],
+    "realScheduledTasks":  false
+}

@@ -48,6 +48,6 @@ try {
   script('start-review.ps1'); script('stop-review.ps1');
   checks.push('restart tolerates retained review process records and stale daemon lock');
   mkdirSync(output,{recursive:true});
-  writeFileSync(resolve(output,'bundle-verification.json'),JSON.stringify({status:'passed',extracted,checks,requiredNodeAbi:built.requiredNodeAbi,externalNode:true,limitations:['local Windows review bundle; unsigned and not an installer','readers disabled; empty usage database','host Node prerequisite; no logon tasks installed']},null,2));
+  writeFileSync(resolve(output,'bundle-verification.json'),JSON.stringify({status:'passed',extracted,checks,requiredNodeAbi:built.requiredNodeAbi,externalNode:true,limitations:['portable launch checks; versioned installation validated separately','readers disabled; empty usage database','host Node prerequisite; no logon tasks installed']},null,2));
   console.log(`Review bundle passed: ${checks.length} checks outside the repository dependency tree.`);
 } finally { if(existsSync(resolve(data,'review-processes.json'))) script('stop-review.ps1'); }

@@ -1,13 +1,16 @@
 [CmdletBinding(SupportsShouldProcess)]
-param([ValidateRange(1024,65535)][int]$Port=7807)
+param([ValidateRange(1024,65535)][int]$Port=7807,[string]$InstallationRoot)
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
-$data=Join-Path $root 'review-data'
+. (Join-Path $PSScriptRoot 'review-profile.ps1')
+$data=Get-ReviewDataPath $root $InstallationRoot
 $entry=Join-Path $PSScriptRoot 'task-entry.cjs'
 $manifest=Get-Content -LiteralPath (Join-Path $root 'review-manifest.json') -Raw | ConvertFrom-Json
 $node=(Get-Command node -ErrorAction Stop).Source
-$abi=& $node -p 'process.versions.modules'
-if ($LASTEXITCODE -ne 0 -or $abi -ne $manifest.requiredNodeAbi) { throw "This review bundle requires Node module ABI $($manifest.requiredNodeAbi)." }
+$runtimeInfo=& $node -p 'JSON.stringify({abi:process.versions.modules,platform:process.platform,arch:process.arch})'
+if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect native Node runtime.' }
+$runtimeInfo=$runtimeInfo | ConvertFrom-Json
+if ($runtimeInfo.abi -ne $manifest.requiredNodeAbi -or $runtimeInfo.platform -ne $manifest.platform -or $runtimeInfo.arch -ne $manifest.arch) { throw "This review bundle requires Node ABI $($manifest.requiredNodeAbi) on $($manifest.platform)/$($manifest.arch)." }
 $statePath=Join-Path $data 'review-processes.json'
 if (Test-Path -LiteralPath $statePath) {
   $old=Get-Content -LiteralPath $statePath -Raw | ConvertFrom-Json
@@ -19,11 +22,24 @@ if (Test-Path -LiteralPath $statePath) {
 $probe=[Net.Sockets.TcpListener]::new([Net.IPAddress]::Loopback,$Port)
 try { $probe.Start() } finally { $probe.Stop() }
 if (-not $PSCmdlet.ShouldProcess($data,'Start isolated review daemon and tray with readers disabled')) { return }
-New-Item -ItemType Directory -Path $data -Force | Out-Null
-[IO.File]::WriteAllText((Join-Path $data 'pet-settings.json'),'{"schemaVersion":4,"enabled":false}')
 $state=@{port=$Port}
 $previousRunAsNode=$env:ELECTRON_RUN_AS_NODE
+$instanceLock=$null
+$startLock=$null
 try {
+  if ($InstallationRoot) {
+    $lockPath=Join-Path $InstallationRoot 'installation.lock'
+    Assert-ReviewPlainPath $lockPath
+    $instanceLock=[IO.File]::Open($lockPath,[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None)
+    $data=Get-ReviewDataPath $root $InstallationRoot
+  }
+  New-Item -ItemType Directory -Path $data -Force | Out-Null
+  $startLockPath=Join-Path $data 'start.lock'
+  Assert-ReviewPlainPath $startLockPath
+  $startLock=[IO.File]::Open($startLockPath,[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None)
+  $running=@(Get-CimInstance Win32_Process | Where-Object { $_.Name -in @('node.exe','electron.exe') -and $_.CommandLine -and $_.CommandLine.Contains($data) })
+  if ($running.Count) { throw 'Review instance still running; use stop-review before starting again.' }
+  [IO.File]::WriteAllText((Join-Path $data 'pet-settings.json'),'{"schemaVersion":4,"enabled":false}')
   foreach ($role in @('daemon','tray')) {
     $exe=if($role -eq 'daemon'){$node}else{Join-Path $root 'node_modules\electron\dist\electron.exe'}
     $args='"'+$entry+'" --role '+$role+' --port '+$Port+' --data-dir "'+$data+'" --node-exe "'+$node+'" --no-readers'
@@ -48,6 +64,9 @@ try {
       if (-not $ready) { throw 'Review daemon did not become ready.' }
     }
   }
-} catch { & (Join-Path $PSScriptRoot 'stop-review.ps1'); throw }
-finally { $env:ELECTRON_RUN_AS_NODE=$previousRunAsNode }
+} catch {
+  if ($state.ContainsKey('daemon') -or $state.ContainsKey('tray')) { & (Join-Path $PSScriptRoot 'stop-review.ps1') -InstallationRoot $InstallationRoot }
+  throw
+}
+finally { $env:ELECTRON_RUN_AS_NODE=$previousRunAsNode; if ($startLock) { $startLock.Dispose() }; if ($instanceLock) { $instanceLock.Dispose() } }
 Write-Host "Review ready: http://127.0.0.1:$Port/#overview (readers disabled). Use the review tray icon to open the native dashboard."
