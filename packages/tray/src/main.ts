@@ -2698,7 +2698,15 @@ function createDashboardWindow(): void {
     if (dashboardUnresponsiveTimer) clearTimeout(dashboardUnresponsiveTimer);
     dashboardUnresponsiveTimer = setTimeout(() => {
       dashboardUnresponsiveTimer = null;
-      if (popup && !popup.isDestroyed()) recoverDashboard();
+      if (!popup || popup.isDestroyed()) return;
+      // Reload alone queues behind a blocked renderer thread. Terminate it after
+      // the grace period; render-process-gone owns the existing bounded recovery.
+      try {
+        popup.webContents.forcefullyCrashRenderer();
+      } catch (error) {
+        console.error(`dashboard unresponsive renderer termination failed: ${String(error)}`);
+        recoverDashboard();
+      }
     }, 4_000);
   });
   popup.webContents.on('responsive', () => {

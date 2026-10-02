@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "runtimeRoot": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review-bundles\\QuotaPulse-v1.25-vYDqYN",
+  "bundled": true,
+  "checks": [
+    "real compiled tray/main opens built dashboard through its existing open action with isolated profile and sandbox",
+    "actual renderer crash reloads the same native window with a new renderer and restored React/preload",
+    "repeated document-load failures close dashboard after bounded retries while tray/main remains alive",
+    "reopening after failed recovery creates one replacement window with loaded data and working pause control"
+  ],
+  "identity": {
+    "id": 1,
+    "pid": 28736,
+    "userData": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\tray-recovery\\instance-Q2KCFA\\electron",
+    "sessionData": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\tray-recovery\\instance-Q2KCFA\\electron",
+    "preferences": {
+      "allowRunningInsecureContent": false,
+      "contextIsolation": true,
+      "disableDialogs": false,
+      "disablePopups": false,
+      "enableBlinkFeatures": "",
+      "experimentalFeatures": false,
+      "javascript": true,
+      "nodeIntegration": false,
+      "nodeIntegrationInSubFrames": false,
+      "nodeIntegrationInWorker": false,
+      "safeDialogs": false,
+      "safeDialogsMessage": "",
+      "sandbox": true,
+      "webSecurity": true,
+      "webviewTag": false
+    }
+  },
+  "recovery": {
+    "crashes": [
+      "crashed",
+      "crashed"
+    ],
+    "loads": 2,
+    "ready": 2
+  },
+  "final": [
+    {
+      "id": 2,
+      "visible": true,
+      "pid": 14824
+    }
+  ],
+  "database": "in-memory synthetic; no adapters",
+  "limitations": [
+    "unpacked compiled tray/main; not packaged installer",
+    "dashboard crash/load failure covered; pet/quota popup and actual unresponsive renderer remain separate",
+    "open action dispatched from test main; no physical tray-click automation"
+  ]
+}
