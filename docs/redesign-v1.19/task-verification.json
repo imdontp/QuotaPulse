@@ -1,0 +1,18 @@
+{
+    "status":  "passed",
+    "limitations":  [
+                        "All ScheduledTask cmdlets mocked; no real tasks queried or modified",
+                        "Tray runner and installed task/process lifecycle require separate approved manual validation"
+                    ],
+    "fixture":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\task isolation-3ef883d22f7a42b28bfc76e6aba6cd4d",
+    "checks":  [
+                   "install WhatIf makes no definition changes",
+                   "invalid or shared paths and default-port collisions rejected before mutation",
+                   "named tasks use this checkout, quoted paths and selected port; replacement requires Replace",
+                   "uninstall WhatIf and tray-before-daemon scoped stop/removal retain original definitions and data",
+                   "NoTray registers only daemon",
+                   "partial registration rollback removes new tasks and restores replaced XML definitions",
+                   "copied runner forwards port/data directory only to child environment",
+                   "tray runner quotes entry, forwards environment, clears run-as-node, waits hidden and propagates exit code through mocked launch"
+               ]
+}

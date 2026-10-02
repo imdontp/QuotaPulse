@@ -9,6 +9,8 @@ export const DATA_DIR =
   join(process.env.LOCALAPPDATA ?? join(HOME, '.local', 'share'), 'quotapulse');
 
 export const DB_PATH = join(DATA_DIR, 'usage.db');
+/** Explicit instances must never adopt another installation's data. */
+export const HAS_CUSTOM_DATA_DIR = process.env.QUOTAPULSE_DATA_DIR !== undefined;
 export const LOCK_PATH = join(DATA_DIR, 'daemon.lock');
 /** Optional sanitized quota events emitted by an existing harness invocation. */
 export const EVENTS_DIR = join(DATA_DIR, 'events');

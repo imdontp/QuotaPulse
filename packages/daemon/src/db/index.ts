@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3';
 import { copyFileSync, existsSync, mkdirSync, renameSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { DATA_DIR, DB_PATH, LEGACY_DATA_DIRS, projectOf } from '../util/paths.js';
+import { DATA_DIR, DB_PATH, HAS_CUSTOM_DATA_DIR, LEGACY_DATA_DIRS, projectOf } from '../util/paths.js';
 import { SCHEMA_SQL, SCHEMA_VERSION } from './schema.js';
 import { logger } from '../util/log.js';
 import type { AccountIdentity } from '../adapters/types.js';
@@ -22,6 +22,7 @@ let handle: DB | null = null;
  * both directories adopts the plimsoll one and leaves the older usage-trend copy alone.
  */
 function adoptLegacyDataDir(): void {
+  if (HAS_CUSTOM_DATA_DIR) return;
   if (existsSync(DATA_DIR)) return;
   const legacy = LEGACY_DATA_DIRS.find((dir) => existsSync(dir));
   if (!legacy) return;

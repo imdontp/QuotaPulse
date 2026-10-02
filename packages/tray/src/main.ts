@@ -1,5 +1,6 @@
 import { app, Tray, Menu, BrowserWindow, Notification, nativeImage, screen, ipcMain } from 'electron';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { configureInstanceProfile } from './instance-profile.js';
 import { spawn } from 'node:child_process';
 import { join, resolve } from 'node:path';
 import { homedir, totalmem, freemem } from 'node:os';
@@ -140,6 +141,7 @@ const DATA_DIR =
   process.env.QUOTAPULSE_DATA_DIR ??
   join(process.env.LOCALAPPDATA ?? join(homedir(), '.local', 'share'), 'quotapulse');
 const LOCK_PATH = join(DATA_DIR, 'daemon.lock');
+configureInstanceProfile(app, process.env.QUOTAPULSE_DATA_DIR);
 const REPO_ROOT = resolve(fileURLToPath(new URL('.', import.meta.url)), '..', '..', '..');
 
 const POLL_MS = 15_000;

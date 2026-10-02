@@ -1,0 +1,23 @@
+{
+    "status":  "validated-checkpoint",
+    "version":  "v1.19",
+    "scope":  "isolated instance source and synthetic Windows task/runner checks",
+    "daemonBuild":  "passed",
+    "trayAndPreloadBuild":  "passed",
+    "targetedTests":  {
+                          "passed":  9,
+                          "failed":  0
+                      },
+    "taskCheckGroups":  {
+                            "trayLaunchMocked":  true,
+                            "realTaskCmdletsUsed":  false,
+                            "passed":  8
+                        },
+    "hiddenElectron":  "passed with compiled instance profile helper",
+    "webSourceChanged":  false,
+    "limitations":  [
+                        "Installed tray/main lifecycle and actual ScheduledTask child shutdown not exercised",
+                        "No live provider or user database access",
+                        "Visual baseline approval, screen-reader review, packaging and release sign-off pending"
+                    ]
+}

@@ -4,8 +4,9 @@
 dot that says the reading is live.
 
 > Previously **plimsoll**, and before that **usage-trend**. The state directory moved with
-> each rename and the daemon adopts either of the old ones on first start, so upgrading in
+> each rename and the default daemon adopts either of the old ones on first start, so upgrading in
 > place keeps your history. See `packages/daemon/src/util/paths.ts`.
+> Setting `QUOTAPULSE_DATA_DIR` explicitly disables legacy adoption for that instance.
 
 One dashboard for every AI agent harness on this machine: tokens, quota limits, reset times,
 burn rate, cost, models, effort, and history that keeps accruing whether or not anything is
@@ -68,6 +69,39 @@ Start-ScheduledTask quotapulse-daemon
 ```
 
 Remove with `./scripts/uninstall-task.ps1 -StopRunning`.
+
+### Separate review instance on Windows
+
+Build the daemon, web and tray in the review checkout first. Preview the task definitions:
+
+```powershell
+./scripts/install-task.ps1 -InstanceName quotapulse-redesign -DataDir C:\QuotaPulse-review-data -Port 7805 -WhatIf
+```
+
+Remove `-WhatIf` when ready to register `quotapulse-redesign-daemon` and
+`quotapulse-redesign-tray`. Registration does not start tasks. The task runner passes the
+port and data directory to its child process; it does not write persistent environment
+variables. A named instance requires an absolute separate data directory and a port other
+than 7676. The directory must not overlap the default or legacy data directories.
+Both Electron settings and session storage live under `<DataDir>\electron`.
+
+Existing definitions require `-Replace`; a failed registration restores replaced XML
+definitions and removes newly registered definitions when rollback succeeds. The default
+installer refuses existing legacy tasks instead of removing them automatically. A distinct
+port still needs to be available before starting the instance.
+
+```powershell
+./scripts/uninstall-task.ps1 -InstanceName quotapulse-redesign -StopRunning -WhatIf
+```
+
+Uninstall targets only that instance's root-folder task definitions. `-StopRunning` stops
+the tray task before the daemon task. Manually launched processes, data and lock files are
+retained; no process-wide Electron search or PID-based kill is performed. Actual scheduled
+task and child-process shutdown still require a manual Windows lifecycle check before release.
+
+Run `powershell -NoProfile -File scripts/check-task-isolation.ps1` for synthetic task
+definition, rollback and runner checks. This harness mocks every ScheduledTask cmdlet and
+does not query or change real tasks.
 
 ## Running your own copy
 

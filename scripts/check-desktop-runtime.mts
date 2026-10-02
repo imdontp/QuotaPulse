@@ -85,10 +85,12 @@ try {
   const evidence = await desktop.evaluate(({ BrowserWindow, app }) => ({
     state: (globalThis as any).qpDesktopEvidence,
     userData: app.getPath('userData'),
+    sessionData: app.getPath('sessionData'),
     windows: BrowserWindow.getAllWindows().map(win => ({ visible: win.isVisible(), preferences: win.webContents.getLastWebPreferences() })),
     versions: process.versions,
   }));
-  assert.equal(evidence.userData, userData);
+  assert.equal(evidence.userData, resolve(userData, 'electron'));
+  assert.equal(evidence.sessionData, evidence.userData);
   assert.ok(evidence.state.ready.includes('qp-dashboard-ready'));
   assert.ok(evidence.state.ready.includes('qp-popup-ready'));
   assert.ok(evidence.state.actions.includes('qp-popup-open-dashboard'));
@@ -102,7 +104,7 @@ try {
     assert.equal(win.preferences.nodeIntegration, false);
   }
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'passed', host: 'isolated hidden Electron windows', database: 'in-memory synthetic',
-    checks: ['built dashboard', 'built popup with hash override', 'real compiled sandboxed preloads', 'renderer ready IPC', 'popup dashboard/close IPC', 'legacy sessions alias', 'isolated user data', 'native command modal and keyboard isolation', 'bundled custom Thai font and language switching', 'no external requests'], thaiFont,
+    checks: ['built dashboard', 'built popup with hash override', 'real compiled sandboxed preloads', 'renderer ready IPC', 'popup dashboard/close IPC', 'legacy sessions alias', 'compiled instance profile helper isolates userData and sessionData', 'native command modal and keyboard isolation', 'bundled custom Thai font and language switching', 'no external requests'], thaiFont,
     limitations: ['fixture main process; installed tray/main lifecycle not exercised', 'not an installer or packaged application release', 'no scheduled tasks, tray registration or live readers'], evidence }, null, 2));
   console.log('Desktop runtime passed: isolated dashboard/popup, compiled preloads and readiness/action IPC.');
 } catch (error) {

@@ -1,43 +1,17 @@
-<#
-.SYNOPSIS
-  Remove the quotapulse logon tasks.
-
-.DESCRIPTION
-  Unregisters both scheduled tasks and optionally stops anything still running.
-  The collected database in %LOCALAPPDATA%\quotapulse is left alone; delete it
-  yourself if you want the history gone.
-#>
-[CmdletBinding()]
-param([switch]$StopRunning)
-
+<# Removes task definitions; collected data and manually launched processes are retained. #>
+[CmdletBinding(SupportsShouldProcess)]
+param(
+  [switch]$StopRunning,
+  [ValidatePattern('^quotapulse(?:-[a-zA-Z0-9][a-zA-Z0-9-]{0,39})?$')][string]$InstanceName = 'quotapulse'
+)
 $ErrorActionPreference = 'Stop'
-
-foreach ($name in @('quotapulse-daemon', 'quotapulse-tray', 'plimsoll-daemon', 'plimsoll-tray', 'usage-trend-daemon', 'usage-trend-tray')) {
-  if (Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue) {
-    Unregister-ScheduledTask -TaskName $name -Confirm:$false
-    Write-Host "removed task $name"
-  } else {
-    Write-Host "task $name not present"
-  }
+# Stop the tray first so it cannot restart its instance's daemon during removal.
+$names = @("$InstanceName-tray", "$InstanceName-daemon")
+if ($InstanceName -eq 'quotapulse') { $names += @('plimsoll-tray','plimsoll-daemon','usage-trend-tray','usage-trend-daemon') }
+foreach ($name in $names) {
+  if (-not (Get-ScheduledTask -TaskPath '\' -TaskName $name -ErrorAction SilentlyContinue)) { continue }
+  if (-not $PSCmdlet.ShouldProcess($name, 'Remove QuotaPulse task definition')) { continue }
+  if ($StopRunning) { Stop-ScheduledTask -TaskPath '\' -TaskName $name -ErrorAction Stop }
+  Unregister-ScheduledTask -TaskPath '\' -TaskName $name -Confirm:$false
 }
-
-if ($StopRunning) {
-  $lock = Join-Path $env:LOCALAPPDATA 'quotapulse\daemon.lock'
-  if (Test-Path $lock) {
-    $pidValue = (Get-Content $lock -Raw | ConvertFrom-Json).pid
-    try {
-      Stop-Process -Id $pidValue -Force
-      Write-Host "stopped daemon pid $pidValue"
-    } catch {
-      Write-Host "daemon pid $pidValue was not running"
-    }
-    Remove-Item $lock -Force
-  }
-  Get-Process electron -ErrorAction SilentlyContinue |
-    Where-Object { $_.Path -like '*quotapulse*' -or $_.MainWindowTitle -like '*QuotaPulse*' } |
-    Stop-Process -Force -ErrorAction SilentlyContinue
-}
-
-Write-Host ''
-Write-Host 'History kept at: ' -NoNewline
-Write-Host (Join-Path $env:LOCALAPPDATA 'quotapulse\usage.db')
+Write-Host "Task instance: $InstanceName. Data directories and lock files are retained."
