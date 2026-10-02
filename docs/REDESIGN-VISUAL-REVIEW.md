@@ -1,5 +1,13 @@
 # Concept comparison and refinement queue
 
+[Overview density 1.26](REDESIGN-OVERVIEW-DENSITY-V1.26.md) returns execution to
+the dashboard blueprint. An occupied eight-model fixture now keeps the Pulse Core,
+Runtime Map, runway/insights and first complete activity record within the canonical
+viewport in both languages/themes, with keyboard access to all models and complete
+graph data. Four repeated pairs are byte-identical. Exact concept parity and named
+baseline approval remain pending. Pet/popup remain compatibility scope; further pet
+recovery and desktop distribution work are not the next dashboard tasks.
+
 Reviewed: 2026-10-01. Source: the eight original concept PNGs preserved in the
 blueprint v1.1 archive. Candidate set: `redesign-v1.3/*-concept-size.png`, captured
 at 1586 × 992 for Overview and 1672 × 941 for the other seven pages, DPR 1.

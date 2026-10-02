@@ -667,20 +667,46 @@
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
+@media(min-width:1101px) {
+  [data-testid=production-overview] .qp-top-models {
+    max-height:270px;
+    overflow-y:auto;
+    scrollbar-gutter:stable;
+    padding-right:8px;
+  }
+  [data-testid=production-overview] .qp-model-row {
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:6px 8px;
+    padding:10px 0;
+  }
+  [data-testid=production-overview] .qp-model-row>.qp-bar { grid-column:1/-1; }
+}
 @media(min-width:1280px) {
-  [data-testid=production-overview] main { gap:12px; }
+  [data-testid=production-overview] main { gap:8px; }
   [data-testid=production-overview] .qp-core-grid { min-height:270px; }
   [data-testid=production-overview] .qp-pulse { max-width:300px; }
   [data-testid=production-overview] .qp-metrics { gap:14px; }
   [data-testid=production-overview] .qp-runtime { padding:12px; }
+  [data-testid=production-overview] .qp-runtime .qp-map-scroll {
+    max-height:160px;
+    overflow-y:auto;
+    scrollbar-gutter:stable;
+  }
   [data-testid=production-overview] .qp-bottom-grid { gap:12px; }
   [data-testid=production-overview] .qp-runway,
-  [data-testid=production-overview] .qp-insights { padding:14px; gap:8px; }
-  [data-testid=production-overview] .qp-insights .qp-metric strong { font-size:21px; }
+  [data-testid=production-overview] .qp-insights { padding:12px; gap:4px; }
+  [data-testid=production-overview] .qp-runway { gap:4px; }
+  [data-testid=production-overview] .qp-runway-labels,
+  [data-testid=production-overview] .qp-runway-stats { font-size:11px; line-height:1.3; }
+  [data-testid=production-overview] .qp-runway-stats strong { font-size:15px; line-height:1.2; }
+  [data-testid=production-overview] .qp-runway .qp-footnote { line-height:1.3; }
+  [data-testid=production-overview] .qp-quota-history { padding-top:6px; }
+  [data-testid=production-overview] .qp-insights .qp-metric { gap:2px; }
+  [data-testid=production-overview] .qp-insights .qp-metric strong { font-size:21px; line-height:1.15; }
   [data-testid=production-overview] .qp-insights .qp-coverage { margin:0; gap:10px; }
   [data-testid=production-overview] .qp-insights .qp-footnote { line-height:1.4; }
-  [data-testid=production-overview] .qp-activity { padding:8px 14px; gap:6px; }
-  [data-testid=production-overview] .qp-activity-item { padding:4px 8px; gap:2px; }
+  [data-testid=production-overview] .qp-activity { padding:8px 14px; gap:4px; }
+  [data-testid=production-overview] .qp-activity-item { padding:4px 8px; gap:2px; line-height:1.3; }
   [data-testid=production-overview] .qp-activity-item strong { font-size:11px; }
 }
 @media(max-width:500px) {

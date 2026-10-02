@@ -1,0 +1,438 @@
+{
+  "status": "repeatable within recorded raster tolerance; review candidates, not approved visual baselines",
+  "scope": "overview",
+  "clock": 1779025320000,
+  "isoClock": "2026-05-17T13:42:00.000Z",
+  "browser": "153.0.8010.53",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "timezone": "Asia/Bangkok",
+  "dpr": 1,
+  "reducedMotion": true,
+  "tolerance": {
+    "maxChannelDelta": 2,
+    "maxChangedPixelFraction": 0.0001,
+    "masks": false
+  },
+  "productionIndexSha256": "c7154a9ed207fe6a07815eadc6477f21e5ac896835537369e364bf73c03124a7",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "sessions": 12,
+    "namedProjects": 8,
+    "models": 8,
+    "providers": 4,
+    "records": 38
+  },
+  "checks": [
+    "frozen daemon and browser Date",
+    "8 screenshots / 4 pairs within raster tolerance",
+    "independent browser process per language/theme set",
+    "fresh document per route",
+    "production web without Vite",
+    "fonts ready and API settled",
+    "no page overflow",
+    "no external or write requests",
+    "no browser errors",
+    "Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration",
+    "complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow"
+  ],
+  "overviewLayouts": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "heroBottom": 463.5,
+      "activityBottom": 990.953125,
+      "models": 8,
+      "railHeight": 270
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "heroBottom": 463.5,
+      "activityBottom": 990.953125,
+      "models": 8,
+      "railHeight": 270
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "heroBottom": 463.5,
+      "activityBottom": 990.953125,
+      "models": 8,
+      "railHeight": 270
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "heroBottom": 463.5,
+      "activityBottom": 990.953125,
+      "models": 8,
+      "railHeight": 270
+    }
+  ],
+  "chartChecks": [],
+  "modelCostChecks": [],
+  "quotaChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    }
+  ],
+  "runtimeChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    }
+  ],
+  "shellChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    }
+  ],
+  "fontProvenance": {
+    "family": "Noto Sans Thai",
+    "upstream": "https://github.com/google/fonts",
+    "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+    "upstreamPath": "ofl/notosansthai/NotoSansThai[wdth,wght].ttf",
+    "sha256": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+    "license": "OFL-1.1",
+    "modifiedFont": false
+  },
+  "fontChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    }
+  ],
+  "cases": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "overview-en-dark.png",
+      "sha256": "73fd25cfb7b76294f4c3abdcb0e57adc364ea38ffac6e485609e16a3c799bc49",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        },
+        {
+          "role": "muted",
+          "color": "#9aabc5",
+          "minimumRatio": 6.849903068287789
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "73fd25cfb7b76294f4c3abdcb0e57adc364ea38ffac6e485609e16a3c799bc49",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "filename": "overview-en-light.png",
+      "sha256": "fb72a15dcc2672ee9f856a6610276078c31acaddd74c4c65ee06e88cae674056",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "fb72a15dcc2672ee9f856a6610276078c31acaddd74c4c65ee06e88cae674056",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "overview-th-dark.png",
+      "sha256": "4871028a16bacc3000e3463c62521f1b654f58ad09f044e5cbaefff74f615cde",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 5.789974910056664
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 8.620850207719164
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 4.932898783974573
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 8.546947749328579
+        },
+        {
+          "role": "muted",
+          "color": "#9aabc5",
+          "minimumRatio": 6.849903068287789
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "4871028a16bacc3000e3463c62521f1b654f58ad09f044e5cbaefff74f615cde",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "filename": "overview-th-light.png",
+      "sha256": "4243261101384221555d8e49cdb4305b4c9866b6739b37a7a570a97f429ca2e4",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "4243261101384221555d8e49cdb4305b4c9866b6739b37a7a570a97f429ca2e4",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    }
+  ]
+}

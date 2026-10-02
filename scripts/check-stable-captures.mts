@@ -15,7 +15,8 @@ import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/mode
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
 process.env.TZ = 'Asia/Bangkok';
-const output = resolve(root, 'screens/stable-captures');
+const overviewOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'overview';
+const output = resolve(root, overviewOnly ? 'screens/overview-layout' : 'screens/stable-captures');
 mkdirSync(output, { recursive: true });
 // A failed attempt must never leave a previous success manifest in this folder.
 rmSync(resolve(output, 'verification.json'), { force: true });
@@ -67,18 +68,20 @@ const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: 
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
 const fontChecks: Array<{ page: string; lang: string; theme: string; family: string; custom: boolean; glyphs: number }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
+const overviewLayouts: Array<{ lang: string; theme: string; heroBottom: number; activityBottom: number; models: number; railHeight: number }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const fontPath = 'fonts/noto-sans-thai/';
 const fontProvenance = JSON.parse(readFileSync(resolve(root, `packages/web/public/${fontPath}provenance.json`), 'utf8'));
 assert.equal(sha(readFileSync(resolve(root, `packages/web/dist/${fontPath}NotoSansThai-variable.ttf`))), fontProvenance.sha256);
 assert.deepEqual(readFileSync(resolve(root, `packages/web/dist/${fontPath}OFL.txt`)), readFileSync(resolve(root, `packages/web/public/${fontPath}OFL.txt`)));
 const rendererArgs = ['--disable-gpu', '--deterministic-mode', '--disable-skia-runtime-opts', '--force-color-profile=srgb'];
-const pages = [
+const allPages = [
   ['overview', '.qp-activity-item'], ['live', '.qp-live-chart'],
   ['projects', '.qp-project-trend'], ['providers', '.qp-provider-health tbody tr'],
   ['models', '.qp-model-trend'], ['cost', '.qp-cost-chart'],
   ['history', '[data-testid="usage-history"] tbody tr'], ['alerts', '.qp-quota-point'],
 ] as const;
+const pages = overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : allPages;
 
 async function settled(page: Page, pending: Set<Request>) {
   const deadline = performance.now() + 15_000;
@@ -513,6 +516,33 @@ try {
           assert.equal(await page.evaluate(() => Date.now()), fixedNow);
           assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
           const contrastEvidence = await semanticContrast(page);
+          if (destination === 'overview') {
+            const hero = await page.locator('.qp-hero').boundingBox();
+            const activity = await page.locator('.qp-activity-item').first().boundingBox();
+            const rail = page.locator('.qp-top-models');
+            const box = await rail.boundingBox();
+            assert.ok(hero && activity && box);
+            if (overviewOnly && pass === 0) {
+              await page.screenshot({ path: resolve(output, `layout-${lang}-${theme}.png`), animations: 'disabled' });
+              writeFileSync(resolve(output, `layout-${lang}-${theme}.json`), JSON.stringify({ hero, activity, rail: box, runtime: await page.locator('.qp-runtime').boundingBox(), bottom: await page.locator('.qp-bottom-grid').boundingBox() }, null, 2));
+            }
+            assert.ok(box.height <= 270.1, `Model rail exceeds its desktop height: ${box.height}`);
+            assert.ok(activity.y + activity.height <= 992, `Overview activity is outside concept viewport: ${activity.y + activity.height}`);
+            assert.equal(await rail.locator('.qp-model-row').count(), 8);
+            if (pass === 0) {
+              await rail.focus(); await page.keyboard.press('End'); await page.waitForTimeout(300);
+              assert.ok(await rail.evaluate(element => element.scrollTop > 0), 'Model rail is not keyboard-scrollable');
+              const last = rail.locator('.qp-model-row').last();
+              await last.focus(); await page.keyboard.press('Enter');
+              await page.getByRole('dialog').waitFor();
+              assert.equal(await page.locator('#qp-detail-title').textContent(), 'fixture-model-7');
+              await page.keyboard.press('Escape'); await page.getByRole('dialog').waitFor({ state: 'hidden' });
+              assert.equal(await last.evaluate(element => element === document.activeElement), true);
+              await rail.evaluate(element => { element.scrollTop = 0; }); await last.evaluate(element => (element as HTMLElement).blur());
+              await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300);
+              overviewLayouts.push({ lang, theme, heroBottom: hero.y + hero.height, activityBottom: activity.y + activity.height, models: 8, railHeight: box.height });
+            }
+          }
           const filename = `${destination}-${lang}-${theme}.png`;
           const screenshot = await page.screenshot({ path: resolve(output, pass === 0 ? filename : `repeat-${filename}`), animations: 'disabled' });
           if (pass === 0) cases.push({ page: destination, lang, theme, filename, sha256: sha(screenshot), ...contrastEvidence });
@@ -538,12 +568,12 @@ try {
           await checkShellAccess(page, 'settings', lang, theme);
         }
       } finally { await page.close(); await browser.close(); }
-      console.log(`Stable capture pass ${pass + 1}: ${lang}/${theme}, eight pages`);
+      console.log(`Stable capture pass ${pass + 1}: ${lang}/${theme}, ${pages.length} pages`);
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, fontProvenance, fontChecks, cases }, null, 2));
-  console.log(`Stable captures passed: 32 pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, fontProvenance, fontChecks, cases }, null, 2));
+  console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;
   if (priorTimezone === undefined) delete process.env.TZ; else process.env.TZ = priorTimezone;
