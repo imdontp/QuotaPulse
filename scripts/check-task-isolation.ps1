@@ -115,6 +115,15 @@ Assert ($LASTEXITCODE -eq 0) 'Direct task entry failed'
 $runtime=$result | ConvertFrom-Json
 Assert ($runtime.port -eq '7805' -and $runtime.dataDir -eq $data -and $runtime.readers -eq 'off') 'Direct entry environment mismatch'
 $global:qpMockChecks.Add('direct task entry forwards instance settings through paths with spaces and Thai')
+$probe=Join-Path $fixture 'runtime-prefix.cjs'
+$entry=Join-Path $scripts 'task-entry.cjs'
+$argv=@($node,'--inspect=0','--remote-debugging-port=0',$entry,'--role','daemon','--port','7805','--data-dir',$data,'--no-readers') | ConvertTo-Json -Compress
+[IO.File]::WriteAllText($probe,('process.argv=' + $argv + ';require(' + ($entry | ConvertTo-Json -Compress) + ');'))
+$result=& $node $probe
+Assert ($LASTEXITCODE -eq 0) 'Runtime-prefix entry failed'
+$runtime=$result | ConvertFrom-Json
+Assert ($runtime.port -eq '7805' -and $runtime.dataDir -eq $data -and $runtime.readers -eq 'off') 'Runtime-prefix entry environment mismatch'
+$global:qpMockChecks.Add('runtime switches before task entry are excluded from strict application argument parsing')
 # Run only the copied runner against a synthetic JS entry, never the daemon/tray.
 $ps = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
 $previousPort=$env:QUOTAPULSE_PORT; $previousData=$env:QUOTAPULSE_DATA_DIR

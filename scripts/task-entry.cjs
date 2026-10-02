@@ -1,7 +1,11 @@
 // The Scheduled Task owns this process directly; there is no shell parent.
 const { parseArgs } = require('node:util');
-const { join, isAbsolute } = require('node:path');
-const { values } = parseArgs({ options: {
+const { join, isAbsolute, resolve } = require('node:path');
+// Electron may retain its runtime switches before the application entry in argv.
+const samePath = (value) => process.platform === 'win32' ? resolve(value).toLowerCase() === __filename.toLowerCase() : resolve(value) === __filename;
+const entryIndex = process.argv.findIndex((value, index) => index > 0 && samePath(value));
+if (entryIndex < 0) throw new Error('Task entry not found in process arguments');
+const { values } = parseArgs({ args: process.argv.slice(entryIndex + 1), options: {
   role: { type: 'string' }, port: { type: 'string' },
   'data-dir': { type: 'string' }, 'no-readers': { type: 'boolean', default: false },
   'node-exe': { type: 'string' },

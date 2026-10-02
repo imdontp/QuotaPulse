@@ -31,6 +31,7 @@
     "test:history": "node --import tsx scripts/check-history.mts",
     "test:runtime": "node --import tsx scripts/check-production-runtime.mts",
     "test:desktop": "node --import tsx scripts/check-desktop-runtime.mts",
+    "test:tray-recovery": "node --import tsx scripts/check-tray-recovery.mts",
     "test:stable": "node --import tsx scripts/check-stable-captures.mts",
     "prices:refresh": "node scripts/fetch-prices.mjs",
     "doctor": "node scripts/doctor.mjs"

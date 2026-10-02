@@ -15,7 +15,7 @@ const base = resolve(root, 'tmp/task-entry-tests');
 mkdirSync(base, { recursive: true });
 
 test('direct task entry rejects invalid configuration before creating an instance database', () => {
-  for (const args of [['--role', 'unknown', '--port', '7805'], ['--role', 'daemon', '--port', '0'], ['--role', 'daemon', '--port', '7805', '--data-dir', 'relative'], ['--role', 'daemon', '--port', '7805', '--node-exe', 'relative']]) {
+  for (const args of [['--role', 'unknown', '--port', '7805'], ['--role', 'daemon', '--port', '0'], ['--role', 'daemon', '--port', '7805', '--data-dir', 'relative'], ['--role', 'daemon', '--port', '7805', '--node-exe', 'relative'], ['--role', 'daemon', '--port', '7805', '--unknown-application-option']]) {
     const data = mkdtempSync(resolve(base, 'invalid-'));
     const child = spawnSync(process.execPath, [entry, ...args], { env: { ...process.env, QUOTAPULSE_DATA_DIR: data, QUOTAPULSE_READERS: 'off' }, encoding: 'utf8' });
     assert.notEqual(child.status, 0);

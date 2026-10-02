@@ -1,0 +1,28 @@
+{
+  "status": "validated-checkpoint",
+  "version": "v1.21",
+  "taskEntryTests": { "passed": 3, "failed": 0 },
+  "syntheticTaskGroups": { "passed": 10, "actualTaskCmdlets": false },
+  "trayAssetRecoveryUnitTests": { "passed": 24, "failed": 0 },
+  "compiledMainRecoveryChecks": { "passed": 4, "syntheticDaemon": true },
+  "finalBundleRecoveryChecks": { "passed": 4, "ownElectronMainPreloadsWeb": true, "syntheticDaemon": true },
+  "finalBundleLifecycleChecks": { "passed": 5, "outsideRepositoryDependencies": true, "readersDisabled": true },
+  "petRuntimeAssets": { "files": 209, "characters": 8, "sourceIdentical": true, "errors": 0, "namingWarnings": 172 },
+  "runtimePackages": 87,
+  "webLicensePackages": 114,
+  "archive": { "files": 3114, "everyEntrySha256Compared": true, "containsAppProfile": false, "bytes": 199802583, "sha256": "ab6917123cb442bc3717cea04e8768754804f8590e9a777266b98dcbbb7114ec" },
+  "externalNodePrerequisite": { "platform": "win32", "arch": "x64", "abi": "127", "testedVersion": "v22.13.1" },
+  "reviewOwnedNodeElectronProcessesAfterCleanup": 0,
+  "scheduledTasksInstalled": false,
+  "originalCheckoutClean": true,
+  "originalHead": "be8e145039247958992fa7673a9c77e1bff35db1",
+  "dependencyManifestsOrLockfileChanged": false,
+  "sharedNativeBinaryRebuilt": false,
+  "remaining": [
+    "physical tray clicks, pet/quota-popup recovery and truly unresponsive renderer",
+    "actual logon trigger",
+    "signed installer and installer recovery",
+    "manual screen-reader and typography review",
+    "approved concept visual baseline/SSIM and release sign-off"
+  ]
+}
