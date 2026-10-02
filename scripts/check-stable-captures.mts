@@ -66,6 +66,7 @@ const modelCostChecks: Array<{ route: string; lang: string; theme: string; bucke
 const quotaChecks: Array<{ page: string; lang: string; theme: string; segments: number; samples: number; unknown: number }> = [];
 const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number }> = [];
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
+const headerChecks: Array<{ page: string; lang: string; theme: string; width: number; height: number; sidebarWidth: number }> = [];
 const fontChecks: Array<{ page: string; lang: string; theme: string; family: string; custom: boolean; glyphs: number }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const overviewLayouts: Array<{ lang: string; theme: string; heroBottom: number; activityBottom: number; models: number; railHeight: number }> = [];
@@ -271,6 +272,22 @@ async function checkFontAccess(page: Page, destination: string, lang: string, th
 }
 
 async function checkShellAccess(page: Page, destination: string, lang: string, theme: string) {
+  const originalViewport = page.viewportSize()!;
+  for (const width of [originalViewport.width, 390, 900, 1280]) {
+    await page.setViewportSize({ width, height: originalViewport.height });
+    const header = await page.locator('.qp-topbar').boundingBox();
+    const brand = await page.locator('.qp-topbar .qp-brand').boundingBox();
+    const sidebar = await page.locator('.qp-sidebar').boundingBox();
+    assert.ok(header && brand && sidebar);
+    assert.equal(header.x, 0); assert.equal(header.width, width); assert.equal(header.height, 60);
+    assert.equal(brand.x, 0); assert.equal(brand.width, sidebar.width);
+    assert.equal(sidebar.width, width <= 500 ? 48 : width <= 1100 ? 66 : 226);
+    assert.equal(await page.locator('.qp-sidebar nav a').count(), 9);
+    assert.equal(await page.locator('.qp-sidebar nav a[aria-current=page]').count(), 1);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    headerChecks.push({ page: destination, lang, theme, width, height: header.height, sidebarWidth: sidebar.width });
+  }
+  await page.setViewportSize(originalViewport);
   const originalHash = await page.evaluate(() => location.hash);
   const shell = page.getByTestId(`production-${destination}`);
   assert.equal(await shell.locator('.qp-sidebar nav').getAttribute('aria-label'), lang === 'th' ? 'เมนูหลัก' : 'Main navigation');
@@ -572,7 +589,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, fontProvenance, fontChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

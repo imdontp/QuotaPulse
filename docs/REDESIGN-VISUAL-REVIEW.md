@@ -1,5 +1,14 @@
 # Concept comparison and refinement queue
 
+[Shared header 1.27](REDESIGN-SHARED-HEADER-V1.27.md) places the existing brand in
+the full-width header and aligns its column with the responsive sidebar. Actual
+daemon/machine state and page-navigation behavior remain intact. All eight screens
+have fresh candidates in both languages/themes: 32 repeated pairs are byte-identical
+and 144 header geometry cases pass, including Settings. Main content origin and
+the occupied Overview density gate remain unchanged. These candidates are not
+approved baselines; further screen-specific concept refinement remains dashboard
+work. No new pet/popup or native distribution work is part of this checkpoint.
+
 [Overview density 1.26](REDESIGN-OVERVIEW-DENSITY-V1.26.md) returns execution to
 the dashboard blueprint. An occupied eight-model fixture now keeps the Pulse Core,
 Runtime Map, runway/insights and first complete activity record within the canonical
