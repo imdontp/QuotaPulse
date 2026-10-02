@@ -10,6 +10,7 @@ import type { MessageKey } from './en';
  * tools it is describing.
  */
 export const th: Record<MessageKey, string> = {
+  'redesign.navigation': 'เมนูหลัก',
   'redesign.runtimeNodes': 'โหนดที่บันทึก',
   'redesign.runtimeEdges': 'ความสัมพันธ์ระหว่างมิติที่อยู่ติดกัน',
   'redesign.runtimeDimension': 'มิติ',

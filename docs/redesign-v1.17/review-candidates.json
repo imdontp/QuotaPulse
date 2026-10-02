@@ -1,0 +1,357 @@
+{
+  "status": "review candidates; not approved visual baselines",
+  "browser": "153.0.8010.53",
+  "timezone": "Asia/Bangkok",
+  "dpr": 1,
+  "language": "en",
+  "theme": "dark",
+  "reducedMotion": true,
+  "browserClock": 1790936882978,
+  "daemonClock": "real clock; synthetic data seeded at browserClock",
+  "captures": [
+    {
+      "destination": "overview",
+      "viewport": {
+        "width": 1586,
+        "height": 992
+      },
+      "filename": "overview-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 226,
+          "height": 992
+        },
+        ".qp-topbar": {
+          "x": 226,
+          "y": 0,
+          "width": 1360,
+          "height": 60
+        },
+        ".qp-workspace main": {
+          "x": 226,
+          "y": 60,
+          "width": 1360,
+          "height": 973.65625
+        },
+        ".qp-hero-grid": {
+          "x": 242,
+          "y": 76,
+          "width": 1328,
+          "height": 363.1875
+        },
+        ".qp-bottom-grid": {
+          "x": 242,
+          "y": 649.6875,
+          "width": 1328,
+          "height": 221.28125
+        },
+        ".qp-activity": {
+          "x": 242,
+          "y": 882.96875,
+          "width": 1328,
+          "height": 134.6875
+        },
+        ".qp-activity-item": {
+          "x": 257,
+          "y": 920.46875,
+          "width": 317,
+          "height": 63.5
+        }
+      }
+    },
+    {
+      "destination": "live",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "live-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 226,
+          "height": 941
+        },
+        ".qp-topbar": {
+          "x": 226,
+          "y": 0,
+          "width": 1446,
+          "height": 60
+        },
+        ".qp-workspace main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 923.078125
+        },
+        ".qp-live-metrics": {
+          "x": 242,
+          "y": 137.5,
+          "width": 1414,
+          "height": 74.890625
+        },
+        ".qp-live-sessions": {
+          "x": 242,
+          "y": 255.078125,
+          "width": 1012.546875,
+          "height": 162
+        },
+        ".qp-live-trend": {
+          "x": 242,
+          "y": 429.078125,
+          "width": 1012.546875,
+          "height": 195.5
+        },
+        ".qp-live-records": {
+          "x": 242,
+          "y": 636.578125,
+          "width": 1012.546875,
+          "height": 330.5
+        },
+        ".qp-live-feed li": {
+          "x": 255,
+          "y": 681.578125,
+          "width": 986.546875,
+          "height": 23.5
+        },
+        ".qp-live-rail": {
+          "x": 1266.546875,
+          "y": 255.078125,
+          "width": 389.453125,
+          "height": 247.28125
+        }
+      }
+    },
+    {
+      "destination": "projects",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "projects-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 226,
+          "height": 941
+        },
+        ".qp-topbar": {
+          "x": 226,
+          "y": 0,
+          "width": 1446,
+          "height": 60
+        },
+        ".qp-workspace main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 722.453125
+        },
+        ".qp-project-cards": {
+          "x": 242,
+          "y": 193,
+          "width": 882.734375,
+          "height": 169.5
+        },
+        ".qp-project-detail": {
+          "x": 1136.734375,
+          "y": 193,
+          "width": 519.265625,
+          "height": 452.5625
+        },
+        ".qp-project-top": {
+          "x": 1136.734375,
+          "y": 657.5625,
+          "width": 519.265625,
+          "height": 108.890625
+        },
+        ".qp-project-rail": {
+          "x": 1136.734375,
+          "y": 193,
+          "width": 519.265625,
+          "height": 573.453125
+        }
+      }
+    },
+    {
+      "destination": "providers",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "providers-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 226,
+          "height": 941
+        },
+        ".qp-topbar": {
+          "x": 226,
+          "y": 0,
+          "width": 1446,
+          "height": 60
+        },
+        ".qp-workspace main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 768.6875
+        },
+        ".qp-provider-grid": {
+          "x": 242,
+          "y": 145.5,
+          "width": 1414,
+          "height": 181
+        },
+        ".qp-provider-detail": {
+          "x": 242,
+          "y": 346.5,
+          "width": 1414,
+          "height": 202
+        },
+        ".qp-provider-bottom": {
+          "x": 242,
+          "y": 568.5,
+          "width": 1414,
+          "height": 244.1875
+        }
+      }
+    },
+    {
+      "destination": "models",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "models-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 226,
+          "height": 941
+        },
+        ".qp-topbar": {
+          "x": 226,
+          "y": 0,
+          "width": 1446,
+          "height": 60
+        },
+        ".qp-workspace main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 877.46875
+        },
+        ".qp-model-summary": {
+          "x": 242,
+          "y": 204,
+          "width": 1414,
+          "height": 96.1875
+        },
+        ".qp-model-providers": {
+          "x": 242,
+          "y": 504.1875,
+          "width": 1012.546875,
+          "height": 152
+        },
+        ".qp-model-detail": {
+          "x": 1266.546875,
+          "y": 312.1875,
+          "width": 389.453125,
+          "height": 609.28125
+        }
+      }
+    },
+    {
+      "destination": "cost",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "cost-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 226,
+          "height": 941
+        },
+        ".qp-topbar": {
+          "x": 226,
+          "y": 0,
+          "width": 1446,
+          "height": 60
+        },
+        ".qp-workspace main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 847.3125
+        }
+      }
+    },
+    {
+      "destination": "history",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "history-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 226,
+          "height": 941
+        },
+        ".qp-topbar": {
+          "x": 226,
+          "y": 0,
+          "width": 1446,
+          "height": 60
+        },
+        ".qp-workspace main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 3560.140625
+        }
+      }
+    },
+    {
+      "destination": "alerts",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "alerts-concept-size.png",
+      "regions": {
+        ".qp-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 226,
+          "height": 941
+        },
+        ".qp-topbar": {
+          "x": 226,
+          "y": 0,
+          "width": 1446,
+          "height": 60
+        },
+        ".qp-workspace main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 589.34375
+        }
+      }
+    }
+  ]
+}

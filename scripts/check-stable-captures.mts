@@ -64,6 +64,7 @@ const chartChecks: Array<{ page: string; lang: string; theme: string; buckets: n
 const modelCostChecks: Array<{ route: string; lang: string; theme: string; buckets: number; collapsedBottom: number }> = [];
 const quotaChecks: Array<{ page: string; lang: string; theme: string; segments: number; samples: number; unknown: number }> = [];
 const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number }> = [];
+const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const rendererArgs = ['--disable-gpu', '--deterministic-mode', '--disable-skia-runtime-opts', '--force-color-profile=srgb'];
@@ -244,6 +245,74 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
     await summary.focus(); await page.keyboard.press('Enter'); assert.equal(await disclosure.getAttribute('open'), null);
     modelCostChecks.push({ route, lang, theme, buckets: starts.length, collapsedBottom });
   }
+}
+
+async function checkShellAccess(page: Page, destination: string, lang: string, theme: string) {
+  const originalHash = await page.evaluate(() => location.hash);
+  const shell = page.getByTestId(`production-${destination}`);
+  assert.equal(await shell.locator('.qp-sidebar nav').getAttribute('aria-label'), lang === 'th' ? 'เมนูหลัก' : 'Main navigation');
+  const main = shell.locator('main');
+  assert.ok(await main.getAttribute('aria-label'));
+  await shell.locator('.qp-skip').focus(); await page.keyboard.press('Enter');
+  assert.equal(await main.evaluate(element => element === document.activeElement), true);
+  const trigger = shell.locator('.qp-topbar button[aria-haspopup=dialog]');
+  await trigger.focus(); await page.keyboard.press('Enter');
+  const modal = shell.locator('.qp-command-dialog');
+  await modal.waitFor();
+  assert.equal(await modal.evaluate(element => element.matches(':modal')), true);
+  assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+  const search = modal.getByRole('searchbox');
+  assert.ok(await search.getAttribute('aria-label'));
+  assert.equal(await search.evaluate(element => element === document.activeElement), true);
+  await page.keyboard.press('Shift+Tab');
+  assert.equal(await modal.locator('button').last().evaluate(element => element === document.activeElement), true);
+  await page.keyboard.press('Tab');
+  assert.equal(await search.evaluate(element => element === document.activeElement), true);
+  await page.evaluate(() => (document.querySelector('.qp-sidebar a') as HTMLElement).focus());
+  assert.equal(await search.evaluate(element => element === document.activeElement), true, 'Background must remain inert');
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    const tree = await cdp.send('Accessibility.getFullAXTree');
+    const roles = tree.nodes.filter(node => !node.ignored).map(node => node.role?.value);
+    assert.ok(roles.includes('dialog') && roles.includes('searchbox'));
+    assert.ok(!roles.includes('main') && !roles.includes('navigation'), 'Modal must exclude background landmarks from the browser accessibility tree');
+  } finally { await cdp.detach(); }
+  await page.keyboard.press('ArrowDown');
+  assert.equal(await modal.getByRole('status').textContent(), lang === 'th' ? 'สด' : 'Live');
+  await search.fill('no-such-synthetic-page');
+  assert.equal(await modal.locator('button').count(), 1);
+  await page.keyboard.press('Enter'); assert.equal(await modal.evaluate(element => element.matches(':modal')), true);
+  await page.keyboard.press('Escape'); await modal.waitFor({ state: 'hidden' });
+  assert.equal(await trigger.evaluate(element => element === document.activeElement), true);
+  assert.equal(await trigger.getAttribute('aria-expanded'), 'false');
+  await page.keyboard.press('Control+k'); await modal.waitFor();
+  assert.equal(await search.inputValue(), '');
+  if (destination === 'overview') {
+    for (const width of [390, 900, 1280]) {
+      await page.setViewportSize({ width, height: 992 });
+      const box = await modal.locator('div').first().boundingBox();
+      assert.ok(box && box.x >= 0 && box.x + box.width <= width && box.y + box.height <= 992);
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+      if (width === 390) await page.screenshot({ path: resolve(output, `palette-${lang}-${theme}-390.png`), animations: 'disabled' });
+    }
+  }
+  await page.mouse.click(4, 4); await modal.waitFor({ state: 'hidden' });
+  assert.equal(await trigger.evaluate(element => element === document.activeElement), true);
+  assert.equal(await page.evaluate(() => location.hash), originalHash);
+  if (destination === 'live') {
+    const sessions = shell.locator('.qp-live-table tbody tr button');
+    assert.ok(await sessions.count() >= 2);
+    for (const index of [0, 1, 0]) {
+      const target = sessions.nth(index); await target.focus(); await page.keyboard.press('Enter');
+      const detail = shell.locator('.qp-live-dialog[open]'); await detail.waitFor();
+      assert.equal(await detail.getAttribute('aria-labelledby'), 'qp-live-detail-title');
+      assert.ok(await detail.locator('#qp-live-detail-title').textContent());
+      assert.equal(await detail.locator('dd').first().textContent(), await target.textContent());
+      await page.keyboard.press('Escape'); await detail.waitFor({ state: 'hidden' });
+      assert.equal(await target.evaluate(element => element === document.activeElement), true);
+    }
+  }
+  shellChecks.push({ page: destination, lang, theme, modal: true, backgroundExcluded: true });
 }
 
 async function checkRuntimeAccess(page: Page, lang: string, theme: string, pending: Set<Request>) {
@@ -435,17 +504,23 @@ try {
             // No region is hidden, blurred or exempted from the comparison.
             assert.ok(difference.maxChannelDelta <= 2 && difference.changedPixels / difference.pixelCount <= 0.0001, `${filename}: capture differs beyond raster tolerance (${JSON.stringify(difference)})`);
           }
+          if (pass === 0) await checkShellAccess(page, destination, lang, theme);
           if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme);
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
           if (pass === 0 && destination === 'overview') await checkRuntimeAccess(page, lang, theme, pending);
           if (pass === 0 && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
+        }
+        if (pass === 0) {
+          await page.goto('http://127.0.0.1:7804/?shell-access=settings#settings', { waitUntil: 'domcontentloaded' });
+          await page.getByTestId('production-settings').waitFor(); await settled(page, pending);
+          await checkShellAccess(page, 'settings', lang, theme);
         }
       } finally { await page.close(); await browser.close(); }
       console.log(`Stable capture pass ${pass + 1}: ${lang}/${theme}, eight pages`);
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, modelCostChecks, quotaChecks, runtimeChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, cases }, null, 2));
   console.log(`Stable captures passed: 32 pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

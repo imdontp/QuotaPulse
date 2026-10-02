@@ -869,7 +869,7 @@ try {
       await page.getByRole('button', { name: 'Open navigation' }).click();
       await page.getByRole('dialog', { name: 'Open navigation' }).getByRole('button', { name: 'Limits', exact: true }).click();
       await page.waitForURL(/#limits$/);
-      assert.equal(await page.locator('dialog').evaluate(el => el.open), false);
+      assert.equal(await page.locator('dialog.nav-drawer').evaluate(el => el.open), false);
     } else await page.goto('http://127.0.0.1:7798/?mode=legacy#limits');
     await page.getByRole('combobox').first().waitFor();
     await noOverflow(page, `limits-${lang}-${theme}-${width}`);

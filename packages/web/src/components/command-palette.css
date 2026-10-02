@@ -1,0 +1,3 @@
+.qp-command-dialog { position:fixed; inset:0; margin:0; border:0; padding:12vh 16px 0; width:100vw; max-width:none; height:100dvh; max-height:none; background:transparent; color:inherit; }
+.qp-command-dialog[open] { display:flex; align-items:flex-start; justify-content:center; }
+.qp-command-dialog::backdrop { background:rgb(0 0 0 / .35); }

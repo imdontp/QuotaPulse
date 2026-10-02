@@ -48,7 +48,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
     <a className="qp-skip" href={`#${active}`} onClick={event => { event.preventDefault(); document.getElementById(active)?.focus(); }}>{t('redesign.skipContent')}</a>
     <aside className="qp-sidebar">
       <a className="qp-brand" href="#overview" aria-label="QuotaPulse"><Activity/><span>Quota<strong>Pulse</strong><small>MISSION CONTROL</small></span></a>
-      <nav aria-label={t('redesign.overview')}>
+      <nav aria-label={t('redesign.navigation')}>
         {preview ? <>
           <a href="#overview" className="qp-nav-active" aria-label={t('redesign.overview')}><CircleGauge/><span>{t('redesign.overview')}</span></a>
           <a href="#runtime" aria-label={t('redesign.runtime')}><GitBranch/><span>{t('redesign.runtime')}</span></a>
@@ -60,7 +60,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
     </aside>
     <div className="qp-workspace">
       <header className="qp-topbar"><div className="qp-topbar-context">{!preview && <DaemonConnection/>}<span className="qp-preview-badge">{t(preview ? 'redesign.preview' : NAV.find(item => item.id === active)!.label)}</span>{!preview && <span className="qp-machine-scope">{t('redesign.machineScope')}</span>}</div><div className="qp-topbar-actions">{!preview && <RedesignNavigator/>}<div className="qp-tools"><button onClick={onLanguage} aria-label={t('redesign.language')}>{language === 'en' ? 'ไทย' : 'EN'}</button><button onClick={onTheme} aria-label={t('redesign.theme')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button></div></div></header>
-      <main id={active} tabIndex={-1}>{children}</main>
+      <main id={active} aria-label={t(NAV.find(item => item.id === active)!.label)} tabIndex={-1}>{children}</main>
     </div>
     {overlay}
   </div>;

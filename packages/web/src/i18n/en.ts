@@ -6,6 +6,7 @@
  * `{placeholders}` are substituted by `t(key, vars)`.
  */
 export const en = {
+  'redesign.navigation': 'Main navigation',
   'redesign.runtimeNodes': 'Recorded nodes',
   'redesign.runtimeEdges': 'Recorded adjacent relationships',
   'redesign.runtimeDimension': 'Dimension',

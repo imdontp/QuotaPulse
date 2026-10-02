@@ -1,0 +1,45 @@
+{
+    "checkpoint":  "redesign-modal-access-v1.17.0",
+    "status":  "Validated checkpoint; overall release approval pending",
+    "commands":  [
+                     {
+                         "exitCode":  0,
+                         "command":  "npm run build -w @quotapulse/web",
+                         "note":  "Existing legacy App chunk warning remains"
+                     },
+                     {
+                         "liveDetailInteractions":  12,
+                         "exitCode":  0,
+                         "command":  "npm run test:stable",
+                         "pairs":  32,
+                         "modalCases":  36,
+                         "byteIdentical":  30
+                     },
+                     {
+                         "exitCode":  0,
+                         "command":  "npm run test:ui",
+                         "note":  "Legacy dashboard and popup; fixture-only API responses; no page errors"
+                     },
+                     {
+                         "exitCode":  0,
+                         "command":  "npm run test:history",
+                         "responsivePageCases":  144
+                     },
+                     {
+                         "command":  "git diff --check",
+                         "exitCode":  0
+                     }
+                 ],
+    "initialFailures":  [
+                            "Native Shift+Tab moved focus to body; retained explicit edge wrap",
+                            "Outside mousedown dismissal lost trigger focus; prevent default before closing",
+                            "Reopen initially retained the previous query; reset query and index with the opening event",
+                            "Test selectors narrowed to sidebar and nav drawer; compare actual route/query rather than assuming an unnormalized hash"
+                        ],
+    "limits":  [
+                   "No manual screen-reader verification",
+                   "No approved visual baseline or concept SSIM",
+                   "No unit/desktop/installer suite repeated",
+                   "No installed app, task or live usage/provider access"
+               ]
+}
