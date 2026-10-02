@@ -1,0 +1,362 @@
+{
+  "status": "repeatable within recorded raster tolerance; review candidates, not approved visual baselines",
+  "clock": 1779025320000,
+  "isoClock": "2026-05-17T13:42:00.000Z",
+  "browser": "153.0.8010.53",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "timezone": "Asia/Bangkok",
+  "dpr": 1,
+  "reducedMotion": true,
+  "tolerance": {
+    "maxChannelDelta": 2,
+    "maxChangedPixelFraction": 0.0001,
+    "masks": false
+  },
+  "productionIndexSha256": "c2a753c5ce6bee8bf13cbabd38d8947edcc168043b8c9335ee3f7150756d3a4b",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "sessions": 12,
+    "namedProjects": 8,
+    "models": 8,
+    "providers": 4,
+    "records": 36
+  },
+  "checks": [
+    "frozen daemon and browser Date",
+    "64 screenshots / 32 pairs within raster tolerance",
+    "independent browser process per language/theme set",
+    "fresh document per route",
+    "production web without Vite",
+    "fonts ready and API settled",
+    "no page overflow",
+    "no external or write requests",
+    "no browser errors"
+  ],
+  "cases": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "overview-en-dark.png",
+      "sha256": "6b292b601a834f6666e8bcff34150837997d086f1baca57dcd4fed79e7b23233",
+      "repeatSha256": "6b292b601a834f6666e8bcff34150837997d086f1baca57dcd4fed79e7b23233",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "live-en-dark.png",
+      "sha256": "013bf789de046502f3061c8dc8cdce9e009c50409436cdbf1632809d2e687920",
+      "repeatSha256": "013bf789de046502f3061c8dc8cdce9e009c50409436cdbf1632809d2e687920",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "projects-en-dark.png",
+      "sha256": "0cf3394deeeb25f2bc5c1a46c5f0a1de57c667e69578acbb5db939a0248946e6",
+      "repeatSha256": "1134c13ff871339d28978927d03464dff1ccce8bfd6c1035b7d4d9c963f5c6ce",
+      "changedPixels": 25,
+      "maxChannelDelta": 2
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "providers-en-dark.png",
+      "sha256": "a0e80d095904c775549569e637c60f428d1fec294bc25602fab31c3484bab0f6",
+      "repeatSha256": "a0e80d095904c775549569e637c60f428d1fec294bc25602fab31c3484bab0f6",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "models-en-dark.png",
+      "sha256": "a570011efcd7887d90f474e1c6943b35092d5a3a75c8ecc2cbe3ac366b31dde6",
+      "repeatSha256": "a570011efcd7887d90f474e1c6943b35092d5a3a75c8ecc2cbe3ac366b31dde6",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "cost-en-dark.png",
+      "sha256": "134060705ceffc05b96ceaca73c00ecb8ac4f10b1904c8a077e534d97c1dbcfe",
+      "repeatSha256": "134060705ceffc05b96ceaca73c00ecb8ac4f10b1904c8a077e534d97c1dbcfe",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "history-en-dark.png",
+      "sha256": "f0eb76b98ae4be929bb98ebbb5d58e2017e0b42cbc8c23a72168fdc58931f3ed",
+      "repeatSha256": "f0eb76b98ae4be929bb98ebbb5d58e2017e0b42cbc8c23a72168fdc58931f3ed",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "alerts-en-dark.png",
+      "sha256": "300e79daa0b79e73846ddee7a7f0e4f5383d6a46446b9f2a743fc1c9d0234924",
+      "repeatSha256": "300e79daa0b79e73846ddee7a7f0e4f5383d6a46446b9f2a743fc1c9d0234924",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "filename": "overview-en-light.png",
+      "sha256": "695001e5b2716408ce648684370356ee8a80a514974f902131aff7445cfb211e",
+      "repeatSha256": "695001e5b2716408ce648684370356ee8a80a514974f902131aff7445cfb211e",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "filename": "live-en-light.png",
+      "sha256": "09965bdb8655da83a9825138b59a09086c421478b08af5fd8d2c747c169a679f",
+      "repeatSha256": "09965bdb8655da83a9825138b59a09086c421478b08af5fd8d2c747c169a679f",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "filename": "projects-en-light.png",
+      "sha256": "dd8001e64b04d34c0986c453d1a8272b88ec10ac4eec4bf4c82f1ddacde3e217",
+      "repeatSha256": "dd8001e64b04d34c0986c453d1a8272b88ec10ac4eec4bf4c82f1ddacde3e217",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "light",
+      "filename": "providers-en-light.png",
+      "sha256": "d94eb0a065c06a3d53705636a6447369289e2726ace4e268116a43e674fee048",
+      "repeatSha256": "d94eb0a065c06a3d53705636a6447369289e2726ace4e268116a43e674fee048",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "filename": "models-en-light.png",
+      "sha256": "316d39a377677802bee1e928df345088891f691422643b96e215bbfa3abc3686",
+      "repeatSha256": "316d39a377677802bee1e928df345088891f691422643b96e215bbfa3abc3686",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "light",
+      "filename": "cost-en-light.png",
+      "sha256": "b632d8cee8baf9323db445a1f9ff8e0c159082eb8729096cae2b841d3be52d2a",
+      "repeatSha256": "b632d8cee8baf9323db445a1f9ff8e0c159082eb8729096cae2b841d3be52d2a",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "filename": "history-en-light.png",
+      "sha256": "c2b571c53f17161b4a7d5cfb0eb334f7d4cd7a745d4cbd6d1eaff9bddd089361",
+      "repeatSha256": "c2b571c53f17161b4a7d5cfb0eb334f7d4cd7a745d4cbd6d1eaff9bddd089361",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "filename": "alerts-en-light.png",
+      "sha256": "a91f60fc184d6da75bfb35b08e621be6e38191c628f46bf446056559f78cb1da",
+      "repeatSha256": "a91f60fc184d6da75bfb35b08e621be6e38191c628f46bf446056559f78cb1da",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "overview-th-dark.png",
+      "sha256": "dee4f20d54250c09f54081c38e5793a44e2a715e0687f2f2571fbef6b260d6b4",
+      "repeatSha256": "dee4f20d54250c09f54081c38e5793a44e2a715e0687f2f2571fbef6b260d6b4",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "live-th-dark.png",
+      "sha256": "8d075e9f3879e96c59c87fb474ea7e7104b4dd6216b4984984268cea1b83ac55",
+      "repeatSha256": "8d075e9f3879e96c59c87fb474ea7e7104b4dd6216b4984984268cea1b83ac55",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "projects-th-dark.png",
+      "sha256": "4308902a548c47adb10cf5c4aa298b81d8c71adde7c583141d8f75ee3bfd3a3f",
+      "repeatSha256": "8338673a1b4217a87f44c5db2efb91e500ec7aa0e0a78043fde344e7a2276264",
+      "changedPixels": 1,
+      "maxChannelDelta": 1
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "providers-th-dark.png",
+      "sha256": "a17eb43c44919a4631f5278296cdb261e54f11595e9b0d7e7de63a6c798ec26a",
+      "repeatSha256": "a17eb43c44919a4631f5278296cdb261e54f11595e9b0d7e7de63a6c798ec26a",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "models-th-dark.png",
+      "sha256": "defd536e71798c51d851242d68dc0b9fe1c7ee23c1949d3f3bcf832d0803bb58",
+      "repeatSha256": "defd536e71798c51d851242d68dc0b9fe1c7ee23c1949d3f3bcf832d0803bb58",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "cost-th-dark.png",
+      "sha256": "17b77d44963c03100837bf14be9b2a643138f267a7adfc3dea75d65fb7ebbc5f",
+      "repeatSha256": "17b77d44963c03100837bf14be9b2a643138f267a7adfc3dea75d65fb7ebbc5f",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "history-th-dark.png",
+      "sha256": "2059b7a6e038b84f2ffcb4ec027b714fbd35995db1c325264e71accda1ae545e",
+      "repeatSha256": "2059b7a6e038b84f2ffcb4ec027b714fbd35995db1c325264e71accda1ae545e",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "alerts-th-dark.png",
+      "sha256": "7b4ce16e8d49fca2392a4fad4aac64d2ec7e37f0af266fd7e8b12ac49e276e81",
+      "repeatSha256": "7b4ce16e8d49fca2392a4fad4aac64d2ec7e37f0af266fd7e8b12ac49e276e81",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "filename": "overview-th-light.png",
+      "sha256": "a0c8f3ddcfb4b40341af8fc4ef1d5ddd765c837baefd21f2c0640764cdf46992",
+      "repeatSha256": "a0c8f3ddcfb4b40341af8fc4ef1d5ddd765c837baefd21f2c0640764cdf46992",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "filename": "live-th-light.png",
+      "sha256": "f423ab9712c66156e3c656a4651ec47ff4bd616825093ca57b5999f4a652caad",
+      "repeatSha256": "f423ab9712c66156e3c656a4651ec47ff4bd616825093ca57b5999f4a652caad",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "filename": "projects-th-light.png",
+      "sha256": "ed5c30f5a15c6d483aa6b69f391ec128e4ca31c1f1279ff571ae1b44c9491a1b",
+      "repeatSha256": "ed5c30f5a15c6d483aa6b69f391ec128e4ca31c1f1279ff571ae1b44c9491a1b",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "light",
+      "filename": "providers-th-light.png",
+      "sha256": "650a5ad1a2d656e517c2e5446104234e9aef0752f4b205a9d4a328e816bb7fba",
+      "repeatSha256": "650a5ad1a2d656e517c2e5446104234e9aef0752f4b205a9d4a328e816bb7fba",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "filename": "models-th-light.png",
+      "sha256": "abfc1ebb91560e75eb6f32232e7a52b2299b174be444f40885976c5d0a456b1a",
+      "repeatSha256": "abfc1ebb91560e75eb6f32232e7a52b2299b174be444f40885976c5d0a456b1a",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "light",
+      "filename": "cost-th-light.png",
+      "sha256": "13df55fbfcbb5a0f123691905e65293de74404ee5141e8b992e116b747b711e3",
+      "repeatSha256": "13df55fbfcbb5a0f123691905e65293de74404ee5141e8b992e116b747b711e3",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "filename": "history-th-light.png",
+      "sha256": "e28a8d5ff87a32b65b27c32316f000e3192dcba0ade14e9beb85ea0c2af44e84",
+      "repeatSha256": "e28a8d5ff87a32b65b27c32316f000e3192dcba0ade14e9beb85ea0c2af44e84",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "filename": "alerts-th-light.png",
+      "sha256": "65f51658297cce2b872c8abe484af0692852590afccaa57b499942ec1e50f9a8",
+      "repeatSha256": "65f51658297cce2b872c8abe484af0692852590afccaa57b499942ec1e50f9a8",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    }
+  ]
+}

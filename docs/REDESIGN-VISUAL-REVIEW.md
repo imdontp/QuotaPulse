@@ -68,8 +68,12 @@ concept's constant “All Systems Operational”, workspace account or avatar.
 Data count, chart shape and missing metrics legitimately differ from the concept.
 Those differences do not excuse unrelated geometry or typography changes. Use a
 richer fixed synthetic fixture to review occupied layouts, as well as empty and
-unknown states. The current real daemon clock makes the candidate set unsuitable
-for deterministic pixel regression. Establish a named reviewed baseline only
+unknown states. Earlier candidate sets used the real daemon clock.
+[Stable captures 1.11](REDESIGN-STABLE-CAPTURES-V1.11.md) now freezes daemon/browser
+Date, uses independent browser processes and compares 32 pairs without masks.
+The final run has 30 byte-identical pairs and two within a recorded small raster
+tolerance. These new candidates are suitable for review, not approved baselines.
+Establish a named reviewed baseline only
 after the refinements and deterministic capture controls; then enforce the
 blueprint's SSIM ≥ 0.985 and regional geometry/typography checks. Do not mask
 charts, labels or complete cards to obtain that score.
