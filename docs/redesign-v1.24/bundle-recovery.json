@@ -1,0 +1,119 @@
+{
+  "status": "passed",
+  "runtimeRoot": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review-bundles\\QuotaPulse-v1.24-TaztdT",
+  "bundled": true,
+  "checks": [
+    "two actual pet renderer crashes recover the same sandboxed window with new renderer processes and restored sprite/preload",
+    "third real crash creates one visible reduced-motion pet without changing persisted preferences",
+    "quota popup opened by real pet preload recovers in the same native window after a renderer crash",
+    "failed document loads exhaust bounded popup recovery and close the panel while pet/main stay alive",
+    "popup reopens as one replacement and its production close bridge works after recovery exhaustion"
+  ],
+  "pet": {
+    "id": 1,
+    "pid": 39436,
+    "visible": true,
+    "preferences": {
+      "allowRunningInsecureContent": false,
+      "contextIsolation": true,
+      "disableDialogs": false,
+      "disablePopups": false,
+      "enableBlinkFeatures": "",
+      "experimentalFeatures": false,
+      "javascript": true,
+      "nodeIntegration": false,
+      "nodeIntegrationInSubFrames": false,
+      "nodeIntegrationInWorker": false,
+      "safeDialogs": false,
+      "safeDialogsMessage": "",
+      "sandbox": true,
+      "webSecurity": true,
+      "webviewTag": false
+    }
+  },
+  "safePet": {
+    "id": 2,
+    "pid": 2204,
+    "visible": true,
+    "preferences": {
+      "allowRunningInsecureContent": false,
+      "contextIsolation": true,
+      "disableDialogs": false,
+      "disablePopups": false,
+      "enableBlinkFeatures": "",
+      "experimentalFeatures": false,
+      "javascript": true,
+      "nodeIntegration": false,
+      "nodeIntegrationInSubFrames": false,
+      "nodeIntegrationInWorker": false,
+      "safeDialogs": false,
+      "safeDialogsMessage": "",
+      "sandbox": true,
+      "webSecurity": true,
+      "webviewTag": false
+    }
+  },
+  "popup": {
+    "id": 3,
+    "pid": 23072,
+    "visible": false,
+    "preferences": {
+      "allowRunningInsecureContent": false,
+      "contextIsolation": true,
+      "disableDialogs": false,
+      "disablePopups": false,
+      "enableBlinkFeatures": "",
+      "experimentalFeatures": false,
+      "javascript": true,
+      "nodeIntegration": false,
+      "nodeIntegrationInSubFrames": false,
+      "nodeIntegrationInWorker": false,
+      "safeDialogs": false,
+      "safeDialogsMessage": "",
+      "sandbox": true,
+      "webSecurity": true,
+      "webviewTag": false
+    }
+  },
+  "replacement": {
+    "id": 4,
+    "pid": 37188,
+    "visible": false,
+    "preferences": {
+      "allowRunningInsecureContent": false,
+      "contextIsolation": true,
+      "disableDialogs": false,
+      "disablePopups": false,
+      "enableBlinkFeatures": "",
+      "experimentalFeatures": false,
+      "javascript": true,
+      "nodeIntegration": false,
+      "nodeIntegrationInSubFrames": false,
+      "nodeIntegrationInWorker": false,
+      "safeDialogs": false,
+      "safeDialogsMessage": "",
+      "sandbox": true,
+      "webSecurity": true,
+      "webviewTag": false
+    }
+  },
+  "recovery": {
+    "petCrashes": [
+      "crashed",
+      "crashed",
+      "crashed"
+    ],
+    "popupCrashes": [
+      "crashed",
+      "crashed"
+    ],
+    "popupReady": 3,
+    "popupLoads": 2
+  },
+  "database": "in-memory synthetic; no adapters",
+  "limitations": [
+    "actual unresponsive renderer and physical click automation remain separate",
+    "safe mode persistence retained; manual exit not exercised",
+    "empty synthetic quota data, no live accounts"
+  ]
+}
