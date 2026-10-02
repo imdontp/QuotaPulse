@@ -210,10 +210,10 @@ try {
   assert.equal(await overview.locator('.qp-pulse-label strong').textContent(), '62%');
   assert.equal(await overview.locator('.qp-metrics strong').nth(1).textContent(), '2');
   assert.match(await overview.locator('.qp-metrics strong').nth(3).textContent() ?? '', /฿|THB/);
-  await overview.getByTestId('quota-history').locator('summary').click();
-  await overview.getByTestId('quota-history').locator('.qp-history-segments ol').first().waitFor();
-  assert.equal(await overview.getByTestId('quota-history').locator('.qp-history-segments ol').count(), 2);
-  await overview.getByTestId('quota-history').locator('summary').click();
+  await overview.getByTestId('quota-history').locator('summary').first().click();
+  await overview.getByTestId('quota-history').locator('.qp-alert-segments>g[data-reset]').first().waitFor();
+  assert.equal(await overview.getByTestId('quota-history').locator('.qp-alert-segments>g[data-reset]').count(), 2);
+  await overview.getByTestId('quota-history').locator('summary').first().click();
   assert.match(await overview.getByTestId('quota-runway').innerText(), /31/);
   assert.match(await overview.getByTestId('usage-insights').innerText(), /33%/);
   assert.equal(await overview.getByText('ตัวอย่างดีไซน์', { exact: false }).count(), 0);

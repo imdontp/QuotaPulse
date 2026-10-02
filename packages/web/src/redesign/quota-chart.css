@@ -1,0 +1,15 @@
+.qp-quota-chart { min-width:0; display:grid; gap:4px; }
+.qp-quota-chart-label,.qp-quota-chart-dates { font-size:10px; color:var(--qp-muted); }
+.qp-quota-chart-dates { display:flex; justify-content:space-between; gap:8px; }
+.qp-alert-segments { display:block; width:100%; height:112px; overflow:visible; }
+.qp-alert-segments text { font-size:10px; fill:var(--qp-muted); }
+.qp-quota-grid { stroke:var(--qp-border); stroke-dasharray:3 4; }
+.qp-quota-reset { stroke:var(--qp-muted); stroke-dasharray:3 4; }
+.qp-quota-series { stroke:var(--qp-accent); stroke-width:2; }
+.qp-quota-point { fill:var(--qp-accent); }
+.qp-quota-samples { font-size:11px; color:var(--qp-muted); }
+.qp-quota-samples summary { cursor:pointer; min-height:24px; display:list-item; }
+.qp-quota-samples>div { overflow-x:auto; }
+.qp-quota-samples table { width:100%; border-collapse:collapse; }
+.qp-quota-samples th,.qp-quota-samples td { padding:5px; text-align:left; border-bottom:1px solid var(--qp-border); vertical-align:top; overflow-wrap:anywhere; }
+.qp-quota-samples caption { text-align:left; font-weight:600; padding:4px 0; }

@@ -9,7 +9,7 @@ import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
-import type { MinuteTrendResponse, ProjectDetailResponse, ModelDetailResponse, CostAnalysisResponse } from '../packages/web/src/api.js';
+import type { MinuteTrendResponse, ProjectDetailResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse } from '../packages/web/src/api.js';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
@@ -43,6 +43,12 @@ const tinyUsage = db.prepare("INSERT INTO usage_event(source_id,session_id,dedup
 tinyUsage.run('fixed-tiny-minute', fixedNow - 15 * 60_000);
 tinyUsage.run('fixed-tiny-day', fixedNow - 3 * 86_400_000);
 const quota = db.prepare("INSERT INTO limit_sample(source_id,window_kind,used_percent,resets_at,observed_at,last_seen_at,source_fetched_at,origin) VALUES (?,'5h',?,?,?,?,?,'fixed-fixture')");
+// Complete history must include older reset periods, nulls and more than eight
+// readings per period, without changing the latest live quota/default selection.
+for (let segment = 0; segment < 4; segment++) for (let index = 0; index < 12; index++) {
+  const at = fixedNow - (5 - segment) * 3_600_000 + index * 60_000;
+  quota.run(1, index === 4 ? null : index === 1 ? 0.5 : index * 8, segment === 0 ? null : fixedNow - (4 - segment) * 3_600_000, at, at, at);
+}
 for (const [percent, minutes] of [[0, 50], [10, 35], [20, 20], [38, 5], [97, 1]]) {
   const at = fixedNow - minutes * 60_000; quota.run(1, percent, fixedNow + 7_200_000, at, at, at);
 }
@@ -55,6 +61,7 @@ const errors: string[] = [];
 const forbidden: string[] = [];
 const chartChecks: Array<{ page: string; lang: string; theme: string; buckets: number; tokens: number }> = [];
 const modelCostChecks: Array<{ route: string; lang: string; theme: string; buckets: number; collapsedBottom: number }> = [];
+const quotaChecks: Array<{ page: string; lang: string; theme: string; segments: number; samples: number; unknown: number }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const rendererArgs = ['--disable-gpu', '--deterministic-mode', '--disable-skia-runtime-opts', '--force-color-profile=srgb'];
@@ -237,6 +244,89 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
   }
 }
 
+async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', lang: string, theme: string, pending: Set<Request>) {
+  await page.setViewportSize({ width: 1672, height: 941 });
+  await page.goto(`http://127.0.0.1:7804/?quota-access=${destination}#${destination}${destination === 'alerts' ? '?owner=openai%3Asubscription&window=5h' : ''}`, { waitUntil: 'domcontentloaded' });
+  if (destination === 'overview') {
+    const outer = page.getByTestId('quota-history');
+    await outer.waitFor(); await settled(page, pending);
+    assert.equal(await outer.locator('.qp-quota-chart').count(), 0, 'Collapsed Overview must not mount the full quota plot');
+    await outer.locator('summary').first().focus(); await page.keyboard.press('Enter');
+    assert.equal(await outer.getAttribute('open'), '');
+  }
+  await page.locator('.qp-quota-point').first().waitFor(); await settled(page, pending);
+  const result = await daemon.inject({ method: 'GET', url: '/api/quota-history?subscription_key=openai%3Asubscription&window_kind=5h', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  assert.equal(result.statusCode, 200);
+  const history = result.json<QuotaHistoryResponse>();
+  const samples = history.segments.flatMap(segment => segment.samples);
+  assert.ok(history.segments.length > 3 && history.segments.some(segment => segment.samples.length > 8), 'Complete-history fixture missing');
+  assert.ok(samples.some(sample => sample.usedPercent === null) && samples.some(sample => sample.usedPercent === 0) && samples.some(sample => sample.usedPercent === 0.5));
+  const chart = page.locator('.qp-quota-chart');
+  assert.equal(await chart.locator('svg>g[data-reset]').count(), history.segments.length);
+  const disclosure = chart.locator('.qp-quota-samples'); const summary = disclosure.locator('summary');
+  assert.equal(await disclosure.locator('table').count(), 0, 'Collapsed quota samples must not mount all rows');
+  await summary.focus(); await page.keyboard.press('Enter'); assert.equal(await disclosure.getAttribute('open'), '');
+  await disclosure.locator('table').waitFor();
+  assert.equal(await disclosure.locator('caption').isVisible(), true);
+  assert.equal(await disclosure.locator('th[scope=col]').count(), 3);
+  const expected = history.segments.flatMap(segment => segment.samples.map(sample => ({ at: sample.observedAt, value: sample.usedPercent, reset: segment.resetAt })));
+  const rows = await disclosure.locator('tbody tr').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: element.getAttribute('data-value'), reset: element.getAttribute('data-reset'), cells: Array.from(element.querySelectorAll('td')).map(cell => cell.textContent), iso: Array.from(element.querySelectorAll('time')).map(time => time.getAttribute('datetime')) })));
+  assert.equal(rows.length, expected.length);
+  const locale = lang === 'th' ? 'th-TH' : 'en-US'; const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 20 });
+  const unknown = lang === 'th' ? 'ไม่ทราบ' : 'Unknown';
+  rows.forEach((row, index) => {
+    const sample = expected[index];
+    assert.equal(row.at, sample.at); assert.equal(row.value, String(sample.value ?? 'unknown')); assert.equal(row.reset, String(sample.reset ?? 'unknown'));
+    assert.deepEqual(row.cells, [new Date(sample.at).toLocaleString(locale), sample.value === null ? unknown : `${number.format(sample.value)}%`, sample.reset === null ? unknown : new Date(sample.reset).toLocaleString(locale)]);
+    assert.deepEqual(row.iso, [new Date(sample.at).toISOString(), ...(sample.reset === null ? [] : [new Date(sample.reset).toISOString()])]);
+  });
+  const points = await chart.locator('.qp-quota-point').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')), x: Number(element.getAttribute('cx')), y: Number(element.getAttribute('cy')) })));
+  const known = samples.filter(sample => sample.usedPercent !== null);
+  assert.equal(points.length, known.length);
+  const viewBox = (await chart.locator('svg').getAttribute('viewBox'))!.split(' ').map(Number);
+  const first = Math.min(...samples.map(sample => sample.observedAt)); const last = Math.max(...samples.map(sample => sample.observedAt));
+  points.forEach((point, index) => {
+    const sample = known[index]; assert.equal(point.at, sample.observedAt); assert.equal(point.value, sample.usedPercent);
+    assert.ok(Math.abs(point.y - (6 + (100 - sample.usedPercent!) / 100 * 98)) < 0.0001, 'Incorrect percentage ordinate');
+    assert.ok(Math.abs(point.x - (34 + (sample.observedAt - first) / (last - first) * (viewBox[2] - 40))) < 0.0001, 'Incorrect timestamp abscissa');
+  });
+  const expectedLines = history.segments.reduce((total, segment) => total + segment.samples.filter((sample, index) => index > 0 && sample.usedPercent !== null && segment.samples[index - 1].usedPercent !== null).length, 0);
+  assert.equal(await chart.locator('.qp-quota-series').count(), expectedLines, 'Unknown/reset intervals must break the series');
+  await page.screenshot({ path: resolve(output, `quota-expanded-${destination}-${lang}-${theme}.png`), animations: 'disabled' });
+  for (const width of [390, 900, 1280]) {
+    await page.setViewportSize({ width, height: 941 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${destination}: quota table overflow at ${width}`);
+  }
+  await summary.focus(); await page.keyboard.press('Enter'); assert.equal(await disclosure.getAttribute('open'), null);
+  await disclosure.locator('table').waitFor({ state: 'detached' });
+  if (destination === 'overview') { const outer = page.getByTestId('quota-history'); await outer.locator('summary').first().focus(); await page.keyboard.press('Enter'); assert.equal(await outer.getAttribute('open'), null); await outer.locator('.qp-quota-chart').waitFor({ state: 'detached' }); }
+  quotaChecks.push({ page: destination, lang, theme, segments: history.segments.length, samples: samples.length, unknown: samples.filter(sample => sample.usedPercent === null).length });
+  if (destination === 'overview') {
+    const pattern = '**/api/quota-history?**';
+    for (const state of ['unknown', 'empty', 'recovered']) {
+      if (state !== 'recovered') await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ...history, segments: state === 'empty' ? [{ resetAt: history.reader!.resetAt, samples: [] }] : history.segments.map(segment => ({ ...segment, samples: segment.samples.map(sample => ({ ...sample, usedPercent: null })) })) }) }));
+      try {
+        await page.goto(`http://127.0.0.1:7804/?quota-state=${state}#overview`, { waitUntil: 'domcontentloaded' });
+        const outer = page.getByTestId('quota-history'); await outer.waitFor(); await settled(page, pending);
+        await outer.locator('summary').first().focus(); await page.keyboard.press('Enter');
+        if (state === 'empty') {
+          await outer.getByRole('status').waitFor();
+          assert.equal(await outer.locator('svg').count(), 0, 'Empty history must not create an invalid time axis');
+        } else {
+          await outer.locator('.qp-quota-samples').waitFor();
+          assert.equal(await outer.locator('.qp-quota-point').count(), state === 'unknown' ? 0 : known.length);
+          if (state === 'unknown') {
+            assert.equal(await outer.locator('.qp-quota-series').count(), 0);
+            await outer.locator('.qp-quota-samples summary').focus(); await page.keyboard.press('Enter');
+            await outer.locator('table').waitFor();
+            assert.equal(await outer.locator('tr[data-value=unknown]').count(), samples.length);
+          }
+        }
+      } finally { if (state !== 'recovered') await page.unroute(pattern); }
+    }
+  }
+}
+
 try {
   await daemon.listen({ host: '127.0.0.1', port: 7804 });
   assert.equal((await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json().now, fixedNow);
@@ -289,13 +379,14 @@ try {
           }
           if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme);
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
+          if (pass === 0 && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
         }
       } finally { await page.close(); await browser.close(); }
       console.log(`Stable capture pass ${pass + 1}: ${lang}/${theme}, eight pages`);
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, modelCostChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, modelCostChecks, quotaChecks, cases }, null, 2));
   console.log(`Stable captures passed: 32 pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

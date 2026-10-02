@@ -4,6 +4,7 @@ import type { QuotaHistoryResponse } from '@/api';
 import { CostValue, recordCostCoverage } from './cost-value';
 import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
 import { RedesignShell, type RedesignTranslate } from './shell';
+import { QuotaChart } from './quota-chart';
 
 type Translate = RedesignTranslate;
 const riskLabel = (state: ReturnType<typeof quotaState> | null) =>
@@ -110,6 +111,7 @@ function RuntimeMap({ nodes, edges, recordCount, t, onInspect }: { nodes: Runtim
 }
 
 function QuotaRunway({ quota, now, t, language, preview, history, historyError }: { quota: QuotaWindow | undefined; now: number; t: Translate; language: 'en' | 'th'; preview: boolean; history?: QuotaHistoryResponse | null; historyError?: boolean }) {
+  const [historyOpen, setHistoryOpen] = useState(false);
   const runway = runwayState(quota, now, preview ? 300000 : 3600000);
   const decimal = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 1 }).format(value);
   const date = (value: number) => new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(value);
@@ -130,11 +132,11 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
       <div className="qp-runway-stats"><span>{t('redesign.safePace')} <strong>{decimal(runway.safePace)}</strong> {t('redesign.pointsPerHour')}</span></div>
       <p className="qp-footnote">{forecast}</p>
     </>}
-    {!preview && <details className="qp-quota-history" data-testid="quota-history">
+    {!preview && <details className="qp-quota-history" data-testid="quota-history" onToggle={event => setHistoryOpen(event.currentTarget.open)}>
       <summary>{t('redesign.observedHistory')}</summary>
+      {historyError && history?.reader && <p role="status" className="qp-footnote">{t('redesign.historyUnavailable')}</p>}
       {history?.reader && history.segments.length > 0 ? <>
-        <div className="qp-history-segments">{history.segments.slice(-3).map((segment, index) => <ol key={`${segment.resetAt}-${index}`} aria-label={`${t('redesign.resetPeriods')} ${index + 1}`}>
-          {segment.samples.slice(-8).map(sample => <li key={sample.observedAt} title={`${date(sample.observedAt)} · ${sample.usedPercent ?? '—'}%`} aria-label={`${date(sample.observedAt)} · ${sample.usedPercent ?? '—'}%`} style={{ height: `${Math.max(4, Math.min(100, sample.usedPercent ?? 0))}%` }}/>)}</ol>)}</div>
+        {historyOpen && <QuotaChart history={history} t={t} language={language} title={t('redesign.observedHistory')}/>}
         <p className="qp-footnote">{history.reader.origin} · {history.segments.length} {t('redesign.resetPeriods')} · {history.segments.reduce((sum, segment) => sum + segment.samples.length, 0)} {t('redesign.readings')}</p>
       </> : <p className="qp-footnote">{historyError ? t('redesign.historyUnavailable') : history || !quota ? t('redesign.noHistory') : t('redesign.historyLoading')}</p>}
     </details>}
