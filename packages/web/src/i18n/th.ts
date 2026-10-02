@@ -10,6 +10,8 @@ import type { MessageKey } from './en';
  * tools it is describing.
  */
 export const th: Record<MessageKey, string> = {
+  'redesign.chartData': 'ข้อมูลกราฟที่บันทึก',
+  'redesign.chartBucketStart': 'เวลาเริ่มช่วง',
   'redesign.live': "สด",
   'redesign.cost': "ค่าใช้จ่าย",
   'redesign.history': "ประวัติ",

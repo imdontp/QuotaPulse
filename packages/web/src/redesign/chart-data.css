@@ -1,0 +1,8 @@
+.qp-chart-access { display:flex; flex-wrap:wrap; align-items:start; gap:3px 10px; min-width:0; color:var(--qp-muted); font-size:10px; }
+.qp-chart-scale { display:flex; flex:1; min-width:0; flex-wrap:wrap; justify-content:space-between; gap:4px 10px; }
+.qp-chart-data[open] { width:100%; }
+.qp-chart-data summary { cursor:pointer; min-height:24px; display:list-item; }
+.qp-chart-data>div { overflow-x:auto; }
+.qp-chart-data table { width:100%; border-collapse:collapse; }
+.qp-chart-data caption { text-align:left; font-weight:600; padding:4px 0; }
+.qp-chart-data th,.qp-chart-data td { text-align:left; padding:5px; border-bottom:1px solid var(--qp-border); vertical-align:top; overflow-wrap:anywhere; }

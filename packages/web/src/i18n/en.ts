@@ -207,6 +207,8 @@ export const en = {
   'redesign.liveObservedTime': 'Last record',
   'redesign.liveSessionDetail': 'Session metadata',
   'redesign.liveChart': 'Recorded tokens per minute',
+  'redesign.chartData': 'Recorded chart data',
+  'redesign.chartBucketStart': 'Bucket start',
   'redesign.liveChartEmpty': 'No call records in this window',
   'redesign.liveExcluded': 'Excluded from per-call chart',
   'redesign.liveAggregate': 'Aggregate updates',

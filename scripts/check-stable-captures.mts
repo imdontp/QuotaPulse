@@ -9,6 +9,7 @@ import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
+import type { MinuteTrendResponse, ProjectDetailResponse } from '../packages/web/src/api.js';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
@@ -37,6 +38,10 @@ for (let index = 0; index < 12; index++) {
   session.run(index + 1, source, `fixture-session-${index}`, `Fixture project ${index % 8}`, fixedNow - 10_000);
   for (let call = 0; call < 3; call++) usage.run(source, index + 1, `fixed-${index}-${call}`, fixedNow - (index + call + 1) * 30_000, `fixture-model-${index % 8}`, ['openai', 'anthropic', 'openrouter', 'provider-fixture'][index % 4], call + 1, (index + 1) / 100, index === 0 ? 'native' : 'computed');
 }
+// Values below the old visual minimum catch inflated nonzero bars in both charts.
+const tinyUsage = db.prepare("INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,input_tokens,cached_input_tokens,output_tokens,total_tokens,call_count,cost_usd,cost_source) VALUES (1,1,?,?,'fixture-model-0','openai',1,0,0,1,1,0,'computed')");
+tinyUsage.run('fixed-tiny-minute', fixedNow - 15 * 60_000);
+tinyUsage.run('fixed-tiny-day', fixedNow - 3 * 86_400_000);
 const quota = db.prepare("INSERT INTO limit_sample(source_id,window_kind,used_percent,resets_at,observed_at,last_seen_at,source_fetched_at,origin) VALUES (?,'5h',?,?,?,?,?,'fixed-fixture')");
 for (const [percent, minutes] of [[0, 50], [10, 35], [20, 20], [38, 5], [97, 1]]) {
   const at = fixedNow - minutes * 60_000; quota.run(1, percent, fixedNow + 7_200_000, at, at, at);
@@ -48,6 +53,7 @@ const daemon = buildServer(db, scheduler, { token: 'stable-capture-test', port: 
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 const errors: string[] = [];
 const forbidden: string[] = [];
+const chartChecks: Array<{ page: string; lang: string; theme: string; buckets: number; tokens: number }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const rendererArgs = ['--disable-gpu', '--deterministic-mode', '--disable-skia-runtime-opts', '--force-color-profile=srgb'];
@@ -106,9 +112,9 @@ assert.equal(contrast('#000', '#fff'), 21);
 async function semanticContrast(page: Page) {
   const result = await page.evaluate(() => {
     const root = document.querySelector('.qp-redesign')!; const style = getComputedStyle(root);
-    const colors = Object.fromEntries(['danger', 'warning', 'series', 'success'].map(role => [role, style.getPropertyValue(`--qp-${role}`).trim()]));
+    const colors = Object.fromEntries(['danger', 'warning', 'series', 'success', 'muted'].map(role => [role, style.getPropertyValue(`--qp-${role}`).trim()]));
     const backgrounds = [style.backgroundColor, style.getPropertyValue('--qp-panel').trim(), style.backgroundImage.match(/rgb\([^)]+\)/)![0]];
-    const samples = [['danger', '.qp-alert-level[data-level=critical]'], ['warning', '.qp-alert-level[data-level=warning]'], ['series', '.qp-cost-chart-labels span:last-child'], ['success', '.qp-daemon-badge[data-state=live]']].flatMap(([role, selector]) => {
+    const samples = [['danger', '.qp-alert-level[data-level=critical]'], ['warning', '.qp-alert-level[data-level=warning]'], ['series', '.qp-cost-chart-labels span:last-child'], ['success', '.qp-daemon-badge[data-state=live]'], ['muted', '.qp-chart-scale>span']].flatMap(([role, selector]) => {
       const element = root.querySelector(selector); return element ? [{ role, selector, color: getComputedStyle(element).color }] : [];
     });
     return { colors, backgrounds, samples };
@@ -117,6 +123,44 @@ async function semanticContrast(page: Page) {
   for (const item of semanticContrasts) assert.ok(item.minimumRatio >= 4.5, `${item.role}: insufficient text contrast (${item.minimumRatio})`);
   for (const sample of result.samples) assert.deepEqual(rgb(sample.color), rgb(result.colors[sample.role]), `${sample.selector}: semantic color was overridden`);
   return { semanticContrasts, checkedElements: result.samples.map(sample => sample.selector) };
+}
+
+async function checkChartAccess(page: Page, destination: 'live' | 'projects', lang: string, theme: string) {
+  const headers = { 'x-quotapulse-token': 'stable-capture-test' };
+  let expected: Array<{ at: number; tokens: number }>;
+  if (destination === 'live') {
+    const result = await daemon.inject({ method: 'GET', url: `/api/trend?bucket=minute&group_by=none&from=${fixedNow - 1_800_000}&to=${fixedNow + 1}`, headers });
+    assert.equal(result.statusCode, 200);
+    const trend = result.json<MinuteTrendResponse>();
+    const start = Math.floor(trend.from / 60_000) * 60_000;
+    expected = Array.from({ length: Math.floor((trend.to - 1) / 60_000) - Math.floor(trend.from / 60_000) + 1 }, (_, index) => ({ at: start + index * 60_000, tokens: trend.rows.find(row => row.bucket_ts === start + index * 60_000)?.total_tokens ?? 0 }));
+  } else {
+    const month = new Date(fixedNow); month.setDate(1); month.setHours(0, 0, 0, 0);
+    const query = new URLSearchParams({ from: String(month.getTime()), to: String(fixedNow + 1), project: 'Fixture project 0' });
+    const result = await daemon.inject({ method: 'GET', url: `/api/project-detail?${query}&limit=20&offset=0`, headers });
+    assert.equal(result.statusCode, 200);
+    const detail = result.json<ProjectDetailResponse>();
+    expected = Array.from({ length: Math.ceil((detail.scope.to - detail.scope.from) / detail.bucketMs) }, (_, index) => ({ at: detail.scope.from + index * detail.bucketMs, tokens: detail.points.find(point => point.start === detail.scope.from + index * detail.bucketMs)?.tokens ?? 0 }));
+  }
+  const disclosure = page.locator('.qp-chart-data'); const summary = disclosure.locator('summary');
+  await summary.focus(); await page.keyboard.press('Enter');
+  assert.equal(await disclosure.getAttribute('open'), '');
+  assert.equal(await disclosure.locator('table').isVisible(), true);
+  const rows = await disclosure.locator('tbody tr').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), tokens: Number(element.getAttribute('data-tokens')), text: element.querySelector('td:last-child')!.textContent, stamp: element.querySelector('td:first-child')!.textContent, iso: element.querySelector('time')!.getAttribute('datetime') })));
+  assert.deepEqual(rows.map(({ at, tokens }) => ({ at, tokens })), expected);
+  const format = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US');
+  for (const row of rows) { assert.equal(row.text, format.format(row.tokens)); assert.equal(row.iso, new Date(row.at).toISOString()); assert.equal(row.stamp, new Date(row.at).toLocaleString(lang === 'th' ? 'th-TH' : 'en-US')); }
+  const heights = await page.locator(destination === 'live' ? '.qp-live-chart>span' : '.qp-project-trend>span').evaluateAll(elements => elements.map(element => parseFloat((element as HTMLElement).style.height)));
+  assert.equal(heights.length, expected.length);
+  const maximum = Math.max(0, ...expected.map(point => point.tokens));
+  assert.ok(expected.some(point => point.tokens === 1) && expected.some(point => point.tokens === 0), 'Tiny and zero bucket regression fixtures must be present');
+  heights.forEach((height, index) => assert.ok(Math.abs(height - expected[index].tokens / (maximum || 1) * 100) < 0.0001, 'Bar height is not proportional to the API value'));
+  for (const width of [390, 900, 1280]) {
+    await page.setViewportSize({ width, height: 941 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${destination}: expanded data table overflows at ${width}`);
+  }
+  await summary.focus(); await page.keyboard.press('Enter'); assert.equal(await disclosure.getAttribute('open'), null);
+  chartChecks.push({ page: destination, lang, theme, buckets: expected.length, tokens: expected.reduce((sum, point) => sum + point.tokens, 0) });
 }
 
 try {
@@ -169,13 +213,14 @@ try {
             // No region is hidden, blurred or exempted from the comparison.
             assert.ok(difference.maxChannelDelta <= 2 && difference.changedPixels / difference.pixelCount <= 0.0001, `${filename}: capture differs beyond raster tolerance (${JSON.stringify(difference)})`);
           }
+          if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme);
         }
       } finally { await page.close(); await browser.close(); }
       console.log(`Stable capture pass ${pass + 1}: ${lang}/${theme}, eight pages`);
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 36 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors'], cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, cases }, null, 2));
   console.log(`Stable captures passed: 32 pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

@@ -5,6 +5,7 @@ import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import { RedesignShell } from './shell';
+import { ChartData } from './chart-data';
 import { readScope, selectedScope, writeScope, type ScopeSelection, type ScopeRange } from './scope';
 import { ScopeNotice } from './scope-notice';
 import './projects.css';
@@ -120,7 +121,7 @@ export function ProductionProjects() {
     const start = detail.scope.from + index * detail.bucketMs;
     return { start, tokens: detail.points.find(point => point.start === start)?.tokens ?? 0 };
   }) : [];
-  const trendMaximum = Math.max(1, ...trendBins.map(bin => bin.tokens));
+  const trendMaximum = Math.max(0, ...trendBins.map(bin => bin.tokens));
   const historyHref = (sessionId?: number) => {
     if (!detailScope) return '#history';
     const params = new URLSearchParams({ range: 'custom', from: String(detailScope.from), to: String(detailScope.to) });
@@ -174,8 +175,8 @@ export function ProductionProjects() {
           <div className="qp-project-money"><div><small>{t('redesign.reported')}</small><strong>{selected.native_calls > 0 ? <CostValue amount={selected.reported_native_usd} priced={selected.native_calls} total={selected.calls} money={money} t={t}/> : t('redesign.projectCostNotReported')}</strong></div><div><small>{t('redesign.value')}</small><strong>{selected.computed_calls + selected.estimated_calls > 0 ? <CostValue amount={selected.api_value_usd} priced={selected.computed_calls + selected.estimated_calls} total={selected.calls} money={money} t={t}/> : t('redesign.projectValueUnavailable')}</strong></div></div>
           {(selected.unknown_calls > 0 || selected.estimated_calls > 0) && <p className="qp-footnote">{number(selected.unknown_calls)} {t('redesign.projectUnpriced')} · {number(selected.estimated_calls)} {t('redesign.projectEstimated')}</p>}
           <h3>{t('redesign.projectTrend')}</h3>
-          {detail ? detail.points.length ? <div className="qp-project-trend" role="img" aria-label={t('redesign.projectTrend')}>
-            {trendBins.map(bin => <span key={bin.start} title={`${date(bin.start)}: ${number(bin.tokens)} ${t('redesign.tokens')}`} style={{ height: `${bin.tokens ? Math.max(5, bin.tokens / trendMaximum * 100) : 0}%`, opacity: bin.tokens ? 1 : 0 }} />)}</div>
+          {detail ? detail.points.length ? <><div className="qp-project-trend" role="img" aria-label={`${t('redesign.projectTrend')}: ${t('redesign.tokens')} 0 – ${number(trendMaximum)}`}>
+            {trendBins.map(bin => <span key={bin.start} title={`${date(bin.start)}: ${number(bin.tokens)} ${t('redesign.tokens')}`} style={{ height: `${bin.tokens ? bin.tokens / (trendMaximum || 1) * 100 : 0}%`, opacity: bin.tokens ? 1 : 0 }} />)}</div><ChartData title={t('redesign.projectTrend')} points={trendBins.map(bin => ({ at: bin.start, tokens: bin.tokens }))} language={lang} t={t}/></>
             : <p>{t('redesign.projectNoTrend')}</p> : detailError ? null : <p>{t('app.loading')}</p>}
           <h3>{t('redesign.projectBreakdown')}</h3>
           <ol className="qp-project-breakdown">{detailRows.slice(0, 8).map(row => <li key={JSON.stringify([row.sourceId, row.provider, row.model])}><span>{row.sourceName} · {row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}</span><strong>{number(row.tokens)}</strong></li>)}</ol>

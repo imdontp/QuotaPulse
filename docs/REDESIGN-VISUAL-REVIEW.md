@@ -57,6 +57,13 @@ visible Alerts badges, Cost labels and daemon status use the expected colors.
 Its final 32 capture pairs are byte-identical. Full text/state/non-text contrast,
 Thai font portability and keyboard/screen-reader review remain pending.
 
+[Chart access 1.13](REDESIGN-CHART-ACCESS-V1.13.md) adds complete keyboard-operated
+bucket tables, zero/actual-maximum scales and time/date endpoints to Live and
+Projects. Their tiny/zero bars remain proportional to API values. The unchanged
+occupied feed/ranking gates pass after compacting the new information; 144
+responsive cases and 32 byte-identical production capture pairs pass. Other
+charts and manual screen-reader review remain pending.
+
 ## Screen review
 
 | Screen | Preserved structure and intentional factual changes | Findings at initial v1.3 review; see follow-up above |
