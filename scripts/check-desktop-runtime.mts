@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,6 +12,7 @@ import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const output = resolve(root, 'screens/desktop-runtime');
 mkdirSync(output, { recursive: true });
+rmSync(resolve(output, 'verification.json'), { force: true });
 const profiles = resolve(root, 'tmp/desktop-runtime');
 mkdirSync(profiles, { recursive: true });
 const userData = mkdtempSync(resolve(profiles, 'profile-'));
@@ -47,6 +48,35 @@ try {
   assert.equal(await popup.evaluate(() => typeof (window as any).require), 'undefined');
   await dashboard.screenshot({ path: resolve(output, 'dashboard-production.png') });
   await popup.screenshot({ path: resolve(output, 'popup-production.png') });
+  const trigger = dashboard.locator('.qp-topbar button[aria-haspopup=dialog]');
+  await trigger.click();
+  const palette = dashboard.locator('.qp-command-dialog'); await palette.waitFor();
+  assert.equal(await palette.evaluate(element => element.matches(':modal')), true);
+  const search = palette.getByRole('searchbox');
+  await search.focus(); await dashboard.keyboard.press('Shift+Tab');
+  assert.equal(await palette.locator('button').last().evaluate(element => element === document.activeElement), true);
+  await dashboard.keyboard.press('Tab');
+  assert.equal(await search.evaluate(element => element === document.activeElement), true);
+  await dashboard.evaluate(() => (document.querySelector('.qp-sidebar a') as HTMLElement).focus());
+  assert.equal(await search.evaluate(element => element === document.activeElement), true);
+  await dashboard.keyboard.press('Escape'); await palette.waitFor({ state: 'hidden' });
+  assert.equal(await trigger.evaluate(element => element === document.activeElement), true);
+  await dashboard.locator('.qp-tools button').first().click();
+  await dashboard.waitForFunction(() => document.documentElement.lang === 'th');
+  await dashboard.evaluate(() => document.fonts.ready);
+  const cdp = await dashboard.context().newCDPSession(dashboard);
+  let thaiFont;
+  try {
+    await cdp.send('DOM.enable'); await cdp.send('CSS.enable');
+    const { root } = await cdp.send('DOM.getDocument');
+    const { nodeId } = await cdp.send('DOM.querySelector', { nodeId: root.nodeId, selector: '.qp-sidebar nav a span' });
+    const { fonts } = await cdp.send('CSS.getPlatformFontsForNode', { nodeId });
+    thaiFont = fonts.find(font => font.familyName === 'Noto Sans Thai');
+    assert.ok(thaiFont && thaiFont.isCustomFont && thaiFont.glyphCount > 0, 'Electron Thai label must use the bundled custom font');
+  } finally { await cdp.detach(); }
+  await dashboard.screenshot({ path: resolve(output, 'dashboard-production-thai.png') });
+  await dashboard.locator('.qp-tools button').first().click();
+  await dashboard.waitForFunction(() => document.documentElement.lang === 'en');
   await popup.getByRole('button', { name: 'Open dashboard', exact: true }).click();
   await popup.locator('.pet-popup-close').click();
   await dashboard.goto('http://127.0.0.1:7803/#sessions?range=all');
@@ -72,7 +102,7 @@ try {
     assert.equal(win.preferences.nodeIntegration, false);
   }
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'passed', host: 'isolated hidden Electron windows', database: 'in-memory synthetic',
-    checks: ['built dashboard', 'built popup with hash override', 'real compiled sandboxed preloads', 'renderer ready IPC', 'popup dashboard/close IPC', 'legacy sessions alias', 'isolated user data', 'no external requests'],
+    checks: ['built dashboard', 'built popup with hash override', 'real compiled sandboxed preloads', 'renderer ready IPC', 'popup dashboard/close IPC', 'legacy sessions alias', 'isolated user data', 'native command modal and keyboard isolation', 'bundled custom Thai font and language switching', 'no external requests'], thaiFont,
     limitations: ['fixture main process; installed tray/main lifecycle not exercised', 'not an installer or packaged application release', 'no scheduled tasks, tray registration or live readers'], evidence }, null, 2));
   console.log('Desktop runtime passed: isolated dashboard/popup, compiled preloads and readiness/action IPC.');
 } catch (error) {

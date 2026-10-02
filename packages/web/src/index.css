@@ -187,8 +187,8 @@
    */
   --radius-2xl: calc(var(--radius) + 6px);
 
-  --font-sans: 'Geist Variable', Geist, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-sans: 'Geist Variable', Geist, 'Noto Sans Thai', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', 'Noto Sans Thai', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 /*

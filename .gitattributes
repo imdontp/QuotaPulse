@@ -12,3 +12,6 @@ package-lock.json -diff linguist-generated
 # These are written by scripts/gen-vendor-icons.mjs; review the generator, not the output.
 packages/web/src/vendor-colors.css linguist-generated
 packages/web/src/components/vendor-icon.tsx linguist-generated
+
+# Preserve the upstream font license verbatim, including its end-of-line space.
+packages/web/public/fonts/noto-sans-thai/OFL.txt whitespace=-blank-at-eol

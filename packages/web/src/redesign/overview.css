@@ -15,7 +15,7 @@
   min-height:100vh;
   display:grid;
   grid-template-columns:226px minmax(0,1fr);
-  font-family:'Geist Variable',sans-serif;
+  font-family:var(--font-sans);
   color-scheme:dark;
   font-size:13px;
 }

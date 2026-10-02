@@ -17,10 +17,12 @@ const ProductionUtilityPage = lazy(() => import('@/redesign/utility-pages').then
  * and in PRIVACY.md that this app makes no outbound request -- opening the dashboard told
  * Google the machine's IP and that it had been opened. `wght` is the upright axis only
  * (the UI never renders italics), and the @font-face rules carry unicode-range, so a
- * browser only ever loads the Latin subset it actually needs.
+ * browser loads only the declared character ranges it needs. Thai uses the
+ * bundled Noto Sans Thai face rather than a machine's system font.
  */
 import '@fontsource-variable/geist/wght.css';
 import '@fontsource-variable/geist-mono/wght.css';
+import '@/thai-font.css';
 import '@/index.css';
 
 const root = createRoot(document.getElementById('root')!);

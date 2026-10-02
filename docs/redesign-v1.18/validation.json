@@ -1,0 +1,56 @@
+{
+    "checkpoint":  "redesign-thai-font-desktop-v1.18.0",
+    "status":  "Validated checkpoint; release approval pending",
+    "commands":  [
+                     {
+                         "command":  "npm run build -w @quotapulse/web",
+                         "exitCode":  0
+                     },
+                     {
+                         "byteIdentical":  31,
+                         "exitCode":  0,
+                         "command":  "npm run test:stable",
+                         "fontCases":  36,
+                         "pairs":  32
+                     },
+                     {
+                         "exitCode":  0,
+                         "command":  "npm run test:history",
+                         "responsivePageCases":  144
+                     },
+                     {
+                         "command":  "npm run build -w @quotapulse/tray",
+                         "exitCode":  0
+                     },
+                     {
+                         "host":  "isolated hidden Electron fixture main",
+                         "exitCode":  0,
+                         "command":  "npm run test:desktop"
+                     },
+                     {
+                         "host":  "legacy dashboard/popup with fixture API responses",
+                         "exitCode":  0,
+                         "command":  "npm run test:ui"
+                     },
+                     {
+                         "command":  "git diff --check",
+                         "exitCode":  0
+                     }
+                 ],
+    "font":  {
+                 "family":  "Noto Sans Thai",
+                 "upstream":  "https://github.com/google/fonts",
+                 "commit":  "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+                 "upstreamPath":  "ofl/notosansthai/NotoSansThai[wdth,wght].ttf",
+                 "sha256":  "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                 "license":  "OFL-1.1",
+                 "modifiedFont":  false
+             },
+    "limits":  [
+                   "Manual screen reader and cross-OS approval pending",
+                   "Concept baseline and SSIM approval pending",
+                   "Actual packaged tray/main lifecycle, installer and recovery pending",
+                   "No unit suite repeated",
+                   "No installed app, user usage DB, live providers or scheduled tasks accessed"
+               ]
+}

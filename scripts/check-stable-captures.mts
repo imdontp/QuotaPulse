@@ -65,8 +65,13 @@ const modelCostChecks: Array<{ route: string; lang: string; theme: string; bucke
 const quotaChecks: Array<{ page: string; lang: string; theme: string; segments: number; samples: number; unknown: number }> = [];
 const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number }> = [];
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
+const fontChecks: Array<{ page: string; lang: string; theme: string; family: string; custom: boolean; glyphs: number }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
+const fontPath = 'fonts/noto-sans-thai/';
+const fontProvenance = JSON.parse(readFileSync(resolve(root, `packages/web/public/${fontPath}provenance.json`), 'utf8'));
+assert.equal(sha(readFileSync(resolve(root, `packages/web/dist/${fontPath}NotoSansThai-variable.ttf`))), fontProvenance.sha256);
+assert.deepEqual(readFileSync(resolve(root, `packages/web/dist/${fontPath}OFL.txt`)), readFileSync(resolve(root, `packages/web/public/${fontPath}OFL.txt`)));
 const rendererArgs = ['--disable-gpu', '--deterministic-mode', '--disable-skia-runtime-opts', '--force-color-profile=srgb'];
 const pages = [
   ['overview', '.qp-activity-item'], ['live', '.qp-live-chart'],
@@ -245,6 +250,21 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
     await summary.focus(); await page.keyboard.press('Enter'); assert.equal(await disclosure.getAttribute('open'), null);
     modelCostChecks.push({ route, lang, theme, buckets: starts.length, collapsedBottom });
   }
+}
+
+async function checkFontAccess(page: Page, destination: string, lang: string, theme: string) {
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    await cdp.send('DOM.enable'); await cdp.send('CSS.enable');
+    const { root } = await cdp.send('DOM.getDocument');
+    const selector = lang === 'th' ? '.qp-sidebar nav a span' : '.qp-tools button';
+    const { nodeId } = await cdp.send('DOM.querySelector', { nodeId: root.nodeId, selector });
+    const { fonts } = await cdp.send('CSS.getPlatformFontsForNode', { nodeId });
+    const thai = fonts.find(font => font.familyName === 'Noto Sans Thai');
+    assert.ok(thai && thai.isCustomFont && thai.glyphCount > 0, `${destination}/${lang}/${theme}: Thai glyphs did not use the bundled custom font`);
+    assert.ok(fonts.every(font => font.isCustomFont), 'Selected Thai label must not fall back to system fonts');
+    fontChecks.push({ page: destination, lang, theme, family: thai.familyName, custom: thai.isCustomFont, glyphs: thai.glyphCount });
+  } finally { await cdp.detach(); }
 }
 
 async function checkShellAccess(page: Page, destination: string, lang: string, theme: string) {
@@ -489,6 +509,7 @@ try {
           await page.locator('.qp-daemon-badge[data-state=live]').waitFor();
           await page.waitForFunction(() => document.querySelector('[data-stat=models]')?.textContent === '8');
           await settled(page, pending);
+          if (pass === 0) await checkFontAccess(page, destination, lang, theme);
           assert.equal(await page.evaluate(() => Date.now()), fixedNow);
           assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
           const contrastEvidence = await semanticContrast(page);
@@ -513,6 +534,7 @@ try {
         if (pass === 0) {
           await page.goto('http://127.0.0.1:7804/?shell-access=settings#settings', { waitUntil: 'domcontentloaded' });
           await page.getByTestId('production-settings').waitFor(); await settled(page, pending);
+          await checkFontAccess(page, 'settings', lang, theme);
           await checkShellAccess(page, 'settings', lang, theme);
         }
       } finally { await page.close(); await browser.close(); }
@@ -520,7 +542,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, fontProvenance, fontChecks, cases }, null, 2));
   console.log(`Stable captures passed: 32 pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;
