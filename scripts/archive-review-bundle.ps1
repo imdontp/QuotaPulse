@@ -8,7 +8,7 @@ $bundle=[IO.Path]::GetFullPath($built.bundle)
 $boundary=[IO.Path]::GetFullPath((Join-Path $root 'tmp\review-bundles'))+[IO.Path]::DirectorySeparatorChar
 if (-not $bundle.StartsWith($boundary,[StringComparison]::OrdinalIgnoreCase)) { throw 'Bundle is outside the review output directory.' }
 if (Test-Path -LiteralPath (Join-Path $bundle 'review-data')) { throw 'Do not archive a used review profile.' }
-foreach ($script in @('task-entry.cjs','start-review.ps1','stop-review.ps1','review-profile.ps1','install-review.ps1')) {
+foreach ($script in @('task-entry.cjs','start-review.ps1','stop-review.ps1','review-profile.ps1','install-review.ps1','uninstall-review.ps1')) {
   $source=Join-Path $PSScriptRoot $script
   $copied=Join-Path (Join-Path $bundle 'scripts') $script
   if ((Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $copied -Algorithm SHA256).Hash) { throw "Bundle script is stale: $script" }

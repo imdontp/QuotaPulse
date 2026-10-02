@@ -1,0 +1,16 @@
+{
+    "toArchiveSha256":  "462c59971703c8d366af9aceb6ba9ab4ca5bea18c77c0a539b2ae5f33afcbe1c",
+    "checks":  [
+                   "actual shipped v1.22 ZIP and installer start an isolated profile without ownedReleases metadata",
+                   "v1.23 upgrade registers actual v1.22 release and starts the retained profile with readers off",
+                   "uninstall removes both registered real versions and preserves exact stopped DB bytes and profile sentinel"
+               ],
+    "target":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-legacy-review-b787a02998404954882b12289879d9bb",
+    "limitations":  [
+                        "same compiled app/schema; installer metadata compatibility only",
+                        "earlier untracked staging/older releases are retained"
+                    ],
+    "readersDisabled":  true,
+    "status":  "passed",
+    "fromArchiveSha256":  "3bfec2f507fff8fbefd3a286f949ea84cc9ab56c23dc9ae79666680a987f7450"
+}

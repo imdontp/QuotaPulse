@@ -24,7 +24,7 @@ $state=$null
 if (Test-Path -LiteralPath $marker) {
   $state=Get-Content -LiteralPath $marker -Raw | ConvertFrom-Json
   if ($state.schemaVersion -ne 1 -or $state.mode -ne 'isolated-review') { throw 'Destination is not an isolated review installation.' }
-  foreach ($id in @($state.active,$state.previous)) { if ($id -and $id -notmatch '^release-[a-f0-9]{64}$') { throw 'Invalid installed release identity.' } }
+  foreach ($id in @($state.active,$state.previous)+@($state.ownedReleases)) { if ($id -and $id -notmatch '^release-[a-f0-9]{64}$') { throw 'Invalid installed release identity.' } }
 } elseif ((Test-Path -LiteralPath $target) -and @(Get-ChildItem -LiteralPath $target -Force).Count) { throw 'Use a new, empty dedicated destination.' }
 $data=Join-Path $target 'review-data'
 Assert-ReviewPlainPath $data
@@ -41,7 +41,7 @@ function Enter-InstallationChange {
     if (Test-Path -LiteralPath $marker) {
       $current=Get-Content -LiteralPath $marker -Raw | ConvertFrom-Json
       if ($current.schemaVersion -ne 1 -or $current.mode -ne 'isolated-review') { throw 'Installation identity changed.' }
-      foreach ($id in @($current.active,$current.previous)) { if ($id -and $id -notmatch '^release-[a-f0-9]{64}$') { throw 'Invalid installed release identity.' } }
+      foreach ($id in @($current.active,$current.previous)+@($current.ownedReleases)) { if ($id -and $id -notmatch '^release-[a-f0-9]{64}$') { throw 'Invalid installed release identity.' } }
     }
     $alive=@(Get-CimInstance Win32_Process | Where-Object { $_.Name -in @('node.exe','electron.exe') -and $_.CommandLine -and $_.CommandLine.Contains($data) })
     if ($alive.Count) { throw 'Stop this review instance before changing releases.' }
@@ -107,7 +107,7 @@ try {
     $entryTarget=[IO.Path]::GetFullPath((Join-Path $published $name))
     if (-not $entryTarget.StartsWith($published+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Archive entry escapes its release directory.' }
   }
-  foreach ($required in @('review-manifest.json','scripts/start-review.ps1','scripts/stop-review.ps1','scripts/review-profile.ps1','scripts/install-review.ps1','scripts/task-entry.cjs','packages/daemon/dist/index.js','packages/tray/dist/main.js','node_modules/electron/dist/electron.exe','node_modules/better-sqlite3/build/Release/better_sqlite3.node','packages/web/dist/index.html')) {
+  foreach ($required in @('review-manifest.json','scripts/start-review.ps1','scripts/stop-review.ps1','scripts/review-profile.ps1','scripts/install-review.ps1','scripts/uninstall-review.ps1','scripts/task-entry.cjs','packages/daemon/dist/index.js','packages/tray/dist/main.js','node_modules/electron/dist/electron.exe','node_modules/better-sqlite3/build/Release/better_sqlite3.node','packages/web/dist/index.html')) {
     if (-not $zip.GetEntry($required)) { throw "Incomplete review archive: $required" }
   }
   $reader=[IO.StreamReader]::new($zip.GetEntry('review-manifest.json').Open())
@@ -121,7 +121,7 @@ $state=$change.state
 New-Item -ItemType Directory -Path $releases -Force | Out-Null
 if (Test-Path -LiteralPath $published) { throw 'Release was installed by another operation.' }
 if (-not $state) {
-  $state=[pscustomobject]@{schemaVersion=1;mode='isolated-review';active=$null;previous=$null}
+  $state=[pscustomobject]@{schemaVersion=1;mode='isolated-review';active=$null;previous=$null;ownedReleases=@()}
   # A failed first install retains an inactive, identifiable target for retry.
   Write-Installation $state
 }
@@ -143,12 +143,18 @@ __INVOKE__
     Assert-ReviewPlainPath $wrapperPath
     if (-not (Test-Path -LiteralPath $wrapperPath)) { [IO.File]::WriteAllText($wrapperPath,$wrapper.Replace('__PARAMETERS__',$parameters).Replace('__INVOKE__',$invoke),[Text.UTF8Encoding]::new($false)) }
   }
+foreach ($helper in @{'uninstall.ps1'='uninstall-review.ps1';'review-profile.ps1'='review-profile.ps1'}.GetEnumerator()) {
+  $helperPath=Join-Path $target $helper.Key
+  Assert-ReviewPlainPath $helperPath
+  if (-not (Test-Path -LiteralPath $helperPath)) { Copy-Item -LiteralPath (Join-Path $PSScriptRoot $helper.Value) -Destination $helperPath }
+}
 $stage=Join-Path $releases ('.stage-'+[guid]::NewGuid().ToString('N'))
 Assert-ReviewPlainPath $stage
 # Inert staging files remain available for diagnosis on failure. Never delete data.
 [IO.Compression.ZipFile]::ExtractToDirectory($Archive,$stage)
 Move-ReviewDirectory $stage $published
-$next=[pscustomobject]@{schemaVersion=1;mode='isolated-review';active=$release;previous=$state.active}
+$owned=@(@($state.ownedReleases)+@($state.active,$state.previous,$release) | Where-Object { $_ } | Sort-Object -Unique)
+$next=[pscustomobject]@{schemaVersion=1;mode='isolated-review';active=$release;previous=$state.active;ownedReleases=$owned}
 try { Write-Installation $next }
 catch {
   # Return our unpublished release to staging so the same ZIP can be retried.

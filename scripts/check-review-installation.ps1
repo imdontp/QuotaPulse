@@ -126,6 +126,53 @@ try {
   & (Join-Path $destination 'stop.ps1')
   DbSentinel 'check'
   $checks.Add('real atomic pointer failure preserves active release/data; staged payload can be retried and starts successfully')
+  $uninstall=Join-Path $destination 'uninstall.ps1'
+  $saved=[IO.File]::ReadAllText((Join-Path $destination 'installation.json'))
+  $bad=Marker; $bad.ownedReleases=@('..\protected')
+  [IO.File]::WriteAllText((Join-Path $destination 'installation.json'),($bad | ConvertTo-Json -Depth 5))
+  try { Reject { & $uninstall } 'Invalid registered' } finally { [IO.File]::WriteAllText((Join-Path $destination 'installation.json'),$saved) }
+  $checks.Add('uninstall rejects malformed ownership receipts before touching processes or data')
+  $protected=Join-Path $fixture 'protected'; New-Item -ItemType Directory -Path $protected | Out-Null
+  [IO.File]::WriteAllText((Join-Path $protected 'sentinel.txt'),'protected-outside-release')
+  $link=Join-Path (Active) 'test-junction'
+  New-Item -ItemType Junction -Path $link -Target $protected | Out-Null
+  try { Reject { & $uninstall } 'Linked entries' } finally {
+    $absolute=[IO.Path]::GetFullPath($link)
+    Assert ($absolute.StartsWith([IO.Path]::GetFullPath($fixture)+'\') -and ((Get-Item -LiteralPath $absolute -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) 'Invalid test junction removal boundary'
+    [IO.Directory]::Delete($absolute)
+  }
+  Assert ([IO.File]::ReadAllText((Join-Path $protected 'sentinel.txt')) -eq 'protected-outside-release') 'Junction target changed'
+  $checks.Add('nested junction prevents uninstall; target sentinel is preserved')
+  & (Join-Path $destination 'start.ps1') -Port 7810
+  $before=[IO.File]::ReadAllText((Join-Path $destination 'installation.json'))
+  & $uninstall -WhatIf
+  Assert ([IO.File]::ReadAllText((Join-Path $destination 'installation.json')) -eq $before -and (Health).ok) 'Uninstall WhatIf changed running instance'
+  $checks.Add('uninstall WhatIf retains active pointer, software and running daemon/tray')
+  $registered=@((Marker).ownedReleases)
+  Assert ($registered.Count -eq 3) 'Successful older releases were not registered for removal'
+  $unknown=Join-Path $destination 'releases\unowned-diagnostic'; New-Item -ItemType Directory -Path $unknown | Out-Null
+  [IO.File]::WriteAllText((Join-Path $unknown 'sentinel.txt'),'retained-unowned-diagnostic')
+  $heldFile=Join-Path (Join-Path (Join-Path $destination 'releases') $registered[0]) 'README-REVIEW.txt'
+  $held=[IO.File]::Open($heldFile,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::Read)
+  try { Reject { & $uninstall } 'used by another process|being used|cannot access|sharing violation' } finally { $held.Dispose() }
+  Assert (-not (Marker).active -and (Marker).ownedReleases.Count -eq 3) 'Partial uninstall lost receipts or kept active runtime'
+  Reject { & (Join-Path $destination 'start.ps1') } 'No active'
+  Assert (Test-Path -LiteralPath (Join-Path $destination 'review-data\usage.db')) 'Partial uninstall deleted profile'
+  $checks.Add('real file-lock delete failure stops own instance, disables launch and retains removal receipts/profile for retry')
+  & $uninstall
+  foreach($id in $registered) { Assert (-not (Test-Path -LiteralPath (Join-Path (Join-Path $destination 'releases') $id))) 'Registered software remains after retry' }
+  Assert (@((Marker).ownedReleases).Count -eq 0) 'Completed uninstall retained pending receipts'
+  Assert ([IO.File]::ReadAllText((Join-Path $unknown 'sentinel.txt')) -eq 'retained-unowned-diagnostic') 'Unknown diagnostic was removed'
+  Assert ([IO.File]::ReadAllText((Join-Path $protected 'sentinel.txt')) -eq 'protected-outside-release') 'Protected sentinel changed'
+  $checks.Add('retry removes all three registered releases while preserving database, unknown diagnostics and outside sentinel')
+  & $uninstall
+  Install $archiveReport.archive $archiveReport.sha256
+  & (Join-Path $destination 'start.ps1') -Port 7810
+  Assert ((Health).ok) 'Reinstalled retained profile did not start'
+  & (Join-Path $destination 'stop.ps1')
+  DbSentinel 'check'
+  & $uninstall
+  $checks.Add('uninstall is repeatable; reinstall starts with retained DB sentinel and can be removed again')
   [IO.File]::WriteAllText($report,(@{status='passed';fixture=$fixture;destination=$destination;checks=@($checks);archiveSha256=$archiveReport.sha256;realScheduledTasks=$false;readersDisabled=$true;limitations=@('unsigned PowerShell review installer, not signed MSI/EXE','upgrade/rollback variants modify manifest only; no different-version DB migration certified','no actual Windows logon or physical tray-click check')} | ConvertTo-Json -Depth 8),[Text.UTF8Encoding]::new($false))
   Write-Host "Review installation passed: $($checks.Count) checks."
 } finally {

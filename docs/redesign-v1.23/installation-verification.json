@@ -1,0 +1,32 @@
+{
+    "readersDisabled":  true,
+    "archiveSha256":  "462c59971703c8d366af9aceb6ba9ab4ca5bea18c77c0a539b2ae5f33afcbe1c",
+    "destination":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-install-19e74d9cc62c42a6b2d7f408c35742de\\review isolated",
+    "status":  "passed",
+    "fixture":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-install-19e74d9cc62c42a6b2d7f408c35742de",
+    "limitations":  [
+                        "unsigned PowerShell review installer, not signed MSI/EXE",
+                        "upgrade/rollback variants modify manifest only; no different-version DB migration certified",
+                        "no actual Windows logon or physical tray-click check"
+                    ],
+    "checks":  [
+                   "install WhatIf verifies ZIP without creating the destination",
+                   "incorrect archive checksum fails before destination mutation",
+                   "ZIP traversal is rejected before extraction",
+                   "nonempty unowned destination remains unchanged",
+                   "actual ZIP installs inactive processes with immutable release and previewable start wrapper",
+                   "installation lock prevents start without creating app data or invoking process cleanup",
+                   "installed real daemon/tray starts with readers off; running upgrades/rollback rejected; scoped stop succeeds",
+                   "exclusive installation lock rejects competing upgrade and retains active pointer",
+                   "upgrade retains prior runtime and the same database sentinel; upgraded real daemon/tray starts",
+                   "rollback WhatIf is inert; actual rollback starts retained runtime and preserves database sentinel",
+                   "real atomic pointer failure preserves active release/data; staged payload can be retried and starts successfully",
+                   "uninstall rejects malformed ownership receipts before touching processes or data",
+                   "nested junction prevents uninstall; target sentinel is preserved",
+                   "uninstall WhatIf retains active pointer, software and running daemon/tray",
+                   "real file-lock delete failure stops own instance, disables launch and retains removal receipts/profile for retry",
+                   "retry removes all three registered releases while preserving database, unknown diagnostics and outside sentinel",
+                   "uninstall is repeatable; reinstall starts with retained DB sentinel and can be removed again"
+               ],
+    "realScheduledTasks":  false
+}

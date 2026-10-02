@@ -1,0 +1,31 @@
+{
+  "status": "validated-checkpoint",
+  "version": "v1.23",
+  "installationUpgradeRollbackUninstallChecks": { "passed": 17, "failed": 0, "actualZip": true, "outsideRepositoryDependencies": true },
+  "actualV1_22UpgradeChecks": { "passed": 3, "failed": 0, "legacyOwnedReleaseMetadataMigrated": true, "stoppedDatabaseSha256PreservedAfterUninstall": true },
+  "uninstall": {
+    "whatIfKeepsRunningInstance": true,
+    "malformedReceiptRejected": true,
+    "realJunctionRejected": true,
+    "outsideSentinelPreserved": true,
+    "realLockedFileFailureRetainsRetryReceipts": true,
+    "launchDisabledBeforePartialDeletion": true,
+    "allThreeRegisteredReleasesRemovedOnRetry": true,
+    "unownedDiagnosticsRetained": true,
+    "reinstallPreservesSyntheticDatabaseSentinel": true,
+    "repeatable": true,
+    "extendedLiteralPathRemovalProbe": "PowerShell 5.1 passes with synthetic paths longer than 260 characters"
+  },
+  "zip": { "files": 3117, "bytes": 199810185, "sha256": "462c59971703c8d366af9aceb6ba9ab4ca5bea18c77c0a539b2ae5f33afcbe1c", "everyEntrySha256Compared": true, "helpersMatchSource": true, "containsAppProfile": false },
+  "runtimePackages": 87,
+  "webLicensePackages": 114,
+  "externalNode": { "platform": "win32", "arch": "x64", "abi": "127", "testedVersion": "v22.13.1" },
+  "readersDisabled": true,
+  "scheduledTasksInstalled": false,
+  "testOwnedNodeElectronAfterCleanup": 0,
+  "originalCheckoutClean": true,
+  "originalHead": "be8e145039247958992fa7673a9c77e1bff35db1",
+  "dependencyManifestOrLockfileChanged": false,
+  "sharedNativeBinaryRebuilt": false,
+  "remaining": ["signed installer", "actual Windows logon", "different-code/schema migration", "pet/popup/unresponsive recovery and physical tray click", "manual accessibility/typography/concept approval"]
+}
