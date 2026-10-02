@@ -10,6 +10,14 @@ import type { MessageKey } from './en';
  * tools it is describing.
  */
 export const th: Record<MessageKey, string> = {
+  'redesign.runtimeNodes': 'โหนดที่บันทึก',
+  'redesign.runtimeEdges': 'ความสัมพันธ์ระหว่างมิติที่อยู่ติดกัน',
+  'redesign.runtimeDimension': 'มิติ',
+  'redesign.runtimeName': 'ชื่อ',
+  'redesign.runtimeFrom': 'จาก',
+  'redesign.runtimeTo': 'ไปยัง',
+  'redesign.emptyIdentity': 'ชื่อว่าง',
+  'redesign.runtimeDataNote': 'แต่ละความสัมพันธ์เชื่อมมิติที่อยู่ติดกันในขอบเขตนี้ ข้อมูลใช้งานเดียวกันปรากฏในแต่ละคู่มิติ จึงไม่ควรนำคู่มิติมารวมยอด ตัวเลขคือโทเค็นที่บันทึกและความสัมพันธ์ของ metadata ไม่ใช่ลำดับการรันหรือจำนวน calls',
   'redesign.chartData': 'ข้อมูลกราฟที่บันทึก',
   'redesign.chartBucketStart': 'เวลาเริ่มช่วง',
   'redesign.live': "สด",

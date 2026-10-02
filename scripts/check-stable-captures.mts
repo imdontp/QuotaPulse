@@ -10,6 +10,7 @@ import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
 import type { MinuteTrendResponse, ProjectDetailResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse } from '../packages/web/src/api.js';
+import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
@@ -62,6 +63,7 @@ const forbidden: string[] = [];
 const chartChecks: Array<{ page: string; lang: string; theme: string; buckets: number; tokens: number }> = [];
 const modelCostChecks: Array<{ route: string; lang: string; theme: string; buckets: number; collapsedBottom: number }> = [];
 const quotaChecks: Array<{ page: string; lang: string; theme: string; segments: number; samples: number; unknown: number }> = [];
+const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const rendererArgs = ['--disable-gpu', '--deterministic-mode', '--disable-skia-runtime-opts', '--force-color-profile=srgb'];
@@ -244,6 +246,62 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
   }
 }
 
+async function checkRuntimeAccess(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  // Owned synthetic rows exist only for this check; default capture data stays fixed.
+  try {
+    db.prepare("INSERT INTO source(id,harness,profile,root_path,display_name,detected_at) VALUES (900,'codex','runtime-access','/synthetic/nonexistent','Runtime access fixture',?)").run(fixedNow);
+    const extra = db.prepare("INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,input_tokens,total_tokens,call_count,cost_usd,cost_source) VALUES (900,?,?,?,?,?,1,1,1,0,'computed')");
+    for (let index = 0; index < 11; index++) {
+      session.run(900 + index, 900, `runtime-${index}`, index === 9 ? null : index === 10 ? '' : `Runtime extra project ${index}`, fixedNow - 10_000);
+      extra.run(900 + index, `runtime-${index}`, fixedNow - 10_000, index === 9 ? null : index === 10 ? '' : `runtime-model-${index}`, index === 9 ? null : index === 10 ? '' : 'runtime-provider');
+    }
+    await page.setViewportSize({ width: 1586, height: 992 });
+    const response = page.waitForResponse(response => new URL(response.url()).pathname === '/api/runtime-map' && response.status() === 200);
+    await page.goto('http://127.0.0.1:7804/?runtime-access=full#overview', { waitUntil: 'domcontentloaded' });
+    const graph = await (await response).json() as RuntimeGraph;
+    await settled(page, pending);
+    assert.ok(graph.nodes.project.length > 8 && graph.nodes.model.length > 8);
+    const disclosure = page.locator('.qp-runtime-data'); const summary = disclosure.locator('summary');
+    assert.equal(await disclosure.locator('table').count(), 0);
+    await summary.focus(); await page.keyboard.press('Enter');
+    await disclosure.locator('.qp-runtime-nodes').waitFor();
+    assert.equal(await disclosure.locator('caption').count(), 2);
+    assert.equal(await disclosure.locator('th[scope=col]').count(), 10);
+    const number = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US');
+    const expected = dimensions.flatMap(dimension => graph.nodes[dimension].map(node => ({ identity: JSON.stringify([dimension, node.key]), tokens: String(node.tokens), records: String(node.records), sessions: String(node.sessions), values: [node.tokens, node.records, node.sessions].map(value => number.format(value)) })));
+    const rows = await disclosure.locator('.qp-runtime-nodes tbody tr').evaluateAll(elements => elements.map(element => ({ identity: element.getAttribute('data-identity'), tokens: element.getAttribute('data-tokens'), records: element.getAttribute('data-records'), sessions: element.getAttribute('data-sessions'), values: Array.from(element.querySelectorAll('td')).slice(2).map(cell => cell.textContent) })));
+    assert.deepEqual(rows, expected);
+    const edges = await disclosure.locator('.qp-runtime-edges tbody tr').evaluateAll(elements => elements.map(element => ({ identity: element.getAttribute('data-identity'), tokens: element.getAttribute('data-tokens'), value: element.querySelector('td:last-child')?.textContent })));
+    assert.deepEqual(edges, graph.edges.map(edge => ({ identity: JSON.stringify([edge.column, edge.from, edge.to]), tokens: String(edge.tokens), value: number.format(edge.tokens) })));
+    for (const column of [0, 1, 2]) assert.equal(graph.edges.filter(edge => edge.column === column).reduce((sum, edge) => sum + edge.tokens, 0), graph.totals.tokens);
+    let inspected = 0;
+    for (const [dimension, key] of [['model', 'runtime-model-8'], ['project', null], ['project', ''], ['model', null], ['model', '']] as const) {
+      const button = disclosure.locator('.qp-runtime-nodes tbody tr').filter({ has: page.locator('button') });
+      const index = expected.findIndex(node => node.identity === JSON.stringify([dimension, key]));
+      const target = button.nth(index).locator('button');
+      await target.focus(); await page.keyboard.press('Enter');
+      const dialog = page.locator('.qp-dialog[open]'); await dialog.waitFor();
+      assert.equal(await dialog.locator('h2').textContent(), await target.textContent());
+      const node = graph.nodes[dimension].find(node => node.key === key)!;
+      assert.deepEqual(await dialog.locator('.qp-detail-grid strong').allTextContents(), [node.tokens, node.sessions, node.callRecords, node.aggregateRecords].map(value => number.format(value)));
+      await page.keyboard.press('Escape'); await dialog.waitFor({ state: 'hidden' });
+      assert.equal(await target.evaluate(element => element === document.activeElement), true);
+      inspected++;
+    }
+    await page.screenshot({ path: resolve(output, `runtime-expanded-${lang}-${theme}.png`), animations: 'disabled', fullPage: true });
+    for (const width of [390, 900, 1280]) {
+      await page.setViewportSize({ width, height: 992 });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Runtime overflow at ${width}`);
+    }
+    await summary.focus(); await page.keyboard.press('Enter');
+    await disclosure.locator('table').first().waitFor({ state: 'detached' });
+    runtimeChecks.push({ lang, theme, nodes: rows.length, edges: edges.length, inspected });
+  } finally {
+    db.transaction(() => { db.prepare('DELETE FROM usage_event WHERE source_id=900').run(); db.prepare('DELETE FROM session WHERE source_id=900').run(); db.prepare('DELETE FROM source WHERE id=900').run(); })();
+    assert.equal((db.prepare('SELECT COUNT(*) AS count FROM usage_event').get() as { count: number }).count, 38);
+  }
+}
+
 async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', lang: string, theme: string, pending: Set<Request>) {
   await page.setViewportSize({ width: 1672, height: 941 });
   await page.goto(`http://127.0.0.1:7804/?quota-access=${destination}#${destination}${destination === 'alerts' ? '?owner=openai%3Asubscription&window=5h' : ''}`, { waitUntil: 'domcontentloaded' });
@@ -379,6 +437,7 @@ try {
           }
           if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme);
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
+          if (pass === 0 && destination === 'overview') await checkRuntimeAccess(page, lang, theme, pending);
           if (pass === 0 && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
         }
       } finally { await page.close(); await browser.close(); }
@@ -386,7 +445,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, modelCostChecks, quotaChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', '64 screenshots / 32 pairs within raster tolerance', 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', 'API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'], chartChecks, modelCostChecks, quotaChecks, runtimeChecks, cases }, null, 2));
   console.log(`Stable captures passed: 32 pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

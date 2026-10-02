@@ -2,7 +2,7 @@
 .qp-model-header { grid-template-columns:minmax(0,1fr) auto; align-items:start; }
 .qp-model-header h1 { display:flex; align-items:center; gap:9px; font-size:22px; }
 .qp-model-header h1 svg { color:var(--qp-accent); }
-.qp-model-header h1 svg,.qp-model-search svg { shape-rendering:geometricPrecision; }
+.qp-model-header h1 svg,.qp-model-search svg { shape-rendering:geometricPrecision; transform:translateZ(0); }
 .qp-model-header p,.qp-model-detail p,.qp-model-detail small,.qp-model-summary small { color:var(--qp-muted); font-size:11px; }
 .qp-model-header button,.qp-model-toolbar input,.qp-model-toolbar select { border:1px solid var(--qp-border); border-radius:7px; padding:8px 10px; background:var(--qp-panel); color:var(--qp-text); font-size:11px; }
 .qp-model-header button { display:flex; align-items:center; gap:6px; }

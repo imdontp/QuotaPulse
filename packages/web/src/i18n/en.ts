@@ -6,6 +6,14 @@
  * `{placeholders}` are substituted by `t(key, vars)`.
  */
 export const en = {
+  'redesign.runtimeNodes': 'Recorded nodes',
+  'redesign.runtimeEdges': 'Recorded adjacent relationships',
+  'redesign.runtimeDimension': 'Dimension',
+  'redesign.runtimeName': 'Name',
+  'redesign.runtimeFrom': 'From',
+  'redesign.runtimeTo': 'To',
+  'redesign.emptyIdentity': 'Empty name',
+  'redesign.runtimeDataNote': 'Each relationship joins adjacent dimensions in this scope. The same usage appears in each dimension pair; do not add those pairs together. These are recorded tokens and metadata relationships, not an execution sequence or call counts.',
   'redesign.live': "Live",
   'redesign.cost': "Cost",
   'redesign.history': "History",

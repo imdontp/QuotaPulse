@@ -5,6 +5,7 @@ import { CostValue, recordCostCoverage } from './cost-value';
 import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
 import { RedesignShell, type RedesignTranslate } from './shell';
 import { QuotaChart } from './quota-chart';
+import { RuntimeData } from './runtime-data';
 
 type Translate = RedesignTranslate;
 const riskLabel = (state: ReturnType<typeof quotaState> | null) =>
@@ -82,12 +83,13 @@ function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: num
   </div>;
 }
 
-function RuntimeMap({ nodes, edges, recordCount, t, onInspect }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; t: Translate; onInspect: (dimension: Dimension, key: string | null) => void }) {
+function RuntimeMap({ nodes, edges, recordCount, t, language, onInspect }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void }) {
   const columns = dimensions.map(dimension => nodes[dimension].slice(0, 8));
   const maxRows = Math.max(1, ...columns.map(column => column.length));
   const height = maxRows * 40;
   return <section className="qp-panel qp-runtime" id="runtime">
     <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.runtime')}</h2><p>{t('redesign.connections')}</p></div><span className="qp-chip">{t('redesign.records')} · {recordCount}</span></div>
+    {recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} language={language} t={t} onInspect={onInspect}/>}
     {recordCount === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
       <div className="qp-map" style={{ height: height + 24 }}>
         <svg className="qp-map-edges" viewBox={`0 0 1000 ${height}`} preserveAspectRatio="none" aria-hidden="true">
@@ -202,7 +204,7 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
             </button>; })}
           </section>
         </div>
-        <RuntimeMap nodes={nodes} edges={edges} recordCount={totals.records} t={t} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
+        <RuntimeMap nodes={nodes} edges={edges} recordCount={totals.records} t={t} language={language} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
         <div className="qp-bottom-grid">
           <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
           <section className="qp-panel qp-insights" data-testid="usage-insights"><h2><Box size={18}/>{t('redesign.insights')}</h2>
@@ -220,8 +222,8 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
           })}</div>}
           <p className="qp-footnote">{t('redesign.activityCaveat')}</p>
         </section>
-    <dialog ref={dialog} className="qp-dialog" aria-labelledby="qp-detail-title" onClose={() => setSelection(null)}>
-      <div className="qp-section-heading"><h2 id="qp-detail-title">{selection?.key ?? t(selection?.dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X/></button></div>
+    <dialog ref={dialog} className="qp-dialog" aria-labelledby="qp-detail-title" onClose={event => { if (!event.currentTarget.open) setSelection(null); }}>
+      <div className="qp-section-heading"><h2 id="qp-detail-title">{selection?.key === '' ? t('redesign.emptyIdentity') : selection?.key ?? t(selection?.dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X/></button></div>
       <p>{selection && t(`redesign.${selection.dimension}`)}</p><div className="qp-detail-grid"><Metric label={t('redesign.tokens')} value={number(detail?.tokens ?? 0)}/><Metric label={t('redesign.sessions')} value={number(detail?.sessions ?? 0)}/><Metric label={t('redesign.calls')} value={number(detail?.callRecords ?? 0)}/><Metric label={t('redesign.aggregates')} value={number(detail?.aggregateRecords ?? 0)}/></div>
       <p className="qp-footnote">{t('redesign.coverage')}</p>
     </dialog>
