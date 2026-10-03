@@ -18,6 +18,21 @@
 .qp-provider-state[data-state=active] { color:var(--qp-success); }
 .qp-provider-state[data-state=stale] { color:var(--qp-warning); }
 .qp-provider-state[data-state=inactive],.qp-provider-state[data-state=unavailable],.qp-provider-state[data-state=waiting] { color:var(--qp-muted); }
+.qp-provider-state { display:inline-flex; align-items:center; gap:5px; border-radius:20px; }
+.qp-provider-state::before,.qp-provider-freshness::before { content:''; width:6px; height:6px; border-radius:50%; background:currentColor; flex:none; }
+.qp-provider-heading-icon { width:46px; height:46px; display:grid; place-items:center; border-radius:11px; background:linear-gradient(135deg,var(--qp-glow),var(--qp-panel)); border:1px solid var(--qp-border); }
+.qp-provider-card { background:radial-gradient(ellipse at 20% 0,color-mix(in srgb,var(--qp-accent) 6%,transparent),transparent 65%),var(--qp-panel); }
+.qp-provider-inspector { min-width:0; }
+.qp-provider-inspector>summary { cursor:pointer; color:var(--qp-muted); font-size:11px; padding:8px 12px; border:1px solid var(--qp-border); border-radius:8px; }
+.qp-provider-inspector[open]>summary { color:var(--qp-accent); margin-bottom:10px; }
+.qp-provider-reader-identity { display:flex; align-items:center; gap:6px; }
+.qp-provider-reader-identity svg { width:16px; height:16px; flex:none; }
+.qp-provider-freshness { display:inline-flex; align-items:center; gap:5px; color:var(--qp-muted); }
+.qp-provider-freshness[data-freshness=live],.qp-provider-freshness[data-freshness=recent] { color:var(--qp-success); }
+.qp-provider-freshness[data-freshness=stale],.qp-provider-freshness[data-freshness=mixed] { color:var(--qp-warning); }
+.qp-provider-card-reading { display:grid; grid-template-columns:minmax(70px,.7fr) minmax(0,1fr); gap:7px; margin:0; padding-top:12px; border-top:1px solid var(--qp-border); font-size:11px; }
+.qp-provider-card-reading dt { color:var(--qp-muted); }
+.qp-provider-card-reading dd { margin:0; overflow-wrap:anywhere; }
 .qp-provider-hidden { color:var(--qp-warning); }
 .qp-provider-windows { display:grid; gap:11px; }
 .qp-provider-windows>div { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 10px; font-size:11px; }
@@ -42,6 +57,8 @@
 .qp-provider-comparison ol { display:grid; gap:11px; padding:0; margin:0; list-style:none; }
 .qp-provider-comparison li { display:grid; grid-template-columns:minmax(90px,1fr) minmax(70px,1fr) auto; align-items:center; gap:9px; font-size:11px; }
 .qp-provider-comparison li>button { overflow-wrap:anywhere; text-align:left; min-width:0; min-height:24px; }
+.qp-provider-comparison li>button { display:inline-flex; align-items:center; justify-content:center; gap:6px; }
+.qp-provider-comparison li>button svg { width:17px; height:17px; flex:none; }
 .qp-provider-comparison li>button[aria-pressed=true] { color:var(--qp-accent); text-decoration:underline; text-underline-offset:3px; }
 .qp-provider-comparison .qp-bar>span { width:var(--qp-quota-used); }
 .qp-provider-axis { display:none; }
@@ -50,15 +67,25 @@
 .qp-provider-table th,.qp-provider-table td { padding:8px; text-align:left; border-bottom:1px solid var(--qp-border); vertical-align:top; }
 .qp-provider-table small { display:block; color:var(--qp-muted); }
 @media(min-width:1280px) {
-  .qp-provider-comparison-chart { display:grid; grid-template-columns:32px minmax(0,1fr); gap:8px; }
+  [data-testid=production-providers] main { padding:12px; gap:12px; }
+  .qp-provider-header { min-height:68px; }
+  .qp-provider-card { min-height:360px; grid-template-rows:auto auto minmax(0,1fr) auto auto; }
+  .qp-provider-card[data-has-quota=false] { min-height:190px; align-self:start; grid-template-rows:auto auto auto auto; }
+  .qp-provider-windows { align-content:start; }
+  .qp-provider-windows>div { grid-template-columns:minmax(60px,.8fr) minmax(70px,1fr) minmax(56px,.6fr); padding:14px 0; border-top:1px solid var(--qp-border); }
+  .qp-provider-windows>div>span:first-child { grid-column:1; grid-row:1/span 2; align-self:center; }
+  .qp-provider-windows strong { grid-column:2; grid-row:1; color:var(--qp-accent); font-size:15px; }
+  .qp-provider-windows .qp-bar { grid-column:2; grid-row:2; height:7px; }
+  .qp-provider-windows small { grid-column:3; grid-row:1/span 2; align-self:center; }
+  .qp-provider-comparison-chart { display:grid; grid-template-columns:32px minmax(0,1fr); gap:8px; padding-top:16px; }
   .qp-provider-axis { display:block; position:relative; color:var(--qp-muted); font-size:10px; height:144px; }
   .qp-provider-axis>span { position:absolute; right:0; transform:translateY(-50%); }
   .qp-provider-comparison ol { display:flex; align-items:start; gap:12px; min-width:0; background:repeating-linear-gradient(to top,transparent 0,transparent 35px,var(--qp-border) 35px,var(--qp-border) 36px); background-size:100% 144px; background-repeat:no-repeat; }
-  .qp-provider-comparison li { display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:144px auto auto; gap:5px; flex:1; min-width:0; text-align:center; }
-  .qp-provider-comparison li>strong { grid-row:2; }
+  .qp-provider-comparison li { position:relative; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:144px auto; gap:5px; flex:1; min-width:0; text-align:center; }
+  .qp-provider-comparison li>strong { position:absolute; top:var(--qp-value-top); left:50%; transform:translate(-50%,calc(-100% - 4px)); }
   .qp-provider-comparison li>.qp-bar { grid-row:1; width:min(100%,48px); height:144px; justify-self:center; background:transparent; display:flex; align-items:end; border-radius:0; }
   .qp-provider-comparison li>.qp-bar>span { width:100%; height:var(--qp-quota-used); border-radius:5px 5px 0 0; background:linear-gradient(to top,var(--qp-series),var(--qp-accent)); }
-  .qp-provider-comparison li>button { grid-row:3; text-align:center; line-height:1.4; }
+  .qp-provider-comparison li>button { grid-row:2; text-align:center; line-height:1.4; }
   .qp-provider-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
   .qp-provider-card { padding:14px; gap:12px; align-content:start; }
   .qp-provider-card-head { align-items:start; gap:8px; }

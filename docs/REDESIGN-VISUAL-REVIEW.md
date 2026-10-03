@@ -1,5 +1,10 @@
 # Concept comparison and refinement queue
 
+[Providers reference repair v1.39](REDESIGN-PROVIDERS-REFERENCE-V1.39.md) refines
+card/window geometry, owner details access and comparison labels. Provider quota
+and reader freshness remain distinct from service health. Scoped captures are
+evidence of behavior/repeatability; the eight-page reference target remains open.
+
 [Projects reference repair v1.38](REDESIGN-PROJECTS-REFERENCE-V1.38.md) adds
 scoped aggregate mini-chart data, larger decorated project cards and observed
 detail lines. Its reference review page supports direct inspection of all eight

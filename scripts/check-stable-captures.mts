@@ -336,12 +336,19 @@ async function checkProviders(page: Page, lang: string, theme: string, pending: 
     assert.ok((await rows.nth(index).locator('strong').textContent())!.includes(String(reading.used_percent)));
     const valueBox = await rows.nth(index).locator('strong').boundingBox();
     const barBox = await bar.boundingBox(); const nameBox = await rows.nth(index).locator('button').boundingBox();
-    assert.ok(valueBox && barBox && nameBox && valueBox.y >= barBox.y + barBox.height && nameBox.y >= valueBox.y + valueBox.height, 'Percent and owner must follow their bar vertically');
+    assert.ok(valueBox && barBox && nameBox && valueBox.y + valueBox.height <= barBox.y + barBox.height - heights.inner + 1 && nameBox.y >= barBox.y + barBox.height, 'Percent must sit above the observed bar and owner below its plot');
   }
-  const last = rows.last().locator('button'); const owner = await last.textContent();
+  const last = rows.last().locator('button'); const owner = await last.locator('.qp-provider-comparison-name').textContent();
   await last.focus(); await page.keyboard.press('Enter');
   assert.equal(await last.getAttribute('aria-pressed'), 'true');
   assert.ok((await page.locator('.qp-provider-detail h2').textContent())!.includes(owner!));
+  assert.equal(await page.locator('.qp-provider-inspector').getAttribute('open'), '');
+  assert.equal(await page.locator('.qp-provider-detail').isVisible(), true);
+  const inspectorToggle = page.locator('.qp-provider-inspector>summary');
+  await inspectorToggle.focus(); await page.keyboard.press('Enter');
+  assert.equal(await page.locator('.qp-provider-detail').isVisible(), false);
+  await inspectorToggle.focus(); await page.keyboard.press('Enter');
+  assert.equal(await page.locator('.qp-provider-detail').isVisible(), true);
   for (const width of [390, 900, 1280]) {
     await page.setViewportSize({ width, height: 941 });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);

@@ -1,5 +1,6 @@
 import { useEffect, useState, type CSSProperties } from 'react';
-import { Cloud, RefreshCw } from 'lucide-react';
+import { Activity, Cloud, RefreshCw, ShieldCheck } from 'lucide-react';
+import { HarnessIcon } from '@/components/harness-icon';
 import { VendorIcon } from '@/components/vendor-icon';
 import { isExpired, primaryLimits, windowRank, type WindowReadings } from '@/format';
 import { api, type AccountState, type Limit, type Overview, type QuotaFreshness, type SourceStatus, type SubscriptionStatus } from '@/api';
@@ -33,16 +34,18 @@ export function ProductionProviders() {
   const { lang, setLang } = useI18n();
   const [theme, toggleTheme] = useTheme();
   const [route, setRoute] = useState(routeState);
+  const [inspectorOpen, setInspectorOpen] = useState(Boolean(route.owner || route.source));
   const [overview, setOverview] = useState<Overview | null>(null);
   const [error, setError] = useState<string | null>(null);
   const refresh = useRefreshStatus();
   useEffect(() => {
-    const sync = () => { if (location.hash.slice(1).split('?')[0] === 'providers') setRoute(routeState()); };
+    const sync = () => { if (location.hash.slice(1).split('?')[0] === 'providers') { const next = routeState(); setRoute(next); if (next.owner || next.source) setInspectorOpen(true); } };
     addEventListener('hashchange', sync);
     return () => removeEventListener('hashchange', sync);
   }, []);
   const update = (patch: Partial<typeof route>) => {
     const next = { ...route, ...patch };
+    if (patch.owner || patch.source) setInspectorOpen(true);
     const params = new URLSearchParams();
     if (next.owner) params.set('owner', next.owner);
     if (next.window) params.set('window', next.window);
@@ -90,10 +93,10 @@ export function ProductionProviders() {
   const manageHref = (card: OwnerCard) => card.subscription ? `#settings?subscription=${encodeURIComponent(card.key)}` : `#settings?section=diagnostics&source=${card.sources[0]?.source_id ?? ''}`;
 
   return <RedesignShell active="providers" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-providers">
-    <header className="qp-provider-header"><div><h1><Cloud size={24}/>{t('redesign.providerHeading')}</h1><p>{t('redesign.providerSubtitle')}</p></div><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
+    <header className="qp-provider-header"><div><h1><span className="qp-provider-heading-icon" aria-hidden="true"><Cloud size={26}/></span>{t('redesign.providerHeading')}</h1><p>{t('redesign.providerSubtitle')}</p></div><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
     {error && <p className="qp-provider-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     {!overview ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : cards.length === 0 ? <p className="qp-panel">{t('redesign.providerNoAccounts')}</p> : <>
-      <section className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{cards.map(card => <article key={card.key} className="qp-panel qp-provider-card" data-selected={selected?.key === card.key}>
+      <section className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{cards.map(card => <article key={card.key} className="qp-panel qp-provider-card" data-has-quota={card.readings.length > 0} data-selected={selected?.key === card.key}>
         <div className="qp-provider-card-head"><button aria-pressed={selected?.key === card.key} onClick={() => update({ owner: card.key })}><span className="qp-provider-icon" aria-hidden="true"><VendorIcon vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'}/></span><span>{card.title}</span></button><span className="qp-provider-state" data-state={card.sources.length > 0 && card.sources.every(source => !source.enabled) ? 'inactive' : card.state}>{card.sources.length > 0 && card.sources.every(source => !source.enabled) ? t('redesign.providerInactive') : stateLabel(card.state)}</span></div>
         <p className="qp-provider-linked">{t('redesign.providerLinked')}: {card.linked.join(', ') || t('redesign.unknownValue')}</p>
         {card.hidden && <p className="qp-provider-hidden">{t('redesign.providerHidden')}</p>}
@@ -101,18 +104,19 @@ export function ProductionProviders() {
           const value = used(primary);
           return <div key={primary.window_kind} title={`${primary.origin} · ${age(primary.observed_at)} · ${date(primary.resets_at, true)}`}><span>{f.window(primary.window_kind)}</span><strong>{value === null ? t('redesign.providerUnavailable') : f.pct(value)}</strong><span className="qp-bar"><span style={{ width: `${value ?? 0}%` }}/></span><small>{value === null ? t(isExpired(primary, now) ? 'redesign.providerExpired' : 'redesign.providerNoQuota') : `${t('redesign.providerReset')}: ${f.countdown(primary.resets_at, now)}`}</small></div>;
         })}</div>
+        {card.readings.length > 0 && <dl className="qp-provider-card-reading"><dt>{t('redesign.providerOrigin')}</dt><dd>{[...new Set(card.readings.map(({ primary }) => primary.origin))].join(', ')}</dd><dt>{t('redesign.providerObserved')}</dt><dd>{date(Math.max(...card.readings.map(({ primary }) => primary.observed_at)))}</dd><dt>{t('redesign.providerConfirmed')}</dt><dd>{date(Math.max(...card.readings.map(({ primary }) => primary.last_seen_at)))}</dd></dl>}
         <footer><span>{card.sources.length} {t('redesign.providerReader')}</span><a href={manageHref(card)}>{card.subscription ? t('redesign.providerManage') : t('redesign.providerDiagnostics')}</a></footer>
       </article>)}</section>
-      {selected && <section className="qp-panel qp-provider-detail" aria-label={t('redesign.providerDetails')}><div className="qp-provider-section-head"><h2>{t('redesign.providerDetails')}: {selected.title}</h2><a href={manageHref(selected)}>{selected.subscription ? t('redesign.providerManage') : t('redesign.providerDiagnostics')}</a></div>
+      {selected && <details className="qp-provider-inspector" open={inspectorOpen} onToggle={event => setInspectorOpen(event.currentTarget.open)}><summary>{t('redesign.providerDetails')}: {selected.title}</summary><section className="qp-panel qp-provider-detail" aria-label={t('redesign.providerDetails')}><div className="qp-provider-section-head"><h2>{t('redesign.providerDetails')}: {selected.title}</h2><a href={manageHref(selected)}>{selected.subscription ? t('redesign.providerManage') : t('redesign.providerDiagnostics')}</a></div>
         <p>{t('redesign.providerLinked')}: {selected.linked.join(', ') || t('redesign.unknownValue')}</p>
         {selected.readings.length === 0 ? <p>{t('redesign.providerNoQuota')}</p> : <div className="qp-provider-detail-windows">{selected.readings.map(({ primary, superseded }) => <div key={primary.window_kind}><h3>{f.window(primary.window_kind)} · {used(primary) === null ? t('redesign.providerUnavailable') : f.pct(used(primary))}</h3><dl><dt>{t('redesign.providerOrigin')}</dt><dd>{primary.origin}</dd><dt>{t('redesign.providerObserved')}</dt><dd>{date(primary.observed_at)} · {age(primary.observed_at)}</dd><dt>{t('redesign.providerConfirmed')}</dt><dd>{date(primary.last_seen_at)} · {age(primary.last_seen_at)}</dd><dt>{t('redesign.providerReset')}</dt><dd>{date(primary.resets_at, true)}</dd></dl>{superseded.length > 0 && <details><summary>{t('redesign.providerOtherReaders')} ({superseded.length})</summary><ul>{superseded.map(reader => <li key={`${reader.source_id}-${reader.origin}`}>{reader.display_name} · {reader.origin} · {date(reader.observed_at)}</li>)}</ul></details>}</div>)}</div>}
-      </section>}
+      </section></details>}
       <div className="qp-provider-bottom">
-        <section id="provider-quotas" className="qp-panel qp-provider-comparison"><div className="qp-provider-section-head"><h2>{t('redesign.providerComparison')}</h2>{kinds.length > 0 && <label>{t('redesign.projectRange')}<select value={kind} onChange={event => update({ window: event.target.value })}>{kinds.map(value => <option key={value} value={value}>{f.window(value)}</option>)}</select></label>}</div><p className="qp-footnote">{t('redesign.providerComparisonNote')}</p>
-          {comparable.length === 0 ? <p>{t('redesign.providerNoComparison')}</p> : <div className="qp-provider-comparison-chart"><div className="qp-provider-axis" aria-hidden="true">{[100, 75, 50, 25, 0].map(value => <span key={value} style={{ top: `${100 - value}%` }}>{f.pct(value)}</span>)}</div><ol>{comparable.map(({ card, reading }) => <li key={card.key}><button aria-pressed={selected?.key === card.key} onClick={() => update({ owner: card.key })}>{card.title}</button><span className="qp-bar" aria-hidden="true" style={{ '--qp-quota-used': `${Math.max(0, Math.min(100, reading.used_percent ?? 0))}%` } as CSSProperties}><span/></span><strong>{f.pct(reading.used_percent)}</strong></li>)}</ol></div>}
+        <section id="provider-quotas" className="qp-panel qp-provider-comparison"><div className="qp-provider-section-head"><h2><Activity size={20}/>{t('redesign.providerComparison')}</h2>{kinds.length > 0 && <label>{t('redesign.projectRange')}<select value={kind} onChange={event => update({ window: event.target.value })}>{kinds.map(value => <option key={value} value={value}>{f.window(value)}</option>)}</select></label>}</div><p className="qp-footnote">{t('redesign.providerComparisonNote')}</p>
+          {comparable.length === 0 ? <p>{t('redesign.providerNoComparison')}</p> : <div className="qp-provider-comparison-chart"><div className="qp-provider-axis" aria-hidden="true">{[100, 75, 50, 25, 0].map(value => <span key={value} style={{ top: `${100 - value}%` }}>{f.pct(value)}</span>)}</div><ol>{comparable.map(({ card, reading }) => <li key={card.key}><button aria-pressed={selected?.key === card.key} onClick={() => update({ owner: card.key })}><span aria-hidden="true"><VendorIcon vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'}/></span><span className="qp-provider-comparison-name">{card.title}</span></button><span className="qp-bar" aria-hidden="true" style={{ '--qp-quota-used': `${Math.max(0, Math.min(100, reading.used_percent ?? 0))}%` } as CSSProperties}><span/></span><strong style={{ '--qp-value-top': `${144 * (1 - Math.max(0, Math.min(100, reading.used_percent ?? 0)) / 100)}px` } as CSSProperties}>{f.pct(reading.used_percent)}</strong></li>)}</ol></div>}
           <p className="qp-footnote">{excluded} {t('redesign.providerExcluded')}</p>
         </section>
-        <section className="qp-panel qp-provider-health"><h2>{t('redesign.providerReaderHealth')}</h2><p className="qp-footnote">{t('redesign.providerReaderNote')}</p><div className="qp-provider-table"><table><thead><tr><th>{t('redesign.providerReader')}</th><th>{t('redesign.providerOwner')}</th><th>{t('redesign.providerState')}</th><th>{t('redesign.providerFreshness')}</th><th>{t('redesign.providerAge')}</th><th>{t('redesign.providerSamples')}</th></tr></thead><tbody>{overview.sourceStatus.map(source => <tr key={source.source_id}><td>{source.display_name}<small>{source.harness}/{source.profile}</small></td><td>{cards.find(card => card.sources.some(item => item.source_id === source.source_id))?.title ?? t('redesign.unknownValue')}</td><td>{source.enabled ? stateLabel(source.account_state) : t('redesign.providerInactive')}</td><td>{freshnessLabel(source.telemetry.freshness)}</td><td>{age(source.last_limit_at)}</td><td>{source.limit_samples}</td></tr>)}</tbody></table></div></section>
+        <section className="qp-panel qp-provider-health"><h2><ShieldCheck size={20}/>{t('redesign.providerReaderHealth')}</h2><p className="qp-footnote">{t('redesign.providerReaderNote')}</p><div className="qp-provider-table"><table><thead><tr><th>{t('redesign.providerReader')}</th><th>{t('redesign.providerOwner')}</th><th>{t('redesign.providerState')}</th><th>{t('redesign.providerFreshness')}</th><th>{t('redesign.providerAge')}</th><th>{t('redesign.providerSamples')}</th></tr></thead><tbody>{overview.sourceStatus.map(source => <tr key={source.source_id}><td><span className="qp-provider-reader-identity"><HarnessIcon harness={source.harness} vendor={overview.harnesses.find(harness => harness.harness === source.harness)?.vendor}/>{source.display_name}</span><small>{source.harness}/{source.profile}</small></td><td>{cards.find(card => card.sources.some(item => item.source_id === source.source_id))?.title ?? t('redesign.unknownValue')}</td><td>{source.enabled ? stateLabel(source.account_state) : t('redesign.providerInactive')}</td><td><span className="qp-provider-freshness" data-freshness={source.telemetry.freshness}>{freshnessLabel(source.telemetry.freshness)}</span></td><td>{age(source.last_limit_at)}</td><td>{source.limit_samples}</td></tr>)}</tbody></table></div></section>
       </div>
     </>}
   </RedesignShell>;

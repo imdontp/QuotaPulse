@@ -141,5 +141,8 @@ do not close the remaining fidelity gaps or provide a measured likeness score.
 per-project sparklines and larger three-row desktop cards, with all further
 projects keyboard reachable. The associated reference review artifact shows
 all eight original concepts beside matching app captures without masking.
+[Providers reference v1.39](REDESIGN-PROVIDERS-REFERENCE-V1.39.md) then refines
+quota rows, card height, selected-owner disclosure and above-bar labels using
+published quota/reader facts. The complete fidelity target remains open.
 Original-reference similarity scoring, user visual acceptance, manual screen
 reader review and the broader release gates remain outstanding.
