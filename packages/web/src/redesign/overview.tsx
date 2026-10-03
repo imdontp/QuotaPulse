@@ -31,6 +31,7 @@ interface OverviewProps {
   recent?: readonly ActivityItem[];
   period?: string;
   historyHref?: string;
+  harnessVendors?: Readonly<Record<string, string>>;
 }
 
 export interface ActivityItem {
@@ -103,7 +104,7 @@ function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: num
   </div>;
 }
 
-function RuntimeMap({ nodes, edges, recordCount, t, language, onInspect }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void }) {
+function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, onInspect }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; harnessVendors: Readonly<Record<string, string>>; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void }) {
   const columns = dimensions.map(dimension => nodes[dimension].slice(0, 8));
   const maxRows = Math.max(1, ...columns.map(column => column.length));
   const height = maxRows * 40;
@@ -124,7 +125,7 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, onInspect }: { nod
         </svg>
         {dimensions.map((dimension, index) => <div className="qp-map-column" key={dimension}>
           <h3>{t(`redesign.${dimension}`)}</h3>
-          {columns[index].map(node => <button className="qp-map-node" data-dimension={dimension} key={JSON.stringify(node.key)} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <Box size={15}/>}</span><span className="qp-node-label">{node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</span><small>{new Intl.NumberFormat(undefined, { notation: 'compact' }).format(node.tokens)}</small></button>)}
+          {columns[index].map(node => <button className="qp-map-node" data-dimension={dimension} key={JSON.stringify(node.key)} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <Box size={15}/>}</span><span className="qp-node-label">{node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</span><small>{new Intl.NumberFormat(undefined, { notation: 'compact' }).format(node.tokens)}</small></button>)}
         </div>)}
       </div>
     </div>}
@@ -165,7 +166,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ records = [], graph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, recent, period, historyHref = '#history?range=today' }: OverviewProps) {
+export function Overview({ records = [], graph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, recent, period, harnessVendors = {}, historyHref = '#history?range=today' }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -210,7 +211,7 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
               <Metric icon={<Layers size={21}/>} label={t('redesign.sessions')} value={number(totals.sessions)}/>
               <Metric icon={<Coins size={21}/>} label={t('redesign.reported')} value={<CostValue amount={totals.reportedCost} priced={prices.native} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
               <Metric icon={<Wallet size={21}/>} label={t('redesign.value')} value={<CostValue amount={totals.apiValue} priced={prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
-            </div><PulseCore quota={quota} now={now} t={t}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.models')}><h3>{t('redesign.models')}</h3>{models.map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span>{model.key ?? t('redesign.unknownValue')}</span><strong>{number(model.tokens)}</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</section></div>
+            </div><PulseCore quota={quota} now={now} t={t}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.models')}><h3>{t('redesign.models')}</h3>{models.map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span className="qp-model-identity"><i aria-hidden="true"><Box size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</section></div>
             <p className="qp-footnote">{t('redesign.scope')}</p>
           </section>
           <section className="qp-panel qp-quotas"><h2><CircleGauge size={18}/>{t('redesign.windows')}</h2>
@@ -224,7 +225,7 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
             </button>; })}
           </section>
         </div>
-        <RuntimeMap nodes={nodes} edges={edges} recordCount={totals.records} t={t} language={language} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
+        <RuntimeMap nodes={nodes} edges={edges} recordCount={totals.records} t={t} language={language} harnessVendors={harnessVendors} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
         <div className="qp-bottom-grid">
           <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
           <section className="qp-panel qp-insights" data-testid="usage-insights"><h2><Box size={18}/>{t('redesign.insights')}</h2>
@@ -236,7 +237,7 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
         <section className="qp-panel qp-activity" data-testid="recent-activity">
           <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.activity')}</h2>{!preview && <a href={historyHref}>{t('redesign.openHistory')} <ArrowUpRight size={14}/></a>}</div>
           {activities.length === 0 ? <p className="qp-footnote">{t('redesign.noRecent')}</p> : <div className="qp-activity-list">{activities.map(item => {
-            const content = <><strong>{item.harness}<time dateTime={new Date(item.timestamp).toISOString()}>{new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit' }).format(item.timestamp)}</time></strong><span>{item.provider ?? t('redesign.unknownValue')} · {item.model ?? t('redesign.unknownValue')}</span><small>{number(item.tokens)} {t('redesign.tokens')} · {t(item.grain === 'call' ? 'redesign.callRecord' : 'redesign.aggregateUpdate')}</small></>;
+            const content = <><strong><span className="qp-activity-identity"><HarnessIcon harness={item.harness} vendor={harnessVendors[item.harness]} label={item.harness}/>{item.harness}</span><time dateTime={new Date(item.timestamp).toISOString()}>{new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit' }).format(item.timestamp)}</time></strong><span className="qp-activity-route"><VendorIcon vendor={item.provider ?? 'unknown'}/>{item.provider ?? t('redesign.unknownValue')} · {item.model ?? t('redesign.unknownValue')}</span><small>{number(item.tokens)} {t('redesign.tokens')} · {t(item.grain === 'call' ? 'redesign.callRecord' : 'redesign.aggregateUpdate')}</small></>;
             return preview ? <div className="qp-activity-item" key={item.id}>{content}</div>
               : <a className="qp-activity-item" key={item.id} href={item.sessionKey !== null ? `#history?range=all&session_id=${item.sessionKey}` : '#history?range=today'} aria-label={`${item.harness} · ${item.model ?? t('redesign.unknownValue')} · ${t('redesign.openHistory')}`}>{content}</a>;
           })}</div>}

@@ -130,8 +130,9 @@ Node or Chromium processes. The original checkout is clean at
 `be8e145039247958992fa7673a9c77e1bff35db1`; the preserved v1.34 archive still hashes
 to `f19a0a7063394f40145585078764c8d82556c3a96c4b5dc784941923b3a5d379`.
 
-Next implementation: finish Overview's model/activity identities and
-runway/insights composition, then Live/Models column placement and observed
-chart styling, followed by the remaining per-page gaps in the table above.
+The next checkpoint advances Overview's model/activity identities and
+runway/insights composition, plus Live/Models column placement and observed
+chart styling. See [v1.36 composition repair](REDESIGN-REFERENCE-COMPOSITION-V1.36.md)
+for changes, build-specific evidence and remaining per-page work.
 Original-reference similarity scoring, user visual acceptance, manual screen
 reader review and the broader release gates remain outstanding.

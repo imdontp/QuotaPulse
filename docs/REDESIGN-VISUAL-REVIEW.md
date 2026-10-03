@@ -1,5 +1,10 @@
 # Concept comparison and refinement queue
 
+[Reference composition repair v1.36](REDESIGN-REFERENCE-COMPOSITION-V1.36.md)
+continues the reopened fidelity work on Overview, Live and Models. It records
+real-data chart validation separately from similarity to the supplied refs.
+The user's 99–100% visual target remains open.
+
 [Alerts and combined dashboard review 1.34](REDESIGN-ALERTS-REVIEW-V1.34.md)
 refines Alerts icons, threshold/event hierarchy, chart spacing and keyboard access
 to long histories. All eight pages now have fresh combined English/Thai dark/light
