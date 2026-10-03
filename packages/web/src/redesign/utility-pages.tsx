@@ -7,6 +7,8 @@ import { HistorySection } from '@/sections/history';
 import { SettingsSection } from '@/sections/settings';
 import { HealthSection } from '@/sections/health';
 import { RedesignShell } from './shell';
+import { Settings } from 'lucide-react';
+import './settings.css';
 
 function readDiagnostics() { return new URLSearchParams(location.hash.split('?')[1] ?? '').get('section') === 'diagnostics'; }
 
@@ -29,14 +31,14 @@ export function ProductionUtilityPage({ page }: { page: 'history' | 'settings' }
     catch (cause) { setError(String(cause)); throw cause; }
   }, []);
   return <RedesignShell active={page} theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId={`production-${page}`}>
-    {page === 'settings' && <h1 className="text-xl font-semibold">{t('settings.pageTitle')}</h1>}
+    {page === 'settings' && <header className="qp-settings-heading"><i aria-hidden="true"><Settings size={26}/></i><div><h1>{t('settings.pageTitle')}</h1><p>{t('settings.pageBlurb')}</p></div></header>}
     {error && <p role="status">{t('app.couldNotLoad')}: {error}</p>}
     {page === 'history' ? <HistorySection redesign sources={overview?.sources ?? []}/> : <>
-      <nav className="flex gap-4" aria-label={t('settings.pageTitle')}>
+      <nav className="qp-settings-nav" aria-label={t('settings.pageTitle')}>
         <a href="#settings" aria-current={!diagnostics ? 'page' : undefined}>{t('settings.pageTitle')}</a>
         <a href="#settings?section=diagnostics" aria-current={diagnostics ? 'page' : undefined}>{t('tab.health')}</a>
       </nav>
-      {diagnostics ? <HealthSection/> : <SettingsSection subscriptions={overview?.subscriptions ?? []} onPricingUpdated={() => void refresh.refreshNow()}/>}
+      {diagnostics ? <HealthSection/> : <SettingsSection redesign subscriptions={overview?.subscriptions ?? []} onPricingUpdated={() => void refresh.refreshNow()}/>}
     </>}
   </RedesignShell>;
 }

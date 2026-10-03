@@ -176,3 +176,9 @@ Its combined capture evidence covers all eight dashboard pages plus Settings on
 one production build, alongside 418 passing repository unit tests. Original
 reference likeness, final Settings composition and release/manual acceptance
 still require evidence before the complete goal can be closed.
+
+[Settings composition v1.45](REDESIGN-SETTINGS-COMPOSITION-V1.45.md) then makes
+Settings use the shared dashboard card/color hierarchy, preserves all six
+sections and validates local preference controls. No Settings reference PNG is
+supplied, so this does not claim a new source-comparison score for that page.
+Eight-page typography, detailed composition and final release/manual gates remain.

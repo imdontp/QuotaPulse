@@ -1,5 +1,11 @@
 # Concept comparison and refinement queue
 
+[Settings composition v1.45](REDESIGN-SETTINGS-COMPOSITION-V1.45.md) adopts the
+shared dashboard surfaces, two-column layout and selected-control semantics.
+Settings-only captures and local preference/overflow checks pass with 124 web
+unit tests. There is no Settings source PNG; the eight-page likeness target
+remains separately open.
+
 [Shared sidebar reference v1.44](REDESIGN-SIDEBAR-REFERENCE-V1.44.md) restores
 count-over-label stats, icon frames, larger navigation marks and brand footer.
 All eight dashboard pages plus Settings were captured on the same build;

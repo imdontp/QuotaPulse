@@ -24,7 +24,8 @@ const modelsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'models';
 const costOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'cost';
 const historyOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'history';
 const alertsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'alerts';
-const output = resolve(root, liveOnly ? 'screens/live-density' : compositionOnly ? 'screens/reference-composition' : overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : modelsOnly ? 'screens/models-comparison' : costOnly ? 'screens/cost-axes' : historyOnly ? 'screens/history-details' : alertsOnly ? 'screens/alerts-refinement' : 'screens/stable-captures');
+const settingsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'settings';
+const output = resolve(root, liveOnly ? 'screens/live-density' : compositionOnly ? 'screens/reference-composition' : overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : modelsOnly ? 'screens/models-comparison' : costOnly ? 'screens/cost-axes' : historyOnly ? 'screens/history-details' : alertsOnly ? 'screens/alerts-refinement' : settingsOnly ? 'screens/settings-composition' : 'screens/stable-captures');
 mkdirSync(output, { recursive: true });
 // A failed attempt must never leave a previous success manifest in this folder.
 rmSync(resolve(output, 'verification.json'), { force: true });
@@ -76,6 +77,7 @@ const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: 
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
 const headerChecks: Array<{ page: string; lang: string; theme: string; width: number; height: number; sidebarWidth: number }> = [];
 const fontChecks: Array<{ page: string; lang: string; theme: string; family: string; custom: boolean; glyphs: number }> = [];
+const settingsChecks: Array<{ lang: string; theme: string; sections: number; language: boolean; currency: boolean; rate: number; widths: number[] }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const overviewLayouts: Array<{ lang: string; theme: string; heroBottom: number; activityBottom: number; models: number; railHeight: number }> = [];
 const referenceColumnChecks: Array<{ page: string; lang: string; theme: string; headerTop: number; railTop: number; summaryRight: number; railLeft: number }> = [];
@@ -100,7 +102,7 @@ const allPages = [
   ['history', '[data-testid="usage-history"] tbody tr'], ['alerts', '.qp-quota-point'],
   ['settings', '[data-slot="card"]'],
 ] as const;
-const pages = liveOnly ? allPages.filter(([destination]) => destination === 'live') : compositionOnly ? allPages.filter(([destination]) => ['overview', 'live', 'models'].includes(destination)) : overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : projectsOnly ? allPages.filter(([destination]) => destination === 'projects') : providersOnly ? allPages.filter(([destination]) => destination === 'providers') : modelsOnly ? allPages.filter(([destination]) => destination === 'models') : costOnly ? allPages.filter(([destination]) => destination === 'cost') : historyOnly ? allPages.filter(([destination]) => destination === 'history') : alertsOnly ? allPages.filter(([destination]) => destination === 'alerts') : allPages;
+const pages = liveOnly ? allPages.filter(([destination]) => destination === 'live') : compositionOnly ? allPages.filter(([destination]) => ['overview', 'live', 'models'].includes(destination)) : overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : projectsOnly ? allPages.filter(([destination]) => destination === 'projects') : providersOnly ? allPages.filter(([destination]) => destination === 'providers') : modelsOnly ? allPages.filter(([destination]) => destination === 'models') : costOnly ? allPages.filter(([destination]) => destination === 'cost') : historyOnly ? allPages.filter(([destination]) => destination === 'history') : alertsOnly ? allPages.filter(([destination]) => destination === 'alerts') : settingsOnly ? allPages.filter(([destination]) => destination === 'settings') : allPages;
 
 async function checkLiveDensity(page: Page, lang: string, theme: string) {
   await page.setViewportSize({ width: 1672, height: 941 });
@@ -784,6 +786,34 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
   shellChecks.push({ page: destination, lang, theme, modal: true, backgroundExcluded: true });
 }
 
+async function checkSettingsAccess(page: Page, lang: string, theme: string) {
+  const settings = page.locator('.qp-settings-grid');
+  assert.equal(await settings.locator('[data-slot=card]').count(), 6);
+  assert.equal(await page.getByTestId('production-settings').locator('h1').count(), 1);
+  const originalLanguage = lang === 'en' ? 'English' : 'Thai';
+  const alternateLanguage = lang === 'en' ? 'Thai' : 'English';
+  assert.equal(await settings.getByRole('button', { name: originalLanguage, exact: true }).getAttribute('aria-pressed'), 'true');
+  await settings.getByRole('button', { name: alternateLanguage, exact: true }).click();
+  assert.equal(await page.evaluate(() => document.documentElement.lang), lang === 'en' ? 'th' : 'en');
+  await settings.getByRole('button', { name: originalLanguage, exact: true }).click();
+  await settings.getByRole('button', { name: /THB/ }).click();
+  const rate = settings.locator('input[inputmode=decimal]');
+  await rate.fill('40'); await rate.press('Enter');
+  const preferences = await page.evaluate(() => JSON.parse(localStorage.getItem('quotapulse-prefs')!));
+  assert.equal(preferences.currency, 'THB'); assert.equal(preferences.rate, 40);
+  assert.equal(await settings.getByRole('button', { name: /THB/ }).getAttribute('aria-pressed'), 'true');
+  await settings.getByRole('button', { name: /USD/ }).click();
+  assert.equal(await rate.count(), 0);
+  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('quotapulse-prefs')!).rate), 1);
+  for (const width of [390, 900, 1280]) {
+    await page.setViewportSize({ width, height: 941 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Settings overflow: ${lang}/${theme}/${width}`);
+  }
+  await page.setViewportSize({ width: 1672, height: 941 });
+  await page.evaluate(() => { (document.activeElement as HTMLElement)?.blur(); scrollTo(0, 0); });
+  settingsChecks.push({ lang, theme, sections: 6, language: true, currency: true, rate: 40, widths: [390, 900, 1280] });
+}
+
 async function checkRuntimeAccess(page: Page, lang: string, theme: string, pending: Set<Request>) {
   // Owned synthetic rows exist only for this check; default capture data stays fixed.
   try {
@@ -1015,6 +1045,7 @@ try {
           if (pass === 0 && destination === 'history') await checkHistoryDensity(page, lang, theme);
           if (destination === 'history') await checkHistoryDetails(page, lang, theme, pass, pending);
           if (pass === 0) await checkShellAccess(page, destination, lang, theme);
+          if (pass === 0 && destination === 'settings') await checkSettingsAccess(page, lang, theme);
           if (pass === 0 && destination === 'alerts') await checkAlerts(page, lang, theme, pending);
           if (pass === 0 && destination === 'projects') await checkProjectCards(page, lang, theme, pending);
           if (pass === 0 && destination === 'providers') await checkProviders(page, lang, theme, pending);
@@ -1025,7 +1056,7 @@ try {
           if (pass === 0 && destination === 'overview') await checkRuntimeAccess(page, lang, theme, pending);
           if (pass === 0 && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
         }
-        if (pass === 0) {
+        if (pass === 0 && !pages.some(([destination]) => destination === 'settings')) {
           await page.goto('http://127.0.0.1:7804/?shell-access=settings#settings', { waitUntil: 'domcontentloaded' });
           await page.getByTestId('production-settings').waitFor(); await settled(page, pending);
           await checkFontAccess(page, 'settings', lang, theme);
@@ -1036,7 +1067,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

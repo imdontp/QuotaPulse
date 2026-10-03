@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QuotaPulse Settings v1.45 review</title>
+<style>body{margin:0;background:#040a14;color:#eef3ff;font:15px system-ui,sans-serif}header{padding:20px;display:grid;gap:12px}h1{font-size:22px;margin:0}p{margin:0;color:#a6b9dc}fieldset{display:flex;gap:20px;flex-wrap:wrap;border:1px solid #32455f;padding:12px}label{display:flex;align-items:center;gap:8px}select{font:inherit;background:#08101b;color:#eef3ff;padding:6px;border:1px solid #52657c}:focus-visible{outline:2px solid #36c9ff;outline-offset:3px}main{padding:12px}img{display:block;width:100%;height:auto}</style>
+<header><h1>QuotaPulse Settings v1.45</h1><p>ภาพแอปจาก build ที่ตรวจแล้ว ใช้ฐานข้อมูลจำลองในการทดสอบ มีทั้งภาษาไทย/อังกฤษและสองธีม หน้า Settings ไม่มีภาพต้นฉบับใน refs จึงยังไม่มีการเทียบความเหมือนของหน้านี้</p><fieldset><legend>ดูภาพทดสอบ</legend><label>ภาษา <select id="language"><option value="en">English</option><option value="th">ไทย</option></select></label><label>ธีม <select id="theme"><option>dark</option><option>light</option></select></label></fieldset><p>ภาพขนาด 1672 × 941 แสดงส่วนบนของหน้าที่เลื่อนดูต่อได้ในแอป ไม่มีการตัดออกจากการทดสอบการทำงานของ preference controls</p></header>
+<main><img id="capture" src="settings-en-dark.png" alt="Settings English dark production capture"></main>
+<script>const language=document.getElementById('language'),theme=document.getElementById('theme');function update(){document.getElementById('capture').src=`settings-${language.value}-${theme.value}.png`;document.getElementById('capture').alt=`Settings ${language.value} ${theme.value} production capture`}language.addEventListener('change',update);theme.addEventListener('change',update);</script>
+</html>

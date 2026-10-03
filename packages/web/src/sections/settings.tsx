@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Info, RefreshCw } from 'lucide-react';
+import { Activity, BellRing, Coins, Globe, Info, Layers, Monitor, RefreshCw } from 'lucide-react';
 import { api, type AppSettings, type NotificationSettings, type SubscriptionStatus } from '@/api';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,9 +28,11 @@ function minutesValue(value: string): number | null {
 export function SettingsSection({
   subscriptions,
   onPricingUpdated,
+  redesign = false,
 }: {
   subscriptions: SubscriptionStatus[];
   onPricingUpdated?: () => void;
+  redesign?: boolean;
 }) {
   const t = useT();
   const {
@@ -215,20 +217,20 @@ export function SettingsSection({
   if (!settings) return <Empty>{t('app.loading')}</Empty>;
 
   return (
-    <Stagger className="flex flex-col gap-3.5">
-      <StaggerItem>
+    <Stagger className={redesign ? 'qp-settings-grid' : 'flex flex-col gap-3.5'}>
+      {!redesign && <StaggerItem>
         <div>
           <h2 className="text-[15px] font-semibold tracking-tight">{t('settings.pageTitle')}</h2>
           <p className="text-muted-foreground note mt-1 text-[12.5px] leading-relaxed">{t('settings.pageBlurb')}</p>
         </div>
-      </StaggerItem>
+      </StaggerItem>}
 
       {err && <StaggerItem><ErrorBox>{err}</ErrorBox></StaggerItem>}
 
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle as="h2">{t('settings.display')}</CardTitle>
+            <CardTitle as="h2">{redesign && <Globe aria-hidden="true"/>}{t('settings.display')}</CardTitle>
             <CardDescription>{t('settings.displayBlurb')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -239,6 +241,7 @@ export function SettingsSection({
                   <button
                     key={item.id}
                     onClick={() => setLang(item.id)}
+                    aria-pressed={lang === item.id}
                     className={`rounded-md border px-2 py-1.5 text-[12.5px] transition-colors ${lang === item.id ? 'border-foreground/25 bg-secondary font-medium' : 'text-muted-foreground hover:bg-accent/60'}`}
                   >
                     {item.label}
@@ -254,6 +257,7 @@ export function SettingsSection({
                   <button
                     key={item}
                     onClick={() => setCurrency(item)}
+                    aria-pressed={currency === item}
                     className={`rounded-md border px-2 py-1.5 text-[12.5px] transition-colors ${currency === item ? 'border-foreground/25 bg-secondary font-medium' : 'text-muted-foreground hover:bg-accent/60'}`}
                   >
                     {CURRENCIES[item].symbol} {item}
@@ -292,7 +296,7 @@ export function SettingsSection({
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle as="h2">{t('settings.windowSize')}</CardTitle>
+            <CardTitle as="h2">{redesign && <Monitor aria-hidden="true"/>}{t('settings.windowSize')}</CardTitle>
             <CardDescription>{t('settings.windowSizeBlurb')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -342,7 +346,7 @@ export function SettingsSection({
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle as="h2">{t('settings.subscriptions')}</CardTitle>
+            <CardTitle as="h2">{redesign && <Layers aria-hidden="true"/>}{t('settings.subscriptions')}</CardTitle>
             <CardDescription>{t('settings.subscriptionHelp')}</CardDescription>
           </CardHeader>
           <CardContent>
@@ -381,7 +385,7 @@ export function SettingsSection({
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle as="h2">{t('settings.notifications')}</CardTitle>
+            <CardTitle as="h2">{redesign && <BellRing aria-hidden="true"/>}{t('settings.notifications')}</CardTitle>
             <CardDescription>{t('settings.notificationsBlurb')}</CardDescription>
           </CardHeader>
           <CardContent>
@@ -429,7 +433,7 @@ export function SettingsSection({
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle as="h2">{t('settings.pricing')}</CardTitle>
+            <CardTitle as="h2">{redesign && <Coins aria-hidden="true"/>}{t('settings.pricing')}</CardTitle>
             <CardDescription>{t('settings.pricingBlurb')}</CardDescription>
           </CardHeader>
           <CardContent>
@@ -445,7 +449,7 @@ export function SettingsSection({
       <StaggerItem>
         <Card>
           <CardHeader className="flex-col items-start gap-1">
-            <CardTitle as="h2">{t('settings.runtime')}</CardTitle>
+            <CardTitle as="h2">{redesign && <Activity aria-hidden="true"/>}{t('settings.runtime')}</CardTitle>
             <CardDescription>{t('settings.runtimeBlurb')}</CardDescription>
           </CardHeader>
           <CardContent className="divide-y">
