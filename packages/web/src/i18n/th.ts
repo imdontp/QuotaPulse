@@ -144,6 +144,8 @@ export const th: Record<MessageKey, string> = {
   'redesign.cacheShare': 'สัดส่วนข้อมูลเข้าจากแคช',
   'redesign.cacheSaving': 'ส่วนต่างราคาจากแคชที่ทราบ',
   'redesign.pricingCoverage': 'ความครอบคลุมของราคา',
+  'redesign.reportedPricingCoverage': 'ความครอบคลุมราคาที่รายงาน',
+  'redesign.pricingCallCountNote': 'ใช้จำนวนเรียกที่รายงาน รวมจำนวนจากข้อมูลสะสมด้วย',
   'redesign.knownCalls': 'ครั้งที่มีราคาแคช',
   'redesign.noInput': 'ไม่มีโทเคนขาเข้าที่บันทึกไว้',
   'redesign.noCachePrice': 'ไม่มีส่วนประกอบราคาแคชที่บันทึกไว้',

@@ -16,6 +16,13 @@ that harness must never be reported as a reference fidelity percentage.
 
 ## Source and observed gaps
 
+Latest Overview composition: [Insight cards v1.53](REDESIGN-INSIGHT-CARDS-V1.53.md)
+uses four framed cards and actual API coverage, with reported call counts
+distinguished from individual call records. The
+[Overview viewer](redesign-v1.53/reference-review.html) retains v1.52 captures;
+the latest full nine-page capture set remains v1.52. Full reference visual
+acceptance remains open.
+
 Latest shared header work: [Header brand/status v1.52](REDESIGN-HEADER-BRAND-V1.52.md)
 aligns the larger waveform/wordmark and framed status/scope/date-time composition
 with the source. Connection and clock values are real machine state. The

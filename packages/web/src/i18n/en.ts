@@ -138,6 +138,8 @@ export const en = {
   'redesign.cacheShare': 'Cached input share',
   'redesign.cacheSaving': 'Known cache price difference',
   'redesign.pricingCoverage': 'Call pricing coverage',
+  'redesign.reportedPricingCoverage': 'Reported pricing coverage',
+  'redesign.pricingCallCountNote': 'Coverage uses reported call counts, including aggregate reports.',
   'redesign.knownCalls': 'calls with known cache pricing',
   'redesign.noInput': 'No input tokens recorded',
   'redesign.noCachePrice': 'No cache price components recorded',

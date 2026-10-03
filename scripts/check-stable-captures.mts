@@ -75,6 +75,7 @@ const modelCostChecks: Array<{ route: string; lang: string; theme: string; bucke
 const quotaChecks: Array<{ page: string; lang: string; theme: string; segments: number; samples: number; unknown: number }> = [];
 const pulseCoreChecks: Array<{ lang: string; theme: string; assetSha256: string; imageWidth: number; selectedUsed: number[]; boundaries: number[]; unknown: boolean; reducedMotion: boolean }> = [];
 const overviewPeriodChecks: Array<{ lang: string; theme: string; tokensByRange: Record<string, number>; selectedQuotaPreserved: boolean; customSourcePreserved: boolean; focusRestored: boolean }> = [];
+const overviewInsightChecks: Array<{ lang: string; theme: string; cards: number; cacheShare: number | null; pricedCalls: number; totalCalls: number; states: string[] }> = [];
 const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number }> = [];
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
 const headerChecks: Array<{ page: string; lang: string; theme: string; width: number; height: number; sidebarWidth: number }> = [];
@@ -999,6 +1000,54 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
   pulseCoreChecks.push({ lang, theme, assetSha256, imageWidth, selectedUsed, boundaries: [0, 100, 125], unknown: true, reducedMotion: true });
 }
 
+async function checkOverviewInsights(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  const home = 'http://127.0.0.1:7804/?overview-insights=default#overview';
+  const responsePromise = page.waitForResponse(response => new URL(response.url()).pathname === '/api/runtime-map' && response.status() === 200);
+  await page.goto(home, { waitUntil: 'domcontentloaded' });
+  const response = await responsePromise, url = new URL(response.url());
+  const graph = (await daemon.inject({ method: 'GET', url: url.pathname + url.search, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<RuntimeGraph>();
+  await page.locator('.qp-insight-card').first().waitFor(); await settled(page, pending);
+  const panel = page.getByTestId('usage-insights'), number = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 });
+  const money = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' });
+  async function values(expected: RuntimeGraph['totals']) {
+    const input = expected.inputTokens + expected.cachedInputTokens + expected.cacheWriteTokens;
+    assert.equal(await panel.locator('[data-insight=cache] strong').textContent(), input ? `${number.format(expected.cachedInputTokens / input * 100)}%` : '—');
+    assert.equal(await panel.locator('[data-insight=saving] strong').textContent(), expected.cacheSavingKnownCalls ? money.format(expected.cacheSavingKnownUsd) : '—');
+    const priced = expected.nativeCalls + expected.computedCalls + expected.estimatedCalls, calls = priced + expected.unknownCalls;
+    assert.equal(await panel.locator('[data-insight=pricing] strong').textContent(), calls ? `${number.format(priced)} / ${number.format(calls)}` : '—');
+    assert.equal(await panel.locator('[data-count=calls]').textContent(), number.format(expected.callRecords));
+    assert.equal(await panel.locator('[data-count=aggregates]').textContent(), number.format(expected.aggregateRecords));
+    assert.equal(await panel.locator('[data-insight=unknown] strong').textContent(), number.format(expected.unknownCostRecords));
+  }
+  await values(graph.totals);
+  const boxes = await panel.locator('.qp-insight-card').evaluateAll(elements => elements.map(element => { const box = element.getBoundingClientRect(); return { x: box.x, y: box.y, right: box.right, bottom: box.bottom }; }));
+  assert.equal(boxes.length, 4); assert.equal(boxes[0].y, boxes[1].y); assert.equal(boxes[2].y, boxes[3].y);
+  assert.ok(boxes[1].x > boxes[0].right && boxes[2].y > boxes[0].bottom, 'Insights must form the source two-column/two-row card arrangement');
+  const pattern = '**/api/runtime-map?**', states = ['zero-cache-price', 'large-known-price', 'empty'];
+  for (const state of states) {
+    const totals = state === 'empty' ? Object.fromEntries(Object.keys(graph.totals).map(key => [key, 0])) as RuntimeGraph['totals'] : { ...graph.totals, cacheSavingKnownCalls: 3, cacheSavingKnownUsd: state === 'zero-cache-price' ? 0 : 1_234_567.89,
+      ...(state === 'zero-cache-price' ? { inputTokens: graph.totals.inputTokens + graph.totals.cachedInputTokens + graph.totals.cacheWriteTokens, cachedInputTokens: 0, cacheWriteTokens: 0 } : { unknownCostRecords: 2 }) };
+    const fixture = { ...graph, totals, ...(state === 'empty' ? { nodes: Object.fromEntries(dimensions.map(dimension => [dimension, []])), edges: [] } : {}) };
+    await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixture) }));
+    try {
+      await page.goto(`http://127.0.0.1:7804/?overview-insights=${state}#overview`, { waitUntil: 'domcontentloaded' });
+      await panel.locator('.qp-insight-card').first().waitFor(); await settled(page, pending); await values(totals);
+      for (const width of [390, 900, 1280]) {
+        await page.setViewportSize({ width, height: 992 });
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Insight card overflow: ${state}/${lang}/${theme}/${width}`);
+        assert.equal(await panel.locator('.qp-insight-card').count(), 4);
+        const bounds = await panel.boundingBox(); assert.ok(bounds);
+        const textBoxes = await panel.locator('h3,strong,p').evaluateAll(elements => elements.map(element => { const box = element.getBoundingClientRect(); return { x: box.x, right: box.right }; }));
+        assert.ok(textBoxes.every(box => box.x >= bounds.x && box.right <= bounds.x + bounds.width), 'Insight contents must stay inside their panel');
+      }
+      await page.setViewportSize({ width: 1586, height: 992 });
+    } finally { await page.unroute(pattern); }
+  }
+  await page.goto(home, { waitUntil: 'domcontentloaded' }); await panel.locator('.qp-insight-card').first().waitFor(); await settled(page, pending);
+  const total = graph.totals, input = total.inputTokens + total.cachedInputTokens + total.cacheWriteTokens, priced = total.nativeCalls + total.computedCalls + total.estimatedCalls;
+  overviewInsightChecks.push({ lang, theme, cards: 4, cacheShare: input ? total.cachedInputTokens / input * 100 : null, pricedCalls: priced, totalCalls: priced + total.unknownCalls, states });
+}
+
 async function checkOverviewPeriod(page: Page, lang: string, theme: string, pending: Set<Request>) {
   const home = 'http://127.0.0.1:7804/?overview-period=presets#overview';
   await page.goto(home, { waitUntil: 'domcontentloaded' });
@@ -1265,6 +1314,7 @@ try {
           if (pass === 0 && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
           if (pass === 0 && destination === 'overview') await checkPulseCore(page, lang, theme, pending);
           if (pass === 0 && destination === 'overview') await checkOverviewPeriod(page, lang, theme, pending);
+          if (pass === 0 && destination === 'overview') await checkOverviewInsights(page, lang, theme, pending);
         }
         if (pass === 0 && !pages.some(([destination]) => destination === 'settings')) {
           await page.goto('http://127.0.0.1:7804/?shell-access=settings#settings', { waitUntil: 'domcontentloaded' });
@@ -1277,7 +1327,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, overviewPeriodChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, overviewPeriodChecks, overviewInsightChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;
