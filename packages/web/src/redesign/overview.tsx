@@ -133,6 +133,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   const runway = runwayState(quota, now, preview ? 300000 : 3600000);
   const decimal = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 1 }).format(value);
   const date = (value: number) => new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(value);
+  const duration = (value: number) => value - now < 60_000 ? '<1m' : countdown(value, now);
   const reason = runway.status === 'unavailable' ? ({ noQuota: 'redesign.runwayNoQuota', stale: 'redesign.runwayStale', noReset: 'redesign.runwayNoReset', reset: 'redesign.runwayReset', unknown: 'redesign.runwayUnknown' } as const)[runway.reason] : null;
   const forecast = runway.status === 'ready' ? runway.projectedBeforeReset && runway.projectedFullAt !== null
     ? `${t('redesign.projected')} ${date(runway.projectedFullAt)} · ${t('redesign.beforeReset')}`
@@ -141,14 +142,20 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   const marker = runway.status === 'ready' && runway.projectedBeforeReset && runway.projectedFullAt !== null
     ? (runway.projectedFullAt - now) / (quota!.resetAt - now) * 100 : null;
   return <section className="qp-panel qp-runway" data-testid="quota-runway">
-    <h2><CircleGauge size={18}/>{t('redesign.runway')}</h2>
-    <p className="qp-footnote">{quota ? `${quota.owner} · ${quota.window}` : t('redesign.unavailable')}</p>
+    <div className="qp-runway-heading"><h2><CircleGauge size={18}/>{t('redesign.runway')}</h2><span className="qp-footnote">{quota ? `${quota.owner} · ${quota.window}` : t('redesign.unavailable')}</span></div>
     {runway.status === 'unavailable' ? <p className="qp-runway-message" role="status">{t(reason!)}</p> : <>
-      <div className="qp-runway-labels"><span>{t('redesign.now')}</span><span>{t('redesign.resetIn')} {decimal(runway.hoursUntilReset)} {t('redesign.hours')}</span></div>
-      <div className="qp-runway-track" role="img" aria-label={forecast ?? t('redesign.runway')}>
-        {marker !== null && <span className="qp-runway-marker" style={{ left: `${marker}%` }}/>}</div>
-      <div className="qp-runway-stats"><span>{t('redesign.safePace')} <strong>{decimal(runway.safePace)}</strong> {t('redesign.pointsPerHour')}</span></div>
-      <p className="qp-footnote">{forecast}</p>
+      <div className="qp-runway-labels">
+        <span>{t('redesign.now')}<time dateTime={new Date(now).toISOString()}>{date(now)}</time></span>
+        <span data-risk={marker !== null ? 'warning' : undefined}>{t('redesign.projected')}{runway.projectedFullAt !== null ? <time dateTime={new Date(runway.projectedFullAt).toISOString()}>{date(runway.projectedFullAt)}</time> : <small>{t('redesign.unknownValue')}</small>}</span>
+        <span>{t('redesign.resetShort')} ({quota!.window})<time dateTime={new Date(quota!.resetAt).toISOString()}>{date(quota!.resetAt)}</time></span>
+      </div>
+      <div className="qp-runway-track" role="img" aria-label={`${t('redesign.now')} ${date(now)} · ${forecast} · ${t('redesign.resetShort')} ${date(quota!.resetAt)}`} data-now={now} data-reset-at={quota!.resetAt} data-projected-at={runway.projectedFullAt ?? undefined}>
+        <span className="qp-runway-fill" style={{ width: `${marker ?? 100}%` }}/>
+        {marker !== null && <span className="qp-runway-risk" style={{ left: `${marker}%` }}/>}<span className="qp-runway-now"/>
+        {marker !== null && <span className="qp-runway-marker" style={{ left: `${marker}%` }}/>}<span className="qp-runway-reset"/>
+      </div>
+      <div className="qp-runway-outcome"><strong>{runway.projectedFullAt !== null ? `${duration(runway.projectedFullAt)} ${t('redesign.remaining')}` : '—'}</strong><span data-risk={marker !== null ? 'warning' : undefined}>{forecast}</span><strong>{t('redesign.resetIn')} {duration(quota!.resetAt)}</strong></div>
+      <p className="qp-footnote">{t('redesign.safePace')} <strong>{decimal(runway.safePace)}</strong> {t('redesign.pointsPerHour')}</p>
     </>}
     {!preview && <details className="qp-quota-history" data-testid="quota-history" onToggle={event => setHistoryOpen(event.currentTarget.open)}>
       <summary>{t('redesign.observedHistory')}</summary>

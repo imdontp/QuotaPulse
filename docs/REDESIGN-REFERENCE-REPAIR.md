@@ -16,6 +16,12 @@ that harness must never be reported as a reference fidelity percentage.
 
 ## Source and observed gaps
 
+Latest composition work: [Runway timeline v1.50](REDESIGN-RUNWAY-TIMELINE-V1.50.md)
+aligns the lower panel's time-label, marker and outcome hierarchy with the
+source, using actual quota forecast/reset timestamps. The
+[latest Overview comparison](redesign-v1.50/reference-review.html) retains the
+previous v1.49 captures. Full source likeness remains open.
+
 Latest functional/composition checkpoint: [Pulse period and runway v1.49](REDESIGN-PULSE-PERIOD-V1.49.md)
 adds the scope-backed Overview selector and actual forecast/reset duration pill.
 Custom/source scope, selected quota, keyboard focus and narrow-screen layout
@@ -76,7 +82,7 @@ data. Their variation does not justify unrelated changes to colors, effects,
 spacing, imagery or composition. Unsupported ROI, lifecycle outcomes, benchmark
 scores, latency, automated mitigation and invented forecasts remain excluded.
 
-## Current repair checkpoint
+## Initial repair checkpoint (v1.35)
 
 Changes include measured dark colors, a waveform brand, textured/glowing SVG orb,
 larger desktop orb and quota rail, colored metric tiles, runtime identity tiles,

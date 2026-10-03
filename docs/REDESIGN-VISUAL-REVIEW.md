@@ -1,5 +1,11 @@
 # Concept comparison and refinement queue
 
+[Runway timeline v1.50](REDESIGN-RUNWAY-TIMELINE-V1.50.md) follows the source's
+three time-label columns, cyan/violet timeline, prediction/reset markers and
+lower outcome row using the selected quota's actual timestamps. Its validation
+and [Overview comparison](redesign-v1.50/reference-review.html) are retained
+separately from v1.49. Full eight-page visual acceptance remains open.
+
 [Pulse period and runway v1.49](REDESIGN-PULSE-PERIOD-V1.49.md) connects the
 Overview period selector to existing scope APIs and adds the globe's Runway/Reset
 pill from actual reader timestamps. Selected quota, source filters and keyboard

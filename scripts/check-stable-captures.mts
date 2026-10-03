@@ -907,6 +907,17 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
     assert.equal(await pill.getAttribute('data-reset-at'), String(reading.resets_at));
     const projectedAt = reading.forecast?.status === 'ready' && reading.forecast.projectedFullAt! > fixedNow ? reading.forecast.projectedFullAt : null;
     assert.equal(await pill.getAttribute('data-projected-at'), projectedAt === null ? null : String(projectedAt));
+    const track = page.locator('.qp-runway-track');
+    assert.equal(await track.getAttribute('data-now'), String(fixedNow));
+    assert.equal(await track.getAttribute('data-reset-at'), String(reading.resets_at));
+    assert.equal(await track.getAttribute('data-projected-at'), projectedAt === null ? null : String(projectedAt));
+    const expectedMarker = projectedAt !== null && projectedAt < reading.resets_at! ? (projectedAt - fixedNow) / (reading.resets_at! - fixedNow) * 100 : null;
+    assert.equal(await track.locator('.qp-runway-marker').count(), expectedMarker === null ? 0 : 1);
+    if (expectedMarker !== null) {
+      const percent = await track.locator('.qp-runway-marker').evaluate(element => parseFloat((element as HTMLElement).style.left));
+      assert.ok(Math.abs(percent - expectedMarker) < 0.00001, 'Runway marker must reflect actual forecast/reset timestamps');
+    }
+    assert.equal(await page.locator('.qp-runway-labels time').last().getAttribute('datetime'), new Date(reading.resets_at!).toISOString());
     if (projectedAt === null) assert.equal(await pill.locator('strong').first().textContent(), lang === 'th' ? 'ไม่ทราบ' : 'Unknown');
     const reducedSeconds = await page.getByTestId('pulse-progress').evaluate(element => parseFloat(getComputedStyle(element).transitionDuration));
     assert.ok(reducedSeconds <= 0.001, `Reduced motion must suppress the quota transition, observed ${reducedSeconds}s`);
@@ -924,6 +935,7 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
         assert.equal(await progress.count(), 0, 'Unknown quota must not render an invented progress arc');
         assert.equal(await page.getByTestId('pulse-runway').getAttribute('data-projected-at'), null);
         assert.equal(await page.getByTestId('pulse-runway').getAttribute('data-reset-at'), null);
+        assert.equal(await page.locator('.qp-runway-track').count(), 0, 'Unknown quota must not invent a runway timeline');
       }
       else {
         assert.equal(await progress.getAttribute('stroke-dasharray'), `${Math.min(100, used)} 100`);
@@ -933,6 +945,36 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
   }
   await page.goto(home, { waitUntil: 'domcontentloaded' });
   await page.locator('.qp-quota').first().waitFor(); await settled(page, pending);
+  for (const state of ['imminent', 'after-reset', 'flat', 'stale', 'expired'] as const) {
+    const fixture = { ...data, limits: data.limits.map(limit => ({ ...limit,
+      last_seen_at: state === 'stale' ? fixedNow - 7_200_000 : fixedNow,
+      resets_at: state === 'expired' ? fixedNow - 1 : limit.resets_at,
+      forecast: { ...limit.forecast, status: state === 'flat' ? 'flat' : 'ready', projectedFullAt: state === 'flat' ? null : state === 'after-reset' ? limit.resets_at! + 60_000 : fixedNow + 30_000 },
+    })) };
+    await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixture) }));
+    try {
+      await page.goto(`http://127.0.0.1:7804/?runway-state=${state}#overview`, { waitUntil: 'domcontentloaded' });
+      await page.getByTestId('quota-runway').waitFor(); await settled(page, pending);
+      const track = page.locator('.qp-runway-track');
+      if (state === 'stale' || state === 'expired') {
+        assert.equal(await track.count(), 0, `${state} quota must not display a live timeline`);
+        assert.equal(await page.locator('.qp-runway-message').isVisible(), true);
+      } else {
+        assert.equal(await track.locator('.qp-runway-marker').count(), state === 'imminent' ? 1 : 0);
+        assert.equal(await track.locator('.qp-runway-risk').count(), state === 'imminent' ? 1 : 0);
+        const reset = Number(await track.getAttribute('data-reset-at'));
+        const projected = state === 'flat' ? null : state === 'after-reset' ? reset + 60_000 : fixedNow + 30_000;
+        assert.equal(await track.getAttribute('data-projected-at'), projected === null ? null : String(projected));
+        if (state === 'imminent') {
+          assert.ok((await page.locator('.qp-runway-outcome>strong').first().textContent())!.startsWith('<1m'));
+          const marker = await track.locator('.qp-runway-marker').evaluate(element => parseFloat((element as HTMLElement).style.left));
+          assert.ok(Math.abs(marker - 30_000 / (reset - fixedNow) * 100) < 0.00001);
+        }
+        if (state === 'flat') assert.equal(await page.locator('.qp-runway-labels small').textContent(), lang === 'th' ? 'ไม่ทราบ' : 'Unknown');
+      }
+    } finally { await page.unroute(pattern); }
+  }
+  await page.goto(home, { waitUntil: 'domcontentloaded' }); await page.locator('.qp-overview-period select').waitFor(); await settled(page, pending);
   pulseCoreChecks.push({ lang, theme, assetSha256, imageWidth, selectedUsed, boundaries: [0, 100, 125], unknown: true, reducedMotion: true });
 }
 
