@@ -20,7 +20,8 @@ const projectsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'projects';
 const providersOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'providers';
 const modelsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'models';
 const costOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'cost';
-const output = resolve(root, overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : modelsOnly ? 'screens/models-comparison' : costOnly ? 'screens/cost-axes' : 'screens/stable-captures');
+const historyOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'history';
+const output = resolve(root, overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : modelsOnly ? 'screens/models-comparison' : costOnly ? 'screens/cost-axes' : historyOnly ? 'screens/history-details' : 'screens/stable-captures');
 mkdirSync(output, { recursive: true });
 // A failed attempt must never leave a previous success manifest in this folder.
 rmSync(resolve(output, 'verification.json'), { force: true });
@@ -78,6 +79,7 @@ const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bot
 const providerChecks: Array<{ lang: string; theme: string; bottom: number; compared: number; unavailable: boolean; expired: boolean; proportional: boolean }> = [];
 const modelComparisonChecks: Array<{ lang: string; theme: string; bottom: number; rows: number; ratios: number; boundaryRatios: boolean }> = [];
 const costAxisChecks: Array<{ route: string; lang: string; theme: string; priced: boolean; maxAmount: number; maxTokens: number }> = [];
+const historyChecks: Array<{ lang: string; theme: string; eventId: number; widths: number[]; modal: boolean; focusRestored: boolean }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const fontPath = 'fonts/noto-sans-thai/';
 const fontProvenance = JSON.parse(readFileSync(resolve(root, `packages/web/public/${fontPath}provenance.json`), 'utf8'));
@@ -90,7 +92,7 @@ const allPages = [
   ['models', '.qp-model-trend'], ['cost', '.qp-cost-chart'],
   ['history', '[data-testid="usage-history"] tbody tr'], ['alerts', '.qp-quota-point'],
 ] as const;
-const pages = overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : projectsOnly ? allPages.filter(([destination]) => destination === 'projects') : providersOnly ? allPages.filter(([destination]) => destination === 'providers') : modelsOnly ? allPages.filter(([destination]) => destination === 'models') : costOnly ? allPages.filter(([destination]) => destination === 'cost') : allPages;
+const pages = overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : projectsOnly ? allPages.filter(([destination]) => destination === 'projects') : providersOnly ? allPages.filter(([destination]) => destination === 'providers') : modelsOnly ? allPages.filter(([destination]) => destination === 'models') : costOnly ? allPages.filter(([destination]) => destination === 'cost') : historyOnly ? allPages.filter(([destination]) => destination === 'history') : allPages;
 
 async function checkModelComparison(page: Page, lang: string, theme: string, pending: Set<Request>) {
   await page.setViewportSize({ width: 1672, height: 941 }); await page.evaluate(() => window.scrollTo(0, 0));
@@ -137,6 +139,63 @@ async function checkModelComparison(page: Page, lang: string, theme: string, pen
   modelComparisonChecks.push({ lang, theme, bottom, rows: data.groups.length, ratios: data.groups.length * 2, boundaryRatios: true });
 }
 
+async function checkHistoryDetails(page: Page, lang: string, theme: string, pass: number, pending: Set<Request>) {
+  const history = page.getByTestId('usage-history');
+  const trigger = history.locator('tbody tr').first().getByRole('button');
+  const eventId = Number((await trigger.innerText()).slice(1));
+  const response = await daemon.inject({ method: 'GET', url: `/api/usage-events?from=0&to=${fixedNow}&limit=50`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  assert.equal(response.statusCode, 200);
+  const row = response.json().rows.find((row: { event_id: number }) => row.event_id === eventId);
+  assert.ok(row);
+  await trigger.focus(); await page.keyboard.press('Enter');
+  const dialog = page.getByRole('dialog'); await dialog.waitFor();
+  assert.equal(await dialog.evaluate(element => element.matches(':modal')), true);
+  assert.equal(await history.locator('tr[data-selected=true]').count(), 1);
+  assert.equal(await history.locator('tr[data-selected=true] button').innerText(), `#${eventId}`);
+  const groups = dialog.locator('.qp-history-detail-groups section'); assert.equal(await groups.count(), 4);
+  const tokens = dialog.locator('[data-group="history.tokenBreakdown"] dd');
+  for (const [index, value] of [row.total_tokens, row.input_tokens, row.cached_input_tokens, row.cache_write_tokens, row.output_tokens, row.reasoning_tokens].entries()) {
+    assert.equal(await tokens.nth(index).innerText(), value.toLocaleString(lang));
+  }
+  for (const value of [row.project, row.harness, row.provider, row.vendor, row.model]) assert.ok((await groups.first().innerText()).includes(value));
+  await page.evaluate(() => window.scrollTo(0, 0)); await settled(page, pending);
+  const filename = `history-selected-${lang}-${theme}.png`;
+  const screenshot = await page.screenshot({ path: resolve(output, pass === 0 ? filename : `repeat-${filename}`), animations: 'disabled' });
+  if (pass === 0) cases.push({ page: 'history-selected', lang, theme, filename, sha256: sha(screenshot), semanticContrasts: [], checkedElements: ['API-matched recorded metadata', 'native modal', 'selected record'] });
+  else {
+    const item = cases.find(item => item.filename === filename)!; item.repeatSha256 = sha(screenshot);
+    const difference = await comparePixels(page, readFileSync(resolve(output, filename)), screenshot);
+    item.changedPixels = difference.changedPixels; item.maxChannelDelta = difference.maxChannelDelta;
+    assert.ok(difference.maxChannelDelta <= 2 && difference.changedPixels / difference.pixelCount <= 0.0001, `${filename}: ${JSON.stringify(difference)}`);
+  }
+  if (pass === 0) {
+    for (const width of [390, 900, 1280]) {
+      await page.setViewportSize({ width, height: 941 });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+      assert.equal(await dialog.evaluate(element => element.scrollWidth <= element.clientWidth), true);
+      const box = await dialog.boundingBox(); assert.ok(box && box.x >= 0 && box.x + box.width <= width && box.height <= 941);
+      await dialog.evaluate(element => { element.scrollTop = element.scrollHeight; });
+      const heading = await dialog.locator('.qp-history-detail-heading').boundingBox(); assert.ok(heading && heading.y >= box.y && heading.y + heading.height <= box.y + box.height);
+    }
+    await dialog.getByRole('button').first().focus();
+    let browserFocusStep = false;
+    for (let index = 0; index < 10; index++) {
+      await page.keyboard.press('Tab');
+      const focus = await dialog.evaluate(element => element.contains(document.activeElement) ? 'dialog' : document.activeElement === document.body ? 'browser' : 'background');
+      assert.notEqual(focus, 'background', 'Modal allowed focus on a background control');
+      assert.ok(!(browserFocusStep && focus === 'browser'), 'Tab did not return from browser chrome to the modal');
+      browserFocusStep = focus === 'browser';
+    }
+    await dialog.getByRole('button').first().focus();
+    await trigger.evaluate(element => element.focus());
+    assert.equal(await dialog.evaluate(element => element.contains(document.activeElement)), true, 'Background control accepted programmatic focus');
+  }
+  await page.keyboard.press('Escape'); await dialog.waitFor({ state: 'hidden' });
+  assert.equal(await trigger.evaluate(element => element === document.activeElement), true);
+  assert.equal(await history.locator('tr[data-selected=true]').count(), 0);
+  if (pass === 0) historyChecks.push({ lang, theme, eventId, widths: [390, 900, 1280], modal: true, focusRestored: true });
+  await page.setViewportSize({ width: 1672, height: 941 }); await page.evaluate(() => window.scrollTo(0, 0));
+}
 async function checkProviders(page: Page, lang: string, theme: string, pending: Set<Request>) {
   await page.setViewportSize({ width: 1672, height: 941 });
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -693,7 +752,9 @@ try {
           await page.locator('.qp-daemon-badge[data-state=live]').waitFor();
           await page.waitForFunction(() => document.querySelector('[data-stat=models]')?.textContent === '8');
           await settled(page, pending);
-          if (pass === 0) await checkFontAccess(page, destination, lang, theme);
+          // Native select text can retain a renderer font cache. Warm and inspect
+          // fonts in the same order in both independent capture passes.
+          await checkFontAccess(page, destination, lang, theme);
           assert.equal(await page.evaluate(() => Date.now()), fixedNow);
           assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
           const contrastEvidence = await semanticContrast(page);
@@ -736,6 +797,7 @@ try {
             // No region is hidden, blurred or exempted from the comparison.
             assert.ok(difference.maxChannelDelta <= 2 && difference.changedPixels / difference.pixelCount <= 0.0001, `${filename}: capture differs beyond raster tolerance (${JSON.stringify(difference)})`);
           }
+          if (destination === 'history') await checkHistoryDetails(page, lang, theme, pass, pending);
           if (pass === 0) await checkShellAccess(page, destination, lang, theme);
           if (pass === 0 && destination === 'projects') await checkProjectCards(page, lang, theme, pending);
           if (pass === 0 && destination === 'providers') await checkProviders(page, lang, theme, pending);
@@ -756,7 +818,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

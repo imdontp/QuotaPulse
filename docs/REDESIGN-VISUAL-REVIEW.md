@@ -1,5 +1,12 @@
 # Concept comparison and refinement queue
 
+[History record details 1.32](REDESIGN-HISTORY-DETAIL-V1.32.md) refines the selected
+row, sticky detail heading, recorded-kind badge and token tiles. Eight normal and
+selected repeat pairs are byte-identical. API-matched metadata, native modal
+background isolation, Escape/focus restoration and 390/900/1280 geometry pass.
+Main History timeline/filter/table density remains in the dashboard refinement
+queue. This is scoped evidence; visual approval and complete RC gates are pending.
+
 [Cost axes 1.31](REDESIGN-COST-AXES-V1.31.md) adds visible monetary/priced-token
 scales, quarter-step grid and localized exact scope endpoints. API/native bases,
 coverage and complete bucket access remain. Twelve axis/data cases pass and four

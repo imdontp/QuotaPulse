@@ -33,7 +33,7 @@ export function HistoryRecordDetails({ row, basis, date }: { row: UsageEventRow;
       [t('history.subagent'), row.is_subagent === null ? unknown : t(row.is_subagent ? 'history.yes' : 'history.no')],
     ] },
   ] satisfies Array<{ title: Parameters<typeof t>[0]; fields: Array<Array<string | number>> }>;
-  return <div className="qp-history-detail-groups">{groups.map(group => <section key={group.title} aria-label={t(group.title)}>
+  return <div className="qp-history-detail-groups">{groups.map(group => <section key={group.title} data-group={group.title} aria-label={t(group.title)}>
     <h3>{t(group.title)}</h3>
     <dl>{group.fields.map(([label, value]) => <div key={String(label)}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
     {group.title === 'history.tokenBreakdown' && row.total_tokens !== row.input_tokens + row.cached_input_tokens + row.cache_write_tokens + row.output_tokens && <p className="qp-footnote">{t('history.partialBreakdown')}</p>}

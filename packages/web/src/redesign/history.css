@@ -15,11 +15,20 @@
 .qp-redesign [data-testid="usage-history"] form label:has(select) { display:grid; gap:4px; }
 .qp-redesign [data-testid="usage-history"] form select { min-width:0; width:100%; }
 .qp-redesign [data-testid="usage-history"] td { padding:8px 12px; font-size:12px; }
+.qp-redesign [data-testid="usage-history"] tr[data-selected=true] { background:color-mix(in srgb,var(--qp-accent) 12%,var(--qp-panel)); }
+.qp-redesign [data-testid="usage-history"] tr[data-selected=true] td:first-child { box-shadow:inset 3px 0 var(--qp-accent); }
+.qp-redesign dialog[aria-labelledby=history-detail-title] { padding:14px; }
+.qp-history-detail-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; position:sticky; top:-14px; z-index:1; background:var(--qp-bg); padding:12px 0; border-bottom:1px solid var(--qp-border); }
+.qp-history-detail-heading h2 { font-size:16px; font-weight:600; }
+.qp-history-detail-heading h2 span { display:block; color:var(--qp-muted); font-size:12px; font-weight:400; }
+.qp-history-record-kind { display:inline-block; margin-top:10px; border:1px solid var(--qp-border); border-radius:6px; padding:3px 8px; font-size:11px; color:var(--qp-muted); }
 .qp-history-detail-groups section,.qp-history-detail-actions { border-top:1px solid var(--qp-border); padding-top:12px; margin-top:12px; }
 .qp-history-detail-groups h3,.qp-history-detail-actions h3 { font-size:13px; font-weight:600; margin-bottom:10px; }
 .qp-history-detail-groups dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 12px; }
 .qp-history-detail-groups dt { color:var(--qp-muted); font-size:11px; }
 .qp-history-detail-groups dd { font-size:12px; overflow-wrap:anywhere; }
+.qp-history-detail-groups [data-group="history.tokenBreakdown"] dl>div { padding:8px; border:1px solid var(--qp-border); border-radius:8px; }
+.qp-history-detail-groups [data-group="history.tokenBreakdown"] dd { font-size:16px; font-weight:600; font-variant-numeric:tabular-nums; }
 .qp-history-detail-actions { display:flex; flex-wrap:wrap; align-items:center; gap:10px; font-size:12px; }
 .qp-history-detail-actions h3 { flex-basis:100%; margin:0; }
 @media(max-width:900px) {

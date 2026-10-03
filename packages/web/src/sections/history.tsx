@@ -157,7 +157,7 @@ export function HistorySection({ sources, redesign = false }: { sources: Array<{
       <CardHeader><CardTitle as="h2">{t('history.records')}</CardTitle><span className="text-xs text-muted-foreground" aria-live="polite">{t('history.range', { from: snapshot?.total ? snapshot.offset + 1 : 0, to: snapshot ? Math.min(snapshot.offset + snapshot.rows.length, snapshot.total) : 0, total: snapshot?.total ?? 0 })}</span></CardHeader>
       {!snapshot?.rows.length ? !error && <Empty>{t(loading ? 'app.loading' : 'history.empty')}</Empty> : <Table>
         <TableHeader><TableRow><TableHead>{t('history.recordedAt')}</TableHead><TableHead>{t('history.kind')}</TableHead><TableHead>{t('col.harness')}</TableHead><TableHead>{t('col.project')}</TableHead><TableHead>{t('history.provider')}</TableHead><TableHead>{t('col.model')}</TableHead><TableHead>{t('col.total')}</TableHead><TableHead>{t('history.basis')}</TableHead><TableHead>{t('history.detail')}</TableHead></TableRow></TableHeader>
-        <TableBody>{snapshot.rows.map(row => <TableRow key={row.event_id}>
+        <TableBody>{snapshot.rows.map(row => <TableRow key={row.event_id} data-selected={redesign && selected?.event_id === row.event_id ? 'true' : undefined}>
           <TableCell className="whitespace-nowrap">{date(row.timestamp_ms)}</TableCell><TableCell>{t(`history.${row.grain}`)}</TableCell><TableCell>{row.source_name}</TableCell><TableCell className="max-w-48 break-all">{row.project ?? t('redesign.unassigned')}</TableCell><TableCell>{row.provider ?? '—'}</TableCell><TableCell>{row.model ?? '—'}</TableCell><TableCell>{row.total_tokens.toLocaleString(lang)}</TableCell><TableCell><span>{basis(row)}</span><br/><span title={f.explain(row.cost_usd) ?? undefined}>{row.cost_usd !== null && ['native', 'computed', 'estimated'].includes(row.cost_source) ? f.money(row.cost_usd) : '—'}</span></TableCell><TableCell><Button onClick={event => { returnFocus.current = event.currentTarget; setCopyState('idle'); setSelected(row); }} aria-label={`${t('history.detail')} ${row.event_id}`}>#{row.event_id}</Button></TableCell>
         </TableRow>)}</TableBody>
       </Table>}
@@ -165,7 +165,8 @@ export function HistorySection({ sources, redesign = false }: { sources: Array<{
     </Card>
     <p className="text-xs leading-relaxed text-muted-foreground">{t('history.coverage')}</p>
     <dialog ref={dialog} onClose={() => { setSelected(null); returnFocus.current?.focus(); }} aria-labelledby="history-detail-title" className="m-auto max-h-[85vh] w-[min(640px,92vw)] overflow-auto rounded-xl border bg-background p-5 text-foreground backdrop:bg-black/60">
-      <div className="flex items-center justify-between gap-3"><h2 id="history-detail-title">{t('history.detail')} #{selected?.event_id}</h2><Button autoFocus onClick={() => dialog.current?.close()}>{t('history.close')}</Button></div>
+      <div className={redesign ? 'qp-history-detail-heading' : 'flex items-center justify-between gap-3'}><h2 id="history-detail-title">{t('history.detail')} <span>#{selected?.event_id}</span></h2><Button autoFocus onClick={() => dialog.current?.close()}>{t('history.close')}</Button></div>
+      {redesign && selected && <div className="qp-history-record-kind">{t(`history.${selected.grain}`)}</div>}
       <p className="my-3 text-xs text-muted-foreground">{t('history.coverage')}</p>
       {selected && redesign && <HistoryRecordDetails row={selected} basis={basis(selected)} date={date(selected.timestamp_ms)}/>}
       {selected && !redesign && <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">{[
