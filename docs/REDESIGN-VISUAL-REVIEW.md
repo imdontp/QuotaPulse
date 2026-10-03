@@ -1,5 +1,10 @@
 # Concept comparison and refinement queue
 
+[Cost detail refinement v1.41](REDESIGN-COST-DETAIL-V1.41.md) restores the
+190px plot and wider trend column, adds amount-share table bars, and refines
+insight rows and keyboard-accessible table scrolling. Its browser evidence is
+Cost-only; other pages retain separately labelled v1.40 review captures.
+
 [Cost reference repair v1.40](REDESIGN-COST-REFERENCE-V1.40.md) advances the
 header/donut alignment, real monetary sparkline, provider identity and connected
 token line. Both axes retain their separate measurements and pricing coverage.

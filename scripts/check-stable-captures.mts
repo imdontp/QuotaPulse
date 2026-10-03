@@ -546,6 +546,7 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
     const data = result.json<ModelDetailResponse | CostAnalysisResponse>();
     await page.locator('.qp-chart-data').waitFor(); await settled(page, pending);
     const collapsedBottom = await page.locator(destination === 'models' ? '.qp-model-detail' : '.qp-cost-layout').evaluate(element => element.getBoundingClientRect().bottom);
+    if (destination === 'cost' && collapsedBottom >= 941) console.log('Cost overflow geometry', await page.locator('.qp-cost-top,.qp-cost-summary,.qp-cost-trend,.qp-cost-models,.qp-cost-projects,.qp-cost-sessions,.qp-cost-insights').evaluateAll(elements => elements.map(element => ({ className: element.className, top: element.getBoundingClientRect().top, height: element.getBoundingClientRect().height }))));
     assert.ok(collapsedBottom < 941, `${route}: collapsed detail outside viewport (${collapsedBottom})`);
     if (destination === 'cost') {
       const cost = data as CostAnalysisResponse;
@@ -574,6 +575,21 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
           assert.ok(Math.abs(point.x - 1000 * (index + 0.5) / tokenPoints.length) < 0.0001, 'Token point is not centered on its bucket');
         });
       } else assert.equal(await page.locator('.qp-cost-plot').count(), 0, 'Unpriced scope must not show a monetary plot/axis');
+      for (const [selector, groups] of [['.qp-cost-models', cost.models], ['.qp-cost-projects', cost.projects]] as const) {
+        const expected = groups.filter(group => group.pricedCalls > 0).slice(0, 8);
+        const bars = await page.locator(`${selector} .qp-cost-share b`).evaluateAll(elements => elements.map(element => parseFloat((element as HTMLElement).style.width)));
+        assert.equal(bars.length, expected.length);
+        bars.forEach((width, index) => assert.ok(Math.abs(width - (cost.totals.amount > 0 ? expected[index].amount / cost.totals.amount * 100 : 0)) < 0.0001, 'Share bar differs from recorded amount fraction'));
+      }
+      if (cost.sessions.length > 0) {
+        const table = page.locator('.qp-cost-sessions .qp-cost-table');
+        assert.equal(await table.locator('tbody tr').count(), cost.sessions.length);
+        await table.focus(); await page.keyboard.press('End');
+        const last = table.locator('tbody tr:last-child a');
+        await last.focus(); await page.keyboard.press('Tab'); await page.keyboard.press('Shift+Tab');
+        assert.equal(await last.evaluate(element => element === document.activeElement), true, 'Last session link is not keyboard reachable');
+        assert.equal(await last.evaluate(element => { const row = element.getBoundingClientRect(); const scroll = element.closest('.qp-cost-table')!.getBoundingClientRect(); return row.top >= scroll.top && row.bottom <= scroll.bottom; }), true, 'Last session is hidden by its table viewport');
+      }
       costAxisChecks.push({ route, lang, theme, priced: cost.totals.pricedCalls > 0, maxAmount, maxTokens });
     }
     const disclosure = page.locator('.qp-chart-data'); const summary = disclosure.locator('summary');

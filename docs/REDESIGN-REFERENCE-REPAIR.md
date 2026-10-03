@@ -150,3 +150,9 @@ priced-token buckets over the independent monetary bars. Remaining plot/table
 and typography work is recorded separately from repeatability results.
 Original-reference similarity scoring, user visual acceptance, manual screen
 reader review and the broader release gates remain outstanding.
+
+[Cost detail v1.41](REDESIGN-COST-DETAIL-V1.41.md) then restores the wider
+190px trend plot, amount-share table decoration and reference-style insight
+rows. Desktop tables scroll with all loaded rows keyboard reachable. This
+advances the same real-data target; its Cost-only evidence is not approval of
+all eight pages or a measurement of concept similarity.
