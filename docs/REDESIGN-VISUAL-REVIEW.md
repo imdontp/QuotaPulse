@@ -1,5 +1,10 @@
 # Concept comparison and refinement queue
 
+[Live composition repair v1.37](REDESIGN-LIVE-COMPOSITION-V1.37.md) keeps the
+sessions, observed chart and record feed together in the reference-sized
+desktop viewport. All loaded data remains keyboard reachable. Provider marks
+and token-share bars use recorded route data. Reference fidelity remains open.
+
 [Reference composition repair v1.36](REDESIGN-REFERENCE-COMPOSITION-V1.36.md)
 continues the reopened fidelity work on Overview, Live and Models. It records
 real-data chart validation separately from similarity to the supplied refs.

@@ -134,5 +134,8 @@ The next checkpoint advances Overview's model/activity identities and
 runway/insights composition, plus Live/Models column placement and observed
 chart styling. See [v1.36 composition repair](REDESIGN-REFERENCE-COMPOSITION-V1.36.md)
 for changes, build-specific evidence and remaining per-page work.
+[Live composition v1.37](REDESIGN-LIVE-COMPOSITION-V1.37.md) then refines
+session/feed allocation and recorded-activity rail marks. These checkpoints
+do not close the remaining fidelity gaps or provide a measured likeness score.
 Original-reference similarity scoring, user visual acceptance, manual screen
 reader review and the broader release gates remain outstanding.
