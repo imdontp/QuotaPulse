@@ -1,5 +1,10 @@
 # Concept comparison and refinement queue
 
+[Cost reference repair v1.40](REDESIGN-COST-REFERENCE-V1.40.md) advances the
+header/donut alignment, real monetary sparkline, provider identity and connected
+token line. Both axes retain their separate measurements and pricing coverage.
+The full dashboard fidelity target remains open.
+
 [Providers reference repair v1.39](REDESIGN-PROVIDERS-REFERENCE-V1.39.md) refines
 card/window geometry, owner details access and comparison labels. Provider quota
 and reader freshness remain distinct from service health. Scoped captures are

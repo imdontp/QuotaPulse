@@ -566,6 +566,13 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
         const points = Array.from({ length: Math.ceil((cost.scope.to - cost.scope.from) / cost.bucketMs) }, (_, index) => cost.points.find(point => point.start === cost.scope.from + index * cost.bucketMs)?.amount ?? 0);
         assert.equal(heights.length, points.length);
         heights.forEach((height, index) => assert.ok(Math.abs(height - points[index] / (maxAmount || 1) * 100) < 0.0001));
+        const tokenPoints = await page.locator('.qp-cost-token-line>circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')), x: Number(element.getAttribute('cx')), y: Number(element.getAttribute('cy')) })));
+        const expectedTokens = points.map((_, index) => { const at = cost.scope.from + index * cost.bucketMs; return { at, value: cost.points.find(point => point.start === at)?.pricedTokens ?? 0 }; });
+        assert.deepEqual(tokenPoints.map(({ at, value }) => ({ at, value })), expectedTokens);
+        tokenPoints.forEach((point, index) => {
+          assert.ok(Math.abs(point.y - (100 - 100 * point.value / (maxTokens || 1))) < 0.0001, 'Token line does not match its own axis');
+          assert.ok(Math.abs(point.x - 1000 * (index + 0.5) / tokenPoints.length) < 0.0001, 'Token point is not centered on its bucket');
+        });
       } else assert.equal(await page.locator('.qp-cost-plot').count(), 0, 'Unpriced scope must not show a monetary plot/axis');
       costAxisChecks.push({ route, lang, theme, priced: cost.totals.pricedCalls > 0, maxAmount, maxTokens });
     }

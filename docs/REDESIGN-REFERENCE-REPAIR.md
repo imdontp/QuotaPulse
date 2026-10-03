@@ -144,5 +144,9 @@ all eight original concepts beside matching app captures without masking.
 [Providers reference v1.39](REDESIGN-PROVIDERS-REFERENCE-V1.39.md) then refines
 quota rows, card height, selected-owner disclosure and above-bar labels using
 published quota/reader facts. The complete fidelity target remains open.
+[Cost reference v1.40](REDESIGN-COST-REFERENCE-V1.40.md) aligns the donut with
+the header, adds actual monetary summary and provider decoration, and connects
+priced-token buckets over the independent monetary bars. Remaining plot/table
+and typography work is recorded separately from repeatability results.
 Original-reference similarity scoring, user visual acceptance, manual screen
 reader review and the broader release gates remain outstanding.
