@@ -162,3 +162,10 @@ the header controls, adds summary icon tiles and recorded identity marks, and
 restores blue/violet timeline area treatment. Complete record-table keyboard
 scrolling and native selected-detail behavior remain validated. Fine filter,
 typography and sidebar composition still require closer reference comparison.
+
+[Alerts reference v1.43](REDESIGN-ALERTS-REFERENCE-V1.43.md) aligns the forecast
+rail with the header, adds an actual forecast-day circular centerpiece, decorates
+recorded owner risk cards and presents the fixed rules in a native table. The
+gate compares all selectable owners' forecast values independently with daemon
+responses and retains history/keyboard/overflow checks. This checkpoint does
+not close the full visual acceptance or broader release requirements.

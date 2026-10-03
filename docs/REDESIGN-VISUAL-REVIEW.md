@@ -1,5 +1,10 @@
 # Concept comparison and refinement queue
 
+[Alerts reference refinement v1.43](REDESIGN-ALERTS-REFERENCE-V1.43.md) moves
+the forecast rail beside the main header, adds a real forecast-day center and
+recorded owner marks, decorates risk cards and lays out fixed rules as a table.
+Alerts-only checks pass; remaining composition and overall fidelity remain open.
+
 [History reference refinement v1.42](REDESIGN-HISTORY-REFERENCE-V1.42.md)
 combines title/range controls, decorates summary and recorded identities, and
 adds actual blue/violet area treatment. History and selected-detail browser

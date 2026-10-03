@@ -45,12 +45,30 @@
 .qp-alert-history li span { color:var(--qp-muted); font-size:10px; }
 .qp-alert-history button { justify-self:start; }
 .qp-alert-error { color:var(--qp-warning); font-size:11px; }
+.qp-alert-owner { display:flex!important; align-items:center; gap:7px; }
+.qp-alert-owner svg { width:19px; height:19px; flex:none; }
+.qp-alert-forecast-orb { width:170px; height:170px; margin:4px auto; padding:10px; border-radius:50%; background:conic-gradient(from 12deg,#19c9ff 0 20%,#08101b 20% 22%,#7557ff 22% 48%,#08101b 48% 50%,#17d6b2 50% 66%,#08101b 66% 68%,#784bfa 68% 93%,#08101b 93% 100%); box-shadow:0 0 22px #167eff44,inset 0 0 7px #15c8ff77; outline:1px solid var(--qp-border); outline-offset:6px; }
+.qp-alert-forecast-orb>div { height:100%; width:100%; display:grid; align-content:center; justify-items:center; gap:6px; border-radius:50%; background:radial-gradient(ellipse at 50% 40%,color-mix(in srgb,var(--qp-accent) 10%,var(--qp-panel)),var(--qp-panel) 70%); text-align:center; padding:12px; }
+.qp-alert-forecast-orb strong { font-size:28px; line-height:1.15; }
+.qp-alert-forecast-orb span { font-size:10px; line-height:1.4; color:var(--qp-accent); }
+.qp-alert-forecast { background:radial-gradient(ellipse at 50% 30%,color-mix(in srgb,var(--qp-accent) 5%,var(--qp-panel)),var(--qp-panel) 75%); }
+.qp-alert-rule-table { overflow:auto; }
+.qp-alert-rule-table table { width:100%; border-collapse:collapse; font-size:11px; text-align:left; }
+.qp-alert-rule-table th { background:color-mix(in srgb,var(--qp-accent) 4%,var(--qp-panel)); color:var(--qp-muted); font-weight:500; }
+.qp-alert-rule-table th,.qp-alert-rule-table td { padding:6px 8px; border-bottom:1px solid var(--qp-border); }
+.qp-alert-rule-table td>span { font-size:11px; padding:3px 8px!important; display:inline-block; }
+.qp-alert-risk li[data-level] { border:1px solid var(--qp-border); border-radius:8px; padding:9px; background:linear-gradient(90deg,color-mix(in srgb,var(--qp-accent) 4%,var(--qp-panel)),var(--qp-panel)); }
+.qp-alert-risk li[data-level=critical] { border-color:color-mix(in srgb,var(--qp-danger) 25%,var(--qp-border)); background:linear-gradient(90deg,color-mix(in srgb,var(--qp-danger) 7%,var(--qp-panel)),var(--qp-panel)); }
+.qp-alert-risk li[data-level=warning] { border-color:color-mix(in srgb,var(--qp-warning) 25%,var(--qp-border)); background:linear-gradient(90deg,color-mix(in srgb,var(--qp-warning) 6%,var(--qp-panel)),var(--qp-panel)); }
+.qp-alert-guidance { background:linear-gradient(120deg,color-mix(in srgb,var(--qp-series) 5%,var(--qp-panel)),var(--qp-panel)); }
 @media(max-width:1200px) { .qp-alert-layout { grid-template-columns:1fr; } .qp-alert-rail { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:730px) { .qp-alert-header { grid-template-columns:1fr; } .qp-alert-summary { grid-template-columns:repeat(2,minmax(0,1fr)); } .qp-alert-rail { grid-template-columns:1fr; } .qp-alert-risk li { grid-template-columns:70px minmax(0,1fr); } .qp-alert-risk li a { grid-column:2; } }
 @media(max-width:450px) { .qp-alert-controls { grid-template-columns:1fr; } .qp-alert-section-head { grid-template-columns:1fr; } .qp-alert-section-head select { max-width:100%; width:100%; } }
 @media(min-width:1280px) {
   [data-testid=production-alerts] main { gap:12px; }
   .qp-alert-layout { grid-template-columns:minmax(0,2.1fr) minmax(320px,1fr); }
+  [data-testid=production-alerts] main { padding:12px; }
+  .qp-alert-main>.qp-footnote { margin:0; }
   .qp-alert-summary article { padding:12px; gap:5px; }
   .qp-alert-summary strong { line-height:1.2; }
   .qp-alert-main .qp-panel,.qp-alert-rail .qp-panel { padding:14px; gap:8px; }
@@ -64,7 +82,7 @@
   .qp-alert-risk li p { margin-top:2px; line-height:1.3; }
   .qp-alert-risk ul,.qp-alert-history ol { gap:5px; }
   .qp-alert-risk ul { max-height:200px; overflow:auto; overscroll-behavior:contain; }
-  .qp-alert-history ol { max-height:240px; overflow:auto; overscroll-behavior:contain; }
+  .qp-alert-history ol { max-height:160px; overflow:auto; overscroll-behavior:contain; }
   .qp-alert-history li { gap:2px 8px; padding-bottom:5px; }
   .qp-alert-rules>div span { padding:6px 12px; }
   .qp-alert-main .qp-alert-rules { padding:12px; gap:6px; }

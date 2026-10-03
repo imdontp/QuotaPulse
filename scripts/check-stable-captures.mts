@@ -195,6 +195,31 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
   const bottom = await page.locator('.qp-alert-layout').evaluate(element => element.getBoundingClientRect().bottom + scrollY);
   assert.ok(bottom <= 941, `Alerts occupied panels exceed viewport: ${bottom}`);
   assert.deepEqual(await page.locator('.qp-alert-rules [data-threshold]').allTextContents(), ['50%', '80%', '95%']);
+  const forecastSelect = page.locator('.qp-alert-chart select');
+  const initialWindow = await forecastSelect.inputValue();
+  const forecastStates = new Set<string>();
+  for (const key of await forecastSelect.locator('option').evaluateAll(options => options.map(option => (option as HTMLOptionElement).value))) {
+    if (await forecastSelect.inputValue() !== key) {
+      const quotaResponse = page.waitForResponse(response => response.url().includes('/api/quota-history?') && response.status() === 200);
+      await forecastSelect.selectOption(key); await quotaResponse; await settled(page, pending);
+    }
+    const [owner, window] = JSON.parse(key) as [string, string];
+    const params = new URLSearchParams({ subscription_key: owner, window_kind: window, from: String(Math.max(0, fixedNow - 30 * 86_400_000)), to: String(fixedNow + 1) });
+    const quotaResponse = await daemon.inject({ method: 'GET', url: `/api/quota-history?${params}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+    assert.equal(quotaResponse.statusCode, 200);
+    const quota = quotaResponse.json<QuotaHistoryResponse>();
+    forecastStates.add(quota.reader?.forecast.status ?? 'unknown');
+    const expected = quota.reader?.forecast.status === 'ready' && quota.reader.forecast.projectedFullAt != null
+      ? new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 1 }).format(Math.max(0, (quota.reader.forecast.projectedFullAt - fixedNow) / 86_400_000))
+      : lang === 'th' ? 'ไม่ทราบ' : 'Unknown';
+    assert.equal(await page.getByTestId('alert-forecast-days').textContent(), expected, 'Forecast days differ from daemon result');
+  }
+  assert.ok(forecastStates.has('ready'), 'Ready forecast fixture was not checked');
+  assert.ok([...forecastStates].some(status => status !== 'ready'), 'Unavailable forecast fixture was not checked');
+  if (await forecastSelect.inputValue() !== initialWindow) {
+    const quotaResponse = page.waitForResponse(response => response.url().includes('/api/quota-history?') && response.status() === 200);
+    await forecastSelect.selectOption(initialWindow); await quotaResponse; await settled(page, pending);
+  }
   for (const [threshold, color] of [[80, '--qp-warning'], [95, '--qp-danger']] as const) {
     const swatch = await page.locator(`.qp-alert-history [data-threshold="${threshold}"]`).first().evaluate((element, color) => ({ actual: getComputedStyle(element).color, expected: getComputedStyle(document.querySelector('.qp-redesign')!).getPropertyValue(color).trim() }), color);
     assert.deepEqual(rgb(swatch.actual), rgb(swatch.expected));

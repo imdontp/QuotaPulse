@@ -374,6 +374,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.alertStale': 'ค่าที่อ่านเก่าหรือหมดอายุ จึงไม่ทราบความเสี่ยงปัจจุบัน',
   'redesign.alertForecast': 'คาดว่าใช้เต็มก่อนรีเซ็ต',
   'redesign.alertForecastPanel': 'คาดการณ์การใช้งาน',
+  'redesign.alertForecastDays': 'จำนวนวันที่คาดว่าจะใช้เต็ม',
   'redesign.alertReaderAdvisory': 'ตัวอ่านควรตรวจสอบ',
   'redesign.alertThreshold': 'ค่าปัจจุบันผ่านเกณฑ์คงที่',
   'redesign.alertThresholdTable': 'กฎเกณฑ์แบบอ่านอย่างเดียว',

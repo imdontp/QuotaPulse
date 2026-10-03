@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QuotaPulse — reference review v1.43</title>
+<style>
+body{margin:0;background:#040a14;color:#eef3ff;font:15px system-ui,sans-serif}header{padding:20px;display:grid;gap:12px}h1{font-size:22px;margin:0}p{margin:0;color:#a6b9dc}fieldset{border:1px solid #32455f;display:flex;gap:20px;flex-wrap:wrap;padding:12px}label{display:flex;gap:8px;align-items:center}select,button{font:inherit;background:#08101b;color:#eef3ff;border:1px solid #52657c;padding:6px}input{accent-color:#36c9ff}:focus-visible{outline:2px solid #36c9ff;outline-offset:3px}.images{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}figure{margin:0;min-width:0}figcaption{padding:8px;color:#a6b9dc}img{width:100%;display:block}.overlay .images{display:block;position:relative;padding:0;margin:12px}.overlay figure:last-child{position:absolute;inset:0;opacity:var(--app-opacity,.5)}.overlay figcaption{display:none}@media(max-width:800px){.images{grid-template-columns:1fr}}
+</style>
+<header>
+<h1>QuotaPulse — refs เทียบแอป v1.43</h1>
+<p>ภาพแอปใช้ข้อมูลทดสอบจาก daemon จริงในฐานข้อมูลจำลอง ตัวเลข ชื่อ และรูปกราฟจึงต่างจาก concept เครื่องมือนี้ช่วยตรวจหน้าตา ไม่มีคะแนนความเหมือนหรือการอนุมัติ visual acceptance</p>
+<fieldset><legend>เปรียบเทียบภาพ</legend>
+<label>หน้า <select id="page"><option>overview</option><option>live</option><option>projects</option><option>providers</option><option>models</option><option>cost</option><option>history</option><option selected>alerts</option></select></label>
+<label><input id="overlay" type="checkbox">ซ้อนภาพที่ขนาดเดียวกัน</label>
+<label>ความทึบภาพแอป <input id="opacity" type="range" min="0" max="100" value="50"><output id="value">50%</output></label>
+</fieldset>
+<p>ภาพต้นฉบับถูกคัดลอกโดยตรวจ SHA256 ว่าตรงกับ refs ทุกไฟล์ ภาพแอปเป็น English/dark ที่ขนาดต้นฉบับ ไม่มีการตัดส่วนหรือปิดบังพื้นที่</p>
+</header>
+<p style="padding:12px">Alerts: v1.43; History: v1.42; Cost: v1.41; Overview, Live, Projects, Providers, Models: v1.40. Only Alerts was changed and captured in this checkpoint.</p><main class="images"><figure><figcaption>Source concept</figcaption><img id="source" src="source-alerts.png" alt="Alerts source concept"></figure><figure><figcaption>Production app — synthetic fixture</figcaption><img id="app" src="alerts-en-dark.png" alt="Alerts production capture"></figure></main>
+<script>
+const page=document.getElementById('page'),overlay=document.getElementById('overlay'),opacity=document.getElementById('opacity');
+page.addEventListener('change',()=>{const name=page.value;document.getElementById('source').src=`source-${name}.png`;document.getElementById('source').alt=`${name} source concept`;document.getElementById('app').src=`${name}-en-dark.png`;document.getElementById('app').alt=`${name} production capture`});
+overlay.addEventListener('change',()=>document.body.classList.toggle('overlay',overlay.checked));
+opacity.addEventListener('input',()=>{document.body.style.setProperty('--app-opacity',opacity.value/100);document.getElementById('value').value=`${opacity.value}%`});
+</script>
+</html>

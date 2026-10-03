@@ -370,6 +370,7 @@ export const en = {
   'redesign.alertStale': 'Reading is stale or expired; current risk is unknown',
   'redesign.alertForecast': 'Forecast reaches full use before reset',
   'redesign.alertForecastPanel': 'Usage forecast',
+  'redesign.alertForecastDays': 'Forecast days until full use',
   'redesign.alertReaderAdvisory': 'Reader needs review',
   'redesign.alertThreshold': 'Current reading crossed a fixed threshold',
   'redesign.alertThresholdTable': 'Read-only threshold rules',
