@@ -156,10 +156,10 @@ export function ProductionProjects() {
           const share = data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0;
           const rows = data?.rows.filter(row => row.project === group.key) ?? [];
           return <button key={JSON.stringify(group.key)} className="qp-project-card qp-panel" aria-pressed={selected?.key === group.key} onClick={() => update({ project: group.key, offset: 0 })}>
-            <span className="qp-project-card-heading"><Folder size={19}/><strong>{projectName(group.key)}</strong></span>
-            <span className="qp-project-card-meta">{t('redesign.sortRecent')} · {date(group.lastObservedAt)}</span>
+            <span className="qp-project-card-heading"><span className="qp-project-icon" aria-hidden="true"><Folder size={21}/></span><span className="qp-project-card-identity"><strong>{projectName(group.key)}</strong><span className="qp-project-card-meta">{t('redesign.sortRecent')} · {date(group.lastObservedAt)}</span></span></span>
             <span className="qp-project-card-tokens"><strong>{number(group.tokens)}</strong><small>{number(share)}% {t('redesign.projectShare')}</small></span>
             <span className="qp-bar"><span style={{ width: `${share}%` }}/></span>
+            <span className="qp-project-card-money"><span><small>{t('redesign.reported')}</small><strong><CostValue amount={group.reported_native_usd} priced={group.native_calls} total={group.calls} money={money} t={t}/></strong></span><span><small>{t('redesign.value')}</small><strong><CostValue amount={group.api_value_usd} priced={group.computed_calls + group.estimated_calls} total={group.calls} money={money} t={t}/></strong></span></span>
             <span className="qp-project-card-facts"><span>{number(group.sessions)} {t('redesign.sessions')}</span><span>{number(group.calls)} {t('redesign.modelsCalls')}</span><span>{new Set(rows.map(row => row.harness)).size} {t('redesign.harnessesUsed')}</span></span>
           </button>;
         })}

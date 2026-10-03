@@ -1,5 +1,13 @@
 # Concept comparison and refinement queue
 
+[Project cards 1.28](REDESIGN-PROJECT-CARDS-V1.28.md) adds separate recorded-cost
+and calculated-API comparisons to cards, with weighted coverage and unknown states.
+Card identity, selected appearance and desktop spacing are refined. All eight
+occupied cards fit the unchanged viewport gate in both languages/themes; four
+repeat pairs pass the existing unmasked tolerance (three byte-identical). Page-origin
+geometry, keyboard selection, empty search and existing chart/shell access pass.
+This is a scoped Projects checkpoint; other screens retain historical v1.27 evidence.
+
 [Shared header 1.27](REDESIGN-SHARED-HEADER-V1.27.md) places the existing brand in
 the full-width header and aligns its column with the responsive sidebar. Actual
 daemon/machine state and page-navigation behavior remain intact. All eight screens

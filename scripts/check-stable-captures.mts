@@ -9,14 +9,15 @@ import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
-import type { MinuteTrendResponse, ProjectDetailResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse } from '../packages/web/src/api.js';
+import type { MinuteTrendResponse, ProjectDetailResponse, DetailedProjectResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse } from '../packages/web/src/api.js';
 import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
 process.env.TZ = 'Asia/Bangkok';
 const overviewOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'overview';
-const output = resolve(root, overviewOnly ? 'screens/overview-layout' : 'screens/stable-captures');
+const projectsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'projects';
+const output = resolve(root, overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : 'screens/stable-captures');
 mkdirSync(output, { recursive: true });
 // A failed attempt must never leave a previous success manifest in this folder.
 rmSync(resolve(output, 'verification.json'), { force: true });
@@ -70,6 +71,7 @@ const headerChecks: Array<{ page: string; lang: string; theme: string; width: nu
 const fontChecks: Array<{ page: string; lang: string; theme: string; family: string; custom: boolean; glyphs: number }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const overviewLayouts: Array<{ lang: string; theme: string; heroBottom: number; activityBottom: number; models: number; railHeight: number }> = [];
+const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bottom: number; unknownNative: number }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const fontPath = 'fonts/noto-sans-thai/';
 const fontProvenance = JSON.parse(readFileSync(resolve(root, `packages/web/public/${fontPath}provenance.json`), 'utf8'));
@@ -82,7 +84,45 @@ const allPages = [
   ['models', '.qp-model-trend'], ['cost', '.qp-cost-chart'],
   ['history', '[data-testid="usage-history"] tbody tr'], ['alerts', '.qp-quota-point'],
 ] as const;
-const pages = overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : allPages;
+const pages = overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : projectsOnly ? allPages.filter(([destination]) => destination === 'projects') : allPages;
+
+async function checkProjectCards(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  const month = new Date(fixedNow); month.setDate(1); month.setHours(0, 0, 0, 0);
+  const query = new URLSearchParams({ detailed: '1', from: String(month.getTime()), to: String(fixedNow + 1) });
+  const result = await daemon.inject({ method: 'GET', url: `/api/projects?${query}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  assert.equal(result.statusCode, 200);
+  const data = result.json<DetailedProjectResponse>();
+  const cards = page.locator('.qp-project-card');
+  assert.equal(await cards.count(), 8);
+  const bottom = await cards.last().evaluate(element => element.getBoundingClientRect().bottom + window.scrollY);
+  const geometry = await cards.last().evaluate(element => ({ padding: getComputedStyle(element).padding, gap: getComputedStyle(element).gap, height: element.getBoundingClientRect().height, width: innerWidth, scrollY }));
+  assert.ok(bottom <= 941, `All eight project cards must fit the canonical viewport: ${bottom}; ${JSON.stringify(geometry)}`);
+  const money = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' });
+  for (const group of data.groups) {
+    const card = cards.filter({ has: page.locator('.qp-project-card-identity>strong', { hasText: group.key! }) });
+    assert.equal(await card.count(), 1);
+    const values = card.locator('.qp-project-card-money>span');
+    for (const [index, amount, priced] of [[0, group.reported_native_usd, group.native_calls], [1, group.api_value_usd, group.computed_calls + group.estimated_calls]]) {
+      const expected = priced === 0 ? (lang === 'th' ? 'ไม่ทราบ' : 'Unknown') : `${money.format(amount)}${priced < group.calls ? '+' : ''}`;
+      assert.equal(await values.nth(index).locator('.qp-cost-value>span:first-child').textContent(), expected);
+      assert.ok((await values.nth(index).locator('.qp-cost-value').getAttribute('title'))!.includes(`${priced} / ${group.calls}`));
+    }
+  }
+  assert.ok(data.groups.some(group => group.native_calls === 0));
+  assert.ok(data.groups.some(group => group.native_calls > 0 && group.native_calls < group.calls));
+  // Keyboard selection must keep the existing detail/identity behavior.
+  const last = cards.last(); const identity = await last.locator('.qp-project-card-identity>strong').textContent();
+  await last.focus(); await page.keyboard.press('Enter'); await settled(page, pending);
+  assert.equal(await last.getAttribute('aria-pressed'), 'true');
+  assert.ok((await page.locator('.qp-project-detail h2').textContent())!.includes(identity!));
+  await page.locator('.qp-project-search input').fill('no-such-synthetic-project');
+  assert.equal(await cards.count(), 0);
+  await page.locator('.qp-project-search input').fill('');
+  const first = cards.filter({ has: page.locator('.qp-project-card-identity>strong', { hasText: 'Fixture project 0' }) });
+  await first.click(); await settled(page, pending);
+  await first.evaluate(element => (element as HTMLElement).blur()); await page.evaluate(() => window.scrollTo(0, 0));
+  projectCardChecks.push({ lang, theme, cards: data.groups.length, bottom, unknownNative: data.groups.filter(group => group.native_calls === 0).length });
+}
 
 async function settled(page: Page, pending: Set<Request>) {
   const deadline = performance.now() + 15_000;
@@ -573,6 +613,7 @@ try {
             assert.ok(difference.maxChannelDelta <= 2 && difference.changedPixels / difference.pixelCount <= 0.0001, `${filename}: capture differs beyond raster tolerance (${JSON.stringify(difference)})`);
           }
           if (pass === 0) await checkShellAccess(page, destination, lang, theme);
+          if (pass === 0 && destination === 'projects') await checkProjectCards(page, lang, theme, pending);
           if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme);
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
           if (pass === 0 && destination === 'overview') await checkRuntimeAccess(page, lang, theme, pending);
@@ -589,7 +630,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : projectsOnly ? 'projects' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, projectCardChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;
