@@ -1,0 +1,982 @@
+{
+  "status": "repeatable within recorded raster tolerance; review candidates, not approved visual baselines",
+  "scope": "overview",
+  "clock": 1779025320000,
+  "isoClock": "2026-05-17T13:42:00.000Z",
+  "browser": "153.0.8010.53",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "timezone": "Asia/Bangkok",
+  "dpr": 1,
+  "reducedMotion": true,
+  "tolerance": {
+    "maxChannelDelta": 2,
+    "maxChangedPixelFraction": 0.0001,
+    "masks": false
+  },
+  "productionIndexSha256": "29334997a1aada15af6f59ba5c080dd02cd61dee0c73c836b58ffeecf00fbed2",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "sessions": 12,
+    "namedProjects": 8,
+    "models": 8,
+    "providers": 4,
+    "records": 38
+  },
+  "checks": [
+    "frozen daemon and browser Date",
+    "8 screenshots / 4 pairs within raster tolerance",
+    "independent browser process per language/theme set",
+    "fresh document per route",
+    "production web without Vite",
+    "fonts ready and API settled",
+    "no page overflow",
+    "no external or write requests",
+    "no browser errors",
+    "Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration",
+    "complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow"
+  ],
+  "referenceColumnChecks": [],
+  "liveDensityChecks": [],
+  "overviewLayouts": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "heroBottom": 462.6875,
+      "activityBottom": 989.515625,
+      "models": 8,
+      "railHeight": 270,
+      "runtimeProvidersVisible": 4,
+      "edgeMaxError": 0.00750732421875,
+      "pulseCenter": {
+        "x": 728.546875,
+        "y": 251
+      },
+      "modelTitleOutside": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "heroBottom": 462.6875,
+      "activityBottom": 989.515625,
+      "models": 8,
+      "railHeight": 270,
+      "runtimeProvidersVisible": 4,
+      "edgeMaxError": 0.00750732421875,
+      "pulseCenter": {
+        "x": 728.546875,
+        "y": 251
+      },
+      "modelTitleOutside": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "heroBottom": 462.6875,
+      "activityBottom": 989.515625,
+      "models": 8,
+      "railHeight": 270,
+      "runtimeProvidersVisible": 4,
+      "edgeMaxError": 0.00750732421875,
+      "pulseCenter": {
+        "x": 728.546875,
+        "y": 251
+      },
+      "modelTitleOutside": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "heroBottom": 462.6875,
+      "activityBottom": 989.515625,
+      "models": 8,
+      "railHeight": 270,
+      "runtimeProvidersVisible": 4,
+      "edgeMaxError": 0.00750732421875,
+      "pulseCenter": {
+        "x": 728.546875,
+        "y": 251
+      },
+      "modelTitleOutside": true
+    }
+  ],
+  "projectCardChecks": [],
+  "providerChecks": [],
+  "modelComparisonChecks": [],
+  "costAxisChecks": [],
+  "historyChecks": [],
+  "historyDensityChecks": [],
+  "alertChecks": [],
+  "chartChecks": [],
+  "modelCostChecks": [],
+  "quotaChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    }
+  ],
+  "pulseCoreChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "assetSha256": "31da2aab7354705aacaccb5b63111d5208e2dd0b705bd10e563a5adc1c6e4ddd",
+      "imageWidth": 1254,
+      "selectedUsed": [
+        85,
+        97
+      ],
+      "boundaries": [
+        0,
+        100,
+        125
+      ],
+      "unknown": true,
+      "reducedMotion": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "assetSha256": "31da2aab7354705aacaccb5b63111d5208e2dd0b705bd10e563a5adc1c6e4ddd",
+      "imageWidth": 1254,
+      "selectedUsed": [
+        85,
+        97
+      ],
+      "boundaries": [
+        0,
+        100,
+        125
+      ],
+      "unknown": true,
+      "reducedMotion": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "assetSha256": "31da2aab7354705aacaccb5b63111d5208e2dd0b705bd10e563a5adc1c6e4ddd",
+      "imageWidth": 1254,
+      "selectedUsed": [
+        85,
+        97
+      ],
+      "boundaries": [
+        0,
+        100,
+        125
+      ],
+      "unknown": true,
+      "reducedMotion": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "assetSha256": "31da2aab7354705aacaccb5b63111d5208e2dd0b705bd10e563a5adc1c6e4ddd",
+      "imageWidth": 1254,
+      "selectedUsed": [
+        85,
+        97
+      ],
+      "boundaries": [
+        0,
+        100,
+        125
+      ],
+      "unknown": true,
+      "reducedMotion": true
+    }
+  ],
+  "overviewPeriodChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "tokensByRange": {
+        "week": 3602,
+        "month": 3602,
+        "all": 3602,
+        "today": 3601
+      },
+      "selectedQuotaPreserved": true,
+      "customSourcePreserved": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "tokensByRange": {
+        "week": 3602,
+        "month": 3602,
+        "all": 3602,
+        "today": 3601
+      },
+      "selectedQuotaPreserved": true,
+      "customSourcePreserved": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "tokensByRange": {
+        "week": 3602,
+        "month": 3602,
+        "all": 3602,
+        "today": 3601
+      },
+      "selectedQuotaPreserved": true,
+      "customSourcePreserved": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "tokensByRange": {
+        "week": 3602,
+        "month": 3602,
+        "all": 3602,
+        "today": 3601
+      },
+      "selectedQuotaPreserved": true,
+      "customSourcePreserved": true,
+      "focusRestored": true
+    }
+  ],
+  "overviewInsightChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "cards": 4,
+      "cacheShare": 33.31790837575196,
+      "pricedCalls": 73,
+      "totalCalls": 73,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "empty"
+      ]
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "cards": 4,
+      "cacheShare": 33.31790837575196,
+      "pricedCalls": 73,
+      "totalCalls": 73,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "empty"
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "cards": 4,
+      "cacheShare": 33.31790837575196,
+      "pricedCalls": 73,
+      "totalCalls": 73,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "empty"
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "cards": 4,
+      "cacheShare": 33.31790837575196,
+      "pricedCalls": 73,
+      "totalCalls": 73,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "empty"
+      ]
+    }
+  ],
+  "quotaGroupChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "owners": 2,
+      "windows": 8,
+      "sameNameSeparate": true,
+      "keyboardScrolled": true,
+      "historyIdentity": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "owners": 2,
+      "windows": 8,
+      "sameNameSeparate": true,
+      "keyboardScrolled": true,
+      "historyIdentity": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "owners": 2,
+      "windows": 8,
+      "sameNameSeparate": true,
+      "keyboardScrolled": true,
+      "historyIdentity": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "owners": 2,
+      "windows": 8,
+      "sameNameSeparate": true,
+      "keyboardScrolled": true,
+      "historyIdentity": true
+    }
+  ],
+  "runtimeChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    }
+  ],
+  "shellChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    }
+  ],
+  "headerChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216
+    }
+  ],
+  "fontProvenance": {
+    "family": "Noto Sans Thai",
+    "upstream": "https://github.com/google/fonts",
+    "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+    "upstreamPath": "ofl/notosansthai/NotoSansThai[wdth,wght].ttf",
+    "sha256": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+    "license": "OFL-1.1",
+    "modifiedFont": false
+  },
+  "fontChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    }
+  ],
+  "settingsChecks": [],
+  "cases": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "overview-en-dark.png",
+      "sha256": "33405acb707921ab3722ba0eb4f4cddb5b5b7134e52feb450820db128a5b4a42",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "1901c1ad486d16a29ddee836c9bcfb0ebf026cbfa6fc0f34e13a4d09d883eef7",
+      "changedPixels": 17,
+      "maxChannelDelta": 1
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "filename": "overview-en-light.png",
+      "sha256": "52fdc973fca89af15f83b6c6f2f230e72e2068f6a1f1d86c829333f6a9ff1104",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "f8ca3989b17676202281cd2099cc3039cec8af37cc75e6a917bc1aa9c2f88a8f",
+      "changedPixels": 16,
+      "maxChannelDelta": 2
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "overview-th-dark.png",
+      "sha256": "e1e5f3140b53fba9d59e8c07c62ab15ae45e77843e953f1d477712b4f4cad737",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "6b32e84febe95662988d81ff3a241c15e9052d718485b64a9f5cf212bc2f5219",
+      "changedPixels": 17,
+      "maxChannelDelta": 1
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "filename": "overview-th-light.png",
+      "sha256": "eebcb1aed90cfa6ca974ec0ab9a629e4ddd0188a6bd72f399918a17b26e1743c",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "67b99d1fd4027fe5dc0898e6bccb7d62cf5989022fed769b5bd36b4c21bf1d0c",
+      "changedPixels": 16,
+      "maxChannelDelta": 2
+    }
+  ]
+}

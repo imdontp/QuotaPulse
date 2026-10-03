@@ -121,6 +121,7 @@ export const en = {
   'redesign.safePace': 'Safe pace',
   'redesign.pointsPerHour': 'percentage points/hour',
   'redesign.resetIn': 'Reset in',
+  'redesign.resetPast': 'Past reset',
   'redesign.hours': 'hours',
   'redesign.now': 'Now',
   'redesign.projected': 'Projected exhaustion',

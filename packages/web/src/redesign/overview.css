@@ -407,6 +407,26 @@
   font-size:21px;
   font-weight:550;
 }
+.qp-quota-groups { display:grid; gap:10px; align-content:start; max-height:300px; overflow-y:auto; scrollbar-gutter:stable; overscroll-behavior:contain; padding:1px 4px 1px 1px; }
+.qp-quota-group { border:1px solid var(--qp-border); border-radius:10px; padding:10px; background:linear-gradient(115deg,color-mix(in srgb,var(--qp-accent) 3%,var(--qp-panel)),var(--qp-panel)); }
+.qp-quota-group-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
+.qp-quota-group-heading h3 { display:flex; align-items:center; gap:8px; min-width:0; font-size:13px; font-weight:600; overflow-wrap:anywhere; }
+.qp-quota-group-heading h3>svg,.qp-quota-group-heading h3>span { flex:none; width:22px; height:22px; font-size:22px; }
+.qp-quota-group-heading .qp-chip { padding:2px 7px; font-size:10px; }
+.qp-quota-group .qp-quota { width:100%; display:grid; grid-template-columns:minmax(42px,.7fr) minmax(0,1.3fr) minmax(52px,.8fr); gap:8px; align-items:center; min-height:55px; padding:7px 4px; border:1px solid transparent; border-radius:6px; }
+.qp-quota-group .qp-quota+.qp-quota { border-top-color:var(--qp-border); }
+.qp-quota-group .qp-quota[aria-pressed=true] { border-color:var(--qp-accent); background:color-mix(in srgb,var(--qp-accent) 5%,transparent); }
+.qp-quota-group .qp-quota[data-stale=true] { opacity:.7; }
+.qp-quota-group .qp-quota-heading { display:grid; gap:3px; font-size:11px; overflow-wrap:anywhere; }
+.qp-quota-group .qp-quota-heading .qp-status { font-size:9px; }
+.qp-quota-usage { display:grid; gap:5px; min-width:0; }
+.qp-quota-group .qp-quota-number { display:flex; align-items:baseline; gap:4px; flex-wrap:wrap; font-size:15px; }
+.qp-quota-group .qp-quota-number strong { color:var(--qp-series); font-weight:600; }
+.qp-quota-group .qp-quota-number small { font-size:9px; }
+.qp-quota-reset { display:grid; gap:4px; text-align:right; font-size:11px; overflow-wrap:anywhere; }
+.qp-quota-reset small { font-size:9px; }
+.qp-quota-reset strong { font-weight:500; color:var(--qp-text); }
+@media(max-width:1100px) { .qp-quota-groups { max-height:360px; } }
 .qp-bar {
   height:5px;
   border-radius:8px;

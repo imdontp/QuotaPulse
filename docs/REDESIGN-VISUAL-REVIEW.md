@@ -1,11 +1,11 @@
 # Concept comparison and refinement queue
 
-[Overview insight cards v1.53](REDESIGN-INSIGHT-CARDS-V1.53.md) adopts the source's
-2×2 framed-card composition while preserving actual cached-input, known-price,
-reported-call coverage and recorded-grain values. The
-[latest Overview comparison](redesign-v1.53/reference-review.html) retains v1.52
-captures. This checkpoint captures Overview only; the previous full nine-page
-viewer remains v1.52. Complete source likeness remains open.
+Latest Overview composition: [Quota groups v1.54](REDESIGN-QUOTA-GROUPS-V1.54.md)
+groups actual windows by canonical owner, with used-percentage and reset rows.
+Multiwindow, duplicate-origin, same-name and history-identity checks pass in all
+four language/theme sets. The [Overview viewer](redesign-v1.54/reference-review.html)
+retains v1.53 captures; the latest full nine-page capture set remains v1.52.
+Full reference visual acceptance remains open.
 
 [Header brand and status v1.52](REDESIGN-HEADER-BRAND-V1.52.md) enlarges the
 waveform/wordmark, frames actual daemon connection and machine scope, and adds

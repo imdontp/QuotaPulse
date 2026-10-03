@@ -127,6 +127,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.safePace': 'อัตราใช้ที่ยังปลอดภัย',
   'redesign.pointsPerHour': 'จุดเปอร์เซ็นต์/ชั่วโมง',
   'redesign.resetIn': 'รีเซ็ตใน',
+  'redesign.resetPast': 'พ้นเวลารีเซ็ต',
   'redesign.hours': 'ชั่วโมง',
   'redesign.now': 'ตอนนี้',
   'redesign.projected': 'คาดว่าจะใช้เต็ม',

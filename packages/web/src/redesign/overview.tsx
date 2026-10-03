@@ -181,6 +181,11 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
   const nodes: RuntimeGraph['nodes'] = graph?.nodes ?? Object.fromEntries(dimensions.map(dimension => [dimension, groupUsage(records, dimension)])) as RuntimeGraph['nodes'];
   const edges = graph?.edges ?? runtimeEdges(records);
   const models = nodes.model;
+  const quotaGroups = new Map<string, QuotaWindow[]>();
+  for (const item of quotas) {
+    const key = item.ownerKey ?? JSON.stringify([item.provider, item.owner]);
+    const group = quotaGroups.get(key) ?? []; group.push(item); quotaGroups.set(key, group);
+  }
   const state = quota ? quotaState(quota, now, preview ? 300000 : 3600000) : null;
   const detail: UsageNode | null = selection ? nodes[selection.dimension].find(node => node.key === selection.key) ?? null : null;
   const number = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 }).format(value);
@@ -219,13 +224,22 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
           </section>
           <section className="qp-panel qp-quotas"><h2><CircleGauge size={18}/>{t('redesign.windows')}</h2>
             {quotas.length === 0 && <p className="qp-footnote">{t('redesign.unavailable')}</p>}
-            {quotas.map(item => { const reading = quotaState(item, now, preview ? 300000 : 3600000); return <button className="qp-quota" key={item.id} aria-pressed={quota?.id === item.id} onClick={() => { setQuotaId(item.id); onQuotaSelect?.(item.id); }}>
-              <span className="qp-quota-heading"><strong><VendorIcon vendor={item.provider ?? 'unknown'}/>{item.owner}</strong><span>{item.window}</span></span>
-              <span className="qp-quota-number">{reading.remaining === null ? '—' : `${reading.remaining}%`} <small>{t('redesign.remaining')}</small></span>
-              <span className="qp-bar"><span style={{ width: `${reading.remaining ?? 0}%` }}/></span>
-              <small>{t('redesign.reset')} · {Number.isFinite(item.resetAt) && item.resetAt > 0 ? new Date(item.resetAt).toISOString().slice(5, 16).replace('T', ' ') : '—'}</small>
-              <span className="qp-status" data-risk={reading.risk}>{t(riskLabel(reading))}</span>
-            </button>; })}
+            {quotas.length > 0 && <div className="qp-quota-groups" tabIndex={0} aria-label={t('redesign.windows')}>
+              {[...quotaGroups].map(([key, windows]) => <section className="qp-quota-group" key={key} data-owner-key={key} aria-label={windows[0].owner}>
+                <div className="qp-quota-group-heading"><h3><VendorIcon vendor={windows[0].provider ?? 'unknown'}/>{windows[0].owner}</h3><span className="qp-chip" aria-label={`${t('redesign.windows')}: ${windows.length}`}>{windows.length}</span></div>
+                {windows.map(item => { const reading = quotaState(item, now, preview ? 300000 : 3600000);
+                  const used = reading.remaining === null ? null : item.usedPercent;
+                  const percent = used === null ? '—' : `${used}%`;
+                  const knownReset = Number.isFinite(item.resetAt) && item.resetAt > 0;
+                  const reset = !knownReset ? '—' : item.resetAt <= now ? t('redesign.resetPast') : item.resetAt - now < 60_000 ? '<1m' : countdown(item.resetAt, now);
+                  return <button className="qp-quota" key={item.id} data-owner={item.owner} data-window={item.window} data-stale={reading.stale} aria-pressed={quota?.id === item.id} aria-label={`${item.owner} · ${item.window} · ${percent} ${t('redesign.quotaUsed')} · ${t('redesign.resetIn')} ${reset} · ${t(riskLabel(reading))}`} onClick={() => { setQuotaId(item.id); onQuotaSelect?.(item.id); }}>
+                    <span className="qp-quota-heading"><span>{item.window}</span><span className="qp-status" data-risk={reading.risk}>{t(riskLabel(reading))}</span></span>
+                    <span className="qp-quota-usage"><span className="qp-quota-number"><strong>{percent}</strong><small>{t('redesign.quotaUsed')}</small></span><span className="qp-bar"><span style={{ width: `${used === null ? 0 : Math.min(100, used)}%` }}/></span></span>
+                    <span className="qp-quota-reset"><small>{t('redesign.resetIn')}</small><strong title={knownReset ? new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(item.resetAt) : t('redesign.unavailable')}>{reset}</strong></span>
+                  </button>;
+                })}
+              </section>)}
+            </div>}
           </section>
         </div>
         <RuntimeMap nodes={nodes} edges={edges} recordCount={totals.records} t={t} language={language} harnessVendors={harnessVendors} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
