@@ -16,12 +16,12 @@ that harness must never be reported as a reference fidelity percentage.
 
 ## Source and observed gaps
 
-Latest Overview composition: [Quota groups v1.54](REDESIGN-QUOTA-GROUPS-V1.54.md)
-groups actual windows by canonical owner, with used-percentage and reset rows.
-Multiwindow, duplicate-origin, same-name and history-identity checks pass in all
-four language/theme sets. The [Overview viewer](redesign-v1.54/reference-review.html)
-retains v1.53 captures; the latest full nine-page capture set remains v1.52.
-Full reference visual acceptance remains open.
+Latest Overview composition: [Runtime Map v1.55](REDESIGN-RUNTIME-MAP-V1.55.md)
+adds direction arrows, framed nodes and proportional model-share bars using the
+complete requested-scope model-token denominator. The
+[Overview viewer](redesign-v1.55/reference-review.html) retains v1.54 captures;
+the latest full nine-page capture set remains v1.52. Full reference visual
+acceptance remains open.
 
 Latest shared header work: [Header brand/status v1.52](REDESIGN-HEADER-BRAND-V1.52.md)
 aligns the larger waveform/wordmark and framed status/scope/date-time composition

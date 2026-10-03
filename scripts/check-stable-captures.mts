@@ -77,7 +77,7 @@ const pulseCoreChecks: Array<{ lang: string; theme: string; assetSha256: string;
 const overviewPeriodChecks: Array<{ lang: string; theme: string; tokensByRange: Record<string, number>; selectedQuotaPreserved: boolean; customSourcePreserved: boolean; focusRestored: boolean }> = [];
 const overviewInsightChecks: Array<{ lang: string; theme: string; cards: number; cacheShare: number | null; pricedCalls: number; totalCalls: number; states: string[] }> = [];
 const quotaGroupChecks: Array<{ lang: string; theme: string; owners: number; windows: number; sameNameSeparate: boolean; keyboardScrolled: boolean; historyIdentity: boolean }> = [];
-const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number }> = [];
+const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number; modelShares: number; directionArrows: boolean }> = [];
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
 const headerChecks: Array<{ page: string; lang: string; theme: string; width: number; height: number; sidebarWidth: number }> = [];
 const fontChecks: Array<{ page: string; lang: string; theme: string; family: string; custom: boolean; glyphs: number }> = [];
@@ -854,6 +854,26 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
     const graph = await (await response).json() as RuntimeGraph;
     await settled(page, pending);
     assert.ok(graph.nodes.project.length > 8 && graph.nodes.model.length > 8);
+    const modelTotal = graph.nodes.model.reduce((total, node) => total + node.tokens, 0);
+    const modelCards = page.locator('.qp-map-node[data-dimension=model]');
+    assert.equal(await modelCards.count(), 8);
+    const shareFormat = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 1 });
+    for (let index = 0; index < 8; index++) {
+      const node = graph.nodes.model[index], card = modelCards.nth(index), share = node.tokens / modelTotal * 100;
+      assert.equal(await card.getAttribute('data-tokens'), String(node.tokens));
+      assert.equal(await card.getAttribute('data-total'), String(modelTotal));
+      assert.equal(await card.locator('.qp-node-share small').textContent(), `${shareFormat.format(share)}%`);
+      const width = await card.locator('.qp-node-track>span').evaluate(element => Number.parseFloat((element as HTMLElement).style.width));
+      assert.ok(Math.abs(width - share) < 0.0001);
+      assert.ok((await card.getAttribute('aria-label'))?.includes(`${shareFormat.format(share)}%`));
+    }
+    const paths = page.locator('.qp-map-edges>path');
+    assert.ok(await paths.count() > 0);
+    for (const path of await paths.all()) {
+      const marker = await path.getAttribute('marker-end');
+      assert.ok(marker?.startsWith('url(#'));
+      assert.equal(await page.locator('.qp-map-edges marker').getAttribute('orient'), 'auto');
+    }
     const disclosure = page.locator('.qp-runtime-data'); const summary = disclosure.locator('summary');
     assert.equal(await disclosure.locator('table').count(), 0);
     await summary.focus(); await page.keyboard.press('Enter');
@@ -888,7 +908,7 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
     }
     await summary.focus(); await page.keyboard.press('Enter');
     await disclosure.locator('table').first().waitFor({ state: 'detached' });
-    runtimeChecks.push({ lang, theme, nodes: rows.length, edges: edges.length, inspected });
+    runtimeChecks.push({ lang, theme, nodes: rows.length, edges: edges.length, inspected, modelShares: 8, directionArrows: true });
   } finally {
     db.transaction(() => { db.prepare('DELETE FROM usage_event WHERE source_id=900').run(); db.prepare('DELETE FROM session WHERE source_id=900').run(); db.prepare('DELETE FROM source WHERE id=900').run(); })();
     assert.equal((db.prepare('SELECT COUNT(*) AS count FROM usage_event').get() as { count: number }).count, 38);

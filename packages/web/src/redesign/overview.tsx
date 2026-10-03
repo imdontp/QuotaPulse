@@ -100,6 +100,11 @@ function PulseCore({ quota, now, t, language, staleAfterMs }: { quota: QuotaWind
 }
 
 function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, onInspect }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; harnessVendors: Readonly<Record<string, string>>; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void }) {
+  const arrowId = useId();
+  const modelTokens = nodes.model.reduce((total, node) => total + node.tokens, 0);
+  const locale = language === 'th' ? 'th-TH' : 'en-US';
+  const compact = new Intl.NumberFormat(locale, { notation: 'compact' });
+  const percent = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
   const columns = dimensions.map(dimension => nodes[dimension].slice(0, 8));
   const maxRows = Math.max(1, ...columns.map(column => column.length));
   const height = maxRows * 40;
@@ -109,18 +114,24 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, on
     {recordCount === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
       <div className="qp-map" style={{ height: height + 24 }}>
         <svg className="qp-map-edges" viewBox={`0 0 1000 ${height}`} preserveAspectRatio="none" aria-hidden="true">
+          <defs><marker id={arrowId} viewBox="0 0 8 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth"><polygon points="0,0 8,4 0,8 2,4" fill="context-stroke"/></marker></defs>
           {edges.filter(edge => columns[edge.column].some(node => node.key === edge.from) && columns[edge.column + 1].some(node => node.key === edge.to)).map(edge => {
             const fromIndex = columns[edge.column].findIndex(node => node.key === edge.from);
             const toIndex = columns[edge.column + 1].findIndex(node => node.key === edge.to);
             const x = edge.column * 250 + 195;
             const y = fromIndex * 40 + 17;
             const endY = toIndex * 40 + 17;
-            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + 45} ${y}, ${x + 10} ${endY}, ${x + 55} ${endY}`} fill="none" stroke="currentColor" strokeWidth="2"/>;
+            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + 45} ${y}, ${x + 10} ${endY}, ${x + 55} ${endY}`} fill="none" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrowId})`}/>;
           })}
         </svg>
         {dimensions.map((dimension, index) => <div className="qp-map-column" key={dimension}>
           <h3>{t(`redesign.${dimension}`)}</h3>
-          {columns[index].map(node => <button className="qp-map-node" data-dimension={dimension} data-key={JSON.stringify(node.key)} key={JSON.stringify(node.key)} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <Box size={15}/>}</span><span className="qp-node-label">{node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</span><small>{new Intl.NumberFormat(undefined, { notation: 'compact' }).format(node.tokens)}</small></button>)}
+          {columns[index].map(node => {
+            const label = node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue');
+            const share = dimension === 'model' && modelTokens > 0 ? node.tokens / modelTokens * 100 : null;
+            const exact = `${label} · ${new Intl.NumberFormat(locale).format(node.tokens)} ${t('redesign.tokens')}`;
+            return <button className="qp-map-node" data-dimension={dimension} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <Box size={15}/>}</span><span className="qp-node-label">{label}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : <small>{compact.format(node.tokens)}</small>}</button>;
+          })}
         </div>)}
       </div>
     </div>}

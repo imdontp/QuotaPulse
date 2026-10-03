@@ -1,11 +1,11 @@
 # Concept comparison and refinement queue
 
-Latest Overview composition: [Quota groups v1.54](REDESIGN-QUOTA-GROUPS-V1.54.md)
-groups actual windows by canonical owner, with used-percentage and reset rows.
-Multiwindow, duplicate-origin, same-name and history-identity checks pass in all
-four language/theme sets. The [Overview viewer](redesign-v1.54/reference-review.html)
-retains v1.53 captures; the latest full nine-page capture set remains v1.52.
-Full reference visual acceptance remains open.
+Latest Overview composition: [Runtime Map v1.55](REDESIGN-RUNTIME-MAP-V1.55.md)
+adds direction arrows, framed nodes and proportional model-share bars using the
+complete requested-scope model-token denominator. The
+[Overview viewer](redesign-v1.55/reference-review.html) retains v1.54 captures;
+the latest full nine-page capture set remains v1.52. Full reference visual
+acceptance remains open.
 
 [Header brand and status v1.52](REDESIGN-HEADER-BRAND-V1.52.md) enlarges the
 waveform/wordmark, frames actual daemon connection and machine scope, and adds
