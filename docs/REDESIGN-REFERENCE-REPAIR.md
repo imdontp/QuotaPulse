@@ -16,6 +16,12 @@ that harness must never be reported as a reference fidelity percentage.
 
 ## Source and observed gaps
 
+Latest shared geometry work: [Shell geometry v1.51](REDESIGN-SHELL-GEOMETRY-V1.51.md)
+uses separate header/body column widths and reference-like main insets. The
+[latest full-page viewer](redesign-v1.51/reference-review.html) preserves all nine
+application pages and uses the unchanged, hash-verified eight source images
+from v1.44. Full 99–100% source likeness remains open.
+
 Latest composition work: [Runway timeline v1.50](REDESIGN-RUNWAY-TIMELINE-V1.50.md)
 aligns the lower panel's time-label, marker and outcome hierarchy with the
 source, using actual quota forecast/reset timestamps. The

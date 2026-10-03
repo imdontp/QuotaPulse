@@ -1,5 +1,11 @@
 # Concept comparison and refinement queue
 
+[Shared shell geometry v1.51](REDESIGN-SHELL-GEOMETRY-V1.51.md) reconciles the
+body sidebar, independent header brand column and content insets using the
+source dimensions. The [latest full-page viewer](redesign-v1.51/reference-review.html)
+offers all nine application pages, English/Thai and both themes. Settings has
+no source PNG. Complete visual acceptance remains open.
+
 [Runway timeline v1.50](REDESIGN-RUNWAY-TIMELINE-V1.50.md) follows the source's
 three time-label columns, cyan/violet timeline, prediction/reset markers and
 lower outcome row using the selected quota's actual timestamps. Its validation

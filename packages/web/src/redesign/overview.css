@@ -138,7 +138,7 @@
   min-height:60px;
   grid-column:1/-1;
   display:grid;
-  grid-template-columns:var(--qp-sidebar-width) minmax(0,1fr);
+  grid-template-columns:clamp(253px,16vw,267px) minmax(0,1fr);
   border-bottom:1px solid var(--qp-border);
 }
 .qp-topbar-body {
@@ -195,11 +195,14 @@
   padding:6px;
 }
 .qp-redesign main {
-  padding:16px;
+  padding:12px;
   max-width:1600px;
   margin:auto;
   display:grid;
   gap:20px;
+}
+@media(min-width:1101px) and (max-width:1600px) {
+  .qp-redesign { --qp-sidebar-width:216px; }
 }
 .qp-page-heading {
   position:absolute;
@@ -698,6 +701,7 @@
   }
 }
 @media(max-width:1100px) {
+  .qp-topbar { grid-template-columns:var(--qp-sidebar-width) minmax(0,1fr); }
   .qp-core-grid { row-gap:44px; }
   .qp-redesign {
     --qp-sidebar-width:66px;

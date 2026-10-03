@@ -713,8 +713,11 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
     const sidebar = await page.locator('.qp-sidebar').boundingBox();
     assert.ok(header && brand && sidebar);
     assert.equal(header.x, 0); assert.equal(header.width, width); assert.equal(header.height, 60);
-    assert.equal(brand.x, 0); assert.equal(brand.width, sidebar.width);
-    assert.equal(sidebar.width, width <= 500 ? 48 : width <= 1100 ? 66 : 226);
+    assert.equal(brand.x, 0);
+    const expectedSidebar = width <= 500 ? 48 : width <= 1100 ? 66 : width <= 1600 ? 216 : 226;
+    const expectedBrand = width <= 1100 ? expectedSidebar : Math.max(253, Math.min(267, width * .16));
+    assert.ok(Math.abs(brand.width - expectedBrand) < .02);
+    assert.equal(sidebar.width, expectedSidebar);
     assert.equal(await page.locator('.qp-sidebar nav a').count(), 9);
     assert.equal(await page.locator('.qp-sidebar nav a[aria-current=page]').count(), 1);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
