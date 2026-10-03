@@ -9,7 +9,7 @@ import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
-import type { Overview, MinuteTrendResponse, ProjectDetailResponse, DetailedProjectResponse, DetailedModelResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse } from '../packages/web/src/api.js';
+import type { Overview, MinuteTrendResponse, ProjectDetailResponse, DetailedProjectResponse, DetailedModelResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse, AlertEvent } from '../packages/web/src/api.js';
 import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
@@ -21,7 +21,8 @@ const providersOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'providers';
 const modelsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'models';
 const costOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'cost';
 const historyOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'history';
-const output = resolve(root, overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : modelsOnly ? 'screens/models-comparison' : costOnly ? 'screens/cost-axes' : historyOnly ? 'screens/history-details' : 'screens/stable-captures');
+const alertsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'alerts';
+const output = resolve(root, overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : modelsOnly ? 'screens/models-comparison' : costOnly ? 'screens/cost-axes' : historyOnly ? 'screens/history-details' : alertsOnly ? 'screens/alerts-refinement' : 'screens/stable-captures');
 mkdirSync(output, { recursive: true });
 // A failed attempt must never leave a previous success manifest in this folder.
 rmSync(resolve(output, 'verification.json'), { force: true });
@@ -81,6 +82,7 @@ const modelComparisonChecks: Array<{ lang: string; theme: string; bottom: number
 const costAxisChecks: Array<{ route: string; lang: string; theme: string; priced: boolean; maxAmount: number; maxTokens: number }> = [];
 const historyChecks: Array<{ lang: string; theme: string; eventId: number; widths: number[]; modal: boolean; focusRestored: boolean }> = [];
 const historyDensityChecks: Array<{ lang: string; theme: string; bottom: number; visibleRows: number; records: number; keyboardScrolled: boolean }> = [];
+const alertChecks: Array<{ lang: string; theme: string; bottom: number; events: number; expandedEvents: number; keyboardScrolled: boolean; empty: boolean }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const fontPath = 'fonts/noto-sans-thai/';
 const fontProvenance = JSON.parse(readFileSync(resolve(root, `packages/web/public/${fontPath}provenance.json`), 'utf8'));
@@ -93,7 +95,7 @@ const allPages = [
   ['models', '.qp-model-trend'], ['cost', '.qp-cost-chart'],
   ['history', '[data-testid="usage-history"] tbody tr'], ['alerts', '.qp-quota-point'],
 ] as const;
-const pages = overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : projectsOnly ? allPages.filter(([destination]) => destination === 'projects') : providersOnly ? allPages.filter(([destination]) => destination === 'providers') : modelsOnly ? allPages.filter(([destination]) => destination === 'models') : costOnly ? allPages.filter(([destination]) => destination === 'cost') : historyOnly ? allPages.filter(([destination]) => destination === 'history') : allPages;
+const pages = overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : projectsOnly ? allPages.filter(([destination]) => destination === 'projects') : providersOnly ? allPages.filter(([destination]) => destination === 'providers') : modelsOnly ? allPages.filter(([destination]) => destination === 'models') : costOnly ? allPages.filter(([destination]) => destination === 'cost') : historyOnly ? allPages.filter(([destination]) => destination === 'history') : alertsOnly ? allPages.filter(([destination]) => destination === 'alerts') : allPages;
 
 async function checkModelComparison(page: Page, lang: string, theme: string, pending: Set<Request>) {
   await page.setViewportSize({ width: 1672, height: 941 }); await page.evaluate(() => window.scrollTo(0, 0));
@@ -138,6 +140,53 @@ async function checkModelComparison(page: Page, lang: string, theme: string, pen
     for (const width of [390, 900, 1280]) { await page.setViewportSize({ width, height: 941 }); assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true); }
   } finally { await page.unroute(pattern); }
   modelComparisonChecks.push({ lang, theme, bottom, rows: data.groups.length, ratios: data.groups.length * 2, boundaryRatios: true });
+}
+
+async function checkAlerts(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  await page.setViewportSize({ width: 1672, height: 941 }); await page.evaluate(() => scrollTo(0, 0));
+  const bottom = await page.locator('.qp-alert-layout').evaluate(element => element.getBoundingClientRect().bottom + scrollY);
+  assert.ok(bottom <= 941, `Alerts occupied panels exceed viewport: ${bottom}`);
+  assert.deepEqual(await page.locator('.qp-alert-rules [data-threshold]').allTextContents(), ['50%', '80%', '95%']);
+  for (const [threshold, color] of [[80, '--qp-warning'], [95, '--qp-danger']] as const) {
+    const swatch = await page.locator(`.qp-alert-history [data-threshold="${threshold}"]`).first().evaluate((element, color) => ({ actual: getComputedStyle(element).color, expected: getComputedStyle(document.querySelector('.qp-redesign')!).getPropertyValue(color).trim() }), color);
+    assert.deepEqual(rgb(swatch.actual), rgb(swatch.expected));
+  }
+  const response = await daemon.inject({ method: 'GET', url: '/api/alerts?limit=100', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  assert.equal(response.statusCode, 200); const events = response.json<{ events: AlertEvent[] }>().events;
+  const items = page.locator('.qp-alert-history li'); assert.equal(await items.count(), events.length);
+  for (const [index, event] of events.entries()) {
+    assert.equal(await items.nth(index).locator('.qp-alert-event-threshold').innerText(), `${event.threshold}%`);
+    assert.ok((await items.nth(index).locator('strong').innerText()).includes(event.subscription_display_name ?? event.display_name));
+  }
+  const more = page.locator('.qp-alert-history button'); const originalLabel = await more.innerText();
+  const expanded = page.waitForResponse(response => response.url().includes('/api/alerts?limit=500'));
+  await more.focus(); await page.keyboard.press('Enter'); assert.equal((await expanded).status(), 200); await settled(page, pending);
+  assert.notEqual(await more.innerText(), originalLabel);
+  const collapsed = page.waitForResponse(response => response.url().includes('/api/alerts?limit=100'));
+  await page.keyboard.press('Enter'); assert.equal((await collapsed).status(), 200); await settled(page, pending);
+  assert.equal(await more.innerText(), originalLabel);
+  assert.ok(events.length > 0);
+  const pattern = '**/api/alerts?*';
+  for (const state of ['large', 'empty']) {
+    const fixture = state === 'empty' ? [] : Array.from({ length: 60 }, (_, index) => ({ ...events[index % events.length], id: 1000 + index }));
+    await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ events: fixture }) }));
+    try {
+      await page.goto(`http://127.0.0.1:7804/?alert-history=${state}#alerts`, { waitUntil: 'domcontentloaded' });
+      await page.locator('.qp-alert-history').waitFor(); await settled(page, pending);
+      assert.equal(await page.locator('.qp-alert-history li').count(), fixture.length);
+      assert.ok(await page.locator('.qp-alert-layout').evaluate(element => element.getBoundingClientRect().bottom + scrollY <= 941));
+      const list = page.locator('.qp-alert-history ol');
+      if (state === 'empty') assert.equal(await list.count(), 0);
+      else {
+        await list.focus(); await page.keyboard.press('End'); await page.waitForTimeout(300);
+        assert.ok(await list.evaluate(element => element.scrollTop > 0));
+        assert.ok(await list.evaluate(element => element.lastElementChild!.getBoundingClientRect().bottom <= element.getBoundingClientRect().bottom + 1));
+        for (const width of [390, 900, 1280]) { await page.setViewportSize({ width, height: 941 }); assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true); }
+        await page.setViewportSize({ width: 1672, height: 941 });
+      }
+    } finally { await page.unroute(pattern); }
+  }
+  alertChecks.push({ lang, theme, bottom, events: events.length, expandedEvents: 60, keyboardScrolled: true, empty: true });
 }
 
 async function checkHistoryDetails(page: Page, lang: string, theme: string, pass: number, pending: Set<Request>) {
@@ -825,6 +874,7 @@ try {
           if (pass === 0 && destination === 'history') await checkHistoryDensity(page, lang, theme);
           if (destination === 'history') await checkHistoryDetails(page, lang, theme, pass, pending);
           if (pass === 0) await checkShellAccess(page, destination, lang, theme);
+          if (pass === 0 && destination === 'alerts') await checkAlerts(page, lang, theme, pending);
           if (pass === 0 && destination === 'projects') await checkProjectCards(page, lang, theme, pending);
           if (pass === 0 && destination === 'providers') await checkProviders(page, lang, theme, pending);
           if (pass === 0 && destination === 'models') await checkModelComparison(page, lang, theme, pending);
@@ -844,7 +894,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

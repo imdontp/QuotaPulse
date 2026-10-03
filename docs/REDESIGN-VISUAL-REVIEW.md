@@ -1,5 +1,14 @@
 # Concept comparison and refinement queue
 
+[Alerts and combined dashboard review 1.34](REDESIGN-ALERTS-REVIEW-V1.34.md)
+refines Alerts icons, threshold/event hierarchy, chart spacing and keyboard access
+to long histories. All eight pages now have fresh combined English/Thai dark/light
+evidence, including selected History states: 36 repeat pairs pass, 35 byte-identical
+and one within the unchanged unmasked raster tolerance. API/data, responsive,
+shell, fonts and occupied layout gates pass. Manual visual approval, remaining
+release regression and performance/installation gates are still pending; this is
+a review checkpoint, not a production release or measured concept-parity verdict.
+
 [History density 1.33](REDESIGN-HISTORY-DENSITY-V1.33.md) compacts the timeline and
 desktop filters, aligns table cost labels and introduces a keyboard-scrollable
 record region with sticky headers. Five complete rows and pagination fit the
