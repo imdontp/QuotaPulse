@@ -1,5 +1,13 @@
 # Concept comparison and refinement queue
 
+[Models comparison 1.30](REDESIGN-MODEL-COMPARISON-V1.30.md) adds proportional
+cache-share and priced-call-coverage rails, summary identity tiles and a selected-row
+accent. Existing factual metrics, cost bases and missing-denominator disclosure
+remain. Four repeated pairs are byte-identical; eight rows/provider summary fit,
+API ratios, zero/tiny/unavailable boundaries, keyboard selection, search and the
+three model-detail ranking routes pass. This is scoped Models evidence, with
+approved visual baselines and further dashboard refinements still pending.
+
 [Providers comparison 1.29](REDESIGN-PROVIDER-COMPARISON-V1.29.md) adds a desktop
 percentage-scale column chart with keyboard-selectable owner labels. Actual
 same-window eligibility, unknown/expired exclusions and reader diagnostics remain.
