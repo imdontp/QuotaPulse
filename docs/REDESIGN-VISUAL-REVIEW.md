@@ -1,5 +1,12 @@
 # Concept comparison and refinement queue
 
+[Cost axes 1.31](REDESIGN-COST-AXES-V1.31.md) adds visible monetary/priced-token
+scales, quarter-step grid and localized exact scope endpoints. API/native bases,
+coverage and complete bucket access remain. Twelve axis/data cases pass and four
+capture pairs meet the existing unmasked tolerance (three byte-identical). Complete
+occupied panels and responsive shell access pass. This is scoped Cost evidence;
+approved visual baselines and further dashboard refinements remain pending.
+
 [Models comparison 1.30](REDESIGN-MODEL-COMPARISON-V1.30.md) adds proportional
 cache-share and priced-call-coverage rails, summary identity tiles and a selected-row
 accent. Existing factual metrics, cost bases and missing-denominator disclosure

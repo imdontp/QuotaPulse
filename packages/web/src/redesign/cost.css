@@ -23,6 +23,13 @@
 .qp-cost-chart>div { position:relative; flex:1; height:100%; min-width:2px; display:flex; align-items:end; }
 .qp-cost-column { display:block; width:100%; border-radius:3px 3px 0 0; background:linear-gradient(#2bb8ef,#4c6df2); }
 .qp-cost-chart i { position:absolute; left:0; right:0; height:3px; border-radius:3px; background:var(--qp-series); }
+.qp-cost-plot { --qp-cost-plot-height:175px; display:grid; grid-template-columns:54px minmax(0,1fr) 54px; gap:8px; min-width:0; }
+.qp-cost-plot .qp-cost-chart { height:var(--qp-cost-plot-height); padding:0; background-image:linear-gradient(var(--qp-border) 1px,transparent 1px); background-size:100% calc((var(--qp-cost-plot-height) - 1px)/4); }
+.qp-cost-axis { position:relative; height:calc(var(--qp-cost-plot-height) - 1px); color:var(--qp-accent); font-size:10px; line-height:1.3; }
+.qp-cost-axis[data-axis=tokens] { color:var(--qp-series); }
+.qp-cost-axis>span { position:absolute; right:0; max-width:100%; overflow-wrap:anywhere; transform:translateY(-50%); }
+.qp-cost-axis[data-axis=tokens]>span { left:0; right:auto; }
+.qp-cost-plot-dates { grid-column:1/-1; display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 12px; font-size:10px; color:var(--qp-muted); }
 .qp-cost-donut { width:138px; height:138px; margin:auto; border-radius:50%; display:grid; place-items:center; }
 .qp-cost-donut[data-zero=true] { background:var(--qp-border)!important; }
 .qp-cost-donut>span { width:94px; height:94px; border-radius:50%; background:var(--qp-panel); display:grid; place-items:center; font-size:15px; font-weight:700; }
@@ -52,6 +59,7 @@
 .qp-cost-chart-labels { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; font-size:11px; color:var(--qp-accent); }
 .qp-cost-chart-labels>span:nth-child(2) { color:var(--qp-series); }
 @media(min-width:1280px) {
+  .qp-cost-plot { --qp-cost-plot-height:125px; }
   [data-testid=production-cost] main { gap:12px; }
   .qp-cost-top { grid-template-columns:minmax(0,1fr) auto; align-items:center; }
   .qp-cost-toolbar { grid-template-columns:repeat(2,minmax(0,180px)); }
