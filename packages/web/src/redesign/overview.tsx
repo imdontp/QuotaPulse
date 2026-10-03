@@ -48,15 +48,13 @@ export interface ActivityItem {
 function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: number; t: Translate }) {
   const id = useId().replace(/:/g, '');
   const state = quota ? quotaState(quota, now, 300000) : null;
-  const remaining = state?.remaining ?? null;
+  const used = state?.remaining == null ? null : quota?.usedPercent ?? null;
   return <div className="qp-pulse" data-stale={!state || state.stale}>
     <svg viewBox="0 0 360 320" aria-hidden="true">
       <defs>
         <radialGradient id={`${id}-fill`}><stop stopColor="#225575" stopOpacity=".7"/><stop offset=".75" stopColor="#071f43" stopOpacity=".5"/><stop offset="1" stopColor="#32cdff" stopOpacity=".2"/></radialGradient>
         <linearGradient id={`${id}-arc`}><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
         <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <filter id={`${id}-surface`}><feTurbulence type="fractalNoise" baseFrequency=".13" numOctaves="3" seed="17"/><feColorMatrix type="matrix" values="0 0 0 0 .03  0 0 0 0 .48  0 0 0 0 1  0 0 0 .32 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
-        <radialGradient id={`${id}-shade`} cx="35%" cy="25%"><stop stopColor="#14a9ff" stopOpacity=".18"/><stop offset=".7" stopColor="#01244d" stopOpacity=".08"/><stop offset="1" stopColor="#000a21" stopOpacity=".85"/></radialGradient>
         <clipPath id={`${id}-world`}><circle cx="180" cy="160" r="114"/></clipPath>
       </defs>
       <g fill="none" stroke={`url(#${id}-arc)`} strokeWidth=".8" opacity=".45">
@@ -71,22 +69,7 @@ function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: num
         <ellipse cx="180" cy="160" rx="165" ry="96" transform="rotate(30 180 160)"/>
       </g>
       <circle cx="180" cy="160" r="117" fill={`url(#${id}-fill)`} stroke="#51b9ef" strokeOpacity=".4"/>
-      <circle cx="180" cy="160" r="114" fill="#087bdd" filter={`url(#${id}-surface)`}/>
-      <g clipPath={`url(#${id}-world)`} fill="#27a8ff" opacity=".32">
-        <path d="M83 97 101 72 128 68 149 82 139 99 121 107 126 126 111 139 95 126 79 122Z M124 142 142 143 159 159 153 181 139 203 130 229 119 211 121 186 109 164Z M170 94 187 78 216 79 232 88 258 80 283 104 276 127 252 136 229 128 213 145 195 129 176 127Z M184 132 209 139 224 163 213 181 199 206 185 187 171 154Z M241 211 268 202 285 220 273 238 252 234Z"/>
-      </g>
-      <g fill="#48b7ff" opacity=".4">
-        {Array.from({ length: 400 }, (_, index) => {
-          const angle = index * 2.399963;
-          const radius = 114 * Math.sqrt((index + .5) / 400);
-          return <circle key={index} cx={180 + Math.cos(angle) * radius} cy={160 + Math.sin(angle) * radius} r={index % 7 === 0 ? 1.1 : .55}/>;
-        })}
-      </g>
-      <g fill="none" stroke="#59c3fa" strokeOpacity=".16">
-        {[34, 69, 98].map(rx => <ellipse key={rx} cx="180" cy="160" rx={rx} ry="116"/>)}
-        {[38, 76].map(ry => <ellipse key={ry} cx="180" cy="160" rx="116" ry={ry}/>)}
-      </g>
-      <circle cx="180" cy="160" r="115" fill={`url(#${id}-shade)`}/>
+      <image data-testid="pulse-earth" href="/redesign/pulse-earth-v1.png" x="38" y="19" width="284" height="284" clipPath={`url(#${id}-world)`}/>
       <g fill="none" stroke={`url(#${id}-arc)`} filter={`url(#${id}-glow)`}>
         <circle cx="180" cy="160" r="119" strokeWidth="2"/>
         <circle cx="180" cy="160" r="137" strokeWidth="3" opacity=".45"/>
@@ -96,11 +79,11 @@ function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: num
         const angle = index * 2.399963;
         return <circle key={index} cx={180 + Math.cos(angle) * 150} cy={160 + Math.sin(angle) * 150} r={index % 3 === 0 ? 1.7 : .7}/>;
       })}</g>
-      <circle cx="180" cy="160" r="129" fill="none" stroke="#395175" strokeOpacity=".45" strokeWidth="5"/>
+      <circle cx="180" cy="160" r="129" fill="none" stroke="#395175" strokeOpacity=".45" strokeWidth="8"/>
       <circle className="qp-core-halo" cx="180" cy="160" r="120" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="2"/>
-      {remaining !== null && <circle cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="5" strokeLinecap="round" strokeDasharray={`${remaining} 100`} transform="rotate(-90 180 160)"/>}
+      {used !== null && <circle className="qp-core-progress" data-testid="pulse-progress" cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used)} 100`} transform="rotate(-90 180 160)"/>}
     </svg>
-    <div className="qp-pulse-label"><span>{quota?.owner ?? '—'} · {quota?.window ?? '—'}</span><strong>{remaining === null ? '—' : `${remaining}%`}</strong><span>{t('redesign.remaining')}</span></div>
+    <div className="qp-pulse-label"><strong>{used === null ? '—' : `${used}%`}</strong><span className="qp-pulse-state">{t('redesign.quotaUsed')}</span><span>{quota?.owner ?? '—'} · {quota?.window ?? '—'}</span></div>
   </div>;
 }
 

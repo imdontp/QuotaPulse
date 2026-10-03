@@ -16,6 +16,13 @@ that harness must never be reported as a reference fidelity percentage.
 
 ## Source and observed gaps
 
+Latest Overview image checkpoint: [Pulse Earth v1.47](REDESIGN-PULSE-EARTH-V1.47.md)
+replaces the approximate vector globe with a generated local reference-derived
+surface and displays the selected reader's actual used-quota percentage. Source
+and asset hashes, alpha inspection, image decoding and quota boundary checks are
+recorded. Exact image/geometry likeness and the complete eight-page goal remain
+open; this does not close the Overview gap row below.
+
 Source: `C:\Users\TH12367283\Downloads\quotapulse_build_blueprint\refs`.
 The folder contains eight PNGs: Overview is 1586 × 992; Live, Projects, Providers,
 Models, Cost, History and Alerts are 1672 × 941. The original files remain intact.

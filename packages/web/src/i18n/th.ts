@@ -95,6 +95,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.reported': "ค่าใช้จ่ายที่แหล่งข้อมูลรายงาน",
   'redesign.value': "มูลค่า API ที่คำนวณ",
   'redesign.remaining': "คงเหลือ",
+  'redesign.quotaUsed': "โควตาที่ใช้ไป",
   'redesign.windows': "รอบโควตา",
   'redesign.models': "การใช้งานโมเดล",
   'redesign.project': "โปรเจกต์",

@@ -89,6 +89,7 @@ export const en = {
   'redesign.reported': "Source-reported cost",
   'redesign.value': "Calculated API value",
   'redesign.remaining': "remaining",
+  'redesign.quotaUsed': "Quota used",
   'redesign.windows': "Quota windows",
   'redesign.models': "Model usage",
   'redesign.project': "Projects",

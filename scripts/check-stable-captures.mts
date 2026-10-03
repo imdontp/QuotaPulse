@@ -73,6 +73,7 @@ const forbidden: string[] = [];
 const chartChecks: Array<{ page: string; lang: string; theme: string; buckets: number; tokens: number }> = [];
 const modelCostChecks: Array<{ route: string; lang: string; theme: string; buckets: number; collapsedBottom: number }> = [];
 const quotaChecks: Array<{ page: string; lang: string; theme: string; segments: number; samples: number; unknown: number }> = [];
+const pulseCoreChecks: Array<{ lang: string; theme: string; assetSha256: string; imageWidth: number; selectedUsed: number[]; boundaries: number[]; unknown: boolean; reducedMotion: boolean }> = [];
 const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number }> = [];
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
 const headerChecks: Array<{ page: string; lang: string; theme: string; width: number; height: number; sidebarWidth: number }> = [];
@@ -870,6 +871,61 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
   }
 }
 
+async function checkPulseCore(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  const home = 'http://127.0.0.1:7804/?pulse-core=asset#overview';
+  await page.goto(home, { waitUntil: 'domcontentloaded' });
+  await page.locator('.qp-quota').first().waitFor(); await settled(page, pending);
+  const image = page.getByTestId('pulse-earth');
+  const assetUrl = new URL((await image.getAttribute('href'))!, home).href;
+  const response = await page.request.get(assetUrl);
+  assert.equal(response.status(), 200);
+  assert.ok(response.headers()['content-type']?.startsWith('image/png'));
+  const assetSha256 = sha(readFileSync(resolve(root, 'packages/web/public/redesign/pulse-earth-v1.png')));
+  assert.equal(sha(await response.body()), assetSha256, 'Served Earth asset differs from the retained source');
+  const imageWidth = await page.evaluate(url => new Promise<number>((resolve, reject) => {
+    const image = new Image(); image.onload = () => resolve(image.naturalWidth);
+    image.onerror = () => reject(new Error('Earth asset failed to decode')); image.src = url;
+  }), assetUrl);
+  assert.equal(imageWidth, 1254);
+  assert.equal(await image.locator('..').getAttribute('aria-hidden'), 'true', 'Decorative Earth must not replace the readable quota label');
+  const data = (await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<Overview>();
+  const selectedUsed: number[] = [];
+  const quotas = page.locator('.qp-quota');
+  for (let index = 0; index < await quotas.count(); index++) {
+    const button = quotas.nth(index);
+    const owner = await button.locator('.qp-quota-heading strong').innerText();
+    const window = await button.locator('.qp-quota-heading>span').innerText();
+    const reading = data.limits.filter(limit => (limit.subscription_display_name ?? limit.account_display_name ?? limit.display_name) === owner && limit.window_kind === window).sort((a, b) => b.last_seen_at - a.last_seen_at)[0];
+    assert.ok(reading && reading.used_percent !== null);
+    const used = reading.used_percent!;
+    await button.click();
+    await page.waitForFunction(value => document.querySelector('.qp-pulse-label strong')?.textContent === `${value}%`, used);
+    assert.equal(await page.getByTestId('pulse-progress').getAttribute('stroke-dasharray'), `${Math.min(100, used)} 100`);
+    assert.equal(await page.locator('.qp-pulse-state').textContent(), lang === 'th' ? 'โควตาที่ใช้ไป' : 'Quota used');
+    const reducedSeconds = await page.getByTestId('pulse-progress').evaluate(element => parseFloat(getComputedStyle(element).transitionDuration));
+    assert.ok(reducedSeconds <= 0.001, `Reduced motion must suppress the quota transition, observed ${reducedSeconds}s`);
+    selectedUsed.push(used);
+  }
+  const pattern = '**/api/overview*';
+  for (const used of [100, 0, 125, null]) {
+    await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ...data, limits: data.limits.map(limit => ({ ...limit, used_percent: used })) }) }));
+    try {
+      await page.goto(`http://127.0.0.1:7804/?pulse-core=${used ?? 'unknown'}#overview`, { waitUntil: 'domcontentloaded' });
+      await page.locator('.qp-core-grid').waitFor(); await settled(page, pending);
+      assert.equal(await page.locator('.qp-pulse-label strong').textContent(), used === null ? '—' : `${used}%`);
+      const progress = page.getByTestId('pulse-progress');
+      if (used === null) assert.equal(await progress.count(), 0, 'Unknown quota must not render an invented progress arc');
+      else {
+        assert.equal(await progress.getAttribute('stroke-dasharray'), `${Math.min(100, used)} 100`);
+        if (used === 0) assert.equal(await progress.getAttribute('stroke-linecap'), 'butt', 'Zero progress must not show a rounded minimum dot');
+      }
+    } finally { await page.unroute(pattern); }
+  }
+  await page.goto(home, { waitUntil: 'domcontentloaded' });
+  await page.locator('.qp-quota').first().waitFor(); await settled(page, pending);
+  pulseCoreChecks.push({ lang, theme, assetSha256, imageWidth, selectedUsed, boundaries: [0, 100, 125], unknown: true, reducedMotion: true });
+}
+
 async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', lang: string, theme: string, pending: Set<Request>) {
   await page.setViewportSize({ width: 1672, height: 941 });
   await page.goto(`http://127.0.0.1:7804/?quota-access=${destination}#${destination}${destination === 'alerts' ? '?owner=openai%3Asubscription&window=5h' : ''}`, { waitUntil: 'domcontentloaded' });
@@ -1055,6 +1111,7 @@ try {
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
           if (pass === 0 && destination === 'overview') await checkRuntimeAccess(page, lang, theme, pending);
           if (pass === 0 && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
+          if (pass === 0 && destination === 'overview') await checkPulseCore(page, lang, theme, pending);
         }
         if (pass === 0 && !pages.some(([destination]) => destination === 'settings')) {
           await page.goto('http://127.0.0.1:7804/?shell-access=settings#settings', { waitUntil: 'domcontentloaded' });
@@ -1067,7 +1124,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

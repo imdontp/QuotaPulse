@@ -1,5 +1,12 @@
 # Concept comparison and refinement queue
 
+[Pulse Earth v1.47](REDESIGN-PULSE-EARTH-V1.47.md) adds a reference-derived local
+Earth surface, uses the real used-quota percentage in the center, and adds
+Overview section icon frames. Four repeated pairs are byte-identical; asset,
+quota boundaries and 124 web unit checks pass. Overall visual acceptance remains
+open. The [current Overview viewer](redesign-v1.47/reference-review.html) retains
+this build's captures separately from the earlier full-page review.
+
 [Settings composition v1.45](REDESIGN-SETTINGS-COMPOSITION-V1.45.md) adopts the
 shared dashboard surfaces, two-column layout and selected-control semantics.
 Settings-only captures and local preference/overflow checks pass with 124 web

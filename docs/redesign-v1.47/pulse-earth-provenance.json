@@ -1,0 +1,24 @@
+{
+  "asset": "packages/web/public/redesign/pulse-earth-v1.png",
+  "assetSha256": "31da2aab7354705aacaccb5b63111d5208e2dd0b705bd10e563a5adc1c6e4ddd",
+  "assetBytes": 1715230,
+  "reference": "refs/overview.png",
+  "referenceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+  "generator": "built-in image_gen",
+  "intent": "Reference-derived decorative Earth surface, separate from live quota state",
+  "dimensions": [1254, 1254],
+  "mode": "RGBA",
+  "cornerAlpha": 0,
+  "alphaExtrema": [0, 255],
+  "opaqueBoundsAboveAlpha128": [123, 124, 1132, 1124],
+  "inspection": "Read-only Pillow metadata and visual inspection; no post-generation raster editing",
+  "constraints": [
+    "Reconstruct only the central Pulse Core Earth surface from the supplied concept",
+    "Match dark blue oceans, glowing fine continental texture, cyan left rim and violet right rim",
+    "No overlaid numbers, percentages, labels, owner identity or UI",
+    "No progress rings or baked quota state",
+    "Actual transparent background and dark center for live white text",
+    "Keep original reference and generated source unchanged"
+  ],
+  "sourceIdentity": "The output is generated from the source concept, not an exact extraction or pixel-identical copy"
+}
