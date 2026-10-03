@@ -182,3 +182,8 @@ Settings use the shared dashboard card/color hierarchy, preserves all six
 sections and validates local preference controls. No Settings reference PNG is
 supplied, so this does not claim a new source-comparison score for that page.
 Eight-page typography, detailed composition and final release/manual gates remain.
+# Overview typography v1.46
+
+The latest Overview typography and model-row refinement is recorded in
+[v1.46 evidence](REDESIGN-OVERVIEW-TYPOGRAPHY-V1.46.md). This remains an incremental
+checkpoint toward the eight-page reference goal, not visual acceptance.

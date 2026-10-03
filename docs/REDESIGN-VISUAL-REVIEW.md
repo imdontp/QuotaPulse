@@ -226,3 +226,8 @@ charts, labels or complete cards to obtain that score.
 
 Settings has no supplied concept image. Preserve its existing controls within
 the shared shell and verify navigation, narrow layouts and keyboard behavior.
+# Overview typography v1.46
+
+[Overview comparison](redesign-v1.46/reference-review.html) contains the latest
+scoped captures; [validation](REDESIGN-OVERVIEW-TYPOGRAPHY-V1.46.md) describes
+their tested scope. Source similarity and broader manual acceptance remain open.
