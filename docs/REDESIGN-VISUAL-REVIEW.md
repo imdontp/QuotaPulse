@@ -1,5 +1,13 @@
 # Concept comparison and refinement queue
 
+[Providers comparison 1.29](REDESIGN-PROVIDER-COMPARISON-V1.29.md) adds a desktop
+percentage-scale column chart with keyboard-selectable owner labels. Actual
+same-window eligibility, unknown/expired exclusions and reader diagnostics remain.
+Four capture pairs are byte-identical; API values, proportional zero/tiny bars,
+vertical labels, complete panels and responsive shell access pass. Owner identity
+tiles and account-state colors are refined. This is scoped Providers evidence;
+approved baselines and further dashboard concept refinements remain pending.
+
 [Project cards 1.28](REDESIGN-PROJECT-CARDS-V1.28.md) adds separate recorded-cost
 and calculated-API comparisons to cards, with weighted coverage and unknown states.
 Card identity, selected appearance and desktop spacing are refined. All eight

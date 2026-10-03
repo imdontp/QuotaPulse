@@ -9,7 +9,7 @@ import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
-import type { MinuteTrendResponse, ProjectDetailResponse, DetailedProjectResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse } from '../packages/web/src/api.js';
+import type { Overview, MinuteTrendResponse, ProjectDetailResponse, DetailedProjectResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse } from '../packages/web/src/api.js';
 import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
@@ -17,7 +17,8 @@ const priorTimezone = process.env.TZ;
 process.env.TZ = 'Asia/Bangkok';
 const overviewOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'overview';
 const projectsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'projects';
-const output = resolve(root, overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : 'screens/stable-captures');
+const providersOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'providers';
+const output = resolve(root, overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : 'screens/stable-captures');
 mkdirSync(output, { recursive: true });
 // A failed attempt must never leave a previous success manifest in this folder.
 rmSync(resolve(output, 'verification.json'), { force: true });
@@ -72,6 +73,7 @@ const fontChecks: Array<{ page: string; lang: string; theme: string; family: str
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const overviewLayouts: Array<{ lang: string; theme: string; heroBottom: number; activityBottom: number; models: number; railHeight: number }> = [];
 const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bottom: number; unknownNative: number }> = [];
+const providerChecks: Array<{ lang: string; theme: string; bottom: number; compared: number; unavailable: boolean; expired: boolean; proportional: boolean }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const fontPath = 'fonts/noto-sans-thai/';
 const fontProvenance = JSON.parse(readFileSync(resolve(root, `packages/web/public/${fontPath}provenance.json`), 'utf8'));
@@ -84,7 +86,58 @@ const allPages = [
   ['models', '.qp-model-trend'], ['cost', '.qp-cost-chart'],
   ['history', '[data-testid="usage-history"] tbody tr'], ['alerts', '.qp-quota-point'],
 ] as const;
-const pages = overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : projectsOnly ? allPages.filter(([destination]) => destination === 'projects') : allPages;
+const pages = overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : projectsOnly ? allPages.filter(([destination]) => destination === 'projects') : providersOnly ? allPages.filter(([destination]) => destination === 'providers') : allPages;
+
+async function checkProviders(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  await page.setViewportSize({ width: 1672, height: 941 });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  const bottom = await page.locator('.qp-provider-bottom').evaluate(element => element.getBoundingClientRect().bottom);
+  assert.ok(bottom <= 941, `Provider comparison/reader panels exceed viewport: ${bottom}`);
+  const result = await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  assert.equal(result.statusCode, 200);
+  const data = result.json<Overview>();
+  const latest = [1, 2].map(source => data.limits.filter(reading => reading.source_id === source && reading.window_kind === '5h').sort((a, b) => b.last_seen_at - a.last_seen_at)[0]);
+  const rows = page.locator('.qp-provider-comparison li'); assert.equal(await rows.count(), 2);
+  for (const [index, reading] of latest.entries()) {
+    const bar = rows.nth(index).locator('.qp-bar');
+    assert.equal(await bar.evaluate(element => element.style.getPropertyValue('--qp-quota-used')), `${reading.used_percent}%`);
+    const heights = await bar.evaluate(element => ({ outer: element.getBoundingClientRect().height, inner: element.firstElementChild!.getBoundingClientRect().height }));
+    assert.ok(Math.abs(heights.inner / heights.outer * 100 - reading.used_percent!) < 0.02);
+    assert.ok((await rows.nth(index).locator('strong').textContent())!.includes(String(reading.used_percent)));
+    const valueBox = await rows.nth(index).locator('strong').boundingBox();
+    const barBox = await bar.boundingBox(); const nameBox = await rows.nth(index).locator('button').boundingBox();
+    assert.ok(valueBox && barBox && nameBox && valueBox.y >= barBox.y + barBox.height && nameBox.y >= valueBox.y + valueBox.height, 'Percent and owner must follow their bar vertically');
+  }
+  const last = rows.last().locator('button'); const owner = await last.textContent();
+  await last.focus(); await page.keyboard.press('Enter');
+  assert.equal(await last.getAttribute('aria-pressed'), 'true');
+  assert.ok((await page.locator('.qp-provider-detail h2').textContent())!.includes(owner!));
+  for (const width of [390, 900, 1280]) {
+    await page.setViewportSize({ width, height: 941 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  }
+  const pattern = '**/api/overview';
+  for (const state of ['unknown', 'expired', 'tiny'] as const) {
+    const fixture = structuredClone(data);
+    for (const reading of fixture.limits) {
+      if (state === 'unknown') reading.used_percent = null;
+      else if (state === 'expired') reading.resets_at = fixedNow - 1;
+      else reading.used_percent = reading.source_id === 1 ? 0.5 : 0;
+    }
+    await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixture) }));
+    try {
+      await page.setViewportSize({ width: 1672, height: 941 });
+      await page.goto(`http://127.0.0.1:7804/?provider-check=${state}#providers`, { waitUntil: 'domcontentloaded' });
+      await page.locator('.qp-provider-health').waitFor(); await settled(page, pending);
+      if (state !== 'tiny') { assert.equal(await page.locator('.qp-provider-comparison li').count(), 0); assert.equal(await page.locator('.qp-provider-comparison-chart').count(), 0); }
+      else {
+        const heights = await page.locator('.qp-provider-comparison li .qp-bar').evaluateAll(elements => elements.map(element => element.firstElementChild!.getBoundingClientRect().height));
+        assert.equal(heights.length, 2); assert.ok(heights[0] > 0 && heights[0] < 1); assert.equal(heights[1], 0);
+      }
+    } finally { await page.unroute(pattern); }
+  }
+  providerChecks.push({ lang, theme, bottom, compared: latest.length, unavailable: true, expired: true, proportional: true });
+}
 
 async function checkProjectCards(page: Page, lang: string, theme: string, pending: Set<Request>) {
   const month = new Date(fixedNow); month.setDate(1); month.setHours(0, 0, 0, 0);
@@ -614,6 +667,7 @@ try {
           }
           if (pass === 0) await checkShellAccess(page, destination, lang, theme);
           if (pass === 0 && destination === 'projects') await checkProjectCards(page, lang, theme, pending);
+          if (pass === 0 && destination === 'providers') await checkProviders(page, lang, theme, pending);
           if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme);
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
           if (pass === 0 && destination === 'overview') await checkRuntimeAccess(page, lang, theme, pending);
@@ -630,7 +684,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : projectsOnly ? 'projects' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, projectCardChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, projectCardChecks, providerChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;
