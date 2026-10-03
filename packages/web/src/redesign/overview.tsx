@@ -1,7 +1,8 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { Activity, ArrowUpRight, Box, CircleGauge, Coins, Folder, GitBranch, Layers, Wallet, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
+import { countdown } from '@/format';
 import type { QuotaHistoryResponse } from '@/api';
 import { CostValue, recordCostCoverage } from './cost-value';
 import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
@@ -30,6 +31,8 @@ interface OverviewProps {
   quotaHistoryError?: boolean;
   recent?: readonly ActivityItem[];
   period?: string;
+  periodControl?: ReactNode;
+  selectedQuotaId?: string | null;
   historyHref?: string;
   harnessVendors?: Readonly<Record<string, string>>;
 }
@@ -45,10 +48,15 @@ export interface ActivityItem {
   sessionKey: number | null;
 }
 
-function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: number; t: Translate }) {
+function PulseCore({ quota, now, t, language, staleAfterMs }: { quota: QuotaWindow | undefined; now: number; t: Translate; language: 'en' | 'th'; staleAfterMs: number }) {
   const id = useId().replace(/:/g, '');
-  const state = quota ? quotaState(quota, now, 300000) : null;
+  const state = quota ? quotaState(quota, now, staleAfterMs) : null;
   const used = state?.remaining == null ? null : quota?.usedPercent ?? null;
+  const runway = runwayState(quota, now, staleAfterMs);
+  const projectedAt = runway.status === 'ready' ? runway.projectedFullAt : null;
+  const resetAt = runway.status === 'ready' ? quota!.resetAt : null;
+  const duration = (at: number | null) => at === null ? t('redesign.unknownValue') : at - now < 60_000 ? '<1m' : countdown(at, now);
+  const exact = (at: number | null) => at === null ? t('redesign.unavailable') : new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(at);
   return <div className="qp-pulse" data-stale={!state || state.stale}>
     <svg viewBox="0 0 360 320" aria-hidden="true">
       <defs>
@@ -84,6 +92,10 @@ function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: num
       {used !== null && <circle className="qp-core-progress" data-testid="pulse-progress" cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used)} 100`} transform="rotate(-90 180 160)"/>}
     </svg>
     <div className="qp-pulse-label"><strong>{used === null ? '—' : `${used}%`}</strong><span className="qp-pulse-state">{t('redesign.quotaUsed')}</span><span>{quota?.owner ?? '—'} · {quota?.window ?? '—'}</span></div>
+    <div className="qp-pulse-runway" data-testid="pulse-runway" data-projected-at={projectedAt ?? undefined} data-reset-at={resetAt ?? undefined}>
+      <span>{t('redesign.runwayShort')} <strong title={exact(projectedAt)}>{duration(projectedAt)}</strong></span>
+      <span>{t('redesign.resetShort')} <strong title={exact(resetAt)}>{duration(resetAt)}</strong></span>
+    </div>
   </div>;
 }
 
@@ -149,14 +161,15 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ records = [], graph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, recent, period, harnessVendors = {}, historyHref = '#history?range=today' }: OverviewProps) {
+export function Overview({ records = [], graph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, recent, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today' }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
   const [selection, setSelection] = useState<{ dimension: Dimension; key: string | null } | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const shell = useRef<HTMLDivElement>(null);
-  const quota = (quotaId && quotas.find(item => item.id === quotaId)) || defaultQuota(quotas, now, preview ? 300000 : 3600000);
+  const quotaKey = selectedQuotaId !== undefined ? selectedQuotaId : quotaId;
+  const quota = (quotaKey && quotas.find(item => item.id === quotaKey)) || defaultQuota(quotas, now, preview ? 300000 : 3600000);
   const totals = graph?.totals ?? { ...summarize(records), records: records.length };
   const nodes: RuntimeGraph['nodes'] = graph?.nodes ?? Object.fromEntries(dimensions.map(dimension => [dimension, groupUsage(records, dimension)])) as RuntimeGraph['nodes'];
   const edges = graph?.edges ?? runtimeEdges(records);
@@ -188,13 +201,13 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
         <div className="qp-page-heading"><h1>{t('redesign.title')}</h1><span className="qp-chip">{period ?? new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(now)}</span></div>
         <div className="qp-hero-grid">
           <section className="qp-panel qp-hero">
-            <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.core')}</h2>{period && <span className="qp-chip">{period}</span>}<span className="qp-status" data-risk={state?.risk ?? 'unknown'}>{t(riskLabel(state))}</span></div>
+            <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.core')}</h2>{periodControl ?? (period && <span className="qp-chip">{period}</span>)}<span className="qp-status" data-risk={state?.risk ?? 'unknown'}>{t(riskLabel(state))}</span></div>
             <div className="qp-core-grid"><div className="qp-metrics">
               <Metric icon={<CircleGauge size={21}/>} label={t('redesign.tokens')} value={number(totals.tokens)}/>
               <Metric icon={<Layers size={21}/>} label={t('redesign.sessions')} value={number(totals.sessions)}/>
               <Metric icon={<Coins size={21}/>} label={t('redesign.reported')} value={<CostValue amount={totals.reportedCost} priced={prices.native} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
               <Metric icon={<Wallet size={21}/>} label={t('redesign.value')} value={<CostValue amount={totals.apiValue} priced={prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
-            </div><PulseCore quota={quota} now={now} t={t}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.models')}><h3>{t('redesign.models')}</h3><div className="qp-top-model-list">{models.map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span className="qp-model-identity"><i aria-hidden="true"><Box size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</div></section></div>
+            </div><PulseCore quota={quota} now={now} t={t} language={language} staleAfterMs={preview ? 300000 : 3600000}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.models')}><h3>{t('redesign.models')}</h3><div className="qp-top-model-list">{models.map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span className="qp-model-identity"><i aria-hidden="true"><Box size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</div></section></div>
             <p className="qp-footnote">{t('redesign.scope')}</p>
           </section>
           <section className="qp-panel qp-quotas"><h2><CircleGauge size={18}/>{t('redesign.windows')}</h2>

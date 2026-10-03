@@ -7,7 +7,7 @@ import { useTheme } from '@/lib/use-theme';
 import { Overview } from './overview';
 import type { ActivityItem } from './overview';
 import { defaultQuota, type QuotaWindow, type RuntimeGraph } from './model';
-import { readScope, selectedScope, writeScope } from './scope';
+import { readScope, selectedScope, writeScope, type ScopeRange } from './scope';
 
 function readRoute() {
   return readScope(new URLSearchParams(location.hash.split('?')[1] ?? ''), 'today');
@@ -18,6 +18,8 @@ export function ProductionOverview() {
   const { lang, setLang, currency, rate } = useI18n();
   const [theme, toggleTheme] = useTheme();
   const [route, setRoute] = useState(readRoute);
+  const periodSelect = useRef<HTMLSelectElement>(null);
+  const restorePeriodFocus = useRef(false);
   const routeKey = JSON.stringify(route);
   const currentKey = useRef(routeKey);
   currentKey.current = routeKey;
@@ -45,6 +47,11 @@ export function ProductionOverview() {
     }
   }, [routeKey]);
   const current = snapshot?.key === routeKey ? snapshot : null;
+  useEffect(() => {
+    if (current && restorePeriodFocus.current) {
+      periodSelect.current?.focus({ preventScroll: true }); restorePeriodFocus.current = false;
+    }
+  }, [current?.key]);
   const overview = current?.overview;
   const selected = overview ? primaryLimits(overview.limits, overview.now).map(({ primary }) => primary) : [];
   const quotas: QuotaWindow[] = selected.filter(limit => {
@@ -97,8 +104,22 @@ export function ProductionOverview() {
     : t(route.range === 'today' ? 'redesign.today' : route.range === 'week' ? 'redesign.thisWeek' : route.range === 'month' ? 'redesign.thisMonth' : 'redesign.allTime');
   const historyParams = writeScope(new URLSearchParams(), route);
   const scopeLabel = route.sourceId ? `${period} · ${t('analysis.source')} #${route.sourceId}` : period;
+  const periodControl = <div className="qp-overview-period">
+    <select ref={periodSelect} aria-label={t('redesign.period')} title={scopeLabel} value={route.range} onChange={event => {
+      const range = event.currentTarget.value as ScopeRange;
+      const next = { ...route, range, ...(range !== 'custom' ? { from: undefined, to: undefined } : {}) };
+      const params = writeScope(new URLSearchParams(location.hash.split('?')[1] ?? ''), next);
+      restorePeriodFocus.current = true;
+      window.history.replaceState(null, '', `${location.pathname}${location.search}#overview?${params}`); setRoute(next);
+    }}>
+      <option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.thisWeek')}</option>
+      <option value="month">{t('redesign.thisMonth')}</option><option value="all">{t('redesign.allTime')}</option>
+      {route.range === 'custom' && <option value="custom">{period}</option>}
+    </select>
+    {route.sourceId && <span className="qp-chip">{t('analysis.source')} #{route.sourceId}</span>}
+  </div>;
   return <>
     {error && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
-    <Overview graph={graph} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} recent={recent} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
+    <Overview graph={graph} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} recent={recent} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
   </>;
 }

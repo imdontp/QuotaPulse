@@ -263,6 +263,7 @@
   grid-template-columns:145px minmax(180px,1fr) 150px;
   align-items:center;
   min-height:305px;
+  row-gap:24px;
 }
 .qp-metrics {
   display:grid;
@@ -330,6 +331,12 @@
   overflow-wrap:anywhere;
 }
 .qp-pulse-label .qp-pulse-state { color:#36c9ff; font-size:14px; font-weight:600; letter-spacing:.5px; text-transform:uppercase; }
+.qp-pulse-runway { position:absolute; top:calc(100% - 20px); left:50%; transform:translateX(-50%); width:318px; max-width:calc(100% - 16px); display:flex; align-items:center; justify-content:center; gap:4px 12px; flex-wrap:wrap; min-height:36px; padding:7px 12px; border:1px solid transparent; border-radius:24px; background:linear-gradient(var(--qp-panel),var(--qp-panel)) padding-box,linear-gradient(100deg,#289cff,#a576ff) border-box; font-size:14px; color:var(--qp-accent); }
+.qp-pulse-runway>span { white-space:nowrap; }
+.qp-pulse-runway>span+span { color:var(--qp-series); }
+.qp-pulse-runway strong { font-weight:600; font-variant-numeric:tabular-nums; }
+.qp-overview-period { display:flex; align-items:center; gap:8px; margin-left:auto; min-width:0; }
+.qp-overview-period select { min-width:0; max-width:180px; min-height:30px; padding:4px 8px; border:1px solid var(--qp-border); border-radius:7px; color:var(--qp-text); background:var(--qp-panel); font-family:'Noto Sans Thai',var(--font-sans); font-size:11px; }
 .qp-pulse-label strong {
   font-size:clamp(30px,4vw,56px);
   line-height:1.1;
@@ -668,6 +675,7 @@
   }
 }
 @media(max-width:1100px) {
+  .qp-core-grid { row-gap:44px; }
   .qp-redesign {
     --qp-sidebar-width:66px;
   }

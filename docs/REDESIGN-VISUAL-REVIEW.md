@@ -1,5 +1,12 @@
 # Concept comparison and refinement queue
 
+[Pulse period and runway v1.49](REDESIGN-PULSE-PERIOD-V1.49.md) connects the
+Overview period selector to existing scope APIs and adds the globe's Runway/Reset
+pill from actual reader timestamps. Selected quota, source filters and keyboard
+focus survive scope changes. All 124 web tests and four repeated capture pairs
+pass within unchanged raster tolerance. The [latest Overview viewer](redesign-v1.49/reference-review.html)
+also offers v1.48 captures. The complete eight-page visual target remains open.
+
 [Overview placement v1.48](REDESIGN-OVERVIEW-PLACEMENT-V1.48.md) moves the globe
 to the reference focal position, separates the model caption/card and exposes
 all four recorded providers. Connector/node endpoints differ by at most 0.014px

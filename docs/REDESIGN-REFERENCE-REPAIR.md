@@ -16,6 +16,12 @@ that harness must never be reported as a reference fidelity percentage.
 
 ## Source and observed gaps
 
+Latest functional/composition checkpoint: [Pulse period and runway v1.49](REDESIGN-PULSE-PERIOD-V1.49.md)
+adds the scope-backed Overview selector and actual forecast/reset duration pill.
+Custom/source scope, selected quota, keyboard focus and narrow-screen layout
+checks pass. [Latest Overview comparison](redesign-v1.49/reference-review.html)
+retains v1.48 as a previous capture. Full reference visual acceptance remains open.
+
 Latest composition checkpoint: [Overview placement v1.48](REDESIGN-OVERVIEW-PLACEMENT-V1.48.md)
 aligns the globe's focal position, separates the model list caption and makes
 four provider rows fully visible while correcting connector endpoints. The

@@ -74,6 +74,7 @@ const chartChecks: Array<{ page: string; lang: string; theme: string; buckets: n
 const modelCostChecks: Array<{ route: string; lang: string; theme: string; buckets: number; collapsedBottom: number }> = [];
 const quotaChecks: Array<{ page: string; lang: string; theme: string; segments: number; samples: number; unknown: number }> = [];
 const pulseCoreChecks: Array<{ lang: string; theme: string; assetSha256: string; imageWidth: number; selectedUsed: number[]; boundaries: number[]; unknown: boolean; reducedMotion: boolean }> = [];
+const overviewPeriodChecks: Array<{ lang: string; theme: string; tokensByRange: Record<string, number>; selectedQuotaPreserved: boolean; customSourcePreserved: boolean; focusRestored: boolean }> = [];
 const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number }> = [];
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
 const headerChecks: Array<{ page: string; lang: string; theme: string; width: number; height: number; sidebarWidth: number }> = [];
@@ -902,6 +903,11 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
     await page.waitForFunction(value => document.querySelector('.qp-pulse-label strong')?.textContent === `${value}%`, used);
     assert.equal(await page.getByTestId('pulse-progress').getAttribute('stroke-dasharray'), `${Math.min(100, used)} 100`);
     assert.equal(await page.locator('.qp-pulse-state').textContent(), lang === 'th' ? 'โควตาที่ใช้ไป' : 'Quota used');
+    const pill = page.getByTestId('pulse-runway');
+    assert.equal(await pill.getAttribute('data-reset-at'), String(reading.resets_at));
+    const projectedAt = reading.forecast?.status === 'ready' && reading.forecast.projectedFullAt! > fixedNow ? reading.forecast.projectedFullAt : null;
+    assert.equal(await pill.getAttribute('data-projected-at'), projectedAt === null ? null : String(projectedAt));
+    if (projectedAt === null) assert.equal(await pill.locator('strong').first().textContent(), lang === 'th' ? 'ไม่ทราบ' : 'Unknown');
     const reducedSeconds = await page.getByTestId('pulse-progress').evaluate(element => parseFloat(getComputedStyle(element).transitionDuration));
     assert.ok(reducedSeconds <= 0.001, `Reduced motion must suppress the quota transition, observed ${reducedSeconds}s`);
     selectedUsed.push(used);
@@ -914,7 +920,11 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
       await page.locator('.qp-core-grid').waitFor(); await settled(page, pending);
       assert.equal(await page.locator('.qp-pulse-label strong').textContent(), used === null ? '—' : `${used}%`);
       const progress = page.getByTestId('pulse-progress');
-      if (used === null) assert.equal(await progress.count(), 0, 'Unknown quota must not render an invented progress arc');
+      if (used === null) {
+        assert.equal(await progress.count(), 0, 'Unknown quota must not render an invented progress arc');
+        assert.equal(await page.getByTestId('pulse-runway').getAttribute('data-projected-at'), null);
+        assert.equal(await page.getByTestId('pulse-runway').getAttribute('data-reset-at'), null);
+      }
       else {
         assert.equal(await progress.getAttribute('stroke-dasharray'), `${Math.min(100, used)} 100`);
         if (used === 0) assert.equal(await progress.getAttribute('stroke-linecap'), 'butt', 'Zero progress must not show a rounded minimum dot');
@@ -924,6 +934,59 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
   await page.goto(home, { waitUntil: 'domcontentloaded' });
   await page.locator('.qp-quota').first().waitFor(); await settled(page, pending);
   pulseCoreChecks.push({ lang, theme, assetSha256, imageWidth, selectedUsed, boundaries: [0, 100, 125], unknown: true, reducedMotion: true });
+}
+
+async function checkOverviewPeriod(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  const home = 'http://127.0.0.1:7804/?overview-period=presets#overview';
+  await page.goto(home, { waitUntil: 'domcontentloaded' });
+  await page.locator('.qp-quota').first().waitFor(); await settled(page, pending);
+  await page.locator('.qp-quota').first().click();
+  const selectedOwner = await page.locator('.qp-quota[aria-pressed=true] .qp-quota-heading strong').innerText();
+  const starts = { today: Date.parse('2026-05-16T17:00:00Z'), week: Date.parse('2026-05-10T17:00:00Z'), month: Date.parse('2026-04-30T17:00:00Z'), all: 0 };
+  const tokensByRange: Record<string, number> = {};
+  for (const range of ['week', 'month', 'all', 'today'] as const) {
+    const graphResponse = page.waitForResponse(response => new URL(response.url()).pathname === '/api/runtime-map' && response.status() === 200);
+    const usageResponse = page.waitForResponse(response => new URL(response.url()).pathname === '/api/usage-events' && response.status() === 200);
+    await page.locator('.qp-overview-period select').selectOption(range);
+    const response = await graphResponse;
+    const query = new URL(response.url()).searchParams;
+    assert.equal(query.get('from'), String(starts[range])); assert.equal(query.get('to'), String(fixedNow + 1));
+    const usageQuery = new URL((await usageResponse).url()).searchParams;
+    assert.equal(usageQuery.get('from'), query.get('from')); assert.equal(usageQuery.get('to'), query.get('to'));
+    await page.locator('.qp-metrics').waitFor(); await settled(page, pending);
+    const expected = (await daemon.inject({ method: 'GET', url: `/api/runtime-map?from=${starts[range]}&to=${fixedNow + 1}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<RuntimeGraph>();
+    assert.equal(await page.locator('.qp-metrics .qp-metric strong').first().textContent(), new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(expected.totals.tokens));
+    assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('range'), range);
+    assert.equal(await page.locator('.qp-quota[aria-pressed=true] .qp-quota-heading strong').innerText(), selectedOwner);
+    assert.equal(await page.locator('.qp-overview-period select').evaluate(element => element === document.activeElement), true);
+    const link = await page.locator('.qp-activity .qp-section-heading>a').getAttribute('href');
+    assert.equal(new URLSearchParams(link!.split('?')[1]).get('range'), range);
+    tokensByRange[range] = expected.totals.tokens;
+  }
+  assert.ok(tokensByRange.month > tokensByRange.today, 'Period fixture must contain genuinely different totals');
+  const from = starts.today, to = fixedNow + 1;
+  await page.goto(`http://127.0.0.1:7804/?overview-period=custom#overview?range=custom&from=${from}&to=${to}&source=1&bucket=hour`, { waitUntil: 'domcontentloaded' });
+  await page.locator('.qp-overview-period select').waitFor(); await settled(page, pending);
+  assert.equal(await page.locator('.qp-overview-period select').inputValue(), 'custom');
+  assert.ok((await page.locator('.qp-overview-period .qp-chip').textContent())!.includes('#1'));
+  for (const width of [390, 900, 1280]) {
+    await page.setViewportSize({ width, height: 992 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Custom/source period control overflow: ${lang}/${theme}/${width}`);
+  }
+  await page.setViewportSize({ width: 1586, height: 992 });
+  const scopedResponse = page.waitForResponse(response => new URL(response.url()).pathname === '/api/runtime-map' && response.status() === 200);
+  await page.locator('.qp-overview-period select').selectOption('week');
+  const query = new URL((await scopedResponse).url()).searchParams;
+  assert.equal(query.get('source_id'), '1'); assert.equal(query.get('from'), String(starts.week));
+  await page.locator('.qp-overview-period select').waitFor(); await settled(page, pending);
+  const params = new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
+  assert.equal(params.get('source'), '1'); assert.equal(params.get('bucket'), 'hour');
+  assert.equal(params.has('from'), false); assert.equal(params.has('to'), false);
+  await page.reload({ waitUntil: 'domcontentloaded' }); await page.locator('.qp-overview-period select').waitFor(); await settled(page, pending);
+  assert.equal(await page.locator('.qp-overview-period select').inputValue(), 'week');
+  assert.ok((await page.locator('.qp-overview-period .qp-chip').textContent())!.includes('#1'));
+  await page.goto(home, { waitUntil: 'domcontentloaded' }); await page.locator('.qp-overview-period select').waitFor(); await settled(page, pending);
+  overviewPeriodChecks.push({ lang, theme, tokensByRange, selectedQuotaPreserved: true, customSourcePreserved: true, focusRestored: true });
 }
 
 async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', lang: string, theme: string, pending: Set<Request>) {
@@ -1137,6 +1200,7 @@ try {
           if (pass === 0 && destination === 'overview') await checkRuntimeAccess(page, lang, theme, pending);
           if (pass === 0 && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
           if (pass === 0 && destination === 'overview') await checkPulseCore(page, lang, theme, pending);
+          if (pass === 0 && destination === 'overview') await checkOverviewPeriod(page, lang, theme, pending);
         }
         if (pass === 0 && !pages.some(([destination]) => destination === 'settings')) {
           await page.goto('http://127.0.0.1:7804/?shell-access=settings#settings', { waitUntil: 'domcontentloaded' });
@@ -1149,7 +1213,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, overviewPeriodChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;
