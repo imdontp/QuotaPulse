@@ -23,6 +23,7 @@ export const en = {
   'redesign.daemonConnection': 'Daemon connection',
   'redesign.skipContent': 'Skip to content',
   'redesign.quickStats': 'Quick stats',
+  'redesign.keepFlowing': 'Keep the flow going.',
   'redesign.namedProjects': 'Named projects',
   'redesign.recordedModels': 'Recorded models',
   'redesign.recordedProviders': 'Recorded providers',

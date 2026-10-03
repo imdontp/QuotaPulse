@@ -1,5 +1,11 @@
 # Concept comparison and refinement queue
 
+[Shared sidebar reference v1.44](REDESIGN-SIDEBAR-REFERENCE-V1.44.md) restores
+count-over-label stats, icon frames, larger navigation marks and brand footer.
+All eight dashboard pages plus Settings were captured on the same build;
+the blueprint integration unit gate passed 418 tests. Overall visual acceptance
+and remaining typography/per-page work remain open.
+
 [Alerts reference refinement v1.43](REDESIGN-ALERTS-REFERENCE-V1.43.md) moves
 the forecast rail beside the main header, adds a real forecast-day center and
 recorded owner marks, decorates risk cards and lays out fixed rules as a table.

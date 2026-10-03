@@ -29,6 +29,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.daemonConnection': 'การเชื่อมต่อ daemon',
   'redesign.skipContent': 'ข้ามไปเนื้อหา',
   'redesign.quickStats': 'สถิติย่อ',
+  'redesign.keepFlowing': 'ให้การทำงานไหลลื่นต่อไป',
   'redesign.namedProjects': 'โปรเจกต์ที่มีชื่อ',
   'redesign.recordedModels': 'โมเดลที่บันทึก',
   'redesign.recordedProviders': 'ผู้ให้บริการที่บันทึก',

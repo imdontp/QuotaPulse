@@ -169,3 +169,10 @@ recorded owner risk cards and presents the fixed rules in a native table. The
 gate compares all selectable owners' forecast values independently with daemon
 responses and retains history/keyboard/overflow checks. This checkpoint does
 not close the full visual acceptance or broader release requirements.
+
+[Shared sidebar v1.44](REDESIGN-SIDEBAR-REFERENCE-V1.44.md) then refines
+Quick stats, navigation marks, active-row treatment and the missing brand footer.
+Its combined capture evidence covers all eight dashboard pages plus Settings on
+one production build, alongside 418 passing repository unit tests. Original
+reference likeness, final Settings composition and release/manual acceptance
+still require evidence before the complete goal can be closed.

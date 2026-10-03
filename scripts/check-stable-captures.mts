@@ -98,6 +98,7 @@ const allPages = [
   ['projects', '.qp-project-trend'], ['providers', '.qp-provider-health tbody tr'],
   ['models', '.qp-model-trend'], ['cost', '.qp-cost-chart'],
   ['history', '[data-testid="usage-history"] tbody tr'], ['alerts', '.qp-quota-point'],
+  ['settings', '[data-slot="card"]'],
 ] as const;
 const pages = liveOnly ? allPages.filter(([destination]) => destination === 'live') : compositionOnly ? allPages.filter(([destination]) => ['overview', 'live', 'models'].includes(destination)) : overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : projectsOnly ? allPages.filter(([destination]) => destination === 'projects') : providersOnly ? allPages.filter(([destination]) => destination === 'providers') : modelsOnly ? allPages.filter(([destination]) => destination === 'models') : costOnly ? allPages.filter(([destination]) => destination === 'cost') : historyOnly ? allPages.filter(([destination]) => destination === 'history') : alertsOnly ? allPages.filter(([destination]) => destination === 'alerts') : allPages;
 
@@ -689,6 +690,18 @@ async function checkFontAccess(page: Page, destination: string, lang: string, th
 
 async function checkShellAccess(page: Page, destination: string, lang: string, theme: string) {
   const originalViewport = page.viewportSize()!;
+  const statsResponse = await daemon.inject({ method: 'GET', url: '/api/runtime-summary', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  assert.equal(statsResponse.statusCode, 200);
+  const stats = statsResponse.json<Record<string, number>>();
+  const statsCard = page.locator('.qp-quick-stats');
+  for (const key of ['namedProjects', 'models', 'providers', 'recentSessions']) {
+    const value = statsCard.locator(`[data-stat=${key}]`);
+    assert.equal(await value.textContent(), new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(stats[key]));
+    const label = value.locator('..').locator('dt a>span');
+    const valueBox = await value.boundingBox(); const labelBox = await label.boundingBox();
+    assert.ok(valueBox && labelBox && valueBox.y + valueBox.height <= labelBox.y, 'Quick-stat count is not above its label');
+  }
+  assert.equal(await page.locator('.qp-sidebar-brand').count(), 1);
   for (const width of [originalViewport.width, 390, 900, 1280]) {
     await page.setViewportSize({ width, height: originalViewport.height });
     const header = await page.locator('.qp-topbar').boundingBox();

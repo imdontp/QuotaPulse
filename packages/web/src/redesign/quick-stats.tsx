@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Layers, Radio, Activity } from 'lucide-react';
+import { Box, Folder, Headphones, Activity } from 'lucide-react';
 import { api, type RuntimeSummary } from '@/api';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useT } from '@/i18n';
@@ -21,9 +21,9 @@ export function QuickStats({ t, language }: { t: RedesignTranslate; language: 'e
   }, []);
   const number = (value: number | undefined) => value === undefined ? t('redesign.unknownValue') : new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US').format(value);
   const rows = [
-    { key: 'namedProjects', label: 'redesign.namedProjects', icon: Box, href: '#projects?range=all' },
-    { key: 'models', label: 'redesign.recordedModels', icon: Layers, href: '#models?range=all' },
-    { key: 'providers', label: 'redesign.recordedProviders', icon: Radio, href: '#providers' },
+    { key: 'namedProjects', label: 'redesign.namedProjects', icon: Folder, href: '#projects?range=all' },
+    { key: 'models', label: 'redesign.recordedModels', icon: Box, href: '#models?range=all' },
+    { key: 'providers', label: 'redesign.recordedProviders', icon: Headphones, href: '#providers' },
     { key: 'recentSessions', label: 'redesign.recentSessions', icon: Activity, href: '#live' },
   ] as const;
   return <section className="qp-quick-stats" aria-label={t('redesign.quickStats')} data-stale={stale}>
