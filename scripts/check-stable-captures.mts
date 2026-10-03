@@ -80,6 +80,7 @@ const providerChecks: Array<{ lang: string; theme: string; bottom: number; compa
 const modelComparisonChecks: Array<{ lang: string; theme: string; bottom: number; rows: number; ratios: number; boundaryRatios: boolean }> = [];
 const costAxisChecks: Array<{ route: string; lang: string; theme: string; priced: boolean; maxAmount: number; maxTokens: number }> = [];
 const historyChecks: Array<{ lang: string; theme: string; eventId: number; widths: number[]; modal: boolean; focusRestored: boolean }> = [];
+const historyDensityChecks: Array<{ lang: string; theme: string; bottom: number; visibleRows: number; records: number; keyboardScrolled: boolean }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const fontPath = 'fonts/noto-sans-thai/';
 const fontProvenance = JSON.parse(readFileSync(resolve(root, `packages/web/public/${fontPath}provenance.json`), 'utf8'));
@@ -195,6 +196,30 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
   assert.equal(await history.locator('tr[data-selected=true]').count(), 0);
   if (pass === 0) historyChecks.push({ lang, theme, eventId, widths: [390, 900, 1280], modal: true, focusRestored: true });
   await page.setViewportSize({ width: 1672, height: 941 }); await page.evaluate(() => window.scrollTo(0, 0));
+}
+async function checkHistoryDensity(page: Page, lang: string, theme: string) {
+  const history = page.getByTestId('usage-history');
+  const region = history.locator('.qp-history-table');
+  const geometry = await region.evaluate(element => {
+    const box = element.getBoundingClientRect();
+    const rows = [...element.querySelectorAll('tbody tr')];
+    return { visibleRows: rows.filter(row => { const rect = row.getBoundingClientRect(); return rect.top >= box.top && rect.bottom <= box.bottom; }).length, records: rows.length };
+  });
+  const bottom = await history.locator('.qp-history-records').evaluate(element => element.getBoundingClientRect().bottom + scrollY);
+  console.log('History occupied geometry', lang, theme, { bottom, ...geometry });
+  assert.ok(bottom <= 941, `History pagination outside desktop viewport: ${bottom}`);
+  assert.ok(geometry.visibleRows >= 4, `Fewer than four complete History rows: ${geometry.visibleRows}`);
+  assert.equal(geometry.records, 37, 'Scrollable region dropped displayed records');
+  await region.focus(); await page.keyboard.press('End'); await page.waitForTimeout(300);
+  assert.ok(await region.evaluate(element => element.scrollTop > 0), 'History region did not scroll with keyboard');
+  const last = region.locator('tbody tr').last().getByRole('button');
+  await last.focus(); await page.keyboard.press('Enter'); await page.getByRole('dialog').waitFor();
+  assert.ok((await page.locator('#history-detail-title').innerText()).includes(await last.innerText()));
+  await page.keyboard.press('Escape'); await page.getByRole('dialog').waitFor({ state: 'hidden' });
+  assert.equal(await last.evaluate(element => element === document.activeElement), true);
+  await region.evaluate(element => { element.scrollTop = 0; element.scrollLeft = 0; });
+  await last.evaluate(element => element.blur()); await page.evaluate(() => scrollTo(0, 0));
+  historyDensityChecks.push({ lang, theme, bottom, ...geometry, keyboardScrolled: true });
 }
 async function checkProviders(page: Page, lang: string, theme: string, pending: Set<Request>) {
   await page.setViewportSize({ width: 1672, height: 941 });
@@ -797,6 +822,7 @@ try {
             // No region is hidden, blurred or exempted from the comparison.
             assert.ok(difference.maxChannelDelta <= 2 && difference.changedPixels / difference.pixelCount <= 0.0001, `${filename}: capture differs beyond raster tolerance (${JSON.stringify(difference)})`);
           }
+          if (pass === 0 && destination === 'history') await checkHistoryDensity(page, lang, theme);
           if (destination === 'history') await checkHistoryDetails(page, lang, theme, pass, pending);
           if (pass === 0) await checkShellAccess(page, destination, lang, theme);
           if (pass === 0 && destination === 'projects') await checkProjectCards(page, lang, theme, pending);
@@ -818,7 +844,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars'])], overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, chartChecks, modelCostChecks, quotaChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

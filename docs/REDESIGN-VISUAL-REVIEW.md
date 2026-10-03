@@ -1,5 +1,13 @@
 # Concept comparison and refinement queue
 
+[History density 1.33](REDESIGN-HISTORY-DENSITY-V1.33.md) compacts the timeline and
+desktop filters, aligns table cost labels and introduces a keyboard-scrollable
+record region with sticky headers. Five complete rows and pagination fit the
+941 px gate (card bottom 936.796875 px); all 37 scoped records remain accessible.
+Eight repeat pairs are byte-identical. Last-record detail/focus restoration and
+existing responsive/shell checks pass. This is scoped evidence; remaining screen
+refinements, manual review and combined RC gates remain pending.
+
 [History record details 1.32](REDESIGN-HISTORY-DETAIL-V1.32.md) refines the selected
 row, sticky detail heading, recorded-kind badge and token tiles. Eight normal and
 selected repeat pairs are byte-identical. API-matched metadata, native modal
