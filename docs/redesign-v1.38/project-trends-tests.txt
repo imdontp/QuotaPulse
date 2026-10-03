@@ -1,0 +1,22 @@
+﻿TAP version 13
+# 08:13:49.672 INFO  [db] opened :memory:
+# Subtest: opt-in project/model aggregates preserve identity, sessions and money coverage
+ok 1 - opt-in project/model aggregates preserve identity, sessions and money coverage
+  ---
+  duration_ms: 403.1117
+  ...
+# 08:13:50.213 INFO  [db] opened :memory:
+# Subtest: project mini trends preserve scope, half-open range, identities and aggregate totals
+ok 2 - project mini trends preserve scope, half-open range, identities and aggregate totals
+  ---
+  duration_ms: 341.9367
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1855.3156

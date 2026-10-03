@@ -371,19 +371,26 @@ async function checkProviders(page: Page, lang: string, theme: string, pending: 
 
 async function checkProjectCards(page: Page, lang: string, theme: string, pending: Set<Request>) {
   const month = new Date(fixedNow); month.setDate(1); month.setHours(0, 0, 0, 0);
-  const query = new URLSearchParams({ detailed: '1', from: String(month.getTime()), to: String(fixedNow + 1) });
+  const query = new URLSearchParams({ detailed: '1', trends: '1', from: String(month.getTime()), to: String(fixedNow + 1) });
   const result = await daemon.inject({ method: 'GET', url: `/api/projects?${query}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(result.statusCode, 200);
   const data = result.json<DetailedProjectResponse>();
   const cards = page.locator('.qp-project-card');
   assert.equal(await cards.count(), 8);
-  const bottom = await cards.last().evaluate(element => element.getBoundingClientRect().bottom + window.scrollY);
-  const geometry = await cards.last().evaluate(element => ({ padding: getComputedStyle(element).padding, gap: getComputedStyle(element).gap, height: element.getBoundingClientRect().height, width: innerWidth, scrollY }));
-  assert.ok(bottom <= 941, `All eight project cards must fit the canonical viewport: ${bottom}; ${JSON.stringify(geometry)}`);
+  const bottom = await page.locator('.qp-project-cards').evaluate(element => element.getBoundingClientRect().bottom);
+  assert.ok(bottom <= 941, `Project card region exceeds canonical viewport: ${bottom}`);
   const money = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' });
   for (const group of data.groups) {
     const card = cards.filter({ has: page.locator('.qp-project-card-identity>strong', { hasText: group.key! }) });
     assert.equal(await card.count(), 1);
+    assert.equal(await card.evaluate(element => element.querySelector('.qp-project-card-facts')!.getBoundingClientRect().bottom <= element.getBoundingClientRect().bottom - 1), true, 'Project facts are clipped by the card');
+    const actual = await card.locator('.qp-project-spark>circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')) })));
+    const expected = Array.from({ length: Math.ceil((data.scope.to - data.scope.from) / data.trends!.bucketMs) }, (_, index) => {
+      const at = data.scope.from + index * data.trends!.bucketMs;
+      return { at, value: data.trends!.points.find(point => point.project === group.key && point.start === at)?.tokens ?? 0 };
+    });
+    assert.deepEqual(actual, expected);
+    assert.equal(actual.reduce((sum, point) => sum + point.value, 0), group.tokens);
     const values = card.locator('.qp-project-card-money>span');
     for (const [index, amount, priced] of [[0, group.reported_native_usd, group.native_calls], [1, group.api_value_usd, group.computed_calls + group.estimated_calls]]) {
       const expected = priced === 0 ? (lang === 'th' ? 'ไม่ทราบ' : 'Unknown') : `${money.format(amount)}${priced < group.calls ? '+' : ''}`;
@@ -396,6 +403,8 @@ async function checkProjectCards(page: Page, lang: string, theme: string, pendin
   // Keyboard selection must keep the existing detail/identity behavior.
   const last = cards.last(); const identity = await last.locator('.qp-project-card-identity>strong').textContent();
   await last.focus(); await page.keyboard.press('Enter'); await settled(page, pending);
+  const lastBounds = await last.boundingBox(); const regionBounds = await page.locator('.qp-project-cards').boundingBox();
+  assert.ok(lastBounds && regionBounds && lastBounds.y >= regionBounds.y && lastBounds.y + lastBounds.height <= regionBounds.y + regionBounds.height + 1, 'Final project card is not keyboard reachable');
   assert.equal(await last.getAttribute('aria-pressed'), 'true');
   assert.ok((await page.locator('.qp-project-detail h2').textContent())!.includes(identity!));
   await page.locator('.qp-project-search input').fill('no-such-synthetic-project');
@@ -500,9 +509,9 @@ async function checkChartAccess(page: Page, destination: 'live' | 'projects', la
     assert.deepEqual(points.map(({ at, tokens }) => ({ at, tokens })), expected);
     points.forEach((point, index) => assert.ok(Math.abs(point.cy - (94 - 88 * expected[index].tokens / (maximum || 1))) < 0.0001, 'Line point is not proportional to the API value'));
   } else {
-    const heights = await page.locator('.qp-project-trend>span').evaluateAll(elements => elements.map(element => parseFloat((element as HTMLElement).style.height)));
-    assert.equal(heights.length, expected.length);
-    heights.forEach((height, index) => assert.ok(Math.abs(height - expected[index].tokens / (maximum || 1) * 100) < 0.0001, 'Bar height is not proportional to the API value'));
+    const points = await page.locator('.qp-project-trend>circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), tokens: Number(element.getAttribute('data-value')), cy: Number(element.getAttribute('cy')) })));
+    assert.deepEqual(points.map(({ at, tokens }) => ({ at, tokens })), expected);
+    points.forEach((point, index) => assert.ok(Math.abs(point.cy - (94 - 88 * expected[index].tokens / (maximum || 1))) < 0.0001, 'Project line point is not proportional to the API value'));
   }
   for (const width of [390, 900, 1280]) {
     await page.setViewportSize({ width, height: 941 });

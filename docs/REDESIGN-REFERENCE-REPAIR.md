@@ -137,5 +137,9 @@ for changes, build-specific evidence and remaining per-page work.
 [Live composition v1.37](REDESIGN-LIVE-COMPOSITION-V1.37.md) then refines
 session/feed allocation and recorded-activity rail marks. These checkpoints
 do not close the remaining fidelity gaps or provide a measured likeness score.
+[Projects reference v1.38](REDESIGN-PROJECTS-REFERENCE-V1.38.md) adds actual
+per-project sparklines and larger three-row desktop cards, with all further
+projects keyboard reachable. The associated reference review artifact shows
+all eight original concepts beside matching app captures without masking.
 Original-reference similarity scoring, user visual acceptance, manual screen
 reader review and the broader release gates remain outstanding.

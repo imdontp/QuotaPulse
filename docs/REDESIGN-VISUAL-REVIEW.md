@@ -1,5 +1,10 @@
 # Concept comparison and refinement queue
 
+[Projects reference repair v1.38](REDESIGN-PROJECTS-REFERENCE-V1.38.md) adds
+scoped aggregate mini-chart data, larger decorated project cards and observed
+detail lines. Its reference review page supports direct inspection of all eight
+source concepts against the app. The full fidelity target remains open.
+
 [Live composition repair v1.37](REDESIGN-LIVE-COMPOSITION-V1.37.md) keeps the
 sessions, observed chart and record feed together in the reference-sized
 desktop viewport. All loaded data remains keyboard reachable. Provider marks

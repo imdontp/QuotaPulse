@@ -16,7 +16,7 @@ import { minuteTrend, MINUTE_GROUPS, type MinuteGroup } from './minute-trend.js'
 import { runtimeMap } from './runtime-map.js';
 import { parseQuotaHistoryScope, quotaHistory } from './quota-history.js';
 import { detailedAggregates } from './detailed-aggregates.js';
-import { projectDetail } from './project-detail.js';
+import { projectDetail, projectTrends } from './project-detail.js';
 import { modelDetail } from './model-detail.js';
 import { costAnalysis, type CostBasis } from './cost-analysis.js';
 import { liveSessions, type LiveSessionMode } from './live-sessions.js';
@@ -518,8 +518,10 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       if (s.detailed !== '1') return reply.code(400).send({ error: 'Invalid detailed mode' });
       const now = Date.now();
       try {
-        const scope = parseUsageScope(req.query as Record<string, unknown>, now, { extraKeys: ['detailed'] });
-        return { now, scope, ...detailedAggregates(db, scope, 'project') };
+        if (s.trends !== undefined && s.trends !== '1') throw new Error('Invalid project trends mode');
+        const scope = parseUsageScope(req.query as Record<string, unknown>, now, { extraKeys: ['detailed', 'trends'] });
+        return db.transaction(() => ({ now, scope, ...detailedAggregates(db, scope, 'project'),
+          ...(s.trends === '1' ? { trends: projectTrends(db, scope) } : {}) }))();
       } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
     }
     const to = s.to == null ? Date.now() : Number(s.to);

@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowDownUp, Folder, RefreshCw, Search } from 'lucide-react';
+import { Activity, ArrowDownUp, Folder, Layers, RefreshCw, Search, Users } from 'lucide-react';
 import { api, type DetailedProjectResponse, type Overview as OverviewData, type ProjectDetailResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import { RedesignShell } from './shell';
+import { HarnessIcon } from '@/components/harness-icon';
+import { VendorIcon } from '@/components/vendor-icon';
+import { ObservedTrend } from './observed-trend';
 import { ChartData } from './chart-data';
 import { readScope, selectedScope, writeScope, type ScopeSelection, type ScopeRange } from './scope';
 import { ScopeNotice } from './scope-notice';
@@ -75,7 +78,7 @@ export function ProductionProjects() {
     const requestedKey = requestKey;
     try {
       const scope = { ...selectedScope(route, Date.now()), ...(route.harness ? { harness: route.harness } : {}) };
-      const [data, overview] = await Promise.all([api.detailedProjects(scope), api.overview()]);
+      const [data, overview] = await Promise.all([api.detailedProjects(scope, true), api.overview()]);
       if (currentKey.current === requestedKey) { setSnapshot({ key: requestedKey, data, overview }); setError(null); }
     } catch (cause) {
       if (currentKey.current === requestedKey) setError(String(cause));
@@ -86,6 +89,11 @@ export function ProductionProjects() {
   const currentSnapshot = snapshot?.key === requestKey ? snapshot : null;
   const groups = currentSnapshot?.data.groups ?? [];
   const data = currentSnapshot?.data;
+  const trendLookup = new Map<string | null, Map<number, number>>();
+  for (const point of data?.trends?.points ?? []) {
+    const values = trendLookup.get(point.project) ?? new Map<number, number>();
+    values.set(point.start, point.tokens); trendLookup.set(point.project, values);
+  }
   const metadata = new Map<string | null, string[]>();
   for (const row of data?.rows ?? []) {
     const values = metadata.get(row.project) ?? [];
@@ -152,21 +160,22 @@ export function ProductionProjects() {
     {!currentSnapshot ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : <div className="qp-project-layout">
       <section className="qp-project-cards" aria-label={t('redesign.allProjects')}>
         {visible.length === 0 && <p className="qp-panel">{t('redesign.noProjects')}</p>}
-        {visible.map(group => {
+        {visible.map((group, index) => {
           const share = data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0;
           const rows = data?.rows.filter(row => row.project === group.key) ?? [];
-          return <button key={JSON.stringify(group.key)} className="qp-project-card qp-panel" aria-pressed={selected?.key === group.key} onClick={() => update({ project: group.key, offset: 0 })}>
+          return <button key={JSON.stringify(group.key)} className="qp-project-card qp-panel" data-tone={index % 2 ? 'violet' : 'cyan'} aria-pressed={selected?.key === group.key} onClick={() => update({ project: group.key, offset: 0 })}>
             <span className="qp-project-card-heading"><span className="qp-project-icon" aria-hidden="true"><Folder size={21}/></span><span className="qp-project-card-identity"><strong>{projectName(group.key)}</strong><span className="qp-project-card-meta">{t('redesign.sortRecent')} · {date(group.lastObservedAt)}</span></span></span>
             <span className="qp-project-card-tokens"><strong>{number(group.tokens)}</strong><small>{number(share)}% {t('redesign.projectShare')}</small></span>
             <span className="qp-bar"><span style={{ width: `${share}%` }}/></span>
             <span className="qp-project-card-money"><span><small>{t('redesign.reported')}</small><strong><CostValue amount={group.reported_native_usd} priced={group.native_calls} total={group.calls} money={money} t={t}/></strong></span><span><small>{t('redesign.value')}</small><strong><CostValue amount={group.api_value_usd} priced={group.computed_calls + group.estimated_calls} total={group.calls} money={money} t={t}/></strong></span></span>
-            <span className="qp-project-card-facts"><span>{number(group.sessions)} {t('redesign.sessions')}</span><span>{number(group.calls)} {t('redesign.modelsCalls')}</span><span>{new Set(rows.map(row => row.harness)).size} {t('redesign.harnessesUsed')}</span></span>
+            {data?.trends && <ObservedTrend className="qp-project-spark" language={lang} label={`${t('redesign.projectTrend')}: ${projectName(group.key)}`} points={Array.from({ length: Math.ceil((data.scope.to - data.scope.from) / data.trends.bucketMs) }, (_, index) => { const at = data.scope.from + index * data.trends!.bucketMs; return { at, value: trendLookup.get(group.key)?.get(at) ?? 0 }; })}/>}
+            <span className="qp-project-card-facts"><span><Users size={14}/>{number(group.sessions)} {t('redesign.sessions')}</span><span><Activity size={14}/>{number(group.calls)} {t('redesign.modelsCalls')}</span><span><Layers size={14}/>{new Set(rows.map(row => row.harness)).size} {t('redesign.harnessesUsed')}</span></span>
           </button>;
         })}
       </section>
       <div className="qp-project-rail"><aside className="qp-panel qp-project-detail" aria-label={t('redesign.projectDetails')}>
         {selected ? <>
-          <h2><Folder size={20}/>{projectName(selected.key)}</h2>
+          <h2><span className="qp-project-icon" aria-hidden="true"><Folder size={26}/></span>{projectName(selected.key)}</h2>
           <nav className="qp-project-detail-tabs" aria-label={t('redesign.projectDetails')}>{(['overview', 'sessions', 'usage', 'details'] as const).map(tab =>
             <button key={tab} aria-current={route.detail === tab ? 'page' : undefined} onClick={() => update({ detail: tab, offset: 0 })}>{t(tab === 'overview' ? 'redesign.projectOverviewTab' : tab === 'sessions' ? 'redesign.projectSessionsTab' : tab === 'usage' ? 'redesign.projectUsageTab' : 'redesign.projectMetadataTab')}</button>)}</nav>
           {detailError && <p role="status" className="qp-project-error">{detailError}</p>}
@@ -175,11 +184,10 @@ export function ProductionProjects() {
           <div className="qp-project-money"><div><small>{t('redesign.reported')}</small><strong>{selected.native_calls > 0 ? <CostValue amount={selected.reported_native_usd} priced={selected.native_calls} total={selected.calls} money={money} t={t}/> : t('redesign.projectCostNotReported')}</strong></div><div><small>{t('redesign.value')}</small><strong>{selected.computed_calls + selected.estimated_calls > 0 ? <CostValue amount={selected.api_value_usd} priced={selected.computed_calls + selected.estimated_calls} total={selected.calls} money={money} t={t}/> : t('redesign.projectValueUnavailable')}</strong></div></div>
           {(selected.unknown_calls > 0 || selected.estimated_calls > 0) && <p className="qp-footnote">{number(selected.unknown_calls)} {t('redesign.projectUnpriced')} · {number(selected.estimated_calls)} {t('redesign.projectEstimated')}</p>}
           <h3>{t('redesign.projectTrend')}</h3>
-          {detail ? detail.points.length ? <><div className="qp-project-trend" role="img" aria-label={`${t('redesign.projectTrend')}: ${t('redesign.tokens')} 0 – ${number(trendMaximum)}`}>
-            {trendBins.map(bin => <span key={bin.start} title={`${date(bin.start)}: ${number(bin.tokens)} ${t('redesign.tokens')}`} style={{ height: `${bin.tokens ? bin.tokens / (trendMaximum || 1) * 100 : 0}%`, opacity: bin.tokens ? 1 : 0 }} />)}</div><ChartData title={t('redesign.projectTrend')} points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} language={lang} t={t}/></>
+          {detail ? detail.points.length ? <><ObservedTrend className="qp-project-trend" points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} language={lang} label={`${t('redesign.projectTrend')}: ${t('redesign.tokens')} 0 – ${number(trendMaximum)}`}/><ChartData title={t('redesign.projectTrend')} points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} language={lang} t={t}/></>
             : <p>{t('redesign.projectNoTrend')}</p> : detailError ? null : <p>{t('app.loading')}</p>}
           <h3>{t('redesign.projectBreakdown')}</h3>
-          <ol className="qp-project-breakdown">{detailRows.slice(0, 8).map(row => <li key={JSON.stringify([row.sourceId, row.provider, row.model])}><span>{row.sourceName} · {row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}</span><strong>{number(row.tokens)}</strong></li>)}</ol>
+          <ol className="qp-project-breakdown">{detailRows.slice(0, 8).map(row => <li key={JSON.stringify([row.sourceId, row.provider, row.model])}><span className="qp-project-route"><HarnessIcon harness={row.harness} vendor={snapshot?.overview.harnesses.find(harness => harness.harness === row.harness)?.vendor}/>{row.sourceName} · <VendorIcon vendor={row.provider ?? 'unknown'}/>{row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}</span><strong>{number(row.tokens)}</strong></li>)}</ol>
           {detailRows.length > 8 && <p className="qp-footnote">{detailRows.length - 8} {t('redesign.moreRows')}</p>}
           <p className="qp-footnote">{t('redesign.projectCoverage')}</p>
           </>}

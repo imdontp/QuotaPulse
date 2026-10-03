@@ -133,6 +133,16 @@
   flex:none;
   color:var(--qp-accent);
 }
+.qp-project-card[data-tone=violet] { --qp-accent:var(--qp-series); }
+.qp-project-card { background:radial-gradient(ellipse at 0 0,color-mix(in srgb,var(--qp-accent) 8%,transparent),transparent 70%),var(--qp-panel); }
+.qp-project-icon { width:48px; height:48px; border-radius:12px; box-shadow:inset 0 0 15px color-mix(in srgb,var(--qp-accent) 15%,transparent); }
+.qp-project-card-heading strong { font-size:16px; }
+.qp-project-spark { display:block; height:44px; width:100%; }
+.qp-project-route { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.qp-project-route svg { width:16px; height:16px; flex:none; }
+.qp-project-card-facts>span { display:inline-flex; align-items:center; gap:5px; }
+.qp-project-card-facts svg { color:var(--qp-accent); }
+.qp-observed-trend.qp-project-trend { display:block; width:100%; overflow:visible; }
 .qp-project-card-heading strong,.qp-project-identity {
   overflow-wrap:anywhere;
 }
@@ -289,10 +299,14 @@
 .qp-project-top li>button { text-align:left; overflow-wrap:anywhere; color:var(--qp-accent); min-height:24px; }
 .qp-project-top li>button[aria-pressed=true] { text-decoration:underline; text-underline-offset:3px; }
 @media(min-width:1280px) {
-  [data-testid=production-projects] main { gap:12px; }
+  [data-testid=production-projects] main { padding:12px; gap:12px; }
+  .qp-project-header { min-height:68px; }
+  .qp-project-toolbar { min-height:42px; }
   .qp-project-header p { margin-top:4px; font-size:11px; }
-  .qp-project-layout { grid-template-columns:minmax(0,1.7fr) minmax(320px,1fr); gap:12px; }
-  [data-testid=production-projects] .qp-project-card { padding:10px; gap:5px; }
+  .qp-project-layout { grid-template-columns:minmax(0,1.65fr) minmax(320px,1fr); gap:12px; }
+  .qp-project-cards { max-height:720px; overflow:auto; scrollbar-width:thin; grid-auto-rows:minmax(232px,auto); }
+  [data-testid=production-projects] .qp-project-card { padding:14px; gap:6px; }
+  .qp-project-spark { height:36px; }
   .qp-project-card-facts { padding-top:6px; }
   .qp-project-detail { padding:12px; gap:6px; }
   .qp-project-detail h2 { font-size:19px; line-height:1.3; overflow-wrap:anywhere; }
@@ -300,7 +314,7 @@
   .qp-project-detail-metrics>div,.qp-project-money>div { padding:6px; gap:4px; }
   .qp-project-detail small { font-size:10px; }
   .qp-project-detail-metrics strong,.qp-project-money strong { font-size:16px; line-height:1.3; }
-  .qp-project-trend { height:80px; }
+  .qp-project-trend { height:112px; }
   .qp-project-breakdown { gap:6px; font-size:11px; }
   .qp-project-breakdown li { padding-bottom:6px; }
   .qp-project-detail .qp-footnote { line-height:1.4; }

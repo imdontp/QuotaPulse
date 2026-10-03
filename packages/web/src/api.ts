@@ -174,6 +174,7 @@ export interface DetailedProjectResponse {
   now: number;
   scope: UsageEventScope;
   totals: DetailedFacts;
+  trends?: { bucketMs: number; points: Array<{ project: string | null; start: number; tokens: number }> };
   groups: Array<DetailedFacts & { key: string | null }>;
   rows: Array<DetailedFacts & { project: string | null; sourceId: number; harness: string; sourceName: string; provider: string | null; model: string | null; vendor: string }>;
 }
@@ -619,7 +620,7 @@ export interface PricingRefresh {
 }
 
 export const api = {
-  detailedProjects: (scope: UsageEventScope) => get<DetailedProjectResponse>(`/api/projects?detailed=1&${usageEventParams(scope)}`),
+  detailedProjects: (scope: UsageEventScope, trends = false) => get<DetailedProjectResponse>(`/api/projects?detailed=1&${trends ? 'trends=1&' : ''}${usageEventParams(scope)}`),
   projectDetail: (scope: UsageEventScope, offset = 0) => get<ProjectDetailResponse>(`/api/project-detail?${usageEventParams(scope)}&limit=20&offset=${offset}`),
   liveSessions: (scope: UsageEventScope, mode: 'recent' | 'all', offset = 0) => get<LiveSessionsResponse>(`/api/live-sessions?${usageEventParams(scope)}&mode=${mode}&limit=10&offset=${offset}`),
   detailedModels: (scope: UsageEventScope) => get<DetailedModelResponse>(`/api/models?detailed=1&${usageEventParams(scope)}`),

@@ -1,6 +1,19 @@
 import type { DB } from '../db/index.js';
 import { usageWhere, type UsageScope } from './usage-scope.js';
 
+/** All project mini charts in one scoped query; null and empty identities stay distinct. */
+export function projectTrends(db: DB, scope: UsageScope) {
+  const where = usageWhere(scope);
+  const bucketMs = Math.max(60_000, Math.ceil((scope.to - scope.from) / 30 / 60_000) * 60_000);
+  const rows = db.prepare(`SELECT sess.project AS project,
+    CAST((u.ts - @from) / @bucketMs AS INTEGER) AS bin,
+    COALESCE(SUM(u.total_tokens),0) AS tokens
+    FROM usage_event u JOIN source s ON s.id=u.source_id
+    LEFT JOIN session sess ON sess.id=u.session_id WHERE ${where.sql}
+    GROUP BY sess.project, bin ORDER BY sess.project, bin`).all({ ...where.params, bucketMs }) as Array<{ project: string | null; bin: number; tokens: number }>;
+  return { bucketMs, points: rows.map(row => ({ project: row.project, start: scope.from + row.bin * bucketMs, tokens: row.tokens })) };
+}
+
 /** One exact project scope. Bins are elapsed time, capped at 30 without fabricating gaps. */
 export function projectDetail(db: DB, scope: UsageScope, pagination: { limit: number; offset: number }) {
   const where = usageWhere(scope);
