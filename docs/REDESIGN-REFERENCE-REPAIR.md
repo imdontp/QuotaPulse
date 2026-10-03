@@ -16,6 +16,11 @@ that harness must never be reported as a reference fidelity percentage.
 
 ## Source and observed gaps
 
+Latest composition checkpoint: [Overview placement v1.48](REDESIGN-OVERVIEW-PLACEMENT-V1.48.md)
+aligns the globe's focal position, separates the model list caption and makes
+four provider rows fully visible while correcting connector endpoints. The
+source rows below remain open; stable application repeats are not visual approval.
+
 Latest Overview image checkpoint: [Pulse Earth v1.47](REDESIGN-PULSE-EARTH-V1.47.md)
 replaces the approximate vector globe with a generated local reference-derived
 surface and displays the selected reader's actual used-quota percentage. Source

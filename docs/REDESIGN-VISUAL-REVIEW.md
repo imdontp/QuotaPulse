@@ -1,5 +1,11 @@
 # Concept comparison and refinement queue
 
+[Overview placement v1.48](REDESIGN-OVERVIEW-PLACEMENT-V1.48.md) moves the globe
+to the reference focal position, separates the model caption/card and exposes
+all four recorded providers. Connector/node endpoints differ by at most 0.014px
+and four repeated pairs are byte-identical. The [current comparison viewer](redesign-v1.48/reference-review.html)
+also offers v1.47 captures. The complete eight-page goal remains open.
+
 [Pulse Earth v1.47](REDESIGN-PULSE-EARTH-V1.47.md) adds a reference-derived local
 Earth surface, uses the real used-quota percentage in the center, and adds
 Overview section icon frames. Four repeated pairs are byte-identical; asset,

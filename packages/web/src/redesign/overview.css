@@ -609,6 +609,7 @@
   border-bottom:1px solid var(--qp-border);
   font-size:11px!important;
 }
+.qp-top-model-list { display:contents; }
 .qp-model-row>span:first-child {
   overflow-wrap:anywhere;
 }
@@ -743,7 +744,7 @@
     grid-template-columns:28px minmax(0,1fr) 34px;
     grid-template-rows:auto 8px;
     gap:5px 8px;
-    padding:10px 0;
+    padding:8px 0;
   }
   [data-testid=production-overview] .qp-model-identity { display:contents; }
   [data-testid=production-overview] .qp-model-identity i { grid-column:1; grid-row:1/3; width:28px; height:28px; align-self:center; }
@@ -756,17 +757,27 @@
   [data-testid=production-overview] .qp-hero-grid { grid-template-columns:minmax(0,1fr) clamp(285px,22vw,350px); gap:12px; }
   [data-testid=production-overview] .qp-hero { padding:12px 14px; }
   [data-testid=production-overview] .qp-core-grid { grid-template-columns:190px minmax(180px,1fr) 190px; min-height:320px; }
-  [data-testid=production-overview] .qp-pulse { max-width:360px; }
+  [data-testid=production-overview] .qp-pulse { max-width:360px; transform:translate(8px,-20px); }
+  [data-testid=production-overview] .qp-hero>.qp-section-heading { justify-content:flex-start; }
+  [data-testid=production-overview] .qp-hero>.qp-section-heading>.qp-chip { margin-left:auto; }
   [data-testid=production-overview] .qp-metrics { gap:14px; }
   [data-testid=production-overview] .qp-metrics .qp-metric>span { font-size:12px; }
   [data-testid=production-overview] .qp-metrics .qp-metric strong { font-size:16px; line-height:1.4; letter-spacing:0; }
   [data-testid=production-overview] .qp-pulse-label strong { font-size:68px; font-weight:550; text-shadow:0 0 16px #299fff80; }
   [data-testid=production-overview] .qp-pulse-label span { font-size:12px; }
   [data-testid=production-overview] .qp-pulse-label .qp-pulse-state { font-size:14px; }
-  [data-testid=production-overview] .qp-top-models { padding:10px; border:1px solid var(--qp-border); border-radius:10px; background:color-mix(in srgb,var(--qp-bg) 45%,transparent); }
+  [data-testid=production-overview] .qp-top-models { padding:0; }
+  [data-testid=production-overview] .qp-top-models h3 { margin:0 0 6px; font-size:12px; line-height:18px; font-weight:400; color:var(--qp-muted); }
+  [data-testid=production-overview] .qp-top-model-list { display:block; padding:0 10px; border:1px solid var(--qp-border); border-radius:10px; background:color-mix(in srgb,var(--qp-bg) 45%,transparent); }
   [data-testid=production-overview] .qp-runtime { padding:12px; }
+  [data-testid=production-overview] .qp-runtime>.qp-section-heading>div { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  [data-testid=production-overview] .qp-runtime .qp-section-heading p { margin:0; }
+  [data-testid=production-overview] .qp-runtime .qp-chip { padding-block:5px; }
+  [data-testid=production-overview] .qp-runtime .qp-map { margin-top:4px; }
+  [data-testid=production-overview] .qp-runtime .qp-map-column h3 { height:16px; }
+  [data-testid=production-overview] .qp-runtime .qp-map-edges { top:16px; height:calc(100% - 24px); }
   [data-testid=production-overview] .qp-runtime .qp-map-scroll {
-    max-height:160px;
+    max-height:176px;
     overflow-y:auto;
     scrollbar-gutter:stable;
   }

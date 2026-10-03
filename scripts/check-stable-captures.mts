@@ -80,7 +80,7 @@ const headerChecks: Array<{ page: string; lang: string; theme: string; width: nu
 const fontChecks: Array<{ page: string; lang: string; theme: string; family: string; custom: boolean; glyphs: number }> = [];
 const settingsChecks: Array<{ lang: string; theme: string; sections: number; language: boolean; currency: boolean; rate: number; widths: number[] }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
-const overviewLayouts: Array<{ lang: string; theme: string; heroBottom: number; activityBottom: number; models: number; railHeight: number }> = [];
+const overviewLayouts: Array<{ lang: string; theme: string; heroBottom: number; activityBottom: number; models: number; railHeight: number; runtimeProvidersVisible: number; edgeMaxError: number; pulseCenter: { x: number; y: number }; modelTitleOutside: boolean }> = [];
 const referenceColumnChecks: Array<{ page: string; lang: string; theme: string; headerTop: number; railTop: number; summaryRight: number; railLeft: number }> = [];
 const liveDensityChecks: Array<{ lang: string; theme: string; bottom: number; sessions: number; records: number }> = [];
 const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bottom: number; unknownNative: number }> = [];
@@ -1083,7 +1083,32 @@ try {
               assert.equal(await last.evaluate(element => element === document.activeElement), true);
               await rail.evaluate(element => { element.scrollTop = 0; }); await last.evaluate(element => (element as HTMLElement).blur());
               await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300);
-              overviewLayouts.push({ lang, theme, heroBottom: hero.y + hero.height, activityBottom: activity.y + activity.height, models: 8, railHeight: box.height });
+              const composition = await page.evaluate(() => {
+                const viewport = document.querySelector('.qp-runtime .qp-map-scroll')!.getBoundingClientRect();
+                const nodes = Array.from(document.querySelectorAll<HTMLElement>('.qp-runtime .qp-map-node'));
+                const runtimeProvidersVisible = nodes.filter(node => node.dataset.dimension === 'provider').filter(node => {
+                  const rect = node.getBoundingClientRect(); return rect.top >= viewport.top && rect.bottom <= viewport.bottom;
+                }).length;
+                const dimensions = ['project', 'harness', 'provider', 'model'];
+                let edgeMaxError = 0;
+                for (const path of document.querySelectorAll<SVGPathElement>('.qp-runtime .qp-map-edges path')) {
+                  const column = Number(path.dataset.column);
+                  const from = nodes.find(node => node.dataset.dimension === dimensions[column] && node.dataset.key === path.dataset.from)!;
+                  const to = nodes.find(node => node.dataset.dimension === dimensions[column + 1] && node.dataset.key === path.dataset.to)!;
+                  const start = path.getPointAtLength(0).matrixTransform(path.getScreenCTM()!);
+                  const end = path.getPointAtLength(path.getTotalLength()).matrixTransform(path.getScreenCTM()!);
+                  const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
+                  edgeMaxError = Math.max(edgeMaxError, Math.abs(start.x - a.right), Math.abs(start.y - (a.top + a.height / 2)), Math.abs(end.x - b.left), Math.abs(end.y - (b.top + b.height / 2)));
+                }
+                const pulse = document.querySelector('.qp-pulse')!.getBoundingClientRect();
+                const title = document.querySelector('.qp-top-models h3')!.getBoundingClientRect();
+                const list = document.querySelector('.qp-top-model-list')!.getBoundingClientRect();
+                return { runtimeProvidersVisible, edgeMaxError, pulseCenter: { x: pulse.x + pulse.width / 2, y: pulse.y + pulse.height / 2 }, modelTitleOutside: title.bottom <= list.top };
+              });
+              assert.equal(composition.runtimeProvidersVisible, 4, 'All four recorded provider rows must be fully visible');
+              assert.ok(composition.edgeMaxError <= 1, `Runtime connector endpoints miss their nodes by ${composition.edgeMaxError}px`);
+              assert.equal(composition.modelTitleOutside, true, 'Model caption must sit above the bordered list');
+              overviewLayouts.push({ lang, theme, heroBottom: hero.y + hero.height, activityBottom: activity.y + activity.height, models: 8, railHeight: box.height, ...composition });
             }
           }
           const filename = `${destination}-${lang}-${theme}.png`;
