@@ -16,6 +16,12 @@ that harness must never be reported as a reference fidelity percentage.
 
 ## Source and observed gaps
 
+Latest shared header work: [Header brand/status v1.52](REDESIGN-HEADER-BRAND-V1.52.md)
+aligns the larger waveform/wordmark and framed status/scope/date-time composition
+with the source. Connection and clock values are real machine state. The
+[latest full-page viewer](redesign-v1.52/reference-review.html) uses unchanged,
+hash-verified reference PNGs. Full source likeness remains open.
+
 Latest shared geometry work: [Shell geometry v1.51](REDESIGN-SHELL-GEOMETRY-V1.51.md)
 uses separate header/body column widths and reference-like main insets. The
 [latest full-page viewer](redesign-v1.51/reference-review.html) preserves all nine

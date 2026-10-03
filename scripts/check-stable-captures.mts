@@ -718,6 +718,24 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
     const expectedBrand = width <= 1100 ? expectedSidebar : Math.max(253, Math.min(267, width * .16));
     assert.ok(Math.abs(brand.width - expectedBrand) < .02);
     assert.equal(sidebar.width, expectedSidebar);
+    if (width > 1100) {
+      const mark = await page.locator('.qp-topbar .qp-brand>svg').boundingBox();
+      const wordmark = await page.locator('.qp-topbar .qp-brand>span').boundingBox();
+      assert.ok(mark && wordmark);
+      assert.equal(mark.width, 42); assert.equal(mark.height, 42);
+      assert.equal(mark.x, 20);
+      assert.ok(wordmark.x + wordmark.width <= brand.x + brand.width - 8, 'Brand text must fit its source-sized header column');
+      const status = page.locator('.qp-daemon-badge');
+      const state = await status.getAttribute('data-state');
+      assert.equal(state, 'live');
+      assert.equal(await status.getAttribute('role'), 'status');
+      assert.equal(await status.getAttribute('aria-label'), lang === 'th' ? 'การเชื่อมต่อ daemon: กำลังอัปเดต' : 'Daemon connection: live');
+      if (width > 1400) {
+        assert.deepEqual(await page.locator('.qp-header-clock time').evaluateAll(elements => elements.map(element => element.getAttribute('datetime'))), [new Date(fixedNow).toISOString(), new Date(fixedNow).toISOString()]);
+        const clock = await page.locator('.qp-header-clock time').last().textContent();
+        assert.equal(clock, new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'Asia/Bangkok' }).format(fixedNow));
+      }
+    }
     assert.equal(await page.locator('.qp-sidebar nav a').count(), 9);
     assert.equal(await page.locator('.qp-sidebar nav a[aria-current=page]').count(), 1);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
@@ -1173,6 +1191,7 @@ try {
             const rail = page.locator('.qp-top-models');
             const box = await rail.boundingBox();
             assert.ok(hero && activity && box);
+            if (activity.y + activity.height > 992) console.log('Overview header geometry', await page.locator('.qp-topbar,.qp-brand,.qp-brand>svg,.qp-brand>span,.qp-brand small,.qp-topbar-body,.qp-daemon-status').evaluateAll(elements => elements.map(element => { const rect = element.getBoundingClientRect(), style = getComputedStyle(element); return { className: element.className, x: rect.x, y: rect.y, width: rect.width, height: rect.height, font: style.font, lineHeight: style.lineHeight }; })));
             if (overviewOnly && pass === 0) {
               await page.screenshot({ path: resolve(output, `layout-${lang}-${theme}.png`), animations: 'disabled' });
               writeFileSync(resolve(output, `layout-${lang}-${theme}.json`), JSON.stringify({ hero, activity, rail: box, runtime: await page.locator('.qp-runtime').boundingBox(), bottom: await page.locator('.qp-bottom-grid').boundingBox() }, null, 2));

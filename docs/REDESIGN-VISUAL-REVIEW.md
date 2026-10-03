@@ -1,5 +1,12 @@
 # Concept comparison and refinement queue
 
+[Header brand and status v1.52](REDESIGN-HEADER-BRAND-V1.52.md) enlarges the
+waveform/wordmark, frames actual daemon connection and machine scope, and adds
+the localized system clock beside the existing page navigator. The
+[latest full-page comparison](redesign-v1.52/reference-review.html) retains all
+nine application pages and the original eight source references. Full visual
+acceptance remains open.
+
 [Shared shell geometry v1.51](REDESIGN-SHELL-GEOMETRY-V1.51.md) reconciles the
 body sidebar, independent header brand column and content insets using the
 source dimensions. The [latest full-page viewer](redesign-v1.51/reference-review.html)

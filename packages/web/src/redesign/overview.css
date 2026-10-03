@@ -85,26 +85,29 @@
 .qp-brand {
   display:flex;
   align-items:center;
-  gap:10px;
-  font-size:22px;
+  gap:12px;
+  font-size:24px;
   font-weight:650;
   line-height:1.15;
   min-height:0;
-  padding:8px 12px;
+  padding:8px 20px;
   border-right:1px solid var(--qp-border);
 }
 .qp-brand strong { color:var(--qp-accent); font-weight:inherit; }
 .qp-brand>svg {
   color:var(--qp-accent);
-  width:28px;
-  height:28px;
+  width:42px;
+  height:42px;
+  flex:none;
 }
 .qp-brand small {
   display:block;
-  font-size:8px;
-  letter-spacing:.3px;
+  font-size:10px;
+  letter-spacing:0;
+  font-weight:400;
+  white-space:nowrap;
   color:var(--qp-muted);
-  margin-top:6px;
+  margin-top:3px;
 }
 .qp-sidebar nav {
   display:grid;
@@ -163,9 +166,18 @@
   color:var(--qp-muted);
   font-size:11px;
   white-space:nowrap;
-  border-left:1px solid var(--qp-border);
-  padding-left:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:32px;
+  border:1px solid var(--qp-border);
+  border-radius:8px;
+  padding:6px 10px;
+  background:var(--qp-panel);
 }
+.qp-machine-scope svg { color:var(--qp-accent); flex:none; }
+.qp-header-clock { display:flex; align-items:center; gap:8px; color:var(--qp-muted); font-size:11px; white-space:nowrap; }
+.qp-header-clock time:last-child { padding:4px 8px; border:1px solid var(--qp-border); border-radius:7px; color:var(--qp-text); font-size:13px; font-variant-numeric:tabular-nums; background:var(--qp-panel); }
 .qp-topbar-actions>button {
   background:var(--qp-panel);
   border:1px solid var(--qp-border);
@@ -173,7 +185,7 @@
 }
 @media(min-width:1101px) {
   .qp-topbar-actions>button[aria-haspopup=dialog] {
-    width:clamp(180px,24vw,360px);
+    width:clamp(180px,24vw,408px);
     justify-content:flex-start;
     padding:0 12px;
   }
@@ -501,7 +513,7 @@
 .qp-redesign[data-theme=dark] .qp-map-edges path { stroke:#28caff; filter:drop-shadow(0 0 3px #078dff); }
 .qp-redesign[data-theme=dark] .qp-map-edges path:nth-child(3n) { stroke:#7953ff; }
 .qp-redesign[data-theme=dark] .qp-map-node { background:linear-gradient(110deg,#071428,#08101b); }
-.qp-brand>svg { height:32px; filter:drop-shadow(0 0 5px #158dff); }
+.qp-brand>svg { filter:drop-shadow(0 0 5px #158dff); }
 .qp-bottom-grid {
   display:grid;
   grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);
@@ -941,8 +953,10 @@
 .qp-sidebar-brand { display:flex; align-items:center; gap:9px; min-height:48px; padding:8px; border:1px solid var(--qp-border); border-radius:9px; margin-top:auto; font-size:10px; color:var(--qp-muted); background:var(--qp-panel); }
 .qp-sidebar-brand svg { color:var(--qp-accent); width:30px; height:30px; flex:none; filter:drop-shadow(0 0 5px #158dff); }
 .qp-sidebar-brand small { display:block; margin-top:3px; font-size:10px; color:var(--qp-accent); }
-.qp-daemon-badge { display:flex; align-items:center; gap:6px; color:var(--qp-muted); font-size:11px; white-space:nowrap; }
-.qp-daemon-badge i { width:7px; height:7px; border-radius:50%; background:currentColor; flex-shrink:0; }
+.qp-daemon-status { display:flex; align-items:center; gap:12px; min-width:0; }
+.qp-daemon-caption { color:var(--qp-muted); font-size:11px; white-space:nowrap; }
+.qp-daemon-badge { display:flex; align-items:center; gap:8px; min-height:32px; padding:5px 10px; border:1px solid color-mix(in srgb,currentColor 30%,transparent); border-radius:8px; background:color-mix(in srgb,currentColor 8%,var(--qp-panel)); color:var(--qp-accent); font-size:13px; line-height:20px; font-weight:600; text-transform:uppercase; white-space:nowrap; }
+.qp-daemon-badge i { width:14px; height:14px; border:3px solid currentColor; border-radius:50%; flex-shrink:0; }
 .qp-daemon-badge[data-state=live] { color:var(--qp-success); }
 .qp-daemon-badge[data-state=unavailable],.qp-daemon-badge[data-state=stale] { color:var(--qp-muted); }
 @media(min-width:1101px) {
@@ -953,7 +967,8 @@
   .qp-redesign[data-theme=dark] .qp-sidebar .qp-nav-active { background:linear-gradient(100deg,#091c5f,#0c1636 40%,#161a29); }
 }
 @media(max-width:1100px) { .qp-quick-stats,.qp-sidebar-brand { display:none; } }
-@media(max-width:730px) { .qp-daemon-badge { display:none; } }
+@media(max-width:1400px) { .qp-daemon-caption,.qp-header-clock { display:none; } }
+@media(max-width:730px) { .qp-daemon-status { display:none; } }
 
 .qp-visually-hidden {
   position:absolute;
