@@ -1,12 +1,31 @@
 .qp-redesign .qp-history-timeline { --history-input:#2bb8ef; --history-output:#a98bfa; padding:12px; min-width:0; }
 .qp-redesign[data-theme=light] .qp-history-timeline { --history-input:#06658b; --history-output:#7046b0; }
 .qp-history-timeline h2 { font-size:16px; font-weight:600; }
-.qp-history-timeline svg { display:block; width:100%; height:112px; color:var(--qp-muted); }
+.qp-history-timeline>svg { display:block; width:100%; height:144px; color:var(--qp-muted); }
+.qp-history-heading { display:flex; justify-content:space-between; align-items:center; gap:16px; min-width:0; }
+.qp-history-heading h1 { display:flex; align-items:center; gap:12px; font-size:22px; font-weight:600; }
+.qp-history-heading h1>i { display:grid; place-items:center; width:46px; height:46px; color:var(--qp-accent); border-radius:14px; background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 16%,var(--qp-panel)),var(--qp-panel)); }
+.qp-history-heading>fieldset { min-width:0; }
+.qp-redesign .qp-history-heading>fieldset>div { padding:6px 10px; }
+.qp-history-heading select { font-family:'Noto Sans Thai',var(--font-sans); font-weight:400; }
+.qp-history-timeline h2 { display:flex; align-items:center; gap:9px; }
+.qp-history-timeline h2>i { display:grid; place-items:center; width:28px; height:28px; border-radius:8px; color:var(--qp-accent); background:color-mix(in srgb,var(--qp-accent) 12%,var(--qp-panel)); }
 .qp-history-summary { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:10px 0; }
 .qp-history-summary article { min-width:0; border:1px solid var(--qp-border); border-radius:10px; padding:10px; display:grid; align-content:start; gap:4px; }
 .qp-history-summary span,.qp-history-summary small { font-size:11px; line-height:1.3; color:var(--qp-muted); }
 .qp-history-summary strong { font-size:20px; line-height:1.2; }
 .qp-history-summary ul { font-size:12px; max-height:70px; overflow:auto; }
+.qp-history-summary article { grid-template-columns:40px minmax(0,1fr); column-gap:10px; background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 3%,var(--qp-panel)),var(--qp-panel)); }
+.qp-history-summary article>i { grid-row:1/span 2; display:grid; place-items:center; width:40px; height:40px; border-radius:10px; color:var(--qp-accent); background:color-mix(in srgb,var(--qp-accent) 12%,var(--qp-panel)); }
+.qp-history-summary article:nth-child(2)>i { color:var(--qp-series); background:color-mix(in srgb,var(--qp-series) 12%,var(--qp-panel)); }
+.qp-history-summary article:nth-child(3)>i { color:var(--qp-warning); background:color-mix(in srgb,var(--qp-warning) 12%,var(--qp-panel)); }
+.qp-history-summary article>span,.qp-history-summary article>strong,.qp-history-summary article>ul { grid-column:2; }
+.qp-history-summary article>small { grid-column:1/-1; }
+.qp-history-harness,.qp-history-provider,.qp-history-project { display:inline-flex; align-items:center; gap:6px; }
+.qp-history-harness { padding:2px 5px; border:1px solid color-mix(in srgb,var(--qp-accent) 25%,var(--qp-border)); border-radius:5px; background:color-mix(in srgb,var(--qp-accent) 7%,var(--qp-panel)); }
+.qp-history-harness svg,.qp-history-provider svg { width:17px; height:17px; flex:none; }
+.qp-history-project>svg { color:var(--qp-accent); flex:none; }
+.qp-redesign .qp-history-records tbody tr:nth-child(even):not([data-selected=true]) { background:color-mix(in srgb,var(--qp-accent) 3%,var(--qp-panel)); }
 .qp-history-legend { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:18px; font-size:11px; }
 .qp-history-legend span:first-child { color:var(--history-input); }
 .qp-history-legend span:last-child { color:var(--history-output); }
@@ -32,6 +51,7 @@
 .qp-history-detail-actions { display:flex; flex-wrap:wrap; align-items:center; gap:10px; font-size:12px; }
 .qp-history-detail-actions h3 { flex-basis:100%; margin:0; }
 @media(max-width:900px) {
+  .qp-history-heading { flex-wrap:wrap; }
   .qp-history-summary { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .qp-redesign [data-testid="usage-history"] form fieldset { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }

@@ -1,5 +1,10 @@
 # Concept comparison and refinement queue
 
+[History reference refinement v1.42](REDESIGN-HISTORY-REFERENCE-V1.42.md)
+combines title/range controls, decorates summary and recorded identities, and
+adds actual blue/violet area treatment. History and selected-detail browser
+checks pass; the complete reference likeness goal remains open.
+
 [Cost detail refinement v1.41](REDESIGN-COST-DETAIL-V1.41.md) restores the
 190px plot and wider trend column, adds amount-share table bars, and refines
 insight rows and keyboard-accessible table scrolling. Its browser evidence is

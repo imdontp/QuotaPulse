@@ -156,3 +156,9 @@ reader review and the broader release gates remain outstanding.
 rows. Desktop tables scroll with all loaded rows keyboard reachable. This
 advances the same real-data target; its Cost-only evidence is not approval of
 all eight pages or a measurement of concept similarity.
+
+[History reference v1.42](REDESIGN-HISTORY-REFERENCE-V1.42.md) then combines
+the header controls, adds summary icon tiles and recorded identity marks, and
+restores blue/violet timeline area treatment. Complete record-table keyboard
+scrolling and native selected-detail behavior remain validated. Fine filter,
+typography and sidebar composition still require closer reference comparison.

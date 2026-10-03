@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
+import { BarChart3, Coins, FileText, History, Zap } from 'lucide-react';
 import type { HistorySummaryResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
@@ -8,6 +9,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
   const t = useT();
   const f = useFormat();
   const { lang } = useI18n();
+  const id = useId().replace(/:/g, '');
   const chart = useRef<SVGSVGElement>(null);
   const [width, setWidth] = useState(1000);
   useEffect(() => {
@@ -28,27 +30,30 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
   const left = 44;
   const right = width - 12;
   const x = (index: number) => left + (right - left) * index / Math.max(1, buckets.length - 1);
-  const y = (value: number) => 88 - 72 * value / max;
+  const y = (value: number) => 118 - 100 * value / max;
   const points = (key: 'inputTokens' | 'outputTokens') => buckets.map((row, index) => `${x(index)},${y(row[key])}`).join(' ');
   const date = (at: number) => new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(at);
   const priced = totals.computed_calls + totals.estimated_calls;
   const value = (amount: number, calls: number) => totals.records === 0 ? f.money(0) : calls ? `${f.money(amount)}${calls < totals.calls ? '+' : ''}` : t('redesign.unknownValue');
   return <section className="qp-history-timeline qp-panel" data-testid="history-timeline">
-    <h2>{t('history.timeline')}</h2>
+    <h2><i aria-hidden="true"><History size={19}/></i>{t('history.timeline')}</h2>
     <p className="qp-footnote">{t('history.timelineNote')}</p>
     <div className="qp-history-summary">
-      <article><span>{t('col.total')}</span><strong data-testid="history-total-tokens">{count(totals.tokens)}</strong></article>
-      <article><span>{t('col.calls')}</span><strong>{count(totals.calls)}</strong><small>{count(totals.records)} {t('history.records')} · {count(totals.sessions)} {t('redesign.sessions')}</small></article>
-      <article><span>{t('history.apiTotal')}</span><strong>{value(totals.api_value_usd, priced)}</strong><small>{t('history.nativeTotal')}: {value(totals.reported_native_usd, totals.native_calls)}</small><small>{count(priced)} / {count(totals.calls)} {t('col.calls')}</small></article>
-      <article><span>{t('history.effortDistribution')}</span><ul>{data.effort.map(row => <li key={JSON.stringify(row.effort)}>{row.effort ?? t('redesign.unknownValue')}: {count(row.calls)}</li>)}</ul>{!data.effort.length && <strong>—</strong>}</article>
+      <article><i aria-hidden="true"><BarChart3 size={24}/></i><span>{t('col.total')}</span><strong data-testid="history-total-tokens">{count(totals.tokens)}</strong></article>
+      <article><i aria-hidden="true"><FileText size={24}/></i><span>{t('col.calls')}</span><strong>{count(totals.calls)}</strong><small>{count(totals.records)} {t('history.records')} · {count(totals.sessions)} {t('redesign.sessions')}</small></article>
+      <article><i aria-hidden="true"><Coins size={24}/></i><span>{t('history.apiTotal')}</span><strong>{value(totals.api_value_usd, priced)}</strong><small>{t('history.nativeTotal')}: {value(totals.reported_native_usd, totals.native_calls)}</small><small>{count(priced)} / {count(totals.calls)} {t('col.calls')}</small></article>
+      <article><i aria-hidden="true"><Zap size={24}/></i><span>{t('history.effortDistribution')}</span><ul>{data.effort.map(row => <li key={JSON.stringify(row.effort)}>{row.effort ?? t('redesign.unknownValue')}: {count(row.calls)}</li>)}</ul>{!data.effort.length && <strong>—</strong>}</article>
     </div>
     <div className="qp-history-legend"><span>{t('history.inputCombined')}</span><span>{t('col.output')}</span></div>
-    <svg ref={chart} viewBox={`0 0 ${width} 112`} role="img" aria-label={`${t('history.timeline')}: ${count(totals.tokens)}`}>
+    <svg ref={chart} viewBox={`0 0 ${width} 144`} role="img" aria-label={`${t('history.timeline')}: ${count(totals.tokens)}`}>
+      <defs>{(['input', 'output'] as const).map(series => <linearGradient key={series} id={`${id}-${series}`} x1="0" y1="0" x2="0" y2="1"><stop stopColor={`var(--history-${series})`} stopOpacity=".22"/><stop offset="1" stopColor={`var(--history-${series})`} stopOpacity="0"/></linearGradient>)}<filter id={`${id}-glow`} x="-10%" y="-50%" width="120%" height="200%"><feGaussianBlur stdDeviation="1.5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
       {[0, .5, 1].map(fraction => <g key={fraction}><line x1={left} x2={right} y1={y(max * fraction)} y2={y(max * fraction)} stroke="currentColor" opacity=".15"/><text x="0" y={y(max * fraction)} fill="currentColor" fontSize="11">{f.tokens(max * fraction)}</text></g>)}
-      <polyline points={points('inputTokens')} fill="none" stroke="var(--history-input)" strokeWidth="2"/>
-      <polyline points={points('outputTokens')} fill="none" stroke="var(--history-output)" strokeWidth="2"/>
+      <polygon points={`${left},118 ${points('inputTokens')} ${right},118`} fill={`url(#${id}-input)`}/>
+      <polygon points={`${left},118 ${points('outputTokens')} ${right},118`} fill={`url(#${id}-output)`}/>
+      <polyline points={points('inputTokens')} fill="none" stroke="var(--history-input)" strokeWidth="2" filter={`url(#${id}-glow)`}/>
+      <polyline points={points('outputTokens')} fill="none" stroke="var(--history-output)" strokeWidth="2" filter={`url(#${id}-glow)`}/>
       {buckets.map((row, index) => <g key={row.at}><title>{date(row.at)} · {t('history.inputCombined')}: {count(row.inputTokens)} · {t('col.output')}: {count(row.outputTokens)}</title><circle cx={x(index)} cy={y(row.inputTokens)} r="2" fill="var(--history-input)"/><circle cx={x(index)} cy={y(row.outputTokens)} r="2" fill="var(--history-output)"/></g>)}
-      <text x={left} y="108" fill="currentColor" fontSize="11">{date(data.scope.from)}</text><text x={right} y="108" textAnchor="end" fill="currentColor" fontSize="11">{date(data.scope.to)}</text>
+      <text x={left} y="140" fill="currentColor" fontSize="11">{date(data.scope.from)}</text><text x={right} y="140" textAnchor="end" fill="currentColor" fontSize="11">{date(data.scope.to)}</text>
     </svg>
     {totals.tokens !== totals.inputTokens + totals.cachedInputTokens + totals.cacheWriteTokens + totals.outputTokens && <p className="qp-footnote">{t('history.partialBreakdown')}</p>}
   </section>;
