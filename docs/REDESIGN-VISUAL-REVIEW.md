@@ -136,6 +136,14 @@ occupied feed/ranking gates pass after compacting the new information; 144
 responsive cases and 32 byte-identical production capture pairs pass. Other
 charts and manual screen-reader review remain pending.
 
+## Reference repair after user review
+
+The user rejected v1.34's visual likeness. Visual acceptance is reopened; see
+[Reference fidelity repair](REDESIGN-REFERENCE-REPAIR.md) for the authoritative
+clarification (actual application data, appearance matching refs), observed gaps
+and repair sequence. Browser repeatability checkpoints below do not establish
+similarity to the original concept.
+
 ## Screen review
 
 | Screen | Preserved structure and intentional factual changes | Findings at initial v1.3 review; see follow-up above |

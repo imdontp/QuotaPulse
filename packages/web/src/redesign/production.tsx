@@ -66,6 +66,7 @@ export function ProductionOverview() {
       sourceId: limit.source_id,
       origin: limit.origin,
       owner: limit.subscription_display_name ?? limit.account_display_name ?? limit.display_name,
+      provider: limit.subscription_provider ?? limit.account_provider ?? subscription?.provider,
       window: limit.window_kind,
       usedPercent: limit.used_percent,
       observedAt: limit.observed_at,

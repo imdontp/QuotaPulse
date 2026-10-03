@@ -1,5 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { Activity, ArrowUpRight, Box, CircleGauge, GitBranch, X } from 'lucide-react';
+import { Activity, ArrowUpRight, Box, CircleGauge, Coins, Folder, GitBranch, Layers, Wallet, X } from 'lucide-react';
+import { VendorIcon } from '@/components/vendor-icon';
+import { HarnessIcon } from '@/components/harness-icon';
 import type { QuotaHistoryResponse } from '@/api';
 import { CostValue, recordCostCoverage } from './cost-value';
 import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
@@ -51,6 +53,10 @@ function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: num
       <defs>
         <radialGradient id={`${id}-fill`}><stop stopColor="#225575" stopOpacity=".7"/><stop offset=".75" stopColor="#071f43" stopOpacity=".5"/><stop offset="1" stopColor="#32cdff" stopOpacity=".2"/></radialGradient>
         <linearGradient id={`${id}-arc`}><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
+        <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id={`${id}-surface`}><feTurbulence type="fractalNoise" baseFrequency=".13" numOctaves="3" seed="17"/><feColorMatrix type="matrix" values="0 0 0 0 .03  0 0 0 0 .48  0 0 0 0 1  0 0 0 .32 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+        <radialGradient id={`${id}-shade`} cx="35%" cy="25%"><stop stopColor="#14a9ff" stopOpacity=".18"/><stop offset=".7" stopColor="#01244d" stopOpacity=".08"/><stop offset="1" stopColor="#000a21" stopOpacity=".85"/></radialGradient>
+        <clipPath id={`${id}-world`}><circle cx="180" cy="160" r="114"/></clipPath>
       </defs>
       <g fill="none" stroke={`url(#${id}-arc)`} strokeWidth=".8" opacity=".45">
         {[0, 1, 2].map(wave => <path key={wave} d={Array.from({ length: 73 }, (_, index) => {
@@ -64,6 +70,10 @@ function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: num
         <ellipse cx="180" cy="160" rx="165" ry="96" transform="rotate(30 180 160)"/>
       </g>
       <circle cx="180" cy="160" r="117" fill={`url(#${id}-fill)`} stroke="#51b9ef" strokeOpacity=".4"/>
+      <circle cx="180" cy="160" r="114" fill="#087bdd" filter={`url(#${id}-surface)`}/>
+      <g clipPath={`url(#${id}-world)`} fill="#27a8ff" opacity=".32">
+        <path d="M83 97 101 72 128 68 149 82 139 99 121 107 126 126 111 139 95 126 79 122Z M124 142 142 143 159 159 153 181 139 203 130 229 119 211 121 186 109 164Z M170 94 187 78 216 79 232 88 258 80 283 104 276 127 252 136 229 128 213 145 195 129 176 127Z M184 132 209 139 224 163 213 181 199 206 185 187 171 154Z M241 211 268 202 285 220 273 238 252 234Z"/>
+      </g>
       <g fill="#48b7ff" opacity=".4">
         {Array.from({ length: 400 }, (_, index) => {
           const angle = index * 2.399963;
@@ -75,6 +85,16 @@ function PulseCore({ quota, now, t }: { quota: QuotaWindow | undefined; now: num
         {[34, 69, 98].map(rx => <ellipse key={rx} cx="180" cy="160" rx={rx} ry="116"/>)}
         {[38, 76].map(ry => <ellipse key={ry} cx="180" cy="160" rx="116" ry={ry}/>)}
       </g>
+      <circle cx="180" cy="160" r="115" fill={`url(#${id}-shade)`}/>
+      <g fill="none" stroke={`url(#${id}-arc)`} filter={`url(#${id}-glow)`}>
+        <circle cx="180" cy="160" r="119" strokeWidth="2"/>
+        <circle cx="180" cy="160" r="137" strokeWidth="3" opacity=".45"/>
+        <circle cx="180" cy="160" r="145" pathLength="100" strokeWidth="1" strokeDasharray=".1 1.8" opacity=".6"/>
+      </g>
+      <g fill="#4ebcff" filter={`url(#${id}-glow)`} aria-hidden="true">{Array.from({ length: 16 }, (_, index) => {
+        const angle = index * 2.399963;
+        return <circle key={index} cx={180 + Math.cos(angle) * 150} cy={160 + Math.sin(angle) * 150} r={index % 3 === 0 ? 1.7 : .7}/>;
+      })}</g>
       <circle cx="180" cy="160" r="129" fill="none" stroke="#395175" strokeOpacity=".45" strokeWidth="5"/>
       <circle className="qp-core-halo" cx="180" cy="160" r="120" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="2"/>
       {remaining !== null && <circle cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="5" strokeLinecap="round" strokeDasharray={`${remaining} 100`} transform="rotate(-90 180 160)"/>}
@@ -104,7 +124,7 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, onInspect }: { nod
         </svg>
         {dimensions.map((dimension, index) => <div className="qp-map-column" key={dimension}>
           <h3>{t(`redesign.${dimension}`)}</h3>
-          {columns[index].map(node => <button className="qp-map-node" key={JSON.stringify(node.key)} onClick={() => onInspect(dimension, node.key)}><span>{node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</span><small>{new Intl.NumberFormat(undefined, { notation: 'compact' }).format(node.tokens)}</small></button>)}
+          {columns[index].map(node => <button className="qp-map-node" data-dimension={dimension} key={JSON.stringify(node.key)} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <Box size={15}/>}</span><span className="qp-node-label">{node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</span><small>{new Intl.NumberFormat(undefined, { notation: 'compact' }).format(node.tokens)}</small></button>)}
         </div>)}
       </div>
     </div>}
@@ -186,17 +206,17 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
           <section className="qp-panel qp-hero">
             <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.core')}</h2>{period && <span className="qp-chip">{period}</span>}<span className="qp-status" data-risk={state?.risk ?? 'unknown'}>{t(riskLabel(state))}</span></div>
             <div className="qp-core-grid"><div className="qp-metrics">
-              <Metric label={t('redesign.tokens')} value={number(totals.tokens)}/>
-              <Metric label={t('redesign.sessions')} value={number(totals.sessions)}/>
-              <Metric label={t('redesign.reported')} value={<CostValue amount={totals.reportedCost} priced={prices.native} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
-              <Metric label={t('redesign.value')} value={<CostValue amount={totals.apiValue} priced={prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
+              <Metric icon={<CircleGauge size={21}/>} label={t('redesign.tokens')} value={number(totals.tokens)}/>
+              <Metric icon={<Layers size={21}/>} label={t('redesign.sessions')} value={number(totals.sessions)}/>
+              <Metric icon={<Coins size={21}/>} label={t('redesign.reported')} value={<CostValue amount={totals.reportedCost} priced={prices.native} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
+              <Metric icon={<Wallet size={21}/>} label={t('redesign.value')} value={<CostValue amount={totals.apiValue} priced={prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
             </div><PulseCore quota={quota} now={now} t={t}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.models')}><h3>{t('redesign.models')}</h3>{models.map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span>{model.key ?? t('redesign.unknownValue')}</span><strong>{number(model.tokens)}</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</section></div>
             <p className="qp-footnote">{t('redesign.scope')}</p>
           </section>
           <section className="qp-panel qp-quotas"><h2><CircleGauge size={18}/>{t('redesign.windows')}</h2>
             {quotas.length === 0 && <p className="qp-footnote">{t('redesign.unavailable')}</p>}
             {quotas.map(item => { const reading = quotaState(item, now, preview ? 300000 : 3600000); return <button className="qp-quota" key={item.id} aria-pressed={quota?.id === item.id} onClick={() => { setQuotaId(item.id); onQuotaSelect?.(item.id); }}>
-              <span className="qp-quota-heading"><strong>{item.owner}</strong><span>{item.window}</span></span>
+              <span className="qp-quota-heading"><strong><VendorIcon vendor={item.provider ?? 'unknown'}/>{item.owner}</strong><span>{item.window}</span></span>
               <span className="qp-quota-number">{reading.remaining === null ? '—' : `${reading.remaining}%`} <small>{t('redesign.remaining')}</small></span>
               <span className="qp-bar"><span style={{ width: `${reading.remaining ?? 0}%` }}/></span>
               <small>{t('redesign.reset')} · {Number.isFinite(item.resetAt) && item.resetAt > 0 ? new Date(item.resetAt).toISOString().slice(5, 16).replace('T', ' ') : '—'}</small>
@@ -230,6 +250,6 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
   </RedesignShell>;
 }
 
-function Metric({ label, value }: { label: string; value: React.ReactNode }) {
-  return <div className="qp-metric"><span>{label}</span><strong>{value}</strong></div>;
+function Metric({ label, value, icon }: { label: string; value: React.ReactNode; icon?: React.ReactNode }) {
+  return <div className="qp-metric" data-icon={icon ? true : undefined}>{icon && <i className="qp-metric-icon" aria-hidden="true">{icon}</i>}<span>{label}</span><strong>{value}</strong></div>;
 }

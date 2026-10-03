@@ -1,0 +1,4056 @@
+{
+  "status": "repeatable within recorded raster tolerance; review candidates, not approved visual baselines",
+  "scope": "all",
+  "clock": 1779025320000,
+  "isoClock": "2026-05-17T13:42:00.000Z",
+  "browser": "153.0.8010.53",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "timezone": "Asia/Bangkok",
+  "dpr": 1,
+  "reducedMotion": true,
+  "tolerance": {
+    "maxChannelDelta": 2,
+    "maxChangedPixelFraction": 0.0001,
+    "masks": false
+  },
+  "productionIndexSha256": "9f9d020ee0e364a74e1bc3dd1b0455f28b14b28ae166552f71c144d523e56c25",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "sessions": 12,
+    "namedProjects": 8,
+    "models": 8,
+    "providers": 4,
+    "records": 38
+  },
+  "checks": [
+    "frozen daemon and browser Date",
+    "72 screenshots / 36 pairs within raster tolerance",
+    "independent browser process per language/theme set",
+    "fresh document per route",
+    "production web without Vite",
+    "fonts ready and API settled",
+    "no page overflow",
+    "no external or write requests",
+    "no browser errors",
+    "API-matched complete chart tables, keyboard and 390/900/1280 overflow",
+    "proportional one-token and zero bars"
+  ],
+  "overviewLayouts": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "heroBottom": 463.1875,
+      "activityBottom": 990.640625,
+      "models": 8,
+      "railHeight": 270
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "heroBottom": 463.1875,
+      "activityBottom": 990.640625,
+      "models": 8,
+      "railHeight": 270
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "heroBottom": 463.1875,
+      "activityBottom": 990.640625,
+      "models": 8,
+      "railHeight": 270
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "heroBottom": 463.1875,
+      "activityBottom": 990.640625,
+      "models": 8,
+      "railHeight": 270
+    }
+  ],
+  "projectCardChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "cards": 8,
+      "bottom": 930.5625,
+      "unknownNative": 7
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "cards": 8,
+      "bottom": 930.5625,
+      "unknownNative": 7
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "cards": 8,
+      "bottom": 930.5625,
+      "unknownNative": 7
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "cards": 8,
+      "bottom": 930.5625,
+      "unknownNative": 7
+    }
+  ],
+  "providerChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "bottom": 921.875,
+      "compared": 2,
+      "unavailable": true,
+      "expired": true,
+      "proportional": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "bottom": 921.875,
+      "compared": 2,
+      "unavailable": true,
+      "expired": true,
+      "proportional": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "bottom": 921.875,
+      "compared": 2,
+      "unavailable": true,
+      "expired": true,
+      "proportional": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "bottom": 921.875,
+      "compared": 2,
+      "unavailable": true,
+      "expired": true,
+      "proportional": true
+    }
+  ],
+  "modelComparisonChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "bottom": 884.1875,
+      "rows": 8,
+      "ratios": 16,
+      "boundaryRatios": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "bottom": 884.1875,
+      "rows": 8,
+      "ratios": 16,
+      "boundaryRatios": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "bottom": 884.1875,
+      "rows": 8,
+      "ratios": 16,
+      "boundaryRatios": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "bottom": 884.1875,
+      "rows": 8,
+      "ratios": 16,
+      "boundaryRatios": true
+    }
+  ],
+  "costAxisChecks": [
+    {
+      "route": "cost?basis=api&range=month",
+      "lang": "en",
+      "theme": "dark",
+      "priced": true,
+      "maxAmount": 2.31,
+      "maxTokens": 3301
+    },
+    {
+      "route": "cost?basis=native&range=month",
+      "lang": "en",
+      "theme": "dark",
+      "priced": true,
+      "maxAmount": 0.03,
+      "maxTokens": 300
+    },
+    {
+      "route": "cost?basis=native&range=month&source=2",
+      "lang": "en",
+      "theme": "dark",
+      "priced": false,
+      "maxAmount": 0,
+      "maxTokens": 0
+    },
+    {
+      "route": "cost?basis=api&range=month",
+      "lang": "en",
+      "theme": "light",
+      "priced": true,
+      "maxAmount": 2.31,
+      "maxTokens": 3301
+    },
+    {
+      "route": "cost?basis=native&range=month",
+      "lang": "en",
+      "theme": "light",
+      "priced": true,
+      "maxAmount": 0.03,
+      "maxTokens": 300
+    },
+    {
+      "route": "cost?basis=native&range=month&source=2",
+      "lang": "en",
+      "theme": "light",
+      "priced": false,
+      "maxAmount": 0,
+      "maxTokens": 0
+    },
+    {
+      "route": "cost?basis=api&range=month",
+      "lang": "th",
+      "theme": "dark",
+      "priced": true,
+      "maxAmount": 2.31,
+      "maxTokens": 3301
+    },
+    {
+      "route": "cost?basis=native&range=month",
+      "lang": "th",
+      "theme": "dark",
+      "priced": true,
+      "maxAmount": 0.03,
+      "maxTokens": 300
+    },
+    {
+      "route": "cost?basis=native&range=month&source=2",
+      "lang": "th",
+      "theme": "dark",
+      "priced": false,
+      "maxAmount": 0,
+      "maxTokens": 0
+    },
+    {
+      "route": "cost?basis=api&range=month",
+      "lang": "th",
+      "theme": "light",
+      "priced": true,
+      "maxAmount": 2.31,
+      "maxTokens": 3301
+    },
+    {
+      "route": "cost?basis=native&range=month",
+      "lang": "th",
+      "theme": "light",
+      "priced": true,
+      "maxAmount": 0.03,
+      "maxTokens": 300
+    },
+    {
+      "route": "cost?basis=native&range=month&source=2",
+      "lang": "th",
+      "theme": "light",
+      "priced": false,
+      "maxAmount": 0,
+      "maxTokens": 0
+    }
+  ],
+  "historyChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "eventId": 1,
+      "widths": [
+        390,
+        900,
+        1280
+      ],
+      "modal": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "eventId": 1,
+      "widths": [
+        390,
+        900,
+        1280
+      ],
+      "modal": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "eventId": 1,
+      "widths": [
+        390,
+        900,
+        1280
+      ],
+      "modal": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "eventId": 1,
+      "widths": [
+        390,
+        900,
+        1280
+      ],
+      "modal": true,
+      "focusRestored": true
+    }
+  ],
+  "historyDensityChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "bottom": 936.796875,
+      "visibleRows": 5,
+      "records": 37,
+      "keyboardScrolled": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "bottom": 936.796875,
+      "visibleRows": 5,
+      "records": 37,
+      "keyboardScrolled": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "bottom": 936.796875,
+      "visibleRows": 5,
+      "records": 37,
+      "keyboardScrolled": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "bottom": 936.796875,
+      "visibleRows": 5,
+      "records": 37,
+      "keyboardScrolled": true
+    }
+  ],
+  "alertChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "bottom": 798.9375,
+      "events": 3,
+      "expandedEvents": 60,
+      "keyboardScrolled": true,
+      "empty": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "bottom": 798.9375,
+      "events": 3,
+      "expandedEvents": 60,
+      "keyboardScrolled": true,
+      "empty": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "bottom": 798.9375,
+      "events": 3,
+      "expandedEvents": 60,
+      "keyboardScrolled": true,
+      "empty": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "bottom": 798.9375,
+      "events": 3,
+      "expandedEvents": 60,
+      "keyboardScrolled": true,
+      "empty": true
+    }
+  ],
+  "chartChecks": [
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "buckets": 31,
+      "tokens": 1801
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "buckets": 30,
+      "tokens": 602
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "buckets": 31,
+      "tokens": 1801
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "buckets": 30,
+      "tokens": 602
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "buckets": 31,
+      "tokens": 1801
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "buckets": 30,
+      "tokens": 602
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "buckets": 31,
+      "tokens": 1801
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "buckets": 30,
+      "tokens": 602
+    }
+  ],
+  "modelCostChecks": [
+    {
+      "route": "models?metric=tokens",
+      "lang": "en",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 921.46875
+    },
+    {
+      "route": "models?metric=calls",
+      "lang": "en",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 911.46875
+    },
+    {
+      "route": "models?metric=api_value_usd",
+      "lang": "en",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 921.46875
+    },
+    {
+      "route": "cost?basis=api&range=month",
+      "lang": "en",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 914.3125
+    },
+    {
+      "route": "cost?basis=native&range=month",
+      "lang": "en",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 914.3125
+    },
+    {
+      "route": "cost?basis=native&range=month&source=2",
+      "lang": "en",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 803.171875
+    },
+    {
+      "route": "models?metric=tokens",
+      "lang": "en",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 921.46875
+    },
+    {
+      "route": "models?metric=calls",
+      "lang": "en",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 911.46875
+    },
+    {
+      "route": "models?metric=api_value_usd",
+      "lang": "en",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 921.46875
+    },
+    {
+      "route": "cost?basis=api&range=month",
+      "lang": "en",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 914.3125
+    },
+    {
+      "route": "cost?basis=native&range=month",
+      "lang": "en",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 914.3125
+    },
+    {
+      "route": "cost?basis=native&range=month&source=2",
+      "lang": "en",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 803.171875
+    },
+    {
+      "route": "models?metric=tokens",
+      "lang": "th",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 911.46875
+    },
+    {
+      "route": "models?metric=calls",
+      "lang": "th",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 911.46875
+    },
+    {
+      "route": "models?metric=api_value_usd",
+      "lang": "th",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 911.46875
+    },
+    {
+      "route": "cost?basis=api&range=month",
+      "lang": "th",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 914.3125
+    },
+    {
+      "route": "cost?basis=native&range=month",
+      "lang": "th",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 914.3125
+    },
+    {
+      "route": "cost?basis=native&range=month&source=2",
+      "lang": "th",
+      "theme": "dark",
+      "buckets": 30,
+      "collapsedBottom": 803.171875
+    },
+    {
+      "route": "models?metric=tokens",
+      "lang": "th",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 911.46875
+    },
+    {
+      "route": "models?metric=calls",
+      "lang": "th",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 911.46875
+    },
+    {
+      "route": "models?metric=api_value_usd",
+      "lang": "th",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 911.46875
+    },
+    {
+      "route": "cost?basis=api&range=month",
+      "lang": "th",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 914.3125
+    },
+    {
+      "route": "cost?basis=native&range=month",
+      "lang": "th",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 914.3125
+    },
+    {
+      "route": "cost?basis=native&range=month&source=2",
+      "lang": "th",
+      "theme": "light",
+      "buckets": 30,
+      "collapsedBottom": 803.171875
+    }
+  ],
+  "quotaChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "segments": 5,
+      "samples": 53,
+      "unknown": 4
+    }
+  ],
+  "runtimeChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "nodes": 47,
+      "edges": 45,
+      "inspected": 5
+    }
+  ],
+  "shellChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    }
+  ],
+  "headerChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 226
+    }
+  ],
+  "fontProvenance": {
+    "family": "Noto Sans Thai",
+    "upstream": "https://github.com/google/fonts",
+    "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+    "upstreamPath": "ofl/notosansthai/NotoSansThai[wdth,wght].ttf",
+    "sha256": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+    "license": "OFL-1.1",
+    "modifiedFont": false
+  },
+  "fontChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    }
+  ],
+  "cases": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "overview-en-dark.png",
+      "sha256": "236e745431f008ac56b6ef98fd9a8ead673667830336c3b473185b902b9642b5",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "226f12879996a1f9f474fcb57c5fac6262cbff45fe0c0e197f5190be53610535",
+      "changedPixels": 5,
+      "maxChannelDelta": 1
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "live-en-dark.png",
+      "sha256": "c28b5038d0f8598b4407c533782d76c0e10dfbf71b59af5341d11e157cc7d5e1",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "c28b5038d0f8598b4407c533782d76c0e10dfbf71b59af5341d11e157cc7d5e1",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "projects-en-dark.png",
+      "sha256": "4fc711be90de6b36065c2669bd12ddb93c6d3d70a192393ee096868a7ecc6b01",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "4fc711be90de6b36065c2669bd12ddb93c6d3d70a192393ee096868a7ecc6b01",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "providers-en-dark.png",
+      "sha256": "35cd773ed393723c2f4b367d09ce3183831792c70c90426ba3262c08052c7c58",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "35cd773ed393723c2f4b367d09ce3183831792c70c90426ba3262c08052c7c58",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "models-en-dark.png",
+      "sha256": "968d0f3ea7cb331c8fd9fde527a3e0825174c1963bdb8e4359175068c9b0d3d3",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "968d0f3ea7cb331c8fd9fde527a3e0825174c1963bdb8e4359175068c9b0d3d3",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "cost-en-dark.png",
+      "sha256": "0a074454cf7c4fb3ae8dac2fde433dabb4225dc8ae63c524f44c47d5b871f01d",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-cost-chart-labels>span:nth-child(2)",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "0a074454cf7c4fb3ae8dac2fde433dabb4225dc8ae63c524f44c47d5b871f01d",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "history-en-dark.png",
+      "sha256": "80b12956d91424ca9a5538295a7bc1923545ac8565fcc57075f90a25153340ed",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "80b12956d91424ca9a5538295a7bc1923545ac8565fcc57075f90a25153340ed",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history-selected",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "history-selected-en-dark.png",
+      "sha256": "12ba37b04fd8552d0a0cdcb9f887e454be473babb05cc10f2a87d3b195f5ee55",
+      "semanticContrasts": [],
+      "checkedElements": [
+        "API-matched recorded metadata",
+        "native modal",
+        "selected record"
+      ],
+      "repeatSha256": "12ba37b04fd8552d0a0cdcb9f887e454be473babb05cc10f2a87d3b195f5ee55",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "alerts-en-dark.png",
+      "sha256": "bf2de487580662447dfd8e95e4fa4947a4e396568514c4b6d694a6cd21caab21",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "bf2de487580662447dfd8e95e4fa4947a4e396568514c4b6d694a6cd21caab21",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "filename": "overview-en-light.png",
+      "sha256": "094139c683ce5cc69fcf8481154f6743a0044b3b1a73edc459e2986f5f92d0f4",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "094139c683ce5cc69fcf8481154f6743a0044b3b1a73edc459e2986f5f92d0f4",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "filename": "live-en-light.png",
+      "sha256": "cdd4872f7521faa9c2f89d3660a3db9b7bb6fa3e2883a35e1429e8e06cadfbb6",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "cdd4872f7521faa9c2f89d3660a3db9b7bb6fa3e2883a35e1429e8e06cadfbb6",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "filename": "projects-en-light.png",
+      "sha256": "2cc0d6935d2b350d6aea5f79256d3227d3eabbde1ada3f113c8005d120c09502",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "2cc0d6935d2b350d6aea5f79256d3227d3eabbde1ada3f113c8005d120c09502",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "light",
+      "filename": "providers-en-light.png",
+      "sha256": "c86ab8b879d2f1aebead7cc3078d281ed263404a217735f32af6108d6dcbc263",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "c86ab8b879d2f1aebead7cc3078d281ed263404a217735f32af6108d6dcbc263",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "filename": "models-en-light.png",
+      "sha256": "ad12db08508b0a3afa9c00028e435fe06907f0903e049b6f9bb9ba3972c93ffa",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "ad12db08508b0a3afa9c00028e435fe06907f0903e049b6f9bb9ba3972c93ffa",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "en",
+      "theme": "light",
+      "filename": "cost-en-light.png",
+      "sha256": "fabe20a1ad04b54d2e27ee04b55e3f54aa9f7eaa04e2105af4971a9d63456abc",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-cost-chart-labels>span:nth-child(2)",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "fabe20a1ad04b54d2e27ee04b55e3f54aa9f7eaa04e2105af4971a9d63456abc",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "filename": "history-en-light.png",
+      "sha256": "d06d2c5650839f29ae8236650f28630750b0adbd2a32aa6b4428e31a368ad140",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "d06d2c5650839f29ae8236650f28630750b0adbd2a32aa6b4428e31a368ad140",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history-selected",
+      "lang": "en",
+      "theme": "light",
+      "filename": "history-selected-en-light.png",
+      "sha256": "f3136e27eaebd64c4366a8caa3e5e8596248a4023e7fb10b04a54c01b8df57d3",
+      "semanticContrasts": [],
+      "checkedElements": [
+        "API-matched recorded metadata",
+        "native modal",
+        "selected record"
+      ],
+      "repeatSha256": "f3136e27eaebd64c4366a8caa3e5e8596248a4023e7fb10b04a54c01b8df57d3",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "filename": "alerts-en-light.png",
+      "sha256": "03ef24052c414c930e065ec4b676b44c4fd18994d561214928dc8bf3efc44b62",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "03ef24052c414c930e065ec4b676b44c4fd18994d561214928dc8bf3efc44b62",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "overview-th-dark.png",
+      "sha256": "21290ddfd69f99e6cc7916acd1e0e2dcd833bf8f00662da15fcf6262da4ede09",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "21290ddfd69f99e6cc7916acd1e0e2dcd833bf8f00662da15fcf6262da4ede09",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "live-th-dark.png",
+      "sha256": "afe19204aee82a5b14c1796eae559c90d0f4bc3029d73ca587dd8c2b01585f6a",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "afe19204aee82a5b14c1796eae559c90d0f4bc3029d73ca587dd8c2b01585f6a",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "projects-th-dark.png",
+      "sha256": "8f26f3843f44cc387345b3c7bff3bd3481bdc892d368e3490765de2080a48bf4",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "fe6d89221a566381106514a2cbcccc3b487881ec908fe50876b34de8553de675",
+      "changedPixels": 10,
+      "maxChannelDelta": 2
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "providers-th-dark.png",
+      "sha256": "b8d230a5b028e481e4fbac259ac723eb5891644684ee5cb384a85e7eaefb59b0",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "b8d230a5b028e481e4fbac259ac723eb5891644684ee5cb384a85e7eaefb59b0",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "models-th-dark.png",
+      "sha256": "b147f9b72404025b7730cb54854483965b5ea6874b1ab9555e4ad15e8b8a4023",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "b147f9b72404025b7730cb54854483965b5ea6874b1ab9555e4ad15e8b8a4023",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "cost-th-dark.png",
+      "sha256": "efe45bf2e494c35616450962d32351d4ac0c431d3cd2a85625214037846ed841",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-cost-chart-labels>span:nth-child(2)",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "efe45bf2e494c35616450962d32351d4ac0c431d3cd2a85625214037846ed841",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "history-th-dark.png",
+      "sha256": "3d52a202c7466201d734203a7b70a55a76ed7c4e5c32a36fb242c2db4f53aba9",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "3d52a202c7466201d734203a7b70a55a76ed7c4e5c32a36fb242c2db4f53aba9",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history-selected",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "history-selected-th-dark.png",
+      "sha256": "9053f04485adb989dd0c1479fb387b1e6eedea9ab1619a83b1301c42f6e4fc9a",
+      "semanticContrasts": [],
+      "checkedElements": [
+        "API-matched recorded metadata",
+        "native modal",
+        "selected record"
+      ],
+      "repeatSha256": "9053f04485adb989dd0c1479fb387b1e6eedea9ab1619a83b1301c42f6e4fc9a",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "alerts-th-dark.png",
+      "sha256": "f53ce77b36b6f9e4ea7e93e0e2b0dea8593431e4910cb21f4ce12919d8ba5e06",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.629405139576069
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 9.87070057511001
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.648070166018997
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 9.786083742551568
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.226922680071112
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "f53ce77b36b6f9e4ea7e93e0e2b0dea8593431e4910cb21f4ce12919d8ba5e06",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "filename": "overview-th-light.png",
+      "sha256": "824b94534ba71e7ee4e267234064fe9e09c8c701ed844a8e2cf1b9430954a396",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "824b94534ba71e7ee4e267234064fe9e09c8c701ed844a8e2cf1b9430954a396",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "filename": "live-th-light.png",
+      "sha256": "c79dc18b7a5a61960c27a4cd20f27cddf06440e9b77934441ba93af1e4cc44fe",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "c79dc18b7a5a61960c27a4cd20f27cddf06440e9b77934441ba93af1e4cc44fe",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "filename": "projects-th-light.png",
+      "sha256": "e9ad7e4aab89ca02ccfc0b4c7e369fd643dbfc370be842cf56c97479b042767d",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "7414f60a108613d44e3f7fd0f90949aedfc6c2eec7d73bed3f04529b342f6552",
+      "changedPixels": 8,
+      "maxChannelDelta": 1
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "light",
+      "filename": "providers-th-light.png",
+      "sha256": "394131999e660ed54cd1d6f5ff8782c88a2585774012ceed7b1116826d343bb2",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "394131999e660ed54cd1d6f5ff8782c88a2585774012ceed7b1116826d343bb2",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "filename": "models-th-light.png",
+      "sha256": "ef0881efa2b7231bd15e29e25af99effb86bb5143dd151136ce69e435dc3d71e",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "ef0881efa2b7231bd15e29e25af99effb86bb5143dd151136ce69e435dc3d71e",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "cost",
+      "lang": "th",
+      "theme": "light",
+      "filename": "cost-th-light.png",
+      "sha256": "ad4fe245a9b33a2914e39c5a13a926480d317912315818eb562a088566731899",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-cost-chart-labels>span:nth-child(2)",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "ad4fe245a9b33a2914e39c5a13a926480d317912315818eb562a088566731899",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "filename": "history-th-light.png",
+      "sha256": "dd85cc1e62034328c17d7de341f765fa552bdc075618c19982668a14b7d47b41",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "dd85cc1e62034328c17d7de341f765fa552bdc075618c19982668a14b7d47b41",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history-selected",
+      "lang": "th",
+      "theme": "light",
+      "filename": "history-selected-th-light.png",
+      "sha256": "79403d8a2491a70f0aaedaae82f6abe669bb35114537a609e97b49edf5fc86c1",
+      "semanticContrasts": [],
+      "checkedElements": [
+        "API-matched recorded metadata",
+        "native modal",
+        "selected record"
+      ],
+      "repeatSha256": "79403d8a2491a70f0aaedaae82f6abe669bb35114537a609e97b49edf5fc86c1",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "filename": "alerts-th-light.png",
+      "sha256": "2eb12978224b8aecefef4e0e20eaa8aa1b0c05738aaabeaf63a847294844676b",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "2eb12978224b8aecefef4e0e20eaa8aa1b0c05738aaabeaf63a847294844676b",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { Cloud, RefreshCw } from 'lucide-react';
+import { VendorIcon } from '@/components/vendor-icon';
 import { isExpired, primaryLimits, windowRank, type WindowReadings } from '@/format';
 import { api, type AccountState, type Limit, type Overview, type QuotaFreshness, type SourceStatus, type SubscriptionStatus } from '@/api';
 import { useI18n, useT } from '@/i18n';
@@ -93,7 +94,7 @@ export function ProductionProviders() {
     {error && <p className="qp-provider-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     {!overview ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : cards.length === 0 ? <p className="qp-panel">{t('redesign.providerNoAccounts')}</p> : <>
       <section className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{cards.map(card => <article key={card.key} className="qp-panel qp-provider-card" data-selected={selected?.key === card.key}>
-        <div className="qp-provider-card-head"><button aria-pressed={selected?.key === card.key} onClick={() => update({ owner: card.key })}><span className="qp-provider-icon" aria-hidden="true"><Cloud size={21}/></span><span>{card.title}</span></button><span className="qp-provider-state" data-state={card.sources.length > 0 && card.sources.every(source => !source.enabled) ? 'inactive' : card.state}>{card.sources.length > 0 && card.sources.every(source => !source.enabled) ? t('redesign.providerInactive') : stateLabel(card.state)}</span></div>
+        <div className="qp-provider-card-head"><button aria-pressed={selected?.key === card.key} onClick={() => update({ owner: card.key })}><span className="qp-provider-icon" aria-hidden="true"><VendorIcon vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'}/></span><span>{card.title}</span></button><span className="qp-provider-state" data-state={card.sources.length > 0 && card.sources.every(source => !source.enabled) ? 'inactive' : card.state}>{card.sources.length > 0 && card.sources.every(source => !source.enabled) ? t('redesign.providerInactive') : stateLabel(card.state)}</span></div>
         <p className="qp-provider-linked">{t('redesign.providerLinked')}: {card.linked.join(', ') || t('redesign.unknownValue')}</p>
         {card.hidden && <p className="qp-provider-hidden">{t('redesign.providerHidden')}</p>}
         <div className="qp-provider-windows">{card.readings.length === 0 ? <p>{t('redesign.providerNoQuota')}</p> : card.readings.map(({ primary }) => {

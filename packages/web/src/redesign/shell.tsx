@@ -1,5 +1,5 @@
 import { useEffect, type ReactNode, type RefObject } from 'react';
-import { Activity, ArrowUpRight, BarChart3, BellRing, Box, CircleGauge, GitBranch, Layers, MessagesSquare, Moon, Radio, Settings, Sun } from 'lucide-react';
+import { Activity, ArrowUpRight, BarChart3, BellRing, Box, CircleGauge, GitBranch, Layers, Moon, Radio, Settings, Sun, House, Folder, History } from 'lucide-react';
 import type { MessageKey } from '@/i18n/en';
 import { CommandPalette } from '@/components/command-palette';
 import { useT } from '@/i18n';
@@ -10,13 +10,13 @@ export type RedesignTranslate = (key: Extract<MessageKey, `redesign.${string}`>)
 type Page = 'overview' | 'live' | 'projects' | 'providers' | 'models' | 'cost' | 'alerts' | 'history' | 'settings';
 
 const NAV = [
-  { id: 'overview', href: '#overview', label: 'redesign.overview', icon: CircleGauge },
+  { id: 'overview', href: '#overview', label: 'redesign.overview', icon: House },
   { id: 'live', href: '#live', label: 'redesign.live', icon: Activity },
-  { id: 'projects', href: '#projects', label: 'redesign.project', icon: Box },
+  { id: 'projects', href: '#projects', label: 'redesign.project', icon: Folder },
   { id: 'providers', href: '#providers', label: 'redesign.provider', icon: Radio },
-  { id: 'models', href: '#models', label: 'redesign.models', icon: Layers },
+  { id: 'models', href: '#models', label: 'redesign.models', icon: Box },
   { id: 'cost', href: '#cost', label: 'redesign.cost', icon: BarChart3 },
-  { id: 'history', href: '#history', label: 'redesign.history', icon: MessagesSquare },
+  { id: 'history', href: '#history', label: 'redesign.history', icon: History },
   { id: 'alerts', href: '#alerts', label: 'redesign.alerts', icon: BellRing },
   { id: 'settings', href: '#settings', label: 'redesign.settings', icon: Settings },
 ] as const;
@@ -47,7 +47,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
   return <div ref={rootRef} className="qp-redesign" data-theme={theme} lang={language} data-testid={testId}>
     <a className="qp-skip" href={`#${active}`} onClick={event => { event.preventDefault(); document.getElementById(active)?.focus(); }}>{t('redesign.skipContent')}</a>
     <header className="qp-topbar">
-      <a className="qp-brand" href="#overview" aria-label="QuotaPulse"><Activity aria-hidden="true"/><span>Quota<strong>Pulse</strong><small>MISSION CONTROL</small></span></a>
+      <a className="qp-brand" href="#overview" aria-label="QuotaPulse"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M1 22h6l3-10 4 22 5-31 5 34 4-25 4 16 3-8h4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span>Quota<strong>Pulse</strong><small>AI RUNTIME MISSION CONTROL</small></span></a>
       <div className="qp-topbar-body"><div className="qp-topbar-context">{!preview && <DaemonConnection/>}<span className="qp-preview-badge">{t(preview ? 'redesign.preview' : NAV.find(item => item.id === active)!.label)}</span>{!preview && <span className="qp-machine-scope">{t('redesign.machineScope')}</span>}</div><div className="qp-topbar-actions">{!preview && <RedesignNavigator/>}<div className="qp-tools"><button onClick={onLanguage} aria-label={t('redesign.language')}>{language === 'en' ? 'ไทย' : 'EN'}</button><button onClick={onTheme} aria-label={t('redesign.theme')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button></div></div></div>
     </header>
     <aside className="qp-sidebar">

@@ -18,6 +18,7 @@ export interface QuotaWindow {
   sourceId?: number;
   origin?: string;
   owner: string;
+  provider?: string;
   window: string;
   usedPercent: number | null;
   observedAt: number;

@@ -10,8 +10,10 @@
 .qp-provider-card[data-selected=true] { border-color:var(--qp-accent); box-shadow:0 0 0 1px var(--qp-accent); }
 .qp-provider-card-head button { display:flex; align-items:center; gap:8px; min-width:0; text-align:left; color:var(--qp-text); font-size:16px; font-weight:600; }
 .qp-provider-card-head button span { overflow-wrap:anywhere; }
-.qp-provider-card-head svg { flex:none; color:var(--qp-accent); }
+.qp-provider-card-head svg { flex:none; color:var(--qp-text); }
 .qp-provider-icon { display:grid; place-items:center; width:36px; height:36px; flex:none; border-radius:9px; border:1px solid color-mix(in srgb,var(--qp-accent) 30%,var(--qp-border)); background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 16%,var(--qp-panel)),var(--qp-panel)); }
+.qp-provider-icon { width:44px; height:44px; font-size:28px; box-shadow:inset 0 1px 0 color-mix(in srgb,var(--qp-accent) 15%,transparent); }
+.qp-provider-state { border:1px solid color-mix(in srgb,currentColor 25%,transparent); border-radius:6px; padding:3px 6px; background:color-mix(in srgb,currentColor 6%,transparent); }
 .qp-provider-state { color:var(--qp-accent); font-size:11px; white-space:nowrap; }
 .qp-provider-state[data-state=active] { color:var(--qp-success); }
 .qp-provider-state[data-state=stale] { color:var(--qp-warning); }
