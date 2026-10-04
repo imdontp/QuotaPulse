@@ -10,20 +10,25 @@ than exact vector specifications or a whole-screen fidelity score.
 The v1.65 checkpoint adds timestamp-scaled Live curves, a seven-label time
 axis, dynamic y labels and an actual latest-minute rail. It also tunes the
 Overview pulse treatment, Projects top-card ratio and the command-palette mark.
-The complete 40-pair gate passed with 39 byte-identical pairs, one pair inside
-the unchanged raster tolerance, and no masks. See
-[the v1.65 report](REDESIGN-SECTION-MARKS-V1.65.md) and its
+See [the v1.65 report](REDESIGN-SECTION-MARKS-V1.65.md) and its
 [reference viewer](redesign-v1.65/reference-review.html).
+
+v1.66 aligns five Overview headings and the review clock date to the concept,
+adds assertions for those labels/date, and snaps the header sun icon onto the
+pixel grid. Its full 40-pair gate passed: 37 byte-identical, 3 within the
+unchanged tolerance, no masks. See
+[the v1.66 report](REDESIGN-SECTION-MARKS-V1.66.md) and its
+[reference viewer](redesign-v1.66/reference-review.html).
 
 The user's acceptance target remains 99-100% likeness to the supplied refs,
 with real app data in production. The v1.65 screenshot comparison still shows
-visible differences in labels, data density, side navigation and small details
-even where page geometry is already close. The next pass should preserve each
-page's current daemon/API semantics while comparing regions directly against
-the original PNGs:
+visible differences in data density, side navigation and small details even
+where page geometry is already close. v1.66 closes five Overview heading gaps;
+the next pass should preserve each page's current daemon/API semantics while
+comparing regions directly against the original PNGs:
 
-- Tune the isolated screenshot fixture to the source's visible labels, counts,
-  and frozen date where those fields already exist in the real UI. Keep it
+- Continue aligning isolated screenshot names, counts and percentages only
+  where the production UI already renders daemon-returned fields. Keep fixtures
   synthetic and in memory; do not add concept values to production defaults or
   persistent stores. Preserve separate edge/unknown/zero stress cases.
 - Inspect the source and app Overview side by side at the canonical viewport;

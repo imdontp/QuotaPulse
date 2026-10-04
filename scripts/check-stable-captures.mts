@@ -30,11 +30,15 @@ const costOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'cost';
 const historyOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'history';
 const alertsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'alerts';
 const settingsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'settings';
+const captureLanguages = process.env.QUOTAPULSE_CAPTURE_LANGUAGE ? [process.env.QUOTAPULSE_CAPTURE_LANGUAGE] : ['en', 'th'];
+const captureThemes = process.env.QUOTAPULSE_CAPTURE_THEME ? [process.env.QUOTAPULSE_CAPTURE_THEME] : ['dark', 'light'];
+assert.ok(captureLanguages.every(language => language === 'en' || language === 'th'), 'Capture language must be en or th');
+assert.ok(captureThemes.every(theme => theme === 'dark' || theme === 'light'), 'Capture theme must be dark or light');
 const output = resolve(root, runtimeLayoutOnly ? 'screens/runtime-layout' : liveOnly ? 'screens/live-density' : compositionOnly ? 'screens/reference-composition' : overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : modelsOnly ? 'screens/models-comparison' : costOnly ? 'screens/cost-axes' : historyOnly ? 'screens/history-details' : alertsOnly ? 'screens/alerts-refinement' : settingsOnly ? 'screens/settings-composition' : 'screens/stable-captures');
 mkdirSync(output, { recursive: true });
 // A failed attempt must never leave a previous success manifest in this folder.
 rmSync(resolve(output, 'verification.json'), { force: true });
-const fixedNow = Date.parse('2026-05-17T13:42:00.000Z');
+const fixedNow = Date.parse('2025-05-17T13:42:00.000Z');
 // Freeze Date only, keeping real timers/performance for HTTP, browser and cleanup.
 // This applies to internal query helpers too, without changing production clocks.
 const realDate = globalThis.Date;
@@ -94,11 +98,12 @@ const activityRendererChecks: Array<{ lang: string; theme: string; accessibleVal
 const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number; modelShares: number; directionArrows: boolean }> = [];
 const runtimeGeometryChecks: Array<{ lang: string; theme: string; state: string; paths: number; maxError: number }> = [];
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
-const headerChecks: Array<{ page: string; lang: string; theme: string; width: number; height: number; sidebarWidth: number }> = [];
+const headerChecks: Array<{ page: string; lang: string; theme: string; width: number; height: number; sidebarWidth: number; dateText: string | null }> = [];
 const fontChecks: Array<{ page: string; lang: string; theme: string; family: string; custom: boolean; glyphs: number }> = [];
 const settingsChecks: Array<{ lang: string; theme: string; sections: number; language: boolean; currency: boolean; rate: number; widths: number[] }> = [];
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const overviewLayouts: Array<{ lang: string; theme: string; heroBottom: number; activityBottom: number; models: number; railHeight: number; runtimeProvidersVisible: number; edgeMaxError: number; pulseCenter: { x: number; y: number }; modelTitleOutside: boolean }> = [];
+const overviewReferenceLabelChecks: Array<{ lang: string; theme: string; labels: string[]; modelRailLabel: string | null }> = [];
 const referenceColumnChecks: Array<{ page: string; lang: string; theme: string; headerTop: number; railTop: number; summaryRight: number; railLeft: number }> = [];
 const liveDensityChecks: Array<{ lang: string; theme: string; bottom: number; sessions: number; records: number }> = [];
 const liveMinuteChecks: Array<{ lang: string; theme: string; state: string; pairs: number; cells: number; missing: number; zero: number; recorded: number; partial: number; included: number; aggregate: number; unknown: number; table: boolean; labelGeometry: Array<{ viewport: number; width: number; clientWidth: number; scrollWidth: number; name: string | null | undefined }> }> = [];
@@ -848,6 +853,7 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
     const expectedBrand = width <= 1100 ? expectedSidebar : Math.max(253, Math.min(267, width * .16));
     assert.ok(Math.abs(brand.width - expectedBrand) < .02);
     assert.equal(sidebar.width, expectedSidebar);
+    let dateText: string | null = null;
     if (width > 1100) {
       const mark = await page.locator('.qp-topbar .qp-brand>svg').boundingBox();
       const wordmark = await page.locator('.qp-topbar .qp-brand>span').boundingBox();
@@ -861,6 +867,9 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
       assert.equal(await status.getAttribute('role'), 'status');
       assert.equal(await status.getAttribute('aria-label'), lang === 'th' ? 'การเชื่อมต่อ daemon: กำลังอัปเดต' : 'Daemon connection: live');
       if (width > 1400) {
+        dateText = await page.locator('.qp-header-clock time').first().textContent();
+        const expectedDate = lang === 'en' ? 'Sat, May 17, 2025' : await page.evaluate(now => new Intl.DateTimeFormat('th-TH', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'Asia/Bangkok' }).format(now), fixedNow);
+        assert.equal(dateText, expectedDate, 'Review clock date must match the source concept capture');
         assert.deepEqual(await page.locator('.qp-header-clock time').evaluateAll(elements => elements.map(element => element.getAttribute('datetime'))), [new Date(fixedNow).toISOString(), new Date(fixedNow).toISOString()]);
         const clock = await page.locator('.qp-header-clock time').last().textContent();
         assert.equal(clock, new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'Asia/Bangkok' }).format(fixedNow));
@@ -869,7 +878,7 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
     assert.equal(await page.locator('.qp-sidebar nav a').count(), 9);
     assert.equal(await page.locator('.qp-sidebar nav a[aria-current=page]').count(), 1);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
-    headerChecks.push({ page: destination, lang, theme, width, height: header.height, sidebarWidth: sidebar.width });
+    headerChecks.push({ page: destination, lang, theme, width, height: header.height, sidebarWidth: sidebar.width, dateText });
   }
   await page.setViewportSize(originalViewport);
   const originalHash = await page.evaluate(() => location.hash);
@@ -1593,7 +1602,7 @@ async function checkOverviewPeriod(page: Page, lang: string, theme: string, pend
   await page.locator('.qp-quota').first().waitFor(); await settled(page, pending);
   await page.locator('.qp-quota').first().click();
   const selectedOwner = await page.locator('.qp-quota[aria-pressed=true]').getAttribute('data-owner');
-  const starts = { today: Date.parse('2026-05-16T17:00:00Z'), week: Date.parse('2026-05-10T17:00:00Z'), month: Date.parse('2026-04-30T17:00:00Z'), all: 0 };
+  const starts = { today: Date.parse('2025-05-16T17:00:00Z'), week: Date.parse('2025-05-11T17:00:00Z'), month: Date.parse('2025-04-30T17:00:00Z'), all: 0 };
   const tokensByRange: Record<string, number> = {};
   for (const range of ['week', 'month', 'all', 'today'] as const) {
     const graphResponse = page.waitForResponse(response => new URL(response.url()).pathname === '/api/runtime-map' && response.status() === 200);
@@ -1734,7 +1743,7 @@ try {
   const fixtureState = () => JSON.stringify(['source', 'session', 'usage_event', 'limit_sample'].map(table => db.prepare(`SELECT * FROM ${table} ORDER BY id`).all()));
   const originalFixture = fixtureState();
   for (const pass of [0, 1]) {
-    for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) {
+    for (const lang of captureLanguages) for (const theme of captureThemes) {
       // Each language/theme set starts a new renderer process in both passes.
       browser = await chromium.launch({ channel: 'chrome', headless: true, args: rendererArgs });
       const page = await browser.newPage({ viewport: { width: 1672, height: 941 }, reducedMotion: 'reduce', deviceScaleFactor: 1, timezoneId: 'Asia/Bangkok' });
@@ -1796,6 +1805,21 @@ try {
             referenceColumnChecks.push({ page: destination, lang, theme, headerTop: header.y, railTop: rail.y, summaryRight: summary.x + summary.width, railLeft: rail.x });
           }
           if (destination === 'overview') {
+            const activityHeading = await page.locator('.qp-activity h2').evaluate(element => Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE)?.textContent?.trim() ?? '');
+            const labels = await Promise.all([
+              page.locator('.qp-quotas>h2').innerText(),
+              page.locator('.qp-top-models h3').innerText(),
+              page.locator('.qp-runway-heading h2').innerText(),
+              page.locator('.qp-insights>h2').innerText(),
+            ]);
+            labels.push(activityHeading);
+            const expectedLabels = lang === 'th'
+              ? ['การสมัครและโควตา', 'โมเดลยอดนิยม (ตามจำนวนโทเค็น)', 'ระยะโควตา', 'ข้อมูลเชิงลึก Pulse', 'กิจกรรมสด']
+              : ['Subscriptions & Quotas', 'Top Models (by tokens)', 'Quota Runway', 'Pulse Insights', 'Live Activity'];
+            assert.deepEqual(labels, expectedLabels, 'Overview section labels must follow the original concept reference');
+            const modelRailLabel = await page.locator('.qp-top-models').getAttribute('aria-label');
+            assert.equal(modelRailLabel, expectedLabels[1]);
+            overviewReferenceLabelChecks.push({ lang, theme, labels, modelRailLabel });
             const hero = await page.locator('.qp-hero').boundingBox();
             const activity = await page.locator('.qp-activity-item').first().boundingBox();
             const rail = page.locator('.qp-top-models');
@@ -1935,7 +1959,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 8px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', captureMatrix: { languages: captureLanguages, themes: captureThemes, complete: captureLanguages.length === 2 && captureThemes.length === 2 }, clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', 'source-matched date on the screenshot clock', 'reference-matched Overview section labels and model rail accessible name', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 8px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, overviewReferenceLabelChecks, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;
