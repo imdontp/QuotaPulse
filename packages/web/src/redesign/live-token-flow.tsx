@@ -1,6 +1,6 @@
 import { useId, useMemo } from 'react';
 import type { MessageKey } from '@/i18n/en';
-import { liveTokenFlow, liveTokenFlowSegments, liveTokenFlowX, liveTokenFlowY, type LiveTokenFlowPoint, type LiveTokenFlowResponse, type LiveTokenFlowSeries } from './live-token-flow-data';
+import { liveTokenFlow, liveTokenFlowLatest, liveTokenFlowSegments, liveTokenFlowTicks, liveTokenFlowX, liveTokenFlowY, liveTokenFlowYTicks, type LiveTokenFlowPoint, type LiveTokenFlowResponse, type LiveTokenFlowSeries } from './live-token-flow-data';
 import './live-token-flow.css';
 
 type Translate = (key: MessageKey) => string;
@@ -24,8 +24,11 @@ export function LiveTokenFlow({ data, language, t, showLegend = true }: {
   const number = (value: number) => value.toLocaleString(locale);
   const date = new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'medium' });
   const clock = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
-  const x = (index: number) => liveTokenFlowX(index, flow.points.length);
+  const x = (at: number) => liveTokenFlowX(at, data.from, data.to);
   const y = (value: number) => liveTokenFlowY(value, flow.maximum);
+  const latest = liveTokenFlowLatest(flow.points);
+  const xTicks = liveTokenFlowTicks(data.from, data.to);
+  const yTicks = liveTokenFlowYTicks(flow.maximum);
   const state = (point: LiveTokenFlowPoint) => t(point.state === 'missing' ? 'redesign.liveMinuteMissing' : point.state === 'zero' ? 'redesign.liveMinuteZero' : 'redesign.liveMinuteRecorded');
   const cell = (point: LiveTokenFlowPoint, value: number | null) => point.state === 'missing' ? '—' : value === null ? t('redesign.unknownValue') : number(value);
   const partial = (point: LiveTokenFlowPoint, index: number) => t(index === flow.points.length - 1 && point.end === data.to && point.end % 60000 !== 0 ? 'redesign.liveMinuteCurrent' : 'redesign.liveMinutePartial');
@@ -33,21 +36,28 @@ export function LiveTokenFlow({ data, language, t, showLegend = true }: {
 
   return <div className="qp-live-token-flow" data-maximum={flow.maximum}>
     {showLegend && <LiveTokenFlowLegend t={t}/>}
-    <div className="qp-live-flow-plot" role="img" aria-label={`${t('redesign.liveChart')} · ${series.map(key => t(labels[key])).join(' · ')} · 0 – ${number(flow.maximum)}`} aria-describedby={`${id}-data`}>
+    <div className="qp-live-flow-plot">
+      <div className="qp-live-flow-y-axis" aria-hidden="true">{yTicks.map((value, index) => <span key={`${value}-${index}`} style={{ top: `${y(value)}%` }}>{number(value)}</span>)}</div>
+      <div className="qp-live-flow-canvas" role="img" aria-label={`${t('redesign.liveChart')} · ${series.map(key => t(labels[key])).join(' · ')} · 0 – ${number(flow.maximum)}`} aria-describedby={`${id}-data`}>
       {/* The total SVG retains the existing total-point selector; the other traces use separate SVGs. */}
       <svg className="qp-live-chart qp-live-flow-total" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
         <defs><linearGradient id={`${id}-area`} x1="0" y1="0" x2="0" y2="1"><stop stopColor="var(--qp-flow-total)" stopOpacity=".18"/><stop offset="1" stopColor="var(--qp-flow-total)" stopOpacity="0"/></linearGradient><filter id={`${id}-glow`} x="-5%" y="-50%" width="110%" height="200%"><feGaussianBlur stdDeviation="1"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-        {[6, 28, 50, 72, 94].map(value => <line key={value} x1="8" x2="992" y1={value} y2={value} stroke="var(--qp-border)" strokeDasharray="2 4" vectorEffect="non-scaling-stroke"/>)}
-        {flow.points.length > 1 && <polygon points={`${x(0)},94 ${flow.points.map((point, index) => `${x(index)},${y(point.total)}`).join(' ')} ${x(flow.points.length - 1)},94`} fill={`url(#${id}-area)`}/>}
-        <polyline className="qp-live-flow-line" data-series="total" points={flow.points.map((point, index) => `${x(index)},${y(point.total)}`).join(' ')} fill="none" stroke="var(--qp-flow-total)" strokeWidth="2" vectorEffect="non-scaling-stroke" filter={`url(#${id}-glow)`}/>
-        {flow.points.map((point, index) => <circle key={point.at} data-series="total" data-at={point.at} data-value={point.total} data-state={point.state} data-partial={point.partial || undefined} cx={x(index)} cy={y(point.total)} r="2" fill="var(--qp-flow-total)"><title>{describe(point, 'total', index)}</title></circle>)}
+        {yTicks.map((value, index) => <line key={`${value}-${index}`} x1="8" x2="992" y1={y(value)} y2={y(value)} stroke="var(--qp-border)" strokeDasharray="2 4" vectorEffect="non-scaling-stroke"/>)}
+        {flow.points.length > 1 && <polygon points={`${x(flow.points[0]!.start)},94 ${flow.points.map(point => `${x(point.start)},${y(point.total)}`).join(' ')} ${x(flow.points[flow.points.length - 1]!.start)},94`} fill={`url(#${id}-area)`}/>}
+        <polyline className="qp-live-flow-line" data-series="total" points={flow.points.map(point => `${x(point.start)},${y(point.total)}`).join(' ')} fill="none" stroke="var(--qp-flow-total)" strokeWidth="2" vectorEffect="non-scaling-stroke" filter={`url(#${id}-glow)`}/>
+        {flow.points.map((point, index) => <circle key={point.at} data-series="total" data-at={point.at} data-value={point.total} data-state={point.state} data-partial={point.partial || undefined} cx={x(point.start)} cy={y(point.total)} r="2" fill="var(--qp-flow-total)"><title>{describe(point, 'total', index)}</title></circle>)}
       </svg>
       {(['input', 'output'] as const).map(key => <svg key={key} className={`qp-live-flow-component qp-live-flow-${key}`} viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
-        {liveTokenFlowSegments(flow.points, key).map((segment, index) => <polyline key={index} className="qp-live-flow-line" data-series={key} points={segment.map(point => `${x(point.index)},${y(point.value)}`).join(' ')} fill="none" stroke={`var(--qp-flow-${key})`} strokeWidth="1.8" vectorEffect="non-scaling-stroke"/>)}
-        {flow.points.map((point, index) => point[key] === null ? null : <circle key={point.at} data-series={key} data-at={point.at} data-value={point[key]} data-state={point.state} data-partial={point.partial || undefined} cx={x(index)} cy={y(point[key]!)} r="1.6" fill={`var(--qp-flow-${key})`}><title>{describe(point, key, index)}</title></circle>)}
+        {liveTokenFlowSegments(flow.points, key).map((segment, index) => <polyline key={index} className="qp-live-flow-line" data-series={key} points={segment.map(point => `${x(point.start)},${y(point.value)}`).join(' ')} fill="none" stroke={`var(--qp-flow-${key})`} strokeWidth="1.8" vectorEffect="non-scaling-stroke"/>)}
+        {flow.points.map((point, index) => point[key] === null ? null : <circle key={point.at} data-series={key} data-at={point.at} data-value={point[key]} data-state={point.state} data-partial={point.partial || undefined} cx={x(point.start)} cy={y(point[key]!)} r="1.6" fill={`var(--qp-flow-${key})`}><title>{describe(point, key, index)}</title></circle>)}
       </svg>)}
+      </div>
+      {!!xTicks.length && <div className="qp-live-flow-axis" role="group" aria-label={t('redesign.liveChart')}>{xTicks.map((at, index) => <span key={`${at}-${index}`} data-at={at} title={date.format(at)} style={{ left: `${(x(at) - 8) / 984 * 100}%`, transform: index === 0 ? 'translateX(0)' : index === xTicks.length - 1 ? 'translateX(-100%)' : 'translateX(-50%)' }}>{clock.format(at)}</span>)}</div>}
+      <section className="qp-live-flow-latest" data-at={latest?.at} data-start={latest?.start} data-end={latest?.end} data-partial={latest?.partial || undefined} data-input={latest?.input ?? undefined} data-output={latest?.output ?? undefined} data-total={latest?.total} aria-label={t('redesign.liveLatestMinute')}>
+        <div className="qp-live-flow-latest-heading"><span>{t('redesign.liveLatestMinute')}</span>{latest && <time dateTime={new Date(latest.start).toISOString()} title={`${date.format(latest.start)} – ${date.format(latest.end)}`}>{clock.format(latest.start)} – {clock.format(latest.end)}{latest.partial ? ` · ${partial(latest, latest.index)}` : ''}</time>}</div>
+        {latest ? <div className="qp-live-flow-latest-values">{series.map(key => <span key={key} data-series={key}><small>{t(labels[key])}</small><strong>{cell(latest, latest[key])}</strong></span>)}</div> : <small>{t('redesign.liveFlowNoLatest')}</small>}
+      </section>
     </div>
-    {!!flow.points.length && <div className="qp-live-flow-axis"><span>{clock.format(flow.points[0]!.start)}</span><span>{clock.format(flow.points[flow.points.length - 1]!.start)}{flow.points[flow.points.length - 1]!.partial && ` · ${partial(flow.points[flow.points.length - 1]!, flow.points.length - 1)}`}</span></div>}
     {flow.hasPartialBreakdown && <p className="qp-footnote qp-live-flow-breakdown">{t('redesign.liveFlowBreakdown')}</p>}
     <details className="qp-live-flow-data" id={`${id}-data`}>
       <summary>{t('redesign.chartData')}</summary>

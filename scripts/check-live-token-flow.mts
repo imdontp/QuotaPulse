@@ -170,7 +170,7 @@ const colorFixture = resolvedBackgrounds([
 assert.ok(colorFixture.every(candidate => candidate.color.alpha === 1 && candidate.color.r >= 252.8 && candidate.color.g >= 253.6 && candidate.color.b >= 254.7));
 assert.ok(minimumContrast('#057e95', colorFixture).minimum > 4.6);
 
-async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, theme: string, pending: Set<Request>, state: 'baseline' | 'diagnostic') {
+async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, theme: string, pending: Set<Request>, state: 'baseline' | 'diagnostic' | 'empty') {
   await page.locator('.qp-live-token-flow').waitFor({ timeout: 12000 }); await settle(page, pending);
   const expected = expectedMinutes(data);
   const maximum = Math.max(0, ...expected.flatMap(point => [point.total, point.input ?? 0, point.output ?? 0]));
@@ -193,16 +193,29 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
     const lines = Array.from(root.querySelectorAll('polyline')).map(element => ({ series: element.getAttribute('data-series'), points: element.getAttribute('points') ?? '', stroke: getComputedStyle(element).stroke }));
     return { maximum: Number(root.getAttribute('data-maximum')), points, lines,
       totalOnly: Array.from(root.querySelectorAll('.qp-live-chart>circle')).every(element => element.getAttribute('data-series') === 'total'),
-      axis: Array.from(root.querySelectorAll('.qp-live-flow-axis>span')).map(element => element.textContent),
+      axis: Array.from(root.querySelectorAll('.qp-live-flow-axis>span')).map(element => ({ at: Number(element.getAttribute('data-at')), text: element.textContent, left: Number.parseFloat((element as HTMLElement).style.left) })),
+      yAxis: Array.from(root.querySelectorAll('.qp-live-flow-y-axis>span')).map(element => ({ value: element.textContent, top: Number.parseFloat((element as HTMLElement).style.top) })),
+      latest: (() => {
+        const element = root.querySelector('.qp-live-flow-latest')!;
+        return { attrs: ['data-at', 'data-start', 'data-end', 'data-partial', 'data-input', 'data-output', 'data-total'].map(key => element.getAttribute(key)),
+          heading: element.querySelector('.qp-live-flow-latest-heading>span')?.textContent,
+          time: element.querySelector('.qp-live-flow-latest-heading>time')?.textContent ?? null,
+          values: Array.from(element.querySelectorAll('.qp-live-flow-latest-values>[data-series]')).map(value => ({
+            series: value.getAttribute('data-series'), label: value.querySelector('small')?.textContent, value: value.querySelector('strong')?.textContent,
+          })), empty: element.querySelector(':scope>small')?.textContent ?? null };
+      })(),
       note: root.querySelector('.qp-live-flow-breakdown')?.textContent ?? null,
-      role: root.querySelector('.qp-live-flow-plot')?.getAttribute('role'), imageLabel: root.querySelector('.qp-live-flow-plot')?.getAttribute('aria-label'),
-      description: root.querySelector('.qp-live-flow-plot')?.getAttribute('aria-describedby'), tableId: root.querySelector('.qp-live-flow-data')?.id,
+      role: root.querySelector('.qp-live-flow-canvas')?.getAttribute('role'), imageLabel: root.querySelector('.qp-live-flow-canvas')?.getAttribute('aria-label'),
+      description: root.querySelector('.qp-live-flow-canvas')?.getAttribute('aria-describedby'), tableId: root.querySelector('.qp-live-flow-data')?.id,
     };
   });
   assert.equal(snapshot.maximum, maximum, `${state}: the shared scale ignored an actual component`);
   assert.equal(snapshot.totalOnly, true, 'Existing .qp-live-chart point selector must retain total only');
   assert.equal(snapshot.role, 'img'); assert.equal(snapshot.description, snapshot.tableId);
   assert.ok(snapshot.imageLabel?.includes(number.format(maximum)), 'Accessible plot label omits its shared range');
+  const expectedYTicks = maximum > 0 ? [maximum, Math.round(maximum * 2 / 3), Math.round(maximum / 3), 0].filter((value, index, values) => index === 0 || value < values[index - 1]!) : [0];
+  assert.deepEqual(snapshot.yAxis.map(item => item.value), expectedYTicks.map(value => number.format(value)), `${state}: y-axis labels must use the actual shared scale`);
+  assert.ok(snapshot.yAxis.every((item, index) => Math.abs(item.top - (94 - 88 * expectedYTicks[index]! / (maximum || 1))) < .0001), `${state}: y-axis labels must align to the actual gridlines`);
   const pointCounts: Record<Series, number> = { input: 0, output: 0, total: 0 };
   const segmentCounts: Record<Series, number> = { input: 0, output: 0, total: 0 };
   for (const series of ['input', 'output', 'total'] as const) {
@@ -211,7 +224,7 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
     assert.deepEqual(circles.map(point => [point.at, point.value]), known.map(({ point }) => [point.at, point[series]]), `${state}/${series}: SVG values differ from API components`);
     for (const [index, circle] of circles.entries()) {
       const item = known[index]!, point = item.point;
-      const x = 8 + 984 * item.index / Math.max(1, expected.length - 1), y = 94 - 88 * point[series]! / (maximum || 1);
+      const x = 8 + 984 * (point.start - data.from) / Math.max(1, data.to - 1 - data.from), y = 94 - 88 * point[series]! / (maximum || 1);
       assert.ok(Math.abs(circle.x - x) < .0001 && Math.abs(circle.y - y) < .0001, `${state}/${series}: incorrect shared-scale coordinate at ${point.at}`);
       assert.equal(circle.state, point.state); assert.equal(circle.partial, point.partial ? 'true' : null);
       assert.ok(circle.title?.includes(states[point.state]));
@@ -223,7 +236,7 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
     assert.equal(flattened.length, known.length, `${state}/${series}: line invents or omits points`);
     for (const [index, coordinates] of flattened.entries()) {
       const item = known[index]!;
-      assert.ok(Math.abs(coordinates[0]! - (8 + 984 * item.index / Math.max(1, expected.length - 1))) < .0001);
+      assert.ok(Math.abs(coordinates[0]! - (8 + 984 * (item.point.start - data.from) / Math.max(1, data.to - 1 - data.from))) < .0001);
       assert.ok(Math.abs(coordinates[1]! - (94 - 88 * item.point[series]! / (maximum || 1))) < .0001);
     }
     const expectedRuns = expected.filter((point, index) => point[series] !== null && (index === 0 || expected[index - 1]![series] === null)).length;
@@ -235,8 +248,27 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
     }
     pointCounts[series] = circles.length; segmentCounts[series] = lines.length;
   }
-  const last = expected[expected.length - 1]!;
-  assert.deepEqual(snapshot.axis, [clock.format(expected[0]!.start), `${clock.format(last.start)}${last.partial ? ` · ${partial(last, expected.length - 1)}` : ''}`]);
+  const expectedTicks = Array.from({ length: 7 }, (_, index) => Math.round(data.from + (data.to - 1 - data.from) * index / 6));
+  assert.deepEqual(snapshot.axis.map(({ at, text }) => ({ at, text })), expectedTicks.map(at => ({ at, text: clock.format(at) })), `${state}: time axis must show seven timestamps across the requested window`);
+  assert.ok(snapshot.axis.every((item, index) => Math.abs(item.left - 100 * index / 6) < .0001), `${state}: axis timestamps must be evenly spaced`);
+  const latestIndex = expected.map(point => point.records > 0).lastIndexOf(true);
+  const latest = latestIndex < 0 ? null : expected[latestIndex]!;
+  assert.deepEqual(snapshot.latest.attrs, latest ? [latest.at, latest.start, latest.end, latest.partial ? 'true' : null, latest.input, latest.output, latest.total].map(value => value === null ? null : String(value)) : [null, null, null, null, null, null, null], `${state}: latest rail metadata must belong to one actual recorded minute`);
+  assert.equal(snapshot.latest.heading, messages['redesign.liveLatestMinute']);
+  if (latest) {
+    const expectedTime = `${clock.format(latest.start)} – ${clock.format(latest.end)}${latest.partial ? ` · ${partial(latest, latestIndex)}` : ''}`;
+    assert.equal(snapshot.latest.time, expectedTime, `${state}: latest interval and partial status must remain visible`);
+    assert.deepEqual(snapshot.latest.values, ['input', 'output', 'total'].map((key, index) => ({
+      series: key,
+      label: messages[[ 'history.inputCombined', 'col.output', 'col.total' ][index] as keyof typeof messages],
+      value: latest[key as Series] === null ? messages['redesign.unknownValue'] : number.format(latest[key as Series]!),
+    })), `${state}: latest rail values must match the last recorded minute and preserve unknowns`);
+    assert.equal(snapshot.latest.empty, null);
+  } else {
+    assert.equal(snapshot.latest.time, null);
+    assert.deepEqual(snapshot.latest.values, []);
+    assert.equal(snapshot.latest.empty, messages['redesign.liveFlowNoLatest']);
+  }
   assert.equal(snapshot.note, expected.some(point => point.partialBreakdown) ? messages['redesign.liveFlowBreakdown'] : null);
 
   const disclosure = page.locator('.qp-live-flow-data'), summary = disclosure.locator('summary');
@@ -264,13 +296,15 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
 
   const region = page.locator('.qp-live-flow-table');
   assert.equal(await region.getAttribute('role'), 'region'); assert.equal(await region.getAttribute('tabindex'), '0');
-  await region.focus(); await page.keyboard.press('End');
-  await page.waitForFunction(() => {
-    const element = document.querySelector('.qp-live-flow-table')!;
-    return element.scrollTop > 0 && element.scrollTop + element.clientHeight >= element.scrollHeight - 1;
-  }, undefined, { polling: 25, timeout: 12000 });
-  const reach = await region.evaluate(element => ({ focused: element === document.activeElement, bottom: element.getBoundingClientRect().bottom, lastBottom: element.querySelector('tbody tr:last-child')!.getBoundingClientRect().bottom, scrollTop: element.scrollTop }));
-  assert.equal(reach.focused, true); assert.ok(reach.lastBottom <= reach.bottom + 1, 'Final minute is not keyboard reachable');
+  if (expected.length) {
+    await region.focus(); await page.keyboard.press('End');
+    await page.waitForFunction(() => {
+      const element = document.querySelector('.qp-live-flow-table')!;
+      return element.scrollTop > 0 && element.scrollTop + element.clientHeight >= element.scrollHeight - 1;
+    }, undefined, { polling: 25, timeout: 12000 });
+    const reach = await region.evaluate(element => ({ focused: element === document.activeElement, bottom: element.getBoundingClientRect().bottom, lastBottom: element.querySelector('tbody tr:last-child')!.getBoundingClientRect().bottom, scrollTop: element.scrollTop }));
+    assert.equal(reach.focused, true); assert.ok(reach.lastBottom <= reach.bottom + 1, 'Final minute is not keyboard reachable');
+  } else assert.equal(table.length, 0, 'An empty window must not invent table rows');
   const widths: Array<{ width: number; plotHeight: number; tableWidth: number; horizontalKeyboardScroll: boolean }> = [];
   for (const width of [390, 900, 1280]) {
     await page.setViewportSize({ width, height: 941 }); await page.waitForTimeout(75);
@@ -278,14 +312,23 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
     const bounds = await page.evaluate(() => {
       const plot = document.querySelector('.qp-live-flow-plot')!.getBoundingClientRect();
       const table = document.querySelector('.qp-live-flow-table')!;
+      const canvas = document.querySelector('.qp-live-flow-canvas')!.getBoundingClientRect();
+      const latest = document.querySelector('.qp-live-flow-latest')!.getBoundingClientRect();
       return { plot: { x: plot.x, y: plot.y, width: plot.width, height: plot.height },
-        traces: Array.from(document.querySelectorAll('.qp-live-flow-plot>svg')).map(element => { const r = element.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; }),
+        canvas: { x: canvas.x, y: canvas.y, width: canvas.width, height: canvas.height },
+        latest: { x: latest.x, y: latest.y, right: latest.right, bottom: latest.bottom, width: latest.width, height: latest.height },
+        latestValues: Array.from(document.querySelectorAll('.qp-live-flow-latest-values strong')).map(element => { const r = element.getBoundingClientRect(); return { left: r.left, right: r.right, top: r.top, bottom: r.bottom }; }),
+        traces: Array.from(document.querySelectorAll('.qp-live-flow-canvas>svg')).map(element => { const r = element.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; }),
         tableWidth: table.clientWidth, horizontal: table.scrollWidth > table.clientWidth,
       };
     });
-    assert.equal(bounds.plot.height, width >= 1280 ? 72 : 120, 'Token-flow plot exceeded its bounded height');
+    assert.equal(bounds.plot.height, width >= 1280 ? 72 : 124, 'Token-flow plot exceeded its bounded height');
     assert.equal(bounds.traces.length, 3);
-    for (const trace of bounds.traces) for (const dimension of ['x', 'y', 'width', 'height'] as const) assert.ok(Math.abs(trace[dimension] - bounds.plot[dimension]) < .1, 'Input/output/total SVGs use different screen scales');
+    for (const trace of bounds.traces) for (const dimension of ['x', 'y', 'width', 'height'] as const) assert.ok(Math.abs(trace[dimension] - bounds.canvas[dimension]) < .1, 'Input/output/total SVGs use different screen scales');
+    assert.ok(bounds.latest.x >= bounds.plot.x - .1 && bounds.latest.right <= bounds.plot.x + bounds.plot.width + .1 && bounds.latest.bottom <= bounds.plot.y + bounds.plot.height + .1,
+      'Latest-minute values must remain inside the bounded chart/summary region');
+    assert.ok(bounds.latestValues.every(value => value.left >= bounds.latest.x - .1 && value.right <= bounds.latest.x + bounds.latest.width + .1 && value.bottom <= bounds.latest.y + bounds.latest.height + .1),
+      'Latest-minute values must remain visible inside their rail on every viewport');
     let horizontalKeyboardScroll = false;
     if (bounds.horizontal) {
       await region.evaluate(element => { element.scrollLeft = 0; }); await region.focus();
@@ -329,14 +372,14 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
       strokeBackgrounds: stroke.measured, legendBackgrounds: legendBackgrounds.map(candidate => candidate.color) };
   });
   assert.equal(new Set(colorEvidence.map(item => JSON.stringify(rgb(item.stroke)))).size, 3, 'The three token series must retain distinct colors');
-  return { lang, theme, state, synthetic: state === 'diagnostic', scope: { from: data.from, to: data.to }, buckets: expected.length,
+  return { lang, theme, state, synthetic: state !== 'baseline', latestRailEmpty: !latest, latestMinuteAt: latest?.at ?? null, scope: { from: data.from, to: data.to }, buckets: expected.length,
     recordedMinutes: expected.filter(point => point.state === 'recorded').length, missingMinutes: expected.filter(point => point.state === 'missing').length,
     zeroMinutes: expected.filter(point => point.state === 'zero').length, unknownInputMinutes: expected.filter(point => point.input === null).length,
     unknownOutputMinutes: expected.filter(point => point.output === null).length, partialMinutes: expected.filter(point => point.partial).length,
     mismatchedMinutes: expected.filter(point => point.input !== null && point.output !== null && point.input + point.output !== point.total).length,
     sharedMaximum: maximum, recordedTotalTokens: expected.reduce((sum, point) => sum + point.total, 0), pointCounts, segmentCounts,
     exactApiValues: true, unknownLineGaps: true, totalSelectorPreserved: true, clippedIntervals: true, tableColumns: 9,
-    keyboardOpenedAndClosed: true, keyboardFinalMinute: true, widths, colorEvidence,
+    keyboardOpenedAndClosed: true, keyboardFinalMinute: expected.length > 0, widths, colorEvidence,
     backgroundLayers: styles.backgroundLayers.map(layer => ({ ...layer, parsedColor: rgba(layer.color) })), resolvedPlotBackgrounds: plotBackgrounds };
 }
 
@@ -347,18 +390,21 @@ export async function checkLiveTokenFlow(page: Page, data: MinuteTrendResponse, 
   const diagnostic = structuredClone(data);
   const recorded = diagnostic.rows.filter(row => row.records > 0).sort((a, b) => a.bucket_ts - b.bucket_ts);
   assert.ok(recorded.length >= 3 && new Set(recorded.slice(0, 3).map(row => row.bucket_ts)).size === 3, 'Token-flow diagnostics need three distinct actual recorded minutes');
-  const [unknown, zero, mismatch] = recorded;
+  const zero = recorded[0]!;
+  const mismatch = recorded[1]!;
+  const unknown = recorded.at(-1)!;
   for (const field of ['input_tokens', 'cached_input_tokens', 'cache_write_tokens', 'output_tokens'] as const) delete unknown![field];
   Object.assign(zero!, { input_tokens: 0, cached_input_tokens: 0, cache_write_tokens: 0, output_tokens: 0, total_tokens: 0 });
   Object.assign(mismatch!, { input_tokens: 1000, cached_input_tokens: 300, cache_write_tokens: 0, output_tokens: 40, total_tokens: 7 });
   assert.deepEqual(diagnostic.coverage, data.coverage, 'Diagnostic component changes must preserve API grain coverage');
   const pattern = (url: URL) => url.origin === origin && url.pathname === '/api/trend' && url.searchParams.get('bucket') === 'minute' && url.searchParams.get('group_by') === 'none';
   let interceptions = 0, installed = false;
+  let responseUnderTest: MinuteTrendResponse = diagnostic;
   const handler = async (route: Route) => {
     const url = new URL(route.request().url());
     if (route.request().method() !== 'GET' || url.searchParams.get('from') !== String(data.from) || url.searchParams.get('to') !== String(data.to)) return route.fallback();
     interceptions++;
-    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(diagnostic) });
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(responseUnderTest) });
   };
   const writes: string[] = [];
   const observe = (request: Request) => {
@@ -388,10 +434,18 @@ export async function checkLiveTokenFlow(page: Page, data: MinuteTrendResponse, 
     const filename = `live-flow-states-${lang}-${theme}.png`;
     const screenshot = await page.screenshot({ path: resolve(output, filename), animations: 'disabled', fullPage: true, timeout: 15000 });
     await summary.focus(); await page.keyboard.press('Enter');
+    responseUnderTest = { ...diagnostic, rows: [] };
+    const emptyWindow = new URL(home); emptyWindow.searchParams.set('live-flow', 'empty-window');
+    console.log(`Live token-flow gate ${lang}/${theme}: empty window`);
+    await page.goto(emptyWindow.href, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    const empty = await checkValues(page, responseUnderTest, lang, theme, pending, 'empty');
+    assert.equal(empty.recordedMinutes, 0);
+    assert.equal(empty.latestRailEmpty, true, 'An empty window must show the no-record state rather than borrow an older minute');
     assert.deepEqual(writes, [], 'Live token-flow checks issued an API write');
     assert.equal(JSON.stringify(data), original, 'Synthetic response mutated the supplied real API baseline');
     return [baseline, { ...states, diagnosticGetInterceptions: interceptions, persistedDataChanged: false, writeRequests: 0,
-      capture: { filename, sha256: createHash('sha256').update(screenshot).digest('hex'), synthetic: true, approvedVisualBaseline: false } }];
+      capture: { filename, sha256: createHash('sha256').update(screenshot).digest('hex'), synthetic: true, approvedVisualBaseline: false } },
+    { ...empty, diagnosticGetInterceptions: interceptions, persistedDataChanged: false, writeRequests: 0 }];
   } finally {
     if (installed) await page.unroute(pattern, handler);
     page.off('request', observe);

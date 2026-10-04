@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { liveTokenFlow, liveTokenFlowSegments, liveTokenFlowX, liveTokenFlowY, type LiveTokenFlowResponse } from '../src/redesign/live-token-flow-data.ts';
+import { liveTokenFlow, liveTokenFlowLatest, liveTokenFlowSegments, liveTokenFlowTicks, liveTokenFlowX, liveTokenFlowY, liveTokenFlowYTicks, type LiveTokenFlowResponse } from '../src/redesign/live-token-flow-data.ts';
 
 type Row = LiveTokenFlowResponse['rows'][number];
 const row = (bucket_ts: number, overrides: Partial<Row> = {}): Row => ({ bucket_ts, records: 1, calls: 1,
@@ -76,8 +76,27 @@ test('the exact half-open scope retains clipped endpoints and ignores rows outsi
   const live = liveTokenFlow(response([], 120000, 1920001));
   assert.equal(live.points.length, 31);
   assert.equal(live.points[30]!.end - live.points[30]!.start, 1);
-  assert.equal(liveTokenFlowX(0, 31), 8);
-  assert.equal(liveTokenFlowX(30, 31), 992);
-  assert.equal(liveTokenFlowX(0, 1), 8);
+  assert.equal(liveTokenFlowX(60001, 60001, 240001), 8);
+  assert.equal(liveTokenFlowX(240000, 60001, 240001), 992);
+  assert.equal(liveTokenFlowX(60001, 60001, 60002), 8);
+  assert.ok(Math.abs(liveTokenFlowX(120001, 60001, 240001) - 336.0018) < .0001);
+  assert.deepEqual(liveTokenFlowTicks(60001, 240001), [60001, 90001, 120001, 150001, 180000, 210000, 240000]);
+  assert.deepEqual(liveTokenFlowTicks(240001, 240001), []);
+  assert.deepEqual(liveTokenFlowYTicks(160), [160, 107, 53, 0]);
+  assert.deepEqual(liveTokenFlowYTicks(2), [2, 1, 0]);
+  assert.deepEqual(liveTokenFlowYTicks(0), [0]);
   assert.deepEqual(liveTokenFlow(response([], 1, 1)), { points: [], maximum: 0, hasPartialBreakdown: false });
+});
+
+test('latest rail selects one latest recorded interval and preserves its unknown and stored values', () => {
+  const flow = liveTokenFlow(response([
+    row(60000, { input_tokens: 10, cached_input_tokens: 5, cache_write_tokens: 0, output_tokens: 7, total_tokens: 22 }),
+    row(180000, { input_tokens: undefined, cached_input_tokens: 4, cache_write_tokens: 1, output_tokens: 3, total_tokens: 0 }),
+  ]));
+  const latest = liveTokenFlowLatest(flow.points);
+  assert.ok(latest);
+  assert.deepEqual([latest.index, latest.at, latest.start, latest.end, latest.state, latest.records, latest.input, latest.output, latest.total],
+    [2, 180000, 180000, 240000, 'zero', 1, null, 3, 0]);
+  assert.equal(liveTokenFlowLatest(liveTokenFlow(response([], 60001, 240001)).points), null,
+    'No record in the selected range must not borrow an older minute');
 });

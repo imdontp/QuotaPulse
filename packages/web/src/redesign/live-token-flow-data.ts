@@ -64,8 +64,30 @@ export function liveTokenFlow(data: LiveTokenFlowResponse) {
   return { points, maximum, hasPartialBreakdown };
 }
 
-export function liveTokenFlowX(index: number, count: number) {
-  return 8 + 984 * index / Math.max(1, count - 1);
+/** Position a clipped minute by its real interval timestamp within the exact half-open window. */
+export function liveTokenFlowX(at: number, from: number, to: number) {
+  return 8 + 984 * (at - from) / Math.max(1, to - 1 - from);
+}
+
+/** Seven evenly-spaced timestamps span the visible window, including its last included millisecond. */
+export function liveTokenFlowTicks(from: number, to: number) {
+  if (!Number.isFinite(from) || !Number.isFinite(to) || to <= from) return [];
+  const end = to - 1;
+  return Array.from({ length: 7 }, (_, index) => Math.round(from + (end - from) * index / 6));
+}
+
+/** Compact y labels use the actual shared plotted maximum. */
+export function liveTokenFlowYTicks(maximum: number) {
+  if (!(maximum > 0) || !Number.isFinite(maximum)) return [0];
+  return [maximum, Math.round(maximum * 2 / 3), Math.round(maximum / 3), 0]
+    .filter((value, index, values) => index === 0 || value < values[index - 1]!);
+}
+
+export function liveTokenFlowLatest(points: readonly LiveTokenFlowPoint[]) {
+  for (let index = points.length - 1; index >= 0; index--) {
+    if (points[index]!.records > 0) return { ...points[index]!, index };
+  }
+  return null;
 }
 
 export function liveTokenFlowY(value: number, maximum: number) {
@@ -74,14 +96,14 @@ export function liveTokenFlowY(value: number, maximum: number) {
 
 /** Unknown components break their line; they never acquire a zero or a back-solved value. */
 export function liveTokenFlowSegments(points: readonly LiveTokenFlowPoint[], series: LiveTokenFlowSeries) {
-  const segments: Array<Array<{ index: number; at: number; value: number }>> = [];
+  const segments: Array<Array<{ index: number; at: number; start: number; value: number }>> = [];
   let segment: (typeof segments)[number] = [];
   points.forEach((point, index) => {
     const value = point[series];
     if (value === null) {
       if (segment.length) segments.push(segment);
       segment = [];
-    } else segment.push({ index, at: point.at, value });
+    } else segment.push({ index, at: point.at, start: point.start, value });
   });
   if (segment.length) segments.push(segment);
   return segments;

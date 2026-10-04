@@ -5,6 +5,41 @@ audit found fifteen framed marks across four pages: eight unframed SVGs and
 seven missing icons. The measurements below remain raster estimates rather
 than exact vector specifications or a whole-screen fidelity score.
 
+## v1.65 completed and next fidelity pass
+
+The v1.65 checkpoint adds timestamp-scaled Live curves, a seven-label time
+axis, dynamic y labels and an actual latest-minute rail. It also tunes the
+Overview pulse treatment, Projects top-card ratio and the command-palette mark.
+The complete 40-pair gate passed with 39 byte-identical pairs, one pair inside
+the unchanged raster tolerance, and no masks. See
+[the v1.65 report](REDESIGN-SECTION-MARKS-V1.65.md) and its
+[reference viewer](redesign-v1.65/reference-review.html).
+
+The user's acceptance target remains 99-100% likeness to the supplied refs,
+with real app data in production. The v1.65 screenshot comparison still shows
+visible differences in labels, data density, side navigation and small details
+even where page geometry is already close. The next pass should preserve each
+page's current daemon/API semantics while comparing regions directly against
+the original PNGs:
+
+- Tune the isolated screenshot fixture to the source's visible labels, counts,
+  and frozen date where those fields already exist in the real UI. Keep it
+  synthetic and in memory; do not add concept values to production defaults or
+  persistent stores. Preserve separate edge/unknown/zero stress cases.
+- Inspect the source and app Overview side by side at the canonical viewport;
+  prioritize its sidebar width/spacing, toolbar alignment, quota-window cards,
+  Runtime Map rows, runway/insight balance and bottom activity density.
+- Compare remaining refs one page at a time for panel boundaries, label
+  placement, colors, icon glyphs, strokes and glow falloff. Reuse existing API
+  values and show honest empty/unknown states when a concept field is not
+  available from the daemon.
+- Record measured reference bounding boxes and color samples for each changed
+  region. Keep the raster replay tolerance fixed and report source likeness as
+  open until the reference comparisons support acceptance.
+
+Do not introduce pet/popup redesign, fabricated production telemetry, a
+separate Concept Preview, schema changes or daemon writes in this fidelity pass.
+
 | Page | Existing panel | Implemented mark |
 | --- | --- | --- |
 | Live | `.qp-live-sessions` | Compact blue session mark |

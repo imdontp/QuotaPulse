@@ -108,7 +108,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs }: { quota: QuotaWind
       })}</g>
       <circle cx="180" cy="160" r="129" fill="none" stroke="#395175" strokeOpacity=".45" strokeWidth="8"/>
       <circle className="qp-core-halo" cx="180" cy="160" r="120" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="2"/>
-      {used !== null && <circle className="qp-core-progress" data-testid="pulse-progress" cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used)} 100`} transform="rotate(-90 180 160)"/>}
+      {used !== null && <circle className="qp-core-progress" data-testid="pulse-progress" cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used)} 100`} transform="rotate(-90 180 160)" filter={`url(#${id}-glow)`}/>}
     </svg>
     <div className="qp-pulse-label"><strong>{used === null ? '—' : `${used}%`}</strong><span className="qp-pulse-state">{t('redesign.quotaUsed')}</span><span>{quota?.owner ?? '—'} · {quota?.window ?? '—'}</span></div>
     <div className="qp-pulse-runway" data-testid="pulse-runway" data-projected-at={projectedAt ?? undefined} data-reset-at={resetAt ?? undefined}>

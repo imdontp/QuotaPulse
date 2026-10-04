@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { Command, Search, X } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useT } from '@/i18n';
 import './command-palette.css';
@@ -67,7 +67,7 @@ export function CommandPalette({ items, onSelect }: { items: CommandItem[]; onSe
   return (
     <>
       <Button ref={trigger} size="sm" onClick={() => { setQuery(''); setIndex(0); setOpen(true); }} aria-haspopup="dialog" aria-expanded={open} aria-controls={dialogId} aria-label={t('palette.open')} title={t('palette.shortcut')} className="text-muted-foreground gap-1.5">
-        <Command className="size-[14px]" /><span className="hidden lg:inline">{t('palette.open')}</span><kbd className="border-border/70 hidden rounded border px-1 text-[10px] lg:inline">⌘K</kbd>
+        <span className="qp-palette-search-mark" aria-hidden="true"/><span className="hidden lg:inline">{t('palette.open')}</span><kbd className="border-border/70 hidden rounded border px-1 text-[10px] lg:inline">⌘K</kbd>
       </Button>
       <dialog ref={dialog} id={dialogId} className="qp-command-dialog" aria-modal="true" aria-label={t('palette.title')} onKeyDown={trapFocus} onCancel={event => { event.preventDefault(); close(); }} onClose={event => { if (!event.currentTarget.open) setOpen(false); }} onMouseDown={event => { if (event.target === event.currentTarget) { event.preventDefault(); close(); } }}>
         {open && <div className="bg-popover text-popover-foreground w-full max-w-lg overflow-hidden rounded-2xl border shadow-2xl">

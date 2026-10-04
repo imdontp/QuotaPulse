@@ -103,7 +103,7 @@ const referenceColumnChecks: Array<{ page: string; lang: string; theme: string; 
 const liveDensityChecks: Array<{ lang: string; theme: string; bottom: number; sessions: number; records: number }> = [];
 const liveMinuteChecks: Array<{ lang: string; theme: string; state: string; pairs: number; cells: number; missing: number; zero: number; recorded: number; partial: number; included: number; aggregate: number; unknown: number; table: boolean; labelGeometry: Array<{ viewport: number; width: number; clientWidth: number; scrollWidth: number; name: string | null | undefined }> }> = [];
 const liveRefreshChecks: Array<Awaited<ReturnType<typeof checkLiveMinuteRefresh>>> = [];
-const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bottom: number; unknownNative: number }> = [];
+const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bottom: number; unknownNative: number; sourceTopCards: Array<{ x: number; width: number }> }> = [];
 const providerChecks: Array<{ lang: string; theme: string; bottom: number; compared: number; unavailable: boolean; expired: boolean; proportional: boolean }> = [];
 const modelComparisonChecks: Array<{ lang: string; theme: string; bottom: number; rows: number; ratios: number; boundaryRatios: boolean }> = [];
 const costAxisChecks: Array<{ route: string; lang: string; theme: string; priced: boolean; maxAmount: number; maxTokens: number }> = [];
@@ -535,6 +535,15 @@ async function checkProjectCards(page: Page, lang: string, theme: string, pendin
   const cards = page.locator('.qp-project-card');
   assert.equal(await cards.count(), 8);
   const bottom = await page.locator('.qp-project-cards').evaluate(element => element.getBoundingClientRect().bottom);
+  const sourceTopCards = await page.locator('.qp-project-card').evaluateAll(elements => elements.slice(0, 2).map(element => {
+    const rect = element.getBoundingClientRect(); return { x: rect.x, width: rect.width };
+  }));
+  const sourceCardEstimates = [{ x: 243, width: 465 }, { x: 716, width: 396 }];
+  assert.equal(sourceTopCards.length, sourceCardEstimates.length);
+  for (const [index, card] of sourceTopCards.entries()) {
+    assert.ok(Math.abs(card.x - sourceCardEstimates[index]!.x) <= 6 && Math.abs(card.width - sourceCardEstimates[index]!.width) <= 6,
+      `Project card ${index + 1} differs from the reference top row: ${JSON.stringify(card)}`);
+  }
   assert.ok(bottom <= 941, `Project card region exceeds canonical viewport: ${bottom}`);
   const money = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' });
   for (const group of data.groups) {
@@ -570,7 +579,7 @@ async function checkProjectCards(page: Page, lang: string, theme: string, pendin
   const first = cards.filter({ has: page.locator('.qp-project-card-identity>strong', { hasText: 'Fixture project 0' }) });
   await first.click(); await settled(page, pending);
   await first.evaluate(element => (element as HTMLElement).blur()); await page.evaluate(() => window.scrollTo(0, 0));
-  projectCardChecks.push({ lang, theme, cards: data.groups.length, bottom, unknownNative: data.groups.filter(group => group.native_calls === 0).length });
+  projectCardChecks.push({ lang, theme, cards: data.groups.length, bottom, unknownNative: data.groups.filter(group => group.native_calls === 0).length, sourceTopCards });
 }
 
 async function settled(page: Page, pending: Set<Request>) {
