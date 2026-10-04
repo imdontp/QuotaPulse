@@ -11,6 +11,7 @@ import { ObservedTrend } from './observed-trend';
 import { ChartData } from './chart-data';
 import { readScope, selectedScope, writeScope, type ScopeSelection, type ScopeRange } from './scope';
 import { ScopeNotice } from './scope-notice';
+import { PageHeading } from './page-heading';
 import './projects.css';
 import { CostValue } from './cost-value';
 
@@ -147,7 +148,7 @@ export function ProductionProjects() {
   const projectName = (key: string | null) => key === null ? t('redesign.unassigned') : key === '' ? t('redesign.emptyProject') : key;
 
   return <RedesignShell active="projects" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-projects">
-    <header className="qp-project-header"><div><h1><Folder size={24}/>{t('redesign.projectHeading')}</h1><p>{t('redesign.projectSubtitle')}</p></div><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing} aria-label={t('app.refreshNow')}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
+    <header className="qp-project-header"><PageHeading icon={<Folder size={24}/>} title={t('redesign.projectHeading')} subtitle={t('redesign.projectSubtitle')}/><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing} aria-label={t('app.refreshNow')}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
     {error && <p className="qp-project-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     <div className="qp-project-toolbar">
       <div className="qp-project-tabs" role="group" aria-label={t('redesign.projectHeading')}>{(['all', 'recent', 'unassigned'] as const).map(tab => <button key={tab} aria-pressed={route.tab === tab} onClick={() => update({ tab, project: undefined, offset: 0 })}>{t(tab === 'all' ? 'redesign.allProjects' : tab === 'recent' ? 'redesign.recentProjects' : 'redesign.unassignedProjects')}</button>)}</div>

@@ -10,6 +10,7 @@ import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
 import { ChartData } from './chart-data';
 import { ObservedTrend } from './observed-trend';
+import { PageHeading } from './page-heading';
 import './live.css';
 
 interface LiveRoute {
@@ -121,7 +122,7 @@ export function ProductionLive() {
   };
 
   return <RedesignShell active="live" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-live">
-    <header className="qp-live-header"><div><h1><Activity size={24}/>{t('redesign.liveHeading')}</h1><p>{t('redesign.liveSubtitle')}</p></div><div className="qp-live-actions"><button onClick={togglePause}>{paused ? <Play size={15}/> : <Pause size={15}/ >}{t(paused ? 'redesign.liveResume' : 'redesign.livePause')}</button><button onClick={() => void refresh.refreshNow()} disabled={paused || refresh.refreshing}><RefreshCw size={15}/>{t('app.refreshNow')}</button></div></header>
+    <header className="qp-live-header"><PageHeading icon={<Activity size={24}/>} title={t('redesign.liveHeading')} subtitle={t('redesign.liveSubtitle')} compact/><div className="qp-live-actions"><button onClick={togglePause}>{paused ? <Play size={15}/> : <Pause size={15}/ >}{t(paused ? 'redesign.liveResume' : 'redesign.livePause')}</button><button onClick={() => void refresh.refreshNow()} disabled={paused || refresh.refreshing}><RefreshCw size={15}/>{t('app.refreshNow')}</button></div></header>
     {paused && <p className="qp-live-note" role="status">{t('redesign.livePaused')} · {date(display?.overview.now ?? null)}</p>}
     {error && <p className="qp-live-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     {!display ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : <>

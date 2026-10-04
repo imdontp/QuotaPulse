@@ -1,0 +1,62 @@
+﻿TAP version 13
+# 07:01:49.199 INFO  [db] opened :memory:
+# Subtest: usage-events and CSV share exact scope, grain and complete pagination
+    # Subtest: stable tie order, boundaries, record total, safe allowlist and authentication
+    ok 1 - stable tie order, boundaries, record total, safe allowlist and authentication
+      ---
+      duration_ms: 79.4034
+      ...
+    # Subtest: literal substring, missing project, route/provider vs model vendor and shared CSV filters
+    ok 2 - literal substring, missing project, route/provider vs model vendor and shared CSV filters
+      ---
+      duration_ms: 99.7056
+      ...
+    # Subtest: invalid supplied values fail rather than silently changing query meaning
+    ok 3 - invalid supplied values fail rather than silently changing query meaning
+      ---
+      duration_ms: 7.6707
+      ...
+    # Subtest: aggregate replacement retains event identity and count
+    ok 4 - aggregate replacement retains event identity and count
+      ---
+      duration_ms: 3.143
+      ...
+    # Subtest: minute trend includes only declared call adapters and reports exclusions under the same filters
+    ok 5 - minute trend includes only declared call adapters and reports exclusions under the same filters
+      ---
+      duration_ms: 15.4352
+      ...
+    # Subtest: CSV keeps literal metadata inert when opened in spreadsheet software
+    ok 6 - CSV keeps literal metadata inert when opened in spreadsheet software
+      ---
+      duration_ms: 5.2542
+      ...
+    # Subtest: runtime nodes and edges conserve scoped tokens and count sessions distinctly
+    ok 7 - runtime nodes and edges conserve scoped tokens and count sessions distinctly
+      ---
+      duration_ms: 14.7503
+      ...
+    # Subtest: runtime model makers follow names across routes; unknown groups stay unbranded
+    ok 8 - runtime model makers follow names across routes; unknown groups stay unbranded
+      ---
+      duration_ms: 10.4541
+      ...
+    # Subtest: pagination and whole-range export exceed the old 2000-row detail cap
+    ok 9 - pagination and whole-range export exceed the old 2000-row detail cap
+      ---
+      duration_ms: 297.9203
+      ...
+    1..9
+ok 1 - usage-events and CSV share exact scope, grain and complete pagination
+  ---
+  duration_ms: 1136.396
+  ...
+1..1
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3161.6425

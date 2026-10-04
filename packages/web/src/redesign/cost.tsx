@@ -13,6 +13,7 @@ import { ScopeNotice } from './scope-notice';
 import { CostValue, costValue } from './cost-value';
 import './cost.css';
 import { CostChartData } from './cost-chart-data';
+import { PageHeading } from './page-heading';
 
 type Range = ScopeRange;
 type Basis = 'api' | 'native';
@@ -77,7 +78,7 @@ export function ProductionCost() {
   const topModel = topModels[0];
 
   return <RedesignShell active="cost" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-cost">
-    <div className="qp-cost-layout"><div className="qp-cost-top"><header className="qp-cost-header"><div><h1><BarChart3 size={24}/>{t('redesign.costHeading')}</h1><p>{t('redesign.costSubtitle')}</p></div><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
+    <div className="qp-cost-layout"><div className="qp-cost-top"><header className="qp-cost-header"><PageHeading icon={<BarChart3 size={24}/>} title={t('redesign.costHeading')} subtitle={t('redesign.costSubtitle')}/><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
     <div className="qp-cost-toolbar"><label>{t('redesign.projectRange')}<select value={route.range} onChange={event => update({ range: event.target.value as Range })}><option value="month">{t('redesign.costMonthToDate')}</option><option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.thisWeek')}</option><option value="last30">{t('redesign.last30')}</option><option value="all">{t('redesign.allTime')}</option>{route.range === 'custom' && <option value="custom">{t('usage.custom')}</option>}</select></label><label>{t('redesign.costBasis')}<select value={route.basis} onChange={event => update({ basis: event.target.value as Basis })}><option value="api">{t('redesign.costApiBasis')}</option><option value="native">{t('redesign.costNativeBasis')}</option></select></label></div>
     </div><ScopeNotice scope={route}/>
     {error && <p className="qp-cost-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}

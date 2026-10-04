@@ -9,6 +9,7 @@ import { useTheme } from '@/lib/use-theme';
 import { RedesignShell } from './shell';
 import { VendorIcon } from '@/components/vendor-icon';
 import { QuotaChart } from './quota-chart';
+import { PageHeading } from './page-heading';
 import './alerts.css';
 
 interface Risk { key: string; owner: string; window: string; title: string; reading: Limit; level: 'critical' | 'warning' | 'info' | 'stale'; reason: 'forecast' | 'threshold' | 'stale' }
@@ -98,7 +99,7 @@ export function ProductionAlerts() {
   const count = (value: number) => new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(value);
 
   return <RedesignShell active="alerts" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-alerts">
-    <div className="qp-alert-layout"><div className="qp-alert-main"><header className="qp-alert-header"><div><h1><BellRing size={24}/>{t('redesign.alertHeading')}</h1><p>{t('redesign.alertSubtitle')}</p></div><div className="qp-alert-controls"><label><input type="checkbox" checked={notification?.enabled ?? false} disabled={!notification || busy} onChange={() => void changeNotifications()}/><span>{t('redesign.alertNotifications')}</span></label><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></div></header>
+    <div className="qp-alert-layout"><div className="qp-alert-main"><header className="qp-alert-header"><PageHeading icon={<BellRing size={24}/>} title={t('redesign.alertHeading')} subtitle={t('redesign.alertSubtitle')}/><div className="qp-alert-controls"><label><input type="checkbox" checked={notification?.enabled ?? false} disabled={!notification || busy} onChange={() => void changeNotifications()}/><span>{t('redesign.alertNotifications')}</span></label><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></div></header>
     <p className="qp-footnote">{t('redesign.alertCollectionNote')} · <a href="#settings">{t('redesign.alertSettings')}</a></p>
     {error && <p className="qp-alert-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     {!overview ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : <>

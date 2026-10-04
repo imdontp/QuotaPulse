@@ -80,6 +80,7 @@
   .qp-redesign .qp-history-table thead { position:sticky; top:0; z-index:1; background:var(--qp-panel); }
   .qp-redesign [data-testid="usage-history"] form fieldset { grid-template-columns:repeat(9,minmax(0,1fr)); align-items:end; }
   .qp-redesign [data-testid="usage-history"] form label:has([type=checkbox]) { align-self:center; }
-  .qp-redesign dialog[aria-labelledby=history-detail-title] { position:fixed; inset:80px 16px auto auto; margin:0; width:320px; max-height:calc(100vh - 96px); }
-  .qp-redesign [data-testid=usage-history]:has(dialog[open]) { margin-right:336px; }
+  .qp-redesign dialog[aria-labelledby=history-detail-title] { position:fixed; inset:72px 8px auto auto; margin:0; width:288px; max-height:calc(100vh - 80px); }
+  .qp-redesign dialog[aria-labelledby=history-detail-title]::backdrop { background:transparent; }
+  .qp-redesign [data-testid=usage-history]:has(dialog[open]) { margin-right:296px; }
 }

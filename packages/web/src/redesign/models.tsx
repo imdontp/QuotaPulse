@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Coins, Database, Layers, RefreshCw, Search, Users } from 'lucide-react';
+import { Box, Coins, Database, Layers, RefreshCw, Search, Users } from 'lucide-react';
 import { api, type DetailedModelResponse, type ModelDetailResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
@@ -13,6 +13,7 @@ import { CostValue } from './cost-value';
 import { ChartData } from './chart-data';
 import { ObservedTrend } from './observed-trend';
 import { VendorIcon } from '@/components/vendor-icon';
+import { PageHeading } from './page-heading';
 
 type Range = ScopeRange;
 type Metric = 'tokens' | 'calls' | 'api_value_usd';
@@ -123,7 +124,7 @@ export function ProductionModels() {
   const historyHref = selected && data && selected.model && selected.provider ? `#history?${new URLSearchParams({ range: 'custom', from: String(data.scope.from), to: String(data.scope.to), model: selected.model, provider: selected.provider, ...(data.scope.vendor ? { vendor: data.scope.vendor } : {}), ...(data.scope.sourceId ? { source: String(data.scope.sourceId) } : {}) })}` : null;
 
   return <RedesignShell active="models" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-models">
-    <header className="qp-model-header"><div><h1><Layers size={24}/>{t('redesign.modelsHeading')}</h1><p>{t('redesign.modelsSubtitle')}</p></div><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
+    <header className="qp-model-header"><PageHeading icon={<Box size={24}/>} title={t('redesign.modelsHeading')} subtitle={t('redesign.modelsSubtitle')} compact/><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
     {error && <p className="qp-model-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     <div className="qp-model-toolbar"><label className="qp-model-search"><Search size={15}/><span className="qp-visually-hidden">{t('redesign.modelsSearch')}</span><input value={search} onChange={event => setSearch(event.target.value)} placeholder={t('redesign.modelsSearch')} maxLength={256}/></label>
       <label>{t('redesign.projectRange')}<select value={route.range} onChange={event => update({ range: event.target.value as Range, model: undefined, selectedProvider: undefined })}><option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.thisWeek')}</option><option value="month">{t('redesign.thisMonth')}</option><option value="all">{t('redesign.allTime')}</option>{route.range === 'custom' && <option value="custom">{t('usage.custom')}</option>}</select></label>
