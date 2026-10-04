@@ -11,6 +11,7 @@ import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
 import type { Overview, MinuteTrendResponse, ProjectDetailResponse, DetailedProjectResponse, DetailedModelResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse, AlertEvent } from '../packages/web/src/api.js';
 import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
+import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
@@ -77,6 +78,8 @@ const pulseCoreChecks: Array<{ lang: string; theme: string; assetSha256: string;
 const overviewPeriodChecks: Array<{ lang: string; theme: string; tokensByRange: Record<string, number>; selectedQuotaPreserved: boolean; customSourcePreserved: boolean; focusRestored: boolean }> = [];
 const overviewInsightChecks: Array<{ lang: string; theme: string; cards: number; cacheShare: number | null; pricedCalls: number; totalCalls: number; states: string[] }> = [];
 const quotaGroupChecks: Array<{ lang: string; theme: string; owners: number; windows: number; sameNameSeparate: boolean; keyboardScrolled: boolean; historyIdentity: boolean }> = [];
+const recentActivityChecks: Array<{ lang: string; theme: string; records: number; keyboardHistory: boolean; unknownGrain: boolean; largeTokens: boolean }> = [];
+const iconViewports = new Map<string, unknown>();
 const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number; modelShares: number; directionArrows: boolean }> = [];
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
 const headerChecks: Array<{ page: string; lang: string; theme: string; width: number; height: number; sidebarWidth: number }> = [];
@@ -1021,6 +1024,56 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
   pulseCoreChecks.push({ lang, theme, assetSha256, imageWidth, selectedUsed, boundaries: [0, 100, 125], unknown: true, reducedMotion: true });
 }
 
+async function checkRecentActivity(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  const home = 'http://127.0.0.1:7804/?recent-activity=actual#overview';
+  const response = page.waitForResponse(response => new URL(response.url()).pathname === '/api/usage-events' && response.status() === 200);
+  await page.goto(home, { waitUntil: 'domcontentloaded' });
+  const url = new URL((await response).url());
+  const data = (await daemon.inject({ method: 'GET', url: url.pathname + url.search, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<UsageEventsResponse>();
+  await settled(page, pending);
+  const cards = page.locator('.qp-activity-item');
+  assert.equal(await cards.count(), data.rows.length);
+  const locale = lang === 'th' ? 'th-TH' : 'en-US';
+  const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
+  for (const [index, record] of data.rows.entries()) {
+    const card = cards.nth(index);
+    assert.equal(await card.getAttribute('data-record-id'), String(record.event_id));
+    assert.equal(await card.getAttribute('data-grain'), record.grain);
+    assert.equal(await card.locator('.qp-activity-value strong').textContent(), number.format(record.total_tokens));
+    assert.equal(await card.locator('time').getAttribute('datetime'), new Date(record.timestamp_ms).toISOString());
+    assert.equal(await card.locator('.qp-activity-identity b').textContent(), record.harness);
+    assert.ok((await card.getAttribute('aria-label'))?.includes(record.model ?? (lang === 'th' ? 'ไม่ทราบ' : 'Unknown')));
+    assert.equal(await card.getAttribute('href'), record.session_key === null ? '#history?range=today' : `#history?range=all&session_id=${record.session_key}`);
+  }
+  const first = cards.first(), href = await first.getAttribute('href');
+  await first.focus(); await page.keyboard.press('Enter'); await page.waitForURL(url => url.hash === href);
+  const pattern = '**/api/usage-events?*';
+  await page.route(pattern, async route => {
+    const response = await route.fetch(), payload = await response.json() as UsageEventsResponse;
+    payload.rows = payload.rows.slice(0, 1).map(record => ({ ...record, total_tokens: 123456789012345, grain: 'unknown', session_key: null, model: null, provider: null, harness: 'Very long recorded harness identity for overflow checking' }));
+    await route.fulfill({ response, json: payload });
+  });
+  try {
+    await page.goto('http://127.0.0.1:7804/?recent-activity=unknown#overview', { waitUntil: 'domcontentloaded' }); await settled(page, pending);
+    assert.equal(await cards.count(), 1);
+    assert.equal(await cards.locator('.qp-activity-value strong').textContent(), number.format(123456789012345));
+    assert.equal(await cards.locator('.qp-activity-meta small').textContent(), lang === 'th' ? 'ไม่ทราบ' : 'Unknown');
+    assert.equal(await cards.getAttribute('href'), '#history?range=today');
+    for (const width of [390, 900, 1280]) {
+      await page.setViewportSize({ width, height: 992 });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Recent activity overflow ${lang}/${theme}/${width}`);
+      const containment = await cards.evaluate(element => {
+        const bounds = element.getBoundingClientRect();
+        return [...element.querySelectorAll('.qp-activity-value,.qp-activity-meta')].every(child => { const rect = child.getBoundingClientRect(); return rect.right <= bounds.right + 1 && rect.bottom <= bounds.bottom + 1; });
+      });
+      assert.equal(containment, true);
+    }
+    recentActivityChecks.push({ lang, theme, records: data.rows.length, keyboardHistory: true, unknownGrain: true, largeTokens: true });
+  } finally { await page.unroute(pattern); }
+  await page.setViewportSize({ width: 1586, height: 992 });
+  await page.goto(home, { waitUntil: 'domcontentloaded' }); await settled(page, pending);
+}
+
 async function checkQuotaGroups(page: Page, lang: string, theme: string, pending: Set<Request>) {
   const original = (await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<Overview>();
   const names = db.prepare('SELECT id,account_display_name FROM source WHERE id IN (1,2) ORDER BY id').all() as Array<{ id: number; account_display_name: string }>;
@@ -1251,7 +1304,12 @@ async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', 
       if (state !== 'recovered') await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ...history, segments: state === 'empty' ? [{ resetAt: history.reader!.resetAt, samples: [] }] : history.segments.map(segment => ({ ...segment, samples: segment.samples.map(sample => ({ ...sample, usedPercent: null })) })) }) }));
       try {
         await page.goto(`http://127.0.0.1:7804/?quota-state=${state}#overview`, { waitUntil: 'domcontentloaded' });
-        const outer = page.getByTestId('quota-history'); await outer.waitFor(); await settled(page, pending);
+        const outer = page.getByTestId('quota-history');
+        try { await outer.waitFor(); } catch (error) {
+          console.log('Quota history wait diagnostics', { state, lang, theme, url: page.url(), text: (await page.locator('body').innerText()).slice(0, 2200), pending: [...pending].map(request => new URL(request.url()).pathname), errors });
+          throw error;
+        }
+        await settled(page, pending);
         await outer.locator('summary').first().focus(); await page.keyboard.press('Enter');
         if (state === 'empty') {
           await outer.getByRole('status').waitFor();
@@ -1274,6 +1332,8 @@ async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', 
 try {
   await daemon.listen({ host: '127.0.0.1', port: 7804 });
   assert.equal((await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json().now, fixedNow);
+  const fixtureState = () => JSON.stringify(['source', 'session', 'usage_event', 'limit_sample'].map(table => db.prepare(`SELECT * FROM ${table} ORDER BY id`).all()));
+  const originalFixture = fixtureState();
   for (const pass of [0, 1]) {
     for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) {
       // Each language/theme set starts a new renderer process in both passes.
@@ -1328,14 +1388,16 @@ try {
             const box = await rail.boundingBox();
             assert.ok(hero && activity && box);
             if (activity.y + activity.height > 992) console.log('Overview header geometry', await page.locator('.qp-topbar,.qp-brand,.qp-brand>svg,.qp-brand>span,.qp-brand small,.qp-topbar-body,.qp-daemon-status').evaluateAll(elements => elements.map(element => { const rect = element.getBoundingClientRect(), style = getComputedStyle(element); return { className: element.className, x: rect.x, y: rect.y, width: rect.width, height: rect.height, font: style.font, lineHeight: style.lineHeight }; })));
-            if (overviewOnly && pass === 0) {
+            if (overviewOnly) {
               await page.screenshot({ path: resolve(output, `layout-${lang}-${theme}.png`), animations: 'disabled' });
               writeFileSync(resolve(output, `layout-${lang}-${theme}.json`), JSON.stringify({ hero, activity, rail: box, runtime: await page.locator('.qp-runtime').boundingBox(), bottom: await page.locator('.qp-bottom-grid').boundingBox() }, null, 2));
             }
             assert.ok(box.height <= 270.1, `Model rail exceeds its desktop height: ${box.height}`);
             assert.ok(activity.y + activity.height <= 992, `Overview activity is outside concept viewport: ${activity.y + activity.height}`);
             assert.equal(await rail.locator('.qp-model-row').count(), 8);
-            if (pass === 0) {
+            // Prime the same scrolling, dialog and paint state in both captures.
+            // The canonical/repeat images must have identical preparation.
+            {
               await rail.focus(); await page.keyboard.press('End'); await page.waitForTimeout(300);
               assert.ok(await rail.evaluate(element => element.scrollTop > 0), 'Model rail is not keyboard-scrollable');
               const last = rail.locator('.qp-model-row').last();
@@ -1371,10 +1433,26 @@ try {
               assert.equal(composition.runtimeProvidersVisible, 4, 'All four recorded provider rows must be fully visible');
               assert.ok(composition.edgeMaxError <= 1, `Runtime connector endpoints miss their nodes by ${composition.edgeMaxError}px`);
               assert.equal(composition.modelTitleOutside, true, 'Model caption must sit above the bordered list');
-              overviewLayouts.push({ lang, theme, heroBottom: hero.y + hero.height, activityBottom: activity.y + activity.height, models: 8, railHeight: box.height, ...composition });
+              if (pass === 0) overviewLayouts.push({ lang, theme, heroBottom: hero.y + hero.height, activityBottom: activity.y + activity.height, models: 8, railHeight: box.height, ...composition });
             }
           }
           const filename = `${destination}-${lang}-${theme}.png`;
+          if (destination === 'overview') {
+            assert.equal(fixtureState(), originalFixture, 'Overview fixture must be fully restored before each canonical capture');
+            // Flush nested SVG viewport layout after scroll/dialog restoration.
+            // Verify the actual visible icon geometry across independent renderers.
+            const geometry = await page.locator('.qp-map-node svg').evaluateAll(elements => elements.flatMap(element => {
+              const rect = element.getBoundingClientRect();
+              if (rect.width === 0 || rect.height === 0) return [];
+              const node = element.closest('.qp-map-node');
+              return [{ key: node?.getAttribute('data-key'), dimension: node?.getAttribute('data-dimension'), x: rect.x, y: rect.y, width: rect.width, height: rect.height }];
+            }));
+            assert.ok(geometry.length > 0);
+            const key = `${lang}/${theme}`;
+            if (pass === 0) iconViewports.set(key, geometry);
+            else assert.deepEqual(geometry, iconViewports.get(key), 'Runtime icon viewports changed between captures');
+            await page.waitForTimeout(100);
+          }
           const screenshot = await page.screenshot({ path: resolve(output, pass === 0 ? filename : `repeat-${filename}`), animations: 'disabled' });
           if (pass === 0) cases.push({ page: destination, lang, theme, filename, sha256: sha(screenshot), ...contrastEvidence });
           else {
@@ -1403,6 +1481,7 @@ try {
           if (pass === 0 && destination === 'overview') await checkOverviewPeriod(page, lang, theme, pending);
           if (pass === 0 && destination === 'overview') await checkOverviewInsights(page, lang, theme, pending);
           if (pass === 0 && destination === 'overview') await checkQuotaGroups(page, lang, theme, pending);
+          if (pass === 0 && destination === 'overview') await checkRecentActivity(page, lang, theme, pending);
         }
         if (pass === 0 && !pages.some(([destination]) => destination === 'settings')) {
           await page.goto('http://127.0.0.1:7804/?shell-access=settings#settings', { waitUntil: 'domcontentloaded' });
@@ -1415,7 +1494,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

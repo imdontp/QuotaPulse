@@ -1,11 +1,12 @@
 # Concept comparison and refinement queue
 
-Latest Overview composition: [Runtime Map v1.55](REDESIGN-RUNTIME-MAP-V1.55.md)
-adds direction arrows, framed nodes and proportional model-share bars using the
-complete requested-scope model-token denominator. The
-[Overview viewer](redesign-v1.55/reference-review.html) retains v1.54 captures;
+Latest Overview composition: [Activity row v1.56](REDESIGN-ACTIVITY-ROW-V1.56.md)
+uses compact harness → model identities, prominent actual recorded tokens and
+explicit timestamp/grain metadata. SVG rendering now passes four byte-identical
+Overview pairs with unchanged tolerance. The
+[Overview viewer](redesign-v1.56/reference-review.html) retains v1.55 captures;
 the latest full nine-page capture set remains v1.52. Full reference visual
-acceptance remains open.
+acceptance remains open; actual minute-series activity charts are next.
 
 [Header brand and status v1.52](REDESIGN-HEADER-BRAND-V1.52.md) enlarges the
 waveform/wordmark, frames actual daemon connection and machine scope, and adds

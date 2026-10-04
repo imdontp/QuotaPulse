@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
-import { Activity, ArrowUpRight, Box, CircleGauge, Coins, Folder, GitBranch, Layers, Wallet, X } from 'lucide-react';
+import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Folder, GitBranch, Layers, Wallet, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
 import { countdown } from '@/format';
@@ -268,9 +268,13 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
         <section className="qp-panel qp-activity" data-testid="recent-activity">
           <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.activity')}</h2>{!preview && <a href={historyHref}>{t('redesign.openHistory')} <ArrowUpRight size={14}/></a>}</div>
           {activities.length === 0 ? <p className="qp-footnote">{t('redesign.noRecent')}</p> : <div className="qp-activity-list">{activities.map(item => {
-            const content = <><strong><span className="qp-activity-identity"><HarnessIcon harness={item.harness} vendor={harnessVendors[item.harness]} label={item.harness}/>{item.harness}</span><time dateTime={new Date(item.timestamp).toISOString()}>{new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit' }).format(item.timestamp)}</time></strong><span className="qp-activity-route"><VendorIcon vendor={item.provider ?? 'unknown'}/>{item.provider ?? t('redesign.unknownValue')} · {item.model ?? t('redesign.unknownValue')}</span><small>{number(item.tokens)} {t('redesign.tokens')} · {t(item.grain === 'call' ? 'redesign.callRecord' : 'redesign.aggregateUpdate')}</small></>;
-            return preview ? <div className="qp-activity-item" key={item.id}>{content}</div>
-              : <a className="qp-activity-item" key={item.id} href={item.sessionKey !== null ? `#history?range=all&session_id=${item.sessionKey}` : '#history?range=today'} aria-label={`${item.harness} · ${item.model ?? t('redesign.unknownValue')} · ${t('redesign.openHistory')}`}>{content}</a>;
+            const route = `${item.provider ?? t('redesign.unknownValue')} · ${item.model ?? t('redesign.unknownValue')}`;
+            const grain = t(item.grain === 'call' ? 'redesign.callRecord' : item.grain === 'session_aggregate' ? 'redesign.aggregateUpdate' : 'redesign.unknownValue');
+            const time = new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit' }).format(item.timestamp);
+            const identity = `${item.harness} → ${route} · ${number(item.tokens)} ${t('redesign.tokens')} · ${grain} · ${time}`;
+            const content = <><div className="qp-activity-path"><span className="qp-activity-identity" title={item.harness}><HarnessIcon harness={item.harness} vendor={harnessVendors[item.harness]} label={item.harness}/><b>{item.harness}</b></span><ArrowRight size={12} aria-hidden="true"/><span className="qp-activity-route" title={route}><VendorIcon vendor={item.provider ?? 'unknown'}/><span>{item.model ?? t('redesign.unknownValue')}</span></span></div><div className="qp-activity-value"><strong>{number(item.tokens)}</strong><small>{t('redesign.tokens')}</small></div><div className="qp-activity-meta"><time dateTime={new Date(item.timestamp).toISOString()}>{time}</time><small>{grain}</small></div></>;
+            return preview ? <div className="qp-activity-item" key={item.id} title={identity}>{content}</div>
+              : <a className="qp-activity-item" key={item.id} data-record-id={item.id} data-grain={item.grain} title={identity} href={item.sessionKey !== null ? `#history?range=all&session_id=${item.sessionKey}` : '#history?range=today'} aria-label={`${identity} · ${t('redesign.openHistory')}`}>{content}</a>;
           })}</div>}
           <p className="qp-footnote">{t('redesign.activityCaveat')}</p>
         </section>
