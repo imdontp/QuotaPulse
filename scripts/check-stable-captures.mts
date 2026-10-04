@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium, type Page, type Request } from 'playwright';
+import { chromium, type Page, type Request, type Route } from 'playwright';
 import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
@@ -13,6 +13,8 @@ import type { Overview, MinuteTrendResponse, ProviderModelMinuteResponse, Projec
 import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
 import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
 import { checkLiveMinuteRefresh } from './check-live-minute-refresh.mjs';
+import { checkLiveTokenFlow } from './check-live-token-flow.mjs';
+import { checkSectionMarks } from './check-section-marks.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
@@ -73,7 +75,9 @@ const daemon = buildServer(db, scheduler, { token: 'stable-capture-test', port: 
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 const errors: string[] = [];
 const forbidden: string[] = [];
-const chartChecks: Array<{ page: string; lang: string; theme: string; buckets: number; tokens: number }> = [];
+const requestOrigins = new WeakMap<Request, { route: string; started: number }>();
+const chartChecks: Array<{ page: string; lang: string; theme: string; buckets: number; tokens: number; flowEvidence?: Awaited<ReturnType<typeof checkLiveTokenFlow>> }> = [];
+const sectionMarkChecks: Array<Awaited<ReturnType<typeof checkSectionMarks>>> = [];
 const modelCostChecks: Array<{ route: string; lang: string; theme: string; buckets: number; collapsedBottom: number }> = [];
 const quotaChecks: Array<{ page: string; lang: string; theme: string; segments: number; samples: number; unknown: number }> = [];
 const pulseCoreChecks: Array<{ lang: string; theme: string; assetSha256: string; imageWidth: number; selectedUsed: number[]; boundaries: number[]; unknown: boolean; reducedMotion: boolean }> = [];
@@ -573,7 +577,15 @@ async function settled(page: Page, pending: Set<Request>) {
   const deadline = performance.now() + 15_000;
   let idle = 0;
   while (idle < 12) {
-    assert.ok(performance.now() < deadline, 'API requests did not settle');
+    if (performance.now() >= deadline) {
+      const waiting = [...pending].map(request => {
+        const url = new URL(request.url()), origin = requestOrigins.get(request);
+        return { method: request.method(), path: url.pathname, queryKeys: [...url.searchParams.keys()],
+          routeAtStart: origin?.route, ageMs: origin ? Math.round(performance.now() - origin.started) : null,
+          failure: request.failure()?.errorText ?? null };
+      });
+      assert.fail(`API requests did not settle: ${JSON.stringify(waiting)}`);
+    }
     idle = pending.size === 0 ? idle + 1 : 0;
     await page.waitForTimeout(25);
   }
@@ -630,23 +642,22 @@ async function semanticContrast(page: Page) {
   return { semanticContrasts, checkedElements: result.samples.map(sample => sample.selector) };
 }
 
-async function checkChartAccess(page: Page, destination: 'live' | 'projects', lang: string, theme: string) {
+async function checkChartAccess(page: Page, destination: 'live' | 'projects', lang: string, theme: string, pending: Set<Request>) {
   const headers = { 'x-quotapulse-token': 'stable-capture-test' };
-  let expected: Array<{ at: number; tokens: number }>;
   if (destination === 'live') {
     const result = await daemon.inject({ method: 'GET', url: `/api/trend?bucket=minute&group_by=none&from=${fixedNow - 1_800_000}&to=${fixedNow + 1}`, headers });
     assert.equal(result.statusCode, 200);
     const trend = result.json<MinuteTrendResponse>();
-    const start = Math.floor(trend.from / 60_000) * 60_000;
-    expected = Array.from({ length: Math.floor((trend.to - 1) / 60_000) - Math.floor(trend.from / 60_000) + 1 }, (_, index) => ({ at: start + index * 60_000, tokens: trend.rows.find(row => row.bucket_ts === start + index * 60_000)?.total_tokens ?? 0 }));
-  } else {
-    const month = new Date(fixedNow); month.setDate(1); month.setHours(0, 0, 0, 0);
-    const query = new URLSearchParams({ from: String(month.getTime()), to: String(fixedNow + 1), project: 'Fixture project 0' });
-    const result = await daemon.inject({ method: 'GET', url: `/api/project-detail?${query}&limit=20&offset=0`, headers });
-    assert.equal(result.statusCode, 200);
-    const detail = result.json<ProjectDetailResponse>();
-    expected = Array.from({ length: Math.ceil((detail.scope.to - detail.scope.from) / detail.bucketMs) }, (_, index) => ({ at: detail.scope.from + index * detail.bucketMs, tokens: detail.points.find(point => point.start === detail.scope.from + index * detail.bucketMs)?.tokens ?? 0 }));
+    const flowEvidence = await checkLiveTokenFlow(page, trend, lang, theme, pending, output);
+    chartChecks.push({ page: destination, lang, theme, buckets: Math.floor((trend.to - 1) / 60000) - Math.floor(trend.from / 60000) + 1, tokens: trend.rows.reduce((sum, row) => sum + row.total_tokens, 0), flowEvidence });
+    return;
   }
+  const month = new Date(fixedNow); month.setDate(1); month.setHours(0, 0, 0, 0);
+  const query = new URLSearchParams({ from: String(month.getTime()), to: String(fixedNow + 1), project: 'Fixture project 0' });
+  const result = await daemon.inject({ method: 'GET', url: `/api/project-detail?${query}&limit=20&offset=0`, headers });
+  assert.equal(result.statusCode, 200);
+  const detail = result.json<ProjectDetailResponse>();
+  const expected = Array.from({ length: Math.ceil((detail.scope.to - detail.scope.from) / detail.bucketMs) }, (_, index) => ({ at: detail.scope.from + index * detail.bucketMs, tokens: detail.points.find(point => point.start === detail.scope.from + index * detail.bucketMs)?.tokens ?? 0 }));
   const disclosure = page.locator('.qp-chart-data'); const summary = disclosure.locator('summary');
   await summary.focus(); await page.keyboard.press('Enter');
   assert.equal(await disclosure.getAttribute('open'), '');
@@ -657,15 +668,9 @@ async function checkChartAccess(page: Page, destination: 'live' | 'projects', la
   for (const row of rows) { assert.equal(row.text, format.format(row.tokens)); assert.equal(row.iso, new Date(row.at).toISOString()); assert.equal(row.stamp, new Date(row.at).toLocaleString(lang === 'th' ? 'th-TH' : 'en-US')); }
   const maximum = Math.max(0, ...expected.map(point => point.tokens));
   assert.ok(expected.some(point => point.tokens === 1) && expected.some(point => point.tokens === 0), 'Tiny and zero bucket regression fixtures must be present');
-  if (destination === 'live') {
-    const points = await page.locator('.qp-live-chart>circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), tokens: Number(element.getAttribute('data-value')), cy: Number(element.getAttribute('cy')) })));
-    assert.deepEqual(points.map(({ at, tokens }) => ({ at, tokens })), expected);
-    points.forEach((point, index) => assert.ok(Math.abs(point.cy - (94 - 88 * expected[index].tokens / (maximum || 1))) < 0.0001, 'Line point is not proportional to the API value'));
-  } else {
-    const points = await page.locator('.qp-project-trend>circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), tokens: Number(element.getAttribute('data-value')), cy: Number(element.getAttribute('cy')) })));
-    assert.deepEqual(points.map(({ at, tokens }) => ({ at, tokens })), expected);
-    points.forEach((point, index) => assert.ok(Math.abs(point.cy - (94 - 88 * expected[index].tokens / (maximum || 1))) < 0.0001, 'Project line point is not proportional to the API value'));
-  }
+  const points = await page.locator('.qp-project-trend>circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), tokens: Number(element.getAttribute('data-value')), cy: Number(element.getAttribute('cy')) })));
+  assert.deepEqual(points.map(({ at, tokens }) => ({ at, tokens })), expected);
+  points.forEach((point, index) => assert.ok(Math.abs(point.cy - (94 - 88 * expected[index].tokens / (maximum || 1))) < 0.0001, 'Project line point is not proportional to the API value'));
   for (const width of [390, 900, 1280]) {
     await page.setViewportSize({ width, height: 941 });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${destination}: expanded data table overflows at ${width}`);
@@ -1355,14 +1360,25 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
   await checkActivityRenderer(page, lang, theme, pending, data.rows[0].timestamp_ms);
   const first = cards.first(), href = await first.getAttribute('href');
   await first.focus(); await page.keyboard.press('Enter'); await page.waitForURL(url => url.hash === href);
-  const pattern = '**/api/usage-events?*';
-  await page.route(pattern, async route => {
-    const response = await route.fetch(), payload = await response.json() as UsageEventsResponse;
-    payload.rows = payload.rows.slice(0, 1).map(record => ({ ...record, total_tokens: 123456789012345, grain: 'unknown', session_key: null, model: null, provider: null, harness: 'Very long recorded harness identity for overflow checking' }));
-    await route.fulfill({ response, json: payload });
-  });
+  await page.getByTestId('usage-history').waitFor({ timeout: 15000 });
+  await page.locator('.qp-history-records[aria-busy="false"]').waitFor({ timeout: 15000 });
+  await settled(page, pending);
+  assert.equal(await page.locator('.qp-history-records table').isVisible(), true, 'Keyboard History destination did not load its actual records');
+  const payload = structuredClone(data);
+  payload.rows = payload.rows.slice(0, 1).map(record => ({ ...record, total_tokens: 123456789012345, grain: 'unknown', session_key: null, model: null, provider: null, harness: 'Very long recorded harness identity for overflow checking' }));
+  const normalized = (query: URLSearchParams) => { const copy = new URLSearchParams(query); copy.sort(); return copy.toString(); };
+  const overviewQuery = normalized(url.searchParams);
+  const pattern = (candidate: URL) => candidate.origin === url.origin && candidate.pathname === url.pathname && normalized(candidate.searchParams) === overviewQuery;
+  let diagnosticReads = 0;
+  const handler = async (route: Route) => {
+    if (route.request().method() !== 'GET') return route.fallback();
+    diagnosticReads++;
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(payload) });
+  };
+  await page.route(pattern, handler);
   try {
     await page.goto('http://127.0.0.1:7804/?recent-activity=unknown#overview', { waitUntil: 'domcontentloaded' }); await settled(page, pending);
+    assert.ok(diagnosticReads > 0, 'Scoped Overview diagnostic GET was not reached');
     assert.equal(await cards.count(), 1);
     assert.equal(await cards.locator('.qp-activity-value strong').textContent(), number.format(123456789012345));
     assert.equal(await cards.locator('.qp-activity-meta small').textContent(), lang === 'th' ? 'ไม่ทราบ' : 'Unknown');
@@ -1378,7 +1394,7 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
       assert.equal(containment, true);
     }
     recentActivityChecks.push({ lang, theme, records: data.rows.length, keyboardHistory: true, unknownGrain: true, largeTokens: true });
-  } finally { await page.unroute(pattern); }
+  } finally { await page.unroute(pattern, handler); }
   await page.setViewportSize({ width: 1586, height: 992 });
   await page.goto(home, { waitUntil: 'domcontentloaded' }); await settled(page, pending);
 }
@@ -1717,7 +1733,12 @@ try {
       const isData = (url: string) => new URL(url).pathname.startsWith('/api/') && !url.includes('/api/events/stream');
       try {
         page.on('pageerror', error => errors.push(error.message));
-        page.on('request', request => { if (isData(request.url())) pending.add(request); });
+        page.on('request', request => {
+          if (isData(request.url())) {
+            pending.add(request);
+            requestOrigins.set(request, { route: new URL(page.url()).hash.split('?')[0], started: performance.now() });
+          }
+        });
         page.on('requestfinished', request => pending.delete(request));
         page.on('requestfailed', request => pending.delete(request));
         await page.route('**/*', route => {
@@ -1873,8 +1894,9 @@ try {
             // No region is hidden, blurred or exempted from the comparison.
             assert.ok(difference.maxChannelDelta <= 2 && difference.changedPixels / difference.pixelCount <= 0.0001, `${filename}: capture differs beyond raster tolerance (${JSON.stringify(difference)})`);
           }
-          if (pass === 0 && destination === 'history') await checkHistoryDensity(page, lang, theme);
           if (destination === 'history') await checkHistoryDetails(page, lang, theme, pass, pending);
+          if (pass === 0 && destination === 'history') await checkHistoryDensity(page, lang, theme);
+          if (pass === 0 && ['live', 'cost', 'providers', 'models'].includes(destination)) sectionMarkChecks.push(await checkSectionMarks(page, destination, lang, theme));
           if (pass === 0) await checkShellAccess(page, destination, lang, theme);
           if (pass === 0 && destination === 'settings') await checkSettingsAccess(page, lang, theme);
           if (pass === 0 && destination === 'alerts') await checkAlerts(page, lang, theme, pending);
@@ -1882,7 +1904,7 @@ try {
           if (pass === 0 && destination === 'providers') await checkProviders(page, lang, theme, pending);
           if (pass === 0 && destination === 'models') await checkModelComparison(page, lang, theme, pending);
           if (pass === 0 && destination === 'live') await checkLiveDensity(page, lang, theme, pending);
-          if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme);
+          if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme, pending);
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
           if (pass === 0 && destination === 'overview') { await checkRuntimeAccess(page, lang, theme, pending); await checkSingleProjectRuntime(page, lang, theme, pending); }
           if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkModelMarks(page, lang, theme, pending);
@@ -1904,7 +1926,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 8px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 8px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

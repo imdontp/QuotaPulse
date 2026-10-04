@@ -1,0 +1,303 @@
+{
+  "checkpoint": "v1.64",
+  "status": "matched",
+  "scope": "all",
+  "productionIndexSha256": "f92fbc3d6fc8f67d4bf4aeb31d147e578fae98056e153e25d08cfc1c91f848b6",
+  "daemonCompiledSha256": {
+    "packages/daemon/dist/api/minute-trend.js": "a15565a5c11505acfe84992b0043506411cb2641b78e47ae9e46cf67dd578deb",
+    "packages/daemon/dist/api/runtime-map.js": "653ae5f8ae6a81d195e2caee161b7457abd11bdd66ba581e7243c507a1f073e3",
+    "packages/daemon/dist/util/vendor.js": "f351be4f6c8afbc80549ef13e0f1bb12bfae8818647f91a406b2e17eb2b8a0a7"
+  },
+  "archiveSha256": "ed36cf8f83378799e18264ecd0a2ae98a78aa26f8834c132cd530de1c7c8b399",
+  "references": [
+    {
+      "sha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+      "page": "overview",
+      "viewerSource": "../redesign-v1.44/source-overview.png"
+    },
+    {
+      "sha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+      "page": "live",
+      "viewerSource": "../redesign-v1.44/source-live.png"
+    },
+    {
+      "sha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "page": "projects",
+      "viewerSource": "../redesign-v1.44/source-projects.png"
+    },
+    {
+      "sha256": "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6",
+      "page": "providers",
+      "viewerSource": "../redesign-v1.44/source-providers.png"
+    },
+    {
+      "sha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "page": "models",
+      "viewerSource": "../redesign-v1.44/source-models.png"
+    },
+    {
+      "sha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+      "page": "cost",
+      "viewerSource": "../redesign-v1.44/source-cost.png"
+    },
+    {
+      "sha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+      "page": "history",
+      "viewerSource": "../redesign-v1.44/source-history.png"
+    },
+    {
+      "sha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+      "page": "alerts",
+      "viewerSource": "../redesign-v1.44/source-alerts.png"
+    }
+  ],
+  "captures": [
+    {
+      "filename": "overview-en-dark.png",
+      "sha256": "6f5d0e611207eff94cbaf2c876b76c91fafde1188a37043d5d50df0a1f5f1d57"
+    },
+    {
+      "filename": "live-en-dark.png",
+      "sha256": "581b65734e1fb07cbc038b0fa0df499d12d847588bf2b75cc9d5391b9c2058a4"
+    },
+    {
+      "filename": "projects-en-dark.png",
+      "sha256": "d0c15f603dd6fc4371d28f469b6df1069b42b93a9a98564a43619134b04c78f8"
+    },
+    {
+      "filename": "providers-en-dark.png",
+      "sha256": "e3ebfa4fa2d0a7caca7e438fa5e3ff39fb08cbe95adf28920d801c3e36690827"
+    },
+    {
+      "filename": "models-en-dark.png",
+      "sha256": "a2535336aa1b1cf9b205d6199120c915c36941e93103ce7075938a509f18a9e0"
+    },
+    {
+      "filename": "cost-en-dark.png",
+      "sha256": "4b26088d1258a00f01e6b9f46150444a59a73e44f98d2594772a05543a74113d"
+    },
+    {
+      "filename": "history-en-dark.png",
+      "sha256": "89ea7174e7c1bf54d926e905d601b9da48d376eb79a76ed5dde09a6307bd7f60"
+    },
+    {
+      "filename": "history-selected-en-dark.png",
+      "sha256": "d4c6b0affecbc304d34515e8e5452cb6ba81d09d325a00207fa455ea9591abea"
+    },
+    {
+      "filename": "alerts-en-dark.png",
+      "sha256": "156ddc5eeb5679514896b237993f58b6312bcdeacf3ce5e4b378cdf3ced77e9f"
+    },
+    {
+      "filename": "settings-en-dark.png",
+      "sha256": "c7b6829595957efe5e5c91e0d692bf07c8bb7c59190ee2abcafb15e062f72d4d"
+    },
+    {
+      "filename": "overview-en-light.png",
+      "sha256": "928a327ce9f138a2d65ed008cb0eb46d48f57ed97d6a63bd25e0ec4c91434aa3"
+    },
+    {
+      "filename": "live-en-light.png",
+      "sha256": "00ad8809cfbc0f06d53d895df5d89e5af144d9e7448f2d278ea76fc4eaf9b9fe"
+    },
+    {
+      "filename": "projects-en-light.png",
+      "sha256": "e975c12347e85d47082d947e6a694821a35a90f1358925163945ae480060d17d"
+    },
+    {
+      "filename": "providers-en-light.png",
+      "sha256": "00f884e0f4ae5042fb51d9fc85c2e037c3e24c450ea24f125c4920a0ddea4005"
+    },
+    {
+      "filename": "models-en-light.png",
+      "sha256": "31f0911385a0c6452bdc2e1df391218bc1d8846ea19f4e182061257dff60b53b"
+    },
+    {
+      "filename": "cost-en-light.png",
+      "sha256": "d5efff892ab6c67e78bf74ca4e3c28a4f1e197ab610dc1d2a2983125ca105df9"
+    },
+    {
+      "filename": "history-en-light.png",
+      "sha256": "b47a7cd798eb676845cc2fff7648630d454652f9f71b6b17a8c6c1d87104a2e5"
+    },
+    {
+      "filename": "history-selected-en-light.png",
+      "sha256": "75beb4f8fcd81802f7d8497e7cc17ebcc7d22ac12ec449a453ced4db4a1a8d9f"
+    },
+    {
+      "filename": "alerts-en-light.png",
+      "sha256": "b2c3d7f028bfb1f47b351bcb661d9b510b476bd9d109bbd385c9647c00c8d5c9"
+    },
+    {
+      "filename": "settings-en-light.png",
+      "sha256": "2c3f93d9a894a948edf7dc43c2400362b59af1187ede86fd57c9744fab6c8c4e"
+    },
+    {
+      "filename": "overview-th-dark.png",
+      "sha256": "0a160b046389dc712fb58070bf89cef33653a75178ff9630dbcb293bdde19550"
+    },
+    {
+      "filename": "live-th-dark.png",
+      "sha256": "f15b0520b91ca851320aa498d994f12ab8493a87648dd3836c58be5a56681641"
+    },
+    {
+      "filename": "projects-th-dark.png",
+      "sha256": "3a81e47a60805079cddda8247dac25c8113c2e42197d176cc343eeb5d03ddbbc"
+    },
+    {
+      "filename": "providers-th-dark.png",
+      "sha256": "1ecd680f9a8e62c59443d7b3a1c29bcf651f4dea573746b6242cf12b2fa5c8cd"
+    },
+    {
+      "filename": "models-th-dark.png",
+      "sha256": "870e06cdf16ee67517fae8933d6f86037bf84653b61c107a6bf1337db66db896"
+    },
+    {
+      "filename": "cost-th-dark.png",
+      "sha256": "7bf7e70e3256538461730e511d5a3668407945d4cf7e40047e13c721eccb1d48"
+    },
+    {
+      "filename": "history-th-dark.png",
+      "sha256": "4cbc493fb69dbeb93f5a4385bf67063c8350337993ec20776a0dc5f95d69e463"
+    },
+    {
+      "filename": "history-selected-th-dark.png",
+      "sha256": "60ae6b6c31a4082ab4be8f5691a4a15f165153f0f66228357da99cad1c1eea4c"
+    },
+    {
+      "filename": "alerts-th-dark.png",
+      "sha256": "e8bb80653c0fd6bfa2d2c64f966545cd89e638d579ef606546632751905fd17e"
+    },
+    {
+      "filename": "settings-th-dark.png",
+      "sha256": "a1ab1710ccdf01bbf43df3be4feaad14b159b17e7425bba0f7d512e8be968235"
+    },
+    {
+      "filename": "overview-th-light.png",
+      "sha256": "b74a309de6a6cf3c98243ab32b9c31bf243ca7bd59dfa3b8bc0b4a9446b16179"
+    },
+    {
+      "filename": "live-th-light.png",
+      "sha256": "4afaa3deba3e06bf820e8c827c2958c042ee0bc226d46f43f8b712dcbd9fac09"
+    },
+    {
+      "filename": "projects-th-light.png",
+      "sha256": "498ceb06cd26e267508d1c2aa6f6bda4ab64ea1e5763eb838ab895a0d25d0443"
+    },
+    {
+      "filename": "providers-th-light.png",
+      "sha256": "4286f672e58addf99f28bc94a02966c49ca489b517f73b8db15bfb1c6e50bea9"
+    },
+    {
+      "filename": "models-th-light.png",
+      "sha256": "6ee24456b26c0ba014ee1ce862eff211e15af729ea096bc91fbf31cb80d2efe6"
+    },
+    {
+      "filename": "cost-th-light.png",
+      "sha256": "5ea7a93c20239879119f96541bd88801fa690bd76d080a6192157d0d907df463"
+    },
+    {
+      "filename": "history-th-light.png",
+      "sha256": "00564c59b52f75f76af12da5e333b1045d89ec8b628222fd6ad76d76787c5b8c"
+    },
+    {
+      "filename": "history-selected-th-light.png",
+      "sha256": "4893f4510da72c60d69365e223803fd2fbf15071d14788167f1892aea2b95275"
+    },
+    {
+      "filename": "alerts-th-light.png",
+      "sha256": "8f480d5a92d3a4bad3fdd781c15c3bc0c17cdbeeca0f8c09c275dc14e20d4d6e"
+    },
+    {
+      "filename": "settings-th-light.png",
+      "sha256": "ab217f6da4b65f62cbf3a4f2b0dc5c65aee9bbb887a01aaa98e1222adc2597cb"
+    }
+  ],
+  "diagnosticCaptures": [
+    {
+      "filename": "runtime-single-en-dark.png",
+      "sha256": "d3cacecb232e387ff0d964dde57d55015c47d057e20c9ec4bb84fb18a48f66e0",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "model-marks-en-dark.png",
+      "sha256": "92c3abce649408fb4b884ee259c245054289bcca02b85e5fae0cf6e430dff9bd",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "live-minute-states-en-dark.png",
+      "sha256": "0aa6bc0e0352bdd17461b8e1af475fa5d8d516adbca93da4bf887ba62257ca24",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "live-flow-states-en-dark.png",
+      "sha256": "aded87d0bd99b3f677d4d398bf3d707e1592bc406e824045d2bae95da56e6732",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "runtime-single-en-light.png",
+      "sha256": "0d98d8569e554e2c2e8c95c77f103c1c556b26de3864394b2dab915d3844dd4b",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "model-marks-en-light.png",
+      "sha256": "c1f02d00d952949809522d02979f2f99ba42e9443de6a65ea507291a1f429115",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "live-minute-states-en-light.png",
+      "sha256": "9fe31faf73347e7047fc5d278fa6720d4149227e4fc276ea8299db79ce226f87",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "live-flow-states-en-light.png",
+      "sha256": "9d11e4b9f7e46437620695f3fdce319907bc0507f1f8e26d8cdc4ca8058e9da8",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "runtime-single-th-dark.png",
+      "sha256": "c4e0dece385592cb7e1e368a072ab4727a2761a4695ed865079f1c50d7b36ee3",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "model-marks-th-dark.png",
+      "sha256": "a4ff835e0cd32bf7f476e7e9b6f9e4aa13c24636582d0d78beb6266d14adf6dc",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "live-minute-states-th-dark.png",
+      "sha256": "6365b102bc31cee039a6d5c65f474eeeff951572c2fb85a1f340332fd89094d9",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "live-flow-states-th-dark.png",
+      "sha256": "75cf5c89584c5cf35e259fef37a1b7c956ffbda743e56ddfed158728d8b8c3fc",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "runtime-single-th-light.png",
+      "sha256": "9f0760bfb591b4df09d586cc9136139143ac376c3eb6614369c3ae00bdffab35",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "model-marks-th-light.png",
+      "sha256": "289291bd7858cb0fd989c698df5b4f1ba35a96c6031d05c85923605b8fcc7137",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "live-minute-states-th-light.png",
+      "sha256": "7d1faa49c3aca168772db1ce74c0a7883f81b3e2894d1c9c921c1ebfb2035fb4",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    },
+    {
+      "filename": "live-flow-states-th-light.png",
+      "sha256": "982eb59a78f0f21aa2a3abdd9b2c9bdb2b547afbe64ee84835cd67e7b3a65612",
+      "purpose": "Synthetic diagnostic state; not canonical or accepted visual baseline"
+    }
+  ],
+  "testProvenance": {
+    "web": "New v1.64 136-test run",
+    "daemon": "Retained v1.62 11-node memory API suite; daemon source unchanged"
+  },
+  "statement": "Nine-page production captures, fifteen panel identity marks, actual input/output/total minute curves, accessible tables, contrast and stale-response checks match the compiled web index and archived review bundle. Canonical repeats are not source-fidelity approval."
+}

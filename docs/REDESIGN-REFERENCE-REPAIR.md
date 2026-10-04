@@ -16,15 +16,14 @@ that harness must never be reported as a reference fidelity percentage.
 
 ## Source and observed gaps
 
-Latest presentation work: [Actual Live minute strips v1.62](REDESIGN-LIVE-MINUTES-V1.62.md)
-replaces aggregate matrix bars with real provider/model minute cells, explicit
-grain coverage and window totals. Paused snapshots and obsolete-response guards
-are verified; shared dark heading tiles use a stronger source blue. The
-[latest nine-page viewer](redesign-v1.62/reference-review.html) retains v1.61
-and labels synthetic Live diagnostics separately. New 130 web / 11 memory API
-tests and the full 40-pair gate pass (37 byte-identical), with unchanged
-tolerance and no masks. All eight original source hashes match. Full source
-likeness remains open: section marks, globe/pill glow and page composition.
+Latest presentation work: [Panel identity marks and recorded Live curves v1.64](REDESIGN-SECTION-MARKS-V1.64.md)
+adds fifteen measured section tiles, three actual minute curves, coloured legend
+text and complete accessible values. Fresh 136 web tests and the full 40-pair
+gate pass (37 byte-identical), with unchanged raster tolerance and no
+masks. The [reference viewer](redesign-v1.64/reference-review.html) retains the
+previous validated v1.62 and separates synthetic diagnostics. All eight source
+hashes match. Full source likeness remains open: circuit glyphs, globe/pill glow
+and page composition.
 
 Latest shared header work: [Header brand/status v1.52](REDESIGN-HEADER-BRAND-V1.52.md)
 aligns the larger waveform/wordmark and framed status/scope/date-time composition

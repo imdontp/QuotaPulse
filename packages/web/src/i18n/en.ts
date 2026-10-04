@@ -227,6 +227,7 @@ export const en = {
   'redesign.chartData': 'Recorded chart data',
   'redesign.chartBucketStart': 'Bucket start',
   'redesign.liveChartEmpty': 'No call records in this window',
+  'redesign.liveFlowBreakdown': 'Input includes fresh input, cache reads and cache writes. Stored totals are shown as recorded; some components are unknown or differ from the total.',
   'redesign.liveExcluded': 'Excluded from per-call chart',
   'redesign.liveAggregate': 'Aggregate updates',
   'redesign.liveUnknownGrain': 'Unknown-grain records',

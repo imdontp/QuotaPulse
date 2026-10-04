@@ -49,6 +49,10 @@ async function view(page: Page) {
     })),
     trend: Array.from(document.querySelectorAll('.qp-live-chart circle')).map(element =>
       [element.getAttribute('data-at'), element.getAttribute('data-value')]),
+    flow: Array.from(document.querySelectorAll('.qp-live-flow-component circle')).map(element =>
+      ['data-series', 'data-at', 'data-value', 'data-state', 'data-partial'].map(name => element.getAttribute(name))),
+    flowTable: Array.from(document.querySelectorAll('.qp-live-flow-table tbody tr')).map(element =>
+      ['data-at', 'data-start', 'data-end', 'data-input', 'data-output', 'data-total', 'data-fresh-input', 'data-cache-read', 'data-cache-write', 'data-records', 'data-calls', 'data-state', 'data-partial', 'data-partial-breakdown'].map(name => element.getAttribute(name))),
     feed: Array.from(document.querySelectorAll('.qp-live-feed li')).map(element => element.textContent),
     sessions: Array.from(document.querySelectorAll('.qp-live-table tbody tr')).map(element => element.textContent),
     metrics: Array.from(document.querySelectorAll('.qp-live-metrics strong')).map(element => element.textContent),

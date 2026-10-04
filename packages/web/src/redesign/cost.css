@@ -18,6 +18,7 @@
 .qp-cost-upper .qp-panel,.qp-cost-lower .qp-panel { display:grid; gap:13px; min-width:0; }
 .qp-cost-upper h2,.qp-cost-lower h2 { font-size:16px; }
 .qp-cost-section-head { grid-template-columns:minmax(0,1fr) auto; align-items:center; }
+.qp-cost-trend .qp-cost-section-head { margin-bottom:8px; }
 .qp-cost-section-head a,.qp-cost-table a,.qp-cost-insights a { color:var(--qp-accent); text-decoration:none; font-size:11px; }
 .qp-cost-chart { display:flex; align-items:end; gap:4px; height:175px; padding:10px 0; border-bottom:1px solid var(--qp-border); }
 .qp-cost-chart>div { position:relative; flex:1; height:100%; min-width:2px; display:flex; align-items:end; }

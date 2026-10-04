@@ -231,6 +231,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.liveSessionDetail': 'ข้อมูลเซสชัน',
   'redesign.liveChart': 'โทเคนที่บันทึกต่อนาที',
   'redesign.liveChartEmpty': 'ไม่มีรายการเรียกใช้ในช่วงนี้',
+  'redesign.liveFlowBreakdown': 'Input รวมข้อมูลใหม่ การอ่าน cache และการเขียน cache ยอดรวมแสดงตามที่บันทึก โดยรายละเอียดบางส่วนไม่ทราบค่าหรือไม่ตรงกับยอดรวม',
   'redesign.liveExcluded': 'ไม่รวมในกราฟต่อการเรียกใช้',
   'redesign.liveAggregate': 'ข้อมูลสะสมที่อัปเดต',
   'redesign.liveUnknownGrain': 'รายการที่ไม่ทราบชนิด',

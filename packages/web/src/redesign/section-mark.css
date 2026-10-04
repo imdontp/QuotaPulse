@@ -1,0 +1,35 @@
+.qp-redesign .qp-section-mark {
+  --qp-mark-size:34px;
+  --qp-mark-icon-size:22px;
+  --qp-mark-color:var(--qp-accent);
+  display:grid;
+  place-items:center;
+  width:var(--qp-mark-size);
+  height:var(--qp-mark-size);
+  flex:none;
+  /* Keep the existing 20px section-icon footprint; panel padding and row gaps contain the larger painted tile. */
+  margin-block:-7px;
+  border:1px solid color-mix(in srgb,var(--qp-mark-color) 24%,var(--qp-border));
+  border-radius:9px;
+  color:var(--qp-mark-color);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--qp-mark-color) 20%,var(--qp-panel)),color-mix(in srgb,var(--qp-series) 13%,var(--qp-panel)));
+  box-shadow:inset 0 1px color-mix(in srgb,var(--qp-mark-color) 16%,transparent);
+}
+.qp-redesign .qp-section-mark[data-size="28"] { --qp-mark-size:28px; --qp-mark-icon-size:19px; margin-block:-4px; border-radius:8px; }
+.qp-redesign .qp-section-mark[data-size="20"] { --qp-mark-size:20px; --qp-mark-icon-size:15px; margin-block:0; border-radius:5px; }
+.qp-redesign .qp-section-mark[data-tone="warm"] {
+  --qp-mark-color:var(--qp-danger);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--qp-danger) 10%,var(--qp-panel)),color-mix(in srgb,var(--qp-warning) 5%,var(--qp-panel)));
+}
+.qp-redesign .qp-section-mark>svg { width:var(--qp-mark-icon-size); height:var(--qp-mark-icon-size); color:inherit; }
+.qp-redesign[data-theme=dark] .qp-section-mark {
+  background:linear-gradient(135deg,#001e63,#001a51);
+  border-color:#12367b;
+  box-shadow:inset 0 0 10px color-mix(in srgb,var(--qp-mark-color) 9%,transparent),0 0 8px color-mix(in srgb,var(--qp-glow) 30%,transparent);
+}
+.qp-redesign[data-theme=dark] .qp-section-mark[data-tone="warm"] {
+  background:linear-gradient(135deg,#1b1823,#19141b);
+  border-color:color-mix(in srgb,var(--qp-danger) 14%,var(--qp-border));
+  box-shadow:inset 0 0 10px color-mix(in srgb,var(--qp-danger) 7%,transparent);
+}
+.qp-redesign[data-theme=dark] .qp-section-mark>svg { filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 45%,transparent)); }

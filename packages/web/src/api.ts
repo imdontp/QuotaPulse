@@ -7,7 +7,9 @@ export interface MinuteTrendResponse {
   to: number;
   groupBy: string;
   measurement: 'recorded_tokens_per_minute';
-  rows: Array<{ bucket_ts: number; series: string; records: number; calls: number; total_tokens: number }>;
+  rows: Array<{ bucket_ts: number; series: string; records: number; calls: number; total_tokens: number;
+    input_tokens?: number | null; cached_input_tokens?: number | null;
+    cache_write_tokens?: number | null; output_tokens?: number | null }>;
   coverage: {
     includedRecords: number;
     includedCalls: number;
