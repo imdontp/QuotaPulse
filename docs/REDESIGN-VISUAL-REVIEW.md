@@ -1,13 +1,13 @@
 # Concept comparison and refinement queue
 
-Latest Overview composition: [Runtime Map proportions v1.58](REDESIGN-RUNTIME-LAYOUT-V1.58.md)
-uses source-like unequal columns, measured connectors and a genuine single-project
-card. Native-size Activity bitmaps retain actual minute data and accessible values.
-All 126 web tests and four full Overview capture pairs pass unchanged tolerance;
-three are byte-identical. [Overview viewer](redesign-v1.58/reference-review.html)
-retains v1.57. Latest full nine-page browser evidence remains v1.52; 99–100% source
-likeness remains open. Wider hero waves, model-family marks and other-page details
-are next.
+Latest Overview composition: [Decorative wave field v1.59](REDESIGN-PULSE-AMBIENT-V1.59.md)
+adds source-inspired wide cyan/violet waves and a sparse star field around the
+existing real quota globe. Foreground columns stay readable; narrow screens hide
+the wide decoration. Four full Overview capture pairs pass unchanged tolerance,
+three byte-identical. [Overview viewer](redesign-v1.59/reference-review.html)
+retains v1.58. Latest full nine-page browser evidence remains v1.52. Full source
+likeness remains open, including stronger glow, real model-family marks and
+other-page details.
 
 [Header brand and status v1.52](REDESIGN-HEADER-BRAND-V1.52.md) enlarges the
 waveform/wordmark, frames actual daemon connection and machine scope, and adds

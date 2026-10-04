@@ -10,6 +10,7 @@ import { RedesignShell, type RedesignTranslate } from './shell';
 import { QuotaChart } from './quota-chart';
 import { RuntimeData } from './runtime-data';
 import { ActivitySparkline } from './activity-sparkline';
+import { PulseAmbient } from './pulse-ambient';
 import { activityMinutePoints } from './activity-trend';
 
 type Translate = RedesignTranslate;
@@ -77,20 +78,14 @@ function PulseCore({ quota, now, t, language, staleAfterMs }: { quota: QuotaWind
   const duration = (at: number | null) => at === null ? t('redesign.unknownValue') : at - now < 60_000 ? '<1m' : countdown(at, now);
   const exact = (at: number | null) => at === null ? t('redesign.unavailable') : new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(at);
   return <div className="qp-pulse" data-stale={!state || state.stale}>
-    <svg viewBox="0 0 360 320" aria-hidden="true">
+    <PulseAmbient/>
+    <svg className="qp-pulse-art" viewBox="0 0 360 320" aria-hidden="true">
       <defs>
         <radialGradient id={`${id}-fill`}><stop stopColor="#225575" stopOpacity=".7"/><stop offset=".75" stopColor="#071f43" stopOpacity=".5"/><stop offset="1" stopColor="#32cdff" stopOpacity=".2"/></radialGradient>
         <linearGradient id={`${id}-arc`}><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
         <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <clipPath id={`${id}-world`}><circle cx="180" cy="160" r="114"/></clipPath>
       </defs>
-      <g fill="none" stroke={`url(#${id}-arc)`} strokeWidth=".8" opacity=".45">
-        {[0, 1, 2].map(wave => <path key={wave} d={Array.from({ length: 73 }, (_, index) => {
-          const x = index * 5;
-          const y = 160 + Math.sin(index * .21 + wave * 1.8) * (18 + wave * 9);
-          return `${index === 0 ? 'M' : 'L'}${x} ${y.toFixed(2)}`;
-        }).join(' ')}/>)}
-      </g>
       <g className="qp-orbit" fill="none" stroke="#55baf3" strokeOpacity=".2">
         <ellipse cx="180" cy="160" rx="169" ry="73" transform="rotate(-26 180 160)"/>
         <ellipse cx="180" cy="160" rx="165" ry="96" transform="rotate(30 180 160)"/>
