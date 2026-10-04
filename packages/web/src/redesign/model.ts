@@ -88,7 +88,7 @@ export function summarize(records: readonly UsageRecord[]) {
 export type Dimension = 'project' | 'harness' | 'provider' | 'model';
 export const dimensions: readonly Dimension[] = ['project', 'harness', 'provider', 'model'];
 export type UsageSummary = ReturnType<typeof summarize> & { records: number };
-export type UsageNode = UsageSummary & { key: string | null };
+export type UsageNode = UsageSummary & { key: string | null; vendor?: string };
 export interface RuntimeCoverage {
   inputTokens: number;
   cachedInputTokens: number;

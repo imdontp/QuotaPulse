@@ -1,13 +1,14 @@
 # Concept comparison and refinement queue
 
-Latest Overview composition: [Decorative wave field v1.59](REDESIGN-PULSE-AMBIENT-V1.59.md)
-adds source-inspired wide cyan/violet waves and a sparse star field around the
-existing real quota globe. Foreground columns stay readable; narrow screens hide
-the wide decoration. Four full Overview capture pairs pass unchanged tolerance,
-three byte-identical. [Overview viewer](redesign-v1.59/reference-review.html)
-retains v1.58. Latest full nine-page browser evidence remains v1.52. Full source
-likeness remains open, including stronger glow, real model-family marks and
-other-page details.
+Latest Overview identity work: [Model makers v1.60](REDESIGN-MODEL-MARKS-V1.60.md)
+uses name-based maker metadata and existing offline artwork in the model rail
+and Runtime Map, retaining generic icons for unrecognized/legacy identities.
+The [latest nine-page viewer](redesign-v1.60/reference-review.html) offers all
+pages and a known-model diagnostic; all eight original source hashes match.
+The full production-browser gate passes 40 pairs including selected History,
+38 byte-identical, with unchanged tolerance and no masks. Full source likeness
+remains open: History rail/backdrop, framed heading icons, real minute-based
+Live activity strips, stronger globe/pill glow and other composition details.
 
 [Header brand and status v1.52](REDESIGN-HEADER-BRAND-V1.52.md) enlarges the
 waveform/wordmark, frames actual daemon connection and machine scope, and adds

@@ -77,6 +77,7 @@ const modelCostChecks: Array<{ route: string; lang: string; theme: string; bucke
 const quotaChecks: Array<{ page: string; lang: string; theme: string; segments: number; samples: number; unknown: number }> = [];
 const pulseCoreChecks: Array<{ lang: string; theme: string; assetSha256: string; imageWidth: number; selectedUsed: number[]; boundaries: number[]; unknown: boolean; reducedMotion: boolean }> = [];
 const pulseAmbientChecks: Array<{ lang: string; theme: string; width: number; height: number; centerError: number; decorative: boolean; staticArtwork: boolean }> = [];
+const modelMarkChecks: Array<{ lang: string; theme: string; vendors: string[]; unknown: number; tokens: number; legacyFallback: boolean; keyboardDetail: boolean; framedMarkContained: boolean }> = [];
 const overviewPeriodChecks: Array<{ lang: string; theme: string; tokensByRange: Record<string, number>; selectedQuotaPreserved: boolean; customSourcePreserved: boolean; focusRestored: boolean }> = [];
 const overviewInsightChecks: Array<{ lang: string; theme: string; cards: number; cacheShare: number | null; pricedCalls: number; totalCalls: number; states: string[] }> = [];
 const quotaGroupChecks: Array<{ lang: string; theme: string; owners: number; windows: number; sameNameSeparate: boolean; keyboardScrolled: boolean; historyIdentity: boolean }> = [];
@@ -998,6 +999,79 @@ async function checkSingleProjectRuntime(page: Page, lang: string, theme: string
   }
 }
 
+async function checkModelMarks(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  const saved = db.prepare('SELECT id,model FROM usage_event ORDER BY id').all() as Array<{ id: number; model: string | null }>;
+  const replacements = [
+    ['fixture-model-0', 'openai/gpt-5-fixture', 'openai'],
+    ['fixture-model-1', 'claude-3.7-fixture', 'anthropic'],
+    ['fixture-model-2', 'deepseek-v4-fixture', 'deepseek'],
+    ['fixture-model-4', 'hermes-fixture', 'nous'],
+  ] as const;
+  const day = new Date(fixedNow); day.setHours(0, 0, 0, 0);
+  const url = `/api/runtime-map?from=${day.getTime()}&to=${fixedNow + 1}`;
+  const headers = { 'x-quotapulse-token': 'stable-capture-test' };
+  const baseline = (await daemon.inject({ url, headers })).json<RuntimeGraph>();
+  const pattern = '**/api/runtime-map?*';
+  let routed = false;
+  try {
+    db.transaction(() => {
+      const update = db.prepare('UPDATE usage_event SET model=? WHERE model=?');
+      for (const [prior, name] of replacements) update.run(name, prior);
+    })();
+    const graph = (await daemon.inject({ url, headers })).json<RuntimeGraph>();
+    assert.deepEqual(graph.totals, baseline.totals, 'Maker metadata must not alter usage totals');
+    for (const [, name, vendor] of replacements) assert.equal(graph.nodes.model.find(node => node.key === name)?.vendor, vendor);
+    assert.equal(graph.nodes.model.filter(node => !node.vendor).length, 4);
+    for (const column of [0, 1, 2]) assert.equal(graph.edges.filter(edge => edge.column === column).reduce((sum, edge) => sum + edge.tokens, 0), graph.totals.tokens);
+    await page.setViewportSize({ width: 1586, height: 992 });
+    await page.goto('http://127.0.0.1:7804/?model-marks=known#overview', { waitUntil: 'domcontentloaded' });
+    await settled(page, pending);
+    const hero = page.locator('.qp-model-row'), runtime = page.locator('.qp-map-node[data-dimension=model]');
+    assert.equal(await hero.count(), graph.nodes.model.length);
+    assert.equal(await runtime.count(), graph.nodes.model.length);
+    for (const [index, node] of graph.nodes.model.entries()) {
+      assert.equal(await runtime.nth(index).getAttribute('data-key'), JSON.stringify(node.key));
+      assert.equal(await runtime.nth(index).getAttribute('data-tokens'), String(node.tokens));
+      for (const [icon, size] of [[hero.nth(index).locator('.qp-model-identity i'), 18], [runtime.nth(index).locator('.qp-node-icon'), 15]] as const) {
+        assert.equal(await icon.getAttribute('data-model-vendor'), node.vendor ?? null);
+        assert.equal(await icon.getAttribute('aria-hidden'), 'true');
+        if (!node.vendor) { assert.equal(await icon.locator('svg.lucide-box').count(), 1); continue; }
+        assert.equal(await icon.locator('svg.lucide-box').count(), 0);
+        const mark = icon.locator('.qp-model-mark');
+        const box = (await mark.boundingBox())!;
+        assert.equal(box.width, size); assert.equal(box.height, size);
+        const vectors = await mark.locator('svg').evaluateAll(elements => elements.filter(element => element.getBoundingClientRect().width > 0).map(element => {
+          const rect = element.getBoundingClientRect();
+          return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, hidden: element.getAttribute('aria-hidden'), focusable: element.getAttribute('focusable'), paths: element.querySelectorAll('path').length };
+        }));
+        assert.equal(vectors.length, 1); assert.ok(vectors[0].paths > 0);
+        assert.equal(vectors[0].hidden, 'true'); assert.equal(vectors[0].focusable, 'false');
+        assert.ok(vectors[0].x >= box.x - .1 && vectors[0].y >= box.y - .1 && vectors[0].x + vectors[0].width <= box.x + size + .1 && vectors[0].y + vectors[0].height <= box.y + size + .1, `${node.vendor} maker artwork exceeds its frame`);
+      }
+    }
+    await checkRuntimeGeometry(page, graph, lang, theme, 'known-model-makers');
+    await page.screenshot({ path: resolve(output, `model-marks-${lang}-${theme}.png`), animations: 'disabled' });
+    const selected = graph.nodes.model.findIndex(node => node.vendor === 'openai');
+    const target = hero.nth(selected);
+    await target.focus(); await page.keyboard.press('Enter'); await page.getByRole('dialog').waitFor();
+    assert.equal(await page.locator('#qp-detail-title').textContent(), graph.nodes.model[selected].key);
+    await page.keyboard.press('Escape'); await page.getByRole('dialog').waitFor({ state: 'hidden' });
+    assert.equal(await target.evaluate(element => element === document.activeElement), true);
+    // An older daemon may omit the additive maker field. Keep its real totals and names.
+    const legacy = { ...graph, nodes: { ...graph.nodes, model: graph.nodes.model.map(({ vendor: _vendor, ...node }) => node) } };
+    await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(legacy) })); routed = true;
+    await page.goto('http://127.0.0.1:7804/?model-marks=legacy#overview', { waitUntil: 'domcontentloaded' }); await settled(page, pending);
+    assert.equal(await page.locator('.qp-model-identity i[data-model-vendor],.qp-map-node[data-dimension=model] .qp-node-icon[data-model-vendor]').count(), 0);
+    assert.equal(await page.locator('.qp-model-identity i svg.lucide-box').count(), graph.nodes.model.length);
+    assert.equal(await page.locator('.qp-map-node[data-dimension=model] .qp-node-icon svg.lucide-box').count(), graph.nodes.model.length);
+    assert.deepEqual(await page.locator('.qp-map-node[data-dimension=model]').evaluateAll(elements => elements.map(element => ({ key: element.getAttribute('data-key'), tokens: element.getAttribute('data-tokens') }))), graph.nodes.model.map(node => ({ key: JSON.stringify(node.key), tokens: String(node.tokens) })));
+    modelMarkChecks.push({ lang, theme, vendors: replacements.map(([, , vendor]) => vendor), unknown: 4, tokens: graph.totals.tokens, legacyFallback: true, keyboardDetail: true, framedMarkContained: true });
+  } finally {
+    if (routed) await page.unroute(pattern);
+    db.transaction(() => { const restore = db.prepare('UPDATE usage_event SET model=? WHERE id=?'); for (const row of saved) restore.run(row.model, row.id); })();
+  }
+}
+
 async function checkPulseCore(page: Page, lang: string, theme: string, pending: Set<Request>) {
   const home = 'http://127.0.0.1:7804/?pulse-core=asset#overview';
   await page.goto(home, { waitUntil: 'domcontentloaded' });
@@ -1697,6 +1771,7 @@ try {
           if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme);
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
           if (pass === 0 && destination === 'overview') { await checkRuntimeAccess(page, lang, theme, pending); await checkSingleProjectRuntime(page, lang, theme, pending); }
+          if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkModelMarks(page, lang, theme, pending);
           if (pass === 0 && !runtimeLayoutOnly && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
           if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkPulseCore(page, lang, theme, pending);
           if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkOverviewPeriod(page, lang, theme, pending);
@@ -1715,7 +1790,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 8px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 8px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

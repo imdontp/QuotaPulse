@@ -135,6 +135,31 @@ test('usage-events and CSV share exact scope, grain and complete pagination', as
       assert.equal((await app.inject('/api/runtime-map')).statusCode, 401);
       assert.equal((await app.inject({ url: '/api/runtime-map?project_missing=0', headers })).statusCode, 400);
     });
+    await t.test('runtime model makers follow names across routes; unknown groups stay unbranded', async () => {
+      const cases = [
+        ['gpt-test', 'anthropic'], ['gpt-test', 'openrouter'],
+        ['claude-test', 'openai'], ['deepseek-test', 'openrouter'],
+        ['unidentified-alias', 'openai'], ['unidentified-alias', 'anthropic'],
+        [null, 'openai'], ['', 'anthropic'],
+      ] as const;
+      cases.forEach(([model, provider], index) => insert.run(1, 1, `maker-${index}`, 300000, model, provider, 1));
+      const response = await app.inject({ url: '/api/runtime-map?from=300000&to=300001', headers });
+      assert.equal(response.statusCode, 200);
+      const graph = response.json();
+      assert.equal(graph.totals.tokens, 80);
+      assert.equal(graph.totals.records, 8);
+      assert.equal(graph.totals.sessions, 1);
+      assert.deepEqual(graph.nodes.model.map((node: { key: string | null; vendor?: string }) => [node.key, node.vendor ?? null]), [
+        ['gpt-test', 'openai'], ['unidentified-alias', null],
+        [null, null], ['', null], ['claude-test', 'anthropic'], ['deepseek-test', 'deepseek'],
+      ]);
+      const filtered = (await app.inject({ url: '/api/runtime-map?from=300000&to=300001&provider=anthropic', headers })).json();
+      assert.equal(filtered.nodes.model.find((node: { key: string }) => node.key === 'gpt-test').vendor, 'openai');
+      for (const dimension of ['project', 'harness', 'provider', 'model'])
+        assert.equal(graph.nodes[dimension].reduce((sum: number, node: { tokens: number }) => sum + node.tokens, 0), 80);
+      for (const column of [0, 1, 2]) assert.equal(graph.edges.filter((edge: { column: number }) => edge.column === column).reduce((sum: number, edge: { tokens: number }) => sum + edge.tokens, 0), 80);
+      for (const dimension of ['project', 'harness', 'provider']) assert.ok(graph.nodes[dimension].every((node: object) => !('vendor' in node)));
+    });
     await t.test('pagination and whole-range export exceed the old 2000-row detail cap', async () => {
       db.transaction(() => { for (let index = 0; index < 2005; index++) insert.run(1, 1, `bulk-${index}`, 101, 'bulk-model', 'openai', 1); })();
       const response = (await get('&model=bulk-model&offset=2000&limit=500')).json();

@@ -1,5 +1,6 @@
 import type { DB } from '../db/index.js';
 import { usageWhere, USAGE_GRAIN_SQL, type UsageScope } from './usage-scope.js';
+import { vendorOf } from '../util/vendor.js';
 
 const DIMENSIONS = {
   project: 'sess.project',
@@ -40,11 +41,16 @@ export function runtimeMap(db: DB, scope: UsageScope) {
       cacheSavingKnownUsd: number; cacheSavingKnownCalls: number;
       nativeCalls: number; computedCalls: number; estimatedCalls: number; unknownCalls: number;
     };
-    const nodes = {} as Record<Dimension, Array<typeof totals & { key: string | null }>>;
+    const nodes = {} as Record<Dimension, Array<typeof totals & { key: string | null; vendor?: string }>>;
     for (const dimension of ORDER) {
       const column = DIMENSIONS[dimension];
       nodes[dimension] = db.prepare(`SELECT ${column} AS key, ${TOTALS} ${from}
         GROUP BY ${column} ORDER BY tokens DESC, key ASC`).all(where.params) as typeof nodes[typeof dimension];
+      if (dimension === 'model') nodes.model = nodes.model.map(node => {
+        // A grouped model can traverse multiple providers; only its name identifies its maker.
+        const vendor = vendorOf(node.key);
+        return vendor === 'unknown' ? node : { ...node, vendor };
+      });
     }
     const edges = ORDER.slice(0, -1).flatMap((dimension, column) => {
       const fromColumn = DIMENSIONS[dimension], toColumn = DIMENSIONS[ORDER[column + 1]!];
