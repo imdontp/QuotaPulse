@@ -17,6 +17,29 @@ export interface MinuteTrendResponse {
   };
 }
 
+export interface ProviderModelMinuteResponse extends Omit<MinuteTrendResponse, 'groupBy' | 'rows'> {
+  groupBy: 'provider_model';
+  rows: Array<MinuteTrendResponse['rows'][number] & {
+    provider: string | null;
+    model: string | null;
+    input_tokens: number;
+    cached_input_tokens: number;
+    cache_write_tokens: number;
+    output_tokens: number;
+  }>;
+  /** All-grain window totals; minute rows remain call-only and sparse. */
+  groups: Array<{
+    provider: string | null;
+    model: string | null;
+    tokens: number;
+    records: number;
+    calls: number;
+    callRecords: number;
+    aggregateRecords: number;
+    unknownRecords: number;
+  }>;
+}
+
 const TOKEN =
   typeof window === 'undefined'
     ? ''
@@ -639,6 +662,7 @@ export const api = {
   },
   runtimeMap: (scope: UsageEventScope) => get<RuntimeGraph>(`/api/runtime-map?${usageEventParams(scope)}`),
   minuteTrend: (scope?: UsageEventScope) => get<MinuteTrendResponse>(`/api/trend?bucket=minute&group_by=none${scope ? `&${usageEventParams(scope)}` : ''}`),
+  providerModelMinutes: (scope: UsageEventScope) => get<ProviderModelMinuteResponse>(`/api/trend?bucket=minute&group_by=provider_model&${usageEventParams(scope)}`),
   usageEvents: (scope: UsageEventScope, pagination: { limit: number; offset: number }) => {
     const params = usageEventParams(scope);
     params.set('limit', String(pagination.limit));

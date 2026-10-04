@@ -1,0 +1,67 @@
+﻿TAP version 13
+# 07:58:33.555 INFO  [db] opened :memory:
+# Subtest: usage-events and CSV share exact scope, grain and complete pagination
+    # Subtest: stable tie order, boundaries, record total, safe allowlist and authentication
+    ok 1 - stable tie order, boundaries, record total, safe allowlist and authentication
+      ---
+      duration_ms: 70.2881
+      ...
+    # Subtest: literal substring, missing project, route/provider vs model vendor and shared CSV filters
+    ok 2 - literal substring, missing project, route/provider vs model vendor and shared CSV filters
+      ---
+      duration_ms: 122.8077
+      ...
+    # Subtest: invalid supplied values fail rather than silently changing query meaning
+    ok 3 - invalid supplied values fail rather than silently changing query meaning
+      ---
+      duration_ms: 6.5153
+      ...
+    # Subtest: aggregate replacement retains event identity and count
+    ok 4 - aggregate replacement retains event identity and count
+      ---
+      duration_ms: 3.9661
+      ...
+    # Subtest: minute trend includes only declared call adapters and reports exclusions under the same filters
+    ok 5 - minute trend includes only declared call adapters and reports exclusions under the same filters
+      ---
+      duration_ms: 9.4337
+      ...
+    # Subtest: provider/model minutes preserve exact identities, sparse call values and all-grain window coverage
+    ok 6 - provider/model minutes preserve exact identities, sparse call values and all-grain window coverage
+      ---
+      duration_ms: 73.5937
+      ...
+    # Subtest: CSV keeps literal metadata inert when opened in spreadsheet software
+    ok 7 - CSV keeps literal metadata inert when opened in spreadsheet software
+      ---
+      duration_ms: 7.8442
+      ...
+    # Subtest: runtime nodes and edges conserve scoped tokens and count sessions distinctly
+    ok 8 - runtime nodes and edges conserve scoped tokens and count sessions distinctly
+      ---
+      duration_ms: 16.5126
+      ...
+    # Subtest: runtime model makers follow names across routes; unknown groups stay unbranded
+    ok 9 - runtime model makers follow names across routes; unknown groups stay unbranded
+      ---
+      duration_ms: 11.5617
+      ...
+    # Subtest: pagination and whole-range export exceed the old 2000-row detail cap
+    ok 10 - pagination and whole-range export exceed the old 2000-row detail cap
+      ---
+      duration_ms: 256.451
+      ...
+    1..10
+ok 1 - usage-events and CSV share exact scope, grain and complete pagination
+  ---
+  duration_ms: 1391.48
+  ...
+1..1
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3446.0171

@@ -1,0 +1,279 @@
+{
+  "checkpoint": "v1.62",
+  "status": "matched",
+  "scope": "all",
+  "productionIndexSha256": "01715737b91671baae91c203b6ed6067da1386568af00388a773fda083681c45",
+  "daemonCompiledSha256": {
+    "packages/daemon/dist/api/minute-trend.js": "a15565a5c11505acfe84992b0043506411cb2641b78e47ae9e46cf67dd578deb",
+    "packages/daemon/dist/api/runtime-map.js": "653ae5f8ae6a81d195e2caee161b7457abd11bdd66ba581e7243c507a1f073e3",
+    "packages/daemon/dist/util/vendor.js": "f351be4f6c8afbc80549ef13e0f1bb12bfae8818647f91a406b2e17eb2b8a0a7"
+  },
+  "archiveSha256": "7c955cc29d2ef769501f4fa4a8c8770823e6cdfc0e7683f191ed9a198c377ad6",
+  "references": [
+    {
+      "sha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+      "page": "overview",
+      "viewerSource": "../redesign-v1.44/source-overview.png"
+    },
+    {
+      "sha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+      "page": "live",
+      "viewerSource": "../redesign-v1.44/source-live.png"
+    },
+    {
+      "sha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "page": "projects",
+      "viewerSource": "../redesign-v1.44/source-projects.png"
+    },
+    {
+      "sha256": "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6",
+      "page": "providers",
+      "viewerSource": "../redesign-v1.44/source-providers.png"
+    },
+    {
+      "sha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "page": "models",
+      "viewerSource": "../redesign-v1.44/source-models.png"
+    },
+    {
+      "sha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+      "page": "cost",
+      "viewerSource": "../redesign-v1.44/source-cost.png"
+    },
+    {
+      "sha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+      "page": "history",
+      "viewerSource": "../redesign-v1.44/source-history.png"
+    },
+    {
+      "sha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+      "page": "alerts",
+      "viewerSource": "../redesign-v1.44/source-alerts.png"
+    }
+  ],
+  "captures": [
+    {
+      "filename": "overview-en-dark.png",
+      "sha256": "6a31ccc9e5755dceffb9a999bc779d64516d46fbddc7e6ea3ae12e0df200dbbb"
+    },
+    {
+      "filename": "live-en-dark.png",
+      "sha256": "17bca28f57712da78cd9b87ec58f4a62a81f44661ce2ec0393120cd757f518e7"
+    },
+    {
+      "filename": "projects-en-dark.png",
+      "sha256": "d0c15f603dd6fc4371d28f469b6df1069b42b93a9a98564a43619134b04c78f8"
+    },
+    {
+      "filename": "providers-en-dark.png",
+      "sha256": "d5221e28ab40f6477f50bd35b3d7b259f52347507ec4fc4bf35003a900321ffc"
+    },
+    {
+      "filename": "models-en-dark.png",
+      "sha256": "d573020369bd05e060604e3d88184dfa80fb2bf8ce34d6f20fb9b053a6d67840"
+    },
+    {
+      "filename": "cost-en-dark.png",
+      "sha256": "c9792e3c0f83e96966eebc3e8d3c33d43863327ef05b8061b3d9ea77cc7a739a"
+    },
+    {
+      "filename": "history-en-dark.png",
+      "sha256": "89ea7174e7c1bf54d926e905d601b9da48d376eb79a76ed5dde09a6307bd7f60"
+    },
+    {
+      "filename": "history-selected-en-dark.png",
+      "sha256": "386c9ce9e9b6d1cae1e15ab1396f67745131c035956edd32ebafcac418c7066b"
+    },
+    {
+      "filename": "alerts-en-dark.png",
+      "sha256": "156ddc5eeb5679514896b237993f58b6312bcdeacf3ce5e4b378cdf3ced77e9f"
+    },
+    {
+      "filename": "settings-en-dark.png",
+      "sha256": "c7b6829595957efe5e5c91e0d692bf07c8bb7c59190ee2abcafb15e062f72d4d"
+    },
+    {
+      "filename": "overview-en-light.png",
+      "sha256": "3dd5f8c895a8321e9fbd2d2f3ff55eb6da0518f9bb72958d2e83eefe5fc57933"
+    },
+    {
+      "filename": "live-en-light.png",
+      "sha256": "d63c2631d132783cde73edda7f1f7265e1914e11e2ce8fe89411d1bab12a1abb"
+    },
+    {
+      "filename": "projects-en-light.png",
+      "sha256": "e975c12347e85d47082d947e6a694821a35a90f1358925163945ae480060d17d"
+    },
+    {
+      "filename": "providers-en-light.png",
+      "sha256": "cc70f3f11cb19a62eeb3327d26c0a84a99ac49938f98f7d4aa614cef189fc025"
+    },
+    {
+      "filename": "models-en-light.png",
+      "sha256": "9641392ef1ab81428f394ef1b8f63caa0aab296c31cdbcbbe97455895b7893da"
+    },
+    {
+      "filename": "cost-en-light.png",
+      "sha256": "80dd8f17ec8934e76bebdac5830c5eb22f1140b0716442079d6cfe35b709d78d"
+    },
+    {
+      "filename": "history-en-light.png",
+      "sha256": "b47a7cd798eb676845cc2fff7648630d454652f9f71b6b17a8c6c1d87104a2e5"
+    },
+    {
+      "filename": "history-selected-en-light.png",
+      "sha256": "75beb4f8fcd81802f7d8497e7cc17ebcc7d22ac12ec449a453ced4db4a1a8d9f"
+    },
+    {
+      "filename": "alerts-en-light.png",
+      "sha256": "b2c3d7f028bfb1f47b351bcb661d9b510b476bd9d109bbd385c9647c00c8d5c9"
+    },
+    {
+      "filename": "settings-en-light.png",
+      "sha256": "2c3f93d9a894a948edf7dc43c2400362b59af1187ede86fd57c9744fab6c8c4e"
+    },
+    {
+      "filename": "overview-th-dark.png",
+      "sha256": "0a160b046389dc712fb58070bf89cef33653a75178ff9630dbcb293bdde19550"
+    },
+    {
+      "filename": "live-th-dark.png",
+      "sha256": "f597d9c55cb319d99484a5a049a68b7bd73b04788c725634fd64cb7fb6b7a1a8"
+    },
+    {
+      "filename": "projects-th-dark.png",
+      "sha256": "1ca67f4b1112cd5c1f53a50f4f3e60c20357f0315dbcaa96a46a79abaae5f24d"
+    },
+    {
+      "filename": "providers-th-dark.png",
+      "sha256": "cf2f45f2bf5f8abe08bb3ec8145d28549cc07e3f9848033ab895a4b59827cd7c"
+    },
+    {
+      "filename": "models-th-dark.png",
+      "sha256": "ed1ba983a2dc8a00ede150f0c0b146f42a04bc8f4ea82836fed127e4cd90001b"
+    },
+    {
+      "filename": "cost-th-dark.png",
+      "sha256": "0bbe241661964f743bbdabf15a1a7c1beadfe78fd232aa826c3124bdab776667"
+    },
+    {
+      "filename": "history-th-dark.png",
+      "sha256": "4cbc493fb69dbeb93f5a4385bf67063c8350337993ec20776a0dc5f95d69e463"
+    },
+    {
+      "filename": "history-selected-th-dark.png",
+      "sha256": "f3257a8b820815d4db9a0b8c5b103ed13d3584babb61536cf71ebbaec9e7a3d0"
+    },
+    {
+      "filename": "alerts-th-dark.png",
+      "sha256": "e8bb80653c0fd6bfa2d2c64f966545cd89e638d579ef606546632751905fd17e"
+    },
+    {
+      "filename": "settings-th-dark.png",
+      "sha256": "a1ab1710ccdf01bbf43df3be4feaad14b159b17e7425bba0f7d512e8be968235"
+    },
+    {
+      "filename": "overview-th-light.png",
+      "sha256": "b74a309de6a6cf3c98243ab32b9c31bf243ca7bd59dfa3b8bc0b4a9446b16179"
+    },
+    {
+      "filename": "live-th-light.png",
+      "sha256": "d9f7821bcf947385d24bfba8213611e2725eb4aa4a1fe9a0a1fd6372504667b3"
+    },
+    {
+      "filename": "projects-th-light.png",
+      "sha256": "22b599cfa9da0cd8980ecc33a70885f6f4812cd951dc8a58976ca8297592eb33"
+    },
+    {
+      "filename": "providers-th-light.png",
+      "sha256": "64a4b146bd276e8be6e36f8fb8541183abadd04c99ea6add80106df8c45ccf00"
+    },
+    {
+      "filename": "models-th-light.png",
+      "sha256": "aabe479de52286f79f7cf87ede2dd0200433583b668c5aa07aa9e70cfbdb2fa3"
+    },
+    {
+      "filename": "cost-th-light.png",
+      "sha256": "a56cb53c69b4eff45670f0732b822a3dafdc518aa7afdb3ad5eead089c115858"
+    },
+    {
+      "filename": "history-th-light.png",
+      "sha256": "00564c59b52f75f76af12da5e333b1045d89ec8b628222fd6ad76d76787c5b8c"
+    },
+    {
+      "filename": "history-selected-th-light.png",
+      "sha256": "4893f4510da72c60d69365e223803fd2fbf15071d14788167f1892aea2b95275"
+    },
+    {
+      "filename": "alerts-th-light.png",
+      "sha256": "8f480d5a92d3a4bad3fdd781c15c3bc0c17cdbeeca0f8c09c275dc14e20d4d6e"
+    },
+    {
+      "filename": "settings-th-light.png",
+      "sha256": "ab217f6da4b65f62cbf3a4f2b0dc5c65aee9bbb887a01aaa98e1222adc2597cb"
+    }
+  ],
+  "diagnosticCaptures": [
+    {
+      "filename": "runtime-single-en-dark.png",
+      "sha256": "1a962f4ac519e9afb8f108d32103f098e12a51e5bebe2d511c9109d056a0ecf2",
+      "purpose": "Synthetic diagnostic state; not canonical"
+    },
+    {
+      "filename": "model-marks-en-dark.png",
+      "sha256": "92c3abce649408fb4b884ee259c245054289bcca02b85e5fae0cf6e430dff9bd",
+      "purpose": "Synthetic diagnostic state; not canonical"
+    },
+    {
+      "filename": "live-minute-states-en-dark.png",
+      "sha256": "340477acdefd4361e64a6b7819e015e44f9fd7eb757fb53299be5f943924919d",
+      "purpose": "Owned synthetic zero, empty identity and unknown-grain records; not canonical"
+    },
+    {
+      "filename": "runtime-single-en-light.png",
+      "sha256": "adc8633fb81412fd53458e3553d3305f89b9c13802091eb87e49dbe2b155afd2",
+      "purpose": "Synthetic diagnostic state; not canonical"
+    },
+    {
+      "filename": "model-marks-en-light.png",
+      "sha256": "c1f02d00d952949809522d02979f2f99ba42e9443de6a65ea507291a1f429115",
+      "purpose": "Synthetic diagnostic state; not canonical"
+    },
+    {
+      "filename": "live-minute-states-en-light.png",
+      "sha256": "7ede1d153d92ee7bd8ca5e34fc43a8576fdfd423696cbde4ca8ea8d897f47d88",
+      "purpose": "Owned synthetic zero, empty identity and unknown-grain records; not canonical"
+    },
+    {
+      "filename": "runtime-single-th-dark.png",
+      "sha256": "c4e0dece385592cb7e1e368a072ab4727a2761a4695ed865079f1c50d7b36ee3",
+      "purpose": "Synthetic diagnostic state; not canonical"
+    },
+    {
+      "filename": "model-marks-th-dark.png",
+      "sha256": "a4ff835e0cd32bf7f476e7e9b6f9e4aa13c24636582d0d78beb6266d14adf6dc",
+      "purpose": "Synthetic diagnostic state; not canonical"
+    },
+    {
+      "filename": "live-minute-states-th-dark.png",
+      "sha256": "77d98a4db898d64beca89378c83e67c268d9ff71ea1ed9430be286792713855c",
+      "purpose": "Owned synthetic zero, empty identity and unknown-grain records; not canonical"
+    },
+    {
+      "filename": "runtime-single-th-light.png",
+      "sha256": "7d21590d1b657b6d63ef40dfd7d23e0fdec77a5abdc471498736f56b17ba4b50",
+      "purpose": "Synthetic diagnostic state; not canonical"
+    },
+    {
+      "filename": "model-marks-th-light.png",
+      "sha256": "289291bd7858cb0fd989c698df5b4f1ba35a96c6031d05c85923605b8fcc7137",
+      "purpose": "Synthetic diagnostic state; not canonical"
+    },
+    {
+      "filename": "live-minute-states-th-light.png",
+      "sha256": "52ab12eae70c087f72b485b3e0702e6b5f06251fe45ec08c9609e4680505fb1e",
+      "purpose": "Owned synthetic zero, empty identity and unknown-grain records; not canonical"
+    }
+  ],
+  "statement": "Nine-page production captures, actual provider/model minute cells, accessible tables and stale-response checks match the compiled web index and archived review bundle. New web and memory API test logs are from v1.62. Canonical repeats are not source-fidelity approval."
+}

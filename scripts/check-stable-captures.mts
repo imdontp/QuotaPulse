@@ -9,9 +9,10 @@ import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
-import type { Overview, MinuteTrendResponse, ProjectDetailResponse, DetailedProjectResponse, DetailedModelResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse, AlertEvent } from '../packages/web/src/api.js';
+import type { Overview, MinuteTrendResponse, ProviderModelMinuteResponse, ProjectDetailResponse, DetailedProjectResponse, DetailedModelResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse, AlertEvent } from '../packages/web/src/api.js';
 import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
 import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
+import { checkLiveMinuteRefresh } from './check-live-minute-refresh.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
@@ -96,6 +97,8 @@ const cases: Array<{ page: string; lang: string; theme: string; filename: string
 const overviewLayouts: Array<{ lang: string; theme: string; heroBottom: number; activityBottom: number; models: number; railHeight: number; runtimeProvidersVisible: number; edgeMaxError: number; pulseCenter: { x: number; y: number }; modelTitleOutside: boolean }> = [];
 const referenceColumnChecks: Array<{ page: string; lang: string; theme: string; headerTop: number; railTop: number; summaryRight: number; railLeft: number }> = [];
 const liveDensityChecks: Array<{ lang: string; theme: string; bottom: number; sessions: number; records: number }> = [];
+const liveMinuteChecks: Array<{ lang: string; theme: string; state: string; pairs: number; cells: number; missing: number; zero: number; recorded: number; partial: number; included: number; aggregate: number; unknown: number; table: boolean; labelGeometry: Array<{ viewport: number; width: number; clientWidth: number; scrollWidth: number; name: string | null | undefined }> }> = [];
+const liveRefreshChecks: Array<Awaited<ReturnType<typeof checkLiveMinuteRefresh>>> = [];
 const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bottom: number; unknownNative: number }> = [];
 const providerChecks: Array<{ lang: string; theme: string; bottom: number; compared: number; unavailable: boolean; expired: boolean; proportional: boolean }> = [];
 const modelComparisonChecks: Array<{ lang: string; theme: string; bottom: number; rows: number; ratios: number; boundaryRatios: boolean }> = [];
@@ -120,26 +123,90 @@ const allPages = [
 ] as const;
 const pages = liveOnly ? allPages.filter(([destination]) => destination === 'live') : compositionOnly ? allPages.filter(([destination]) => ['overview', 'live', 'models'].includes(destination)) : overviewOnly ? allPages.filter(([destination]) => destination === 'overview') : projectsOnly ? allPages.filter(([destination]) => destination === 'projects') : providersOnly ? allPages.filter(([destination]) => destination === 'providers') : modelsOnly ? allPages.filter(([destination]) => destination === 'models') : costOnly ? allPages.filter(([destination]) => destination === 'cost') : historyOnly ? allPages.filter(([destination]) => destination === 'history') : alertsOnly ? allPages.filter(([destination]) => destination === 'alerts') : settingsOnly ? allPages.filter(([destination]) => destination === 'settings') : allPages;
 
-async function checkLiveDensity(page: Page, lang: string, theme: string) {
+async function checkLiveMinuteValues(page: Page, data: ProviderModelMinuteResponse, lang: string, theme: string, state: string) {
+  const expected = data.groups.slice(0, 12);
+  const matrix = page.locator('.qp-live-matrix-row');
+  assert.equal(await matrix.count(), expected.length);
+  const rows = await matrix.evaluateAll(elements => elements.map(element => ({
+    key: element.getAttribute('data-pair-key'),
+    callRecords: Number(element.getAttribute('data-call-records')),
+    aggregateRecords: Number(element.getAttribute('data-aggregate-records')),
+    unknownRecords: Number(element.getAttribute('data-unknown-records')),
+    total: element.querySelector('.qp-live-matrix-total>span')!.textContent,
+    filterable: element.querySelector('button') !== null,
+    mark: (() => { const rect = element.querySelector('.qp-live-provider-mark')!.getBoundingClientRect(); return { width: rect.width, height: rect.height }; })(),
+    cells: Array.from(element.querySelectorAll<HTMLElement>('.qp-live-minute-strip>i')).map(cell => ({
+      at: Number(cell.dataset.at), state: cell.dataset.state,
+      tokens: cell.hasAttribute('data-tokens') ? Number(cell.dataset.tokens) : null,
+      records: cell.hasAttribute('data-records') ? Number(cell.dataset.records) : null,
+      calls: cell.hasAttribute('data-calls') ? Number(cell.dataset.calls) : null,
+      partial: cell.dataset.partial === 'true', intensity: Number(cell.style.getPropertyValue('--qp-minute-intensity')),
+    })),
+  })));
+  const format = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US');
+  const max = Math.max(0, ...data.rows.map(row => row.total_tokens));
+  const times = Array.from({ length: Math.floor((data.to - 1) / 60000) - Math.floor(data.from / 60000) + 1 }, (_, index) => Math.floor(data.from / 60000) * 60000 + index * 60000);
+  assert.equal(times.length, 31);
+  let missing = 0, zero = 0, recorded = 0, partial = 0;
+  const tableExpected: Array<{ key: string; at: number; state: string; tokens: string; records: string; calls: string }> = [];
+  for (const [index, group] of expected.entries()) {
+    const actual = rows[index], key = JSON.stringify([group.provider, group.model]);
+    assert.equal(actual.key, key); assert.equal(actual.total, format.format(group.tokens));
+    assert.equal(actual.callRecords, group.callRecords); assert.equal(actual.aggregateRecords, group.aggregateRecords); assert.equal(actual.unknownRecords, group.unknownRecords);
+    assert.equal(actual.filterable, group.provider !== null && group.provider !== '' && group.model !== null && group.model !== '');
+    assert.deepEqual(actual.mark, { width: 18, height: 18 });
+    assert.equal(actual.cells.length, times.length);
+    for (const [cellIndex, at] of times.entries()) {
+      const row = data.rows.find(row => row.bucket_ts === at && row.provider === group.provider && row.model === group.model);
+      const exists = row !== undefined && row.records > 0;
+      const cellState = !exists ? 'missing' : row.total_tokens === 0 ? 'zero' : 'recorded';
+      const cellPartial = Math.min(data.to, at + 60000) - Math.max(data.from, at) < 60000;
+      assert.deepEqual(actual.cells[cellIndex], { at, state: cellState, tokens: exists ? row.total_tokens : null, records: exists ? row.records : null, calls: exists ? row.calls : null, partial: cellPartial, intensity: exists && max > 0 ? row.total_tokens / max : 0 });
+      if (cellState === 'missing') missing++; else if (cellState === 'zero') zero++; else recorded++;
+      if (cellPartial) partial++;
+      tableExpected.push({ key, at, state: cellState, tokens: exists ? format.format(row.total_tokens) : '—', records: exists ? format.format(row.records) : '—', calls: exists ? format.format(row.calls) : '—' });
+    }
+  }
+  const aggregate = data.groups.reduce((sum, group) => sum + group.aggregateRecords, 0);
+  const unknown = data.groups.reduce((sum, group) => sum + group.unknownRecords, 0);
+  for (const [coverage, count] of [['included', data.coverage.includedRecords], ['aggregate', aggregate], ['unknown', unknown]] as const) assert.equal(await page.locator(`.qp-live-matrix-coverage [data-coverage=${coverage}]`).getAttribute('data-count'), String(count));
+  const summary = page.locator('.qp-live-minute-data>summary');
+  await summary.focus(); await page.keyboard.press('Enter');
+  assert.equal(await page.locator('.qp-live-minute-data').getAttribute('open'), '');
+  const table = await page.locator('.qp-live-minute-data-table tbody tr').evaluateAll(elements => elements.map(element => ({
+    key: element.getAttribute('data-pair-key'), at: Number(element.getAttribute('data-at')), state: element.getAttribute('data-state'),
+    tokens: element.querySelectorAll('td')[3].firstChild!.textContent,
+    records: element.querySelectorAll('td')[4].textContent, calls: element.querySelectorAll('td')[5].textContent,
+  })));
+  assert.deepEqual(table, tableExpected);
+  const labelGeometry: (typeof liveMinuteChecks)[number]['labelGeometry'] = [];
+  for (const width of [390, 900, 1280]) {
+    await page.setViewportSize({ width, height: 941 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Live minute table overflow at ${width}`);
+    const labels = await page.locator('.qp-live-matrix-label>span:last-child').evaluateAll(elements => elements.map(element => ({ width: element.getBoundingClientRect().width, clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, name: element.querySelector('b')?.textContent })));
+    assert.ok(labels.every(label => label.width >= 45 || label.scrollWidth <= label.clientWidth), `Matrix model labels are nearly hidden at ${width}: ${JSON.stringify(labels)}`);
+    labelGeometry.push(...labels.map(label => ({ viewport: width, ...label })));
+  }
+  const region = page.locator('.qp-live-minute-data-table'); await region.focus(); await page.keyboard.press('End');
+  await page.waitForFunction(() => { const e = document.querySelector('.qp-live-minute-data-table')!; return e.scrollTop > 0 && e.scrollTop + e.clientHeight >= e.scrollHeight - 1; });
+  await summary.focus(); await page.keyboard.press('Enter'); await page.setViewportSize({ width: 1672, height: 941 }); await page.evaluate(() => scrollTo(0, 0));
+  liveMinuteChecks.push({ lang, theme, state, pairs: expected.length, cells: times.length * expected.length, missing, zero, recorded, partial, included: data.coverage.includedRecords, aggregate, unknown, table: true, labelGeometry });
+}
+
+async function checkLiveDensity(page: Page, lang: string, theme: string, pending: Set<Request>) {
   await page.setViewportSize({ width: 1672, height: 941 });
   await page.evaluate(() => window.scrollTo(0, 0));
   const bottom = await page.locator('.qp-live-records').evaluate(element => element.getBoundingClientRect().bottom);
   assert.ok(bottom <= 941, `Live feed and pagination exceed viewport: ${bottom}`);
+  const railBottom = await page.locator('.qp-live-matrix-section').evaluate(element => element.getBoundingClientRect().bottom);
+  assert.ok(railBottom <= 941, `Live canonical minute matrix exceeds the source viewport: ${railBottom}`);
   const sessions = page.locator('.qp-live-table tbody tr');
   const records = page.locator('.qp-live-feed li');
   assert.equal(await sessions.count(), 10); assert.equal(await records.count(), 8);
-  const query = new URLSearchParams({ detailed: '1', from: String(fixedNow - 30 * 60_000), to: String(fixedNow + 1) });
-  const response = await daemon.inject({ method: 'GET', url: `/api/models?${query}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  const query = new URLSearchParams({ bucket: 'minute', group_by: 'provider_model', from: String(fixedNow - 30 * 60_000), to: String(fixedNow + 1) });
+  const response = await daemon.inject({ method: 'GET', url: `/api/trend?${query}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(response.statusCode, 200);
-  const models = response.json<DetailedModelResponse>();
-  const matrix = page.locator('.qp-live-matrix li');
-  assert.equal(await matrix.count(), models.groups.slice(0, 12).length);
-  const format = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US');
-  for (const [index, group] of models.groups.slice(0, 12).entries()) {
-    assert.equal(await matrix.nth(index).locator('strong').textContent(), format.format(group.tokens));
-    const width = await matrix.nth(index).locator('.qp-bar>span').evaluate(element => parseFloat((element as HTMLElement).style.width));
-    assert.ok(Math.abs(width - group.tokens / models.totals.tokens * 100) < 0.0001);
-  }
+  await checkLiveMinuteValues(page, response.json<ProviderModelMinuteResponse>(), lang, theme, 'canonical');
   for (const selector of ['.qp-live-table', '.qp-live-feed']) {
     const region = page.locator(selector);
     await region.focus(); await page.keyboard.press('End');
@@ -162,6 +229,30 @@ async function checkLiveDensity(page: Page, lang: string, theme: string) {
   assert.equal(await target.evaluate(element => element === document.activeElement), true);
   await page.locator('.qp-live-table').evaluate(element => { element.scrollTop = 0; });
   liveDensityChecks.push({ lang, theme, bottom, sessions: await sessions.count(), records: await records.count() });
+  // Owned memory-only diagnostic records. Restored before any later canonical page.
+  const original = JSON.stringify(db.prepare('SELECT * FROM usage_event ORDER BY id').all());
+  db.prepare("INSERT INTO source(id,harness,profile,root_path,display_name,detected_at) VALUES (910,'future-adapter','fixed','/synthetic/nonexistent','Unknown grain fixture',0)").run();
+  const insert = db.prepare('INSERT INTO usage_event(source_id,session_id,dedup_key,ts,provider,model,input_tokens,output_tokens,total_tokens,call_count) VALUES (?,?,?,?,?,?,?,0,?,1)');
+  insert.run(1, 1, 'live-minute-zero-fixture', fixedNow - 60000, 'nous', 'zero-minute-model', 0, 0);
+  insert.run(1, 1, 'live-minute-empty-fixture', fixedNow - 120000, '', '', 1, 1);
+  insert.run(910, null, 'live-minute-unknown-fixture', fixedNow - 60000, null, null, 400, 400);
+  try {
+    const diagnostic = await daemon.inject({ method: 'GET', url: `/api/trend?${query}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+    assert.equal(diagnostic.statusCode, 200); const data = diagnostic.json<ProviderModelMinuteResponse>();
+    await page.goto('http://127.0.0.1:7804/?live-minutes=states#live', { waitUntil: 'domcontentloaded' }); await page.locator('.qp-live-minute-strip').first().waitFor(); await settled(page, pending);
+    await checkLiveMinuteValues(page, data, lang, theme, 'owned-diagnostic');
+    const checked = liveMinuteChecks.at(-1)!; assert.ok(checked.zero > 0 && checked.missing > 0 && checked.recorded > 0 && checked.unknown > 0 && checked.aggregate > 0);
+    const icon = page.locator('.qp-live-matrix-row').filter({ has: page.locator('.qp-live-matrix-label b', { hasText: 'zero-minute-model' }) }).locator('.qp-live-provider-mark');
+    const bounds = await icon.evaluate(element => { const outer = element.getBoundingClientRect(); return Array.from(element.querySelectorAll('svg')).map(svg => { const r = svg.getBoundingClientRect(); return r.left >= outer.left - .1 && r.top >= outer.top - .1 && r.right <= outer.right + .1 && r.bottom <= outer.bottom + .1; }); });
+    assert.ok(bounds.length > 0 && bounds.every(Boolean), 'Nous mark is clipped');
+    await page.screenshot({ path: resolve(output, `live-minute-states-${lang}-${theme}.png`), animations: 'disabled' });
+  } finally {
+    db.prepare("DELETE FROM usage_event WHERE dedup_key IN ('live-minute-zero-fixture','live-minute-empty-fixture','live-minute-unknown-fixture')").run();
+    db.prepare('DELETE FROM source WHERE id=910').run();
+    assert.equal(JSON.stringify(db.prepare('SELECT * FROM usage_event ORDER BY id').all()), original);
+    await page.goto('http://127.0.0.1:7804/?live-minutes=restored#live', { waitUntil: 'domcontentloaded' }); await page.locator('.qp-live-minute-strip').first().waitFor(); await settled(page, pending);
+  }
+  liveRefreshChecks.push(await checkLiveMinuteRefresh(page, pending, response.json<ProviderModelMinuteResponse>(), lang, theme));
 }
 
 async function checkModelComparison(page: Page, lang: string, theme: string, pending: Set<Request>) {
@@ -1790,7 +1881,7 @@ try {
           if (pass === 0 && destination === 'projects') await checkProjectCards(page, lang, theme, pending);
           if (pass === 0 && destination === 'providers') await checkProviders(page, lang, theme, pending);
           if (pass === 0 && destination === 'models') await checkModelComparison(page, lang, theme, pending);
-          if (pass === 0 && destination === 'live') await checkLiveDensity(page, lang, theme);
+          if (pass === 0 && destination === 'live') await checkLiveDensity(page, lang, theme, pending);
           if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme);
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
           if (pass === 0 && destination === 'overview') { await checkRuntimeAccess(page, lang, theme, pending); await checkSingleProjectRuntime(page, lang, theme, pending); }
@@ -1813,7 +1904,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 8px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 8px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

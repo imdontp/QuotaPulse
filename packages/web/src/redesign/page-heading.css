@@ -25,6 +25,8 @@
 }
 .qp-redesign .qp-page-heading-icon>svg { width:26px; height:26px; }
 .qp-redesign[data-theme=dark] .qp-page-heading-icon {
+  background:linear-gradient(135deg,#001e63,#001a51);
+  border-color:#12367b;
   box-shadow:inset 0 0 14px color-mix(in srgb,var(--qp-accent) 10%,transparent),0 0 12px color-mix(in srgb,var(--qp-glow) 45%,transparent);
 }
 .qp-redesign[data-theme=dark] .qp-page-heading-icon>svg { filter:drop-shadow(0 0 4px color-mix(in srgb,var(--qp-accent) 55%,transparent)); }

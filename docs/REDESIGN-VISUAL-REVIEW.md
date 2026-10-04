@@ -1,14 +1,14 @@
 # Concept comparison and refinement queue
 
-Latest presentation work: [Framed headings and History rail v1.61](REDESIGN-FRAMED-HEADINGS-V1.61.md)
-adds framed page identities in five pages and a narrower undimmed desktop
-History detail rail while retaining native modal keyboard behavior. The
-[latest nine-page viewer](redesign-v1.61/reference-review.html) retains v1.60
-and shows selected History for source comparison. All eight original source
-hashes match. The full browser gate passes 40 pairs, 37 byte-identical, with
-unchanged tolerance and no masks. Full source likeness remains open: heading
-blue saturation/section marks, actual minute-based Live strips, globe/pill glow
-and remaining page composition details.
+Latest presentation work: [Actual Live minute strips v1.62](REDESIGN-LIVE-MINUTES-V1.62.md)
+replaces aggregate matrix bars with real provider/model minute cells, explicit
+grain coverage and window totals. Paused snapshots and obsolete-response guards
+are verified; shared dark heading tiles use a stronger source blue. The
+[latest nine-page viewer](redesign-v1.62/reference-review.html) retains v1.61
+and labels synthetic Live diagnostics separately. New 130 web / 11 memory API
+tests and the full 40-pair gate pass (37 byte-identical), with unchanged
+tolerance and no masks. All eight original source hashes match. Full source
+likeness remains open: section marks, globe/pill glow and page composition.
 
 [Header brand and status v1.52](REDESIGN-HEADER-BRAND-V1.52.md) enlarges the
 waveform/wordmark, frames actual daemon connection and machine scope, and adds

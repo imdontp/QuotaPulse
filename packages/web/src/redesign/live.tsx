@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { Activity, AlertTriangle, Clock3, Pause, Play, Radio, RefreshCw, Search, X } from 'lucide-react';
-import { api, type DetailedModelResponse, type LiveSessionsResponse, type MinuteTrendResponse, type Overview } from '@/api';
+import { api, type LiveSessionsResponse, type MinuteTrendResponse, type Overview, type ProviderModelMinuteResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import type { UsageEventScope, UsageEventsResponse } from '@/lib/usage-events';
 import { RedesignShell } from './shell';
-import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
 import { ChartData } from './chart-data';
 import { ObservedTrend } from './observed-trend';
 import { PageHeading } from './page-heading';
+import { LiveMinuteMatrix } from './live-minute-strip';
 import './live.css';
 
 interface LiveRoute {
@@ -33,8 +33,8 @@ function routeHash(route: LiveRoute) {
   if (route.feedOffset) p.set('feed_offset', String(route.feedOffset));
   return `#live${p.size ? `?${p}` : ''}`;
 }
-interface Snapshot { key: string; overview: Overview; scope: UsageEventScope; trend: MinuteTrendResponse;
-  feed: UsageEventsResponse; models: DetailedModelResponse; sessions: LiveSessionsResponse }
+interface Snapshot { key: string; route: LiveRoute; overview: Overview; scope: UsageEventScope; trend: MinuteTrendResponse;
+  feed: UsageEventsResponse; matrix: ProviderModelMinuteResponse; sessions: LiveSessionsResponse }
 
 export function ProductionLive() {
   const t = useT();
@@ -52,16 +52,28 @@ export function ProductionLive() {
   const refresh = useRefreshStatus();
   const dataKey = JSON.stringify(route);
   const currentKey = useRef(dataKey);
+  const requestEpoch = useRef(0);
+  const mounted = useRef(true);
   currentKey.current = dataKey;
   useEffect(() => {
-    const sync = () => { if (location.hash.slice(1).split('?')[0] === 'live') { setRoute(readRoute()); setDraft(readRoute().q); } };
+    mounted.current = true;
+    const sync = () => {
+      requestEpoch.current++;
+      if (location.hash.slice(1).split('?')[0] === 'live') {
+        const next = readRoute();
+        currentKey.current = JSON.stringify(next);
+        setRoute(next); setDraft(next.q); setError(null);
+      }
+    };
     addEventListener('hashchange', sync);
-    return () => removeEventListener('hashchange', sync);
+    return () => { mounted.current = false; requestEpoch.current++; removeEventListener('hashchange', sync); };
   }, []);
   useEffect(() => { if (selectedSession && !dialog.current?.open) dialog.current?.showModal(); }, [selectedSession]);
   const update = (patch: Partial<LiveRoute>) => {
     if (pausedRef.current) return;
     const next = { ...route, ...patch };
+    requestEpoch.current++;
+    currentKey.current = JSON.stringify(next);
     history.replaceState(null, '', `${location.pathname}${location.search}${routeHash(next)}`);
     setRoute(next);
     setError(null);
@@ -69,32 +81,39 @@ export function ProductionLive() {
   useLiveRefresh(async () => {
     if (pausedRef.current) return;
     const requestedKey = dataKey;
+    const requestedEpoch = requestEpoch.current;
+    const isCurrent = () => mounted.current && !pausedRef.current && currentKey.current === requestedKey && requestEpoch.current === requestedEpoch;
     try {
       const overview = await api.overview();
+      if (!isCurrent()) return;
       const scope: UsageEventScope = { from: Math.max(0, overview.now - 30 * 60_000), to: overview.now + 1,
         ...(route.q ? { q: route.q } : {}), ...(route.provider ? { provider: route.provider } : {}),
         ...(route.model ? { model: route.model } : {}) };
       const base = { from: scope.from, to: scope.to };
-      const [trend, feed, models, sessions] = await Promise.all([
+      const [trend, feed, matrix, sessions] = await Promise.all([
         api.minuteTrend(scope), api.usageEvents(scope, { limit: 8, offset: route.feedOffset }),
-        api.detailedModels(base), api.liveSessions(scope, route.sessions, route.sessionOffset),
+        api.providerModelMinutes(base), api.liveSessions(scope, route.sessions, route.sessionOffset),
       ]);
-      if (!pausedRef.current && currentKey.current === requestedKey) {
-        setSnapshot({ key: requestedKey, overview, scope, trend, feed, models, sessions });
+      if (isCurrent()) {
+        setSnapshot({ key: requestedKey, route, overview, scope, trend, feed, matrix, sessions });
         setError(null);
       }
     } catch (cause) {
-      if (!pausedRef.current && currentKey.current === requestedKey) setError(String(cause));
+      if (!isCurrent()) return;
+      setError(String(cause));
       throw cause;
     }
   }, [dataKey, paused]);
   const togglePause = () => {
+    requestEpoch.current++;
     pausedRef.current = !pausedRef.current;
     setPaused(pausedRef.current);
     if (!pausedRef.current) update({ sessionOffset: 0, feedOffset: 0 });
   };
   const current = snapshot?.key === dataKey ? snapshot : null;
-  const display = paused ? snapshot : current;
+  const display = paused ? snapshot : current ?? (error ? snapshot : null);
+  const displayRoute = display?.route ?? route;
+  const frozen = paused || (display !== null && display.key !== dataKey);
   const now = display?.overview.now ?? Date.now();
   const sources = display?.overview.sourceStatus ?? [];
   const validRecent = (at: number | null) => at !== null && at <= now && now - at <= 300_000;
@@ -136,28 +155,28 @@ export function ProductionLive() {
       </section>
       <div className="qp-live-layout">
         <div className="qp-live-main">
-          <section className="qp-panel qp-live-section qp-live-sessions"><div className="qp-live-session-tools"><div className="qp-live-section-head"><h2>{t('redesign.liveSessionTable')}</h2><div><button disabled={paused} aria-pressed={route.sessions === 'recent'} onClick={() => update({ sessions: 'recent', sessionOffset: 0 })}>{t('redesign.liveRecentFilter')}</button><button disabled={paused} aria-pressed={route.sessions === 'all'} onClick={() => update({ sessions: 'all', sessionOffset: 0 })}>{t('redesign.liveAllFilter')}</button></div></div>
-            <form className="qp-live-search" onSubmit={event => { event.preventDefault(); update({ q: draft, sessionOffset: 0, feedOffset: 0 }); }}><Search size={15}/><input disabled={paused} value={draft} onChange={event => setDraft(event.target.value)} maxLength={256} aria-label={t('redesign.liveSearch')} placeholder={t('redesign.liveSearch')}/><button disabled={paused} type="submit">{t('redesign.liveApplySearch')}</button></form></div>
+          <section className="qp-panel qp-live-section qp-live-sessions"><div className="qp-live-session-tools"><div className="qp-live-section-head"><h2>{t('redesign.liveSessionTable')}</h2><div><button disabled={frozen} aria-pressed={displayRoute.sessions === 'recent'} onClick={() => update({ sessions: 'recent', sessionOffset: 0 })}>{t('redesign.liveRecentFilter')}</button><button disabled={frozen} aria-pressed={displayRoute.sessions === 'all'} onClick={() => update({ sessions: 'all', sessionOffset: 0 })}>{t('redesign.liveAllFilter')}</button></div></div>
+            <form className="qp-live-search" onSubmit={event => { event.preventDefault(); update({ q: draft, sessionOffset: 0, feedOffset: 0 }); }}><Search size={15}/><input disabled={frozen} value={frozen ? displayRoute.q : draft} onChange={event => setDraft(event.target.value)} maxLength={256} aria-label={t('redesign.liveSearch')} placeholder={t('redesign.liveSearch')}/><button disabled={frozen} type="submit">{t('redesign.liveApplySearch')}</button></form></div>
             {display.sessions.rows.length === 0 ? <p>{t('redesign.liveNoSessions')}</p> : <div className="qp-live-table" tabIndex={0} role="region" aria-label={t('redesign.liveSessionTable')}><table><thead><tr><th>{t('redesign.sessions')}</th><th>{t('redesign.project')}</th><th>{t('redesign.harness')}</th><th>{t('redesign.liveSourceTime')}</th><th>{t('redesign.tokens')}</th></tr></thead><tbody>{display.sessions.rows.map(session => <tr key={session.sessionKey}><td><button onClick={event => { returnFocus.current = event.currentTarget; setSelectedSession(session); }}>{session.nativeSessionId}</button><small>{session.sourceName}</small></td><td>{session.project ?? t('redesign.unassigned')}</td><td><span className="qp-live-session-harness"><HarnessIcon harness={session.harness} vendor={display.overview.harnesses.find(harness => harness.harness === session.harness)?.vendor} label={session.harness}/>{session.harness}</span></td><td>{sourceDate(session.lastSeenAt)}</td><td>{number(session.tokens)}</td></tr>)}</tbody></table></div>}
-            <div className="qp-live-pagination"><button disabled={paused || route.sessionOffset === 0} onClick={() => update({ sessionOffset: Math.max(0, route.sessionOffset - 10) })}>{t('redesign.livePrevious')}</button><span>{number(display.sessions.total)} {t('redesign.sessions')}</span><button disabled={paused || route.sessionOffset + display.sessions.rows.length >= display.sessions.total} onClick={() => update({ sessionOffset: route.sessionOffset + 10 })}>{t('redesign.liveNext')}</button></div>
+            <div className="qp-live-pagination"><button disabled={frozen || displayRoute.sessionOffset === 0} onClick={() => update({ sessionOffset: Math.max(0, displayRoute.sessionOffset - 10) })}>{t('redesign.livePrevious')}</button><span>{number(display.sessions.total)} {t('redesign.sessions')}</span><button disabled={frozen || displayRoute.sessionOffset + display.sessions.rows.length >= display.sessions.total} onClick={() => update({ sessionOffset: displayRoute.sessionOffset + 10 })}>{t('redesign.liveNext')}</button></div>
             <p className="qp-footnote">{t('redesign.liveMetricsNote')}</p>
           </section>
           <section className="qp-panel qp-live-section qp-live-trend"><div className="qp-live-section-head"><h2>{t('redesign.liveChart')}</h2>{trend?.coverage.includedRecords ? <p className="qp-footnote">{number(trend.coverage.includedCalls)} {t('redesign.modelsCalls')}</p> : null}</div>{trend?.coverage.includedRecords ? <><ObservedTrend className="qp-live-chart" points={bars.map(bar => ({ at: bar.at, value: bar.tokens }))} language={lang} label={`${t('redesign.liveChart')}: ${t('redesign.tokens')}: 0 – ${number(barMax)}`}/><ChartData title={t('redesign.liveChart')} points={bars.map(bar => ({ at: bar.at, value: bar.tokens }))} language={lang} t={t}/></> : <p>{t('redesign.liveChartEmpty')}</p>}
             <div className="qp-live-excluded"><strong>{t('redesign.liveExcluded')}</strong><span>{number(aggregateExcluded)} {t('redesign.liveAggregate')}</span><span>{number(unknownExcluded)} {t('redesign.liveUnknownGrain')}</span>{trend?.coverage.excludedSources.map(source => <small key={source.source_id}>{source.source_name}: {number(source.records)} {t('redesign.records')}</small>)}</div>
           </section>
-          <section className="qp-panel qp-live-section qp-live-records"><div className="qp-live-section-head"><h2>{t('redesign.liveFeed')}</h2><a href={historyHref({ ...(route.provider ? { provider: route.provider } : {}), ...(route.model ? { model: route.model } : {}), ...(route.q ? { q: route.q } : {}) })}>{t('redesign.openHistory')}</a></div>
+          <section className="qp-panel qp-live-section qp-live-records"><div className="qp-live-section-head"><h2>{t('redesign.liveFeed')}</h2><a href={historyHref({ ...(displayRoute.provider ? { provider: displayRoute.provider } : {}), ...(displayRoute.model ? { model: displayRoute.model } : {}), ...(displayRoute.q ? { q: displayRoute.q } : {}) })}>{t('redesign.openHistory')}</a></div>
             {display.feed.rows.length === 0 ? <p>{t('redesign.liveNoRecords')}</p> : <ol className="qp-live-feed" tabIndex={0} aria-label={t('redesign.liveFeed')}>{display.feed.rows.map(row => <li key={row.event_id}><span>{date(row.timestamp_ms)} · {row.harness} · {row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}<small>{row.grain === 'call' ? t('redesign.callRecord') : t('redesign.aggregateUpdate')}</small></span><strong>{number(row.total_tokens)}</strong></li>)}</ol>}
-            <div className="qp-live-pagination"><button disabled={paused || route.feedOffset === 0} onClick={() => update({ feedOffset: Math.max(0, route.feedOffset - 8) })}>{t('redesign.livePrevious')}</button><span>{number(display.feed.total)} {t('redesign.records')}</span><button disabled={paused || route.feedOffset + display.feed.rows.length >= display.feed.total} onClick={() => update({ feedOffset: route.feedOffset + 8 })}>{t('redesign.liveNext')}</button></div>
+            <div className="qp-live-pagination"><button disabled={frozen || displayRoute.feedOffset === 0} onClick={() => update({ feedOffset: Math.max(0, displayRoute.feedOffset - 8) })}>{t('redesign.livePrevious')}</button><span>{number(display.feed.total)} {t('redesign.records')}</span><button disabled={frozen || displayRoute.feedOffset + display.feed.rows.length >= display.feed.total} onClick={() => update({ feedOffset: displayRoute.feedOffset + 8 })}>{t('redesign.liveNext')}</button></div>
           </section>
         </div>
         <aside className="qp-live-rail">
           <section className="qp-panel qp-live-section"><h2><AlertTriangle size={18}/>{t('redesign.liveAdvisory')}</h2>{advisories.length === 0 ? <p>{t('redesign.liveNoAdvisory')}</p> : <ol>{advisories.map(source => <li key={source.source_id}><AlertTriangle size={15}/><span>{source.display_name} · {t(source.telemetry.reason === 'usage_newer_than_quota' ? 'redesign.liveUsageAheadQuota' : source.telemetry.reason === 'reader_error' ? 'redesign.liveReaderErrorNote' : 'redesign.liveQuotaReview')}</span><a href="#settings?section=diagnostics">{t('redesign.liveDiagnostics')}</a></li>)}</ol>}</section>
-          <section className="qp-panel qp-live-section"><h2><Radio size={18}/>{t('redesign.liveMatrix')}</h2><p className="qp-footnote">{t('redesign.liveMatrixNote')} {t('redesign.liveMatrixTop')}</p>{(route.provider || route.model) && <button disabled={paused} className="qp-live-clear" onClick={() => update({ provider: null, model: null, feedOffset: 0, sessionOffset: 0 })}>{t('redesign.liveClearMatrix')}</button>}
-            <ol className="qp-live-matrix">{display.models.groups.slice(0, 12).map((group, index) => <li key={JSON.stringify([group.provider, group.model, index])}>{group.provider && group.model ? <button disabled={paused} aria-pressed={route.provider === group.provider && route.model === group.model} onClick={() => update({ provider: group.provider, model: group.model, feedOffset: 0, sessionOffset: 0 })}><span className="qp-live-matrix-label"><VendorIcon vendor={group.provider}/>{group.provider} · {group.model}</span><strong>{number(group.tokens)}</strong><span className="qp-bar" aria-hidden="true"><span style={{ width: `${display.models.totals.tokens ? group.tokens / display.models.totals.tokens * 100 : 0}%` }}/></span></button> : <span>{group.provider ?? t('redesign.unknownValue')} · {group.model ?? t('redesign.unknownValue')}<strong>{number(group.tokens)}</strong></span>}</li>)}</ol>
+          <section className="qp-panel qp-live-section qp-live-matrix-section"><h2><Radio size={18}/>{t('redesign.liveMatrix')}</h2>
+            <LiveMinuteMatrix data={display.matrix} language={lang} t={t} frozen={frozen} provider={displayRoute.provider} model={displayRoute.model} onSelect={(provider, model) => update({ provider, model, feedOffset: 0, sessionOffset: 0 })} onClear={() => update({ provider: null, model: null, feedOffset: 0, sessionOffset: 0 })}/>
           </section>
         </aside>
       </div>
     </>}
-    <dialog ref={dialog} className="qp-live-dialog" aria-labelledby="qp-live-detail-title" onClose={event => { if (!event.currentTarget.open) { setSelectedSession(null); returnFocus.current?.focus(); } }}>{selectedSession && <><div className="qp-live-section-head"><h2 id="qp-live-detail-title">{t('redesign.liveSessionDetail')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X size={18}/></button></div><dl><dt>{t('redesign.sessions')}</dt><dd>{selectedSession.nativeSessionId}</dd><dt>{t('redesign.project')}</dt><dd>{selectedSession.project ?? t('redesign.unassigned')}</dd><dt>{t('redesign.liveSourceTime')}</dt><dd>{sourceDate(selectedSession.lastSeenAt)}</dd><dt>{t('redesign.liveObservedTime')}</dt><dd>{date(selectedSession.lastObservedAt)}</dd><dt>{t('redesign.tokens')}</dt><dd>{number(selectedSession.tokens)}</dd><dt>{t('redesign.projectObservedPaths')}</dt><dd>{selectedSession.cwd ?? t('redesign.projectUnknownPath')}</dd></dl><a href={historyHref({ session_id: String(selectedSession.sessionKey), ...(route.provider ? { provider: route.provider } : {}), ...(route.model ? { model: route.model } : {}), ...(route.q ? { q: route.q } : {}) })}>{t('redesign.openHistory')}</a></>}</dialog>
+    <dialog ref={dialog} className="qp-live-dialog" aria-labelledby="qp-live-detail-title" onClose={event => { if (!event.currentTarget.open) { setSelectedSession(null); returnFocus.current?.focus(); } }}>{selectedSession && <><div className="qp-live-section-head"><h2 id="qp-live-detail-title">{t('redesign.liveSessionDetail')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X size={18}/></button></div><dl><dt>{t('redesign.sessions')}</dt><dd>{selectedSession.nativeSessionId}</dd><dt>{t('redesign.project')}</dt><dd>{selectedSession.project ?? t('redesign.unassigned')}</dd><dt>{t('redesign.liveSourceTime')}</dt><dd>{sourceDate(selectedSession.lastSeenAt)}</dd><dt>{t('redesign.liveObservedTime')}</dt><dd>{date(selectedSession.lastObservedAt)}</dd><dt>{t('redesign.tokens')}</dt><dd>{number(selectedSession.tokens)}</dd><dt>{t('redesign.projectObservedPaths')}</dt><dd>{selectedSession.cwd ?? t('redesign.projectUnknownPath')}</dd></dl><a href={historyHref({ session_id: String(selectedSession.sessionKey), ...(displayRoute.provider ? { provider: displayRoute.provider } : {}), ...(displayRoute.model ? { model: displayRoute.model } : {}), ...(displayRoute.q ? { q: displayRoute.q } : {}) })}>{t('redesign.openHistory')}</a></>}</dialog>
   </RedesignShell>;
 }

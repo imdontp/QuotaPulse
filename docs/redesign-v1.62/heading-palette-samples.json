@@ -1,0 +1,13 @@
+{
+  "scope": "Six local heading-background samples only; not a whole-image likeness score",
+  "method": "Read-only PIL RGB pixel sampling; matching local tile offsets. Source tile origin is a visual estimate.",
+  "page": "projects",
+  "relativePoints": [[6,6],[12,6],[30,6],[36,12],[6,30],[30,36]],
+  "origins": {"source": [243,78], "v1.61": [238,83], "v1.62": [238,83]},
+  "pixels": {
+    "source": [[1,25,82],[1,30,97],[2,29,93],[1,30,105],[1,24,76],[0,28,91]],
+    "v1.61": [[20,55,78],[21,54,78],[24,46,70],[26,46,72],[25,50,76],[28,45,72]],
+    "v1.62": [[1,36,103],[1,36,103],[0,32,95],[2,35,97],[2,36,100],[3,37,96]]
+  },
+  "meanAbsoluteChannelDifference": {"v1.61": 20.333333333333332, "v1.62": 6.611111111111111}
+}

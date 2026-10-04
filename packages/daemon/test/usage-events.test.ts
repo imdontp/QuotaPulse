@@ -102,6 +102,149 @@ test('usage-events and CSV share exact scope, grain and complete pagination', as
       const boundary = (await app.inject({ url: '/api/trend?bucket=minute&from=59999&to=60001&model=boundary-model', headers })).json();
       assert.deepEqual(boundary.rows.map((row: { bucket_ts: number }) => row.bucket_ts), [0, 60000]);
     });
+    await t.test('provider/model minutes preserve exact identities, sparse call values and all-grain window coverage', async () => {
+      const from = 600000;
+      const to = 780000;
+      type Pair = { provider: string | null; model: string | null };
+      type Fixture = Pair & { sourceId: number; at: number; tokens: number; calls: number };
+      type Row = Pair & { series: string; bucket_ts: number; records: number; calls: number; total_tokens: number;
+        input_tokens: number; cached_input_tokens: number; cache_write_tokens: number; output_tokens: number };
+      type Group = Pair & { tokens: number; records: number; calls: number; callRecords: number; aggregateRecords: number; unknownRecords: number };
+      type Response = { groupBy: string; measurement: string; rows: Row[]; groups: Group[];
+        coverage: { includedRecords: number; includedCalls: number; excludedRecords: number; excludedCalls: number;
+          excludedSources: Array<{ source_id: number; grain: string; records: number; calls: number; last_observed_tokens: number }> } };
+      const pairKey = (pair: Pair) => JSON.stringify([pair.provider, pair.model]);
+      const fixtures: Fixture[] = [];
+      const add = db.prepare(`INSERT INTO usage_event(source_id,session_id,dedup_key,ts,provider,model,
+        input_tokens,output_tokens,total_tokens,call_count) VALUES (?,?,?,?,?,?,?,?,?,?)`);
+      const record = (sourceId: number, at: number, provider: string | null, model: string | null, tokens: number, calls = 1) => {
+        add.run(sourceId, sourceId, `minute-pair-${fixtures.length}`, at, provider, model,
+          Math.floor(tokens / 2), tokens - Math.floor(tokens / 2), tokens, calls);
+        fixtures.push({ sourceId, at, provider, model, tokens, calls });
+      };
+      const identities = [
+        [null, null], ['', null], [null, ''], ['', ''], ['(unknown)', '(unknown)'],
+        [null, 'x'], ['null', 'x'], ['a/b', 'c'], ['a', 'b/c'], ['a|b', 'c'], ['a', 'b|c'],
+        ['route|"quoted"', '模型/ไทย😀\n%_'], [' provider ', ' model '],
+        ['openrouter', 'gpt-shared'], ['openai', 'gpt-shared'],
+      ] as const;
+      identities.forEach(([provider, model], index) => {
+        record(1, from + 100 + index, provider, model, index + 1, index % 3 + 1);
+        record(2, from + 200 + index, provider, model, 200 + index, 10);
+        record(3, from + 300 + index, provider, model, 300 + index, 2);
+      });
+      record(1, from + 60000, 'zero-provider', 'zero-model', 0);
+      record(2, from + 60050, 'aggregate-provider', 'aggregate-model', 1000, 9);
+      record(3, from + 60060, 'unknown-provider', 'unknown-model', 500, 3);
+      record(1, from + 59999, 'openai', 'gpt-shared', 11);
+      record(1, from + 60000, 'openai', 'gpt-shared', 13, 2);
+      record(1, from - 1, 'outside-provider', 'outside-before', 10000);
+      record(1, to, 'outside-provider', 'outside-after', 10000);
+      const scopedFixtures = fixtures.filter(row => row.at >= from && row.at < to);
+      const request = (query = '', grouping = 'provider_model') => app.inject({
+        url: `/api/trend?bucket=minute&from=${from}&to=${to}&group_by=${grouping}${query}`, headers,
+      });
+      const scopes = [
+        { query: '', matches: (_row: Fixture) => true },
+        { query: '&provider=openai', matches: (row: Fixture) => row.provider === 'openai' },
+        { query: '&model=gpt-shared', matches: (row: Fixture) => row.model === 'gpt-shared' },
+        { query: '&provider=openai&model=gpt-shared', matches: (row: Fixture) => row.provider === 'openai' && row.model === 'gpt-shared' },
+        { query: '&q=gpt', matches: (row: Fixture) => row.model?.includes('gpt') === true },
+        { query: '&q=%25', matches: (row: Fixture) => row.model?.includes('%') === true || row.sourceId === 1 },
+        { query: '&source_id=2', matches: (row: Fixture) => row.sourceId === 2 },
+        { query: '&project_missing=1', matches: (row: Fixture) => row.sourceId === 2 },
+        { query: '&harness=future-adapter', matches: (row: Fixture) => row.sourceId === 3 },
+        { query: '&grain=call', matches: (row: Fixture) => row.sourceId === 1 },
+        { query: '&grain=session_aggregate', matches: (row: Fixture) => row.sourceId === 2 },
+        { query: '&grain=unknown', matches: (row: Fixture) => row.sourceId === 3 },
+        { query: '&provider=openai&grain=session_aggregate', matches: (row: Fixture) => row.provider === 'openai' && row.sourceId === 2 },
+        { query: '&model=missing-model', matches: (_row: Fixture) => false },
+      ];
+      for (const scope of scopes) {
+        const response = await request(scope.query);
+        assert.equal(response.statusCode, 200, scope.query);
+        const body = response.json<Response>();
+        assert.equal(body.groupBy, 'provider_model');
+        assert.equal(body.measurement, 'recorded_tokens_per_minute');
+        const expected = scopedFixtures.filter(scope.matches);
+        const calls = expected.filter(row => row.sourceId === 1);
+        const excluded = expected.filter(row => row.sourceId !== 1);
+        const expectedGroups = new Map<string, Group>();
+        const expectedRows = new Map<string, Row>();
+        for (const fixture of expected) {
+          const key = pairKey(fixture);
+          const group = expectedGroups.get(key) ?? { provider: fixture.provider, model: fixture.model,
+            tokens: 0, records: 0, calls: 0, callRecords: 0, aggregateRecords: 0, unknownRecords: 0 };
+          group.tokens += fixture.tokens; group.records++; group.calls += fixture.calls;
+          if (fixture.sourceId === 1) group.callRecords++;
+          else if (fixture.sourceId === 2) group.aggregateRecords++;
+          else group.unknownRecords++;
+          expectedGroups.set(key, group);
+          if (fixture.sourceId === 1) {
+            const at = Math.floor(fixture.at / 60000) * 60000;
+            const cellKey = JSON.stringify([at, fixture.provider, fixture.model]);
+            const row = expectedRows.get(cellKey) ?? { provider: fixture.provider, model: fixture.model,
+              series: key, bucket_ts: at, records: 0, calls: 0, total_tokens: 0,
+              input_tokens: 0, cached_input_tokens: 0, cache_write_tokens: 0, output_tokens: 0 };
+            row.records++; row.calls += fixture.calls; row.total_tokens += fixture.tokens;
+            row.input_tokens += Math.floor(fixture.tokens / 2);
+            row.output_tokens += fixture.tokens - Math.floor(fixture.tokens / 2);
+            expectedRows.set(cellKey, row);
+          }
+        }
+        assert.equal(body.groups.length, expectedGroups.size, scope.query);
+        assert.equal(new Set(body.groups.map(pairKey)).size, body.groups.length, scope.query);
+        for (const group of body.groups) {
+          assert.deepEqual(group, expectedGroups.get(pairKey(group)), scope.query);
+          assert.equal(group.callRecords + group.aggregateRecords + group.unknownRecords, group.records);
+        }
+        assert.ok(body.groups.every((group, index) => index === 0 || group.tokens <= body.groups[index - 1]!.tokens));
+        assert.equal(body.rows.length, expectedRows.size, scope.query);
+        assert.equal(new Set(body.rows.map(row => JSON.stringify([row.bucket_ts, row.provider, row.model]))).size, body.rows.length);
+        for (const row of body.rows) assert.deepEqual(row, expectedRows.get(JSON.stringify([row.bucket_ts, row.provider, row.model])), scope.query);
+        assert.equal(body.coverage.includedRecords, calls.length, scope.query);
+        assert.equal(body.coverage.includedCalls, calls.reduce((sum, row) => sum + row.calls, 0), scope.query);
+        assert.equal(body.coverage.excludedRecords, excluded.length, scope.query);
+        assert.equal(body.coverage.excludedCalls, excluded.reduce((sum, row) => sum + row.calls, 0), scope.query);
+        for (const source of body.coverage.excludedSources) {
+          const records = excluded.filter(row => row.sourceId === source.source_id);
+          assert.equal(source.grain, source.source_id === 2 ? 'session_aggregate' : 'unknown');
+          assert.equal(source.records, records.length);
+          assert.equal(source.calls, records.reduce((sum, row) => sum + row.calls, 0));
+          assert.equal(source.last_observed_tokens, records.reduce((sum, row) => sum + row.tokens, 0));
+        }
+        const ungrouped = (await request(scope.query, 'none')).json<Response>();
+        assert.deepEqual(body.coverage, ungrouped.coverage, scope.query);
+        assert.equal('groups' in ungrouped, false);
+        for (const row of ungrouped.rows) {
+          const grouped = body.rows.filter(cell => cell.bucket_ts === row.bucket_ts);
+          assert.equal(row.total_tokens, grouped.reduce((sum, cell) => sum + cell.total_tokens, 0));
+          assert.equal(row.records, grouped.reduce((sum, cell) => sum + cell.records, 0));
+          assert.equal(row.calls, grouped.reduce((sum, cell) => sum + cell.calls, 0));
+        }
+      }
+      const full = (await request()).json<Response>();
+      assert.equal(full.groups.length, identities.length + 3);
+      const zero = full.rows.find(row => row.provider === 'zero-provider')!;
+      assert.equal(zero.bucket_ts, from + 60000); assert.equal(zero.records, 1); assert.equal(zero.total_tokens, 0);
+      assert.equal(full.rows.some(row => row.bucket_ts === from + 120000), false, 'missing minute stays absent, distinct from observed zero');
+      assert.equal(full.rows.some(row => row.provider === 'aggregate-provider' || row.provider === 'unknown-provider'), false);
+      assert.equal(full.groups.find(group => group.provider === 'aggregate-provider')!.aggregateRecords, 1);
+      assert.equal(full.groups.find(group => group.provider === 'unknown-provider')!.unknownRecords, 1);
+      assert.ok(full.rows.some(row => row.provider === null && row.model === null));
+      assert.ok(full.rows.some(row => row.provider === '' && row.model === ''));
+      assert.ok(full.rows.some(row => row.provider === '(unknown)' && row.model === '(unknown)'));
+      const boundary = await app.inject({ url: `/api/trend?bucket=minute&group_by=provider_model&from=${from + 59999}&to=${from + 60001}&provider=openai&model=gpt-shared`, headers });
+      assert.equal(boundary.statusCode, 200);
+      assert.deepEqual(boundary.json<Response>().rows.map(row => [row.bucket_ts, row.total_tokens]), [[from, 11], [from + 60000, 13]]);
+      for (const mode of ['none', 'harness', 'model', 'provider', 'vendor', 'project']) {
+        const legacy = (await request('', mode)).json<Response>();
+        assert.equal('groups' in legacy, false, mode);
+        assert.ok(legacy.rows.every(row => !('provider' in row) && !('model' in row)), mode);
+      }
+      assert.equal((await app.inject('/api/trend?bucket=minute&group_by=provider_model')).statusCode, 401);
+      assert.equal((await app.inject({ url: '/api/trend?bucket=minute&group_by=provider_model&from=0&to=86400001', headers })).statusCode, 400);
+    });
     await t.test('CSV keeps literal metadata inert when opened in spreadsheet software', async () => {
       db.prepare("UPDATE session SET project='=1+1' WHERE id=1").run();
       const response = await app.inject({ url: '/api/export/usage?from=0&to=200&project=%3D1%2B1', headers });
