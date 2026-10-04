@@ -3,12 +3,14 @@ import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Folder, Gi
 import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
 import { countdown } from '@/format';
-import type { QuotaHistoryResponse } from '@/api';
+import type { MinuteTrendResponse, QuotaHistoryResponse } from '@/api';
 import { CostValue, recordCostCoverage } from './cost-value';
 import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
 import { RedesignShell, type RedesignTranslate } from './shell';
 import { QuotaChart } from './quota-chart';
 import { RuntimeData } from './runtime-data';
+import { ObservedTrend } from './observed-trend';
+import { activityMinutePoints } from './activity-trend';
 
 type Translate = RedesignTranslate;
 const riskLabel = (state: ReturnType<typeof quotaState> | null) =>
@@ -46,6 +48,23 @@ export interface ActivityItem {
   tokens: number;
   grain: 'call' | 'session_aggregate' | 'unknown';
   sessionKey: number | null;
+  trend?: MinuteTrendResponse;
+  trendError?: boolean;
+  sourceName?: string;
+}
+
+function ActivityTrend({ item, language }: { item: ActivityItem; language: 'en' | 'th' }) {
+  const th = language === 'th';
+  const points = item.trend ? activityMinutePoints(item.trend) : [];
+  const label = th ? 'โทเค็นจาก call ที่บันทึก / นาที' : 'Recorded call tokens / minute';
+  const locale = th ? 'th-TH' : 'en-US';
+  const range = item.trend ? `${new Date(item.trend.from).toLocaleString(locale)} – ${new Date(item.trend.to).toLocaleString(locale)}` : '';
+  const title = `${label} · ${item.sourceName ?? item.harness} → ${item.provider ?? '—'} / ${item.model ?? '—'} · ${range} · ${th ? 'เฉพาะ source นี้; นาทีต้นและปลายอาจไม่เต็มนาที' : 'This source only; boundary minutes may be partial'}`;
+  return <div className="qp-activity-trend" data-testid="activity-minute-trend" title={title}>
+    {item.trend && item.trend.coverage.includedRecords > 0 && points.length > 0
+      ? <ObservedTrend points={points} label={title} className="qp-activity-sparkline" language={language} grid={false} edgeToEdge/>
+      : <small>{item.trendError ? (th ? 'ข้อมูลรายนาทีไม่พร้อมใช้งาน' : 'Minute data unavailable') : (th ? 'ไม่มีข้อมูล call รายนาทีในช่วงนี้' : 'No minute call data in this interval')}</small>}
+  </div>;
 }
 
 function PulseCore({ quota, now, t, language, staleAfterMs }: { quota: QuotaWindow | undefined; now: number; t: Translate; language: 'en' | 'th'; staleAfterMs: number }) {
@@ -266,13 +285,13 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
           </section>
         </div>
         <section className="qp-panel qp-activity" data-testid="recent-activity">
-          <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.activity')}</h2>{!preview && <a href={historyHref}>{t('redesign.openHistory')} <ArrowUpRight size={14}/></a>}</div>
+          <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.activity')}<small className='qp-activity-chart-label'>{language === 'th' ? 'กราฟ: call tokens/นาที · ≤30 นาทีท้ายของช่วง' : 'Charts: call tokens/min · final ≤30m of period'}</small></h2>{!preview && <a href={historyHref}>{t('redesign.openHistory')} <ArrowUpRight size={14}/></a>}</div>
           {activities.length === 0 ? <p className="qp-footnote">{t('redesign.noRecent')}</p> : <div className="qp-activity-list">{activities.map(item => {
             const route = `${item.provider ?? t('redesign.unknownValue')} · ${item.model ?? t('redesign.unknownValue')}`;
             const grain = t(item.grain === 'call' ? 'redesign.callRecord' : item.grain === 'session_aggregate' ? 'redesign.aggregateUpdate' : 'redesign.unknownValue');
             const time = new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit' }).format(item.timestamp);
             const identity = `${item.harness} → ${route} · ${number(item.tokens)} ${t('redesign.tokens')} · ${grain} · ${time}`;
-            const content = <><div className="qp-activity-path"><span className="qp-activity-identity" title={item.harness}><HarnessIcon harness={item.harness} vendor={harnessVendors[item.harness]} label={item.harness}/><b>{item.harness}</b></span><ArrowRight size={12} aria-hidden="true"/><span className="qp-activity-route" title={route}><VendorIcon vendor={item.provider ?? 'unknown'}/><span>{item.model ?? t('redesign.unknownValue')}</span></span></div><div className="qp-activity-value"><strong>{number(item.tokens)}</strong><small>{t('redesign.tokens')}</small></div><div className="qp-activity-meta"><time dateTime={new Date(item.timestamp).toISOString()}>{time}</time><small>{grain}</small></div></>;
+            const content = <><div className="qp-activity-path"><span className="qp-activity-identity" title={item.harness}><HarnessIcon harness={item.harness} vendor={harnessVendors[item.harness]} label={item.harness}/><b>{item.harness}</b></span><ArrowRight size={12} aria-hidden="true"/><span className="qp-activity-route" title={route}><VendorIcon vendor={item.provider ?? 'unknown'}/><span>{item.model ?? t('redesign.unknownValue')}</span></span></div><div className="qp-activity-value"><strong>{number(item.tokens)}</strong><small>{t('redesign.tokens')}</small></div><div className="qp-activity-meta"><time dateTime={new Date(item.timestamp).toISOString()}>{time}</time><small>{grain}</small></div>{!preview && <ActivityTrend item={item} language={language}/>}</>;
             return preview ? <div className="qp-activity-item" key={item.id} title={identity}>{content}</div>
               : <a className="qp-activity-item" key={item.id} data-record-id={item.id} data-grain={item.grain} title={identity} href={item.sessionKey !== null ? `#history?range=all&session_id=${item.sessionKey}` : '#history?range=today'} aria-label={`${identity} · ${t('redesign.openHistory')}`}>{content}</a>;
           })}</div>}

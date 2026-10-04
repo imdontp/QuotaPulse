@@ -8,6 +8,8 @@ import { Overview } from './overview';
 import type { ActivityItem } from './overview';
 import { defaultQuota, type QuotaWindow, type RuntimeGraph } from './model';
 import { readScope, selectedScope, writeScope, type ScopeRange } from './scope';
+import { activityTrendScope } from './activity-trend';
+import { usageEventParams } from '@/lib/usage-events';
 
 function readRoute() {
   return readScope(new URLSearchParams(location.hash.split('?')[1] ?? ''), 'today');
@@ -39,7 +41,17 @@ export function ProductionOverview() {
       const overview = await api.overview();
       const scope = selectedScope(route, overview.now);
       const [graph, usage] = await Promise.all([api.runtimeMap(scope), api.usageEvents(scope, { limit: 4, offset: 0 })]);
-      const recent: ActivityItem[] = usage.rows.map(row => ({ id: row.event_id, timestamp: row.timestamp_ms, harness: row.harness, provider: row.provider, model: row.model, tokens: row.total_tokens, grain: row.grain, sessionKey: row.session_key }));
+      const recent: ActivityItem[] = usage.rows.map(row => ({ id: row.event_id, timestamp: row.timestamp_ms, harness: row.harness, provider: row.provider, model: row.model, tokens: row.total_tokens, grain: row.grain, sessionKey: row.session_key, sourceName: row.source_name }));
+      const trends = new Map<string, ReturnType<typeof api.minuteTrend>>();
+      await Promise.all(recent.map(async (item, index) => {
+        const trendScope = activityTrendScope(scope, usage.rows[index], overview.now);
+        if (!trendScope) return;
+        const trendKey = usageEventParams(trendScope).toString();
+        let request = trends.get(trendKey);
+        if (!request) { request = api.minuteTrend(trendScope); trends.set(trendKey, request); }
+        // A chart failure must not discard the real activity records or quota snapshot.
+        try { item.trend = await request; } catch { item.trendError = true; }
+      }));
       if (currentKey.current === key) { setSnapshot({ key, overview, graph, recent }); setError(null); }
     } catch (cause) {
       if (currentKey.current === key) setError(String(cause));

@@ -675,6 +675,13 @@
 .qp-activity-item:nth-child(2) .qp-activity-value strong { color:var(--qp-series); }
 .qp-activity-item:nth-child(3) .qp-activity-value strong { color:var(--qp-warning); }
 .qp-activity-meta { display:flex; align-items:baseline; gap:6px; flex-wrap:wrap; min-width:0; font-size:10px; }
+.qp-activity-trend { grid-column:1/-1; min-width:0; height:12px; }
+.qp-activity-trend>small { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:8px; line-height:12px; }
+.qp-activity-sparkline { display:block; width:100%; height:12px; overflow:visible; }
+.qp-activity-chart-label { color:var(--qp-muted); font-size:9px; font-weight:400; }
+@media(max-width:650px) { .qp-activity-chart-label { display:none; } }
+.qp-activity-item:nth-child(2) .qp-activity-trend { --qp-accent:var(--qp-series); }
+.qp-activity-item:nth-child(3) .qp-activity-trend { --qp-accent:var(--qp-warning); }
 .qp-insight-grid {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));

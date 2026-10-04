@@ -1,12 +1,12 @@
 # Concept comparison and refinement queue
 
-Latest Overview composition: [Activity row v1.56](REDESIGN-ACTIVITY-ROW-V1.56.md)
-uses compact harness → model identities, prominent actual recorded tokens and
-explicit timestamp/grain metadata. SVG rendering now passes four byte-identical
-Overview pairs with unchanged tolerance. The
-[Overview viewer](redesign-v1.56/reference-review.html) retains v1.55 captures;
-the latest full nine-page capture set remains v1.52. Full reference visual
-acceptance remains open; actual minute-series activity charts are next.
+Latest Overview composition: [Recorded minute activity v1.57](REDESIGN-ACTIVITY-MINUTE-V1.57.md)
+adds genuine source/provider/model call-token minute graphs to the actual recent
+records, bounded to the final thirty minutes of the selected period. All 126 web
+tests and four byte-identical Overview capture pairs pass with unchanged tolerance.
+The [Overview viewer](redesign-v1.57/reference-review.html) retains v1.56;
+latest full nine-page browser evidence remains v1.52. Full reference visual
+acceptance remains open; Runtime Map proportions and other-page refinement remain.
 
 [Header brand and status v1.52](REDESIGN-HEADER-BRAND-V1.52.md) enlarges the
 waveform/wordmark, frames actual daemon connection and machine scope, and adds

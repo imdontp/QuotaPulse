@@ -1044,6 +1044,18 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
     assert.equal(await card.locator('.qp-activity-identity b').textContent(), record.harness);
     assert.ok((await card.getAttribute('aria-label'))?.includes(record.model ?? (lang === 'th' ? 'ไม่ทราบ' : 'Unknown')));
     assert.equal(await card.getAttribute('href'), record.session_key === null ? '#history?range=today' : `#history?range=all&session_id=${record.session_key}`);
+    const clock = (await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<Overview>().now;
+    const to = Math.min(data.scope.to, clock + 1), from = Math.max(data.scope.from, to - 30 * 60_000);
+    const params = new URLSearchParams({ bucket: 'minute', group_by: 'none', from: String(from), to: String(to), source_id: String(record.source_id), harness: record.harness, model: record.model!, provider: record.provider!, grain: 'call' });
+    const minute = (await daemon.inject({ method: 'GET', url: `/api/trend?${params}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<MinuteTrendResponse>();
+    const points = await card.locator('[data-at][data-value]').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')) })));
+    if (minute.coverage.includedRecords) {
+      const firstBucket = Math.floor(from / 60_000) * 60_000;
+      assert.deepEqual(points, Array.from({ length: Math.ceil(to / 60_000) - firstBucket / 60_000 }, (_, offset) => {
+        const at = firstBucket + offset * 60_000;
+        return { at, value: minute.rows.filter(row => row.bucket_ts === at).reduce((sum, row) => sum + row.total_tokens, 0) };
+      }));
+    } else assert.equal(points.length, 0);
   }
   const first = cards.first(), href = await first.getAttribute('href');
   await first.focus(); await page.keyboard.press('Enter'); await page.waitForURL(url => url.hash === href);
@@ -1059,6 +1071,7 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
     assert.equal(await cards.locator('.qp-activity-value strong').textContent(), number.format(123456789012345));
     assert.equal(await cards.locator('.qp-activity-meta small').textContent(), lang === 'th' ? 'ไม่ทราบ' : 'Unknown');
     assert.equal(await cards.getAttribute('href'), '#history?range=today');
+    assert.equal(await cards.locator('[data-at][data-value]').count(), 0);
     for (const width of [390, 900, 1280]) {
       await page.setViewportSize({ width, height: 992 });
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Recent activity overflow ${lang}/${theme}/${width}`);
