@@ -18,7 +18,8 @@ const priorTimezone = process.env.TZ;
 process.env.TZ = 'Asia/Bangkok';
 const liveOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'live';
 const compositionOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'composition';
-const overviewOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'overview';
+const runtimeLayoutOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'runtime-layout';
+const overviewOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'overview' || runtimeLayoutOnly;
 const projectsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'projects';
 const providersOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'providers';
 const modelsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'models';
@@ -26,7 +27,7 @@ const costOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'cost';
 const historyOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'history';
 const alertsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'alerts';
 const settingsOnly = process.env.QUOTAPULSE_CAPTURE_SCOPE === 'settings';
-const output = resolve(root, liveOnly ? 'screens/live-density' : compositionOnly ? 'screens/reference-composition' : overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : modelsOnly ? 'screens/models-comparison' : costOnly ? 'screens/cost-axes' : historyOnly ? 'screens/history-details' : alertsOnly ? 'screens/alerts-refinement' : settingsOnly ? 'screens/settings-composition' : 'screens/stable-captures');
+const output = resolve(root, runtimeLayoutOnly ? 'screens/runtime-layout' : liveOnly ? 'screens/live-density' : compositionOnly ? 'screens/reference-composition' : overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : modelsOnly ? 'screens/models-comparison' : costOnly ? 'screens/cost-axes' : historyOnly ? 'screens/history-details' : alertsOnly ? 'screens/alerts-refinement' : settingsOnly ? 'screens/settings-composition' : 'screens/stable-captures');
 mkdirSync(output, { recursive: true });
 // A failed attempt must never leave a previous success manifest in this folder.
 rmSync(resolve(output, 'verification.json'), { force: true });
@@ -80,7 +81,11 @@ const overviewInsightChecks: Array<{ lang: string; theme: string; cards: number;
 const quotaGroupChecks: Array<{ lang: string; theme: string; owners: number; windows: number; sameNameSeparate: boolean; keyboardScrolled: boolean; historyIdentity: boolean }> = [];
 const recentActivityChecks: Array<{ lang: string; theme: string; records: number; keyboardHistory: boolean; unknownGrain: boolean; largeTokens: boolean }> = [];
 const iconViewports = new Map<string, unknown>();
+const overviewVectors = new Map<string, unknown>();
+const activityBitmapChecks: Array<{ lang: string; theme: string; recordId: number; points: number; width: number; height: number; paintedPixels: number; sha256: string }> = [];
+const activityRendererChecks: Array<{ lang: string; theme: string; accessibleValues: boolean; themeRedraw: boolean; resized: boolean; singlePoint: boolean; zeroBaseline: boolean }> = [];
 const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number; modelShares: number; directionArrows: boolean }> = [];
+const runtimeGeometryChecks: Array<{ lang: string; theme: string; state: string; paths: number; maxError: number }> = [];
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
 const headerChecks: Array<{ page: string; lang: string; theme: string; width: number; height: number; sidebarWidth: number }> = [];
 const fontChecks: Array<{ page: string; lang: string; theme: string; family: string; custom: boolean; glyphs: number }> = [];
@@ -842,6 +847,41 @@ async function checkSettingsAccess(page: Page, lang: string, theme: string) {
   settingsChecks.push({ lang, theme, sections: 6, language: true, currency: true, rate: 40, widths: [390, 900, 1280] });
 }
 
+async function checkRuntimeGeometry(page: Page, graph: RuntimeGraph, lang: string, theme: string, state: string) {
+  const visible = dimensions.map(dimension => new Set(graph.nodes[dimension].slice(0, 8).map(node => node.key)));
+  const expected = graph.edges.filter(edge => visible[edge.column].has(edge.from) && visible[edge.column + 1].has(edge.to)).map(edge => JSON.stringify([edge.column, edge.from, edge.to]));
+  assert.ok(expected.length > 0, `Connected populated ${state} fixture has no expected visible edges`);
+  await page.waitForFunction(expected => {
+    const paths = Array.from(document.querySelectorAll<SVGPathElement>('.qp-map-edges>path'));
+    if (paths.length !== expected.length) return false;
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>('.qp-map-node'));
+    const dimensions = ['project', 'harness', 'provider', 'model'];
+    return paths.every((path, index) => {
+      const column = Number(path.dataset.column);
+      if (JSON.stringify([column, JSON.parse(path.dataset.from!), JSON.parse(path.dataset.to!)]) !== expected[index]) return false;
+      const from = nodes.find(node => node.dataset.dimension === dimensions[column] && node.dataset.key === path.dataset.from)?.getBoundingClientRect();
+      const to = nodes.find(node => node.dataset.dimension === dimensions[column + 1] && node.dataset.key === path.dataset.to)?.getBoundingClientRect();
+      const matrix = path.getScreenCTM();
+      if (!from || !to || !matrix) return false;
+      const start = path.getPointAtLength(0).matrixTransform(matrix), end = path.getPointAtLength(path.getTotalLength()).matrixTransform(matrix);
+      return Math.max(Math.abs(start.x - from.right), Math.abs(start.y - from.top - from.height / 2), Math.abs(end.x - to.left), Math.abs(end.y - to.top - to.height / 2)) <= 1;
+    });
+  }, expected);
+  const maxError = await page.locator('.qp-map-edges>path').evaluateAll(paths => {
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>('.qp-map-node'));
+    const dimensions = ['project', 'harness', 'provider', 'model'];
+    return Math.max(0, ...paths.map(element => {
+      const path = element as SVGPathElement, column = Number(path.dataset.column), matrix = path.getScreenCTM()!;
+      const from = nodes.find(node => node.dataset.dimension === dimensions[column] && node.dataset.key === path.dataset.from)!.getBoundingClientRect();
+      const to = nodes.find(node => node.dataset.dimension === dimensions[column + 1] && node.dataset.key === path.dataset.to)!.getBoundingClientRect();
+      const start = path.getPointAtLength(0).matrixTransform(matrix), end = path.getPointAtLength(path.getTotalLength()).matrixTransform(matrix);
+      return Math.max(Math.abs(start.x - from.right), Math.abs(start.y - from.top - from.height / 2), Math.abs(end.x - to.left), Math.abs(end.y - to.top - to.height / 2));
+    }));
+  });
+  assert.ok(maxError <= 1);
+  runtimeGeometryChecks.push({ lang, theme, state, paths: expected.length, maxError });
+}
+
 async function checkRuntimeAccess(page: Page, lang: string, theme: string, pending: Set<Request>) {
   // Owned synthetic rows exist only for this check; default capture data stays fixed.
   try {
@@ -857,6 +897,7 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
     const graph = await (await response).json() as RuntimeGraph;
     await settled(page, pending);
     assert.ok(graph.nodes.project.length > 8 && graph.nodes.model.length > 8);
+    await checkRuntimeGeometry(page, graph, lang, theme, 'desktop-many-nodes');
     const modelTotal = graph.nodes.model.reduce((total, node) => total + node.tokens, 0);
     const modelCards = page.locator('.qp-map-node[data-dimension=model]');
     assert.equal(await modelCards.count(), 8);
@@ -908,6 +949,11 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
     for (const width of [390, 900, 1280]) {
       await page.setViewportSize({ width, height: 992 });
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Runtime overflow at ${width}`);
+      await checkRuntimeGeometry(page, graph, lang, theme, `resize-${width}`);
+      await page.locator('.qp-map-scroll').evaluate(element => { element.scrollLeft = element.scrollWidth; element.scrollTop = element.scrollHeight; });
+      assert.ok(await page.locator('.qp-map-scroll').evaluate(element => element.scrollLeft > 0 || element.scrollTop > 0), `Runtime scroll did not move at ${width}`);
+      await checkRuntimeGeometry(page, graph, lang, theme, `scroll-${width}`);
+      await page.locator('.qp-map-scroll').evaluate(element => { element.scrollLeft = 0; element.scrollTop = 0; });
     }
     await summary.focus(); await page.keyboard.press('Enter');
     await disclosure.locator('table').first().waitFor({ state: 'detached' });
@@ -915,6 +961,39 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
   } finally {
     db.transaction(() => { db.prepare('DELETE FROM usage_event WHERE source_id=900').run(); db.prepare('DELETE FROM session WHERE source_id=900').run(); db.prepare('DELETE FROM source WHERE id=900').run(); })();
     assert.equal((db.prepare('SELECT COUNT(*) AS count FROM usage_event').get() as { count: number }).count, 38);
+  }
+}
+
+async function checkSingleProjectRuntime(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  const saved = db.prepare('SELECT id,project FROM session ORDER BY id').all() as Array<{ id: number; project: string | null }>;
+  try {
+    db.prepare('UPDATE session SET project=?').run('Single project fixture');
+    await page.setViewportSize({ width: 1586, height: 992 });
+    const response = page.waitForResponse(response => new URL(response.url()).pathname === '/api/runtime-map' && response.status() === 200);
+    await page.goto('http://127.0.0.1:7804/?runtime-layout=single#overview', { waitUntil: 'domcontentloaded' });
+    const graph = await (await response).json() as RuntimeGraph;
+    await settled(page, pending);
+    assert.equal(graph.nodes.project.length, 1);
+    assert.equal(await page.locator('.qp-map').getAttribute('data-single-project'), 'true');
+    const project = page.locator('.qp-map-node[data-dimension=project]');
+    assert.equal((await project.boundingBox())!.height, 80);
+    assert.ok((await project.getAttribute('aria-label'))?.includes(new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(graph.nodes.project[0].sessions)));
+    await checkRuntimeGeometry(page, graph, lang, theme, 'single-project');
+    await project.focus(); await page.keyboard.press('Enter'); await page.getByRole('dialog').waitFor();
+    assert.equal(await page.locator('#qp-detail-title').textContent(), 'Single project fixture');
+    await page.keyboard.press('Escape'); await page.getByRole('dialog').waitFor({ state: 'hidden' });
+    assert.equal(await project.evaluate(element => element === document.activeElement), true);
+    await page.screenshot({ path: resolve(output, `runtime-single-${lang}-${theme}.png`), animations: 'disabled' });
+    // Replace the visible graph on the same React page, exercising observer cleanup.
+    const updateRoute = (hash: string) => page.evaluate(hash => { location.hash = hash; }, hash);
+    await updateRoute('#overview?range=custom&from=1&to=2'); await settled(page, pending);
+    await page.waitForFunction(() => document.querySelector('.qp-runtime') && !document.querySelector('.qp-map'));
+    assert.equal(await page.locator('.qp-map-edges>path').count(), 0);
+    runtimeGeometryChecks.push({ lang, theme, state: 'empty-replacement', paths: 0, maxError: 0 });
+    await updateRoute('#overview?range=today'); await settled(page, pending);
+    await checkRuntimeGeometry(page, graph, lang, theme, 'single-restored');
+  } finally {
+    db.transaction(() => { const restore = db.prepare('UPDATE session SET project=? WHERE id=?'); for (const row of saved) restore.run(row.project, row.id); })();
   }
 }
 
@@ -1040,7 +1119,7 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
     assert.equal(await card.getAttribute('data-record-id'), String(record.event_id));
     assert.equal(await card.getAttribute('data-grain'), record.grain);
     assert.equal(await card.locator('.qp-activity-value strong').textContent(), number.format(record.total_tokens));
-    assert.equal(await card.locator('time').getAttribute('datetime'), new Date(record.timestamp_ms).toISOString());
+    assert.equal(await card.locator('.qp-activity-meta time').getAttribute('datetime'), new Date(record.timestamp_ms).toISOString());
     assert.equal(await card.locator('.qp-activity-identity b').textContent(), record.harness);
     assert.ok((await card.getAttribute('aria-label'))?.includes(record.model ?? (lang === 'th' ? 'ไม่ทราบ' : 'Unknown')));
     assert.equal(await card.getAttribute('href'), record.session_key === null ? '#history?range=today' : `#history?range=all&session_id=${record.session_key}`);
@@ -1051,12 +1130,39 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
     const points = await card.locator('[data-at][data-value]').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')) })));
     if (minute.coverage.includedRecords) {
       const firstBucket = Math.floor(from / 60_000) * 60_000;
-      assert.deepEqual(points, Array.from({ length: Math.ceil(to / 60_000) - firstBucket / 60_000 }, (_, offset) => {
+      const expected = Array.from({ length: Math.ceil(to / 60_000) - firstBucket / 60_000 }, (_, offset) => {
         const at = firstBucket + offset * 60_000;
         return { at, value: minute.rows.filter(row => row.bucket_ts === at).reduce((sum, row) => sum + row.total_tokens, 0) };
-      }));
+      });
+      assert.deepEqual(points, expected);
+      const canvas = card.locator('canvas.qp-activity-sparkline');
+      const bitmap = await canvas.evaluate(async (element: HTMLCanvasElement, expected) => {
+        const rect = element.getBoundingClientRect(), context = element.getContext('2d')!;
+        const pixels = context.getImageData(0, 0, element.width, element.height).data;
+        const maximum = Math.max(...expected.map(point => point.value));
+        // Independent endpoint checks use API buckets, not canvas fallback metadata.
+        const margin = Math.max(1, rect.width * .008), first = expected[0].at, last = expected.at(-1)!.at;
+        const covered = expected.every(point => {
+          const x = (last > first ? margin + (rect.width - 2 * margin) * (point.at - first) / (last - first) : rect.width / 2) * element.width / rect.width;
+          const y = (11 - 10 * point.value / (maximum || 1)) * element.height / 12;
+          for (let py = Math.max(0, Math.floor(y) - 1); py <= Math.min(element.height - 1, Math.ceil(y) + 1); py++)
+            for (let px = Math.max(0, Math.floor(x) - 1); px <= Math.min(element.width - 1, Math.ceil(x) + 1); px++)
+              if (pixels[(py * element.width + px) * 4 + 3] > 64) return true;
+          return false;
+        });
+        const digest = await crypto.subtle.digest('SHA-256', pixels.buffer);
+        return { width: element.width, height: element.height, cssWidth: rect.width, dpr: devicePixelRatio, covered,
+          paintedPixels: pixels.filter((value, index) => index % 4 === 3 && value > 0).length,
+          sha256: [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, '0')).join('') };
+      }, expected);
+      assert.equal(bitmap.width, Math.round(bitmap.cssWidth * bitmap.dpr));
+      assert.equal(bitmap.height, Math.round(12 * bitmap.dpr));
+      assert.equal(bitmap.covered, true, 'Canvas must paint the independent API bucket positions');
+      assert.ok(bitmap.paintedPixels > 0);
+      activityBitmapChecks.push({ lang, theme, recordId: record.event_id, points: expected.length, width: bitmap.width, height: bitmap.height, paintedPixels: bitmap.paintedPixels, sha256: bitmap.sha256 });
     } else assert.equal(points.length, 0);
   }
+  await checkActivityRenderer(page, lang, theme, pending, data.rows[0].timestamp_ms);
   const first = cards.first(), href = await first.getAttribute('href');
   await first.focus(); await page.keyboard.press('Enter'); await page.waitForURL(url => url.hash === href);
   const pattern = '**/api/usage-events?*';
@@ -1085,6 +1191,71 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
   } finally { await page.unroute(pattern); }
   await page.setViewportSize({ width: 1586, height: 992 });
   await page.goto(home, { waitUntil: 'domcontentloaded' }); await settled(page, pending);
+}
+
+async function checkActivityRenderer(page: Page, lang: string, theme: string, pending: Set<Request>, recentAt: number) {
+  const chart = page.locator('canvas.qp-activity-sparkline').first();
+  const snapshot = () => chart.evaluate(element => {
+    const canvas = element as HTMLCanvasElement;
+    const data = document.getElementById(canvas.getAttribute('aria-describedby')!)!;
+    return { pixels: canvas.toDataURL(), width: canvas.width, height: canvas.height, cssWidth: canvas.getBoundingClientRect().width,
+      points: [...data.querySelectorAll('li')].map(point => ({ at: Number(point.getAttribute('data-at')), value: Number(point.getAttribute('data-value')) })) };
+  });
+  const before = await snapshot();
+  assert.ok(before.points.length > 1);
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    const document = await cdp.send('DOM.getDocument');
+    const { nodeId } = await cdp.send('DOM.querySelector', { nodeId: document.root.nodeId, selector: 'canvas.qp-activity-sparkline' });
+    const tree = await cdp.send('Accessibility.getPartialAXTree', { nodeId });
+    const image = tree.nodes.find(node => !node.ignored && node.role?.value === 'image');
+    assert.ok(image?.description?.value?.includes(new Date(before.points[0].at).toLocaleString(lang === 'th' ? 'th-TH' : 'en-US')), 'Minute values must be exposed through the image accessibility description');
+  } finally { await cdp.detach(); }
+  const themeButton = page.locator('.qp-tools button').last();
+  await themeButton.click();
+  await page.waitForFunction(prior => (document.querySelector('canvas.qp-activity-sparkline') as HTMLCanvasElement).toDataURL() !== prior, before.pixels);
+  assert.deepEqual((await snapshot()).points, before.points);
+  await themeButton.click();
+  await page.waitForFunction(prior => (document.querySelector('canvas.qp-activity-sparkline') as HTMLCanvasElement).toDataURL() === prior, before.pixels);
+  await page.setViewportSize({ width: 390, height: 992 });
+  await page.waitForFunction(() => {
+    const canvas = document.querySelector('canvas.qp-activity-sparkline') as HTMLCanvasElement;
+    return canvas.width === Math.round(canvas.getBoundingClientRect().width * devicePixelRatio);
+  });
+  const narrow = await snapshot();
+  assert.notEqual(narrow.width, before.width); assert.equal(narrow.height, 12);
+  assert.deepEqual(narrow.points, before.points);
+  await page.setViewportSize({ width: 1586, height: 992 });
+  const home = 'http://127.0.0.1:7804/?activity-renderer=fixture#overview';
+  const from = Math.floor(recentAt / 60_000) * 60_000, to = from + 60_000;
+  await page.goto(`${home}?range=custom&from=${from}&to=${to}`, { waitUntil: 'domcontentloaded' }); await settled(page, pending);
+  assert.ok(await chart.count());
+  const one = await snapshot();
+  assert.equal(one.points.length, 1);
+  const onePeak = await chart.evaluate(element => {
+    const canvas = element as HTMLCanvasElement, context = canvas.getContext('2d')!;
+    const data = context.getImageData(Math.floor(canvas.width / 2) - 1, 0, 3, 3).data;
+    return data.some((value, index) => index % 4 === 3 && value > 64);
+  });
+  assert.equal(onePeak, true, 'Single positive bucket must paint the center peak');
+  const saved = db.prepare('SELECT id,input_tokens,cached_input_tokens,output_tokens,total_tokens FROM usage_event').all() as Array<{ id: number; input_tokens: number; cached_input_tokens: number; output_tokens: number; total_tokens: number }>;
+  try {
+    db.exec('UPDATE usage_event SET input_tokens=0,cached_input_tokens=0,output_tokens=0,total_tokens=0');
+    await page.goto(home, { waitUntil: 'domcontentloaded' }); await settled(page, pending);
+    const zero = await snapshot();
+    assert.ok(zero.points.length > 1); assert.ok(zero.points.every(point => point.value === 0));
+    const ink = await chart.evaluate(element => {
+      const canvas = element as HTMLCanvasElement, pixels = canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height).data;
+      return { upper: pixels.slice(0, 4 * canvas.width * 4).some((value, index) => index % 4 === 3 && value > 0),
+        baseline: pixels.slice(10 * canvas.width * 4).some((value, index) => index % 4 === 3 && value > 0) };
+    });
+    assert.equal(ink.upper, false, 'All-zero buckets must not paint a false upper peak');
+    assert.equal(ink.baseline, true);
+  } finally {
+    db.transaction(() => { const restore = db.prepare('UPDATE usage_event SET input_tokens=?,cached_input_tokens=?,output_tokens=?,total_tokens=? WHERE id=?'); for (const row of saved) restore.run(row.input_tokens,row.cached_input_tokens,row.output_tokens,row.total_tokens,row.id); })();
+    await page.goto(home, { waitUntil: 'domcontentloaded' }); await settled(page, pending);
+  }
+  activityRendererChecks.push({ lang, theme, accessibleValues: true, themeRedraw: true, resized: true, singlePoint: true, zeroBaseline: true });
 }
 
 async function checkQuotaGroups(page: Page, lang: string, theme: string, pending: Set<Request>) {
@@ -1441,10 +1612,18 @@ try {
                 const pulse = document.querySelector('.qp-pulse')!.getBoundingClientRect();
                 const title = document.querySelector('.qp-top-models h3')!.getBoundingClientRect();
                 const list = document.querySelector('.qp-top-model-list')!.getBoundingClientRect();
-                return { runtimeProvidersVisible, edgeMaxError, pulseCenter: { x: pulse.x + pulse.width / 2, y: pulse.y + pulse.height / 2 }, modelTitleOutside: title.bottom <= list.top };
+                const runtimeCards = dimensions.map(dimension => {
+                  const rect = nodes.find(node => node.dataset.dimension === dimension)!.getBoundingClientRect();
+                  return { dimension, x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+                });
+                return { runtimeProvidersVisible, edgeMaxError, runtimeCards, pulseCenter: { x: pulse.x + pulse.width / 2, y: pulse.y + pulse.height / 2 }, modelTitleOutside: title.bottom <= list.top };
               });
               assert.equal(composition.runtimeProvidersVisible, 4, 'All four recorded provider rows must be fully visible');
               assert.ok(composition.edgeMaxError <= 1, `Runtime connector endpoints miss their nodes by ${composition.edgeMaxError}px`);
+              const sourceCardEstimates = [{ x: 282, width: 208 }, { x: 633, width: 153 }, { x: 953, width: 160 }, { x: 1245, width: 298 }];
+              for (const [index, card] of composition.runtimeCards.entries()) {
+                assert.ok(Math.abs(card.x - sourceCardEstimates[index].x) <= 8 && Math.abs(card.width - sourceCardEstimates[index].width) <= 8, `${card.dimension} card differs from source composition estimate`);
+              }
               assert.equal(composition.modelTitleOutside, true, 'Model caption must sit above the bordered list');
               if (pass === 0) overviewLayouts.push({ lang, theme, heroBottom: hero.y + hero.height, activityBottom: activity.y + activity.height, models: 8, railHeight: box.height, ...composition });
             }
@@ -1452,6 +1631,9 @@ try {
           const filename = `${destination}-${lang}-${theme}.png`;
           if (destination === 'overview') {
             assert.equal(fixtureState(), originalFixture, 'Overview fixture must be fully restored before each canonical capture');
+            const dayStart = new Date(fixedNow); dayStart.setHours(0, 0, 0, 0);
+            const graph = (await daemon.inject({ method: 'GET', url: `/api/runtime-map?from=${dayStart.getTime()}&to=${fixedNow + 1}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<RuntimeGraph>();
+            await checkRuntimeGeometry(page, graph, lang, theme, `canonical-pass-${pass + 1}`);
             // Flush nested SVG viewport layout after scroll/dialog restoration.
             // Verify the actual visible icon geometry across independent renderers.
             const geometry = await page.locator('.qp-map-node svg').evaluateAll(elements => elements.flatMap(element => {
@@ -1464,6 +1646,20 @@ try {
             const key = `${lang}/${theme}`;
             if (pass === 0) iconViewports.set(key, geometry);
             else assert.deepEqual(geometry, iconViewports.get(key), 'Runtime icon viewports changed between captures');
+            const vectors = await page.locator('.qp-map-edges,.qp-activity-sparkline').evaluateAll(async elements => Promise.all(elements.map(async element => {
+              const rect = element.getBoundingClientRect();
+              let bitmap: { width: number; height: number; sha256: string } | null = null;
+              if (element instanceof HTMLCanvasElement) {
+                const pixels = element.getContext('2d')!.getImageData(0, 0, element.width, element.height).data;
+                const digest = await crypto.subtle.digest('SHA-256', pixels.buffer);
+                bitmap = { width: element.width, height: element.height, sha256: [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, '0')).join('') };
+              }
+              return { className: element.getAttribute('class'), x: rect.x, y: rect.y, width: rect.width, height: rect.height,
+                viewBox: element.getAttribute('viewBox'), bitmap,
+                paths: [...(element instanceof HTMLCanvasElement ? element.closest('.qp-activity-trend')! : element).querySelectorAll('path,polyline,circle,ellipse,li[data-at][data-value]')].map(path => ({ tag: path.tagName, d: path.getAttribute('d'), points: path.getAttribute('points'), cx: path.getAttribute('cx'), cy: path.getAttribute('cy'), rx: path.getAttribute('rx'), ry: path.getAttribute('ry'), at: path.getAttribute('data-at'), value: path.getAttribute('data-value') })) };
+            })));
+            if (pass === 0) overviewVectors.set(key, vectors);
+            else assert.deepEqual(vectors, overviewVectors.get(key), 'Overview SVG paths or Activity canvas bitmap/data/viewport changed between captures');
             await page.waitForTimeout(100);
           }
           const screenshot = await page.screenshot({ path: resolve(output, pass === 0 ? filename : `repeat-${filename}`), animations: 'disabled' });
@@ -1488,13 +1684,13 @@ try {
           if (pass === 0 && destination === 'live') await checkLiveDensity(page, lang, theme);
           if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme);
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
-          if (pass === 0 && destination === 'overview') await checkRuntimeAccess(page, lang, theme, pending);
-          if (pass === 0 && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
-          if (pass === 0 && destination === 'overview') await checkPulseCore(page, lang, theme, pending);
-          if (pass === 0 && destination === 'overview') await checkOverviewPeriod(page, lang, theme, pending);
-          if (pass === 0 && destination === 'overview') await checkOverviewInsights(page, lang, theme, pending);
-          if (pass === 0 && destination === 'overview') await checkQuotaGroups(page, lang, theme, pending);
-          if (pass === 0 && destination === 'overview') await checkRecentActivity(page, lang, theme, pending);
+          if (pass === 0 && destination === 'overview') { await checkRuntimeAccess(page, lang, theme, pending); await checkSingleProjectRuntime(page, lang, theme, pending); }
+          if (pass === 0 && !runtimeLayoutOnly && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
+          if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkPulseCore(page, lang, theme, pending);
+          if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkOverviewPeriod(page, lang, theme, pending);
+          if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkOverviewInsights(page, lang, theme, pending);
+          if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkQuotaGroups(page, lang, theme, pending);
+          if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkRecentActivity(page, lang, theme, pending);
         }
         if (pass === 0 && !pages.some(([destination]) => destination === 'settings')) {
           await page.goto('http://127.0.0.1:7804/?shell-access=settings#settings', { waitUntil: 'domcontentloaded' });
@@ -1507,7 +1703,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, runtimeChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, namedProjects: 8, models: 8, providers: 4, records: 38 }, checks: ['frozen daemon and browser Date', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 8px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, overviewLayouts, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

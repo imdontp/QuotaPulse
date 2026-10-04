@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Folder, GitBranch, Layers, Wallet, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
@@ -9,7 +9,7 @@ import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayS
 import { RedesignShell, type RedesignTranslate } from './shell';
 import { QuotaChart } from './quota-chart';
 import { RuntimeData } from './runtime-data';
-import { ObservedTrend } from './observed-trend';
+import { ActivitySparkline } from './activity-sparkline';
 import { activityMinutePoints } from './activity-trend';
 
 type Translate = RedesignTranslate;
@@ -62,7 +62,7 @@ function ActivityTrend({ item, language }: { item: ActivityItem; language: 'en' 
   const title = `${label} · ${item.sourceName ?? item.harness} → ${item.provider ?? '—'} / ${item.model ?? '—'} · ${range} · ${th ? 'เฉพาะ source นี้; นาทีต้นและปลายอาจไม่เต็มนาที' : 'This source only; boundary minutes may be partial'}`;
   return <div className="qp-activity-trend" data-testid="activity-minute-trend" title={title}>
     {item.trend && item.trend.coverage.includedRecords > 0 && points.length > 0
-      ? <ObservedTrend points={points} label={title} className="qp-activity-sparkline" language={language} grid={false} edgeToEdge/>
+      ? <ActivitySparkline points={points} label={title} language={language}/>
       : <small>{item.trendError ? (th ? 'ข้อมูลรายนาทีไม่พร้อมใช้งาน' : 'Minute data unavailable') : (th ? 'ไม่มีข้อมูล call รายนาทีในช่วงนี้' : 'No minute call data in this interval')}</small>}
   </div>;
 }
@@ -120,6 +120,8 @@ function PulseCore({ quota, now, t, language, staleAfterMs }: { quota: QuotaWind
 
 function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, onInspect }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; harnessVendors: Readonly<Record<string, string>>; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void }) {
   const arrowId = useId();
+  const map = useRef<HTMLDivElement>(null);
+  const [geometry, setGeometry] = useState<{ width: number; height: number; paths: Array<{ edge: RuntimeGraph['edges'][number]; x: number; y: number; endX: number; endY: number }> }>({ width: 1, height: 1, paths: [] });
   const modelTokens = nodes.model.reduce((total, node) => total + node.tokens, 0);
   const locale = language === 'th' ? 'th-TH' : 'en-US';
   const compact = new Intl.NumberFormat(locale, { notation: 'compact' });
@@ -127,29 +129,48 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, on
   const columns = dimensions.map(dimension => nodes[dimension].slice(0, 8));
   const maxRows = Math.max(1, ...columns.map(column => column.length));
   const height = maxRows * 40;
+  const singleProject = columns[0].length === 1 && maxRows >= 3;
+  useLayoutEffect(() => {
+    const element = map.current;
+    if (!element) { setGeometry(previous => previous.paths.length ? { width: 1, height: 1, paths: [] } : previous); return; }
+    const svg = element.querySelector<SVGSVGElement>('.qp-map-edges')!;
+    const measure = () => {
+      const viewport = svg.getBoundingClientRect();
+      if (!viewport.width || !viewport.height) return;
+      const bounds = new Map(Array.from(element.querySelectorAll<HTMLElement>('.qp-map-node'), node => [`${node.dataset.dimension}:${node.dataset.key}`, node.getBoundingClientRect()]));
+      const paths = edges.flatMap(edge => {
+        const from = bounds.get(`${dimensions[edge.column]}:${JSON.stringify(edge.from)}`);
+        const to = bounds.get(`${dimensions[edge.column + 1]}:${JSON.stringify(edge.to)}`);
+        return from && to ? [{ edge, x: from.right - viewport.left, y: from.top + from.height / 2 - viewport.top, endX: to.left - viewport.left, endY: to.top + to.height / 2 - viewport.top }] : [];
+      });
+      const next = { width: viewport.width, height: viewport.height, paths };
+      setGeometry(previous => JSON.stringify(previous) === JSON.stringify(next) ? previous : next);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element); observer.observe(svg);
+    element.querySelectorAll('.qp-map-node').forEach(node => observer.observe(node));
+    return () => observer.disconnect();
+  }, [nodes, edges, recordCount, height, singleProject]);
   return <section className="qp-panel qp-runtime" id="runtime">
     <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.runtime')}</h2><p>{t('redesign.connections')}</p></div><span className="qp-chip">{t('redesign.records')} · {recordCount}</span></div>
     {recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} language={language} t={t} onInspect={onInspect}/>}
     {recordCount === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
-      <div className="qp-map" style={{ height: height + 24 }}>
-        <svg className="qp-map-edges" viewBox={`0 0 1000 ${height}`} preserveAspectRatio="none" aria-hidden="true">
+      <div ref={map} className="qp-map" data-single-project={singleProject} style={{ height: height + 24 }}>
+        <svg className="qp-map-edges" viewBox={`0 0 ${geometry.width} ${geometry.height}`} preserveAspectRatio="none" aria-hidden="true">
           <defs><marker id={arrowId} viewBox="0 0 8 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth"><polygon points="0,0 8,4 0,8 2,4" fill="context-stroke"/></marker></defs>
-          {edges.filter(edge => columns[edge.column].some(node => node.key === edge.from) && columns[edge.column + 1].some(node => node.key === edge.to)).map(edge => {
-            const fromIndex = columns[edge.column].findIndex(node => node.key === edge.from);
-            const toIndex = columns[edge.column + 1].findIndex(node => node.key === edge.to);
-            const x = edge.column * 250 + 195;
-            const y = fromIndex * 40 + 17;
-            const endY = toIndex * 40 + 17;
-            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + 45} ${y}, ${x + 10} ${endY}, ${x + 55} ${endY}`} fill="none" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrowId})`}/>;
+          {geometry.paths.map(({ edge, x, y, endX, endY }) => {
+            const bend = (endX - x) * .55;
+            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrowId})`}/>;
           })}
         </svg>
-        {dimensions.map((dimension, index) => <div className="qp-map-column" key={dimension}>
+        {dimensions.map((dimension, index) => <div className="qp-map-column" data-dimension={dimension} key={dimension}>
           <h3>{t(`redesign.${dimension}`)}</h3>
           {columns[index].map(node => {
             const label = node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue');
             const share = dimension === 'model' && modelTokens > 0 ? node.tokens / modelTokens * 100 : null;
-            const exact = `${label} · ${new Intl.NumberFormat(locale).format(node.tokens)} ${t('redesign.tokens')}`;
-            return <button className="qp-map-node" data-dimension={dimension} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <Box size={15}/>}</span><span className="qp-node-label">{label}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : <small>{compact.format(node.tokens)}</small>}</button>;
+            const exact = `${label} · ${new Intl.NumberFormat(locale).format(node.tokens)} ${t('redesign.tokens')}${dimension === 'project' && singleProject ? ` · ${new Intl.NumberFormat(locale).format(node.sessions)} ${t('redesign.sessions')}` : ''}`;
+            return <button className="qp-map-node" style={dimension === 'project' && singleProject ? { height: 80, marginTop: (Math.min(4, maxRows) * 40 - 80) / 2 } : undefined} data-dimension={dimension} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <Box size={15}/>}</span><span className="qp-node-label">{dimension === 'project' && singleProject ? <><small>{language === 'th' ? 'โปรเจกต์' : 'Project'}</small><span>{label}</span><small>{new Intl.NumberFormat(locale).format(node.sessions)} {t('redesign.sessions')}</small></> : label}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : dimension === 'project' && singleProject ? null : <small>{compact.format(node.tokens)}</small>}</button>;
           })}
         </div>)}
       </div>
