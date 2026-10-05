@@ -1569,7 +1569,15 @@ async function checkQuotaGroups(page: Page, lang: string, theme: string, pending
     const data = (await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<Overview>();
     for (let index = 0; index < 2; index++) {
       const group = page.locator('.qp-quota-group').nth(index), key = await group.getAttribute('data-owner-key');
-      assert.equal(await group.locator('.qp-quota').count(), 4); assert.equal(await group.locator('.qp-quota-group-heading .qp-chip').textContent(), '4');
+      assert.equal(await group.locator('.qp-quota').count(), 4);
+      const expectedState = data.subscriptions.find(subscription => subscription.subscription_key === key)?.state
+        ?? data.sourceStatus.find(source => source.account_key === null && `source:${source.source_id}` === key)?.account_state
+        ?? 'unknown';
+      const status = group.locator('.qp-quota-group-status');
+      assert.equal(await group.getAttribute('data-state'), expectedState);
+      assert.equal(await status.getAttribute('data-state'), expectedState);
+      assert.ok((await status.innerText()).trim().length > 0, 'Quota owner must show a localized API-backed status');
+      assert.equal(await group.locator('.qp-quota-group-heading>.qp-chip').count(), 0, 'Quota owner header must not show a window count');
       const owner = data.limits.find(limit => (limit.subscription_key ?? limit.account_key) === key)!;
       assert.equal(await group.locator('h3').innerText(), owner.subscription_display_name ?? owner.account_display_name ?? owner.display_name);
       const expectedWindows = [...new Set(data.limits.filter(limit => (limit.subscription_key ?? limit.account_key) === key).map(limit => limit.window_kind))];
@@ -1894,7 +1902,7 @@ try {
           if (destination === 'overview') {
             const activityHeading = await page.locator('.qp-activity h2').evaluate(element => Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE)?.textContent?.trim() ?? '');
             const labels = await Promise.all([
-              page.locator('.qp-quotas>h2').innerText(),
+              page.locator('.qp-quotas-heading h2').innerText(),
               page.locator('.qp-top-models h3').innerText(),
               page.locator('.qp-runway-heading h2').innerText(),
               page.locator('.qp-insights>h2').innerText(),
@@ -1917,6 +1925,21 @@ try {
                 windows: Array.from(group.querySelectorAll<HTMLElement>('.qp-quota')).map(row => row.dataset.window ?? '').sort(),
                 labels: Array.from(group.querySelectorAll<HTMLElement>('.qp-quota-heading>span:first-child')).map(label => label.textContent?.trim() ?? ''),
               })),
+              quotaGroupStates: Array.from(document.querySelectorAll<HTMLElement>('.qp-quota-group')).map(group => ({
+                ownerKey: group.dataset.ownerKey ?? '', state: group.dataset.state ?? '',
+                label: group.querySelector('.qp-quota-group-status')?.textContent?.trim() ?? '',
+                statusState: group.querySelector<HTMLElement>('.qp-quota-group-status')?.dataset.state ?? '',
+              })),
+              quotaGroupRects: Array.from(document.querySelectorAll<HTMLElement>('.qp-quota-group')).map(group => {
+                const rect = group.getBoundingClientRect(); return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+              }),
+              quotaBoxMetrics: ['.qp-quotas', '.qp-quotas-heading', '.qp-quota-groups', '.qp-quota-group'].map(selector => {
+                const element = document.querySelector<HTMLElement>(selector); if (!element) return { selector, missing: true };
+                const rect = element.getBoundingClientRect(), style = getComputedStyle(element);
+                return { selector, x: rect.x, y: rect.y, width: rect.width, height: rect.height, clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, columnWidth: style.gridTemplateColumns, overflowX: style.overflowX, scrollbarGutter: style.scrollbarGutter, padding: style.padding };
+              }),              quotaManageHref: document.querySelector<HTMLAnchorElement>('.qp-quota-manage')?.getAttribute('href') ?? null,
+              quotaManageLabel: document.querySelector('.qp-quota-manage')?.textContent?.trim() ?? '',
+              quotaWindowCountBadges: document.querySelectorAll('.qp-quota-group-heading>.qp-chip').length,
               quotaContentHeight: document.querySelector<HTMLElement>('.qp-quota-groups')?.scrollHeight ?? 0,
               quotaViewportHeight: document.querySelector<HTMLElement>('.qp-quota-groups')?.clientHeight ?? 0,
               selectedWindow: document.querySelector<HTMLElement>('.qp-quota[aria-pressed="true"]')?.dataset.window ?? null,
@@ -1936,6 +1959,22 @@ try {
             const modelShares = [38, 24, 18, 11, 9];
             assert.deepEqual(conceptData.modelRows.map(row => row.name), modelNames);
             assert.deepEqual(conceptData.modelRows.map(row => row.share), modelShares);
+            const overviewAccounts = (await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<Overview>();
+            const accountStates = new Map(overviewAccounts.subscriptions.map(subscription => [subscription.subscription_key, subscription.state] as const));
+            for (const source of overviewAccounts.sourceStatus) if (source.account_key === null) accountStates.set(`source:${source.source_id}`, source.account_state);
+            for (const group of conceptData.quotaGroupStates) {
+              assert.equal(group.state, accountStates.get(group.ownerKey) ?? 'unknown', `Quota group state must match API owner state for ${group.ownerKey}`);
+              assert.equal(group.statusState, group.state);
+              assert.ok(group.label.length > 0, 'Quota owner state badge must be localized and visible');
+            }
+            assert.equal(conceptData.quotaManageHref, '#providers');
+            assert.equal(conceptData.quotaManageLabel, lang === 'th' ? 'จัดการ' : 'Manage');
+            assert.equal(conceptData.quotaWindowCountBadges, 0, 'Reference status pills must show account state, not a window count');
+            const quotaReferenceRects = [{ x: 1229, y: 110, width: 324, height: 201 }, { x: 1229, y: 322, width: 324, height: 140 }];
+            for (const [index, rect] of conceptData.quotaGroupRects.entries()) {
+              const reference = quotaReferenceRects[index]; assert.ok(reference, 'Overview has only the two reference subscription cards');
+              assert.ok(Math.abs(rect.x - reference.x) <= 10 && Math.abs(rect.y - reference.y) <= 12 && Math.abs(rect.width - reference.width) <= 12 && Math.abs(rect.height - reference.height) <= 20, `Quota card ${index + 1} differs from source bounds: ${JSON.stringify({ rect, boxes: conceptData.quotaBoxMetrics, allRects: conceptData.quotaGroupRects })}`);
+            }
             const [openAiQuota, openCodeQuota] = conceptData.quotaGroups;
             assert.deepEqual(openAiQuota, { owner: 'OpenAI Subscription', windows: ['5h', 'monthly', 'weekly'], labels: lang === 'th' ? ['โควตา 5 ชม.', 'โควตารายสัปดาห์', 'โควตารายเดือน'] : ['5h quota', 'Weekly quota', 'Monthly quota'] });
             assert.deepEqual(openCodeQuota, { owner: 'OpenCode Go Subscription', windows: ['daily', 'monthly'], labels: lang === 'th' ? ['โควตารายเดือน', 'โควตารายวัน'] : ['Monthly quota', 'Daily quota'] });

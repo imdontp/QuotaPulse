@@ -3,7 +3,7 @@ import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Flame, Fol
 import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
 import { countdown } from '@/format';
-import type { MinuteTrendResponse, QuotaHistoryResponse, UsageResponse } from '@/api';
+import type { AccountState, MinuteTrendResponse, QuotaHistoryResponse, UsageResponse } from '@/api';
 import { CostValue, recordCostCoverage } from './cost-value';
 import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from './metric-series';
@@ -22,6 +22,7 @@ function ModelMark({ node, size }: { node: Pick<UsageNode, 'key' | 'vendor'>; si
 }
 const riskLabel = (state: ReturnType<typeof quotaState> | null) =>
   !state ? 'redesign.unavailable' : state.stale ? 'redesign.stale' : state.risk === 'unknown' ? 'redesign.unavailable' : `redesign.${state.risk}` as const;
+const accountStateMessage = (state: AccountState | undefined) => state ? ({ active: 'redesign.providerActive', stale: 'redesign.providerStale', inactive: 'redesign.providerInactive', unavailable: 'redesign.providerUnavailable', waiting: 'redesign.providerWaiting' } as const)[state] : 'redesign.providerFreshUnknown';
 const quotaWindowLabel = (window: string, t: Translate) => window === '5h' ? t('redesign.windowQuota5h')
   : window === 'weekly' ? t('redesign.windowQuotaWeekly')
     : window === 'monthly' ? t('redesign.windowQuotaMonthly')
@@ -31,6 +32,7 @@ interface OverviewProps {
   graph?: RuntimeGraph;
   runtimeGraph?: RuntimeGraph;
   quotas: readonly QuotaWindow[];
+  quotaAccountStates?: Readonly<Record<string, AccountState>>;
   now: number;
   t: Translate;
   language: 'en' | 'th';
@@ -230,7 +232,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ records = [], graph, runtimeGraph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, recent, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
+export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, recent, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -297,11 +299,11 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, now, t, la
                 </div><PulseCore quota={quota} now={now} t={t} language={language} staleAfterMs={preview ? 300000 : 3600000} tokens={totals.tokens} period={period ?? t('redesign.allTime')}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.topModelsByTokens')}><h3>{t('redesign.topModelsByTokens')}</h3><div className="qp-top-model-list">{models.slice(0, 5).map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span className="qp-model-identity"><i data-model-vendor={model.key ? model.vendor : undefined} aria-hidden="true"><ModelMark node={model} size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</div></section></div>
             <p className="qp-footnote">{t('redesign.scope')}</p>
           </section>
-          <section className="qp-panel qp-quotas"><h2><CircleGauge size={18}/>{t('redesign.windows')}</h2>
+          <section className="qp-panel qp-quotas"><div className="qp-quotas-heading"><h2><CircleGauge size={18}/>{t('redesign.windows')}</h2><a className="qp-quota-manage" href="#providers">{t('redesign.manage')} <ArrowRight size={14}/></a></div>
             {quotas.length === 0 && <p className="qp-footnote">{t('redesign.unavailable')}</p>}
             {quotas.length > 0 && <div className="qp-quota-groups" tabIndex={0} aria-label={t('redesign.windows')}>
-              {[...quotaGroups].map(([key, windows]) => <section className="qp-quota-group" key={key} data-owner-key={key} aria-label={windows[0].owner}>
-                <div className="qp-quota-group-heading"><h3><VendorIcon vendor={windows[0].provider ?? 'unknown'}/>{windows[0].owner}</h3><span className="qp-chip" aria-label={`${t('redesign.windows')}: ${windows.length}`}>{windows.length}</span></div>
+              {[...quotaGroups].map(([key, windows]) => <section className="qp-quota-group" key={key} data-owner-key={key} data-state={quotaAccountStates?.[key] ?? 'unknown'} aria-label={windows[0].owner}>
+                <div className="qp-quota-group-heading"><h3><VendorIcon vendor={windows[0].provider ?? 'unknown'}/>{windows[0].owner}</h3><span className="qp-quota-group-status" data-state={quotaAccountStates?.[key] ?? 'unknown'}>{t(accountStateMessage(quotaAccountStates?.[key]))}</span></div>
                 {windows.map(item => { const reading = quotaState(item, now, preview ? 300000 : 3600000);
                   const used = reading.remaining === null ? null : item.usedPercent;
                   const percent = used === null ? '—' : `${used}%`;

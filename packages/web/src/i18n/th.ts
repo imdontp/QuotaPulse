@@ -120,6 +120,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.windowQuotaMonthly': "โควตารายเดือน",
   'redesign.windowQuotaDaily': "โควตารายวัน",
   'redesign.windows': "การสมัครและโควตา",
+  'redesign.manage': "จัดการ",
   'redesign.topModelsByTokens': "โมเดลยอดนิยม (ตามจำนวนโทเค็น)",
   'redesign.models': "การใช้งานโมเดล",
   'redesign.project': "โปรเจกต์",

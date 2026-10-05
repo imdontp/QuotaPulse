@@ -114,6 +114,7 @@ export const en = {
   'redesign.windowQuotaMonthly': "Monthly quota",
   'redesign.windowQuotaDaily': "Daily quota",
   'redesign.windows': "Subscriptions & Quotas",
+  'redesign.manage': "Manage",
   'redesign.topModelsByTokens': "Top Models (by tokens)",
   'redesign.models': "Model usage",
   'redesign.project': "Projects",
