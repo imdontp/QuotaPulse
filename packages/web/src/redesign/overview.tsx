@@ -172,6 +172,7 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
       return { edge, x: u ** 3 * x + 3 * u ** 2 * t * (x + bend) + 3 * u * t ** 2 * (endX - bend) + t ** 3 * endX,
         y: u ** 3 * y + 3 * u ** 2 * t * y + 3 * u * t ** 2 * endY + t ** 3 * endY };
     }));
+  const projectFilter = onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>;
   useLayoutEffect(() => {
     const element = map.current;
     if (!element) { setGeometry(previous => previous.paths.length ? { width: 1, height: 1, paths: [] } : previous); return; }
@@ -195,7 +196,21 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
     return () => observer.disconnect();
   }, [nodes, edges, recordCount, height, singleProject]);
   return <section className="qp-panel qp-runtime" id="runtime">
-    <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.liveRuntimeMap')}</h2><p>{t('redesign.connections')}</p>{recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} language={language} t={t} onInspect={onInspect}/>}</div><div className="qp-runtime-controls"><span className="qp-runtime-legend"><i aria-hidden="true"/>{t('redesign.tokenFlow')}</span><span className="qp-runtime-activity-legend" title={t('redesign.runtimeActivityNote')} aria-label={`${t('redesign.runtimeActivityActive')}, ${t('redesign.runtimeActivityIdle')}. ${t('redesign.runtimeActivityNote')}`}><span data-state="active"><i aria-hidden="true"/>{t('redesign.runtimeActivityActive')}</span><span data-state="idle"><i aria-hidden="true"/>{t('redesign.runtimeActivityIdle')}</span></span>{onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>}<span className="qp-chip">{t('redesign.records')} · {recordCount}</span></div></div>
+    <div className="qp-section-heading">
+      <div className="qp-runtime-heading-main">
+        <h2><GitBranch size={18}/>{t('redesign.liveRuntimeMap')}</h2>
+        <p>{t('redesign.connections')}</p>
+        {projectFilter}
+        {recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} recordCount={recordCount} language={language} t={t} onInspect={onInspect}/>}
+      </div>
+      <div className="qp-runtime-controls">
+        <span className="qp-runtime-legend"><i aria-hidden="true"/>{t('redesign.tokenFlow')}</span>
+        <span className="qp-runtime-activity-legend" title={t('redesign.runtimeActivityNote')} aria-label={`${t('redesign.runtimeActivityActive')}, ${t('redesign.runtimeActivityIdle')}. ${t('redesign.runtimeActivityNote')}`}>
+          <span data-state="active"><i aria-hidden="true"/>{t('redesign.runtimeActivityActive')}</span>
+          <span data-state="idle"><i aria-hidden="true"/>{t('redesign.runtimeActivityIdle')}</span>
+        </span>
+      </div>
+    </div>
 
     {recordCount === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
       <div ref={map} className="qp-map" data-single-project={singleProject} style={{ height: height + 24 }}>

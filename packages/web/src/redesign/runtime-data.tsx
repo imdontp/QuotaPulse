@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { Table } from 'lucide-react';
 import { dimensions, type Dimension, type RuntimeGraph } from './model';
 import type { RedesignTranslate } from './shell';
 import './chart-data.css';
 
 /** Complete graph facts. Each adjacent dimension pair represents the same scope. */
-export function RuntimeData({ nodes, edges, language, t, onInspect }: {
-  nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; language: 'en' | 'th';
+export function RuntimeData({ nodes, edges, recordCount, language, t, onInspect }: {
+  nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; language: 'en' | 'th';
   t: RedesignTranslate; onInspect: (dimension: Dimension, key: string | null) => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -14,8 +15,9 @@ export function RuntimeData({ nodes, edges, language, t, onInspect }: {
     ? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')
     : key === '' ? t('redesign.emptyIdentity') : key;
   const count = dimensions.reduce((sum, dimension) => sum + nodes[dimension].length, 0);
+  const summaryLabel = `${t('redesign.chartData')} · ${number.format(recordCount)} ${t('redesign.records')}`;
   return <details className="qp-chart-data qp-runtime-data" onToggle={event => setOpen(event.currentTarget.open)}>
-    <summary>{t('redesign.chartData')}</summary>
+    <summary aria-label={summaryLabel} title={summaryLabel} data-record-count={recordCount}><Table size={14} aria-hidden="true"/></summary>
     {open && <div>
       <p className="qp-footnote">{t('redesign.runtimeDataNote')}</p>
       <table className="qp-runtime-nodes"><caption>{t('redesign.runtimeNodes')} ({number.format(count)})</caption><thead><tr>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QuotaPulse concept review v1.82</title>
+<style>
+:root{color-scheme:dark}body{margin:0;background:#040a14;color:#eef3ff;font:15px system-ui,sans-serif}header{padding:20px;display:grid;gap:12px}h1{margin:0;font-size:22px}p{margin:0;color:#a6b9dc;line-height:1.5;max-width:1100px}fieldset{display:flex;gap:16px;flex-wrap:wrap;border:1px solid #32455f;padding:12px}label{display:flex;align-items:center;gap:8px}select{font:inherit;background:#08101b;color:#eef3ff;padding:6px;border:1px solid #52657c}:focus-visible{outline:2px solid #36c9ff;outline-offset:3px}main{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}figure{margin:0;min-width:0}figcaption{padding:8px;color:#a6b9dc}img{display:block;width:100%;height:auto}.overlay main{display:block;position:relative;padding:0;margin:12px}.overlay figure:last-child{position:absolute;inset:0;opacity:var(--app-opacity,.5)}.overlay figcaption{display:none}@media(max-width:800px){main{grid-template-columns:1fr}}
+</style>
+<header>
+  <h1>QuotaPulse concept and app comparison v1.82</h1>
+  <p>The left image is the supplied Overview concept. The right image is a repeatable production build capture using a synthetic fixture. The running app continues to use daemon data. Dynamic values and unavailable source fields are kept truthful, so the captures review layout, color, and hierarchy rather than fixed numbers.</p>
+  <fieldset>
+    <legend>Capture options</legend>
+    <label>Language <select id="language"><option value="en">English</option><option value="th">Thai</option></select></label>
+    <label>Theme <select id="theme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+    <label><input id="overlay" type="checkbox">Overlay images</label>
+    <label>App opacity <input id="opacity" type="range" min="0" max="100" value="50"><output id="value">50%</output></label>
+  </fieldset>
+  <p id="note" role="status"></p>
+</header>
+<main>
+  <figure><figcaption>Source concept v1.44</figcaption><img id="source" src="../redesign-v1.44/source-overview.png" alt="QuotaPulse Overview source concept"></figure>
+  <figure><figcaption id="captureCaption">Production build capture - English/dark</figcaption><img id="capture" src="overview-en-dark.png" alt="QuotaPulse Overview English dark production capture"></figure>
+</main>
+<script>
+const language=document.getElementById('language'),theme=document.getElementById('theme'),overlay=document.getElementById('overlay');
+function update(){const capture=document.getElementById('capture');capture.src=`overview-${language.value}-${theme.value}.png`;capture.alt=`Overview ${language.value} ${theme.value} production capture`;document.getElementById('captureCaption').textContent=`Production build capture - ${language.value}/${theme.value}`;document.getElementById('note').textContent='Captures are repeatable review candidates, not approved visual baselines.'}
+[language,theme].forEach(control=>control.addEventListener('change',update));overlay.addEventListener('change',()=>document.body.classList.toggle('overlay',overlay.checked));document.getElementById('opacity').addEventListener('input',event=>{document.body.style.setProperty('--app-opacity',event.target.value/100);document.getElementById('value').value=event.target.value+'%'});update();
+</script>
+</html>

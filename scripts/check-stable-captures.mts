@@ -2304,6 +2304,8 @@ try {
             assert.equal(await page.locator('.qp-hero>.qp-section-heading .qp-status').count(), 0, 'Pulse Core must not repeat the selected quota risk badge');
             const runtimeProjectSelect = page.locator('.qp-runtime-project select');
             assert.equal(await runtimeProjectSelect.inputValue(), 'QuotaPulse', 'Runtime Map should default to the most active project in this range');
+            assert.equal(await page.locator('.qp-runtime-heading-main .qp-runtime-project select').count(), 1, 'Project filtering stays with the map title and breadcrumb');
+            assert.equal(await page.locator('.qp-runtime-controls .qp-runtime-project').count(), 0, 'The concept-aligned legend stays clear of project controls');
             const projectQuery = new URLSearchParams({ from: String(monthFrom.getTime()), to: String(fixedNow + 1), project: 'QuotaPulse' });
             const focusedGraph = (await daemon.inject({ method: 'GET', url: `/api/runtime-map?${projectQuery}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<RuntimeGraph>();
             const visibleProjectNodes = page.locator('.qp-runtime .qp-map-node[data-dimension=project]');
@@ -2312,7 +2314,9 @@ try {
             assert.equal(Number(await visibleProjectNodes.first().getAttribute('data-tokens')), focusedGraph.nodes.project[0]?.tokens);
             assert.equal(focusedGraph.nodes.project[0]?.activeSessions, 12, 'The reference project node shows sessions with recorded use in the last five minutes');
             assert.equal(await visibleProjectNodes.first().getAttribute('data-active-sessions'), '12');
-            assert.equal(Number(await page.locator('.qp-runtime .qp-chip').textContent().then(text => text.match(/\d+/)?.[0])), focusedGraph.totals.records);
+            const runtimeDataSummary = page.locator('.qp-runtime-data summary');
+            assert.equal(await runtimeDataSummary.getAttribute('data-record-count'), String(focusedGraph.totals.records));
+            assert.ok((await runtimeDataSummary.getAttribute('aria-label'))?.includes(new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(focusedGraph.totals.records)), 'Record count stays available in the graph data control name');
             const runtimeNodeSessions = await visibleProjectNodes.first().getAttribute('aria-label');
             assert.ok(runtimeNodeSessions?.includes(new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(12)), 'Focused Runtime Map must retain the active project session total');
             await runtimeProjectSelect.selectOption(''); await settled(page, pending);
