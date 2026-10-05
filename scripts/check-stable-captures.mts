@@ -72,13 +72,28 @@ const referenceModels = [
   { name: 'GPT-4.1 mini', provider: 'openai', share: 0 },
 ];
 const session = db.prepare('INSERT INTO session(id,source_id,native_session_id,project,last_seen_at) VALUES (?,?,?,?,?)');
-const usage = db.prepare('INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,input_tokens,cached_input_tokens,output_tokens,total_tokens,call_count,cost_usd,cost_source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)');
+const usage = db.prepare('INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,input_tokens,cached_input_tokens,output_tokens,total_tokens,call_count,cost_usd,cost_source,cost_input_usd,cost_cached_input_usd,cost_cache_write_usd,cost_output_usd,cost_cache_saving_usd,price_provider) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+// Synthetic catalogue rates for the in-memory visual fixture only. The saved
+// amount is derived from the same fresh/cached input components the UI reports.
+const fixtureInputUsdPerMillion = 0.04, fixtureCachedInputUsdPerMillion = 0.004;
 for (let index = 0; index < 12; index++) {
   const source = [1, 3, 4, 1, 2, 2, 2, 2, 2, 2, 1, 4][index]!;
   session.run(index + 1, source, `fixture-session-${index}`, referenceProjects[0], fixedNow - 10_000);
   const model = referenceModels[index % referenceModels.length]!;
   const totalTokens = model.share === 0 ? 1 : model.share * 721_000_000 / 600;
-  for (let call = 0; call < 3; call++) usage.run(source, index + 1, `fixed-${index}-${call}`, fixedNow - (index + call + 1) * 15_000, model.name, model.provider, totalTokens * .58, totalTokens * .42, 0, totalTokens, call + 1, (index + 1) / 100, index === 0 ? 'native' : 'computed');
+  for (let call = 0; call < 3; call++) {
+    const inputTokens = totalTokens * .58, cachedInputTokens = totalTokens * .42;
+    const costSource = index === 0 ? 'native' : 'computed';
+    const inputUsd = inputTokens / 1_000_000 * fixtureInputUsdPerMillion;
+    const cachedInputUsd = cachedInputTokens / 1_000_000 * fixtureCachedInputUsdPerMillion;
+    const cacheSavingUsd = cachedInputTokens / 1_000_000 * (fixtureInputUsdPerMillion - fixtureCachedInputUsdPerMillion);
+    usage.run(source, index + 1, `fixed-${index}-${call}`, fixedNow - (index + call + 1) * 15_000, model.name, model.provider,
+      inputTokens, cachedInputTokens, 0, totalTokens, call + 1,
+      costSource === 'native' ? (index + 1) / 100 : inputUsd + cachedInputUsd, costSource,
+      costSource === 'native' ? null : inputUsd, costSource === 'native' ? null : cachedInputUsd,
+      costSource === 'native' ? null : 0, costSource === 'native' ? null : 0,
+      costSource === 'native' ? null : cacheSavingUsd, costSource === 'native' ? null : model.provider);
+  }
 }
 // The monthly concept is focused on QuotaPulse while the machine-wide quick
 // stats still report all five named projects. Keep four small monthly records
@@ -88,7 +103,9 @@ for (let index = 1; index < referenceProjects.length; index++) {
   const model = referenceModels[index - 1]!;
   const at = fixedNow - 10 * 60_000;
   session.run(id, source, `fixture-project-${index}`, referenceProjects[index], at);
-  usage.run(source, id, `fixture-project-usage-${index}`, at, model.name, model.provider, 1, 0, 0, 1, 1, 0, 'computed');
+  const inputUsd = fixtureInputUsdPerMillion / 1_000_000;
+  usage.run(source, id, `fixture-project-usage-${index}`, at, model.name, model.provider, 1, 0, 0, 1, 1,
+    inputUsd, 'computed', inputUsd, 0, 0, 0, 0, model.provider);
 }
 // Values below the old visual minimum catch inflated nonzero bars in both charts.
 const tinyUsage = db.prepare("INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,input_tokens,cached_input_tokens,output_tokens,total_tokens,call_count,cost_usd,cost_source) VALUES (1,1,?,?,'DeepSeek V4.1','deepseek',1,0,0,1,1,0,'computed')");
@@ -142,7 +159,7 @@ const settingsChecks: Array<{ lang: string; theme: string; sections: number; lan
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const overviewLayouts: Array<{ lang: string; theme: string; heroBottom: number; activityBottom: number; models: number; railHeight: number; runtimeProvidersVisible: number; edgeMaxError: number; pulseCenter: { x: number; y: number }; modelTitleOutside: boolean }> = [];
 const overviewReferenceLabelChecks: Array<{ lang: string; theme: string; labels: string[]; modelRailLabel: string | null }> = [];
-const overviewConceptDataChecks: Array<{ lang: string; theme: string; periodRange: string; modelNames: string[]; modelShares: number[]; quotaGroups: Array<{ owner: string; windows: string[]; labels: string[] }>; quotaContentHeight: number; quotaViewportHeight: number; selectedWindow: string | null; pulsePercent: number | null; pulseLabel: string | null; pulseDetail: string | null; cacheShare: number | null; mapProject: string | null; mapProjects: number; mapRecords: number; mapSessions: number }> = [];
+const overviewConceptDataChecks: Array<{ lang: string; theme: string; periodRange: string; modelNames: string[]; modelShares: number[]; quotaGroups: Array<{ owner: string; windows: string[]; labels: string[] }>; quotaContentHeight: number; quotaViewportHeight: number; selectedWindow: string | null; pulsePercent: number | null; pulseLabel: string | null; pulseDetail: string | null; cacheShare: number | null; cacheSavingsUsd: number | null; cacheSavingsKnownCalls: number; mapProject: string | null; mapProjects: number; mapRecords: number; mapSessions: number }> = [];
 const referenceColumnChecks: Array<{ page: string; lang: string; theme: string; headerTop: number; railTop: number; summaryRight: number; railLeft: number }> = [];
 const liveDensityChecks: Array<{ lang: string; theme: string; bottom: number; sessions: number; records: number }> = [];
 const liveMinuteChecks: Array<{ lang: string; theme: string; state: string; pairs: number; cells: number; missing: number; zero: number; recorded: number; partial: number; included: number; aggregate: number; unknown: number; table: boolean; labelGeometry: Array<{ viewport: number; width: number; clientWidth: number; scrollWidth: number; name: string | null | undefined }> }> = [];
@@ -664,6 +681,24 @@ async function settled(page: Page, pending: Set<Request>) {
   await page.waitForTimeout(1_000);
 }
 
+async function openRuntimeMapOptions(page: Page) {
+  const disclosure = page.locator('.qp-runtime-options');
+  if (await disclosure.getAttribute('open') === null) {
+    await page.locator('.qp-runtime-options>summary').focus();
+    await page.keyboard.press('Enter');
+  }
+  await page.locator('.qp-runtime-options[open]').waitFor();
+}
+
+async function closeRuntimeMapOptions(page: Page) {
+  const disclosure = page.locator('.qp-runtime-options');
+  if (await disclosure.getAttribute('open') !== null) {
+    await page.locator('.qp-runtime-options>summary').focus();
+    await page.keyboard.press('Enter');
+  }
+  await page.locator('.qp-runtime-options:not([open])').waitFor();
+}
+
 async function comparePixels(page: Page, first: Buffer, second: Buffer) {
   return page.evaluate(async ({ first, second }) => {
     // Inline decoding avoids tsx's nested-function __name helper in page context.
@@ -967,7 +1002,7 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
       assert.equal(state, 'live');
       assert.equal(await status.getAttribute('role'), 'status');
       assert.equal(await status.getAttribute('aria-label'), lang === 'th' ? 'การเชื่อมต่อ daemon: กำลังอัปเดต' : 'Daemon connection: live');
-      assert.equal(await page.locator('.qp-daemon-caption').textContent(), lang === 'th' ? 'ระบบทั้งหมดทำงานปกติ' : 'All Systems Operational');
+      assert.equal(await page.locator('.qp-daemon-caption').textContent(), lang === 'th' ? th['redesign.daemonConnected'] : en['redesign.daemonConnected']);
       assert.equal(await page.locator('.qp-workspace-label').textContent(), lang === 'th' ? 'พื้นที่ทำงาน' : 'Workspace');
       assert.equal((await page.locator('.qp-machine-scope').innerText()).trim(), lang === 'th' ? 'เครื่องนี้' : 'This machine');
       assert.equal(await page.locator('.qp-topbar button[aria-haspopup=dialog]').getAttribute('aria-label'), lang === 'th' ? 'ค้นหาทุกอย่าง...' : 'Search anything...');
@@ -1165,7 +1200,7 @@ async function checkRuntimeGeometry(page: Page, graph: RuntimeGraph, lang: strin
   assert.equal(weightedPaths.length, expected.length);
   for (const [index, path] of weightedPaths.entries()) {
     const columnTotal = graph.nodes[dimensions[path.column]!].reduce((total, node) => total + node.tokens, 0);
-    const expectedWidth = columnTotal > 0 ? Math.max(1.4, Math.min(5.5, 1.4 + path.tokens / columnTotal * 9)) : 1.4;
+    const expectedWidth = columnTotal > 0 ? Math.max(1.2, Math.min(4.4, 1.2 + path.tokens / columnTotal * 6)) : 1.2;
     assert.ok(Math.abs(path.width - expectedWidth) < 0.01, `Runtime edge ${index} width must encode its share of recorded token flow (${path.width} != ${expectedWidth})`);
   }
   const maxError = await page.locator('.qp-map-edges>path').evaluateAll(paths => {
@@ -1198,6 +1233,7 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
     const graph = await (await response).json() as RuntimeGraph;
     await settled(page, pending);
     assert.ok(graph.nodes.project.length > 8 && graph.nodes.model.length > 8);
+    await openRuntimeMapOptions(page);
     await page.locator('.qp-runtime-project select').selectOption(''); await settled(page, pending);
     await checkRuntimeGeometry(page, graph, lang, theme, 'desktop-many-nodes');
     const modelTotal = graph.nodes.model.reduce((total, node) => total + node.tokens, 0);
@@ -1276,7 +1312,18 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
     await page.screenshot({ path: resolve(output, `runtime-expanded-${lang}-${theme}.png`), animations: 'disabled', fullPage: true });
     for (const width of [390, 900, 1280]) {
       await page.setViewportSize({ width, height: 992 });
-      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Runtime overflow at ${width}`);
+      const overflow = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, viewport: innerWidth,
+        layout: Array.from(document.querySelectorAll<HTMLElement>('.qp-runtime-options,.qp-runtime-options-panel,.qp-runtime-heading-main,.qp-map-scroll,.qp-map')).map(element => {
+          const rect = element.getBoundingClientRect();
+          return { className: element.className, left: Math.round(rect.left), right: Math.round(rect.right), width: Math.round(rect.width), scrollWidth: element.scrollWidth };
+        }),
+        elements: Array.from(document.querySelectorAll<HTMLElement>('*')).flatMap(element => {
+          const rect = element.getBoundingClientRect();
+          return rect.width && (rect.left < -1 || rect.right > innerWidth + 1)
+            ? [{ tag: element.tagName, className: String(element.className), left: Math.round(rect.left), right: Math.round(rect.right), width: Math.round(rect.width) }]
+            : [];
+        }).sort((a, b) => b.right - a.right).slice(0, 8) }));
+      assert.equal(overflow.scrollWidth <= overflow.viewport, true, `Runtime overflow at ${width}: ${JSON.stringify(overflow)}`);
       await checkRuntimeGeometry(page, graph, lang, theme, `resize-${width}`);
       await page.locator('.qp-map-scroll').evaluate(element => { element.scrollLeft = element.scrollWidth; element.scrollTop = element.scrollHeight; });
       assert.ok(await page.locator('.qp-map-scroll').evaluate(element => element.scrollLeft > 0 || element.scrollTop > 0), `Runtime scroll did not move at ${width}`);
@@ -1357,6 +1404,7 @@ async function checkModelMarks(page: Page, lang: string, theme: string, pending:
     await page.setViewportSize({ width: 1586, height: 992 });
     await page.goto('http://127.0.0.1:7804/?model-marks=known#overview', { waitUntil: 'domcontentloaded' });
     await settled(page, pending);
+    await openRuntimeMapOptions(page);
     await page.locator('.qp-runtime-project select').selectOption(''); await settled(page, pending);
     const hero = page.locator('.qp-model-row'), runtime = page.locator('.qp-map-node[data-dimension=model]');
     const displayedModels = graph.nodes.model.slice(0, 5);
@@ -1935,6 +1983,20 @@ async function checkOverviewInsights(page: Page, lang: string, theme: string, pe
     try {
       await page.goto(`http://127.0.0.1:7804/?overview-insights=${state}#overview`, { waitUntil: 'domcontentloaded' });
       await panel.locator('.qp-insight-card').first().waitFor(); await settled(page, pending); await values(totals);
+      const cacheMetric = page.locator('.qp-metric-rail[data-metric=cache]');
+      const expectedSavings = totals.cacheSavingKnownCalls > 0 ? totals.cacheSavingKnownUsd : null;
+      assert.equal(await cacheMetric.getAttribute('data-value'), expectedSavings === null ? null : String(expectedSavings), 'Cache savings remain unavailable without priced cache components, while a known zero remains measurable');
+      const cacheMetricSupport = await cacheMetric.locator('.qp-metric-rail-support').first().getAttribute('title');
+      const cacheMetricLines = await cacheMetric.locator('.qp-metric-rail-support').allTextContents();
+      const pricingCalls = totals.nativeCalls + totals.computedCalls + totals.estimatedCalls + totals.unknownCalls;
+      const inputTotal = totals.inputTokens + totals.cachedInputTokens + totals.cacheWriteTokens;
+      const cacheSharePercent = inputTotal > 0 ? totals.cachedInputTokens / inputTotal * 100 : null;
+      assert.equal(cacheMetricLines[0], cacheSharePercent === null ? (lang === 'th' ? th['redesign.noInput'] : en['redesign.noInput']) : `${new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 }).format(cacheSharePercent)}% ${lang === 'th' ? th['redesign.cacheReadsShort'] : en['redesign.cacheReadsShort']}`);
+      assert.equal(cacheMetricLines[1], pricingCalls > 0
+        ? `${new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(totals.cacheSavingKnownCalls)} / ${new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(pricingCalls)} ${lang === 'th' ? th['redesign.cachePriceShort'] : en['redesign.cachePriceShort']}`
+        : (lang === 'th' ? th['redesign.noCachePrice'] : en['redesign.noCachePrice']));
+      if (pricingCalls > 0) assert.ok(cacheMetricSupport?.includes(`${new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(totals.cacheSavingKnownCalls)} / ${new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(pricingCalls)}`));
+      else assert.ok(cacheMetricSupport?.includes(lang === 'th' ? th['redesign.noCachePrice'] : en['redesign.noCachePrice']));
       if (state === 'empty') {
         const recommendation = panel.locator('[data-insight=recommendation]');
         assert.equal(await recommendation.getAttribute('data-pricing-state'), 'unavailable');
@@ -2235,9 +2297,11 @@ try {
               pulseDetail: document.querySelector('.qp-pulse-label>span:last-child')?.textContent?.trim() ?? null,
               cacheShare: Number(document.querySelector('[data-insight="cache"] header strong')?.textContent?.replace('%', '') ?? NaN),
               metricRail: Array.from(document.querySelectorAll<HTMLElement>('.qp-metric-rail')).map(item => ({
-                metric: item.dataset.metric ?? '', value: Number(item.dataset.value),
+                metric: item.dataset.metric ?? '', value: item.dataset.value === undefined ? null : Number(item.dataset.value),
                 label: item.querySelector('.qp-metric-rail-label')?.textContent?.trim() ?? '',
                 meter: item.querySelector('.qp-metric-meter')?.getAttribute('data-value') ?? null,
+                support: item.querySelector('.qp-metric-rail-support')?.getAttribute('title') ?? '',
+                supportLines: Array.from(item.querySelectorAll('.qp-metric-rail-support'), line => line.textContent?.trim() ?? ''),
                 traces: Array.from(item.querySelectorAll<SVGElement>('.qp-metric-trace'), trace => trace.dataset.values ?? ''),
               })),
               periodRange: (document.querySelector('.qp-overview-period select') as HTMLSelectElement | null)?.value ?? '',
@@ -2274,8 +2338,8 @@ try {
             assert.equal(conceptData.insightsSubtitle, lang === 'th' ? 'สัญญาณการใช้งานและราคา' : 'Usage and pricing signals');
             assert.equal(conceptData.cacheShare, 42);
             const expectedMetricLabels = lang === 'th'
-              ? [th['redesign.tokenUsage'], th['redesign.averageTokenPace'], th['redesign.knownCost'], th['redesign.cacheShare']]
-              : ['Token Usage', 'Burn Rate', 'Known cost', 'Cached input share'];
+              ? [th['redesign.tokenUsage'], th['redesign.averageTokenPace'], th['redesign.knownCost'], th['redesign.cacheSaving']]
+              : ['Token Usage', 'Burn Rate', 'Known cost', 'Known cache savings'];
             assert.deepEqual(conceptData.metricRail.map(metric => metric.metric), ['tokens', 'pace', 'cost', 'cache']);
             assert.deepEqual(conceptData.metricRail.map(metric => metric.label), expectedMetricLabels);
             assert.equal(conceptData.metricRail[0]?.meter, '72');
@@ -2290,7 +2354,9 @@ try {
             assert.equal(metrics.cost?.value, monthGraph.totals.reportedCost + monthGraph.totals.apiValue);
             const cacheDenominator = monthGraph.totals.inputTokens + monthGraph.totals.cachedInputTokens + monthGraph.totals.cacheWriteTokens;
             const expectedCacheShare = cacheDenominator > 0 ? monthGraph.totals.cachedInputTokens / cacheDenominator * 100 : null;
-            assert.ok(metrics.cache?.value != null && expectedCacheShare != null && Math.abs(metrics.cache.value - expectedCacheShare) < 0.000001);
+            const expectedCacheSavings = monthGraph.totals.cacheSavingKnownCalls > 0 ? monthGraph.totals.cacheSavingKnownUsd : null;
+            assert.equal(metrics.cache?.value, expectedCacheSavings, 'The concept Value Created slot uses only known priced cache savings');
+            assert.ok(metrics.cache?.support?.includes(`${new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(monthGraph.totals.cacheSavingKnownCalls)} / ${new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(monthGraph.totals.nativeCalls + monthGraph.totals.computedCalls + monthGraph.totals.estimatedCalls + monthGraph.totals.unknownCalls)}`), 'The cache metric discloses cache-pricing coverage');
             assert.equal(Math.round(expectedCacheShare ?? 0), conceptData.cacheShare);
             const traceValues = (metric: string) => {
               const raw = metrics[metric]?.traces[0];
@@ -2304,8 +2370,10 @@ try {
             assert.equal(await page.locator('.qp-hero>.qp-section-heading .qp-status').count(), 0, 'Pulse Core must not repeat the selected quota risk badge');
             const runtimeProjectSelect = page.locator('.qp-runtime-project select');
             assert.equal(await runtimeProjectSelect.inputValue(), 'QuotaPulse', 'Runtime Map should default to the most active project in this range');
-            assert.equal(await page.locator('.qp-runtime-heading-main .qp-runtime-project select').count(), 1, 'Project filtering stays with the map title and breadcrumb');
+            assert.equal(await page.locator('.qp-runtime-options>summary').getAttribute('aria-label'), lang === 'th' ? th['redesign.mapOptions'] : en['redesign.mapOptions']);
+            assert.equal(await page.locator('.qp-runtime-heading-main>.qp-runtime-project select').count(), 0, 'Project filtering stays out of the visible title breadcrumb');
             assert.equal(await page.locator('.qp-runtime-controls .qp-runtime-project').count(), 0, 'The concept-aligned legend stays clear of project controls');
+            await openRuntimeMapOptions(page);
             const projectQuery = new URLSearchParams({ from: String(monthFrom.getTime()), to: String(fixedNow + 1), project: 'QuotaPulse' });
             const focusedGraph = (await daemon.inject({ method: 'GET', url: `/api/runtime-map?${projectQuery}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<RuntimeGraph>();
             const visibleProjectNodes = page.locator('.qp-runtime .qp-map-node[data-dimension=project]');
@@ -2323,7 +2391,8 @@ try {
             assert.equal(await page.locator('.qp-runtime .qp-map-node[data-dimension=project]').count(), monthGraph.nodes.project.length, 'All-project scope must restore every project node');
             await runtimeProjectSelect.selectOption('QuotaPulse'); await settled(page, pending);
             assert.equal(await page.locator('.qp-runtime .qp-map-node[data-dimension=project]').count(), 1, 'Selecting a project must filter the runtime graph through the API');
-            overviewConceptDataChecks.push({ lang, theme, periodRange: conceptData.periodRange, modelNames, modelShares, quotaGroups: conceptData.quotaGroups, quotaContentHeight: conceptData.quotaContentHeight, quotaViewportHeight: conceptData.quotaViewportHeight, selectedWindow: conceptData.selectedWindow, pulsePercent: conceptData.pulsePercent, pulseLabel: conceptData.pulseLabel, pulseDetail: conceptData.pulseDetail, cacheShare: conceptData.cacheShare, mapProject: 'QuotaPulse', mapProjects: focusedGraph.nodes.project.length, mapRecords: focusedGraph.totals.records, mapSessions: focusedGraph.totals.sessions, mapActiveSessions: focusedGraph.nodes.project[0]?.activeSessions });
+            await closeRuntimeMapOptions(page);
+            overviewConceptDataChecks.push({ lang, theme, periodRange: conceptData.periodRange, modelNames, modelShares, quotaGroups: conceptData.quotaGroups, quotaContentHeight: conceptData.quotaContentHeight, quotaViewportHeight: conceptData.quotaViewportHeight, selectedWindow: conceptData.selectedWindow, pulsePercent: conceptData.pulsePercent, pulseLabel: conceptData.pulseLabel, pulseDetail: conceptData.pulseDetail, cacheShare: conceptData.cacheShare, cacheSavingsUsd: expectedCacheSavings, cacheSavingsKnownCalls: monthGraph.totals.cacheSavingKnownCalls, mapProject: 'QuotaPulse', mapProjects: focusedGraph.nodes.project.length, mapRecords: focusedGraph.totals.records, mapSessions: focusedGraph.totals.sessions, mapActiveSessions: focusedGraph.nodes.project[0]?.activeSessions });
             const hero = await page.locator('.qp-hero').boundingBox();
             const activity = await page.locator('.qp-activity-item').first().boundingBox();
             const rail = page.locator('.qp-top-models');
@@ -2427,6 +2496,7 @@ try {
           // Prior page interactions can leave the shared browser pointer over a
           // control or focused; normalize both before capture so hover/focus
           // paint cannot leak into the next canonical screenshot.
+          if (destination === 'overview') assert.equal(await page.locator('.qp-runtime-options').getAttribute('open'), null, 'Overview capture must show the map with its optional controls collapsed');
           await page.evaluate(() => { const focused = document.activeElement; if (focused instanceof HTMLElement) focused.blur(); });
           await page.mouse.move(0, 0);
           await page.waitForTimeout(200);

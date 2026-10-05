@@ -11,7 +11,7 @@ export function DaemonConnection() {
   const { state } = useRefreshStatus();
   const label = { connecting: 'app.refreshConnecting', live: 'app.refreshLive', reconnecting: 'app.refreshReconnecting', stale: 'app.refreshStale', unavailable: 'app.refreshUnavailable' } as const;
   const stateLabel = t(label[state]);
-  const status = state === 'live' ? t('redesign.systemsOperational') : stateLabel;
+  const status = state === 'live' ? t('redesign.daemonConnected') : stateLabel;
   const description = `${t('redesign.daemonConnection')}: ${stateLabel}`;
   return <span className="qp-daemon-status"><span className="qp-daemon-badge" data-state={state} role="status" aria-label={description} title={description}><i aria-hidden="true"/>{stateLabel}</span><span className="qp-daemon-caption" aria-hidden="true">{status}</span></span>;
 }

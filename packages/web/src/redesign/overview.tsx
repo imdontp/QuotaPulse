@@ -1,5 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
-import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Flame, Folder, GitBranch, History, Layers, Star, Wallet, X } from 'lucide-react';
+import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Flame, Folder, GitBranch, History, Layers, SlidersHorizontal, Star, Wallet, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
 import { countdown } from '@/format';
@@ -172,6 +172,7 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
       return { edge, x: u ** 3 * x + 3 * u ** 2 * t * (x + bend) + 3 * u * t ** 2 * (endX - bend) + t ** 3 * endX,
         y: u ** 3 * y + 3 * u ** 2 * t * y + 3 * u * t ** 2 * endY + t ** 3 * endY };
     }));
+  const featuredFlowEdges = new Set(flowPaths.map(({ edge }) => JSON.stringify([edge.column, edge.from, edge.to])));
   const projectFilter = onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>;
   useLayoutEffect(() => {
     const element = map.current;
@@ -200,8 +201,13 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
       <div className="qp-runtime-heading-main">
         <h2><GitBranch size={18}/>{t('redesign.liveRuntimeMap')}</h2>
         <p>{t('redesign.connections')}</p>
-        {projectFilter}
-        {recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} recordCount={recordCount} language={language} t={t} onInspect={onInspect}/>}
+        {(projectFilter || recordCount > 0) && <details className="qp-runtime-options">
+          <summary aria-label={t('redesign.mapOptions')} title={t('redesign.mapOptions')}><SlidersHorizontal size={14} aria-hidden="true"/></summary>
+          <div className="qp-runtime-options-panel">
+            {projectFilter}
+            {recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} recordCount={recordCount} language={language} t={t} onInspect={onInspect}/>}
+          </div>
+        </details>}
       </div>
       <div className="qp-runtime-controls">
         <span className="qp-runtime-legend"><i aria-hidden="true"/>{t('redesign.tokenFlow')}</span>
@@ -219,9 +225,10 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
           {geometry.paths.map(({ edge, x, y, endX, endY }) => {
             const bend = (endX - x) * .55;
             const total = columnTokenTotals[edge.column] ?? 0;
-            const strokeWidth = total > 0 ? Math.max(1.4, Math.min(5.5, 1.4 + edge.tokens / total * 9)) : 1.4;
+            const strokeWidth = total > 0 ? Math.max(1.2, Math.min(4.4, 1.2 + edge.tokens / total * 6)) : 1.2;
             const activityState = runtimeActivityState(edge.lastActivityAt, now, activityWindowMs);
-            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-last-activity-at={edge.lastActivityAt ?? undefined} data-active-sessions={edge.activeSessions} data-activity-state={activityState} key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth={strokeWidth} markerEnd={`url(#${arrowId})`}/>;
+            const identity = JSON.stringify([edge.column, edge.from, edge.to]);
+            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-last-activity-at={edge.lastActivityAt ?? undefined} data-active-sessions={edge.activeSessions} data-activity-state={activityState} data-flow-priority={featuredFlowEdges.has(identity) ? 'primary' : 'secondary'} key={identity} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth={strokeWidth} markerEnd={`url(#${arrowId})`}/>;
           })}
           {flowPaths.map(({ edge, x, y }) => <circle className="qp-map-flow-dot" data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-activity-state="active" key={JSON.stringify([edge.column, edge.from, edge.to])} cx={x} cy={y} r="2.8"/>)}
         </svg>
@@ -322,6 +329,10 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
   const prices = coverage ? { native: coverage.nativeCalls, api: coverage.computedCalls + coverage.estimatedCalls, total: coverage.nativeCalls + coverage.computedCalls + coverage.estimatedCalls + coverage.unknownCalls } : recordCostCoverage(records);
   const inputTotal = coverage ? coverage.inputTokens + coverage.cachedInputTokens + coverage.cacheWriteTokens : 0;
   const cacheShare = inputTotal > 0 && coverage ? coverage.cachedInputTokens / inputTotal * 100 : null;
+  const cacheSavings = coverage && coverage.cacheSavingKnownCalls > 0 ? coverage.cacheSavingKnownUsd : null;
+  const cachePricingCoverage = coverage && prices.total > 0
+    ? `${number(coverage.cacheSavingKnownCalls)} / ${number(prices.total)} ${t('redesign.knownCalls')}`
+    : t('redesign.noCachePrice');
   const tokenPeriodChange = metricComparison
     ? relativeChangePercent(metricComparison.current.total_tokens, metricComparison.previous.total_tokens) : null;
   const previousCacheShare = metricComparison ? cacheSharePercent(metricComparison.previous) : null;
@@ -372,6 +383,12 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
   const metricTrendLabel = `${t('redesign.metricTrend')} · ${period ?? t('redesign.allTime')}`;
   const costSupport = `${t('redesign.nativeShort')} ${money(totals.reportedCost)} · ${t('redesign.apiShort')} ${money(totals.apiValue)}`;
   const cacheSupport = cacheShare === null ? t('redesign.noInput') : `${compactNumber(coverage!.cachedInputTokens)} / ${compactNumber(inputTotal)}`;
+  const cacheMetricSupport = `${cacheShare === null ? t('redesign.noInput') : `${number(cacheShare)}% ${t('redesign.cacheShare')}`} · ${cachePricingCoverage}`;
+  const cacheMetricShareText = cacheShare === null ? t('redesign.noInput') : `${number(cacheShare)}% ${t('redesign.cacheReadsShort')}`;
+  const cacheMetricPricingText = coverage && prices.total > 0
+    ? `${number(coverage.cacheSavingKnownCalls)} / ${number(prices.total)} ${t('redesign.cachePriceShort')}`
+    : t('redesign.noCachePrice');
+  const cacheMetricTrendLabel = `${t('redesign.cacheShare')} · ${metricTrendLabel}`;
   const cacheInsightSupport = `${cacheSupport} · ${coverage && coverage.cacheSavingKnownCalls > 0
     ? `${money(coverage.cacheSavingKnownUsd)} · ${number(coverage.cacheSavingKnownCalls)} ${t('redesign.knownCalls')}`
     : t('redesign.noCachePrice')}`;
@@ -399,7 +416,7 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
               <MetricRailItem metric="tokens" icon={<CircleGauge size={21}/>} label={t('redesign.tokenUsage')} value={compactNumber(totals.tokens)} rawValue={totals.tokens} meter={quotaPercent} meterCaption={quota ? quotaWindowLabel(quota.window, t) : t('redesign.quotaUsed')} meterLabel={quota ? `${quota.owner} · ${quotaWindowLabel(quota.window, t)} · ${t('redesign.quotaUsed')}` : t('redesign.quotaUsed')}/>
               <MetricRailItem metric="pace" icon={<Flame size={21}/>} label={t('redesign.averageTokenPace')} value={metricPace === null ? '—' : compactNumber(metricPace)} rawValue={metricPace} support={t('redesign.tokensPerDay')} trend={metricTokenSeries} trendLabel={metricTrendLabel}/>
               <MetricRailItem metric="cost" icon={<Coins size={21}/>} label={t('redesign.knownCost')} value={<CostValue amount={knownCost} priced={prices.native + prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>} rawValue={knownCost} support={costSupport} trend={metricCostSeries} trendLabel={metricTrendLabel}/>
-              <MetricRailItem metric="cache" icon={<Star size={21}/>} label={t('redesign.cacheShare')} value={cacheShare === null ? '—' : `${number(cacheShare)}%`} rawValue={cacheShare} support={cacheSupport} trend={metricCacheSeries} trendLabel={metricTrendLabel} scale="percent"/>
+              <MetricRailItem metric="cache" icon={<Star size={21}/>} label={t('redesign.cacheSaving')} value={cacheSavings === null ? '—' : money(cacheSavings)} rawValue={cacheSavings} support={cacheMetricSupport} supportText={cacheMetricShareText} supportDetail={cacheMetricPricingText} trend={metricCacheSeries} trendLabel={cacheMetricTrendLabel} scale="percent"/>
                 </div><PulseCore quota={quota} now={now} t={t} language={language} staleAfterMs={preview ? 300000 : 3600000} tokens={totals.tokens} period={period ?? t('redesign.allTime')}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.topModelsByTokens')}><h3>{t('redesign.topModelsByTokens')}</h3><div className="qp-top-model-list">{models.slice(0, 5).map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span className="qp-model-identity"><i data-model-vendor={model.key ? model.vendor : undefined} aria-hidden="true"><ModelMark node={model} size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</div></section></div>
             <div className="qp-hero-notes">
               {projectionMessage && <p className="qp-hero-projection" data-testid="pulse-projection">{projectionMessage}</p>}
@@ -485,8 +502,8 @@ function MetricTrace({ values, label, scale = 'amount' }: { values: readonly (nu
   return <svg className="qp-metric-trace" viewBox="0 0 56 22" preserveAspectRatio="none" role="img" aria-label={label} data-values={values.map(value => value === null ? '' : String(value)).join(',')}><path d={path} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke"/></svg>;
 }
 
-function MetricRailItem({ metric, label, value, rawValue, icon, support, trend, trendLabel, scale = 'amount', meter, meterCaption, meterLabel }: {
-  metric: string; label: string; value: ReactNode; rawValue: number | null; icon: ReactNode; support?: string;
+function MetricRailItem({ metric, label, value, rawValue, icon, support, supportText, supportDetail, trend, trendLabel, scale = 'amount', meter, meterCaption, meterLabel }: {
+  metric: string; label: string; value: ReactNode; rawValue: number | null; icon: ReactNode; support?: string; supportText?: string; supportDetail?: string;
   trend?: readonly (number | null)[]; trendLabel?: string; scale?: 'amount' | 'percent'; meter?: number | null; meterCaption?: string; meterLabel?: string;
 }) {
   const hasMeter = meter != null && Number.isFinite(meter);
@@ -500,7 +517,8 @@ function MetricRailItem({ metric, label, value, rawValue, icon, support, trend, 
         <small aria-hidden="true"><span className="qp-metric-meter-context">{meterCaption ?? label}</span><strong>{visibleMeter}</strong></small>
         <span aria-hidden="true"><i style={{ width: `${Math.max(0, Math.min(100, meter))}%` }}/></span>
       </div>}
-      {support && <small className="qp-metric-rail-support" title={support}>{support}</small>}
+      {support && <small className="qp-metric-rail-support" title={support}>{supportText ?? support}</small>}
+      {supportDetail && <small className="qp-metric-rail-support" title={support}>{supportDetail}</small>}
     </div>
   </div>;
 }
