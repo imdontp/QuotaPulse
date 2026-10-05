@@ -1,3 +1,8 @@
+## v1.68 current candidate
+
+v1.68 aligns the Dashboard topbar hierarchy, live operational status, Workspace/This machine context, search label, and Theme/Language controls while preserving the existing real-data and accessibility behavior. The focused Overview gate is 4/4 byte-identical, and the full 40-pair matrix passes with one 5-pixel delta-1 replay. It is a review checkpoint, not visual acceptance. See the [v1.68 report](REDESIGN-VISUAL-FIDELITY-V1.68.md) and [reference viewer](redesign-v1.68/reference-review.html).
+
+Next, compare the Overview metric rail and remaining cards region by region. Only use supported daemon fields in production; label unsupported concept data honestly. Keep pet/popup redesign out of scope.
 ## v1.67 current candidate
 
 v1.67 adjusts the Overview fixture to the supplied Dashboard content and monthly scope, shows all published provider quota windows, tightens Alerts density, and makes History verification follow its API result. Its complete 40-pair production capture matrix and web/daemon tests pass. This is a repeatability checkpoint, not visual acceptance: source-image likeness is still below the requested 99-100% target. The comparison and all screenshots are in [the v1.67 report](REDESIGN-VISUAL-FIDELITY-V1.67.md) and [review viewer](redesign-v1.67/reference-review.html).

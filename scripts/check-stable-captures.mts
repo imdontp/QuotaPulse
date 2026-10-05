@@ -863,7 +863,7 @@ async function checkFontAccess(page: Page, destination: string, lang: string, th
   try {
     await cdp.send('DOM.enable'); await cdp.send('CSS.enable');
     const { root } = await cdp.send('DOM.getDocument');
-    const selector = lang === 'th' ? '.qp-sidebar nav a span' : '.qp-tools button';
+    const selector = lang === 'th' ? '.qp-sidebar nav a span' : '.qp-tools button:last-child';
     const { nodeId } = await cdp.send('DOM.querySelector', { nodeId: root.nodeId, selector });
     const { fonts } = await cdp.send('CSS.getPlatformFontsForNode', { nodeId });
     const thai = fonts.find(font => font.familyName === 'Noto Sans Thai');
@@ -915,6 +915,12 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
       assert.equal(state, 'live');
       assert.equal(await status.getAttribute('role'), 'status');
       assert.equal(await status.getAttribute('aria-label'), lang === 'th' ? 'การเชื่อมต่อ daemon: กำลังอัปเดต' : 'Daemon connection: live');
+      assert.equal(await page.locator('.qp-daemon-caption').textContent(), lang === 'th' ? 'ระบบทั้งหมดทำงานปกติ' : 'All Systems Operational');
+      assert.equal(await page.locator('.qp-workspace-label').textContent(), lang === 'th' ? 'พื้นที่ทำงาน' : 'Workspace');
+      assert.equal((await page.locator('.qp-machine-scope').innerText()).trim(), lang === 'th' ? 'เครื่องนี้' : 'This machine');
+      assert.equal(await page.locator('.qp-topbar button[aria-haspopup=dialog]').getAttribute('aria-label'), lang === 'th' ? 'ค้นหาทุกอย่าง...' : 'Search anything...');
+      assert.deepEqual(await page.locator('.qp-tools button').evaluateAll(elements => elements.map(element => element.getAttribute('aria-label'))), lang === 'th' ? ['เปลี่ยนธีมสี', 'เปลี่ยนภาษา'] : ['Switch color theme', 'Switch language']);
+      assert.equal(await page.locator('.qp-tools button:last-child').innerText(), lang === 'th' ? 'EN' : 'ไทย');
       if (width > 1400) {
         dateText = await page.locator('.qp-header-clock time').first().textContent();
         const expectedDate = lang === 'en' ? 'Sat, May 17, 2025' : await page.evaluate(now => new Intl.DateTimeFormat('th-TH', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'Asia/Bangkok' }).format(now), fixedNow);
@@ -1497,7 +1503,7 @@ async function checkActivityRenderer(page: Page, lang: string, theme: string, pe
     const image = tree.nodes.find(node => !node.ignored && node.role?.value === 'image');
     assert.ok(image?.description?.value?.includes(new Date(before.points[0].at).toLocaleString(lang === 'th' ? 'th-TH' : 'en-US')), 'Minute values must be exposed through the image accessibility description');
   } finally { await cdp.detach(); }
-  const themeButton = page.locator('.qp-tools button').last();
+  const themeButton = page.locator('.qp-tools button').first();
   await themeButton.click();
   await page.waitForFunction(prior => (document.querySelector('canvas.qp-activity-sparkline') as HTMLCanvasElement).toDataURL() !== prior, before.pixels);
   assert.deepEqual((await snapshot()).points, before.points);

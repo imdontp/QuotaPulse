@@ -460,7 +460,7 @@ try {
   await page.setViewportSize({ width: 390, height: 1000 });
   await page.goto('http://127.0.0.1:7801/#cost');
   await page.reload();
-  if (await cost.getAttribute('lang') !== 'th') await cost.locator('.qp-tools button').first().click();
+  if (await cost.getAttribute('lang') !== 'th') await cost.locator('.qp-tools button').last().click();
   await cost.getByRole('heading', { name: 'วิเคราะห์ต้นทุน', exact: true }).waitFor();
   await cost.locator('.qp-cost-summary strong').first().waitFor();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Cost mobile overflow');
@@ -497,7 +497,7 @@ try {
   await page.goto('http://127.0.0.1:7801/#alerts');
   await page.reload();
   const alerts = page.getByTestId('production-alerts');
-  if (await alerts.getAttribute('lang') !== 'en') await alerts.locator('.qp-tools button').first().click();
+  if (await alerts.getAttribute('lang') !== 'en') await alerts.locator('.qp-tools button').last().click();
   await alerts.getByRole('heading', { name: 'Alerts and quota guard', exact: true }).waitFor();
   await alerts.locator('.qp-alert-risk li').first().waitFor();
   assert.equal(await alerts.locator('.qp-alert-risk li').count(), 1);
@@ -512,7 +512,7 @@ try {
   await page.evaluate(() => localStorage.setItem('quotapulse-theme', 'light'));
   await page.setViewportSize({ width: 390, height: 1000 });
   await page.reload();
-  if (await alerts.getAttribute('lang') !== 'th') await alerts.locator('.qp-tools button').first().click();
+  if (await alerts.getAttribute('lang') !== 'th') await alerts.locator('.qp-tools button').last().click();
   await alerts.getByRole('heading', { name: 'การแจ้งเตือนและเฝ้าโควตา', exact: true }).waitFor();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Alerts mobile overflow');
   await page.screenshot({ path: resolve(output, 'alerts-real-th-light-390.png'), fullPage: true });

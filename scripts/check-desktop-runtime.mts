@@ -61,7 +61,7 @@ try {
   assert.equal(await search.evaluate(element => element === document.activeElement), true);
   await dashboard.keyboard.press('Escape'); await palette.waitFor({ state: 'hidden' });
   assert.equal(await trigger.evaluate(element => element === document.activeElement), true);
-  await dashboard.locator('.qp-tools button').first().click();
+  await dashboard.locator('.qp-tools button').last().click();
   await dashboard.waitForFunction(() => document.documentElement.lang === 'th');
   await dashboard.evaluate(() => document.fonts.ready);
   const cdp = await dashboard.context().newCDPSession(dashboard);
@@ -75,7 +75,7 @@ try {
     assert.ok(thaiFont && thaiFont.isCustomFont && thaiFont.glyphCount > 0, 'Electron Thai label must use the bundled custom font');
   } finally { await cdp.detach(); }
   await dashboard.screenshot({ path: resolve(output, 'dashboard-production-thai.png') });
-  await dashboard.locator('.qp-tools button').first().click();
+  await dashboard.locator('.qp-tools button').last().click();
   await dashboard.waitForFunction(() => document.documentElement.lang === 'en');
   await popup.getByRole('button', { name: 'Open dashboard', exact: true }).click();
   await popup.locator('.pet-popup-close').click();

@@ -54,7 +54,7 @@ try {
   for (const language of ['en', 'th']) {
     if (language === 'th') await page.getByRole('button', { name: 'Switch language' }).click();
     for (const theme of ['dark', 'light']) {
-      if (theme === 'light') await page.locator('.qp-tools button').last().click();
+      if (theme === 'light') await page.locator('.qp-tools button').first().click();
       for (const width of [390, 900, 1280, 1440]) {
         await page.setViewportSize({ width, height: 1000 });
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `overflow: ${language}/${theme}/${width}`);
@@ -68,7 +68,7 @@ try {
         }))) });
       }
     }
-    await page.locator('.qp-tools button').last().click();
+    await page.locator('.qp-tools button').first().click();
   }
   assert.equal(await page.evaluate(() => JSON.stringify(localStorage)), before, 'preview changed stored preferences');
   assert.deepEqual(forbidden, [], 'preview accessed daemon or external network');
