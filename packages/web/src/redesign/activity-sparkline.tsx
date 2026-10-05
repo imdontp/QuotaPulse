@@ -5,7 +5,8 @@ interface ActivityPoint {
   value: number;
 }
 
-const HEIGHT = 12;
+export const ACTIVITY_SPARKLINE_HEIGHT = 22;
+const HEIGHT = ACTIVITY_SPARKLINE_HEIGHT;
 
 /** Native-size bitmap; every straight segment represents the supplied minute buckets. */
 export function ActivitySparkline({ points, label, language }: {

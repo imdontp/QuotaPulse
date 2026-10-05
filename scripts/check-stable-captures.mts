@@ -18,6 +18,7 @@ import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.j
 import { countdown } from '../packages/web/src/format.js';
 import { usageEventParams } from '../packages/web/src/lib/usage-events.js';
 import { activityTokensPerMinute, activityTrendScope, latestActivityByHarness } from '../packages/web/src/redesign/activity-trend.js';
+import { ACTIVITY_SPARKLINE_HEIGHT } from '../packages/web/src/redesign/activity-sparkline.js';
 import { checkLiveMinuteRefresh } from './check-live-minute-refresh.mjs';
 import { checkLiveTokenFlow } from './check-live-token-flow.mjs';
 import { checkSectionMarks } from './check-section-marks.mjs';
@@ -1536,6 +1537,12 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
     const expectedValue = record.grain === 'session_aggregate' ? compact.format(record.total_tokens) : rate === null ? '—' : compact.format(rate);
     assert.equal(await card.locator('.qp-activity-value').getAttribute('data-rate-state'), expectedState);
     assert.equal(await rateValue.textContent(), expectedValue);
+    const sparklineLocator = card.locator('canvas.qp-activity-sparkline');
+    const hasSparkline = await sparklineLocator.count() === 1;
+    const expectedSparkline = Boolean(minute?.coverage.includedRecords && record.grain === 'call' && record.model && record.provider);
+    assert.equal(hasSparkline, expectedSparkline, 'Only recorded minute data for an individual call may draw a waveform');
+    const sparkline = hasSparkline ? await sparklineLocator.boundingBox() : null;
+    if (hasSparkline) assert.ok(sparkline && Math.abs(sparkline.height - ACTIVITY_SPARKLINE_HEIGHT) < .1, 'Recorded call waveform must use the reference-sized chart row');
     assert.equal(await card.locator('.qp-activity-value small').textContent(), record.grain === 'session_aggregate' ? (lang === 'th' ? 'โทเค็นที่ตรวจพบ' : 'tokens observed') : (lang === 'th' ? 'โทเค็น/นาที' : 'tokens/min'));
     const points = await card.locator('[data-at][data-value]').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')) })));
     if (minute?.coverage.includedRecords) {
@@ -1546,7 +1553,8 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
       });
       assert.deepEqual(points, expected);
       const canvas = card.locator('canvas.qp-activity-sparkline');
-      const bitmap = await canvas.evaluate(async (element: HTMLCanvasElement, expected) => {
+      const bitmap = await canvas.evaluate(async (element: HTMLCanvasElement, input: { expected: Array<{ at: number; value: number }>; chartHeight: number }) => {
+        const { expected, chartHeight } = input;
         const rect = element.getBoundingClientRect(), context = element.getContext('2d')!;
         const pixels = context.getImageData(0, 0, element.width, element.height).data;
         const maximum = Math.max(...expected.map(point => point.value));
@@ -1554,7 +1562,7 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
         const margin = Math.max(1, rect.width * .008), first = expected[0].at, last = expected.at(-1)!.at;
         const covered = expected.every(point => {
           const x = (last > first ? margin + (rect.width - 2 * margin) * (point.at - first) / (last - first) : rect.width / 2) * element.width / rect.width;
-          const y = (11 - 10 * point.value / (maximum || 1)) * element.height / 12;
+          const y = (chartHeight - 1 - (chartHeight - 2) * point.value / (maximum || 1)) * element.height / chartHeight;
           for (let py = Math.max(0, Math.floor(y) - 1); py <= Math.min(element.height - 1, Math.ceil(y) + 1); py++)
             for (let px = Math.max(0, Math.floor(x) - 1); px <= Math.min(element.width - 1, Math.ceil(x) + 1); px++)
               if (pixels[(py * element.width + px) * 4 + 3] > 64) return true;
@@ -1564,9 +1572,9 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
         return { width: element.width, height: element.height, cssWidth: rect.width, dpr: devicePixelRatio, covered,
           paintedPixels: pixels.filter((value, index) => index % 4 === 3 && value > 0).length,
           sha256: [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, '0')).join('') };
-      }, expected);
+      }, { expected, chartHeight: ACTIVITY_SPARKLINE_HEIGHT });
       assert.equal(bitmap.width, Math.round(bitmap.cssWidth * bitmap.dpr));
-      assert.equal(bitmap.height, Math.round(12 * bitmap.dpr));
+      assert.equal(bitmap.height, Math.round(ACTIVITY_SPARKLINE_HEIGHT * bitmap.dpr));
       assert.equal(bitmap.covered, true, 'Canvas must paint the independent API bucket positions');
       assert.ok(bitmap.paintedPixels > 0);
       activityBitmapChecks.push({ lang, theme, recordId: record.event_id, points: expected.length, width: bitmap.width, height: bitmap.height, paintedPixels: bitmap.paintedPixels, sha256: bitmap.sha256 });
@@ -1664,7 +1672,7 @@ async function checkActivityRenderer(page: Page, lang: string, theme: string, pe
     return canvas.width === Math.round(canvas.getBoundingClientRect().width * devicePixelRatio);
   });
   const narrow = await snapshot();
-  assert.notEqual(narrow.width, before.width); assert.equal(narrow.height, 12);
+  assert.notEqual(narrow.width, before.width); assert.equal(narrow.height, ACTIVITY_SPARKLINE_HEIGHT);
   assert.deepEqual(narrow.points, before.points);
   await page.setViewportSize({ width: 1586, height: 992 });
   const home = 'http://127.0.0.1:7804/?activity-renderer=fixture#overview';
@@ -2205,11 +2213,16 @@ try {
             const activity = await page.locator('.qp-activity-item').first().boundingBox();
             const rail = page.locator('.qp-top-models');
             const box = await rail.boundingBox();
-            assert.ok(hero && activity && box);
+            const quickStats = await page.locator('.qp-quick-stats').boundingBox();
+            assert.ok(hero && activity && box && quickStats);
+            assert.ok(Math.abs(quickStats.y - 423) <= 8 && Math.abs(quickStats.height - 288) <= 12,
+              `Quick Stats sidebar card differs from the reference placement: y=${quickStats.y}, height=${quickStats.height}`);
+            const modelBar = await rail.locator('.qp-model-row .qp-bar>span').first().evaluate(element => getComputedStyle(element).backgroundImage);
+            assert.match(modelBar, /rgb\(89, 108, 255\).*rgb\(154, 103, 237\)/, 'Top model token share uses the reference violet ramp');
             if (activity.y + activity.height > 992) console.log('Overview header geometry', await page.locator('.qp-topbar,.qp-brand,.qp-brand>svg,.qp-brand>span,.qp-brand small,.qp-topbar-body,.qp-daemon-status').evaluateAll(elements => elements.map(element => { const rect = element.getBoundingClientRect(), style = getComputedStyle(element); return { className: element.className, x: rect.x, y: rect.y, width: rect.width, height: rect.height, font: style.font, lineHeight: style.lineHeight }; })));
             if (overviewOnly) {
               await page.screenshot({ path: resolve(output, `layout-${lang}-${theme}.png`), animations: 'disabled' });
-              writeFileSync(resolve(output, `layout-${lang}-${theme}.json`), JSON.stringify({ hero, activity, rail: box, runtime: await page.locator('.qp-runtime').boundingBox(), bottom: await page.locator('.qp-bottom-grid').boundingBox() }, null, 2));
+              writeFileSync(resolve(output, `layout-${lang}-${theme}.json`), JSON.stringify({ hero, activity, quickStats, rail: box, runtime: await page.locator('.qp-runtime').boundingBox(), bottom: await page.locator('.qp-bottom-grid').boundingBox() }, null, 2));
             }
             assert.ok(box.height <= 270.1, `Model rail exceeds its desktop height: ${box.height}`);
             assert.ok(activity.y + activity.height <= 992, `Overview activity is outside concept viewport: ${activity.y + activity.height}`);
