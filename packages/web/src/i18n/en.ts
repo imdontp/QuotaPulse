@@ -160,6 +160,8 @@ export const en = {
   'redesign.afterReset': 'Forecast reaches full after reset',
   'redesign.coreProjectionLead': 'At the current pace, quota is projected to fill in',
   'redesign.coreProjectionAfterReset': 'At the current pace, the quota is projected to remain within its limit until reset.',
+  'redesign.runwayHitLimitLead': 'Projected to hit limit',
+  'redesign.runwayAfterReset': 'Forecast stays within quota through reset',
   'redesign.forecastInsufficient': 'Forecast needs three readings across at least 15 minutes',
   'redesign.forecastFlat': 'Recent quota use is flat',
   'redesign.forecastReset': 'Forecast reset after a window change',

@@ -231,6 +231,12 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
     ? `${t('redesign.projected')} ${date(runway.projectedFullAt)} · ${t('redesign.beforeReset')}`
     : runway.projectedFullAt !== null ? t('redesign.afterReset')
       : t(runway.forecastStatus === 'flat' ? 'redesign.forecastFlat' : runway.forecastStatus === 'reset' ? 'redesign.forecastReset' : 'redesign.forecastInsufficient') : null;
+  const timeBeforeReset = runway.status === 'ready' && runway.projectedBeforeReset && runway.projectedFullAt !== null
+    ? quotaDuration(now + quota!.resetAt - runway.projectedFullAt, now, t('redesign.unknownValue')) : null;
+  const consequence = timeBeforeReset !== null
+    ? `${t('redesign.runwayHitLimitLead')} ${timeBeforeReset} ${t('redesign.beforeReset')}${language === 'th' ? '' : '.'}`
+    : runway.status === 'ready' && runway.projectedFullAt !== null
+      ? t('redesign.runwayAfterReset') : forecast;
   const marker = runway.status === 'ready' && runway.projectedBeforeReset && runway.projectedFullAt !== null
     ? (runway.projectedFullAt - now) / (quota!.resetAt - now) * 100 : null;
   return <section className="qp-panel qp-runway" data-testid="quota-runway">
@@ -246,7 +252,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
         {marker !== null && <span className="qp-runway-risk" style={{ left: `${marker}%` }}/>}<span className="qp-runway-now"/>
         {marker !== null && <span className="qp-runway-marker" style={{ left: `${marker}%` }}/>}<span className="qp-runway-reset"/>
       </div>
-      <div className="qp-runway-outcome"><strong>{runway.projectedFullAt !== null ? `${duration(runway.projectedFullAt)} ${t('redesign.remaining')}` : '—'}</strong><span data-risk={marker !== null ? 'warning' : undefined}>{forecast}</span><strong>{t('redesign.resetIn')} {duration(quota!.resetAt)}</strong></div>
+      <div className="qp-runway-outcome"><strong>{runway.projectedFullAt !== null ? `${duration(runway.projectedFullAt)} ${t('redesign.remaining')}` : '—'}</strong><span data-testid="quota-runway-consequence" data-risk={marker !== null ? 'warning' : undefined}>{consequence}</span><strong>{t('redesign.resetIn')} {duration(quota!.resetAt)}</strong></div>
       <p className="qp-footnote">{t('redesign.safePace')} <strong>{decimal(runway.safePace)}</strong> {t('redesign.pointsPerHour')}</p>
     </>}
     {!preview && <details className="qp-quota-history" data-testid="quota-history" onToggle={event => setHistoryOpen(event.currentTarget.open)}>
@@ -327,7 +333,7 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
           <section className="qp-panel qp-hero">
             <div className="qp-section-heading"><div className="qp-hero-heading-copy"><h2><Activity size={18}/>{t('redesign.core')}</h2><small className="qp-hero-tagline">{t('redesign.coreSubtitle')}</small></div>{periodControl ?? (period && <span className="qp-chip">{period}</span>)}</div>
             <div className="qp-core-grid"><div className="qp-metrics">
-              <MetricRailItem metric="tokens" icon={<CircleGauge size={21}/>} label={t('redesign.tokenUsage')} value={compactNumber(totals.tokens)} rawValue={totals.tokens} meter={quotaPercent} meterLabel={quota ? `${quota.owner} · ${quotaWindowLabel(quota.window, t)} · ${t('redesign.quotaUsed')}` : t('redesign.quotaUsed')}/>
+              <MetricRailItem metric="tokens" icon={<CircleGauge size={21}/>} label={t('redesign.tokenUsage')} value={compactNumber(totals.tokens)} rawValue={totals.tokens} meter={quotaPercent} meterCaption={quota ? quotaWindowLabel(quota.window, t) : t('redesign.quotaUsed')} meterLabel={quota ? `${quota.owner} · ${quotaWindowLabel(quota.window, t)} · ${t('redesign.quotaUsed')}` : t('redesign.quotaUsed')}/>
               <MetricRailItem metric="pace" icon={<Flame size={21}/>} label={t('redesign.averageTokenPace')} value={metricPace === null ? '—' : compactNumber(metricPace)} rawValue={metricPace} support={t('redesign.tokensPerDay')} trend={metricTokenSeries} trendLabel={metricTrendLabel}/>
               <MetricRailItem metric="cost" icon={<Coins size={21}/>} label={t('redesign.knownCost')} value={<CostValue amount={knownCost} priced={prices.native + prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>} rawValue={knownCost} support={costSupport} trend={metricCostSeries} trendLabel={metricTrendLabel}/>
               <MetricRailItem metric="cache" icon={<Star size={21}/>} label={t('redesign.cacheShare')} value={cacheShare === null ? '—' : `${number(cacheShare)}%`} rawValue={cacheShare} support={cacheSupport} trend={metricCacheSeries} trendLabel={metricTrendLabel} scale="percent"/>
@@ -416,9 +422,9 @@ function MetricTrace({ values, label, scale = 'amount' }: { values: readonly (nu
   return <svg className="qp-metric-trace" viewBox="0 0 56 22" preserveAspectRatio="none" role="img" aria-label={label} data-values={values.map(value => value === null ? '' : String(value)).join(',')}><path d={path} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke"/></svg>;
 }
 
-function MetricRailItem({ metric, label, value, rawValue, icon, support, trend, trendLabel, scale = 'amount', meter, meterLabel }: {
+function MetricRailItem({ metric, label, value, rawValue, icon, support, trend, trendLabel, scale = 'amount', meter, meterCaption, meterLabel }: {
   metric: string; label: string; value: ReactNode; rawValue: number | null; icon: ReactNode; support?: string;
-  trend?: readonly (number | null)[]; trendLabel?: string; scale?: 'amount' | 'percent'; meter?: number | null; meterLabel?: string;
+  trend?: readonly (number | null)[]; trendLabel?: string; scale?: 'amount' | 'percent'; meter?: number | null; meterCaption?: string; meterLabel?: string;
 }) {
   const hasMeter = meter != null && Number.isFinite(meter);
   const visibleMeter = hasMeter ? `${Math.round(meter)}%` : null;
@@ -428,7 +434,8 @@ function MetricRailItem({ metric, label, value, rawValue, icon, support, trend, 
       <span className="qp-metric-rail-label">{label}</span>
       <div className="qp-metric-rail-main"><strong>{value}</strong>{trend && trendLabel && <MetricTrace values={trend} label={trendLabel} scale={scale}/>}</div>
       {hasMeter && <div className="qp-metric-meter" role="meter" aria-label={`${meterLabel ?? label} · ${visibleMeter}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={meter} data-value={meter}>
-        <span aria-hidden="true"><i style={{ width: `${Math.max(0, Math.min(100, meter))}%` }}/></span><small aria-hidden="true">{visibleMeter}</small>
+        <small aria-hidden="true"><span className="qp-metric-meter-context">{meterCaption ?? label}</span><strong>{visibleMeter}</strong></small>
+        <span aria-hidden="true"><i style={{ width: `${Math.max(0, Math.min(100, meter))}%` }}/></span>
       </div>}
       {support && <small className="qp-metric-rail-support" title={support}>{support}</small>}
     </div>

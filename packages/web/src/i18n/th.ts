@@ -166,6 +166,8 @@ export const th: Record<MessageKey, string> = {
   'redesign.afterReset': 'แนวโน้มใช้เต็มหลังเวลารีเซ็ต',
   'redesign.coreProjectionLead': 'ด้วยอัตราปัจจุบัน คาดว่าโควตาจะเต็มในอีก',
   'redesign.coreProjectionAfterReset': 'ด้วยอัตราปัจจุบัน คาดว่าจะยังใช้โควตาไม่เต็มก่อนรีเซ็ต',
+  'redesign.runwayHitLimitLead': 'คาดว่าโควตาจะเต็ม',
+  'redesign.runwayAfterReset': 'คาดว่าโควตาจะยังไม่เต็มก่อนรีเซ็ต',
   'redesign.forecastInsufficient': 'ต้องมีข้อมูลอย่างน้อย 3 ครั้งในช่วง 15 นาทีจึงคาดการณ์ได้',
   'redesign.forecastFlat': 'การใช้โควตาล่าสุดทรงตัว',
   'redesign.forecastReset': 'เริ่มคาดการณ์ใหม่หลังรอบโควตาเปลี่ยน',

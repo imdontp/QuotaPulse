@@ -36,6 +36,16 @@
   background:radial-gradient(ellipse at 48% 0,#dce9ff,transparent 65%),var(--qp-bg);
   color-scheme:light;
 }
+.qp-redesign[data-theme=dark] {
+  background:
+    radial-gradient(1px 1px at 32px 47px,#a4e6ff9c .65px,transparent 1.25px),
+    radial-gradient(1px 1px at 136px 109px,#b39cff80 .65px,transparent 1.25px),
+    radial-gradient(ellipse at 77% 33%,#3847a81f,transparent 45%),
+    radial-gradient(ellipse at 28% 69%,#0089cc14,transparent 43%),
+    radial-gradient(ellipse at 48% 0,#0b1525,transparent 65%),var(--qp-bg);
+  background-size:240px 220px,310px 260px,100% 100%,100% 100%,100% 100%,auto;
+  background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;
+}
 .qp-redesign[data-theme=light] .qp-pulse radialGradient stop {
   stop-color:#c7e6fb;
 }
@@ -296,7 +306,11 @@
 }
 .qp-hero {
   overflow:hidden;
-  background:radial-gradient(ellipse at 52% 45%,color-mix(in srgb,var(--qp-glow) 65%,transparent),transparent 55%),var(--qp-panel);
+  background:
+    radial-gradient(1px 1px at 14% 23%,#b6edffb0 .65px,transparent 1.25px),
+    radial-gradient(1px 1px at 83% 17%,#c3b4ff99 .65px,transparent 1.25px),
+    radial-gradient(1px 1px at 74% 78%,#91ddff80 .65px,transparent 1.25px),
+    radial-gradient(ellipse at 52% 45%,color-mix(in srgb,var(--qp-glow) 65%,transparent),transparent 55%),var(--qp-panel);
 }
 .qp-core-grid {
   display:grid;
@@ -326,10 +340,12 @@
 .qp-metrics>.qp-metric-rail:nth-child(4) .qp-metric-trace { color:var(--qp-success); }
 .qp-metric-trace path { filter:drop-shadow(0 0 2px currentColor); }
 .qp-metric-rail-support { overflow:hidden; color:var(--qp-muted); font-size:9px; line-height:12px; text-overflow:ellipsis; white-space:nowrap; }
-.qp-metric-meter { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:6px; min-width:0; }
-.qp-metric-meter>span { display:block; height:5px; overflow:hidden; border-radius:999px; background:color-mix(in srgb,var(--qp-border) 75%,transparent); }
+.qp-metric-meter { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:2px 6px; min-width:0; }
+.qp-metric-meter>span { grid-column:1/-1; grid-row:2; display:block; height:5px; overflow:hidden; border-radius:999px; background:color-mix(in srgb,var(--qp-border) 75%,transparent); }
 .qp-metric-meter>span>i { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#26baff,#417cff); box-shadow:0 0 7px #238dff70; }
-.qp-metric-meter>small { color:var(--qp-accent); font-size:9px; font-variant-numeric:tabular-nums; }
+.qp-metric-meter>small { grid-column:1/-1; grid-row:1; display:flex; justify-content:space-between; gap:5px; min-width:0; color:var(--qp-accent); font-size:9px; line-height:11px; font-variant-numeric:tabular-nums; }
+.qp-metric-meter-context { overflow:hidden; color:var(--qp-muted); text-overflow:ellipsis; white-space:nowrap; }
+.qp-metric-meter>small strong { flex:none; color:var(--qp-accent); font-size:inherit; font-weight:600; }
 .qp-metric {
   display:flex;
   flex-direction:column;
@@ -639,11 +655,11 @@
   width:100%;
   height:calc(100% - 32px);
   color:var(--qp-accent);
-  opacity:.65;
+  opacity:.78;
 }
-.qp-redesign[data-theme=dark] .qp-map-edges path { stroke:#28caff; filter:drop-shadow(0 0 2px #078dff); }
-.qp-redesign[data-theme=dark] .qp-map-edges path[data-column="1"] { stroke:#3a9bff; }
-.qp-redesign[data-theme=dark] .qp-map-edges path[data-column="2"] { stroke:#7953ff; }
+.qp-redesign[data-theme=dark] .qp-map-edges path { stroke:#42d5ff; stroke-width:1.8; filter:drop-shadow(0 0 2px #078dff) drop-shadow(0 0 5px #078dff80); }
+.qp-redesign[data-theme=dark] .qp-map-edges path[data-column="1"] { stroke:#55aaff; filter:drop-shadow(0 0 2px #187bff) drop-shadow(0 0 5px #187bff80); }
+.qp-redesign[data-theme=dark] .qp-map-edges path[data-column="2"] { stroke:#9b79ff; filter:drop-shadow(0 0 2px #7953ff) drop-shadow(0 0 5px #7953ff80); }
 .qp-redesign[data-theme=dark] .qp-map-flow-dot { fill:#eafaff; filter:drop-shadow(0 0 2px #20bbff) drop-shadow(0 0 5px #078dff); }
 .qp-redesign[data-theme=dark] .qp-map-node[data-dimension=harness],.qp-redesign[data-theme=dark] .qp-map-node[data-dimension=provider] { background:linear-gradient(110deg,color-mix(in srgb,var(--qp-node-tone) 13%,#071428),#08101b 78%); }
 .qp-redesign[data-theme=dark] .qp-map-node { background:linear-gradient(110deg,#071428,#08101b); }
@@ -658,6 +674,7 @@
   align-content:start;
   gap:16px;
 }
+.qp-runway { gap:14px; }
 .qp-runway-labels,.qp-runway-stats {
   display:flex;
   justify-content:space-between;

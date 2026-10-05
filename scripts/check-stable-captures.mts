@@ -10,6 +10,8 @@ import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
 import type { Overview, MinuteTrendResponse, ProviderModelMinuteResponse, ProjectDetailResponse, DetailedProjectResponse, DetailedModelResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse, UsageResponse, AlertEvent } from '../packages/web/src/api.js';
+import { en } from '../packages/web/src/i18n/en.js';
+import { th } from '../packages/web/src/i18n/th.js';
 import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from '../packages/web/src/redesign/metric-series.js';
 import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
@@ -1298,6 +1300,7 @@ async function checkModelMarks(page: Page, lang: string, theme: string, pending:
 }
 
 async function checkPulseCore(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  const copy = lang === 'th' ? th : en;
   const home = 'http://127.0.0.1:7804/?pulse-core=asset#overview';
   await page.goto(home, { waitUntil: 'domcontentloaded' });
   await page.locator('.qp-quota').first().waitFor(); await settled(page, pending);
@@ -1338,6 +1341,11 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
     await button.click();
     await page.waitForFunction(value => document.querySelector('.qp-pulse-label strong')?.textContent === `${value}%`, used);
     assert.equal(await page.getByTestId('pulse-progress').getAttribute('stroke-dasharray'), `${Math.min(100, used)} 100`);
+    const meter = page.locator('.qp-metric-meter');
+    assert.equal(await meter.getAttribute('data-value'), String(used), 'Metric rail meter must follow the selected quota');
+    const selectedWindowLabel = await button.locator('.qp-quota-heading').evaluate(element => element.firstElementChild?.firstChild?.textContent?.trim() ?? '');
+    assert.equal(await meter.locator('.qp-metric-meter-context').textContent(), selectedWindowLabel, 'Metric rail meter must identify the selected quota window');
+    assert.equal(await meter.locator('small strong').textContent(), `${Math.round(used)}%`);
     assert.equal(await page.locator('.qp-pulse-state').textContent(), window === 'monthly'
       ? lang === 'th' ? 'ใช้โควตารายเดือน' : 'Monthly used'
       : lang === 'th' ? 'โควตาที่ใช้ไป' : 'Quota used');
@@ -1345,6 +1353,16 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
     assert.equal(await pill.getAttribute('data-reset-at'), String(reading.resets_at));
     const projectedAt = reading.forecast?.status === 'ready' && reading.forecast.projectedFullAt! > fixedNow ? reading.forecast.projectedFullAt : null;
     assert.equal(await pill.getAttribute('data-projected-at'), projectedAt === null ? null : String(projectedAt));
+    const runwayConsequence = page.getByTestId('quota-runway-consequence');
+    if (projectedAt === null) {
+      const forecastKey = reading.forecast?.status === 'flat' ? 'redesign.forecastFlat'
+        : reading.forecast?.status === 'reset' ? 'redesign.forecastReset' : 'redesign.forecastInsufficient';
+      assert.equal(await runwayConsequence.textContent(), copy[forecastKey]);
+    } else if (projectedAt < reading.resets_at!) {
+      const beforeReset = reading.resets_at! - projectedAt;
+      const durationBeforeReset = beforeReset < 60_000 ? '<1m' : countdown(fixedNow + beforeReset, fixedNow);
+      assert.equal(await runwayConsequence.textContent(), `${copy['redesign.runwayHitLimitLead']} ${durationBeforeReset} ${copy['redesign.beforeReset']}${lang === 'th' ? '' : '.'}`);
+    } else assert.equal(await runwayConsequence.textContent(), copy['redesign.runwayAfterReset']);
     const projection = page.getByTestId('pulse-projection');
     if (projectedAt === null) assert.equal(await projection.count(), 0, 'Do not state a projection without a valid forecast');
     else if (projectedAt < reading.resets_at!) {
@@ -1409,6 +1427,7 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
       if (state === 'stale' || state === 'expired') {
         assert.equal(await track.count(), 0, `${state} quota must not display a live timeline`);
         assert.equal(await page.locator('.qp-runway-message').isVisible(), true);
+        assert.equal(await page.getByTestId('quota-runway-consequence').count(), 0, `${state} quota must not display a runway consequence`);
         assert.equal(await page.getByTestId('pulse-projection').count(), 0, `${state} quota must not display a projected fill sentence`);
       } else {
         assert.equal(await track.locator('.qp-runway-marker').count(), state === 'imminent' ? 1 : 0);
@@ -1416,6 +1435,13 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
         const reset = Number(await track.getAttribute('data-reset-at'));
         const projected = state === 'flat' ? null : state === 'after-reset' ? reset + 60_000 : fixedNow + 30_000;
         assert.equal(await track.getAttribute('data-projected-at'), projected === null ? null : String(projected));
+        if (state === 'imminent') {
+          const beforeReset = reset - projected!;
+          const durationBeforeReset = beforeReset < 60_000 ? '<1m' : countdown(fixedNow + beforeReset, fixedNow);
+          assert.equal(await page.getByTestId('quota-runway-consequence').textContent(), `${copy['redesign.runwayHitLimitLead']} ${durationBeforeReset} ${copy['redesign.beforeReset']}${lang === 'th' ? '' : '.'}`);
+        }
+        if (state === 'after-reset') assert.equal(await page.getByTestId('quota-runway-consequence').textContent(), copy['redesign.runwayAfterReset']);
+        if (state === 'flat') assert.equal(await page.getByTestId('quota-runway-consequence').textContent(), copy['redesign.forecastFlat']);
         if (state === 'imminent') {
           assert.ok((await page.locator('.qp-runway-outcome>strong').first().textContent())!.startsWith('<1m'));
           const marker = await track.locator('.qp-runway-marker').evaluate(element => parseFloat((element as HTMLElement).style.left));
