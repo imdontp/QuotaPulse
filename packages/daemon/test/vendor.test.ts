@@ -112,6 +112,17 @@ test('the main model families resolve', () => {
   assert.equal(vendorOf('ling-3.0-flash-fin-free', 'opencode'), 'inclusionai');
 });
 
+test('space-separated Claude display names resolve identically in TypeScript and SQL', () => {
+  const db = openDb(':memory:');
+  try {
+    const query = db.prepare(`SELECT ${vendorSqlCase('m', 'p')} AS vendor FROM (SELECT ? AS m, ? AS p)`);
+    for (const model of ['Claude 3.7', 'Claude 3.5']) {
+      assert.equal(vendorOf(model, 'anthropic'), 'anthropic');
+      assert.equal((query.get(model, 'anthropic') as { vendor: string }).vendor, 'anthropic');
+    }
+  } finally { db.close(); }
+});
+
 /*
  * Makers wired up ahead of ever seeing one locally. The live-database tests cannot reach
  * these -- there is no Granite or Command row to walk -- so without this the sixteen new

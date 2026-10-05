@@ -69,7 +69,7 @@ export const VENDORS: Record<string, Vendor> = {
  * `openai/` path prefix settles it before we get here).
  */
 const MODEL_RULES: Array<[RegExp, string]> = [
-  [/^claude[-.]/, 'anthropic'],
+  [/^claude[ .-]/, 'anthropic'],
   [/^(gpt|codex|o[1-9]|chatgpt|davinci|dall-e|whisper|text-embedding)/, 'openai'],
   [/^(gemini|gemma|palm|imagen)/, 'google'],
   [/^deepseek/, 'deepseek'],
@@ -234,7 +234,7 @@ export function vendorSqlCase(modelCol: string, providerCol: string): string {
 
   // 2. Model-name families. LIKE patterns mirror the anchored regexes above.
   const likeFamilies: Array<[string[], string]> = [
-    [['claude-', 'claude.'], 'anthropic'],
+    [['claude-', 'claude.', 'claude '], 'anthropic'],
     [['gpt%', 'codex%', 'o1-%', 'o3-%', 'o4-%', 'chatgpt%', 'davinci%', 'dall-e%', 'whisper%', 'text-embedding%'], 'openai'],
     [['gemini%', 'gemma%', 'palm%', 'imagen%'], 'google'],
     [['deepseek%'], 'deepseek'],

@@ -20,6 +20,8 @@ export function ProductionOverview() {
   const { lang, setLang, currency, rate } = useI18n();
   const [theme, toggleTheme] = useTheme();
   const [route, setRoute] = useState(readRoute);
+  const [mapProject, setMapProject] = useState<string | null | 'auto'>('auto');
+  const [mapGraphSnapshot, setMapGraphSnapshot] = useState<{ key: string; graph: RuntimeGraph } | null>(null);
   const periodSelect = useRef<HTMLSelectElement>(null);
   const restorePeriodFocus = useRef(false);
   const routeKey = JSON.stringify(route);
@@ -59,6 +61,23 @@ export function ProductionOverview() {
     }
   }, [routeKey]);
   const current = snapshot?.key === routeKey ? snapshot : null;
+  const projectNames = current?.graph.nodes.project.map(node => node.key).filter((project): project is string => project !== null) ?? [];
+  const mostActiveProject = current?.graph.nodes.project.slice().sort((a, b) => b.sessions - a.sessions || b.tokens - a.tokens)[0]?.key ?? null;
+  const selectedRuntimeProject = mapProject === 'auto' || (mapProject !== null && !projectNames.includes(mapProject)) ? mostActiveProject : mapProject;
+  const mapGraphKey = current ? `${current.key}|${current.overview.now}|${selectedRuntimeProject ?? ''}` : '';
+  useEffect(() => {
+    if (!current) return;
+    if (mapProject !== selectedRuntimeProject) { setMapProject(selectedRuntimeProject); return; }
+    if (!selectedRuntimeProject) { setMapGraphSnapshot({ key: mapGraphKey, graph: current.graph }); return; }
+    let active = true;
+    const scope = { ...selectedScope(route, current.overview.now), project: selectedRuntimeProject };
+    void api.runtimeMap(scope).then(graph => {
+      if (active) setMapGraphSnapshot({ key: mapGraphKey, graph });
+    }).catch(cause => {
+      if (active) { setMapGraphSnapshot(null); setError(String(cause)); }
+    });
+    return () => { active = false; };
+  }, [current?.key, current?.overview.now, mapProject, selectedRuntimeProject, routeKey]);
   useEffect(() => {
     if (current && restorePeriodFocus.current) {
       periodSelect.current?.focus({ preventScroll: true }); restorePeriodFocus.current = false;
@@ -125,13 +144,14 @@ export function ProductionOverview() {
       window.history.replaceState(null, '', `${location.pathname}${location.search}#overview?${params}`); setRoute(next);
     }}>
       <option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.thisWeek')}</option>
-      <option value="month">{t('redesign.thisMonth')}</option><option value="all">{t('redesign.allTime')}</option>
+      <option value="month">{t('redesign.monthly')}</option><option value="all">{t('redesign.allTime')}</option>
       {route.range === 'custom' && <option value="custom">{period}</option>}
     </select>
     {route.sourceId && <span className="qp-chip">{t('analysis.source')} #{route.sourceId}</span>}
   </div>;
+  const mapGraph = mapGraphSnapshot?.key === mapGraphKey ? mapGraphSnapshot.graph : graph;
   return <>
     {error && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
-    <Overview graph={graph} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} recent={recent} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
+    <Overview graph={graph} runtimeGraph={mapGraph} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} recent={recent} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
   </>;
 }

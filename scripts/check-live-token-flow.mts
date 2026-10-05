@@ -317,18 +317,18 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
       return { plot: { x: plot.x, y: plot.y, width: plot.width, height: plot.height },
         canvas: { x: canvas.x, y: canvas.y, width: canvas.width, height: canvas.height },
         latest: { x: latest.x, y: latest.y, right: latest.right, bottom: latest.bottom, width: latest.width, height: latest.height },
-        latestValues: Array.from(document.querySelectorAll('.qp-live-flow-latest-values strong')).map(element => { const r = element.getBoundingClientRect(); return { left: r.left, right: r.right, top: r.top, bottom: r.bottom }; }),
+        latestValues: Array.from(document.querySelectorAll('.qp-live-flow-latest-values strong')).map(element => { const r = element.getBoundingClientRect(), cell = element.closest<HTMLElement>('[data-series]')!, style = getComputedStyle(element), cellRect = cell.getBoundingClientRect(); return { text: element.textContent, left: r.left, right: r.right, top: r.top, bottom: r.bottom, fontSize: style.fontSize, cell: { left: cellRect.left, right: cellRect.right, width: cellRect.width } }; }),
         traces: Array.from(document.querySelectorAll('.qp-live-flow-canvas>svg')).map(element => { const r = element.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; }),
         tableWidth: table.clientWidth, horizontal: table.scrollWidth > table.clientWidth,
       };
     });
-    assert.equal(bounds.plot.height, width >= 1280 ? 72 : 124, 'Token-flow plot exceeded its bounded height');
+    assert.equal(bounds.plot.height, width >= 1280 ? 72 : width <= 540 ? 132 : 124, 'Token-flow plot exceeded its bounded height');
     assert.equal(bounds.traces.length, 3);
     for (const trace of bounds.traces) for (const dimension of ['x', 'y', 'width', 'height'] as const) assert.ok(Math.abs(trace[dimension] - bounds.canvas[dimension]) < .1, 'Input/output/total SVGs use different screen scales');
     assert.ok(bounds.latest.x >= bounds.plot.x - .1 && bounds.latest.right <= bounds.plot.x + bounds.plot.width + .1 && bounds.latest.bottom <= bounds.plot.y + bounds.plot.height + .1,
       'Latest-minute values must remain inside the bounded chart/summary region');
     assert.ok(bounds.latestValues.every(value => value.left >= bounds.latest.x - .1 && value.right <= bounds.latest.x + bounds.latest.width + .1 && value.bottom <= bounds.latest.y + bounds.latest.height + .1),
-      'Latest-minute values must remain visible inside their rail on every viewport');
+      `Latest-minute values must remain visible inside their rail at ${width}px: ${JSON.stringify({ latest: bounds.latest, values: bounds.latestValues })}`);
     let horizontalKeyboardScroll = false;
     if (bounds.horizontal) {
       await region.evaluate(element => { element.scrollLeft = 0; }); await region.focus();

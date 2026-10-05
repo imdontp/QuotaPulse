@@ -82,7 +82,7 @@ export function ProductionProviders() {
     if (loaded && route.section === 'quotas') document.getElementById('provider-quotas')?.scrollIntoView({ block: 'start' });
   }, [loaded, route.section]);
   const kinds = [...new Set(allReadings.map(({ primary }) => primary.window_kind))].sort((a, b) => windowRank(a) - windowRank(b));
-  const kind = route.window && kinds.includes(route.window) ? route.window : kinds[0];
+  const kind = route.window && kinds.includes(route.window) ? route.window : kinds.includes('monthly') ? 'monthly' : kinds[0];
   const comparable = cards.map(card => ({ card, reading: card.readings.find(({ primary }) => primary.window_kind === kind)?.primary })).filter(({ reading }) =>
     reading && reading.used_percent !== null && !isExpired(reading, now) && reading.last_seen_at <= now) as Array<{ card: OwnerCard; reading: Limit }>;
   const excluded = cards.length - comparable.length;
@@ -103,9 +103,8 @@ export function ProductionProviders() {
         {card.hidden && <p className="qp-provider-hidden">{t('redesign.providerHidden')}</p>}
         <div className="qp-provider-windows">{card.readings.length === 0 ? <p>{t('redesign.providerNoQuota')}</p> : card.readings.map(({ primary }) => {
           const value = used(primary);
-          return <div key={primary.window_kind} title={`${primary.origin} · ${age(primary.observed_at)} · ${date(primary.resets_at, true)}`}><span>{f.window(primary.window_kind)}</span><strong>{value === null ? t('redesign.providerUnavailable') : f.pct(value)}</strong><span className="qp-bar"><span style={{ width: `${value ?? 0}%` }}/></span><small>{value === null ? t(isExpired(primary, now) ? 'redesign.providerExpired' : 'redesign.providerNoQuota') : `${t('redesign.providerReset')}: ${f.countdown(primary.resets_at, now)}`}</small></div>;
+          return <div key={primary.window_kind} data-window-kind={primary.window_kind} title={`${primary.origin} · ${age(primary.observed_at)} · ${date(primary.resets_at, true)}`}><span>{f.window(primary.window_kind)}</span><strong>{value === null ? t('redesign.providerUnavailable') : f.pct(value)}</strong><span className="qp-bar"><span style={{ width: `${value ?? 0}%` }}/></span><small>{value === null ? t(isExpired(primary, now) ? 'redesign.providerExpired' : 'redesign.providerNoQuota') : `${t('redesign.providerReset')}: ${f.countdown(primary.resets_at, now)}`}</small></div>;
         })}</div>
-        {card.readings.length > 0 && <dl className="qp-provider-card-reading"><dt>{t('redesign.providerOrigin')}</dt><dd>{[...new Set(card.readings.map(({ primary }) => primary.origin))].join(', ')}</dd><dt>{t('redesign.providerObserved')}</dt><dd>{date(Math.max(...card.readings.map(({ primary }) => primary.observed_at)))}</dd><dt>{t('redesign.providerConfirmed')}</dt><dd>{date(Math.max(...card.readings.map(({ primary }) => primary.last_seen_at)))}</dd></dl>}
         <footer><span>{card.sources.length} {t('redesign.providerReader')}</span><a href={manageHref(card)}>{card.subscription ? t('redesign.providerManage') : t('redesign.providerDiagnostics')}</a></footer>
       </article>)}</section>
       {selected && <details className="qp-provider-inspector" open={inspectorOpen} onToggle={event => setInspectorOpen(event.currentTarget.open)}><summary>{t('redesign.providerDetails')}: {selected.title}</summary><section className="qp-panel qp-provider-detail" aria-label={t('redesign.providerDetails')}><div className="qp-provider-section-head"><h2>{t('redesign.providerDetails')}: {selected.title}</h2><a href={manageHref(selected)}>{selected.subscription ? t('redesign.providerManage') : t('redesign.providerDiagnostics')}</a></div>

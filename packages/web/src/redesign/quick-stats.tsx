@@ -22,15 +22,15 @@ export function QuickStats({ t, language }: { t: RedesignTranslate; language: 'e
   }, []);
   const number = (value: number | undefined) => value === undefined ? t('redesign.unknownValue') : new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US').format(value);
   const rows = [
-    { key: 'namedProjects', label: 'redesign.namedProjects', icon: Folder, href: '#projects?range=all' },
-    { key: 'models', label: 'redesign.recordedModels', icon: Box, href: '#models?range=all' },
-    { key: 'providers', label: 'redesign.recordedProviders', icon: Headphones, href: '#providers' },
-    { key: 'recentSessions', label: 'redesign.recentSessions', icon: Activity, href: '#live' },
+    { key: 'namedProjects', label: 'redesign.quickProjects', icon: Folder, href: '#projects?range=all' },
+    { key: 'models', label: 'redesign.quickModels', icon: Box, href: '#models?range=all' },
+    { key: 'providers', label: 'redesign.quickProviders', icon: Headphones, href: '#providers' },
+    { key: 'recentSessions', label: 'redesign.quickSessions', icon: Activity, href: '#live' },
   ] as const;
-  return <section className="qp-quick-stats" aria-label={t('redesign.quickStats')} data-stale={stale}>
+  return <section className="qp-quick-stats" aria-label={t('redesign.quickStats')} aria-describedby="qp-quick-stats-note" data-stale={stale}>
     <h2>{t('redesign.quickStats')}</h2><p>{t('redesign.machineScope')}</p>
     <dl>{rows.map(({ key, label, icon: Icon, href }) => <div key={key}><dt><a href={href}><Icon aria-hidden="true"/><span>{t(label)}</span></a></dt><dd data-stat={key}>{number(data?.[key])}</dd></div>)}</dl>
-    <small>{t('redesign.quickStatsNote')}</small>
+    <small id="qp-quick-stats-note" className="qp-visually-hidden">{t('redesign.quickStatsNote')}</small>
     {stale && <small role="status">{t('redesign.staleSnapshot')}</small>}
   </section>;
 }

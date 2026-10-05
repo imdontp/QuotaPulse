@@ -21,9 +21,14 @@ function ModelMark({ node, size }: { node: Pick<UsageNode, 'key' | 'vendor'>; si
 }
 const riskLabel = (state: ReturnType<typeof quotaState> | null) =>
   !state ? 'redesign.unavailable' : state.stale ? 'redesign.stale' : state.risk === 'unknown' ? 'redesign.unavailable' : `redesign.${state.risk}` as const;
+const quotaWindowLabel = (window: string, t: Translate) => window === '5h' ? t('redesign.windowQuota5h')
+  : window === 'weekly' ? t('redesign.windowQuotaWeekly')
+    : window === 'monthly' ? t('redesign.windowQuotaMonthly')
+      : window === 'daily' ? t('redesign.windowQuotaDaily') : window;
 interface OverviewProps {
   records?: readonly UsageRecord[];
   graph?: RuntimeGraph;
+  runtimeGraph?: RuntimeGraph;
   quotas: readonly QuotaWindow[];
   now: number;
   t: Translate;
@@ -43,6 +48,9 @@ interface OverviewProps {
   selectedQuotaId?: string | null;
   historyHref?: string;
   harnessVendors?: Readonly<Record<string, string>>;
+  runtimeProjects?: readonly string[];
+  selectedRuntimeProject?: string | null;
+  onRuntimeProjectChange?: (project: string | null) => void;
 }
 
 export interface ActivityItem {
@@ -73,7 +81,7 @@ function ActivityTrend({ item, language }: { item: ActivityItem; language: 'en' 
   </div>;
 }
 
-function PulseCore({ quota, now, t, language, staleAfterMs }: { quota: QuotaWindow | undefined; now: number; t: Translate; language: 'en' | 'th'; staleAfterMs: number }) {
+function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { quota: QuotaWindow | undefined; now: number; t: Translate; language: 'en' | 'th'; staleAfterMs: number; tokens: number; period: string }) {
   const id = useId().replace(/:/g, '');
   const state = quota ? quotaState(quota, now, staleAfterMs) : null;
   const used = state?.remaining == null ? null : quota?.usedPercent ?? null;
@@ -82,6 +90,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs }: { quota: QuotaWind
   const resetAt = runway.status === 'ready' ? quota!.resetAt : null;
   const duration = (at: number | null) => at === null ? t('redesign.unknownValue') : at - now < 60_000 ? '<1m' : countdown(at, now);
   const exact = (at: number | null) => at === null ? t('redesign.unavailable') : new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(at);
+  const tokenTotal = new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(tokens);
   return <div className="qp-pulse" data-stale={!state || state.stale}>
     <PulseAmbient/>
     <svg className="qp-pulse-art" viewBox="0 0 360 320" aria-hidden="true">
@@ -110,7 +119,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs }: { quota: QuotaWind
       <circle className="qp-core-halo" cx="180" cy="160" r="120" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="2"/>
       {used !== null && <circle className="qp-core-progress" data-testid="pulse-progress" cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used)} 100`} transform="rotate(-90 180 160)" filter={`url(#${id}-glow)`}/>}
     </svg>
-    <div className="qp-pulse-label"><strong>{used === null ? '—' : `${used}%`}</strong><span className="qp-pulse-state">{t('redesign.quotaUsed')}</span><span>{quota?.owner ?? '—'} · {quota?.window ?? '—'}</span></div>
+    <div className="qp-pulse-label"><strong>{used === null ? '—' : `${used}%`}</strong><span className="qp-pulse-state">{t(quota?.window === 'monthly' ? 'redesign.monthlyUsed' : 'redesign.quotaUsed')}</span><span>{tokenTotal} {t('redesign.tokens')} · {period}</span></div>
     <div className="qp-pulse-runway" data-testid="pulse-runway" data-projected-at={projectedAt ?? undefined} data-reset-at={resetAt ?? undefined}>
       <span>{t('redesign.runwayShort')} <strong title={exact(projectedAt)}>{duration(projectedAt)}</strong></span>
       <span>{t('redesign.resetShort')} <strong title={exact(resetAt)}>{duration(resetAt)}</strong></span>
@@ -118,7 +127,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs }: { quota: QuotaWind
   </div>;
 }
 
-function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, onInspect }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; harnessVendors: Readonly<Record<string, string>>; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void }) {
+function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, onInspect, projects, selectedProject, onProjectChange }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; harnessVendors: Readonly<Record<string, string>>; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
   const arrowId = useId();
   const map = useRef<HTMLDivElement>(null);
   const [geometry, setGeometry] = useState<{ width: number; height: number; paths: Array<{ edge: RuntimeGraph['edges'][number]; x: number; y: number; endX: number; endY: number }> }>({ width: 1, height: 1, paths: [] });
@@ -153,7 +162,7 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, on
     return () => observer.disconnect();
   }, [nodes, edges, recordCount, height, singleProject]);
   return <section className="qp-panel qp-runtime" id="runtime">
-    <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.runtime')}</h2><p>{t('redesign.connections')}</p></div><span className="qp-chip">{t('redesign.records')} · {recordCount}</span></div>
+    <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.liveRuntimeMap')}</h2><p>{t('redesign.connections')}</p></div><div className="qp-runtime-controls">{onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>}<span className="qp-chip">{t('redesign.records')} · {recordCount}</span></div></div>
     {recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} language={language} t={t} onInspect={onInspect}/>}
     {recordCount === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
       <div ref={map} className="qp-map" data-single-project={singleProject} style={{ height: height + 24 }}>
@@ -193,7 +202,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   const marker = runway.status === 'ready' && runway.projectedBeforeReset && runway.projectedFullAt !== null
     ? (runway.projectedFullAt - now) / (quota!.resetAt - now) * 100 : null;
   return <section className="qp-panel qp-runway" data-testid="quota-runway">
-    <div className="qp-runway-heading"><h2><CircleGauge size={18}/>{t('redesign.runway')}</h2><span className="qp-footnote">{quota ? `${quota.owner} · ${quota.window}` : t('redesign.unavailable')}</span></div>
+    <div className="qp-runway-heading"><h2><CircleGauge size={18}/>{t('redesign.runway')}</h2><span className="qp-footnote">{quota ? `${quota.owner} · ${quotaWindowLabel(quota.window, t)}` : t('redesign.unavailable')}</span></div>
     {runway.status === 'unavailable' ? <p className="qp-runway-message" role="status">{t(reason!)}</p> : <>
       <div className="qp-runway-labels">
         <span>{t('redesign.now')}<time dateTime={new Date(now).toISOString()}>{date(now)}</time></span>
@@ -219,7 +228,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ records = [], graph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, recent, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today' }: OverviewProps) {
+export function Overview({ records = [], graph, runtimeGraph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, recent, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -231,15 +240,18 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
   const totals = graph?.totals ?? { ...summarize(records), records: records.length };
   const nodes: RuntimeGraph['nodes'] = graph?.nodes ?? Object.fromEntries(dimensions.map(dimension => [dimension, groupUsage(records, dimension)])) as RuntimeGraph['nodes'];
   const edges = graph?.edges ?? runtimeEdges(records);
+  const runtimeTotals = runtimeGraph?.totals ?? totals;
+  const runtimeNodes = runtimeGraph?.nodes ?? nodes;
+  const runtimeEdgesForMap = runtimeGraph?.edges ?? edges;
   const models = nodes.model;
   const quotaGroups = new Map<string, QuotaWindow[]>();
   for (const item of quotas) {
     const key = item.ownerKey ?? JSON.stringify([item.provider, item.owner]);
     const group = quotaGroups.get(key) ?? []; group.push(item); quotaGroups.set(key, group);
   }
-  const state = quota ? quotaState(quota, now, preview ? 300000 : 3600000) : null;
-  const detail: UsageNode | null = selection ? nodes[selection.dimension].find(node => node.key === selection.key) ?? null : null;
+  const detail: UsageNode | null = selection ? runtimeNodes[selection.dimension].find(node => node.key === selection.key) ?? null : null;
   const number = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 }).format(value);
+  const compactNumber = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
   const money = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency }).format(currency === 'THB' ? value * rate : value);
   const coverage = graph?.totals;
   const prices = coverage ? { native: coverage.nativeCalls, api: coverage.computedCalls + coverage.estimatedCalls, total: coverage.nativeCalls + coverage.computedCalls + coverage.estimatedCalls + coverage.unknownCalls } : recordCostCoverage(records);
@@ -264,13 +276,13 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
         <div className="qp-page-heading"><h1>{t('redesign.title')}</h1><span className="qp-chip">{period ?? new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(now)}</span></div>
         <div className="qp-hero-grid">
           <section className="qp-panel qp-hero">
-            <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.core')}</h2>{periodControl ?? (period && <span className="qp-chip">{period}</span>)}<span className="qp-status" data-risk={state?.risk ?? 'unknown'}>{t(riskLabel(state))}</span></div>
+            <div className="qp-section-heading"><div className="qp-hero-heading-copy"><h2><Activity size={18}/>{t('redesign.core')}</h2><small className="qp-hero-tagline">{t('redesign.coreSubtitle')}</small></div>{periodControl ?? (period && <span className="qp-chip">{period}</span>)}</div>
             <div className="qp-core-grid"><div className="qp-metrics">
-              <Metric icon={<CircleGauge size={21}/>} label={t('redesign.tokens')} value={number(totals.tokens)}/>
+              <Metric icon={<CircleGauge size={21}/>} label={t('redesign.tokenUsage')} value={compactNumber(totals.tokens)}/>
               <Metric icon={<Layers size={21}/>} label={t('redesign.sessions')} value={number(totals.sessions)}/>
               <Metric icon={<Coins size={21}/>} label={t('redesign.reported')} value={<CostValue amount={totals.reportedCost} priced={prices.native} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
               <Metric icon={<Wallet size={21}/>} label={t('redesign.value')} value={<CostValue amount={totals.apiValue} priced={prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
-            </div><PulseCore quota={quota} now={now} t={t} language={language} staleAfterMs={preview ? 300000 : 3600000}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.topModelsByTokens')}><h3>{t('redesign.topModelsByTokens')}</h3><div className="qp-top-model-list">{models.map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span className="qp-model-identity"><i data-model-vendor={model.key ? model.vendor : undefined} aria-hidden="true"><ModelMark node={model} size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</div></section></div>
+                </div><PulseCore quota={quota} now={now} t={t} language={language} staleAfterMs={preview ? 300000 : 3600000} tokens={totals.tokens} period={period ?? t('redesign.allTime')}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.topModelsByTokens')}><h3>{t('redesign.topModelsByTokens')}</h3><div className="qp-top-model-list">{models.slice(0, 5).map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span className="qp-model-identity"><i data-model-vendor={model.key ? model.vendor : undefined} aria-hidden="true"><ModelMark node={model} size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</div></section></div>
             <p className="qp-footnote">{t('redesign.scope')}</p>
           </section>
           <section className="qp-panel qp-quotas"><h2><CircleGauge size={18}/>{t('redesign.windows')}</h2>
@@ -284,7 +296,7 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
                   const knownReset = Number.isFinite(item.resetAt) && item.resetAt > 0;
                   const reset = !knownReset ? '—' : item.resetAt <= now ? t('redesign.resetPast') : item.resetAt - now < 60_000 ? '<1m' : countdown(item.resetAt, now);
                   return <button className="qp-quota" key={item.id} data-owner={item.owner} data-window={item.window} data-stale={reading.stale} aria-pressed={quota?.id === item.id} aria-label={`${item.owner} · ${item.window} · ${percent} ${t('redesign.quotaUsed')} · ${t('redesign.resetIn')} ${reset} · ${t(riskLabel(reading))}`} onClick={() => { setQuotaId(item.id); onQuotaSelect?.(item.id); }}>
-                    <span className="qp-quota-heading"><span>{item.window}</span><span className="qp-status" data-risk={reading.risk}>{t(riskLabel(reading))}</span></span>
+                    <span className="qp-quota-heading"><span>{quotaWindowLabel(item.window, t)}</span>{reading.risk !== 'normal' && <span className="qp-status" data-risk={reading.risk}>{t(riskLabel(reading))}</span>}</span>
                     <span className="qp-quota-usage"><span className="qp-quota-number"><strong>{percent}</strong><small>{t('redesign.quotaUsed')}</small></span><span className="qp-bar"><span style={{ width: `${used === null ? 0 : Math.min(100, used)}%` }}/></span></span>
                     <span className="qp-quota-reset"><small>{t('redesign.resetIn')}</small><strong title={knownReset ? new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(item.resetAt) : t('redesign.unavailable')}>{reset}</strong></span>
                   </button>;
@@ -293,7 +305,7 @@ export function Overview({ records = [], graph, quotas, now, t, language, onLang
             </div>}
           </section>
         </div>
-        <RuntimeMap nodes={nodes} edges={edges} recordCount={totals.records} t={t} language={language} harnessVendors={harnessVendors} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
+        <RuntimeMap nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} t={t} language={language} harnessVendors={harnessVendors} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
         <div className="qp-bottom-grid">
           <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
           <section className="qp-panel qp-insights" data-testid="usage-insights"><h2><Box size={18}/>{t('redesign.insights')}</h2>

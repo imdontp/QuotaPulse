@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode, type RefObject } from 'react';
-import { Activity, ArrowUpRight, BarChart3, BellRing, Box, CircleGauge, GitBranch, Layers, Monitor, Moon, Radio, Settings, Sun, House, Folder, History } from 'lucide-react';
+import { Activity, ArrowUpRight, BarChart3, BellRing, Box, CircleGauge, GitBranch, Layers, Monitor, Moon, Radio, Settings, Sun, House, Folder, History, MoreHorizontal } from 'lucide-react';
 import type { MessageKey } from '@/i18n/en';
 import { CommandPalette } from '@/components/command-palette';
 import { useT } from '@/i18n';
@@ -20,6 +20,8 @@ const NAV = [
   { id: 'alerts', href: '#alerts', label: 'redesign.alerts', icon: BellRing },
   { id: 'settings', href: '#settings', label: 'redesign.settings', icon: Settings },
 ] as const;
+const PRIMARY_NAV = NAV.filter(item => !['providers', 'cost', 'settings'].includes(item.id));
+const MORE_NAV = NAV.filter(item => ['providers', 'cost', 'settings'].includes(item.id));
 
 function RedesignNavigator() {
   const t = useT();
@@ -50,7 +52,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
     <a className="qp-skip" href={`#${active}`} onClick={event => { event.preventDefault(); document.getElementById(active)?.focus(); }}>{t('redesign.skipContent')}</a>
     <header className="qp-topbar">
       <a className="qp-brand" href="#overview" aria-label="QuotaPulse"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M1 22h6l3-10 4 22 5-31 5 34 4-25 4 16 3-8h4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span>Quota<strong>Pulse</strong><small>AI RUNTIME MISSION CONTROL</small></span></a>
-      <div className="qp-topbar-body"><div className="qp-topbar-context">{!preview && <DaemonConnection/>}<span className="qp-preview-badge">{t(preview ? 'redesign.preview' : NAV.find(item => item.id === active)!.label)}</span>{!preview && <span className="qp-machine-scope"><Monitor size={14} aria-hidden="true"/>{t('redesign.machineScope')}</span>}</div><div className="qp-topbar-actions">{!preview && <RedesignNavigator/>}<div className="qp-header-clock"><time dateTime={new Date(clock).toISOString()}>{new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).format(clock)}</time><time dateTime={new Date(clock).toISOString()}>{new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(clock)}</time></div><div className="qp-tools"><button onClick={onLanguage} aria-label={t('redesign.language')}>{language === 'en' ? 'ไทย' : 'EN'}</button><button onClick={onTheme} aria-label={t('redesign.theme')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button></div></div></div>
+      <div className="qp-topbar-body"><div className="qp-topbar-context">{!preview && <DaemonConnection/>}<span className="qp-preview-badge" data-page={active}>{t(preview ? 'redesign.preview' : NAV.find(item => item.id === active)!.label)}</span>{!preview && <span className="qp-machine-scope"><Monitor size={14} aria-hidden="true"/>{t('redesign.machineScope')}</span>}</div><div className="qp-topbar-actions">{!preview && <RedesignNavigator/>}<div className="qp-header-clock"><time dateTime={new Date(clock).toISOString()}>{new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).format(clock)}</time><time dateTime={new Date(clock).toISOString()}>{new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(clock)}</time></div><div className="qp-tools"><button onClick={onLanguage} aria-label={t('redesign.language')}>{language === 'en' ? 'ไทย' : 'EN'}</button><button onClick={onTheme} aria-label={t('redesign.theme')}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button></div></div></div>
     </header>
     <aside className="qp-sidebar">
       <nav aria-label={t('redesign.navigation')}>
@@ -58,7 +60,13 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
           <a href="#overview" className="qp-nav-active" aria-label={t('redesign.overview')}><CircleGauge/><span>{t('redesign.overview')}</span></a>
           <a href="#runtime" aria-label={t('redesign.runtime')}><GitBranch/><span>{t('redesign.runtime')}</span></a>
           <a href="#model-usage" aria-label={t('redesign.models')}><Layers/><span>{t('redesign.models')}</span></a>
-        </> : NAV.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined}><Icon/><span>{t(label)}</span></a>)}
+        </> : <>
+          {PRIMARY_NAV.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined}><Icon/><span>{t(label)}</span></a>)}
+          <details className="qp-nav-more" open={MORE_NAV.some(item => item.id === active)}>
+            <summary aria-label={t('redesign.more')}><MoreHorizontal aria-hidden="true"/><span>{t('redesign.more')}</span></summary>
+            {MORE_NAV.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined}><Icon/><span>{t(label)}</span></a>)}
+          </details>
+        </>}
       </nav>
       {!preview && <QuickStats t={t} language={language}/>}
       {!preview && <div className="qp-sidebar-brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M1 22h6l3-10 4 22 5-31 5 34 4-25 4 16 3-8h4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span>{t('redesign.keepFlowing')}<small>QuotaPulse</small></span></div>}

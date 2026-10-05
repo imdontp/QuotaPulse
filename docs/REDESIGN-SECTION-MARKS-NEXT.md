@@ -1,3 +1,8 @@
+## v1.67 current candidate
+
+v1.67 adjusts the Overview fixture to the supplied Dashboard content and monthly scope, shows all published provider quota windows, tightens Alerts density, and makes History verification follow its API result. Its complete 40-pair production capture matrix and web/daemon tests pass. This is a repeatability checkpoint, not visual acceptance: source-image likeness is still below the requested 99-100% target. The comparison and all screenshots are in [the v1.67 report](REDESIGN-VISUAL-FIDELITY-V1.67.md) and [review viewer](redesign-v1.67/reference-review.html).
+
+Continue with the Dashboard toolbar/workspace/search and remaining Overview visual differences. Keep production data daemon-backed and use synthetic values only in the in-memory capture fixture. Pet and popup work remain outside this blueprint pass.
 # Panel identity marks — source measurements and v1.64 implementation
 
 Implemented in [v1.64](REDESIGN-SECTION-MARKS-V1.64.md). The original read-only
