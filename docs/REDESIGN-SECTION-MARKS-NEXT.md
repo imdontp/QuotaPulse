@@ -1,14 +1,15 @@
-## v1.68 current candidate
+## v1.69 current candidate
 
-v1.68 aligns the Dashboard topbar hierarchy, live operational status, Workspace/This machine context, search label, and Theme/Language controls while preserving the existing real-data and accessibility behavior. The focused Overview gate is 4/4 byte-identical, and the full 40-pair matrix passes with one 5-pixel delta-1 replay. It is a review checkpoint, not visual acceptance. See the [v1.68 report](REDESIGN-VISUAL-FIDELITY-V1.68.md) and [reference viewer](redesign-v1.68/reference-review.html).
+v1.69 restructures the Overview metric rail into four concept-aligned icon rows and uses selected-scope daemon values and `/api/usage` trends. Web build and 141 tests pass; all four Overview language/theme capture pairs pass the existing repeatability tolerance with no masks. It is a review candidate, not visual acceptance. See the [v1.69 report](REDESIGN-VISUAL-FIDELITY-V1.69.md) and [reference viewer](redesign-v1.69/reference-review.html). The requested 99–100% source likeness remains open.
 
-Next, compare the Overview metric rail and remaining cards region by region. Only use supported daemon fields in production; label unsupported concept data honestly. Keep pet/popup redesign out of scope.
+Next, compare the Overview quota cards and remaining lower content region by region against the source PNGs. Preserve real quota/status data, refine card hierarchy, spacing, icon treatment and color, and record which concept content is not present in the daemon. Keep pet/popup redesign out of scope.
+
 ## v1.67 current candidate
 
 v1.67 adjusts the Overview fixture to the supplied Dashboard content and monthly scope, shows all published provider quota windows, tightens Alerts density, and makes History verification follow its API result. Its complete 40-pair production capture matrix and web/daemon tests pass. This is a repeatability checkpoint, not visual acceptance: source-image likeness is still below the requested 99-100% target. The comparison and all screenshots are in [the v1.67 report](REDESIGN-VISUAL-FIDELITY-V1.67.md) and [review viewer](redesign-v1.67/reference-review.html).
 
 Continue with the Dashboard toolbar/workspace/search and remaining Overview visual differences. Keep production data daemon-backed and use synthetic values only in the in-memory capture fixture. Pet and popup work remain outside this blueprint pass.
-# Panel identity marks — source measurements and v1.64 implementation
+# Panel identity marks โ€” source measurements and v1.64 implementation
 
 Implemented in [v1.64](REDESIGN-SECTION-MARKS-V1.64.md). The original read-only
 audit found fifteen framed marks across four pages: eight unframed SVGs and
@@ -80,16 +81,16 @@ Antialiasing and glow affect these estimates; they are not exact vector bounds.
 
 | Original ref | Measured example | Practical frame size |
 | --- | --- | --- |
-| Live Sessions | x249–276, y232–258 | 28px |
-| Live Token Flow | x249–276, y570–598 | 28px |
-| Live Activity | x249–276, y776–804 | 28px |
-| Live Matrix | x1298–1323, y435–462 | 28px |
-| Providers Comparison | x250–283, y706–740 | 34px |
-| Providers Health | x970–1003, y706–740 | 34px |
-| Cost Trend | x247–281, y348–383 | 34px |
-| Cost Model | x1046–1077, y349–381 | 34px |
-| Models Comparison | x247–278, y269–301 | 34px |
-| Models Provider Overview | y851–871 | 20px |
+| Live Sessions | x249โ€“276, y232โ€“258 | 28px |
+| Live Token Flow | x249โ€“276, y570โ€“598 | 28px |
+| Live Activity | x249โ€“276, y776โ€“804 | 28px |
+| Live Matrix | x1298โ€“1323, y435โ€“462 | 28px |
+| Providers Comparison | x250โ€“283, y706โ€“740 | 34px |
+| Providers Health | x970โ€“1003, y706โ€“740 | 34px |
+| Cost Trend | x247โ€“281, y348โ€“383 | 34px |
+| Cost Model | x1046โ€“1077, y349โ€“381 | 34px |
+| Models Comparison | x247โ€“278, y269โ€“301 | 34px |
+| Models Provider Overview | y851โ€“871 | 20px |
 
 Representative original tile pixels: Live Sessions RGB (5,30,82)/(3,30,82);
 Cost Trend (4,29,78)/(3,28,83); Providers Comparison (0,31,110)/(5,25,82);
@@ -101,7 +102,7 @@ Cost Sessions warm tile (25,24,33)/(26,24,32).
   Retain existing h2 elements, translated text, accessible names and controls.
   Hide the wrapper and SVG from assistive technology; SVG is not focusable.
 - v1.64 uses explicit 20/28/34px frames, scoped SVG sizing and theme-aware
-  colours. The v1.62 dark gradient #001e63 → #001a51 and border #12367b provide
+  colours. The v1.62 dark gradient #001e63 โ’ #001a51 and border #12367b provide
   the blue palette. Browser checks confirm that Cost's warm Flame colour
   overrides the global h2 SVG rule.
 - Resolve Live row height against actual geometry. Its Thai canonical

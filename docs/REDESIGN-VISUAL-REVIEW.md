@@ -1,3 +1,5 @@
+Latest Overview metric-rail checkpoint: [Quota, pace, cost and cache rows v1.69](redesign-v1.69/REDESIGN-VISUAL-FIDELITY-V1.69.md) uses daemon/API data and selected-scope trends. The four Overview capture pairs pass repeatability tolerance (3 exact, 1 within tolerance); web build and 141 tests pass. The reference viewer makes clear that secondary-page images are retained from v1.68. This remains below the requested 99–100% source-image likeness.
+
 # Concept comparison and refinement queue
 
 Latest presentation work: [Panel identity marks and recorded Live curves v1.64](REDESIGN-SECTION-MARKS-V1.64.md)
@@ -98,7 +100,7 @@ and token-share bars use recorded route data. Reference fidelity remains open.
 [Reference composition repair v1.36](REDESIGN-REFERENCE-COMPOSITION-V1.36.md)
 continues the reopened fidelity work on Overview, Live and Models. It records
 real-data chart validation separately from similarity to the supplied refs.
-The user's 99–100% visual target remains open.
+The user's 99โ€“100% visual target remains open.
 
 [Alerts and combined dashboard review 1.34](REDESIGN-ALERTS-REVIEW-V1.34.md)
 refines Alerts icons, threshold/event hierarchy, chart spacing and keyboard access
@@ -174,7 +176,7 @@ recovery and desktop distribution work are not the next dashboard tasks.
 
 Reviewed: 2026-10-01. Source: the eight original concept PNGs preserved in the
 blueprint v1.1 archive. Candidate set: `redesign-v1.3/*-concept-size.png`, captured
-at 1586 × 992 for Overview and 1672 × 941 for the other seven pages, DPR 1.
+at 1586 ร— 992 for Overview and 1672 ร— 941 for the other seven pages, DPR 1.
 All eight pairs were inspected visually. These are not approved baselines.
 
 Follow-up: [Layout 1.5](REDESIGN-LAYOUT-REFINEMENT-V1.5.md) addresses the initial
@@ -220,7 +222,7 @@ still differ. The nine consistent destinations, machine scope, language/theme
 controls and command palette follow blueprint overrides. Stable reviewed visual
 baselines remain pending.
 Keep connection state separate from source freshness. Do not restore the
-concept's constant “All Systems Operational”, workspace account or avatar.
+concept's constant โ€All Systems Operationalโ€, workspace account or avatar.
 
 [Semantic text contrast 1.12](REDESIGN-SEMANTIC-CONTRAST-V1.12.md) adds theme-aware
 danger/warning/secondary-series/success colors. Computed semantic foregrounds pass
@@ -269,7 +271,7 @@ The final run has 30 byte-identical pairs and two within a recorded small raster
 tolerance. These new candidates are suitable for review, not approved baselines.
 Establish a named reviewed baseline only
 after the refinements and deterministic capture controls; then enforce the
-blueprint's SSIM ≥ 0.985 and regional geometry/typography checks. Do not mask
+blueprint's SSIM โฅ 0.985 and regional geometry/typography checks. Do not mask
 charts, labels or complete cards to obtain that score.
 
 Settings has no supplied concept image. Preserve its existing controls within

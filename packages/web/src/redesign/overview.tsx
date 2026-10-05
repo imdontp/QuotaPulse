@@ -1,11 +1,12 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
-import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Folder, GitBranch, Layers, Wallet, X } from 'lucide-react';
+import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Flame, Folder, GitBranch, Layers, Star, Wallet, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
 import { countdown } from '@/format';
-import type { MinuteTrendResponse, QuotaHistoryResponse } from '@/api';
+import type { MinuteTrendResponse, QuotaHistoryResponse, UsageResponse } from '@/api';
 import { CostValue, recordCostCoverage } from './cost-value';
 import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
+import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from './metric-series';
 import { RedesignShell, type RedesignTranslate } from './shell';
 import { QuotaChart } from './quota-chart';
 import { RuntimeData } from './runtime-data';
@@ -42,6 +43,7 @@ interface OverviewProps {
   onQuotaSelect?: (id: string) => void;
   quotaHistory?: QuotaHistoryResponse | null;
   quotaHistoryError?: boolean;
+  metricUsage?: Pick<UsageResponse, 'range' | 'timeline' | 'totals'> | null;
   recent?: readonly ActivityItem[];
   period?: string;
   periodControl?: ReactNode;
@@ -228,7 +230,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ records = [], graph, runtimeGraph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, recent, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
+export function Overview({ records = [], graph, runtimeGraph, quotas, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, recent, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -257,6 +259,16 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, now, t, la
   const prices = coverage ? { native: coverage.nativeCalls, api: coverage.computedCalls + coverage.estimatedCalls, total: coverage.nativeCalls + coverage.computedCalls + coverage.estimatedCalls + coverage.unknownCalls } : recordCostCoverage(records);
   const inputTotal = coverage ? coverage.inputTokens + coverage.cachedInputTokens + coverage.cacheWriteTokens : 0;
   const cacheShare = inputTotal > 0 && coverage ? coverage.cachedInputTokens / inputTotal * 100 : null;
+  const metricPace = metricUsage ? averageDailyTokenPace(metricUsage.totals.total_tokens, metricUsage.range.from, metricUsage.range.to) : null;
+  const metricTokenSeries = metricUsage ? metricTrendSeries(metricUsage.timeline, metricUsage.range, 'total_tokens') : [];
+  const metricCostSeries = metricUsage ? metricTrendSeries(metricUsage.timeline, metricUsage.range, 'cost_usd') : [];
+  const metricCacheSeries = metricUsage ? cacheShareTrendSeries(metricUsage.timeline, metricUsage.range) : [];
+  const quotaReading = quota ? quotaState(quota, now, preview ? 300000 : 3600000) : null;
+  const quotaPercent = quotaReading && !quotaReading.stale && quotaReading.remaining !== null ? quota?.usedPercent ?? null : null;
+  const knownCost = totals.reportedCost + totals.apiValue;
+  const metricTrendLabel = `${t('redesign.metricTrend')} · ${period ?? t('redesign.allTime')}`;
+  const costSupport = `${t('redesign.nativeShort')} ${money(totals.reportedCost)} · ${t('redesign.apiShort')} ${money(totals.apiValue)}`;
+  const cacheSupport = cacheShare === null ? t('redesign.noInput') : `${compactNumber(coverage!.cachedInputTokens)} / ${compactNumber(inputTotal)}`;
   const activities: readonly ActivityItem[] = recent ?? records.slice(0, 4).map((record, index) => ({ id: record.id, timestamp: now - index * 60_000, harness: record.harness, provider: record.provider, model: record.model, tokens: record.tokens, grain: record.grain === 'call' ? 'call' : 'session_aggregate', sessionKey: null }));
   useEffect(() => {
     if (selection && !dialog.current?.open) dialog.current?.showModal();
@@ -278,10 +290,10 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, now, t, la
           <section className="qp-panel qp-hero">
             <div className="qp-section-heading"><div className="qp-hero-heading-copy"><h2><Activity size={18}/>{t('redesign.core')}</h2><small className="qp-hero-tagline">{t('redesign.coreSubtitle')}</small></div>{periodControl ?? (period && <span className="qp-chip">{period}</span>)}</div>
             <div className="qp-core-grid"><div className="qp-metrics">
-              <Metric icon={<CircleGauge size={21}/>} label={t('redesign.tokenUsage')} value={compactNumber(totals.tokens)}/>
-              <Metric icon={<Layers size={21}/>} label={t('redesign.sessions')} value={number(totals.sessions)}/>
-              <Metric icon={<Coins size={21}/>} label={t('redesign.reported')} value={<CostValue amount={totals.reportedCost} priced={prices.native} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
-              <Metric icon={<Wallet size={21}/>} label={t('redesign.value')} value={<CostValue amount={totals.apiValue} priced={prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>}/>
+              <MetricRailItem metric="tokens" icon={<CircleGauge size={21}/>} label={t('redesign.tokenUsage')} value={compactNumber(totals.tokens)} rawValue={totals.tokens} meter={quotaPercent} meterLabel={quota ? `${quota.owner} · ${quotaWindowLabel(quota.window, t)} · ${t('redesign.quotaUsed')}` : t('redesign.quotaUsed')}/>
+              <MetricRailItem metric="pace" icon={<Flame size={21}/>} label={t('redesign.averageTokenPace')} value={metricPace === null ? '—' : compactNumber(metricPace)} rawValue={metricPace} support={t('redesign.tokensPerDay')} trend={metricTokenSeries} trendLabel={metricTrendLabel}/>
+              <MetricRailItem metric="cost" icon={<Coins size={21}/>} label={t('redesign.knownCost')} value={<CostValue amount={knownCost} priced={prices.native + prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>} rawValue={knownCost} support={costSupport} trend={metricCostSeries} trendLabel={metricTrendLabel}/>
+              <MetricRailItem metric="cache" icon={<Star size={21}/>} label={t('redesign.cacheShare')} value={cacheShare === null ? '—' : `${number(cacheShare)}%`} rawValue={cacheShare} support={cacheSupport} trend={metricCacheSeries} trendLabel={metricTrendLabel} scale="percent"/>
                 </div><PulseCore quota={quota} now={now} t={t} language={language} staleAfterMs={preview ? 300000 : 3600000} tokens={totals.tokens} period={period ?? t('redesign.allTime')}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.topModelsByTokens')}><h3>{t('redesign.topModelsByTokens')}</h3><div className="qp-top-model-list">{models.slice(0, 5).map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span className="qp-model-identity"><i data-model-vendor={model.key ? model.vendor : undefined} aria-hidden="true"><ModelMark node={model} size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</div></section></div>
             <p className="qp-footnote">{t('redesign.scope')}</p>
           </section>
@@ -340,4 +352,38 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, now, t, la
 
 function Metric({ label, value, icon }: { label: string; value: React.ReactNode; icon?: React.ReactNode }) {
   return <div className="qp-metric" data-icon={icon ? true : undefined}>{icon && <i className="qp-metric-icon" aria-hidden="true">{icon}</i>}<span>{label}</span><strong>{value}</strong></div>;
+}
+
+function MetricTrace({ values, label, scale = 'amount' }: { values: readonly (number | null)[]; label: string; scale?: 'amount' | 'percent' }) {
+  const finite = values.filter((value): value is number => value !== null && Number.isFinite(value));
+  if (finite.length < 2 || values.length < 2) return null;
+  const max = scale === 'percent' ? 100 : Math.max(1, ...finite);
+  let drawing = false;
+  const path = values.map((value, index) => {
+    if (value === null || !Number.isFinite(value)) { drawing = false; return ''; }
+    const x = index / (values.length - 1) * 56;
+    const y = 20 - Math.max(0, Math.min(max, value)) / max * 16;
+    const command = drawing ? 'L' : 'M'; drawing = true;
+    return `${command}${x.toFixed(2)},${y.toFixed(2)}`;
+  }).filter(Boolean).join(' ');
+  return <svg className="qp-metric-trace" viewBox="0 0 56 22" preserveAspectRatio="none" role="img" aria-label={label} data-values={values.map(value => value === null ? '' : String(value)).join(',')}><path d={path} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke"/></svg>;
+}
+
+function MetricRailItem({ metric, label, value, rawValue, icon, support, trend, trendLabel, scale = 'amount', meter, meterLabel }: {
+  metric: string; label: string; value: ReactNode; rawValue: number | null; icon: ReactNode; support?: string;
+  trend?: readonly (number | null)[]; trendLabel?: string; scale?: 'amount' | 'percent'; meter?: number | null; meterLabel?: string;
+}) {
+  const hasMeter = meter != null && Number.isFinite(meter);
+  const visibleMeter = hasMeter ? `${Math.round(meter)}%` : null;
+  return <div className="qp-metric-rail" data-metric={metric} data-value={rawValue ?? undefined}>
+    <i className="qp-metric-rail-icon" aria-hidden="true">{icon}</i>
+    <div className="qp-metric-rail-copy">
+      <span className="qp-metric-rail-label">{label}</span>
+      <div className="qp-metric-rail-main"><strong>{value}</strong>{trend && trendLabel && <MetricTrace values={trend} label={trendLabel} scale={scale}/>}</div>
+      {hasMeter && <div className="qp-metric-meter" role="meter" aria-label={`${meterLabel ?? label} · ${visibleMeter}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={meter} data-value={meter}>
+        <span aria-hidden="true"><i style={{ width: `${Math.max(0, Math.min(100, meter))}%` }}/></span><small aria-hidden="true">{visibleMeter}</small>
+      </div>}
+      {support && <small className="qp-metric-rail-support" title={support}>{support}</small>}
+    </div>
+  </div>;
 }

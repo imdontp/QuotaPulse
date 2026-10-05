@@ -9,8 +9,9 @@ import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
-import type { Overview, MinuteTrendResponse, ProviderModelMinuteResponse, ProjectDetailResponse, DetailedProjectResponse, DetailedModelResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse, AlertEvent } from '../packages/web/src/api.js';
+import type { Overview, MinuteTrendResponse, ProviderModelMinuteResponse, ProjectDetailResponse, DetailedProjectResponse, DetailedModelResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse, UsageResponse, AlertEvent } from '../packages/web/src/api.js';
 import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
+import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from '../packages/web/src/redesign/metric-series.js';
 import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
 import { checkLiveMinuteRefresh } from './check-live-minute-refresh.mjs';
 import { checkLiveTokenFlow } from './check-live-token-flow.mjs';
@@ -1677,15 +1678,20 @@ async function checkOverviewPeriod(page: Page, lang: string, theme: string, pend
   for (const range of ['week', 'month', 'all', 'today'] as const) {
     const graphResponse = page.waitForResponse(response => new URL(response.url()).pathname === '/api/runtime-map' && response.status() === 200);
     const usageResponse = page.waitForResponse(response => new URL(response.url()).pathname === '/api/usage-events' && response.status() === 200);
+    const metricResponse = page.waitForResponse(response => new URL(response.url()).pathname === '/api/usage' && response.status() === 200);
     await page.locator('.qp-overview-period select').selectOption(range);
     const response = await graphResponse;
     const query = new URL(response.url()).searchParams;
     assert.equal(query.get('from'), String(starts[range])); assert.equal(query.get('to'), String(fixedNow + 1));
     const usageQuery = new URL((await usageResponse).url()).searchParams;
     assert.equal(usageQuery.get('from'), query.get('from')); assert.equal(usageQuery.get('to'), query.get('to'));
+    const metricQuery = new URL((await metricResponse).url()).searchParams;
+    assert.equal(metricQuery.get('range'), range);
+    assert.equal(metricQuery.get('from'), query.get('from')); assert.equal(metricQuery.get('to'), query.get('to'));
+    assert.equal(metricQuery.get('source_id'), query.get('source_id'));
     await page.locator('.qp-metrics').waitFor(); await settled(page, pending);
     const expected = (await daemon.inject({ method: 'GET', url: `/api/runtime-map?from=${starts[range]}&to=${fixedNow + 1}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<RuntimeGraph>();
-    assert.equal(await page.locator('.qp-metrics .qp-metric strong').first().textContent(), new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', {
+    assert.equal(await page.locator('.qp-metrics .qp-metric-rail strong').first().textContent(), new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', {
       notation: 'compact',
       maximumFractionDigits: 1,
     }).format(expected.totals.tokens));
@@ -1918,6 +1924,12 @@ try {
               pulseLabel: document.querySelector('.qp-pulse-state')?.textContent?.trim() ?? null,
               pulseDetail: document.querySelector('.qp-pulse-label>span:last-child')?.textContent?.trim() ?? null,
               cacheShare: Number(document.querySelector('[data-insight="cache"] header strong')?.textContent?.replace('%', '') ?? NaN),
+              metricRail: Array.from(document.querySelectorAll<HTMLElement>('.qp-metric-rail')).map(item => ({
+                metric: item.dataset.metric ?? '', value: Number(item.dataset.value),
+                label: item.querySelector('.qp-metric-rail-label')?.textContent?.trim() ?? '',
+                meter: item.querySelector('.qp-metric-meter')?.getAttribute('data-value') ?? null,
+                traces: Array.from(item.querySelectorAll<SVGElement>('.qp-metric-trace'), trace => trace.dataset.values ?? ''),
+              })),
               periodRange: (document.querySelector('.qp-overview-period select') as HTMLSelectElement | null)?.value ?? '',
             }));
             const modelNames = ['DeepSeek V4.1', 'GPT-5.x', 'Claude 3.7', 'Claude 3.5', 'Others'];
@@ -1932,9 +1944,32 @@ try {
             assert.equal(conceptData.pulsePercent, 72);
             assert.equal(conceptData.pulseLabel, lang === 'th' ? 'ใช้โควตารายเดือน' : 'Monthly used');
             assert.equal(conceptData.cacheShare, 42);
+            const expectedMetricLabels = lang === 'th'
+              ? ['ปริมาณโทเค็น', 'จังหวะโทเค็นเฉลี่ย', 'ค่าใช้จ่ายที่ทราบ', 'สัดส่วนข้อมูลเข้าจากแคช']
+              : ['Token Usage', 'Average token pace', 'Known cost', 'Cached input share'];
+            assert.deepEqual(conceptData.metricRail.map(metric => metric.metric), ['tokens', 'pace', 'cost', 'cache']);
+            assert.deepEqual(conceptData.metricRail.map(metric => metric.label), expectedMetricLabels);
+            assert.equal(conceptData.metricRail[0]?.meter, '72');
             assert.equal(conceptData.periodRange, 'month');
             const monthFrom = new Date(fixedNow); monthFrom.setDate(1); monthFrom.setHours(0, 0, 0, 0);
             const monthGraph = (await daemon.inject({ method: 'GET', url: `/api/runtime-map?from=${monthFrom.getTime()}&to=${fixedNow + 1}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<RuntimeGraph>();
+            const metricUsage = (await daemon.inject({ method: 'GET', url: '/api/usage?range=month&bucket=auto', headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<UsageResponse>();
+            const metrics = Object.fromEntries(conceptData.metricRail.map(metric => [metric.metric, metric]));
+            assert.equal(metrics.tokens?.value, monthGraph.totals.tokens);
+            assert.equal(metrics.pace?.value, averageDailyTokenPace(metricUsage.totals.total_tokens, metricUsage.range.from, metricUsage.range.to));
+            assert.ok(Math.abs(metricUsage.totals.total_tokens - monthGraph.totals.tokens) < 0.001, 'Metric timeline total must match Runtime Map total');
+            assert.equal(metrics.cost?.value, monthGraph.totals.reportedCost + monthGraph.totals.apiValue);
+            const cacheDenominator = monthGraph.totals.inputTokens + monthGraph.totals.cachedInputTokens + monthGraph.totals.cacheWriteTokens;
+            const expectedCacheShare = cacheDenominator > 0 ? monthGraph.totals.cachedInputTokens / cacheDenominator * 100 : null;
+            assert.ok(metrics.cache?.value != null && expectedCacheShare != null && Math.abs(metrics.cache.value - expectedCacheShare) < 0.000001);
+            assert.equal(Math.round(expectedCacheShare ?? 0), conceptData.cacheShare);
+            const traceValues = (metric: string) => {
+              const raw = metrics[metric]?.traces[0];
+              return raw === undefined ? [] : raw.split(',').map(value => value === '' ? null : Number(value));
+            };
+            assert.deepEqual(traceValues('pace'), metricTrendSeries(metricUsage.timeline, metricUsage.range, 'total_tokens'));
+            assert.deepEqual(traceValues('cost'), metricTrendSeries(metricUsage.timeline, metricUsage.range, 'cost_usd'));
+            assert.deepEqual(traceValues('cache'), cacheShareTrendSeries(metricUsage.timeline, metricUsage.range));
             const expectedPulseTokens = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(monthGraph.totals.tokens);
             assert.ok(conceptData.pulseDetail?.startsWith(expectedPulseTokens), 'Pulse Core token detail must match the selected range API total');
             assert.equal(await page.locator('.qp-hero>.qp-section-heading .qp-status').count(), 0, 'Pulse Core must not repeat the selected quota risk badge');
