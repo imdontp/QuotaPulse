@@ -77,7 +77,9 @@ const usage = db.prepare('INSERT INTO usage_event(source_id,session_id,dedup_key
 // amount is derived from the same fresh/cached input components the UI reports.
 const fixtureInputUsdPerMillion = 0.04, fixtureCachedInputUsdPerMillion = 0.004;
 for (let index = 0; index < 12; index++) {
-  const source = [1, 3, 4, 1, 2, 2, 2, 2, 2, 2, 1, 4][index]!;
+  // Keep the reference map's 4 Codex, 2 Claude Code, 6 Hermes, 0 OpenCode
+  // recent-session distribution while preserving the same 12 sessions.
+  const source = [1, 1, 1, 1, 3, 3, 2, 2, 2, 2, 2, 2][index]!;
   session.run(index + 1, source, `fixture-session-${index}`, referenceProjects[0], fixedNow - 10_000);
   const model = referenceModels[index % referenceModels.length]!;
   const totalTokens = model.share === 0 ? 1 : model.share * 721_000_000 / 600;
@@ -159,7 +161,7 @@ const settingsChecks: Array<{ lang: string; theme: string; sections: number; lan
 const cases: Array<{ page: string; lang: string; theme: string; filename: string; sha256: string; repeatSha256?: string; changedPixels?: number; maxChannelDelta?: number; semanticContrasts: Array<{ role: string; color: string; minimumRatio: number }>; checkedElements: string[] }> = [];
 const overviewLayouts: Array<{ lang: string; theme: string; heroBottom: number; activityBottom: number; models: number; railHeight: number; runtimeProvidersVisible: number; edgeMaxError: number; pulseCenter: { x: number; y: number }; modelTitleOutside: boolean }> = [];
 const overviewReferenceLabelChecks: Array<{ lang: string; theme: string; labels: string[]; modelRailLabel: string | null }> = [];
-const overviewConceptDataChecks: Array<{ lang: string; theme: string; periodRange: string; modelNames: string[]; modelShares: number[]; quotaGroups: Array<{ owner: string; windows: string[]; labels: string[] }>; quotaContentHeight: number; quotaViewportHeight: number; selectedWindow: string | null; pulsePercent: number | null; pulseLabel: string | null; pulseDetail: string | null; cacheShare: number | null; cacheSavingsUsd: number | null; cacheSavingsKnownCalls: number; mapProject: string | null; mapProjects: number; mapRecords: number; mapSessions: number }> = [];
+const overviewConceptDataChecks: Array<{ lang: string; theme: string; periodRange: string; modelNames: string[]; modelShares: number[]; quotaGroups: Array<{ owner: string; windows: string[]; labels: string[] }>; quotaContentHeight: number; quotaViewportHeight: number; selectedWindow: string | null; pulsePercent: number | null; pulseLabel: string | null; pulseDetail: string | null; cacheShare: number | null; cacheSavingsUsd: number | null; cacheSavingsKnownCalls: number; mapProject: string | null; mapProjects: number; mapRecords: number; mapSessions: number; mapHarnessSessions: Record<string, number> }> = [];
 const referenceColumnChecks: Array<{ page: string; lang: string; theme: string; headerTop: number; railTop: number; summaryRight: number; railLeft: number }> = [];
 const liveDensityChecks: Array<{ lang: string; theme: string; bottom: number; sessions: number; records: number }> = [];
 const liveMinuteChecks: Array<{ lang: string; theme: string; state: string; pairs: number; cells: number; missing: number; zero: number; recorded: number; partial: number; included: number; aggregate: number; unknown: number; table: boolean; labelGeometry: Array<{ viewport: number; width: number; clientWidth: number; scrollWidth: number; name: string | null | undefined }> }> = [];
@@ -976,8 +978,9 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
     assert.ok(header && brand && sidebar);
     assert.equal(header.x, 0); assert.equal(header.width, width); assert.equal(header.height, 60);
     assert.equal(brand.x, 0);
-    const expectedSidebar = width <= 500 ? 48 : width <= 1100 ? 66 : width <= 1600 ? 216 : 226;
-    const expectedBrand = width <= 1100 ? expectedSidebar : Math.max(253, Math.min(267, width * .16));
+    const overviewReferenceWidth = destination === 'overview' && width > 1500;
+    const expectedSidebar = overviewReferenceWidth ? 211 : width <= 500 ? 48 : width <= 1100 ? 66 : width <= 1600 ? 216 : 226;
+    const expectedBrand = overviewReferenceWidth ? 211 : width <= 1100 ? expectedSidebar : Math.max(253, Math.min(267, width * .16));
     assert.ok(Math.abs(brand.width - expectedBrand) < .02);
     assert.equal(sidebar.width, expectedSidebar);
     if (expectedAlertCount > 0) {
@@ -996,7 +999,9 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
       assert.ok(mark && wordmark);
       assert.equal(mark.width, 42); assert.equal(mark.height, 42);
       assert.equal(mark.x, 20);
-      assert.ok(wordmark.x + wordmark.width <= brand.x + brand.width - 8, 'Brand text must fit its source-sized header column');
+      const brandRightGap = overviewReferenceWidth ? 2 : 8;
+      assert.ok(wordmark.x + wordmark.width <= brand.x + brand.width - brandRightGap,
+        `Brand text must fit its source-sized header column: ${JSON.stringify({ brand, mark, wordmark })}`);
       const status = page.locator('.qp-daemon-badge');
       const state = await status.getAttribute('data-state');
       assert.equal(state, 'live');
@@ -1025,6 +1030,16 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
     if (width === 1280) {
       const moreSummary = await navigation.locator('.qp-nav-more > summary').boundingBox();
       assert.ok(moreSummary && moreSummary.height <= 32.1, 'More remains compact ahead of Quick Stats');
+    }
+    if (destination === 'overview' && width === originalViewport.width && width > 1500) {
+      const menuCenters = await navigation.locator(':scope > a, :scope > details > summary').evaluateAll(elements => elements.map(element => {
+        const box = element.getBoundingClientRect(); return box.y + box.height / 2;
+      }));
+      const menuSteps = menuCenters.slice(1).map((center, index) => center - menuCenters[index]!);
+      assert.equal(menuCenters.length, 7);
+      assert.ok(menuSteps.every(step => step >= 39 && step <= 47), `Overview navigation rhythm drifted from the concept: ${JSON.stringify(menuSteps)}`);
+      const quickStatsBox = await statsCard.boundingBox();
+      assert.ok(quickStatsBox && Math.abs(quickStatsBox.y - 421) <= 1, `Quick Stats must retain its reference-aligned y position: ${JSON.stringify(quickStatsBox)}`);
     }
     assert.equal(await page.locator('.qp-sidebar nav a[aria-current=page]').count(), 1);
     const shellBounds = await page.evaluate(() => {
@@ -2376,6 +2391,8 @@ try {
             await openRuntimeMapOptions(page);
             const projectQuery = new URLSearchParams({ from: String(monthFrom.getTime()), to: String(fixedNow + 1), project: 'QuotaPulse' });
             const focusedGraph = (await daemon.inject({ method: 'GET', url: `/api/runtime-map?${projectQuery}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<RuntimeGraph>();
+            const mapHarnessSessions = Object.fromEntries(focusedGraph.nodes.harness.filter(node => node.key !== null).map(node => [node.key!, node.sessions]));
+            assert.deepEqual(mapHarnessSessions, { codex: 4, 'claude-code': 2, hermes: 6 }, 'The synthetic reference project should retain the concept harness/session distribution');
             const visibleProjectNodes = page.locator('.qp-runtime .qp-map-node[data-dimension=project]');
             assert.equal(await visibleProjectNodes.count(), 1);
             assert.equal(await visibleProjectNodes.first().getAttribute('data-key'), JSON.stringify('QuotaPulse'));
@@ -2392,7 +2409,7 @@ try {
             await runtimeProjectSelect.selectOption('QuotaPulse'); await settled(page, pending);
             assert.equal(await page.locator('.qp-runtime .qp-map-node[data-dimension=project]').count(), 1, 'Selecting a project must filter the runtime graph through the API');
             await closeRuntimeMapOptions(page);
-            overviewConceptDataChecks.push({ lang, theme, periodRange: conceptData.periodRange, modelNames, modelShares, quotaGroups: conceptData.quotaGroups, quotaContentHeight: conceptData.quotaContentHeight, quotaViewportHeight: conceptData.quotaViewportHeight, selectedWindow: conceptData.selectedWindow, pulsePercent: conceptData.pulsePercent, pulseLabel: conceptData.pulseLabel, pulseDetail: conceptData.pulseDetail, cacheShare: conceptData.cacheShare, cacheSavingsUsd: expectedCacheSavings, cacheSavingsKnownCalls: monthGraph.totals.cacheSavingKnownCalls, mapProject: 'QuotaPulse', mapProjects: focusedGraph.nodes.project.length, mapRecords: focusedGraph.totals.records, mapSessions: focusedGraph.totals.sessions, mapActiveSessions: focusedGraph.nodes.project[0]?.activeSessions });
+            overviewConceptDataChecks.push({ lang, theme, periodRange: conceptData.periodRange, modelNames, modelShares, quotaGroups: conceptData.quotaGroups, quotaContentHeight: conceptData.quotaContentHeight, quotaViewportHeight: conceptData.quotaViewportHeight, selectedWindow: conceptData.selectedWindow, pulsePercent: conceptData.pulsePercent, pulseLabel: conceptData.pulseLabel, pulseDetail: conceptData.pulseDetail, cacheShare: conceptData.cacheShare, cacheSavingsUsd: expectedCacheSavings, cacheSavingsKnownCalls: monthGraph.totals.cacheSavingKnownCalls, mapProject: 'QuotaPulse', mapProjects: focusedGraph.nodes.project.length, mapRecords: focusedGraph.totals.records, mapSessions: focusedGraph.totals.sessions, mapActiveSessions: focusedGraph.nodes.project[0]?.activeSessions, mapHarnessSessions });
             const hero = await page.locator('.qp-hero').boundingBox();
             const activity = await page.locator('.qp-activity-item').first().boundingBox();
             const rail = page.locator('.qp-top-models');

@@ -88,7 +88,7 @@
   padding:24px 12px 12px;
   display:flex;
   flex-direction:column;
-  gap:20px;
+  gap:38px;
   border-right:1px solid var(--qp-border);
   background:color-mix(in srgb,var(--qp-bg) 80%,transparent);
 }
@@ -121,7 +121,7 @@
 }
 .qp-sidebar nav {
   display:grid;
-  gap:5px;
+  gap:2px;
 }
 .qp-sidebar nav a,.qp-sidebar nav details>summary,.qp-exit {
   display:flex;
@@ -1152,6 +1152,19 @@
   [data-testid=production-overview] .qp-activity-value strong { font-size:15px; }
 }
 @media(min-width:1500px) {
+  .qp-redesign[data-testid=production-overview] { --qp-sidebar-width:211px; }
+  .qp-redesign[data-testid=production-overview] .qp-topbar { grid-template-columns:211px minmax(0,1fr); }
+  .qp-redesign[data-testid=production-overview] .qp-brand { gap:16px; font-size:23px; }
+  .qp-redesign[data-testid=production-overview] .qp-brand small { font-size:8px; }
+  .qp-redesign[data-testid=production-overview] .qp-topbar-body { padding-left:56px; }
+  .qp-redesign[data-testid=production-overview] .qp-sidebar { padding-right:8px; }
+  .qp-redesign[data-testid=production-overview] main { padding-left:0; }
+  .qp-redesign[data-testid=production-overview] .qp-hero { padding-left:30px; }
+  .qp-redesign[data-testid=production-overview] .qp-runtime { padding-left:29px; }
+  .qp-redesign[data-testid=production-overview] .qp-bottom-grid { grid-template-columns:minmax(0,1.17fr) minmax(0,1fr); }
+  .qp-redesign[data-testid=production-overview] .qp-runway,
+  .qp-redesign[data-testid=production-overview] .qp-insights { padding-left:29px; }
+  .qp-redesign[data-testid=production-overview] .qp-activity { padding-left:31px; }
   [data-testid=production-overview] .qp-pulse { transform:translate(32px,-19px); }
 }
 @media(max-width:500px) {
