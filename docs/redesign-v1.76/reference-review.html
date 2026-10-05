@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QuotaPulse reference review v1.76</title>
+<style>
+:root{color-scheme:dark}body{margin:0;background:#040a14;color:#eef3ff;font:15px system-ui,sans-serif}header{padding:20px;display:grid;gap:12px}h1{margin:0;font-size:22px}p{margin:0;color:#a6b9dc;line-height:1.5}fieldset{display:flex;gap:16px;flex-wrap:wrap;border:1px solid #32455f;padding:12px}label{display:flex;align-items:center;gap:8px}select{font:inherit;background:#08101b;color:#eef3ff;padding:6px;border:1px solid #52657c}:focus-visible{outline:2px solid #36c9ff;outline-offset:3px}main{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}figure{margin:0;min-width:0}figcaption{padding:8px;color:#a6b9dc}img{display:block;width:100%;height:auto}.overlay main{display:block;position:relative;padding:0;margin:12px}.overlay figure:last-child{position:absolute;inset:0;opacity:var(--app-opacity,.5)}.overlay figcaption{display:none}.settings main{grid-template-columns:1fr}.settings figure:first-child{display:none}@media(max-width:800px){main{grid-template-columns:1fr}}
+</style>
+<header>
+  <h1>QuotaPulse — เทียบ concept กับแอป v1.76</h1>
+  <p>The v1.76 candidate adds token-weighted Runtime Map flows and measured pace/cache insights. Captures use an in-memory synthetic fixture and do not indicate 99–100% visual acceptance.</p>
+  <fieldset>
+    <legend>ตัวเลือกภาพ</legend>
+    <label>รุ่น <select id="version"><option value="v1.76">v1.76 current</option><option value="v1.75">v1.75 previous</option><option value="v1.74">v1.74</option><option value="v1.73">v1.73</option><option value="v1.72">v1.72 previous</option><option value="v1.71">v1.71</option><option value="v1.70">v1.70</option><option value="v1.69">v1.69</option><option value="v1.68">v1.68</option><option value="v1.67">v1.67</option><option value="v1.66">v1.66</option><option value="v1.65">v1.65</option><option value="v1.64">v1.64</option><option value="v1.62">v1.62 baseline</option></select></label>
+    <label>หน้า <select id="page"><option>overview</option><option>live</option><option>projects</option><option>providers</option><option>models</option><option>cost</option><option>history</option><option>alerts</option><option>settings</option></select></label>
+    <label>สภาวะ Overview <select id="state"><option value="full">Overview เต็ม</option><option value="quota">รายการ quota เพิ่มเติม</option><option value="runtime">Runtime Map ขยาย</option><option value="runtime-single">Runtime Map เลือกโปรเจกต์</option></select></label>
+    <label>ภาษา <select id="language"><option value="en">English</option><option value="th">ไทย</option></select></label>
+    <label>ธีม <select id="theme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+    <label><input id="overlay" type="checkbox">ซ้อนภาพ</label>
+    <label>ความทึบภาพแอป <input id="opacity" type="range" min="0" max="100" value="50"><output id="value">50%</output></label>
+  </fieldset>
+  <p id="note" role="status"></p>
+</header>
+<main>
+  <figure id="sourceFigure"><figcaption>Source concept</figcaption><img id="source" src="../redesign-v1.44/source-overview.png" alt="Overview source concept"></figure>
+  <figure><figcaption id="captureCaption">Production app — synthetic review fixture</figcaption><img id="capture" src="overview-en-dark.png" alt="Overview English dark production capture"></figure>
+</main>
+<script>
+const page=document.getElementById('page'),language=document.getElementById('language'),theme=document.getElementById('theme'),version=document.getElementById('version'),state=document.getElementById('state'),overlay=document.getElementById('overlay');
+const roots={'v1.76':'','v1.75':'../redesign-v1.75/','v1.74':'../redesign-v1.74/','v1.73':'../redesign-v1.73/','v1.72':'../redesign-v1.72/','v1.71':'../redesign-v1.71/','v1.70':'../redesign-v1.70/','v1.69':'../redesign-v1.69/','v1.68':'../redesign-v1.68/','v1.67':'../redesign-v1.67/','v1.66':'../redesign-v1.66/','v1.65':'../redesign-v1.65/','v1.64':'../redesign-v1.64/','v1.62':'../redesign-v1.62/'};
+const states={full:'overview',quota:'quota-expanded-overview',runtime:'runtime-expanded', 'runtime-single':'runtime-single'};
+function update(){
+  const name=page.value,settings=name==='settings',hasOverviewStates=name==='overview'&&['v1.71','v1.72','v1.73','v1.74','v1.75','v1.76'].includes(version.value),latestOverview=version.value==='v1.76'&&name==='overview',carriedPage=name!=='overview'&&['v1.70','v1.71','v1.72','v1.73','v1.74','v1.75','v1.76'].includes(version.value);
+  document.body.classList.toggle('settings',settings);overlay.disabled=settings;state.disabled=!hasOverviewStates;
+  if(settings){overlay.checked=false;document.body.classList.remove('overlay')}
+  const source=document.getElementById('source'),sourceFigure=document.getElementById('sourceFigure');sourceFigure.hidden=settings;
+  if(!settings){source.src='../redesign-v1.44/source-'+name+'.png';source.alt=name+' source concept'}
+  const captureVersion=carriedPage?'v1.68':version.value,root=roots[captureVersion]??'';
+  const filename=hasOverviewStates?`${state.value==='full'?'overview':states[state.value]}-${language.value}-${theme.value}.png`:(name==='history'?'history-selected':name)+'-'+language.value+'-'+theme.value+'.png';
+  const capture=document.getElementById('capture');capture.src=root+filename;capture.alt=(latestOverview?'Overview '+state.options[state.selectedIndex].text:name)+' '+language.value+' '+theme.value+' production capture';
+  document.getElementById('captureCaption').textContent='Production app — synthetic review fixture — '+(hasOverviewStates?version.value+' '+state.options[state.selectedIndex].text:carriedPage?'v1.68 capture carried forward through later review sets':version.value+' capture');
+  document.getElementById('note').textContent=settings?'หน้า Settings ไม่มี source concept PNG':hasOverviewStates?'เลือก Overview เต็มหรือภาพขยาย quota/runtime ภาพ capture ใช้ข้อมูลจำลองในหน่วยความจำ':carriedPage?'ภาพหน้ารองมาจาก v1.68 และสืบต่อใน review set รุ่นหลัง':'ภาพ concept ต้นฉบับไม่ถูกแก้ hash อยู่ใน reference manifest';
+}
+[page,language,theme,version,state].forEach(control=>control.addEventListener('change',update));
+overlay.addEventListener('change',()=>document.body.classList.toggle('overlay',overlay.checked));
+document.getElementById('opacity').addEventListener('input',event=>{document.body.style.setProperty('--app-opacity',event.target.value/100);document.getElementById('value').value=event.target.value+'%'});
+update();
+</script>
+</html>

@@ -949,7 +949,16 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
       assert.ok(moreSummary && moreSummary.height <= 32.1, 'More remains compact ahead of Quick Stats');
     }
     assert.equal(await page.locator('.qp-sidebar nav a[aria-current=page]').count(), 1);
-    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Shell horizontal overflow at ${destination}/${lang}/${theme}/${width}px`);
+    const shellBounds = await page.evaluate(() => {
+      const selectors = ['.qp-runtime', '.qp-runtime>.qp-section-heading', '.qp-runtime-controls', '.qp-map-scroll', '.qp-map'];
+      return { documentWidth: document.documentElement.scrollWidth, viewportWidth: innerWidth, elements: selectors.map(selector => {
+        const element = document.querySelector<HTMLElement>(selector);
+        if (!element) return { selector, missing: true };
+        const box = element.getBoundingClientRect(), style = getComputedStyle(element);
+        return { selector, left: Math.round(box.left), right: Math.round(box.right), width: Math.round(box.width), scrollWidth: element.scrollWidth, minWidth: style.minWidth, overflowX: style.overflowX };
+      }) };
+    });
+    assert.ok(shellBounds.documentWidth <= shellBounds.viewportWidth, `Shell horizontal overflow at ${destination}/${lang}/${theme}/${width}px: ${JSON.stringify(shellBounds)}`);
     headerChecks.push({ page: destination, lang, theme, width, height: header.height, sidebarWidth: sidebar.width, dateText });
   }
   await page.setViewportSize(originalViewport);
@@ -1049,9 +1058,11 @@ async function checkSettingsAccess(page: Page, lang: string, theme: string) {
 }
 
 async function checkRuntimeGeometry(page: Page, graph: RuntimeGraph, lang: string, theme: string, state: string) {
+  const copy = lang === 'th' ? th : en;
   const visible = dimensions.map(dimension => new Set(graph.nodes[dimension].slice(0, 8).map(node => node.key)));
   const expected = graph.edges.filter(edge => visible[edge.column].has(edge.from) && visible[edge.column + 1].has(edge.to)).map(edge => JSON.stringify([edge.column, edge.from, edge.to]));
   assert.ok(expected.length > 0, `Connected populated ${state} fixture has no expected visible edges`);
+  assert.equal(await page.locator('.qp-runtime-legend').textContent(), copy['redesign.tokenFlow']);
   await page.waitForFunction(expected => {
     const paths = Array.from(document.querySelectorAll<SVGPathElement>('.qp-map-edges>path'));
     if (paths.length !== expected.length) return false;
@@ -1068,6 +1079,17 @@ async function checkRuntimeGeometry(page: Page, graph: RuntimeGraph, lang: strin
       return Math.max(Math.abs(start.x - from.right), Math.abs(start.y - from.top - from.height / 2), Math.abs(end.x - to.left), Math.abs(end.y - to.top - to.height / 2)) <= 1;
     });
   }, expected);
+  const weightedPaths = await page.locator('.qp-map-edges>path').evaluateAll(paths => paths.map(path => ({
+    column: Number((path as SVGPathElement).dataset.column),
+    tokens: Number((path as SVGPathElement).dataset.tokens),
+    width: Number.parseFloat(getComputedStyle(path).strokeWidth),
+  })));
+  assert.equal(weightedPaths.length, expected.length);
+  for (const [index, path] of weightedPaths.entries()) {
+    const columnTotal = graph.nodes[dimensions[path.column]!].reduce((total, node) => total + node.tokens, 0);
+    const expectedWidth = columnTotal > 0 ? Math.max(1.4, Math.min(5.5, 1.4 + path.tokens / columnTotal * 9)) : 1.4;
+    assert.ok(Math.abs(path.width - expectedWidth) < 0.01, `Runtime edge ${index} width must encode its share of recorded token flow (${path.width} != ${expectedWidth})`);
+  }
   const maxError = await page.locator('.qp-map-edges>path').evaluateAll(paths => {
     const nodes = Array.from(document.querySelectorAll<HTMLElement>('.qp-map-node'));
     const dimensions = ['project', 'harness', 'provider', 'model'];
@@ -1762,13 +1784,24 @@ async function checkOverviewInsights(page: Page, lang: string, theme: string, pe
   await page.locator('.qp-insight-card').first().waitFor(); await settled(page, pending);
   const panel = page.getByTestId('usage-insights'), number = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 });
   const money = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' });
+  const locale = lang === 'th' ? 'th-TH' : 'en-US';
+  const range = await page.locator('.qp-overview-period select').inputValue();
+  const metricUsage = (await daemon.inject({ method: 'GET', url: `/api/usage?${new URLSearchParams({ range, bucket: 'auto' })}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<UsageResponse>();
+  const pace = averageDailyTokenPace(metricUsage.totals.total_tokens, metricUsage.range.from, metricUsage.range.to);
+  const paceFormat = new Intl.NumberFormat(locale, { notation: 'compact', maximumFractionDigits: 1 });
   assert.equal(await panel.locator('.qp-insights-subtitle').innerText(), lang === 'th' ? 'สัญญาณการใช้งานและราคา' : 'Usage and pricing signals');
   async function values(expected: RuntimeGraph['totals']) {
     const input = expected.inputTokens + expected.cachedInputTokens + expected.cacheWriteTokens;
+    const paceCard = panel.locator('[data-insight=pace]');
+    assert.equal(await paceCard.getAttribute('data-value'), pace === null ? null : String(pace));
+    assert.equal(await paceCard.locator('strong').textContent(), pace === null ? '—' : paceFormat.format(pace));
     assert.equal(await panel.locator('[data-insight=cache] strong').textContent(), input ? `${number.format(expected.cachedInputTokens / input * 100)}%` : '—');
     assert.equal(await panel.locator('[data-insight=cache]').getAttribute('data-state'), input ? 'measured' : 'unavailable');
-    assert.equal(await panel.locator('[data-insight=saving] strong').textContent(), expected.cacheSavingKnownCalls ? money.format(expected.cacheSavingKnownUsd) : '—');
-    assert.equal(await panel.locator('[data-insight=saving]').getAttribute('data-state'), expected.cacheSavingKnownCalls ? 'known' : 'unavailable');
+    const cacheSupport = await panel.locator('[data-insight=cache] p').textContent();
+    if (expected.cacheSavingKnownCalls > 0) {
+      assert.ok(cacheSupport?.includes(money.format(expected.cacheSavingKnownUsd)));
+      assert.ok(cacheSupport?.includes(number.format(expected.cacheSavingKnownCalls)));
+    }
     const priced = expected.nativeCalls + expected.computedCalls + expected.estimatedCalls, calls = priced + expected.unknownCalls;
     assert.equal(await panel.locator('[data-insight=pricing] strong').textContent(), calls ? `${number.format(priced)} / ${number.format(calls)}` : '—');
     assert.equal(await panel.locator('[data-insight=pricing]').getAttribute('data-state'), calls === 0 ? 'unavailable' : priced === calls ? 'complete' : 'partial');

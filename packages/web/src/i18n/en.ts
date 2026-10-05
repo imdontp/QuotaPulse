@@ -179,6 +179,8 @@ export const en = {
   'redesign.tokensPerMinute': 'tokens/min',
   'redesign.viewAllActivity': 'View All',
   'redesign.cacheShare': 'Cached input share',
+  'redesign.cacheEfficiency': 'Cache efficiency',
+  'redesign.tokenFlow': 'Token Flow',
   'redesign.cacheSaving': 'Known cache price difference',
   'redesign.pricingCoverage': 'Call pricing coverage',
   'redesign.reportedPricingCoverage': 'Reported pricing coverage',

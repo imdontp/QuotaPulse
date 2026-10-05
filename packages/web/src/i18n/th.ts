@@ -185,6 +185,8 @@ export const th: Record<MessageKey, string> = {
   'redesign.tokensPerMinute': 'โทเค็น/นาที',
   'redesign.viewAllActivity': 'ดูทั้งหมด',
   'redesign.cacheShare': 'สัดส่วนข้อมูลเข้าจากแคช',
+  'redesign.cacheEfficiency': 'ประสิทธิภาพแคช',
+  'redesign.tokenFlow': 'การไหลของโทเค็น',
   'redesign.cacheSaving': 'ส่วนต่างราคาจากแคชที่ทราบ',
   'redesign.pricingCoverage': 'ความครอบคลุมของราคา',
   'redesign.reportedPricingCoverage': 'ความครอบคลุมราคาที่รายงาน',

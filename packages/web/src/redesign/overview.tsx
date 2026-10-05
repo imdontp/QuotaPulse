@@ -157,6 +157,7 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, on
   const number = new Intl.NumberFormat(locale);
   const percent = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
   const columns = dimensions.map(dimension => nodes[dimension].slice(0, 8));
+  const columnTokenTotals = dimensions.slice(0, 3).map(dimension => nodes[dimension].reduce((total, node) => total + node.tokens, 0));
   const maxRows = Math.max(1, ...columns.map(column => column.length));
   const height = maxRows * 43;
   const singleProject = columns[0].length === 1 && maxRows >= 3;
@@ -192,7 +193,7 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, on
     return () => observer.disconnect();
   }, [nodes, edges, recordCount, height, singleProject]);
   return <section className="qp-panel qp-runtime" id="runtime">
-    <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.liveRuntimeMap')}</h2><p>{t('redesign.connections')}</p>{recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} language={language} t={t} onInspect={onInspect}/>}</div><div className="qp-runtime-controls">{onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>}<span className="qp-chip">{t('redesign.records')} · {recordCount}</span></div></div>
+    <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.liveRuntimeMap')}</h2><p>{t('redesign.connections')}</p>{recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} language={language} t={t} onInspect={onInspect}/>}</div><div className="qp-runtime-controls"><span className="qp-runtime-legend"><i aria-hidden="true"/>{t('redesign.tokenFlow')}</span>{onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>}<span className="qp-chip">{t('redesign.records')} · {recordCount}</span></div></div>
 
     {recordCount === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
       <div ref={map} className="qp-map" data-single-project={singleProject} style={{ height: height + 24 }}>
@@ -200,7 +201,9 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, on
           <defs><marker id={arrowId} viewBox="0 0 8 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth"><polygon points="0,0 8,4 0,8 2,4" fill="context-stroke"/></marker></defs>
           {geometry.paths.map(({ edge, x, y, endX, endY }) => {
             const bend = (endX - x) * .55;
-            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth="1.6" markerEnd={`url(#${arrowId})`}/>;
+            const total = columnTokenTotals[edge.column] ?? 0;
+            const strokeWidth = total > 0 ? Math.max(1.4, Math.min(5.5, 1.4 + edge.tokens / total * 9)) : 1.4;
+            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth={strokeWidth} markerEnd={`url(#${arrowId})`}/>;
           })}
           {flowPaths.map(({ edge, x, y }) => <circle className="qp-map-flow-dot" data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} key={JSON.stringify([edge.column, edge.from, edge.to])} cx={x} cy={y} r="2.8"/>)}
         </svg>
@@ -312,6 +315,9 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
   const metricTrendLabel = `${t('redesign.metricTrend')} · ${period ?? t('redesign.allTime')}`;
   const costSupport = `${t('redesign.nativeShort')} ${money(totals.reportedCost)} · ${t('redesign.apiShort')} ${money(totals.apiValue)}`;
   const cacheSupport = cacheShare === null ? t('redesign.noInput') : `${compactNumber(coverage!.cachedInputTokens)} / ${compactNumber(inputTotal)}`;
+  const cacheInsightSupport = `${cacheSupport} · ${coverage && coverage.cacheSavingKnownCalls > 0
+    ? `${money(coverage.cacheSavingKnownUsd)} · ${number(coverage.cacheSavingKnownCalls)} ${t('redesign.knownCalls')}`
+    : t('redesign.noCachePrice')}`;
   const activities: readonly ActivityItem[] = recent ?? records.slice(0, 4).map((record, index) => ({ id: record.id, timestamp: now - index * 60_000, harness: record.harness, provider: record.provider, model: record.model, tokens: record.tokens, grain: record.grain === 'call' ? 'call' : 'session_aggregate', sessionKey: null }));
   useEffect(() => {
     if (selection && !dialog.current?.open) dialog.current?.showModal();
@@ -368,8 +374,8 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
           <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
           <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Box size={18}/>{t('redesign.insights')}</h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>
             <div className="qp-insight-grid">
-              <article className="qp-insight-card" data-insight="cache" data-state={cacheShare === null ? 'unavailable' : 'measured'}><i aria-hidden="true"><Layers size={17}/></i><div><header><h3>{t('redesign.cacheShare')}</h3><strong>{cacheShare === null ? '—' : `${number(cacheShare)}%`}</strong></header><p>{cacheShare === null ? t('redesign.noInput') : `${number(coverage!.cachedInputTokens)} / ${number(inputTotal)}`}</p></div></article>
-              <article className="qp-insight-card" data-insight="saving" data-state={coverage && coverage.cacheSavingKnownCalls > 0 ? 'known' : 'unavailable'}><i aria-hidden="true"><Coins size={17}/></i><div><header><h3>{t('redesign.cacheSaving')}</h3><strong>{coverage && coverage.cacheSavingKnownCalls > 0 ? money(coverage.cacheSavingKnownUsd) : '—'}</strong></header><p>{coverage && coverage.cacheSavingKnownCalls > 0 ? `${number(coverage.cacheSavingKnownCalls)} ${t('redesign.knownCalls')}` : t('redesign.noCachePrice')}</p></div></article>
+              <article className="qp-insight-card" data-insight="pace" data-state={quotaReading?.risk ?? 'unknown'} data-value={metricPace ?? undefined}><i aria-hidden="true"><Flame size={17}/></i><div><header><h3>{t('redesign.averageTokenPace')}</h3><strong>{metricPace === null ? '—' : compactNumber(metricPace)}</strong></header><p>{metricPace === null ? t('redesign.unavailable') : `${t('redesign.tokensPerDay')} · ${period ?? t('redesign.allTime')}`}</p></div></article>
+              <article className="qp-insight-card" data-insight="cache" data-state={cacheShare === null ? 'unavailable' : 'measured'}><i aria-hidden="true"><Layers size={17}/></i><div><header><h3>{t('redesign.cacheEfficiency')}</h3><strong>{cacheShare === null ? '—' : `${number(cacheShare)}%`}</strong></header><p>{cacheInsightSupport}</p></div></article>
               <article className="qp-insight-card" data-insight="pricing" data-state={prices.total === 0 ? 'unavailable' : prices.native + prices.api === prices.total ? 'complete' : 'partial'}><i aria-hidden="true"><Activity size={17}/></i><div><header><h3>{t('redesign.reportedPricingCoverage')}</h3><strong title={t('redesign.pricingCallCountNote')}>{prices.total > 0 ? `${number(prices.native + prices.api)} / ${number(prices.total)}` : '—'}</strong></header><p className="qp-insight-records"><span>{t('redesign.calls')} <b data-count="calls">{number(totals.callRecords)}</b></span><span>{t('redesign.aggregates')} <b data-count="aggregates">{number(totals.aggregateRecords)}</b></span></p></div></article>
               <article className="qp-insight-card" data-insight="unknown" data-state={totals.unknownCostRecords > 0 ? 'incomplete' : 'clear'}><i aria-hidden="true"><Wallet size={17}/></i><div><header><h3>{t('redesign.unknown')}</h3><strong>{number(totals.unknownCostRecords)}</strong></header><p>{t('redesign.coverage')}</p></div></article>
             </div>
