@@ -13,6 +13,7 @@ import type { Overview, MinuteTrendResponse, ProviderModelMinuteResponse, Projec
 import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from '../packages/web/src/redesign/metric-series.js';
 import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
+import { countdown } from '../packages/web/src/format.js';
 import { usageEventParams } from '../packages/web/src/lib/usage-events.js';
 import { activityTokensPerMinute, activityTrendScope, latestActivityByHarness } from '../packages/web/src/redesign/activity-trend.js';
 import { checkLiveMinuteRefresh } from './check-live-minute-refresh.mjs';
@@ -883,6 +884,9 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
   const stats = statsResponse.json<Record<string, number>>();
   const statsCard = page.locator('.qp-quick-stats');
   assert.equal(await statsCard.getAttribute('aria-describedby'), 'qp-quick-stats-note');
+  assert.equal(await statsCard.locator('h2').textContent(), 'Quick Stats');
+  assert.equal(await statsCard.locator('p').count(), 0, 'Workspace scope is already shown in the header');
+  assert.equal(await page.locator('.qp-sidebar nav a[href="#models"] > span').textContent(), lang === 'th' ? 'โมเดล' : 'Models');
   const statsNote = await statsCard.locator('#qp-quick-stats-note').boundingBox();
   assert.ok(statsNote && statsNote.width === 1 && statsNote.height === 1, 'The session-count caveat remains available to assistive technology without extending the reference card');
   for (const key of ['namedProjects', 'models', 'providers', 'recentSessions']) {
@@ -938,6 +942,10 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
     assert.equal(await navigation.locator(':scope > a').count(), 6, 'Six concept routes must remain in the primary sidebar');
     assert.equal(await navigation.locator('.qp-nav-more > a').count(), 3, 'Additional routes must remain available in More');
     assert.equal(await navigation.locator('.qp-nav-more').getAttribute('open'), ['providers', 'cost', 'settings'].includes(destination) ? '' : null);
+    if (width === 1280) {
+      const moreSummary = await navigation.locator('.qp-nav-more > summary').boundingBox();
+      assert.ok(moreSummary && moreSummary.height <= 32.1, 'More remains compact ahead of Quick Stats');
+    }
     assert.equal(await page.locator('.qp-sidebar nav a[aria-current=page]').count(), 1);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Shell horizontal overflow at ${destination}/${lang}/${theme}/${width}px`);
     headerChecks.push({ page: destination, lang, theme, width, height: header.height, sidebarWidth: sidebar.width, dateText });
@@ -1337,6 +1345,16 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
     assert.equal(await pill.getAttribute('data-reset-at'), String(reading.resets_at));
     const projectedAt = reading.forecast?.status === 'ready' && reading.forecast.projectedFullAt! > fixedNow ? reading.forecast.projectedFullAt : null;
     assert.equal(await pill.getAttribute('data-projected-at'), projectedAt === null ? null : String(projectedAt));
+    const projection = page.getByTestId('pulse-projection');
+    if (projectedAt === null) assert.equal(await projection.count(), 0, 'Do not state a projection without a valid forecast');
+    else if (projectedAt < reading.resets_at!) {
+      const expectedDuration = projectedAt - fixedNow < 60_000 ? '<1m' : countdown(projectedAt, fixedNow);
+      assert.equal(await projection.textContent(), lang === 'th'
+        ? `ด้วยอัตราปัจจุบัน คาดว่าโควตาจะเต็มในอีก ${expectedDuration} ก่อนรีเซ็ต`
+        : `At the current pace, quota is projected to fill in ${expectedDuration} before reset.`);
+    } else assert.equal(await projection.textContent(), lang === 'th'
+      ? 'ด้วยอัตราปัจจุบัน คาดว่าจะยังใช้โควตาไม่เต็มก่อนรีเซ็ต'
+      : 'At the current pace, the quota is projected to remain within its limit until reset.');
     const track = page.locator('.qp-runway-track');
     assert.equal(await track.getAttribute('data-now'), String(fixedNow));
     assert.equal(await track.getAttribute('data-reset-at'), String(reading.resets_at));
@@ -1364,6 +1382,7 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
       const progress = page.getByTestId('pulse-progress');
       if (used === null) {
         assert.equal(await progress.count(), 0, 'Unknown quota must not render an invented progress arc');
+        assert.equal(await page.getByTestId('pulse-projection').count(), 0, 'Unknown quota must not render a projected fill sentence');
         assert.equal(await page.getByTestId('pulse-runway').getAttribute('data-projected-at'), null);
         assert.equal(await page.getByTestId('pulse-runway').getAttribute('data-reset-at'), null);
         assert.equal(await page.locator('.qp-runway-track').count(), 0, 'Unknown quota must not invent a runway timeline');
@@ -1390,6 +1409,7 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
       if (state === 'stale' || state === 'expired') {
         assert.equal(await track.count(), 0, `${state} quota must not display a live timeline`);
         assert.equal(await page.locator('.qp-runway-message').isVisible(), true);
+        assert.equal(await page.getByTestId('pulse-projection').count(), 0, `${state} quota must not display a projected fill sentence`);
       } else {
         assert.equal(await track.locator('.qp-runway-marker').count(), state === 'imminent' ? 1 : 0);
         assert.equal(await track.locator('.qp-runway-risk').count(), state === 'imminent' ? 1 : 0);
@@ -1401,7 +1421,19 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
           const marker = await track.locator('.qp-runway-marker').evaluate(element => parseFloat((element as HTMLElement).style.left));
           assert.ok(Math.abs(marker - 30_000 / (reset - fixedNow) * 100) < 0.00001);
         }
-        if (state === 'flat') assert.equal(await page.locator('.qp-runway-labels small').textContent(), lang === 'th' ? 'ไม่ทราบ' : 'Unknown');
+        if (state === 'flat') {
+          assert.equal(await page.locator('.qp-runway-labels small').textContent(), lang === 'th' ? 'ไม่ทราบ' : 'Unknown');
+          assert.equal(await page.getByTestId('pulse-projection').count(), 0, 'Flat usage must not claim a fill date');
+        }
+        if (state === 'imminent') {
+          const expected = lang === 'th'
+            ? 'ด้วยอัตราปัจจุบัน คาดว่าโควตาจะเต็มในอีก <1m ก่อนรีเซ็ต'
+            : 'At the current pace, quota is projected to fill in <1m before reset.';
+          assert.equal(await page.getByTestId('pulse-projection').textContent(), expected);
+        }
+        if (state === 'after-reset') assert.equal(await page.getByTestId('pulse-projection').textContent(), lang === 'th'
+          ? 'ด้วยอัตราปัจจุบัน คาดว่าจะยังใช้โควตาไม่เต็มก่อนรีเซ็ต'
+          : 'At the current pace, the quota is projected to remain within its limit until reset.');
       }
     } finally { await page.unroute(pattern); }
   }

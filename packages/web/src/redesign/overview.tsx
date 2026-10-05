@@ -42,6 +42,7 @@ const quotaWindowLabel = (window: string, t: Translate) => window === '5h' ? t('
   : window === 'weekly' ? t('redesign.windowQuotaWeekly')
     : window === 'monthly' ? t('redesign.windowQuotaMonthly')
       : window === 'daily' ? t('redesign.windowQuotaDaily') : window;
+const quotaDuration = (at: number | null, now: number, unknown: string) => at === null ? unknown : at - now < 60_000 ? '<1m' : countdown(at, now);
 interface OverviewProps {
   records?: readonly UsageRecord[];
   graph?: RuntimeGraph;
@@ -108,7 +109,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
   const runway = runwayState(quota, now, staleAfterMs);
   const projectedAt = runway.status === 'ready' ? runway.projectedFullAt : null;
   const resetAt = runway.status === 'ready' ? quota!.resetAt : null;
-  const duration = (at: number | null) => at === null ? t('redesign.unknownValue') : at - now < 60_000 ? '<1m' : countdown(at, now);
+  const duration = (at: number | null) => quotaDuration(at, now, t('redesign.unknownValue'));
   const exact = (at: number | null) => at === null ? t('redesign.unavailable') : new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(at);
   const tokenTotal = new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(tokens);
   return <div className="qp-pulse" data-stale={!state || state.stale}>
@@ -294,6 +295,12 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
   const metricCostSeries = metricUsage ? metricTrendSeries(metricUsage.timeline, metricUsage.range, 'cost_usd') : [];
   const metricCacheSeries = metricUsage ? cacheShareTrendSeries(metricUsage.timeline, metricUsage.range) : [];
   const quotaReading = quota ? quotaState(quota, now, preview ? 300000 : 3600000) : null;
+  const runway = runwayState(quota, now, preview ? 300000 : 3600000);
+  const projectionMessage = runway.status !== 'ready' || runway.projectedFullAt === null
+    ? null
+    : runway.projectedBeforeReset
+      ? `${t('redesign.coreProjectionLead')} ${quotaDuration(runway.projectedFullAt, now, t('redesign.unknownValue'))} ${t('redesign.beforeReset')}${language === 'th' ? '' : '.'}`
+      : t('redesign.coreProjectionAfterReset');
   const quotaPercent = quotaReading && !quotaReading.stale && quotaReading.remaining !== null ? quota?.usedPercent ?? null : null;
   const knownCost = totals.reportedCost + totals.apiValue;
   const metricTrendLabel = `${t('redesign.metricTrend')} · ${period ?? t('redesign.allTime')}`;
@@ -325,7 +332,10 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
               <MetricRailItem metric="cost" icon={<Coins size={21}/>} label={t('redesign.knownCost')} value={<CostValue amount={knownCost} priced={prices.native + prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>} rawValue={knownCost} support={costSupport} trend={metricCostSeries} trendLabel={metricTrendLabel}/>
               <MetricRailItem metric="cache" icon={<Star size={21}/>} label={t('redesign.cacheShare')} value={cacheShare === null ? '—' : `${number(cacheShare)}%`} rawValue={cacheShare} support={cacheSupport} trend={metricCacheSeries} trendLabel={metricTrendLabel} scale="percent"/>
                 </div><PulseCore quota={quota} now={now} t={t} language={language} staleAfterMs={preview ? 300000 : 3600000} tokens={totals.tokens} period={period ?? t('redesign.allTime')}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.topModelsByTokens')}><h3>{t('redesign.topModelsByTokens')}</h3><div className="qp-top-model-list">{models.slice(0, 5).map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span className="qp-model-identity"><i data-model-vendor={model.key ? model.vendor : undefined} aria-hidden="true"><ModelMark node={model} size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</div></section></div>
-            <p className="qp-footnote">{t('redesign.scope')}</p>
+            <div className="qp-hero-notes">
+              {projectionMessage && <p className="qp-hero-projection" data-testid="pulse-projection">{projectionMessage}</p>}
+              <p className="qp-footnote">{t('redesign.scope')}</p>
+            </div>
           </section>
           <section className="qp-panel qp-quotas"><div className="qp-quotas-heading"><h2><CircleGauge size={18}/>{t('redesign.windows')}</h2><a className="qp-quota-manage" href="#providers">{t('redesign.manage')} <ArrowRight size={14}/></a></div>
             {quotas.length === 0 && <p className="qp-footnote">{t('redesign.unavailable')}</p>}
