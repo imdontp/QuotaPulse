@@ -12,7 +12,7 @@ import { QuotaChart } from './quota-chart';
 import { RuntimeData } from './runtime-data';
 import { ActivitySparkline } from './activity-sparkline';
 import { PulseAmbient } from './pulse-ambient';
-import { activityMinutePoints } from './activity-trend';
+import { activityMinutePoints, activityTokensPerMinute } from './activity-trend';
 
 type Translate = RedesignTranslate;
 function ModelMark({ node, size }: { node: Pick<UsageNode, 'key' | 'vendor'>; size: number }) {
@@ -62,6 +62,7 @@ interface OverviewProps {
   quotaHistoryError?: boolean;
   metricUsage?: Pick<UsageResponse, 'range' | 'timeline' | 'totals'> | null;
   recent?: readonly ActivityItem[];
+  activityTrend?: MinuteTrendResponse | null;
   period?: string;
   periodControl?: ReactNode;
   selectedQuotaId?: string | null;
@@ -96,7 +97,7 @@ function ActivityTrend({ item, language }: { item: ActivityItem; language: 'en' 
   return <div className="qp-activity-trend" data-testid="activity-minute-trend" title={title}>
     {item.trend && item.trend.coverage.includedRecords > 0 && points.length > 0
       ? <ActivitySparkline points={points} label={title} language={language}/>
-      : <small>{item.trendError ? (th ? 'ข้อมูลรายนาทีไม่พร้อมใช้งาน' : 'Minute data unavailable') : (th ? 'ไม่มีข้อมูล call รายนาทีในช่วงนี้' : 'No minute call data in this interval')}</small>}
+      : <small>{item.grain === 'session_aggregate' ? (th ? 'ยอดสะสม · ไม่มีเวลาเรียกใช้รายครั้ง' : 'Aggregate total · no per-call timeline') : item.trendError ? (th ? 'ข้อมูลรายนาทีไม่พร้อมใช้งาน' : 'Minute data unavailable') : (th ? 'ไม่มีข้อมูล call รายนาทีในช่วงนี้' : 'No minute call data in this interval')}</small>}
   </div>;
 }
 
@@ -258,7 +259,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, recent, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
+export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -282,6 +283,7 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
   const detail: UsageNode | null = selection ? runtimeNodes[selection.dimension].find(node => node.key === selection.key) ?? null : null;
   const number = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 }).format(value);
   const compactNumber = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
+  const totalActivityRate = activityTokensPerMinute(activityTrend);
   const money = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency }).format(currency === 'THB' ? value * rate : value);
   const coverage = graph?.totals;
   const prices = coverage ? { native: coverage.nativeCalls, api: coverage.computedCalls + coverage.estimatedCalls, total: coverage.nativeCalls + coverage.computedCalls + coverage.estimatedCalls + coverage.unknownCalls } : recordCostCoverage(records);
@@ -358,17 +360,24 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
           </section>
         </div>
         <section className="qp-panel qp-activity" data-testid="recent-activity">
-          <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.liveActivity')}<small className='qp-activity-chart-label'>{language === 'th' ? 'กราฟ: call tokens/นาที · ≤30 นาทีท้ายของช่วง' : 'Charts: call tokens/min · final ≤30m of period'}</small></h2>{!preview && <a href={historyHref}>{t('redesign.openHistory')} <ArrowUpRight size={14}/></a>}</div>
+          <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.liveActivity')}<small className='qp-activity-chart-label'>{t('redesign.activityWindow')}</small></h2>{!preview && <div className="qp-activity-actions"><span className="qp-activity-total" data-rate-state={totalActivityRate === null ? 'unavailable' : 'measured'}><small>{t('redesign.activityTotal')}</small><strong data-activity-total>{totalActivityRate === null ? '—' : compactNumber(totalActivityRate)} <small>{t('redesign.tokensPerMinute')}</small></strong></span><a href={historyHref}>{t('redesign.viewAllActivity')} <ArrowUpRight size={14}/></a></div>}</div>
           {activities.length === 0 ? <p className="qp-footnote">{t('redesign.noRecent')}</p> : <div className="qp-activity-list">{activities.map(item => {
             const route = `${item.provider ?? t('redesign.unknownValue')} · ${item.model ?? t('redesign.unknownValue')}`;
             const grain = t(item.grain === 'call' ? 'redesign.callRecord' : item.grain === 'session_aggregate' ? 'redesign.aggregateUpdate' : 'redesign.unknownValue');
             const time = new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit' }).format(item.timestamp);
-            const identity = `${item.harness} → ${route} · ${number(item.tokens)} ${t('redesign.tokens')} · ${grain} · ${time}`;
-            const content = <><div className="qp-activity-path"><span className="qp-activity-identity" title={item.harness}><HarnessIcon harness={item.harness} vendor={harnessVendors[item.harness]} label={item.harness}/><b>{item.harness}</b></span><ArrowRight size={12} aria-hidden="true"/><span className="qp-activity-route" title={route}><VendorIcon vendor={item.provider ?? 'unknown'}/><span>{item.model ?? t('redesign.unknownValue')}</span></span></div><div className="qp-activity-value"><strong>{number(item.tokens)}</strong><small>{t('redesign.tokens')}</small></div><div className="qp-activity-meta"><time dateTime={new Date(item.timestamp).toISOString()}>{time}</time><small>{grain}</small></div>{!preview && <ActivityTrend item={item} language={language}/>}</>;
-            return preview ? <div className="qp-activity-item" key={item.id} title={identity}>{content}</div>
-              : <a className="qp-activity-item" key={item.id} data-record-id={item.id} data-grain={item.grain} title={identity} href={item.sessionKey !== null ? `#history?range=all&session_id=${item.sessionKey}` : '#history?range=today'} aria-label={`${identity} · ${t('redesign.openHistory')}`}>{content}</a>;
+            const ratePerMinute = activityTokensPerMinute(item.trend);
+            const isAggregate = item.grain === 'session_aggregate';
+            const harnessName = runtimeNodeLabel('harness', item.harness, item.harness);
+            const shownValue = isAggregate ? compactNumber(item.tokens) : ratePerMinute === null ? '—' : compactNumber(ratePerMinute);
+            const shownUnit = isAggregate ? t('redesign.tokensObserved') : t('redesign.tokensPerMinute');
+            const identityMetric = isAggregate ? `${number(item.tokens)} ${t('redesign.tokensObserved')}` : ratePerMinute === null ? t('redesign.unavailable') : `${number(ratePerMinute)} ${t('redesign.tokensPerMinute')}`;
+            const identityTokens = isAggregate ? '' : ` · ${number(item.tokens)} ${t('redesign.tokens')} recorded`;
+            const identity = `${harnessName} → ${route} · ${identityMetric} · ${grain} · ${time}${identityTokens}`;
+            const rateState = isAggregate ? 'aggregate' : item.grain !== 'call' || ratePerMinute === null ? 'unavailable' : 'measured';
+            const content = <><div className="qp-activity-path"><span className="qp-activity-identity" title={harnessName}><HarnessIcon harness={item.harness} vendor={harnessVendors[item.harness]} label={harnessName}/><b>{harnessName}</b></span><ArrowRight size={12} aria-hidden="true"/><span className="qp-activity-route" title={route}><VendorIcon vendor={item.provider ?? 'unknown'}/><span>{item.model ?? t('redesign.unknownValue')}</span></span></div><div className="qp-activity-value" data-rate-state={rateState}><strong data-rate-value={ratePerMinute ?? undefined}>{shownValue}</strong><small>{shownUnit}</small></div><div className="qp-activity-meta qp-visually-hidden"><time dateTime={new Date(item.timestamp).toISOString()}>{time}</time><small>{grain}</small></div>{!preview && <ActivityTrend item={item} language={language}/>}</>;
+            return preview ? <div className="qp-activity-item" key={item.id} data-harness={item.harness.trim().toLowerCase()} title={identity}>{content}</div>
+              : <a className="qp-activity-item" key={item.id} data-harness={item.harness.trim().toLowerCase()} data-record-id={item.id} data-grain={item.grain} title={identity} href={item.sessionKey !== null ? `#history?range=all&session_id=${item.sessionKey}` : '#history?range=today'} aria-label={`${identity} · ${t('redesign.openHistory')}`}>{content}</a>;
           })}</div>}
-          <p className="qp-footnote">{t('redesign.activityCaveat')}</p>
         </section>
     <dialog ref={dialog} className="qp-dialog" aria-labelledby="qp-detail-title" onClose={event => { if (!event.currentTarget.open) setSelection(null); }}>
       <div className="qp-section-heading"><h2 id="qp-detail-title">{selection?.key === '' ? t('redesign.emptyIdentity') : selection?.key ?? t(selection?.dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X/></button></div>

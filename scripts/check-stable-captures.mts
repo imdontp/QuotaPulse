@@ -13,6 +13,8 @@ import type { Overview, MinuteTrendResponse, ProviderModelMinuteResponse, Projec
 import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from '../packages/web/src/redesign/metric-series.js';
 import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
+import { usageEventParams } from '../packages/web/src/lib/usage-events.js';
+import { activityTokensPerMinute, activityTrendScope, latestActivityByHarness } from '../packages/web/src/redesign/activity-trend.js';
 import { checkLiveMinuteRefresh } from './check-live-minute-refresh.mjs';
 import { checkLiveTokenFlow } from './check-live-token-flow.mjs';
 import { checkSectionMarks } from './check-section-marks.mjs';
@@ -120,7 +122,7 @@ const modelMarkChecks: Array<{ lang: string; theme: string; vendors: string[]; u
 const overviewPeriodChecks: Array<{ lang: string; theme: string; tokensByRange: Record<string, number>; selectedQuotaPreserved: boolean; customSourcePreserved: boolean; focusRestored: boolean }> = [];
 const overviewInsightChecks: Array<{ lang: string; theme: string; cards: number; cacheShare: number | null; pricedCalls: number; totalCalls: number; states: string[] }> = [];
 const quotaGroupChecks: Array<{ lang: string; theme: string; owners: number; windows: number; sameNameSeparate: boolean; keyboardScrolled: boolean; historyIdentity: boolean }> = [];
-const recentActivityChecks: Array<{ lang: string; theme: string; records: number; keyboardHistory: boolean; unknownGrain: boolean; largeTokens: boolean }> = [];
+const recentActivityChecks: Array<{ lang: string; theme: string; records: number; keyboardHistory: boolean; unknownGrain: boolean; largeTokens: boolean; perHarnessLatestQueries: boolean; futureRangeEmpty: boolean }> = [];
 const iconViewports = new Map<string, unknown>();
 const overviewVectors = new Map<string, unknown>();
 const activityBitmapChecks: Array<{ lang: string; theme: string; recordId: number; points: number; width: number; height: number; paintedPixels: number; sha256: string }> = [];
@@ -1410,31 +1412,55 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
 async function checkRecentActivity(page: Page, lang: string, theme: string, pending: Set<Request>) {
   const home = 'http://127.0.0.1:7804/?recent-activity=actual#overview';
   const response = page.waitForResponse(response => new URL(response.url()).pathname === '/api/usage-events' && response.status() === 200);
+  const activityRequests: URL[] = [];
+  const collectActivityRequest = (request: Request) => {
+    const url = new URL(request.url());
+    if (url.pathname === '/api/usage-events') activityRequests.push(url);
+  };
+  page.on('request', collectActivityRequest);
   await page.goto(home, { waitUntil: 'domcontentloaded' });
   const url = new URL((await response).url());
-  const data = (await daemon.inject({ method: 'GET', url: url.pathname + url.search, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<UsageEventsResponse>();
+  const firstHarnessData = (await daemon.inject({ method: 'GET', url: url.pathname + url.search, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<UsageEventsResponse>();
+  const globalScope = { ...firstHarnessData.scope };
+  delete globalScope.harness;
+  const data = (await daemon.inject({ method: 'GET', url: `/api/usage-events?${usageEventParams(globalScope)}&limit=500&offset=0`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<UsageEventsResponse>();
   await settled(page, pending);
+  page.off('request', collectActivityRequest);
   const cards = page.locator('.qp-activity-item');
-  assert.equal(await cards.count(), data.rows.length);
+  const expectedRows = latestActivityByHarness(data.rows);
+  assert.equal(expectedRows.length, 4, 'Reference Overview fixture must expose all four recorded harnesses');
+  assert.equal(await cards.count(), expectedRows.length);
+  const perHarnessRequests = activityRequests.filter(request => request.searchParams.get('limit') === '1' && request.searchParams.has('harness'));
+  const perHarnessLatestQueries = new Set(perHarnessRequests.map(request => request.searchParams.get('harness'))).size >= 4;
+  assert.ok(perHarnessLatestQueries,
+    'Recent activity must query the newest row per harness so a high-volume harness cannot starve others');
+  assert.equal(new Set(expectedRows.map(record => record.harness.toLowerCase())).size, expectedRows.length, 'Activity cards must use distinct harnesses');
   const locale = lang === 'th' ? 'th-TH' : 'en-US';
   const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
-  for (const [index, record] of data.rows.entries()) {
+  const compact = new Intl.NumberFormat(locale, { notation: 'compact', maximumFractionDigits: 1 });
+  for (const [index, record] of expectedRows.entries()) {
     const card = cards.nth(index);
     assert.equal(await card.getAttribute('data-record-id'), String(record.event_id));
     assert.equal(await card.getAttribute('data-grain'), record.grain);
-    assert.equal(await card.locator('.qp-activity-value strong').textContent(), number.format(record.total_tokens));
     assert.equal(await card.locator('.qp-activity-meta time').getAttribute('datetime'), new Date(record.timestamp_ms).toISOString());
-    assert.equal(await card.locator('.qp-activity-identity b').textContent(), record.harness);
-    assert.ok((await card.getAttribute('aria-label'))?.includes(record.model ?? (lang === 'th' ? 'ไม่ทราบ' : 'Unknown')));
+    const expectedHarness = ({ codex: 'Codex CLI', hermes: 'Hermes Agent', 'claude-code': 'Claude Code', opencode: 'OpenCode' } as Record<string, string>)[record.harness] ?? record.harness;
+    assert.equal(await card.locator('.qp-activity-identity b').textContent(), expectedHarness);
     assert.equal(await card.getAttribute('href'), record.session_key === null ? '#history?range=today' : `#history?range=all&session_id=${record.session_key}`);
-    const clock = (await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<Overview>().now;
-    const to = Math.min(data.scope.to, clock + 1), from = Math.max(data.scope.from, to - 30 * 60_000);
-    const params = new URLSearchParams({ bucket: 'minute', group_by: 'none', from: String(from), to: String(to), source_id: String(record.source_id), harness: record.harness, model: record.model!, provider: record.provider!, grain: 'call' });
-    const minute = (await daemon.inject({ method: 'GET', url: `/api/trend?${params}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<MinuteTrendResponse>();
+    const trendScope = activityTrendScope(globalScope, record, data.now);
+    assert.equal(trendScope !== null, record.grain === 'call' && record.model !== null && record.provider !== null);
+    const minute = trendScope ? (await daemon.inject({ method: 'GET', url: `/api/trend?bucket=minute&group_by=none&${usageEventParams(trendScope)}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<MinuteTrendResponse>() : null;
+    const rate = activityTokensPerMinute(minute);
+    const rateValue = card.locator('.qp-activity-value strong');
+    assert.equal(await rateValue.getAttribute('data-rate-value'), rate === null ? null : String(rate));
+    const expectedState = record.grain === 'session_aggregate' ? 'aggregate' : rate === null ? 'unavailable' : 'measured';
+    const expectedValue = record.grain === 'session_aggregate' ? compact.format(record.total_tokens) : rate === null ? '—' : compact.format(rate);
+    assert.equal(await card.locator('.qp-activity-value').getAttribute('data-rate-state'), expectedState);
+    assert.equal(await rateValue.textContent(), expectedValue);
+    assert.equal(await card.locator('.qp-activity-value small').textContent(), record.grain === 'session_aggregate' ? (lang === 'th' ? 'โทเค็นที่ตรวจพบ' : 'tokens observed') : (lang === 'th' ? 'โทเค็น/นาที' : 'tokens/min'));
     const points = await card.locator('[data-at][data-value]').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')) })));
-    if (minute.coverage.includedRecords) {
-      const firstBucket = Math.floor(from / 60_000) * 60_000;
-      const expected = Array.from({ length: Math.ceil(to / 60_000) - firstBucket / 60_000 }, (_, offset) => {
+    if (minute?.coverage.includedRecords) {
+      const firstBucket = Math.floor(minute.from / 60_000) * 60_000;
+      const expected = Array.from({ length: Math.ceil(minute.to / 60_000) - firstBucket / 60_000 }, (_, offset) => {
         const at = firstBucket + offset * 60_000;
         return { at, value: minute.rows.filter(row => row.bucket_ts === at).reduce((sum, row) => sum + row.total_tokens, 0) };
       });
@@ -1466,7 +1492,11 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
       activityBitmapChecks.push({ lang, theme, recordId: record.event_id, points: expected.length, width: bitmap.width, height: bitmap.height, paintedPixels: bitmap.paintedPixels, sha256: bitmap.sha256 });
     } else assert.equal(points.length, 0);
   }
-  await checkActivityRenderer(page, lang, theme, pending, data.rows[0].timestamp_ms);
+  const allTrend = (await daemon.inject({ method: 'GET', url: `/api/trend?bucket=minute&group_by=none&${new URLSearchParams({ from: String(globalScope.from), to: String(globalScope.to), ...(globalScope.sourceId === undefined ? {} : { source_id: String(globalScope.sourceId) }), grain: 'call' })}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<MinuteTrendResponse>();
+  const totalRate = activityTokensPerMinute(allTrend);
+  assert.equal(await page.locator('.qp-activity-total').getAttribute('data-rate-state'), totalRate === null ? 'unavailable' : 'measured');
+  assert.equal(await page.locator('[data-activity-total]').textContent(), `${totalRate === null ? '—' : compact.format(totalRate)} ${lang === 'th' ? 'โทเค็น/นาที' : 'tokens/min'}`);
+  await checkActivityRenderer(page, lang, theme, pending, expectedRows[0].timestamp_ms);
   const first = cards.first(), href = await first.getAttribute('href');
   await first.focus(); await page.keyboard.press('Enter'); await page.waitForURL(url => url.hash === href);
   await page.getByTestId('usage-history').waitFor({ timeout: 15000 });
@@ -1475,9 +1505,7 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
   assert.equal(await page.locator('.qp-history-records table').isVisible(), true, 'Keyboard History destination did not load its actual records');
   const payload = structuredClone(data);
   payload.rows = payload.rows.slice(0, 1).map(record => ({ ...record, total_tokens: 123456789012345, grain: 'unknown', session_key: null, model: null, provider: null, harness: 'Very long recorded harness identity for overflow checking' }));
-  const normalized = (query: URLSearchParams) => { const copy = new URLSearchParams(query); copy.sort(); return copy.toString(); };
-  const overviewQuery = normalized(url.searchParams);
-  const pattern = (candidate: URL) => candidate.origin === url.origin && candidate.pathname === url.pathname && normalized(candidate.searchParams) === overviewQuery;
+  const pattern = (candidate: URL) => candidate.origin === url.origin && candidate.pathname === '/api/usage-events';
   let diagnosticReads = 0;
   const handler = async (route: Route) => {
     if (route.request().method() !== 'GET') return route.fallback();
@@ -1489,7 +1517,9 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
     await page.goto('http://127.0.0.1:7804/?recent-activity=unknown#overview', { waitUntil: 'domcontentloaded' }); await settled(page, pending);
     assert.ok(diagnosticReads > 0, 'Scoped Overview diagnostic GET was not reached');
     assert.equal(await cards.count(), 1);
-    assert.equal(await cards.locator('.qp-activity-value strong').textContent(), number.format(123456789012345));
+    assert.equal(await cards.locator('.qp-activity-value strong').textContent(), '—');
+    assert.equal(await cards.locator('.qp-activity-value').getAttribute('data-rate-state'), 'unavailable');
+    assert.ok((await cards.getAttribute('title'))?.includes(number.format(123456789012345)));
     assert.equal(await cards.locator('.qp-activity-meta small').textContent(), lang === 'th' ? 'ไม่ทราบ' : 'Unknown');
     assert.equal(await cards.getAttribute('href'), '#history?range=today');
     assert.equal(await cards.locator('[data-at][data-value]').count(), 0);
@@ -1502,8 +1532,24 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
       });
       assert.equal(containment, true);
     }
-    recentActivityChecks.push({ lang, theme, records: data.rows.length, keyboardHistory: true, unknownGrain: true, largeTokens: true });
   } finally { await page.unroute(pattern, handler); }
+  const futureFrom = data.now + 60_000, futureTo = futureFrom + 60_000;
+  const futureRequests: URL[] = [];
+  const collectFutureActivity = (request: Request) => {
+    const candidate = new URL(request.url());
+    if (candidate.pathname === '/api/usage-events') futureRequests.push(candidate);
+  };
+  page.on('request', collectFutureActivity);
+  await page.goto(`http://127.0.0.1:7804/#overview?range=custom&from=${futureFrom}&to=${futureTo}`, { waitUntil: 'domcontentloaded' });
+  await page.getByTestId('production-overview').waitFor({ timeout: 15000 });
+  await settled(page, pending);
+  page.off('request', collectFutureActivity);
+  assert.equal(futureRequests.length, 0, 'A future-only custom range must skip the empty activity query');
+  assert.equal(await page.locator('.qp-activity-item').count(), 0);
+  assert.equal(await page.locator('.qp-activity-total').getAttribute('data-rate-state'), 'unavailable');
+  assert.equal(await page.locator('p[role="status"][class*="bg-warn/10"]').count(), 0, 'A future-only Overview should load without a stale-snapshot error');
+  recentActivityChecks.push({ lang, theme, records: expectedRows.length, keyboardHistory: true, unknownGrain: true, largeTokens: true,
+    perHarnessLatestQueries, futureRangeEmpty: futureRequests.length === 0 });
   await page.setViewportSize({ width: 1586, height: 992 });
   await page.goto(home, { waitUntil: 'domcontentloaded' }); await settled(page, pending);
 }
@@ -1719,7 +1765,10 @@ async function checkOverviewPeriod(page: Page, lang: string, theme: string, pend
     const query = new URL(response.url()).searchParams;
     assert.equal(query.get('from'), String(starts[range])); assert.equal(query.get('to'), String(fixedNow + 1));
     const usageQuery = new URL((await usageResponse).url()).searchParams;
-    assert.equal(usageQuery.get('from'), query.get('from')); assert.equal(usageQuery.get('to'), query.get('to'));
+    const activityTo = Math.min(Number(query.get('to')), fixedNow + 1);
+    const activityFrom = Math.max(Number(query.get('from')), activityTo - 30 * 60_000);
+    assert.equal(usageQuery.get('from'), String(activityFrom)); assert.equal(usageQuery.get('to'), String(activityTo));
+    assert.equal(usageQuery.get('grain'), null, 'Live Activity keeps the latest observed record grain for each harness');
     const metricQuery = new URL((await metricResponse).url()).searchParams;
     assert.equal(metricQuery.get('range'), range);
     assert.equal(metricQuery.get('from'), query.get('from')); assert.equal(metricQuery.get('to'), query.get('to'));
@@ -1733,7 +1782,7 @@ async function checkOverviewPeriod(page: Page, lang: string, theme: string, pend
     assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('range'), range);
     assert.equal(await page.locator('.qp-quota[aria-pressed=true]').getAttribute('data-owner'), selectedOwner);
     assert.equal(await page.locator('.qp-overview-period select').evaluate(element => element === document.activeElement), true);
-    const link = await page.locator('.qp-activity .qp-section-heading>a').getAttribute('href');
+    const link = await page.locator('.qp-activity-actions>a').getAttribute('href');
     assert.equal(new URLSearchParams(link!.split('?')[1]).get('range'), range);
     tokensByRange[range] = expected.totals.tokens;
   }

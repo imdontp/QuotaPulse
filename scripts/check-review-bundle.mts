@@ -32,7 +32,9 @@ try {
   assert.equal(response.status,200);
   const health=await response.json() as any;
   assert.deepEqual(health.scheduler.sources,[]);
-  assert.ok(existsSync(resolve(data,'electron')));
+  const profile=resolve(data,'electron'), profileDeadline=Date.now()+10000;
+  while(!existsSync(profile)&&Date.now()<profileDeadline) await delay(100);
+  assert.ok(existsSync(profile),'Extracted tray did not create its isolated Electron profile');
   const processes=JSON.parse(readFileSync(resolve(data,'review-processes.json'),'utf8'));
   assert.ok(processes.daemon.pid>0&&processes.tray.pid>0);
   checks.push('extracted bundle outside repository dependencies starts its real daemon/tray with readers off and isolated profile');

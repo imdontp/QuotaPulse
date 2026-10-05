@@ -8,7 +8,7 @@ import { Overview } from './overview';
 import type { ActivityItem } from './overview';
 import { defaultQuota, type QuotaWindow, type RuntimeGraph } from './model';
 import { readScope, selectedScope, writeScope, type ScopeRange } from './scope';
-import { activityTrendScope } from './activity-trend';
+import { activityTrendScope, latestActivityByHarness, recentActivityCallScope, recentActivityScope } from './activity-trend';
 import { usageEventParams } from '@/lib/usage-events';
 
 function readRoute() {
@@ -27,7 +27,7 @@ export function ProductionOverview() {
   const routeKey = JSON.stringify(route);
   const currentKey = useRef(routeKey);
   currentKey.current = routeKey;
-  const [snapshot, setSnapshot] = useState<{ key: string; overview: OverviewData; graph: RuntimeGraph; recent: ActivityItem[]; metricUsage: UsageResponse | null } | null>(null);
+  const [snapshot, setSnapshot] = useState<{ key: string; overview: OverviewData; graph: RuntimeGraph; recent: ActivityItem[]; recentTrend: Awaited<ReturnType<typeof api.minuteTrend>> | null; metricUsage: UsageResponse | null } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedQuotaId, setSelectedQuotaId] = useState<string | null>(null);
   const [history, setHistory] = useState<QuotaHistoryResponse | null>(null);
@@ -42,16 +42,27 @@ export function ProductionOverview() {
     try {
       const overview = await api.overview();
       const scope = selectedScope(route, overview.now);
+      const activityScope = recentActivityScope(scope, overview.now);
+      const activityCallScope = recentActivityCallScope(scope, overview.now);
       const usageRange: UsageRangeKey = route.range === 'last30' ? 'custom' : route.range;
-      const [graph, usage, metricUsage] = await Promise.all([
+      const [graph, recentTrend, metricUsage] = await Promise.all([
         api.runtimeMap(scope),
-        api.usageEvents(scope, { limit: 4, offset: 0 }),
+        activityCallScope ? api.minuteTrend(activityCallScope).catch(() => null) : Promise.resolve(null),
         api.usage({ range: usageRange, from: scope.from, to: scope.to, bucket: 'auto', sourceId: route.sourceId }).catch(() => null),
       ]);
-      const recent: ActivityItem[] = usage.rows.map(row => ({ id: row.event_id, timestamp: row.timestamp_ms, harness: row.harness, provider: row.provider, model: row.model, tokens: row.total_tokens, grain: row.grain, sessionKey: row.session_key, sourceName: row.source_name }));
+      // Fetch one newest event per observed harness. A global first page can be filled
+      // by a single busy harness and hide quieter harnesses before client-side dedupe.
+      const harnesses = [...new Set(graph.nodes.harness.map(node => node.key)
+        .filter((harness): harness is string => harness !== null && harness.trim().length > 0))];
+      const activityRows = activityScope ? (await Promise.all(harnesses.map(async harness => {
+        try { return (await api.usageEvents({ ...activityScope, harness }, { limit: 1, offset: 0 })).rows[0] ?? null; }
+        catch { return null; }
+      }))).filter((row): row is NonNullable<typeof row> => row !== null) : [];
+      const latestByHarness = latestActivityByHarness(activityRows);
+      const recent: ActivityItem[] = latestByHarness.map(row => ({ id: row.event_id, timestamp: row.timestamp_ms, harness: row.harness, provider: row.provider, model: row.model, tokens: row.total_tokens, grain: row.grain, sessionKey: row.session_key, sourceName: row.source_name }));
       const trends = new Map<string, ReturnType<typeof api.minuteTrend>>();
       await Promise.all(recent.map(async (item, index) => {
-        const trendScope = activityTrendScope(scope, usage.rows[index], overview.now);
+        const trendScope = activityTrendScope(activityCallScope, latestByHarness[index], overview.now);
         if (!trendScope) return;
         const trendKey = usageEventParams(trendScope).toString();
         let request = trends.get(trendKey);
@@ -59,7 +70,7 @@ export function ProductionOverview() {
         // A chart failure must not discard the real activity records or quota snapshot.
         try { item.trend = await request; } catch { item.trendError = true; }
       }));
-      if (currentKey.current === key) { setSnapshot({ key, overview, graph, recent, metricUsage }); setError(null); }
+      if (currentKey.current === key) { setSnapshot({ key, overview, graph, recent, recentTrend, metricUsage }); setError(null); }
     } catch (cause) {
       if (currentKey.current === key) setError(String(cause));
       throw cause;
@@ -161,6 +172,6 @@ export function ProductionOverview() {
   const mapGraph = mapGraphSnapshot?.key === mapGraphKey ? mapGraphSnapshot.graph : graph;
   return <>
     {error && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
-    <Overview graph={graph} runtimeGraph={mapGraph} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} metricUsage={metricUsage} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
+    <Overview graph={graph} runtimeGraph={mapGraph} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
   </>;
 }
