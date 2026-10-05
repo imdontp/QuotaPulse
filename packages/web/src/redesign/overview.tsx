@@ -20,6 +20,21 @@ function ModelMark({ node, size }: { node: Pick<UsageNode, 'key' | 'vendor'>; si
     ? <span className="qp-model-mark" style={{ fontSize: size }}><VendorIcon vendor={node.vendor}/></span>
     : <Box size={size}/>;
 }
+const runtimeNodeNames = {
+  harness: { hermes: 'Hermes Agent', codex: 'Codex CLI', 'claude-code': 'Claude Code', opencode: 'OpenCode' },
+  provider: { deepseek: 'DeepSeek', openai: 'OpenAI', anthropic: 'Anthropic', openrouter: 'OpenRouter' },
+} as const;
+const runtimeHeadingKeys = {
+  project: 'redesign.runtimeProjectHeading',
+  harness: 'redesign.runtimeHarnessHeading',
+  provider: 'redesign.runtimeProviderHeading',
+  model: 'redesign.runtimeModelHeading',
+} as const;
+function runtimeNodeLabel(dimension: Dimension, key: string | null, fallback: string) {
+  if (!key || dimension === 'project' || dimension === 'model') return fallback;
+  const normalized = key.trim().toLowerCase();
+  return (runtimeNodeNames[dimension as 'harness' | 'provider'] as Record<string, string>)[normalized] ?? key;
+}
 const riskLabel = (state: ReturnType<typeof quotaState> | null) =>
   !state ? 'redesign.unavailable' : state.stale ? 'redesign.stale' : state.risk === 'unknown' ? 'redesign.unavailable' : `redesign.${state.risk}` as const;
 const accountStateMessage = (state: AccountState | undefined) => state ? ({ active: 'redesign.providerActive', stale: 'redesign.providerStale', inactive: 'redesign.providerInactive', unavailable: 'redesign.providerUnavailable', waiting: 'redesign.providerWaiting' } as const)[state] : 'redesign.providerFreshUnknown';
@@ -137,12 +152,21 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, on
   const [geometry, setGeometry] = useState<{ width: number; height: number; paths: Array<{ edge: RuntimeGraph['edges'][number]; x: number; y: number; endX: number; endY: number }> }>({ width: 1, height: 1, paths: [] });
   const modelTokens = nodes.model.reduce((total, node) => total + node.tokens, 0);
   const locale = language === 'th' ? 'th-TH' : 'en-US';
-  const compact = new Intl.NumberFormat(locale, { notation: 'compact' });
+  const number = new Intl.NumberFormat(locale);
   const percent = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
   const columns = dimensions.map(dimension => nodes[dimension].slice(0, 8));
   const maxRows = Math.max(1, ...columns.map(column => column.length));
-  const height = maxRows * 40;
+  const height = maxRows * 43;
   const singleProject = columns[0].length === 1 && maxRows >= 3;
+  const flowPaths = dimensions.slice(0, 3).flatMap((_, column) => geometry.paths
+    .filter(path => path.edge.column === column)
+    .sort((a, b) => b.edge.tokens - a.edge.tokens || JSON.stringify([a.edge.from, a.edge.to]).localeCompare(JSON.stringify([b.edge.from, b.edge.to])))
+    .slice(0, 2)
+    .map(({ edge, x, y, endX, endY }) => {
+      const bend = (endX - x) * .55, t = .58, u = 1 - t;
+      return { edge, x: u ** 3 * x + 3 * u ** 2 * t * (x + bend) + 3 * u * t ** 2 * (endX - bend) + t ** 3 * endX,
+        y: u ** 3 * y + 3 * u ** 2 * t * y + 3 * u * t ** 2 * endY + t ** 3 * endY };
+    }));
   useLayoutEffect(() => {
     const element = map.current;
     if (!element) { setGeometry(previous => previous.paths.length ? { width: 1, height: 1, paths: [] } : previous); return; }
@@ -166,24 +190,26 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, on
     return () => observer.disconnect();
   }, [nodes, edges, recordCount, height, singleProject]);
   return <section className="qp-panel qp-runtime" id="runtime">
-    <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.liveRuntimeMap')}</h2><p>{t('redesign.connections')}</p></div><div className="qp-runtime-controls">{onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>}<span className="qp-chip">{t('redesign.records')} · {recordCount}</span></div></div>
-    {recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} language={language} t={t} onInspect={onInspect}/>}
+    <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.liveRuntimeMap')}</h2><p>{t('redesign.connections')}</p>{recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} language={language} t={t} onInspect={onInspect}/>}</div><div className="qp-runtime-controls">{onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>}<span className="qp-chip">{t('redesign.records')} · {recordCount}</span></div></div>
+
     {recordCount === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
       <div ref={map} className="qp-map" data-single-project={singleProject} style={{ height: height + 24 }}>
         <svg className="qp-map-edges" viewBox={`0 0 ${geometry.width} ${geometry.height}`} preserveAspectRatio="none" aria-hidden="true">
           <defs><marker id={arrowId} viewBox="0 0 8 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth"><polygon points="0,0 8,4 0,8 2,4" fill="context-stroke"/></marker></defs>
           {geometry.paths.map(({ edge, x, y, endX, endY }) => {
             const bend = (endX - x) * .55;
-            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrowId})`}/>;
+            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth="1.6" markerEnd={`url(#${arrowId})`}/>;
           })}
+          {flowPaths.map(({ edge, x, y }) => <circle className="qp-map-flow-dot" data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} key={JSON.stringify([edge.column, edge.from, edge.to])} cx={x} cy={y} r="2.8"/>)}
         </svg>
         {dimensions.map((dimension, index) => <div className="qp-map-column" data-dimension={dimension} key={dimension}>
-          <h3>{t(`redesign.${dimension}`)}</h3>
+          <h3>{singleProject && dimension === 'project' ? <span className="qp-visually-hidden">{t(runtimeHeadingKeys.project)}</span> : t(runtimeHeadingKeys[dimension])}</h3>
           {columns[index].map(node => {
-            const label = node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue');
+            const label = runtimeNodeLabel(dimension, node.key, node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue'));
             const share = dimension === 'model' && modelTokens > 0 ? node.tokens / modelTokens * 100 : null;
-            const exact = `${label} · ${new Intl.NumberFormat(locale).format(node.tokens)} ${t('redesign.tokens')}${dimension === 'project' && singleProject ? ` · ${new Intl.NumberFormat(locale).format(node.sessions)} ${t('redesign.sessions')}` : ''}`;
-            return <button className="qp-map-node" style={dimension === 'project' && singleProject ? { height: 80, marginTop: (Math.min(4, maxRows) * 40 - 80) / 2 } : undefined} data-dimension={dimension} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" data-model-vendor={dimension === 'model' && node.key ? node.vendor : undefined} aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <ModelMark node={node} size={15}/>}</span><span className="qp-node-label">{dimension === 'project' && singleProject ? <><small>{language === 'th' ? 'โปรเจกต์' : 'Project'}</small><span>{label}</span><small>{new Intl.NumberFormat(locale).format(node.sessions)} {t('redesign.sessions')}</small></> : label}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : dimension === 'project' && singleProject ? null : <small>{compact.format(node.tokens)}</small>}</button>;
+            const exact = `${label} · ${number.format(node.tokens)} ${t('redesign.tokens')} · ${number.format(node.sessions)} ${t('redesign.sessions')}`;
+            const nodeStyle = dimension === 'project' && singleProject ? { height: 80, marginTop: Math.max(0, (Math.min(4, maxRows) * 43 - 80) / 2 - 8) } : undefined;
+            return <button className="qp-map-node" style={nodeStyle} data-dimension={dimension} data-runtime-name={node.key?.trim().toLowerCase() ?? undefined} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-sessions={node.sessions} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" data-model-vendor={dimension === 'model' && node.key ? node.vendor : undefined} aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <ModelMark node={node} size={15}/>}</span><span className="qp-node-label">{dimension === 'project' && singleProject && <small className="qp-node-kicker">{language === 'th' ? 'โปรเจกต์' : 'Project'}</small>}<span className="qp-node-label-main">{label}</span>{dimension !== 'model' && <small className="qp-node-meta" data-testid="runtime-node-sessions">{number.format(node.sessions)} {t('redesign.runtimeNodeSessions')}</small>}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : null}</button>;
           })}
         </div>)}
       </div>

@@ -1101,6 +1101,20 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
       assert.ok(Math.abs(width - share) < 0.0001);
       assert.ok((await card.getAttribute('aria-label'))?.includes(`${shareFormat.format(share)}%`));
     }
+    const sessionNumber = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US');
+    for (const dimension of ['project', 'harness', 'provider'] as const) {
+      const visible = graph.nodes[dimension].slice(0, 8), cards = page.locator(`.qp-map-node[data-dimension=${dimension}]`);
+      assert.equal(await cards.count(), visible.length);
+      for (const [index, node] of visible.entries()) {
+        const card = cards.nth(index);
+        assert.equal(await card.getAttribute('data-sessions'), String(node.sessions));
+        assert.equal(await card.locator('[data-testid=runtime-node-sessions]').textContent(), `${sessionNumber.format(node.sessions)} ${lang === 'th' ? 'เซสชัน' : 'sessions'}`);
+      }
+    }
+    assert.equal(await page.locator('.qp-map-node[data-dimension=harness][data-runtime-name=codex] .qp-node-label-main').textContent(), 'Codex CLI');
+    assert.equal(await page.locator('.qp-map-node[data-dimension=provider][data-runtime-name=runtime-provider] .qp-node-label-main').textContent(), 'runtime-provider');
+    assert.deepEqual(await page.locator('.qp-map-column h3').evaluateAll(elements => elements.map(element => element.textContent?.trim())), [lang === 'th' ? 'โปรเจกต์' : 'Project', lang === 'th' ? 'ฮาร์เนส' : 'Harness', lang === 'th' ? 'ผู้ให้บริการ' : 'Provider', lang === 'th' ? 'โมเดล' : 'Model']);
+    if (graph.nodes.project.length === 1) assert.deepEqual(await page.locator('.qp-map-column[data-dimension=project] h3 span').evaluate(element => { const rect = element.getBoundingClientRect(); return { width: rect.width, height: rect.height }; }), { width: 1, height: 1 });
     const paths = page.locator('.qp-map-edges>path');
     assert.ok(await paths.count() > 0);
     for (const path of await paths.all()) {
@@ -1108,6 +1122,14 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
       assert.ok(marker?.startsWith('url(#'));
       assert.equal(await page.locator('.qp-map-edges marker').getAttribute('orient'), 'auto');
     }
+    const visibleKeys = dimensions.map(dimension => new Set(graph.nodes[dimension].slice(0, 8).map(node => JSON.stringify(node.key))));
+    const expectedFlowEdges = dimensions.slice(0, 3).flatMap((_, column) => graph.edges
+      .filter(edge => edge.column === column && visibleKeys[column].has(JSON.stringify(edge.from)) && visibleKeys[column + 1].has(JSON.stringify(edge.to)))
+      .sort((a, b) => b.tokens - a.tokens || JSON.stringify([a.from, a.to]).localeCompare(JSON.stringify([b.from, b.to])))
+      .slice(0, 2)
+      .map(edge => ({ column: String(edge.column), from: JSON.stringify(edge.from), to: JSON.stringify(edge.to), tokens: String(edge.tokens) })));
+    const flowEdges = await page.locator('.qp-map-flow-dot').evaluateAll(elements => elements.map(element => ({ column: element.getAttribute('data-column'), from: element.getAttribute('data-from'), to: element.getAttribute('data-to'), tokens: element.getAttribute('data-tokens') })));
+    assert.deepEqual(flowEdges, expectedFlowEdges);
     const disclosure = page.locator('.qp-runtime-data'); const summary = disclosure.locator('summary');
     assert.equal(await disclosure.locator('table').count(), 0);
     await summary.focus(); await page.keyboard.press('Enter');
