@@ -25,6 +25,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.cost': "ค่าใช้จ่าย",
   'redesign.history': "ประวัติ",
   'redesign.alerts': "การแจ้งเตือน",
+  'redesign.currentQuotaRisks': 'ความเสี่ยงโควตาปัจจุบัน',
   'redesign.settings': "ตั้งค่า",
   'redesign.daemonConnection': 'การเชื่อมต่อ daemon',
   'redesign.systemsOperational': 'ระบบทั้งหมดทำงานปกติ',

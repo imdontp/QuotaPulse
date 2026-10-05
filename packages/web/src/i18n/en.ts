@@ -19,6 +19,7 @@ export const en = {
   'redesign.cost': "Cost",
   'redesign.history': "History",
   'redesign.alerts': "Alerts",
+  'redesign.currentQuotaRisks': 'Current quota risks',
   'redesign.settings': "Settings",
   'redesign.daemonConnection': 'Daemon connection',
   'redesign.systemsOperational': 'All Systems Operational',

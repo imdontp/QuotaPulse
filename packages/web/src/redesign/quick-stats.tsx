@@ -4,6 +4,7 @@ import { api, type RuntimeSummary } from '@/api';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useT } from '@/i18n';
 import type { RedesignTranslate } from './shell';
+import { activeQuotaRiskCount } from './alert-risks';
 
 export function DaemonConnection() {
   const t = useT();
@@ -15,13 +16,19 @@ export function DaemonConnection() {
   return <span className="qp-daemon-status"><span className="qp-daemon-badge" data-state={state} role="status" aria-label={description} title={description}><i aria-hidden="true"/>{stateLabel}</span><span className="qp-daemon-caption" aria-hidden="true">{status}</span></span>;
 }
 
-export function QuickStats({ t, language }: { t: RedesignTranslate; language: 'en' | 'th' }) {
+export function QuickStats({ t, language, onAlertCountChange }: { t: RedesignTranslate; language: 'en' | 'th'; onAlertCountChange: (count: number | null) => void }) {
   const [data, setData] = useState<RuntimeSummary | null>(null);
   const [stale, setStale] = useState(false);
   useLiveRefresh(async () => {
-    try { setData(await api.runtimeSummary()); setStale(false); }
-    catch (cause) { setStale(true); throw cause; }
-  }, []);
+    const [summaryResult, overviewResult] = await Promise.allSettled([api.runtimeSummary(), api.overview()]);
+    onAlertCountChange(overviewResult.status === 'fulfilled' ? activeQuotaRiskCount(overviewResult.value) : null);
+    if (summaryResult.status === 'rejected') {
+      setStale(true);
+      throw summaryResult.reason;
+    }
+    setData(summaryResult.value);
+    setStale(false);
+  }, [onAlertCountChange]);
   const number = (value: number | undefined) => value === undefined ? t('redesign.unknownValue') : new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US').format(value);
   const rows = [
     { key: 'namedProjects', label: 'redesign.quickProjects', icon: Folder, href: '#projects?range=all' },

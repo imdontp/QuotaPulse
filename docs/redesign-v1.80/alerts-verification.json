@@ -1,0 +1,58 @@
+{
+    "status":  "behavioral assertions passed; strict repeated capture comparison failed for one variant",
+    "scope":  "alerts",
+    "fixture":  {
+                    "source":  "in-memory synthetic database",
+                    "expectedCurrentQuotaRiskCount":  4,
+                    "languages":  [
+                                      "en",
+                                      "th"
+                                  ],
+                    "themes":  [
+                                   "dark",
+                                   "light"
+                               ]
+                },
+    "checks":  [
+                   "sidebar badge equals the API-derived active quota-risk count",
+                   "Alerts page current-risk summary equals the sidebar badge",
+                   "accessible link name describes current quota risks and does not call the count unread",
+                   "badge stays within bounds at 390, 900, and 1280 pixels",
+                   "four canonical language/theme captures completed"
+               ],
+    "repeatability":  {
+                          "masks":  false,
+                          "canonicalSecondPass":  {
+                                                      "status":  "failed",
+                                                      "language":  "en",
+                                                      "theme":  "light",
+                                                      "changedPixels":  42,
+                                                      "maxChannelDelta":  52
+                                                  },
+                          "isolatedRepeatAfterExplicitThaiFontWait":  {
+                                                                          "status":  "failed",
+                                                                          "language":  "en",
+                                                                          "theme":  "light",
+                                                                          "changedPixels":  47,
+                                                                          "maxChannelDelta":  52
+                                                                      },
+                          "changedRegions":  [
+                                                 "top toolbar controls near x=1572-1651, y=27-30",
+                                                 "page-heading icon near x=258-263, y=105-106",
+                                                 "sidebar card edges"
+                                             ],
+                          "badgeAmongChangedPixels":  false
+                      },
+    "broaderChecks":  [
+                          {
+                              "command":  "npm run test:history",
+                              "status":  "failed before Alerts sub-suite",
+                              "detail":  "Timed out at scripts/check-history.mts:209 waiting for Overview .qp-metrics strong to contain 7,525."
+                          },
+                          {
+                              "command":  "direct checkAlertsLayout helper",
+                              "status":  "failed after new badge assertions",
+                              "detail":  "Assertion failed: Quota chart uses stretched coordinates (scripts/check-alerts-layout.mts:58)."
+                          }
+                      ]
+}

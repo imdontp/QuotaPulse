@@ -45,6 +45,9 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
   overlay?: ReactNode;
 }) {
   const [clock, setClock] = useState(() => Date.now());
+  const [alertCount, setAlertCount] = useState<number | null>(null);
+  const localizedAlertCount = alertCount === null ? null : new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US').format(alertCount);
+  const alertCountBadge = alertCount !== null && alertCount > 0 ? (alertCount > 99 ? '99+' : String(alertCount)) : null;
   useEffect(() => { const timer = window.setInterval(() => setClock(Date.now()), 30_000); return () => window.clearInterval(timer); }, []);
   useEffect(() => { if (!preview) window.qpDashboard?.ready(); }, [preview]);
   useEffect(() => { if (!preview) document.documentElement.lang = language; }, [language, preview]);
@@ -78,14 +81,18 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
           <a href="#runtime" aria-label={t('redesign.runtime')}><GitBranch/><span>{t('redesign.runtime')}</span></a>
           <a href="#model-usage" aria-label={t('redesign.models')}><Layers/><span>{t('redesign.models')}</span></a>
         </> : <>
-          {PRIMARY_NAV.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined}><Icon/><span>{t(label)}</span></a>)}
+          {PRIMARY_NAV.map(({ id, href, label, icon: Icon }) => {
+            const hasAlertCount = id === 'alerts' && alertCountBadge !== null && localizedAlertCount !== null;
+            const accessibleLabel = hasAlertCount ? `${t(label)} · ${t('redesign.currentQuotaRisks')}: ${localizedAlertCount}` : t(label);
+            return <a key={id} href={href} aria-label={accessibleLabel} title={hasAlertCount ? accessibleLabel : undefined} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined} data-alert-count={hasAlertCount ? alertCountBadge : undefined}><Icon/><span>{t(label)}</span>{hasAlertCount && <span className="qp-nav-count" aria-hidden="true">{alertCountBadge}</span>}</a>;
+          })}
           <details className="qp-nav-more" open={MORE_NAV.some(item => item.id === active)}>
             <summary aria-label={t('redesign.more')}><MoreHorizontal aria-hidden="true"/><span>{t('redesign.more')}</span></summary>
             {MORE_NAV.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined}><Icon/><span>{t(label)}</span></a>)}
           </details>
         </>}
       </nav>
-      {!preview && <QuickStats t={t} language={language}/>}
+      {!preview && <QuickStats t={t} language={language} onAlertCountChange={setAlertCount}/>}
       {!preview && <div className="qp-sidebar-brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M1 22h6l3-10 4 22 5-31 5 34 4-25 4 16 3-8h4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span>{t('redesign.keepFlowing')}<small>QuotaPulse</small></span></div>}
       {preview && <a className="qp-exit" href="./#overview" aria-label={t('redesign.dashboard')}><ArrowUpRight/><span>{t('redesign.dashboard')}</span></a>}
     </aside>

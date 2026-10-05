@@ -38,6 +38,13 @@ export async function checkAlertsLayout(browser: Browser, db: DB, output: string
         await screen.locator('.qp-quota-point').nth(2).waitFor();
         await page.locator('.qp-quick-stats [data-stat=namedProjects]').getByText('1', { exact: true }).waitFor();
         await page.evaluate(() => document.fonts.ready);
+        const currentRiskCount = screen.locator('[data-summary="redesign.alertCurrent"] strong');
+        await currentRiskCount.waitFor({ state: 'visible' });
+        const expectedRiskCount = (await currentRiskCount.textContent())!.trim();
+        const alertsLink = page.locator('.qp-sidebar nav a[href="#alerts"]');
+        assert.equal(await alertsLink.locator('.qp-nav-count').textContent(), expectedRiskCount, 'Sidebar badge and Alerts summary must share the current risk count');
+        assert.equal(await alertsLink.locator('.qp-nav-count').getAttribute('aria-hidden'), 'true');
+        assert.ok((await alertsLink.getAttribute('aria-label'))!.includes(`${messages['redesign.currentQuotaRisks']}: ${expectedRiskCount}`));
         assert.equal(await screen.locator('.qp-quota-point').count(), 3, 'Unknown sample has a plotted numeric value');
         assert.equal(await screen.locator('.qp-quota-series').count(), 1, 'Series connects through unknown sample');
         assert.equal(await screen.locator('.qp-alert-rules>div span').count(), 3);
@@ -101,5 +108,5 @@ export async function checkAlertsLayout(browser: Browser, db: DB, output: string
   } finally {
     db.exec('DELETE FROM alert_event WHERE source_id BETWEEN 400 AND 403; DELETE FROM limit_sample WHERE source_id BETWEEN 400 AND 403; DELETE FROM source WHERE id BETWEEN 400 AND 403;');
   }
-  writeFileSync(resolve(output, 'alerts-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { addedOwners: 4, selectedValues: [0, null, 45, 97] }, checks: ['forecast beside summary', 'complete rules/history in concept viewport', 'en/th and dark/light', 'unknown sample breaks lines', 'known zero baseline', 'timestamp coordinates', 'keyboard sample table', 'same-owner refresh includes counter drop', '390/900/1280 overflow', 'unknown-only owner', 'machine-wide Quick Stats'], captures }, null, 2));
+  writeFileSync(resolve(output, 'alerts-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { addedOwners: 4, selectedValues: [0, null, 45, 97] }, checks: ['sidebar current-risk badge matches Alerts summary in en/th and dark/light', 'accessible badge label discloses current quota risks; not unread count', 'forecast beside summary', 'complete rules/history in concept viewport', 'unknown sample breaks lines', 'known zero baseline', 'timestamp coordinates', 'keyboard sample table', 'same-owner refresh includes counter drop', '390/900/1280 overflow', 'unknown-only owner', 'machine-wide Quick Stats'], captures }, null, 2));
 }

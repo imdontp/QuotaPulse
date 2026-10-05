@@ -13,6 +13,7 @@ import type { Overview, MinuteTrendResponse, ProviderModelMinuteResponse, Projec
 import { en } from '../packages/web/src/i18n/en.js';
 import { th } from '../packages/web/src/i18n/th.js';
 import { dimensions, runtimeActivityState, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
+import { activeQuotaRiskCount } from '../packages/web/src/redesign/alert-risks.js';
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from '../packages/web/src/redesign/metric-series.js';
 import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
 import { countdown } from '../packages/web/src/format.js';
@@ -654,7 +655,10 @@ async function settled(page: Page, pending: Set<Request>) {
     idle = pending.size === 0 ? idle + 1 : 0;
     await page.waitForTimeout(25);
   }
-  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(async () => {
+    await document.fonts.load('14px "Noto Sans Thai"', 'ไทย');
+    await document.fonts.ready;
+  });
   // Native form controls/compositor paints can outlive the last HTTP request.
   await page.waitForTimeout(1_000);
 }
@@ -885,6 +889,29 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
   const statsResponse = await daemon.inject({ method: 'GET', url: '/api/runtime-summary', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(statsResponse.statusCode, 200);
   const stats = statsResponse.json<Record<string, number>>();
+  const overviewResponse = await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  assert.equal(overviewResponse.statusCode, 200);
+  const overview = overviewResponse.json<Overview>();
+  const expectedAlertCount = activeQuotaRiskCount(overview);
+  await page.waitForFunction(expected => {
+    const badge = document.querySelector<HTMLElement>('.qp-nav-count');
+    return expected > 0 ? badge?.textContent === (expected > 99 ? '99+' : String(expected)) : badge === null;
+  }, expectedAlertCount, { timeout: 15_000 });
+  const alertsLink = page.locator('.qp-sidebar nav a[href="#alerts"]');
+  const expectedAlertLabel = lang === 'th' ? th['redesign.currentQuotaRisks'] : en['redesign.currentQuotaRisks'];
+  const formattedAlertCount = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(expectedAlertCount);
+  if (destination === 'alerts') {
+    const pageRiskCount = page.locator('[data-summary="redesign.alertCurrent"] strong');
+    await pageRiskCount.waitFor({ state: 'visible', timeout: 15_000 });
+    assert.equal(await pageRiskCount.textContent(), formattedAlertCount, 'Alerts page summary and sidebar badge must share the same live risk count');
+  }
+  if (expectedAlertCount > 0) {
+    assert.equal(await alertsLink.getAttribute('aria-label'), `${lang === 'th' ? th['redesign.alerts'] : en['redesign.alerts']} · ${expectedAlertLabel}: ${formattedAlertCount}`);
+    assert.equal(await alertsLink.getAttribute('data-alert-count'), expectedAlertCount > 99 ? '99+' : String(expectedAlertCount));
+    assert.equal(await alertsLink.locator('.qp-nav-count').getAttribute('aria-hidden'), 'true');
+  } else {
+    assert.equal(await alertsLink.getAttribute('data-alert-count'), null);
+  }
   const statsCard = page.locator('.qp-quick-stats');
   assert.equal(await statsCard.getAttribute('aria-describedby'), 'qp-quick-stats-note');
   assert.equal(await statsCard.locator('h2').textContent(), 'Quick Stats');
@@ -917,6 +944,15 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
     const expectedBrand = width <= 1100 ? expectedSidebar : Math.max(253, Math.min(267, width * .16));
     assert.ok(Math.abs(brand.width - expectedBrand) < .02);
     assert.equal(sidebar.width, expectedSidebar);
+    if (expectedAlertCount > 0) {
+      const alertLinkBox = await alertsLink.boundingBox();
+      const alertBadgeBox = await alertsLink.locator('.qp-nav-count').boundingBox();
+      assert.ok(alertLinkBox && alertBadgeBox);
+      assert.ok(alertBadgeBox.x >= alertLinkBox.x && alertBadgeBox.x + alertBadgeBox.width <= alertLinkBox.x + alertLinkBox.width,
+        `Quota-risk badge escaped the Alerts link at ${width}px`);
+      assert.ok(alertBadgeBox.y >= alertLinkBox.y && alertBadgeBox.y + alertBadgeBox.height <= alertLinkBox.y + alertLinkBox.height,
+        `Quota-risk badge escaped the Alerts link vertically at ${width}px`);
+    }
     let dateText: string | null = null;
     if (width > 1100) {
       const mark = await page.locator('.qp-topbar .qp-brand>svg').boundingBox();
