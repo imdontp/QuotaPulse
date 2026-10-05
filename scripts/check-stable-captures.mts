@@ -1636,15 +1636,20 @@ async function checkOverviewInsights(page: Page, lang: string, theme: string, pe
   await page.locator('.qp-insight-card').first().waitFor(); await settled(page, pending);
   const panel = page.getByTestId('usage-insights'), number = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 });
   const money = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' });
+  assert.equal(await panel.locator('.qp-insights-subtitle').innerText(), lang === 'th' ? 'สัญญาณการใช้งานและราคา' : 'Usage and pricing signals');
   async function values(expected: RuntimeGraph['totals']) {
     const input = expected.inputTokens + expected.cachedInputTokens + expected.cacheWriteTokens;
     assert.equal(await panel.locator('[data-insight=cache] strong').textContent(), input ? `${number.format(expected.cachedInputTokens / input * 100)}%` : '—');
+    assert.equal(await panel.locator('[data-insight=cache]').getAttribute('data-state'), input ? 'measured' : 'unavailable');
     assert.equal(await panel.locator('[data-insight=saving] strong').textContent(), expected.cacheSavingKnownCalls ? money.format(expected.cacheSavingKnownUsd) : '—');
+    assert.equal(await panel.locator('[data-insight=saving]').getAttribute('data-state'), expected.cacheSavingKnownCalls ? 'known' : 'unavailable');
     const priced = expected.nativeCalls + expected.computedCalls + expected.estimatedCalls, calls = priced + expected.unknownCalls;
     assert.equal(await panel.locator('[data-insight=pricing] strong').textContent(), calls ? `${number.format(priced)} / ${number.format(calls)}` : '—');
+    assert.equal(await panel.locator('[data-insight=pricing]').getAttribute('data-state'), calls === 0 ? 'unavailable' : priced === calls ? 'complete' : 'partial');
     assert.equal(await panel.locator('[data-count=calls]').textContent(), number.format(expected.callRecords));
     assert.equal(await panel.locator('[data-count=aggregates]').textContent(), number.format(expected.aggregateRecords));
     assert.equal(await panel.locator('[data-insight=unknown] strong').textContent(), number.format(expected.unknownCostRecords));
+    assert.equal(await panel.locator('[data-insight=unknown]').getAttribute('data-state'), expected.unknownCostRecords > 0 ? 'incomplete' : 'clear');
   }
   await values(graph.totals);
   const boxes = await panel.locator('.qp-insight-card').evaluateAll(elements => elements.map(element => { const box = element.getBoundingClientRect(); return { x: box.x, y: box.y, right: box.right, bottom: box.bottom }; }));
@@ -1905,7 +1910,7 @@ try {
               page.locator('.qp-quotas-heading h2').innerText(),
               page.locator('.qp-top-models h3').innerText(),
               page.locator('.qp-runway-heading h2').innerText(),
-              page.locator('.qp-insights>h2').innerText(),
+              page.locator('.qp-insights-heading h2').innerText(),
             ]);
             labels.push(activityHeading);
             const expectedLabels = lang === 'th'
@@ -1940,6 +1945,9 @@ try {
               }),              quotaManageHref: document.querySelector<HTMLAnchorElement>('.qp-quota-manage')?.getAttribute('href') ?? null,
               quotaManageLabel: document.querySelector('.qp-quota-manage')?.textContent?.trim() ?? '',
               quotaWindowCountBadges: document.querySelectorAll('.qp-quota-group-heading>.qp-chip').length,
+              runwaySubtitle: document.querySelector('.qp-runway-subtitle')?.textContent?.trim() ?? '',
+              runwayOwner: document.querySelector('.qp-runway-owner')?.textContent?.trim() ?? '',
+              insightsSubtitle: document.querySelector('.qp-insights-subtitle')?.textContent?.trim() ?? '',
               quotaContentHeight: document.querySelector<HTMLElement>('.qp-quota-groups')?.scrollHeight ?? 0,
               quotaViewportHeight: document.querySelector<HTMLElement>('.qp-quota-groups')?.clientHeight ?? 0,
               selectedWindow: document.querySelector<HTMLElement>('.qp-quota[aria-pressed="true"]')?.dataset.window ?? null,
@@ -1982,6 +1990,9 @@ try {
             assert.equal(conceptData.selectedWindow, 'monthly');
             assert.equal(conceptData.pulsePercent, 72);
             assert.equal(conceptData.pulseLabel, lang === 'th' ? 'ใช้โควตารายเดือน' : 'Monthly used');
+            assert.equal(conceptData.runwaySubtitle, lang === 'th' ? 'แนวโน้มปัจจุบันและการคาดการณ์' : 'Current trajectory and projection');
+            assert.ok(conceptData.runwayOwner.length > 0, 'Quota Runway must identify the selected quota owner/window');
+            assert.equal(conceptData.insightsSubtitle, lang === 'th' ? 'สัญญาณการใช้งานและราคา' : 'Usage and pricing signals');
             assert.equal(conceptData.cacheShare, 42);
             const expectedMetricLabels = lang === 'th'
               ? ['ปริมาณโทเค็น', 'จังหวะโทเค็นเฉลี่ย', 'ค่าใช้จ่ายที่ทราบ', 'สัดส่วนข้อมูลเข้าจากแคช']
