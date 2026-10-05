@@ -892,6 +892,11 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
   assert.equal(await page.locator('.qp-sidebar nav a[href="#models"] > span').textContent(), lang === 'th' ? 'โมเดล' : 'Models');
   const statsNote = await statsCard.locator('#qp-quick-stats-note').boundingBox();
   assert.ok(statsNote && statsNote.width === 1 && statsNote.height === 1, 'The session-count caveat remains available to assistive technology without extending the reference card');
+  const recentSessionLink = statsCard.locator('[data-stat=recentSessions]').locator('..').locator('dt a');
+  const quickSessionsLabel = lang === 'th' ? th['redesign.quickSessions'] : en['redesign.quickSessions'];
+  const quickStatsNote = lang === 'th' ? th['redesign.quickStatsNote'] : en['redesign.quickStatsNote'];
+  assert.equal(await recentSessionLink.locator('span').textContent(), quickSessionsLabel);
+  assert.equal(await recentSessionLink.getAttribute('title'), quickStatsNote, 'Active-session label must disclose its observation window and limitation');
   for (const key of ['namedProjects', 'models', 'providers', 'recentSessions']) {
     const value = statsCard.locator(`[data-stat=${key}]`);
     assert.equal(await value.textContent(), new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(stats[key]));

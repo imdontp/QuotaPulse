@@ -1,0 +1,6 @@
+npm run test --workspace=@quotapulse/web - 144 passed, 0 failed
+npm run build --workspace=@quotapulse/web - passed; existing 532.87 kB App chunk advisory
+node --import tsx scripts/check-stable-captures.mts (QUOTAPULSE_CAPTURE_SCOPE=overview) - 4 language/theme pairs passed; all 4 byte-identical; no masks
+node --import tsx scripts/check-stable-captures.mts (QUOTAPULSE_CAPTURE_SCOPE=overview) - verified Active sessions labels and five-minute source-observed explanation in en/th
+Static viewer smoke - all 16 capture assets present; original concept hash matches; embedded JavaScript syntax passed
+Daemon suite and review-runtime checks are unchanged from v1.78: 100 tests passed; 5 extracted-runtime checks passed

@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "extracted": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\QuotaPulse-review-4jBSla",
+  "checks": [
+    "start WhatIf creates no review profile or processes",
+    "extracted bundle outside repository dependencies starts its real daemon/tray with readers off and isolated profile",
+    "stop WhatIf retains both recorded processes",
+    "scoped stop ends recorded processes and preserves database",
+    "restart tolerates retained review process records and stale daemon lock"
+  ],
+  "requiredNodeAbi": "127",
+  "externalNode": true,
+  "limitations": [
+    "portable launch checks; versioned installation validated separately",
+    "readers disabled; empty usage database",
+    "host Node prerequisite; no logon tasks installed"
+  ]
+}

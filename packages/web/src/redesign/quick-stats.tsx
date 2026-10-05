@@ -31,7 +31,7 @@ export function QuickStats({ t, language }: { t: RedesignTranslate; language: 'e
   ] as const;
   return <section className="qp-quick-stats" aria-label={t('redesign.quickStats')} aria-describedby="qp-quick-stats-note" data-stale={stale}>
     <h2>{t('redesign.quickStats')}</h2>
-    <dl>{rows.map(({ key, label, icon: Icon, href }) => <div key={key}><dt><a href={href}><Icon aria-hidden="true"/><span>{t(label)}</span></a></dt><dd data-stat={key}>{number(data?.[key])}</dd></div>)}</dl>
+    <dl>{rows.map(({ key, label, icon: Icon, href }) => <div key={key}><dt><a href={href} title={key === 'recentSessions' ? t('redesign.quickStatsNote') : undefined}><Icon aria-hidden="true"/><span>{t(label)}</span></a></dt><dd data-stat={key}>{number(data?.[key])}</dd></div>)}</dl>
     <small id="qp-quick-stats-note" className="qp-visually-hidden">{t('redesign.quickStatsNote')}</small>
     {stale && <small role="status">{t('redesign.staleSnapshot')}</small>}
   </section>;
