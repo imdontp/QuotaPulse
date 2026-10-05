@@ -686,17 +686,21 @@
   width:100%;
   height:calc(100% - 32px);
   color:var(--qp-accent);
-  opacity:.78;
+  opacity:.92;
 }
-.qp-redesign[data-theme=dark] .qp-map-edges path { stroke:#42d5ff; filter:drop-shadow(0 0 2px #078dff) drop-shadow(0 0 5px #078dff80); }
-.qp-redesign[data-theme=dark] .qp-map-edges path[data-column="1"] { stroke:#55aaff; filter:drop-shadow(0 0 2px #187bff) drop-shadow(0 0 5px #187bff80); }
-.qp-redesign[data-theme=dark] .qp-map-edges path[data-column="2"] { stroke:#9b79ff; filter:drop-shadow(0 0 2px #7953ff) drop-shadow(0 0 5px #7953ff80); }
-.qp-redesign[data-theme=dark] .qp-map-flow-dot { fill:#eafaff; filter:drop-shadow(0 0 2px #20bbff) drop-shadow(0 0 5px #078dff); }
+.qp-redesign[data-theme=dark] .qp-map-edges path { stroke:#52dcff; filter:drop-shadow(0 0 3px #078dff) drop-shadow(0 0 8px #078dffb3); }
+.qp-redesign[data-theme=dark] .qp-map-edges path[data-column="1"] { stroke:#63b7ff; filter:drop-shadow(0 0 3px #187bff) drop-shadow(0 0 8px #187bffb3); }
+.qp-redesign[data-theme=dark] .qp-map-edges path[data-column="2"] { stroke:#a98aff; filter:drop-shadow(0 0 3px #7953ff) drop-shadow(0 0 8px #7953ffb3); }
+.qp-redesign[data-theme=dark] .qp-map-flow-dot { fill:#f1fcff; filter:drop-shadow(0 0 3px #20bbff) drop-shadow(0 0 8px #078dff); }
 .qp-map-edges path[data-activity-state=idle] { opacity:.24; }
 .qp-map-edges path[data-activity-state=unknown] { opacity:.5; }
 .qp-redesign[data-theme=dark] .qp-map-edges path[data-activity-state=idle],.qp-redesign[data-theme=dark] .qp-map-edges path[data-activity-state=unknown] { filter:none; }
 .qp-redesign[data-theme=dark] .qp-map-node[data-dimension=harness],.qp-redesign[data-theme=dark] .qp-map-node[data-dimension=provider] { background:linear-gradient(110deg,color-mix(in srgb,var(--qp-node-tone) 13%,#071428),#08101b 78%); }
 .qp-redesign[data-theme=dark] .qp-map-node { background:linear-gradient(110deg,#071428,#08101b); }
+.qp-redesign[data-theme=dark] .qp-map-node[data-dimension=project] { box-shadow:0 0 18px color-mix(in srgb,var(--qp-series) 18%,transparent),inset 0 0 16px color-mix(in srgb,var(--qp-series) 8%,transparent); }
+.qp-redesign[data-theme=dark] .qp-map-node[data-dimension=harness],.qp-redesign[data-theme=dark] .qp-map-node[data-dimension=provider] { box-shadow:0 0 13px color-mix(in srgb,var(--qp-node-tone) 17%,transparent); }
+.qp-redesign[data-theme=dark] .qp-map-node[data-dimension=model] { box-shadow:0 0 11px color-mix(in srgb,var(--qp-series) 12%,transparent); }
+.qp-redesign[data-theme=dark] .qp-map-node[data-activity-state=active] { border-color:color-mix(in srgb,var(--qp-node-tone,var(--qp-accent)) 65%,white); }
 .qp-brand>svg { filter:drop-shadow(0 0 5px #158dff); }
 .qp-bottom-grid {
   display:grid;
@@ -740,6 +744,7 @@
   color:var(--qp-muted);
   line-height:1.6;
 }
+.qp-runway { position:relative; }
 .qp-runway-heading { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
 .qp-runway-heading h2 { flex:none; }
 .qp-runway-subtitle { color:var(--qp-accent); font-size:12px; }
@@ -765,16 +770,23 @@
 .qp-runway-outcome>strong:first-child { color:var(--qp-accent); }
 .qp-runway-outcome>strong:last-child { color:var(--qp-text); }
 .qp-runway-outcome strong { font-size:13px; font-weight:600; }
-.qp-quota-history {
-  border-top:1px solid var(--qp-border);
-  padding-top:10px;
-}
+.qp-quota-history { flex:none; }
 .qp-quota-history summary {
+  display:grid;
+  place-items:center;
+  width:24px;
+  height:24px;
+  border:1px solid var(--qp-border);
+  border-radius:7px;
   cursor:pointer;
-  font-size:12px;
   color:var(--qp-muted);
+  list-style:none;
 }
-.qp-quota-history[open] .qp-quota-chart { margin-top:12px; }
+.qp-quota-history summary::-webkit-details-marker { display:none; }
+.qp-quota-history summary:hover,.qp-quota-history summary:focus-visible { color:var(--qp-accent); border-color:var(--qp-accent); outline:none; }
+.qp-quota-history-panel { position:absolute; top:44px; right:12px; z-index:30; width:min(620px,calc(100vw - 48px)); max-height:min(68vh,560px); overflow:auto; padding:12px; border:1px solid var(--qp-border); border-radius:10px; background:var(--qp-panel); box-shadow:0 14px 40px #0009; }
+.qp-quota-history-panel .qp-quota-chart { margin-top:8px; }
+.qp-quota-history-panel .qp-footnote { margin-top:8px; }
 .qp-activity {
   display:grid;
   gap:12px;
@@ -869,8 +881,18 @@
 .qp-insight-card[data-insight=pace][data-state=critical] { --qp-insight-color:var(--qp-danger); }
 .qp-insight-card[data-insight=pace][data-state=warning] { --qp-insight-color:var(--qp-warning); }
 .qp-insight-card[data-insight=pace][data-state=unknown] { --qp-insight-color:var(--qp-muted); }
+.qp-insight-card[data-insight=burn] { --qp-insight-color:var(--qp-warning); }
+.qp-insight-card[data-insight=burn][data-state=increase] { --qp-insight-color:var(--qp-danger); }
+.qp-insight-card[data-insight=burn][data-state=decrease] { --qp-insight-color:var(--qp-success); }
+.qp-insight-card[data-insight=burn][data-state=unknown] { --qp-insight-color:var(--qp-muted); }
 .qp-insight-card[data-insight=cache] { --qp-insight-color:var(--qp-success); }
 .qp-insight-card[data-insight=cache][data-state=unavailable] { --qp-insight-color:var(--qp-muted); }
+.qp-insight-card[data-insight=pace-comparison] { --qp-insight-color:var(--qp-series); }
+.qp-insight-card[data-insight=pace-comparison][data-state=above-safe] { --qp-insight-color:var(--qp-warning); }
+.qp-insight-card[data-insight=pace-comparison][data-state=unknown] { --qp-insight-color:var(--qp-muted); }
+.qp-insight-card[data-insight=recommendation] { --qp-insight-color:var(--qp-warning); }
+.qp-insight-card[data-insight=recommendation][data-state=fresh-reading] { --qp-insight-color:var(--qp-muted); }
+.qp-insight-card[data-insight=recommendation][data-state=monitor] { --qp-insight-color:var(--qp-success); }
 .qp-insight-card[data-insight=pricing][data-state=complete] { --qp-insight-color:var(--qp-accent); }
 .qp-insight-card[data-insight=pricing][data-state=partial] { --qp-insight-color:var(--qp-warning); }
 .qp-insight-card[data-insight=pricing][data-state=unavailable] { --qp-insight-color:var(--qp-muted); }
@@ -881,6 +903,11 @@
 .qp-insight-card h3 { min-width:0; font-size:11px; line-height:1.3; font-weight:500; color:var(--qp-insight-color); }
 .qp-insight-card strong { font-size:13px; line-height:1.15; font-weight:600; color:var(--qp-insight-color); font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
 .qp-insight-card p { margin-top:3px; font-size:10px; line-height:1.3; color:var(--qp-muted); overflow-wrap:anywhere; }
+.qp-insight-delta { display:inline-block; margin-top:2px; font-size:9px; line-height:1.2; font-variant-numeric:tabular-nums; color:var(--qp-insight-color); }
+.qp-insight-detail { display:block; margin-top:3px; font-size:9px; line-height:1.25; color:var(--qp-muted); overflow-wrap:anywhere; }
+.qp-insight-card[data-insight=recommendation] header strong { font-size:10px; }
+.qp-insight-card[data-insight=recommendation] p { font-size:9px; line-height:1.15; }
+.qp-insight-card[data-insight=recommendation] .qp-insight-detail { margin-top:2px; font-size:8px; line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .qp-insight-records { display:flex; flex-wrap:wrap; gap:3px 8px; }
 .qp-insight-records b { color:var(--qp-text); font-weight:600; }
 @media(max-width:650px) { .qp-insight-grid { grid-template-columns:minmax(0,1fr); } }
@@ -1093,6 +1120,8 @@
     scrollbar-gutter:stable;
   }
   [data-testid=production-overview] .qp-bottom-grid { grid-template-columns:minmax(0,1.14fr) minmax(0,1fr); gap:12px; }
+  [data-testid=production-overview] .qp-runtime + .qp-bottom-grid { margin-top:2px; }
+  [data-testid=production-overview] .qp-insight-card { padding-block:6px; }
   [data-testid=production-overview] .qp-runway,
   [data-testid=production-overview] .qp-insights { padding:12px; gap:4px; }
   [data-testid=production-overview] .qp-runway { gap:4px; }
@@ -1101,7 +1130,6 @@
   [data-testid=production-overview] .qp-runway-stats { font-size:11px; line-height:1.3; }
   [data-testid=production-overview] .qp-runway-stats strong { font-size:15px; line-height:1.2; }
   [data-testid=production-overview] .qp-runway .qp-footnote { line-height:1.3; }
-  [data-testid=production-overview] .qp-quota-history { padding-top:6px; }
   [data-testid=production-overview] .qp-insights .qp-metric { gap:2px; }
   [data-testid=production-overview] .qp-insights .qp-metric strong { font-size:21px; line-height:1.15; }
   [data-testid=production-overview] .qp-insights .qp-coverage { margin:0; gap:10px; }

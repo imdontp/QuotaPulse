@@ -9,12 +9,13 @@ import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
 import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
-import type { Overview, MinuteTrendResponse, ProviderModelMinuteResponse, ProjectDetailResponse, DetailedProjectResponse, DetailedModelResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse, UsageResponse, AlertEvent } from '../packages/web/src/api.js';
+import type { Overview, CompareResult, MinuteTrendResponse, ProviderModelMinuteResponse, ProjectDetailResponse, DetailedProjectResponse, DetailedModelResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse, UsageResponse, AlertEvent } from '../packages/web/src/api.js';
 import { en } from '../packages/web/src/i18n/en.js';
 import { th } from '../packages/web/src/i18n/th.js';
 import { dimensions, runtimeActivityState, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
 import { activeQuotaRiskCount } from '../packages/web/src/redesign/alert-risks.js';
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from '../packages/web/src/redesign/metric-series.js';
+import { cacheSharePercent, percentagePointChange, relativeChangePercent } from '../packages/web/src/redesign/insight-model.js';
 import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
 import { countdown } from '../packages/web/src/format.js';
 import { usageEventParams } from '../packages/web/src/lib/usage-events.js';
@@ -1880,28 +1881,46 @@ async function checkOverviewInsights(page: Page, lang: string, theme: string, pe
   const locale = lang === 'th' ? 'th-TH' : 'en-US';
   const range = await page.locator('.qp-overview-period select').inputValue();
   const metricUsage = (await daemon.inject({ method: 'GET', url: `/api/usage?${new URLSearchParams({ range, bucket: 'auto' })}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<UsageResponse>();
-  const pace = averageDailyTokenPace(metricUsage.totals.total_tokens, metricUsage.range.from, metricUsage.range.to);
-  const paceFormat = new Intl.NumberFormat(locale, { notation: 'compact', maximumFractionDigits: 1 });
+  const span = metricUsage.range.to - metricUsage.range.from;
+  const previousFrom = metricUsage.range.from - span;
+  const comparisonResponse = previousFrom >= 0
+    ? await daemon.inject({ method: 'GET', url: `/api/compare?from=${metricUsage.range.from}&to=${metricUsage.range.to}&previous_from=${previousFrom}&previous_to=${metricUsage.range.from}&group_by=none`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })
+    : null;
+  assert.equal(comparisonResponse?.statusCode, 200, 'Previous-period comparison must be available for the fixture range');
+  const comparison = comparisonResponse?.statusCode === 200 ? comparisonResponse.json<CompareResult>() : null;
   assert.equal(await panel.locator('.qp-insights-subtitle').innerText(), lang === 'th' ? 'สัญญาณการใช้งานและราคา' : 'Usage and pricing signals');
   async function values(expected: RuntimeGraph['totals']) {
     const input = expected.inputTokens + expected.cachedInputTokens + expected.cacheWriteTokens;
-    const paceCard = panel.locator('[data-insight=pace]');
-    assert.equal(await paceCard.getAttribute('data-value'), pace === null ? null : String(pace));
-    assert.equal(await paceCard.locator('strong').textContent(), pace === null ? '—' : paceFormat.format(pace));
-    assert.equal(await panel.locator('[data-insight=cache] strong').textContent(), input ? `${number.format(expected.cachedInputTokens / input * 100)}%` : '—');
+    const tokenChange = comparison ? relativeChangePercent(comparison.current.total_tokens, comparison.previous.total_tokens) : null;
+    const tokenCard = panel.locator('[data-insight=burn]');
+    assert.equal(await tokenCard.getAttribute('data-value'), tokenChange === null ? null : String(tokenChange));
+    const signed = tokenChange === null ? '—' : `${new Intl.NumberFormat(locale, { maximumFractionDigits: 0, signDisplay: 'always' }).format(tokenChange)}%`;
+    assert.equal(await tokenCard.locator('strong').textContent(), signed);
+    const cacheShare = input ? expected.cachedInputTokens / input * 100 : null;
+    assert.equal(await panel.locator('[data-insight=cache] strong').textContent(), cacheShare === null ? '—' : `${number.format(cacheShare)}%`);
     assert.equal(await panel.locator('[data-insight=cache]').getAttribute('data-state'), input ? 'measured' : 'unavailable');
+    const previousCacheShare = comparison ? cacheSharePercent(comparison.previous) : null;
+    const cacheDelta = percentagePointChange(cacheShare, previousCacheShare);
+    const cacheDeltaLabel = cacheDelta === null ? null : `${cacheDelta > 0 ? '↑' : cacheDelta < 0 ? '↓' : '→'}${number.format(Math.abs(cacheDelta))} pp`;
+    const cacheDeltaLocator = panel.locator('[data-insight=cache] .qp-insight-delta');
+    assert.equal(await cacheDeltaLocator.count() ? await cacheDeltaLocator.textContent() : null, cacheDeltaLabel);
     const cacheSupport = await panel.locator('[data-insight=cache] p').textContent();
     if (expected.cacheSavingKnownCalls > 0) {
       assert.ok(cacheSupport?.includes(money.format(expected.cacheSavingKnownUsd)));
       assert.ok(cacheSupport?.includes(number.format(expected.cacheSavingKnownCalls)));
     }
     const priced = expected.nativeCalls + expected.computedCalls + expected.estimatedCalls, calls = priced + expected.unknownCalls;
-    assert.equal(await panel.locator('[data-insight=pricing] strong').textContent(), calls ? `${number.format(priced)} / ${number.format(calls)}` : '—');
-    assert.equal(await panel.locator('[data-insight=pricing]').getAttribute('data-state'), calls === 0 ? 'unavailable' : priced === calls ? 'complete' : 'partial');
-    assert.equal(await panel.locator('[data-count=calls]').textContent(), number.format(expected.callRecords));
-    assert.equal(await panel.locator('[data-count=aggregates]').textContent(), number.format(expected.aggregateRecords));
-    assert.equal(await panel.locator('[data-insight=unknown] strong').textContent(), number.format(expected.unknownCostRecords));
-    assert.equal(await panel.locator('[data-insight=unknown]').getAttribute('data-state'), expected.unknownCostRecords > 0 ? 'incomplete' : 'clear');
+    const recommendation = panel.locator('[data-insight=recommendation]');
+    assert.ok(['fresh-reading','reduce-load','slow-down','use-cache','check-pricing','monitor'].includes((await recommendation.getAttribute('data-state')) ?? ''));
+    assert.equal(await recommendation.getAttribute('data-pricing-state'), calls === 0 ? 'unavailable' : priced === calls ? 'complete' : 'partial');
+    const recommendationDetail = await recommendation.locator('.qp-insight-detail').textContent();
+    if (calls > 0) {
+      assert.ok(recommendationDetail?.includes(`${number.format(priced)}/${number.format(calls)}`));
+      assert.ok(recommendationDetail?.includes(number.format(expected.unknownCostRecords)));
+    }
+    const paceComparison = panel.locator('[data-insight=pace-comparison]');
+    assert.ok(['unknown','above-safe','within-safe'].includes((await paceComparison.getAttribute('data-state')) ?? ''));
+    if (await paceComparison.getAttribute('data-state') === 'unknown') assert.equal(await paceComparison.locator('strong').textContent(), '—');
   }
   await values(graph.totals);
   const boxes = await panel.locator('.qp-insight-card').evaluateAll(elements => elements.map(element => { const box = element.getBoundingClientRect(); return { x: box.x, y: box.y, right: box.right, bottom: box.bottom }; }));
@@ -1916,6 +1935,11 @@ async function checkOverviewInsights(page: Page, lang: string, theme: string, pe
     try {
       await page.goto(`http://127.0.0.1:7804/?overview-insights=${state}#overview`, { waitUntil: 'domcontentloaded' });
       await panel.locator('.qp-insight-card').first().waitFor(); await settled(page, pending); await values(totals);
+      if (state === 'empty') {
+        const recommendation = panel.locator('[data-insight=recommendation]');
+        assert.equal(await recommendation.getAttribute('data-pricing-state'), 'unavailable');
+        assert.notEqual(await recommendation.getAttribute('data-state'), 'check-pricing', 'No calls must not be described as a pricing issue');
+      }
       for (const width of [390, 900, 1280]) {
         await page.setViewportSize({ width, height: 992 });
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Insight card overflow: ${state}/${lang}/${theme}/${width}`);
@@ -2068,7 +2092,7 @@ async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', 
         await outer.locator('summary').first().focus(); await page.keyboard.press('Enter');
         if (state === 'empty') {
           await outer.getByRole('status').waitFor();
-          assert.equal(await outer.locator('svg').count(), 0, 'Empty history must not create an invalid time axis');
+          assert.equal(await outer.locator('svg.qp-alert-segments').count(), 0, 'Empty history must not create an invalid time axis');
         } else {
           await outer.locator('.qp-quota-samples').waitFor();
           assert.equal(await outer.locator('.qp-quota-point').count(), state === 'unknown' ? 0 : known.length);
@@ -2250,8 +2274,8 @@ try {
             assert.equal(conceptData.insightsSubtitle, lang === 'th' ? 'สัญญาณการใช้งานและราคา' : 'Usage and pricing signals');
             assert.equal(conceptData.cacheShare, 42);
             const expectedMetricLabels = lang === 'th'
-              ? ['ปริมาณโทเค็น', 'จังหวะโทเค็นเฉลี่ย', 'ค่าใช้จ่ายที่ทราบ', 'สัดส่วนข้อมูลเข้าจากแคช']
-              : ['Token Usage', 'Average token pace', 'Known cost', 'Cached input share'];
+              ? [th['redesign.tokenUsage'], th['redesign.averageTokenPace'], th['redesign.knownCost'], th['redesign.cacheShare']]
+              : ['Token Usage', 'Burn Rate', 'Known cost', 'Cached input share'];
             assert.deepEqual(conceptData.metricRail.map(metric => metric.metric), ['tokens', 'pace', 'cost', 'cache']);
             assert.deepEqual(conceptData.metricRail.map(metric => metric.label), expectedMetricLabels);
             assert.equal(conceptData.metricRail[0]?.meter, '72');

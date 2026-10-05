@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { api, type Overview as OverviewData, type QuotaHistoryResponse, type UsageRangeKey, type UsageResponse } from '@/api';
+import { api, type CompareResult, type Overview as OverviewData, type QuotaHistoryResponse, type UsageRangeKey, type UsageResponse } from '@/api';
 import { isExpired, primaryLimits } from '@/format';
 import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh } from '@/lib/use-live';
@@ -10,6 +10,7 @@ import { defaultQuota, type QuotaWindow, type RuntimeGraph } from './model';
 import { readScope, selectedScope, writeScope, type ScopeRange } from './scope';
 import { activityTrendScope, latestActivityByHarness, recentActivityCallScope, recentActivityScope } from './activity-trend';
 import { usageEventParams } from '@/lib/usage-events';
+import { supportedForecastPace } from './insight-model';
 
 function readRoute() {
   return readScope(new URLSearchParams(location.hash.split('?')[1] ?? ''), 'today');
@@ -27,7 +28,7 @@ export function ProductionOverview() {
   const routeKey = JSON.stringify(route);
   const currentKey = useRef(routeKey);
   currentKey.current = routeKey;
-  const [snapshot, setSnapshot] = useState<{ key: string; overview: OverviewData; graph: RuntimeGraph; recent: ActivityItem[]; recentTrend: Awaited<ReturnType<typeof api.minuteTrend>> | null; metricUsage: UsageResponse | null } | null>(null);
+  const [snapshot, setSnapshot] = useState<{ key: string; overview: OverviewData; graph: RuntimeGraph; recent: ActivityItem[]; recentTrend: Awaited<ReturnType<typeof api.minuteTrend>> | null; metricUsage: UsageResponse | null; metricComparison: CompareResult | null } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedQuotaId, setSelectedQuotaId] = useState<string | null>(null);
   const [history, setHistory] = useState<QuotaHistoryResponse | null>(null);
@@ -45,10 +46,16 @@ export function ProductionOverview() {
       const activityScope = recentActivityScope(scope, overview.now);
       const activityCallScope = recentActivityCallScope(scope, overview.now);
       const usageRange: UsageRangeKey = route.range === 'last30' ? 'custom' : route.range;
-      const [graph, recentTrend, metricUsage] = await Promise.all([
+      const comparisonSpan = scope.to - scope.from;
+      const previousFrom = scope.from - comparisonSpan;
+      const comparison = comparisonSpan > 0 && previousFrom >= 0
+        ? api.compare({ from: scope.from, to: scope.to, previousFrom, previousTo: scope.from, groupBy: 'none', sourceId: route.sourceId }).catch(() => null)
+        : Promise.resolve(null);
+      const [graph, recentTrend, metricUsage, metricComparison] = await Promise.all([
         api.runtimeMap(scope),
         activityCallScope ? api.minuteTrend(activityCallScope).catch(() => null) : Promise.resolve(null),
         api.usage({ range: usageRange, from: scope.from, to: scope.to, bucket: 'auto', sourceId: route.sourceId }).catch(() => null),
+        comparison,
       ]);
       // Fetch one newest event per observed harness. A global first page can be filled
       // by a single busy harness and hide quieter harnesses before client-side dedupe.
@@ -70,7 +77,7 @@ export function ProductionOverview() {
         // A chart failure must not discard the real activity records or quota snapshot.
         try { item.trend = await request; } catch { item.trendError = true; }
       }));
-      if (currentKey.current === key) { setSnapshot({ key, overview, graph, recent, recentTrend, metricUsage }); setError(null); }
+      if (currentKey.current === key) { setSnapshot({ key, overview, graph, recent, recentTrend, metricUsage, metricComparison }); setError(null); }
     } catch (cause) {
       if (currentKey.current === key) setError(String(cause));
       throw cause;
@@ -129,6 +136,7 @@ export function ProductionOverview() {
       freshness,
       projectedFullAt: limit.forecast?.status === 'ready' ? limit.forecast.projectedFullAt : null,
       forecastStatus: limit.forecast?.status,
+      burnPercentPerHour: supportedForecastPace(limit.forecast?.status, limit.forecast?.percentPerHour),
     };
   });
   const quotaAccountStates = Object.fromEntries([
@@ -149,7 +157,7 @@ export function ProductionOverview() {
     return () => { current = false; };
   }, [activeQuota?.id, overview?.now]);
   if (!current) return <main className="p-6" role="status">{error ?? t('app.loading')}</main>;
-  const { graph, recent, metricUsage } = current;
+  const { graph, recent, metricUsage, metricComparison } = current;
   const period = route.range === 'custom'
     ? `${new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(route.from!)} – ${new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(route.to!)}`
     : t(route.range === 'today' ? 'redesign.today' : route.range === 'week' ? 'redesign.thisWeek' : route.range === 'month' ? 'redesign.thisMonth' : 'redesign.allTime');
@@ -172,6 +180,6 @@ export function ProductionOverview() {
   const mapGraph = mapGraphSnapshot?.key === mapGraphKey ? mapGraphSnapshot.graph : graph;
   return <>
     {error && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
-    <Overview graph={graph} runtimeGraph={mapGraph} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
+    <Overview graph={graph} runtimeGraph={mapGraph} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} metricComparison={metricComparison} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
   </>;
 }

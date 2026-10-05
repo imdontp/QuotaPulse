@@ -1,12 +1,13 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
-import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Flame, Folder, GitBranch, Layers, Star, Wallet, X } from 'lucide-react';
+import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Flame, Folder, GitBranch, History, Layers, Star, Wallet, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
 import { countdown } from '@/format';
-import type { AccountState, MinuteTrendResponse, QuotaHistoryResponse, UsageResponse } from '@/api';
+import type { AccountState, CompareResult, MinuteTrendResponse, QuotaHistoryResponse, UsageResponse } from '@/api';
 import { CostValue, recordCostCoverage } from './cost-value';
 import { defaultQuota, dimensions, groupUsage, quotaState, RUNTIME_ACTIVITY_WINDOW_MS, runtimeActivityState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from './metric-series';
+import { cacheSharePercent, paceAboveSafePercent, percentagePointChange, recommendationKind, relativeChangePercent, supportedForecastPace } from './insight-model';
 import { RedesignShell, type RedesignTranslate } from './shell';
 import { QuotaChart } from './quota-chart';
 import { RuntimeData } from './runtime-data';
@@ -62,6 +63,7 @@ interface OverviewProps {
   quotaHistory?: QuotaHistoryResponse | null;
   quotaHistoryError?: boolean;
   metricUsage?: Pick<UsageResponse, 'range' | 'timeline' | 'totals'> | null;
+  metricComparison?: CompareResult | null;
   recent?: readonly ActivityItem[];
   activityTrend?: MinuteTrendResponse | null;
   period?: string;
@@ -233,7 +235,6 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
 function QuotaRunway({ quota, now, t, language, preview, history, historyError }: { quota: QuotaWindow | undefined; now: number; t: Translate; language: 'en' | 'th'; preview: boolean; history?: QuotaHistoryResponse | null; historyError?: boolean }) {
   const [historyOpen, setHistoryOpen] = useState(false);
   const runway = runwayState(quota, now, preview ? 300000 : 3600000);
-  const decimal = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 1 }).format(value);
   const date = (value: number) => new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(value);
   const duration = (value: number) => value - now < 60_000 ? '<1m' : countdown(value, now);
   const reason = runway.status === 'unavailable' ? ({ noQuota: 'redesign.runwayNoQuota', stale: 'redesign.runwayStale', noReset: 'redesign.runwayNoReset', reset: 'redesign.runwayReset', unknown: 'redesign.runwayUnknown' } as const)[runway.reason] : null;
@@ -250,7 +251,16 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   const marker = runway.status === 'ready' && runway.projectedBeforeReset && runway.projectedFullAt !== null
     ? (runway.projectedFullAt - now) / (quota!.resetAt - now) * 100 : null;
   return <section className="qp-panel qp-runway" data-testid="quota-runway">
-    <div className="qp-runway-heading"><h2><CircleGauge size={18}/>{t('redesign.runway')}</h2><span className="qp-runway-subtitle">{t('redesign.runwaySubtitle')}</span><span className="qp-runway-owner">{quota ? `${quota.owner} · ${quotaWindowLabel(quota.window, t)}` : t('redesign.unavailable')}</span></div>
+    <div className="qp-runway-heading"><h2><CircleGauge size={18}/>{t('redesign.runway')}</h2><span className="qp-runway-subtitle">{t('redesign.runwaySubtitle')}</span>{!preview && <details className="qp-quota-history" data-testid="quota-history" onToggle={event => setHistoryOpen(event.currentTarget.open)}>
+      <summary aria-label={t('redesign.observedHistory')} title={t('redesign.observedHistory')}><History size={14}/></summary>
+      <div className="qp-quota-history-panel">
+        {historyError && history?.reader && <p role="status" className="qp-footnote">{t('redesign.historyUnavailable')}</p>}
+        {history?.reader && history.segments.length > 0 ? <>
+          {historyOpen && <QuotaChart history={history} t={t} language={language} title={t('redesign.observedHistory')}/>}
+          <p className="qp-footnote">{history.reader.origin} · {history.segments.length} {t('redesign.resetPeriods')} · {history.segments.reduce((sum, segment) => sum + segment.samples.length, 0)} {t('redesign.readings')}</p>
+        </> : <p className="qp-footnote">{historyError ? t('redesign.historyUnavailable') : history || !quota ? t('redesign.noHistory') : t('redesign.historyLoading')}</p>}
+      </div>
+    </details>}<span className="qp-runway-owner">{quota ? `${quota.owner} · ${quotaWindowLabel(quota.window, t)}` : t('redesign.unavailable')}</span></div>
     {runway.status === 'unavailable' ? <p className="qp-runway-message" role="status">{t(reason!)}</p> : <>
       <div className="qp-runway-labels">
         <span>{t('redesign.now')}<time dateTime={new Date(now).toISOString()}>{date(now)}</time></span>
@@ -263,20 +273,11 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
         {marker !== null && <span className="qp-runway-marker" style={{ left: `${marker}%` }}/>}<span className="qp-runway-reset"/>
       </div>
       <div className="qp-runway-outcome"><strong>{runway.projectedFullAt !== null ? `${duration(runway.projectedFullAt)} ${t('redesign.remaining')}` : '—'}</strong><span data-testid="quota-runway-consequence" data-risk={marker !== null ? 'warning' : undefined}>{consequence}</span><strong>{t('redesign.resetIn')} {duration(quota!.resetAt)}</strong></div>
-      <p className="qp-footnote">{t('redesign.safePace')} <strong>{decimal(runway.safePace)}</strong> {t('redesign.pointsPerHour')}</p>
     </>}
-    {!preview && <details className="qp-quota-history" data-testid="quota-history" onToggle={event => setHistoryOpen(event.currentTarget.open)}>
-      <summary>{t('redesign.observedHistory')}</summary>
-      {historyError && history?.reader && <p role="status" className="qp-footnote">{t('redesign.historyUnavailable')}</p>}
-      {history?.reader && history.segments.length > 0 ? <>
-        {historyOpen && <QuotaChart history={history} t={t} language={language} title={t('redesign.observedHistory')}/>}
-        <p className="qp-footnote">{history.reader.origin} · {history.segments.length} {t('redesign.resetPeriods')} · {history.segments.reduce((sum, segment) => sum + segment.samples.length, 0)} {t('redesign.readings')}</p>
-      </> : <p className="qp-footnote">{historyError ? t('redesign.historyUnavailable') : history || !quota ? t('redesign.noHistory') : t('redesign.historyLoading')}</p>}
-    </details>}
   </section>;
 }
 
-export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
+export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -306,6 +307,10 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
   const prices = coverage ? { native: coverage.nativeCalls, api: coverage.computedCalls + coverage.estimatedCalls, total: coverage.nativeCalls + coverage.computedCalls + coverage.estimatedCalls + coverage.unknownCalls } : recordCostCoverage(records);
   const inputTotal = coverage ? coverage.inputTokens + coverage.cachedInputTokens + coverage.cacheWriteTokens : 0;
   const cacheShare = inputTotal > 0 && coverage ? coverage.cachedInputTokens / inputTotal * 100 : null;
+  const tokenPeriodChange = metricComparison
+    ? relativeChangePercent(metricComparison.current.total_tokens, metricComparison.previous.total_tokens) : null;
+  const previousCacheShare = metricComparison ? cacheSharePercent(metricComparison.previous) : null;
+  const cacheShareChange = percentagePointChange(cacheShare, previousCacheShare);
   const metricPace = metricUsage ? averageDailyTokenPace(metricUsage.totals.total_tokens, metricUsage.range.from, metricUsage.range.to) : null;
   const metricTokenSeries = metricUsage ? metricTrendSeries(metricUsage.timeline, metricUsage.range, 'total_tokens') : [];
   const metricCostSeries = metricUsage ? metricTrendSeries(metricUsage.timeline, metricUsage.range, 'cost_usd') : [];
@@ -318,6 +323,36 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
       ? `${t('redesign.coreProjectionLead')} ${quotaDuration(runway.projectedFullAt, now, t('redesign.unknownValue'))} ${t('redesign.beforeReset')}${language === 'th' ? '' : '.'}`
       : t('redesign.coreProjectionAfterReset');
   const quotaPercent = quotaReading && !quotaReading.stale && quotaReading.remaining !== null ? quota?.usedPercent ?? null : null;
+  const measuredPace = supportedForecastPace(quota?.forecastStatus, quota?.burnPercentPerHour);
+  const safePace = runway.status === 'ready' ? runway.safePace : null;
+  const paceVsSafe = paceAboveSafePercent(measuredPace, safePace);
+  const pricingState = prices.total === 0 ? 'unavailable' : prices.native + prices.api === prices.total ? 'complete' : 'partial';
+  const recommendation = recommendationKind({
+    stale: !quotaReading || quotaReading.stale,
+    projectedBeforeReset: runway.status === 'ready' && runway.projectedBeforeReset,
+    risk: quotaReading?.risk ?? 'unknown',
+    cacheShare,
+    pricingState,
+  });
+  const recommendationAction = ({
+    'fresh-reading': 'redesign.insightActionFresh',
+    'reduce-load': 'redesign.insightActionReduce',
+    'slow-down': 'redesign.insightActionSlow',
+    'use-cache': 'redesign.insightActionCache',
+    'check-pricing': 'redesign.insightActionPricing',
+    monitor: 'redesign.insightActionMonitor',
+  } as const)[recommendation];
+  const recommendationText = ({
+    'fresh-reading': 'redesign.insightFreshReading',
+    'reduce-load': 'redesign.insightReduceLoad',
+    'slow-down': 'redesign.insightSlowDown',
+    'use-cache': 'redesign.insightUseCache',
+    'check-pricing': 'redesign.insightCheckPricing',
+    monitor: 'redesign.insightMonitor',
+  } as const)[recommendation];
+  const signedPercent = (value: number | null) => value === null ? '—' : `${new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0, signDisplay: 'always' }).format(value)}%`;
+  const signedPoints = (value: number | null) => value === null ? null : `${value > 0 ? '↑' : value < 0 ? '↓' : '→'}${number(Math.abs(value))} ${t('redesign.percentagePointsShort')}`;
+  const decimalNumber = (value: number | null) => value === null ? '—' : new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 2 }).format(value);
   const knownCost = totals.reportedCost + totals.apiValue;
   const metricTrendLabel = `${t('redesign.metricTrend')} · ${period ?? t('redesign.allTime')}`;
   const costSupport = `${t('redesign.nativeShort')} ${money(totals.reportedCost)} · ${t('redesign.apiShort')} ${money(totals.apiValue)}`;
@@ -381,10 +416,10 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
           <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
           <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Box size={18}/>{t('redesign.insights')}</h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>
             <div className="qp-insight-grid">
-              <article className="qp-insight-card" data-insight="pace" data-state={quotaReading?.risk ?? 'unknown'} data-value={metricPace ?? undefined}><i aria-hidden="true"><Flame size={17}/></i><div><header><h3>{t('redesign.averageTokenPace')}</h3><strong>{metricPace === null ? '—' : compactNumber(metricPace)}</strong></header><p>{metricPace === null ? t('redesign.unavailable') : `${t('redesign.tokensPerDay')} · ${period ?? t('redesign.allTime')}`}</p></div></article>
-              <article className="qp-insight-card" data-insight="cache" data-state={cacheShare === null ? 'unavailable' : 'measured'}><i aria-hidden="true"><Layers size={17}/></i><div><header><h3>{t('redesign.cacheEfficiency')}</h3><strong>{cacheShare === null ? '—' : `${number(cacheShare)}%`}</strong></header><p>{cacheInsightSupport}</p></div></article>
-              <article className="qp-insight-card" data-insight="pricing" data-state={prices.total === 0 ? 'unavailable' : prices.native + prices.api === prices.total ? 'complete' : 'partial'}><i aria-hidden="true"><Activity size={17}/></i><div><header><h3>{t('redesign.reportedPricingCoverage')}</h3><strong title={t('redesign.pricingCallCountNote')}>{prices.total > 0 ? `${number(prices.native + prices.api)} / ${number(prices.total)}` : '—'}</strong></header><p className="qp-insight-records"><span>{t('redesign.calls')} <b data-count="calls">{number(totals.callRecords)}</b></span><span>{t('redesign.aggregates')} <b data-count="aggregates">{number(totals.aggregateRecords)}</b></span></p></div></article>
-              <article className="qp-insight-card" data-insight="unknown" data-state={totals.unknownCostRecords > 0 ? 'incomplete' : 'clear'}><i aria-hidden="true"><Wallet size={17}/></i><div><header><h3>{t('redesign.unknown')}</h3><strong>{number(totals.unknownCostRecords)}</strong></header><p>{t('redesign.coverage')}</p></div></article>
+              <article className="qp-insight-card" data-insight="burn" data-state={tokenPeriodChange === null ? 'unknown' : tokenPeriodChange > 0 ? 'increase' : tokenPeriodChange < 0 ? 'decrease' : 'steady'} data-value={tokenPeriodChange ?? undefined}><i aria-hidden="true"><Flame size={17}/></i><div><header><h3>{t('redesign.highBurnRate')}</h3><strong>{signedPercent(tokenPeriodChange)}</strong></header><p>{tokenPeriodChange === null ? t('redesign.noComparisonBaseline') : `${t('redesign.comparedWithPrevious')} · ${period ?? t('redesign.allTime')}`}</p></div></article>
+              <article className="qp-insight-card" data-insight="cache" data-state={cacheShare === null ? 'unavailable' : 'measured'} data-value={cacheShare ?? undefined}><i aria-hidden="true"><Layers size={17}/></i><div><header><h3>{t('redesign.cacheEfficiency')}</h3><strong>{cacheShare === null ? '—' : `${number(cacheShare)}%`}</strong></header><p>{cacheInsightSupport}</p>{cacheShareChange !== null && <small className="qp-insight-delta" data-direction={cacheShareChange > 0 ? 'up' : cacheShareChange < 0 ? 'down' : 'steady'}>{signedPoints(cacheShareChange)}</small>}</div></article>
+              <article className="qp-insight-card" data-insight="pace-comparison" data-state={paceVsSafe === null ? 'unknown' : paceVsSafe > 0 ? 'above-safe' : 'within-safe'} data-value={paceVsSafe ?? undefined}><i aria-hidden="true"><Activity size={17}/></i><div><header><h3>{t('redesign.paceComparison')}</h3><strong>{signedPercent(paceVsSafe)}</strong></header><p>{measuredPace === null || safePace === null ? t('redesign.paceComparisonUnavailable') : `${t('redesign.measuredPace')} ${decimalNumber(measuredPace)} ${t('redesign.pointsPerHour')} · ${t('redesign.safePace')} ${decimalNumber(safePace)} ${t('redesign.pointsPerHour')}`}</p></div></article>
+              <article className="qp-insight-card" data-insight="recommendation" data-state={recommendation} data-pricing-state={pricingState}><i aria-hidden="true"><Wallet size={17}/></i><div><header><h3>{t('redesign.recommendation')}</h3><strong>{t(recommendationAction)}</strong></header><p title={t(recommendationText)}>{t(recommendationText)}</p><small className="qp-insight-detail">{prices.total > 0 ? `${number(prices.native + prices.api)}/${number(prices.total)} ${t('redesign.calls')} · ${number(totals.unknownCostRecords)} ${t('redesign.unknownCostShort')}` : t('redesign.pricingUnavailable')}</small></div></article>
             </div>
           </section>
         </div>

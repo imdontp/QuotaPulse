@@ -27,6 +27,7 @@ export interface QuotaWindow {
   freshness?: 'live' | 'recent' | 'stale' | 'unknown' | 'expired' | 'mixed';
   projectedFullAt?: number | null;
   forecastStatus?: 'ready' | 'insufficient' | 'flat' | 'reset';
+  burnPercentPerHour?: number | null;
 }
 
 export function quotaState(quota: QuotaWindow, now: number, staleAfterMs: number) {
