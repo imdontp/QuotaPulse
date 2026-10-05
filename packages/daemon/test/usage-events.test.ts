@@ -278,6 +278,40 @@ test('usage-events and CSV share exact scope, grain and complete pagination', as
       assert.equal((await app.inject('/api/runtime-map')).statusCode, 401);
       assert.equal((await app.inject({ url: '/api/runtime-map?project_missing=0', headers })).statusCode, 400);
     });
+    await t.test('runtime activity and active-session counts follow the selected project and recorded timestamps', async () => {
+      const sampleNow = Date.now(), recentAt = sampleNow - 30_000, idleAt = sampleNow - 10 * 60_000;
+      insert.run(1, 1, 'runtime-recent-state', recentAt, 'gpt-runtime-active', 'openrouter', 1);
+      insert.run(1, 1, 'runtime-idle-state', idleAt, 'claude-runtime-idle', 'anthropic', 1);
+      try {
+        const response = await app.inject({
+          url: `/api/runtime-map?from=${sampleNow - 15 * 60_000}&to=${sampleNow + 1}&project=project_100%25`, headers,
+        });
+        assert.equal(response.statusCode, 200);
+        const graph = response.json();
+        assert.equal(graph.activityWindowMs, 5 * 60_000);
+        assert.equal(typeof graph.now, 'number');
+        assert.equal(graph.totals.activeSessions, 1, 'A session counts once even when it has both recent and idle records');
+        assert.equal(graph.nodes.project[0].activeSessions, 1);
+        const activeProvider = graph.nodes.provider.find((node: { key: string }) => node.key === 'openrouter');
+        const idleProvider = graph.nodes.provider.find((node: { key: string }) => node.key === 'anthropic');
+        assert.equal(activeProvider.lastActivityAt, recentAt);
+        assert.equal(activeProvider.activeSessions, 1);
+        assert.equal(idleProvider.lastActivityAt, idleAt);
+        assert.equal(idleProvider.activeSessions, 0);
+        const activeEdge = graph.edges.find((edge: { column: number; to: string }) => edge.column === 2 && edge.to === 'gpt-runtime-active');
+        const idleEdge = graph.edges.find((edge: { column: number; to: string }) => edge.column === 2 && edge.to === 'claude-runtime-idle');
+        assert.equal(activeEdge.lastActivityAt, recentAt);
+        assert.equal(activeEdge.activeSessions, 1);
+        assert.equal(idleEdge.lastActivityAt, idleAt);
+        assert.equal(idleEdge.activeSessions, 0);
+        const otherProject = await app.inject({
+          url: `/api/runtime-map?from=${sampleNow - 15 * 60_000}&to=${sampleNow + 1}&project=another-project`, headers,
+        });
+        assert.equal(otherProject.json().totals.records, 0, 'Project activity does not leak into another project graph');
+      } finally {
+        db.prepare("DELETE FROM usage_event WHERE dedup_key IN ('runtime-recent-state','runtime-idle-state')").run();
+      }
+    });
     await t.test('runtime model makers follow names across routes; unknown groups stay unbranded', async () => {
       const cases = [
         ['gpt-test', 'anthropic'], ['gpt-test', 'openrouter'],

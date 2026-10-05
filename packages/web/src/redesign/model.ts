@@ -89,6 +89,15 @@ export type Dimension = 'project' | 'harness' | 'provider' | 'model';
 export const dimensions: readonly Dimension[] = ['project', 'harness', 'provider', 'model'];
 export type UsageSummary = ReturnType<typeof summarize> & { records: number };
 export type UsageNode = UsageSummary & { key: string | null; vendor?: string };
+export const RUNTIME_ACTIVITY_WINDOW_MS = 5 * 60_000;
+export function runtimeActivityState(lastActivityAt: number | null | undefined, now: number, windowMs = RUNTIME_ACTIVITY_WINDOW_MS) {
+  if (lastActivityAt == null || !Number.isFinite(lastActivityAt) || !Number.isFinite(now) || now < lastActivityAt || !Number.isFinite(windowMs) || windowMs < 0) return 'unknown' as const;
+  return now - lastActivityAt <= windowMs ? 'active' as const : 'idle' as const;
+}
+export interface RuntimeActivity {
+  lastActivityAt?: number | null;
+  activeSessions?: number;
+}
 export interface RuntimeCoverage {
   inputTokens: number;
   cachedInputTokens: number;
@@ -101,9 +110,10 @@ export interface RuntimeCoverage {
   unknownCalls: number;
 }
 export interface RuntimeGraph {
-  totals: UsageSummary & RuntimeCoverage;
-  nodes: Record<Dimension, Array<UsageNode & RuntimeCoverage>>;
-  edges: Array<{ column: number; from: string | null; to: string | null; tokens: number }>;
+  totals: UsageSummary & RuntimeCoverage & RuntimeActivity;
+  nodes: Record<Dimension, Array<UsageNode & RuntimeCoverage & RuntimeActivity>>;
+  edges: Array<{ column: number; from: string | null; to: string | null; tokens: number } & RuntimeActivity>;
+  activityWindowMs?: number;
   now: number;
 }
 

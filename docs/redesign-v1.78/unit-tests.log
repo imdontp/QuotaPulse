@@ -1,0 +1,6 @@
+npm run test --workspace=@quotapulse/web - 144 passed, 0 failed
+npm run test --workspace=@quotapulse/daemon - 100 passed, 0 failed
+npm run build --workspace=@quotapulse/web - passed; existing 532.87 kB App chunk advisory
+npm run build --workspace=@quotapulse/daemon - passed
+node --import tsx scripts/check-stable-captures.mts (QUOTAPULSE_CAPTURE_SCOPE=overview) - 4 language/theme pairs passed; 3 byte-identical; th/light 99 changed pixels, max channel delta 2; no masks
+node --import tsx scripts/check-stable-captures.mts (QUOTAPULSE_CAPTURE_SCOPE=runtime-layout, en/dark) - passed; expanded graph, single-project graph, details, responsive and scroll geometry

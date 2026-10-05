@@ -12,7 +12,7 @@ import { recordQuotaAlerts } from '../packages/daemon/src/api/queries.js';
 import type { Overview, MinuteTrendResponse, ProviderModelMinuteResponse, ProjectDetailResponse, DetailedProjectResponse, DetailedModelResponse, ModelDetailResponse, CostAnalysisResponse, QuotaHistoryResponse, UsageResponse, AlertEvent } from '../packages/web/src/api.js';
 import { en } from '../packages/web/src/i18n/en.js';
 import { th } from '../packages/web/src/i18n/th.js';
-import { dimensions, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
+import { dimensions, runtimeActivityState, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from '../packages/web/src/redesign/metric-series.js';
 import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
 import { countdown } from '../packages/web/src/format.js';
@@ -76,7 +76,7 @@ for (let index = 0; index < 12; index++) {
   session.run(index + 1, source, `fixture-session-${index}`, referenceProjects[0], fixedNow - 10_000);
   const model = referenceModels[index % referenceModels.length]!;
   const totalTokens = model.share === 0 ? 1 : model.share * 721_000_000 / 600;
-  for (let call = 0; call < 3; call++) usage.run(source, index + 1, `fixed-${index}-${call}`, fixedNow - (index + call + 1) * 30_000, model.name, model.provider, totalTokens * .58, totalTokens * .42, 0, totalTokens, call + 1, (index + 1) / 100, index === 0 ? 'native' : 'computed');
+  for (let call = 0; call < 3; call++) usage.run(source, index + 1, `fixed-${index}-${call}`, fixedNow - (index + call + 1) * 15_000, model.name, model.provider, totalTokens * .58, totalTokens * .42, 0, totalTokens, call + 1, (index + 1) / 100, index === 0 ? 'native' : 'computed');
 }
 // The monthly concept is focused on QuotaPulse while the machine-wide quick
 // stats still report all five named projects. Keep four small monthly records
@@ -1064,6 +1064,41 @@ async function checkRuntimeGeometry(page: Page, graph: RuntimeGraph, lang: strin
   const expected = graph.edges.filter(edge => visible[edge.column].has(edge.from) && visible[edge.column + 1].has(edge.to)).map(edge => JSON.stringify([edge.column, edge.from, edge.to]));
   assert.ok(expected.length > 0, `Connected populated ${state} fixture has no expected visible edges`);
   assert.equal(await page.locator('.qp-runtime-legend').textContent(), copy['redesign.tokenFlow']);
+  const expectedEdges = graph.edges.filter(edge => visible[edge.column].has(edge.from) && visible[edge.column + 1].has(edge.to));
+  const activityView = await page.locator('.qp-runtime').evaluate(root => ({
+    legend: {
+      title: root.querySelector('.qp-runtime-activity-legend')?.getAttribute('title'),
+      active: root.querySelector('.qp-runtime-activity-legend [data-state=active]')?.textContent,
+      idle: root.querySelector('.qp-runtime-activity-legend [data-state=idle]')?.textContent,
+    },
+    edgeStates: Array.from(root.querySelectorAll<SVGPathElement>('.qp-map-edges>path'), path => path.dataset.activityState),
+    nodes: Array.from(root.querySelectorAll<HTMLElement>('.qp-map-node'), node => ({
+      dimension: node.dataset.dimension,
+      key: node.dataset.key,
+      state: node.dataset.activityState ?? null,
+      lastActivityAt: node.dataset.lastActivityAt ?? null,
+      activeSessions: node.dataset.activeSessions ?? null,
+      activityLabel: node.querySelector('[data-testid=runtime-node-activity]')?.textContent ?? null,
+    })),
+  }));
+  assert.deepEqual(activityView.legend, {
+    title: copy['redesign.runtimeActivityNote'],
+    active: copy['redesign.runtimeActivityActive'],
+    idle: copy['redesign.runtimeActivityIdle'],
+  });
+  assert.deepEqual(activityView.edgeStates, expectedEdges.map(edge => runtimeActivityState(edge.lastActivityAt, graph.now, graph.activityWindowMs)));
+  assert.deepEqual(activityView.nodes, dimensions.flatMap(dimension => graph.nodes[dimension].slice(0, 8).map(node => {
+    const state = runtimeActivityState(node.lastActivityAt, graph.now, graph.activityWindowMs);
+    const label = state === 'active' ? copy['redesign.runtimeActivityActive'] : state === 'idle' ? copy['redesign.runtimeActivityIdle'] : state === 'unknown' && dimension === 'provider' ? copy['redesign.runtimeActivityUnknown'] : null;
+    return {
+      dimension,
+      key: JSON.stringify(node.key),
+      state,
+      lastActivityAt: node.lastActivityAt === null ? null : String(node.lastActivityAt),
+      activeSessions: String(node.activeSessions),
+      activityLabel: dimension === 'provider' ? label : null,
+    };
+  })));
   await page.waitForFunction(expected => {
     const paths = Array.from(document.querySelectorAll<SVGPathElement>('.qp-map-edges>path'));
     if (paths.length !== expected.length) return false;
@@ -1079,7 +1114,7 @@ async function checkRuntimeGeometry(page: Page, graph: RuntimeGraph, lang: strin
       const start = path.getPointAtLength(0).matrixTransform(matrix), end = path.getPointAtLength(path.getTotalLength()).matrixTransform(matrix);
       return Math.max(Math.abs(start.x - from.right), Math.abs(start.y - from.top - from.height / 2), Math.abs(end.x - to.left), Math.abs(end.y - to.top - to.height / 2)) <= 1;
     });
-  }, expected);
+  }, expected, { timeout: 15_000 });
   const weightedPaths = await page.locator('.qp-map-edges>path').evaluateAll(paths => paths.map(path => ({
     column: Number((path as SVGPathElement).dataset.column),
     tokens: Number((path as SVGPathElement).dataset.tokens),
@@ -1143,7 +1178,11 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
       for (const [index, node] of visible.entries()) {
         const card = cards.nth(index);
         assert.equal(await card.getAttribute('data-sessions'), String(node.sessions));
-        assert.equal(await card.locator('[data-testid=runtime-node-sessions]').textContent(), `${sessionNumber.format(node.sessions)} ${lang === 'th' ? 'เซสชัน' : 'sessions'}`);
+        if (dimension !== 'provider') {
+          const value = dimension === 'project' ? node.activeSessions : node.sessions;
+          const label = dimension === 'project' ? (lang === 'th' ? 'เซสชันที่ใช้งานล่าสุด' : 'active sessions') : (lang === 'th' ? 'เซสชัน' : 'sessions');
+          assert.equal(await card.locator('[data-testid=runtime-node-sessions]').textContent(), `${sessionNumber.format(value)} ${label}`);
+        }
       }
     }
     assert.equal(await page.locator('.qp-map-node[data-dimension=harness][data-runtime-name=codex] .qp-node-label-main').textContent(), 'Codex CLI');
@@ -1224,11 +1263,16 @@ async function checkSingleProjectRuntime(page: Page, lang: string, theme: string
     assert.equal(await page.locator('.qp-map').getAttribute('data-single-project'), 'true');
     const project = page.locator('.qp-map-node[data-dimension=project]');
     assert.equal((await project.boundingBox())!.height, 80);
-    assert.ok((await project.getAttribute('aria-label'))?.includes(new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(graph.nodes.project[0].sessions)));
+    const projectLabel = await project.evaluate(element => element.getAttribute('aria-label'));
+    const projectActiveSessionLabel = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(graph.nodes.project[0].activeSessions);
+    assert.ok(projectLabel?.includes(projectActiveSessionLabel), `Single-project node aria-label omits its active-session count (${projectLabel})`);
     await checkRuntimeGeometry(page, graph, lang, theme, 'single-project');
-    await project.focus(); await page.keyboard.press('Enter'); await page.getByRole('dialog').waitFor();
+    await project.focus(); await page.keyboard.press('Enter');
+    const detail = page.locator('.qp-dialog'); await detail.waitFor({ state: 'visible', timeout: 10_000 });
+    assert.equal(await detail.getAttribute('open'), '');
+    assert.equal(await detail.getAttribute('aria-labelledby'), 'qp-detail-title');
     assert.equal(await page.locator('#qp-detail-title').textContent(), 'Single project fixture');
-    await page.keyboard.press('Escape'); await page.getByRole('dialog').waitFor({ state: 'hidden' });
+    await page.keyboard.press('Escape'); await detail.waitFor({ state: 'hidden', timeout: 10_000 });
     assert.equal(await project.evaluate(element => element === document.activeElement), true);
     await page.screenshot({ path: resolve(output, `runtime-single-${lang}-${theme}.png`), animations: 'disabled' });
     // Replace the visible graph on the same React page, exercising observer cleanup.
@@ -2201,6 +2245,8 @@ try {
             assert.equal(await visibleProjectNodes.count(), 1);
             assert.equal(await visibleProjectNodes.first().getAttribute('data-key'), JSON.stringify('QuotaPulse'));
             assert.equal(Number(await visibleProjectNodes.first().getAttribute('data-tokens')), focusedGraph.nodes.project[0]?.tokens);
+            assert.equal(focusedGraph.nodes.project[0]?.activeSessions, 12, 'The reference project node shows sessions with recorded use in the last five minutes');
+            assert.equal(await visibleProjectNodes.first().getAttribute('data-active-sessions'), '12');
             assert.equal(Number(await page.locator('.qp-runtime .qp-chip').textContent().then(text => text.match(/\d+/)?.[0])), focusedGraph.totals.records);
             const runtimeNodeSessions = await visibleProjectNodes.first().getAttribute('aria-label');
             assert.ok(runtimeNodeSessions?.includes(new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(12)), 'Focused Runtime Map must retain the active project session total');
@@ -2208,7 +2254,7 @@ try {
             assert.equal(await page.locator('.qp-runtime .qp-map-node[data-dimension=project]').count(), monthGraph.nodes.project.length, 'All-project scope must restore every project node');
             await runtimeProjectSelect.selectOption('QuotaPulse'); await settled(page, pending);
             assert.equal(await page.locator('.qp-runtime .qp-map-node[data-dimension=project]').count(), 1, 'Selecting a project must filter the runtime graph through the API');
-            overviewConceptDataChecks.push({ lang, theme, periodRange: conceptData.periodRange, modelNames, modelShares, quotaGroups: conceptData.quotaGroups, quotaContentHeight: conceptData.quotaContentHeight, quotaViewportHeight: conceptData.quotaViewportHeight, selectedWindow: conceptData.selectedWindow, pulsePercent: conceptData.pulsePercent, pulseLabel: conceptData.pulseLabel, pulseDetail: conceptData.pulseDetail, cacheShare: conceptData.cacheShare, mapProject: 'QuotaPulse', mapProjects: focusedGraph.nodes.project.length, mapRecords: focusedGraph.totals.records, mapSessions: focusedGraph.totals.sessions });
+            overviewConceptDataChecks.push({ lang, theme, periodRange: conceptData.periodRange, modelNames, modelShares, quotaGroups: conceptData.quotaGroups, quotaContentHeight: conceptData.quotaContentHeight, quotaViewportHeight: conceptData.quotaViewportHeight, selectedWindow: conceptData.selectedWindow, pulsePercent: conceptData.pulsePercent, pulseLabel: conceptData.pulseLabel, pulseDetail: conceptData.pulseDetail, cacheShare: conceptData.cacheShare, mapProject: 'QuotaPulse', mapProjects: focusedGraph.nodes.project.length, mapRecords: focusedGraph.totals.records, mapSessions: focusedGraph.totals.sessions, mapActiveSessions: focusedGraph.nodes.project[0]?.activeSessions });
             const hero = await page.locator('.qp-hero').boundingBox();
             const activity = await page.locator('.qp-activity-item').first().boundingBox();
             const rail = page.locator('.qp-top-models');

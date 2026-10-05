@@ -411,7 +411,7 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     let scope: UsageScope;
     try { scope = parseUsageScope(req.query as Record<string, unknown>, now); }
     catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
-    return { ...runtimeMap(db, scope), scope, now };
+    return { ...runtimeMap(db, scope, now), scope, now };
   });
 
   app.get('/api/trend', async (req, reply) => {

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { defaultQuota, groupUsage, quotaState, runtimeEdges, runwayState, summarize } from '../src/redesign/model.ts';
+import { defaultQuota, groupUsage, quotaState, runtimeActivityState, runtimeEdges, runwayState, summarize } from '../src/redesign/model.ts';
 import { fixtureNow, fixtureQuotas, fixtureRecords } from '../src/redesign/fixture.ts';
 
 test('usage preserves distinct sessions, record grain and separate money bases', () => {
@@ -17,6 +17,14 @@ test('runtime edges contain only observed relationships and conserve each column
   for (const column of [0, 1, 2]) assert.equal(edges.filter(edge => edge.column === column).reduce((sum, edge) => sum + edge.tokens, 0), 1000000);
   assert.equal(edges.some(edge => edge.from === 'Codex' && edge.to === 'Anthropic'), false);
   assert.equal(runtimeEdges([]).length, 0);
+});
+
+test('runtime activity reflects recorded use within the API window and keeps future or missing time unknown', () => {
+  assert.equal(runtimeActivityState(fixtureNow - 300000, fixtureNow), 'active');
+  assert.equal(runtimeActivityState(fixtureNow - 300001, fixtureNow), 'idle');
+  assert.equal(runtimeActivityState(fixtureNow + 1, fixtureNow), 'unknown');
+  assert.equal(runtimeActivityState(null, fixtureNow), 'unknown');
+  assert.equal(runtimeActivityState(Number.NaN, fixtureNow), 'unknown');
 });
 
 test('quota risk belongs to one fresh owner/window, invalid values are not normalized into healthy readings', () => {

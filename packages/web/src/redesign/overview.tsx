@@ -5,7 +5,7 @@ import { HarnessIcon } from '@/components/harness-icon';
 import { countdown } from '@/format';
 import type { AccountState, MinuteTrendResponse, QuotaHistoryResponse, UsageResponse } from '@/api';
 import { CostValue, recordCostCoverage } from './cost-value';
-import { defaultQuota, dimensions, groupUsage, quotaState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
+import { defaultQuota, dimensions, groupUsage, quotaState, RUNTIME_ACTIVITY_WINDOW_MS, runtimeActivityState, runtimeEdges, runwayState, summarize, type Dimension, type QuotaWindow, type RuntimeGraph, type UsageNode, type UsageRecord } from './model';
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from './metric-series';
 import { RedesignShell, type RedesignTranslate } from './shell';
 import { QuotaChart } from './quota-chart';
@@ -148,7 +148,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
   </div>;
 }
 
-function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, onInspect, projects, selectedProject, onProjectChange }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; harnessVendors: Readonly<Record<string, string>>; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
+function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, onInspect, projects, selectedProject, onProjectChange }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
   const arrowId = useId();
   const map = useRef<HTMLDivElement>(null);
   const [geometry, setGeometry] = useState<{ width: number; height: number; paths: Array<{ edge: RuntimeGraph['edges'][number]; x: number; y: number; endX: number; endY: number }> }>({ width: 1, height: 1, paths: [] });
@@ -162,7 +162,7 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, on
   const height = maxRows * 43;
   const singleProject = columns[0].length === 1 && maxRows >= 3;
   const flowPaths = dimensions.slice(0, 3).flatMap((_, column) => geometry.paths
-    .filter(path => path.edge.column === column)
+    .filter(path => path.edge.column === column && runtimeActivityState(path.edge.lastActivityAt, now, activityWindowMs) === 'active')
     .sort((a, b) => b.edge.tokens - a.edge.tokens || JSON.stringify([a.edge.from, a.edge.to]).localeCompare(JSON.stringify([b.edge.from, b.edge.to])))
     .slice(0, 2)
     .map(({ edge, x, y, endX, endY }) => {
@@ -193,7 +193,7 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, on
     return () => observer.disconnect();
   }, [nodes, edges, recordCount, height, singleProject]);
   return <section className="qp-panel qp-runtime" id="runtime">
-    <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.liveRuntimeMap')}</h2><p>{t('redesign.connections')}</p>{recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} language={language} t={t} onInspect={onInspect}/>}</div><div className="qp-runtime-controls"><span className="qp-runtime-legend"><i aria-hidden="true"/>{t('redesign.tokenFlow')}</span>{onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>}<span className="qp-chip">{t('redesign.records')} · {recordCount}</span></div></div>
+    <div className="qp-section-heading"><div><h2><GitBranch size={18}/>{t('redesign.liveRuntimeMap')}</h2><p>{t('redesign.connections')}</p>{recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} language={language} t={t} onInspect={onInspect}/>}</div><div className="qp-runtime-controls"><span className="qp-runtime-legend"><i aria-hidden="true"/>{t('redesign.tokenFlow')}</span><span className="qp-runtime-activity-legend" title={t('redesign.runtimeActivityNote')} aria-label={`${t('redesign.runtimeActivityActive')}, ${t('redesign.runtimeActivityIdle')}. ${t('redesign.runtimeActivityNote')}`}><span data-state="active"><i aria-hidden="true"/>{t('redesign.runtimeActivityActive')}</span><span data-state="idle"><i aria-hidden="true"/>{t('redesign.runtimeActivityIdle')}</span></span>{onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>}<span className="qp-chip">{t('redesign.records')} · {recordCount}</span></div></div>
 
     {recordCount === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
       <div ref={map} className="qp-map" data-single-project={singleProject} style={{ height: height + 24 }}>
@@ -203,18 +203,25 @@ function RuntimeMap({ nodes, edges, recordCount, t, language, harnessVendors, on
             const bend = (endX - x) * .55;
             const total = columnTokenTotals[edge.column] ?? 0;
             const strokeWidth = total > 0 ? Math.max(1.4, Math.min(5.5, 1.4 + edge.tokens / total * 9)) : 1.4;
-            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth={strokeWidth} markerEnd={`url(#${arrowId})`}/>;
+            const activityState = runtimeActivityState(edge.lastActivityAt, now, activityWindowMs);
+            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-last-activity-at={edge.lastActivityAt ?? undefined} data-active-sessions={edge.activeSessions} data-activity-state={activityState} key={JSON.stringify([edge.column, edge.from, edge.to])} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth={strokeWidth} markerEnd={`url(#${arrowId})`}/>;
           })}
-          {flowPaths.map(({ edge, x, y }) => <circle className="qp-map-flow-dot" data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} key={JSON.stringify([edge.column, edge.from, edge.to])} cx={x} cy={y} r="2.8"/>)}
+          {flowPaths.map(({ edge, x, y }) => <circle className="qp-map-flow-dot" data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-activity-state="active" key={JSON.stringify([edge.column, edge.from, edge.to])} cx={x} cy={y} r="2.8"/>)}
         </svg>
         {dimensions.map((dimension, index) => <div className="qp-map-column" data-dimension={dimension} key={dimension}>
           <h3>{singleProject && dimension === 'project' ? <span className="qp-visually-hidden">{t(runtimeHeadingKeys.project)}</span> : t(runtimeHeadingKeys[dimension])}</h3>
           {columns[index].map(node => {
             const label = runtimeNodeLabel(dimension, node.key, node.key ?? t(dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue'));
             const share = dimension === 'model' && modelTokens > 0 ? node.tokens / modelTokens * 100 : null;
-            const exact = `${label} · ${number.format(node.tokens)} ${t('redesign.tokens')} · ${number.format(node.sessions)} ${t('redesign.sessions')}`;
+            const activityState = runtimeActivityState(node.lastActivityAt, now, activityWindowMs);
+            const activityKey = activityState === 'active' ? 'redesign.runtimeActivityActive' : activityState === 'idle' ? 'redesign.runtimeActivityIdle' : 'redesign.runtimeActivityUnknown';
+            const activityLabel = t(activityKey);
+            const activeSessions = typeof node.activeSessions === 'number' && Number.isFinite(node.activeSessions) ? node.activeSessions : null;
+            const sessionValue = dimension === 'project' && activeSessions !== null ? activeSessions : node.sessions;
+            const sessionLabel = dimension === 'project' && activeSessions !== null ? 'redesign.runtimeNodeActiveSessions' : 'redesign.runtimeNodeSessions';
+            const exact = `${label} · ${number.format(node.tokens)} ${t('redesign.tokens')} · ${number.format(sessionValue)} ${t(sessionLabel)}${dimension === 'provider' ? ` · ${activityLabel}. ${t('redesign.runtimeActivityNote')}` : ''}`;
             const nodeStyle = dimension === 'project' && singleProject ? { height: 80, marginTop: Math.max(0, (Math.min(4, maxRows) * 43 - 80) / 2 - 8) } : undefined;
-            return <button className="qp-map-node" style={nodeStyle} data-dimension={dimension} data-runtime-name={node.key?.trim().toLowerCase() ?? undefined} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-sessions={node.sessions} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" data-model-vendor={dimension === 'model' && node.key ? node.vendor : undefined} aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <ModelMark node={node} size={15}/>}</span><span className="qp-node-label">{dimension === 'project' && singleProject && <small className="qp-node-kicker">{language === 'th' ? 'โปรเจกต์' : 'Project'}</small>}<span className="qp-node-label-main">{label}</span>{dimension !== 'model' && <small className="qp-node-meta" data-testid="runtime-node-sessions">{number.format(node.sessions)} {t('redesign.runtimeNodeSessions')}</small>}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : null}</button>;
+            return <button className="qp-map-node" style={nodeStyle} data-dimension={dimension} data-runtime-name={node.key?.trim().toLowerCase() ?? undefined} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-sessions={node.sessions} data-active-sessions={activeSessions ?? undefined} data-last-activity-at={node.lastActivityAt ?? undefined} data-activity-state={activityState} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" data-model-vendor={dimension === 'model' && node.key ? node.vendor : undefined} aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <ModelMark node={node} size={15}/>}</span><span className="qp-node-label">{dimension === 'project' && singleProject && <small className="qp-node-kicker">{language === 'th' ? 'โปรเจกต์' : 'Project'}</small>}<span className="qp-node-label-main">{label}</span>{dimension === 'provider' ? <small className="qp-node-activity" data-testid="runtime-node-activity" data-state={activityState} title={t('redesign.runtimeActivityNote')}><i aria-hidden="true"/>{activityLabel}</small> : dimension !== 'model' && <small className="qp-node-meta" data-testid="runtime-node-sessions">{number.format(sessionValue)} {t(sessionLabel)}</small>}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : null}</button>;
           })}
         </div>)}
       </div>
@@ -369,7 +376,7 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
             </div>}
           </section>
         </div>
-        <RuntimeMap nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} t={t} language={language} harnessVendors={harnessVendors} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
+        <RuntimeMap nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
         <div className="qp-bottom-grid">
           <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
           <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Box size={18}/>{t('redesign.insights')}</h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>
