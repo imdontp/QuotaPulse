@@ -1161,14 +1161,16 @@
   .qp-redesign[data-testid=production-overview] .qp-brand { gap:16px; font-size:23px; }
   .qp-redesign[data-testid=production-overview] .qp-brand small { font-size:8px; }
   .qp-redesign[data-testid=production-overview] .qp-topbar-body { padding-left:15px; }
-  .qp-redesign[data-testid=production-overview] .qp-workspace-context { margin-left:58px; }
+  .qp-redesign[data-testid=production-overview] .qp-workspace-context { display:flex; align-items:center; gap:43px; margin-left:58px; }
+  .qp-redesign[data-testid=production-overview] .qp-workspace-label { font-size:11px; line-height:1; }
+  .qp-redesign[data-testid=production-overview] .qp-machine-scope { width:170px; flex:none; }
   .qp-redesign[data-testid=production-overview] .qp-topbar-actions>button[aria-haspopup=dialog] { margin-right:18px; }
   .qp-redesign[data-testid=production-overview] .qp-hero-grid { gap:11px; }
   .qp-redesign[data-testid=production-overview] .qp-sidebar { padding-right:8px; }
   .qp-redesign[data-testid=production-overview] .qp-sidebar nav { min-height:308px; align-content:start; }
   .qp-redesign[data-testid=production-overview] .qp-sidebar .qp-nav-more { display:none; }
   .qp-redesign[data-testid=production-overview] main { padding-left:17px; }
-  .qp-redesign[data-testid=production-overview] .qp-hero { padding-left:14px; }
+  .qp-redesign[data-testid=production-overview] .qp-hero { height:394px; min-height:0; padding-left:14px; }
   .qp-redesign[data-testid=production-overview] .qp-runtime { padding-left:13px; }
   .qp-redesign[data-testid=production-overview] .qp-bottom-grid { grid-template-columns:minmax(0,1.145fr) minmax(0,1fr); }
   .qp-redesign[data-testid=production-overview] .qp-runway,
