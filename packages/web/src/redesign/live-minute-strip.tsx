@@ -38,7 +38,7 @@ export function LiveMinuteMatrix({ data, language, t, frozen, provider, model, o
     {(provider || model) && <button disabled={frozen} className="qp-live-clear" onClick={onClear}>{t('redesign.liveClearMatrix')}</button>}
     {pairs.length === 0 ? <p>{t('redesign.liveMinuteEmpty')}</p> : <>
       <div className="qp-live-minute-range"><span>{clock.format(buckets[0]!.start)}</span><span>{clock.format(buckets[buckets.length - 1]!.start)} · {t('redesign.liveMinuteCurrent')}</span></div>
-      <ol className="qp-live-matrix">{pairs.map(group => {
+      <ol className="qp-live-matrix" tabIndex={0} aria-label={t('redesign.liveMatrix')}>{pairs.map(group => {
         const content = <>
           <span className="qp-live-matrix-label" title={`${name(group.provider)} · ${name(group.model)}`}><span className="qp-live-provider-mark" aria-hidden="true"><VendorIcon vendor={group.provider ?? 'unknown'}/></span><span><b>{name(group.model)}</b><small>{name(group.provider)}</small></span></span>
           <span className="qp-live-minute-strip" role="img" aria-label={`${name(group.provider)} · ${name(group.model)} · ${number(group.callRecords)} ${t('redesign.liveMinuteIncluded')}`} aria-describedby={legendId}>

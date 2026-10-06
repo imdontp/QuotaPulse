@@ -116,7 +116,7 @@
   .qp-live-feed { gap:6px; }
   .qp-live-feed li { padding-bottom:6px; }
   .qp-live-feed small { display:inline; margin-left:8px; }
-  .qp-live-matrix { gap:5px; }
+  .qp-live-matrix { gap:5px; max-height:360px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; }
   .qp-live-matrix button,.qp-live-matrix li>span { padding:5px; gap:6px; }
   .qp-live-rail .qp-live-section { gap:6px; }
   .qp-live-rail h2 { font-size:15px; line-height:1.3; }
@@ -139,6 +139,7 @@
 .qp-live-matrix-label b { font-size:10px; font-weight:500; }
 .qp-live-matrix-label small { font-size:9px; color:var(--qp-muted); }
 .qp-live-matrix-total { min-width:0; text-align:right; }
+.qp-live-matrix:focus-visible { outline:2px solid var(--qp-accent); outline-offset:3px; }
 .qp-live-matrix .qp-live-matrix-total>span { display:block; white-space:nowrap; font-weight:550; }
 .qp-live-matrix-total small { display:block; color:var(--qp-muted); font-size:8px; font-weight:400; white-space:normal; line-height:11px; }
 .qp-live-minute-strip { display:flex; min-width:0; width:100%; height:26px; gap:2px; }

@@ -27,7 +27,7 @@ The web production build and 152 web unit tests pass. `QUOTAPULSE_CAPTURE_SCOPE=
 npm run test:stable` passes 40 repeat pairs: 33 byte-identical and seven within
 the recorded raster tolerance, without masks. The manifest covers nine pages,
 both languages and both themes; this folder preserves the five changed pages
-and selected History detail (24 PNGs). History shows eight full rows and its
+and selected History detail plus Live boundary states (32 PNGs). History shows eight full rows and its
 pagination bottom is 931.78125px in the 941px viewport.
 
 The first combined attempt stopped at a test's incorrect image-size assumption;

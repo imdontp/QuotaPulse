@@ -1,0 +1,22 @@
+{
+  "database": "in-memory synthetic",
+  "checks": [
+    "blueprint v1.1 bare Cost preserves All time",
+    "sidebar Cost explicitly selects month",
+    "command palette Cost explicitly selects month"
+  ],
+  "ranges": {
+    "bare": {
+      "from": 0,
+      "to": 1791302113452
+    },
+    "sidebar": {
+      "from": 1790787600000,
+      "to": 1791302113452
+    },
+    "palette": {
+      "from": 1790787600000,
+      "to": 1791302113452
+    }
+  }
+}

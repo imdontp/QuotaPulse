@@ -323,6 +323,7 @@
 .qp-project-top li>button>svg { color:var(--qp-accent); flex:none; }
 .qp-project-rank { display:grid; place-items:center; width:20px; height:20px; flex:none; border-radius:50%; background:color-mix(in srgb,var(--qp-muted) 10%,var(--qp-panel)); color:var(--qp-muted); font-size:10px; }
 .qp-project-top li>button[aria-pressed=true] { text-decoration:underline; text-underline-offset:3px; }
+.qp-project-cards:focus-visible { outline:2px solid var(--qp-accent); outline-offset:3px; }
 @media(min-width:1280px) {
   [data-testid=production-projects] main { padding:12px; gap:12px; }
   .qp-project-header { min-height:68px; }

@@ -171,7 +171,7 @@ export function ProductionProjects() {
     </div>
     <ScopeNotice scope={route}/>
     {!currentSnapshot ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : <div className="qp-project-layout">
-      <section className="qp-project-cards" aria-label={t('redesign.allProjects')}>
+      <section className="qp-project-cards" tabIndex={0} aria-label={t('redesign.allProjects')}>
         {visible.length === 0 && <p className="qp-panel">{t('redesign.noProjects')}</p>}
         {visible.map(group => {
           const share = data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0;

@@ -16,7 +16,7 @@ const NAV = [
   { id: 'projects', href: '#projects', label: 'redesign.project', icon: Folder },
   { id: 'providers', href: '#providers', label: 'redesign.provider', icon: Radio },
   { id: 'models', href: '#models', label: 'redesign.models', icon: Box },
-  { id: 'cost', href: '#cost', label: 'redesign.cost', icon: BarChart3 },
+  { id: 'cost', href: '#cost?range=month', label: 'redesign.cost', icon: BarChart3 },
   { id: 'history', href: '#history', label: 'redesign.history', icon: History },
   { id: 'alerts', href: '#alerts', label: 'redesign.alerts', icon: BellRing },
   { id: 'settings', href: '#settings', label: 'redesign.settings', icon: Settings },

@@ -14,7 +14,19 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest combined composition checkpoint: [v1.85.21](redesign-v1.85.21/REDESIGN-COMPOSITION-V1.85.21.md)
+Latest combined reference hierarchy checkpoint: [v1.85.22](redesign-v1.85.22/REDESIGN-REFERENCE-HIERARCHY-V1.85.22.md)
+updates Projects, History, Alerts, Live totals and the local globe surface.
+All forty full-matrix repeat pairs pass; this is not source-image acceptance.
+[Current region audit](redesign-v1.85.22/SOURCE-REGION-AUDIT.md) and
+[next Cost repair](redesign-v1.85.23/COST-REFERENCE-NEXT-REPAIR.md) retain the
+specific source differences to address.
+
+Latest compatibility/access repair: [v1.85.23](redesign-v1.85.23/COST-ROUTE-COMPATIBILITY.md)
+restores legacy Cost bookmarks, makes redesigned month navigation explicit and
+bounds the occupied Live matrix with keyboard access. Its report records the
+workflow evidence and remaining visual acceptance work.
+
+Previous combined composition checkpoint: [v1.85.21](redesign-v1.85.21/REDESIGN-COMPOSITION-V1.85.21.md)
 aligns the actual globe focal point and progress colors, adds activity-derived
 Runtime Map motion, reorganizes Projects and Models panels, and restores History
 table density and in-viewport pagination. [Remaining region gaps](redesign-v1.85.21/REFERENCE-GAPS.md)

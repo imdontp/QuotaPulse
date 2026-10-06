@@ -880,7 +880,7 @@ async function checkChartAccess(page: Page, destination: 'live' | 'projects', la
 async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', lang: string, theme: string, pending: Set<Request>) {
   const routes = destination === 'models'
     ? ['models?metric=tokens', 'models?metric=calls', 'models?metric=api_value_usd']
-    : ['cost?basis=api', 'cost?basis=native&range=month&bucket=week', 'cost?basis=native&range=month&source=2'];
+    : ['cost?basis=api&range=month', 'cost?basis=native&range=month&bucket=week', 'cost?basis=native&range=month&source=2'];
   const locale = lang === 'th' ? 'th-TH' : 'en-US';
   const number = new Intl.NumberFormat(locale);
   const money = new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' });
@@ -903,11 +903,11 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
       assert.equal(cost.bucket, expectedBucket, `${route}: response bucket must match the selected interval`);
       assert.equal(cost.bucketMs, expectedBucket === 'week' ? 7 * 86_400_000 : 86_400_000);
       assert.equal(await page.locator('.qp-cost-toolbar select').nth(2).inputValue(), expectedBucket, `${route}: interval selection must match API aggregation`);
-      if (route === 'cost?basis=api') {
+      if (route === 'cost?basis=api&range=month') {
         const monthStart = new Date(fixedNow); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
-        assert.equal(await page.locator('.qp-cost-toolbar select').first().inputValue(), 'month', 'Cost must default to month-to-date');
-        assert.equal(cost.scope.from, monthStart.getTime(), 'Default Cost API request must begin at local month start');
-        assert.equal(cost.scope.to, fixedNow + 1, 'Default Cost API request must end at the current instant');
+        assert.equal(await page.locator('.qp-cost-toolbar select').first().inputValue(), 'month', 'Explicit month Cost route must select month-to-date');
+        assert.equal(cost.scope.from, monthStart.getTime(), 'Month Cost API request must begin at local month start');
+        assert.equal(cost.scope.to, fixedNow + 1, 'Month Cost API request must end at the current instant');
         const unitValue = await page.locator('.qp-cost-summary article:nth-child(4)>strong').innerText();
         const prefs = await page.evaluate(() => JSON.parse(localStorage.getItem('quotapulse-prefs') ?? '{}') as { currency?: string; rate?: number });
         const currency = prefs.currency === 'THB' ? 'THB' : 'USD';
@@ -1066,7 +1066,7 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
   assert.equal(await moreSummary.isVisible(), true, `${destination}: OVR-001 requires More on every screen`);
   const moreWasOpen = await moreMenu.evaluate(element => (element as HTMLDetailsElement).open);
   if (!moreWasOpen) await moreSummary.click();
-  for (const href of ['#overview', '#live', '#projects', '#models', '#history', '#alerts', '#providers', '#cost', '#settings']) {
+  for (const href of ['#overview', '#live', '#projects', '#models', '#history', '#alerts', '#providers', '#cost?range=month', '#settings']) {
     assert.equal(await page.locator(`.qp-sidebar nav a[href="${href}"]`).isVisible(), true, `${destination}: global destination ${href} must be reachable`);
   }
   if (!moreWasOpen) await moreSummary.click();
@@ -2394,7 +2394,7 @@ try {
           await page.setViewportSize(destination === 'overview' ? { width: 1586, height: 992 } : { width: 1672, height: 941 });
           // A distinct document URL avoids carrying hash-navigation paint caches
           // and asynchronous state from the preceding route into this capture.
-          await page.goto(`http://127.0.0.1:7804/?capture=${destination}#${destination}`, { waitUntil: 'domcontentloaded' });
+          await page.goto(`http://127.0.0.1:7804/?capture=${destination}#${destination}${destination === 'cost' ? '?range=month' : ''}`, { waitUntil: 'domcontentloaded' });
           await page.getByTestId(`production-${destination}`).locator(ready).first().waitFor();
           await page.locator('.qp-daemon-badge[data-state=live]').waitFor();
           await page.waitForFunction(() => document.querySelector('[data-stat=models]')?.textContent === '6');

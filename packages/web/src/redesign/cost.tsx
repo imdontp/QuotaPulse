@@ -22,7 +22,8 @@ type Bucket = 'auto' | 'hour' | 'day' | 'week';
 function readRoute() {
   const p = new URLSearchParams(location.hash.split('?')[1] ?? '');
   const bucket = p.get('bucket');
-  return { ...readScope(p, 'month', true), bucket: bucket === 'hour' || bucket === 'day' || bucket === 'week' || bucket === 'auto' ? bucket as Bucket : undefined,
+  // Preserve legacy bookmarks; redesigned navigation selects month explicitly.
+  return { ...readScope(p, 'all', true), bucket: bucket === 'hour' || bucket === 'day' || bucket === 'week' || bucket === 'auto' ? bucket as Bucket : undefined,
     basis: p.get('basis') === 'native' ? 'native' as Basis : 'api' as Basis };
 }
 const colors = ['#2bb8ef', '#775cf6', '#18cfa9', '#f58e43', '#8796ae', '#d364e9'];

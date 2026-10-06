@@ -1,0 +1,284 @@
+{
+  "database": "in-memory synthetic",
+  "fixture": {
+    "projects": 8,
+    "addedSessions": 30,
+    "selectedProjectSessions": 25,
+    "selectedProjectCalls": 76,
+    "selectedProjectRoutes": 3
+  },
+  "checks": [
+    "ranking below details in same column",
+    "reference two complete card rows and complete rail in concept viewport; all eight cards keyboard reachable",
+    "en/th and dark/light",
+    "weighted native and API monetary coverage",
+    "ranking selects project",
+    "20/5 session pagination",
+    "390/900/1280 overflow",
+    "exact source/harness/project/session History scope",
+    "long Thai identity and observed paths",
+    "empty filtered cards and ranking"
+  ],
+  "captures": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "projects-occupied-en-dark.png",
+      "regions": {
+        ".qp-project-cards": {
+          "x": 238,
+          "y": 206,
+          "width": 877.921875,
+          "height": 720,
+          "bottom": 926
+        },
+        ".qp-project-card:nth-child(4)": {
+          "x": 717.59375,
+          "y": 476,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 734
+        },
+        ".qp-project-card:nth-child(6)": {
+          "x": 717.59375,
+          "y": 746,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 1004
+        },
+        ".qp-project-card:nth-child(8)": {
+          "x": 717.59375,
+          "y": 1016,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 1274
+        },
+        ".qp-project-detail": {
+          "x": 1127.921875,
+          "y": 206,
+          "width": 532.0625,
+          "height": 491.671875,
+          "bottom": 697.671875
+        },
+        ".qp-project-top": {
+          "x": 1127.921875,
+          "y": 709.671875,
+          "width": 532.0625,
+          "height": 192.890625,
+          "bottom": 902.5625
+        },
+        ".qp-project-rail": {
+          "x": 1127.921875,
+          "y": 206,
+          "width": 532.0625,
+          "height": 696.5625,
+          "bottom": 902.5625
+        }
+      },
+      "cardsScroll": {
+        "clientHeight": 720,
+        "scrollHeight": 1068,
+        "overflow": "auto"
+      }
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "projects-occupied-en-light.png",
+      "regions": {
+        ".qp-project-cards": {
+          "x": 238,
+          "y": 206,
+          "width": 877.921875,
+          "height": 720,
+          "bottom": 926
+        },
+        ".qp-project-card:nth-child(4)": {
+          "x": 717.59375,
+          "y": 476,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 734
+        },
+        ".qp-project-card:nth-child(6)": {
+          "x": 717.59375,
+          "y": 746,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 1004
+        },
+        ".qp-project-card:nth-child(8)": {
+          "x": 717.59375,
+          "y": 1016,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 1274
+        },
+        ".qp-project-detail": {
+          "x": 1127.921875,
+          "y": 206,
+          "width": 532.0625,
+          "height": 491.671875,
+          "bottom": 697.671875
+        },
+        ".qp-project-top": {
+          "x": 1127.921875,
+          "y": 709.671875,
+          "width": 532.0625,
+          "height": 192.890625,
+          "bottom": 902.5625
+        },
+        ".qp-project-rail": {
+          "x": 1127.921875,
+          "y": 206,
+          "width": 532.0625,
+          "height": 696.5625,
+          "bottom": 902.5625
+        }
+      },
+      "cardsScroll": {
+        "clientHeight": 720,
+        "scrollHeight": 1068,
+        "overflow": "auto"
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "projects-occupied-th-dark.png",
+      "regions": {
+        ".qp-project-cards": {
+          "x": 238,
+          "y": 206,
+          "width": 877.921875,
+          "height": 720,
+          "bottom": 926
+        },
+        ".qp-project-card:nth-child(4)": {
+          "x": 717.59375,
+          "y": 476,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 734
+        },
+        ".qp-project-card:nth-child(6)": {
+          "x": 717.59375,
+          "y": 746,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 1004
+        },
+        ".qp-project-card:nth-child(8)": {
+          "x": 717.59375,
+          "y": 1016,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 1274
+        },
+        ".qp-project-detail": {
+          "x": 1127.921875,
+          "y": 206,
+          "width": 532.0625,
+          "height": 491.671875,
+          "bottom": 697.671875
+        },
+        ".qp-project-top": {
+          "x": 1127.921875,
+          "y": 709.671875,
+          "width": 532.0625,
+          "height": 192.890625,
+          "bottom": 902.5625
+        },
+        ".qp-project-rail": {
+          "x": 1127.921875,
+          "y": 206,
+          "width": 532.0625,
+          "height": 696.5625,
+          "bottom": 902.5625
+        }
+      },
+      "cardsScroll": {
+        "clientHeight": 720,
+        "scrollHeight": 1068,
+        "overflow": "auto"
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "projects-occupied-th-light.png",
+      "regions": {
+        ".qp-project-cards": {
+          "x": 238,
+          "y": 206,
+          "width": 877.921875,
+          "height": 720,
+          "bottom": 926
+        },
+        ".qp-project-card:nth-child(4)": {
+          "x": 717.59375,
+          "y": 476,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 734
+        },
+        ".qp-project-card:nth-child(6)": {
+          "x": 717.59375,
+          "y": 746,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 1004
+        },
+        ".qp-project-card:nth-child(8)": {
+          "x": 717.59375,
+          "y": 1016,
+          "width": 398.328125,
+          "height": 258,
+          "bottom": 1274
+        },
+        ".qp-project-detail": {
+          "x": 1127.921875,
+          "y": 206,
+          "width": 532.0625,
+          "height": 491.671875,
+          "bottom": 697.671875
+        },
+        ".qp-project-top": {
+          "x": 1127.921875,
+          "y": 709.671875,
+          "width": 532.0625,
+          "height": 192.890625,
+          "bottom": 902.5625
+        },
+        ".qp-project-rail": {
+          "x": 1127.921875,
+          "y": 206,
+          "width": 532.0625,
+          "height": 696.5625,
+          "bottom": 902.5625
+        }
+      },
+      "cardsScroll": {
+        "clientHeight": 720,
+        "scrollHeight": 1068,
+        "overflow": "auto"
+      }
+    }
+  ]
+}

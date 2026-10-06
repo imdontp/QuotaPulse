@@ -1,6 +1,6 @@
 /** Real HTTP + in-memory SQLite E2E. Never opens the user's usage database. */
 import assert from 'node:assert/strict';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
@@ -16,6 +16,7 @@ import { checkAlertsLayout } from './check-alerts-layout.mts';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const output = resolve(root, 'screens/history');
 mkdirSync(output, { recursive: true });
+for (const manifest of ['verification.json', 'cost-route-compatibility.json']) rmSync(resolve(output, manifest), { force: true });
 const db = openDb(':memory:');
 const now = Date.now();
 db.exec(`INSERT INTO source(id,harness,profile,root_path,display_name,detected_at) VALUES
@@ -73,19 +74,23 @@ try {
   const liveRequests: string[] = [];
   const modelRequests: string[] = [];
   const costRequests: string[] = [];
+  type UsageMetricSnapshot = { range: { from: number; to: number }; totals: { total_tokens: number } };
+  const overviewUsageResponses: Array<Promise<UsageMetricSnapshot | null>> = [];
   page.on('pageerror', error => errors.push(error.message));
+  page.on('response', response => { if (new URL(response.url()).pathname === '/api/usage' && response.ok()) overviewUsageResponses.push(response.json().catch(() => null)); });
   page.on('request', request => { if (request.url().includes('/api/usage-events')) requests.push(request.url()); if (request.url().includes('/api/live-sessions')) liveRequests.push(request.url()); if (request.url().includes('/api/models?detailed=1')) modelRequests.push(request.url()); if (request.url().includes('/api/cost-analysis?')) costRequests.push(request.url()); });
   await page.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
   await page.goto('http://127.0.0.1:7801/#history?range=all');
   const history = page.getByTestId('usage-history');
   await history.getByText('1–50 of 53 records', { exact: true }).waitFor();
-  await history.getByTestId('history-total-tokens').getByText('7,525', { exact: true }).waitFor();
+  await history.locator('[data-testid="history-total-tokens"][aria-label="7525"]').waitFor();
+  assert.equal(await history.getByTestId('history-total-tokens').getAttribute('title'), '7,525');
   await page.getByRole('dialog').waitFor();
   await page.keyboard.press('Escape');
   await page.getByRole('dialog').waitFor({ state: 'hidden' });
   await history.getByRole('button', { name: 'Next page', exact: true }).click();
   await history.getByText('51–53 of 53 records', { exact: true }).waitFor();
-  assert.equal(await history.getByTestId('history-total-tokens').innerText(), '7,525', 'timeline total changed with pagination');
+  assert.equal(await history.getByTestId('history-total-tokens').getAttribute('aria-label'), '7525', 'timeline total changed with pagination');
   await history.getByRole('button', { name: 'Record details 53', exact: true }).click();
   await page.getByRole('dialog').waitFor();
   assert.match(await page.getByRole('dialog').innerText(), /Session aggregate|session_aggregate/);
@@ -207,12 +212,24 @@ try {
   assert.match(await chart.innerText(), /52 ครั้ง/);
   assert.equal(await chart.locator('[role=img] > span').count() >= 30, true);
   await page.screenshot({ path: resolve(output, 'live-minute-th-light.png') });
+  const overviewUsageResponseStart = overviewUsageResponses.length;
   await page.goto('http://127.0.0.1:7801/#overview');
   const overview = page.getByTestId('production-overview');
-  await overview.locator('.qp-metrics strong').first().getByText('7,525').waitFor();
-  assert.equal(await overview.locator('.qp-pulse-label strong').textContent(), '62%');
-  assert.equal(await overview.locator('.qp-metrics strong').nth(1).textContent(), '2');
-  assert.match(await overview.locator('.qp-metrics strong').nth(3).textContent() ?? '', /฿|THB/);
+  await overview.locator('.qp-metric-rail[data-metric="tokens"][data-value="7525"]').waitFor();
+  assert.equal(await overview.locator('.qp-pulse-label strong').textContent(), '38%');
+  assert.equal(await overview.locator('.qp-metric-meter').getAttribute('aria-valuenow'), '38');
+  assert.deepEqual(await overview.locator('.qp-metric-rail').evaluateAll(nodes => nodes.map(node => node.getAttribute('data-metric'))), ['tokens', 'pace', 'cost', 'cache']);
+  const dailyUsageSnapshots = (await Promise.all(overviewUsageResponses.slice(overviewUsageResponseStart))).filter((snapshot): snapshot is UsageMetricSnapshot => snapshot !== null);
+  assert.ok(dailyUsageSnapshots.length > 0, 'Overview did not fetch usage data');
+  assert.ok(dailyUsageSnapshots.every(snapshot => snapshot.totals.total_tokens === 7525), 'Overview HTTP snapshots disagree with synthetic token total');
+  const observedDailyPace = Number(await overview.locator('[data-metric="pace"]').getAttribute('data-value'));
+  // StrictMode and refresh may issue a newer HTTP request before its snapshot
+  // is rendered. Require an exact pace from a response in this navigation.
+  const expectedDailyPaces = dailyUsageSnapshots.map(snapshot => 7525 * 86400000 / (snapshot.range.to - snapshot.range.from));
+  assert.ok(expectedDailyPaces.some(expected => Math.abs(observedDailyPace - expected) < 1e-9), `Overview pace must match an actual scoped HTTP snapshot: actual=${observedDailyPace}, expected=${JSON.stringify(expectedDailyPaces)}`);
+  assert.ok(Math.abs(Number(await overview.locator('[data-metric="cost"]').getAttribute('data-value')) - 53 * .2) < 1e-9);
+  assert.ok(Math.abs(Number(await overview.locator('[data-metric="cache"]').getAttribute('data-value')) - 52 * .03) < 1e-9);
+  assert.match(await overview.locator('[data-metric="cache"] .qp-metric-rail-main>strong').textContent() ?? '', /฿|THB/);
   await overview.getByTestId('quota-history').locator('summary').first().click();
   await overview.getByTestId('quota-history').locator('.qp-alert-segments>g[data-reset]').first().waitFor();
   assert.equal(await overview.getByTestId('quota-history').locator('.qp-alert-segments>g[data-reset]').count(), 2);
@@ -234,25 +251,27 @@ try {
     localStorage.setItem('quotapulse-theme', 'dark');
   });
   await page.reload();
-  await overview.locator('.qp-metrics strong').first().getByText('7,525').waitFor();
+  await overview.locator('.qp-metric-rail[data-metric="tokens"][data-value="7525"]').waitFor();
   assert.equal(await overview.getAttribute('data-theme'), 'dark');
   const overviewFrom = now - 60_000;
   const overviewTo = Date.now() + 1;
   await page.goto(`http://127.0.0.1:7801/#overview?range=custom&from=${overviewFrom}&to=${overviewTo}&source=2`);
-  await overview.locator('.qp-metrics strong').first().getByText('999', { exact: true }).waitFor();
+  await overview.locator('.qp-metric-rail[data-metric="tokens"][data-value="999"]').waitFor();
   assert.equal(await overview.locator('.qp-hero .qp-chip').isVisible(), true);
-  assert.match(await overview.getByTestId('recent-activity').innerText(), /hermes/);
-  await overview.getByTestId('recent-activity').getByRole('link', { name: 'Open History', exact: true }).click();
+  assert.match(await overview.getByTestId('recent-activity').innerText(), /Hermes Agent/);
+  assert.equal(await overview.getByTestId('recent-activity').locator('.qp-activity-item').getAttribute('data-harness'), 'hermes');
+  assert.equal(await overview.getByTestId('recent-activity').locator('.qp-activity-value').getAttribute('data-rate-state'), 'aggregate');
+  await overview.getByTestId('recent-activity').getByRole('link', { name: englishMessages['redesign.viewAllActivity'], exact: true }).click();
   const scopedOverviewHistory = new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
   assert.equal(scopedOverviewHistory.get('source'), '2');
   assert.equal(scopedOverviewHistory.get('from'), String(overviewFrom));
   assert.equal(scopedOverviewHistory.get('to'), String(overviewTo));
   await page.getByTestId('usage-history').getByText('1–1 of 1 records', { exact: true }).waitFor();
   await page.goto('http://127.0.0.1:7801/#overview');
-  await overview.locator('.qp-metrics strong').first().getByText('7,525').waitFor();
+  await overview.locator('.qp-metric-rail[data-metric="tokens"][data-value="7525"]').waitFor();
   await page.screenshot({ path: resolve(output, 'overview-real-en-dark-1440.png'), fullPage: true });
   assert.equal(await overview.locator('.qp-machine-scope').innerText(), 'This machine');
-  await overview.getByRole('button', { name: 'Go to' }).click();
+  await overview.getByRole('button', { name: englishMessages['palette.open'], exact: true }).click();
   const palette = page.getByRole('dialog', { name: 'Command palette' });
   await palette.locator('input').focus();
   await page.keyboard.press('Shift+Tab');
@@ -260,23 +279,32 @@ try {
   await page.keyboard.press('Tab');
   assert.equal(await palette.locator('input').evaluate(element => element === document.activeElement), true);
   await page.keyboard.press('Escape');
-  assert.equal(await overview.getByRole('button', { name: 'Go to' }).evaluate(element => element === document.activeElement), true);
-  await overview.getByRole('button', { name: 'Go to' }).click();
+  assert.equal(await overview.getByRole('button', { name: englishMessages['palette.open'], exact: true }).evaluate(element => element === document.activeElement), true);
+  await overview.getByRole('button', { name: englishMessages['palette.open'], exact: true }).click();
   await palette.getByRole('button', { name: 'Settings' }).click();
   await page.waitForURL('**/#settings');
   await page.getByRole('heading', { name: 'Settings', exact: true, level: 1 }).waitFor();
   await page.goto('http://127.0.0.1:7801/#overview');
-  await overview.locator('.qp-metrics strong').first().getByText('7,525').waitFor();
+  await overview.locator('.qp-metric-rail[data-metric="tokens"][data-value="7525"]').waitFor();
   await page.keyboard.press('Control+k');
   await palette.getByPlaceholder('Search a page…').fill('Providers');
   await page.keyboard.press('Enter');
   await page.waitForURL('**/#providers');
   await page.goto('http://127.0.0.1:7801/#overview');
-  await overview.locator('.qp-metrics strong').first().getByText('7,525').waitFor();
-  await overview.getByTestId('recent-activity').locator('a.qp-activity-item').first().click();
+  await overview.locator('.qp-metric-rail[data-metric="tokens"][data-value="7525"]').waitFor();
+  const codexActivity = overview.getByTestId('recent-activity').locator('a.qp-activity-item[data-harness="codex"]');
+  assert.equal(await codexActivity.getAttribute('href'), '#history?range=all&session_id=1');
+  await codexActivity.click();
   await page.waitForURL('**/#history?range=all&session_id=1');
   await page.getByRole('heading', { name: 'Usage records', exact: true }).waitFor();
   await page.getByTestId('usage-history').getByText('1–50 of 52 records', { exact: true }).waitFor();
+  const sessionHistoryDialog = page.getByRole('dialog');
+  await sessionHistoryDialog.waitFor();
+  assert.equal(await sessionHistoryDialog.locator('dt').filter({ hasText: /^Session reference$/ }).locator('xpath=following-sibling::dd[1]').textContent(), '1');
+  assert.equal(await sessionHistoryDialog.locator('dt').filter({ hasText: /^Project$/ }).locator('xpath=following-sibling::dd[1]').textContent(), 'alpha_100%');
+  await page.keyboard.press('Escape');
+  await sessionHistoryDialog.waitFor({ state: 'hidden' });
+  assert.equal(await page.getByTestId('usage-history').getByRole('button', { name: 'Record details 1', exact: true }).evaluate(element => element === document.activeElement), true);
   await page.getByTestId('usage-history').getByRole('link', { name: 'Show all sessions', exact: true }).click();
   await page.getByTestId('usage-history').getByText('1–50 of 53 records', { exact: true }).waitFor();
   await page.goto('http://127.0.0.1:7801/#projects?range=all');
@@ -284,10 +312,12 @@ try {
   await projects.getByRole('heading', { name: 'Projects', exact: true }).waitFor();
   await projects.locator('.qp-project-card').first().waitFor();
   assert.equal(await projects.locator('.qp-project-card').count(), 2);
-  assert.match(await projects.locator('.qp-project-detail').innerText(), /6,526/);
+  await projects.locator('.qp-project-detail-metrics strong[data-value="6526"]').waitFor();
+  assert.equal(await projects.locator('.qp-project-detail-metrics strong[data-value]').getAttribute('title'), '6,526');
   await projects.locator('.qp-project-money').getByText('Not reported', { exact: true }).waitFor();
   await projects.locator('.qp-project-trend').waitFor();
-  assert.equal(await projects.locator('.qp-project-trend span').count() > 1, true);
+  assert.ok(await projects.locator('.qp-project-trend circle[data-value]').count() > 1);
+  assert.equal(await projects.locator('.qp-project-trend circle[data-value]').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(node.getAttribute('data-value')), 0)), 6526);
   await projects.getByRole('button', { name: 'Sessions', exact: true }).click();
   await projects.locator('.qp-project-breakdown a').first().waitFor();
   assert.match(await projects.locator('.qp-project-breakdown').innerText(), /synthetic-session/);
@@ -297,7 +327,7 @@ try {
   await page.getByTestId('usage-history').getByText('1–50 of 52 records', { exact: true }).waitFor();
   await page.goto('http://127.0.0.1:7801/#projects?range=all');
   await projects.locator('.qp-project-card').first().waitFor();
-  await projects.getByRole('button', { name: 'Unassigned', exact: true }).click();
+  await projects.locator('.qp-project-tabs').getByRole('button', { name: 'Unassigned', exact: true }).click();
   assert.equal(await projects.locator('.qp-project-card').count(), 1);
   await projects.getByRole('button', { name: 'All projects', exact: true }).click();
   await projects.getByRole('combobox', { name: /Harness/ }).selectOption('codex');
@@ -367,6 +397,7 @@ try {
   await providers.locator('.qp-provider-card').first().waitFor();
   assert.equal(await providers.locator('.qp-provider-card').count(), 4);
   assert.match(await providers.locator('.qp-provider-comparison').innerText(), /3 Owners without a comparable reading/);
+  await providers.locator('.qp-provider-inspector>summary').click();
   const publishedReset = providers.locator('.qp-provider-detail-windows dt').filter({ hasText: /^Reset$/ }).locator('xpath=following-sibling::dd[1]');
   assert.notEqual(await publishedReset.innerText(), 'Unknown', 'published future quota reset was hidden');
   await providers.locator('.qp-provider-card').filter({ hasText: 'Hermes test' }).getByRole('button', { name: 'Hermes test' }).click();
@@ -405,7 +436,8 @@ try {
   assert.equal(modelDefaultFrom, monthStart.getTime(), 'Models default scope must be the calendar month');
   assert.equal(await models.locator('.qp-model-table-wrap tbody tr').count(), 2);
   await models.locator('.qp-model-detail').getByText('gpt-test', { exact: true }).waitFor();
-  await models.locator('.qp-model-trend span').first().waitFor({ state: 'attached' });
+  await models.locator('.qp-model-trend circle[data-value]').first().waitFor({ state: 'attached' });
+  assert.equal(await models.locator('.qp-model-trend circle[data-value]').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(node.getAttribute('data-value')), 0)), 6526);
   assert.match(await models.locator('.qp-model-summary').innerText(), /Model and route pairs\s+2/);
   assert.match(await models.locator('.qp-model-comparison').innerText(), /openrouter/);
   await page.screenshot({ path: resolve(output, 'models-real-en-dark-1440.png'), fullPage: true });
@@ -433,13 +465,19 @@ try {
     localStorage.setItem('quotapulse-theme', 'dark');
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto('http://127.0.0.1:7801/#cost');
+  await page.goto('http://127.0.0.1:7801/#cost?range=month');
   await page.reload();
   const cost = page.getByTestId('production-cost');
   await cost.getByRole('heading', { name: 'Cost analysis', exact: true }).waitFor();
   await cost.locator('.qp-cost-summary strong').first().waitFor();
-  assert.equal(new URL(costRequests.at(-1)!).searchParams.get('from'), '0', 'Cost default scope must be all time');
+  assert.equal(Number(new URL(costRequests.at(-1)!).searchParams.get('from')), monthStart.getTime(), 'Cost explicit month scope must begin at the calendar month');
+  assert.equal(await cost.getByRole('combobox', { name: 'Period', exact: true }).inputValue(), 'month');
+  const explicitAllCost = page.waitForResponse(response => response.url().includes('/api/cost-analysis?') && new URL(response.url()).searchParams.get('from') === '0');
+  await cost.getByRole('combobox', { name: 'Period' }).selectOption('all');
+  assert.equal((await explicitAllCost).ok(), true, 'Cost explicit All time request failed');
+  const explicitMonthCost = page.waitForResponse(response => response.url().includes('/api/cost-analysis?') && Number(new URL(response.url()).searchParams.get('from')) === monthStart.getTime());
   await cost.getByRole('combobox', { name: 'Period' }).selectOption('month');
+  assert.equal((await explicitMonthCost).ok(), true, 'Cost explicit month request failed');
   await page.waitForFunction(() => (document.querySelector('.qp-cost-toolbar select') as HTMLSelectElement)?.value === 'month');
   await cost.locator('.qp-cost-sessions tbody tr').first().waitFor();
   assert.equal(Number(new URL(costRequests.at(-1)!).searchParams.get('from')), monthStart.getTime(), 'Cost explicit month must retain its calendar scope');
@@ -461,7 +499,7 @@ try {
     localStorage.setItem('quotapulse-theme', 'light');
   });
   await page.setViewportSize({ width: 390, height: 1000 });
-  await page.goto('http://127.0.0.1:7801/#cost');
+  await page.goto('http://127.0.0.1:7801/#cost?range=month');
   await page.reload();
   if (await cost.getAttribute('lang') !== 'th') await cost.locator('.qp-tools button').last().click();
   await cost.getByRole('heading', { name: 'วิเคราะห์ต้นทุน', exact: true }).waitFor();
@@ -576,7 +614,7 @@ try {
     await page.evaluate(() => document.fonts.ready);
     if (destination === 'history') {
       const geometry = await page.getByTestId('history-timeline').evaluate(element => {
-        const svg = element.querySelector('svg')!;
+        const svg = element.querySelector('svg[role="img"]')!;
         const line = svg.querySelector('line')!;
         const table = document.querySelector('[data-testid="usage-history"] tbody tr')!;
         return { timelineHeight: element.getBoundingClientRect().height, chartWidth: svg.getBoundingClientRect().width, plotWidth: Number(line.getAttribute('x2')) - Number(line.getAttribute('x1')), firstRowBottom: table.getBoundingClientRect().bottom };
@@ -592,7 +630,7 @@ try {
       providers: ['.qp-provider-grid', '.qp-provider-detail', '.qp-provider-bottom'],
       models: ['.qp-model-summary', '.qp-model-providers', '.qp-model-detail'],
     };
-    if (destination === 'models') await page.locator('.qp-model-trend span').first().waitFor({ state: 'attached' });
+    if (destination === 'models') await page.locator('.qp-model-trend circle[data-value]').first().waitFor({ state: 'attached' });
     if (destination === 'projects') await page.locator('.qp-project-trend').waitFor();
     const regions = await page.evaluate(selectors => Object.fromEntries(selectors.map(selector => {
       const { x, y, width, height } = document.querySelector(selector)!.getBoundingClientRect();
@@ -650,9 +688,16 @@ try {
       assert.equal(await screen.locator('.qp-sidebar nav a[aria-current="page"]').count(), 1);
       assert.equal(await screen.locator('main h1').count(), 1);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${destination}/${lang}/${theme}/${width} overflow`);
+      if (destination === 'history') {
+        const defaultDetail = page.getByRole('dialog');
+        await defaultDetail.waitFor();
+        await page.keyboard.press('Escape');
+        await defaultDetail.waitFor({ state: 'hidden' });
+        assert.equal(await page.evaluate(() => Boolean(document.activeElement?.closest('[data-testid="usage-history"] tbody tr'))), true, `${lang}/${theme}/${width}: History Escape did not restore the selected-row focus`);
+      }
       const link = screen.locator('.qp-sidebar nav a').first();
       await link.focus();
-      assert.equal(await link.evaluate(element => getComputedStyle(element).outlineStyle), 'solid', 'missing keyboard focus');
+      assert.equal(await link.evaluate(element => getComputedStyle(element).outlineStyle), 'solid', `${destination}/${lang}/${theme}/${width}: missing keyboard focus; ${await page.evaluate(() => JSON.stringify({ active: document.activeElement?.outerHTML, openDialogs: [...document.querySelectorAll('dialog[open]')].map(dialog => dialog.getAttribute('aria-labelledby') || dialog.getAttribute('aria-label')) }))}`);
       await page.waitForTimeout(100);
       // The previous HTTP stream can still be closing after a document reload.
       // Bound transport cleanup separately from the synchronous client count.
@@ -681,11 +726,16 @@ try {
       entry.setup();
       await page.goto(`http://127.0.0.1:7801/#overview?range=all${entry.suffix ?? ''}`);
       await page.reload();
-      const metrics = page.getByTestId('production-overview').locator('.qp-metrics strong');
-      await metrics.first().waitFor();
-      assert.equal(await metrics.nth(2).locator('span > span').first().textContent(), entry.native, `${entry.name}: Overview native`);
-      assert.equal(await metrics.nth(3).locator('span > span').first().textContent(), entry.api, `${entry.name}: Overview API`);
-      assert.match(await metrics.nth(3).locator('[title]').getAttribute('title') ?? '', new RegExp(entry.coverage));
+      // The Overview combines known native and API prices; Models/Cost below
+      // independently verify the separate bases and weighted coverage.
+      const combined = entry.name === 'mixed weighted bases' ? '$0.60+' : entry.api;
+      const combinedAmount = entry.name === 'mixed weighted bases' ? .6 : 0;
+      const combinedCoverage = entry.name === 'mixed weighted bases' ? '60 / 110' : entry.coverage;
+      const costMetric = page.getByTestId('production-overview').locator('.qp-metric-rail[data-metric="cost"]');
+      await costMetric.waitFor();
+      assert.equal(await costMetric.locator('.qp-cost-value>span').first().textContent(), combined, `${entry.name}: Overview combined known cost`);
+      assert.ok(Math.abs(Number(await costMetric.getAttribute('data-value')) - combinedAmount) < 1e-9, `${entry.name}: exact Overview combined amount`);
+      assert.match(await costMetric.locator('.qp-cost-value').getAttribute('title') ?? '', new RegExp(combinedCoverage));
       await page.goto(`http://127.0.0.1:7801/#models?range=all${entry.suffix ?? ''}`);
       await page.reload();
       const summary = page.getByTestId('production-models').locator('.qp-model-summary article').last();
@@ -718,6 +768,32 @@ try {
     }
   } finally { db.exec("UPDATE usage_event SET cost_usd=0.2,cost_source='computed',call_count=1"); }
   writeFileSync(resolve(output, 'cost-semantics.json'), JSON.stringify({ database: 'in-memory synthetic', cases: costCases.map(({ name, native, api, coverage }) => ({ name, native, api, coverage })), checks: ['Overview, Models and Cost summary', 'Models comparison and selected model', 'weighted call counts', 'separate native and API bases', 'accessible coverage explanation', 'Cost zero bars and neutral zero donut', 'Cost model weighted coverage'] }, null, 2));
+  // Blueprint v1.1 compatibility: an existing bare Cost bookmark retains
+  // All time. Design workflows above select month explicitly.
+  const bareCostResponse = page.waitForResponse(response => response.url().includes('/api/cost-analysis?') && response.ok());
+  await page.goto('http://127.0.0.1:7801/#cost');
+  const bareCostSnapshot = await (await bareCostResponse).json();
+  assert.equal(bareCostSnapshot.scope.from, 0, 'Legacy bare #cost must preserve All time per blueprint v1.1');
+  await page.getByTestId('production-cost').locator('.qp-cost-summary strong').first().waitFor();
+  assert.equal(await page.getByTestId('production-cost').locator('.qp-cost-toolbar select').first().inputValue(), 'all');
+  const sidebarCostLink = page.getByTestId('production-cost').locator('.qp-sidebar nav a[href="#cost?range=month"]');
+  assert.equal(await sidebarCostLink.count(), 1);
+  const sidebarMonthResponse = page.waitForResponse(response => response.url().includes('/api/cost-analysis?') && Number(new URL(response.url()).searchParams.get('from')) === monthStart.getTime());
+  await sidebarCostLink.click();
+  await page.waitForURL('**/#cost?range=month');
+  const sidebarCostSnapshot = await (await sidebarMonthResponse).json();
+  assert.equal(sidebarCostSnapshot.scope.from, monthStart.getTime(), 'Redesigned sidebar Cost navigation must explicitly select month');
+  await page.goto('http://127.0.0.1:7801/#overview');
+  await page.getByTestId('production-overview').locator('.qp-metric-rail').first().waitFor();
+  await page.keyboard.press('Control+k');
+  const costPalette = page.getByRole('dialog');
+  await costPalette.getByRole('button', { name: englishMessages['redesign.cost'], exact: true }).waitFor();
+  const paletteMonthResponse = page.waitForResponse(response => response.url().includes('/api/cost-analysis?') && Number(new URL(response.url()).searchParams.get('from')) === monthStart.getTime());
+  await costPalette.getByRole('button', { name: englishMessages['redesign.cost'], exact: true }).click();
+  await page.waitForURL('**/#cost?range=month');
+  const paletteCostSnapshot = await (await paletteMonthResponse).json();
+  assert.equal(paletteCostSnapshot.scope.from, monthStart.getTime(), 'Redesigned command palette Cost navigation must explicitly select month');
+  writeFileSync(resolve(output, 'cost-route-compatibility.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['blueprint v1.1 bare Cost preserves All time', 'sidebar Cost explicitly selects month', 'command palette Cost explicitly selects month'], ranges: { bare: bareCostSnapshot.scope, sidebar: sidebarCostSnapshot.scope, palette: paletteCostSnapshot.scope } }, null, 2));
   // Occupied Live layouts and pagination get a separate synthetic fixture after
   // the baseline flow, so its original totals and captured reference values stay intact.
   await page.close();
@@ -753,15 +829,32 @@ try {
         assert.equal(await screen.locator('.qp-live-metrics strong').first().textContent(), '13');
         assert.equal(await screen.locator('.qp-live-matrix li').count(), 12);
         assert.equal(await screen.locator('.qp-live-feed li').count(), 8);
-        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-live-sessions', '.qp-live-trend', '.qp-live-records', '.qp-live-feed li', '.qp-live-rail'].map(selector => {
+        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-live-sessions', '.qp-live-trend', '.qp-live-records', '.qp-live-feed li', '.qp-live-rail', '.qp-live-rail>section:first-child', '.qp-live-matrix-section', '.qp-live-matrix'].map(selector => {
           const { x, y, width, height, bottom } = node.querySelector(selector)!.getBoundingClientRect();
           return [selector, { x, y, width, height, bottom }];
         })));
         assert.ok(regions['.qp-live-feed li'].bottom < 941, `${lang}/${theme}: occupied Live first feed record outside viewport: ${JSON.stringify(regions)}`);
         assert.ok(regions['.qp-live-rail'].bottom < 941, `${lang}/${theme}: occupied Live rail outside viewport: ${JSON.stringify(regions)}`);
+        const matrixList = screen.locator('.qp-live-matrix');
+        const matrixIdentities = await matrixList.locator('li').allTextContents();
+        const matrixScroll = await matrixList.evaluate(node => ({ clientHeight: node.clientHeight, scrollHeight: node.scrollHeight, overflow: getComputedStyle(node).overflowY }));
+        assert.ok(matrixScroll.clientHeight <= 360, `${lang}/${theme}: matrix exceeds its desktop height bound: ${JSON.stringify(matrixScroll)}`);
+        assert.ok(matrixScroll.scrollHeight > matrixScroll.clientHeight, `${lang}/${theme}: occupied matrix should expose additional rows through scrolling`);
+        assert.equal(matrixScroll.overflow, 'auto');
+        assert.equal(await matrixList.getAttribute('tabindex'), '0');
+        assert.equal(await matrixList.getAttribute('aria-label'), (lang === 'en' ? englishMessages : thaiMessages)['redesign.liveMatrix']);
+        await occupied.keyboard.press('Tab');
+        await matrixList.focus();
+        assert.equal(await matrixList.evaluate(node => node === document.activeElement), true);
+        assert.equal(await matrixList.evaluate(node => getComputedStyle(node).outlineStyle), 'solid');
+        await occupied.keyboard.press('End');
+        await occupied.waitForFunction(() => (document.querySelector('.qp-live-matrix')?.scrollTop ?? 0) > 0);
+        assert.deepEqual(await matrixList.locator('li').allTextContents(), matrixIdentities, `${lang}/${theme}: scrolling changed the twelve observed identities`);
+        await occupied.keyboard.press('Home');
+        await occupied.waitForFunction(() => document.querySelector('.qp-live-matrix')?.scrollTop === 0);
         const filename = `live-occupied-${lang}-${theme}.png`;
         await occupied.screenshot({ path: resolve(output, filename), animations: 'disabled' });
-        occupiedCaptures.push({ lang, theme, viewport: { width: 1672, height: 941 }, filename, regions });
+        occupiedCaptures.push({ lang, theme, viewport: { width: 1672, height: 941 }, filename, regions, matrixScroll });
         const sessionControls = screen.locator('.qp-live-sessions .qp-live-pagination button');
         await sessionControls.last().click();
         await occupied.waitForURL(/session_offset=10/);
@@ -851,17 +944,51 @@ try {
         assert.equal(await screen.locator('.qp-project-detail-metrics > div').nth(2).locator('strong').textContent(), '76');
         assert.match(await native.getAttribute('title') ?? '', /36 \/ 76/);
         assert.match(await apiValue.getAttribute('title') ?? '', /40 \/ 76/);
-        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-project-cards', '.qp-project-card:nth-child(6)', '.qp-project-detail', '.qp-project-top', '.qp-project-rail'].map(selector => {
+        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-project-cards', '.qp-project-card:nth-child(4)', '.qp-project-card:nth-child(6)', '.qp-project-card:nth-child(8)', '.qp-project-detail', '.qp-project-top', '.qp-project-rail'].map(selector => {
           const { x, y, width, height, bottom } = node.querySelector(selector)!.getBoundingClientRect();
           return [selector, { x, y, width, height, bottom }];
         })));
         assert.equal(regions['.qp-project-top'].x, regions['.qp-project-detail'].x, 'Occupied ranking is outside detail column');
         assert.ok(regions['.qp-project-top'].y >= regions['.qp-project-detail'].bottom, 'Occupied ranking is above detail');
         assert.ok(regions['.qp-project-rail'].bottom < 941, `${lang}/${theme}: Projects rail outside viewport: ${JSON.stringify(regions)}`);
-        assert.ok(regions['.qp-project-card:nth-child(6)'].bottom < 941, `${lang}/${theme}: first six project cards outside viewport`);
+        // refs/projects.png at 1672x941 shows two complete rows; its third
+        // row begins around y739 and is cropped at the viewport bottom.
+        // Preserve that card rhythm and verify keyboard access to later rows.
+        assert.ok(await screen.locator('.qp-project-card').evaluateAll(nodes => nodes.slice(0, 4).every(node => node.getBoundingClientRect().bottom < 941)), `${lang}/${theme}: first four project cards outside viewport: ${JSON.stringify(regions)}`);
+        assert.ok(regions['.qp-project-cards'].bottom < 941, `${lang}/${theme}: project scroller outside viewport: ${JSON.stringify(regions)}`);
+        const cardsList = screen.locator('.qp-project-cards');
+        const cardIdentities = await cardsList.locator('.qp-project-card-heading strong').allTextContents();
+        assert.equal(cardIdentities.length, 8);
+        const cardsScroll = await cardsList.evaluate(node => ({ clientHeight: node.clientHeight, scrollHeight: node.scrollHeight, overflow: getComputedStyle(node).overflowY }));
+        assert.ok(cardsScroll.scrollHeight > cardsScroll.clientHeight, `${lang}/${theme}: later project rows must be reachable by scrolling`);
+        assert.equal(cardsScroll.overflow, 'auto');
+        assert.equal(await cardsList.getAttribute('tabindex'), '0');
+        assert.equal(await cardsList.getAttribute('aria-label'), messages['redesign.allProjects']);
+        await occupied.keyboard.press('Tab');
+        await cardsList.focus();
+        assert.equal(await cardsList.evaluate(node => node === document.activeElement), true);
+        assert.equal(await cardsList.evaluate(node => getComputedStyle(node).outlineStyle), 'solid');
+        await occupied.keyboard.press('End');
+        await occupied.waitForFunction(() => {
+          const scroller = document.querySelector('.qp-project-cards');
+          const lastCard = scroller?.querySelector('.qp-project-card:last-child');
+          if (!scroller || !lastCard || scroller.scrollTop <= 0) return false;
+          const bounds = scroller.getBoundingClientRect();
+          const last = lastCard.getBoundingClientRect();
+          return last.top >= bounds.top - 1 && last.bottom <= bounds.bottom + 1;
+        });
+        const finalCardVisible = await cardsList.evaluate(node => {
+          const last = node.querySelector('.qp-project-card:last-child')!.getBoundingClientRect();
+          const scroller = node.getBoundingClientRect();
+          return last.top >= scroller.top - 1 && last.bottom <= scroller.bottom + 1;
+        });
+        assert.equal(finalCardVisible, true, `${lang}/${theme}: End did not expose the final eighth project card`);
+        assert.deepEqual(await cardsList.locator('.qp-project-card-heading strong').allTextContents(), cardIdentities, 'Scrolling changed the eight observed project identities');
+        await occupied.keyboard.press('Home');
+        await occupied.waitForFunction(() => document.querySelector('.qp-project-cards')?.scrollTop === 0);
         const filename = `projects-occupied-${lang}-${theme}.png`;
         await occupied.screenshot({ path: resolve(output, filename), animations: 'disabled' });
-        projectCaptures.push({ lang, theme, viewport: { width: 1672, height: 941 }, filename, regions });
+        projectCaptures.push({ lang, theme, viewport: { width: 1672, height: 941 }, filename, regions, cardsScroll });
         await screen.locator('.qp-project-top button').filter({ hasText: 'Project 3' }).click();
         await screen.locator('.qp-project-detail h2').getByText('Project 3', { exact: true }).waitFor();
         assert.equal(await screen.locator('.qp-project-card[aria-pressed=true] .qp-project-card-heading strong').textContent(), 'Project 3');
@@ -912,7 +1039,7 @@ try {
       db.exec('DELETE FROM usage_event WHERE session_id BETWEEN 200 AND 229; DELETE FROM session WHERE id BETWEEN 200 AND 229;');
     })();
   }
-  writeFileSync(resolve(output, 'projects-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { projects: 8, addedSessions: 30, selectedProjectSessions: 25, selectedProjectCalls: 76, selectedProjectRoutes: 3 }, checks: ['ranking below details in same column', 'first six cards and complete rail in concept viewport', 'en/th and dark/light', 'weighted native and API monetary coverage', 'ranking selects project', '20/5 session pagination', '390/900/1280 overflow', 'exact source/harness/project/session History scope', 'long Thai identity and observed paths', 'empty filtered cards and ranking'], captures: projectCaptures }, null, 2));
+  writeFileSync(resolve(output, 'projects-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { projects: 8, addedSessions: 30, selectedProjectSessions: 25, selectedProjectCalls: 76, selectedProjectRoutes: 3 }, checks: ['ranking below details in same column', 'reference two complete card rows and complete rail in concept viewport; all eight cards keyboard reachable', 'en/th and dark/light', 'weighted native and API monetary coverage', 'ranking selects project', '20/5 session pagination', '390/900/1280 overflow', 'exact source/harness/project/session History scope', 'long Thai identity and observed paths', 'empty filtered cards and ranking'], captures: projectCaptures }, null, 2));
   // Occupied Cost: five recorded providers, nine models (top eight), seven projects,
   // twelve sessions (top ten), with values distributed through a 30-day scope.
   const costCaptures: unknown[] = [];
