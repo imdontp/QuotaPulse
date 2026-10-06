@@ -48,6 +48,12 @@ matching API record in the right-side detail rail. Focus, keyboard, range-count
 and overflow checks pass. Captured records remain concentrated near the end of
 the period, so the reference likeness target is still open.
 
+Latest Alerts behavior checkpoint: [Forecastable quota default v1.85.18](redesign-v1.85.18/REDESIGN-ALERTS-FORECAST-DEFAULT-V1.85.18.md)
+selects the first owner/window with an API-backed ready forecast unless a route
+explicitly requests another one. The selected monthly forecast reports 4.3 days
+from recorded quota samples. Stable captures and owner/window checks pass; full
+source likeness remains open.
+
 ## Source and observed gaps
 
 Latest presentation work: [Panel identity marks and recorded Live curves v1.64](REDESIGN-SECTION-MARKS-V1.64.md)

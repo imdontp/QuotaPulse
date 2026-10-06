@@ -405,7 +405,9 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
   const forecastSelect = page.locator('.qp-alert-chart select');
   const initialWindow = await forecastSelect.inputValue();
   const forecastStates = new Set<string>();
-  for (const key of await forecastSelect.locator('option').evaluateAll(options => options.map(option => (option as HTMLOptionElement).value))) {
+  const forecastWindows: string[] = [];
+  const keys = await forecastSelect.locator('option').evaluateAll(options => options.map(option => (option as HTMLOptionElement).value));
+  for (const key of keys) {
     if (await forecastSelect.inputValue() !== key) {
       const quotaResponse = page.waitForResponse(response => response.url().includes('/api/quota-history?') && response.status() === 200);
       await forecastSelect.selectOption(key); await quotaResponse; await settled(page, pending);
@@ -416,6 +418,7 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
     assert.equal(quotaResponse.statusCode, 200);
     const quota = quotaResponse.json<QuotaHistoryResponse>();
     forecastStates.add(quota.reader?.forecast.status ?? 'unknown');
+    if (quota.reader?.forecast.status === 'ready' && quota.reader.forecast.projectedFullAt != null) forecastWindows.push(key);
     const expected = quota.reader?.forecast.status === 'ready' && quota.reader.forecast.projectedFullAt != null
       ? new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 1 }).format(Math.max(0, (quota.reader.forecast.projectedFullAt - fixedNow) / 86_400_000))
       : lang === 'th' ? 'ไม่ทราบ' : 'Unknown';
@@ -423,6 +426,7 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
   }
   assert.ok(forecastStates.has('ready'), 'Ready forecast fixture was not checked');
   assert.ok([...forecastStates].some(status => status !== 'ready'), 'Unavailable forecast fixture was not checked');
+  assert.equal(initialWindow, forecastWindows[0] ?? keys[0], 'Alerts should default to the first quota window with an API-backed forecast');
   if (await forecastSelect.inputValue() !== initialWindow) {
     const quotaResponse = page.waitForResponse(response => response.url().includes('/api/quota-history?') && response.status() === 200);
     await forecastSelect.selectOption(initialWindow); await quotaResponse; await settled(page, pending);

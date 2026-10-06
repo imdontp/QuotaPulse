@@ -47,7 +47,8 @@ export function ProductionAlerts() {
   const now = overview?.now ?? Date.now();
   const riskModel = getQuotaRiskModel(overview?.limits ?? [], overview?.settings.hidden_subscriptions ?? [], now);
   const { windows, risks, activeRisks, freshCount } = riskModel;
-  const selected = windows.find(({ primary }) => ownerKey(primary) === route.owner && primary.window_kind === route.window) ?? windows[0];
+  const selected = windows.find(({ primary }) => ownerKey(primary) === route.owner && primary.window_kind === route.window) ??
+    windows.find(({ primary }) => primary.forecast?.status === 'ready' && primary.forecast.projectedFullAt != null) ?? windows[0];
   const selectionKey = selected ? windowKey(selected.primary) : '';
   useEffect(() => {
     if (!selected) return;
