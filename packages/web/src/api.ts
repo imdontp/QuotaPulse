@@ -504,7 +504,7 @@ export interface SessionRow {
   cost_estimated_calls: number;
 }
 
-export type UsageRangeKey = 'today' | 'week' | 'month' | 'all' | 'custom';
+export type UsageRangeKey = 'today' | 'week' | 'month' | 'last30' | 'all' | 'custom';
 export type UsageBucket = 'hour' | 'day' | 'week' | 'month';
 
 export interface UsagePeriod {

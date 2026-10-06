@@ -1,4 +1,4 @@
-export type UsageRangeKey = 'today' | 'week' | 'month' | 'all' | 'custom';
+export type UsageRangeKey = 'today' | 'week' | 'month' | 'last30' | 'all' | 'custom';
 export type UsageBucket = 'hour' | 'day' | 'week' | 'month';
 
 export interface UsagePeriod {
@@ -44,7 +44,7 @@ function timezoneName(): string {
 
 function automaticBucket(range: UsageRangeKey, from: number, to: number): UsageBucket {
   if (range === 'today') return 'hour';
-  if (range === 'week' || range === 'month') return 'day';
+  if (range === 'week' || range === 'month' || range === 'last30') return 'day';
   if (range === 'all') return 'month';
   const spanDays = (to - from) / DAY_MS;
   if (spanDays <= 31) return 'day';
@@ -73,6 +73,10 @@ export function resolveUsagePeriod(input: UsagePeriodInput): UsagePeriod {
       break;
     case 'month':
       from = startOfLocalMonth(now);
+      to = now;
+      break;
+    case 'last30':
+      from = now - 30 * DAY_MS;
       to = now;
       break;
     case 'all':

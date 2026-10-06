@@ -23,7 +23,7 @@ export interface UsageRouteUpdate {
   view?: UsageView;
 }
 
-const RANGE_KEYS: UsageRangeKey[] = ['today', 'week', 'month', 'all', 'custom'];
+const RANGE_KEYS: UsageRangeKey[] = ['today', 'week', 'month', 'last30', 'all', 'custom'];
 const BUCKET_KEYS: Array<UsageBucket | 'auto'> = ['auto', 'hour', 'day', 'week', 'month'];
 const VIEW_KEYS: UsageView[] = ['summary', 'cost', 'projects', 'models'];
 const DAY = 86_400_000;
@@ -42,11 +42,11 @@ function routeHash(scope: 'usage' | 'sessions' | 'history', route: UsageRoute): 
 }
 
 function readRoute(scope: 'usage' | 'sessions' | 'history'): UsageRoute {
-  if (typeof window === 'undefined') return { selection: { range: 'today', bucket: 'auto' }, view: 'summary' };
+  if (typeof window === 'undefined') return { selection: { range: scope === 'history' ? 'last30' : 'today', bucket: 'auto' }, view: 'summary' };
   const [path, rawQuery = ''] = window.location.hash.slice(1).split('?');
   const params = new URLSearchParams(rawQuery);
   const rawRange = params.get('range') as UsageRangeKey | null;
-  const range = rawRange && RANGE_KEYS.includes(rawRange) ? rawRange : 'today';
+  const range = rawRange && RANGE_KEYS.includes(rawRange) ? rawRange : scope === 'history' ? 'last30' : 'today';
   const rawBucket = params.get('bucket') as UsageBucket | null;
   const bucket = rawBucket && BUCKET_KEYS.includes(rawBucket) ? rawBucket : 'auto';
   const source = Number(params.get('source'));
@@ -141,6 +141,7 @@ export function UsageRangeBar({
         <option value="today">{t('usage.today')}</option>
         <option value="week">{t('usage.thisWeek')}</option>
         <option value="month">{t('usage.thisMonth')}</option>
+        <option value="last30">{t('redesign.last30')}</option>
         <option value="all">{t('usage.allTime')}</option>
         <option value="custom">{t('usage.custom')}</option>
       </Select>

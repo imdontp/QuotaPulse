@@ -49,6 +49,7 @@ export function HistorySection({ sources, redesign = false }: { sources: Array<{
   const [error, setError] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
   const [selected, setSelected] = useState<UsageEventRow | null>(null);
+  const initialSelection = useRef(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const returnFocus = useRef<HTMLButtonElement | null>(null);
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
@@ -67,7 +68,11 @@ export function HistorySection({ sources, redesign = false }: { sources: Array<{
     addEventListener('hashchange', sync);
     return () => removeEventListener('hashchange', sync);
   }, []);
-  useEffect(() => { if (selected && !dialog.current?.open) dialog.current?.showModal(); }, [selected]);
+  useEffect(() => {
+    if (!selected || dialog.current?.open) return;
+    returnFocus.current ??= document.querySelector<HTMLButtonElement>('[data-testid="usage-history"] tr[data-selected="true"] button');
+    dialog.current?.showModal();
+  }, [selected]);
   useEffect(() => {
     if (location.hash.slice(1).split('?')[0] !== 'history') return;
     const params = new URLSearchParams(location.hash.split('?')[1] ?? '');
@@ -97,6 +102,10 @@ export function HistorySection({ sources, redesign = false }: { sources: Array<{
       if (result.total > 0 && offset >= result.total) { setOffset(0); return; }
       setSnapshot(result);
       setSummary(fullRange);
+      if (redesign && !initialSelection.current) {
+        initialSelection.current = true;
+        setSelected(result.rows[0] ?? null);
+      }
       setSnapshotKey(queryKey);
       setError(null);
     } catch (err) {

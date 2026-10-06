@@ -4,7 +4,7 @@ import { join } from 'node:path';
 
 import { buildServer } from '../src/api/server.js';
 import { openDb, type DB } from '../src/db/index.js';
-import { startOfLocalMonth, startOfLocalWeek } from '../src/api/usage-period.js';
+import { resolveUsagePeriod, startOfLocalMonth, startOfLocalWeek } from '../src/api/usage-period.js';
 import { Scheduler } from '../src/ingest/scheduler.js';
 import { tmpRoot } from './fixtures.js';
 
@@ -25,6 +25,10 @@ test('usage period uses local calendar boundaries and Monday weeks', () => {
   const monthDate = new Date(month);
   assert.equal(monthDate.getDate(), 1);
   assert.equal(monthDate.getHours(), 0);
+  assert.deepEqual(resolveUsagePeriod({ range: 'last30', now }), {
+    range: 'last30', from: now - 30 * 86_400_000, to: now,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, bucket: 'day',
+  });
 });
 
 test('usage endpoint returns normalized range, calendar timeline, and source totals', async () => {
@@ -60,6 +64,13 @@ test('usage endpoint returns normalized range, calendar timeline, and source tot
     assert.equal(body.timeline[0]!.series, 'all');
     assert.equal(body.bySource[0]!.display_name, 'Codex');
     assert.equal(body.bySource[0]!.calls, 2);
+
+    const last30Response = await app.inject({ url: '/api/usage?range=last30', headers: { 'x-quotapulse-token': 'usage-token' } });
+    assert.equal(last30Response.statusCode, 200);
+    const last30 = last30Response.json().range as { range: string; from: number; to: number; bucket: string };
+    assert.equal(last30.range, 'last30');
+    assert.equal(last30.from, last30.to - 30 * 86_400_000);
+    assert.equal(last30.bucket, 'day');
 
     const weekResponse = await app.inject({
       url: '/api/usage?range=week',

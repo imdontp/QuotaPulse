@@ -1,0 +1,931 @@
+{
+  "status": "repeatable within recorded raster tolerance; review candidates, not approved visual baselines",
+  "scope": "history",
+  "captureMatrix": {
+    "languages": [
+      "en",
+      "th"
+    ],
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "complete": true
+  },
+  "clock": 1747489320000,
+  "isoClock": "2025-05-17T13:42:00.000Z",
+  "browser": "154.0.8037.97",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "timezone": "Asia/Bangkok",
+  "dpr": 1,
+  "reducedMotion": true,
+  "tolerance": {
+    "maxChannelDelta": 10,
+    "maxChangedPixelFraction": 0.00005,
+    "masks": false
+  },
+  "captureNormalization": [
+    "CSS transitions disabled and caret hidden before screenshot only",
+    "Playwright animations disabled during screenshot"
+  ],
+  "productionIndexSha256": "78127223aeda353ae1b54e429257a03be5845e6bf144a42e7af7e2773d79aa70",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "sessions": 12,
+    "runtimeMapProject": "QuotaPulse",
+    "runtimeMapSessions": 12,
+    "runtimeMapRecords": 39,
+    "allRangeProjects": 5,
+    "allRangeRecords": 43,
+    "namedProjects": 5,
+    "projectNames": [
+      "QuotaPulse",
+      "Agent Platform",
+      "Edge Services",
+      "Developer Tools",
+      "Research Lab"
+    ],
+    "models": 6,
+    "modelNames": [
+      "DeepSeek V4.1",
+      "GPT-5.x",
+      "Claude 3.7",
+      "Claude 3.5",
+      "Others",
+      "GPT-4.1 mini"
+    ],
+    "modelShares": [
+      38,
+      24,
+      18,
+      11,
+      9,
+      0
+    ],
+    "providers": 4,
+    "records": 39,
+    "quotaOwners": [
+      "OpenAI Subscription",
+      "OpenCode Go Subscription"
+    ],
+    "cacheSharePercent": 42,
+    "monthlySelection": "OpenAI Subscription · monthly"
+  },
+  "checks": [
+    "frozen daemon and browser Date",
+    "source-matched date on the screenshot clock",
+    "reference-matched Overview section labels and model rail accessible name",
+    "reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection",
+    "16 screenshots / 8 pairs within raster tolerance",
+    "independent browser process per language/theme set",
+    "fresh document per route",
+    "production web without Vite",
+    "fonts ready and API settled",
+    "no page overflow",
+    "no external or write requests",
+    "no browser errors",
+    "History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow"
+  ],
+  "referenceColumnChecks": [],
+  "liveDensityChecks": [],
+  "liveMinuteChecks": [],
+  "liveRefreshChecks": [],
+  "overviewLayouts": [],
+  "overviewReferenceLabelChecks": [],
+  "overviewConceptDataChecks": [],
+  "projectCardChecks": [],
+  "providerChecks": [],
+  "modelComparisonChecks": [],
+  "costAxisChecks": [],
+  "historyChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "eventId": 1,
+      "widths": [
+        390,
+        900,
+        1280
+      ],
+      "modal": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "eventId": 1,
+      "widths": [
+        390,
+        900,
+        1280
+      ],
+      "modal": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "eventId": 1,
+      "widths": [
+        390,
+        900,
+        1280
+      ],
+      "modal": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "eventId": 1,
+      "widths": [
+        390,
+        900,
+        1280
+      ],
+      "modal": true,
+      "focusRestored": true
+    }
+  ],
+  "historyRailChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "x": 1376,
+      "y": 72,
+      "width": 288,
+      "height": 861,
+      "contentGap": 12,
+      "transparentBackdrop": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "x": 1376,
+      "y": 72,
+      "width": 288,
+      "height": 861,
+      "contentGap": 12,
+      "transparentBackdrop": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "x": 1376,
+      "y": 72,
+      "width": 288,
+      "height": 861,
+      "contentGap": 12,
+      "transparentBackdrop": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "x": 1376,
+      "y": 72,
+      "width": 288,
+      "height": 861,
+      "contentGap": 12,
+      "transparentBackdrop": true
+    }
+  ],
+  "pageHeadingChecks": [],
+  "sectionMarkChecks": [],
+  "historyDensityChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "bottom": 924.40625,
+      "visibleRows": 5,
+      "records": 43,
+      "keyboardScrolled": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "bottom": 924.40625,
+      "visibleRows": 5,
+      "records": 43,
+      "keyboardScrolled": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "bottom": 924.40625,
+      "visibleRows": 5,
+      "records": 43,
+      "keyboardScrolled": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "bottom": 924.40625,
+      "visibleRows": 5,
+      "records": 43,
+      "keyboardScrolled": true
+    }
+  ],
+  "alertChecks": [],
+  "chartChecks": [],
+  "modelCostChecks": [],
+  "quotaChecks": [],
+  "pulseCoreChecks": [],
+  "pulseAmbientChecks": [],
+  "modelMarkChecks": [],
+  "overviewPeriodChecks": [],
+  "overviewInsightChecks": [],
+  "quotaGroupChecks": [],
+  "recentActivityChecks": [],
+  "activityBitmapChecks": [],
+  "activityRendererChecks": [],
+  "runtimeChecks": [],
+  "runtimeGeometryChecks": [],
+  "shellChecks": [
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    }
+  ],
+  "headerChecks": [
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "Sat, May 17, 2025"
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "Sat, May 17, 2025"
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "Sat, May 17, 2025"
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "Sat, May 17, 2025"
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "เสาร์ 17 พ.ค. 2568"
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "เสาร์ 17 พ.ค. 2568"
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "เสาร์ 17 พ.ค. 2568"
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "เสาร์ 17 พ.ค. 2568"
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    }
+  ],
+  "workspaceChecks": [],
+  "fontProvenance": {
+    "family": "Noto Sans Thai",
+    "upstream": "https://github.com/google/fonts",
+    "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+    "upstreamPath": "ofl/notosansthai/NotoSansThai[wdth,wght].ttf",
+    "sha256": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+    "license": "OFL-1.1",
+    "modifiedFont": false
+  },
+  "fontChecks": [
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    }
+  ],
+  "settingsChecks": [],
+  "cases": [
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "history-en-dark.png",
+      "sha256": "afbfdf02eeb0deb5453da4d73669226379308775ad0de03861907fea6d9a4266",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.908033471113596
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 10.285557832200997
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.885453812610461
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 10.197384625219907
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.61472249279132
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "0560e4a8537e21d9d704b7a5847cfc8ee72d224f73c7cf392de676d2e52575a4",
+      "changedPixels": 29,
+      "maxChannelDelta": 7
+    },
+    {
+      "page": "history-selected",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "history-selected-en-dark.png",
+      "sha256": "23b7028117b190ee9fd0b26605788da9785164828160a1c3feab77b59f3f2935",
+      "semanticContrasts": [],
+      "checkedElements": [
+        "API-matched recorded metadata",
+        "native modal",
+        "selected record"
+      ],
+      "repeatSha256": "25c07f2863dd338f520165c682d317cf545c6599cf4c724b09633a5ceaa95634",
+      "changedPixels": 14,
+      "maxChannelDelta": 7
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "filename": "history-en-light.png",
+      "sha256": "c16e937ee67d18f98feced1eaf2438865fa2c0a2a4fd2278562e36ec9ee38aa8",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "c16e937ee67d18f98feced1eaf2438865fa2c0a2a4fd2278562e36ec9ee38aa8",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history-selected",
+      "lang": "en",
+      "theme": "light",
+      "filename": "history-selected-en-light.png",
+      "sha256": "b5317389fd4c9b0f3fe1ac71e98ff9b96b7aac0d014269c5ba6296e3793ceafe",
+      "semanticContrasts": [],
+      "checkedElements": [
+        "API-matched recorded metadata",
+        "native modal",
+        "selected record"
+      ],
+      "repeatSha256": "b5317389fd4c9b0f3fe1ac71e98ff9b96b7aac0d014269c5ba6296e3793ceafe",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "history-th-dark.png",
+      "sha256": "3c94ba8015a57d540c298a782ed8db45ee3dcd78987598896100c8495838f49c",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.908033471113596
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 10.285557832200997
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.885453812610461
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 10.197384625219907
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.61472249279132
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "3c94ba8015a57d540c298a782ed8db45ee3dcd78987598896100c8495838f49c",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history-selected",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "history-selected-th-dark.png",
+      "sha256": "19aea7313e33ef329e8aba7557b735d020b84b945d3ca2d7a6acd0da7f352e56",
+      "semanticContrasts": [],
+      "checkedElements": [
+        "API-matched recorded metadata",
+        "native modal",
+        "selected record"
+      ],
+      "repeatSha256": "19aea7313e33ef329e8aba7557b735d020b84b945d3ca2d7a6acd0da7f352e56",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "filename": "history-th-light.png",
+      "sha256": "8c3857223817a152568fde5b959aefd65be90642e5b3ede630f2ccaf230f2081",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "8c680aeb9571c4d07a86e66e28f833a9f069a351b678e764c3d8a31460ed033c",
+      "changedPixels": 30,
+      "maxChannelDelta": 9
+    },
+    {
+      "page": "history-selected",
+      "lang": "th",
+      "theme": "light",
+      "filename": "history-selected-th-light.png",
+      "sha256": "39ab63d26033b29d15e6f6b079b693457d6bb26e6e4f08f5d0e6dc6019850e63",
+      "semanticContrasts": [],
+      "checkedElements": [
+        "API-matched recorded metadata",
+        "native modal",
+        "selected record"
+      ],
+      "repeatSha256": "219b43ad7c5ae1c7f9efbf6d4ebeb2eddbf7258ad8d00156958167c34a6fc1f5",
+      "changedPixels": 20,
+      "maxChannelDelta": 9
+    }
+  ]
+}

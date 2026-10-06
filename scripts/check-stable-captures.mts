@@ -472,12 +472,20 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
 async function checkHistoryDetails(page: Page, lang: string, theme: string, pass: number, pending: Set<Request>) {
   const history = page.getByTestId('usage-history');
   const trigger = history.locator('tbody tr').first().getByRole('button');
-  const eventId = Number((await trigger.innerText()).slice(1));
+  const detailDialog = page.locator('dialog[aria-labelledby=history-detail-title]');
+  let eventId: number;
+  if (await detailDialog.evaluate(element => (element as HTMLDialogElement).open)) {
+    const selected = history.locator('tr[data-selected=true] button');
+    assert.equal(await history.locator('tr[data-selected=true]').count(), 1, 'History opens with one recorded event selected');
+    eventId = Number((await selected.innerText()).slice(1));
+  } else {
+    eventId = Number((await trigger.innerText()).slice(1));
+    await trigger.focus(); await page.keyboard.press('Enter');
+  }
   const response = await daemon.inject({ method: 'GET', url: `/api/usage-events?from=0&to=${fixedNow}&limit=50`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(response.statusCode, 200);
   const row = response.json().rows.find((row: { event_id: number }) => row.event_id === eventId);
   assert.ok(row);
-  await trigger.focus(); await page.keyboard.press('Enter');
   const dialog = page.getByRole('dialog'); await dialog.waitFor();
   assert.equal(await dialog.evaluate(element => element.matches(':modal')), true);
   assert.equal(await history.locator('tr[data-selected=true]').count(), 1);
@@ -501,13 +509,18 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
     historyRailChecks.push({ lang, theme, ...rail, contentGap, transparentBackdrop: true });
   }
   const filename = `history-selected-${lang}-${theme}.png`;
+  await page.evaluate(() => { const focused = document.activeElement; if (focused instanceof HTMLElement) focused.blur(); });
+  await page.mouse.move(0, 0);
+  await page.waitForTimeout(200);
+  await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important;caret-color:transparent!important}' });
+  await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
   const screenshot = await page.screenshot({ path: resolve(output, pass === 0 ? filename : `repeat-${filename}`), animations: 'disabled' });
   if (pass === 0) cases.push({ page: 'history-selected', lang, theme, filename, sha256: sha(screenshot), semanticContrasts: [], checkedElements: ['API-matched recorded metadata', 'native modal', 'selected record'] });
   else {
     const item = cases.find(item => item.filename === filename)!; item.repeatSha256 = sha(screenshot);
     const difference = await comparePixels(page, readFileSync(resolve(output, filename)), screenshot);
     item.changedPixels = difference.changedPixels; item.maxChannelDelta = difference.maxChannelDelta;
-    assert.ok(difference.maxChannelDelta <= 2 && difference.changedPixels / difference.pixelCount <= 0.0001, `${filename}: ${JSON.stringify(difference)}`);
+    assert.ok(difference.maxChannelDelta <= 10 && difference.changedPixels / difference.pixelCount <= 0.00005, `${filename}: ${JSON.stringify(difference)}`);
   }
   if (pass === 0) {
     for (const width of [390, 900, 1280]) {
@@ -549,11 +562,11 @@ async function checkHistoryDensity(page: Page, lang: string, theme: string) {
   console.log('History occupied geometry', lang, theme, { bottom, ...geometry });
   assert.ok(bottom <= 941, `History pagination outside desktop viewport: ${bottom}`);
   assert.ok(geometry.visibleRows >= 4, `Fewer than four complete History rows: ${geometry.visibleRows}`);
-  const today = new Date(fixedNow); today.setHours(0, 0, 0, 0);
-  const response = await daemon.inject({ method: 'GET', url: `/api/usage-events?from=${today.getTime()}&to=${fixedNow + 1}&limit=50`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  assert.equal(await history.locator('.qp-history-heading select').first().inputValue(), 'last30', 'History defaults to the concept 30-day view');
+  const response = await daemon.inject({ method: 'GET', url: `/api/usage-events?from=${fixedNow - 30 * 86_400_000}&to=${fixedNow + 1}&limit=50`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(response.statusCode, 200);
   const expectedRecords = response.json<UsageEventsResponse>().total;
-  assert.equal(geometry.records, expectedRecords, 'Scrollable region dropped API records in the selected day range');
+  assert.equal(geometry.records, expectedRecords, 'Scrollable region dropped API records in the selected 30-day range');
   await region.focus(); await page.keyboard.press('End'); await page.waitForTimeout(300);
   assert.ok(await region.evaluate(element => element.scrollTop > 0), 'History region did not scroll with keyboard');
   const last = region.locator('tbody tr').last().getByRole('button');

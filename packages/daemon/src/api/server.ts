@@ -328,7 +328,7 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
   app.get('/api/usage', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
     const range = s.range as UsageRangeKey | undefined;
-    const validRanges: UsageRangeKey[] = ['today', 'week', 'month', 'all', 'custom'];
+    const validRanges: UsageRangeKey[] = ['today', 'week', 'month', 'last30', 'all', 'custom'];
     const validBuckets: UsageBucket[] = ['hour', 'day', 'week', 'month'];
     const sourceId = s.source_id == null ? undefined : Number(s.source_id);
     const from = s.from == null ? undefined : Number(s.from);

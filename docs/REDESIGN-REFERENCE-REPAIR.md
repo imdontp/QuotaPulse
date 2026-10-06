@@ -42,6 +42,12 @@ aggregation and preserves sub-cent unit-cost precision. Daemon/web tests and all
 four Cost capture variants pass. The recorded fixture trend remains sparse and
 the concept likeness target is still open.
 
+Latest History composition checkpoint: [Rolling range and selected record v1.85.17](redesign-v1.85.17/REDESIGN-HISTORY-RANGE-AND-DETAIL-V1.85.17.md)
+defaults to a real rolling 30-day range, daily timeline grouping and the latest
+matching API record in the right-side detail rail. Focus, keyboard, range-count
+and overflow checks pass. Captured records remain concentrated near the end of
+the period, so the reference likeness target is still open.
+
 ## Source and observed gaps
 
 Latest presentation work: [Panel identity marks and recorded Live curves v1.64](REDESIGN-SECTION-MARKS-V1.64.md)
