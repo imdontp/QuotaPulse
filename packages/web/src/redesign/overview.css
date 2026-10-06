@@ -522,6 +522,9 @@
 .qp-quota-group-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:2px; }
 .qp-quota-group-heading h3 { display:flex; align-items:center; gap:8px; min-width:0; font-size:13px; font-weight:600; overflow-wrap:anywhere; }
 .qp-quota-group-heading h3>svg,.qp-quota-group-heading h3>span { flex:none; width:22px; height:22px; font-size:22px; }
+.qp-quota-brand { display:inline-grid; place-items:center; border-radius:6px; color:var(--qp-text); }
+.qp-quota-brand[data-provider=opencode] { color:#fff; background:linear-gradient(135deg,#5144df,#7d43ed); }
+.qp-quota-brand[data-provider=opencode]>svg { width:14px; height:14px; }
 .qp-quota-group-status { display:inline-flex; align-items:center; gap:5px; padding:3px 7px; border:1px solid color-mix(in srgb,currentColor 25%,transparent); border-radius:20px; color:var(--qp-muted); background:color-mix(in srgb,currentColor 6%,transparent); font-size:10px; white-space:nowrap; }
 .qp-quota-group-status::before { content:''; width:6px; height:6px; flex:none; border-radius:50%; background:currentColor; }
 .qp-quota-group-status[data-state=active] { color:var(--qp-success); }
