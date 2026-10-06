@@ -93,7 +93,9 @@ for (let index = 0; index < 12; index++) {
     const outputUsd = outputTokens / 1_000_000 * fixtureOutputUsdPerMillion;
     const cacheSavingUsd = cachedInputTokens / 1_000_000 * (fixtureInputUsdPerMillion - fixtureCachedInputUsdPerMillion);
     // Keep each session's latest record within four minutes, then spread older calls across the visible 30-minute interval.
-    const ageMs = call === 0 ? 15_000 + index * 20_000 : 300_000 + index * 120_000 + (call === 2 ? 30_000 : 0);
+    const ageMs = call === 0 ? 15_000 + index * 20_000 : source === 2
+      ? 300_000 + index * 120_000 + (call === 2 ? 30_000 : 0)
+      : 300_000 + index * 240_000 + (call === 2 ? 90_000 : 0);
     const recordedAt = fixedNow - ageMs;
     usage.run(source, index + 1, `fixed-${index}-${call}`, recordedAt, model.name, model.provider,
       inputTokens, cachedInputTokens, outputTokens, totalTokens, call + 1,
