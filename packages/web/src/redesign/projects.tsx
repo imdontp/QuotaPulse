@@ -21,6 +21,15 @@ type Sort = 'tokens' | 'recent' | 'value';
 type DetailTab = 'overview' | 'sessions' | 'usage' | 'details';
 interface Route extends ScopeSelection { tab: Tab; sort: Sort; harness: string | null; project: string | null | undefined; detail: DetailTab; offset: number }
 
+function projectTone(key: string | null): 'cyan' | 'violet' {
+  const identity = key ?? '\0unassigned';
+  let hash = 0x811c9dc5;
+  for (let index = 0; index < identity.length; index++) {
+    hash = Math.imul(hash ^ identity.charCodeAt(index), 0x01000193) >>> 0;
+  }
+  return hash % 2 === 0 ? 'cyan' : 'violet';
+}
+
 function readRoute(): Route {
   const params = new URLSearchParams(location.hash.split('?')[1] ?? '');
   const tab = params.get('tab');
@@ -161,10 +170,10 @@ export function ProductionProjects() {
     {!currentSnapshot ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : <div className="qp-project-layout">
       <section className="qp-project-cards" aria-label={t('redesign.allProjects')}>
         {visible.length === 0 && <p className="qp-panel">{t('redesign.noProjects')}</p>}
-        {visible.map((group, index) => {
+        {visible.map(group => {
           const share = data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0;
           const rows = data?.rows.filter(row => row.project === group.key) ?? [];
-          return <button key={JSON.stringify(group.key)} className="qp-project-card qp-panel" data-tone={index % 2 ? 'violet' : 'cyan'} aria-pressed={selected?.key === group.key} onClick={() => update({ project: group.key, offset: 0 })}>
+          return <button key={JSON.stringify(group.key)} className="qp-project-card qp-panel" data-tone={projectTone(group.key)} aria-pressed={selected?.key === group.key} onClick={() => update({ project: group.key, offset: 0 })}>
             <span className="qp-project-card-heading"><span className="qp-project-icon" aria-hidden="true"><Folder size={21}/></span><span className="qp-project-card-identity"><strong>{projectName(group.key)}</strong><span className="qp-project-card-meta">{t('redesign.sortRecent')} · {date(group.lastObservedAt)}</span></span></span>
             <span className="qp-project-card-tokens"><strong>{number(group.tokens)}</strong><small>{number(share)}% {t('redesign.projectShare')}</small></span>
             <span className="qp-bar"><span style={{ width: `${share}%` }}/></span>
@@ -174,7 +183,7 @@ export function ProductionProjects() {
           </button>;
         })}
       </section>
-      <div className="qp-project-rail"><aside className="qp-panel qp-project-detail" aria-label={t('redesign.projectDetails')}>
+      <div className="qp-project-rail"><aside className="qp-panel qp-project-detail" data-tone={selected ? projectTone(selected.key) : undefined} aria-label={t('redesign.projectDetails')}>
         {selected ? <>
           <h2><span className="qp-project-icon" aria-hidden="true"><Folder size={26}/></span>{projectName(selected.key)}</h2>
           <nav className="qp-project-detail-tabs" aria-label={t('redesign.projectDetails')}>{(['overview', 'sessions', 'usage', 'details'] as const).map(tab =>

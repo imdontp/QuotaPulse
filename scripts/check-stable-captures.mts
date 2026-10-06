@@ -181,7 +181,7 @@ const referenceColumnChecks: Array<{ page: string; lang: string; theme: string; 
 const liveDensityChecks: Array<{ lang: string; theme: string; bottom: number; sessions: number; records: number }> = [];
 const liveMinuteChecks: Array<{ lang: string; theme: string; state: string; pairs: number; cells: number; missing: number; zero: number; recorded: number; partial: number; included: number; aggregate: number; unknown: number; table: boolean; labelGeometry: Array<{ viewport: number; width: number; clientWidth: number; scrollWidth: number; modelClientWidth: number; modelScrollWidth: number; name: string | null | undefined }> }> = [];
 const liveRefreshChecks: Array<Awaited<ReturnType<typeof checkLiveMinuteRefresh>>> = [];
-const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bottom: number; unknownNative: number; sourceTopCards: Array<{ x: number; width: number }> }> = [];
+const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bottom: number; unknownNative: number; stableIdentityTones: boolean; sourceTopCards: Array<{ x: number; width: number }> }> = [];
 const providerChecks: Array<{ lang: string; theme: string; bottom: number; compared: number; unavailable: boolean; expired: boolean; proportional: boolean }> = [];
 const modelComparisonChecks: Array<{ lang: string; theme: string; bottom: number; rows: number; ratios: number; boundaryRatios: boolean }> = [];
 const costAxisChecks: Array<{ route: string; lang: string; theme: string; priced: boolean; maxAmount: number; maxTokens: number }> = [];
@@ -648,9 +648,11 @@ async function checkProjectCards(page: Page, lang: string, theme: string, pendin
   }
   assert.ok(bottom <= 941, `Project card region exceeds canonical viewport: ${bottom}`);
   const money = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' });
+  const tonesByProject = new Map<string, string>();
   for (const group of data.groups) {
     const card = cards.filter({ has: page.locator('.qp-project-card-identity>strong', { hasText: group.key! }) });
     assert.equal(await card.count(), 1);
+    tonesByProject.set(JSON.stringify(group.key), (await card.getAttribute('data-tone'))!);
     assert.equal(await card.evaluate(element => element.querySelector('.qp-project-card-facts')!.getBoundingClientRect().bottom <= element.getBoundingClientRect().bottom - 1), true, 'Project facts are clipped by the card');
     const actual = await card.locator('.qp-project-spark>circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')) })));
     const expected = Array.from({ length: Math.ceil((data.scope.to - data.scope.from) / data.trends!.bucketMs) }, (_, index) => {
@@ -668,20 +670,28 @@ async function checkProjectCards(page: Page, lang: string, theme: string, pendin
   }
   assert.ok(data.groups.some(group => group.native_calls === 0));
   assert.ok(data.groups.some(group => group.native_calls > 0 && group.native_calls < group.calls));
+  const sortSelect = page.locator('.qp-project-toolbar select').last();
+  await sortSelect.selectOption('recent'); await settled(page, pending);
+  for (const group of data.groups) {
+    const card = cards.filter({ has: page.locator('.qp-project-card-identity>strong', { hasText: group.key! }) });
+    assert.equal(await card.getAttribute('data-tone'), tonesByProject.get(JSON.stringify(group.key)), 'Project identity tint changed when sorting cards');
+  }
+  await sortSelect.selectOption('tokens'); await settled(page, pending);
   // Keyboard selection must keep the existing detail/identity behavior.
-  const last = cards.last(); const identity = await last.locator('.qp-project-card-identity>strong').textContent();
+  const last = cards.last(); const identity = await last.locator('.qp-project-card-identity>strong').textContent(); const lastTone = await last.getAttribute('data-tone');
   await last.focus(); await page.keyboard.press('Enter'); await settled(page, pending);
   const lastBounds = await last.boundingBox(); const regionBounds = await page.locator('.qp-project-cards').boundingBox();
   assert.ok(lastBounds && regionBounds && lastBounds.y >= regionBounds.y && lastBounds.y + lastBounds.height <= regionBounds.y + regionBounds.height + 1, 'Final project card is not keyboard reachable');
   assert.equal(await last.getAttribute('aria-pressed'), 'true');
   assert.ok((await page.locator('.qp-project-detail h2').textContent())!.includes(identity!));
+  assert.equal(await page.locator('.qp-project-detail').getAttribute('data-tone'), lastTone, 'Selected project detail tint must match its card');
   await page.locator('.qp-project-search input').fill('no-such-synthetic-project');
   assert.equal(await cards.count(), 0);
   await page.locator('.qp-project-search input').fill('');
   const first = cards.filter({ has: page.locator('.qp-project-card-identity>strong', { hasText: 'QuotaPulse' }) });
   await first.click(); await settled(page, pending);
   await first.evaluate(element => (element as HTMLElement).blur()); await page.evaluate(() => window.scrollTo(0, 0));
-  projectCardChecks.push({ lang, theme, cards: data.groups.length, bottom, unknownNative: data.groups.filter(group => group.native_calls === 0).length, sourceTopCards });
+  projectCardChecks.push({ lang, theme, cards: data.groups.length, bottom, unknownNative: data.groups.filter(group => group.native_calls === 0).length, stableIdentityTones: true, sourceTopCards });
 }
 
 async function settled(page: Page, pending: Set<Request>) {

@@ -20,6 +20,11 @@ while retaining daemon-backed counts. All four language/theme captures repeat
 byte-identically, but this is not reference-image sign-off. Live composition and
 the complete eight-page 99 to 100 percent likeness goal remain open.
 
+Latest Projects styling checkpoint: [Project identity tints v1.85.13](redesign-v1.85.13/REDESIGN-PROJECT-IDENTITY-TINTS-V1.85.13.md)
+keeps each card's decorative cyan/violet accent stable across sort and selection,
+and carries it into the detail panel. Four language/theme captures pass the
+repeatability gate; source-image acceptance remains open.
+
 ## Source and observed gaps
 
 Latest presentation work: [Panel identity marks and recorded Live curves v1.64](REDESIGN-SECTION-MARKS-V1.64.md)

@@ -134,6 +134,7 @@
   color:var(--qp-accent);
 }
 .qp-project-card[data-tone=violet] { --qp-accent:var(--qp-series); }
+.qp-project-detail[data-tone=violet] { --qp-accent:var(--qp-series); }
 .qp-project-card { background:radial-gradient(ellipse at 0 0,color-mix(in srgb,var(--qp-accent) 8%,transparent),transparent 70%),var(--qp-panel); }
 .qp-project-icon { width:48px; height:48px; border-radius:12px; box-shadow:inset 0 0 15px color-mix(in srgb,var(--qp-accent) 15%,transparent); }
 .qp-project-card-heading strong { font-size:16px; }
