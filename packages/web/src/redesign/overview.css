@@ -1193,6 +1193,7 @@
   [data-testid=production-overview] .qp-pulse-art { transform:translateY(-19px) scale(1.025); }
   [data-testid=production-overview] .qp-pulse .qp-pulse-ambient { top:-19px; }
   [data-testid=production-overview] .qp-pulse-label { gap:4px; transform:translateY(-7px); }
+  [data-testid=production-overview] .qp-metrics { gap:30px; transform:translateY(18px); }
   [data-testid=production-overview] .qp-runtime .qp-map-column[data-dimension=harness] { transform:translateX(1.703125px); }
   [data-testid=production-overview] .qp-runtime .qp-map-column[data-dimension=provider] { transform:translateX(5.421875px); }
   [data-testid=production-overview] .qp-runtime .qp-map-column[data-dimension=model] { transform:translateX(6.953125px); }

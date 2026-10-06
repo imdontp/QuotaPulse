@@ -14,6 +14,13 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
+Latest Overview composition checkpoint: [Metric rail spacing v1.85.19](redesign-v1.85.19/REDESIGN-OVERVIEW-METRIC-SPACING-V1.85.19.md)
+spreads the four daemon-backed metric rows down to the source's vertical rhythm
+at the 1586×992 desktop reference size. The web build and all four language/theme
+repeat pairs pass. The browser gate uses synthetic in-memory data and does not
+measure whole-image similarity; the complete Overview and eight-page source
+likeness target remain open.
+
 Latest Live styling checkpoint: [Metric tiles v1.85.12](redesign-v1.85.12/REDESIGN-LIVE-METRIC-TILES-V1.85.12.md)
 matches the concept's circular icon marks and restrained colored card treatments
 while retaining daemon-backed counts. All four language/theme captures repeat
