@@ -14,7 +14,13 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest Overview composition checkpoint: [Metric rail spacing v1.85.19](redesign-v1.85.19/REDESIGN-OVERVIEW-METRIC-SPACING-V1.85.19.md)
+Latest Overview visual checkpoint: [Runtime Map glow v1.85.20](redesign-v1.85.20/REDESIGN-RUNTIME-MAP-GLOW-V1.85.20.md)
+strengthens dark-theme flow trails and identity-colored node halos using existing
+runtime data. The web build, card/connector geometry, accessibility and overflow
+checks pass; all four language/theme capture pairs are within repeat tolerance.
+This remains a review candidate, not a whole-image similarity score.
+
+Previous Overview composition checkpoint: [Metric rail spacing v1.85.19](redesign-v1.85.19/REDESIGN-OVERVIEW-METRIC-SPACING-V1.85.19.md)
 spreads the four daemon-backed metric rows down to the source's vertical rhythm
 at the 1586×992 desktop reference size. The web build and all four language/theme
 repeat pairs pass. The browser gate uses synthetic in-memory data and does not
