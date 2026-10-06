@@ -121,6 +121,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
       <defs>
         <radialGradient id={`${id}-fill`}><stop stopColor="#225575" stopOpacity=".7"/><stop offset=".75" stopColor="#071f43" stopOpacity=".5"/><stop offset="1" stopColor="#32cdff" stopOpacity=".2"/></radialGradient>
         <linearGradient id={`${id}-arc`}><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
+        <linearGradient id={`${id}-progress-arc`} gradientTransform="rotate(90 .5 .5)"><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
         <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <clipPath id={`${id}-world`}><circle cx="180" cy="160" r="114"/></clipPath>
       </defs>
@@ -141,7 +142,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
       })}</g>
       <circle className="qp-core-track" cx="180" cy="160" r="129" fill="none" stroke={`url(#${id}-arc)`} strokeOpacity=".4" strokeWidth="8"/>
       <circle className="qp-core-halo" cx="180" cy="160" r="120" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="2"/>
-      {used !== null && <circle className="qp-core-progress" data-testid="pulse-progress" cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used)} 100`} transform="rotate(-90 180 160)" filter={`url(#${id}-glow)`}/>}
+      {used !== null && <circle className="qp-core-progress" data-testid="pulse-progress" cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-progress-arc)`} strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used)} 100`} transform="rotate(-90 180 160)" filter={`url(#${id}-glow)`}/>}
     </svg>
     <div className="qp-pulse-label"><strong>{used === null ? '—' : `${used}%`}</strong><span className="qp-pulse-state">{t(quota?.window === 'monthly' ? 'redesign.monthlyUsed' : 'redesign.quotaUsed')}</span><span>{tokenTotal} {t('redesign.tokens')} · {period}</span></div>
     <div className="qp-pulse-runway" data-testid="pulse-runway" data-projected-at={projectedAt ?? undefined} data-reset-at={resetAt ?? undefined}>
@@ -160,6 +161,7 @@ function emptyHarnessNode(key: string): RuntimeGraph['nodes']['harness'][number]
 function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, enabledHarnesses, onInspect, projects, selectedProject, onProjectChange }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; enabledHarnesses?: readonly string[]; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
   const arrowId = useId();
   const map = useRef<HTMLDivElement>(null);
+  const [flowMotionEnabled, setFlowMotionEnabled] = useState(false);
   const [geometry, setGeometry] = useState<{ width: number; height: number; paths: Array<{ edge: RuntimeGraph['edges'][number]; x: number; y: number; endX: number; endY: number }> }>({ width: 1, height: 1, paths: [] });
   const modelTokens = nodes.model.reduce((total, node) => total + node.tokens, 0);
   const locale = language === 'th' ? 'th-TH' : 'en-US';
@@ -186,10 +188,23 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
     .slice(0, 2)
     .map(({ edge, x, y, endX, endY }) => {
       const bend = (endX - x) * .55, t = .58, u = 1 - t;
-      return { edge, x: u ** 3 * x + 3 * u ** 2 * t * (x + bend) + 3 * u * t ** 2 * (endX - bend) + t ** 3 * endX,
+      return { edge, path: `M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`, x: u ** 3 * x + 3 * u ** 2 * t * (x + bend) + 3 * u * t ** 2 * (endX - bend) + t ** 3 * endX,
         y: u ** 3 * y + 3 * u ** 2 * t * y + 3 * u * t ** 2 * endY + t ** 3 * endY };
     }));
   const featuredFlowEdges = new Set(flowPaths.map(({ edge }) => JSON.stringify([edge.column, edge.from, edge.to])));
+  useEffect(() => {
+    const element = map.current;
+    if (!element) { setFlowMotionEnabled(false); return; }
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let visible = false;
+    const update = () => setFlowMotionEnabled(visible && !document.hidden && !reduced.matches);
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; update(); });
+    observer.observe(element);
+    document.addEventListener('visibilitychange', update);
+    reduced.addEventListener('change', update);
+    update();
+    return () => { observer.disconnect(); document.removeEventListener('visibilitychange', update); reduced.removeEventListener('change', update); };
+  }, [recordCount === 0]);
   const projectFilter = onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>;
   useLayoutEffect(() => {
     const element = map.current;
@@ -247,7 +262,7 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
             const identity = JSON.stringify([edge.column, edge.from, edge.to]);
             return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-last-activity-at={edge.lastActivityAt ?? undefined} data-active-sessions={edge.activeSessions} data-activity-state={activityState} data-flow-priority={featuredFlowEdges.has(identity) ? 'primary' : 'secondary'} key={identity} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth={strokeWidth} markerEnd={`url(#${arrowId})`}/>;
           })}
-          {flowPaths.map(({ edge, x, y }) => <circle className="qp-map-flow-dot" data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-activity-state="active" key={JSON.stringify([edge.column, edge.from, edge.to])} cx={x} cy={y} r="2.8"/>)}
+          {flowPaths.map(({ edge, path, x, y }) => <circle className="qp-map-flow-dot" data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-activity-state="active" data-motion-state={flowMotionEnabled ? 'running' : 'static'} key={JSON.stringify([edge.column, edge.from, edge.to])} cx={flowMotionEnabled ? 0 : x} cy={flowMotionEnabled ? 0 : y} r="2.8">{flowMotionEnabled && <animateMotion path={path} dur={`${3.2 + edge.column * .45}s`} repeatCount="indefinite"/>}</circle>)}
         </svg>
         {dimensions.map((dimension, index) => <div className="qp-map-column" data-dimension={dimension} key={dimension}>
           <h3>{singleProject && dimension === 'project' ? <span className="qp-visually-hidden">{t(runtimeHeadingKeys.project)}</span> : t(runtimeHeadingKeys[dimension])}</h3>

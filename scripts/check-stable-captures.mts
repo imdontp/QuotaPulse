@@ -17,7 +17,7 @@ import { activeQuotaRiskCount } from '../packages/web/src/redesign/alert-risks.j
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from '../packages/web/src/redesign/metric-series.js';
 import { cacheSharePercent, percentagePointChange, relativeChangePercent } from '../packages/web/src/redesign/insight-model.js';
 import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
-import { countdown } from '../packages/web/src/format.js';
+import { countdown, tokens as formatTokens } from '../packages/web/src/format.js';
 import { usageEventParams } from '../packages/web/src/lib/usage-events.js';
 import { activityTokensPerMinute, activityTrendScope, latestActivityByHarness } from '../packages/web/src/redesign/activity-trend.js';
 import { ACTIVITY_SPARKLINE_HEIGHT } from '../packages/web/src/redesign/activity-sparkline.js';
@@ -166,7 +166,7 @@ const iconViewports = new Map<string, unknown>();
 const overviewVectors = new Map<string, unknown>();
 const activityBitmapChecks: Array<{ lang: string; theme: string; recordId: number; points: number; width: number; height: number; paintedPixels: number; sha256: string }> = [];
 const activityRendererChecks: Array<{ lang: string; theme: string; accessibleValues: boolean; themeRedraw: boolean; resized: boolean; singlePoint: boolean; zeroBaseline: boolean }> = [];
-const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number; modelShares: number; directionArrows: boolean }> = [];
+const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number; modelShares: number; directionArrows: boolean; nativeMotion: boolean }> = [];
 const runtimeGeometryChecks: Array<{ lang: string; theme: string; state: string; paths: number; maxError: number }> = [];
 const shellChecks: Array<{ page: string; lang: string; theme: string; modal: boolean; backgroundExcluded: boolean }> = [];
 const headerChecks: Array<{ page: string; lang: string; theme: string; width: number; height: number; sidebarWidth: number; dateText: string | null }> = [];
@@ -497,7 +497,9 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
   const groups = dialog.locator('.qp-history-detail-groups section'); assert.equal(await groups.count(), 4);
   const tokens = dialog.locator('[data-group="history.tokenBreakdown"] dd');
   for (const [index, value] of [row.total_tokens, row.input_tokens, row.cached_input_tokens, row.cache_write_tokens, row.output_tokens, row.reasoning_tokens].entries()) {
-    assert.equal(await tokens.nth(index).innerText(), value.toLocaleString(lang));
+    assert.equal(await tokens.nth(index).innerText(), formatTokens(value));
+    assert.equal(await tokens.nth(index).getAttribute('aria-label'), String(value));
+    assert.equal(await tokens.nth(index).getAttribute('title'), value.toLocaleString(lang, { maximumFractionDigits: 20 }));
   }
   for (const value of [row.project, row.harness, row.provider, row.vendor, row.model]) assert.ok((await groups.first().innerText()).includes(value));
   await page.evaluate(() => window.scrollTo(0, 0)); await settled(page, pending);
@@ -565,7 +567,7 @@ async function checkHistoryDensity(page: Page, lang: string, theme: string) {
   const bottom = await history.locator('.qp-history-records').evaluate(element => element.getBoundingClientRect().bottom + scrollY);
   console.log('History occupied geometry', lang, theme, { bottom, ...geometry });
   assert.ok(bottom <= 941, `History pagination outside desktop viewport: ${bottom}`);
-  assert.ok(geometry.visibleRows >= 4, `Fewer than four complete History rows: ${geometry.visibleRows}`);
+  assert.ok(geometry.visibleRows >= 8, `Fewer than eight complete History rows: ${geometry.visibleRows}`);
   assert.equal(await history.locator('.qp-history-heading select').first().inputValue(), 'last30', 'History defaults to the concept 30-day view');
   const response = await daemon.inject({ method: 'GET', url: `/api/usage-events?from=${fixedNow - 30 * 86_400_000}&to=${fixedNow + 1}&limit=50`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(response.statusCode, 200);
@@ -671,6 +673,8 @@ async function checkProjectCards(page: Page, lang: string, theme: string, pendin
       `Project card ${index + 1} differs from the reference top row: ${JSON.stringify(card)}`);
   }
   assert.ok(bottom <= 941, `Project card region exceeds canonical viewport: ${bottom}`);
+  const railBottom = await page.locator('.qp-project-rail').evaluate(element => element.getBoundingClientRect().bottom);
+  assert.ok(railBottom <= 941, `Project ranking rail exceeds canonical viewport: ${railBottom}`);
   const money = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' });
   const tonesByProject = new Map<string, string>();
   for (const group of data.groups) {
@@ -714,6 +718,20 @@ async function checkProjectCards(page: Page, lang: string, theme: string, pendin
   await page.locator('.qp-project-search input').fill('');
   const first = cards.filter({ has: page.locator('.qp-project-card-identity>strong', { hasText: 'QuotaPulse' }) });
   await first.click(); await settled(page, pending);
+  const selectedRows = data.rows.filter(row => row.project === 'QuotaPulse');
+  const panels = page.locator('.qp-project-identity-panel');
+  assert.equal(await panels.count(), 2);
+  assert.equal(await panels.nth(0).locator('li').count(), new Set(selectedRows.map(row => row.harness).filter(Boolean)).size);
+  assert.equal(await panels.nth(1).locator('li').count(), new Set(selectedRows.map(row => row.provider).filter(Boolean)).size);
+  const messages = lang === 'th' ? th : en;
+  await page.getByRole('button', { name: messages['redesign.projectMetadataTab'], exact: true }).click();
+  await settled(page, pending);
+  assert.equal(await page.locator('.qp-project-full-breakdown li').count(), selectedRows.length);
+  const actualBreakdown = await page.locator('.qp-project-full-breakdown li strong').allTextContents();
+  const formatter = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 });
+  assert.deepEqual(actualBreakdown, selectedRows.map(row => formatter.format(row.tokens)));
+  await page.getByRole('button', { name: messages['redesign.projectOverviewTab'], exact: true }).click();
+  await settled(page, pending);
   await first.evaluate(element => (element as HTMLElement).blur()); await page.evaluate(() => window.scrollTo(0, 0));
   projectCardChecks.push({ lang, theme, cards: data.groups.length, bottom, unknownNative: data.groups.filter(group => group.native_calls === 0).length, stableIdentityTones: true, sourceTopCards });
 }
@@ -1409,6 +1427,31 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
       .map(edge => ({ column: String(edge.column), from: JSON.stringify(edge.from), to: JSON.stringify(edge.to), tokens: String(edge.tokens) })));
     const flowEdges = await page.locator('.qp-map-flow-dot').evaluateAll(elements => elements.map(element => ({ column: element.getAttribute('data-column'), from: element.getAttribute('data-from'), to: element.getAttribute('data-to'), tokens: element.getAttribute('data-tokens') })));
     assert.deepEqual(flowEdges, expectedFlowEdges);
+    assert.equal(await page.locator('.qp-map-flow-dot animateMotion').count(), 0, 'Reduced motion must keep flow particles static');
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    const flowDot = page.locator('.qp-map-flow-dot').first();
+    const map = page.locator('.qp-map');
+    const originalTransform = await map.evaluate(element => (element as HTMLElement).style.transform);
+    try {
+      await flowDot.locator('animateMotion').waitFor({ state: 'attached' });
+      const position = () => flowDot.evaluate(element => {
+        const circle = element as SVGCircleElement;
+        const point = new DOMPoint(circle.cx.baseVal.value, circle.cy.baseVal.value).matrixTransform(circle.getScreenCTM()!);
+        return { x: point.x, y: point.y };
+      });
+      const before = await position();
+      await page.waitForTimeout(400);
+      const after = await position();
+      assert.ok(Math.hypot(after.x - before.x, after.y - before.y) > 2, 'Active flow particle must travel along its recorded edge');
+      await map.evaluate(element => { (element as HTMLElement).style.transform = 'translateY(2000px)'; });
+      await page.waitForFunction(() => document.querySelectorAll('.qp-map-flow-dot animateMotion').length === 0);
+      await map.evaluate((element, transform) => { (element as HTMLElement).style.transform = transform; }, originalTransform);
+      await flowDot.locator('animateMotion').waitFor({ state: 'attached' });
+    } finally {
+      await map.evaluate((element, transform) => { (element as HTMLElement).style.transform = transform; }, originalTransform);
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.waitForFunction(() => document.querySelectorAll('.qp-map-flow-dot animateMotion').length === 0);
+    }
     const disclosure = page.locator('.qp-runtime-data'); const summary = disclosure.locator('summary');
     assert.equal(await disclosure.locator('table').count(), 0);
     await summary.focus(); await page.keyboard.press('Enter');
@@ -1459,7 +1502,7 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
     }
     await summary.focus(); await page.keyboard.press('Enter');
     await disclosure.locator('table').first().waitFor({ state: 'detached' });
-    runtimeChecks.push({ lang, theme, nodes: rows.length, edges: edges.length, inspected, modelShares: 8, directionArrows: true });
+    runtimeChecks.push({ lang, theme, nodes: rows.length, edges: edges.length, inspected, modelShares: 8, directionArrows: true, nativeMotion: true });
   } finally {
     db.transaction(() => { db.prepare('DELETE FROM usage_event WHERE source_id=900').run(); db.prepare('DELETE FROM session WHERE source_id=900').run(); db.prepare('DELETE FROM source WHERE id=900').run(); })();
     assert.equal((db.prepare('SELECT COUNT(*) AS count FROM usage_event').get() as { count: number }).count, 43);
@@ -2548,11 +2591,17 @@ try {
             const quickStats = await page.locator('.qp-quick-stats').boundingBox();
             const pulse = await page.locator('.qp-pulse').boundingBox();
             const pulseArt = await page.locator('.qp-pulse-art').boundingBox();
+            const pulseFocal = await page.locator('.qp-core-track').evaluate(element => {
+              const circle = element as SVGCircleElement;
+              const point = new DOMPoint(circle.cx.baseVal.value, circle.cy.baseVal.value).matrixTransform(circle.getScreenCTM()!);
+              return { x: point.x, y: point.y };
+            });
             const quotaGroups = await page.locator('.qp-quota-group').evaluateAll(elements => elements.map(element => {
               const rect = element.getBoundingClientRect(); return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
             }));
             assert.ok(hero && activity && box && quickStats && pulse && pulseArt);
             if (overviewOnly) {
+              assert.ok(Math.abs(pulseFocal.x - 734) <= 2 && Math.abs(pulseFocal.y - 243) <= 2, `Globe focal point differs from reference: ${JSON.stringify(pulseFocal)}`);
               assert.ok(Math.abs(hero.x - 228) <= 2 && Math.abs(hero.y - 68) <= 2 && Math.abs(hero.width - 977) <= 2 && Math.abs(hero.height - 394) <= 2,
                 `Pulse Core bounds differ from the measured reference by more than 2px: ${JSON.stringify(hero)}`);
             }
@@ -2563,7 +2612,7 @@ try {
             if (activity.y + activity.height > 992) console.log('Overview header geometry', await page.locator('.qp-topbar,.qp-brand,.qp-brand>svg,.qp-brand>span,.qp-brand small,.qp-topbar-body,.qp-daemon-status').evaluateAll(elements => elements.map(element => { const rect = element.getBoundingClientRect(), style = getComputedStyle(element); return { className: element.className, x: rect.x, y: rect.y, width: rect.width, height: rect.height, font: style.font, lineHeight: style.lineHeight }; })));
             if (overviewOnly && pass === 0) {
               await page.screenshot({ path: resolve(output, `layout-${lang}-${theme}.png`), animations: 'disabled' });
-              writeFileSync(resolve(output, `layout-${lang}-${theme}.json`), JSON.stringify({ hero, activity, quickStats, rail: box, pulse, pulseArt, quotaGroups, runtime: await page.locator('.qp-runtime').boundingBox(), bottom: await page.locator('.qp-bottom-grid').boundingBox() }, null, 2));
+              writeFileSync(resolve(output, `layout-${lang}-${theme}.json`), JSON.stringify({ hero, activity, quickStats, rail: box, pulse, pulseArt, pulseFocal, quotaGroups, runtime: await page.locator('.qp-runtime').boundingBox(), bottom: await page.locator('.qp-bottom-grid').boundingBox() }, null, 2));
             }
             assert.ok(box.height <= 270.1, `Model rail exceeds its desktop height: ${box.height}`);
             assert.ok(activity.y + activity.height <= 992, `Overview activity is outside concept viewport: ${activity.y + activity.height}`);

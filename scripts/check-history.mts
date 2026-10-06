@@ -80,6 +80,9 @@ try {
   const history = page.getByTestId('usage-history');
   await history.getByText('1–50 of 53 records', { exact: true }).waitFor();
   await history.getByTestId('history-total-tokens').getByText('7,525', { exact: true }).waitFor();
+  await page.getByRole('dialog').waitFor();
+  await page.keyboard.press('Escape');
+  await page.getByRole('dialog').waitFor({ state: 'hidden' });
   await history.getByRole('button', { name: 'Next page', exact: true }).click();
   await history.getByText('51–53 of 53 records', { exact: true }).waitFor();
   assert.equal(await history.getByTestId('history-total-tokens').innerText(), '7,525', 'timeline total changed with pagination');
@@ -834,7 +837,11 @@ try {
         assert.equal(await screen.locator('.qp-project-detail h2').textContent(), 'Project 6');
         assert.equal(await screen.locator('.qp-project-top li').count(), 5);
         assert.ok(await screen.locator('.qp-project-top button').evaluateAll(nodes => nodes.every(node => node.getBoundingClientRect().height >= 24 && node.getBoundingClientRect().width >= 24)), 'Project ranking targets are smaller than 24 px');
-        assert.equal(await screen.locator('.qp-project-detail > .qp-project-breakdown li').count(), 3);
+        assert.equal(await screen.locator('.qp-project-identity-panel').count(), 2);
+        assert.ok(await screen.locator('.qp-project-identity-panel li').count() > 0);
+        await screen.getByRole('button', { name: messages['redesign.projectMetadataTab'], exact: true }).click();
+        assert.equal(await screen.locator('.qp-project-full-breakdown li').count(), 3);
+        await screen.getByRole('button', { name: messages['redesign.projectOverviewTab'], exact: true }).click();
         const native = screen.locator('.qp-project-money > div').first().locator('.qp-cost-value');
         const apiValue = screen.locator('.qp-project-money > div').last().locator('.qp-cost-value');
         const expectedMoney = (amount: number) => new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' }).format(amount);

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Activity, ArrowDownUp, Folder, Layers, RefreshCw, Search, Users } from 'lucide-react';
+import { Activity, ArrowDownUp, BarChart3, Folder, Layers, RefreshCw, Search, Settings, Users } from 'lucide-react';
 import { api, type DetailedProjectResponse, type Overview as OverviewData, type ProjectDetailResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
@@ -123,6 +123,8 @@ export function ProductionProjects() {
   });
   const selected = visible.find(group => group.key === route.project) ?? visible[0];
   const detailRows = selected ? (data?.rows ?? []).filter(row => row.project === selected.key) : [];
+  const observedHarnesses = [...new Set(detailRows.map(row => row.harness))].sort();
+  const observedProviders = [...new Set(detailRows.map(row => row.provider).filter((provider): provider is string => Boolean(provider)))].sort();
   const detailScope = selected && data ? { ...data.scope, ...(selected.key === null ? { projectMissing: true } : { project: selected.key }) } : null;
   const detailKey = JSON.stringify([detailScope, route.offset, data?.now]);
   useEffect(() => {
@@ -187,7 +189,7 @@ export function ProductionProjects() {
         {selected ? <>
           <h2><span className="qp-project-icon" aria-hidden="true"><Folder size={26}/></span>{projectName(selected.key)}</h2>
           <nav className="qp-project-detail-tabs" aria-label={t('redesign.projectDetails')}>{(['overview', 'sessions', 'usage', 'details'] as const).map(tab =>
-            <button key={tab} aria-current={route.detail === tab ? 'page' : undefined} onClick={() => update({ detail: tab, offset: 0 })}>{t(tab === 'overview' ? 'redesign.projectOverviewTab' : tab === 'sessions' ? 'redesign.projectSessionsTab' : tab === 'usage' ? 'redesign.projectUsageTab' : 'redesign.projectMetadataTab')}</button>)}</nav>
+            <button key={tab} aria-current={route.detail === tab ? 'page' : undefined} onClick={() => update({ detail: tab, offset: 0 })}>{tab === 'overview' ? <Layers size={15} aria-hidden="true"/> : tab === 'sessions' ? <Users size={15} aria-hidden="true"/> : tab === 'usage' ? <BarChart3 size={15} aria-hidden="true"/> : <Settings size={15} aria-hidden="true"/>}{t(tab === 'overview' ? 'redesign.projectOverviewTab' : tab === 'sessions' ? 'redesign.projectSessionsTab' : tab === 'usage' ? 'redesign.projectUsageTab' : 'redesign.projectMetadataTab')}</button>)}</nav>
           {detailError && <p role="status" className="qp-project-error">{detailError}</p>}
           {route.detail === 'overview' && <>
           <div className="qp-project-detail-metrics"><div><small>{t('redesign.tokens')}</small><strong>{number(selected.tokens)}</strong></div><div><small>{t('redesign.sessions')}</small><strong>{number(selected.sessions)}</strong></div><div><small>{t('redesign.modelsCalls')}</small><strong>{number(selected.calls)}</strong></div><div><small>{t('redesign.providersUsed')}</small><strong>{new Set(detailRows.map(row => row.provider).filter(Boolean)).size}</strong></div></div>
@@ -196,10 +198,11 @@ export function ProductionProjects() {
           <h3>{t('redesign.projectTrend')}</h3>
           {detail ? detail.points.length ? <><ObservedTrend className="qp-project-trend" points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} language={lang} label={`${t('redesign.projectTrend')}: ${t('redesign.tokens')} 0 – ${number(trendMaximum)}`}/><ChartData title={t('redesign.projectTrend')} points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} language={lang} t={t}/></>
             : <p>{t('redesign.projectNoTrend')}</p> : detailError ? null : <p>{t('app.loading')}</p>}
-          <h3>{t('redesign.projectBreakdown')}</h3>
-          <ol className="qp-project-breakdown">{detailRows.slice(0, 8).map(row => <li key={JSON.stringify([row.sourceId, row.provider, row.model])}><span className="qp-project-route"><HarnessIcon harness={row.harness} vendor={snapshot?.overview.harnesses.find(harness => harness.harness === row.harness)?.vendor}/>{row.sourceName} · <VendorIcon vendor={row.provider ?? 'unknown'}/>{row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}</span><strong>{number(row.tokens)}</strong></li>)}</ol>
-          {detailRows.length > 8 && <p className="qp-footnote">{detailRows.length - 8} {t('redesign.moreRows')}</p>}
-          <p className="qp-footnote">{t('redesign.projectCoverage')}</p>
+          <div className="qp-project-observed-identities">
+            <section className="qp-project-identity-panel"><h3>{t('redesign.harnessesUsed')}<span>{number(observedHarnesses.length)}</span></h3><ul>{observedHarnesses.map(harness => <li key={harness}><span className="qp-project-identity-mark" title={harness}><HarnessIcon harness={harness} vendor={currentSnapshot.overview.harnesses.find(item => item.harness === harness)?.vendor} label={harness}/><span className="qp-visually-hidden">{harness}</span></span></li>)}</ul></section>
+            <section className="qp-project-identity-panel"><h3>{t('redesign.providersUsed')}<span>{number(observedProviders.length)}</span></h3><ul>{observedProviders.map(provider => <li key={provider}><span className="qp-project-identity-mark" title={provider}><VendorIcon vendor={provider}/><span className="qp-visually-hidden">{provider}</span></span></li>)}</ul></section>
+          </div>
+          <button className="qp-project-detail-link" onClick={() => update({ detail: 'details', offset: 0 })}>{t('redesign.projectBreakdown')} →</button>
           </>}
           {route.detail === 'sessions' && (detail ? <>
             {detail.sessions.total === 0 && <p>{t('redesign.projectNoSessions')}</p>}
@@ -214,6 +217,7 @@ export function ProductionProjects() {
           </> : detailError ? null : <p>{t('app.loading')}</p>)}
           {route.detail === 'details' && <>
             <div><h3>{t('redesign.projectFullIdentity')}</h3><p className="qp-project-identity">{selected.key ?? t('redesign.unassigned')}</p></div>
+            <div><h3>{t('redesign.projectBreakdown')}</h3><ol className="qp-project-breakdown qp-project-full-breakdown">{detailRows.map(row => <li key={JSON.stringify([row.sourceId, row.provider, row.model])}><span className="qp-project-route"><HarnessIcon harness={row.harness} vendor={currentSnapshot.overview.harnesses.find(harness => harness.harness === row.harness)?.vendor}/>{row.sourceName} · <VendorIcon vendor={row.provider ?? 'unknown'}/>{row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}</span><strong>{number(row.tokens)}</strong></li>)}</ol></div>
             <div><h3>{t('redesign.projectSources')}</h3><ol className="qp-project-breakdown">{[...new Map(detailRows.map(row => [row.sourceId, row])).values()].map(row => <li key={row.sourceId}><span>{row.sourceName}</span><strong>{row.harness}</strong></li>)}</ol></div>
             <div><h3>{t('redesign.projectObservedPaths')}</h3>{detail ? <ol className="qp-project-paths">{[...new Set(detail.sessions.rows.map(session => session.cwd).filter((cwd): cwd is string => Boolean(cwd)))].slice(0, 5).map(cwd => <li key={cwd}>{cwd}</li>)}</ol> : detailError ? null : <p>{t('app.loading')}</p>}{detail?.sessions.rows.every(session => !session.cwd) && <p>{t('redesign.projectUnknownPath')}</p>}</div>
             <p className="qp-footnote">{t('redesign.projectCoverage')}</p>

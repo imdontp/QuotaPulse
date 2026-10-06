@@ -1190,8 +1190,8 @@
   .qp-redesign[data-testid=production-overview] .qp-insights { padding-left:13px; }
   .qp-redesign[data-testid=production-overview] .qp-activity { padding-left:15px; }
   [data-testid=production-overview] .qp-pulse { transform:translate(21px,-19px); }
-  [data-testid=production-overview] .qp-pulse-art { transform:translateY(-19px) scale(1.025); }
-  [data-testid=production-overview] .qp-pulse .qp-pulse-ambient { top:-19px; }
+  [data-testid=production-overview] .qp-pulse-art { transform:translateY(-9px) scale(1.025); }
+  [data-testid=production-overview] .qp-pulse .qp-pulse-ambient { top:-9px; }
   [data-testid=production-overview] .qp-pulse-label { gap:4px; transform:translateY(-7px); }
   [data-testid=production-overview] .qp-metrics { gap:30px; transform:translateY(18px); }
   [data-testid=production-overview] .qp-runtime .qp-map-column[data-dimension=harness] { transform:translateX(1.703125px); }

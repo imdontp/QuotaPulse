@@ -14,7 +14,15 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest Overview visual checkpoint: [Runtime Map glow v1.85.20](redesign-v1.85.20/REDESIGN-RUNTIME-MAP-GLOW-V1.85.20.md)
+Latest combined composition checkpoint: [v1.85.21](redesign-v1.85.21/REDESIGN-COMPOSITION-V1.85.21.md)
+aligns the actual globe focal point and progress colors, adds activity-derived
+Runtime Map motion, reorganizes Projects and Models panels, and restores History
+table density and in-viewport pagination. [Remaining region gaps](redesign-v1.85.21/REFERENCE-GAPS.md)
+record source differences requiring further work. The broader History workflow
+gate remains open because inherited Overview expectations predate the current
+metric semantics; this checkpoint does not close whole-image visual acceptance.
+
+Previous Overview visual checkpoint: [Runtime Map glow v1.85.20](redesign-v1.85.20/REDESIGN-RUNTIME-MAP-GLOW-V1.85.20.md)
 strengthens dark-theme flow trails and identity-colored node halos using existing
 runtime data. The web build, card/connector geometry, accessibility and overflow
 checks pass; all four language/theme capture pairs are within repeat tolerance.
