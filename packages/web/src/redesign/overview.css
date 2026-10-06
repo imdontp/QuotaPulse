@@ -372,6 +372,10 @@
 .qp-metric-meter>small { grid-column:1/-1; grid-row:1; display:flex; justify-content:space-between; gap:5px; min-width:0; color:var(--qp-accent); font-size:9px; line-height:11px; font-variant-numeric:tabular-nums; }
 .qp-metric-meter-context { overflow:hidden; color:var(--qp-muted); text-overflow:ellipsis; white-space:nowrap; }
 .qp-metric-meter>small strong { flex:none; color:var(--qp-accent); font-size:inherit; font-weight:600; }
+.qp-metric-rail[data-metric=tokens] .qp-metric-meter { grid-template-columns:minmax(0,1fr) auto; gap:0 6px; }
+.qp-metric-rail[data-metric=tokens] .qp-metric-meter>span { grid-column:1; grid-row:1; }
+.qp-metric-rail[data-metric=tokens] .qp-metric-meter>small { grid-column:2; grid-row:1; }
+.qp-metric-rail[data-metric=tokens] .qp-metric-meter-context { display:none; }
 .qp-metric {
   display:flex;
   flex-direction:column;
@@ -894,7 +898,8 @@
 .qp-insights-heading h2 { flex:none; }
 .qp-insights-subtitle { color:var(--qp-muted); font-size:11px; }
 .qp-insights { gap:10px; }
-.qp-insight-card { --qp-insight-color:var(--qp-accent); display:grid; grid-template-columns:34px minmax(0,1fr); align-items:start; gap:8px; min-height:56px; padding:8px; border:1px solid color-mix(in srgb,var(--qp-insight-color) 19%,var(--qp-border)); border-radius:10px; background:linear-gradient(120deg,color-mix(in srgb,var(--qp-insight-color) 5%,var(--qp-panel)),var(--qp-panel)); }
+.qp-insight-card { --qp-insight-color:var(--qp-accent); display:grid; grid-template-columns:34px minmax(0,1fr); align-items:start; gap:8px; min-height:56px; padding:8px; border:1px solid color-mix(in srgb,var(--qp-border) 20%,var(--qp-panel)); border-radius:10px; background:linear-gradient(120deg,color-mix(in srgb,var(--qp-insight-color) 1%,var(--qp-panel)),var(--qp-panel)); }
+.qp-redesign[data-theme=light] .qp-insight-card { border-color:color-mix(in srgb,var(--qp-insight-color) 19%,var(--qp-border)); background:linear-gradient(120deg,color-mix(in srgb,var(--qp-insight-color) 5%,var(--qp-panel)),var(--qp-panel)); }
 .qp-insight-card[data-insight=pace] { --qp-insight-color:var(--qp-accent); }
 .qp-insight-card[data-insight=pace][data-state=critical] { --qp-insight-color:var(--qp-danger); }
 .qp-insight-card[data-insight=pace][data-state=warning] { --qp-insight-color:var(--qp-warning); }
