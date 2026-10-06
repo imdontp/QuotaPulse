@@ -101,7 +101,7 @@
 .qp-live-matrix-section { container:qp-live-matrix / inline-size; }
 .qp-live-minute-range { display:flex; justify-content:space-between; gap:8px; color:var(--qp-muted); font-size:9px; }
 .qp-live-matrix .qp-live-matrix-row-body {
-  display:grid; grid-template-columns:minmax(74px,1fr) minmax(90px,180px) minmax(35px,55px);
+  display:grid; grid-template-columns:minmax(104px,1fr) minmax(70px,150px) minmax(35px,55px);
   width:100%; min-width:0; align-items:center; gap:5px; padding:5px;
   text-align:left; border:1px solid var(--qp-border); border-radius:7px;
   color:var(--qp-text); background:var(--qp-panel); font-size:10px;

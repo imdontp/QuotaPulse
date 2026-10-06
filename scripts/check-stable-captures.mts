@@ -171,7 +171,7 @@ const overviewReferenceLabelChecks: Array<{ lang: string; theme: string; labels:
 const overviewConceptDataChecks: Array<{ lang: string; theme: string; periodRange: string; modelNames: string[]; modelShares: number[]; quotaGroups: Array<{ owner: string; windows: string[]; labels: string[] }>; quotaContentHeight: number; quotaViewportHeight: number; selectedWindow: string | null; pulsePercent: number | null; pulseLabel: string | null; pulseDetail: string | null; cacheShare: number | null; cacheSavingsUsd: number | null; cacheSavingsKnownCalls: number; mapProject: string | null; mapProjects: number; mapRecords: number; mapSessions: number; mapHarnessSessions: Record<string, number> }> = [];
 const referenceColumnChecks: Array<{ page: string; lang: string; theme: string; headerTop: number; railTop: number; summaryRight: number; railLeft: number }> = [];
 const liveDensityChecks: Array<{ lang: string; theme: string; bottom: number; sessions: number; records: number }> = [];
-const liveMinuteChecks: Array<{ lang: string; theme: string; state: string; pairs: number; cells: number; missing: number; zero: number; recorded: number; partial: number; included: number; aggregate: number; unknown: number; table: boolean; labelGeometry: Array<{ viewport: number; width: number; clientWidth: number; scrollWidth: number; name: string | null | undefined }> }> = [];
+const liveMinuteChecks: Array<{ lang: string; theme: string; state: string; pairs: number; cells: number; missing: number; zero: number; recorded: number; partial: number; included: number; aggregate: number; unknown: number; table: boolean; labelGeometry: Array<{ viewport: number; width: number; clientWidth: number; scrollWidth: number; modelClientWidth: number; modelScrollWidth: number; name: string | null | undefined }> }> = [];
 const liveRefreshChecks: Array<Awaited<ReturnType<typeof checkLiveMinuteRefresh>>> = [];
 const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bottom: number; unknownNative: number; sourceTopCards: Array<{ x: number; width: number }> }> = [];
 const providerChecks: Array<{ lang: string; theme: string; bottom: number; compared: number; unavailable: boolean; expired: boolean; proportional: boolean }> = [];
@@ -257,10 +257,20 @@ async function checkLiveMinuteValues(page: Page, data: ProviderModelMinuteRespon
   for (const width of [390, 900, 1280]) {
     await page.setViewportSize({ width, height: 941 });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Live minute table overflow at ${width}`);
-    const labels = await page.locator('.qp-live-matrix-label>span:last-child').evaluateAll(elements => elements.map(element => ({ width: element.getBoundingClientRect().width, clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, name: element.querySelector('b')?.textContent })));
+    const labels = await page.locator('.qp-live-matrix-label>span:last-child').evaluateAll(elements => elements.map(element => {
+      const model = element.querySelector('b')!;
+      return { width: element.getBoundingClientRect().width, clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, modelClientWidth: model.clientWidth, modelScrollWidth: model.scrollWidth, name: model.textContent };
+    }));
     assert.ok(labels.every(label => label.width >= 45 || label.scrollWidth <= label.clientWidth), `Matrix model labels are nearly hidden at ${width}: ${JSON.stringify(labels)}`);
     labelGeometry.push(...labels.map(label => ({ viewport: width, ...label })));
   }
+  await page.setViewportSize({ width: 1672, height: 941 });
+  const desktopLabels = await page.locator('.qp-live-matrix-label>span:last-child').evaluateAll(elements => elements.map(element => {
+    const model = element.querySelector('b')!;
+    return { width: element.getBoundingClientRect().width, clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, modelClientWidth: model.clientWidth, modelScrollWidth: model.scrollWidth, name: model.textContent };
+  }));
+  assert.ok(desktopLabels.every(label => label.modelScrollWidth <= label.modelClientWidth), `Desktop matrix model labels are clipped: ${JSON.stringify(desktopLabels)}`);
+  labelGeometry.push(...desktopLabels.map(label => ({ viewport: 1672, ...label })));
   const region = page.locator('.qp-live-minute-data-table'); await region.focus(); await page.keyboard.press('End');
   await page.waitForFunction(() => { const e = document.querySelector('.qp-live-minute-data-table')!; return e.scrollTop > 0 && e.scrollTop + e.clientHeight >= e.scrollHeight - 1; });
   await summary.focus(); await page.keyboard.press('Enter'); await page.setViewportSize({ width: 1672, height: 941 }); await page.evaluate(() => scrollTo(0, 0));
