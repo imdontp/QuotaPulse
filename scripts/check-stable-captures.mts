@@ -833,7 +833,7 @@ async function checkChartAccess(page: Page, destination: 'live' | 'projects', la
 async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', lang: string, theme: string, pending: Set<Request>) {
   const routes = destination === 'models'
     ? ['models?metric=tokens', 'models?metric=calls', 'models?metric=api_value_usd']
-    : ['cost?basis=api&range=month', 'cost?basis=native&range=month', 'cost?basis=native&range=month&source=2'];
+    : ['cost?basis=api', 'cost?basis=native&range=month&bucket=week', 'cost?basis=native&range=month&source=2'];
   const locale = lang === 'th' ? 'th-TH' : 'en-US';
   const number = new Intl.NumberFormat(locale);
   const money = new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' });
@@ -852,6 +852,23 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
     assert.ok(collapsedBottom < 941, `${route}: collapsed detail outside viewport (${collapsedBottom})`);
     if (destination === 'cost') {
       const cost = data as CostAnalysisResponse;
+      const expectedBucket = route.includes('bucket=week') ? 'week' : 'day';
+      assert.equal(cost.bucket, expectedBucket, `${route}: response bucket must match the selected interval`);
+      assert.equal(cost.bucketMs, expectedBucket === 'week' ? 7 * 86_400_000 : 86_400_000);
+      assert.equal(await page.locator('.qp-cost-toolbar select').nth(2).inputValue(), expectedBucket, `${route}: interval selection must match API aggregation`);
+      if (route === 'cost?basis=api') {
+        const monthStart = new Date(fixedNow); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
+        assert.equal(await page.locator('.qp-cost-toolbar select').first().inputValue(), 'month', 'Cost must default to month-to-date');
+        assert.equal(cost.scope.from, monthStart.getTime(), 'Default Cost API request must begin at local month start');
+        assert.equal(cost.scope.to, fixedNow + 1, 'Default Cost API request must end at the current instant');
+        const unitValue = await page.locator('.qp-cost-summary article:nth-child(4)>strong').innerText();
+        const prefs = await page.evaluate(() => JSON.parse(localStorage.getItem('quotapulse-prefs') ?? '{}') as { currency?: string; rate?: number });
+        const currency = prefs.currency === 'THB' ? 'THB' : 'USD';
+        const rate = currency === 'THB' && Number.isFinite(prefs.rate) && prefs.rate! > 0 ? prefs.rate! : 1;
+        const expectedUnitValue = new Intl.NumberFormat(locale, { style: 'currency', currency, maximumFractionDigits: 6 })
+          .format(cost.totals.amount / cost.totals.pricedTokens * 1000 * rate);
+        assert.equal(unitValue, expectedUnitValue, 'Per-1K cost must retain meaningful precision for fractional-unit values');
+      }
       const maxAmount = Math.max(0, ...cost.points.map(point => point.amount));
       const maxTokens = Math.max(0, ...cost.points.map(point => point.pricedTokens));
       if (cost.totals.pricedCalls > 0) {

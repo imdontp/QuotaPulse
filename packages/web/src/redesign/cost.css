@@ -6,7 +6,7 @@
 .qp-cost-header button,.qp-cost-toolbar select { border:1px solid var(--qp-border); border-radius:7px; padding:8px 10px; background:var(--qp-panel); color:var(--qp-text); font-size:11px; }
 .qp-cost-header button { display:flex; align-items:center; gap:6px; }
 .qp-cost-header button:disabled { opacity:.5; }
-.qp-cost-toolbar { grid-template-columns:repeat(2,minmax(0,220px)); }
+.qp-cost-toolbar { grid-template-columns:repeat(3,minmax(0,220px)); }
 .qp-cost-toolbar label { display:grid; gap:5px; color:var(--qp-muted); font-size:11px; }
 .qp-cost-summary { grid-template-columns:repeat(4,minmax(0,1fr)); }
 .qp-cost-summary article { display:grid; gap:8px; min-width:0; }
@@ -62,7 +62,7 @@
 .qp-observed-trend.qp-cost-token-line { position:absolute; inset:0; height:100%; width:100%; display:block; overflow:visible; --qp-accent:var(--qp-series); }
 .qp-redesign[data-theme=dark] .qp-cost-donut { box-shadow:0 0 18px #007dff55,inset 0 0 5px #c1e5ff88; outline:1px solid var(--qp-border); outline-offset:4px; }
 @media(max-width:1200px) { .qp-cost-upper { grid-template-columns:1fr; } .qp-cost-summary { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-@media(max-width:730px) { .qp-cost-header { grid-template-columns:1fr; } .qp-cost-lower { grid-template-columns:1fr; } }
+@media(max-width:730px) { .qp-cost-header { grid-template-columns:1fr; } .qp-cost-toolbar { grid-template-columns:repeat(2,minmax(0,1fr)); } .qp-cost-lower { grid-template-columns:1fr; } }
 @media(max-width:450px) { .qp-cost-toolbar { grid-template-columns:1fr; } .qp-cost-providers li { grid-template-columns:8px minmax(0,1fr); } .qp-cost-providers li strong { grid-column:2; } }
 .qp-cost-layout { display:grid; gap:12px; min-width:0; }
 .qp-cost-top { display:grid; gap:12px; }
@@ -77,7 +77,7 @@
   .qp-cost-plot { --qp-cost-plot-height:190px; }
   [data-testid=production-cost] main { padding:12px; gap:12px; }
   .qp-cost-top { grid-template-columns:minmax(0,1fr) auto; align-items:center; }
-  .qp-cost-toolbar { grid-template-columns:repeat(2,minmax(0,180px)); }
+  .qp-cost-toolbar { grid-template-columns:repeat(3,minmax(0,180px)); }
   .qp-cost-layout { grid-template-columns:repeat(12,minmax(0,1fr)); align-items:start; }
   .qp-cost-top { grid-column:1/9; }
   .qp-cost-upper,.qp-cost-lower { display:contents; }

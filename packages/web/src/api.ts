@@ -234,6 +234,7 @@ export interface CostAnalysisResponse {
   now: number;
   scope: UsageEventScope;
   basis: 'api' | 'native';
+  bucket: 'auto' | 'hour' | 'day' | 'week';
   totals: { amount: number; pricedCalls: number; pricedTokens: number; allCalls: number; allTokens: number; sessions: number;
     unknownCalls: number; estimatedCalls: number; nonCallCalls: number; knownCacheSavingUsd: number; knownCacheSavingCalls: number };
   bucketMs: number;
@@ -655,7 +656,7 @@ export const api = {
     if (identity.provider === null) params.set('provider_missing', '1'); else if (identity.provider === '') params.set('provider_empty', '1'); else params.set('provider', identity.provider);
     return get<ModelDetailResponse>(`/api/model-detail?${params}`);
   },
-  costAnalysis: (scope: UsageEventScope, basis: 'api' | 'native') => get<CostAnalysisResponse>(`/api/cost-analysis?basis=${basis}&${usageEventParams(scope)}`),
+  costAnalysis: (scope: UsageEventScope, basis: 'api' | 'native', bucket: CostAnalysisResponse['bucket'] = 'auto') => get<CostAnalysisResponse>(`/api/cost-analysis?basis=${basis}&bucket=${bucket}&${usageEventParams(scope)}`),
   quotaHistory: (scope: { subscriptionKey: string; windowKind: string; from?: number; to?: number }) => {
     const params = new URLSearchParams({ subscription_key: scope.subscriptionKey, window_kind: scope.windowKind });
     if (scope.from !== undefined) params.set('from', String(scope.from));

@@ -18,7 +18,7 @@ import { parseQuotaHistoryScope, quotaHistory } from './quota-history.js';
 import { detailedAggregates } from './detailed-aggregates.js';
 import { projectDetail, projectTrends } from './project-detail.js';
 import { modelDetail } from './model-detail.js';
-import { costAnalysis, type CostBasis } from './cost-analysis.js';
+import { costAnalysis, type CostBasis, type CostBucket } from './cost-analysis.js';
 import { liveSessions, type LiveSessionMode } from './live-sessions.js';
 import { historySummary } from './history-summary.js';
 import { runtimeSummary } from './runtime-summary.js';
@@ -569,9 +569,11 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     const now = Date.now();
     const query = req.query as Record<string, unknown>;
     try {
-      const scope = parseUsageScope(query, now, { requireRange: true, extraKeys: ['basis'] });
+      const scope = parseUsageScope(query, now, { requireRange: true, extraKeys: ['basis', 'bucket'] });
       if (query.basis !== 'api' && query.basis !== 'native') throw new Error('Expected api or native basis');
-      return { now, scope, basis: query.basis, ...costAnalysis(db, scope, query.basis as CostBasis) };
+      const bucket = query.bucket ?? 'auto';
+      if (bucket !== 'auto' && bucket !== 'hour' && bucket !== 'day' && bucket !== 'week') throw new Error('Expected auto, hour, day or week bucket');
+      return { now, scope, basis: query.basis, ...costAnalysis(db, scope, query.basis as CostBasis, bucket as CostBucket) };
     } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
   });
 

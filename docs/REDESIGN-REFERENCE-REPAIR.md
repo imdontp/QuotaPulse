@@ -36,6 +36,12 @@ identity values. Four capture variants and the selected-provider assertion pass;
 the reference's unsupported performance metadata and additional model rows remain
 out of production display.
 
+Latest Cost behavior and presentation checkpoint: [Month-to-date and chart interval v1.85.16](redesign-v1.85.16/REDESIGN-COST-DATE-AND-INTERVAL-V1.85.16.md)
+defaults to real current-month records, adds API-backed daily/hourly/weekly chart
+aggregation and preserves sub-cent unit-cost precision. Daemon/web tests and all
+four Cost capture variants pass. The recorded fixture trend remains sparse and
+the concept likeness target is still open.
+
 ## Source and observed gaps
 
 Latest presentation work: [Panel identity marks and recorded Live curves v1.64](REDESIGN-SECTION-MARKS-V1.64.md)
