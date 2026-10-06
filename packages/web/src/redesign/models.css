@@ -33,6 +33,11 @@
 .qp-model-table-wrap button { color:var(--qp-accent); font-weight:600; text-align:left; }
 .qp-model-detail { display:grid; gap:12px; min-width:0; }
 .qp-model-detail h3 { font-size:19px; overflow-wrap:anywhere; }
+.qp-model-detail-identity { display:flex; align-items:center; gap:12px; min-width:0; }
+.qp-model-detail-identity>div { display:grid; gap:3px; min-width:0; }
+.qp-model-detail-identity h3 { font-size:17px; line-height:1.3; }
+.qp-model-detail-identity p { margin:0; overflow-wrap:anywhere; }
+.qp-model-detail-provider { display:grid; place-items:center; width:46px; height:46px; flex:none; border:1px solid color-mix(in srgb,var(--qp-accent) 30%,var(--qp-border)); border-radius:12px; color:var(--qp-text); background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 17%,var(--qp-panel)),var(--qp-panel)); box-shadow:inset 0 1px 0 color-mix(in srgb,var(--qp-accent) 16%,transparent); font-size:28px; }
 .qp-model-detail a { color:var(--qp-accent); font-size:11px; }
 .qp-model-detail-stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .qp-model-detail-stats>div { display:grid; gap:5px; border:1px solid var(--qp-border); border-radius:7px; padding:8px; }

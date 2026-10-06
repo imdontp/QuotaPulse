@@ -30,6 +30,12 @@ matches the OpenCode Go tile's purple treatment using its real provider key.
 All four language/theme captures pass the repeatability and provider-data checks;
 the page's differing owner/reader counts remain an intentional data difference.
 
+Latest Models styling checkpoint: [Selected model identity v1.85.15](redesign-v1.85.15/REDESIGN-SELECTED-MODEL-IDENTITY-V1.85.15.md)
+adds the selected model's actual provider/maker mark and retains the recorded
+identity values. Four capture variants and the selected-provider assertion pass;
+the reference's unsupported performance metadata and additional model rows remain
+out of production display.
+
 ## Source and observed gaps
 
 Latest presentation work: [Panel identity marks and recorded Live curves v1.64](REDESIGN-SECTION-MARKS-V1.64.md)

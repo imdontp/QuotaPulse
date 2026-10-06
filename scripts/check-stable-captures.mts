@@ -368,6 +368,10 @@ async function checkModelComparison(page: Page, lang: string, theme: string, pen
   await last.focus(); await page.keyboard.press('Enter'); await settled(page, pending);
   assert.equal(await last.getAttribute('aria-pressed'), 'true');
   assert.equal(await page.locator('.qp-model-detail h3').textContent(), identity);
+  const selectedGroup = data.groups.find(group => group.model === identity);
+  assert.ok(selectedGroup);
+  assert.equal(await page.locator('.qp-model-detail-provider').getAttribute('data-vendor'), selectedGroup.provider ?? selectedGroup.vendor ?? 'unknown');
+  assert.equal(await page.locator('.qp-model-detail-provider svg, .qp-model-detail-provider>span').count(), 1, 'Selected model detail shows its actual provider mark or unknown fallback');
   await page.locator('.qp-model-search input').fill('no-such-synthetic-model'); assert.equal(await rows.count(), 0);
   await page.locator('.qp-model-search input').fill(''); await settled(page, pending);
   const fixture = structuredClone(data);
