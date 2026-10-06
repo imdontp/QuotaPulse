@@ -6,7 +6,7 @@ import { HarnessIcon } from '@/components/harness-icon';
 import { VendorIcon } from '@/components/vendor-icon';
 
 /** Render recorded, allowlisted metadata; never request prompt or source payloads. */
-export function HistoryRecordDetails({ row, basis, date }: { row: UsageEventRow; basis: string; date: string }) {
+export function HistoryRecordDetails({ row, harnessVendor, basis, date }: { row: UsageEventRow; harnessVendor?: string; basis: string; date: string }) {
   const t = useT();
   const f = useFormat();
   const { lang } = useI18n();
@@ -43,8 +43,8 @@ export function HistoryRecordDetails({ row, basis, date }: { row: UsageEventRow;
       const tokenIcons = [BarChart3, ArrowDown, Database, Database, ArrowUp, Zap];
       const TokenIcon = tokenIcons[index];
       const identity = group.title === 'history.eventSummary' && index >= 2 && index <= 6;
-      const identityIcon = !identity ? null : index === 2 ? <Folder size={21} aria-hidden="true"/> : index === 3 ? <HarnessIcon harness={row.harness} label={row.harness}/> : <VendorIcon vendor={index === 4 ? row.provider ?? 'unknown' : row.vendor}/>;
-      return <div key={String(label)} data-field={group.title === 'history.eventSummary' ? index : undefined} className={identity ? 'qp-history-detail-identity' : undefined}>
+      const identityIcon = !identity ? null : index === 2 ? <Folder size={21} aria-hidden="true"/> : index === 3 ? <HarnessIcon harness={row.harness} vendor={harnessVendor} label={row.harness}/> : <VendorIcon vendor={index === 4 ? row.provider ?? 'unknown' : row.vendor}/>;
+      return <div key={String(label)} data-field={group.title === 'history.eventSummary' ? index : undefined} data-harness={group.title === 'history.eventSummary' && index === 3 ? row.harness : undefined} className={identity ? 'qp-history-detail-identity' : undefined}>
         {identityIcon && <i aria-hidden="true">{identityIcon}</i>}
         <dt>{label}</dt><dd title={token ? count(value) : undefined} aria-label={token ? String(value) : undefined}>{token ? <><TokenIcon size={14} aria-hidden="true"/><span>{f.tokens(value)}</span></> : value}</dd>
       </div>;

@@ -113,7 +113,11 @@
   background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 15%,var(--qp-panel)),var(--qp-panel));
 }
 .qp-project-card-identity { display:grid; gap:3px; min-width:0; }
-.qp-project-card-money { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.qp-project-card-summary { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(92px,1fr); gap:14px; align-items:start; }
+.qp-project-card-usage { display:grid; gap:5px; min-width:0; }
+.qp-project-card-usage>small,.qp-project-card-share-label { color:var(--qp-muted); font-size:10px; line-height:1.3; }
+.qp-project-card-share-label { font-size:9px; }
+.qp-project-card-money { display:grid; gap:8px; }
 .qp-project-card-money>span { display:grid; min-width:0; gap:2px; overflow-wrap:anywhere; }
 .qp-project-card-money small { color:var(--qp-muted); font-size:10px; line-height:1.4; }
 .qp-project-card-money strong { font-size:13px; line-height:1.3; font-weight:550; }
@@ -158,9 +162,10 @@
   gap:8px;
 }
 .qp-project-card-tokens strong {
-  font-size:22px;
+  font-size:17px;
   font-weight:550;
 }
+.qp-project-card-tokens small { color:var(--qp-accent); font-size:13px; font-weight:600; }
 .qp-project-card-facts {
   display:flex;
   flex-wrap:wrap;
@@ -314,6 +319,9 @@
 .qp-project-rail { display:grid; gap:12px; min-width:0; }
 .qp-project-rail .qp-project-detail { position:static; }
 .qp-project-top li>button { text-align:left; overflow-wrap:anywhere; color:var(--qp-accent); min-height:24px; }
+.qp-project-top li>button { display:flex; align-items:center; gap:7px; color:var(--qp-text); }
+.qp-project-top li>button>svg { color:var(--qp-accent); flex:none; }
+.qp-project-rank { display:grid; place-items:center; width:20px; height:20px; flex:none; border-radius:50%; background:color-mix(in srgb,var(--qp-muted) 10%,var(--qp-panel)); color:var(--qp-muted); font-size:10px; }
 .qp-project-top li>button[aria-pressed=true] { text-decoration:underline; text-underline-offset:3px; }
 @media(min-width:1280px) {
   [data-testid=production-projects] main { padding:12px; gap:12px; }
@@ -321,17 +329,23 @@
   .qp-project-toolbar { min-height:42px; }
   .qp-project-header p { margin-top:4px; font-size:11px; }
   .qp-project-layout { grid-template-columns:minmax(0,1.65fr) minmax(320px,1fr); gap:12px; }
-  .qp-project-cards { max-height:720px; overflow:auto; scrollbar-width:thin; grid-auto-rows:minmax(232px,auto); }
+  .qp-project-cards { max-height:720px; overflow:auto; scrollbar-width:thin; grid-auto-rows:minmax(258px,auto); }
   [data-testid=production-projects] .qp-project-card { padding:14px; gap:6px; }
-  .qp-project-spark { height:36px; }
+  .qp-project-card-heading { min-height:60px; }
+  .qp-project-spark { height:48px; }
   .qp-project-card-facts { padding-top:6px; }
   .qp-project-detail { padding:12px; gap:6px; }
   .qp-project-detail h2 { font-size:19px; line-height:1.3; overflow-wrap:anywhere; }
   .qp-project-detail-metrics { grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; }
   .qp-project-detail-metrics>div,.qp-project-money>div { padding:6px; gap:4px; }
+  .qp-project-detail-metrics>div { padding:5px 6px; gap:2px; }
+  .qp-project-detail-metrics>div>strong { grid-row:1; }
+  .qp-project-detail-metrics>div>small { grid-row:2; line-height:1.3; }
+  .qp-project-money>div { display:flex; align-items:center; justify-content:space-between; padding:6px 8px; gap:8px; }
+  .qp-project-money small { max-width:65%; line-height:1.3; }
   .qp-project-detail small { font-size:10px; }
   .qp-project-detail-metrics strong,.qp-project-money strong { font-size:16px; line-height:1.3; }
-  .qp-project-trend { height:96px; }
+  .qp-project-trend { height:80px; }
   .qp-project-identity-panel { padding:8px; }
   .qp-project-breakdown { gap:6px; font-size:11px; }
   .qp-project-breakdown li { padding-bottom:6px; }
@@ -339,5 +353,5 @@
   .qp-project-top { padding:14px; }
   .qp-project-top h3 { margin-bottom:10px; line-height:1.3; }
   .qp-project-top ol { gap:4px; }
-  .qp-project-top li { grid-template-columns:minmax(100px,1fr) minmax(40px,.7fr) auto; gap:8px; }
+  .qp-project-top li { grid-template-columns:minmax(130px,1fr) minmax(40px,.7fr) auto; gap:8px; }
 }

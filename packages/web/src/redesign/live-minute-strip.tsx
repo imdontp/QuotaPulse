@@ -21,6 +21,7 @@ export function LiveMinuteMatrix({ data, language, t, frozen, provider, model, o
   const legendId = useId();
   const locale = language === 'th' ? 'th-TH' : 'en-US';
   const formatter = new Intl.NumberFormat(locale);
+  const compact = new Intl.NumberFormat(locale, { notation: 'compact', maximumFractionDigits: 1 });
   const clock = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
   const date = new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'medium' });
   const number = (value: number) => formatter.format(value);
@@ -43,7 +44,7 @@ export function LiveMinuteMatrix({ data, language, t, frozen, provider, model, o
           <span className="qp-live-minute-strip" role="img" aria-label={`${name(group.provider)} · ${name(group.model)} · ${number(group.callRecords)} ${t('redesign.liveMinuteIncluded')}`} aria-describedby={legendId}>
             {group.cells.map(cell => <i key={cell.at} data-at={cell.at} data-state={cell.state} data-tokens={cell.tokens ?? undefined} data-records={cell.records ?? undefined} data-calls={cell.calls ?? undefined} data-partial={cell.partial || undefined} title={describe(cell)} aria-hidden="true" style={{ '--qp-minute-intensity': cell.intensity } as CSSProperties}/>)}
           </span>
-          <strong className="qp-live-matrix-total" title={`${t('redesign.liveMinuteWindowAll')} · ${t('redesign.liveMinuteExcluded')}: ${number(group.aggregateRecords)} ${t('redesign.liveAggregate')} · ${number(group.unknownRecords)} ${t('redesign.liveUnknownGrain')}`}><span>{number(group.tokens)}</span><small>{t('redesign.liveMinuteWindow')}</small></strong>
+          <strong className="qp-live-matrix-total" title={`${t('redesign.liveMinuteWindowAll')} · ${t('redesign.liveMinuteExcluded')}: ${number(group.aggregateRecords)} ${t('redesign.liveAggregate')} · ${number(group.unknownRecords)} ${t('redesign.liveUnknownGrain')}`}><span data-value={group.tokens} aria-label={String(group.tokens)} title={number(group.tokens)}>{compact.format(group.tokens)}</span><small>{t('redesign.liveMinuteWindow')}</small></strong>
         </>;
         return <li className="qp-live-matrix-row" key={group.key} data-pair-key={group.key} data-call-records={group.callRecords} data-aggregate-records={group.aggregateRecords} data-unknown-records={group.unknownRecords}>
           {group.provider !== null && group.provider !== '' && group.model !== null && group.model !== ''

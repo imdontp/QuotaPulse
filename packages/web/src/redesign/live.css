@@ -126,7 +126,7 @@
 .qp-live-matrix-section { container:qp-live-matrix / inline-size; }
 .qp-live-minute-range { display:flex; justify-content:space-between; gap:8px; color:var(--qp-muted); font-size:9px; }
 .qp-live-matrix .qp-live-matrix-row-body {
-  display:grid; grid-template-columns:minmax(104px,1fr) minmax(70px,150px) minmax(35px,55px);
+  display:grid; grid-template-columns:minmax(104px,1fr) minmax(70px,150px) 60px;
   width:100%; min-width:0; align-items:center; gap:5px; padding:5px;
   text-align:left; border:1px solid var(--qp-border); border-radius:7px;
   color:var(--qp-text); background:var(--qp-panel); font-size:10px;
@@ -139,7 +139,7 @@
 .qp-live-matrix-label b { font-size:10px; font-weight:500; }
 .qp-live-matrix-label small { font-size:9px; color:var(--qp-muted); }
 .qp-live-matrix-total { min-width:0; text-align:right; }
-.qp-live-matrix .qp-live-matrix-total>span { display:block; overflow-wrap:anywhere; white-space:normal; font-weight:550; }
+.qp-live-matrix .qp-live-matrix-total>span { display:block; white-space:nowrap; font-weight:550; }
 .qp-live-matrix-total small { display:block; color:var(--qp-muted); font-size:8px; font-weight:400; white-space:normal; line-height:11px; }
 .qp-live-minute-strip { display:flex; min-width:0; width:100%; height:26px; gap:2px; }
 .qp-live-minute-strip>i {

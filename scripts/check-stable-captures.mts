@@ -215,6 +215,8 @@ async function checkLiveMinuteValues(page: Page, data: ProviderModelMinuteRespon
     aggregateRecords: Number(element.getAttribute('data-aggregate-records')),
     unknownRecords: Number(element.getAttribute('data-unknown-records')),
     total: element.querySelector('.qp-live-matrix-total>span')!.textContent,
+    exactTotal: element.querySelector('.qp-live-matrix-total>span')!.getAttribute('aria-label'),
+    totalTitle: element.querySelector('.qp-live-matrix-total>span')!.getAttribute('title'),
     filterable: element.querySelector('button') !== null,
     mark: (() => { const rect = element.querySelector('.qp-live-provider-mark')!.getBoundingClientRect(); return { width: rect.width, height: rect.height }; })(),
     cells: Array.from(element.querySelectorAll<HTMLElement>('.qp-live-minute-strip>i')).map(cell => ({
@@ -233,7 +235,8 @@ async function checkLiveMinuteValues(page: Page, data: ProviderModelMinuteRespon
   const tableExpected: Array<{ key: string; at: number; state: string; tokens: string; records: string; calls: string }> = [];
   for (const [index, group] of expected.entries()) {
     const actual = rows[index], key = JSON.stringify([group.provider, group.model]);
-    assert.equal(actual.key, key); assert.equal(actual.total, format.format(group.tokens));
+    assert.equal(actual.key, key); assert.equal(actual.total, new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(group.tokens));
+    assert.equal(actual.exactTotal, String(group.tokens)); assert.equal(actual.totalTitle, format.format(group.tokens));
     assert.equal(actual.callRecords, group.callRecords); assert.equal(actual.aggregateRecords, group.aggregateRecords); assert.equal(actual.unknownRecords, group.unknownRecords);
     assert.equal(actual.filterable, group.provider !== null && group.provider !== '' && group.model !== null && group.model !== '');
     assert.deepEqual(actual.mark, { width: 18, height: 18 });
@@ -502,6 +505,15 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
     assert.equal(await tokens.nth(index).getAttribute('title'), value.toLocaleString(lang, { maximumFractionDigits: 20 }));
   }
   for (const value of [row.project, row.harness, row.provider, row.vendor, row.model]) assert.ok((await groups.first().innerText()).includes(value));
+  const ownerData = (await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<Overview>();
+  const harnessOwner = ownerData.harnesses.find(harness => harness.harness === row.harness && harness.source_ids.includes(row.source_id));
+  assert.ok(harnessOwner, 'Selected recorded source has no harness ownership metadata');
+  const harnessMark = dialog.locator('.qp-history-detail-identity[data-field="3"] svg').first();
+  assert.equal(await harnessMark.count(), 1, 'Known harness owner must display its published mark');
+  if (harnessOwner.vendor !== row.vendor) {
+    const modelMark = dialog.locator('.qp-history-detail-identity[data-field="6"] svg').first();
+    assert.notEqual(await harnessMark.innerHTML(), await modelMark.innerHTML(), 'Harness owner mark was replaced with the routed model maker');
+  }
   await page.evaluate(() => window.scrollTo(0, 0)); await settled(page, pending);
   if (pass === 0) {
     const rail = (await dialog.boundingBox())!;
@@ -1636,7 +1648,7 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
   const response = await page.request.get(assetUrl);
   assert.equal(response.status(), 200);
   assert.ok(response.headers()['content-type']?.startsWith('image/png'));
-  const assetSha256 = sha(readFileSync(resolve(root, 'packages/web/public/redesign/pulse-earth-v1.png')));
+  const assetSha256 = sha(readFileSync(resolve(root, 'packages/web/public/redesign/pulse-earth-v2.png')));
   assert.equal(sha(await response.body()), assetSha256, 'Served Earth asset differs from the retained source');
   const imageWidth = await page.evaluate(url => new Promise<number>((resolve, reject) => {
     const image = new Image(); image.onload = () => resolve(image.naturalWidth);

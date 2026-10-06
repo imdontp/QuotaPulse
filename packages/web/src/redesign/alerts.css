@@ -23,6 +23,7 @@
 .qp-alert-layout h2 { font-size:16px; }
 .qp-alert-section-head { grid-template-columns:minmax(0,1fr) auto; align-items:center; }
 .qp-alert-section-head select { max-width:280px; }
+.qp-alert-chart-heading { display:grid; gap:4px; min-width:0; }
 .qp-alert-risk ul,.qp-alert-history ol { list-style:none; margin:0; padding:0; display:grid; gap:8px; }
 .qp-alert-risk li { display:grid; grid-template-columns:70px minmax(0,1fr) auto; align-items:center; gap:9px; border-bottom:1px solid var(--qp-border); padding:7px 0; font-size:11px; }
 .qp-alert-risk li strong { display:block; overflow-wrap:anywhere; }
@@ -82,11 +83,20 @@
   .qp-alert-risk li strong { line-height:1.3; }
   .qp-alert-risk li p { margin-top:2px; line-height:1.3; }
   .qp-alert-risk ul,.qp-alert-history ol { gap:5px; }
-  .qp-alert-risk ul { max-height:160px; overflow:auto; overscroll-behavior:contain; }
+  .qp-alert-risk ul { max-height:246px; overflow:auto; overscroll-behavior:contain; }
   .qp-alert-history ol { max-height:160px; overflow:auto; overscroll-behavior:contain; }
   .qp-alert-history li { gap:2px 8px; padding-bottom:5px; }
   .qp-alert-rules>div span { padding:6px 12px; }
-  .qp-alert-main .qp-alert-rules { padding:12px; gap:6px; }
+  .qp-alert-main .qp-alert-rules { padding:8px; gap:6px; }
   .qp-alert-rule-table th,.qp-alert-rule-table td { padding:2px 8px; }
   .qp-alert-main .qp-alert-chart { padding:12px; gap:4px; }
+  .qp-alert-chart-heading { display:flex; align-items:center; flex-wrap:wrap; gap:4px 12px; }
+  .qp-alert-chart-heading h2 { flex:none; }
+  .qp-alert-chart-heading .qp-footnote { font-size:10px; }
+  .qp-alert-chart .qp-quota-chart { grid-template-columns:minmax(0,1fr) auto; align-items:center; }
+  .qp-alert-chart .qp-quota-chart-label { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+  .qp-alert-chart .qp-alert-segments { grid-column:1/-1; grid-row:1; }
+  .qp-alert-chart .qp-quota-chart-dates { grid-column:1; grid-row:2; }
+  .qp-alert-chart .qp-quota-samples { grid-column:2; grid-row:2; }
+  .qp-alert-chart .qp-quota-samples[open] { grid-column:1/-1; grid-row:3; }
 }

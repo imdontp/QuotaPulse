@@ -39,7 +39,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
     <h2><i aria-hidden="true"><History size={19}/></i>{t('history.timeline')}</h2>
     <p className="qp-footnote">{t('history.timelineNote')}</p>
     <div className="qp-history-summary">
-      <article><i aria-hidden="true"><BarChart3 size={24}/></i><span>{t('col.total')}</span><strong data-testid="history-total-tokens">{count(totals.tokens)}</strong></article>
+      <article><i aria-hidden="true"><BarChart3 size={24}/></i><span>{t('col.total')}</span><strong data-testid="history-total-tokens" title={totals.tokens.toLocaleString(lang, { maximumFractionDigits: 20 })} aria-label={String(totals.tokens)}>{f.tokens(totals.tokens)}</strong></article>
       <article><i aria-hidden="true"><FileText size={24}/></i><span>{t('col.calls')}</span><strong>{count(totals.calls)}</strong><small>{count(totals.records)} {t('history.records')} · {count(totals.sessions)} {t('redesign.sessions')}</small></article>
       <article><i aria-hidden="true"><Coins size={24}/></i><span>{t('history.apiTotal')}</span><strong>{value(totals.api_value_usd, priced)}</strong><small>{t('history.nativeTotal')}: {value(totals.reported_native_usd, totals.native_calls)}</small><small>{count(priced)} / {count(totals.calls)} {t('col.calls')}</small></article>
       <article><i aria-hidden="true"><Zap size={24}/></i><span>{t('history.effortDistribution')}</span><ul>{data.effort.map(row => <li key={JSON.stringify(row.effort)}>{row.effort ?? t('redesign.unknownValue')}: {count(row.calls)}</li>)}</ul>{!data.effort.length && <strong>—</strong>}</article>
