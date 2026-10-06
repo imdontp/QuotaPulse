@@ -570,6 +570,9 @@ async function checkProviders(page: Page, lang: string, theme: string, pending: 
   const result = await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(result.statusCode, 200);
   const data = result.json<Overview>();
+  const expectedVendors = [...data.subscriptions.map(subscription => subscription.provider), ...data.sourceStatus.filter(source => source.account_key === null).map(source => source.vendor ?? 'unknown')].sort();
+  const actualVendors = await page.locator('.qp-provider-card').evaluateAll(elements => elements.map(element => element.getAttribute('data-vendor') ?? 'unknown').sort());
+  assert.deepEqual(actualVendors, expectedVendors, 'Provider card tint selector must use the card\'s actual vendor metadata');
   const latest = [1, 2].map(source => data.limits.filter(reading => reading.source_id === source && reading.window_kind === 'monthly').sort((a, b) => b.last_seen_at - a.last_seen_at)[0]);
   const rows = page.locator('.qp-provider-comparison li'); assert.equal(await rows.count(), 2);
   const visibleWindows = page.locator('.qp-provider-card .qp-provider-windows>div');

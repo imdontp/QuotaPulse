@@ -25,6 +25,11 @@ keeps each card's decorative cyan/violet accent stable across sort and selection
 and carries it into the detail panel. Four language/theme captures pass the
 repeatability gate; source-image acceptance remains open.
 
+Latest Providers styling checkpoint: [Provider brand tile v1.85.14](redesign-v1.85.14/REDESIGN-PROVIDER-BRAND-TILE-V1.85.14.md)
+matches the OpenCode Go tile's purple treatment using its real provider key.
+All four language/theme captures pass the repeatability and provider-data checks;
+the page's differing owner/reader counts remain an intentional data difference.
+
 ## Source and observed gaps
 
 Latest presentation work: [Panel identity marks and recorded Live curves v1.64](REDESIGN-SECTION-MARKS-V1.64.md)
