@@ -91,8 +91,8 @@
   .qp-live-feed { gap:6px; }
   .qp-live-feed li { padding-bottom:6px; }
   .qp-live-feed small { display:inline; margin-left:8px; }
-  .qp-live-matrix { gap:6px; }
-  .qp-live-matrix button,.qp-live-matrix li>span { padding:6px; gap:6px; }
+  .qp-live-matrix { gap:5px; }
+  .qp-live-matrix button,.qp-live-matrix li>span { padding:5px; gap:6px; }
   .qp-live-rail .qp-live-section { gap:6px; }
   .qp-live-rail h2 { font-size:15px; line-height:1.3; }
   .qp-live-rail .qp-footnote { line-height:1.4; }
@@ -102,7 +102,7 @@
 .qp-live-minute-range { display:flex; justify-content:space-between; gap:8px; color:var(--qp-muted); font-size:9px; }
 .qp-live-matrix .qp-live-matrix-row-body {
   display:grid; grid-template-columns:minmax(74px,1fr) minmax(90px,180px) minmax(35px,55px);
-  width:100%; min-width:0; align-items:center; gap:5px; padding:6px;
+  width:100%; min-width:0; align-items:center; gap:5px; padding:5px;
   text-align:left; border:1px solid var(--qp-border); border-radius:7px;
   color:var(--qp-text); background:var(--qp-panel); font-size:10px;
 }

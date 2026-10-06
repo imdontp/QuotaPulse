@@ -179,7 +179,7 @@ export const en = {
   'redesign.runwayUnknown': 'Runway unavailable without a reported percentage',
   'redesign.insights': 'Pulse Insights',
   'redesign.insightsSubtitle': 'Usage and pricing signals',
-  'redesign.highBurnRate': 'High burn rate',
+  'redesign.tokenUsageChange': 'Token usage change',
   'redesign.paceComparison': 'Pace comparison',
   'redesign.recommendation': 'Recommendation',
   'redesign.insightActionFresh': 'Waiting',

@@ -64,13 +64,9 @@
 .qp-redesign[data-theme=dark] .qp-model-donut { box-shadow:0 0 14px #0d8aff38,inset 0 0 4px #8bbaff66; }
 @media(min-width:1280px) {
   .qp-model-table-wrap td { padding:7px 5px; vertical-align:middle; }
-  [data-testid=production-models] main { padding:12px; gap:12px; grid-template-columns:minmax(0,2.7fr) minmax(320px,1fr); align-items:start; }
-  [data-testid=production-models] main>header,[data-testid=production-models] main>.qp-model-toolbar,[data-testid=production-models] main>section,[data-testid=production-models] main>p { grid-column:1; }
-  .qp-model-layout { display:contents; }
-  .qp-model-primary { grid-column:1; }
-  .qp-model-summary { grid-row:2; }
-  .qp-model-toolbar { grid-row:3; }
-  .qp-model-detail { grid-column:2; grid-row:1/span 4; }
+  [data-testid=production-models] main { display:block; padding:12px; }
+  .qp-model-layout { grid-template-columns:minmax(0,2.7fr) minmax(320px,1fr); }
+  .qp-model-primary { align-content:start; }
   .qp-model-summary article,.qp-model-detail .qp-panel { padding:12px; gap:6px; }
   .qp-model-summary strong { line-height:1.2; }
   .qp-model-detail h3 { font-size:17px; line-height:1.3; }

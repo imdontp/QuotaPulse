@@ -185,7 +185,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.runwayUnknown': 'แสดงระยะเผื่อไม่ได้เพราะไม่มีเปอร์เซ็นต์โควตา',
   'redesign.insights': 'ข้อมูลเชิงลึก Pulse',
   'redesign.insightsSubtitle': 'สัญญาณการใช้งานและราคา',
-  'redesign.highBurnRate': 'อัตราการใช้สูง',
+  'redesign.tokenUsageChange': 'การเปลี่ยนแปลงการใช้โทเค็น',
   'redesign.paceComparison': 'เปรียบเทียบอัตราการใช้',
   'redesign.recommendation': 'คำแนะนำ',
   'redesign.insightActionFresh': 'รอข้อมูล',
