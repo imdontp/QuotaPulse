@@ -58,7 +58,7 @@ export function ActivitySparkline({ points, label, language }: {
       gradient.addColorStop(0, accent || 'transparent');
       gradient.addColorStop(1, 'transparent');
       context.fillStyle = gradient;
-      context.globalAlpha = .28;
+      context.globalAlpha = .38;
       let start = 0;
       while (start < points.length) {
         while (start < points.length && !valid(points[start])) start++;

@@ -1,5 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
-import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Flame, Folder, GitBranch, History, Layers, SlidersHorizontal, Star, Wallet, X } from 'lucide-react';
+import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Flame, Folder, GitBranch, History, Layers, SlidersHorizontal, Sparkles, Star, Wallet, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
 import { countdown } from '@/format';
@@ -71,6 +71,7 @@ interface OverviewProps {
   selectedQuotaId?: string | null;
   historyHref?: string;
   harnessVendors?: Readonly<Record<string, string>>;
+  runtimeHarnesses?: readonly string[];
   runtimeProjects?: readonly string[];
   selectedRuntimeProject?: string | null;
   onRuntimeProjectChange?: (project: string | null) => void;
@@ -138,7 +139,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
         const angle = index * 2.399963;
         return <circle key={index} cx={180 + Math.cos(angle) * 150} cy={160 + Math.sin(angle) * 150} r={index % 3 === 0 ? 1.7 : .7}/>;
       })}</g>
-      <circle cx="180" cy="160" r="129" fill="none" stroke="#395175" strokeOpacity=".45" strokeWidth="8"/>
+      <circle className="qp-core-track" cx="180" cy="160" r="129" fill="none" stroke={`url(#${id}-arc)`} strokeOpacity=".4" strokeWidth="8"/>
       <circle className="qp-core-halo" cx="180" cy="160" r="120" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="2"/>
       {used !== null && <circle className="qp-core-progress" data-testid="pulse-progress" cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used)} 100`} transform="rotate(-90 180 160)" filter={`url(#${id}-glow)`}/>}
     </svg>
@@ -150,7 +151,13 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
   </div>;
 }
 
-function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, onInspect, projects, selectedProject, onProjectChange }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
+function emptyHarnessNode(key: string): RuntimeGraph['nodes']['harness'][number] {
+  return { key, tokens: 0, sessions: 0, records: 0, callRecords: 0, aggregateRecords: 0, reportedCost: 0, apiValue: 0, unknownCostRecords: 0,
+    inputTokens: 0, cachedInputTokens: 0, cacheWriteTokens: 0, cacheSavingKnownUsd: 0, cacheSavingKnownCalls: 0,
+    nativeCalls: 0, computedCalls: 0, estimatedCalls: 0, unknownCalls: 0, lastActivityAt: null, activeSessions: 0 };
+}
+
+function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, enabledHarnesses, onInspect, projects, selectedProject, onProjectChange }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; enabledHarnesses?: readonly string[]; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
   const arrowId = useId();
   const map = useRef<HTMLDivElement>(null);
   const [geometry, setGeometry] = useState<{ width: number; height: number; paths: Array<{ edge: RuntimeGraph['edges'][number]; x: number; y: number; endX: number; endY: number }> }>({ width: 1, height: 1, paths: [] });
@@ -158,7 +165,17 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
   const locale = language === 'th' ? 'th-TH' : 'en-US';
   const number = new Intl.NumberFormat(locale);
   const percent = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
-  const columns = dimensions.map(dimension => nodes[dimension].slice(0, 8));
+  const harnessNodes = nodes.harness.slice();
+  const knownHarnesses = new Set(harnessNodes.map(node => node.key?.trim().toLowerCase()).filter((key): key is string => Boolean(key)));
+  for (const harness of enabledHarnesses ?? []) {
+    const key = harness.trim();
+    const normalized = key.toLowerCase();
+    if (normalized && !knownHarnesses.has(normalized)) {
+      harnessNodes.push(emptyHarnessNode(key));
+      knownHarnesses.add(normalized);
+    }
+  }
+  const columns = dimensions.map(dimension => (dimension === 'harness' ? harnessNodes : nodes[dimension]).slice(0, 8));
   const columnTokenTotals = dimensions.slice(0, 3).map(dimension => nodes[dimension].reduce((total, node) => total + node.tokens, 0));
   const maxRows = Math.max(1, ...columns.map(column => column.length));
   const height = maxRows * 43;
@@ -241,8 +258,9 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
             const activityKey = activityState === 'active' ? 'redesign.runtimeActivityActive' : activityState === 'idle' ? 'redesign.runtimeActivityIdle' : 'redesign.runtimeActivityUnknown';
             const activityLabel = t(activityKey);
             const activeSessions = typeof node.activeSessions === 'number' && Number.isFinite(node.activeSessions) ? node.activeSessions : null;
-            const sessionValue = dimension === 'project' && activeSessions !== null ? activeSessions : node.sessions;
-            const sessionLabel = dimension === 'project' && activeSessions !== null ? 'redesign.runtimeNodeActiveSessions' : 'redesign.runtimeNodeSessions';
+            const usesActiveSessions = (dimension === 'project' || dimension === 'harness') && activeSessions !== null;
+            const sessionValue = usesActiveSessions ? activeSessions : node.sessions;
+            const sessionLabel = usesActiveSessions ? 'redesign.runtimeNodeActiveSessions' : 'redesign.runtimeNodeSessions';
             const exact = `${label} · ${number.format(node.tokens)} ${t('redesign.tokens')} · ${number.format(sessionValue)} ${t(sessionLabel)}${dimension === 'provider' ? ` · ${activityLabel}. ${t('redesign.runtimeActivityNote')}` : ''}`;
             const nodeStyle = dimension === 'project' && singleProject ? { height: 80, marginTop: Math.max(0, (Math.min(4, maxRows) * 43 - 80) / 2 - 8) } : undefined;
             return <button className="qp-map-node" style={nodeStyle} data-dimension={dimension} data-runtime-name={node.key?.trim().toLowerCase() ?? undefined} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-sessions={node.sessions} data-active-sessions={activeSessions ?? undefined} data-last-activity-at={node.lastActivityAt ?? undefined} data-activity-state={activityState} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" data-model-vendor={dimension === 'model' && node.key ? node.vendor : undefined} aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <ModelMark node={node} size={15}/>}</span><span className="qp-node-label">{dimension === 'project' && singleProject && <small className="qp-node-kicker">{language === 'th' ? 'โปรเจกต์' : 'Project'}</small>}<span className="qp-node-label-main">{label}</span>{dimension === 'provider' ? <small className="qp-node-activity" data-testid="runtime-node-activity" data-state={activityState} title={t('redesign.runtimeActivityNote')}><i aria-hidden="true"/>{activityLabel}</small> : dimension !== 'model' && <small className="qp-node-meta" data-testid="runtime-node-sessions">{number.format(sessionValue)} {t(sessionLabel)}</small>}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : null}</button>;
@@ -299,7 +317,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
+export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -416,7 +434,7 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
               <MetricRailItem metric="tokens" icon={<CircleGauge size={21}/>} label={t('redesign.tokenUsage')} value={compactNumber(totals.tokens)} rawValue={totals.tokens} meter={quotaPercent} meterCaption={quota ? quotaWindowLabel(quota.window, t) : t('redesign.quotaUsed')} meterLabel={quota ? `${quota.owner} · ${quotaWindowLabel(quota.window, t)} · ${t('redesign.quotaUsed')}` : t('redesign.quotaUsed')}/>
               <MetricRailItem metric="pace" icon={<Flame size={21}/>} label={t('redesign.averageTokenPace')} value={metricPace === null ? '—' : compactNumber(metricPace)} rawValue={metricPace} support={t('redesign.tokensPerDay')} trend={metricTokenSeries} trendLabel={metricTrendLabel}/>
               <MetricRailItem metric="cost" icon={<Coins size={21}/>} label={t('redesign.knownCost')} value={<CostValue amount={knownCost} priced={prices.native + prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>} rawValue={knownCost} support={costSupport} trend={metricCostSeries} trendLabel={metricTrendLabel}/>
-              <MetricRailItem metric="cache" icon={<Star size={21}/>} label={t('redesign.cacheSaving')} value={cacheSavings === null ? '—' : money(cacheSavings)} rawValue={cacheSavings} support={cacheMetricSupport} supportText={cacheMetricShareText} supportDetail={cacheMetricPricingText} trend={metricCacheSeries} trendLabel={cacheMetricTrendLabel} scale="percent"/>
+              <MetricRailItem metric="cache" icon={<Star size={21}/>} label={t('redesign.cacheSaving')} labelTitle={t('redesign.cacheValueNote')} value={cacheSavings === null ? '—' : money(cacheSavings)} rawValue={cacheSavings} support={cacheMetricSupport} supportText={cacheMetricShareText} supportDetail={cacheMetricPricingText} trend={metricCacheSeries} trendLabel={cacheMetricTrendLabel} scale="percent"/>
                 </div><PulseCore quota={quota} now={now} t={t} language={language} staleAfterMs={preview ? 300000 : 3600000} tokens={totals.tokens} period={period ?? t('redesign.allTime')}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.topModelsByTokens')}><h3>{t('redesign.topModelsByTokens')}</h3><div className="qp-top-model-list">{models.slice(0, 5).map(model => <button className="qp-model-row" key={String(model.key)} onClick={() => setSelection({ dimension: 'model', key: model.key })}><span className="qp-model-identity"><i data-model-vendor={model.key ? model.vendor : undefined} aria-hidden="true"><ModelMark node={model} size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></button>)}</div></section></div>
             <div className="qp-hero-notes">
               {projectionMessage && <p className="qp-hero-projection" data-testid="pulse-projection">{projectionMessage}</p>}
@@ -443,10 +461,10 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
             </div>}
           </section>
         </div>
-        <RuntimeMap nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
+        <RuntimeMap nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} enabledHarnesses={runtimeHarnesses} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
         <div className="qp-bottom-grid">
           <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
-          <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Box size={18}/>{t('redesign.insights')}</h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>
+          <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Sparkles size={18}/>{t('redesign.insights')}</h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>
             <div className="qp-insight-grid">
               <article className="qp-insight-card" data-insight="burn" data-state={tokenPeriodChange === null ? 'unknown' : tokenPeriodChange > 0 ? 'increase' : tokenPeriodChange < 0 ? 'decrease' : 'steady'} data-value={tokenPeriodChange ?? undefined}><i aria-hidden="true"><Flame size={17}/></i><div><header><h3>{t('redesign.highBurnRate')}</h3><strong>{signedPercent(tokenPeriodChange)}</strong></header><p>{tokenPeriodChange === null ? t('redesign.noComparisonBaseline') : `${t('redesign.comparedWithPrevious')} · ${period ?? t('redesign.allTime')}`}</p></div></article>
               <article className="qp-insight-card" data-insight="cache" data-state={cacheShare === null ? 'unavailable' : 'measured'} data-value={cacheShare ?? undefined}><i aria-hidden="true"><Layers size={17}/></i><div><header><h3>{t('redesign.cacheEfficiency')}</h3><strong>{cacheShare === null ? '—' : `${number(cacheShare)}%`}</strong></header><p>{cacheInsightSupport}</p>{cacheShareChange !== null && <small className="qp-insight-delta" data-direction={cacheShareChange > 0 ? 'up' : cacheShareChange < 0 ? 'down' : 'steady'}>{signedPoints(cacheShareChange)}</small>}</div></article>
@@ -502,8 +520,8 @@ function MetricTrace({ values, label, scale = 'amount' }: { values: readonly (nu
   return <svg className="qp-metric-trace" viewBox="0 0 56 22" preserveAspectRatio="none" role="img" aria-label={label} data-values={values.map(value => value === null ? '' : String(value)).join(',')}><path d={path} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke"/></svg>;
 }
 
-function MetricRailItem({ metric, label, value, rawValue, icon, support, supportText, supportDetail, trend, trendLabel, scale = 'amount', meter, meterCaption, meterLabel }: {
-  metric: string; label: string; value: ReactNode; rawValue: number | null; icon: ReactNode; support?: string; supportText?: string; supportDetail?: string;
+function MetricRailItem({ metric, label, labelTitle, value, rawValue, icon, support, supportText, supportDetail, trend, trendLabel, scale = 'amount', meter, meterCaption, meterLabel }: {
+  metric: string; label: string; labelTitle?: string; value: ReactNode; rawValue: number | null; icon: ReactNode; support?: string; supportText?: string; supportDetail?: string;
   trend?: readonly (number | null)[]; trendLabel?: string; scale?: 'amount' | 'percent'; meter?: number | null; meterCaption?: string; meterLabel?: string;
 }) {
   const hasMeter = meter != null && Number.isFinite(meter);
@@ -511,7 +529,7 @@ function MetricRailItem({ metric, label, value, rawValue, icon, support, support
   return <div className="qp-metric-rail" data-metric={metric} data-value={rawValue ?? undefined}>
     <i className="qp-metric-rail-icon" aria-hidden="true">{icon}</i>
     <div className="qp-metric-rail-copy">
-      <span className="qp-metric-rail-label">{label}</span>
+      <span className="qp-metric-rail-label" title={labelTitle}>{label}</span>
       <div className="qp-metric-rail-main"><strong>{value}</strong>{trend && trendLabel && <MetricTrace values={trend} label={trendLabel} scale={scale}/>}</div>
       {hasMeter && <div className="qp-metric-meter" role="meter" aria-label={`${meterLabel ?? label} · ${visibleMeter}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={meter} data-value={meter}>
         <small aria-hidden="true"><span className="qp-metric-meter-context">{meterCaption ?? label}</span><strong>{visibleMeter}</strong></small>

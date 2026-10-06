@@ -97,6 +97,12 @@ for (let index = 0; index < 12; index++) {
       costSource === 'native' ? null : cacheSavingUsd, costSource === 'native' ? null : model.provider);
   }
 }
+// A stale recorded OpenCode route keeps the concept's zero-active-session edge
+// visible without manufacturing a provider relationship or changing live counts.
+const openCodeAt = fixedNow - 10 * 60_000;
+session.run(13, 4, 'fixture-opencode-quota-pulse', referenceProjects[0], openCodeAt);
+usage.run(4, 13, 'fixed-opencode-route', openCodeAt, 'DeepSeek V4.1', 'deepseek', 1, 0, 0, 1, 1,
+  null, 'unknown', null, null, null, null, null, null);
 // The monthly concept is focused on QuotaPulse while the machine-wide quick
 // stats still report all five named projects. Keep four small monthly records
 // for the other projects, outside the recent-session window.
@@ -980,7 +986,7 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
     assert.equal(brand.x, 0);
     const overviewReferenceWidth = destination === 'overview' && width > 1500;
     const expectedSidebar = overviewReferenceWidth ? 211 : width <= 500 ? 48 : width <= 1100 ? 66 : width <= 1600 ? 216 : 226;
-    const expectedBrand = overviewReferenceWidth ? 211 : width <= 1100 ? expectedSidebar : Math.max(253, Math.min(267, width * .16));
+    const expectedBrand = overviewReferenceWidth ? 252 : width <= 1100 ? expectedSidebar : Math.max(253, Math.min(267, width * .16));
     assert.ok(Math.abs(brand.width - expectedBrand) < .02);
     assert.equal(sidebar.width, expectedSidebar);
     if (expectedAlertCount > 0) {
@@ -1272,8 +1278,9 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
         const card = cards.nth(index);
         assert.equal(await card.getAttribute('data-sessions'), String(node.sessions));
         if (dimension !== 'provider') {
-          const value = dimension === 'project' ? node.activeSessions : node.sessions;
-          const label = dimension === 'project' ? (lang === 'th' ? 'เซสชันที่ใช้งานล่าสุด' : 'active sessions') : (lang === 'th' ? 'เซสชัน' : 'sessions');
+          const activeDimension = dimension === 'project' || dimension === 'harness';
+          const value = activeDimension ? node.activeSessions : node.sessions;
+          const label = activeDimension ? (lang === 'th' ? 'เซสชันที่ใช้งานล่าสุด' : 'active sessions') : (lang === 'th' ? 'เซสชัน' : 'sessions');
           assert.equal(await card.locator('[data-testid=runtime-node-sessions]').textContent(), `${sessionNumber.format(value)} ${label}`);
         }
       }
@@ -1350,7 +1357,7 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
     runtimeChecks.push({ lang, theme, nodes: rows.length, edges: edges.length, inspected, modelShares: 8, directionArrows: true });
   } finally {
     db.transaction(() => { db.prepare('DELETE FROM usage_event WHERE source_id=900').run(); db.prepare('DELETE FROM session WHERE source_id=900').run(); db.prepare('DELETE FROM source WHERE id=900').run(); })();
-    assert.equal((db.prepare('SELECT COUNT(*) AS count FROM usage_event').get() as { count: number }).count, 42);
+    assert.equal((db.prepare('SELECT COUNT(*) AS count FROM usage_event').get() as { count: number }).count, 43);
   }
 }
 
@@ -2354,9 +2361,10 @@ try {
             assert.equal(conceptData.cacheShare, 42);
             const expectedMetricLabels = lang === 'th'
               ? [th['redesign.tokenUsage'], th['redesign.averageTokenPace'], th['redesign.knownCost'], th['redesign.cacheSaving']]
-              : ['Token Usage', 'Burn Rate', 'Known cost', 'Known cache savings'];
+              : ['Token Usage', 'Burn Rate', 'Known cost', en['redesign.cacheSaving']];
             assert.deepEqual(conceptData.metricRail.map(metric => metric.metric), ['tokens', 'pace', 'cost', 'cache']);
             assert.deepEqual(conceptData.metricRail.map(metric => metric.label), expectedMetricLabels);
+            assert.equal(await page.locator('[data-metric=cache] .qp-metric-rail-label').getAttribute('title'), lang === 'th' ? th['redesign.cacheValueNote'] : en['redesign.cacheValueNote']);
             assert.equal(conceptData.metricRail[0]?.meter, '72');
             assert.equal(conceptData.periodRange, 'month');
             const monthFrom = new Date(fixedNow); monthFrom.setDate(1); monthFrom.setHours(0, 0, 0, 0);
@@ -2391,8 +2399,14 @@ try {
             await openRuntimeMapOptions(page);
             const projectQuery = new URLSearchParams({ from: String(monthFrom.getTime()), to: String(fixedNow + 1), project: 'QuotaPulse' });
             const focusedGraph = (await daemon.inject({ method: 'GET', url: `/api/runtime-map?${projectQuery}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } })).json<RuntimeGraph>();
-            const mapHarnessSessions = Object.fromEntries(focusedGraph.nodes.harness.filter(node => node.key !== null).map(node => [node.key!, node.sessions]));
-            assert.deepEqual(mapHarnessSessions, { codex: 4, 'claude-code': 2, hermes: 6 }, 'The synthetic reference project should retain the concept harness/session distribution');
+            const mapHarnessSessions = Object.fromEntries(focusedGraph.nodes.harness.filter(node => node.key !== null).map(node => [node.key!, node.activeSessions]));
+            assert.deepEqual(mapHarnessSessions, { codex: 4, 'claude-code': 2, hermes: 6, opencode: 0 }, 'The synthetic reference project should retain the concept active-session distribution');
+            const openCodeRoute = focusedGraph.edges.find(edge => edge.column === 1 && edge.from === 'opencode' && edge.to === 'deepseek');
+            assert.ok(openCodeRoute && openCodeRoute.activeSessions === 0, 'The fixture OpenCode to DeepSeek route must be based on a recorded idle event');
+            const openCodeCard = page.locator('.qp-runtime .qp-map-node[data-dimension=harness][data-runtime-name=opencode]');
+            assert.equal(await openCodeCard.getAttribute('data-sessions'), '1');
+            assert.equal(await openCodeCard.getAttribute('data-active-sessions'), '0');
+            assert.equal(await openCodeCard.locator('[data-testid=runtime-node-sessions]').textContent(), `${new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(0)} ${lang === 'th' ? 'เซสชันที่ใช้งานล่าสุด' : 'active sessions'}`);
             const visibleProjectNodes = page.locator('.qp-runtime .qp-map-node[data-dimension=project]');
             assert.equal(await visibleProjectNodes.count(), 1);
             assert.equal(await visibleProjectNodes.first().getAttribute('data-key'), JSON.stringify('QuotaPulse'));
@@ -2404,6 +2418,12 @@ try {
             assert.ok((await runtimeDataSummary.getAttribute('aria-label'))?.includes(new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(focusedGraph.totals.records)), 'Record count stays available in the graph data control name');
             const runtimeNodeSessions = await visibleProjectNodes.first().getAttribute('aria-label');
             assert.ok(runtimeNodeSessions?.includes(new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(12)), 'Focused Runtime Map must retain the active project session total');
+            await runtimeProjectSelect.selectOption('Research Lab'); await settled(page, pending);
+            const zeroHarness = page.locator('.qp-runtime .qp-map-node[data-dimension=harness][data-runtime-name=opencode]');
+            assert.equal(await zeroHarness.count(), 1, 'Enabled harnesses with no records in the selected project remain visible at zero');
+            assert.equal(await zeroHarness.getAttribute('data-tokens'), '0');
+            assert.equal(await zeroHarness.getAttribute('data-active-sessions'), '0');
+            assert.equal(await page.locator('.qp-map-edges>path').evaluateAll(paths => paths.some(path => [path.getAttribute('data-from'), path.getAttribute('data-to')].some(value => value?.toLowerCase().includes('opencode')))), false, 'An enabled source without project events must not acquire a fabricated route');
             await runtimeProjectSelect.selectOption(''); await settled(page, pending);
             assert.equal(await page.locator('.qp-runtime .qp-map-node[data-dimension=project]').count(), monthGraph.nodes.project.length, 'All-project scope must restore every project node');
             await runtimeProjectSelect.selectOption('QuotaPulse'); await settled(page, pending);
@@ -2415,15 +2435,20 @@ try {
             const rail = page.locator('.qp-top-models');
             const box = await rail.boundingBox();
             const quickStats = await page.locator('.qp-quick-stats').boundingBox();
-            assert.ok(hero && activity && box && quickStats);
+            const pulse = await page.locator('.qp-pulse').boundingBox();
+            const pulseArt = await page.locator('.qp-pulse-art').boundingBox();
+            const quotaGroups = await page.locator('.qp-quota-group').evaluateAll(elements => elements.map(element => {
+              const rect = element.getBoundingClientRect(); return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+            }));
+            assert.ok(hero && activity && box && quickStats && pulse && pulseArt);
             assert.ok(Math.abs(quickStats.y - 423) <= 8 && Math.abs(quickStats.height - 288) <= 12,
               `Quick Stats sidebar card differs from the reference placement: y=${quickStats.y}, height=${quickStats.height}`);
             const modelBar = await rail.locator('.qp-model-row .qp-bar>span').first().evaluate(element => getComputedStyle(element).backgroundImage);
             assert.match(modelBar, /rgb\(89, 108, 255\).*rgb\(154, 103, 237\)/, 'Top model token share uses the reference violet ramp');
             if (activity.y + activity.height > 992) console.log('Overview header geometry', await page.locator('.qp-topbar,.qp-brand,.qp-brand>svg,.qp-brand>span,.qp-brand small,.qp-topbar-body,.qp-daemon-status').evaluateAll(elements => elements.map(element => { const rect = element.getBoundingClientRect(), style = getComputedStyle(element); return { className: element.className, x: rect.x, y: rect.y, width: rect.width, height: rect.height, font: style.font, lineHeight: style.lineHeight }; })));
-            if (overviewOnly) {
+            if (overviewOnly && pass === 0) {
               await page.screenshot({ path: resolve(output, `layout-${lang}-${theme}.png`), animations: 'disabled' });
-              writeFileSync(resolve(output, `layout-${lang}-${theme}.json`), JSON.stringify({ hero, activity, quickStats, rail: box, runtime: await page.locator('.qp-runtime').boundingBox(), bottom: await page.locator('.qp-bottom-grid').boundingBox() }, null, 2));
+              writeFileSync(resolve(output, `layout-${lang}-${theme}.json`), JSON.stringify({ hero, activity, quickStats, rail: box, pulse, pulseArt, quotaGroups, runtime: await page.locator('.qp-runtime').boundingBox(), bottom: await page.locator('.qp-bottom-grid').boundingBox() }, null, 2));
             }
             assert.ok(box.height <= 270.1, `Model rail exceeds its desktop height: ${box.height}`);
             assert.ok(activity.y + activity.height <= 992, `Overview activity is outside concept viewport: ${activity.y + activity.height}`);
@@ -2470,10 +2495,15 @@ try {
               assert.ok(composition.edgeMaxError <= 1, `Runtime connector endpoints miss their nodes by ${composition.edgeMaxError}px`);
               const sourceCardEstimates = [{ x: 282, width: 208 }, { x: 633, width: 153 }, { x: 953, width: 160 }, { x: 1245, width: 298 }];
               for (const [index, card] of composition.runtimeCards.entries()) {
-                assert.ok(Math.abs(card.x - sourceCardEstimates[index].x) <= 8 && Math.abs(card.width - sourceCardEstimates[index].width) <= 8, `${card.dimension} card differs from source composition estimate`);
+                assert.ok(Math.abs(card.x - sourceCardEstimates[index].x) <= 2 && Math.abs(card.width - sourceCardEstimates[index].width) <= 2, `${card.dimension} card differs from source bounds by more than 2px: ${JSON.stringify(card)}`);
               }
               assert.equal(composition.modelTitleOutside, true, 'Model caption must sit above the bordered list');
-              if (pass === 0) overviewLayouts.push({ lang, theme, heroBottom: hero.y + hero.height, activityBottom: activity.y + activity.height, models: 5, railHeight: box.height, ...composition });
+              if (pass === 0) {
+                overviewLayouts.push({ lang, theme, heroBottom: hero.y + hero.height, activityBottom: activity.y + activity.height, models: 5, railHeight: box.height, ...composition });
+                const layoutPath = resolve(output, `layout-${lang}-${theme}.json`);
+                const layout = JSON.parse(readFileSync(layoutPath, 'utf8'));
+                writeFileSync(layoutPath, JSON.stringify({ ...layout, runtimeCards: composition.runtimeCards, runtimeEdgeMaxError: composition.edgeMaxError, pulseCenter: composition.pulseCenter }, null, 2));
+              }
             }
           }
           const filename = `${destination}-${lang}-${theme}.png`;
@@ -2560,7 +2590,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', captureMatrix: { languages: captureLanguages, themes: captureThemes, complete: captureLanguages.length === 2 && captureThemes.length === 2 }, clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, runtimeMapProject: 'QuotaPulse', runtimeMapSessions: 12, runtimeMapRecords: 38, allRangeProjects: 5, allRangeRecords: 42, namedProjects: referenceProjects.length, projectNames: referenceProjects, models: referenceModels.length, modelNames: referenceModels.map(model => model.name), modelShares: referenceModels.map(model => model.share), providers: 4, records: 38, quotaOwners: ['OpenAI Subscription', 'OpenCode Go Subscription'], cacheSharePercent: 42, monthlySelection: 'OpenAI Subscription · monthly' }, checks: ['frozen daemon and browser Date', 'source-matched date on the screenshot clock', 'reference-matched Overview section labels and model rail accessible name', 'reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 8px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, overviewReferenceLabelChecks, overviewConceptDataChecks, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', captureMatrix: { languages: captureLanguages, themes: captureThemes, complete: captureLanguages.length === 2 && captureThemes.length === 2 }, clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 2, maxChangedPixelFraction: 0.0001, masks: false }, productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, runtimeMapProject: 'QuotaPulse', runtimeMapSessions: 12, runtimeMapRecords: 39, allRangeProjects: 5, allRangeRecords: 43, namedProjects: referenceProjects.length, projectNames: referenceProjects, models: referenceModels.length, modelNames: referenceModels.map(model => model.name), modelShares: referenceModels.map(model => model.share), providers: 4, records: 39, quotaOwners: ['OpenAI Subscription', 'OpenCode Go Subscription'], cacheSharePercent: 42, monthlySelection: 'OpenAI Subscription · monthly' }, checks: ['frozen daemon and browser Date', 'source-matched date on the screenshot clock', 'reference-matched Overview section labels and model rail accessible name', 'reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 2px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, overviewReferenceLabelChecks, overviewConceptDataChecks, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;
