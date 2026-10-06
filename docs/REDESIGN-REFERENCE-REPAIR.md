@@ -14,6 +14,12 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
+Latest Live styling checkpoint: [Metric tiles v1.85.12](redesign-v1.85.12/REDESIGN-LIVE-METRIC-TILES-V1.85.12.md)
+matches the concept's circular icon marks and restrained colored card treatments
+while retaining daemon-backed counts. All four language/theme captures repeat
+byte-identically, but this is not reference-image sign-off. Live composition and
+the complete eight-page 99 to 100 percent likeness goal remain open.
+
 ## Source and observed gaps
 
 Latest presentation work: [Panel identity marks and recorded Live curves v1.64](REDESIGN-SECTION-MARKS-V1.64.md)
