@@ -1,6 +1,6 @@
 .qp-redesign {
   --qp-bg:#050b14;
-  --qp-panel:#070e18;
+  --qp-panel:#07101c;
   --qp-text:#eef3ff;
   --qp-muted:#a6b9dc;
   --qp-border:#15253a;
@@ -1165,6 +1165,8 @@
   .qp-redesign[data-testid=production-overview] .qp-topbar-actions>button[aria-haspopup=dialog] { margin-right:18px; }
   .qp-redesign[data-testid=production-overview] .qp-hero-grid { gap:11px; }
   .qp-redesign[data-testid=production-overview] .qp-sidebar { padding-right:8px; }
+  .qp-redesign[data-testid=production-overview] .qp-sidebar nav { min-height:308px; align-content:start; }
+  .qp-redesign[data-testid=production-overview] .qp-sidebar .qp-nav-more { display:none; }
   .qp-redesign[data-testid=production-overview] main { padding-left:17px; }
   .qp-redesign[data-testid=production-overview] .qp-hero { padding-left:14px; }
   .qp-redesign[data-testid=production-overview] .qp-runtime { padding-left:13px; }
