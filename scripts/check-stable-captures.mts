@@ -75,7 +75,7 @@ const session = db.prepare('INSERT INTO session(id,source_id,native_session_id,p
 const usage = db.prepare('INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,input_tokens,cached_input_tokens,output_tokens,total_tokens,call_count,cost_usd,cost_source,cost_input_usd,cost_cached_input_usd,cost_cache_write_usd,cost_output_usd,cost_cache_saving_usd,price_provider) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
 // Synthetic catalogue rates for the in-memory visual fixture only. The saved
 // amount is derived from the same fresh/cached input components the UI reports.
-const fixtureInputUsdPerMillion = 0.04, fixtureCachedInputUsdPerMillion = 0.004;
+const fixtureInputUsdPerMillion = 0.0593846153846154, fixtureCachedInputUsdPerMillion = 0.004, fixtureOutputUsdPerMillion = 0.004;
 for (let index = 0; index < 12; index++) {
   // Keep the reference map's 4 Codex, 2 Claude Code, 6 Hermes, 0 OpenCode
   // recent-session distribution while preserving the same 12 sessions.
@@ -84,16 +84,22 @@ for (let index = 0; index < 12; index++) {
   const model = referenceModels[index % referenceModels.length]!;
   const totalTokens = model.share === 0 ? 1 : model.share * 721_000_000 / 600;
   for (let call = 0; call < 3; call++) {
-    const inputTokens = totalTokens * .58, cachedInputTokens = totalTokens * .42;
+    const inputShare = [.6, .65, .7][(index + call) % 3]!;
+    const inputTokens = totalTokens * inputShare * .58, cachedInputTokens = totalTokens * inputShare * .42;
+    const outputTokens = totalTokens * (1 - inputShare);
     const costSource = index === 0 ? 'native' : 'computed';
     const inputUsd = inputTokens / 1_000_000 * fixtureInputUsdPerMillion;
     const cachedInputUsd = cachedInputTokens / 1_000_000 * fixtureCachedInputUsdPerMillion;
+    const outputUsd = outputTokens / 1_000_000 * fixtureOutputUsdPerMillion;
     const cacheSavingUsd = cachedInputTokens / 1_000_000 * (fixtureInputUsdPerMillion - fixtureCachedInputUsdPerMillion);
-    usage.run(source, index + 1, `fixed-${index}-${call}`, fixedNow - (index + call + 1) * 15_000, model.name, model.provider,
-      inputTokens, cachedInputTokens, 0, totalTokens, call + 1,
-      costSource === 'native' ? (index + 1) / 100 : inputUsd + cachedInputUsd, costSource,
+    // Keep each session's latest record within four minutes, then spread older calls across the visible 30-minute interval.
+    const ageMs = call === 0 ? 15_000 + index * 20_000 : 300_000 + index * 120_000 + (call === 2 ? 30_000 : 0);
+    const recordedAt = fixedNow - ageMs;
+    usage.run(source, index + 1, `fixed-${index}-${call}`, recordedAt, model.name, model.provider,
+      inputTokens, cachedInputTokens, outputTokens, totalTokens, call + 1,
+      costSource === 'native' ? (index + 1) / 100 : inputUsd + cachedInputUsd + outputUsd, costSource,
       costSource === 'native' ? null : inputUsd, costSource === 'native' ? null : cachedInputUsd,
-      costSource === 'native' ? null : 0, costSource === 'native' ? null : 0,
+      costSource === 'native' ? null : 0, costSource === 'native' ? null : outputUsd,
       costSource === 'native' ? null : cacheSavingUsd, costSource === 'native' ? null : model.provider);
   }
 }
