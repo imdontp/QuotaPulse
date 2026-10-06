@@ -445,7 +445,7 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
             {quotas.length === 0 && <p className="qp-footnote">{t('redesign.unavailable')}</p>}
             {quotas.length > 0 && <div className="qp-quota-groups" tabIndex={0} aria-label={t('redesign.windows')}>
               {[...quotaGroups].map(([key, windows]) => <section className="qp-quota-group" key={key} data-owner-key={key} data-state={quotaAccountStates?.[key] ?? 'unknown'} aria-label={windows[0].owner}>
-                <div className="qp-quota-group-heading"><h3><span className="qp-quota-brand" data-provider={windows[0].provider ?? 'unknown'}><VendorIcon vendor={windows[0].provider ?? 'unknown'}/></span>{windows[0].owner}</h3><span className="qp-quota-group-status" data-state={quotaAccountStates?.[key] ?? 'unknown'}>{t(accountStateMessage(quotaAccountStates?.[key]))}</span></div>
+                <div className="qp-quota-group-heading"><h3 aria-label={windows[0].owner}><span className="qp-quota-brand" data-provider={windows[0].provider ?? 'unknown'}><VendorIcon vendor={windows[0].provider ?? 'unknown'}/></span><QuotaOwnerLabel owner={windows[0].owner}/></h3><span className="qp-quota-group-status" data-state={quotaAccountStates?.[key] ?? 'unknown'}>{t(accountStateMessage(quotaAccountStates?.[key]))}</span></div>
                 {windows.map(item => { const reading = quotaState(item, now, preview ? 300000 : 3600000);
                   const used = reading.remaining === null ? null : item.usedPercent;
                   const percent = used === null ? '—' : `${used}%`;
@@ -518,6 +518,11 @@ function MetricTrace({ values, label, scale = 'amount' }: { values: readonly (nu
     return `${command}${x.toFixed(2)},${y.toFixed(2)}`;
   }).filter(Boolean).join(' ');
   return <svg className="qp-metric-trace" viewBox="0 0 56 22" preserveAspectRatio="none" role="img" aria-label={label} data-values={values.map(value => value === null ? '' : String(value)).join(',')}><path d={path} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke"/></svg>;
+}
+
+function QuotaOwnerLabel({ owner }: { owner: string }) {
+  const subscription = /^(.*\S)\s+(Subscription)$/i.exec(owner);
+  return <span className="qp-quota-owner-copy">{subscription ? <>{subscription[1]} <small className="qp-quota-owner-type">({subscription[2]})</small></> : owner}</span>;
 }
 
 function MetricRailItem({ metric, label, labelTitle, value, rawValue, icon, support, supportText, supportDetail, trend, trendLabel, scale = 'amount', meter, meterCaption, meterLabel }: {

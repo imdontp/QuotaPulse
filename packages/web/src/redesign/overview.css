@@ -529,6 +529,8 @@
 .qp-quota-brand { display:inline-grid; place-items:center; border-radius:6px; color:var(--qp-text); }
 .qp-quota-brand[data-provider=opencode] { color:#fff; background:linear-gradient(135deg,#5144df,#7d43ed); }
 .qp-quota-brand[data-provider=opencode]>svg { width:14px; height:14px; }
+.qp-quota-group-heading h3>.qp-quota-owner-copy { flex:1 1 auto; width:auto; height:auto; font-size:inherit; line-height:1.2; }
+.qp-quota-owner-type { color:var(--qp-muted); font-size:10px; font-weight:400; white-space:nowrap; }
 .qp-quota-group-status { display:inline-flex; align-items:center; gap:5px; padding:3px 7px; border:1px solid color-mix(in srgb,currentColor 25%,transparent); border-radius:20px; color:var(--qp-muted); background:color-mix(in srgb,currentColor 6%,transparent); font-size:10px; white-space:nowrap; }
 .qp-quota-group-status::before { content:''; width:6px; height:6px; flex:none; border-radius:50%; background:currentColor; }
 .qp-quota-group-status[data-state=active] { color:var(--qp-success); }

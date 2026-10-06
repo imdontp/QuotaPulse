@@ -1794,7 +1794,9 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
   const totalRate = activityTokensPerMinute(allTrend);
   assert.equal(await page.locator('.qp-activity-total').getAttribute('data-rate-state'), totalRate === null ? 'unavailable' : 'measured');
   assert.equal(await page.locator('[data-activity-total]').textContent(), `${totalRate === null ? '—' : compact.format(totalRate)} ${lang === 'th' ? 'โทเค็น/นาที' : 'tokens/min'}`);
-  await checkActivityRenderer(page, lang, theme, pending, expectedRows[0].timestamp_ms);
+  const rendererRecord = expectedRows.find(record => record.grain === 'call' && record.model !== null && record.provider !== null);
+  assert.ok(rendererRecord, 'Activity renderer test requires a recorded call with a known model and provider');
+  await checkActivityRenderer(page, lang, theme, pending, rendererRecord.timestamp_ms);
   const first = cards.first(), href = await first.getAttribute('href');
   await first.focus(); await page.keyboard.press('Enter'); await page.waitForURL(url => url.hash === href);
   await page.getByTestId('usage-history').waitFor({ timeout: 15000 });
@@ -1888,7 +1890,8 @@ async function checkActivityRenderer(page: Page, lang: string, theme: string, pe
   const home = 'http://127.0.0.1:7804/?activity-renderer=fixture#overview';
   const from = Math.floor(recentAt / 60_000) * 60_000, to = from + 60_000;
   await page.goto(`${home}?range=custom&from=${from}&to=${to}`, { waitUntil: 'domcontentloaded' }); await settled(page, pending);
-  assert.ok(await chart.count());
+  const chartCount = await chart.count();
+  assert.ok(chartCount, `Activity renderer chart missing at ${page.url()} (quotaCount=${await page.locator('.qp-quota').count()}, heading=${await page.locator('h1').textContent()})`);
   const one = await snapshot();
   assert.equal(one.points.length, 1);
   const onePeak = await chart.evaluate(element => {
@@ -1945,7 +1948,10 @@ async function checkQuotaGroups(page: Page, lang: string, theme: string, pending
       assert.ok((await status.innerText()).trim().length > 0, 'Quota owner must show a localized API-backed status');
       assert.equal(await group.locator('.qp-quota-group-heading>.qp-chip').count(), 0, 'Quota owner header must not show a window count');
       const owner = data.limits.find(limit => (limit.subscription_key ?? limit.account_key) === key)!;
-      assert.equal(await group.locator('h3').innerText(), owner.subscription_display_name ?? owner.account_display_name ?? owner.display_name);
+      const ownerName = owner.subscription_display_name ?? owner.account_display_name ?? owner.display_name;
+      const visibleOwnerName = ownerName.replace(/\s+(Subscription)$/i, ' ($1)');
+      assert.equal(await group.locator('h3').innerText(), visibleOwnerName);
+      assert.equal(await group.locator('h3').getAttribute('aria-label'), ownerName, 'Quota owner heading keeps the full API label for assistive technology');
       const expectedWindows = [...new Set(data.limits.filter(limit => (limit.subscription_key ?? limit.account_key) === key).map(limit => limit.window_kind))];
       assert.equal(expectedWindows.length, 4);
       for (const window of expectedWindows) {
@@ -2343,6 +2349,7 @@ try {
               })),
               quotaGroups: Array.from(document.querySelectorAll<HTMLElement>('.qp-quota-group')).map(group => ({
                 owner: group.querySelector('h3')?.textContent?.trim() ?? '',
+                accessibleOwner: group.querySelector('h3')?.getAttribute('aria-label') ?? '',
                 windows: Array.from(group.querySelectorAll<HTMLElement>('.qp-quota')).map(row => row.dataset.window ?? '').sort(),
                 labels: Array.from(group.querySelectorAll<HTMLElement>('.qp-quota-heading>span:first-child')).map(label => label.textContent?.trim() ?? ''),
               })),
@@ -2402,8 +2409,8 @@ try {
               assert.ok(Math.abs(rect.x - reference.x) <= 10 && Math.abs(rect.y - reference.y) <= 12 && Math.abs(rect.width - reference.width) <= 12 && Math.abs(rect.height - reference.height) <= 20, `Quota card ${index + 1} differs from source bounds: ${JSON.stringify({ rect, boxes: conceptData.quotaBoxMetrics, allRects: conceptData.quotaGroupRects })}`);
             }
             const [openAiQuota, openCodeQuota] = conceptData.quotaGroups;
-            assert.deepEqual(openAiQuota, { owner: 'OpenAI Subscription', windows: ['5h', 'monthly', 'weekly'], labels: lang === 'th' ? ['โควตา 5 ชม.', 'โควตารายสัปดาห์', 'โควตารายเดือน'] : ['5h quota', 'Weekly quota', 'Monthly quota'] });
-            assert.deepEqual(openCodeQuota, { owner: 'OpenCode Go Subscription', windows: ['daily', 'monthly'], labels: lang === 'th' ? ['โควตารายเดือน', 'โควตารายวัน'] : ['Monthly quota', 'Daily quota'] });
+            assert.deepEqual(openAiQuota, { owner: 'OpenAI (Subscription)', accessibleOwner: 'OpenAI Subscription', windows: ['5h', 'monthly', 'weekly'], labels: lang === 'th' ? ['โควตา 5 ชม.', 'โควตารายสัปดาห์', 'โควตารายเดือน'] : ['5h quota', 'Weekly quota', 'Monthly quota'] });
+            assert.deepEqual(openCodeQuota, { owner: 'OpenCode Go (Subscription)', accessibleOwner: 'OpenCode Go Subscription', windows: ['daily', 'monthly'], labels: lang === 'th' ? ['โควตารายเดือน', 'โควตารายวัน'] : ['Monthly quota', 'Daily quota'] });
             assert.ok(conceptData.quotaContentHeight <= conceptData.quotaViewportHeight, `Reference quota rows are clipped: content ${conceptData.quotaContentHeight}px in ${conceptData.quotaViewportHeight}px`);
             assert.equal(conceptData.selectedWindow, 'monthly');
             assert.equal(conceptData.pulsePercent, 72);
