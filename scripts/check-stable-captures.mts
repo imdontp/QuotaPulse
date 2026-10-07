@@ -445,6 +445,12 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
   const bottom = await page.locator('.qp-alert-layout').evaluate(element => element.getBoundingClientRect().bottom + scrollY);
   const geometry = await page.locator('.qp-alert-main').evaluate(element => Array.from(element.children).map(child => { const rect = child.getBoundingClientRect(); return { className: (child as HTMLElement).className, top: rect.top, bottom: rect.bottom, height: rect.height }; }));
   assert.ok(bottom <= 941, `Alerts occupied panels exceed viewport: ${JSON.stringify({ bottom, geometry })}`);
+  referenceDetailRegions.push({ page: 'alerts', lang, theme, regions: await page.evaluate(() => Object.fromEntries(['.qp-alert-forecast', '.qp-alert-forecast-reading', '.qp-alert-forecast-orb', '.qp-alert-forecast-facts', '.qp-alert-forecast-warning', '.qp-alert-guidance', '.qp-alert-history'].map(selector => {
+    const element = document.querySelector(selector);
+    if (!element) return [selector, null];
+    const { x, y, width, height, bottom } = element.getBoundingClientRect();
+    return [selector, { x, y, width, height, bottom }];
+  }))) });
   assert.deepEqual(await page.locator('.qp-alert-rules [data-threshold]').allTextContents(), ['50%', '80%', '95%']);
   const forecastSelect = page.locator('.qp-alert-chart select');
   const initialWindow = await forecastSelect.inputValue();
@@ -467,6 +473,23 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
       ? new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 1 }).format(Math.max(0, (quota.reader.forecast.projectedFullAt - fixedNow) / 86_400_000))
       : lang === 'th' ? 'ไม่ทราบ' : 'Unknown';
     assert.equal(await page.getByTestId('alert-forecast-days').textContent(), expected, 'Forecast days differ from daemon result');
+    const copy = lang === 'th' ? th : en;
+    const facts = page.locator('.qp-alert-forecast-facts');
+    const clock = new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    const projected = quota.reader?.forecast.status === 'ready' && quota.reader.forecast.projectedFullAt != null
+      ? clock.format(quota.reader.forecast.projectedFullAt) : copy['redesign.alertForecastUnknown'];
+    assert.deepEqual(await facts.locator('dt').allTextContents(), [copy['redesign.projected'], copy['redesign.alertReset']]);
+    assert.deepEqual(await facts.locator('dd').allTextContents(), [projected, quota.reader?.resetAt == null ? '--' : clock.format(quota.reader.resetAt)], 'Adjacent forecast dates differ from selected daemon reader');
+    assert.ok((await facts.locator('small').innerText()).includes(quota.reader!.origin), 'Forecast reader origin disappeared from adjacent facts');
+    const fullAt = quota.reader?.forecast.status === 'ready' ? quota.reader.forecast.projectedFullAt : null;
+    const resetAt = quota.reader?.resetAt;
+    const beforeReset = fullAt != null && resetAt != null && fullAt < resetAt;
+    const warning = page.locator('.qp-alert-forecast-warning');
+    assert.equal(await warning.count(), beforeReset ? 1 : 0, 'Forecast warning must follow the selected daemon forecast');
+    if (beforeReset) {
+      assert.equal(await warning.locator('strong').innerText(), copy['redesign.alertForecast']);
+      assert.equal(await warning.locator('span').innerText(), `${resetAt - fullAt < 60_000 ? '<1m' : countdown(resetAt, fullAt)} ${copy['redesign.beforeReset']}`);
+    }
   }
   assert.ok(forecastStates.has('ready'), 'Ready forecast fixture was not checked');
   assert.ok([...forecastStates].some(status => status !== 'ready'), 'Unavailable forecast fixture was not checked');

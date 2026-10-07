@@ -14,7 +14,14 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest particle globe surface: [v1.85.33](redesign-v1.85.33/VALIDATION-STATE.md)
+Latest Alerts forecast composition: [v1.85.34](redesign-v1.85.34/VALIDATION-STATE.md)
+places the actual reader facts beside the orb and adds the source warning card
+when the API projects full use before reset. All four scoped pairs are identical
+and the fresh authenticated workflow passes. These are review candidates;
+[remaining source repairs](redesign-v1.85.34/NEXT-SOURCE-REPAIRS.md) include the
+Alerts heading enclosure, finer primitives and the original whole-goal gates.
+
+Previous particle globe surface: [v1.85.33](redesign-v1.85.33/VALIDATION-STATE.md)
 replaces photographic ocean texture with a local generated particle surface,
 retaining the old bitmap, actual quota/progress values and focal geometry.
 The current authenticated workflow passes. Production Overview scope results
