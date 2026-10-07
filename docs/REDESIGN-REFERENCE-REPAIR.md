@@ -14,7 +14,14 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest native History table density: [v1.85.31](redesign-v1.85.31/VALIDATION-STATE.md)
+Latest History row baseline and native detail header: [v1.85.32](redesign-v1.85.32/VALIDATION-STATE.md)
+removes extra baseline height from harness badges and aligns the rail top/header
+with the source. All four variants now show ten complete fixture rows with43
+records and footer936px; eight scoped pairs pass unchanged raster tolerance.
+The density gate is tightened for future runs. Sidebar identity/card rhythm and
+whole-source/final-release acceptance remain open.
+
+Previous native History table density: [v1.85.31](redesign-v1.85.31/VALIDATION-STATE.md)
 enlarges the native table region while retaining readable content-driven rows.
 All eight scoped capture pairs are byte-identical. All four variants retain43
 records, nine complete rows and footer bottom936px. The tenth row's text is

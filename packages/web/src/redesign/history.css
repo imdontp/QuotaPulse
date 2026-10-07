@@ -131,7 +131,7 @@
   .qp-redesign .qp-history-records [data-slot=card-header] { padding:10px 12px; flex-wrap:wrap; }
   .qp-redesign .qp-history-records td { padding:4px 10px; }
   .qp-redesign .qp-history-records th { padding:8px 10px; text-transform:none; font-size:11px; font-weight:500; }
-  .qp-redesign .qp-history-records .qp-history-harness { max-width:112px; overflow:hidden; white-space:nowrap; }
+  .qp-redesign .qp-history-records .qp-history-harness { max-width:112px; overflow:hidden; white-space:nowrap; vertical-align:middle; }
   .qp-redesign .qp-history-records .qp-history-harness svg { flex:none; }
   .qp-redesign .qp-history-records .qp-history-model { max-width:110px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .qp-redesign .qp-history-records td button { height:24px; }
@@ -149,7 +149,9 @@
   .qp-redesign [data-testid="usage-history"] form label>span { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
   .qp-redesign [data-testid="usage-history"] form input:not([type=checkbox]),.qp-redesign [data-testid="usage-history"] form select,.qp-redesign [data-testid="usage-history"] form button { height:35px; min-height:35px; font-size:11px; }
   .qp-redesign [data-testid="usage-history"] form label:has([type=checkbox]) { align-self:center; }
-  .qp-redesign dialog[aria-labelledby=history-detail-title] { position:fixed; inset:72px 8px auto auto; margin:0; width:288px; max-height:calc(100vh - 80px); }
+  .qp-redesign dialog[aria-labelledby=history-detail-title] { position:fixed; inset:60px 8px auto auto; margin:0; width:288px; max-height:calc(100vh - 74px); padding-block:12px; }
+  .qp-redesign .qp-history-detail-heading { top:-12px; padding:0 0 12px; }
+  .qp-redesign .qp-history-detail-groups [data-group="history.eventSummary"] { margin-top:12px; }
   .qp-redesign dialog[aria-labelledby=history-detail-title]::backdrop { background:transparent; }
   .qp-redesign [data-testid=usage-history]:has(dialog[open]) { margin-right:296px; }
 }

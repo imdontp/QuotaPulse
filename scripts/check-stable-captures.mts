@@ -192,7 +192,7 @@ const costReferenceRegions: Array<{ lang: string; theme: string; pass: number; r
 const historyChecks: Array<{ lang: string; theme: string; eventId: number; widths: number[]; modal: boolean; focusRestored: boolean }> = [];
 const historyRailChecks: Array<{ lang: string; theme: string; x: number; y: number; width: number; height: number; contentGap: number; transparentBackdrop: boolean }> = [];
 const pageHeadingChecks: Array<{ page: string; lang: string; theme: string; tileSize: number; headings: number; decorative: boolean }> = [];
-const historyDensityChecks: Array<{ lang: string; theme: string; bottom: number; visibleRows: number; records: number; keyboardScrolled: boolean }> = [];
+const historyDensityChecks: Array<{ lang: string; theme: string; bottom: number; visibleRows: number; records: number; keyboardScrolled: boolean; table: { top: number; bottom: number; headerHeight: number }; firstRows: Array<{ top: number; bottom: number; height: number }>; cellContents: Array<{ selector: string; height: number; lineHeight: string; verticalAlign: string }> }> = [];
 const alertChecks: Array<{ lang: string; theme: string; bottom: number; events: number; expandedEvents: number; keyboardScrolled: boolean; empty: boolean }> = [];
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const fontPath = 'fonts/noto-sans-thai/';
@@ -561,7 +561,7 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
     const content = (await history.boundingBox())!;
     const backdrop = await dialog.evaluate(element => getComputedStyle(element, '::backdrop').backgroundColor);
     assert.ok(Math.abs(rail.x - 1374) <= 8, 'History detail rail differs from source desktop position estimate');
-    assert.equal(rail.width, 288); assert.equal(rail.y, 72); assert.ok(rail.height <= 861);
+    assert.equal(rail.width, 288); assert.equal(rail.y, 60); assert.ok(rail.height <= 867);
     const contentGap = rail.x - content.x - content.width;
     assert.ok(contentGap >= 8 && contentGap <= 16, `History content/detail gap: ${contentGap}`);
     assert.equal(backdrop, 'rgba(0, 0, 0, 0)', 'Desktop History backdrop dims the reference view');
@@ -630,12 +630,22 @@ async function checkHistoryDensity(page: Page, lang: string, theme: string) {
   const geometry = await region.evaluate(element => {
     const box = element.getBoundingClientRect();
     const rows = [...element.querySelectorAll('tbody tr')];
-    return { visibleRows: rows.filter(row => { const rect = row.getBoundingClientRect(); return rect.top >= box.top && rect.bottom <= box.bottom; }).length, records: rows.length };
+    return {
+      visibleRows: rows.filter(row => { const rect = row.getBoundingClientRect(); return rect.top >= box.top && rect.bottom <= box.bottom; }).length,
+      records: rows.length,
+      table: { top: box.top, bottom: box.bottom, headerHeight: element.querySelector('thead')!.getBoundingClientRect().height },
+      firstRows: rows.slice(0, 10).map(row => { const rect = row.getBoundingClientRect(); return { top: rect.top, bottom: rect.bottom, height: rect.height }; }),
+      cellContents: ['.qp-history-harness', '.qp-history-project', '.qp-history-provider', 'button'].map(selector => {
+        const content = rows[0].querySelector(selector)!;
+        const style = getComputedStyle(content);
+        return { selector, height: content.getBoundingClientRect().height, lineHeight: style.lineHeight, verticalAlign: style.verticalAlign };
+      }),
+    };
   });
   const bottom = await history.locator('.qp-history-records').evaluate(element => element.getBoundingClientRect().bottom + scrollY);
   console.log('History occupied geometry', lang, theme, { bottom, ...geometry });
   assert.ok(bottom <= 941, `History pagination outside desktop viewport: ${bottom}`);
-  assert.ok(geometry.visibleRows >= 8, `Fewer than eight complete History rows: ${geometry.visibleRows}`);
+  assert.ok(geometry.visibleRows >= 10, `Fewer than ten complete History fixture rows: ${geometry.visibleRows}`);
   assert.equal(await history.locator('.qp-history-heading select').first().inputValue(), 'last30', 'History defaults to the concept 30-day view');
   const response = await daemon.inject({ method: 'GET', url: `/api/usage-events?from=${fixedNow - 30 * 86_400_000}&to=${fixedNow + 1}&limit=50`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(response.statusCode, 200);
