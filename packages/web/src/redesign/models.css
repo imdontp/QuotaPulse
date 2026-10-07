@@ -26,6 +26,7 @@
 .qp-model-overview { display:grid; gap:12px; min-width:0; }
 .qp-model-comparison,.qp-model-detail .qp-panel,.qp-model-providers { display:grid; gap:12px; min-width:0; }
 .qp-model-comparison h2,.qp-model-detail h2,.qp-model-providers h2 { font-size:16px; }
+.qp-model-comparison-heading { display:grid; gap:8px; min-width:0; }
 .qp-model-table-wrap { overflow-x:auto; }
 .qp-model-table-wrap table { width:100%; border-collapse:collapse; min-width:715px; font-size:10px; }
 .qp-model-table-wrap th,.qp-model-table-wrap td { padding:9px 5px; text-align:left; border-bottom:1px solid var(--qp-border); white-space:nowrap; }
@@ -137,7 +138,10 @@
   .qp-model-detail .qp-panel { padding:10px; }
   .qp-model-trend { height:112px; }
   /* Keep the original comparison/footer composition even for sparse real records. */
-  .qp-model-comparison { display:flex; flex-direction:column; height:575px; margin-top:11px; padding:10px 8px; }
+  .qp-model-comparison { display:flex; flex-direction:column; height:575px; margin-top:11px; padding:10px 8px; gap:8px; }
+  .qp-model-comparison-heading { display:flex; align-items:center; gap:12px; }
+  .qp-model-comparison-heading h2 { flex:none; }
+  .qp-model-comparison-heading .qp-footnote { flex:1; min-width:0; text-align:right; }
   .qp-model-comparison h2 { font-size:18px; }
   .qp-model-comparison>.qp-model-table-wrap { flex:1; min-height:0; overflow:auto; }
   .qp-model-table-wrap table { font-size:11px; }

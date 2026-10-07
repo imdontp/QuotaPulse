@@ -124,6 +124,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
         <linearGradient id={`${id}-progress-arc`} gradientTransform="rotate(90 .5 .5)"><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
         <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <clipPath id={`${id}-world`}><circle cx="180" cy="160" r="114"/></clipPath>
+        <radialGradient id={`${id}-surface-shade`}><stop stopColor="#010913" stopOpacity=".28"/><stop offset=".7" stopColor="#010913" stopOpacity=".1"/><stop offset="1" stopColor="#010913" stopOpacity="0"/></radialGradient>
       </defs>
       <g className="qp-orbit" fill="none" stroke="#55baf3" strokeOpacity=".2">
         <ellipse cx="180" cy="160" rx="169" ry="73" transform="rotate(-26 180 160)"/>
@@ -131,6 +132,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
       </g>
       <circle cx="180" cy="160" r="117" fill={`url(#${id}-fill)`} stroke="#51b9ef" strokeOpacity=".4"/>
       <image data-testid="pulse-earth" href="/redesign/pulse-earth-v2.png" x="38" y="19" width="284" height="284" clipPath={`url(#${id}-world)`}/>
+      <circle className="qp-core-surface-shade" cx="180" cy="160" r="114" fill={`url(#${id}-surface-shade)`}/>
       <g fill="none" stroke={`url(#${id}-arc)`} filter={`url(#${id}-glow)`}>
         <circle cx="180" cy="160" r="119" strokeWidth="2"/>
         <circle cx="180" cy="160" r="137" strokeWidth="1" opacity=".25"/>

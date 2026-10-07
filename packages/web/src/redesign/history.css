@@ -143,6 +143,11 @@
   .qp-redesign .qp-history-table table { min-width:1050px; }
   .qp-redesign .qp-history-table thead { position:sticky; top:0; z-index:1; background:var(--qp-panel); }
   .qp-redesign [data-testid="usage-history"] form fieldset { grid-template-columns:repeat(9,minmax(0,1fr)); align-items:end; }
+  .qp-redesign [data-testid="usage-history"] form { margin-top:10px; margin-bottom:5px; }
+  .qp-redesign [data-testid="usage-history"] form fieldset { border:0; padding:0; }
+  .qp-redesign [data-testid="usage-history"] form label:not(:has([type=checkbox])) { gap:0; }
+  .qp-redesign [data-testid="usage-history"] form label>span { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  .qp-redesign [data-testid="usage-history"] form input:not([type=checkbox]),.qp-redesign [data-testid="usage-history"] form select,.qp-redesign [data-testid="usage-history"] form button { height:35px; min-height:35px; font-size:11px; }
   .qp-redesign [data-testid="usage-history"] form label:has([type=checkbox]) { align-self:center; }
   .qp-redesign dialog[aria-labelledby=history-detail-title] { position:fixed; inset:72px 8px auto auto; margin:0; width:288px; max-height:calc(100vh - 80px); }
   .qp-redesign dialog[aria-labelledby=history-detail-title]::backdrop { background:transparent; }

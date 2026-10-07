@@ -45,7 +45,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
       <article><i aria-hidden="true"><Zap size={24}/></i><span>{t('history.effortDistribution')}</span><ul>{data.effort.map(row => <li key={JSON.stringify(row.effort)}>{row.effort ?? t('redesign.unknownValue')}: {count(row.calls)}</li>)}</ul>{!data.effort.length && <strong>—</strong>}</article>
     </div>
     <div className="qp-history-legend"><span>{t('history.inputCombined')}</span><span>{t('col.output')}</span></div>
-    <svg ref={chart} viewBox={`0 0 ${width} 144`} role="img" aria-label={`${t('history.timeline')}: ${count(totals.tokens)}`}>
+    <svg ref={chart} viewBox={`0 0 ${width} 144`} preserveAspectRatio="none" role="img" aria-label={`${t('history.timeline')}: ${count(totals.tokens)}`}>
       <defs>{(['input', 'output'] as const).map(series => <linearGradient key={series} id={`${id}-${series}`} x1="0" y1="0" x2="0" y2="1"><stop stopColor={`var(--history-${series})`} stopOpacity=".22"/><stop offset="1" stopColor={`var(--history-${series})`} stopOpacity="0"/></linearGradient>)}<filter id={`${id}-glow`} x="-10%" y="-50%" width="120%" height="200%"><feGaussianBlur stdDeviation="1.5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
       {[0, .5, 1].map(fraction => <g key={fraction}><line x1={left} x2={right} y1={y(max * fraction)} y2={y(max * fraction)} stroke="currentColor" opacity=".15"/><text x="0" y={y(max * fraction)} fill="currentColor" fontSize="11">{f.tokens(max * fraction)}</text></g>)}
       <polygon points={`${left},118 ${points('inputTokens')} ${right},118`} fill={`url(#${id}-input)`}/>

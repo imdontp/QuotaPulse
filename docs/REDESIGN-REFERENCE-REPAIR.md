@@ -14,7 +14,15 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest History hierarchy and native Models/Providers alignment: [v1.85.29](redesign-v1.85.29/VALIDATION-STATE.md)
+Latest native chart/filter and coverage-note composition: [v1.85.30](redesign-v1.85.30/VALIDATION-STATE.md)
+fills the History chart viewport, aligns native filters with the source row,
+places the complete Models coverage note alongside its heading, and darkens
+the globe center in dark theme. The full authenticated workflow passes.
+Scoped production evidence and remaining source differences are recorded in
+the report. History row density, globe particle texture and whole-source
+acceptance remain open; no whole-image likeness percentage is claimed.
+
+Previous History hierarchy and native Models/Providers alignment: [v1.85.29](redesign-v1.85.29/VALIDATION-STATE.md)
 restores the History title/subtitle, native timeline/summary geometry and complete
 selected-row outline, aligns Models heading padding and puts actual Providers
 profiles/reset values in their source hierarchy. Same-build scoped manifests
