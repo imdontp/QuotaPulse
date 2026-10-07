@@ -14,7 +14,16 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest History row baseline and native detail header: [v1.85.32](redesign-v1.85.32/VALIDATION-STATE.md)
+Latest particle globe surface: [v1.85.33](redesign-v1.85.33/VALIDATION-STATE.md)
+replaces photographic ocean texture with a local generated particle surface,
+retaining the old bitmap, actual quota/progress values and focal geometry.
+The current authenticated workflow passes. Production Overview scope results
+are recorded in the report. Northern brightness and broad halo layers remain
+source differences. [Next source repairs](redesign-v1.85.33/NEXT-SOURCE-REPAIRS.md)
+prioritize Alerts orb/context composition and the other eight-page details;
+whole-source acceptance and final release gates remain open.
+
+Previous History row baseline and native detail header: [v1.85.32](redesign-v1.85.32/VALIDATION-STATE.md)
 removes extra baseline height from harness badges and aligns the rail top/header
 with the source. All four variants now show ten complete fixture rows with43
 records and footer936px; eight scoped pairs pass unchanged raster tolerance.

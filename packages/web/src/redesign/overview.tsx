@@ -131,7 +131,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
         <ellipse cx="180" cy="160" rx="165" ry="96" transform="rotate(30 180 160)"/>
       </g>
       <circle cx="180" cy="160" r="117" fill={`url(#${id}-fill)`} stroke="#51b9ef" strokeOpacity=".4"/>
-      <image data-testid="pulse-earth" href="/redesign/pulse-earth-v2.png" x="38" y="19" width="284" height="284" clipPath={`url(#${id}-world)`}/>
+      <image data-testid="pulse-earth" href="/redesign/pulse-earth-v3.png" x="38" y="19" width="284" height="284" clipPath={`url(#${id}-world)`}/>
       <circle className="qp-core-surface-shade" cx="180" cy="160" r="114" fill={`url(#${id}-surface-shade)`}/>
       <g fill="none" stroke={`url(#${id}-arc)`} filter={`url(#${id}-glow)`}>
         <circle cx="180" cy="160" r="119" strokeWidth="2"/>

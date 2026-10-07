@@ -1721,7 +1721,7 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
   const response = await page.request.get(assetUrl);
   assert.equal(response.status(), 200);
   assert.ok(response.headers()['content-type']?.startsWith('image/png'));
-  const assetSha256 = sha(readFileSync(resolve(root, 'packages/web/public/redesign/pulse-earth-v2.png')));
+  const assetSha256 = sha(readFileSync(resolve(root, 'packages/web/public/redesign/pulse-earth-v3.png')));
   assert.equal(sha(await response.body()), assetSha256, 'Served Earth asset differs from the retained source');
   const imageWidth = await page.evaluate(url => new Promise<number>((resolve, reject) => {
     const image = new Image(); image.onload = () => resolve(image.naturalWidth);

@@ -1,0 +1,26 @@
+{
+  "database": "in-memory synthetic",
+  "checks": [
+    "blueprint v1.1 bare Cost preserves All time",
+    "sidebar Cost explicitly selects month",
+    "command palette Cost explicitly selects month"
+  ],
+  "ranges": {
+    "bare": {
+      "from": 0,
+      "to": 1791373118818
+    },
+    "sidebar": {
+      "from": 1790787600000,
+      "to": 1791373118818
+    },
+    "palette": {
+      "from": 1790787600000,
+      "to": 1791373118818
+    }
+  },
+  "responseCapture": {
+    "bare": "http://127.0.0.1:7801/api/cost-analysis?basis=api&bucket=auto&from=0&to=1791373118818",
+    "excludedUnrelated": []
+  }
+}
