@@ -52,6 +52,7 @@ export const en = {
   'history.session': 'Session reference',
   'history.title': "History",
   'history.redesignTitle': 'History & Logs',
+  'history.redesignSubtitle': 'Browse recorded usage and events across projects and providers.',
   'history.records': "Usage records",
   'history.search': "Search metadata",
   'history.apply': "Apply filters",

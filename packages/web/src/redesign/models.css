@@ -112,6 +112,7 @@
   [data-testid=production-models] main { display:block; padding:12px; }
   .qp-model-layout { grid-template-columns:minmax(0,2.7fr) minmax(320px,1fr); }
   .qp-model-primary { align-content:start; }
+  .qp-model-header { padding-inline:8px; }
   .qp-model-overview:has(.qp-model-summary) { position:relative; isolation:isolate; }
   .qp-model-overview:has(.qp-model-summary)::before { content:""; position:absolute; inset:0 -2px -12px; z-index:-1; pointer-events:none; border:1px solid var(--qp-border); border-radius:10px; background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 2%,var(--qp-panel)),var(--qp-panel)); }
   .qp-model-summary article,.qp-model-detail .qp-panel { padding:12px; gap:6px; }
@@ -136,7 +137,7 @@
   .qp-model-detail .qp-panel { padding:10px; }
   .qp-model-trend { height:112px; }
   /* Keep the original comparison/footer composition even for sparse real records. */
-  .qp-model-comparison { display:flex; flex-direction:column; height:575px; margin-top:11px; padding-inline:8px; }
+  .qp-model-comparison { display:flex; flex-direction:column; height:575px; margin-top:11px; padding:10px 8px; }
   .qp-model-comparison h2 { font-size:18px; }
   .qp-model-comparison>.qp-model-table-wrap { flex:1; min-height:0; overflow:auto; }
   .qp-model-table-wrap table { font-size:11px; }

@@ -58,6 +58,7 @@ export const th: Record<MessageKey, string> = {
   'history.session': 'รหัสอ้างอิงเซสชัน',
   'history.title': "ประวัติ",
   'history.redesignTitle': 'ประวัติและบันทึก',
+  'history.redesignSubtitle': 'ดูการใช้งานและเหตุการณ์ที่บันทึกไว้ตามโปรเจกต์และผู้ให้บริการ',
   'history.records': "รายการใช้งาน",
   'history.search': "ค้นหาข้อมูลประกอบ",
   'history.apply': "ใช้ตัวกรอง",

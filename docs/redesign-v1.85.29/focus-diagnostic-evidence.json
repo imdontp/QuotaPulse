@@ -1,0 +1,166 @@
+{
+    "database":  "in-memory synthetic",
+    "viewport":  {
+                     "height":  1000,
+                     "width":  900
+                 },
+    "language":  "en",
+    "theme":  "light",
+    "plainSummary":  {
+                         "cycles":  40,
+                         "immediateMisses":  0
+                     },
+    "instrumentedSummary":  {
+                                "cycles":  30,
+                                "immediateMisses":  0
+                            },
+    "representativeCycles":  [
+                                 {
+                                     "cycle":  0,
+                                     "immediateRowFocus":  true,
+                                     "settledRowFocus":  true,
+                                     "events":  [
+                                                    {
+                                                        "event":  "cancel",
+                                                        "at":  5781.699999988079,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  true
+                                                    },
+                                                    {
+                                                        "event":  "open-mutation",
+                                                        "at":  5781.800000011921,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    },
+                                                    {
+                                                        "event":  "close",
+                                                        "at":  5782,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    },
+                                                    {
+                                                        "event":  "focus-call",
+                                                        "at":  5782.5,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    },
+                                                    {
+                                                        "event":  "focusin",
+                                                        "at":  5832.5,
+                                                        "rowFocus":  true,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    }
+                                                ]
+                                 },
+                                 {
+                                     "cycle":  1,
+                                     "immediateRowFocus":  true,
+                                     "settledRowFocus":  true,
+                                     "events":  [
+                                                    {
+                                                        "event":  "cancel",
+                                                        "at":  6830.699999988079,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  true
+                                                    },
+                                                    {
+                                                        "event":  "open-mutation",
+                                                        "at":  6831,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    },
+                                                    {
+                                                        "event":  "close",
+                                                        "at":  6831.300000011921,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    },
+                                                    {
+                                                        "event":  "focus-call",
+                                                        "at":  6831.5,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    },
+                                                    {
+                                                        "event":  "focusin",
+                                                        "at":  6889.4000000059605,
+                                                        "rowFocus":  true,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    }
+                                                ]
+                                 },
+                                 {
+                                     "cycle":  2,
+                                     "immediateRowFocus":  true,
+                                     "settledRowFocus":  true,
+                                     "events":  [
+                                                    {
+                                                        "event":  "cancel",
+                                                        "at":  8018.699999988079,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  true
+                                                    },
+                                                    {
+                                                        "event":  "open-mutation",
+                                                        "at":  8019.199999988079,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    },
+                                                    {
+                                                        "event":  "close",
+                                                        "at":  8019.4000000059605,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    },
+                                                    {
+                                                        "event":  "focus-call",
+                                                        "at":  8019.9000000059605,
+                                                        "rowFocus":  false,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    },
+                                                    {
+                                                        "event":  "focusin",
+                                                        "at":  8087.300000011921,
+                                                        "rowFocus":  true,
+                                                        "rowConnected":  true,
+                                                        "sameButton":  true,
+                                                        "dialogOpen":  false
+                                                    }
+                                                ]
+                                 }
+                             ],
+    "originalFailure":  {
+                            "variant":  "en/light/900",
+                            "assertion":  "History Escape did not restore the selected-row focus",
+                            "workflow":  2267
+                        },
+    "limitation":  "Original immediate false assertion was not reproduced by 70 scoped cycles; intermediate hidden-before-focus event ordering is observed."
+}

@@ -693,6 +693,8 @@ try {
         await defaultDetail.waitFor();
         await page.keyboard.press('Escape');
         await defaultDetail.waitFor({ state: 'hidden' });
+        // Native close precedes the React close handler that restores row focus.
+        await page.waitForFunction(() => Boolean(document.activeElement?.closest('[data-testid="usage-history"] tbody tr')), undefined, { timeout: 2000 });
         assert.equal(await page.evaluate(() => Boolean(document.activeElement?.closest('[data-testid="usage-history"] tbody tr'))), true, `${lang}/${theme}/${width}: History Escape did not restore the selected-row focus`);
       }
       const link = screen.locator('.qp-sidebar nav a').first();

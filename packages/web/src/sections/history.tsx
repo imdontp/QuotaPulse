@@ -158,7 +158,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false }: { 
   })();
   return <div className="flex min-w-0 flex-col gap-3.5" data-testid="usage-history">
     {sessionId !== undefined && <div className="flex items-center gap-3 text-xs" role="status"><span>{t('history.session')} #{sessionId}</span><a className="underline" href="#history?range=all">{t('history.clearSession')}</a></div>}
-    <div className={redesign ? 'qp-history-heading' : undefined}>{redesign && <><h1><i aria-hidden="true"><History size={27}/></i>{t('history.redesignTitle')}</h1>{viewActions}</>}<fieldset disabled={paused} className="min-w-0 border-0 p-0"><UsageRangeBar route={route} sources={sources} showBucket={false} showHeading={!redesign} onChange={next => { setOffset(0); updateRoute(next); }}/></fieldset></div>
+    <div className={redesign ? 'qp-history-heading' : undefined}>{redesign && <><div className="qp-history-heading-identity"><i aria-hidden="true"><History size={27}/></i><div><h1>{t('history.redesignTitle')}</h1><p>{t('history.redesignSubtitle')}</p></div></div>{viewActions}</>}<fieldset disabled={paused} className="min-w-0 border-0 p-0"><UsageRangeBar route={route} sources={sources} showBucket={false} showHeading={!redesign} onChange={next => { setOffset(0); updateRoute(next); }}/></fieldset></div>
     {summary && <HistoryTimeline data={summary}/>}
     <form onSubmit={event => { event.preventDefault(); setOffset(0); setFilters({ ...draft, project: draft.projectMissing ? undefined : draft.project }); }}>
       <fieldset disabled={paused} className="grid min-w-0 grid-cols-1 gap-3 rounded-lg border p-3 sm:grid-cols-2 xl:grid-cols-3">
