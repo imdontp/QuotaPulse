@@ -134,11 +134,11 @@
   .qp-redesign .qp-history-records .qp-history-harness { max-width:112px; overflow:hidden; white-space:nowrap; }
   .qp-redesign .qp-history-records .qp-history-harness svg { flex:none; }
   .qp-redesign .qp-history-records .qp-history-model { max-width:110px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .qp-redesign .qp-history-records td button { height:26px; }
+  .qp-redesign .qp-history-records td button { height:24px; }
   .qp-redesign .qp-history-records td:nth-child(8) { white-space:nowrap; }
   .qp-redesign .qp-history-records td:nth-child(8) br { display:none; }
   .qp-redesign .qp-history-records td:nth-child(8) span:first-child { margin-right:6px; }
-  .qp-redesign .qp-history-table { max-height:330px; overflow:auto; overscroll-behavior:contain; }
+  .qp-redesign .qp-history-table { max-height:366px; overflow:auto; overscroll-behavior:contain; }
   .qp-redesign .qp-history-table>div { overflow:visible; }
   .qp-redesign .qp-history-table table { min-width:1050px; }
   .qp-redesign .qp-history-table thead { position:sticky; top:0; z-index:1; background:var(--qp-panel); }

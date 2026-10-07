@@ -14,7 +14,15 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest native chart/filter and coverage-note composition: [v1.85.30](redesign-v1.85.30/VALIDATION-STATE.md)
+Latest native History table density: [v1.85.31](redesign-v1.85.31/VALIDATION-STATE.md)
+enlarges the native table region while retaining readable content-driven rows.
+All eight scoped capture pairs are byte-identical. All four variants retain43
+records, nine complete rows and footer bottom936px. The tenth row's text is
+readable in the fresh en/dark image, but exact complete-row clipping remains
+open. Full authenticated workflow evidence is from the previous v1.85.30 source;
+whole-source acceptance and final release checks remain open.
+
+Previous native chart/filter and coverage-note composition: [v1.85.30](redesign-v1.85.30/VALIDATION-STATE.md)
 fills the History chart viewport, aligns native filters with the source row,
 places the complete Models coverage note alongside its heading, and darkens
 the globe center in dark theme. The full authenticated workflow passes.
