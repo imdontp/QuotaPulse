@@ -48,6 +48,7 @@ mkdirSync(output, { recursive: true });
 // A failed attempt must never leave a previous success manifest in this folder.
 rmSync(resolve(output, 'verification.json'), { force: true });
 rmSync(resolve(output, 'cost-reference-layout.json'), { force: true });
+rmSync(resolve(output, 'reference-detail-regions.json'), { force: true });
 const fixedNow = Date.parse('2025-05-17T13:42:00.000Z');
 // Freeze Date only, keeping real timers/performance for HTTP, browser and cleanup.
 // This applies to internal query helpers too, without changing production clocks.
@@ -184,6 +185,7 @@ const liveMinuteChecks: Array<{ lang: string; theme: string; state: string; pair
 const liveRefreshChecks: Array<Awaited<ReturnType<typeof checkLiveMinuteRefresh>>> = [];
 const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bottom: number; unknownNative: number; stableIdentityTones: boolean; sourceTopCards: Array<{ x: number; width: number }> }> = [];
 const providerChecks: Array<{ lang: string; theme: string; bottom: number; compared: number; unavailable: boolean; expired: boolean; proportional: boolean }> = [];
+const referenceDetailRegions: Array<{ page: string; lang: string; theme: string; regions: unknown }> = [];
 const modelComparisonChecks: Array<{ lang: string; theme: string; bottom: number; rows: number; ratios: number; boundaryRatios: boolean }> = [];
 const costAxisChecks: Array<{ route: string; lang: string; theme: string; priced: boolean; maxAmount: number; maxTokens: number }> = [];
 const costReferenceRegions: Array<{ lang: string; theme: string; pass: number; regions: Record<string, { x: number; y: number; width: number; height: number; bottom: number }> }> = [];
@@ -354,8 +356,16 @@ async function checkLiveDensity(page: Page, lang: string, theme: string, pending
 
 async function checkModelComparison(page: Page, lang: string, theme: string, pending: Set<Request>) {
   await page.setViewportSize({ width: 1672, height: 941 }); await page.evaluate(() => window.scrollTo(0, 0));
+  referenceDetailRegions.push({ page: 'models', lang, theme, regions: await page.evaluate(() => Object.fromEntries(['.qp-model-comparison', '.qp-model-providers', '.qp-model-detail>.qp-panel:first-child', '.qp-model-distribution', '.qp-model-donut'].map(selector => {
+    const { x, y, width, height, bottom } = document.querySelector(selector)!.getBoundingClientRect();
+    return [selector, { x, y, width, height, bottom }];
+  }))) });
   const bottom = await page.locator('.qp-model-providers').evaluate(element => element.getBoundingClientRect().bottom);
-  assert.ok(bottom <= 941, `Model comparison/provider panels exceed viewport: ${bottom}`);
+  const primaryRegions = await page.evaluate(() => Object.fromEntries(['.qp-model-header', '.qp-model-summary', '.qp-model-summary article:last-child', '.qp-model-comparison', '.qp-model-providers'].map(selector => {
+    const { y, height, bottom } = document.querySelector(selector)!.getBoundingClientRect();
+    return [selector, { y, height, bottom, ...(selector.endsWith('article:last-child') ? { fields: [...document.querySelector(selector)!.children].map(element => ({ text: element.textContent, height: element.getBoundingClientRect().height, width: element.getBoundingClientRect().width, lineHeight: getComputedStyle(element).lineHeight })) } : {}) }];
+  })));
+  assert.ok(bottom <= 941, `Model comparison/provider panels exceed viewport: ${JSON.stringify(primaryRegions)}`);
   const month = new Date(fixedNow); month.setDate(1); month.setHours(0, 0, 0, 0);
   const query = new URLSearchParams({ detailed: '1', from: String(month.getTime()), to: String(fixedNow + 1) });
   const result = await daemon.inject({ method: 'GET', url: `/api/models?${query}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
@@ -527,6 +537,10 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
     assert.ok(contentGap >= 8 && contentGap <= 16, `History content/detail gap: ${contentGap}`);
     assert.equal(backdrop, 'rgba(0, 0, 0, 0)', 'Desktop History backdrop dims the reference view');
     historyRailChecks.push({ lang, theme, ...rail, contentGap, transparentBackdrop: true });
+    referenceDetailRegions.push({ page: 'history', lang, theme, regions: await dialog.evaluate(element => Object.fromEntries(['.qp-history-detail-record-meta', '.qp-history-detail-identities', '.qp-history-detail-identity[data-field="2"]', '[data-group="history.tokenBreakdown"]', '[data-group="history.pricingSource"]'].map(selector => {
+      const { x, y, width, height, bottom } = element.querySelector(selector)!.getBoundingClientRect();
+      return [selector, { x, y, width, height, bottom }];
+    }))) });
   }
   const filename = `history-selected-${lang}-${theme}.png`;
   await page.evaluate(() => { const focused = document.activeElement; if (focused instanceof HTMLElement) focused.blur(); });
@@ -550,6 +564,17 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
       const box = await dialog.boundingBox(); assert.ok(box && box.x >= 0 && box.x + box.width <= width && box.height <= 941);
       await dialog.evaluate(element => { element.scrollTop = element.scrollHeight; });
       const heading = await dialog.locator('.qp-history-detail-heading').boundingBox(); assert.ok(heading && heading.y >= box.y && heading.y + heading.height <= box.y + box.height);
+    }
+    // Stress only the compact text layout after canonical screenshots; this is
+    // not an API fixture or a substituted value in production/reference captures.
+    const compactToken = tokens.first().locator('span');
+    const originalCompactToken = await compactToken.innerText();
+    try {
+      await compactToken.evaluate((element, value) => { element.textContent = value; }, formatTokens(1e12));
+      assert.equal(await tokens.first().evaluate(element => element.scrollWidth <= element.clientWidth), true, 'Large History token count exceeds its tile');
+      assert.equal(await dialog.evaluate(element => element.scrollWidth <= element.clientWidth), true, 'Large History token count creates horizontal dialog overflow');
+    } finally {
+      await compactToken.evaluate((element, value) => { element.textContent = value; }, originalCompactToken);
     }
     await dialog.getByRole('button').first().focus();
     let browserFocusStep = false;
@@ -604,6 +629,7 @@ async function checkProviders(page: Page, lang: string, theme: string, pending: 
   const bottom = await page.locator('.qp-provider-bottom').evaluate(element => element.getBoundingClientRect().bottom);
   const geometry = await page.evaluate(() => ({ scrollY, documentHeight: document.documentElement.scrollHeight, viewport: { width: innerWidth, height: innerHeight }, cards: Array.from(document.querySelectorAll<HTMLElement>('.qp-provider-card')).map(element => ({ title: element.querySelector('.qp-provider-card-head button')?.textContent, hasQuota: element.dataset.hasQuota, top: element.getBoundingClientRect().top, bottom: element.getBoundingClientRect().bottom, height: element.getBoundingClientRect().height })), gridColumns: getComputedStyle(document.querySelector('.qp-provider-grid')!).gridTemplateColumns, panels: ['.qp-provider-header', '.qp-provider-grid', '.qp-provider-inspector', '.qp-provider-bottom'].map(selector => { const element = document.querySelector<HTMLElement>(selector); const rect = element?.getBoundingClientRect(); return { selector, exists: !!element, top: rect?.top, bottom: rect?.bottom, height: rect?.height, open: element instanceof HTMLDetailsElement ? element.open : undefined }; }) }));
   assert.ok(bottom <= 941, `Provider comparison/reader panels exceed viewport: ${JSON.stringify(geometry)}`);
+  referenceDetailRegions.push({ page: 'providers', lang, theme, regions: geometry });
   const result = await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(result.statusCode, 200);
   const data = result.json<Overview>();
@@ -2799,6 +2825,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
+  if (referenceDetailRegions.length) writeFileSync(resolve(output, 'reference-detail-regions.json'), JSON.stringify({ evidence: 'measured application regions for source review; not whole-image similarity or acceptance', captures: referenceDetailRegions }, null, 2));
   if (costReferenceRegions.length) writeFileSync(resolve(output, 'cost-reference-layout.json'), JSON.stringify({ source: 'quotapulse_build_blueprint/refs/cost.png', evidence: 'region estimates within 3px, not whole-image similarity or visual acceptance', captures: costReferenceRegions }, null, 2));
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', captureMatrix: { languages: captureLanguages, themes: captureThemes, complete: captureLanguages.length === 2 && captureThemes.length === 2 }, clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 10, maxChangedPixelFraction: 0.00005, masks: false }, captureNormalization: ['CSS transitions disabled and caret hidden before screenshot only', 'Playwright animations disabled during screenshot'], productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, runtimeMapProject: 'QuotaPulse', runtimeMapSessions: 12, runtimeMapRecords: 39, allRangeProjects: 5, allRangeRecords: 43, namedProjects: referenceProjects.length, projectNames: referenceProjects, models: referenceModels.length, modelNames: referenceModels.map(model => model.name), modelShares: referenceModels.map(model => model.share), providers: 4, records: 39, quotaOwners: ['OpenAI Subscription', 'OpenCode Go Subscription'], cacheSharePercent: 42, monthlySelection: 'OpenAI Subscription · monthly' }, checks: ['frozen daemon and browser Date', 'source-matched date on the screenshot clock', 'reference-matched Overview section labels and model rail accessible name', 'reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 2px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, overviewReferenceLabelChecks, overviewConceptDataChecks, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, workspaceChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);

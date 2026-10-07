@@ -14,6 +14,15 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
+Latest Providers/Models/History composition: [v1.85.25](redesign-v1.85.25/VALIDATION-STATE.md)
+restores native panel proportions, actual-reading owner priority, source Models
+and History page identities and compact factual detail hierarchy. Providers,
+Models and History scoped captures pass in both languages/themes; the full
+workflow passes before the final narrow presentation corrections. The interrupted
+full40pair production matrix has no success manifest and remains open. Source
+style differences and next implementation priorities are recorded explicitly;
+this checkpoint does not claim99–100% likeness.
+
 Latest Cost frame work: [v1.85.24](redesign-v1.85.24/VALIDATION-STATE.md)
 restores the native overview/provider frame, source-sized summary and donut,
 and trend/model/lower-panel proportions. All four Cost capture pairs pass;

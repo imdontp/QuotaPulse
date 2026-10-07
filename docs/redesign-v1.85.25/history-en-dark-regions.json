@@ -1,0 +1,47 @@
+{
+  "evidence": "measured application regions for source review; not whole-image similarity or acceptance",
+  "captures": [
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "regions": {
+        ".qp-history-detail-record-meta": {
+          "x": 1391,
+          "y": 152,
+          "width": 258,
+          "height": 61,
+          "bottom": 213
+        },
+        ".qp-history-detail-identities": {
+          "x": 1391,
+          "y": 225,
+          "width": 258,
+          "height": 196,
+          "bottom": 421
+        },
+        ".qp-history-detail-identity[data-field=\"2\"]": {
+          "x": 1391,
+          "y": 225,
+          "width": 258,
+          "height": 38,
+          "bottom": 263
+        },
+        "[data-group=\"history.tokenBreakdown\"]": {
+          "x": 1391,
+          "y": 433,
+          "width": 258,
+          "height": 137,
+          "bottom": 570
+        },
+        "[data-group=\"history.pricingSource\"]": {
+          "x": 1391,
+          "y": 582,
+          "width": 258,
+          "height": 175.8125,
+          "bottom": 757.8125
+        }
+      }
+    }
+  ]
+}

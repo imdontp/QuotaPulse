@@ -770,9 +770,24 @@ try {
   writeFileSync(resolve(output, 'cost-semantics.json'), JSON.stringify({ database: 'in-memory synthetic', cases: costCases.map(({ name, native, api, coverage }) => ({ name, native, api, coverage })), checks: ['Overview, Models and Cost summary', 'Models comparison and selected model', 'weighted call counts', 'separate native and API bases', 'accessible coverage explanation', 'Cost zero bars and neutral zero donut', 'Cost model weighted coverage'] }, null, 2));
   // Blueprint v1.1 compatibility: an existing bare Cost bookmark retains
   // All time. Design workflows above select month explicitly.
-  const bareCostResponse = page.waitForResponse(response => response.url().includes('/api/cost-analysis?') && response.ok());
+  // The preceding custom/native/source999 request can finish after navigation.
+  // Match the bare route's actual request, then independently assert its payload/UI.
+  const unrelatedBareCostResponses: string[] = [];
+  const bareCostResponse = page.waitForResponse(response => {
+    const url = new URL(response.url());
+    if (url.pathname !== '/api/cost-analysis' || !response.ok()) return false;
+    const params = url.searchParams;
+    const matches = params.get('from') === '0' && params.get('basis') === 'api'
+      && params.get('bucket') === 'auto' && !params.has('source_id');
+    if (!matches && !unrelatedBareCostResponses.includes(response.url())) {
+      unrelatedBareCostResponses.push(response.url());
+      console.info(`Cost bare-route waiter excluded unrelated successful response: ${response.url()}`);
+    }
+    return matches;
+  });
   await page.goto('http://127.0.0.1:7801/#cost');
-  const bareCostSnapshot = await (await bareCostResponse).json();
+  const matchedBareCostResponse = await bareCostResponse;
+  const bareCostSnapshot = await matchedBareCostResponse.json();
   assert.equal(bareCostSnapshot.scope.from, 0, 'Legacy bare #cost must preserve All time per blueprint v1.1');
   await page.getByTestId('production-cost').locator('.qp-cost-summary strong').first().waitFor();
   assert.equal(await page.getByTestId('production-cost').locator('.qp-cost-toolbar select').first().inputValue(), 'all');
@@ -793,7 +808,7 @@ try {
   await page.waitForURL('**/#cost?range=month');
   const paletteCostSnapshot = await (await paletteMonthResponse).json();
   assert.equal(paletteCostSnapshot.scope.from, monthStart.getTime(), 'Redesigned command palette Cost navigation must explicitly select month');
-  writeFileSync(resolve(output, 'cost-route-compatibility.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['blueprint v1.1 bare Cost preserves All time', 'sidebar Cost explicitly selects month', 'command palette Cost explicitly selects month'], ranges: { bare: bareCostSnapshot.scope, sidebar: sidebarCostSnapshot.scope, palette: paletteCostSnapshot.scope } }, null, 2));
+  writeFileSync(resolve(output, 'cost-route-compatibility.json'), JSON.stringify({ database: 'in-memory synthetic', checks: ['blueprint v1.1 bare Cost preserves All time', 'sidebar Cost explicitly selects month', 'command palette Cost explicitly selects month'], ranges: { bare: bareCostSnapshot.scope, sidebar: sidebarCostSnapshot.scope, palette: paletteCostSnapshot.scope }, responseCapture: { bare: matchedBareCostResponse.url(), excludedUnrelated: unrelatedBareCostResponses } }, null, 2));
   // Occupied Live layouts and pagination get a separate synthetic fixture after
   // the baseline flow, so its original totals and captured reference values stay intact.
   await page.close();

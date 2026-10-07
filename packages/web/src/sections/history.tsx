@@ -158,7 +158,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false }: { 
   })();
   return <div className="flex min-w-0 flex-col gap-3.5" data-testid="usage-history">
     {sessionId !== undefined && <div className="flex items-center gap-3 text-xs" role="status"><span>{t('history.session')} #{sessionId}</span><a className="underline" href="#history?range=all">{t('history.clearSession')}</a></div>}
-    <div className={redesign ? 'qp-history-heading' : undefined}>{redesign && <><h1><i aria-hidden="true"><History size={27}/></i>{t('history.title')}</h1>{viewActions}</>}<fieldset disabled={paused} className="min-w-0 border-0 p-0"><UsageRangeBar route={route} sources={sources} showBucket={false} showHeading={!redesign} onChange={next => { setOffset(0); updateRoute(next); }}/></fieldset></div>
+    <div className={redesign ? 'qp-history-heading' : undefined}>{redesign && <><h1><i aria-hidden="true"><History size={27}/></i>{t('history.redesignTitle')}</h1>{viewActions}</>}<fieldset disabled={paused} className="min-w-0 border-0 p-0"><UsageRangeBar route={route} sources={sources} showBucket={false} showHeading={!redesign} onChange={next => { setOffset(0); updateRoute(next); }}/></fieldset></div>
     {summary && <HistoryTimeline data={summary}/>}
     <form onSubmit={event => { event.preventDefault(); setOffset(0); setFilters({ ...draft, project: draft.projectMissing ? undefined : draft.project }); }}>
       <fieldset disabled={paused} className="grid min-w-0 grid-cols-1 gap-3 rounded-lg border p-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -185,8 +185,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false }: { 
     <p className="text-xs leading-relaxed text-muted-foreground">{t('history.coverage')}</p>
     <dialog ref={dialog} onClose={() => { setSelected(null); returnFocus.current?.focus(); }} aria-labelledby="history-detail-title" className="m-auto max-h-[85vh] w-[min(640px,92vw)] overflow-auto rounded-xl border bg-background p-5 text-foreground backdrop:bg-black/60">
       <div className={redesign ? 'qp-history-detail-heading' : 'flex items-center justify-between gap-3'}><h2 id="history-detail-title">{t('history.detail')} <span>#{selected?.event_id}</span></h2><Button autoFocus onClick={() => dialog.current?.close()}>{t('history.close')}</Button></div>
-      {redesign && selected && <div className="qp-history-record-kind">{t(`history.${selected.grain}`)}</div>}
-      <p className="my-3 text-xs text-muted-foreground">{t('history.coverage')}</p>
+      {!redesign && <p className="my-3 text-xs text-muted-foreground">{t('history.coverage')}</p>}
       {selected && redesign && <HistoryRecordDetails row={selected} harnessVendor={harnessVendor(selected)} basis={basis(selected)} date={date(selected.timestamp_ms)}/>}
       {selected && !redesign && <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">{[
         [t('history.recordedAt'), date(selected.timestamp_ms)], [t('history.kind'), t(`history.${selected.grain}`)],
