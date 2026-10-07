@@ -14,6 +14,14 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
+Latest Cost frame work: [v1.85.24](redesign-v1.85.24/VALIDATION-STATE.md)
+restores the native overview/provider frame, source-sized summary and donut,
+and trend/model/lower-panel proportions. All four Cost capture pairs pass;
+measured primary regions are within 3px of source estimates. Full workflow
+validation passes, including occupied Cost and repaired shared Alerts risk/advisory
+scrolling. Remaining detailed source differences are recorded in the report.
+This is not whole-image acceptance or a reference similarity percentage.
+
 Latest combined reference hierarchy checkpoint: [v1.85.22](redesign-v1.85.22/REDESIGN-REFERENCE-HIERARCHY-V1.85.22.md)
 updates Projects, History, Alerts, Live totals and the local globe surface.
 All forty full-matrix repeat pairs pass; this is not source-image acceptance.

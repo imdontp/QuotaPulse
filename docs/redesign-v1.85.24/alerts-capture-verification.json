@@ -1,0 +1,856 @@
+{
+  "status": "repeatable within recorded raster tolerance; review candidates, not approved visual baselines",
+  "scope": "alerts",
+  "captureMatrix": {
+    "languages": [
+      "en",
+      "th"
+    ],
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "complete": true
+  },
+  "clock": 1747489320000,
+  "isoClock": "2025-05-17T13:42:00.000Z",
+  "browser": "154.0.8037.97",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "timezone": "Asia/Bangkok",
+  "dpr": 1,
+  "reducedMotion": true,
+  "tolerance": {
+    "maxChannelDelta": 10,
+    "maxChangedPixelFraction": 0.00005,
+    "masks": false
+  },
+  "captureNormalization": [
+    "CSS transitions disabled and caret hidden before screenshot only",
+    "Playwright animations disabled during screenshot"
+  ],
+  "productionIndexSha256": "4e23e758cec4dba8d06c318371a51c58cb7fb31a2b5c22310bc2e22cf3d3c94f",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "sessions": 12,
+    "runtimeMapProject": "QuotaPulse",
+    "runtimeMapSessions": 12,
+    "runtimeMapRecords": 39,
+    "allRangeProjects": 5,
+    "allRangeRecords": 43,
+    "namedProjects": 5,
+    "projectNames": [
+      "QuotaPulse",
+      "Agent Platform",
+      "Edge Services",
+      "Developer Tools",
+      "Research Lab"
+    ],
+    "models": 6,
+    "modelNames": [
+      "DeepSeek V4.1",
+      "GPT-5.x",
+      "Claude 3.7",
+      "Claude 3.5",
+      "Others",
+      "GPT-4.1 mini"
+    ],
+    "modelShares": [
+      38,
+      24,
+      18,
+      11,
+      9,
+      0
+    ],
+    "providers": 4,
+    "records": 39,
+    "quotaOwners": [
+      "OpenAI Subscription",
+      "OpenCode Go Subscription"
+    ],
+    "cacheSharePercent": 42,
+    "monthlySelection": "OpenAI Subscription · monthly"
+  },
+  "checks": [
+    "frozen daemon and browser Date",
+    "source-matched date on the screenshot clock",
+    "reference-matched Overview section labels and model rail accessible name",
+    "reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection",
+    "8 screenshots / 4 pairs within raster tolerance",
+    "independent browser process per language/theme set",
+    "fresh document per route",
+    "production web without Vite",
+    "fonts ready and API settled",
+    "no page overflow",
+    "no external or write requests",
+    "no browser errors",
+    "Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history",
+    "Complete quota sample table, null/reset gaps and 390/900/1280 overflow"
+  ],
+  "referenceColumnChecks": [],
+  "liveDensityChecks": [],
+  "liveMinuteChecks": [],
+  "liveRefreshChecks": [],
+  "overviewLayouts": [],
+  "overviewReferenceLabelChecks": [],
+  "overviewConceptDataChecks": [],
+  "projectCardChecks": [],
+  "providerChecks": [],
+  "modelComparisonChecks": [],
+  "costAxisChecks": [],
+  "historyChecks": [],
+  "historyRailChecks": [],
+  "pageHeadingChecks": [
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "tileSize": 46,
+      "headings": 1,
+      "decorative": true
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "tileSize": 46,
+      "headings": 1,
+      "decorative": true
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "tileSize": 46,
+      "headings": 1,
+      "decorative": true
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "tileSize": 46,
+      "headings": 1,
+      "decorative": true
+    }
+  ],
+  "sectionMarkChecks": [],
+  "historyDensityChecks": [],
+  "alertChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "bottom": 932.359375,
+      "events": 2,
+      "expandedEvents": 60,
+      "keyboardScrolled": true,
+      "empty": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "bottom": 932.359375,
+      "events": 2,
+      "expandedEvents": 60,
+      "keyboardScrolled": true,
+      "empty": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "bottom": 932.359375,
+      "events": 2,
+      "expandedEvents": 60,
+      "keyboardScrolled": true,
+      "empty": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "bottom": 932.359375,
+      "events": 2,
+      "expandedEvents": 60,
+      "keyboardScrolled": true,
+      "empty": true
+    }
+  ],
+  "chartChecks": [],
+  "modelCostChecks": [],
+  "quotaChecks": [
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 50,
+      "unknown": 4
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "segments": 5,
+      "samples": 50,
+      "unknown": 4
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 50,
+      "unknown": 4
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "segments": 5,
+      "samples": 50,
+      "unknown": 4
+    }
+  ],
+  "pulseCoreChecks": [],
+  "pulseAmbientChecks": [],
+  "modelMarkChecks": [],
+  "overviewPeriodChecks": [],
+  "overviewInsightChecks": [],
+  "quotaGroupChecks": [],
+  "recentActivityChecks": [],
+  "activityBitmapChecks": [],
+  "activityRendererChecks": [],
+  "runtimeChecks": [],
+  "runtimeGeometryChecks": [],
+  "shellChecks": [
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    }
+  ],
+  "headerChecks": [
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "Sat, May 17, 2025"
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "Sat, May 17, 2025"
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "เสาร์ 17 พ.ค. 2568"
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "height": 60,
+      "sidebarWidth": 226,
+      "dateText": "เสาร์ 17 พ.ค. 2568"
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null
+    }
+  ],
+  "workspaceChecks": [],
+  "fontProvenance": {
+    "family": "Noto Sans Thai",
+    "upstream": "https://github.com/google/fonts",
+    "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+    "upstreamPath": "ofl/notosansthai/NotoSansThai[wdth,wght].ttf",
+    "sha256": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+    "license": "OFL-1.1",
+    "modifiedFont": false
+  },
+  "fontChecks": [
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    }
+  ],
+  "settingsChecks": [],
+  "cases": [
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "alerts-en-dark.png",
+      "sha256": "8baf9f505c807b6e1ac3d18ee94dad5185a1349d40151fa75fc7da38dc1a7d4e",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.908033471113596
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 10.285557832200997
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.885453812610461
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 10.197384625219907
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.61472249279132
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "8baf9f505c807b6e1ac3d18ee94dad5185a1349d40151fa75fc7da38dc1a7d4e",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "filename": "alerts-en-light.png",
+      "sha256": "8eff175f782314ac9851b6fb07c7deb112cbbe3e8a45c7feea48319e0b9ea9d5",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "8eff175f782314ac9851b6fb07c7deb112cbbe3e8a45c7feea48319e0b9ea9d5",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "alerts-th-dark.png",
+      "sha256": "d900527546d291061bbc10f686cfa972791bce8ad058665880ce5b0f6e4519ea",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.908033471113596
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 10.285557832200997
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.885453812610461
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 10.197384625219907
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.61472249279132
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "d900527546d291061bbc10f686cfa972791bce8ad058665880ce5b0f6e4519ea",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "filename": "alerts-th-light.png",
+      "sha256": "3141e036b0f35dd98839c561dfe8770c1e29b84fd16b6da94792ed4e1fd3491e",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-alert-level[data-level=critical]",
+        ".qp-alert-level[data-level=warning]",
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "3141e036b0f35dd98839c561dfe8770c1e29b84fd16b6da94792ed4e1fd3491e",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    }
+  ]
+}

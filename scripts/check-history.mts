@@ -1080,11 +1080,18 @@ try {
         assert.equal(await screen.locator('.qp-cost-sessions tbody tr').count(), 10);
         assert.ok(await screen.locator('.qp-cost-column').evaluateAll(nodes => nodes.some(node => node.getBoundingClientRect().height === 0)), 'Empty Cost buckets show nonzero bars');
         assert.ok((await screen.locator('.qp-cost-chart').getAttribute('aria-label'))?.includes(messages['redesign.costPricedTokens']));
-        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-cost-summary', '.qp-cost-providers', '.qp-cost-trend', '.qp-cost-models', '.qp-cost-projects', '.qp-cost-sessions', '.qp-cost-insights'].map(selector => {
+        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-cost-overview', '.qp-cost-summary', '.qp-cost-providers', '.qp-cost-trend', '.qp-cost-models', '.qp-cost-projects', '.qp-cost-sessions', '.qp-cost-insights'].map(selector => {
           const { x, y, width, height, bottom } = node.querySelector(selector)!.getBoundingClientRect();
           return [selector, { x, y, width, height, bottom }];
         })));
-        assert.equal(regions['.qp-cost-summary'].y, regions['.qp-cost-providers'].y, 'Cost provider breakdown is below the summary');
+        // refs/cost.png aligns the outer overview/provider frames at y72;
+        // the summary cards start near y131 inside the overview frame.
+        assert.equal(regions['.qp-cost-overview'].y, regions['.qp-cost-providers'].y, 'Cost provider breakdown is below the overview frame');
+        assert.ok(regions['.qp-cost-summary'].y > regions['.qp-cost-overview'].y, 'Cost summary is outside its heading frame');
+        assert.ok(regions['.qp-cost-summary'].bottom <= regions['.qp-cost-overview'].bottom, 'Cost summary extends beyond its overview frame');
+        assert.ok(regions['.qp-cost-providers'].x >= regions['.qp-cost-overview'].x + regions['.qp-cost-overview'].width, 'Provider panel overlaps overview frame');
+        assert.equal(await screen.getByTestId('scope-notice').isVisible(), true, 'Custom source scope must remain visible in the heading');
+        assert.match(await screen.getByTestId('scope-notice').innerText(), /#1/);
         assert.ok(regions['.qp-cost-providers'].x >= regions['.qp-cost-summary'].x + regions['.qp-cost-summary'].width, 'Provider panel overlaps summary');
         assert.equal(regions['.qp-cost-trend'].y, regions['.qp-cost-models'].y, 'Cost models do not share the trend row');
         for (const selector of ['.qp-cost-projects', '.qp-cost-sessions', '.qp-cost-insights']) assert.ok(regions[selector].bottom < 941, `${lang}/${theme}: Cost outside viewport: ${JSON.stringify(regions)}`);

@@ -47,6 +47,7 @@ const output = resolve(root, runtimeLayoutOnly ? 'screens/runtime-layout' : live
 mkdirSync(output, { recursive: true });
 // A failed attempt must never leave a previous success manifest in this folder.
 rmSync(resolve(output, 'verification.json'), { force: true });
+rmSync(resolve(output, 'cost-reference-layout.json'), { force: true });
 const fixedNow = Date.parse('2025-05-17T13:42:00.000Z');
 // Freeze Date only, keeping real timers/performance for HTTP, browser and cleanup.
 // This applies to internal query helpers too, without changing production clocks.
@@ -185,6 +186,7 @@ const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bot
 const providerChecks: Array<{ lang: string; theme: string; bottom: number; compared: number; unavailable: boolean; expired: boolean; proportional: boolean }> = [];
 const modelComparisonChecks: Array<{ lang: string; theme: string; bottom: number; rows: number; ratios: number; boundaryRatios: boolean }> = [];
 const costAxisChecks: Array<{ route: string; lang: string; theme: string; priced: boolean; maxAmount: number; maxTokens: number }> = [];
+const costReferenceRegions: Array<{ lang: string; theme: string; pass: number; regions: Record<string, { x: number; y: number; width: number; height: number; bottom: number }> }> = [];
 const historyChecks: Array<{ lang: string; theme: string; eventId: number; widths: number[]; modal: boolean; focusRestored: boolean }> = [];
 const historyRailChecks: Array<{ lang: string; theme: string; x: number; y: number; width: number; height: number; contentGap: number; transparentBackdrop: boolean }> = [];
 const pageHeadingChecks: Array<{ page: string; lang: string; theme: string; tileSize: number; headings: number; decorative: boolean }> = [];
@@ -2415,13 +2417,40 @@ try {
           const contrastEvidence = await semanticContrast(page);
           if (pass === 0 && ['live', 'projects', 'models', 'cost', 'alerts'].includes(destination)) {
             const heading = page.locator('.qp-page-heading'), mark = heading.locator('.qp-page-heading-icon');
-            const size = destination === 'live' || destination === 'models' ? 30 : 46;
+            const size = destination === 'cost' ? 32 : destination === 'live' || destination === 'models' ? 30 : 46;
             const rect = (await mark.boundingBox())!;
             assert.equal(rect.width, size); assert.equal(rect.height, size);
             assert.equal(await heading.locator('h1').count(), 1);
             assert.equal(await mark.getAttribute('aria-hidden'), 'true');
             assert.equal(await mark.locator('[tabindex="0"],a,button').count(), 0);
             pageHeadingChecks.push({ page: destination, lang, theme, tileSize: size, headings: 1, decorative: true });
+          }
+          if (destination === 'cost') {
+            const unitAmount = page.locator('.qp-cost-summary article:last-child strong');
+            const amountLayout = await unitAmount.evaluate(node => ({ height: node.getBoundingClientRect().height, lineHeight: parseFloat(getComputedStyle(node).lineHeight) }));
+            assert.ok(amountLayout.height <= amountLayout.lineHeight + 1, `${lang}/${theme}: Cost unit amount splits across lines: ${JSON.stringify(amountLayout)}`);
+            const regions = await page.evaluate(() => Object.fromEntries(['.qp-cost-overview', '.qp-cost-summary article:first-child', '.qp-cost-providers', '.qp-cost-donut', '.qp-cost-trend', '.qp-cost-models', '.qp-cost-lower'].map(selector => {
+              const box = document.querySelector(selector)!.getBoundingClientRect();
+              return [selector, { x: box.x, y: box.y, width: box.width, height: box.height, bottom: box.bottom }];
+            })));
+            // Direct region estimates from refs/cost.png, not whole-image SSIM.
+            const targets: Record<string, Partial<{ x: number; y: number; width: number; height: number }>> = {
+              '.qp-cost-overview': { x: 238, y: 72, width: 960, height: 258 },
+              '.qp-cost-summary article:first-child': { x: 250, y: 131, height: 187 },
+              '.qp-cost-providers': { x: 1206, y: 72, width: 454, height: 258 },
+              '.qp-cost-donut': { width: 184, height: 184 },
+              '.qp-cost-trend': { y: 341, height: 302 },
+              '.qp-cost-models': { x: 1035, y: 341, height: 302 },
+            };
+            const headingGeometry = await page.locator('.qp-cost-top,.qp-cost-header,.qp-cost-heading,.qp-cost-heading .qp-page-heading-copy,.qp-cost-heading h1,.qp-cost-heading p,.qp-cost-toolbar').evaluateAll(nodes => nodes.map(node => {
+              const box = node.getBoundingClientRect(), style = getComputedStyle(node);
+              return { className: node.className, text: node.matches('h1,p') ? node.textContent : undefined, x: box.x, y: box.y, width: box.width, height: box.height, display: style.display, flexBasis: style.flexBasis, flexWrap: style.flexWrap, alignItems: style.alignItems, fontSize: style.fontSize };
+            }));
+            for (const [selector, expected] of Object.entries(targets)) for (const [dimension, value] of Object.entries(expected)) {
+              assert.ok(Math.abs(regions[selector][dimension as keyof typeof regions[string]] - value) <= 3, `${lang}/${theme}: Cost reference region ${selector}.${dimension} target ${value}: ${JSON.stringify({ regions, headingGeometry })}`);
+            }
+            assert.ok(regions['.qp-cost-lower'].bottom < 941, 'Cost lower panels leave the concept viewport');
+            costReferenceRegions.push({ lang, theme, pass: pass + 1, regions });
           }
           if (pass === 0 && (destination === 'live' || destination === 'models')) {
             const header = await page.locator(destination === 'live' ? '.qp-live-header' : '.qp-model-header').boundingBox();
@@ -2770,6 +2799,7 @@ try {
     }
   }
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
+  if (costReferenceRegions.length) writeFileSync(resolve(output, 'cost-reference-layout.json'), JSON.stringify({ source: 'quotapulse_build_blueprint/refs/cost.png', evidence: 'region estimates within 3px, not whole-image similarity or visual acceptance', captures: costReferenceRegions }, null, 2));
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', captureMatrix: { languages: captureLanguages, themes: captureThemes, complete: captureLanguages.length === 2 && captureThemes.length === 2 }, clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 10, maxChangedPixelFraction: 0.00005, masks: false }, captureNormalization: ['CSS transitions disabled and caret hidden before screenshot only', 'Playwright animations disabled during screenshot'], productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, runtimeMapProject: 'QuotaPulse', runtimeMapSessions: 12, runtimeMapRecords: 39, allRangeProjects: 5, allRangeRecords: 43, namedProjects: referenceProjects.length, projectNames: referenceProjects, models: referenceModels.length, modelNames: referenceModels.map(model => model.name), modelShares: referenceModels.map(model => model.share), providers: 4, records: 39, quotaOwners: ['OpenAI Subscription', 'OpenCode Go Subscription'], cacheSharePercent: 42, monthlySelection: 'OpenAI Subscription · monthly' }, checks: ['frozen daemon and browser Date', 'source-matched date on the screenshot clock', 'reference-matched Overview section labels and model rail accessible name', 'reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 2px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, overviewReferenceLabelChecks, overviewConceptDataChecks, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, workspaceChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {

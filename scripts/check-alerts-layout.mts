@@ -57,15 +57,27 @@ export async function checkAlertsLayout(browser: Browser, db: DB, output: string
         });
         assert.ok(Math.abs(chart.width - chart.viewWidth) <= 1, 'Quota chart uses stretched coordinates');
         assert.equal(chart.points[0].y, 104, 'Zero quota was raised above baseline');
-        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-alert-summary', '.qp-alert-chart', '.qp-alert-risk', '.qp-alert-rules', '.qp-alert-forecast', '.qp-alert-guidance', '.qp-alert-history'].map(selector => {
+        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-alert-header', '.qp-alert-summary', '.qp-alert-chart', '.qp-alert-risk', '.qp-alert-rules', '.qp-alert-forecast', '.qp-alert-guidance', '.qp-alert-history'].map(selector => {
           const { x, y, width, height, bottom } = node.querySelector(selector)!.getBoundingClientRect(); return [selector, { x, y, width, height, bottom }];
         })));
-        assert.equal(regions['.qp-alert-summary'].y, regions['.qp-alert-forecast'].y, 'Forecast is not beside summary');
+        // refs/alerts.png places the forecast beside the heading at y72;
+        // the summary belongs below that heading within the left column.
+        assert.equal(regions['.qp-alert-header'].y, regions['.qp-alert-forecast'].y, 'Forecast is not beside heading');
+        assert.ok(regions['.qp-alert-summary'].y >= regions['.qp-alert-header'].bottom, 'Summary overlaps heading');
+        assert.ok(regions['.qp-alert-forecast'].x >= regions['.qp-alert-summary'].x + regions['.qp-alert-summary'].width, 'Forecast overlaps summary column');
         assert.ok(regions['.qp-alert-rules'].bottom < 941, `${lang}/${theme}: rules outside viewport: ${JSON.stringify(regions)}`);
         assert.ok(regions['.qp-alert-history'].bottom < 941, `${lang}/${theme}: history outside viewport: ${JSON.stringify(regions)}`);
         const filename = `alerts-occupied-${lang}-${theme}.png`;
         await page.screenshot({ path: resolve(output, filename), animations: 'disabled' });
         captures.push({ lang, theme, filename, chart, regions });
+        const riskList = screen.locator('.qp-alert-risk ul');
+        assert.equal(await riskList.count(), 1, 'Risks and reader advisories must share one bounded list');
+        await riskList.focus(); await page.keyboard.press('End');
+        await page.waitForFunction(() => {
+          const list = document.querySelector('.qp-alert-risk ul');
+          const last = list?.lastElementChild;
+          return !!list && !!last && last.getBoundingClientRect().bottom <= list.getBoundingClientRect().bottom + 1;
+        });
         const samples = screen.locator('.qp-quota-samples');
         await samples.locator('summary').focus(); await page.keyboard.press('Enter');
         await samples.locator('tbody tr').nth(3).waitFor();
@@ -108,5 +120,5 @@ export async function checkAlertsLayout(browser: Browser, db: DB, output: string
   } finally {
     db.exec('DELETE FROM alert_event WHERE source_id BETWEEN 400 AND 403; DELETE FROM limit_sample WHERE source_id BETWEEN 400 AND 403; DELETE FROM source WHERE id BETWEEN 400 AND 403;');
   }
-  writeFileSync(resolve(output, 'alerts-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { addedOwners: 4, selectedValues: [0, null, 45, 97] }, checks: ['sidebar current-risk badge matches Alerts summary in en/th and dark/light', 'accessible badge label discloses current quota risks; not unread count', 'forecast beside summary', 'complete rules/history in concept viewport', 'unknown sample breaks lines', 'known zero baseline', 'timestamp coordinates', 'keyboard sample table', 'same-owner refresh includes counter drop', '390/900/1280 overflow', 'unknown-only owner', 'machine-wide Quick Stats'], captures }, null, 2));
+  writeFileSync(resolve(output, 'alerts-occupied-layout.json'), JSON.stringify({ database: 'in-memory synthetic', fixture: { addedOwners: 4, selectedValues: [0, null, 45, 97] }, checks: ['sidebar current-risk badge matches Alerts summary in en/th and dark/light', 'accessible badge label discloses current quota risks; not unread count', 'forecast beside heading; summary contained below without overlap', 'complete rules/history in concept viewport', 'unknown sample breaks lines', 'known zero baseline', 'timestamp coordinates', 'keyboard sample table', 'same-owner refresh includes counter drop', '390/900/1280 overflow', 'unknown-only owner', 'machine-wide Quick Stats'], captures }, null, 2));
 }
