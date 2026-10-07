@@ -18,6 +18,7 @@ import { parseQuotaHistoryScope, quotaHistory } from './quota-history.js';
 import { detailedAggregates } from './detailed-aggregates.js';
 import { projectDetail, projectTrends } from './project-detail.js';
 import { modelDetail } from './model-detail.js';
+import { modelTrends } from './model-trends.js';
 import { costAnalysis, type CostBasis, type CostBucket } from './cost-analysis.js';
 import { liveSessions, type LiveSessionMode } from './live-sessions.js';
 import { historySummary } from './history-summary.js';
@@ -480,8 +481,10 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       if (s.detailed !== '1') return reply.code(400).send({ error: 'Invalid detailed mode' });
       const now = Date.now();
       try {
-        const scope = parseUsageScope(req.query as Record<string, unknown>, now, { extraKeys: ['detailed'] });
-        return { now, scope, ...detailedAggregates(db, scope, 'model') };
+        if (s.trends !== undefined && s.trends !== '1') throw new Error('Invalid model trends mode');
+        const scope = parseUsageScope(req.query as Record<string, unknown>, now, { extraKeys: ['detailed', 'trends'] });
+        return db.transaction(() => ({ now, scope, ...detailedAggregates(db, scope, 'model'),
+          ...(s.trends === '1' ? { trends: modelTrends(db, scope) } : {}) }))();
       } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
     }
     const since = s.since == null ? 0 : Number(s.since);

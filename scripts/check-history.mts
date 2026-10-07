@@ -429,7 +429,7 @@ try {
   await page.goto('http://127.0.0.1:7801/#models');
   await page.reload();
   const models = page.getByTestId('production-models');
-  await models.getByRole('heading', { name: 'Model usage', exact: true }).waitFor();
+  await models.getByRole('heading', { name: englishMessages['redesign.modelsHeading'], exact: true }).waitFor();
   await models.locator('.qp-model-table-wrap tbody tr').first().waitFor();
   const modelDefaultFrom = Number(new URL(modelRequests.at(-1)!).searchParams.get('from'));
   const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);

@@ -14,7 +14,15 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest Providers/Models/History composition: [v1.85.25](redesign-v1.85.25/VALIDATION-STATE.md)
+Latest shared shell and recorded Models histories: [v1.85.26](redesign-v1.85.26/VALIDATION-STATE.md)
+restores measured wordmark/navigation typography and adds actual scoped per-bin
+summary/provider histories, preserving unknown prices and distinct identities.
+Web158 tests, daemon tests/typecheck, four Models language/theme captures,
+Overview/Cost regression captures and the full authenticated workflow pass.
+The final40pair matrix and source-image acceptance remain open; no likeness
+percentage is inferred from repeated captures.
+
+Previous Providers/Models/History composition: [v1.85.25](redesign-v1.85.25/VALIDATION-STATE.md)
 restores native panel proportions, actual-reading owner priority, source Models
 and History page identities and compact factual detail hierarchy. Providers,
 Models and History scoped captures pass in both languages/themes; the full

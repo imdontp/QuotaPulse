@@ -367,11 +367,40 @@ async function checkModelComparison(page: Page, lang: string, theme: string, pen
   })));
   assert.ok(bottom <= 941, `Model comparison/provider panels exceed viewport: ${JSON.stringify(primaryRegions)}`);
   const month = new Date(fixedNow); month.setDate(1); month.setHours(0, 0, 0, 0);
-  const query = new URLSearchParams({ detailed: '1', from: String(month.getTime()), to: String(fixedNow + 1) });
+  const query = new URLSearchParams({ detailed: '1', trends: '1', from: String(month.getTime()), to: String(fixedNow + 1) });
   const result = await daemon.inject({ method: 'GET', url: `/api/models?${query}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(result.statusCode, 200); const data = result.json<DetailedModelResponse>();
   const rows = page.locator('.qp-model-table-wrap tbody tr'); assert.equal(await rows.count(), 6);
   assert.equal(await page.locator('.qp-model-summary-icon').count(), 4);
+  assert.ok(data.trends, 'Models fixture must include recorded histories');
+  const recordedBuckets = new Map(data.trends.points.map(point => [point.start, point]));
+  const bucketCount = Math.ceil((data.scope.to - data.scope.from) / data.trends.bucketMs);
+  for (const [index, metric] of ['pairs', 'tokens', 'sessions', 'api_value_usd'].entries()) {
+    const chart = page.locator('.qp-model-summary article').nth(index).locator('.qp-model-summary-spark');
+    assert.equal(await chart.count(), 1, `Models ${metric} must render its real historical sparkline`);
+    const rendered = await chart.locator('circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')) })));
+    const expected = Array.from({ length: bucketCount }, (_, bucket) => {
+      const at = data.scope.from + bucket * data.trends!.bucketMs;
+      const point = recordedBuckets.get(at);
+      return metric === 'api_value_usd' && (!point || point.api_priced_calls === 0) ? null : { at, value: point ? point[metric as 'pairs' | 'tokens' | 'sessions' | 'api_value_usd'] : 0 };
+    }).filter(point => point !== null);
+    assert.deepEqual(rendered, expected, `Models ${metric} historical values differ from recorded API bins`);
+  }
+  const providerCharts = page.locator('.qp-model-provider-list button');
+  assert.equal(await providerCharts.count(), new Set(data.groups.map(group => group.provider)).size);
+  for (const button of await providerCharts.all()) {
+    const provider = await button.getAttribute('data-provider-missing') === 'true' ? null : await button.getAttribute('data-provider');
+    const expected = Array.from({ length: bucketCount }, (_, bucket) => {
+      const at = data.scope.from + bucket * data.trends!.bucketMs;
+      return { at, value: data.trends!.providers.find(point => point.provider === provider && point.start === at)?.tokens ?? 0 };
+    });
+    const rendered = await button.locator('.qp-model-provider-spark circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')) })));
+    assert.deepEqual(rendered, expected, `Provider ${JSON.stringify(provider)} sparkline differs from its exact scoped API history`);
+  }
+  const historyDisclosure = page.locator('.qp-model-history');
+  await historyDisclosure.locator('summary').focus(); await page.keyboard.press('Enter');
+  assert.equal(await historyDisclosure.locator('tbody tr').count(), bucketCount, 'All Models summary/provider buckets must remain available');
+  await historyDisclosure.locator('summary').focus(); await page.keyboard.press('Enter');
   for (const group of data.groups) {
     const row = rows.filter({ has: page.getByRole('button', { name: group.model!, exact: true }) });
     const input = group.inputTokens + group.cachedInputTokens + group.cacheWriteTokens;
@@ -1221,7 +1250,13 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
       }) };
     });
     assert.ok(shellBounds.documentWidth <= shellBounds.viewportWidth, `Shell horizontal overflow at ${destination}/${lang}/${theme}/${width}px: ${JSON.stringify(shellBounds)}`);
-    headerChecks.push({ page: destination, lang, theme, width, height: header.height, sidebarWidth: sidebar.width, dateText });
+    const sourceReviewRegions = width > 1100 ? await page.evaluate(() => Object.fromEntries(['.qp-brand>span', '.qp-brand small', '.qp-sidebar nav>a', '.qp-quick-stats h2', '.qp-quick-stats dt a', '.qp-nav-active>svg'].map(selector => {
+      const element = document.querySelector(selector)!;
+      const { x, y, width, height } = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return [selector, { x, y, width, height, fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.color, filter: style.filter }];
+    }))) : undefined;
+    headerChecks.push({ page: destination, lang, theme, width, height: header.height, sidebarWidth: sidebar.width, dateText, sourceReviewRegions });
   }
   await page.setViewportSize(originalViewport);
   const originalHash = await page.evaluate(() => location.hash);

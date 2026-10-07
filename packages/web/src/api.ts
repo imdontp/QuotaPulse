@@ -215,6 +215,12 @@ export interface DetailedModelResponse {
   now: number;
   scope: UsageEventScope;
   totals: DetailedFacts;
+  trends?: {
+    bucketMs: number;
+    /** Distinct sessions per bin are not additive across the range. */
+    points: Array<{ start: number; tokens: number; calls: number; sessions: number; pairs: number; api_value_usd: number; api_priced_calls: number }>;
+    providers: Array<{ provider: string | null; start: number; tokens: number }>;
+  };
   groups: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string }>;
   rows: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string; sourceId: number; harness: string; sourceName: string; effort: string | null }>;
 }
@@ -649,7 +655,7 @@ export const api = {
   detailedProjects: (scope: UsageEventScope, trends = false) => get<DetailedProjectResponse>(`/api/projects?detailed=1&${trends ? 'trends=1&' : ''}${usageEventParams(scope)}`),
   projectDetail: (scope: UsageEventScope, offset = 0) => get<ProjectDetailResponse>(`/api/project-detail?${usageEventParams(scope)}&limit=20&offset=${offset}`),
   liveSessions: (scope: UsageEventScope, mode: 'recent' | 'all', offset = 0) => get<LiveSessionsResponse>(`/api/live-sessions?${usageEventParams(scope)}&mode=${mode}&limit=10&offset=${offset}`),
-  detailedModels: (scope: UsageEventScope) => get<DetailedModelResponse>(`/api/models?detailed=1&${usageEventParams(scope)}`),
+  detailedModels: (scope: UsageEventScope, trends = false) => get<DetailedModelResponse>(`/api/models?detailed=1&${trends ? 'trends=1&' : ''}${usageEventParams(scope)}`),
   modelDetail: (scope: UsageEventScope, identity: { model: string | null; provider: string | null }) => {
     const params = usageEventParams(scope);
     if (identity.model === null) params.set('model_missing', '1'); else if (identity.model === '') params.set('model_empty', '1'); else params.set('model', identity.model);
