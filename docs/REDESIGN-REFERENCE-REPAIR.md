@@ -14,7 +14,15 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest shared shell and recorded Models histories: [v1.85.26](redesign-v1.85.26/VALIDATION-STATE.md)
+Latest native ring and provider lighting: [v1.85.27](redesign-v1.85.27/VALIDATION-STATE.md)
+aligns the outer globe envelope and central text, sharpens ring lighting and
+restores source-sized provider quota bars. Same-build Providers and Overview
+four-variant scoped captures pass (eight pairs; seven byte-identical, one within
+unchanged tolerance). Direct source review records improved regions and remaining
+texture/heading differences. [Next repairs](redesign-v1.85.27/NEXT-SOURCE-REPAIRS.md)
+retain Models/History/Provider gaps; whole-source acceptance remains open.
+
+Previous shared shell and recorded Models histories: [v1.85.26](redesign-v1.85.26/VALIDATION-STATE.md)
 restores measured wordmark/navigation typography and adds actual scoped per-bin
 summary/provider histories, preserving unknown prices and distinct identities.
 Web158 tests, daemon tests/typecheck, four Models language/theme captures,

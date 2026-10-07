@@ -122,7 +122,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
         <radialGradient id={`${id}-fill`}><stop stopColor="#225575" stopOpacity=".7"/><stop offset=".75" stopColor="#071f43" stopOpacity=".5"/><stop offset="1" stopColor="#32cdff" stopOpacity=".2"/></radialGradient>
         <linearGradient id={`${id}-arc`}><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
         <linearGradient id={`${id}-progress-arc`} gradientTransform="rotate(90 .5 .5)"><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
-        <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <clipPath id={`${id}-world`}><circle cx="180" cy="160" r="114"/></clipPath>
       </defs>
       <g className="qp-orbit" fill="none" stroke="#55baf3" strokeOpacity=".2">
@@ -133,9 +133,11 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
       <image data-testid="pulse-earth" href="/redesign/pulse-earth-v2.png" x="38" y="19" width="284" height="284" clipPath={`url(#${id}-world)`}/>
       <g fill="none" stroke={`url(#${id}-arc)`} filter={`url(#${id}-glow)`}>
         <circle cx="180" cy="160" r="119" strokeWidth="2"/>
-        <circle cx="180" cy="160" r="137" strokeWidth="3" opacity=".45"/>
+        <circle cx="180" cy="160" r="137" strokeWidth="1" opacity=".25"/>
         <circle cx="180" cy="160" r="145" pathLength="100" strokeWidth="1" strokeDasharray=".1 1.8" opacity=".6"/>
+        <circle cx="180" cy="160" r="157" stroke="#2b62ff" strokeWidth=".7" opacity=".65"/>
       </g>
+      <circle cx="180" cy="3" r="1.7" fill="#78beff" filter={`url(#${id}-glow)`}/>
       <g fill="#4ebcff" filter={`url(#${id}-glow)`} aria-hidden="true">{Array.from({ length: 16 }, (_, index) => {
         const angle = index * 2.399963;
         return <circle key={index} cx={180 + Math.cos(angle) * 150} cy={160 + Math.sin(angle) * 150} r={index % 3 === 0 ? 1.7 : .7}/>;

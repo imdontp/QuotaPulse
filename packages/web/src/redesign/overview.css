@@ -419,7 +419,7 @@
   filter:drop-shadow(0 0 7px #298cff) drop-shadow(0 0 16px #6755ed);
 }
 .qp-core-track { filter:drop-shadow(0 0 6px #238dff70); }
-.qp-core-progress { filter:drop-shadow(0 0 8px #238dffcc) drop-shadow(0 0 16px #844cffb0); transition:stroke-dasharray var(--motion-slow) var(--ease-motion); }
+.qp-core-progress { filter:drop-shadow(0 0 6px #238dffcc) drop-shadow(0 0 12px #844cffb0); transition:stroke-dasharray var(--motion-slow) var(--ease-motion); }
 @media(prefers-reduced-motion:reduce) { .qp-core-progress { transition:none; } }
 [data-testid=production-overview] :is(.qp-hero,.qp-runtime,.qp-activity)>.qp-section-heading h2>svg,
 [data-testid=production-overview] :is(.qp-quotas,.qp-runway,.qp-insights)>h2>svg,
@@ -1130,9 +1130,11 @@
   [data-testid=production-overview] .qp-metrics { gap:18px; }
   [data-testid=production-overview] .qp-metrics .qp-metric>span { font-size:12px; }
   [data-testid=production-overview] .qp-metrics .qp-metric strong { font-size:16px; line-height:1.4; letter-spacing:0; }
-  [data-testid=production-overview] .qp-pulse-label strong { font-size:68px; font-weight:550; text-shadow:0 0 16px #299fff80; }
+  [data-testid=production-overview] .qp-pulse-label strong { font-size:68px; line-height:1; font-weight:550; text-shadow:0 0 16px #299fff80; }
   [data-testid=production-overview] .qp-pulse-label span { font-size:12px; }
-  [data-testid=production-overview] .qp-pulse-label .qp-pulse-state { font-size:14px; }
+  [data-testid=production-overview] .qp-pulse-label .qp-pulse-state { font-size:14px; transform:translateY(-3px); }
+  [data-testid=production-overview] .qp-pulse-label>span:last-child { transform:translateY(-5px); }
+  [data-testid=production-overview][data-theme=dark] .qp-pulse-label strong { color:#b9ddff; }
   [data-testid=production-overview] .qp-top-models { padding:0 0 0 8px; }
   [data-testid=production-overview] .qp-top-models h3 { margin:0 0 6px; font-size:12px; line-height:18px; font-weight:400; color:var(--qp-muted); }
   [data-testid=production-overview] .qp-top-model-list { display:block; padding:0 10px; border:1px solid var(--qp-border); border-radius:10px; background:color-mix(in srgb,var(--qp-bg) 45%,transparent); }
