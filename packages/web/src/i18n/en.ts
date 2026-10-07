@@ -462,7 +462,7 @@ export const en = {
   'redesign.costShare': 'Share',
   'redesign.costOpenHistory': 'Open scoped History',
   'redesign.costUnknownProject': 'Unassigned',
-  'redesign.alertHeading': 'Alerts and quota guard',
+  'redesign.alertHeading': 'Alerts & Quota Guard',
   'redesign.alertSubtitle': 'Current quota observations, fixed thresholds and desktop delivery history',
   'redesign.alertNotifications': 'Desktop notifications',
   'redesign.alertCollectionNote': 'This switch changes delivery only; collection continues',

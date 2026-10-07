@@ -19,6 +19,7 @@
 .qp-alert-summary [data-summary="redesign.alertCurrent"] .qp-alert-summary-icon { color:var(--qp-warning); background:color-mix(in srgb,var(--qp-warning) 10%,var(--qp-panel)); }
 .qp-alert-layout { grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr); align-items:start; }
 .qp-alert-main,.qp-alert-rail { display:grid; gap:12px; min-width:0; }
+.qp-alert-top>.qp-footnote,.qp-alert-top>.qp-alert-error { margin:0; }
 .qp-alert-main .qp-panel,.qp-alert-rail .qp-panel { display:grid; gap:12px; min-width:0; }
 .qp-alert-layout h2 { font-size:16px; }
 .qp-alert-section-head { grid-template-columns:minmax(0,1fr) auto; align-items:center; }
@@ -114,6 +115,9 @@
   .qp-alert-chart .qp-quota-samples[open] { grid-column:1/-1; grid-row:3; }
 }
 @media(min-width:1536px) {
+  .qp-alert-main .qp-alert-top { min-height:163px; padding:11px 12px; gap:4px; align-content:start; }
+  .qp-alert-top .qp-alert-summary article { min-height:69px; padding:4px 10px; gap:2px; }
+  .qp-alert-forecast-warning { margin: -3px 3px 0 11px; }
   .qp-alert-forecast-reading { grid-template-columns:170px minmax(0,1fr); gap:40px; align-items:center; margin-top:12px; padding-left:16px; }
   .qp-alert-forecast-orb { margin:4px 0; }
 }

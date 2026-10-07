@@ -445,7 +445,7 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
   const bottom = await page.locator('.qp-alert-layout').evaluate(element => element.getBoundingClientRect().bottom + scrollY);
   const geometry = await page.locator('.qp-alert-main').evaluate(element => Array.from(element.children).map(child => { const rect = child.getBoundingClientRect(); return { className: (child as HTMLElement).className, top: rect.top, bottom: rect.bottom, height: rect.height }; }));
   assert.ok(bottom <= 941, `Alerts occupied panels exceed viewport: ${JSON.stringify({ bottom, geometry })}`);
-  referenceDetailRegions.push({ page: 'alerts', lang, theme, regions: await page.evaluate(() => Object.fromEntries(['.qp-alert-forecast', '.qp-alert-forecast-reading', '.qp-alert-forecast-orb', '.qp-alert-forecast-facts', '.qp-alert-forecast-warning', '.qp-alert-guidance', '.qp-alert-history'].map(selector => {
+  referenceDetailRegions.push({ page: 'alerts', lang, theme, regions: await page.evaluate(() => Object.fromEntries(['.qp-alert-top', '.qp-alert-header', '.qp-alert-summary', '.qp-alert-chart', '.qp-alert-forecast', '.qp-alert-forecast-reading', '.qp-alert-forecast-orb', '.qp-alert-forecast-facts', '.qp-alert-forecast-warning', '.qp-alert-guidance', '.qp-alert-history'].map(selector => {
     const element = document.querySelector(selector);
     if (!element) return [selector, null];
     const { x, y, width, height, bottom } = element.getBoundingClientRect();

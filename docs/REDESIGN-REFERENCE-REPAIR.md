@@ -14,7 +14,14 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest Alerts forecast composition: [v1.85.34](redesign-v1.85.34/VALIDATION-STATE.md)
+Latest Alerts heading enclosure: [v1.85.35](redesign-v1.85.35/VALIDATION-STATE.md)
+restores the native heading/summary frame and refines the warning inset.
+Four scoped production pairs are identical; source measurements and remaining
+styling gaps are recorded. Full authenticated workflow evidence remains from
+v1.85.34. [Next source repairs](redesign-v1.85.35/NEXT-SOURCE-REPAIRS.md)
+preserve the complete original goal and final acceptance/release gates.
+
+Previous Alerts forecast composition: [v1.85.34](redesign-v1.85.34/VALIDATION-STATE.md)
 places the actual reader facts beside the orb and adds the source warning card
 when the API projects full use before reset. All four scoped pairs are identical
 and the fresh authenticated workflow passes. These are review candidates;
