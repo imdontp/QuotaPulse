@@ -23,6 +23,7 @@
 .qp-model-summary .qp-model-summary-icon { grid-column:1; grid-row:1/span 2; display:grid; place-items:center; width:46px; height:46px; border:1px solid color-mix(in srgb,var(--qp-metric-color) 30%,var(--qp-border)); border-radius:12px; color:var(--qp-metric-color); background:linear-gradient(135deg,color-mix(in srgb,var(--qp-metric-color) 18%,var(--qp-panel)),var(--qp-panel)); box-shadow:inset 0 0 15px color-mix(in srgb,var(--qp-metric-color) 10%,transparent); }
 .qp-model-layout { grid-template-columns:minmax(0,2.6fr) minmax(320px,1fr); align-items:start; }
 .qp-model-primary { display:grid; gap:12px; min-width:0; }
+.qp-model-overview { display:grid; gap:12px; min-width:0; }
 .qp-model-comparison,.qp-model-detail .qp-panel,.qp-model-providers { display:grid; gap:12px; min-width:0; }
 .qp-model-comparison h2,.qp-model-detail h2,.qp-model-providers h2 { font-size:16px; }
 .qp-model-table-wrap { overflow-x:auto; }
@@ -111,6 +112,8 @@
   [data-testid=production-models] main { display:block; padding:12px; }
   .qp-model-layout { grid-template-columns:minmax(0,2.7fr) minmax(320px,1fr); }
   .qp-model-primary { align-content:start; }
+  .qp-model-overview:has(.qp-model-summary) { position:relative; isolation:isolate; }
+  .qp-model-overview:has(.qp-model-summary)::before { content:""; position:absolute; inset:0 -2px -12px; z-index:-1; pointer-events:none; border:1px solid var(--qp-border); border-radius:10px; background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 2%,var(--qp-panel)),var(--qp-panel)); }
   .qp-model-summary article,.qp-model-detail .qp-panel { padding:12px; gap:6px; }
   .qp-model-summary strong { line-height:1.2; }
   .qp-model-detail h3 { font-size:17px; line-height:1.3; }
@@ -133,7 +136,8 @@
   .qp-model-detail .qp-panel { padding:10px; }
   .qp-model-trend { height:112px; }
   /* Keep the original comparison/footer composition even for sparse real records. */
-  .qp-model-comparison { display:flex; flex-direction:column; height:575px; margin-top:11px; }
+  .qp-model-comparison { display:flex; flex-direction:column; height:575px; margin-top:11px; padding-inline:8px; }
+  .qp-model-comparison h2 { font-size:18px; }
   .qp-model-comparison>.qp-model-table-wrap { flex:1; min-height:0; overflow:auto; }
   .qp-model-table-wrap table { font-size:11px; }
   .qp-model-filter-caption { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }

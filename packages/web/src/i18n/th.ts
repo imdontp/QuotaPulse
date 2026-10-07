@@ -388,7 +388,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.modelsTokens': 'โทเค็นที่บันทึก',
   'redesign.modelsSessions': 'เซสชันไม่ซ้ำ',
   'redesign.modelsSessionsPerBucket': 'เซสชันไม่ซ้ำต่อช่วงเวลา (นำมาบวกรวมไม่ได้)',
-  'redesign.modelsPairsPerBucket': 'คู่โมเดลและเส้นทางต่อช่วงเวลา',
+  'redesign.modelsPairsPerBucket': 'คู่โมเดลและเส้นทางต่อช่วงเวลา (นำมาบวกรวมไม่ได้)',
   'redesign.modelsKnownValueTrend': 'มูลค่า API ที่คำนวณได้ต่อช่วงเวลา',
   'redesign.modelsPricedCalls': 'จำนวนการเรียกที่มีราคา',
   'redesign.modelsValue': 'มูลค่าเทียบราคา API',

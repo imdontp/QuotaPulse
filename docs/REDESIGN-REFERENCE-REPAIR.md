@@ -14,7 +14,14 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest native ring and provider lighting: [v1.85.27](redesign-v1.85.27/VALIDATION-STATE.md)
+Latest Models enclosing frame and comparison inset: [v1.85.28](redesign-v1.85.28/VALIDATION-STATE.md)
+restores the source header/summary perimeter and comparison horizontal inset,
+with explicit non-additive pair labels. All four language/theme scoped captures
+pass and retain comparison y259-834 and provider footer y846-936. Direct source
+review confirms improved regions; header/block padding and coverage-note
+hierarchy remain recorded gaps. No whole-image likeness percentage is claimed.
+
+Previous native ring and provider lighting: [v1.85.27](redesign-v1.85.27/VALIDATION-STATE.md)
 aligns the outer globe envelope and central text, sharpens ring lighting and
 restores source-sized provider quota bars. Same-build Providers and Overview
 four-variant scoped captures pass (eight pairs; seven byte-identical, one within

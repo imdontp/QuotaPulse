@@ -384,7 +384,7 @@ export const en = {
   'redesign.modelsTokens': 'Recorded tokens',
   'redesign.modelsSessions': 'Distinct sessions',
   'redesign.modelsSessionsPerBucket': 'Distinct sessions per time bucket (not additive)',
-  'redesign.modelsPairsPerBucket': 'Model and route pairs per bucket',
+  'redesign.modelsPairsPerBucket': 'Model and route pairs per bucket (not additive)',
   'redesign.modelsKnownValueTrend': 'Known calculated API value by time bucket',
   'redesign.modelsPricedCalls': 'Priced calls',
   'redesign.modelsValue': 'Calculated API value',
