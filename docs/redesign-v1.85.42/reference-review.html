@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QuotaPulse v1.85.42 · History reference review</title>
+<style>
+body{margin:0;background:#090f19;color:#e5edff;font:14px system-ui,sans-serif}header{padding:16px;position:sticky;top:0;z-index:2;background:#090f19;border-bottom:1px solid #30445b}h1{font-size:20px;margin:0 0 8px}p{max-width:1000px;line-height:1.5}label{display:inline-flex;gap:8px;align-items:center;margin:8px 16px 0 0}select{background:#132036;color:inherit;border:1px solid #45617e;border-radius:4px;padding:6px}.viewport{overflow:auto;padding:16px}.frame{position:relative;width:1672px;height:941px}img{position:absolute;inset:0;width:100%;height:100%}.source{opacity:0;pointer-events:none}a{color:#60ccff}
+</style>
+<header>
+<h1>QuotaPulse v1.85.42 · History</h1>
+<p>ภาพแอปใช้ข้อมูลทดสอบจาก API ข้อมูลจริงเป็นตัวกำหนดชื่อ ตัวเลข และกราฟ ภาพนี้ใช้ตรวจ layout เทียบต้นฉบับ ยังไม่ใช่การรับรองความเหมือน 99–100%</p>
+<label>สถานะ <select id="state"><option value="history-selected">เปิดรายละเอียด</option><option value="history">ตาราง</option></select></label>
+<label>ภาษา <select id="lang"><option value="en">EN</option><option value="th">TH</option></select></label>
+<label>ธีม <select id="theme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+<label>ภาพ <select id="view"><option value="actual">แอป</option><option value="source">Concept ต้นฉบับ</option><option value="overlay">ซ้อนภาพ 50%</option></select></label>
+<p><a href="VALIDATION-STATE.md">ผลตรวจและข้อจำกัด</a> · 1672 × 941px ตามขนาดจริง · ต้นฉบับเป็น EN/Dark และเปิดรายละเอียด</p>
+</header>
+<main class="viewport"><div class="frame"><img id="actual" alt="History จากแอป"><img id="source" class="source" src="history-source.png" alt="History concept ต้นฉบับ"></div></main>
+<script>
+const controls=['state','lang','theme','view'].map(id=>document.getElementById(id));
+const [state,lang,theme,view]=controls;
+const actual=document.getElementById('actual'),source=document.getElementById('source');
+function update(){actual.src=`${state.value}-${lang.value}-${theme.value}.png`;source.style.opacity=view.value==='source'?'1':view.value==='overlay'?'.5':'0'}
+controls.forEach(control=>control.addEventListener('change',update));update();
+</script>
+</html>

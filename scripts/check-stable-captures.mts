@@ -768,6 +768,7 @@ async function checkHistoryDensity(page: Page, lang: string, theme: string) {
   });
   const bottom = await history.locator('.qp-history-records').evaluate(element => element.getBoundingClientRect().bottom + scrollY);
   console.log('History occupied geometry', lang, theme, { bottom, ...geometry });
+  console.log('History summary geometry', JSON.stringify(await history.locator('.qp-history-summary article').evaluateAll(elements => elements.map(element => ({ height: element.getBoundingClientRect().height, children: [...element.children].map(child => ({ tag: child.tagName, text: child.textContent, y: child.getBoundingClientRect().y, height: child.getBoundingClientRect().height, column: getComputedStyle(child).gridColumn, row: getComputedStyle(child).gridRow })) })))));
   assert.ok(bottom <= 941, `History pagination outside desktop viewport: ${bottom}`);
   assert.ok(geometry.visibleRows >= 10, `Fewer than ten complete History fixture rows: ${geometry.visibleRows}`);
   assert.equal(await history.locator('.qp-history-heading select').first().inputValue(), 'last30', 'History defaults to the concept 30-day view');
@@ -775,6 +776,27 @@ async function checkHistoryDensity(page: Page, lang: string, theme: string) {
   assert.equal(response.statusCode, 200);
   const expectedRecords = response.json<UsageEventsResponse>().total;
   assert.equal(geometry.records, expectedRecords, 'Scrollable region dropped API records in the selected 30-day range');
+  for (const row of response.json<UsageEventsResponse>().rows) {
+    const rendered = region.locator('tbody tr').filter({ has: page.locator('button').filter({ hasText: new RegExp(`^#${row.event_id}$`) }) });
+    assert.equal(await rendered.count(), 1, `Missing History record #${row.event_id}`);
+    assert.equal(await rendered.locator('.qp-history-model-name').textContent(), row.model ?? '—', 'History preserves the raw API model name');
+    assert.equal(await rendered.locator('.qp-history-model').getAttribute('title'), row.model, 'History preserves the complete model tooltip');
+    assert.equal(await rendered.locator('.qp-history-model-maker').getAttribute('data-vendor'), row.vendor, 'History maker comes from vendor metadata independently of provider');
+    assert.equal(await rendered.locator('.qp-history-model-maker').getAttribute('aria-hidden'), 'true');
+  }
+  referenceDetailRegions.push({ page: 'history-summary', lang, theme, regions: await history.locator('.qp-history-summary').evaluate(element => [...element.querySelectorAll('article')].map(article => {
+    const plate = article.querySelector('i')!;
+    const caption = article.querySelector('small');
+    if (caption) {
+      const a = plate.getBoundingClientRect(), b = caption.getBoundingClientRect();
+      if (Math.min(a.right, b.right) > Math.max(a.left, b.left) && Math.min(a.bottom, b.bottom) > Math.max(a.top, b.top)) throw new Error('History summary plate overlaps factual caption');
+    }
+    return Object.fromEntries([['article', article], ['plate', plate], ['label', article.querySelector('span')!], ['caption', caption]].map(([name, node]) => {
+      if (!(node instanceof Element)) return [name, null];
+      const { x, y, width, height, bottom } = node.getBoundingClientRect();
+      return [name, { x, y, width, height, bottom }];
+    }));
+  })) });
   await region.focus(); await page.keyboard.press('End'); await page.waitForTimeout(300);
   assert.ok(await region.evaluate(element => element.scrollTop > 0), 'History region did not scroll with keyboard');
   const last = region.locator('tbody tr').last().getByRole('button');

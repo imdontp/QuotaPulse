@@ -43,6 +43,10 @@
 .qp-history-harness[data-harness] { border-color:color-mix(in srgb,var(--qp-harness-mark,var(--qp-accent)) 35%,var(--qp-border)); background:color-mix(in srgb,var(--qp-harness-mark,var(--qp-accent)) 9%,var(--qp-panel)); }
 .qp-history-harness svg,.qp-history-provider svg { width:17px; height:17px; flex:none; }
 .qp-history-project>svg { color:var(--qp-accent); flex:none; }
+.qp-history-model-identity { display:inline-flex; align-items:center; gap:6px; vertical-align:middle; }
+.qp-history-model-maker { display:grid; place-items:center; width:22px; height:22px; flex:none; border:1px solid var(--qp-border); border-radius:5px; background:color-mix(in srgb,var(--qp-accent) 8%,var(--qp-panel)); font-size:16px; }
+.qp-history-model-maker svg { width:16px; height:16px; }
+.qp-history-model-name { min-width:0; }
 .qp-redesign .qp-history-records tbody tr:nth-child(even):not([data-selected=true]) { background:color-mix(in srgb,var(--qp-accent) 3%,var(--qp-panel)); }
 .qp-history-legend { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:18px; font-size:11px; }
 .qp-history-legend span:first-child { color:var(--history-input); }
@@ -119,10 +123,14 @@
   .qp-redesign .qp-history-timeline>svg { grid-column:1/-1; grid-row:3; height:168px; }
   .qp-redesign .qp-history-timeline>svg+.qp-footnote { grid-column:1/-1; }
   .qp-redesign .qp-history-summary { margin:0; gap:8px; }
-  .qp-redesign .qp-history-summary article { padding:4px 8px; gap:2px; border-radius:8px; min-height:67px; }
-  .qp-redesign .qp-history-summary article:nth-child(3) { grid-template-columns:40px minmax(0,1fr) auto; }
+  .qp-redesign .qp-history-summary article { padding:4px 10px; row-gap:2px; column-gap:10px; grid-template-columns:46px minmax(0,1fr); align-content:center; border-radius:8px; min-height:67px; }
+  .qp-redesign .qp-history-summary article>i { width:46px; height:46px; align-self:center; }
+  .qp-redesign .qp-history-summary article:nth-child(2)>i { grid-row:1/span 3; }
+  .qp-redesign .qp-history-summary article:nth-child(2)>small { grid-column:2; grid-row:3; }
+  .qp-redesign .qp-history-summary article:nth-child(3) { grid-template-columns:46px minmax(0,1fr) auto; }
+  .qp-redesign .qp-history-summary article:nth-child(3)>i { grid-row:1/span 3; }
   .qp-redesign .qp-history-summary article:nth-child(3)>span { grid-column:2/-1; }
-  .qp-redesign .qp-history-summary article:nth-child(3)>small:first-of-type { grid-column:1/-1; grid-row:3; }
+  .qp-redesign .qp-history-summary article:nth-child(3)>small:first-of-type { grid-column:2/-1; grid-row:3; }
   .qp-redesign .qp-history-summary article:nth-child(3)>small:last-of-type { grid-column:3; grid-row:2; align-self:center; }
   .qp-redesign .qp-history-summary strong { font-size:18px; }
   .qp-redesign [data-testid=usage-history]>fieldset>div { padding-top:6px; padding-bottom:6px; }
@@ -133,7 +141,7 @@
   .qp-redesign .qp-history-records th { padding:8px 10px; text-transform:none; font-size:11px; font-weight:500; }
   .qp-redesign .qp-history-records .qp-history-harness { max-width:112px; overflow:hidden; white-space:nowrap; vertical-align:middle; }
   .qp-redesign .qp-history-records .qp-history-harness svg { flex:none; }
-  .qp-redesign .qp-history-records .qp-history-model { max-width:110px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .qp-redesign .qp-history-records .qp-history-model-name { display:inline-block; max-width:110px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .qp-redesign .qp-history-records td button { height:24px; }
   .qp-redesign .qp-history-records td:nth-child(8) { white-space:nowrap; }
   .qp-redesign .qp-history-records td:nth-child(8) br { display:none; }
@@ -152,6 +160,9 @@
   .qp-redesign dialog[aria-labelledby=history-detail-title] { position:fixed; inset:60px 8px auto auto; margin:0; width:288px; max-height:calc(100vh - 74px); padding-block:12px; }
   .qp-redesign .qp-history-detail-heading { top:-12px; padding:0 0 12px; }
   .qp-redesign .qp-history-detail-groups [data-group="history.eventSummary"] { margin-top:12px; }
+  .qp-redesign .qp-history-detail-groups .qp-history-detail-identities { padding-inline-start:7px; gap:16px; margin-top:10px; }
+  .qp-redesign .qp-history-detail-identity { grid-template-columns:40px minmax(0,1fr); column-gap:12px; }
+  .qp-redesign .qp-history-detail-identity>i { width:40px; height:40px; }
   .qp-redesign dialog[aria-labelledby=history-detail-title]::backdrop { background:transparent; }
   .qp-redesign [data-testid=usage-history]:has(dialog[open]) { margin-right:296px; }
 }

@@ -14,7 +14,14 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest Projects/Models identity and Overview lighting:
+Latest History identities and summary/detail spacing:
+[v1.85.42](redesign-v1.85.42/VALIDATION-STATE.md) adds actual model-maker plates,
+aligns selected identities and corrects summary caption layout. Eight production
+main/selected pairs are byte-identical; the frozen-source workflow passes.
+[Compare History with its original](redesign-v1.85.42/reference-review.html).
+[Remaining complete goal](redesign-v1.85.42/NEXT-SOURCE-REPAIRS.md).
+
+Previous Projects/Models identity and Overview lighting:
 [v1.85.41](redesign-v1.85.41/VALIDATION-STATE.md) aligns project identity insets,
 corrects a15px detail-title offset, refines model plates/type and selectively
 quiets northern globe brightness and redundant decoration. All three four-variant

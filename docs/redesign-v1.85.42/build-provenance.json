@@ -1,0 +1,43 @@
+{
+    "scopeSession":  53005,
+    "productionCaptures":  "Built dist assets; eight main/selected pairs",
+    "baseCommit":  "f41e788b832f19ddfcce25c0732649c8497dca1a",
+    "sources":  [
+                    {
+                        "sha256":  "19b68e20f8ce4dc71d39fff61b0cb378d1e6e6a46ecdd28d9fddb098d542dfb6",
+                        "path":  "packages/web/src/redesign/history.css"
+                    },
+                    {
+                        "sha256":  "c0f6fb6c06f1c340b404f1680b3496c52f238584d3aab5ccc4042ace3e964851",
+                        "path":  "packages/web/src/sections/history.tsx"
+                    },
+                    {
+                        "sha256":  "4fb2d34c5bf6be4e44c4ea65eb994af818ef90afd0253747ed5f77f16fda2924",
+                        "path":  "scripts/check-stable-captures.mts"
+                    }
+                ],
+    "buildExitCode":  0,
+    "workflow":  "Final frozen-source Vite workflow is recorded separately",
+    "buildSession":  98412,
+    "scopeExitCode":  0,
+    "productionIndexSha256":  "313c492dcba41138440395e49a8e78dc0f93c3480eaba7058554ba08c14b1708",
+    "checkpoint":  "v1.85.42",
+    "intermediate":  {
+                         "firstBuildSession":  99951,
+                         "workflowContainsIntermediateSource":  true,
+                         "workflowExitCode":  0,
+                         "workflowSession":  23798,
+                         "measurementSerializationFailure":  70903,
+                         "firstIndexSha256":  "082dda54be1867c73ed6a799ceb274acc5c5f40b9b51052bec1968844c149647",
+                         "viewportFailures":  [
+                                                  93698,
+                                                  22733
+                                              ]
+                     },
+    "reference":  {
+                      "sha256":  "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+                      "path":  "history-source.png"
+                  },
+    "workflowSession":  95175,
+    "workflowExitCode":  0
+}
