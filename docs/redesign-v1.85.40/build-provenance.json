@@ -1,0 +1,39 @@
+{
+    "checkpoint":  "v1.85.40",
+    "buildSession":  90296,
+    "buildExitCode":  0,
+    "productionIndexSha256":  "b45c25f6609fe712618c3e5bd2f154b1290013541e4f9cfa6ba95c3b0cab2d81",
+    "productionCaptures":  "Scoped stable checks serve packages/web/dist",
+    "workflow":  "Authenticated workflow serves identical frozen application source through local Vite; not production asset execution",
+    "sources":  [
+                    {
+                        "path":  "packages/web/src/redesign/live-minute-strip.tsx",
+                        "sha256":  "ffaa02076c32e56a3d38251f1d26cfad210a0be73bd2a42dd0a5ed512982e007"
+                    },
+                    {
+                        "path":  "packages/web/src/redesign/live.css",
+                        "sha256":  "a88a283dd115ecaa5b278a7891b84ccdff5135a616e9f06c531894014cbb14dc"
+                    },
+                    {
+                        "path":  "packages/web/src/redesign/alerts.css",
+                        "sha256":  "4709e015d9d5462ea8960ba4922528e79e71fc8be55472c7a204be5dd890cf5b"
+                    },
+                    {
+                        "path":  "packages/web/src/redesign/cost.tsx",
+                        "sha256":  "abaa5c81bb370810862314433901592d31e204c5a4ac26ec78654563dc088697"
+                    },
+                    {
+                        "path":  "packages/web/src/redesign/cost.css",
+                        "sha256":  "042eef121deca04b8feaacf9a8567b2802d9adcd7a9ac96f025f9a8a2214c4c2"
+                    },
+                    {
+                        "path":  "scripts/check-stable-captures.mts",
+                        "sha256":  "4eaaf3901d43e7c4dc4684df648b263374c5062e11d9f77156ed69b34292d452"
+                    },
+                    {
+                        "path":  "scripts/check-history.mts",
+                        "sha256":  "e9b659256b322f786e5c7ff047e7e65d30cfe3b8ea250cd8ae40e3e73516f31d"
+                    }
+                ],
+    "acceptance":  "Build and scoped verification evidence; not source fidelity approval"
+}

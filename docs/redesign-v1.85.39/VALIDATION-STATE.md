@@ -36,7 +36,8 @@ raw totals, shared scales, missing/zero/partial/aggregate/unknown semantics,
 full tables, disclosure text and keyboard access, pagination, all-record End
 access, dialog focus restoration, pause/resume and response-race recovery.
 
-Authenticated workflow 71600 exited 0 on the same production build: 16 responsive
+Authenticated workflow 71600 exited 0 on the same frozen source candidate via
+local Vite (production scope checks above serve built assets): 16 responsive
 combinations across nine routes and functional/occupied/compatibility checks
 across all eight pages. Browser, Vite, daemon and database teardown completed.
 Services and databases are local synthetic test instances.

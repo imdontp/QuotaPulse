@@ -230,3 +230,72 @@
   .qp-live-matrix .qp-live-matrix-row-body { grid-template-columns:minmax(0,1fr) minmax(35px,55px); }
   .qp-live-minute-strip { grid-column:1/-1; grid-row:2; max-width:180px; justify-self:center; }
 }
+
+.qp-live-matrix { grid-auto-rows:max-content; align-content:start; }
+.qp-live-matrix .qp-live-provider-group {
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr);
+  align-items:stretch;
+  gap:0;
+  min-width:0;
+  padding:0;
+  overflow:hidden;
+  border:1px solid var(--qp-border);
+  border-radius:7px;
+  background:var(--qp-panel);
+}
+.qp-live-matrix-provider-plate {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  min-width:0;
+  padding:5px 2px;
+  border-right:1px solid var(--qp-border);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 5%,var(--qp-panel)),var(--qp-panel));
+  color:var(--qp-text);
+}
+.qp-live-matrix-provider-plate .qp-live-provider-mark { font-size:24px; }
+.qp-live-matrix-provider-plate>span:last-child {
+  max-width:100%;
+  font-size:8px;
+  line-height:11px;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+.qp-live-matrix .qp-live-matrix-provider-models {
+  display:grid;
+  align-content:stretch;
+  min-width:0;
+  gap:0;
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.qp-live-matrix-provider-models>.qp-live-matrix-row { min-width:0; }
+.qp-live-matrix-provider-models>.qp-live-matrix-row+.qp-live-matrix-row { border-top:1px solid var(--qp-border); }
+.qp-live-matrix-provider-models .qp-live-matrix-row-body {
+  height:100%;
+  min-height:40px;
+  grid-template-columns:minmax(80px,1fr) minmax(70px,150px) 48px;
+  border:0;
+  border-radius:0;
+}
+.qp-live-matrix-provider-models .qp-live-matrix-label small {
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+}
+.qp-live-matrix-provider-models .qp-live-matrix-label b { line-height:15px; white-space:normal; overflow-wrap:anywhere; }
+.qp-live-matrix-provider-models .qp-live-matrix-row-body:focus-visible { outline-offset:-3px; }
+.qp-live-matrix-provider-models .qp-live-matrix-row-body[aria-pressed=true] { box-shadow:inset 3px 0 var(--qp-accent); }
+@container qp-live-matrix (max-width:280px) {
+  .qp-live-matrix .qp-live-provider-group { grid-template-columns:44px minmax(0,1fr); }
+  .qp-live-matrix-provider-models .qp-live-matrix-row-body { grid-template-columns:minmax(0,1fr) minmax(35px,48px); }
+}

@@ -1,0 +1,537 @@
+{
+  "evidence": "measured application regions for source review; not whole-image similarity or acceptance",
+  "captures": [
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "regions": {
+        ".qp-live-top": {
+          "x": 238,
+          "y": 72,
+          "width": 1040.40625,
+          "height": 144,
+          "bottom": 216
+        },
+        ".qp-live-header": {
+          "x": 249,
+          "y": 83,
+          "width": 1018.40625,
+          "height": 34,
+          "bottom": 117
+        },
+        ".qp-live-metrics": {
+          "x": 249,
+          "y": 127,
+          "width": 1018.40625,
+          "height": 78,
+          "bottom": 205
+        },
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225.65625,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554.65625
+        },
+        ".qp-live-session-tools": {
+          "x": 249,
+          "y": 236.65625,
+          "width": 1018.40625,
+          "height": 28.5,
+          "bottom": 265.15625
+        },
+        ".qp-live-table": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 270,
+          "bottom": 541.15625
+        },
+        ".qp-live-table thead": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 29.5,
+          "bottom": 300.65625
+        },
+        ".qp-live-table tbody tr": {
+          "x": 249,
+          "y": 300.65625,
+          "width": 1018.40625,
+          "height": 30,
+          "bottom": 330.65625
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564.65625,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.84375
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.84375,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 931.34375
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 860,
+          "bottom": 932
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 343,
+          "bottom": 415
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 425,
+          "width": 371.578125,
+          "height": 507,
+          "bottom": 932
+        },
+        ".qp-live-matrix-heading": {
+          "x": 1299.40625,
+          "y": 436,
+          "width": 349.578125,
+          "height": 36,
+          "bottom": 472
+        },
+        ".qp-live-minute-range": {
+          "x": 1299.40625,
+          "y": 480,
+          "width": 349.578125,
+          "height": 13.5,
+          "bottom": 493.5
+        },
+        ".qp-live-matrix": {
+          "x": 1299.40625,
+          "y": 501.5,
+          "width": 349.578125,
+          "height": 328,
+          "bottom": 829.5
+        },
+        ".qp-live-matrix-row:first-child": {
+          "x": 1348.40625,
+          "y": 502.5,
+          "width": 299.578125,
+          "height": 48,
+          "bottom": 550.5
+        },
+        ".qp-live-matrix-coverage": {
+          "x": 1299.40625,
+          "y": 882,
+          "width": 349.578125,
+          "height": 20.5,
+          "bottom": 902.5
+        }
+      }
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "regions": {
+        ".qp-live-top": {
+          "x": 238,
+          "y": 72,
+          "width": 1040.40625,
+          "height": 144,
+          "bottom": 216
+        },
+        ".qp-live-header": {
+          "x": 249,
+          "y": 83,
+          "width": 1018.40625,
+          "height": 34,
+          "bottom": 117
+        },
+        ".qp-live-metrics": {
+          "x": 249,
+          "y": 127,
+          "width": 1018.40625,
+          "height": 78,
+          "bottom": 205
+        },
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225.65625,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554.65625
+        },
+        ".qp-live-session-tools": {
+          "x": 249,
+          "y": 236.65625,
+          "width": 1018.40625,
+          "height": 28.5,
+          "bottom": 265.15625
+        },
+        ".qp-live-table": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 270,
+          "bottom": 541.15625
+        },
+        ".qp-live-table thead": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 29.5,
+          "bottom": 300.65625
+        },
+        ".qp-live-table tbody tr": {
+          "x": 249,
+          "y": 300.65625,
+          "width": 1018.40625,
+          "height": 30,
+          "bottom": 330.65625
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564.65625,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.84375
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.84375,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 931.34375
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 860,
+          "bottom": 932
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 343,
+          "bottom": 415
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 425,
+          "width": 371.578125,
+          "height": 507,
+          "bottom": 932
+        },
+        ".qp-live-matrix-heading": {
+          "x": 1299.40625,
+          "y": 436,
+          "width": 349.578125,
+          "height": 36,
+          "bottom": 472
+        },
+        ".qp-live-minute-range": {
+          "x": 1299.40625,
+          "y": 480,
+          "width": 349.578125,
+          "height": 13.5,
+          "bottom": 493.5
+        },
+        ".qp-live-matrix": {
+          "x": 1299.40625,
+          "y": 501.5,
+          "width": 349.578125,
+          "height": 328,
+          "bottom": 829.5
+        },
+        ".qp-live-matrix-row:first-child": {
+          "x": 1348.40625,
+          "y": 502.5,
+          "width": 299.578125,
+          "height": 48,
+          "bottom": 550.5
+        },
+        ".qp-live-matrix-coverage": {
+          "x": 1299.40625,
+          "y": 882,
+          "width": 349.578125,
+          "height": 20.5,
+          "bottom": 902.5
+        }
+      }
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "regions": {
+        ".qp-live-top": {
+          "x": 238,
+          "y": 72,
+          "width": 1040.40625,
+          "height": 144,
+          "bottom": 216
+        },
+        ".qp-live-header": {
+          "x": 249,
+          "y": 83,
+          "width": 1018.40625,
+          "height": 34,
+          "bottom": 117
+        },
+        ".qp-live-metrics": {
+          "x": 249,
+          "y": 127,
+          "width": 1018.40625,
+          "height": 78,
+          "bottom": 205
+        },
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225.65625,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554.65625
+        },
+        ".qp-live-session-tools": {
+          "x": 249,
+          "y": 236.65625,
+          "width": 1018.40625,
+          "height": 28.5,
+          "bottom": 265.15625
+        },
+        ".qp-live-table": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 270,
+          "bottom": 541.15625
+        },
+        ".qp-live-table thead": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 29.5,
+          "bottom": 300.65625
+        },
+        ".qp-live-table tbody tr": {
+          "x": 249,
+          "y": 300.65625,
+          "width": 1018.40625,
+          "height": 30,
+          "bottom": 330.65625
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564.65625,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.84375
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.84375,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 931.34375
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 860,
+          "bottom": 932
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 343,
+          "bottom": 415
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 425,
+          "width": 371.578125,
+          "height": 507,
+          "bottom": 932
+        },
+        ".qp-live-matrix-heading": {
+          "x": 1299.40625,
+          "y": 436,
+          "width": 349.578125,
+          "height": 36,
+          "bottom": 472
+        },
+        ".qp-live-minute-range": {
+          "x": 1299.40625,
+          "y": 480,
+          "width": 349.578125,
+          "height": 13.5,
+          "bottom": 493.5
+        },
+        ".qp-live-matrix": {
+          "x": 1299.40625,
+          "y": 501.5,
+          "width": 349.578125,
+          "height": 319,
+          "bottom": 820.5
+        },
+        ".qp-live-matrix-row:first-child": {
+          "x": 1348.40625,
+          "y": 502.5,
+          "width": 299.578125,
+          "height": 48,
+          "bottom": 550.5
+        },
+        ".qp-live-matrix-coverage": {
+          "x": 1299.40625,
+          "y": 873,
+          "width": 349.578125,
+          "height": 20.5,
+          "bottom": 893.5
+        }
+      }
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "regions": {
+        ".qp-live-top": {
+          "x": 238,
+          "y": 72,
+          "width": 1040.40625,
+          "height": 144,
+          "bottom": 216
+        },
+        ".qp-live-header": {
+          "x": 249,
+          "y": 83,
+          "width": 1018.40625,
+          "height": 34,
+          "bottom": 117
+        },
+        ".qp-live-metrics": {
+          "x": 249,
+          "y": 127,
+          "width": 1018.40625,
+          "height": 78,
+          "bottom": 205
+        },
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225.65625,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554.65625
+        },
+        ".qp-live-session-tools": {
+          "x": 249,
+          "y": 236.65625,
+          "width": 1018.40625,
+          "height": 28.5,
+          "bottom": 265.15625
+        },
+        ".qp-live-table": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 270,
+          "bottom": 541.15625
+        },
+        ".qp-live-table thead": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 29.5,
+          "bottom": 300.65625
+        },
+        ".qp-live-table tbody tr": {
+          "x": 249,
+          "y": 300.65625,
+          "width": 1018.40625,
+          "height": 30,
+          "bottom": 330.65625
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564.65625,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.84375
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.84375,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 931.34375
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 860,
+          "bottom": 932
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 343,
+          "bottom": 415
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 425,
+          "width": 371.578125,
+          "height": 507,
+          "bottom": 932
+        },
+        ".qp-live-matrix-heading": {
+          "x": 1299.40625,
+          "y": 436,
+          "width": 349.578125,
+          "height": 36,
+          "bottom": 472
+        },
+        ".qp-live-minute-range": {
+          "x": 1299.40625,
+          "y": 480,
+          "width": 349.578125,
+          "height": 13.5,
+          "bottom": 493.5
+        },
+        ".qp-live-matrix": {
+          "x": 1299.40625,
+          "y": 501.5,
+          "width": 349.578125,
+          "height": 319,
+          "bottom": 820.5
+        },
+        ".qp-live-matrix-row:first-child": {
+          "x": 1348.40625,
+          "y": 502.5,
+          "width": 299.578125,
+          "height": 48,
+          "bottom": 550.5
+        },
+        ".qp-live-matrix-coverage": {
+          "x": 1299.40625,
+          "y": 873,
+          "width": 349.578125,
+          "height": 20.5,
+          "bottom": 893.5
+        }
+      }
+    }
+  ]
+}

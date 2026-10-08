@@ -14,7 +14,18 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest Live rail and Alerts spacing: [v1.85.39](redesign-v1.85.39/VALIDATION-STATE.md)
+Latest provider grouping and artwork: [v1.85.40](redesign-v1.85.40/VALIDATION-STATE.md)
+adds consecutive provider plates to Live without changing API ranking, repairs
+long labels and complete keyboard scrolling, refines Alerts forecast rings and
+uses source-sampled identity colors with localized Cost lighting. All three
+four-variant production scopes pass on one frozen build; the authenticated
+workflow passes using the same source through local Vite. Repository regression
+passes 457 tests. These checks do not establish original-reference likeness.
+[Compare source and app](redesign-v1.85.40/reference-review.html).
+[Remaining work](redesign-v1.85.40/NEXT-SOURCE-REPAIRS.md) retains all eight pages
+and full acceptance/release requirements.
+
+Previous Live rail and Alerts spacing: [v1.85.39](redesign-v1.85.39/VALIDATION-STATE.md)
 restores the native Live advisory y72..415 and matrix y425..932 frames,
 accessible full matrix explanations, Alerts first guidance row y477.1875 and
 the blue event-heading icon plate. Both four-variant production scopes are

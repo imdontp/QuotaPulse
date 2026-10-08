@@ -1,0 +1,15 @@
+{
+  "source": "cost-source.png",
+  "sha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+  "method": "Read original PNG pixel RGB at each legend dot center; includes raster lighting",
+  "reviewers": ["concept_visual_gap", "root independently repeated pixel reads"],
+  "samples": [
+    { "identity": "openai", "x": 1448, "y": 158, "hex": "#177af6" },
+    { "identity": "anthropic", "x": 1448, "y": 191, "hex": "#7a3cf6" },
+    { "identity": "google", "x": 1448, "y": 223, "hex": "#01bcf5" },
+    { "identity": "deepseek", "x": 1448, "y": 255, "hex": "#f78c3f" },
+    { "identity": "neutral", "x": 1448, "y": 288, "hex": "#7d8ba0" }
+  ],
+  "meaning": "Stable display palette only; actual provider labels, amounts, shares and order remain API-derived",
+  "acceptance": "Not whole-image likeness or baseline approval"
+}

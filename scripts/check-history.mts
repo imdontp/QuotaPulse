@@ -859,7 +859,7 @@ try {
         await screen.locator('.qp-live-table tbody tr').nth(9).waitFor();
         await occupied.evaluate(() => document.fonts.ready);
         assert.equal(await screen.locator('.qp-live-metrics strong').first().textContent(), '13');
-        assert.equal(await screen.locator('.qp-live-matrix li').count(), 12);
+        assert.equal(await screen.locator('.qp-live-matrix-row').count(), 12);
         assert.equal(await screen.locator('.qp-live-feed li').count(), 8);
         const regions = await screen.evaluate(node => Object.fromEntries(['.qp-live-sessions', '.qp-live-trend', '.qp-live-records', '.qp-live-feed li', '.qp-live-rail', '.qp-live-rail>section:first-child', '.qp-live-matrix-section', '.qp-live-matrix'].map(selector => {
           const { x, y, width, height, bottom } = node.querySelector(selector)!.getBoundingClientRect();
@@ -868,10 +868,10 @@ try {
         assert.ok(regions['.qp-live-feed li'].bottom < 941, `${lang}/${theme}: occupied Live first feed record outside viewport: ${JSON.stringify(regions)}`);
         assert.ok(regions['.qp-live-rail'].bottom < 941, `${lang}/${theme}: occupied Live rail outside viewport: ${JSON.stringify(regions)}`);
         const matrixList = screen.locator('.qp-live-matrix');
-        const matrixIdentities = await matrixList.locator('li').allTextContents();
+        const matrixIdentities = await matrixList.locator('.qp-live-matrix-row').allTextContents();
         const matrixScroll = await matrixList.evaluate(node => ({ clientHeight: node.clientHeight, scrollHeight: node.scrollHeight, overflow: getComputedStyle(node).overflowY }));
         assert.ok(matrixScroll.clientHeight <= 360, `${lang}/${theme}: matrix exceeds its desktop height bound: ${JSON.stringify(matrixScroll)}`);
-        assert.ok(matrixScroll.scrollHeight > matrixScroll.clientHeight, `${lang}/${theme}: occupied matrix should expose additional rows through scrolling`);
+        assert.ok(matrixScroll.scrollHeight > matrixScroll.clientHeight, `${lang}/${theme}: occupied matrix should expose additional rows through scrolling: ${JSON.stringify(matrixScroll)}`);
         assert.equal(matrixScroll.overflow, 'auto');
         assert.equal(await matrixList.getAttribute('tabindex'), '0');
         assert.equal(await matrixList.getAttribute('aria-label'), (lang === 'en' ? englishMessages : thaiMessages)['redesign.liveMatrix']);
@@ -880,8 +880,18 @@ try {
         assert.equal(await matrixList.evaluate(node => node === document.activeElement), true);
         assert.equal(await matrixList.evaluate(node => getComputedStyle(node).outlineStyle), 'solid');
         await occupied.keyboard.press('End');
-        await occupied.waitForFunction(() => (document.querySelector('.qp-live-matrix')?.scrollTop ?? 0) > 0);
-        assert.deepEqual(await matrixList.locator('li').allTextContents(), matrixIdentities, `${lang}/${theme}: scrolling changed the twelve observed identities`);
+        const endInitial = await matrixList.evaluate(node => ({ scrollTop: node.scrollTop, clientHeight: node.clientHeight, scrollHeight: node.scrollHeight }));
+        console.log(`Live occupied End initial ${lang}/${theme}: ${JSON.stringify(endInitial)}`);
+        await occupied.waitForFunction(() => {
+          const node = document.querySelector('.qp-live-matrix')!;
+          return node.scrollTop > 0 && node.scrollTop + node.clientHeight >= node.scrollHeight - 1;
+        });
+        const endGeometry = await matrixList.evaluate(node => {
+          const last = Array.from(node.querySelectorAll('.qp-live-matrix-row')).at(-1)!;
+          return { scrollTop: node.scrollTop, clientHeight: node.clientHeight, scrollHeight: node.scrollHeight, lastBottom: last.getBoundingClientRect().bottom, frameBottom: node.getBoundingClientRect().bottom };
+        });
+        assert.ok(endGeometry.lastBottom <= endGeometry.frameBottom + 1, `${lang}/${theme}: final grouped model row is not visible after keyboard End: ${JSON.stringify(endGeometry)}`);
+        assert.deepEqual(await matrixList.locator('.qp-live-matrix-row').allTextContents(), matrixIdentities, `${lang}/${theme}: scrolling changed the twelve observed identities`);
         await occupied.keyboard.press('Home');
         await occupied.waitForFunction(() => document.querySelector('.qp-live-matrix')?.scrollTop === 0);
         const filename = `live-occupied-${lang}-${theme}.png`;

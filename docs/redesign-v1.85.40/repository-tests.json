@@ -1,0 +1,28 @@
+{
+    "checkpoint":  "v1.85.40",
+    "command":  "npm test",
+    "session":  41775,
+    "exitCode":  0,
+    "suites":  [
+                   {
+                       "workspace":  "daemon",
+                       "passed":  101,
+                       "failed":  0,
+                       "skipped":  0
+                   },
+                   {
+                       "workspace":  "web",
+                       "passed":  158,
+                       "failed":  0,
+                       "skipped":  0
+                   },
+                   {
+                       "workspace":  "tray",
+                       "passed":  198,
+                       "failed":  0,
+                       "skipped":  0
+                   }
+               ],
+    "totalPassed":  457,
+    "evidence":  "Recorded terminal test summaries; does not certify visual likeness or full release readiness"
+}

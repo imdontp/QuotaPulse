@@ -229,6 +229,27 @@ async function checkLiveMinuteValues(page: Page, data: ProviderModelMinuteRespon
   assert.equal(await matrixNote.getAttribute('open'), null);
   const matrix = page.locator('.qp-live-matrix-row');
   assert.equal(await matrix.count(), expected.length);
+  const expectedRuns: Array<{ provider: string; keys: string[] }> = [];
+  for (const group of expected) {
+    const identity = JSON.stringify(group.provider), key = JSON.stringify([group.provider, group.model]);
+    const previous = expectedRuns.at(-1);
+    if (previous?.provider === identity) previous.keys.push(key);
+    else expectedRuns.push({ provider: identity, keys: [key] });
+  }
+  const providerGroups = page.locator('.qp-live-provider-group');
+  assert.deepEqual(await providerGroups.evaluateAll(groups => groups.map(group => ({
+    provider: group.getAttribute('data-provider'),
+    keys: Array.from(group.querySelectorAll('.qp-live-matrix-row')).map(row => row.getAttribute('data-pair-key')),
+  }))), expectedRuns, 'Shared provider plates must retain exact consecutive identities and API pair ranking');
+  for (const group of await providerGroups.all()) {
+    assert.equal(await group.locator('.qp-live-matrix-provider-plate').count(), 1);
+    assert.equal(await group.locator('.qp-live-provider-mark').count(), 1);
+    assert.equal(await group.locator('.qp-live-matrix-provider-plate').getAttribute('aria-hidden'), 'true');
+    assert.equal(await group.locator('.qp-live-provider-mark').evaluate(mark => {
+      const bounds = mark.getBoundingClientRect();
+      return bounds.width === 24 && bounds.height === 24;
+    }), true, 'Shared provider mark retains its source-sized 24px glyph');
+  }
   const rows = await matrix.evaluateAll(elements => elements.map(element => ({
     key: element.getAttribute('data-pair-key'),
     callRecords: Number(element.getAttribute('data-call-records')),
@@ -238,7 +259,7 @@ async function checkLiveMinuteValues(page: Page, data: ProviderModelMinuteRespon
     exactTotal: element.querySelector('.qp-live-matrix-total>span')!.getAttribute('aria-label'),
     totalTitle: element.querySelector('.qp-live-matrix-total>span')!.getAttribute('title'),
     filterable: element.querySelector('button') !== null,
-    mark: (() => { const rect = element.querySelector('.qp-live-provider-mark')!.getBoundingClientRect(); return { width: rect.width, height: rect.height }; })(),
+    accessibleName: element.querySelector('button')?.getAttribute('aria-label') ?? null,
     cells: Array.from(element.querySelectorAll<HTMLElement>('.qp-live-minute-strip>i')).map(cell => ({
       at: Number(cell.dataset.at), state: cell.dataset.state,
       tokens: cell.hasAttribute('data-tokens') ? Number(cell.dataset.tokens) : null,
@@ -259,7 +280,7 @@ async function checkLiveMinuteValues(page: Page, data: ProviderModelMinuteRespon
     assert.equal(actual.exactTotal, String(group.tokens)); assert.equal(actual.totalTitle, format.format(group.tokens));
     assert.equal(actual.callRecords, group.callRecords); assert.equal(actual.aggregateRecords, group.aggregateRecords); assert.equal(actual.unknownRecords, group.unknownRecords);
     assert.equal(actual.filterable, group.provider !== null && group.provider !== '' && group.model !== null && group.model !== '');
-    assert.deepEqual(actual.mark, { width: 18, height: 18 });
+    if (actual.filterable) assert.equal(actual.accessibleName, `${group.provider} · ${group.model} · ${String(group.tokens)} ${copy['redesign.tokens']} · ${copy['redesign.liveMinuteWindow']} · ${format.format(group.callRecords)} ${copy['redesign.liveMinuteIncluded']}`, 'Grouped model controls must retain full provider and recorded-value meaning');
     assert.equal(actual.cells.length, times.length);
     for (const [cellIndex, at] of times.entries()) {
       const row = data.rows.find(row => row.bucket_ts === at && row.provider === group.provider && row.model === group.model);
@@ -392,7 +413,7 @@ async function checkLiveDensity(page: Page, lang: string, theme: string, pending
     await page.goto('http://127.0.0.1:7804/?live-minutes=states#live', { waitUntil: 'domcontentloaded' }); await page.locator('.qp-live-minute-strip').first().waitFor(); await settled(page, pending);
     await checkLiveMinuteValues(page, data, lang, theme, 'owned-diagnostic');
     const checked = liveMinuteChecks.at(-1)!; assert.ok(checked.zero > 0 && checked.missing > 0 && checked.recorded > 0 && checked.unknown > 0 && checked.aggregate > 0);
-    const icon = page.locator('.qp-live-matrix-row').filter({ has: page.locator('.qp-live-matrix-label b', { hasText: 'zero-minute-model' }) }).locator('.qp-live-provider-mark');
+    const icon = page.locator('.qp-live-provider-group').filter({ has: page.locator('.qp-live-matrix-label b', { hasText: 'zero-minute-model' }) }).locator('.qp-live-provider-mark');
     const bounds = await icon.evaluate(element => { const outer = element.getBoundingClientRect(); return Array.from(element.querySelectorAll('svg')).map(svg => { const r = svg.getBoundingClientRect(); return r.left >= outer.left - .1 && r.top >= outer.top - .1 && r.right <= outer.right + .1 && r.bottom <= outer.bottom + .1; }); });
     assert.ok(bounds.length > 0 && bounds.every(Boolean), 'Nous mark is clipped');
     await page.screenshot({ path: resolve(output, `live-minute-states-${lang}-${theme}.png`), animations: 'disabled' });
@@ -1063,9 +1084,16 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
     assert.ok(collapsedBottom < 941, `${route}: collapsed detail outside viewport (${collapsedBottom})`);
     if (destination === 'cost') {
       const cost = data as CostAnalysisResponse;
+      // Independently sampled dot centers in refs/cost.png; these represent identity, not rank.
+      const sourcePalette = new Map([['openai', '#177af6'], ['anthropic', '#7a3cf6'], ['google', '#01bcf5'], ['deepseek', '#f78c3f']]);
+      const pricedProviders = cost.providers.filter(row => row.pricedCalls > 0);
+      const legendColors = await page.locator('.qp-cost-providers ol>li>i').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).backgroundColor));
+      assert.deepEqual(legendColors.map(rgb), pricedProviders.map(row => rgb(sourcePalette.get(row.provider?.toLowerCase() ?? '') ?? '#7d8ba0')), 'Cost legend colors must follow source provider identities regardless of actual rank');
       const positiveProviders = cost.providers.filter(row => row.pricedCalls > 0 && row.amount > 0);
       const edgeShares = await page.locator('.qp-cost-donut-edge:not(.qp-cost-donut-inner-edge)').evaluateAll(nodes => nodes.map(node => Number(node.getAttribute('stroke-dasharray')?.split(' ')[0])));
       assert.deepEqual(edgeShares, cost.totals.amount > 0 ? positiveProviders.map(row => row.amount / cost.totals.amount) : [], 'Decorative Cost edges must retain actual provider amount fractions');
+      const edgeColors = await page.locator('.qp-cost-donut-edge:not(.qp-cost-donut-inner-edge)').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).color));
+      assert.deepEqual(edgeColors.map(rgb), cost.totals.amount > 0 ? positiveProviders.map(row => rgb(sourcePalette.get(row.provider?.toLowerCase() ?? '') ?? '#7d8ba0')) : [], 'Cost ring edges and legend must identify the same actual providers');
       assert.equal(await page.locator('.qp-cost-donut-seam').count(), cost.totals.amount > 0 && positiveProviders.length > 1 ? positiveProviders.length : 0, 'Zero or single-provider cost must not invent sector boundaries');
       const expectedBucket = route.includes('bucket=week') ? 'week' : 'day';
       assert.equal(cost.bucket, expectedBucket, `${route}: response bucket must match the selected interval`);

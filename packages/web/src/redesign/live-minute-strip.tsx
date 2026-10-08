@@ -18,6 +18,21 @@ interface Props {
 
 export function LiveMinuteMatrix({ data, language, t, frozen, provider, model, onSelect, onClear }: Props) {
   const pairs = useMemo(() => liveMinutePairs(data), [data]);
+  const providerRuns = useMemo(() => {
+    const runs: Array<{ key: string; provider: string | null; pairs: typeof pairs }> = [];
+    const occurrences = new Map<string, number>();
+    for (const pair of pairs) {
+      const previous = runs.at(-1);
+      if (previous && previous.provider === pair.provider) previous.pairs.push(pair);
+      else {
+        const identity = JSON.stringify(pair.provider);
+        const occurrence = occurrences.get(identity) ?? 0;
+        occurrences.set(identity, occurrence + 1);
+        runs.push({ key: JSON.stringify([pair.provider, occurrence]), provider: pair.provider, pairs: [pair] });
+      }
+    }
+    return runs;
+  }, [pairs]);
   const legendId = useId();
   const locale = language === 'th' ? 'th-TH' : 'en-US';
   const formatter = new Intl.NumberFormat(locale);
@@ -36,9 +51,15 @@ export function LiveMinuteMatrix({ data, language, t, frozen, provider, model, o
     {(provider || model) && <button disabled={frozen} className="qp-live-clear" onClick={onClear}>{t('redesign.liveClearMatrix')}</button>}
     {pairs.length === 0 ? <p>{t('redesign.liveMinuteEmpty')}</p> : <>
       <div className="qp-live-minute-range"><span>{clock.format(buckets[0]!.start)}</span><span>{clock.format(buckets[buckets.length - 1]!.start)} · {t('redesign.liveMinuteCurrent')}</span></div>
-      <ol className="qp-live-matrix" tabIndex={0} aria-label={t('redesign.liveMatrix')}>{pairs.map(group => {
+      <ol className="qp-live-matrix" tabIndex={0} aria-label={t('redesign.liveMatrix')}>{providerRuns.map(run =>
+        <li className="qp-live-provider-group" key={run.key} data-provider={JSON.stringify(run.provider)} data-run-size={run.pairs.length}>
+          <div className="qp-live-matrix-provider-plate" aria-hidden="true">
+            <span className="qp-live-provider-mark"><VendorIcon vendor={run.provider ?? 'unknown'}/></span>
+            <span title={name(run.provider)}>{name(run.provider)}</span>
+          </div>
+          <ol className="qp-live-matrix-provider-models" aria-label={name(run.provider)}>{run.pairs.map(group => {
         const content = <>
-          <span className="qp-live-matrix-label" title={`${name(group.provider)} · ${name(group.model)}`}><span className="qp-live-provider-mark" aria-hidden="true"><VendorIcon vendor={group.provider ?? 'unknown'}/></span><span><b>{name(group.model)}</b><small>{name(group.provider)}</small></span></span>
+          <span className="qp-live-matrix-label" title={`${name(group.provider)} · ${name(group.model)}`}><span><b>{name(group.model)}</b><small>{name(group.provider)}</small></span></span>
           <span className="qp-live-minute-strip" role="img" aria-label={`${name(group.provider)} · ${name(group.model)} · ${number(group.callRecords)} ${t('redesign.liveMinuteIncluded')}`} aria-describedby={legendId}>
             {group.cells.map(cell => <i key={cell.at} data-at={cell.at} data-state={cell.state} data-tokens={cell.tokens ?? undefined} data-records={cell.records ?? undefined} data-calls={cell.calls ?? undefined} data-partial={cell.partial || undefined} title={describe(cell)} aria-hidden="true" style={{ '--qp-minute-intensity': cell.intensity } as CSSProperties}/>)}
           </span>
@@ -46,10 +67,12 @@ export function LiveMinuteMatrix({ data, language, t, frozen, provider, model, o
         </>;
         return <li className="qp-live-matrix-row" key={group.key} data-pair-key={group.key} data-call-records={group.callRecords} data-aggregate-records={group.aggregateRecords} data-unknown-records={group.unknownRecords}>
           {group.provider !== null && group.provider !== '' && group.model !== null && group.model !== ''
-            ? <button className="qp-live-matrix-row-body" disabled={frozen} aria-pressed={provider === group.provider && model === group.model} onClick={() => onSelect(group.provider!, group.model!)}>{content}</button>
+            ? <button className="qp-live-matrix-row-body" disabled={frozen} aria-label={`${name(group.provider)} · ${name(group.model)} · ${String(group.tokens)} ${t('redesign.tokens')} · ${t('redesign.liveMinuteWindow')} · ${number(group.callRecords)} ${t('redesign.liveMinuteIncluded')}`} aria-pressed={provider === group.provider && model === group.model} onClick={() => onSelect(group.provider!, group.model!)}>{content}</button>
             : <div className="qp-live-matrix-row-body">{content}</div>}
         </li>;
-      })}</ol>
+          })}</ol>
+        </li>
+      )}</ol>
       <p className="qp-live-minute-legend" id={legendId}><span data-state="missing"><i aria-hidden="true"/>{t('redesign.liveMinuteMissing')}</span><span data-state="zero"><i aria-hidden="true"/>{t('redesign.liveMinuteZero')}</span><span data-state="recorded"><i aria-hidden="true"/>{t('redesign.liveMinuteRecorded')}</span></p>
       <details className="qp-live-minute-data"><summary>{t('redesign.liveMinuteData')}</summary><div className="qp-live-minute-data-table" role="region" tabIndex={0} aria-label={t('redesign.liveMinuteData')}><table><caption>{t('redesign.liveMinuteData')}</caption><thead><tr><th scope="col">{t('redesign.provider')}</th><th scope="col">{t('redesign.model')}</th><th scope="col">{t('redesign.liveMinuteInterval')}</th><th scope="col">{t('redesign.tokens')}</th><th scope="col">{t('redesign.records')}</th><th scope="col">{t('redesign.modelsCalls')}</th></tr></thead><tbody>{pairs.flatMap(group => group.cells.map(cell => <tr key={JSON.stringify([group.key, cell.at])} data-pair-key={group.key} data-at={cell.at} data-state={cell.state}><td>{name(group.provider)}</td><td>{name(group.model)}</td><td>{date.format(cell.start)} – {date.format(cell.end)}{cell.partial && <small>{t('redesign.liveMinutePartial')}</small>}</td><td>{cell.tokens === null ? '—' : number(cell.tokens)}<small>{state(cell)}</small></td><td>{cell.records === null ? '—' : number(cell.records)}</td><td>{cell.calls === null ? '—' : number(cell.calls)}</td></tr>))}</tbody></table></div></details>
     </>}
