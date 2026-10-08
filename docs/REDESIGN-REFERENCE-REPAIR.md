@@ -14,7 +14,16 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest Live main-column composition: [v1.85.38](redesign-v1.85.38/VALIDATION-STATE.md)
+Latest Live rail and Alerts spacing: [v1.85.39](redesign-v1.85.39/VALIDATION-STATE.md)
+restores the native Live advisory y72..415 and matrix y425..932 frames,
+accessible full matrix explanations, Alerts first guidance row y477.1875 and
+the blue event-heading icon plate. Both four-variant production scopes are
+byte-identical and the fresh authenticated workflow passes on the same build.
+[Compare source and app](redesign-v1.85.39/reference-review.html).
+[Remaining work](redesign-v1.85.39/NEXT-SOURCE-REPAIRS.md) retains grouping/artwork
+repairs and the complete eight-page acceptance/release requirements.
+
+Previous Live main-column composition: [v1.85.38](redesign-v1.85.38/VALIDATION-STATE.md)
 restores the heading/metric enclosure, eight complete session rows and six
 complete feed rows with factual toolbar pagination and compact exact-value axes.
 All four production pairs are byte-identical; the fresh authenticated workflow

@@ -1,0 +1,380 @@
+{
+  "database": "in-memory synthetic",
+  "fixture": {
+    "addedOwners": 4,
+    "selectedValues": [
+      0,
+      null,
+      45,
+      97
+    ]
+  },
+  "checks": [
+    "sidebar current-risk badge matches Alerts summary in en/th and dark/light",
+    "accessible badge label discloses current quota risks; not unread count",
+    "forecast beside heading; summary contained below without overlap",
+    "complete rules/history in concept viewport",
+    "unknown sample breaks lines",
+    "known zero baseline",
+    "timestamp coordinates",
+    "keyboard sample table",
+    "same-owner refresh includes counter drop",
+    "390/900/1280 overflow",
+    "unknown-only owner",
+    "machine-wide Quick Stats"
+  ],
+  "captures": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "filename": "alerts-occupied-en-dark.png",
+      "chart": {
+        "width": 932.9375,
+        "viewWidth": 933,
+        "points": [
+          {
+            "x": 34,
+            "y": 104
+          },
+          {
+            "x": 629.3333333333333,
+            "y": 59.900000000000006
+          },
+          {
+            "x": 927,
+            "y": 8.94
+          }
+        ]
+      },
+      "regions": {
+        ".qp-alert-top": {
+          "x": 239,
+          "y": 72,
+          "width": 958.9375,
+          "height": 163.6875,
+          "bottom": 235.6875
+        },
+        ".qp-alert-header": {
+          "x": 252,
+          "y": 84,
+          "width": 932.9375,
+          "height": 47.296875,
+          "bottom": 131.296875
+        },
+        ".qp-alert-summary": {
+          "x": 252,
+          "y": 154.6875,
+          "width": 932.9375,
+          "height": 69,
+          "bottom": 223.6875
+        },
+        ".qp-alert-chart": {
+          "x": 239,
+          "y": 243.6875,
+          "width": 958.9375,
+          "height": 204,
+          "bottom": 447.6875
+        },
+        ".qp-alert-risk": {
+          "x": 239,
+          "y": 455.6875,
+          "width": 958.9375,
+          "height": 290.796875,
+          "bottom": 746.484375
+        },
+        ".qp-alert-rules": {
+          "x": 239,
+          "y": 754.484375,
+          "width": 958.9375,
+          "height": 176.1875,
+          "bottom": 930.671875
+        },
+        ".qp-alert-forecast": {
+          "x": 1207.9375,
+          "y": 72,
+          "width": 454.0625,
+          "height": 338,
+          "bottom": 410
+        },
+        ".qp-alert-guidance": {
+          "x": 1207.9375,
+          "y": 419,
+          "width": 454.0625,
+          "height": 328,
+          "bottom": 747
+        },
+        ".qp-alert-history": {
+          "x": 1207.9375,
+          "y": 756,
+          "width": 454.0625,
+          "height": 175.390625,
+          "bottom": 931.390625
+        }
+      }
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "filename": "alerts-occupied-en-light.png",
+      "chart": {
+        "width": 932.9375,
+        "viewWidth": 933,
+        "points": [
+          {
+            "x": 34,
+            "y": 104
+          },
+          {
+            "x": 629.3333333333333,
+            "y": 59.900000000000006
+          },
+          {
+            "x": 927,
+            "y": 8.94
+          }
+        ]
+      },
+      "regions": {
+        ".qp-alert-top": {
+          "x": 239,
+          "y": 72,
+          "width": 958.9375,
+          "height": 163.6875,
+          "bottom": 235.6875
+        },
+        ".qp-alert-header": {
+          "x": 252,
+          "y": 84,
+          "width": 932.9375,
+          "height": 47.296875,
+          "bottom": 131.296875
+        },
+        ".qp-alert-summary": {
+          "x": 252,
+          "y": 154.6875,
+          "width": 932.9375,
+          "height": 69,
+          "bottom": 223.6875
+        },
+        ".qp-alert-chart": {
+          "x": 239,
+          "y": 243.6875,
+          "width": 958.9375,
+          "height": 204,
+          "bottom": 447.6875
+        },
+        ".qp-alert-risk": {
+          "x": 239,
+          "y": 455.6875,
+          "width": 958.9375,
+          "height": 290.796875,
+          "bottom": 746.484375
+        },
+        ".qp-alert-rules": {
+          "x": 239,
+          "y": 754.484375,
+          "width": 958.9375,
+          "height": 176.1875,
+          "bottom": 930.671875
+        },
+        ".qp-alert-forecast": {
+          "x": 1207.9375,
+          "y": 72,
+          "width": 454.0625,
+          "height": 338,
+          "bottom": 410
+        },
+        ".qp-alert-guidance": {
+          "x": 1207.9375,
+          "y": 419,
+          "width": 454.0625,
+          "height": 328,
+          "bottom": 747
+        },
+        ".qp-alert-history": {
+          "x": 1207.9375,
+          "y": 756,
+          "width": 454.0625,
+          "height": 175.390625,
+          "bottom": 931.390625
+        }
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "filename": "alerts-occupied-th-dark.png",
+      "chart": {
+        "width": 932.9375,
+        "viewWidth": 933,
+        "points": [
+          {
+            "x": 34,
+            "y": 104
+          },
+          {
+            "x": 629.3333333333333,
+            "y": 59.900000000000006
+          },
+          {
+            "x": 927,
+            "y": 8.94
+          }
+        ]
+      },
+      "regions": {
+        ".qp-alert-top": {
+          "x": 239,
+          "y": 72,
+          "width": 958.9375,
+          "height": 163.6875,
+          "bottom": 235.6875
+        },
+        ".qp-alert-header": {
+          "x": 252,
+          "y": 84,
+          "width": 932.9375,
+          "height": 47.296875,
+          "bottom": 131.296875
+        },
+        ".qp-alert-summary": {
+          "x": 252,
+          "y": 154.6875,
+          "width": 932.9375,
+          "height": 69,
+          "bottom": 223.6875
+        },
+        ".qp-alert-chart": {
+          "x": 239,
+          "y": 243.6875,
+          "width": 958.9375,
+          "height": 204,
+          "bottom": 447.6875
+        },
+        ".qp-alert-risk": {
+          "x": 239,
+          "y": 455.6875,
+          "width": 958.9375,
+          "height": 290.796875,
+          "bottom": 746.484375
+        },
+        ".qp-alert-rules": {
+          "x": 239,
+          "y": 754.484375,
+          "width": 958.9375,
+          "height": 176.1875,
+          "bottom": 930.671875
+        },
+        ".qp-alert-forecast": {
+          "x": 1207.9375,
+          "y": 72,
+          "width": 454.0625,
+          "height": 338,
+          "bottom": 410
+        },
+        ".qp-alert-guidance": {
+          "x": 1207.9375,
+          "y": 419,
+          "width": 454.0625,
+          "height": 328,
+          "bottom": 747
+        },
+        ".qp-alert-history": {
+          "x": 1207.9375,
+          "y": 756,
+          "width": 454.0625,
+          "height": 175.390625,
+          "bottom": 931.390625
+        }
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "filename": "alerts-occupied-th-light.png",
+      "chart": {
+        "width": 932.9375,
+        "viewWidth": 933,
+        "points": [
+          {
+            "x": 34,
+            "y": 104
+          },
+          {
+            "x": 629.3333333333333,
+            "y": 59.900000000000006
+          },
+          {
+            "x": 927,
+            "y": 8.94
+          }
+        ]
+      },
+      "regions": {
+        ".qp-alert-top": {
+          "x": 239,
+          "y": 72,
+          "width": 958.9375,
+          "height": 163.6875,
+          "bottom": 235.6875
+        },
+        ".qp-alert-header": {
+          "x": 252,
+          "y": 84,
+          "width": 932.9375,
+          "height": 47.296875,
+          "bottom": 131.296875
+        },
+        ".qp-alert-summary": {
+          "x": 252,
+          "y": 154.6875,
+          "width": 932.9375,
+          "height": 69,
+          "bottom": 223.6875
+        },
+        ".qp-alert-chart": {
+          "x": 239,
+          "y": 243.6875,
+          "width": 958.9375,
+          "height": 204,
+          "bottom": 447.6875
+        },
+        ".qp-alert-risk": {
+          "x": 239,
+          "y": 455.6875,
+          "width": 958.9375,
+          "height": 290.796875,
+          "bottom": 746.484375
+        },
+        ".qp-alert-rules": {
+          "x": 239,
+          "y": 754.484375,
+          "width": 958.9375,
+          "height": 176.1875,
+          "bottom": 930.671875
+        },
+        ".qp-alert-forecast": {
+          "x": 1207.9375,
+          "y": 72,
+          "width": 454.0625,
+          "height": 338,
+          "bottom": 410
+        },
+        ".qp-alert-guidance": {
+          "x": 1207.9375,
+          "y": 419,
+          "width": 454.0625,
+          "height": 328,
+          "bottom": 747
+        },
+        ".qp-alert-history": {
+          "x": 1207.9375,
+          "y": 756,
+          "width": 454.0625,
+          "height": 175.390625,
+          "bottom": 931.390625
+        }
+      }
+    }
+  ]
+}

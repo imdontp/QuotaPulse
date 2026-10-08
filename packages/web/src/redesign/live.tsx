@@ -176,7 +176,20 @@ export function ProductionLive() {
         </div>
         <aside className="qp-live-rail">
           <section className="qp-panel qp-live-section"><h2><SectionMark icon={<AlertTriangle/>} size={28}/>{t('redesign.liveAdvisory')}</h2>{advisories.length === 0 ? <p>{t('redesign.liveNoAdvisory')}</p> : <ol>{advisories.map(source => <li key={source.source_id}><AlertTriangle size={15}/><span>{source.display_name} · {t(source.telemetry.reason === 'usage_newer_than_quota' ? 'redesign.liveUsageAheadQuota' : source.telemetry.reason === 'reader_error' ? 'redesign.liveReaderErrorNote' : 'redesign.liveQuotaReview')}</span><a href="#settings?section=diagnostics">{t('redesign.liveDiagnostics')}</a></li>)}</ol>}</section>
-          <section className="qp-panel qp-live-section qp-live-matrix-section"><h2><SectionMark icon={<Radio/>} size={28}/>{t('redesign.liveMatrix')}</h2>
+          <section className="qp-panel qp-live-section qp-live-matrix-section">
+            <div className="qp-live-matrix-heading">
+              <h2><SectionMark icon={<Radio/>} size={28}/>{t('redesign.liveMatrix')}</h2>
+              <details className="qp-live-matrix-note">
+                <summary title={t('redesign.liveReadingDetails')}><Info size={15} aria-hidden="true"/><span>{t('redesign.liveReadingDetails')}</span></summary>
+                <div className="qp-live-matrix-explanation" tabIndex={0} role="region" aria-label={t('redesign.liveReadingDetails')}>
+                  <p className="qp-footnote">{t('redesign.liveMatrixNote')} {t('redesign.liveMatrixTop')}</p>
+                  <p className="qp-footnote qp-live-matrix-context">{t('redesign.liveMinuteContext')}</p>
+                  <p className="qp-footnote">{t('redesign.liveMinuteNote')} {t('redesign.liveMinutePartialNote')}</p>
+                  <p className="qp-footnote">{t('redesign.liveMinuteWindowAll')}</p>
+                  <p className="qp-footnote">{t('redesign.liveMinuteExcluded')}: {t('redesign.liveAggregate')} · {t('redesign.liveUnknownGrain')}</p>
+                </div>
+              </details>
+            </div>
             <LiveMinuteMatrix data={display.matrix} language={lang} t={t} frozen={frozen} provider={displayRoute.provider} model={displayRoute.model} onSelect={(provider, model) => update({ provider, model, feedOffset: 0, sessionOffset: 0 })} onClear={() => update({ provider: null, model: null, feedOffset: 0, sessionOffset: 0 })}/>
           </section>
         </aside>

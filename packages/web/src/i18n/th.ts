@@ -318,6 +318,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.liveFeed': 'รายการใช้งานที่บันทึก',
   'redesign.liveNoRecords': 'ไม่มีรายการใช้งานในช่วงนี้',
   'redesign.liveMatrix': 'กิจกรรมผู้ให้บริการและโมเดลที่ตรวจพบ',
+  'redesign.liveReadingDetails': 'รายละเอียดค่าที่อ่าน',
   'redesign.liveMatrixNote': 'เป็นเส้นทางและโมเดลที่ตรวจพบ ไม่ใช่สถานะบริการหรือความหน่วง',
   'redesign.liveMatrixTop': 'แสดง 12 ชุดที่มีโทเคนที่บันทึกมากที่สุด',
   'redesign.liveClearMatrix': 'ล้างตัวกรองผู้ให้บริการและโมเดล',

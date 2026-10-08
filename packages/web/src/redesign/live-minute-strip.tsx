@@ -33,8 +33,6 @@ export function LiveMinuteMatrix({ data, language, t, frozen, provider, model, o
   const unknown = data.groups.reduce((sum, group) => sum + group.unknownRecords, 0);
 
   return <>
-    <p className="qp-footnote">{t('redesign.liveMatrixNote')} {t('redesign.liveMatrixTop')}</p>
-    <p className="qp-footnote qp-live-matrix-context">{t('redesign.liveMinuteContext')}</p>
     {(provider || model) && <button disabled={frozen} className="qp-live-clear" onClick={onClear}>{t('redesign.liveClearMatrix')}</button>}
     {pairs.length === 0 ? <p>{t('redesign.liveMinuteEmpty')}</p> : <>
       <div className="qp-live-minute-range"><span>{clock.format(buckets[0]!.start)}</span><span>{clock.format(buckets[buckets.length - 1]!.start)} · {t('redesign.liveMinuteCurrent')}</span></div>
@@ -53,9 +51,8 @@ export function LiveMinuteMatrix({ data, language, t, frozen, provider, model, o
         </li>;
       })}</ol>
       <p className="qp-live-minute-legend" id={legendId}><span data-state="missing"><i aria-hidden="true"/>{t('redesign.liveMinuteMissing')}</span><span data-state="zero"><i aria-hidden="true"/>{t('redesign.liveMinuteZero')}</span><span data-state="recorded"><i aria-hidden="true"/>{t('redesign.liveMinuteRecorded')}</span></p>
-      <p className="qp-footnote">{t('redesign.liveMinuteNote')} {t('redesign.liveMinutePartialNote')}</p>
       <details className="qp-live-minute-data"><summary>{t('redesign.liveMinuteData')}</summary><div className="qp-live-minute-data-table" role="region" tabIndex={0} aria-label={t('redesign.liveMinuteData')}><table><caption>{t('redesign.liveMinuteData')}</caption><thead><tr><th scope="col">{t('redesign.provider')}</th><th scope="col">{t('redesign.model')}</th><th scope="col">{t('redesign.liveMinuteInterval')}</th><th scope="col">{t('redesign.tokens')}</th><th scope="col">{t('redesign.records')}</th><th scope="col">{t('redesign.modelsCalls')}</th></tr></thead><tbody>{pairs.flatMap(group => group.cells.map(cell => <tr key={JSON.stringify([group.key, cell.at])} data-pair-key={group.key} data-at={cell.at} data-state={cell.state}><td>{name(group.provider)}</td><td>{name(group.model)}</td><td>{date.format(cell.start)} – {date.format(cell.end)}{cell.partial && <small>{t('redesign.liveMinutePartial')}</small>}</td><td>{cell.tokens === null ? '—' : number(cell.tokens)}<small>{state(cell)}</small></td><td>{cell.records === null ? '—' : number(cell.records)}</td><td>{cell.calls === null ? '—' : number(cell.calls)}</td></tr>))}</tbody></table></div></details>
     </>}
-    <div className="qp-live-matrix-coverage"><span data-coverage="included" data-count={data.coverage.includedRecords}>{t('redesign.liveMinuteIncluded')}: {number(data.coverage.includedRecords)}</span><span data-coverage="aggregate" data-count={aggregate}>{t('redesign.liveMinuteExcluded')} · {t('redesign.liveAggregate')}: {number(aggregate)}</span><span data-coverage="unknown" data-count={unknown}>{t('redesign.liveMinuteExcluded')} · {t('redesign.liveUnknownGrain')}: {number(unknown)}</span></div>
+    <div className="qp-live-matrix-coverage"><span data-coverage="included" data-count={data.coverage.includedRecords}>{t('redesign.liveMinuteIncluded')}: {number(data.coverage.includedRecords)}</span><span data-coverage="aggregate" data-count={aggregate}>{t('redesign.liveAggregate')}: {number(aggregate)}</span><span data-coverage="unknown" data-count={unknown}>{t('redesign.liveUnknownGrain')}: {number(unknown)}</span></div>
   </>;
 }

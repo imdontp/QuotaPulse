@@ -211,6 +211,22 @@ const pages = liveOnly ? allPages.filter(([destination]) => destination === 'liv
 
 async function checkLiveMinuteValues(page: Page, data: ProviderModelMinuteResponse, lang: string, theme: string, state: string) {
   const expected = data.groups.slice(0, 12);
+  const matrixNote = page.locator('.qp-live-matrix-note');
+  const matrixSummary = matrixNote.locator('summary');
+  await matrixSummary.focus(); await page.keyboard.press('Enter');
+  assert.equal(await matrixNote.getAttribute('open'), '');
+  const copy = lang === 'th' ? th : en;
+  assert.deepEqual(await matrixNote.locator('p').allTextContents(), [
+    `${copy['redesign.liveMatrixNote']} ${copy['redesign.liveMatrixTop']}`,
+    copy['redesign.liveMinuteContext'],
+    `${copy['redesign.liveMinuteNote']} ${copy['redesign.liveMinutePartialNote']}`,
+    copy['redesign.liveMinuteWindowAll'],
+    `${copy['redesign.liveMinuteExcluded']}: ${copy['redesign.liveAggregate']} · ${copy['redesign.liveUnknownGrain']}`,
+  ], 'Matrix information must retain all original meaning, scope and provenance');
+  await matrixNote.locator('[role=region]').focus();
+  assert.equal(await matrixNote.locator('[role=region]').evaluate(element => element === document.activeElement), true);
+  await matrixSummary.focus(); await page.keyboard.press('Enter');
+  assert.equal(await matrixNote.getAttribute('open'), null);
   const matrix = page.locator('.qp-live-matrix-row');
   assert.equal(await matrix.count(), expected.length);
   const rows = await matrix.evaluateAll(elements => elements.map(element => ({
@@ -295,7 +311,7 @@ async function checkLiveMinuteValues(page: Page, data: ProviderModelMinuteRespon
 async function checkLiveDensity(page: Page, lang: string, theme: string, pending: Set<Request>) {
   await page.setViewportSize({ width: 1672, height: 941 });
   await page.evaluate(() => window.scrollTo(0, 0));
-  referenceDetailRegions.push({ page: 'live', lang, theme, regions: await page.evaluate(() => Object.fromEntries(['.qp-live-top', '.qp-live-header', '.qp-live-metrics', '.qp-live-sessions', '.qp-live-session-tools', '.qp-live-table', '.qp-live-table thead', '.qp-live-table tbody tr', '.qp-live-trend', '.qp-live-records', '.qp-live-rail'].map(selector => {
+  referenceDetailRegions.push({ page: 'live', lang, theme, regions: await page.evaluate(() => Object.fromEntries(['.qp-live-top', '.qp-live-header', '.qp-live-metrics', '.qp-live-sessions', '.qp-live-session-tools', '.qp-live-table', '.qp-live-table thead', '.qp-live-table tbody tr', '.qp-live-trend', '.qp-live-records', '.qp-live-rail', '.qp-live-rail>section:first-child', '.qp-live-matrix-section', '.qp-live-matrix-heading', '.qp-live-minute-range', '.qp-live-matrix', '.qp-live-matrix-row:first-child', '.qp-live-matrix-coverage'].map(selector => {
     const { x, y, width, height, bottom } = document.querySelector(selector)!.getBoundingClientRect();
     return [selector, { x, y, width, height, bottom }];
   }))) });

@@ -314,6 +314,7 @@ export const en = {
   'redesign.liveFeed': 'Usage record feed',
   'redesign.liveNoRecords': 'No usage records in this window',
   'redesign.liveMatrix': 'Observed provider and model activity',
+  'redesign.liveReadingDetails': 'Reading details',
   'redesign.liveMatrixNote': 'Observed routes and models, not service health or latency.',
   'redesign.liveMatrixTop': 'Top 12 combinations by recorded tokens.',
   'redesign.liveClearMatrix': 'Clear provider/model filter',

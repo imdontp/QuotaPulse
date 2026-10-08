@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QuotaPulse v1.85.39 · Reference review</title>
+<style>
+body{margin:0;background:#090f19;color:#e5edff;font:14px system-ui,sans-serif}
+header{padding:16px;position:sticky;top:0;z-index:2;background:#090f19;border-bottom:1px solid #30445b}
+h1{font-size:20px;margin:0 0 8px}p{margin:8px 0;max-width:1000px;line-height:1.5}
+label{display:inline-flex;gap:8px;align-items:center;margin:8px 16px 0 0}
+select{background:#132036;color:inherit;border:1px solid #45617e;border-radius:4px;padding:6px}
+.viewport{overflow:auto;padding:16px}.frame{position:relative;width:1672px;height:941px}
+img{position:absolute;inset:0;width:1672px;height:941px}.source{opacity:0;pointer-events:none}
+a{color:#60ccff}
+</style>
+<header>
+<h1>QuotaPulse v1.85.39 · เทียบภาพ concept กับแอป</h1>
+<p>ภาพแอปใช้ข้อมูลทดสอบผ่าน API จริง ตัวเลขและข้อความบางส่วนต่างจาก concept ตามข้อกำหนดข้อมูลจริง ภาพนี้เป็นหลักฐานสำหรับตรวจงาน ยังไม่ใช่การรับรองความเหมือน 99–100%</p>
+<label>หน้า <select id="page"><option value="live">Live</option><option value="alerts">Alerts</option></select></label>
+<label>ภาพ <select id="view"><option value="actual">แอป EN / Dark</option><option value="source">Concept ต้นฉบับ</option><option value="overlay">ซ้อนภาพ 50%</option></select></label>
+<p><a href="VALIDATION-STATE.md">ผลตรวจ</a> · <a href="NEXT-SOURCE-REPAIRS.md">งานที่ยังเหลือ</a> · แสดงขนาดต้นฉบับ 1672 × 941px เลื่อนแนวนอนเพื่อดูครบ</p>
+</header>
+<main class="viewport"><div class="frame"><img id="actual" alt="ภาพแอป QuotaPulse EN Dark"><img id="source" class="source" alt="ภาพ concept ต้นฉบับ"></div></main>
+<script>
+const page = document.querySelector('#page'), view = document.querySelector('#view');
+const actual = document.querySelector('#actual'), source = document.querySelector('#source');
+function update() {
+  actual.src = `${page.value}-en-dark.png`;
+  source.src = `${page.value}-source.png`;
+  source.style.opacity = view.value === 'source' ? '1' : view.value === 'overlay' ? '.5' : '0';
+}
+page.addEventListener('change', update);view.addEventListener('change', update);update();
+</script>
+</html>

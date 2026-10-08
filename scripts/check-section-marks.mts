@@ -15,7 +15,7 @@ const targets: Record<string, Target[]> = {
     { selector: '.qp-live-trend h2', size: 28, names: { en: 'Recorded tokens per minute', th: 'โทเคนที่บันทึกต่อนาที' } },
     { selector: '.qp-live-records h2', size: 28, names: { en: 'Usage record feed', th: 'รายการใช้งานที่บันทึก' } },
     { selector: '.qp-live-rail>.qp-live-section:first-child>h2', size: 28, names: { en: 'Source advisories', th: 'คำเตือนของแหล่งข้อมูล' } },
-    { selector: '.qp-live-matrix-section>h2', size: 28, names: { en: 'Observed provider and model activity', th: 'กิจกรรมผู้ให้บริการและโมเดลที่ตรวจพบ' } },
+    { selector: '.qp-live-matrix-heading>h2', size: 28, names: { en: 'Observed provider and model activity', th: 'กิจกรรมผู้ให้บริการและโมเดลที่ตรวจพบ' } },
   ],
   cost: [
     { selector: '.qp-cost-providers h2', size: 34, names: { en: 'Value by recorded provider', th: 'มูลค่าตามผู้ให้บริการที่บันทึก' } },
