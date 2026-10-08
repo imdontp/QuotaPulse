@@ -539,7 +539,7 @@ try {
   await page.reload();
   const alerts = page.getByTestId('production-alerts');
   if (await alerts.getAttribute('lang') !== 'en') await alerts.locator('.qp-tools button').last().click();
-  await alerts.getByRole('heading', { name: 'Alerts and quota guard', exact: true }).waitFor();
+  await alerts.getByRole('heading', { name: 'Alerts & Quota Guard', exact: true }).waitFor();
   await alerts.locator('.qp-alert-risk li').first().waitFor();
   assert.equal(await alerts.locator('.qp-alert-risk li').count(), 1);
   assert.equal(await alerts.locator('.qp-alert-history li').count(), 3);
@@ -760,6 +760,7 @@ try {
         if (entry.name === 'known zero' && basis === 'api') {
           assert.ok(await screen.locator('.qp-cost-column').evaluateAll(nodes => nodes.every(node => node.getBoundingClientRect().height === 0)), 'Known zero has a nonzero chart bar');
           assert.equal(await screen.locator('.qp-cost-donut').getAttribute('data-zero'), 'true');
+          assert.equal(await screen.locator('.qp-cost-donut-edges').count(), 0, 'Known zero must not show colored monetary segments or seams');
         }
         if (entry.name === 'mixed weighted bases') {
           assert.match(await screen.locator('.qp-cost-models tbody .qp-cost-value').first().getAttribute('title') ?? '', new RegExp(basis === 'api' ? '50 / 109' : '10 / 109'));

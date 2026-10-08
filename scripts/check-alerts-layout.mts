@@ -57,12 +57,14 @@ export async function checkAlertsLayout(browser: Browser, db: DB, output: string
         });
         assert.ok(Math.abs(chart.width - chart.viewWidth) <= 1, 'Quota chart uses stretched coordinates');
         assert.equal(chart.points[0].y, 104, 'Zero quota was raised above baseline');
-        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-alert-header', '.qp-alert-summary', '.qp-alert-chart', '.qp-alert-risk', '.qp-alert-rules', '.qp-alert-forecast', '.qp-alert-guidance', '.qp-alert-history'].map(selector => {
+        const regions = await screen.evaluate(node => Object.fromEntries(['.qp-alert-top', '.qp-alert-header', '.qp-alert-summary', '.qp-alert-chart', '.qp-alert-risk', '.qp-alert-rules', '.qp-alert-forecast', '.qp-alert-guidance', '.qp-alert-history'].map(selector => {
           const { x, y, width, height, bottom } = node.querySelector(selector)!.getBoundingClientRect(); return [selector, { x, y, width, height, bottom }];
         })));
-        // refs/alerts.png places the forecast beside the heading at y72;
-        // the summary belongs below that heading within the left column.
-        assert.equal(regions['.qp-alert-header'].y, regions['.qp-alert-forecast'].y, 'Forecast is not beside heading');
+        // refs/alerts.png aligns the enclosing heading/summary panel and
+        // forecast at y72; the actual heading is inset within that panel.
+        assert.equal(regions['.qp-alert-top'].y, regions['.qp-alert-forecast'].y, 'Forecast is not beside heading/summary panel');
+        assert.ok(regions['.qp-alert-header'].y >= regions['.qp-alert-top'].y, 'Heading leaves enclosing panel');
+        assert.ok(regions['.qp-alert-summary'].bottom <= regions['.qp-alert-top'].bottom, 'Summary leaves enclosing panel');
         assert.ok(regions['.qp-alert-summary'].y >= regions['.qp-alert-header'].bottom, 'Summary overlaps heading');
         assert.ok(regions['.qp-alert-forecast'].x >= regions['.qp-alert-summary'].x + regions['.qp-alert-summary'].width, 'Forecast overlaps summary column');
         assert.ok(regions['.qp-alert-rules'].bottom < 941, `${lang}/${theme}: rules outside viewport: ${JSON.stringify(regions)}`);

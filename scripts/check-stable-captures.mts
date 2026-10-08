@@ -989,6 +989,10 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
     assert.ok(collapsedBottom < 941, `${route}: collapsed detail outside viewport (${collapsedBottom})`);
     if (destination === 'cost') {
       const cost = data as CostAnalysisResponse;
+      const positiveProviders = cost.providers.filter(row => row.pricedCalls > 0 && row.amount > 0);
+      const edgeShares = await page.locator('.qp-cost-donut-edge:not(.qp-cost-donut-inner-edge)').evaluateAll(nodes => nodes.map(node => Number(node.getAttribute('stroke-dasharray')?.split(' ')[0])));
+      assert.deepEqual(edgeShares, cost.totals.amount > 0 ? positiveProviders.map(row => row.amount / cost.totals.amount) : [], 'Decorative Cost edges must retain actual provider amount fractions');
+      assert.equal(await page.locator('.qp-cost-donut-seam').count(), cost.totals.amount > 0 && positiveProviders.length > 1 ? positiveProviders.length : 0, 'Zero or single-provider cost must not invent sector boundaries');
       const expectedBucket = route.includes('bucket=week') ? 'week' : 'day';
       assert.equal(cost.bucket, expectedBucket, `${route}: response bucket must match the selected interval`);
       assert.equal(cost.bucketMs, expectedBucket === 'week' ? 7 * 86_400_000 : 86_400_000);
@@ -2523,7 +2527,7 @@ try {
             const unitAmount = page.locator('.qp-cost-summary article:last-child strong');
             const amountLayout = await unitAmount.evaluate(node => ({ height: node.getBoundingClientRect().height, lineHeight: parseFloat(getComputedStyle(node).lineHeight) }));
             assert.ok(amountLayout.height <= amountLayout.lineHeight + 1, `${lang}/${theme}: Cost unit amount splits across lines: ${JSON.stringify(amountLayout)}`);
-            const regions = await page.evaluate(() => Object.fromEntries(['.qp-cost-overview', '.qp-cost-summary article:first-child', '.qp-cost-providers', '.qp-cost-donut', '.qp-cost-trend', '.qp-cost-models', '.qp-cost-lower'].map(selector => {
+            const regions = await page.evaluate(() => Object.fromEntries(['.qp-cost-overview', '.qp-cost-summary article:first-child', '.qp-cost-providers', '.qp-cost-donut', '.qp-cost-providers ol', '.qp-cost-providers li:first-child', '.qp-cost-trend', '.qp-cost-models', '.qp-cost-lower'].map(selector => {
               const box = document.querySelector(selector)!.getBoundingClientRect();
               return [selector, { x: box.x, y: box.y, width: box.width, height: box.height, bottom: box.bottom }];
             })));

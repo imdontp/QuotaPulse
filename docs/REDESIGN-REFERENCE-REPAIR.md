@@ -14,7 +14,15 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest Alerts heading enclosure: [v1.85.35](redesign-v1.85.35/VALIDATION-STATE.md)
+Latest Alerts primitives and Cost presentation: [v1.85.36](redesign-v1.85.36/VALIDATION-STATE.md)
+matches summary value/label ordering, actual risk severity tones, icon treatment
+and decorative forecast colors, and adds Cost sector rims/seams and a boxed
+actual-provider legend. Both four-variant production scopes pass unchanged
+tolerance. The report distinguishes intermediate/final builds and workflow
+results. [Next source repairs](redesign-v1.85.36/NEXT-SOURCE-REPAIRS.md) preserve
+the required Alerts guidance rail, Live recomposition and whole-goal gates.
+
+Previous Alerts heading enclosure: [v1.85.35](redesign-v1.85.35/VALIDATION-STATE.md)
 restores the native heading/summary frame and refines the warning inset.
 Four scoped production pairs are identical; source measurements and remaining
 styling gaps are recorded. Full authenticated workflow evidence remains from
