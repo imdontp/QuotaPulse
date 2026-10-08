@@ -445,7 +445,7 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
   const bottom = await page.locator('.qp-alert-layout').evaluate(element => element.getBoundingClientRect().bottom + scrollY);
   const geometry = await page.locator('.qp-alert-main').evaluate(element => Array.from(element.children).map(child => { const rect = child.getBoundingClientRect(); return { className: (child as HTMLElement).className, top: rect.top, bottom: rect.bottom, height: rect.height }; }));
   assert.ok(bottom <= 941, `Alerts occupied panels exceed viewport: ${JSON.stringify({ bottom, geometry })}`);
-  referenceDetailRegions.push({ page: 'alerts', lang, theme, regions: await page.evaluate(() => Object.fromEntries(['.qp-alert-top', '.qp-alert-header', '.qp-alert-summary', '.qp-alert-chart', '.qp-alert-forecast', '.qp-alert-forecast-reading', '.qp-alert-forecast-orb', '.qp-alert-forecast-facts', '.qp-alert-forecast-warning', '.qp-alert-guidance', '.qp-alert-history'].map(selector => {
+  referenceDetailRegions.push({ page: 'alerts', lang, theme, regions: await page.evaluate(() => Object.fromEntries(['.qp-alert-top', '.qp-alert-header', '.qp-alert-summary', '.qp-alert-chart', '.qp-alert-forecast', '.qp-alert-forecast-reading', '.qp-alert-forecast-orb', '.qp-alert-forecast-facts', '.qp-alert-forecast-warning', '.qp-alert-guidance', '.qp-alert-guidance-heading', '.qp-alert-guidance-list', '.qp-alert-guidance-list>li:first-child', '.qp-alert-history', '.qp-alert-history-heading'].map(selector => {
     const element = document.querySelector(selector);
     if (!element) return [selector, null];
     const { x, y, width, height, bottom } = element.getBoundingClientRect();
@@ -483,6 +483,13 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
     assert.ok((await facts.locator('small').innerText()).includes(quota.reader!.origin), 'Forecast reader origin disappeared from adjacent facts');
     const fullAt = quota.reader?.forecast.status === 'ready' ? quota.reader.forecast.projectedFullAt : null;
     const resetAt = quota.reader?.resetAt;
+    const guidance = page.locator('.qp-alert-guidance-list');
+    assert.deepEqual(await guidance.locator('li').evaluateAll(rows => rows.map(row => row.getAttribute('data-guidance'))), ['quota', 'reset', 'reader', 'notifications']);
+    const ownerHref = `#providers?${new URLSearchParams({ owner, window })}`;
+    for (const action of ['quota', 'reset']) assert.equal(await guidance.locator(`[data-guidance="${action}"] a`).getAttribute('href'), ownerHref, 'Guidance must follow the selected quota');
+    assert.equal(await guidance.locator('[data-guidance="reset"] p').innerText(), resetAt != null && resetAt > fixedNow ? `${copy['redesign.alertGuidanceReportedReset']} ${clock.format(resetAt)}` : copy['redesign.alertGuidanceResetUnknown']);
+    if (quota.reader?.sourceId != null) assert.equal(await guidance.locator('[data-guidance="reader"] a').getAttribute('href'), `#settings?section=diagnostics&source=${quota.reader.sourceId}`, 'Diagnostics must identify the actual selected reader');
+    assert.equal(await guidance.locator('[data-guidance="notifications"] a').getAttribute('href'), '#settings');
     const beforeReset = fullAt != null && resetAt != null && fullAt < resetAt;
     const warning = page.locator('.qp-alert-forecast-warning');
     assert.equal(await warning.count(), beforeReset ? 1 : 0, 'Forecast warning must follow the selected daemon forecast');
@@ -537,7 +544,23 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
       }
     } finally { await page.unroute(pattern); }
   }
-  alertChecks.push({ lang, theme, bottom, events: events.length, expandedEvents: 60, keyboardScrolled: true, empty: true });
+  const notificationPattern = '**/api/notification-settings';
+  const copy = lang === 'th' ? th : en;
+  for (const quietEnd of [420, 1320]) {
+    const settings = { enabled: false, snooze_until: fixedNow + 3_600_000, quiet_start: 1320, quiet_end: quietEnd, updated_at: fixedNow };
+    await page.route(notificationPattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(settings) }));
+    try {
+      await page.goto(`http://127.0.0.1:7804/?notification-guidance=${quietEnd}#alerts`, { waitUntil: 'domcontentloaded' });
+      await page.locator('.qp-alert-guidance-list').waitFor(); await settled(page, pending);
+      const text = await page.locator('[data-guidance="notifications"] p').innerText();
+      assert.ok(text.includes(copy['redesign.alertGuidanceNotificationsOff']));
+      assert.ok(text.includes(copy['redesign.alertGuidanceSnoozedUntil']));
+      assert.equal(text.includes(copy['redesign.alertGuidanceQuietHours']), quietEnd !== 1320, 'Equal quiet-hour endpoints disable the quiet window');
+      if (quietEnd === 420) assert.ok(text.includes('22:00–07:00'));
+      assert.ok(await page.locator('.qp-alert-layout').evaluate(element => element.getBoundingClientRect().bottom + scrollY <= 941), 'Long notification facts must remain in the native frame');
+    } finally { await page.unroute(notificationPattern); }
+  }
+  alertChecks.push({ lang, theme, bottom, events: events.length, expandedEvents: 60, keyboardScrolled: true, empty: true, selectedGuidance: true, notificationGuidance: true });
 }
 
 async function checkHistoryDetails(page: Page, lang: string, theme: string, pass: number, pending: Set<Request>) {

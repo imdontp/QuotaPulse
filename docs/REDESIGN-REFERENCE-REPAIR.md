@@ -14,7 +14,13 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest Alerts primitives and Cost presentation: [v1.85.36](redesign-v1.85.36/VALIDATION-STATE.md)
+Latest Alerts guidance composition: [v1.85.37](redesign-v1.85.37/VALIDATION-STATE.md)
+restores four factual local-action rows and a compact complete event rail.
+All four production capture pairs are byte-identical and the fresh authenticated
+workflow passes. Measured source gaps and full remaining acceptance/release
+requirements are recorded in [remaining work](redesign-v1.85.37/NEXT-SOURCE-REPAIRS.md).
+
+Previous Alerts primitives and Cost presentation: [v1.85.36](redesign-v1.85.36/VALIDATION-STATE.md)
 matches summary value/label ordering, actual risk severity tones, icon treatment
 and decorative forecast colors, and adds Cost sector rims/seams and a boxed
 actual-provider legend. Both four-variant production scopes pass unchanged
