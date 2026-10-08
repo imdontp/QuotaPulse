@@ -37,15 +37,17 @@
 .qp-model-table-wrap tr[data-selected=true]>td:last-child { border-radius:0 6px 6px 0; box-shadow:inset -1px 0 #365eff,inset 0 1px #365eff,inset 0 -1px #365eff; }
 .qp-model-ratio { display:grid; gap:3px; width:56px; }
 .qp-model-ratio .qp-bar { height:4px; }
-.qp-model-table-wrap button { color:var(--qp-accent); font-weight:600; text-align:left; }
+.qp-model-table-wrap button { color:var(--qp-text); font-weight:500; text-align:left; }
+.qp-model-table-wrap tr[data-selected=true] button { font-weight:600; }
 .qp-model-detail { display:grid; gap:12px; min-width:0; }
 .qp-model-detail h3 { font-size:19px; overflow-wrap:anywhere; }
 .qp-model-detail-identity { display:flex; align-items:center; gap:12px; min-width:0; }
 .qp-model-detail-identity>div { display:grid; gap:3px; min-width:0; }
-.qp-model-detail-identity h3 { font-size:17px; line-height:1.3; }
+.qp-model-detail-identity h3 { font-size:18px; font-weight:600; line-height:1.3; }
 .qp-model-detail-identity p { margin:0; overflow-wrap:anywhere; }
-.qp-model-detail-provider { display:grid; place-items:center; width:46px; height:46px; flex:none; border:1px solid color-mix(in srgb,var(--qp-accent) 30%,var(--qp-border)); border-radius:12px; color:var(--qp-text); background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 17%,var(--qp-panel)),var(--qp-panel)); box-shadow:inset 0 1px 0 color-mix(in srgb,var(--qp-accent) 16%,transparent); font-size:28px; }
+.qp-model-detail-provider { display:grid; place-items:center; width:56px; height:56px; flex:none; border:1px solid color-mix(in srgb,var(--qp-accent) 30%,var(--qp-border)); border-radius:12px; color:var(--qp-text); background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 17%,var(--qp-panel)),var(--qp-panel)); box-shadow:inset 0 1px 0 color-mix(in srgb,var(--qp-accent) 16%,transparent); font-size:28px; }
 .qp-model-detail a { color:var(--qp-accent); font-size:11px; }
+.qp-model-detail-provider { font-size:38px; }
 .qp-model-detail-stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .qp-model-detail-stats>div { display:grid; gap:5px; border:1px solid var(--qp-border); border-radius:7px; padding:8px; }
 .qp-model-detail-stats span { color:var(--qp-muted); font-size:10px; }
@@ -106,6 +108,7 @@
 .qp-model-providers button span:not(.qp-bar) { color:var(--qp-muted); }
 .qp-model-error { color:var(--qp-warning); font-size:11px; }
 .qp-model-table-wrap td button,.qp-model-brand { display:inline-flex; align-items:center; gap:6px; }
+.qp-model-maker-mark { display:grid; place-items:center; width:22px; height:22px; flex:none; border:1px solid color-mix(in srgb,var(--qp-accent) 15%,var(--qp-border)); border-radius:5px; background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 12%,var(--qp-panel)),var(--qp-panel)); }
 .qp-model-table-wrap td svg,.qp-model-table-wrap td span>svg { width:17px; height:17px; flex-shrink:0; }
 .qp-redesign[data-theme=dark] .qp-model-donut { box-shadow:0 0 14px #0d8aff38,inset 0 0 4px #8bbaff66; }
 @media(min-width:1280px) {
@@ -118,7 +121,7 @@
   .qp-model-overview:has(.qp-model-summary)::before { content:""; position:absolute; inset:0 -2px -12px; z-index:-1; pointer-events:none; border:1px solid var(--qp-border); border-radius:10px; background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 2%,var(--qp-panel)),var(--qp-panel)); }
   .qp-model-summary article,.qp-model-detail .qp-panel { padding:12px; gap:6px; }
   .qp-model-summary strong { line-height:1.2; }
-  .qp-model-detail h3 { font-size:17px; line-height:1.3; }
+  .qp-model-detail h3 { font-size:18px; font-weight:600; line-height:1.3; }
   .qp-model-detail { gap:10px; }
   .qp-model-detail h2 { line-height:1.3; }
   .qp-model-summary article { align-content:start; min-height:106px; row-gap:4px; }
@@ -136,6 +139,7 @@
   .qp-model-donut span { width:84px; height:84px; font-size:15px; }
   .qp-model-detail ul { gap:4px; }
   .qp-model-detail .qp-panel { padding:10px; }
+  .qp-model-detail>.qp-panel:first-child { padding:16px; gap:12px; }
   .qp-model-trend { height:112px; }
   /* Keep the original comparison/footer composition even for sparse real records. */
   .qp-model-comparison { display:flex; flex-direction:column; height:575px; margin-top:11px; padding:10px 8px; gap:8px; }

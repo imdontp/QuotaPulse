@@ -1,0 +1,3581 @@
+{
+  "status": "repeatable within recorded raster tolerance; review candidates, not approved visual baselines",
+  "scope": "overview",
+  "captureMatrix": {
+    "languages": [
+      "en",
+      "th"
+    ],
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "complete": true
+  },
+  "clock": 1747489320000,
+  "isoClock": "2025-05-17T13:42:00.000Z",
+  "browser": "154.0.8037.97",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "timezone": "Asia/Bangkok",
+  "dpr": 1,
+  "reducedMotion": true,
+  "tolerance": {
+    "maxChannelDelta": 10,
+    "maxChangedPixelFraction": 0.00005,
+    "masks": false
+  },
+  "captureNormalization": [
+    "CSS transitions disabled and caret hidden before screenshot only",
+    "Playwright animations disabled during screenshot"
+  ],
+  "productionIndexSha256": "5fd6f0a03f9773077442b23128e1ef3d0b48e9bacf7e41bc3f9eab68faacbcc9",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "sessions": 12,
+    "runtimeMapProject": "QuotaPulse",
+    "runtimeMapSessions": 12,
+    "runtimeMapRecords": 39,
+    "allRangeProjects": 5,
+    "allRangeRecords": 43,
+    "namedProjects": 5,
+    "projectNames": [
+      "QuotaPulse",
+      "Agent Platform",
+      "Edge Services",
+      "Developer Tools",
+      "Research Lab"
+    ],
+    "models": 6,
+    "modelNames": [
+      "DeepSeek V4.1",
+      "GPT-5.x",
+      "Claude 3.7",
+      "Claude 3.5",
+      "Others",
+      "GPT-4.1 mini"
+    ],
+    "modelShares": [
+      38,
+      24,
+      18,
+      11,
+      9,
+      0
+    ],
+    "providers": 4,
+    "records": 39,
+    "quotaOwners": [
+      "OpenAI Subscription",
+      "OpenCode Go Subscription"
+    ],
+    "cacheSharePercent": 42,
+    "monthlySelection": "OpenAI Subscription · monthly"
+  },
+  "checks": [
+    "frozen daemon and browser Date",
+    "source-matched date on the screenshot clock",
+    "reference-matched Overview section labels and model rail accessible name",
+    "reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection",
+    "8 screenshots / 4 pairs within raster tolerance",
+    "independent browser process per language/theme set",
+    "fresh document per route",
+    "production web without Vite",
+    "fonts ready and API settled",
+    "no page overflow",
+    "no external or write requests",
+    "no browser errors",
+    "Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration",
+    "complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow"
+  ],
+  "referenceColumnChecks": [],
+  "liveDensityChecks": [],
+  "liveMinuteChecks": [],
+  "liveRefreshChecks": [],
+  "overviewLayouts": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "heroBottom": 462,
+      "activityBottom": 977.1875,
+      "models": 5,
+      "railHeight": 259.984375,
+      "runtimeProvidersVisible": 4,
+      "edgeMaxError": 0,
+      "runtimeCards": [
+        {
+          "dimension": "project",
+          "x": 282,
+          "y": 562,
+          "width": 208.359375,
+          "height": 80
+        },
+        {
+          "dimension": "harness",
+          "x": 633,
+          "y": 526.5,
+          "width": 153.078125,
+          "height": 34
+        },
+        {
+          "dimension": "provider",
+          "x": 953,
+          "y": 526.5,
+          "width": 159.75,
+          "height": 34
+        },
+        {
+          "dimension": "model",
+          "x": 1245,
+          "y": 526.5,
+          "width": 298.921875,
+          "height": 34
+        }
+      ],
+      "pulseCenter": {
+        "x": 734.546875,
+        "y": 252
+      },
+      "modelTitleOutside": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "heroBottom": 462,
+      "activityBottom": 977.1875,
+      "models": 5,
+      "railHeight": 259.984375,
+      "runtimeProvidersVisible": 4,
+      "edgeMaxError": 0,
+      "runtimeCards": [
+        {
+          "dimension": "project",
+          "x": 282,
+          "y": 562,
+          "width": 208.359375,
+          "height": 80
+        },
+        {
+          "dimension": "harness",
+          "x": 633,
+          "y": 526.5,
+          "width": 153.078125,
+          "height": 34
+        },
+        {
+          "dimension": "provider",
+          "x": 953,
+          "y": 526.5,
+          "width": 159.75,
+          "height": 34
+        },
+        {
+          "dimension": "model",
+          "x": 1245,
+          "y": 526.5,
+          "width": 298.921875,
+          "height": 34
+        }
+      ],
+      "pulseCenter": {
+        "x": 734.546875,
+        "y": 252
+      },
+      "modelTitleOutside": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "heroBottom": 462,
+      "activityBottom": 974.09375,
+      "models": 5,
+      "railHeight": 259.984375,
+      "runtimeProvidersVisible": 4,
+      "edgeMaxError": 0,
+      "runtimeCards": [
+        {
+          "dimension": "project",
+          "x": 282,
+          "y": 562,
+          "width": 208.359375,
+          "height": 80
+        },
+        {
+          "dimension": "harness",
+          "x": 633,
+          "y": 526.5,
+          "width": 153.078125,
+          "height": 34
+        },
+        {
+          "dimension": "provider",
+          "x": 953,
+          "y": 526.5,
+          "width": 159.75,
+          "height": 34
+        },
+        {
+          "dimension": "model",
+          "x": 1245,
+          "y": 526.5,
+          "width": 298.921875,
+          "height": 34
+        }
+      ],
+      "pulseCenter": {
+        "x": 734.546875,
+        "y": 252
+      },
+      "modelTitleOutside": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "heroBottom": 462,
+      "activityBottom": 974.09375,
+      "models": 5,
+      "railHeight": 259.984375,
+      "runtimeProvidersVisible": 4,
+      "edgeMaxError": 0,
+      "runtimeCards": [
+        {
+          "dimension": "project",
+          "x": 282,
+          "y": 562,
+          "width": 208.359375,
+          "height": 80
+        },
+        {
+          "dimension": "harness",
+          "x": 633,
+          "y": 526.5,
+          "width": 153.078125,
+          "height": 34
+        },
+        {
+          "dimension": "provider",
+          "x": 953,
+          "y": 526.5,
+          "width": 159.75,
+          "height": 34
+        },
+        {
+          "dimension": "model",
+          "x": 1245,
+          "y": 526.5,
+          "width": 298.921875,
+          "height": 34
+        }
+      ],
+      "pulseCenter": {
+        "x": 734.546875,
+        "y": 252
+      },
+      "modelTitleOutside": true
+    }
+  ],
+  "overviewReferenceLabelChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "labels": [
+        "Subscriptions & Quotas",
+        "Top Models (by tokens)",
+        "Quota Runway",
+        "Pulse Insights",
+        "Live Activity"
+      ],
+      "modelRailLabel": "Top Models (by tokens)"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "labels": [
+        "Subscriptions & Quotas",
+        "Top Models (by tokens)",
+        "Quota Runway",
+        "Pulse Insights",
+        "Live Activity"
+      ],
+      "modelRailLabel": "Top Models (by tokens)"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "labels": [
+        "การสมัครและโควตา",
+        "โมเดลยอดนิยม (ตามจำนวนโทเค็น)",
+        "ระยะโควตา",
+        "ข้อมูลเชิงลึก Pulse",
+        "กิจกรรมสด"
+      ],
+      "modelRailLabel": "โมเดลยอดนิยม (ตามจำนวนโทเค็น)"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "labels": [
+        "การสมัครและโควตา",
+        "โมเดลยอดนิยม (ตามจำนวนโทเค็น)",
+        "ระยะโควตา",
+        "ข้อมูลเชิงลึก Pulse",
+        "กิจกรรมสด"
+      ],
+      "modelRailLabel": "โมเดลยอดนิยม (ตามจำนวนโทเค็น)"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "labels": [
+        "Subscriptions & Quotas",
+        "Top Models (by tokens)",
+        "Quota Runway",
+        "Pulse Insights",
+        "Live Activity"
+      ],
+      "modelRailLabel": "Top Models (by tokens)"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "labels": [
+        "Subscriptions & Quotas",
+        "Top Models (by tokens)",
+        "Quota Runway",
+        "Pulse Insights",
+        "Live Activity"
+      ],
+      "modelRailLabel": "Top Models (by tokens)"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "labels": [
+        "การสมัครและโควตา",
+        "โมเดลยอดนิยม (ตามจำนวนโทเค็น)",
+        "ระยะโควตา",
+        "ข้อมูลเชิงลึก Pulse",
+        "กิจกรรมสด"
+      ],
+      "modelRailLabel": "โมเดลยอดนิยม (ตามจำนวนโทเค็น)"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "labels": [
+        "การสมัครและโควตา",
+        "โมเดลยอดนิยม (ตามจำนวนโทเค็น)",
+        "ระยะโควตา",
+        "ข้อมูลเชิงลึก Pulse",
+        "กิจกรรมสด"
+      ],
+      "modelRailLabel": "โมเดลยอดนิยม (ตามจำนวนโทเค็น)"
+    }
+  ],
+  "overviewConceptDataChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "periodRange": "month",
+      "modelNames": [
+        "DeepSeek V4.1",
+        "GPT-5.x",
+        "Claude 3.7",
+        "Claude 3.5",
+        "Others"
+      ],
+      "modelShares": [
+        38,
+        24,
+        18,
+        11,
+        9
+      ],
+      "quotaGroups": [
+        {
+          "owner": "OpenAI (Subscription)",
+          "accessibleOwner": "OpenAI Subscription",
+          "windows": [
+            "5h",
+            "monthly",
+            "weekly"
+          ],
+          "labels": [
+            "5h quota",
+            "Weekly quota",
+            "Monthly quota"
+          ]
+        },
+        {
+          "owner": "OpenCode Go (Subscription)",
+          "accessibleOwner": "OpenCode Go Subscription",
+          "windows": [
+            "daily",
+            "monthly"
+          ],
+          "labels": [
+            "Monthly quota",
+            "Daily quota"
+          ]
+        }
+      ],
+      "quotaContentHeight": 357,
+      "quotaViewportHeight": 357,
+      "selectedWindow": "monthly",
+      "pulsePercent": 72,
+      "pulseLabel": "Monthly used",
+      "pulseDetail": "721M Recorded tokens · This month",
+      "cacheShare": 42,
+      "cacheSavingsUsd": 8.83023129072,
+      "cacheSavingsKnownCalls": 70,
+      "mapProject": "QuotaPulse",
+      "mapProjects": 1,
+      "mapRecords": 39,
+      "mapSessions": 13,
+      "mapActiveSessions": 12,
+      "mapHarnessSessions": {
+        "hermes": 6,
+        "codex": 4,
+        "claude-code": 2,
+        "opencode": 0
+      }
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "periodRange": "month",
+      "modelNames": [
+        "DeepSeek V4.1",
+        "GPT-5.x",
+        "Claude 3.7",
+        "Claude 3.5",
+        "Others"
+      ],
+      "modelShares": [
+        38,
+        24,
+        18,
+        11,
+        9
+      ],
+      "quotaGroups": [
+        {
+          "owner": "OpenAI (Subscription)",
+          "accessibleOwner": "OpenAI Subscription",
+          "windows": [
+            "5h",
+            "monthly",
+            "weekly"
+          ],
+          "labels": [
+            "5h quota",
+            "Weekly quota",
+            "Monthly quota"
+          ]
+        },
+        {
+          "owner": "OpenCode Go (Subscription)",
+          "accessibleOwner": "OpenCode Go Subscription",
+          "windows": [
+            "daily",
+            "monthly"
+          ],
+          "labels": [
+            "Monthly quota",
+            "Daily quota"
+          ]
+        }
+      ],
+      "quotaContentHeight": 357,
+      "quotaViewportHeight": 357,
+      "selectedWindow": "monthly",
+      "pulsePercent": 72,
+      "pulseLabel": "Monthly used",
+      "pulseDetail": "721M Recorded tokens · This month",
+      "cacheShare": 42,
+      "cacheSavingsUsd": 8.83023129072,
+      "cacheSavingsKnownCalls": 70,
+      "mapProject": "QuotaPulse",
+      "mapProjects": 1,
+      "mapRecords": 39,
+      "mapSessions": 13,
+      "mapActiveSessions": 12,
+      "mapHarnessSessions": {
+        "hermes": 6,
+        "codex": 4,
+        "claude-code": 2,
+        "opencode": 0
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "periodRange": "month",
+      "modelNames": [
+        "DeepSeek V4.1",
+        "GPT-5.x",
+        "Claude 3.7",
+        "Claude 3.5",
+        "Others"
+      ],
+      "modelShares": [
+        38,
+        24,
+        18,
+        11,
+        9
+      ],
+      "quotaGroups": [
+        {
+          "owner": "OpenAI (Subscription)",
+          "accessibleOwner": "OpenAI Subscription",
+          "windows": [
+            "5h",
+            "monthly",
+            "weekly"
+          ],
+          "labels": [
+            "โควตา 5 ชม.",
+            "โควตารายสัปดาห์",
+            "โควตารายเดือน"
+          ]
+        },
+        {
+          "owner": "OpenCode Go (Subscription)",
+          "accessibleOwner": "OpenCode Go Subscription",
+          "windows": [
+            "daily",
+            "monthly"
+          ],
+          "labels": [
+            "โควตารายเดือน",
+            "โควตารายวัน"
+          ]
+        }
+      ],
+      "quotaContentHeight": 357,
+      "quotaViewportHeight": 357,
+      "selectedWindow": "monthly",
+      "pulsePercent": 72,
+      "pulseLabel": "ใช้โควตารายเดือน",
+      "pulseDetail": "721M โทเคนที่บันทึก · เดือนนี้",
+      "cacheShare": 42,
+      "cacheSavingsUsd": 8.83023129072,
+      "cacheSavingsKnownCalls": 70,
+      "mapProject": "QuotaPulse",
+      "mapProjects": 1,
+      "mapRecords": 39,
+      "mapSessions": 13,
+      "mapActiveSessions": 12,
+      "mapHarnessSessions": {
+        "hermes": 6,
+        "codex": 4,
+        "claude-code": 2,
+        "opencode": 0
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "periodRange": "month",
+      "modelNames": [
+        "DeepSeek V4.1",
+        "GPT-5.x",
+        "Claude 3.7",
+        "Claude 3.5",
+        "Others"
+      ],
+      "modelShares": [
+        38,
+        24,
+        18,
+        11,
+        9
+      ],
+      "quotaGroups": [
+        {
+          "owner": "OpenAI (Subscription)",
+          "accessibleOwner": "OpenAI Subscription",
+          "windows": [
+            "5h",
+            "monthly",
+            "weekly"
+          ],
+          "labels": [
+            "โควตา 5 ชม.",
+            "โควตารายสัปดาห์",
+            "โควตารายเดือน"
+          ]
+        },
+        {
+          "owner": "OpenCode Go (Subscription)",
+          "accessibleOwner": "OpenCode Go Subscription",
+          "windows": [
+            "daily",
+            "monthly"
+          ],
+          "labels": [
+            "โควตารายเดือน",
+            "โควตารายวัน"
+          ]
+        }
+      ],
+      "quotaContentHeight": 357,
+      "quotaViewportHeight": 357,
+      "selectedWindow": "monthly",
+      "pulsePercent": 72,
+      "pulseLabel": "ใช้โควตารายเดือน",
+      "pulseDetail": "721M โทเคนที่บันทึก · เดือนนี้",
+      "cacheShare": 42,
+      "cacheSavingsUsd": 8.83023129072,
+      "cacheSavingsKnownCalls": 70,
+      "mapProject": "QuotaPulse",
+      "mapProjects": 1,
+      "mapRecords": 39,
+      "mapSessions": 13,
+      "mapActiveSessions": 12,
+      "mapHarnessSessions": {
+        "hermes": 6,
+        "codex": 4,
+        "claude-code": 2,
+        "opencode": 0
+      }
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "periodRange": "month",
+      "modelNames": [
+        "DeepSeek V4.1",
+        "GPT-5.x",
+        "Claude 3.7",
+        "Claude 3.5",
+        "Others"
+      ],
+      "modelShares": [
+        38,
+        24,
+        18,
+        11,
+        9
+      ],
+      "quotaGroups": [
+        {
+          "owner": "OpenAI (Subscription)",
+          "accessibleOwner": "OpenAI Subscription",
+          "windows": [
+            "5h",
+            "monthly",
+            "weekly"
+          ],
+          "labels": [
+            "5h quota",
+            "Weekly quota",
+            "Monthly quota"
+          ]
+        },
+        {
+          "owner": "OpenCode Go (Subscription)",
+          "accessibleOwner": "OpenCode Go Subscription",
+          "windows": [
+            "daily",
+            "monthly"
+          ],
+          "labels": [
+            "Monthly quota",
+            "Daily quota"
+          ]
+        }
+      ],
+      "quotaContentHeight": 357,
+      "quotaViewportHeight": 357,
+      "selectedWindow": "monthly",
+      "pulsePercent": 72,
+      "pulseLabel": "Monthly used",
+      "pulseDetail": "721M Recorded tokens · This month",
+      "cacheShare": 42,
+      "cacheSavingsUsd": 8.83023129072,
+      "cacheSavingsKnownCalls": 70,
+      "mapProject": "QuotaPulse",
+      "mapProjects": 1,
+      "mapRecords": 39,
+      "mapSessions": 13,
+      "mapActiveSessions": 12,
+      "mapHarnessSessions": {
+        "hermes": 6,
+        "codex": 4,
+        "claude-code": 2,
+        "opencode": 0
+      }
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "periodRange": "month",
+      "modelNames": [
+        "DeepSeek V4.1",
+        "GPT-5.x",
+        "Claude 3.7",
+        "Claude 3.5",
+        "Others"
+      ],
+      "modelShares": [
+        38,
+        24,
+        18,
+        11,
+        9
+      ],
+      "quotaGroups": [
+        {
+          "owner": "OpenAI (Subscription)",
+          "accessibleOwner": "OpenAI Subscription",
+          "windows": [
+            "5h",
+            "monthly",
+            "weekly"
+          ],
+          "labels": [
+            "5h quota",
+            "Weekly quota",
+            "Monthly quota"
+          ]
+        },
+        {
+          "owner": "OpenCode Go (Subscription)",
+          "accessibleOwner": "OpenCode Go Subscription",
+          "windows": [
+            "daily",
+            "monthly"
+          ],
+          "labels": [
+            "Monthly quota",
+            "Daily quota"
+          ]
+        }
+      ],
+      "quotaContentHeight": 357,
+      "quotaViewportHeight": 357,
+      "selectedWindow": "monthly",
+      "pulsePercent": 72,
+      "pulseLabel": "Monthly used",
+      "pulseDetail": "721M Recorded tokens · This month",
+      "cacheShare": 42,
+      "cacheSavingsUsd": 8.83023129072,
+      "cacheSavingsKnownCalls": 70,
+      "mapProject": "QuotaPulse",
+      "mapProjects": 1,
+      "mapRecords": 39,
+      "mapSessions": 13,
+      "mapActiveSessions": 12,
+      "mapHarnessSessions": {
+        "hermes": 6,
+        "codex": 4,
+        "claude-code": 2,
+        "opencode": 0
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "periodRange": "month",
+      "modelNames": [
+        "DeepSeek V4.1",
+        "GPT-5.x",
+        "Claude 3.7",
+        "Claude 3.5",
+        "Others"
+      ],
+      "modelShares": [
+        38,
+        24,
+        18,
+        11,
+        9
+      ],
+      "quotaGroups": [
+        {
+          "owner": "OpenAI (Subscription)",
+          "accessibleOwner": "OpenAI Subscription",
+          "windows": [
+            "5h",
+            "monthly",
+            "weekly"
+          ],
+          "labels": [
+            "โควตา 5 ชม.",
+            "โควตารายสัปดาห์",
+            "โควตารายเดือน"
+          ]
+        },
+        {
+          "owner": "OpenCode Go (Subscription)",
+          "accessibleOwner": "OpenCode Go Subscription",
+          "windows": [
+            "daily",
+            "monthly"
+          ],
+          "labels": [
+            "โควตารายเดือน",
+            "โควตารายวัน"
+          ]
+        }
+      ],
+      "quotaContentHeight": 357,
+      "quotaViewportHeight": 357,
+      "selectedWindow": "monthly",
+      "pulsePercent": 72,
+      "pulseLabel": "ใช้โควตารายเดือน",
+      "pulseDetail": "721M โทเคนที่บันทึก · เดือนนี้",
+      "cacheShare": 42,
+      "cacheSavingsUsd": 8.83023129072,
+      "cacheSavingsKnownCalls": 70,
+      "mapProject": "QuotaPulse",
+      "mapProjects": 1,
+      "mapRecords": 39,
+      "mapSessions": 13,
+      "mapActiveSessions": 12,
+      "mapHarnessSessions": {
+        "hermes": 6,
+        "codex": 4,
+        "claude-code": 2,
+        "opencode": 0
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "periodRange": "month",
+      "modelNames": [
+        "DeepSeek V4.1",
+        "GPT-5.x",
+        "Claude 3.7",
+        "Claude 3.5",
+        "Others"
+      ],
+      "modelShares": [
+        38,
+        24,
+        18,
+        11,
+        9
+      ],
+      "quotaGroups": [
+        {
+          "owner": "OpenAI (Subscription)",
+          "accessibleOwner": "OpenAI Subscription",
+          "windows": [
+            "5h",
+            "monthly",
+            "weekly"
+          ],
+          "labels": [
+            "โควตา 5 ชม.",
+            "โควตารายสัปดาห์",
+            "โควตารายเดือน"
+          ]
+        },
+        {
+          "owner": "OpenCode Go (Subscription)",
+          "accessibleOwner": "OpenCode Go Subscription",
+          "windows": [
+            "daily",
+            "monthly"
+          ],
+          "labels": [
+            "โควตารายเดือน",
+            "โควตารายวัน"
+          ]
+        }
+      ],
+      "quotaContentHeight": 357,
+      "quotaViewportHeight": 357,
+      "selectedWindow": "monthly",
+      "pulsePercent": 72,
+      "pulseLabel": "ใช้โควตารายเดือน",
+      "pulseDetail": "721M โทเคนที่บันทึก · เดือนนี้",
+      "cacheShare": 42,
+      "cacheSavingsUsd": 8.83023129072,
+      "cacheSavingsKnownCalls": 70,
+      "mapProject": "QuotaPulse",
+      "mapProjects": 1,
+      "mapRecords": 39,
+      "mapSessions": 13,
+      "mapActiveSessions": 12,
+      "mapHarnessSessions": {
+        "hermes": 6,
+        "codex": 4,
+        "claude-code": 2,
+        "opencode": 0
+      }
+    }
+  ],
+  "projectCardChecks": [],
+  "providerChecks": [],
+  "modelComparisonChecks": [],
+  "costAxisChecks": [],
+  "historyChecks": [],
+  "historyRailChecks": [],
+  "pageHeadingChecks": [],
+  "sectionMarkChecks": [],
+  "historyDensityChecks": [],
+  "alertChecks": [],
+  "chartChecks": [],
+  "modelCostChecks": [],
+  "quotaChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 50,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "segments": 5,
+      "samples": 50,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "segments": 5,
+      "samples": 50,
+      "unknown": 4
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "segments": 5,
+      "samples": 50,
+      "unknown": 4
+    }
+  ],
+  "pulseCoreChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "assetSha256": "26c7a75d8c40eabede74299de44ee607832db29d8a1d0d9572f02e00e83f4e03",
+      "imageWidth": 1254,
+      "selectedUsed": [
+        83,
+        62,
+        72,
+        58,
+        34
+      ],
+      "boundaries": [
+        0,
+        100,
+        125
+      ],
+      "unknown": true,
+      "reducedMotion": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "assetSha256": "26c7a75d8c40eabede74299de44ee607832db29d8a1d0d9572f02e00e83f4e03",
+      "imageWidth": 1254,
+      "selectedUsed": [
+        83,
+        62,
+        72,
+        58,
+        34
+      ],
+      "boundaries": [
+        0,
+        100,
+        125
+      ],
+      "unknown": true,
+      "reducedMotion": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "assetSha256": "26c7a75d8c40eabede74299de44ee607832db29d8a1d0d9572f02e00e83f4e03",
+      "imageWidth": 1254,
+      "selectedUsed": [
+        83,
+        62,
+        72,
+        58,
+        34
+      ],
+      "boundaries": [
+        0,
+        100,
+        125
+      ],
+      "unknown": true,
+      "reducedMotion": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "assetSha256": "26c7a75d8c40eabede74299de44ee607832db29d8a1d0d9572f02e00e83f4e03",
+      "imageWidth": 1254,
+      "selectedUsed": [
+        83,
+        62,
+        72,
+        58,
+        34
+      ],
+      "boundaries": [
+        0,
+        100,
+        125
+      ],
+      "unknown": true,
+      "reducedMotion": true
+    }
+  ],
+  "pulseAmbientChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 760,
+      "height": 248.875,
+      "centerError": 0,
+      "decorative": true,
+      "staticArtwork": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 760,
+      "height": 248.875,
+      "centerError": 0,
+      "decorative": true,
+      "staticArtwork": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 760,
+      "height": 248.875,
+      "centerError": 0,
+      "decorative": true,
+      "staticArtwork": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 760,
+      "height": 248.875,
+      "centerError": 0,
+      "decorative": true,
+      "staticArtwork": true
+    }
+  ],
+  "modelMarkChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "vendors": [
+        "deepseek",
+        "openai",
+        "anthropic",
+        "anthropic"
+      ],
+      "unknown": 1,
+      "tokens": 721000012,
+      "legacyFallback": true,
+      "keyboardDetail": true,
+      "framedMarkContained": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "vendors": [
+        "deepseek",
+        "openai",
+        "anthropic",
+        "anthropic"
+      ],
+      "unknown": 1,
+      "tokens": 721000012,
+      "legacyFallback": true,
+      "keyboardDetail": true,
+      "framedMarkContained": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "vendors": [
+        "deepseek",
+        "openai",
+        "anthropic",
+        "anthropic"
+      ],
+      "unknown": 1,
+      "tokens": 721000012,
+      "legacyFallback": true,
+      "keyboardDetail": true,
+      "framedMarkContained": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "vendors": [
+        "deepseek",
+        "openai",
+        "anthropic",
+        "anthropic"
+      ],
+      "unknown": 1,
+      "tokens": 721000012,
+      "legacyFallback": true,
+      "keyboardDetail": true,
+      "framedMarkContained": true
+    }
+  ],
+  "overviewPeriodChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "tokensByRange": {
+        "week": 721000013,
+        "month": 721000013,
+        "all": 721000013,
+        "today": 721000012
+      },
+      "selectedQuotaPreserved": true,
+      "customSourcePreserved": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "tokensByRange": {
+        "week": 721000013,
+        "month": 721000013,
+        "all": 721000013,
+        "today": 721000012
+      },
+      "selectedQuotaPreserved": true,
+      "customSourcePreserved": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "tokensByRange": {
+        "week": 721000013,
+        "month": 721000013,
+        "all": 721000013,
+        "today": 721000012
+      },
+      "selectedQuotaPreserved": true,
+      "customSourcePreserved": true,
+      "focusRestored": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "tokensByRange": {
+        "week": 721000013,
+        "month": 721000013,
+        "all": 721000013,
+        "today": 721000012
+      },
+      "selectedQuotaPreserved": true,
+      "customSourcePreserved": true,
+      "focusRestored": true
+    }
+  ],
+  "overviewInsightChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "cards": 4,
+      "cacheShare": 41.999999462285295,
+      "pricedCalls": 77,
+      "totalCalls": 78,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "empty"
+      ]
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "cards": 4,
+      "cacheShare": 41.999999462285295,
+      "pricedCalls": 77,
+      "totalCalls": 78,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "empty"
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "cards": 4,
+      "cacheShare": 41.999999462285295,
+      "pricedCalls": 77,
+      "totalCalls": 78,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "empty"
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "cards": 4,
+      "cacheShare": 41.999999462285295,
+      "pricedCalls": 77,
+      "totalCalls": 78,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "empty"
+      ]
+    }
+  ],
+  "quotaGroupChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "owners": 2,
+      "windows": 8,
+      "sameNameSeparate": true,
+      "keyboardScrolled": true,
+      "historyIdentity": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "owners": 2,
+      "windows": 8,
+      "sameNameSeparate": true,
+      "keyboardScrolled": true,
+      "historyIdentity": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "owners": 2,
+      "windows": 8,
+      "sameNameSeparate": true,
+      "keyboardScrolled": true,
+      "historyIdentity": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "owners": 2,
+      "windows": 8,
+      "sameNameSeparate": true,
+      "keyboardScrolled": true,
+      "historyIdentity": true
+    }
+  ],
+  "recentActivityChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "records": 4,
+      "keyboardHistory": true,
+      "unknownGrain": true,
+      "largeTokens": true,
+      "perHarnessLatestQueries": true,
+      "futureRangeEmpty": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "records": 4,
+      "keyboardHistory": true,
+      "unknownGrain": true,
+      "largeTokens": true,
+      "perHarnessLatestQueries": true,
+      "futureRangeEmpty": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "records": 4,
+      "keyboardHistory": true,
+      "unknownGrain": true,
+      "largeTokens": true,
+      "perHarnessLatestQueries": true,
+      "futureRangeEmpty": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "records": 4,
+      "keyboardHistory": true,
+      "unknownGrain": true,
+      "largeTokens": true,
+      "perHarnessLatestQueries": true,
+      "futureRangeEmpty": true
+    }
+  ],
+  "activityBitmapChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "recordId": 1,
+      "points": 31,
+      "width": 310,
+      "height": 22,
+      "paintedPixels": 2032,
+      "sha256": "260bd0abea25db2d99a2e1e1cff7bad7e195838dc637b4fcf4294621a447c2c8"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "recordId": 13,
+      "points": 31,
+      "width": 310,
+      "height": 22,
+      "paintedPixels": 2038,
+      "sha256": "b4c381c456e137a999b6270cd0dd88ee2dc06124600faa7c7f264bd649801180"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "recordId": 40,
+      "points": 31,
+      "width": 311,
+      "height": 22,
+      "paintedPixels": 1517,
+      "sha256": "4df918aa624bd64a89815327d4420d20073160699ef31a22fdb67c5d770d5210"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "recordId": 1,
+      "points": 31,
+      "width": 310,
+      "height": 22,
+      "paintedPixels": 1319,
+      "sha256": "7fc58761f72a2c3cd52700bfd26abe190846555bce963cb65661f4061e148c98"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "recordId": 13,
+      "points": 31,
+      "width": 310,
+      "height": 22,
+      "paintedPixels": 1324,
+      "sha256": "84c85c3b1799cc0bacf7b14b5510a0995939e38f85d0e8cba2c3e6d1a3427bf4"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "recordId": 40,
+      "points": 31,
+      "width": 311,
+      "height": 22,
+      "paintedPixels": 859,
+      "sha256": "6ea7621e1f4e6463545993607cca0ebe61c12c72621e5e56ece7f21ee045541a"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "recordId": 1,
+      "points": 31,
+      "width": 310,
+      "height": 22,
+      "paintedPixels": 2032,
+      "sha256": "260bd0abea25db2d99a2e1e1cff7bad7e195838dc637b4fcf4294621a447c2c8"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "recordId": 13,
+      "points": 31,
+      "width": 310,
+      "height": 22,
+      "paintedPixels": 2038,
+      "sha256": "b4c381c456e137a999b6270cd0dd88ee2dc06124600faa7c7f264bd649801180"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "recordId": 40,
+      "points": 31,
+      "width": 311,
+      "height": 22,
+      "paintedPixels": 1517,
+      "sha256": "4df918aa624bd64a89815327d4420d20073160699ef31a22fdb67c5d770d5210"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "recordId": 1,
+      "points": 31,
+      "width": 310,
+      "height": 22,
+      "paintedPixels": 1319,
+      "sha256": "7fc58761f72a2c3cd52700bfd26abe190846555bce963cb65661f4061e148c98"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "recordId": 13,
+      "points": 31,
+      "width": 310,
+      "height": 22,
+      "paintedPixels": 1324,
+      "sha256": "84c85c3b1799cc0bacf7b14b5510a0995939e38f85d0e8cba2c3e6d1a3427bf4"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "recordId": 40,
+      "points": 31,
+      "width": 311,
+      "height": 22,
+      "paintedPixels": 859,
+      "sha256": "6ea7621e1f4e6463545993607cca0ebe61c12c72621e5e56ece7f21ee045541a"
+    }
+  ],
+  "activityRendererChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "accessibleValues": true,
+      "themeRedraw": true,
+      "resized": true,
+      "singlePoint": true,
+      "zeroBaseline": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "accessibleValues": true,
+      "themeRedraw": true,
+      "resized": true,
+      "singlePoint": true,
+      "zeroBaseline": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "accessibleValues": true,
+      "themeRedraw": true,
+      "resized": true,
+      "singlePoint": true,
+      "zeroBaseline": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "accessibleValues": true,
+      "themeRedraw": true,
+      "resized": true,
+      "singlePoint": true,
+      "zeroBaseline": true
+    }
+  ],
+  "runtimeChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "nodes": 44,
+      "edges": 50,
+      "inspected": 5,
+      "modelShares": 8,
+      "directionArrows": true,
+      "nativeMotion": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "nodes": 44,
+      "edges": 50,
+      "inspected": 5,
+      "modelShares": 8,
+      "directionArrows": true,
+      "nativeMotion": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "nodes": 44,
+      "edges": 50,
+      "inspected": 5,
+      "modelShares": 8,
+      "directionArrows": true,
+      "nativeMotion": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "nodes": 44,
+      "edges": 50,
+      "inspected": 5,
+      "modelShares": 8,
+      "directionArrows": true,
+      "nativeMotion": true
+    }
+  ],
+  "runtimeGeometryChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "canonical-pass-1",
+      "paths": 20,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "desktop-many-nodes",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "resize-390",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "scroll-390",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "resize-900",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "scroll-900",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "resize-1280",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "scroll-1280",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "single-project",
+      "paths": 21,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "empty-replacement",
+      "paths": 0,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "single-restored",
+      "paths": 21,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "known-model-makers",
+      "paths": 25,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "canonical-pass-1",
+      "paths": 20,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "desktop-many-nodes",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "resize-390",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "scroll-390",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "resize-900",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "scroll-900",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "resize-1280",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "scroll-1280",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "single-project",
+      "paths": 21,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "empty-replacement",
+      "paths": 0,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "single-restored",
+      "paths": 21,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "known-model-makers",
+      "paths": 25,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "canonical-pass-1",
+      "paths": 20,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "desktop-many-nodes",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "resize-390",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "scroll-390",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "resize-900",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "scroll-900",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "resize-1280",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "scroll-1280",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "single-project",
+      "paths": 21,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "empty-replacement",
+      "paths": 0,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "single-restored",
+      "paths": 21,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "known-model-makers",
+      "paths": 25,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "canonical-pass-1",
+      "paths": 20,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "desktop-many-nodes",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "resize-390",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "scroll-390",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "resize-900",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "scroll-900",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "resize-1280",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "scroll-1280",
+      "paths": 33,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "single-project",
+      "paths": 21,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "empty-replacement",
+      "paths": 0,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "single-restored",
+      "paths": 21,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "known-model-makers",
+      "paths": 25,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "state": "canonical-pass-2",
+      "paths": 20,
+      "maxError": 0
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "state": "canonical-pass-2",
+      "paths": 20,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "state": "canonical-pass-2",
+      "paths": 20,
+      "maxError": 0
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "state": "canonical-pass-2",
+      "paths": 20,
+      "maxError": 0
+    }
+  ],
+  "shellChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "modal": true,
+      "backgroundExcluded": true
+    }
+  ],
+  "headerChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 211,
+      "dateText": "Sat, May 17, 2025",
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 78,
+          "y": 10.375,
+          "width": 129.671875,
+          "height": 38.234375,
+          "fontSize": "23px",
+          "fontWeight": "650",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 78,
+          "y": 39.8125,
+          "width": 129.671875,
+          "height": 8.796875,
+          "fontSize": "8px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 190,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(54, 201, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 434,
+          "width": 164,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 463,
+          "width": 164,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 23,
+          "y": 94.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(19, 157, 255)",
+          "filter": "drop-shadow(rgb(8, 125, 255) 0px 0px 4px)"
+        }
+      }
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null,
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(54, 201, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 434,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 463,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 23,
+          "y": 94.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(19, 157, 255)",
+          "filter": "drop-shadow(rgb(8, 125, 255) 0px 0px 4px)"
+        }
+      }
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": "Sat, May 17, 2025",
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 559,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 588,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 33,
+          "y": 485.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(19, 157, 255)",
+          "filter": "drop-shadow(rgb(8, 125, 255) 0px 0px 4px)"
+        }
+      }
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null,
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 559,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 588,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 33,
+          "y": 485.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(19, 157, 255)",
+          "filter": "drop-shadow(rgb(8, 125, 255) 0px 0px 4px)"
+        }
+      }
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 211,
+      "dateText": "Sat, May 17, 2025",
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 78,
+          "y": 10.375,
+          "width": 129.671875,
+          "height": 38.234375,
+          "fontSize": "23px",
+          "fontWeight": "650",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 78,
+          "y": 39.8125,
+          "width": 129.671875,
+          "height": 8.796875,
+          "fontSize": "8px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 190,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 434,
+          "width": 164,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 463,
+          "width": 164,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 23,
+          "y": 94.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        }
+      }
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null,
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 434,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 463,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 23,
+          "y": 94.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        }
+      }
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": "Sat, May 17, 2025",
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 559,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 588,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 33,
+          "y": 485.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        }
+      }
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null,
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 559,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 588,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 33,
+          "y": 485.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        }
+      }
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 211,
+      "dateText": "เสาร์ 17 พ.ค. 2568",
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 78,
+          "y": 10.375,
+          "width": 129.671875,
+          "height": 38.234375,
+          "fontSize": "23px",
+          "fontWeight": "650",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 78,
+          "y": 39.8125,
+          "width": 129.671875,
+          "height": 8.796875,
+          "fontSize": "8px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 190,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(54, 201, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 434,
+          "width": 164,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 463,
+          "width": 164,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 23,
+          "y": 94.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(19, 157, 255)",
+          "filter": "drop-shadow(rgb(8, 125, 255) 0px 0px 4px)"
+        }
+      }
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null,
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(54, 201, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 434,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 463,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 23,
+          "y": 94.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(19, 157, 255)",
+          "filter": "drop-shadow(rgb(8, 125, 255) 0px 0px 4px)"
+        }
+      }
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": "เสาร์ 17 พ.ค. 2568",
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 559,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 588,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 33,
+          "y": 485.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(19, 157, 255)",
+          "filter": "drop-shadow(rgb(8, 125, 255) 0px 0px 4px)"
+        }
+      }
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null,
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 559,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(238, 243, 255)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 588,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(166, 185, 220)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 33,
+          "y": 485.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(19, 157, 255)",
+          "filter": "drop-shadow(rgb(8, 125, 255) 0px 0px 4px)"
+        }
+      }
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 211,
+      "dateText": "เสาร์ 17 พ.ค. 2568",
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 78,
+          "y": 10.375,
+          "width": 129.671875,
+          "height": 38.234375,
+          "fontSize": "23px",
+          "fontWeight": "650",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 78,
+          "y": 39.8125,
+          "width": 129.671875,
+          "height": 8.796875,
+          "fontSize": "8px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 190,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 434,
+          "width": 164,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 463,
+          "width": 164,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 23,
+          "y": 94.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        }
+      }
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null,
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 434,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 463,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 23,
+          "y": 94.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        }
+      }
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": "เสาร์ 17 พ.ค. 2568",
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 559,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 588,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 33,
+          "y": 485.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        }
+      }
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "height": 60,
+      "sidebarWidth": 48,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "height": 60,
+      "sidebarWidth": 66,
+      "dateText": null
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "height": 60,
+      "sidebarWidth": 216,
+      "dateText": null,
+      "sourceReviewRegions": {
+        ".qp-brand>span": {
+          "x": 81,
+          "y": 8.15625,
+          "width": 162.578125,
+          "height": 42.6875,
+          "fontSize": "24px",
+          "fontWeight": "650",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-brand small": {
+          "x": 81,
+          "y": 38.75,
+          "width": 162.578125,
+          "height": 12.09375,
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-sidebar nav>a": {
+          "x": 12,
+          "y": 84,
+          "width": 191,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-quick-stats h2": {
+          "x": 25,
+          "y": 559,
+          "width": 165,
+          "height": 21,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "rgb(21, 39, 65)",
+          "filter": "none"
+        },
+        ".qp-quick-stats dt a": {
+          "x": 25,
+          "y": 588,
+          "width": 165,
+          "height": 42,
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "rgb(82, 101, 124)",
+          "filter": "none"
+        },
+        ".qp-nav-active>svg": {
+          "x": 33,
+          "y": 485.5,
+          "width": 23,
+          "height": 23,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "rgb(6, 101, 139)",
+          "filter": "none"
+        }
+      }
+    }
+  ],
+  "workspaceChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "label": {
+        "x": 518.125,
+        "y": 24,
+        "width": 60.15625,
+        "height": 11
+      },
+      "scope": {
+        "x": 621.28125,
+        "y": 13.5,
+        "width": 170,
+        "height": 32
+      }
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "label": {
+        "x": 518.125,
+        "y": 24,
+        "width": 60.15625,
+        "height": 11
+      },
+      "scope": {
+        "x": 621.28125,
+        "y": 13.5,
+        "width": 170,
+        "height": 32
+      }
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "label": {
+        "x": 557.25,
+        "y": 24,
+        "width": 52.453125,
+        "height": 11
+      },
+      "scope": {
+        "x": 652.703125,
+        "y": 13.5,
+        "width": 170,
+        "height": 32
+      }
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "label": {
+        "x": 557.25,
+        "y": 24,
+        "width": 52.453125,
+        "height": 11
+      },
+      "scope": {
+        "x": 652.703125,
+        "y": 13.5,
+        "width": 170,
+        "height": 32
+      }
+    }
+  ],
+  "fontProvenance": {
+    "family": "Noto Sans Thai",
+    "upstream": "https://github.com/google/fonts",
+    "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+    "upstreamPath": "ofl/notosansthai/NotoSansThai[wdth,wght].ttf",
+    "sha256": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+    "license": "OFL-1.1",
+    "modifiedFont": false
+  },
+  "fontChecks": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "settings",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "settings",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 6
+    }
+  ],
+  "settingsChecks": [],
+  "cases": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "overview-en-dark.png",
+      "sha256": "8080b522baf290e6c58f962583e909b0adf143c7ac02cfd116e05d4dd11769d4",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.908033471113596
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 10.285557832200997
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.885453812610461
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 10.197384625219907
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.61472249279132
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "8080b522baf290e6c58f962583e909b0adf143c7ac02cfd116e05d4dd11769d4",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "filename": "overview-en-light.png",
+      "sha256": "d875cd32cf4eace4ae9e3078dfa8c2eed4400fac764edc06c0335ae73a01a402",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "d875cd32cf4eace4ae9e3078dfa8c2eed4400fac764edc06c0335ae73a01a402",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "overview-th-dark.png",
+      "sha256": "9e1011556b93530985608237bbbbf490a3591baad577b5eea0b747bf6936f414",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.908033471113596
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 10.285557832200997
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.885453812610461
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 10.197384625219907
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.61472249279132
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "9e1011556b93530985608237bbbbf490a3591baad577b5eea0b747bf6936f414",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "filename": "overview-th-light.png",
+      "sha256": "018ac075e2f251d8ffbc17d54593ba9932bed5b64304367048a178312ae28c62",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "018ac075e2f251d8ffbc17d54593ba9932bed5b64304367048a178312ae28c62",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    }
+  ]
+}

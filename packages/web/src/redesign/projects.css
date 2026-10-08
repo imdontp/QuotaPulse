@@ -140,8 +140,8 @@
 .qp-project-card[data-tone=violet] { --qp-accent:var(--qp-series); }
 .qp-project-detail[data-tone=violet] { --qp-accent:var(--qp-series); }
 .qp-project-card { background:radial-gradient(ellipse at 0 0,color-mix(in srgb,var(--qp-accent) 8%,transparent),transparent 70%),var(--qp-panel); }
-.qp-project-icon { width:48px; height:48px; border-radius:12px; box-shadow:inset 0 0 15px color-mix(in srgb,var(--qp-accent) 15%,transparent); }
-.qp-project-card-heading strong { font-size:16px; }
+.qp-project-icon { width:54px; height:54px; border-radius:14px; box-shadow:inset 0 0 15px color-mix(in srgb,var(--qp-accent) 15%,transparent); }
+.qp-project-card-heading strong { font-size:16px; font-weight:600; }
 .qp-project-spark { display:block; height:44px; width:100%; }
 .qp-project-route { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
 .qp-project-route svg { width:16px; height:16px; flex:none; }
@@ -355,4 +355,31 @@
   .qp-project-top h3 { margin-bottom:10px; line-height:1.3; }
   .qp-project-top ol { gap:4px; }
   .qp-project-top li { grid-template-columns:minmax(130px,1fr) minmax(40px,.7fr) auto; gap:8px; }
+}
+
+/* The reference uses larger identity plates and a shared left inset at its native viewport. */
+.qp-project-card-heading { gap:16px; }
+.qp-project-card-heading .qp-project-icon svg { width:24px; height:24px; }
+.qp-project-detail h2 { gap:16px; font-weight:600; }
+.qp-redesign[data-theme=dark] .qp-project-icon {
+  border-color:#087bff66;
+  background:linear-gradient(135deg,#063a96,#06153c 70%,#03102b);
+  box-shadow:inset 0 0 18px #0065ff30,0 0 10px #0065ff16;
+}
+.qp-redesign[data-theme=dark] [data-tone=violet] .qp-project-icon {
+  border-color:#804edf66;
+  background:linear-gradient(135deg,#39245e,#190b37 70%,#100925);
+  box-shadow:inset 0 0 18px #9850ff22,0 0 10px #9850ff12;
+}
+@media(min-width:1280px) {
+  .qp-project-card-heading { align-items:start; }
+  .qp-project-card-identity { padding-top:2px; }
+  .qp-project-detail h2 { font-size:22px; align-items:start; }
+  .qp-project-detail h2 .qp-project-icon { width:60px; height:60px; }
+}
+@media(min-width:1536px) {
+  [data-testid=production-projects] main { padding-inline:17px; }
+  .qp-project-cards { column-gap:8px; }
+  [data-testid=production-projects] .qp-project-card { padding-inline:16px; }
+  .qp-project-detail { padding-inline:16px; }
 }

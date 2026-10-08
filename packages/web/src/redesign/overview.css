@@ -416,11 +416,12 @@
   .qp-hero-tagline { white-space:normal; }
 }
 .qp-core-halo {
-  filter:drop-shadow(0 0 7px #298cff) drop-shadow(0 0 16px #6755ed);
+  filter:drop-shadow(0 0 5px #298cff) drop-shadow(0 0 10px #6755ed);
 }
 .qp-core-track { filter:drop-shadow(0 0 6px #238dff70); }
-.qp-core-surface-shade { display:none; }
-.qp-redesign[data-theme=dark] .qp-core-surface-shade { display:block; }
+.qp-core-surface-shade,.qp-core-north-shade { display:none; }
+.qp-redesign[data-theme=dark] .qp-core-surface-shade,
+.qp-redesign[data-theme=dark] .qp-core-north-shade { display:block; }
 .qp-core-progress { filter:drop-shadow(0 0 6px #238dffcc) drop-shadow(0 0 12px #844cffb0); transition:stroke-dasharray var(--motion-slow) var(--ease-motion); }
 @media(prefers-reduced-motion:reduce) { .qp-core-progress { transition:none; } }
 [data-testid=production-overview] :is(.qp-hero,.qp-runtime,.qp-activity)>.qp-section-heading h2>svg,

@@ -125,6 +125,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
         <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <clipPath id={`${id}-world`}><circle cx="180" cy="160" r="114"/></clipPath>
         <radialGradient id={`${id}-surface-shade`}><stop stopColor="#010913" stopOpacity=".28"/><stop offset=".7" stopColor="#010913" stopOpacity=".1"/><stop offset="1" stopColor="#010913" stopOpacity="0"/></radialGradient>
+        <radialGradient id={`${id}-north-shade`} gradientUnits="userSpaceOnUse" cx="180" cy="78" r="38"><stop stopColor="#010913" stopOpacity=".18"/><stop offset="1" stopColor="#010913" stopOpacity="0"/></radialGradient>
       </defs>
       <g className="qp-orbit" fill="none" stroke="#55baf3" strokeOpacity=".2">
         <ellipse cx="180" cy="160" rx="169" ry="73" transform="rotate(-26 180 160)"/>
@@ -133,9 +134,10 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
       <circle cx="180" cy="160" r="117" fill={`url(#${id}-fill)`} stroke="#51b9ef" strokeOpacity=".4"/>
       <image data-testid="pulse-earth" href="/redesign/pulse-earth-v3.png" x="38" y="19" width="284" height="284" clipPath={`url(#${id}-world)`}/>
       <circle className="qp-core-surface-shade" cx="180" cy="160" r="114" fill={`url(#${id}-surface-shade)`}/>
+      <circle className="qp-core-north-shade" cx="180" cy="160" r="114" fill={`url(#${id}-north-shade)`}/>
       <g fill="none" stroke={`url(#${id}-arc)`} filter={`url(#${id}-glow)`}>
-        <circle cx="180" cy="160" r="119" strokeWidth="2"/>
-        <circle cx="180" cy="160" r="137" strokeWidth="1" opacity=".25"/>
+        <circle cx="180" cy="160" r="119" strokeWidth="1" opacity=".5"/>
+        <circle cx="180" cy="160" r="137" strokeWidth="1" opacity=".12"/>
         <circle cx="180" cy="160" r="145" pathLength="100" strokeWidth="1" strokeDasharray=".1 1.8" opacity=".6"/>
         <circle cx="180" cy="160" r="157" stroke="#2b62ff" strokeWidth=".7" opacity=".65"/>
       </g>

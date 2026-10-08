@@ -1,0 +1,52 @@
+{
+    "checkpoint":  "v1.85.41",
+    "buildSession":  64492,
+    "buildExitCode":  0,
+    "productionIndexSha256":  "5fd6f0a03f9773077442b23128e1ef3d0b48e9bacf7e41bc3f9eab68faacbcc9",
+    "productionCaptures":  "Scoped checks serve built dist assets",
+    "workflow":  "Authenticated workflow serves the same frozen source through local Vite",
+    "sources":  [
+                    {
+                        "path":  "packages/web/src/redesign/projects.css",
+                        "sha256":  "225242b4d29f414b243a92a1261daf927b19088e0653d83ef756fde1153967d8"
+                    },
+                    {
+                        "path":  "packages/web/src/redesign/models.css",
+                        "sha256":  "8ec6a099f2ecb3904cd1593ccb293c6377f981cc18a59887f8439a64203d8cd5"
+                    },
+                    {
+                        "path":  "packages/web/src/redesign/models.tsx",
+                        "sha256":  "03f6df1d755a217c4faa374f468fa57638c60e53061a9a1457ec5d97e7f3e232"
+                    },
+                    {
+                        "path":  "packages/web/src/redesign/overview.css",
+                        "sha256":  "1532e0e2ba3ab44840f12854cd0b75ad83808850fb342770dbc6ae139b3f129c"
+                    },
+                    {
+                        "path":  "packages/web/src/redesign/overview.tsx",
+                        "sha256":  "98f303d6fdc8656bbf33e1f8c710bf9e9ccbcaf81d8005b4700506c1d1d25c1e"
+                    },
+                    {
+                        "path":  "scripts/check-stable-captures.mts",
+                        "sha256":  "620e86d7e346cd3db31b3fc9d86e08ef44765798c821caca25ff056397237205"
+                    }
+                ],
+    "references":  [
+                       {
+                           "page":  "projects",
+                           "path":  "projects-source.png",
+                           "sha256":  "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75"
+                       },
+                       {
+                           "page":  "models",
+                           "path":  "models-source.png",
+                           "sha256":  "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c"
+                       },
+                       {
+                           "page":  "overview",
+                           "path":  "overview-source.png",
+                           "sha256":  "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce"
+                       }
+                   ],
+    "acceptance":  "Not original-reference similarity or approved baseline"
+}

@@ -14,7 +14,16 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest provider grouping and artwork: [v1.85.40](redesign-v1.85.40/VALIDATION-STATE.md)
+Latest Projects/Models identity and Overview lighting:
+[v1.85.41](redesign-v1.85.41/VALIDATION-STATE.md) aligns project identity insets,
+corrects a15px detail-title offset, refines model plates/type and selectively
+quiets northern globe brightness and redundant decoration. All three four-variant
+production scopes and the authenticated workflow pass on one frozen source.
+[Compare source and app at native sizes](redesign-v1.85.41/reference-review.html).
+[Remaining work](redesign-v1.85.41/NEXT-SOURCE-REPAIRS.md) retains the full
+eight-page source target and acceptance/release requirements.
+
+Previous provider grouping and artwork: [v1.85.40](redesign-v1.85.40/VALIDATION-STATE.md)
 adds consecutive provider plates to Live without changing API ranking, repairs
 long labels and complete keyboard scrolling, refines Alerts forecast rings and
 uses source-sampled identity colors with localized Cost lighting. All three

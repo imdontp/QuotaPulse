@@ -443,6 +443,10 @@ async function checkModelComparison(page: Page, lang: string, theme: string, pen
   const result = await daemon.inject({ method: 'GET', url: `/api/models?${query}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(result.statusCode, 200); const data = result.json<DetailedModelResponse>();
   const rows = page.locator('.qp-model-table-wrap tbody tr'); assert.equal(await rows.count(), 6);
+  referenceDetailRegions.push({ page: 'models', lang, theme, regions: await page.locator('.qp-model-layout').evaluate(element => Object.fromEntries(['.qp-model-detail>.qp-panel:first-child', '.qp-model-detail-identity', '.qp-model-detail-provider', '.qp-model-detail-identity h3', '.qp-model-detail-stats', '.qp-model-comparison', '.qp-model-maker-mark'].map(selector => {
+    const node = element.querySelector(selector)!; const { x, y, width, height, bottom } = node.getBoundingClientRect();
+    return [selector, { x, y, width, height, bottom }];
+  }))) });
   assert.equal(await page.locator('.qp-model-summary-icon').count(), 4);
   assert.ok(data.trends, 'Models fixture must include recorded histories');
   const recordedBuckets = new Map(data.trends.points.map(point => [point.start, point]));
@@ -475,6 +479,8 @@ async function checkModelComparison(page: Page, lang: string, theme: string, pen
   await historyDisclosure.locator('summary').focus(); await page.keyboard.press('Enter');
   for (const group of data.groups) {
     const row = rows.filter({ has: page.getByRole('button', { name: group.model!, exact: true }) });
+    assert.equal(await row.locator('.qp-model-maker-mark').getAttribute('data-vendor'), group.vendor, 'Maker artwork must retain the API maker independently of the routed provider');
+    assert.equal(await row.locator('.qp-model-maker-mark').getAttribute('aria-hidden'), 'true', 'Decorative maker framing must not alter the model control name');
     const input = group.inputTokens + group.cachedInputTokens + group.cacheWriteTokens;
     const values = [group.cachedInputTokens / input * 100, (group.native_calls + group.computed_calls + group.estimated_calls) / group.calls * 100];
     const bars = row.locator('.qp-model-ratio .qp-bar>span'); assert.equal(await bars.count(), 2);
@@ -859,6 +865,10 @@ async function checkProjectCards(page: Page, lang: string, theme: string, pendin
   const data = result.json<DetailedProjectResponse>();
   const cards = page.locator('.qp-project-card');
   assert.equal(await cards.count(), 5);
+  referenceDetailRegions.push({ page: 'projects', lang, theme, regions: await page.locator('.qp-project-layout').evaluate(element => Object.fromEntries(['.qp-project-card', '.qp-project-card .qp-project-icon', '.qp-project-card-identity>strong', '.qp-project-detail', '.qp-project-detail .qp-project-icon', '.qp-project-detail h2', '.qp-project-rail'].map(selector => {
+    const node = element.querySelector(selector)!; const { x, y, width, height, bottom } = node.getBoundingClientRect();
+    return [selector, { x, y, width, height, bottom }];
+  }))) });
   const bottom = await page.locator('.qp-project-cards').evaluate(element => element.getBoundingClientRect().bottom);
   const sourceTopCards = await page.locator('.qp-project-card').evaluateAll(elements => elements.slice(0, 2).map(element => {
     const rect = element.getBoundingClientRect(); return { x: rect.x, width: rect.width };

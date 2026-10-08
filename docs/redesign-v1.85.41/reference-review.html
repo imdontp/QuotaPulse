@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QuotaPulse v1.85.41 · Reference review</title>
+<style>
+body{margin:0;background:#090f19;color:#e5edff;font:14px system-ui,sans-serif}
+header{padding:16px;position:sticky;top:0;z-index:2;background:#090f19;border-bottom:1px solid #30445b}
+h1{font-size:20px;margin:0 0 8px}p{margin:8px 0;max-width:1000px;line-height:1.5}
+label{display:inline-flex;gap:8px;align-items:center;margin:8px 16px 0 0}
+select{background:#132036;color:inherit;border:1px solid #45617e;border-radius:4px;padding:6px}
+.viewport{overflow:auto;padding:16px}.frame{position:relative;width:1672px;height:941px}
+img{position:absolute;inset:0;width:100%;height:100%}.source{opacity:0;pointer-events:none}a{color:#60ccff}
+</style>
+<header>
+<h1>QuotaPulse v1.85.41 · ตรวจเทียบภาพต้นฉบับ</h1>
+<p>แอปแสดงข้อมูลจาก API จริง ภาพตรวจใช้ข้อมูลทดสอบ ตัวเลขและข้อความที่ต่างจาก concept อยู่ภายใต้ข้อกำหนดข้อมูลจริง ยังไม่ใช่การรับรองความเหมือน 99–100%</p>
+<label>หน้า <select id="page"><option value="projects">Projects</option><option value="models">Models</option><option value="overview">Overview</option></select></label>
+<label>ภาษา <select id="lang"><option value="en">EN</option><option value="th">TH</option></select></label>
+<label>ธีม <select id="theme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+<label>ภาพ <select id="view"><option value="actual">แอป</option><option value="source">Concept ต้นฉบับ</option><option value="overlay">ซ้อนภาพ 50%</option></select></label>
+<p><a href="VALIDATION-STATE.md">ผลตรวจและข้อจำกัด</a> · <a href="NEXT-SOURCE-REPAIRS.md">งานต่อไป</a> · Projects/Models 1672 × 941px · Overview 1586 × 992px · แสดงตามขนาดจริง · ต้นฉบับเป็น EN/Dark</p>
+</header>
+<main class="viewport"><div class="frame"><img id="actual" alt="ภาพแอป QuotaPulse"><img id="source" class="source" alt="ภาพ concept ต้นฉบับ"></div></main>
+<script>
+const controls = ['page','lang','theme','view'].map(id => document.getElementById(id));
+const [page,lang,theme,view] = controls;
+const actual = document.getElementById('actual'), source = document.getElementById('source');
+function update() {
+ const frame = actual.parentElement;
+ frame.style.width = page.value === 'overview' ? '1586px' : '1672px';
+ frame.style.height = page.value === 'overview' ? '992px' : '941px';
+ actual.src = `${page.value}-${lang.value}-${theme.value}.png`;
+ source.src = `${page.value}-source.png`;
+ source.style.opacity = view.value === 'source' ? '1' : view.value === 'overlay' ? '.5' : '0';
+}
+controls.forEach(control => control.addEventListener('change',update));update();
+</script>
+</html>
