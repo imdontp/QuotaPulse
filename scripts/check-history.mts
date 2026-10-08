@@ -12,6 +12,7 @@ import { Scheduler } from '../packages/daemon/src/ingest/scheduler.js';
 import { en as englishMessages } from '../packages/web/src/i18n/en.ts';
 import { th as thaiMessages } from '../packages/web/src/i18n/th.ts';
 import { checkAlertsLayout } from './check-alerts-layout.mts';
+import type { Overview } from '../packages/web/src/api.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const output = resolve(root, 'screens/history');
@@ -76,8 +77,10 @@ try {
   const costRequests: string[] = [];
   type UsageMetricSnapshot = { range: { from: number; to: number }; totals: { total_tokens: number } };
   const overviewUsageResponses: Array<Promise<UsageMetricSnapshot | null>> = [];
+  const overviewSnapshots: Array<Promise<Overview | null>> = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('response', response => { if (new URL(response.url()).pathname === '/api/usage' && response.ok()) overviewUsageResponses.push(response.json().catch(() => null)); });
+  page.on('response', response => { if (new URL(response.url()).pathname === '/api/overview' && response.ok()) overviewSnapshots.push(response.json().catch(() => null)); });
   page.on('request', request => { if (request.url().includes('/api/usage-events')) requests.push(request.url()); if (request.url().includes('/api/live-sessions')) liveRequests.push(request.url()); if (request.url().includes('/api/models?detailed=1')) modelRequests.push(request.url()); if (request.url().includes('/api/cost-analysis?')) costRequests.push(request.url()); });
   await page.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
   await page.goto('http://127.0.0.1:7801/#history?range=all');
@@ -213,6 +216,7 @@ try {
   assert.equal(await chart.locator('[role=img] > span').count() >= 30, true);
   await page.screenshot({ path: resolve(output, 'live-minute-th-light.png') });
   const overviewUsageResponseStart = overviewUsageResponses.length;
+  const overviewSnapshotStart = overviewSnapshots.length;
   await page.goto('http://127.0.0.1:7801/#overview');
   const overview = page.getByTestId('production-overview');
   await overview.locator('.qp-metric-rail[data-metric="tokens"][data-value="7525"]').waitFor();
@@ -234,7 +238,17 @@ try {
   await overview.getByTestId('quota-history').locator('.qp-alert-segments>g[data-reset]').first().waitFor();
   assert.equal(await overview.getByTestId('quota-history').locator('.qp-alert-segments>g[data-reset]').count(), 2);
   await overview.getByTestId('quota-history').locator('summary').first().click();
-  assert.match(await overview.getByTestId('quota-runway').innerText(), /31/);
+  const runwayTrack = overview.locator('.qp-runway-track');
+  const projectedAt = Number(await runwayTrack.getAttribute('data-projected-at'));
+  const resetAt = Number(await runwayTrack.getAttribute('data-reset-at'));
+  const renderedNow = Number(await runwayTrack.getAttribute('data-now'));
+  const runwaySnapshots = (await Promise.all(overviewSnapshots.slice(overviewSnapshotStart))).filter((snapshot): snapshot is Overview => snapshot !== null);
+  assert.ok(runwaySnapshots.some(snapshot => snapshot.limits.some(limit => limit.source_id === 1 && limit.window_kind === '5h' && limit.forecast?.status === 'ready' && limit.forecast.projectedFullAt === projectedAt && limit.resets_at === resetAt)), 'Runway forecast/reset must match an actual overview HTTP snapshot');
+  assert.equal(resetAt, now + 7_200_000);
+  assert.ok(projectedAt > renderedNow && projectedAt < resetAt);
+  const leadMinutes = Math.floor((resetAt - projectedAt) / 60_000);
+  assert.ok(leadMinutes >= 0 && leadMinutes < 60);
+  assert.equal(await overview.getByTestId('quota-runway-consequence').innerText(), `${thaiMessages['redesign.runwayHitLimitLead']} ${leadMinutes === 0 ? '<1m' : `${leadMinutes}m`} ${thaiMessages['redesign.beforeReset']}`, 'Runway lead time follows the exact displayed API forecast, without a wall-clock-dependent literal');
   assert.match(await overview.getByTestId('usage-insights').innerText(), /33%/);
   assert.equal(await overview.getByText('ตัวอย่างดีไซน์', { exact: false }).count(), 0);
   await overview.locator('.qp-map-node').filter({ hasText: 'alpha_100%' }).click();

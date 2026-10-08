@@ -295,6 +295,28 @@ async function checkLiveMinuteValues(page: Page, data: ProviderModelMinuteRespon
 async function checkLiveDensity(page: Page, lang: string, theme: string, pending: Set<Request>) {
   await page.setViewportSize({ width: 1672, height: 941 });
   await page.evaluate(() => window.scrollTo(0, 0));
+  referenceDetailRegions.push({ page: 'live', lang, theme, regions: await page.evaluate(() => Object.fromEntries(['.qp-live-top', '.qp-live-header', '.qp-live-metrics', '.qp-live-sessions', '.qp-live-session-tools', '.qp-live-table', '.qp-live-table thead', '.qp-live-table tbody tr', '.qp-live-trend', '.qp-live-records', '.qp-live-rail'].map(selector => {
+    const { x, y, width, height, bottom } = document.querySelector(selector)!.getBoundingClientRect();
+    return [selector, { x, y, width, height, bottom }];
+  }))) });
+  const note = page.locator('.qp-live-session-note');
+  const noteSummary = note.locator('summary');
+  await noteSummary.focus(); await page.keyboard.press('Enter');
+  assert.equal(await note.getAttribute('open'), '');
+  assert.equal(await note.locator('p').innerText(), (lang === 'th' ? th : en)['redesign.liveMetricsNote'], 'Full session counting disclosure remains available');
+  await page.keyboard.press('Enter');
+  assert.equal(await note.getAttribute('open'), null);
+  const metrics = await page.locator('.qp-live-metrics>div').evaluateAll(cards => cards.map(card => {
+    const value = card.querySelector('strong')!, label = card.querySelector('small')!, icon = card.querySelector('.qp-live-metric-icon')!;
+    return { valueBottom: value.getBoundingClientRect().bottom, labelTop: label.getBoundingClientRect().top, tone: getComputedStyle(card).getPropertyValue('--qp-live-metric-tone').trim(), iconColor: getComputedStyle(icon).color };
+  }));
+  for (const metric of metrics) {
+    assert.ok(metric.valueBottom <= metric.labelTop, 'Live metric value belongs above its label');
+    assert.deepEqual(rgb(metric.iconColor), rgb(metric.tone), 'Metric icon must use its source card tone');
+  }
+  const tableGeometry = await page.locator('.qp-live-table').evaluate(element => ({ height: element.getBoundingClientRect().height, firstRowHeight: element.querySelector('tbody tr')!.getBoundingClientRect().height }));
+  assert.ok(Math.abs(tableGeometry.height - 270) <= 1, `Live table source viewport: ${JSON.stringify(tableGeometry)}`);
+  assert.ok(Math.abs(tableGeometry.firstRowHeight - 30) <= 1, `Live row source rhythm: ${JSON.stringify(tableGeometry)}`);
   const bottom = await page.locator('.qp-live-records').evaluate(element => element.getBoundingClientRect().bottom);
   assert.ok(bottom <= 941, `Live feed and pagination exceed viewport: ${bottom}`);
   const railBottom = await page.locator('.qp-live-matrix-section').evaluate(element => element.getBoundingClientRect().bottom);
@@ -302,6 +324,19 @@ async function checkLiveDensity(page: Page, lang: string, theme: string, pending
   const sessions = page.locator('.qp-live-table tbody tr');
   const records = page.locator('.qp-live-feed li');
   assert.equal(await sessions.count(), 10); assert.equal(await records.count(), 8);
+  const feedFrame = await page.locator('.qp-live-feed').boundingBox();
+  assert.ok(feedFrame);
+  assert.ok(await records.nth(5).evaluate((element, bottom) => element.getBoundingClientRect().bottom <= bottom + 1, feedFrame.y + feedFrame.height), 'Six complete feed rows must fit the source viewport');
+  const firstFeedPage = await records.allTextContents();
+  const feedButtons = page.locator('.qp-live-feed-pagination button');
+  const nextFeed = page.waitForResponse(response => response.url().includes('/api/usage-events?') && new URL(response.url()).searchParams.get('offset') === '8');
+  await feedButtons.last().focus(); await page.keyboard.press('Enter');
+  assert.equal((await nextFeed).status(), 200); await settled(page, pending);
+  assert.equal(await records.count(), 8);
+  const previousFeed = page.waitForResponse(response => response.url().includes('/api/usage-events?') && (new URL(response.url()).searchParams.get('offset') ?? '0') === '0');
+  await feedButtons.first().focus(); await page.keyboard.press('Enter');
+  assert.equal((await previousFeed).status(), 200); await settled(page, pending);
+  assert.deepEqual(await records.allTextContents(), firstFeedPage, 'Feed toolbar pagination must restore the original records');
   const query = new URLSearchParams({ bucket: 'minute', group_by: 'provider_model', from: String(fixedNow - 30 * 60_000), to: String(fixedNow + 1) });
   const response = await daemon.inject({ method: 'GET', url: `/api/trend?${query}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(response.statusCode, 200);
@@ -2574,10 +2609,15 @@ try {
             costReferenceRegions.push({ lang, theme, pass: pass + 1, regions });
           }
           if (pass === 0 && (destination === 'live' || destination === 'models')) {
-            const header = await page.locator(destination === 'live' ? '.qp-live-header' : '.qp-model-header').boundingBox();
+            const header = await page.locator(destination === 'live' ? '.qp-live-top' : '.qp-model-header').boundingBox();
             const summary = await page.locator(destination === 'live' ? '.qp-live-metrics' : '.qp-model-summary').boundingBox();
             const rail = await page.locator(destination === 'live' ? '.qp-live-rail' : '.qp-model-detail').boundingBox();
             assert.ok(header && summary && rail);
+            if (destination === 'live') {
+              const innerHeader = await page.locator('.qp-live-header').boundingBox();
+              assert.ok(innerHeader && innerHeader.y >= header.y && innerHeader.y + innerHeader.height <= header.y + header.height);
+              assert.ok(summary.y >= header.y && summary.y + summary.height <= header.y + header.height, 'Live metrics must stay inside the heading enclosure');
+            }
             assert.ok(Math.abs(header.y - rail.y) <= 1, `${destination}: reference rail must start beside the header`);
             assert.ok(rail.x > summary.x + summary.width, `${destination}: summary must stay in the main column`);
             referenceColumnChecks.push({ page: destination, lang, theme, headerTop: header.y, railTop: rail.y, summaryRight: summary.x + summary.width, railLeft: rail.x });

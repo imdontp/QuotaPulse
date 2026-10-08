@@ -14,7 +14,15 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest Alerts guidance composition: [v1.85.37](redesign-v1.85.37/VALIDATION-STATE.md)
+Latest Live main-column composition: [v1.85.38](redesign-v1.85.38/VALIDATION-STATE.md)
+restores the heading/metric enclosure, eight complete session rows and six
+complete feed rows with factual toolbar pagination and compact exact-value axes.
+All four production pairs are byte-identical; the fresh authenticated workflow
+passes after replacing a clock-bound historical assertion with exact API facts.
+[Remaining work](redesign-v1.85.38/NEXT-SOURCE-REPAIRS.md) retains rail/artwork
+repairs and the complete eight-page acceptance/release requirements.
+
+Previous Alerts guidance composition: [v1.85.37](redesign-v1.85.37/VALIDATION-STATE.md)
 restores four factual local-action rows and a compact complete event rail.
 All four production capture pairs are byte-identical and the fresh authenticated
 workflow passes. Measured source gaps and full remaining acceptance/release

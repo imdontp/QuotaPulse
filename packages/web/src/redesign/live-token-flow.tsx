@@ -22,6 +22,7 @@ export function LiveTokenFlow({ data, language, t, showLegend = true }: {
   const id = useId().replace(/:/g, '');
   const locale = language === 'th' ? 'th-TH' : 'en-US';
   const number = (value: number) => value.toLocaleString(locale);
+  const axisNumber = new Intl.NumberFormat('en-US', { notation: 'compact', maximumSignificantDigits: 3 });
   const date = new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'medium' });
   const clock = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
   const x = (at: number) => liveTokenFlowX(at, data.from, data.to);
@@ -37,7 +38,7 @@ export function LiveTokenFlow({ data, language, t, showLegend = true }: {
   return <div className="qp-live-token-flow" data-maximum={flow.maximum}>
     {showLegend && <LiveTokenFlowLegend t={t}/>}
     <div className="qp-live-flow-plot">
-      <div className="qp-live-flow-y-axis" aria-hidden="true">{yTicks.map((value, index) => <span key={`${value}-${index}`} style={{ top: `${y(value)}%` }}>{number(value)}</span>)}</div>
+      <div className="qp-live-flow-y-axis" aria-hidden="true">{yTicks.map((value, index) => <span key={`${value}-${index}`} data-value={value} title={number(value)} style={{ top: `${y(value)}%` }}>{axisNumber.format(value)}</span>)}</div>
       <div className="qp-live-flow-canvas" role="img" aria-label={`${t('redesign.liveChart')} · ${series.map(key => t(labels[key])).join(' · ')} · 0 – ${number(flow.maximum)}`} aria-describedby={`${id}-data`}>
       {/* The total SVG retains the existing total-point selector; the other traces use separate SVGs. */}
       <svg className="qp-live-chart qp-live-flow-total" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">

@@ -1,0 +1,310 @@
+{
+  "database": "in-memory synthetic",
+  "fixture": {
+    "addedSessions": 12,
+    "recentSessions": 13,
+    "observedSessions": 14,
+    "sessionPageRows": 10,
+    "feedPageRows": 8,
+    "matrixRows": 12
+  },
+  "checks": [
+    "first feed record and complete rail in concept viewport",
+    "en/th and dark/light",
+    "session pagination without missing rows",
+    "390/900/1280 overflow",
+    "long Thai session/project names",
+    "dialog focus restore",
+    "empty filtered sessions/feed"
+  ],
+  "captures": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "live-occupied-en-dark.png",
+      "regions": {
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.1875
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.1875,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 930.6875
+        },
+        ".qp-live-feed li": {
+          "x": 249,
+          "y": 808.6875,
+          "width": 1018.40625,
+          "height": 19,
+          "bottom": 827.6875
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 749.453125,
+          "bottom": 821.453125
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 111,
+          "bottom": 183
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 195,
+          "width": 371.578125,
+          "height": 626.453125,
+          "bottom": 821.453125
+        },
+        ".qp-live-matrix": {
+          "x": 1301.40625,
+          "y": 311.671875,
+          "width": 345.578125,
+          "height": 360,
+          "bottom": 671.671875
+        }
+      },
+      "matrixScroll": {
+        "clientHeight": 360,
+        "scrollHeight": 579,
+        "overflow": "auto"
+      }
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "live-occupied-en-light.png",
+      "regions": {
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.1875
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.1875,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 930.6875
+        },
+        ".qp-live-feed li": {
+          "x": 249,
+          "y": 808.6875,
+          "width": 1018.40625,
+          "height": 19,
+          "bottom": 827.6875
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 749.453125,
+          "bottom": 821.453125
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 111,
+          "bottom": 183
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 195,
+          "width": 371.578125,
+          "height": 626.453125,
+          "bottom": 821.453125
+        },
+        ".qp-live-matrix": {
+          "x": 1301.40625,
+          "y": 311.671875,
+          "width": 345.578125,
+          "height": 360,
+          "bottom": 671.671875
+        }
+      },
+      "matrixScroll": {
+        "clientHeight": 360,
+        "scrollHeight": 579,
+        "overflow": "auto"
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "live-occupied-th-dark.png",
+      "regions": {
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.1875
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.1875,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 930.6875
+        },
+        ".qp-live-feed li": {
+          "x": 249,
+          "y": 808.6875,
+          "width": 1018.40625,
+          "height": 19,
+          "bottom": 827.6875
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 732.953125,
+          "bottom": 804.953125
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 94.5,
+          "bottom": 166.5
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 178.5,
+          "width": 371.578125,
+          "height": 626.453125,
+          "bottom": 804.953125
+        },
+        ".qp-live-matrix": {
+          "x": 1301.40625,
+          "y": 295.171875,
+          "width": 345.578125,
+          "height": 360,
+          "bottom": 655.171875
+        }
+      },
+      "matrixScroll": {
+        "clientHeight": 360,
+        "scrollHeight": 579,
+        "overflow": "auto"
+      }
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "filename": "live-occupied-th-light.png",
+      "regions": {
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.1875
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.1875,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 930.6875
+        },
+        ".qp-live-feed li": {
+          "x": 249,
+          "y": 808.6875,
+          "width": 1018.40625,
+          "height": 19,
+          "bottom": 827.6875
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 732.953125,
+          "bottom": 804.953125
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 94.5,
+          "bottom": 166.5
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 178.5,
+          "width": 371.578125,
+          "height": 626.453125,
+          "bottom": 804.953125
+        },
+        ".qp-live-matrix": {
+          "x": 1301.40625,
+          "y": 295.171875,
+          "width": 345.578125,
+          "height": 360,
+          "bottom": 655.171875
+        }
+      },
+      "matrixScroll": {
+        "clientHeight": 360,
+        "scrollHeight": 579,
+        "overflow": "auto"
+      }
+    }
+  ]
+}

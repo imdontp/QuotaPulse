@@ -194,7 +194,7 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
     return { maximum: Number(root.getAttribute('data-maximum')), points, lines,
       totalOnly: Array.from(root.querySelectorAll('.qp-live-chart>circle')).every(element => element.getAttribute('data-series') === 'total'),
       axis: Array.from(root.querySelectorAll('.qp-live-flow-axis>span')).map(element => ({ at: Number(element.getAttribute('data-at')), text: element.textContent, left: Number.parseFloat((element as HTMLElement).style.left) })),
-      yAxis: Array.from(root.querySelectorAll('.qp-live-flow-y-axis>span')).map(element => ({ value: element.textContent, top: Number.parseFloat((element as HTMLElement).style.top) })),
+      yAxis: Array.from(root.querySelectorAll('.qp-live-flow-y-axis>span')).map(element => ({ value: element.textContent, exact: Number(element.getAttribute('data-value')), title: element.getAttribute('title'), top: Number.parseFloat((element as HTMLElement).style.top) })),
       latest: (() => {
         const element = root.querySelector('.qp-live-flow-latest')!;
         return { attrs: ['data-at', 'data-start', 'data-end', 'data-partial', 'data-input', 'data-output', 'data-total'].map(key => element.getAttribute(key)),
@@ -214,7 +214,9 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
   assert.equal(snapshot.role, 'img'); assert.equal(snapshot.description, snapshot.tableId);
   assert.ok(snapshot.imageLabel?.includes(number.format(maximum)), 'Accessible plot label omits its shared range');
   const expectedYTicks = maximum > 0 ? [maximum, Math.round(maximum * 2 / 3), Math.round(maximum / 3), 0].filter((value, index, values) => index === 0 || value < values[index - 1]!) : [0];
-  assert.deepEqual(snapshot.yAxis.map(item => item.value), expectedYTicks.map(value => number.format(value)), `${state}: y-axis labels must use the actual shared scale`);
+  assert.deepEqual(snapshot.yAxis.map(item => item.exact), expectedYTicks, `${state}: compact y-axis labels must retain the exact shared scale`);
+  assert.deepEqual(snapshot.yAxis.map(item => item.title), expectedYTicks.map(value => number.format(value)), `${state}: y-axis titles must retain full localized values`);
+  assert.deepEqual(snapshot.yAxis.map(item => item.value), expectedYTicks.map(value => new Intl.NumberFormat('en-US', { notation: 'compact', maximumSignificantDigits: 3 }).format(value)), `${state}: y-axis labels must use compact notation`);
   assert.ok(snapshot.yAxis.every((item, index) => Math.abs(item.top - (94 - 88 * expectedYTicks[index]! / (maximum || 1))) < .0001), `${state}: y-axis labels must align to the actual gridlines`);
   const pointCounts: Record<Series, number> = { input: 0, output: 0, total: 0 };
   const segmentCounts: Record<Series, number> = { input: 0, output: 0, total: 0 };
