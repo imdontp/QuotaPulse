@@ -1,0 +1,61 @@
+{
+  "sourceCommit": "508d5db72003c51e04efd1a0a818efeabbba854c",
+  "session": 68649,
+  "exitCode": 0,
+  "assets": [
+    {
+      "path": "packages\\web\\dist\\index.html",
+      "sha256": "a8c2a2ac9b28ced948a17dd50cd45708247a50534d539898c10451a1421e638f"
+    },
+    {
+      "path": "packages\\tray\\dist\\instance-profile.js",
+      "sha256": "37497839475563529ac2d3bc807488daf715a14787a79f6a98880f0bc70c654a"
+    },
+    {
+      "path": "packages\\tray\\dist-preload\\dashboard-preload.js",
+      "sha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f"
+    },
+    {
+      "path": "packages\\tray\\dist-preload\\popup-preload.js",
+      "sha256": "b4fa7c970c40ab64961e6bfbbf08b339cdc21c5cd0cf9c1087c2c098298f9319"
+    },
+    {
+      "path": "scripts\\check-desktop-runtime.mts",
+      "sha256": "ed3dea09f5151d49a20bc3a7dbd9ce1731627ed989373ecce6ac561da3f53939"
+    },
+    {
+      "path": "scripts\\desktop-runtime-entry.cjs",
+      "sha256": "bcde2db2d4f56e9767f6c8b4b7e3c9d88418fe0ac83eb949edca6e7940200398"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "daemon-build.log",
+      "sha256": "a1d1e7057016b70bd68d58b9484def177807071c1f0d457c0e68a41775a308a9"
+    },
+    {
+      "path": "dashboard-production-thai.png",
+      "sha256": "9ead729646fc2259f2b5bc9e1ecf3b344fcf44bb0be5ec88b9a39b058d655f60"
+    },
+    {
+      "path": "dashboard-production.png",
+      "sha256": "573ae367fd78456aa464152bfb655dfeaa168677b744c67d796618fac5a182ef"
+    },
+    {
+      "path": "desktop-runtime.log",
+      "sha256": "7106bd4145f69fa8600fef2580abff492a956908db3db98c637af10d2163874a"
+    },
+    {
+      "path": "popup-production.png",
+      "sha256": "4da3e163c978a59d2e92e356c3b491e93e4df23428de2ed5628ece8e6a7c23d7"
+    },
+    {
+      "path": "tray-build.log",
+      "sha256": "6a49caed6ce7f812bd2fdb4fd81c52aa88a6ab53c25998a4ca42edf7f7fada18"
+    },
+    {
+      "path": "verification.json",
+      "sha256": "2996d9f4fc04933f3ea97c8ebaedb189fba7cc7f9d70d037f5b283cf55349b79"
+    }
+  ]
+}
