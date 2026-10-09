@@ -1,0 +1,30 @@
+
+> quotapulse@0.1.0 test:history
+> node --import tsx scripts/check-history.mts
+
+02:35:13.651 INFO  [db] opened :memory:
+PASS redesigned matrix: en/dark/390, nine pages
+PASS redesigned matrix: en/dark/900, nine pages
+PASS redesigned matrix: en/dark/1280, nine pages
+PASS redesigned matrix: en/dark/1440, nine pages
+PASS redesigned matrix: en/light/390, nine pages
+PASS redesigned matrix: en/light/900, nine pages
+PASS redesigned matrix: en/light/1280, nine pages
+PASS redesigned matrix: en/light/1440, nine pages
+PASS redesigned matrix: th/dark/390, nine pages
+PASS redesigned matrix: th/dark/900, nine pages
+PASS redesigned matrix: th/dark/1280, nine pages
+PASS redesigned matrix: th/dark/1440, nine pages
+PASS redesigned matrix: th/light/390, nine pages
+PASS redesigned matrix: th/light/900, nine pages
+PASS redesigned matrix: th/light/1280, nine pages
+PASS redesigned matrix: th/light/1440, nine pages
+Live occupied End initial en/dark: {"scrollTop":20,"clientHeight":328,"scrollHeight":598}
+Live occupied End initial en/light: {"scrollTop":9,"clientHeight":328,"scrollHeight":598}
+Live occupied End initial th/dark: {"scrollTop":7,"clientHeight":328,"scrollHeight":521}
+Live occupied End initial th/light: {"scrollTop":24,"clientHeight":328,"scrollHeight":521}
+History/Overview/Projects/Live/Providers/Models/Cost/Alerts E2E passed: authenticated HTTP and in-memory SQLite, scopes, pagination, pause, quota runway, drill-down, responsive layout.
+History teardown: browser closed
+History teardown: Vite closed
+History teardown: daemon closed
+History teardown: database closed

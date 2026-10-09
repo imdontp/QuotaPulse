@@ -1,0 +1,77 @@
+{
+  "acceptance": "Unmasked source diagnostics including factual differences; not a likeness percentage or approved baseline",
+  "pages": [
+    {
+      "page": "overview",
+      "reference": "../redesign-v1.85.43/refs/overview.png",
+      "capture": "captures/overview-en-dark.png",
+      "diagnostic": "parity/overview/reference-parity.json",
+      "referenceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+      "captureSha256": "8080b522baf290e6c58f962583e909b0adf143c7ac02cfd116e05d4dd11769d4",
+      "unmaskedDiagnosticSsim": 0.5425938542824179
+    },
+    {
+      "page": "live",
+      "reference": "../redesign-v1.85.43/refs/live.png",
+      "capture": "captures/live-en-dark.png",
+      "diagnostic": "parity/live/reference-parity.json",
+      "referenceSha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+      "captureSha256": "066731be0f11e3ec303ce2f10b7324551fc3c4a517232492aaa62b4fb27c9ae3",
+      "unmaskedDiagnosticSsim": 0.47435531624526667
+    },
+    {
+      "page": "projects",
+      "reference": "../redesign-v1.85.43/refs/projects.png",
+      "capture": "captures/projects-en-dark.png",
+      "diagnostic": "parity/projects/reference-parity.json",
+      "referenceSha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "captureSha256": "9404bca9e5511475d5f67d30843d14bf2adbacae19e73c499bf8bd5097d2f63c",
+      "unmaskedDiagnosticSsim": 0.5274252503934308
+    },
+    {
+      "page": "models",
+      "reference": "../redesign-v1.85.43/refs/models.png",
+      "capture": "captures/models-en-dark.png",
+      "diagnostic": "parity/models/reference-parity.json",
+      "referenceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "captureSha256": "d492cc864a3389c5c24c412f4cc4e1f94bab388963969917c67eee10319df331",
+      "unmaskedDiagnosticSsim": 0.5401581467220006
+    },
+    {
+      "page": "history",
+      "reference": "../redesign-v1.85.43/refs/history.png",
+      "capture": "captures/history-selected-en-dark.png",
+      "diagnostic": "parity/history/reference-parity.json",
+      "referenceSha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+      "captureSha256": "43901e96ba8f5c8a6749392ad25bcc808b416d406dd30d3cf93feb6112e01f16",
+      "unmaskedDiagnosticSsim": 0.4715454504840571
+    },
+    {
+      "page": "alerts",
+      "reference": "../redesign-v1.85.43/refs/alerts.png",
+      "capture": "captures/alerts-en-dark.png",
+      "diagnostic": "parity/alerts/reference-parity.json",
+      "referenceSha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+      "captureSha256": "3fa27dcc3c70316fd8b1567b24cc3b673bddec749afc40d69f608e46b3e2a7a0",
+      "unmaskedDiagnosticSsim": 0.5228953258316413
+    },
+    {
+      "page": "cost",
+      "reference": "../redesign-v1.85.43/refs/cost.png",
+      "capture": "captures/cost-en-dark.png",
+      "diagnostic": "parity/cost/reference-parity.json",
+      "referenceSha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+      "captureSha256": "178b31bb477af2ace750ac60c0bcbc8cf3774134017b0ce3b8391da44f964700",
+      "unmaskedDiagnosticSsim": 0.49875734727033844
+    },
+    {
+      "page": "providers",
+      "reference": "../redesign-v1.85.43/refs/providers.png",
+      "capture": "captures/providers-en-dark.png",
+      "diagnostic": "parity/providers/reference-parity.json",
+      "referenceSha256": "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6",
+      "captureSha256": "20bb9b85748e357436da39e11612d4f339aa741ba048b3d649c2ec454def7e23",
+      "unmaskedDiagnosticSsim": 0.5131790884063628
+    }
+  ]
+}

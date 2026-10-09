@@ -15,6 +15,14 @@ checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
 Latest consolidated source review:
+[v1.85.45](redesign-v1.85.45/VALIDATION-STATE.md) repairs Projects footers,
+Cost insights, Providers bars, History grid/selection and Live series hierarchy.
+Its one-build full 40-pair matrix passes, all 80 PNG hashes are verified, and
+465 unit tests plus authenticated all-page and UI/Preview workflows pass.
+[Current eight-page source viewer](redesign-v1.85.45/reference-review.html).
+The verified checkpoint is incremental; original-reference likeness remains open.
+
+Historical consolidated source review:
 [v1.85.43](redesign-v1.85.43/VALIDATION-STATE.md) collects all40 pairs on one
 production build, all eight original-source diagnostics,457 current unit passes
 and a23-override ledger. Selected DeepSeek lighting follows the source blue.

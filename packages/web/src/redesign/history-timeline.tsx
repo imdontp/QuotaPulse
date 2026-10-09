@@ -32,6 +32,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
   const x = (index: number) => left + (right - left) * index / Math.max(1, buckets.length - 1);
   const y = (value: number) => 118 - 100 * value / max;
   const points = (key: 'inputTokens' | 'outputTokens') => buckets.map((row, index) => `${x(index)},${y(row[key])}`).join(' ');
+  const gridStride = Math.max(1, Math.ceil((buckets.length - 1) / 12));
   const date = (at: number) => new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(at);
   const priced = totals.computed_calls + totals.estimated_calls;
   const value = (amount: number, calls: number) => totals.records === 0 ? f.money(0) : calls ? `${f.money(amount)}${calls < totals.calls ? '+' : ''}` : t('redesign.unknownValue');
@@ -47,7 +48,8 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
     <div className="qp-history-legend"><span>{t('history.inputCombined')}</span><span>{t('col.output')}</span></div>
     <svg ref={chart} viewBox={`0 0 ${width} 144`} preserveAspectRatio="none" role="img" aria-label={`${t('history.timeline')}: ${count(totals.tokens)}`}>
       <defs>{(['input', 'output'] as const).map(series => <linearGradient key={series} id={`${id}-${series}`} x1="0" y1="0" x2="0" y2="1"><stop stopColor={`var(--history-${series})`} stopOpacity=".22"/><stop offset="1" stopColor={`var(--history-${series})`} stopOpacity="0"/></linearGradient>)}<filter id={`${id}-glow`} x="-10%" y="-50%" width="120%" height="200%"><feGaussianBlur stdDeviation="1.5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-      {[0, .5, 1].map(fraction => <g key={fraction}><line x1={left} x2={right} y1={y(max * fraction)} y2={y(max * fraction)} stroke="currentColor" opacity=".15"/><text x="0" y={y(max * fraction)} fill="currentColor" fontSize="11">{f.tokens(max * fraction)}</text></g>)}
+      {[0, .25, .5, .75, 1].map(fraction => <g key={fraction} className={fraction === .25 || fraction === .75 ? 'qp-history-grid-secondary' : undefined}><line className="qp-history-grid-line" x1={left} x2={right} y1={y(max * fraction)} y2={y(max * fraction)}/><text x="0" y={y(max * fraction)} fill="currentColor" fontSize="11">{f.tokens(max * fraction)}</text></g>)}
+      <g className="qp-history-grid-vertical" aria-hidden="true">{buckets.map((row, index) => index % gridStride === 0 || index === buckets.length - 1 ? <line key={row.at} className="qp-history-grid-line" x1={x(index)} x2={x(index)} y1={y(max)} y2={y(0)}/> : null)}</g>
       <polygon points={`${left},118 ${points('inputTokens')} ${right},118`} fill={`url(#${id}-input)`}/>
       <polygon points={`${left},118 ${points('outputTokens')} ${right},118`} fill={`url(#${id}-output)`}/>
       <polyline points={points('inputTokens')} fill="none" stroke="var(--history-input)" strokeWidth="2" filter={`url(#${id}-glow)`}/>

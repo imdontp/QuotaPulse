@@ -1,0 +1,124 @@
+{
+  "checkpoint": "v1.85.45",
+  "baseCommit": "e38977f0002af062a778164c2b8c8a045e11ca86",
+  "productionIndexSha256": "aaf39be820ed7c01144c7c228e653e38d3d52ccb2b8c662a4fc4e2b08a84c162",
+  "build": {
+    "command": "npm run build -w @quotapulse/web",
+    "session": 24359,
+    "exitCode": 0
+  },
+  "unitRegression": {
+    "command": "npm test",
+    "session": 88831,
+    "exitCode": 0,
+    "daemon": 105,
+    "web": 162,
+    "tray": 198,
+    "total": 465
+  },
+  "capture": {
+    "command": "npm run test:stable",
+    "session": 63491,
+    "exitCode": 0,
+    "fullMatrix": true,
+    "pairs": 40,
+    "rasterHashesVerified": true,
+    "byteIdentical": 31
+  },
+  "authenticatedWorkflow": {
+    "command": "npm run test:history",
+    "session": 83997,
+    "exitCode": 0,
+    "responsiveCombinations": 16,
+    "routesPerCombination": 9,
+    "runtime": "authenticated local HTTP, in-memory SQLite, Vite and dashboard routes; teardown complete"
+  },
+  "ui": {
+    "command": "npm run test:ui",
+    "combinedSession": 75572,
+    "logResult": "PASS empty, unavailable, recovery; no page errors",
+    "combinedExitCode": 1,
+    "note": "UI completed successfully; following old Preview check failed. See separate corrected Preview result."
+  },
+  "preview": {
+    "command": "npm run test:visual",
+    "session": 98010,
+    "exitCode": 0,
+    "screenshots": 21
+  },
+  "sourceDiagnostics": {
+    "session": 96486,
+    "exitCode": 0,
+    "pages": 8,
+    "referenceAndCandidateHashesVerified": true,
+    "masks": false
+  },
+  "sources": [
+    {
+      "path": "package.json",
+      "sha256": "cbe805e366c5e4747991c3608adfdeba6874258a4fba2dd1dd23cd570fc76393"
+    },
+    {
+      "path": "packages/web/package.json",
+      "sha256": "e6b64ded7909f0016af2c1e3cbb9c3f9794d82c948e9f8b99505617316581403"
+    },
+    {
+      "path": "scripts/check-stable-captures.mts",
+      "sha256": "3c2297892e7cf2306d09f6de58b02c382c9ec6b8be785962450e324dc2e1d57f"
+    },
+    {
+      "path": "scripts/check-history.mts",
+      "sha256": "e9b659256b322f786e5c7ff047e7e65d30cfe3b8ea250cd8ae40e3e73516f31d"
+    },
+    {
+      "path": "scripts/check-ui.mjs",
+      "sha256": "56ad816a862e29b074dbdd40f0fa817772f8c0a7eff4a5892b0bba57ed5d5f76"
+    },
+    {
+      "path": "packages/web/src/redesign/cost.css",
+      "sha256": "bb45e435f2d2d34b050f949b09b8110eed30208b087a9244b85dd9a68654b4e8"
+    },
+    {
+      "path": "packages/web/src/redesign/cost.tsx",
+      "sha256": "ad67bd6d519ac1d0842c20c3706d8506a8740005c270b1f9e623b8def7f26107"
+    },
+    {
+      "path": "packages/web/src/redesign/history-timeline.tsx",
+      "sha256": "9615d3393f28bdafcd289b2e9d6b2cd3123cee9e11a9969f623dc67fae9fbbba"
+    },
+    {
+      "path": "packages/web/src/redesign/history.css",
+      "sha256": "e0021b343ec6f30a555e093b54f1144f3d79a20dd80c47eb860d2505bb3cca26"
+    },
+    {
+      "path": "packages/web/src/redesign/live-token-flow.css",
+      "sha256": "4c8bf6574195407ed905f9a8d1f3e7b8796cf5fbcaa9a7245e3c9a4b89d0335a"
+    },
+    {
+      "path": "packages/web/src/redesign/live-token-flow.tsx",
+      "sha256": "af205064179c3b65ba98d90ebf5d98d79651fac1ac2e9f081f2f60a48b43ff95"
+    },
+    {
+      "path": "packages/web/src/redesign/projects.css",
+      "sha256": "fa0a063e5b613deda4df1c4753e016f6471e57b49adcefbd7d4c6fd3b81f6b76"
+    },
+    {
+      "path": "packages/web/src/redesign/projects.tsx",
+      "sha256": "983aac880a985e5ef119497871119b4525b250355af6301a10cac7c307253bbc"
+    },
+    {
+      "path": "packages/web/src/redesign/providers.css",
+      "sha256": "c8ed1df2e6e5ab021af8cafa3fb806b9b68ac2e34ccf9691053cd87c6cc9c98c"
+    },
+    {
+      "path": "packages/web/src/redesign/providers.tsx",
+      "sha256": "4fa1ac7e7a785612b7a9dce62c5a8ab331190570b2dc1ff52be1b56f8f4ef6fa"
+    },
+    {
+      "path": "scripts/check-redesign.mjs",
+      "sha256": "88e9900b52f2bff2292db2f250652b370b42208716f8ead4986ed31be503ca92"
+    }
+  ],
+  "acceptance": "No original-reference likeness or final release acceptance claimed",
+  "logRetention": "Documentation log copies have trailing whitespace normalized; original unmodified run logs remain under tmp/reference-45-*."
+}

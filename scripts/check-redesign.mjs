@@ -37,10 +37,10 @@ try {
   const initialRequests = requestCount;
   const before = await page.evaluate(() => JSON.stringify(localStorage));
   assert.deepEqual(JSON.parse(before), { 'preview-test-sentinel': 'unchanged' }, 'preview wrote preferences during mount');
-  await page.getByRole('button', { name: /Anthropic 7d/ }).click();
-  assert.equal(await page.locator('.qp-pulse-label strong').textContent(), '18%');
-  await page.getByRole('button', { name: /OpenAI 5h/ }).click();
-  assert.equal(await page.locator('.qp-pulse-label strong').textContent(), '62%');
+  await page.getByRole('button', { name: /Anthropic · 7d ·/ }).click();
+  assert.equal(await page.locator('.qp-pulse-label strong').textContent(), '82%');
+  await page.getByRole('button', { name: /OpenAI · 5h ·/ }).click();
+  assert.equal(await page.locator('.qp-pulse-label strong').textContent(), '38%');
   const node = page.locator('.qp-map-node').filter({ hasText: 'QuotaPulse' });
   await node.click();
   await page.getByRole('dialog').waitFor();
@@ -85,7 +85,7 @@ try {
     await page.locator('.qp-pulse-label').waitFor();
     if (scenario === 'empty') assert.equal(await page.getByText('No usage records', { exact: true }).count(), 1);
     if (scenario === 'stale') assert.equal(await page.locator('.qp-pulse').getAttribute('data-stale'), 'true');
-    if (scenario === 'critical') assert.equal(await page.locator('.qp-pulse-label strong').textContent(), '3%');
+    if (scenario === 'critical') assert.equal(await page.locator('.qp-pulse-label strong').textContent(), '97%');
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, scenario);
     await page.screenshot({ path: resolve(output, `${scenario}-390.png`), fullPage: true, animations: 'disabled' });
     screenshots.push(`${scenario}-390.png`);

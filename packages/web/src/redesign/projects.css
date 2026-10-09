@@ -145,7 +145,10 @@
 .qp-project-spark { display:block; height:44px; width:100%; }
 .qp-project-route { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
 .qp-project-route svg { width:16px; height:16px; flex:none; }
-.qp-project-card-facts>span { display:inline-flex; align-items:center; gap:5px; }
+.qp-project-card-facts>span { display:grid; grid-template-columns:28px minmax(0,1fr); grid-template-rows:auto auto; align-items:center; gap:0 7px; min-width:0; }
+.qp-project-fact-icon { grid-column:1; grid-row:1/span 2; display:grid; place-items:center; width:28px; height:28px; border:1px solid color-mix(in srgb,var(--qp-accent) 22%,var(--qp-border)); border-radius:8px; background:color-mix(in srgb,var(--qp-accent) 10%,var(--qp-panel)); }
+.qp-project-card-facts strong { grid-column:2; font-size:12px; font-weight:550; line-height:14px; color:var(--qp-text); }
+.qp-project-card-facts small { grid-column:2; font-size:10px; line-height:12px; overflow-wrap:anywhere; }
 .qp-project-card-facts svg { color:var(--qp-accent); }
 .qp-observed-trend.qp-project-trend { display:block; width:100%; overflow:visible; }
 .qp-project-card-heading strong,.qp-project-identity {
@@ -333,7 +336,7 @@
   .qp-project-cards { max-height:720px; overflow:auto; scrollbar-width:thin; grid-auto-rows:minmax(258px,auto); }
   [data-testid=production-projects] .qp-project-card { padding:14px; gap:6px; }
   .qp-project-card-heading { min-height:60px; }
-  .qp-project-spark { height:48px; }
+  .qp-project-spark { height:36px; }
   .qp-project-card-facts { padding-top:6px; }
   .qp-project-detail { padding:12px; gap:6px; }
   .qp-project-detail h2 { font-size:19px; line-height:1.3; overflow-wrap:anywhere; }
@@ -370,6 +373,11 @@
   border-color:#804edf66;
   background:linear-gradient(135deg,#39245e,#190b37 70%,#100925);
   box-shadow:inset 0 0 18px #9850ff22,0 0 10px #9850ff12;
+}
+.qp-redesign[data-theme=dark] .qp-project-card[aria-pressed=true] {
+  border-color:#1684ff;
+  background:radial-gradient(ellipse at 0 0,#0868ff15,transparent 75%),var(--qp-panel);
+  box-shadow:0 0 0 1px #1684ff, inset 0 0 18px #1766ff12, 0 0 20px #126cff22;
 }
 @media(min-width:1280px) {
   .qp-project-card-heading { align-items:start; }
