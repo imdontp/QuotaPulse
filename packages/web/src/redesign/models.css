@@ -139,6 +139,7 @@
   .qp-model-donut span { width:84px; height:84px; font-size:15px; }
   .qp-model-detail ul { gap:4px; }
   .qp-model-detail .qp-panel { padding:10px; }
+  .qp-model-detail>.qp-panel:not(:first-child) { margin-inline:10px; }
   .qp-model-detail>.qp-panel:first-child { padding:16px; gap:12px; }
   .qp-model-trend { height:112px; }
   /* Keep the original comparison/footer composition even for sparse real records. */

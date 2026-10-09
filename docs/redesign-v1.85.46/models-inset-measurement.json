@@ -1,0 +1,134 @@
+{
+  "method": "Native RGB horizontal scans x[1270,1665), max adjacent channel delta >7; edge candidates, not DOM boxes or complete rail acceptance",
+  "images": [
+    {
+      "role": "source",
+      "sha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "scans": [
+        {
+          "y": 450,
+          "outerEdgeCandidates": [
+            1280,
+            1281,
+            1282,
+            1290,
+            1291,
+            1648,
+            1649,
+            1658,
+            1659
+          ]
+        },
+        {
+          "y": 600,
+          "outerEdgeCandidates": [
+            1280,
+            1281,
+            1282,
+            1290,
+            1291,
+            1648,
+            1650,
+            1658,
+            1659
+          ]
+        },
+        {
+          "y": 820,
+          "outerEdgeCandidates": [
+            1280,
+            1282,
+            1290,
+            1291,
+            1648,
+            1650,
+            1658,
+            1659
+          ]
+        }
+      ]
+    },
+    {
+      "role": "before45",
+      "sha256": "d492cc864a3389c5c24c412f4cc4e1f94bab388963969917c67eee10319df331",
+      "scans": [
+        {
+          "y": 450,
+          "outerEdgeCandidates": [
+            1279,
+            1280,
+            1290,
+            1291,
+            1645,
+            1646,
+            1647,
+            1648,
+            1649,
+            1651,
+            1652,
+            1653,
+            1659,
+            1660
+          ]
+        },
+        {
+          "y": 600,
+          "outerEdgeCandidates": [
+            1279,
+            1280,
+            1645,
+            1646,
+            1647,
+            1659,
+            1660
+          ]
+        },
+        {
+          "y": 820,
+          "outerEdgeCandidates": [
+            1279,
+            1280,
+            1290,
+            1291,
+            1292,
+            1659,
+            1660
+          ]
+        }
+      ]
+    },
+    {
+      "role": "after46",
+      "sha256": "4593a6be1bebca1ee9e6b1e7ebf3dab52550745d4fe3ad00a399d5ddc7535a82",
+      "scans": [
+        {
+          "y": 450,
+          "outerEdgeCandidates": [
+            1289,
+            1290,
+            1649,
+            1650
+          ]
+        },
+        {
+          "y": 600,
+          "outerEdgeCandidates": [
+            1289,
+            1290,
+            1649,
+            1650
+          ]
+        },
+        {
+          "y": 820,
+          "outerEdgeCandidates": [
+            1289,
+            1290,
+            1649,
+            1650
+          ]
+        }
+      ]
+    }
+  ]
+}

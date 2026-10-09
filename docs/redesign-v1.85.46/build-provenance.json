@@ -1,0 +1,99 @@
+{
+  "checkpoint": "v1.85.46",
+  "baseCommit": "f91a39bec9208dfba6ffdb334586f59c39fa71fe",
+  "productionIndexSha256": "a6462ca144dec3c37ec5f5a1ca925a410316a412903d260ba714d6847e1ac8dc",
+  "build": {
+    "command": "npm run build -w @quotapulse/web",
+    "session": 54303,
+    "exitCode": 0
+  },
+  "webUnit": {
+    "command": "npm run test -w @quotapulse/web",
+    "session": 8689,
+    "tests": 162,
+    "exitCode": 0
+  },
+  "authenticatedWorkflow": {
+    "command": "npm run test:history",
+    "session": 8689,
+    "exitCode": 0,
+    "responsiveCombinations": 16,
+    "routesPerCombination": 9,
+    "teardownComplete": true
+  },
+  "capture": {
+    "session": 80584,
+    "exitCode": 0,
+    "scope": "three changed pages; all four language/theme variants",
+    "pairs": 12,
+    "pngs": 24,
+    "allNineRouteMatrix": false,
+    "runs": [
+      {
+        "scope": "overview",
+        "pairs": 4,
+        "byteIdentical": 0,
+        "hashesVerified": true
+      },
+      {
+        "scope": "models",
+        "pairs": 4,
+        "byteIdentical": 1,
+        "hashesVerified": true
+      },
+      {
+        "scope": "alerts",
+        "pairs": 4,
+        "byteIdentical": 4,
+        "hashesVerified": true
+      }
+    ]
+  },
+  "sources": [
+    {
+      "path": "packages/web/src/redesign/overview.css",
+      "sha256": "d2d327cc242e68dfcb26a014eeb4d3cf8ee26ce8c580c9adae41f5424d1da42a"
+    },
+    {
+      "path": "packages/web/src/redesign/overview.tsx",
+      "sha256": "b494f1e5aa494e9c4c934445c683977b3f34dae10740ef61a7cc4c416ce98a7e"
+    },
+    {
+      "path": "packages/web/src/redesign/models.css",
+      "sha256": "b71cc445d3c51699a7b9f8bd9cd69926c7d3eb17a042d5e5cd6aea800101fa9e"
+    },
+    {
+      "path": "packages/web/src/redesign/alerts.css",
+      "sha256": "2d7024cb14cd6917dfc23e08d010e3f7b6b72365280e72ea6259097b9ee1a2cc"
+    },
+    {
+      "path": "packages/web/src/redesign/alerts.tsx",
+      "sha256": "40941ea7e700f3ac8e007585654bcf35be02250612294bd71ecae64d8e0940e3"
+    },
+    {
+      "path": "scripts/check-stable-captures.mts",
+      "sha256": "3c2297892e7cf2306d09f6de58b02c382c9ec6b8be785962450e324dc2e1d57f"
+    },
+    {
+      "path": "scripts/check-history.mts",
+      "sha256": "e9b659256b322f786e5c7ff047e7e65d30cfe3b8ea250cd8ae40e3e73516f31d"
+    },
+    {
+      "path": "package.json",
+      "sha256": "cbe805e366c5e4747991c3608adfdeba6874258a4fba2dd1dd23cd570fc76393"
+    },
+    {
+      "path": "packages/web/package.json",
+      "sha256": "e6b64ded7909f0016af2c1e3cbb9c3f9794d82c948e9f8b99505617316581403"
+    }
+  ],
+  "logRetention": "Trailing whitespace normalized in documentation copies; originals retained under tmp/reference-46-*",
+  "sourceDiagnostics": {
+    "overviewSession": 70432,
+    "modelsAlertsSession": 54731,
+    "exitCode": 0,
+    "referenceAndCandidateHashesVerified": true,
+    "masks": false
+  },
+  "acceptance": "No original-reference likeness or final release acceptance claimed"
+}

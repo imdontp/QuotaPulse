@@ -1,0 +1,26 @@
+{
+  "acceptance": "Unmasked diagnostics including factual differences; no likeness percentage or approved baseline",
+  "pages": [
+    {
+      "page": "overview",
+      "referenceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+      "captureSha256": "8927416a87b3ef1a2843ffc8ba02a03aeeb291bd2cc3c97278723c96ac705f64",
+      "diagnostic": "parity/overview/reference-parity.json",
+      "unmaskedDiagnosticSsim": 0.5423647766955846
+    },
+    {
+      "page": "models",
+      "referenceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "captureSha256": "4593a6be1bebca1ee9e6b1e7ebf3dab52550745d4fe3ad00a399d5ddc7535a82",
+      "diagnostic": "parity/models/reference-parity.json",
+      "unmaskedDiagnosticSsim": 0.5419731556397341
+    },
+    {
+      "page": "alerts",
+      "referenceSha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+      "captureSha256": "26bb89f6ab8f2a328efc0543a008b39cf34672350301a200a0b036fb0408dea7",
+      "diagnostic": "parity/alerts/reference-parity.json",
+      "unmaskedDiagnosticSsim": 0.5227889392528664
+    }
+  ]
+}

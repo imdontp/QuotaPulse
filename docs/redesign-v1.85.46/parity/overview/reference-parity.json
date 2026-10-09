@@ -1,0 +1,395 @@
+{
+  "referencePage": "overview",
+  "reference": "overview.png",
+  "candidate": "overview-en-dark.png",
+  "referenceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+  "candidateSha256": "8927416a87b3ef1a2843ffc8ba02a03aeeb291bd2cc3c97278723c96ac705f64",
+  "masks": false,
+  "acceptance": "Source mismatch diagnostic only; real-data differences are included and no baseline or likeness threshold is approved by this report.",
+  "note": "SSIM is averaged over sliding 11x11 uniform luminance windows; tile scores summarize those local values in non-overlapping 32x32 regions. The heatmap overlays relative tile mismatch on the reference. Dynamic real-data differences remain included.",
+  "width": 1586,
+  "height": 992,
+  "tileSize": 32,
+  "global": {
+    "pixels": 1573312,
+    "ssim": 0.5423647766955846,
+    "meanAbsoluteRgbDelta": 15.93338786797109,
+    "rootMeanSquareRgbDelta": 40.77944862580265,
+    "exactPixelPercent": 0.9855006508562828,
+    "withinTwoChannelsPercent": 31.838185941504292,
+    "singleWindowSsim": 0.3532632225641959
+  },
+  "tileWeightedSsim": 0.5423647766955745,
+  "regions": [
+    {
+      "name": "header",
+      "x": 0,
+      "y": 0,
+      "width": 1586,
+      "height": 60,
+      "comparison": {
+        "pixels": 95160,
+        "ssim": 0.5364484534481626,
+        "meanAbsoluteRgbDelta": 12.703222642566905,
+        "rootMeanSquareRgbDelta": 35.303196340429544,
+        "exactPixelPercent": 0.47393862967633454,
+        "withinTwoChannelsPercent": 19.09100462379151,
+        "singleWindowSsim": 0.4667872137443481
+      }
+    },
+    {
+      "name": "sidebar",
+      "x": 0,
+      "y": 60,
+      "width": 216,
+      "height": 932,
+      "comparison": {
+        "pixels": 201312,
+        "ssim": 0.7327844057805765,
+        "meanAbsoluteRgbDelta": 8.437503311609177,
+        "rootMeanSquareRgbDelta": 27.11916512588456,
+        "exactPixelPercent": 2.5542441583214117,
+        "withinTwoChannelsPercent": 50.37404625655698,
+        "singleWindowSsim": 0.3162545613796222
+      }
+    },
+    {
+      "name": "pulse-core",
+      "x": 228,
+      "y": 68,
+      "width": 977,
+      "height": 395,
+      "comparison": {
+        "pixels": 385915,
+        "ssim": 0.515747751864762,
+        "meanAbsoluteRgbDelta": 18.85106564917145,
+        "rootMeanSquareRgbDelta": 43.99015182643786,
+        "exactPixelPercent": 0.4311830325330708,
+        "withinTwoChannelsPercent": 26.796315250767655,
+        "singleWindowSsim": 0.4125111506816015
+      }
+    },
+    {
+      "name": "subscriptions",
+      "x": 1217,
+      "y": 68,
+      "width": 348,
+      "height": 395,
+      "comparison": {
+        "pixels": 137460,
+        "ssim": 0.48612568271762846,
+        "meanAbsoluteRgbDelta": 20.06516077404336,
+        "rootMeanSquareRgbDelta": 49.63451089619554,
+        "exactPixelPercent": 0.03710170231340026,
+        "withinTwoChannelsPercent": 17.530918085261167,
+        "singleWindowSsim": 0.2914639527694898
+      }
+    },
+    {
+      "name": "runtime-map",
+      "x": 228,
+      "y": 473,
+      "width": 1337,
+      "height": 231,
+      "comparison": {
+        "pixels": 308847,
+        "ssim": 0.4755829949844024,
+        "meanAbsoluteRgbDelta": 18.002348519925185,
+        "rootMeanSquareRgbDelta": 42.746492699808016,
+        "exactPixelPercent": 1.0254268294657225,
+        "withinTwoChannelsPercent": 25.579655946148094,
+        "singleWindowSsim": 0.24255062393996127
+      }
+    },
+    {
+      "name": "quota-runway",
+      "x": 228,
+      "y": 714,
+      "width": 707,
+      "height": 176,
+      "comparison": {
+        "pixels": 124432,
+        "ssim": 0.5472115155849933,
+        "meanAbsoluteRgbDelta": 17.911459003043163,
+        "rootMeanSquareRgbDelta": 45.7631413180525,
+        "exactPixelPercent": 1.268966182332519,
+        "withinTwoChannelsPercent": 48.48350906519223,
+        "singleWindowSsim": 0.37450291359268517
+      }
+    },
+    {
+      "name": "pulse-insights",
+      "x": 947,
+      "y": 714,
+      "width": 618,
+      "height": 176,
+      "comparison": {
+        "pixels": 108768,
+        "ssim": 0.5506043710648796,
+        "meanAbsoluteRgbDelta": 15.753178018044522,
+        "rootMeanSquareRgbDelta": 41.47498905896666,
+        "exactPixelPercent": 1.2770300088261253,
+        "withinTwoChannelsPercent": 49.30678140629597,
+        "singleWindowSsim": 0.2750444302377451
+      }
+    },
+    {
+      "name": "live-activity",
+      "x": 228,
+      "y": 899,
+      "width": 1337,
+      "height": 84,
+      "comparison": {
+        "pixels": 112308,
+        "ssim": 0.44794727855648026,
+        "meanAbsoluteRgbDelta": 19.627019743324905,
+        "rootMeanSquareRgbDelta": 46.934531668775776,
+        "exactPixelPercent": 0.5191081668269402,
+        "withinTwoChannelsPercent": 29.626562666951596,
+        "singleWindowSsim": 0.23148317324726475
+      }
+    }
+  ],
+  "worstTiles": [
+    {
+      "x": 320,
+      "y": 160,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.15126844396108285,
+      "meanAbsoluteRgbDelta": 73.32194010416667
+    },
+    {
+      "x": 352,
+      "y": 160,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.13644275366528444,
+      "meanAbsoluteRgbDelta": 70.4091796875
+    },
+    {
+      "x": 992,
+      "y": 576,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.09322435947763864,
+      "meanAbsoluteRgbDelta": 58.172200520833336
+    },
+    {
+      "x": 288,
+      "y": 160,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.06306222037782701,
+      "meanAbsoluteRgbDelta": 66.20149739583333
+    },
+    {
+      "x": 864,
+      "y": 768,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.03263977471215916,
+      "meanAbsoluteRgbDelta": 54.679036458333336
+    },
+    {
+      "x": 1504,
+      "y": 160,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.031879103524827375,
+      "meanAbsoluteRgbDelta": 46.675455729166664
+    },
+    {
+      "x": 992,
+      "y": 608,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.03096174849526674,
+      "meanAbsoluteRgbDelta": 60.054036458333336
+    },
+    {
+      "x": 992,
+      "y": 640,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.029467033004911467,
+      "meanAbsoluteRgbDelta": 45.328450520833336
+    },
+    {
+      "x": 768,
+      "y": 128,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.024894204724627073,
+      "meanAbsoluteRgbDelta": 55.678059895833336
+    },
+    {
+      "x": 1024,
+      "y": 640,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.018238195091694376,
+      "meanAbsoluteRgbDelta": 40.541015625
+    },
+    {
+      "x": 704,
+      "y": 608,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.014426078385626363,
+      "meanAbsoluteRgbDelta": 56.202799479166664
+    },
+    {
+      "x": 672,
+      "y": 640,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.013726272053587929,
+      "meanAbsoluteRgbDelta": 42.894856770833336
+    },
+    {
+      "x": 1024,
+      "y": 224,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.010901966306648195,
+      "meanAbsoluteRgbDelta": 58.435546875
+    },
+    {
+      "x": 1504,
+      "y": 416,
+      "width": 32,
+      "height": 32,
+      "ssim": -0.008377668624162208,
+      "meanAbsoluteRgbDelta": 44.205078125
+    },
+    {
+      "x": 672,
+      "y": 224,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.0008507819038399823,
+      "meanAbsoluteRgbDelta": 79.74609375
+    },
+    {
+      "x": 672,
+      "y": 608,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.011867943755421856,
+      "meanAbsoluteRgbDelta": 55.5087890625
+    },
+    {
+      "x": 800,
+      "y": 160,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.016974969781217205,
+      "meanAbsoluteRgbDelta": 41.681640625
+    },
+    {
+      "x": 1248,
+      "y": 160,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.01838613282864256,
+      "meanAbsoluteRgbDelta": 47.408528645833336
+    },
+    {
+      "x": 704,
+      "y": 640,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.023867216968749883,
+      "meanAbsoluteRgbDelta": 35.012369791666664
+    },
+    {
+      "x": 992,
+      "y": 544,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.023954305066846475,
+      "meanAbsoluteRgbDelta": 30.70703125
+    },
+    {
+      "x": 320,
+      "y": 320,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.02444274645739767,
+      "meanAbsoluteRgbDelta": 60.687174479166664
+    },
+    {
+      "x": 1312,
+      "y": 640,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.027396957264747092,
+      "meanAbsoluteRgbDelta": 25.542317708333332
+    },
+    {
+      "x": 256,
+      "y": 768,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.035259007929342445,
+      "meanAbsoluteRgbDelta": 36.4775390625
+    },
+    {
+      "x": 640,
+      "y": 512,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.03656875964324627,
+      "meanAbsoluteRgbDelta": 47.953125
+    },
+    {
+      "x": 960,
+      "y": 640,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.03731829688657256,
+      "meanAbsoluteRgbDelta": 33.376953125
+    },
+    {
+      "x": 544,
+      "y": 224,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.03908876204499454,
+      "meanAbsoluteRgbDelta": 44.76171875
+    },
+    {
+      "x": 736,
+      "y": 128,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.04586263956186936,
+      "meanAbsoluteRgbDelta": 53.921223958333336
+    },
+    {
+      "x": 640,
+      "y": 192,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.04681603820119289,
+      "meanAbsoluteRgbDelta": 33.116861979166664
+    },
+    {
+      "x": 832,
+      "y": 768,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.047114665822715986,
+      "meanAbsoluteRgbDelta": 47.151692708333336
+    },
+    {
+      "x": 1280,
+      "y": 640,
+      "width": 32,
+      "height": 32,
+      "ssim": 0.052808204542685956,
+      "meanAbsoluteRgbDelta": 26.131184895833332
+    }
+  ]
+}

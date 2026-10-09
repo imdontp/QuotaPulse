@@ -1,0 +1,14 @@
+
+> quotapulse@0.1.0 test:stable
+> node --import tsx scripts/check-stable-captures.mts
+
+13:42:00.000 INFO  [db] opened :memory:
+Stable capture pass 1: en/dark, 1 pages
+Stable capture pass 1: en/light, 1 pages
+Stable capture pass 1: th/dark, 1 pages
+Stable capture pass 1: th/light, 1 pages
+Stable capture pass 2: en/dark, 1 pages
+Stable capture pass 2: en/light, 1 pages
+Stable capture pass 2: th/dark, 1 pages
+Stable capture pass 2: th/light, 1 pages
+Stable captures passed: 4 pairs, 1 byte-identical, remaining pairs within recorded raster tolerance; no masks.

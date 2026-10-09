@@ -144,6 +144,13 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
         <circle cx="180" cy="160" r="157" stroke="#2b62ff" strokeWidth=".7" opacity=".65"/>
       </g>
       <circle cx="180" cy="3" r="1.7" fill="#78beff" filter={`url(#${id}-glow)`}/>
+      <g className="qp-core-glints" filter={`url(#${id}-glow)`} aria-hidden="true">{[
+        { x:180, y:3, color:'#73bfff' }, { x:317, y:74, color:'#d4a2ff' },
+        { x:23, y:95, color:'#48ddff' }, { x:47, y:260, color:'#54dfff' },
+      ].map(({ x, y, color }) => <g key={`${x}:${y}`} stroke={color} strokeWidth=".7">
+        <path d={`M${x - 5} ${y}H${x + 5}M${x} ${y - 5}V${y + 5}`} fill="none"/>
+        <circle cx={x} cy={y} r="1.2" fill={color}/>
+      </g>)}</g>
       <g fill="#4ebcff" filter={`url(#${id}-glow)`} aria-hidden="true">{Array.from({ length: 16 }, (_, index) => {
         const angle = index * 2.399963;
         return <circle key={index} cx={180 + Math.cos(angle) * 150} cy={160 + Math.sin(angle) * 150} r={index % 3 === 0 ? 1.7 : .7}/>;

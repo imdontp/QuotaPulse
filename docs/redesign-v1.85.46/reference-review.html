@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QuotaPulse v1.85.46 — source / before / after</title>
+<style>
+body{margin:0;background:#090f19;color:#e5edff;font:14px system-ui}header{padding:16px;position:sticky;top:0;z-index:2;background:#090f19;border-bottom:1px solid #30445b}h1{font-size:20px;margin:0}p{max-width:1100px;line-height:1.5}label{display:inline-flex;gap:8px;align-items:center;margin:8px 14px 0 0}select{background:#132036;color:inherit;border:1px solid #45617e;border-radius:4px;padding:6px}.viewport{overflow:auto;padding:16px}.frame{position:relative}img{position:absolute;inset:0;width:100%;height:100%}.source{opacity:0;pointer-events:none}a{color:#60ccff}
+</style>
+<header>
+<h1>QuotaPulse v1.85.46 · เทียบต้นฉบับ / ก่อนแก้ / หลังแก้</h1>
+<p>สามหน้าที่แก้รอบนี้ใช้ build เดียวกัน ภาพแอปมีข้อมูล API ทดสอบจริงในฐานข้อมูลแยก
+ตัวเลขและกราฟยังรวมอยู่ในการเทียบ ภาพ concept เป็น EN/Dark การจับภาพซ้ำไม่ใช่การอนุมัติความเหมือน 99–100%</p>
+<label>หน้า <select id="page"><option>overview</option><option>models</option><option>alerts</option></select></label>
+<label>ภาษา <select id="lang"><option value="en">EN</option><option value="th">TH</option></select></label>
+<label>ธีม <select id="theme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+<label>ภาพ <select id="view"><option value="actual">หลังแก้ v1.85.46</option><option value="before">ก่อนแก้ v1.85.45</option><option value="source">Concept ต้นฉบับ</option><option value="overlay">ซ้อนภาพหลังแก้ 50%</option></select></label>
+<p><a href="VALIDATION-STATE.md">ผลตรวจ</a> · <a href="SOURCE-CHANGES.md">จุดที่แก้และงานที่เหลือ</a> · <a href="../redesign-v1.85.45/reference-review.html">ภาพทั้ง 8 หน้า checkpoint ก่อนหน้า</a> · <a id="diagnostic">ผลเทียบต้นฉบับ EN/Dark</a></p>
+<p id="dimensions"></p>
+</header>
+<main class="viewport"><div class="frame"><img id="actual" alt="ภาพแอปตาม checkpoint ที่เลือก"><img id="source" class="source" alt="ภาพ concept ต้นฉบับ"></div></main>
+<script>
+const controls=['page','lang','theme','view'].map(id=>document.getElementById(id));
+const [page,lang,theme,view]=controls;
+const actual=document.getElementById('actual'),source=document.getElementById('source');
+function update(){
+ const width=page.value==='overview'?1586:1672,height=page.value==='overview'?992:941;
+ actual.parentElement.style.width=`${width}px`;actual.parentElement.style.height=`${height}px`;
+ const prefix=view.value==='before'?'../redesign-v1.85.45/captures/':'captures/';
+ actual.src=`${prefix}${page.value}-${lang.value}-${theme.value}.png`;
+ source.src=`../redesign-v1.85.43/refs/${page.value}.png`;
+ source.style.opacity=view.value==='source'?'1':view.value==='overlay'?'.5':'0';
+ document.getElementById('diagnostic').href=`parity/${page.value}/reference-parity.json`;
+ document.getElementById('dimensions').textContent=`${width} × ${height}px ตามขนาดจริง · ไม่ย่อหรือปิดบังพื้นที่ · ผลเทียบต้นฉบับใช้ EN/Dark`;
+}
+controls.forEach(control=>control.addEventListener('change',update));update();
+</script>
+</html>

@@ -1,0 +1,42 @@
+{
+  "method": "PIL RGB, ROI x[77,245), y[39,52), max channel >110; pixel glyph occupancy, not DOM geometry",
+  "images": [
+    {
+      "role": "source",
+      "sha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+      "brightGlyphBounds": [
+        78,
+        41,
+        238,
+        49
+      ],
+      "width": 160,
+      "height": 8
+    },
+    {
+      "role": "before45",
+      "sha256": "8080b522baf290e6c58f962583e909b0adf143c7ac02cfd116e05d4dd11769d4",
+      "brightGlyphBounds": [
+        78,
+        41,
+        196,
+        47
+      ],
+      "width": 118,
+      "height": 6
+    },
+    {
+      "role": "after46",
+      "sha256": "8927416a87b3ef1a2843ffc8ba02a03aeeb291bd2cc3c97278723c96ac705f64",
+      "brightGlyphBounds": [
+        78,
+        40,
+        241,
+        48
+      ],
+      "width": 163,
+      "height": 8
+    }
+  ],
+  "acceptance": "Measured caption improvement, with residual width/vertical differences; not whole-page likeness approval"
+}

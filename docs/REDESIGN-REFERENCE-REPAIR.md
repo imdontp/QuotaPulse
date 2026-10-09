@@ -15,6 +15,13 @@ checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
 Latest consolidated source review:
+[v1.85.46](redesign-v1.85.46/VALIDATION-STATE.md) repairs Overview caption/glow,
+Models detail insets and Alerts risk-row hierarchy. Its changed-page matrix
+covers 12 pairs on one new build; web 162 tests and authenticated all-page
+responsive workflows pass. This is not a new full 40-pair matrix.
+[Source / before / after for the three repaired pages](redesign-v1.85.46/reference-review.html).
+
+Latest full eight-page capture:
 [v1.85.45](redesign-v1.85.45/VALIDATION-STATE.md) repairs Projects footers,
 Cost insights, Providers bars, History grid/selection and Live series hierarchy.
 Its one-build full 40-pair matrix passes, all 80 PNG hashes are verified, and
