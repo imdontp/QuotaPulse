@@ -13,6 +13,7 @@ import { QuotaChart } from './quota-chart';
 import { RuntimeData } from './runtime-data';
 import { ActivitySparkline } from './activity-sparkline';
 import { PulseAmbient } from './pulse-ambient';
+import type { UsageEventScope } from '@/lib/usage-events';
 import { activityMinutePoints, activityTokensPerMinute } from './activity-trend';
 
 type Translate = RedesignTranslate;
@@ -45,6 +46,7 @@ const quotaWindowLabel = (window: string, t: Translate) => window === '5h' ? t('
       : window === 'daily' ? t('redesign.windowQuotaDaily') : window;
 const quotaDuration = (at: number | null, now: number, unknown: string) => at === null ? unknown : at - now < 60_000 ? '<1m' : countdown(at, now);
 interface OverviewProps {
+  quickStatsScope?: UsageEventScope | null;
   records?: readonly UsageRecord[];
   graph?: RuntimeGraph;
   runtimeGraph?: RuntimeGraph;
@@ -338,7 +340,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
+export function Overview({ quickStatsScope, records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -446,7 +448,7 @@ export function Overview({ records = [], graph, runtimeGraph, quotas, quotaAccou
     update();
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', update); };
   }, []);
-  return <RedesignShell active="overview" rootRef={shell} theme={theme} language={language} onLanguage={onLanguage} onTheme={() => onTheme ? onTheme() : setLocalTheme(theme === 'dark' ? 'light' : 'dark')} t={t} preview={preview} testId={preview ? 'redesign-preview' : 'production-overview'}>
+  return <RedesignShell quickStatsScope={quickStatsScope} active="overview" rootRef={shell} theme={theme} language={language} onLanguage={onLanguage} onTheme={() => onTheme ? onTheme() : setLocalTheme(theme === 'dark' ? 'light' : 'dark')} t={t} preview={preview} testId={preview ? 'redesign-preview' : 'production-overview'}>
         <div className="qp-page-heading"><h1>{t('redesign.title')}</h1><span className="qp-chip">{period ?? new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(now)}</span></div>
         <div className="qp-hero-grid">
           <section className="qp-panel qp-hero">

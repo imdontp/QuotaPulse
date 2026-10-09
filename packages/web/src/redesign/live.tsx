@@ -134,7 +134,7 @@ export function ProductionLive() {
     return `#history?${p}`;
   };
 
-  return <RedesignShell active="live" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-live">
+  return <RedesignShell quickStatsPaused={paused} quickStatsScope={display?.scope ?? null} active="live" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-live">
     <section className="qp-panel qp-live-top">
     <header className="qp-live-header"><PageHeading icon={<Activity size={24}/>} title={t('redesign.liveHeading')} subtitle={t('redesign.liveSubtitle')} compact/><div className="qp-live-actions"><button onClick={togglePause}>{paused ? <Play size={15}/> : <Pause size={15}/ >}{t(paused ? 'redesign.liveResume' : 'redesign.livePause')}</button><button onClick={() => void refresh.refreshNow()} disabled={paused || refresh.refreshing}><RefreshCw size={15}/>{t('app.refreshNow')}</button></div></header>
     {paused && <p className="qp-live-note" role="status">{t('redesign.livePaused')} · {date(display?.overview.now ?? null)}</p>}

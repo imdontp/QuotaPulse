@@ -55,6 +55,8 @@ export function ProductionModels() {
   const refresh = useRefreshStatus();
   const requestKey = JSON.stringify([route.range, route.from, route.to, route.sourceId, route.provider, route.vendor]);
   const currentKey = useRef(requestKey);
+  const scopeEpoch = useRef(0);
+  if (currentKey.current !== requestKey) scopeEpoch.current++;
   currentKey.current = requestKey;
   useEffect(() => {
     const sync = () => { if (location.hash.slice(1).split('?')[0] === 'models') setRoute(readRoute()); };
@@ -68,13 +70,14 @@ export function ProductionModels() {
   };
   useLiveRefresh(async () => {
     const key = requestKey;
+    const requestedEpoch = scopeEpoch.current;
     const range = selectedScope(route, Date.now());
     try {
       const basePromise = api.detailedModels(range, true);
       const dataPromise = route.provider || route.vendor ? api.detailedModels({ ...range, ...(route.provider ? { provider: route.provider } : {}), ...(route.vendor ? { vendor: route.vendor } : {}) }, true) : basePromise;
       const [base, data] = await Promise.all([basePromise, dataPromise]);
-      if (currentKey.current === key) { setSnapshot({ key, base, data }); setError(null); }
-    } catch (cause) { if (currentKey.current === key) setError(String(cause)); throw cause; }
+      if (currentKey.current === key && scopeEpoch.current === requestedEpoch) { setSnapshot({ key, base, data }); setError(null); }
+    } catch (cause) { if (!(currentKey.current === key && scopeEpoch.current === requestedEpoch)) return; setError(String(cause)); throw cause; }
   }, [requestKey]);
 
   const current = snapshot?.key === requestKey ? snapshot : null;
@@ -121,7 +124,7 @@ export function ProductionModels() {
   const ratio = (value: number | null) => value === null ? '—' : <span className="qp-model-ratio"><span>{f.pct(value)}</span><span className="qp-bar" aria-hidden="true"><span style={{ width: `${Math.max(0, Math.min(100, value))}%` }}/></span></span>;
   const historyHref = selected && data && selected.model && selected.provider ? `#history?${new URLSearchParams({ range: 'custom', from: String(data.scope.from), to: String(data.scope.to), model: selected.model, provider: selected.provider, ...(data.scope.vendor ? { vendor: data.scope.vendor } : {}), ...(data.scope.sourceId ? { source: String(data.scope.sourceId) } : {}) })}` : null;
 
-  return <RedesignShell active="models" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-models">
+  return <RedesignShell quickStatsScope={data?.scope ?? null} active="models" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-models">
     <div className="qp-model-layout">
       <div className="qp-model-primary">
         <div className="qp-model-overview">

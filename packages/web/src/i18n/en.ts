@@ -35,6 +35,7 @@ export const en = {
   'redesign.recordedProviders': 'Recorded providers',
   'redesign.recentSessions': 'Recent sessions',
   'redesign.quickStatsNote': 'All recorded data on this machine. A source observed these sessions within the past 5 minutes; this does not confirm a process is running.',
+  'redesign.quickStatsScopedNote': 'Recorded usage within the displayed time range and applied filters. A source observed recent sessions within the past 5 minutes; this does not confirm a process is running.',
   'redesign.machineScope': 'This machine',
   'redesign.workspace': 'Workspace',
   'redesign.staleSnapshot': "Showing the last successful overview. Refresh is retrying.",

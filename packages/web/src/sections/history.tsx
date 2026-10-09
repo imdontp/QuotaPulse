@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { api, type HarnessStatus, type HistorySummaryResponse } from '@/api';
 import { HistoryTimeline } from '@/redesign/history-timeline';
 import { HistoryRecordDetails } from '@/redesign/history-record-details';
@@ -30,7 +30,7 @@ function routeFilters(): Filters {
   return filters;
 }
 
-export function HistorySection({ sources, harnesses = [], redesign = false }: { sources: Array<{ id: number; display_name: string }>; harnesses?: HarnessStatus[]; redesign?: boolean }) {
+export function HistorySection({ sources, harnesses = [], redesign = false, onScopeChange, onPauseChange }: { onPauseChange?: (paused: boolean) => void; onScopeChange?: (scope: UsageEventScope | null) => void; sources: Array<{ id: number; display_name: string }>; harnesses?: HarnessStatus[]; redesign?: boolean }) {
   const t = useT();
   const f = useFormat();
   const { lang } = useI18n();
@@ -56,6 +56,8 @@ export function HistorySection({ sources, harnesses = [], redesign = false }: { 
   const queryKey = JSON.stringify([route.selection, filters, sessionId, offset]);
   const key = JSON.stringify([queryKey, paused]);
   const currentKey = useRef(key);
+  const scopeEpoch = useRef(0);
+  if (currentKey.current !== key) scopeEpoch.current++;
   currentKey.current = key;
   const mounted = useRef(true);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
@@ -91,7 +93,8 @@ export function HistorySection({ sources, harnesses = [], redesign = false }: { 
   useLiveRefresh(async ({ live }) => {
     if (pausedRef.current) return;
     const requestedKey = key;
-    const current = () => mounted.current && !pausedRef.current && currentKey.current === requestedKey;
+    const requestedEpoch = scopeEpoch.current;
+    const current = () => mounted.current && !pausedRef.current && currentKey.current === requestedKey && scopeEpoch.current === requestedEpoch;
     if (!live) setLoading(true);
     try {
       const usage = await api.usage({ ...route.selection, bucket: route.selection.bucket ?? 'auto' });
@@ -109,10 +112,18 @@ export function HistorySection({ sources, harnesses = [], redesign = false }: { 
       setSnapshotKey(queryKey);
       setError(null);
     } catch (err) {
-      if (current()) setError(String(err));
+      if (!current()) return;
+      setError(String(err));
       throw err;
     } finally { if (current()) setLoading(false); }
   }, [key]);
+
+  // Report the committed snapshot, never unapplied form controls. While a
+  // replacement query loads the old table remains visible, but its counts must
+  // not be presented as belonging to the newly applied scope.
+  const displayedScope = paused || snapshotKey === queryKey ? snapshot?.scope ?? null : null;
+  useLayoutEffect(() => { onScopeChange?.(displayedScope); }, [onScopeChange, displayedScope]);
+  useLayoutEffect(() => { onPauseChange?.(paused); }, [onPauseChange, paused]);
 
   const togglePause = () => {
     pausedRef.current = !pausedRef.current;

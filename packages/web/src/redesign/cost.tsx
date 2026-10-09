@@ -67,7 +67,10 @@ export function ProductionCost() {
   const refresh = useRefreshStatus();
   const bucket: Bucket = route.bucket ?? (route.range === 'month' ? 'day' : 'auto');
   const key = JSON.stringify([route.range, route.from, route.to, route.sourceId, route.basis, bucket]);
-  const currentKey = useRef(key); currentKey.current = key;
+  const currentKey = useRef(key);
+  const scopeEpoch = useRef(0);
+  if (currentKey.current !== key) scopeEpoch.current++;
+  currentKey.current = key;
   useEffect(() => {
     const sync = () => { if (location.hash.slice(1).split('?')[0] === 'cost') setRoute(readRoute()); };
     addEventListener('hashchange', sync);
@@ -81,10 +84,11 @@ export function ProductionCost() {
   };
   useLiveRefresh(async () => {
     const requestKey = key;
+    const requestedEpoch = scopeEpoch.current;
     try {
       const data = await api.costAnalysis(selectedScope(route, Date.now()), route.basis, bucket);
-      if (currentKey.current === requestKey) { setSnapshot({ key: requestKey, data }); setError(null); }
-    } catch (cause) { if (currentKey.current === requestKey) setError(String(cause)); throw cause; }
+      if (currentKey.current === requestKey && scopeEpoch.current === requestedEpoch) { setSnapshot({ key: requestKey, data }); setError(null); }
+    } catch (cause) { if (!(currentKey.current === requestKey && scopeEpoch.current === requestedEpoch)) return; setError(String(cause)); throw cause; }
   }, [key]);
   const data = snapshot?.key === key ? snapshot.data : null;
   const total = data?.totals;
@@ -112,7 +116,7 @@ export function ProductionCost() {
   const projectName = (value: string | null) => value === null ? t('redesign.costUnknownProject') : value === '' ? t('redesign.emptyProject') : value;
   const topModel = topModels[0];
 
-  return <RedesignShell active="cost" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-cost">
+  return <RedesignShell quickStatsScope={data?.scope ?? null} active="cost" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-cost">
     <div className="qp-cost-layout"><div className="qp-cost-top-row"><section className="qp-panel qp-cost-overview"><div className="qp-cost-top"><header className="qp-cost-header"><div className="qp-cost-heading"><PageHeading compact icon={<BarChart3 size={24}/>} title={t('redesign.costHeading')} subtitle={t('redesign.costSubtitle')}/><ScopeNotice scope={route}/></div><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/><span>{t('app.refreshNow')}</span></button></header>
     <div className="qp-cost-toolbar"><label><span>{t('redesign.projectRange')}</span><select value={route.range} onChange={event => update({ range: event.target.value as Range })}><option value="month">{t('redesign.costMonthToDate')}</option><option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.thisWeek')}</option><option value="last30">{t('redesign.last30')}</option><option value="all">{t('redesign.allTime')}</option>{route.range === 'custom' && <option value="custom">{t('usage.custom')}</option>}</select></label><label><span>{t('redesign.costBasis')}</span><select value={route.basis} onChange={event => update({ basis: event.target.value as Basis })}><option value="api">{t('redesign.costApiBasis')}</option><option value="native">{t('redesign.costNativeBasis')}</option></select></label><label><span>{t('redesign.costBucket')}</span><select value={bucket} onChange={event => update({ bucket: event.target.value as Bucket })}><option value="auto">{t('redesign.costBucketAuto')}</option><option value="hour">{t('redesign.costBucketHour')}</option><option value="day">{t('redesign.costBucketDay')}</option><option value="week">{t('redesign.costBucketWeek')}</option></select></label></div>
     </div>

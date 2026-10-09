@@ -1258,7 +1258,11 @@ async function checkFontAccess(page: Page, destination: string, lang: string, th
 
 async function checkShellAccess(page: Page, destination: string, lang: string, theme: string) {
   const originalViewport = page.viewportSize()!;
-  const statsResponse = await daemon.inject({ method: 'GET', url: '/api/runtime-summary', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  const scopedPage = ['overview', 'live', 'projects', 'models', 'cost', 'history'].includes(destination);
+  const monthStart = new Date(fixedNow); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
+  const from = destination === 'live' ? fixedNow - 30 * 60_000 : destination === 'history' ? fixedNow - 30 * 86_400_000 : monthStart.getTime();
+  const statsQuery = scopedPage ? `?from=${from}&to=${fixedNow + 1}` : '';
+  const statsResponse = await daemon.inject({ method: 'GET', url: `/api/runtime-summary${statsQuery}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(statsResponse.statusCode, 200);
   const stats = statsResponse.json<Record<string, number>>();
   const overviewResponse = await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
@@ -1302,7 +1306,8 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
   assert.ok(statsNote && statsNote.width === 1 && statsNote.height === 1, 'The session-count caveat remains available to assistive technology without extending the reference card');
   const recentSessionLink = statsCard.locator('[data-stat=recentSessions]').locator('..').locator('dt a');
   const quickSessionsLabel = lang === 'th' ? th['redesign.quickSessions'] : en['redesign.quickSessions'];
-  const quickStatsNote = lang === 'th' ? th['redesign.quickStatsNote'] : en['redesign.quickStatsNote'];
+  const noteKey = scopedPage ? 'redesign.quickStatsScopedNote' : 'redesign.quickStatsNote';
+  const quickStatsNote = lang === 'th' ? th[noteKey] : en[noteKey];
   assert.equal(await recentSessionLink.locator('span').textContent(), quickSessionsLabel);
   assert.equal(await recentSessionLink.getAttribute('title'), quickStatsNote, 'Active-session label must disclose its observation window and limitation');
   for (const key of ['namedProjects', 'models', 'providers', 'recentSessions']) {
@@ -2631,7 +2636,7 @@ try {
           await page.goto(`http://127.0.0.1:7804/?capture=${destination}#${destination}${destination === 'cost' ? '?range=month' : ''}`, { waitUntil: 'domcontentloaded' });
           await page.getByTestId(`production-${destination}`).locator(ready).first().waitFor();
           await page.locator('.qp-daemon-badge[data-state=live]').waitFor();
-          await page.waitForFunction(() => document.querySelector('[data-stat=models]')?.textContent === '6');
+          await page.waitForFunction(() => /^\d[\d,]*$/.test(document.querySelector('[data-stat=models]')?.textContent ?? ''));
           await settled(page, pending);
           if (destination === 'overview') {
             const monthlyQuota = page.locator('.qp-quota[data-owner="OpenAI Subscription"][data-window="monthly"]');

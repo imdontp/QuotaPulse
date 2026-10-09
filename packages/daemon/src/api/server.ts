@@ -148,8 +148,14 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
   app.get('/api/diagnostics/runtime', async () => runtimeSnapshot(scheduler));
 
   app.get('/api/runtime-summary', async (req, reply) => {
-    if (Object.keys(req.query as Record<string, unknown>).length) return reply.code(400).send({ error: 'Runtime summary has machine-wide scope' });
-    return runtimeSummary(db, Date.now());
+    const query = req.query as Record<string, unknown>;
+    const now = Date.now();
+    if (!Object.keys(query).length) return runtimeSummary(db, now);
+    try {
+      return runtimeSummary(db, now, parseUsageScope(query, now, { requireRange: true }));
+    } catch (error) {
+      return reply.code(400).send({ error: (error as Error).message });
+    }
   });
 
   app.get('/api/overview', async () => {

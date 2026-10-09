@@ -20,8 +20,10 @@ production build, all eight original-source diagnostics,457 current unit passes
 and a23-override ledger. Selected DeepSeek lighting follows the source blue.
 [Compare all eight pages](redesign-v1.85.43/reference-review.html).
 [Override coverage and open scope gap](redesign-v1.85.43/OVERRIDE-COVERAGE.md).
-OVR-003 selected-scope QuickStats is the next substantive correction; full
-source/baseline/release acceptance remains open.
+OVR-003 selected-scope QuickStats is corrected in
+[v1.85.44](redesign-v1.85.44/VALIDATION-STATE.md), with legacy API defaults,
+committed filters and pause-safe sidebar counts. Full source/baseline/release
+acceptance remains open; the v1.85.43 source viewer is historical.
 
 Previous History identities and summary/detail spacing:
 [v1.85.42](redesign-v1.85.42/VALIDATION-STATE.md) adds actual model-maker plates,

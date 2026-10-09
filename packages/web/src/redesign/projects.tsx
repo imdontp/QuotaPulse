@@ -72,6 +72,8 @@ export function ProductionProjects() {
   const refresh = useRefreshStatus();
   const requestKey = JSON.stringify([route.range, route.from, route.to, route.sourceId, route.harness]);
   const currentKey = useRef(requestKey);
+  const scopeEpoch = useRef(0);
+  if (currentKey.current !== requestKey) scopeEpoch.current++;
   currentKey.current = requestKey;
   useEffect(() => {
     const sync = () => { setRoute(readRoute()); setError(null); };
@@ -86,12 +88,14 @@ export function ProductionProjects() {
   };
   useLiveRefresh(async () => {
     const requestedKey = requestKey;
+    const requestedEpoch = scopeEpoch.current;
     try {
       const scope = { ...selectedScope(route, Date.now()), ...(route.harness ? { harness: route.harness } : {}) };
       const [data, overview] = await Promise.all([api.detailedProjects(scope, true), api.overview()]);
-      if (currentKey.current === requestedKey) { setSnapshot({ key: requestedKey, data, overview }); setError(null); }
+      if (currentKey.current === requestedKey && scopeEpoch.current === requestedEpoch) { setSnapshot({ key: requestedKey, data, overview }); setError(null); }
     } catch (cause) {
-      if (currentKey.current === requestedKey) setError(String(cause));
+      if (!(currentKey.current === requestedKey && scopeEpoch.current === requestedEpoch)) return;
+      setError(String(cause));
       throw cause;
     }
   }, [requestKey]);
@@ -159,7 +163,7 @@ export function ProductionProjects() {
   const date = (ms: number | null) => ms == null ? '—' : new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(ms);
   const projectName = (key: string | null) => key === null ? t('redesign.unassigned') : key === '' ? t('redesign.emptyProject') : key;
 
-  return <RedesignShell active="projects" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-projects">
+  return <RedesignShell quickStatsScope={data?.scope ?? null} active="projects" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-projects">
     <header className="qp-project-header"><PageHeading icon={<Folder size={24}/>} title={t('redesign.projectHeading')} subtitle={t('redesign.projectSubtitle')}/><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing} aria-label={t('app.refreshNow')}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
     {error && <p className="qp-project-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     <div className="qp-project-toolbar">

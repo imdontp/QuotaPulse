@@ -35,6 +35,7 @@
     "test:pet-popup-recovery": "node --import tsx scripts/check-pet-popup-recovery.mts",
     "test:unresponsive-recovery": "node --import tsx scripts/check-unresponsive-recovery.mts",
     "test:stable": "node --import tsx scripts/check-stable-captures.mts",
+    "test:quickstats": "node --import tsx scripts/check-quickstats-scope.mts",
     "prices:refresh": "node scripts/fetch-prices.mjs",
     "doctor": "node scripts/doctor.mjs"
   },

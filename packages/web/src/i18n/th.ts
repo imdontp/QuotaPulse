@@ -41,6 +41,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.recordedProviders': 'ผู้ให้บริการที่บันทึก',
   'redesign.recentSessions': 'เซสชันล่าสุด',
   'redesign.quickStatsNote': 'ข้อมูลทั้งหมดที่บันทึกบนเครื่องนี้ เซสชันที่ใช้งานคือเซสชันที่แหล่งข้อมูลพบใน 5 นาทีล่าสุด ไม่ได้ยืนยันว่า process ยังทำงานอยู่',
+  'redesign.quickStatsScopedNote': 'ข้อมูลการใช้งานที่บันทึกในช่วงเวลาและตัวกรองที่ใช้กับหน้าที่แสดง เซสชันล่าสุดคือเซสชันที่แหล่งข้อมูลพบใน 5 นาทีล่าสุด ไม่ได้ยืนยันว่า process ยังทำงานอยู่',
   'redesign.machineScope': 'เครื่องนี้',
   'redesign.workspace': 'พื้นที่ทำงาน',
   'redesign.staleSnapshot': "กำลังแสดงภาพรวมที่โหลดสำเร็จล่าสุด และพยายามอัปเดตใหม่",

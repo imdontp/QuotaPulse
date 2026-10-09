@@ -5,6 +5,7 @@ import { CommandPalette } from '@/components/command-palette';
 import { useT } from '@/i18n';
 import { DaemonConnection, QuickStats } from './quick-stats';
 import webPackage from '../../package.json';
+import type { UsageEventScope } from '@/lib/usage-events';
 import './overview.css';
 
 export type RedesignTranslate = (key: Extract<MessageKey, `redesign.${string}`>) => string;
@@ -32,7 +33,7 @@ function RedesignNavigator() {
   }}/>;
 }
 
-export function RedesignShell({ active, preview = false, theme, language, onTheme, onLanguage, t, rootRef, testId, children, overlay }: {
+export function RedesignShell({ active, preview = false, theme, language, onTheme, onLanguage, t, rootRef, testId, children, overlay, quickStatsScope, quickStatsPaused }: {
   active: Page;
   preview?: boolean;
   theme: 'dark' | 'light';
@@ -44,6 +45,8 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
   testId: string;
   children: ReactNode;
   overlay?: ReactNode;
+  quickStatsScope?: UsageEventScope | null;
+  quickStatsPaused?: boolean;
 }) {
   const [clock, setClock] = useState(() => Date.now());
   const [alertCount, setAlertCount] = useState<number | null>(null);
@@ -93,7 +96,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
           </details>
         </>}
       </nav>
-      {!preview && <QuickStats t={t} language={language} onAlertCountChange={setAlertCount}/>}
+      {!preview && <QuickStats t={t} language={language} scope={quickStatsScope} paused={quickStatsPaused} onAlertCountChange={setAlertCount}/>}
       {!preview && <div className="qp-sidebar-brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M1 22h6l3-10 4 22 5-31 5 34 4-25 4 16 3-8h4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span>{t('redesign.keepFlowing')}<small>QuotaPulse v{webPackage.version}</small></span></div>}
       {preview && <a className="qp-exit" href="./#overview" aria-label={t('redesign.dashboard')}><ArrowUpRight/><span>{t('redesign.dashboard')}</span></a>}
     </aside>

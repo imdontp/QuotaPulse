@@ -1,0 +1,134 @@
+{
+  "checkpoint": "v1.85.44",
+  "baseCommit": "86174d15ecfebe58a1a6882f91ce43759704935a",
+  "productionIndexSha256": "d58d4a9dd435273033648314bbdc12a3c4cc957355d544a967e1501af44d6e30",
+  "build": {
+    "session": 13592,
+    "exitCode": 0
+  },
+  "unitRegression": {
+    "command": "npm test",
+    "session": 53838,
+    "exitCode": 0
+  },
+  "scopedBrowser": {
+    "session": 27955,
+    "exitCode": 0
+  },
+  "capture": {
+    "session": 94100,
+    "exitCode": 0,
+    "languages": [
+      "en"
+    ],
+    "themes": [
+      "dark"
+    ],
+    "fullMatrix": false,
+    "pairs": 10,
+    "rasterHashesVerified": true,
+    "byteIdentical": 7
+  },
+  "sources": [
+    {
+      "path": "package.json",
+      "sha256": "cbe805e366c5e4747991c3608adfdeba6874258a4fba2dd1dd23cd570fc76393"
+    },
+    {
+      "path": "packages/daemon/src/api/runtime-summary.ts",
+      "sha256": "a348d050f4ad98329d41cea56aa35b6263d49399fe63408227163e5c1b436f3e"
+    },
+    {
+      "path": "packages/daemon/src/api/server.ts",
+      "sha256": "f95a2e1f5094923b6c9a3daf51e06d5072ef08d235b9dbadb9203c8a7ac0def2"
+    },
+    {
+      "path": "packages/daemon/test/runtime-summary.test.ts",
+      "sha256": "db854ab416fed4aee11b83b4990e5b1dfd22f9e6bfd7f78288526a53b208867f"
+    },
+    {
+      "path": "packages/web/src/api.ts",
+      "sha256": "5c66d9e28e3f422dc75b537a9d4abeaaff158087c57c015d07945ff427e98754"
+    },
+    {
+      "path": "packages/web/src/i18n/en.ts",
+      "sha256": "1dcb03584f14b88a7a55f7a38d5af71823c05747d4122da3ab3b21a224efefdd"
+    },
+    {
+      "path": "packages/web/src/i18n/th.ts",
+      "sha256": "fc2b0f28af0a74eebb7cce305e5643ddb2d3ea1a78977553c0dfbe5940981dc4"
+    },
+    {
+      "path": "packages/web/src/redesign/cost.tsx",
+      "sha256": "63b9d04d22a6a0376c50c22edf57d7a21b40f68f0420fe8d05621d37e8994f71"
+    },
+    {
+      "path": "packages/web/src/redesign/live.tsx",
+      "sha256": "43d812ed8895f5a68c0db5da1952fb543c19fcd8e556f4bb5546f07476bf5d9b"
+    },
+    {
+      "path": "packages/web/src/redesign/models.tsx",
+      "sha256": "6c6de7990861759c48c6af04823c1f1d778d2d9891c69c4f353fb6cfe9ba3337"
+    },
+    {
+      "path": "packages/web/src/redesign/overview.tsx",
+      "sha256": "e734c55208bf5ac886896f7880609a0c5bc0a3ea302770177e3efc5b87aee430"
+    },
+    {
+      "path": "packages/web/src/redesign/production.tsx",
+      "sha256": "125cc99211f7328e285caef5dd8d5f8063c0283bf33cf40fc3151ffe2a22f56c"
+    },
+    {
+      "path": "packages/web/src/redesign/projects.tsx",
+      "sha256": "839f86ed9deac4cb6d202c563b1318e76f87f04b47abda13f345037d8506dcc4"
+    },
+    {
+      "path": "packages/web/src/redesign/quick-stats.tsx",
+      "sha256": "afb5ea1b8ac34e8e0662887907e994c0551c1d0f6bcadcb42ec8afd781945376"
+    },
+    {
+      "path": "packages/web/src/redesign/shell.tsx",
+      "sha256": "f53beee73ab74ed5bb6312fdd1fbed213e4abce989386ee01970eeed5a6b119e"
+    },
+    {
+      "path": "packages/web/src/redesign/utility-pages.tsx",
+      "sha256": "da9b5c293efeab6a44db315be7187e58454c8cb9c112b55d686f669d6243c89f"
+    },
+    {
+      "path": "packages/web/src/sections/history.tsx",
+      "sha256": "6a0c506f605fcd44052dc8148e9a7a0d6d0b37822dc56aeed2fde128668636d2"
+    },
+    {
+      "path": "scripts/check-stable-captures.mts",
+      "sha256": "3c2297892e7cf2306d09f6de58b02c382c9ec6b8be785962450e324dc2e1d57f"
+    },
+    {
+      "path": "packages/web/src/redesign/quick-stats-scope.ts",
+      "sha256": "7bfcf98a6d30781116ef08ae0044599c606b2343acf9935b9befd3167310430a"
+    },
+    {
+      "path": "packages/web/test/quick-stats-scope.test.ts",
+      "sha256": "db2cbeb0227450a59624ee8ee674ade3885f12b58da8611a768c55156808e78f"
+    },
+    {
+      "path": "scripts/check-quickstats-scope.mts",
+      "sha256": "5b001bbd1b082b6ad0d96843d622861ca7012a346ba08cc6433308be2987a392"
+    }
+  ],
+  "acceptance": "No original-reference likeness or final release acceptance claimed",
+  "authenticatedWorkflow": {
+    "command": "npm run test:history",
+    "session": 93241,
+    "exitCode": 0,
+    "responsiveCombinations": 16,
+    "routesPerCombination": 9,
+    "runtime": "authenticated local HTTP, in-memory SQLite, Vite and dashboard routes; teardown complete"
+  },
+  "sourceDiagnostics": {
+    "session": 34055,
+    "exitCode": 0,
+    "pages": 8,
+    "referenceAndCandidateHashesVerified": true,
+    "masks": false
+  }
+}

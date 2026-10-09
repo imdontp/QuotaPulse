@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>QuotaPulse v1.85.44 original reference review</title>
+<style>
+  body{margin:20px;background:#07101c;color:#dce7fa;font:14px system-ui}
+  h1{font-size:20px} label{margin-right:24px} select,input{margin-left:8px}
+  .viewport{overflow:auto;border:1px solid #314258;margin-top:16px}
+  .frame{position:relative} .frame img{position:absolute;left:0;top:0;max-width:none}
+  .reference{z-index:1} .candidate{z-index:2}
+  a{color:#76c9ff} output{margin-left:8px}
+</style>
+<h1>Original refs and real-data dashboard — v1.85.44</h1>
+<p>EN/Dark captures from one verified production build. History shows the selected
+record detail. Images retain native size; no masks or resizing. Factual content
+and blueprint overrides differ from the concept. This viewer is not visual approval.</p>
+<label>Page<select id="page">
+  <option>overview</option><option>live</option><option>projects</option>
+  <option>models</option><option>history</option><option>alerts</option>
+  <option>cost</option><option>providers</option>
+</select></label>
+<label>App opacity<input id="opacity" type="range" min="0" max="100" value="50"><output id="value">50%</output></label>
+<p><a id="source">Original reference</a> · <a id="actual">App capture</a> ·
+<a id="diagnostic">Unmasked diagnostic</a> · <a href="VALIDATION-STATE.md">Validation and remaining work</a></p>
+<div class="viewport"><div class="frame">
+  <img class="reference" alt="Original blueprint reference">
+  <img class="candidate" alt="Current production dashboard">
+</div></div>
+<script>
+const page=document.getElementById('page'), opacity=document.getElementById('opacity');
+function update(){
+  const name=page.value, filename=(name==='history'?'history-selected':name)+'-en-dark.png';
+  const frame=document.querySelector('.frame');
+  frame.style.width=(name==='overview'?1586:1672)+'px';
+  frame.style.height=(name==='overview'?992:941)+'px';
+  const source='../redesign-v1.85.43/refs/'+name+'.png', actual='captures/'+filename;
+  document.querySelector('.reference').src=source;
+  document.querySelector('.candidate').src=actual;
+  document.querySelector('.candidate').style.opacity=opacity.value/100;
+  document.getElementById('value').textContent=opacity.value+'%';
+  document.getElementById('source').href=source;
+  document.getElementById('actual').href=actual;
+  document.getElementById('diagnostic').href='parity/'+name+'/reference-parity.json';
+}
+page.addEventListener('change',update); opacity.addEventListener('input',update); update();
+</script>
+</html>

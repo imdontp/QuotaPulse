@@ -430,6 +430,7 @@ export interface Overview {
 }
 
 export interface RuntimeSummary {
+  scope?: UsageEventScope;
   now: number;
   recentFrom: number;
   namedProjects: number;
@@ -689,7 +690,7 @@ export const api = {
     `/api/pricing/coverage?from=${p.from}&to=${p.to}` + (p.sourceId == null ? '' : `&source_id=${p.sourceId}`),
   ),
   overview: () => get<Overview>('/api/overview'),
-  runtimeSummary: () => get<RuntimeSummary>('/api/runtime-summary'),
+  runtimeSummary: (scope?: UsageEventScope) => get<RuntimeSummary>(`/api/runtime-summary${scope ? `?${usageEventParams(scope)}` : ''}`),
   settings: () => get<AppSettings>('/api/settings'),
   updateSettings: (patch: Partial<AppSettings>) => put<AppSettings>('/api/settings', patch),
   limits: () =>
