@@ -1,0 +1,20 @@
+{
+  "classification": "Controlled frontend response probes; not backend correctness, live account data, canonical source captures, or visual baseline acceptance.",
+  "command": "node --import tsx tmp/check-cost-center-47.mts",
+  "exitCode": 0,
+  "browserChannel": "chrome",
+  "browserVersion": "154.0.8037.97",
+  "browserVersionEvidence": "Local C:/Program Files/Google/Chrome/Application/chrome.exe ProductVersion and FileVersion",
+  "nodeVersion": "v22.13.1",
+  "headless": true,
+  "timezone": "Asia/Bangkok",
+  "reducedMotion": "reduce",
+  "theme": "dark",
+  "fixedClock": 1747489320000,
+  "requestPolicy": "Only GET to http://127.0.0.1:7804. Cost responses are controlled browser route fulfillments; actual owned fixture base response fetched with GET. Existing capture/server untouched.",
+  "verificationSha256": "ef39c9a36c01352f2a549bcbc8841e945a29917cb19321f50b34e8ece81532e9",
+  "limitations": [
+    "Controlled frontend probes do not establish backend query accuracy or visual likeness.",
+    "Horizontal overflow and center bounding checks are performed for center-present cases; no-priced cases verify unknown semantics and absence of numeric donut."
+  ]
+}

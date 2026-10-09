@@ -1,0 +1,18 @@
+{
+  "pages": [
+    {
+      "page": "overview",
+      "referenceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+      "candidateSha256": "0687322abc777a51d48c32cfe1002a9cc469b84fdf4936e1f6a5ca8ba547295c",
+      "diagnostic": "parity/overview/reference-parity.json"
+    },
+    {
+      "page": "cost",
+      "referenceSha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+      "candidateSha256": "a6ce5bfa8fa249781aa5720c24e957a2f28642b581d5a444c0b0c3272e1aba97",
+      "diagnostic": "parity/cost/reference-parity.json"
+    }
+  ],
+  "masks": false,
+  "likenessPercentage": false
+}

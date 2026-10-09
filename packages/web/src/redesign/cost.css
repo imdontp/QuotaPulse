@@ -187,3 +187,15 @@
   .qp-cost-donut { top:2px; }
 }
 .qp-redesign[data-theme=dark] .qp-cost-donut { box-shadow:0 0 18px #007dff33,inset 0 0 5px #c1e5ff88; }
+.qp-cost-donut-content { display:grid; gap:2px; width:82px; max-width:100%; text-align:center; line-height:1.25; }
+.qp-cost-donut-amount { min-width:0; font-size:15px; font-weight:600; overflow-wrap:anywhere; }
+.qp-cost-donut-amount[data-size=long] { font-size:12px; line-height:15px; }
+.qp-cost-donut-basis { font-size:9px; font-weight:400; color:var(--qp-muted); overflow-wrap:anywhere; }
+.qp-cost-donut-range { font-size:8px; font-weight:400; color:var(--qp-muted); overflow-wrap:anywhere; }
+@media(min-width:1280px) {
+  .qp-cost-donut-content { width:110px; transform:translateY(6px); }
+  .qp-cost-donut-amount { font-size:24px; line-height:29px; }
+  .qp-cost-donut-amount[data-size=medium] { font-size:18px; line-height:22px; }
+  .qp-cost-donut-basis { font-size:11px; line-height:14px; }
+  .qp-cost-donut-range { font-size:10px; line-height:13px; }
+}

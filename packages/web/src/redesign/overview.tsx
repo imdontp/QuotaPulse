@@ -123,7 +123,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
       <defs>
         <radialGradient id={`${id}-fill`}><stop stopColor="#225575" stopOpacity=".7"/><stop offset=".75" stopColor="#071f43" stopOpacity=".5"/><stop offset="1" stopColor="#32cdff" stopOpacity=".2"/></radialGradient>
         <linearGradient id={`${id}-arc`}><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
-        <linearGradient id={`${id}-progress-arc`} gradientTransform="rotate(90 .5 .5)"><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
+        <linearGradient id={`${id}-progress-arc`} gradientTransform="rotate(90 .5 .5)"><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop className="qp-core-progress-end" offset="1" stopColor="#a26aff"/></linearGradient>
         <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <clipPath id={`${id}-world`}><circle cx="180" cy="160" r="114"/></clipPath>
         <radialGradient id={`${id}-surface-shade`}><stop stopColor="#010913" stopOpacity=".28"/><stop offset=".7" stopColor="#010913" stopOpacity=".1"/><stop offset="1" stopColor="#010913" stopOpacity="0"/></radialGradient>

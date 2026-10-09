@@ -1,0 +1,66 @@
+{
+  "checkpoint": "v1.85.47",
+  "baseCommit": "8bb23ce2c7cfffacc84e04844cb269d0a49507eb",
+  "productionIndexSha256": "2a4cd0c1df61307dac5d469da1c97e7efacbd2f7cce1797011b975d5fef48a09",
+  "build": {
+    "session": 46216,
+    "exitCode": 0
+  },
+  "webUnits": {
+    "session": 86746,
+    "tests": 162,
+    "exitCode": 0
+  },
+  "capture": {
+    "session": 24424,
+    "exitCode": 0,
+    "pairs": 8,
+    "pngs": 16,
+    "runs": [
+      {
+        "scope": "overview",
+        "pairs": 4,
+        "byteIdentical": 4
+      },
+      {
+        "scope": "cost",
+        "pairs": 4,
+        "byteIdentical": 2
+      }
+    ]
+  },
+  "controlledFrontendProbe": {
+    "session": 98295,
+    "exitCode": 0,
+    "cases": 72,
+    "backendAcceptance": false
+  },
+  "sources": [
+    {
+      "path": "packages/web/src/i18n/en.ts",
+      "sha256": "bd6f1e1b2fb433e3e8787df7370b941e1525e1c2add7bcb105c5e98580de35f3"
+    },
+    {
+      "path": "packages/web/src/i18n/th.ts",
+      "sha256": "37bd91d9cb373840a3270c1f20e8934a16b60373abc87428f081cd9413309dcb"
+    },
+    {
+      "path": "packages/web/src/redesign/overview.css",
+      "sha256": "7c3a881e48a98e013c530e52d3ee7b602f5a366bb71fbafbd35fd81711edd1bf"
+    },
+    {
+      "path": "packages/web/src/redesign/overview.tsx",
+      "sha256": "8bcb539e0e7a11b57ad704a06215025d1715effcba388f2f42a94cc2a4a0e810"
+    },
+    {
+      "path": "packages/web/src/redesign/cost.css",
+      "sha256": "98e347b06ab15564bf8755e5b6549315b57a7439bd1d0e7cae1eda4668c1207f"
+    },
+    {
+      "path": "packages/web/src/redesign/cost.tsx",
+      "sha256": "e1b579f72e87d3123d8fda785f87ffa525489f6bd7f68683eedf0f0fc913e6da"
+    }
+  ],
+  "logRetention": "Trailing whitespace normalized in documentation copies; raw logs retained in tmp.",
+  "acceptance": "Incremental source repair, not final visual or release acceptance"
+}

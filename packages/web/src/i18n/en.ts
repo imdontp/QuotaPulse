@@ -428,6 +428,7 @@ export const en = {
   'redesign.costBasis': 'Monetary basis',
   'redesign.costApiBasis': 'Calculated API value',
   'redesign.costNativeBasis': 'Reported native cost',
+  'redesign.costEndExcluded': 'End excluded',
   'redesign.costMonthToDate': 'Month to date',
   'redesign.costTotal': 'Known value in scope',
   'redesign.costDaily': 'Average per elapsed 24h',

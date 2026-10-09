@@ -14,6 +14,8 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
+Latest scoped source repair: [v1.85.47](redesign-v1.85.47/VALIDATION-STATE.md) refines Overview logo/caption/ring and Cost exact amount/basis/scope dates. Build and162 web tests pass;8 capture pairs and72 controlled frontend Cost cases pass. [Native comparison](redesign-v1.85.47/reference-review.html). This is incremental, with original-reference likeness and final release gates open.
+
 Latest consolidated source review:
 [v1.85.46](redesign-v1.85.46/VALIDATION-STATE.md) repairs Overview caption/glow,
 Models detail insets and Alerts risk-row hierarchy. Its changed-page matrix

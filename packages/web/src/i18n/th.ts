@@ -432,6 +432,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.costBasis': 'ฐานการเงิน',
   'redesign.costApiBasis': 'มูลค่าเทียบราคา API',
   'redesign.costNativeBasis': 'ต้นทุนที่ต้นทางรายงาน',
+  'redesign.costEndExcluded': 'ไม่รวมปลายช่วง',
   'redesign.costMonthToDate': 'ตั้งแต่ต้นเดือน',
   'redesign.costTotal': 'มูลค่าที่ทราบในขอบเขต',
   'redesign.costDaily': 'เฉลี่ยต่อ 24 ชั่วโมงที่ผ่านไป',

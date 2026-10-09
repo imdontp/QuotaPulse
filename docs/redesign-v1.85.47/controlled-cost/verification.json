@@ -1,0 +1,5103 @@
+{
+  "classification": "Controlled frontend response probes; not backend correctness, live account data, canonical source captures, or visual baseline acceptance.",
+  "origin": "http://127.0.0.1:7804",
+  "getOnly": true,
+  "widths": [
+    390,
+    1280
+  ],
+  "languages": [
+    "en",
+    "th"
+  ],
+  "currencies": [
+    "USD",
+    "THB"
+  ],
+  "baseResponseSha256": "a039e36bb82f38e132aa89bcb4e511156d61544113467e4c34bb4aaca24724a0",
+  "builtIndexSha256": "2a4cd0c1df61307dac5d469da1c97e7efacbd2f7cce1797011b975d5fef48a09",
+  "scriptSha256": "e0da7645aac99575a2a79ffd98dae65cb321de1df9de77313e7b6e46243935d6",
+  "requests": [
+    "http://127.0.0.1:7804/api/cost-analysis?basis=api&bucket=auto&from=1746032400000&to=1747489320001",
+    "http://127.0.0.1:7804/api/cost-analysis?basis=api&bucket=auto&from=1746032400000&to=1747501200000",
+    "http://127.0.0.1:7804/api/cost-analysis?basis=api&bucket=auto&from=1735578000000&to=1735750800000",
+    "http://127.0.0.1:7804/api/cost-analysis?basis=api&bucket=auto&from=0&to=1747489320001"
+  ],
+  "screenshots": {
+    "base-1280-en-usd-controlled.png": "19d3c94499139dbef1aff55ce3d0b2719400ad8cf1c2d2c8732903131a2fd1eb",
+    "midnight-390-th-thb-controlled.png": "55782928d0bed013a7ed8b9c4e5bfe64bef24606e6b03b543bc96ddf8e7596d0",
+    "midnight-1280-en-usd-controlled.png": "553bd3f0f9ee5abddc14a489cd8d97ba9e8e151507dd4fcea7372db89a0825ae",
+    "cross-year-390-th-thb-controlled.png": "9c0749f375404e630ce8c4f491a243b78a77f5a4788899292921711af8b85846",
+    "cross-year-1280-en-usd-controlled.png": "9c703bc375a106a2d10583812b25aa998e25cffc480c700d54d9ef506ae8b5b9",
+    "all-1280-en-usd-controlled.png": "8eecdb0abba4bd93d7d54f5df818a79807a2e0c79f81ee470e5cf6906ac962b7",
+    "medium-1280-en-usd-controlled.png": "648ff894914e44785706ddb6795d275d5e580fc44fd2eb0e9a48980804c1fc21",
+    "huge-390-th-thb-controlled.png": "33b15e0b9bb672ff121fc023938bf35b77f4ca03906f845ac598c677bbcd6915",
+    "huge-1280-en-usd-controlled.png": "4eaef4feb7bc99ac54251202fa3943fbc492d24a1f7fe2a2c3ec2cc49d283dec",
+    "unknown-1280-en-usd-controlled.png": "1e8b9d7e0a833e81ff5d2cd19d6274bb1106a782aea324ab20eba902b26895ba",
+    "zero-1280-en-usd-controlled.png": "882608eda3b5663d42e5058c1cd34ecbb9523511b4b48ca1709084b42a3ff5c7",
+    "actual-native-1280-en-usd-controlled.png": "4457f99681bc496d880b24224a72be53d05daf1ed7528a2c92be6c044025bbd7"
+  },
+  "results": [
+    {
+      "scenario": "base",
+      "width": 390,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14.53+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1000.953125,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1017.828125,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1017.828125,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1038.578125,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1068.078125,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 190.5625,
+            "y": 1016.828125,
+            "width": 56.859375,
+            "height": 19,
+            "left": 18.5625,
+            "right": -18.578125,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "base",
+      "width": 390,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523.09+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1032.453125,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1039.953125,
+            "width": 82,
+            "height": 79,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1039.953125,
+            "width": 82,
+            "height": 37.5,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -49
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1079.453125,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 47,
+            "bottom": -19.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1108.953125,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 76.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "",
+            "x": 181.4375,
+            "y": 1038.953125,
+            "width": 75.109375,
+            "height": 37.75,
+            "left": 9.4375,
+            "right": -9.453125,
+            "top": 6.5,
+            "bottom": -49.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "base",
+      "width": 390,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14.53+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 968.859375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1006.484375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1035.984375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 180.3125,
+            "y": 984.734375,
+            "width": 77.359375,
+            "height": 19,
+            "left": 8.3125,
+            "right": -8.328125,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "base",
+      "width": 390,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523.09+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 968.859375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1006.484375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1035.984375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 184.671875,
+            "y": 984.734375,
+            "width": 68.65625,
+            "height": 19,
+            "left": 12.671875,
+            "right": -12.671875,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "base",
+      "width": 1280,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14.53+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.734375,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 60,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -29
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -60
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 252.734375,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72,
+            "bottom": -44
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 268.734375,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88,
+            "bottom": -29
+          },
+          {
+            "name": "",
+            "x": 996.203125,
+            "y": 220.734375,
+            "width": 90.96875,
+            "height": 31,
+            "left": 19.515625,
+            "right": -19.515625,
+            "top": 40,
+            "bottom": -59
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "base",
+      "width": 1280,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523.09+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 191.296875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 75,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 44,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -52.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 270.796875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 79.5,
+            "bottom": -36.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 286.796875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 95.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "",
+            "x": 991.0625,
+            "y": 223.796875,
+            "width": 101.25,
+            "height": 45,
+            "left": 14.375,
+            "right": -14.375,
+            "top": 32.5,
+            "bottom": -52.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "base",
+      "width": 1280,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14.53+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 183.046875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 209.546875,
+            "width": 110,
+            "height": 89,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 209.546875,
+            "width": 110,
+            "height": 58,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -45.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 269.546875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 86.5,
+            "bottom": -29.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 285.546875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 102.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "",
+            "x": 994.234375,
+            "y": 208.546875,
+            "width": 94.90625,
+            "height": 60,
+            "left": 17.546875,
+            "right": -17.546875,
+            "top": 25.5,
+            "bottom": -44.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "base",
+      "width": 1280,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523.09+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.734375,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 60,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -29
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -60
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 252.734375,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72,
+            "bottom": -44
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 268.734375,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88,
+            "bottom": -29
+          },
+          {
+            "name": "",
+            "x": 986.75,
+            "y": 220.734375,
+            "width": 109.859375,
+            "height": 31,
+            "left": 10.0625,
+            "right": -10.078125,
+            "top": 40,
+            "bottom": -59
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "midnight",
+      "width": 390,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14.53+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1000.953125,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1017.828125,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1017.828125,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1038.578125,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1068.078125,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 190.5625,
+            "y": 1016.828125,
+            "width": 56.859375,
+            "height": 19,
+            "left": 18.5625,
+            "right": -18.578125,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "midnight",
+      "width": 390,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523.09+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1032.453125,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1039.953125,
+            "width": 82,
+            "height": 79,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1039.953125,
+            "width": 82,
+            "height": 37.5,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -49
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1079.453125,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 47,
+            "bottom": -19.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1108.953125,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 76.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "",
+            "x": 181.4375,
+            "y": 1038.953125,
+            "width": 75.109375,
+            "height": 37.75,
+            "left": 9.4375,
+            "right": -9.453125,
+            "top": 6.5,
+            "bottom": -49.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "midnight",
+      "width": 390,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14.53+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 968.859375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1006.484375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1035.984375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 180.3125,
+            "y": 984.734375,
+            "width": 77.359375,
+            "height": 19,
+            "left": 8.3125,
+            "right": -8.328125,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "midnight",
+      "width": 390,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523.09+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 968.859375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1006.484375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1035.984375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 184.671875,
+            "y": 984.734375,
+            "width": 68.65625,
+            "height": 19,
+            "left": 12.671875,
+            "right": -12.671875,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "midnight",
+      "width": 1280,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14.53+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.734375,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 60,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -29
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -60
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 252.734375,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72,
+            "bottom": -44
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 268.734375,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88,
+            "bottom": -29
+          },
+          {
+            "name": "",
+            "x": 996.203125,
+            "y": 220.734375,
+            "width": 90.96875,
+            "height": 31,
+            "left": 19.515625,
+            "right": -19.515625,
+            "top": 40,
+            "bottom": -59
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "midnight",
+      "width": 1280,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523.09+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 191.296875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 75,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 44,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -52.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 270.796875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 79.5,
+            "bottom": -36.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 286.796875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 95.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "",
+            "x": 991.0625,
+            "y": 223.796875,
+            "width": 101.25,
+            "height": 45,
+            "left": 14.375,
+            "right": -14.375,
+            "top": 32.5,
+            "bottom": -52.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "midnight",
+      "width": 1280,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14.53+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 183.046875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 209.546875,
+            "width": 110,
+            "height": 89,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 209.546875,
+            "width": 110,
+            "height": 58,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -45.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 269.546875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 86.5,
+            "bottom": -29.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 285.546875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 102.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "",
+            "x": 994.234375,
+            "y": 208.546875,
+            "width": 94.90625,
+            "height": 60,
+            "left": 17.546875,
+            "right": -17.546875,
+            "top": 25.5,
+            "bottom": -44.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "midnight",
+      "width": 1280,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523.09+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.734375,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 60,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -29
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -60
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 252.734375,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72,
+            "bottom": -44
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 268.734375,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88,
+            "bottom": -29
+          },
+          {
+            "name": "",
+            "x": 986.75,
+            "y": 220.734375,
+            "width": 109.859375,
+            "height": 31,
+            "left": 10.0625,
+            "right": -10.078125,
+            "top": 40,
+            "bottom": -59
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "cross-year",
+      "width": 390,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14.53+",
+      "range": "Dec 31, 2024 – Jan 1, 2025",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1000.953125,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1012.828125,
+            "width": 82,
+            "height": 70.25,
+            "left": 6,
+            "right": -6,
+            "top": 11.875,
+            "bottom": -11.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1012.828125,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 11.875,
+            "bottom": -63.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1033.578125,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 32.625,
+            "bottom": -33.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1063.078125,
+            "width": 82,
+            "height": 20,
+            "left": 6,
+            "right": -6,
+            "top": 62.125,
+            "bottom": -11.875
+          },
+          {
+            "name": "",
+            "x": 190.5625,
+            "y": 1011.828125,
+            "width": 56.859375,
+            "height": 19,
+            "left": 18.5625,
+            "right": -18.578125,
+            "top": 10.875,
+            "bottom": -64.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "cross-year",
+      "width": 390,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523.09+",
+      "range": "Dec 31, 2024 – Jan 1, 2025",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1032.453125,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1034.953125,
+            "width": 82,
+            "height": 89,
+            "left": 6,
+            "right": -6,
+            "top": 2.5,
+            "bottom": -2.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1034.953125,
+            "width": 82,
+            "height": 37.5,
+            "left": 6,
+            "right": -6,
+            "top": 2.5,
+            "bottom": -54
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1074.453125,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 42,
+            "bottom": -24.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1103.953125,
+            "width": 82,
+            "height": 20,
+            "left": 6,
+            "right": -6,
+            "top": 71.5,
+            "bottom": -2.5
+          },
+          {
+            "name": "",
+            "x": 181.4375,
+            "y": 1033.953125,
+            "width": 75.109375,
+            "height": 37.75,
+            "left": 9.4375,
+            "right": -9.453125,
+            "top": 1.5,
+            "bottom": -54.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "cross-year",
+      "width": 390,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14.53+",
+      "range": "31 ธ.ค. 2567 – 1 ม.ค. 2568",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 968.859375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 980.734375,
+            "width": 82,
+            "height": 70.25,
+            "left": 6,
+            "right": -6,
+            "top": 11.875,
+            "bottom": -11.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 980.734375,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 11.875,
+            "bottom": -63.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1001.484375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 32.625,
+            "bottom": -33.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1030.984375,
+            "width": 82,
+            "height": 20,
+            "left": 6,
+            "right": -6,
+            "top": 62.125,
+            "bottom": -11.875
+          },
+          {
+            "name": "",
+            "x": 180.3125,
+            "y": 979.734375,
+            "width": 77.359375,
+            "height": 19,
+            "left": 8.3125,
+            "right": -8.328125,
+            "top": 10.875,
+            "bottom": -64.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "cross-year",
+      "width": 390,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523.09+",
+      "range": "31 ธ.ค. 2567 – 1 ม.ค. 2568",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 968.859375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 980.734375,
+            "width": 82,
+            "height": 70.25,
+            "left": 6,
+            "right": -6,
+            "top": 11.875,
+            "bottom": -11.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 980.734375,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 11.875,
+            "bottom": -63.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1001.484375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 32.625,
+            "bottom": -33.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1030.984375,
+            "width": 82,
+            "height": 20,
+            "left": 6,
+            "right": -6,
+            "top": 62.125,
+            "bottom": -11.875
+          },
+          {
+            "name": "",
+            "x": 184.671875,
+            "y": 979.734375,
+            "width": 68.65625,
+            "height": 19,
+            "left": 12.671875,
+            "right": -12.671875,
+            "top": 10.875,
+            "bottom": -64.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "cross-year",
+      "width": 1280,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14.53+",
+      "range": "Dec 31, 2024 – Jan 1, 2025",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.734375,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 215.234375,
+            "width": 110,
+            "height": 73,
+            "left": 10,
+            "right": -10,
+            "top": 34.5,
+            "bottom": -22.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 215.234375,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 34.5,
+            "bottom": -66.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 246.234375,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 65.5,
+            "bottom": -50.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 262.234375,
+            "width": 110,
+            "height": 26,
+            "left": 10,
+            "right": -10,
+            "top": 81.5,
+            "bottom": -22.5
+          },
+          {
+            "name": "",
+            "x": 996.203125,
+            "y": 214.234375,
+            "width": 90.96875,
+            "height": 31,
+            "left": 19.515625,
+            "right": -19.515625,
+            "top": 33.5,
+            "bottom": -65.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "cross-year",
+      "width": 1280,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523.09+",
+      "range": "Dec 31, 2024 – Jan 1, 2025",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 191.296875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 218.296875,
+            "width": 110,
+            "height": 88,
+            "left": 10,
+            "right": -10,
+            "top": 27,
+            "bottom": -15
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 218.296875,
+            "width": 110,
+            "height": 44,
+            "left": 10,
+            "right": -10,
+            "top": 27,
+            "bottom": -59
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 264.296875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 73,
+            "bottom": -43
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 280.296875,
+            "width": 110,
+            "height": 26,
+            "left": 10,
+            "right": -10,
+            "top": 89,
+            "bottom": -15
+          },
+          {
+            "name": "",
+            "x": 991.0625,
+            "y": 217.296875,
+            "width": 101.25,
+            "height": 45,
+            "left": 14.375,
+            "right": -14.375,
+            "top": 26,
+            "bottom": -59
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "cross-year",
+      "width": 1280,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14.53+",
+      "range": "31 ธ.ค. 2567 – 1 ม.ค. 2568",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 183.046875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 203.046875,
+            "width": 110,
+            "height": 102,
+            "left": 10,
+            "right": -10,
+            "top": 20,
+            "bottom": -8
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 203.046875,
+            "width": 110,
+            "height": 58,
+            "left": 10,
+            "right": -10,
+            "top": 20,
+            "bottom": -52
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 263.046875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 80,
+            "bottom": -36
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 279.046875,
+            "width": 110,
+            "height": 26,
+            "left": 10,
+            "right": -10,
+            "top": 96,
+            "bottom": -8
+          },
+          {
+            "name": "",
+            "x": 994.234375,
+            "y": 202.046875,
+            "width": 94.90625,
+            "height": 60,
+            "left": 17.546875,
+            "right": -17.546875,
+            "top": 19,
+            "bottom": -51
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "cross-year",
+      "width": 1280,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523.09+",
+      "range": "31 ธ.ค. 2567 – 1 ม.ค. 2568",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.734375,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 215.234375,
+            "width": 110,
+            "height": 73,
+            "left": 10,
+            "right": -10,
+            "top": 34.5,
+            "bottom": -22.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 215.234375,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 34.5,
+            "bottom": -66.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 246.234375,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 65.5,
+            "bottom": -50.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 262.234375,
+            "width": 110,
+            "height": 26,
+            "left": 10,
+            "right": -10,
+            "top": 81.5,
+            "bottom": -22.5
+          },
+          {
+            "name": "",
+            "x": 986.75,
+            "y": 214.234375,
+            "width": 109.859375,
+            "height": 31,
+            "left": 10.0625,
+            "right": -10.078125,
+            "top": 33.5,
+            "bottom": -65.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "all",
+      "width": 390,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14.53+",
+      "range": "All time",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 978.265625,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 995.140625,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 995.140625,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1015.890625,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1045.390625,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 190.5625,
+            "y": 994.140625,
+            "width": 56.859375,
+            "height": 19,
+            "left": 18.5625,
+            "right": -18.578125,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "all",
+      "width": 390,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523.09+",
+      "range": "All time",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1009.765625,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1017.265625,
+            "width": 82,
+            "height": 79,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1017.265625,
+            "width": 82,
+            "height": 37.5,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -49
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1056.765625,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 47,
+            "bottom": -19.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1086.265625,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 76.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "",
+            "x": 181.4375,
+            "y": 1016.265625,
+            "width": 75.109375,
+            "height": 37.75,
+            "left": 9.4375,
+            "right": -9.453125,
+            "top": 6.5,
+            "bottom": -49.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "all",
+      "width": 390,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14.53+",
+      "range": "ทั้งหมด",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 946.171875,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 963.046875,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 963.046875,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 983.796875,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1013.296875,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 180.3125,
+            "y": 962.046875,
+            "width": 77.359375,
+            "height": 19,
+            "left": 8.3125,
+            "right": -8.328125,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "all",
+      "width": 390,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523.09+",
+      "range": "ทั้งหมด",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 946.171875,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 963.046875,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 963.046875,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 983.796875,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1013.296875,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 184.671875,
+            "y": 962.046875,
+            "width": 68.65625,
+            "height": 19,
+            "left": 12.671875,
+            "right": -12.671875,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "all",
+      "width": 1280,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14.53+",
+      "range": "All time",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.3125,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 221.3125,
+            "width": 110,
+            "height": 60,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -29
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 221.3125,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -60
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 252.3125,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72,
+            "bottom": -44
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 268.3125,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88,
+            "bottom": -29
+          },
+          {
+            "name": "",
+            "x": 996.203125,
+            "y": 220.3125,
+            "width": 90.96875,
+            "height": 31,
+            "left": 19.515625,
+            "right": -19.515625,
+            "top": 40,
+            "bottom": -59
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "all",
+      "width": 1280,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523.09+",
+      "range": "All time",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 191.296875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 75,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 44,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -52.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 270.796875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 79.5,
+            "bottom": -36.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 286.796875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 95.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "",
+            "x": 991.0625,
+            "y": 223.796875,
+            "width": 101.25,
+            "height": 45,
+            "left": 14.375,
+            "right": -14.375,
+            "top": 32.5,
+            "bottom": -52.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "all",
+      "width": 1280,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14.53+",
+      "range": "ทั้งหมด",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 183.046875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 209.546875,
+            "width": 110,
+            "height": 89,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 209.546875,
+            "width": 110,
+            "height": 58,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -45.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 269.546875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 86.5,
+            "bottom": -29.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 285.546875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 102.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "",
+            "x": 994.234375,
+            "y": 208.546875,
+            "width": 94.90625,
+            "height": 60,
+            "left": 17.546875,
+            "right": -17.546875,
+            "top": 25.5,
+            "bottom": -44.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "all",
+      "width": 1280,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523.09+",
+      "range": "ทั้งหมด",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.3125,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 221.3125,
+            "width": 110,
+            "height": 60,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -29
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 221.3125,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -60
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 252.3125,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72,
+            "bottom": -44
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 268.3125,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88,
+            "bottom": -29
+          },
+          {
+            "name": "",
+            "x": 986.75,
+            "y": 220.3125,
+            "width": 109.859375,
+            "height": 31,
+            "left": 10.0625,
+            "right": -10.078125,
+            "top": 40,
+            "bottom": -59
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "medium",
+      "width": 390,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14,530.17+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1031.734375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1039.234375,
+            "width": 82,
+            "height": 79,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1039.234375,
+            "width": 82,
+            "height": 37.5,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -49
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1078.734375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 47,
+            "bottom": -19.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1108.234375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 76.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "",
+            "x": 181.484375,
+            "y": 1038.234375,
+            "width": 75.015625,
+            "height": 37.75,
+            "left": 9.484375,
+            "right": -9.5,
+            "top": 6.5,
+            "bottom": -49.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "medium",
+      "width": 390,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523,086.09+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1063.953125,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1071.453125,
+            "width": 82,
+            "height": 79,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1071.453125,
+            "width": 82,
+            "height": 37.5,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -49
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1110.953125,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 47,
+            "bottom": -19.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1140.453125,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 76.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "",
+            "x": 181.4375,
+            "y": 1070.453125,
+            "width": 75.109375,
+            "height": 37.75,
+            "left": 9.4375,
+            "right": -9.453125,
+            "top": 6.5,
+            "bottom": -49.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "medium",
+      "width": 390,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14,530.17+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1000.359375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1007.859375,
+            "width": 82,
+            "height": 79,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1007.859375,
+            "width": 82,
+            "height": 37.5,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -49
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1047.359375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 47,
+            "bottom": -19.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1076.859375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 76.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "",
+            "x": 179.4375,
+            "y": 1006.859375,
+            "width": 79.125,
+            "height": 37.75,
+            "left": 7.4375,
+            "right": -7.4375,
+            "top": 6.5,
+            "bottom": -49.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "medium",
+      "width": 390,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523,086.09+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 999.640625,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1007.140625,
+            "width": 82,
+            "height": 79,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1007.140625,
+            "width": 82,
+            "height": 37.5,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -49
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1046.640625,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 47,
+            "bottom": -19.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1076.140625,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 76.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "",
+            "x": 182.421875,
+            "y": 1006.140625,
+            "width": 73.15625,
+            "height": 37.75,
+            "left": 10.421875,
+            "right": -10.421875,
+            "top": 6.5,
+            "bottom": -49.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "medium",
+      "width": 1280,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14,530.17+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 191.296875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 235.796875,
+            "width": 110,
+            "height": 53,
+            "left": 10,
+            "right": -10,
+            "top": 44.5,
+            "bottom": -32.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 235.796875,
+            "width": 110,
+            "height": 22,
+            "left": 10,
+            "right": -10,
+            "top": 44.5,
+            "bottom": -63.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 259.796875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 68.5,
+            "bottom": -47.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 275.796875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 84.5,
+            "bottom": -32.5
+          },
+          {
+            "name": "",
+            "x": 991.578125,
+            "y": 234.796875,
+            "width": 100.21875,
+            "height": 23,
+            "left": 14.890625,
+            "right": -14.890625,
+            "top": 43.5,
+            "bottom": -63.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "medium",
+      "width": 1280,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523,086.09+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 195.125,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 228.625,
+            "width": 110,
+            "height": 75,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 228.625,
+            "width": 110,
+            "height": 44,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -52.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 274.625,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 79.5,
+            "bottom": -36.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 290.625,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 95.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "",
+            "x": 990.828125,
+            "y": 227.625,
+            "width": 101.71875,
+            "height": 45,
+            "left": 14.140625,
+            "right": -14.140625,
+            "top": 32.5,
+            "bottom": -52.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "medium",
+      "width": 1280,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14,530.17+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 191.296875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 75,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 44,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -52.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 270.796875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 79.5,
+            "bottom": -36.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 286.796875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 95.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "",
+            "x": 989,
+            "y": 223.796875,
+            "width": 105.375,
+            "height": 45,
+            "left": 12.3125,
+            "right": -12.3125,
+            "top": 32.5,
+            "bottom": -52.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "medium",
+      "width": 1280,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523,086.09+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 191.296875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 75,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 44,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -52.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 270.796875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 79.5,
+            "bottom": -36.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 286.796875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 95.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "",
+            "x": 991.640625,
+            "y": 223.796875,
+            "width": 100.09375,
+            "height": 45,
+            "left": 14.953125,
+            "right": -14.953125,
+            "top": 32.5,
+            "bottom": -52.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "huge",
+      "width": 390,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14,530,169,186,818.46+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1126.953125,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1138.203125,
+            "width": 82,
+            "height": 71.5,
+            "left": 6,
+            "right": -6,
+            "top": 11.25,
+            "bottom": -11.25
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1138.203125,
+            "width": 82,
+            "height": 30,
+            "left": 6,
+            "right": -6,
+            "top": 11.25,
+            "bottom": -52.75
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1170.203125,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 43.25,
+            "bottom": -23.25
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1199.703125,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 72.75,
+            "bottom": -11.25
+          },
+          {
+            "name": "",
+            "x": 181.28125,
+            "y": 1137.203125,
+            "width": 75.4375,
+            "height": 31,
+            "left": 9.28125,
+            "right": -9.28125,
+            "top": 10.25,
+            "bottom": -52.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "huge",
+      "width": 390,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523,086,090,725,464.70+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1221.453125,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1225.203125,
+            "width": 82,
+            "height": 86.5,
+            "left": 6,
+            "right": -6,
+            "top": 3.75,
+            "bottom": -3.75
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1225.203125,
+            "width": 82,
+            "height": 45,
+            "left": 6,
+            "right": -6,
+            "top": 3.75,
+            "bottom": -45.25
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1272.203125,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 50.75,
+            "bottom": -15.75
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1301.703125,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 80.25,
+            "bottom": -3.75
+          },
+          {
+            "name": "",
+            "x": 178.171875,
+            "y": 1224.203125,
+            "width": 81.65625,
+            "height": 46,
+            "left": 6.171875,
+            "right": -6.171875,
+            "top": 2.75,
+            "bottom": -45.25
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "huge",
+      "width": 390,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14,530,169,186,818.46+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1157.859375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1169.109375,
+            "width": 82,
+            "height": 71.5,
+            "left": 6,
+            "right": -6,
+            "top": 11.25,
+            "bottom": -11.25
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1169.109375,
+            "width": 82,
+            "height": 30,
+            "left": 6,
+            "right": -6,
+            "top": 11.25,
+            "bottom": -52.75
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1201.109375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 43.25,
+            "bottom": -23.25
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1230.609375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 72.75,
+            "bottom": -11.25
+          },
+          {
+            "name": "",
+            "x": 180.265625,
+            "y": 1168.109375,
+            "width": 77.46875,
+            "height": 31,
+            "left": 8.265625,
+            "right": -8.265625,
+            "top": 10.25,
+            "bottom": -52.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "huge",
+      "width": 390,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523,086,090,725,464.70+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1126.359375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1137.609375,
+            "width": 82,
+            "height": 71.5,
+            "left": 6,
+            "right": -6,
+            "top": 11.25,
+            "bottom": -11.25
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1137.609375,
+            "width": 82,
+            "height": 30,
+            "left": 6,
+            "right": -6,
+            "top": 11.25,
+            "bottom": -52.75
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1169.609375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 43.25,
+            "bottom": -23.25
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1199.109375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 72.75,
+            "bottom": -11.25
+          },
+          {
+            "name": "",
+            "x": 178.546875,
+            "y": 1136.609375,
+            "width": 80.90625,
+            "height": 31,
+            "left": 6.546875,
+            "right": -6.546875,
+            "top": 10.25,
+            "bottom": -52.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "huge",
+      "width": 1280,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14,530,169,186,818.46+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 216.046875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 256.546875,
+            "width": 110,
+            "height": 61,
+            "left": 10,
+            "right": -10,
+            "top": 40.5,
+            "bottom": -28.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 256.546875,
+            "width": 110,
+            "height": 30,
+            "left": 10,
+            "right": -10,
+            "top": 40.5,
+            "bottom": -59.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 288.546875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72.5,
+            "bottom": -43.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 304.546875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88.5,
+            "bottom": -28.5
+          },
+          {
+            "name": "",
+            "x": 988.84375,
+            "y": 255.546875,
+            "width": 105.671875,
+            "height": 31,
+            "left": 12.15625,
+            "right": -12.171875,
+            "top": 39.5,
+            "bottom": -59.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "huge",
+      "width": 1280,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523,086,090,725,464.70+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 224.296875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 264.796875,
+            "width": 110,
+            "height": 61,
+            "left": 10,
+            "right": -10,
+            "top": 40.5,
+            "bottom": -28.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 264.796875,
+            "width": 110,
+            "height": 30,
+            "left": 10,
+            "right": -10,
+            "top": 40.5,
+            "bottom": -59.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 296.796875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72.5,
+            "bottom": -43.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 312.796875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88.5,
+            "bottom": -28.5
+          },
+          {
+            "name": "",
+            "x": 989.421875,
+            "y": 263.796875,
+            "width": 104.53125,
+            "height": 31,
+            "left": 12.734375,
+            "right": -12.734375,
+            "top": 39.5,
+            "bottom": -59.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "huge",
+      "width": 1280,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14,530,169,186,818.46+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 224.296875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 264.796875,
+            "width": 110,
+            "height": 61,
+            "left": 10,
+            "right": -10,
+            "top": 40.5,
+            "bottom": -28.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 264.796875,
+            "width": 110,
+            "height": 30,
+            "left": 10,
+            "right": -10,
+            "top": 40.5,
+            "bottom": -59.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 296.796875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72.5,
+            "bottom": -43.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 312.796875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88.5,
+            "bottom": -28.5
+          },
+          {
+            "name": "",
+            "x": 986.984375,
+            "y": 263.796875,
+            "width": 109.40625,
+            "height": 31,
+            "left": 10.296875,
+            "right": -10.296875,
+            "top": 39.5,
+            "bottom": -59.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "huge",
+      "width": 1280,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523,086,090,725,464.70+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 224.296875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 264.796875,
+            "width": 110,
+            "height": 61,
+            "left": 10,
+            "right": -10,
+            "top": 40.5,
+            "bottom": -28.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 264.796875,
+            "width": 110,
+            "height": 30,
+            "left": 10,
+            "right": -10,
+            "top": 40.5,
+            "bottom": -59.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 296.796875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72.5,
+            "bottom": -43.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 312.796875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88.5,
+            "bottom": -28.5
+          },
+          {
+            "name": "",
+            "x": 987.15625,
+            "y": 263.796875,
+            "width": 109.046875,
+            "height": 31,
+            "left": 10.46875,
+            "right": -10.484375,
+            "top": 39.5,
+            "bottom": -59.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "unknown",
+      "width": 390,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "Unknown",
+      "passed": true
+    },
+    {
+      "scenario": "unknown",
+      "width": 390,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "Unknown",
+      "passed": true
+    },
+    {
+      "scenario": "unknown",
+      "width": 390,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "ไม่ทราบ",
+      "passed": true
+    },
+    {
+      "scenario": "unknown",
+      "width": 390,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "ไม่ทราบ",
+      "passed": true
+    },
+    {
+      "scenario": "unknown",
+      "width": 1280,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "Unknown",
+      "passed": true
+    },
+    {
+      "scenario": "unknown",
+      "width": 1280,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "Unknown",
+      "passed": true
+    },
+    {
+      "scenario": "unknown",
+      "width": 1280,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "ไม่ทราบ",
+      "passed": true
+    },
+    {
+      "scenario": "unknown",
+      "width": 1280,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "ไม่ทราบ",
+      "passed": true
+    },
+    {
+      "scenario": "zero",
+      "width": 390,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$0.00+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1000.234375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1017.109375,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1017.109375,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1037.859375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1067.359375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 192.703125,
+            "y": 1016.109375,
+            "width": 52.59375,
+            "height": 19,
+            "left": 20.703125,
+            "right": -20.703125,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "zero",
+      "width": 390,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 0.00+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1031.734375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1048.609375,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1048.609375,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1069.359375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1098.859375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 181.140625,
+            "y": 1047.609375,
+            "width": 75.703125,
+            "height": 19,
+            "left": 9.140625,
+            "right": -9.15625,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "zero",
+      "width": 390,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$0.00+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 968.140625,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 985.015625,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 985.015625,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1005.765625,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1035.265625,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 182.4375,
+            "y": 984.015625,
+            "width": 73.109375,
+            "height": 19,
+            "left": 10.4375,
+            "right": -10.453125,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "zero",
+      "width": 390,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿0.00+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 968.140625,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 985.015625,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 985.015625,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1005.765625,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1035.265625,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 193.25,
+            "y": 984.015625,
+            "width": 51.484375,
+            "height": 19,
+            "left": 21.25,
+            "right": -21.265625,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "zero",
+      "width": 1280,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$0.00+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 166.328125,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 207.328125,
+            "width": 110,
+            "height": 60,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -29
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 207.328125,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -60
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 238.328125,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72,
+            "bottom": -44
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 254.328125,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88,
+            "bottom": -29
+          },
+          {
+            "name": "",
+            "x": 999.609375,
+            "y": 206.328125,
+            "width": 84.15625,
+            "height": 31,
+            "left": 22.921875,
+            "right": -22.921875,
+            "top": 40,
+            "bottom": -59
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "zero",
+      "width": 1280,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 0.00+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.734375,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 207.234375,
+            "width": 110,
+            "height": 89,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 207.234375,
+            "width": 110,
+            "height": 58,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -45.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 267.234375,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 86.5,
+            "bottom": -29.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 283.234375,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 102.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "",
+            "x": 987.921875,
+            "y": 206.234375,
+            "width": 107.53125,
+            "height": 60,
+            "left": 11.234375,
+            "right": -11.234375,
+            "top": 25.5,
+            "bottom": -44.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "zero",
+      "width": 1280,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$0.00+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.734375,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 207.234375,
+            "width": 110,
+            "height": 89,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 207.234375,
+            "width": 110,
+            "height": 58,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -45.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 267.234375,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 86.5,
+            "bottom": -29.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 283.234375,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 102.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "",
+            "x": 990,
+            "y": 206.234375,
+            "width": 103.375,
+            "height": 60,
+            "left": 13.3125,
+            "right": -13.3125,
+            "top": 25.5,
+            "bottom": -44.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "zero",
+      "width": 1280,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿0.00+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 166.328125,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 207.328125,
+            "width": 110,
+            "height": 60,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -29
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 207.328125,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -60
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 238.328125,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72,
+            "bottom": -44
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 254.328125,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88,
+            "bottom": -29
+          },
+          {
+            "name": "",
+            "x": 1000.5,
+            "y": 206.328125,
+            "width": 82.375,
+            "height": 31,
+            "left": 23.8125,
+            "right": -23.8125,
+            "top": 40,
+            "bottom": -59
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "actual-native",
+      "width": 390,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14.53+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1000.953125,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1017.828125,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1017.828125,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1038.578125,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1068.078125,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 190.5625,
+            "y": 1016.828125,
+            "width": 56.859375,
+            "height": 19,
+            "left": 18.5625,
+            "right": -18.578125,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "actual-native",
+      "width": 390,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523.09+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 1032.453125,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 1039.953125,
+            "width": 82,
+            "height": 79,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 1039.953125,
+            "width": 82,
+            "height": 37.5,
+            "left": 6,
+            "right": -6,
+            "top": 7.5,
+            "bottom": -49
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1079.453125,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 47,
+            "bottom": -19.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1108.953125,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 76.5,
+            "bottom": -7.5
+          },
+          {
+            "name": "",
+            "x": 181.4375,
+            "y": 1038.953125,
+            "width": 75.109375,
+            "height": 37.75,
+            "left": 9.4375,
+            "right": -9.453125,
+            "top": 6.5,
+            "bottom": -49.75
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "actual-native",
+      "width": 390,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14.53+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 968.859375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1006.484375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1035.984375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 180.3125,
+            "y": 984.734375,
+            "width": 77.359375,
+            "height": 19,
+            "left": 8.3125,
+            "right": -8.328125,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "actual-native",
+      "width": 390,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523.09+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 172,
+          "y": 968.859375,
+          "width": 94,
+          "height": 94
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 60.25,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -16.875
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 178,
+            "y": 985.734375,
+            "width": 82,
+            "height": 18.75,
+            "left": 6,
+            "right": -6,
+            "top": 16.875,
+            "bottom": -58.375
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 178,
+            "y": 1006.484375,
+            "width": 82,
+            "height": 27.5,
+            "left": 6,
+            "right": -6,
+            "top": 37.625,
+            "bottom": -28.875
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 178,
+            "y": 1035.984375,
+            "width": 82,
+            "height": 10,
+            "left": 6,
+            "right": -6,
+            "top": 67.125,
+            "bottom": -16.875
+          },
+          {
+            "name": "",
+            "x": 184.671875,
+            "y": 984.734375,
+            "width": 68.65625,
+            "height": 19,
+            "left": 12.671875,
+            "right": -12.671875,
+            "top": 15.875,
+            "bottom": -59.125
+          }
+        ],
+        "viewport": {
+          "client": 390,
+          "scroll": 390
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "actual-native",
+      "width": 1280,
+      "lang": "en",
+      "currency": "USD",
+      "expectedValue": "$14.53+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.734375,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 60,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -29
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -60
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 252.734375,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72,
+            "bottom": -44
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 268.734375,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88,
+            "bottom": -29
+          },
+          {
+            "name": "",
+            "x": 996.203125,
+            "y": 220.734375,
+            "width": 90.96875,
+            "height": 31,
+            "left": 19.515625,
+            "right": -19.515625,
+            "top": 40,
+            "bottom": -59
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "actual-native",
+      "width": 1280,
+      "lang": "en",
+      "currency": "THB",
+      "expectedValue": "THB 523.09+",
+      "range": "May 1 – 17",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 191.296875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 75,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 224.796875,
+            "width": 110,
+            "height": 44,
+            "left": 10,
+            "right": -10,
+            "top": 33.5,
+            "bottom": -52.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 270.796875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 79.5,
+            "bottom": -36.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 286.796875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 95.5,
+            "bottom": -21.5
+          },
+          {
+            "name": "",
+            "x": 991.0625,
+            "y": 223.796875,
+            "width": 101.25,
+            "height": 45,
+            "left": 14.375,
+            "right": -14.375,
+            "top": 32.5,
+            "bottom": -52.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "actual-native",
+      "width": 1280,
+      "lang": "th",
+      "currency": "USD",
+      "expectedValue": "US$14.53+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 183.046875,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 209.546875,
+            "width": 110,
+            "height": 89,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 209.546875,
+            "width": 110,
+            "height": 58,
+            "left": 10,
+            "right": -10,
+            "top": 26.5,
+            "bottom": -45.5
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 269.546875,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 86.5,
+            "bottom": -29.5
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 285.546875,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 102.5,
+            "bottom": -14.5
+          },
+          {
+            "name": "",
+            "x": 994.234375,
+            "y": 208.546875,
+            "width": 94.90625,
+            "height": 60,
+            "left": 17.546875,
+            "right": -17.546875,
+            "top": 25.5,
+            "bottom": -44.5
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "actual-native",
+      "width": 1280,
+      "lang": "th",
+      "currency": "THB",
+      "expectedValue": "฿523.09+",
+      "range": "1 – 17 พ.ค.",
+      "geometry": {
+        "hole": {
+          "x": 976.6875,
+          "y": 180.734375,
+          "width": 130,
+          "height": 130
+        },
+        "children": [
+          {
+            "name": "qp-cost-donut-content",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 60,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -29
+          },
+          {
+            "name": "qp-cost-donut-amount",
+            "x": 986.6875,
+            "y": 221.734375,
+            "width": 110,
+            "height": 29,
+            "left": 10,
+            "right": -10,
+            "top": 41,
+            "bottom": -60
+          },
+          {
+            "name": "qp-cost-donut-basis",
+            "x": 986.6875,
+            "y": 252.734375,
+            "width": 110,
+            "height": 14,
+            "left": 10,
+            "right": -10,
+            "top": 72,
+            "bottom": -44
+          },
+          {
+            "name": "qp-cost-donut-range",
+            "x": 986.6875,
+            "y": 268.734375,
+            "width": 110,
+            "height": 13,
+            "left": 10,
+            "right": -10,
+            "top": 88,
+            "bottom": -29
+          },
+          {
+            "name": "",
+            "x": 986.75,
+            "y": 220.734375,
+            "width": 109.859375,
+            "height": 31,
+            "left": 10.0625,
+            "right": -10.078125,
+            "top": 40,
+            "bottom": -59
+          }
+        ],
+        "viewport": {
+          "client": 1280,
+          "scroll": 1280
+        }
+      },
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "forbidden": [],
+  "expectedCases": 72,
+  "completedCases": 72,
+  "passed": true
+}

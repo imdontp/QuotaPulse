@@ -1,0 +1,336 @@
+{
+  "now": 1747489320000,
+  "scope": {
+    "from": 1746032400000,
+    "to": 1747489320001
+  },
+  "basis": "api",
+  "totals": {
+    "amount": 14.530169186818464,
+    "pricedCalls": 72,
+    "pricedTokens": 584010012,
+    "allCalls": 79,
+    "allTokens": 721000013,
+    "sessions": 17,
+    "unknownCalls": 1,
+    "estimatedCalls": 0,
+    "nonCallCalls": 37,
+    "knownCacheSavingUsd": 8.83023129072,
+    "knownCacheSavingCalls": 70
+  },
+  "providers": [
+    {
+      "provider": "anthropic",
+      "amount": 5.202159318769231,
+      "pricedCalls": 26,
+      "pricedTokens": 209090002,
+      "allCalls": 26,
+      "allTokens": 209090002,
+      "sessions": 6
+    },
+    {
+      "provider": "openai",
+      "amount": 4.3052354086646165,
+      "pricedCalls": 25,
+      "pricedTokens": 173040007,
+      "allCalls": 25,
+      "allTokens": 173040007,
+      "sessions": 5
+    },
+    {
+      "provider": "deepseek",
+      "amount": 3.408311259384616,
+      "pricedCalls": 9,
+      "pricedTokens": 136990003,
+      "allCalls": 16,
+      "allTokens": 273980004,
+      "sessions": 4
+    },
+    {
+      "provider": "openrouter",
+      "amount": 1.6144632,
+      "pricedCalls": 12,
+      "pricedTokens": 64890000,
+      "allCalls": 12,
+      "allTokens": 64890000,
+      "sessions": 2
+    }
+  ],
+  "models": [
+    {
+      "model": "GPT-5.x",
+      "provider": "openai",
+      "vendor": "openai",
+      "amount": 4.305235259384616,
+      "pricedCalls": 13,
+      "pricedTokens": 173040001,
+      "allCalls": 13,
+      "allTokens": 173040001,
+      "sessions": 3
+    },
+    {
+      "model": "DeepSeek V4.1",
+      "provider": "deepseek",
+      "vendor": "deepseek",
+      "amount": 3.408311259384616,
+      "pricedCalls": 9,
+      "pricedTokens": 136990003,
+      "allCalls": 16,
+      "allTokens": 273980004,
+      "sessions": 4
+    },
+    {
+      "model": "Claude 3.7",
+      "provider": "anthropic",
+      "vendor": "anthropic",
+      "amount": 3.2289264593846156,
+      "pricedCalls": 13,
+      "pricedTokens": 129780001,
+      "allCalls": 13,
+      "allTokens": 129780001,
+      "sessions": 3
+    },
+    {
+      "model": "Claude 3.5",
+      "provider": "anthropic",
+      "vendor": "anthropic",
+      "amount": 1.9732328593846158,
+      "pricedCalls": 13,
+      "pricedTokens": 79310001,
+      "allCalls": 13,
+      "allTokens": 79310001,
+      "sessions": 3
+    },
+    {
+      "model": "Others",
+      "provider": "openrouter",
+      "vendor": "unknown",
+      "amount": 1.6144632,
+      "pricedCalls": 12,
+      "pricedTokens": 64890000,
+      "allCalls": 12,
+      "allTokens": 64890000,
+      "sessions": 2
+    },
+    {
+      "model": "GPT-4.1 mini",
+      "provider": "openai",
+      "vendor": "openai",
+      "amount": 1.4928000000000002e-7,
+      "pricedCalls": 12,
+      "pricedTokens": 6,
+      "allCalls": 12,
+      "allTokens": 6,
+      "sessions": 2
+    }
+  ],
+  "projects": [
+    {
+      "project": "QuotaPulse",
+      "amount": 14.530168949280002,
+      "pricedCalls": 68,
+      "pricedTokens": 584010008,
+      "allCalls": 75,
+      "allTokens": 721000009,
+      "sessions": 13
+    },
+    {
+      "project": "Agent Platform",
+      "amount": 5.93846153846154e-8,
+      "pricedCalls": 1,
+      "pricedTokens": 1,
+      "allCalls": 1,
+      "allTokens": 1,
+      "sessions": 1
+    },
+    {
+      "project": "Developer Tools",
+      "amount": 5.93846153846154e-8,
+      "pricedCalls": 1,
+      "pricedTokens": 1,
+      "allCalls": 1,
+      "allTokens": 1,
+      "sessions": 1
+    },
+    {
+      "project": "Edge Services",
+      "amount": 5.93846153846154e-8,
+      "pricedCalls": 1,
+      "pricedTokens": 1,
+      "allCalls": 1,
+      "allTokens": 1,
+      "sessions": 1
+    },
+    {
+      "project": "Research Lab",
+      "amount": 5.93846153846154e-8,
+      "pricedCalls": 1,
+      "pricedTokens": 1,
+      "allCalls": 1,
+      "allTokens": 1,
+      "sessions": 1
+    }
+  ],
+  "sessions": [
+    {
+      "sessionKey": 7,
+      "nativeSessionId": "fixture-session-6",
+      "project": "QuotaPulse",
+      "harness": "hermes",
+      "sourceName": "Hermes fixture",
+      "lastObservedAt": 1747489185000,
+      "amount": 3.408311200000001,
+      "pricedCalls": 6,
+      "pricedTokens": 136990000,
+      "allCalls": 6,
+      "allTokens": 136990000,
+      "sessions": 1
+    },
+    {
+      "sessionKey": 2,
+      "nativeSessionId": "fixture-session-1",
+      "project": "QuotaPulse",
+      "harness": "codex",
+      "sourceName": "Codex fixture",
+      "lastObservedAt": 1747489285000,
+      "amount": 2.1526176,
+      "pricedCalls": 6,
+      "pricedTokens": 86520000,
+      "allCalls": 6,
+      "allTokens": 86520000,
+      "sessions": 1
+    },
+    {
+      "sessionKey": 8,
+      "nativeSessionId": "fixture-session-7",
+      "project": "QuotaPulse",
+      "harness": "hermes",
+      "sourceName": "Hermes fixture",
+      "lastObservedAt": 1747489165000,
+      "amount": 2.1526176,
+      "pricedCalls": 6,
+      "pricedTokens": 86520000,
+      "allCalls": 6,
+      "allTokens": 86520000,
+      "sessions": 1
+    },
+    {
+      "sessionKey": 3,
+      "nativeSessionId": "fixture-session-2",
+      "project": "QuotaPulse",
+      "harness": "codex",
+      "sourceName": "Codex fixture",
+      "lastObservedAt": 1747489265000,
+      "amount": 1.6144632,
+      "pricedCalls": 6,
+      "pricedTokens": 64890000,
+      "allCalls": 6,
+      "allTokens": 64890000,
+      "sessions": 1
+    },
+    {
+      "sessionKey": 9,
+      "nativeSessionId": "fixture-session-8",
+      "project": "QuotaPulse",
+      "harness": "hermes",
+      "sourceName": "Hermes fixture",
+      "lastObservedAt": 1747489145000,
+      "amount": 1.6144632,
+      "pricedCalls": 6,
+      "pricedTokens": 64890000,
+      "allCalls": 6,
+      "allTokens": 64890000,
+      "sessions": 1
+    },
+    {
+      "sessionKey": 4,
+      "nativeSessionId": "fixture-session-3",
+      "project": "QuotaPulse",
+      "harness": "codex",
+      "sourceName": "Codex fixture",
+      "lastObservedAt": 1747489245000,
+      "amount": 0.9866164000000002,
+      "pricedCalls": 6,
+      "pricedTokens": 39655000,
+      "allCalls": 6,
+      "allTokens": 39655000,
+      "sessions": 1
+    },
+    {
+      "sessionKey": 10,
+      "nativeSessionId": "fixture-session-9",
+      "project": "QuotaPulse",
+      "harness": "hermes",
+      "sourceName": "Hermes fixture",
+      "lastObservedAt": 1747489125000,
+      "amount": 0.9866164000000002,
+      "pricedCalls": 6,
+      "pricedTokens": 39655000,
+      "allCalls": 6,
+      "allTokens": 39655000,
+      "sessions": 1
+    },
+    {
+      "sessionKey": 5,
+      "nativeSessionId": "fixture-session-4",
+      "project": "QuotaPulse",
+      "harness": "claude-code",
+      "sourceName": "Claude Code fixture",
+      "lastObservedAt": 1747489225000,
+      "amount": 0.8072316,
+      "pricedCalls": 6,
+      "pricedTokens": 32445000,
+      "allCalls": 6,
+      "allTokens": 32445000,
+      "sessions": 1
+    },
+    {
+      "sessionKey": 11,
+      "nativeSessionId": "fixture-session-10",
+      "project": "QuotaPulse",
+      "harness": "hermes",
+      "sourceName": "Hermes fixture",
+      "lastObservedAt": 1747489105000,
+      "amount": 0.8072316,
+      "pricedCalls": 6,
+      "pricedTokens": 32445000,
+      "allCalls": 6,
+      "allTokens": 32445000,
+      "sessions": 1
+    },
+    {
+      "sessionKey": 6,
+      "nativeSessionId": "fixture-session-5",
+      "project": "QuotaPulse",
+      "harness": "claude-code",
+      "sourceName": "Claude Code fixture",
+      "lastObservedAt": 1747489205000,
+      "amount": 7.464000000000001e-8,
+      "pricedCalls": 6,
+      "pricedTokens": 3,
+      "allCalls": 6,
+      "allTokens": 3,
+      "sessions": 1
+    }
+  ],
+  "bucket": "auto",
+  "bucketMs": 48600000,
+  "points": [
+    {
+      "start": 1747198800000,
+      "amount": 0,
+      "pricedCalls": 1,
+      "pricedTokens": 1,
+      "allCalls": 1,
+      "allTokens": 1
+    },
+    {
+      "start": 1747441800000,
+      "amount": 14.530169186818464,
+      "pricedCalls": 71,
+      "pricedTokens": 584010011,
+      "allCalls": 78,
+      "allTokens": 721000012
+    }
+  ]
+}
