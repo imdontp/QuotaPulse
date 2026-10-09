@@ -14,6 +14,8 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
+Latest scoped source repair: [v1.85.49](redesign-v1.85.49/VALIDATION-STATE.md) aligns painted Live horizontal bounds/divider and Models lower-detail typography. Build170 web tests, UI compatibility and12 production capture pairs pass. [Current/historical eight-page comparison](redesign-v1.85.49/reference-review.html) labels unchanged pages as build48. Vertical Live and other source artwork/geometry remain open.
+
 Latest full eight-page source checkpoint: [v1.85.48](redesign-v1.85.48/VALIDATION-STATE.md) repairs Alerts history/freshness controls and Live plotting hierarchy. Final build, authenticated16×9 workflows,40 capture pairs, five controlled Alerts cases and nine production routes with5,000 synthetic records pass. Repository regression passes473 tests before the final CSS-only28px mark restoration. [Current eight-page comparison](redesign-v1.85.48/reference-review.html). Original-reference likeness and final release gates remain open.
 
 Historical scoped source repair: [v1.85.47](redesign-v1.85.47/VALIDATION-STATE.md) refines Overview logo/caption/ring and Cost exact amount/basis/scope dates. Build and162 web tests pass;8 capture pairs and72 controlled frontend Cost cases pass. [Native comparison](redesign-v1.85.47/reference-review.html). This is incremental, with original-reference likeness and final release gates open.

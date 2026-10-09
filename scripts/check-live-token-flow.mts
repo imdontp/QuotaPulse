@@ -279,6 +279,21 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
   }
   assert.equal(snapshot.note, expected.some(point => point.partialBreakdown) ? messages['redesign.liveFlowBreakdown'] : null);
 
+  if (state === 'baseline' && lang === 'en') {
+    const painted = await page.locator('.qp-live-flow-total').evaluate(svg => {
+      const grid = Array.from(svg.querySelectorAll(':scope>line'));
+      const first = grid[0] as SVGLineElement, last = grid[grid.length - 1] as SVGLineElement;
+      const matrix = first.getScreenCTM()!;
+      const topLeft = new DOMPoint(first.x1.baseVal.value, first.y1.baseVal.value).matrixTransform(matrix);
+      const bottomRight = new DOMPoint(last.x2.baseVal.value, last.y2.baseVal.value).matrixTransform(matrix);
+      const divider = document.querySelector('.qp-live-flow-latest')!.getBoundingClientRect().left;
+      return { left:topLeft.x, top:topLeft.y, right:bottomRight.x, bottom:bottomRight.y, divider };
+    });
+    for (const [edge, target] of Object.entries({ left:278, right:1057, divider:1083 })) {
+      assert.ok(Math.abs(painted[edge as keyof typeof painted]-target)<=2, `Native Live ${edge} differs from original source: ${JSON.stringify(painted)}`);
+    }
+    // Vertical source geometry remains a separate recorded gap; keep the truthful footer visible.
+  }
   const collapsedComposition = await page.locator('.qp-live-trend').evaluate(element => { const r = element.getBoundingClientRect(); return { height: r.height, excludedVisible: !!element.querySelector('.qp-live-excluded')?.getBoundingClientRect().height }; });
   assert.ok(collapsedComposition.excludedVisible, 'Aggregate/unknown exclusion counts must stay visible before opening chart data');
   if (state === 'baseline' && lang === 'en') assert.ok(collapsedComposition.height <= 200, `Native chart panel must retain its approximately197px composition: ${JSON.stringify(collapsedComposition)}`);

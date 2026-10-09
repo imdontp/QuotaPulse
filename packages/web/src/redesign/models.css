@@ -124,6 +124,7 @@
   .qp-model-detail h3 { font-size:18px; font-weight:600; line-height:1.3; }
   .qp-model-detail { gap:10px; }
   .qp-model-detail h2 { line-height:1.3; }
+  .qp-model-detail>.qp-panel:not(:first-child) h2 { font-size:14px; font-weight:500; }
   .qp-model-summary article { align-content:start; min-height:106px; row-gap:4px; }
   .qp-model-summary small { line-height:1.2; }
   .qp-model-detail-stats { grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; }

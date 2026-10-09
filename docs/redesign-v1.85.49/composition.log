@@ -1,0 +1,50 @@
+
+> quotapulse@0.1.0 test:stable
+> node --import tsx scripts/check-stable-captures.mts
+
+13:42:00.000 INFO  [db] opened :memory:
+Live refresh gate en/dark: initial document
+Live refresh gate en/dark: initial settled
+Live refresh gate en/dark: pause/resume success discarded
+Live refresh gate en/dark: A/B/A success discarded
+Live refresh gate en/dark: obsolete failure discarded
+Live refresh gate en/dark: current failure retained and recovered
+Live token-flow gate en/dark: baseline
+Live token-flow gate en/dark: diagnostic response
+Live token-flow gate en/dark: empty window
+Stable capture pass 1: en/dark, 3 pages
+Live refresh gate en/light: initial document
+Live refresh gate en/light: initial settled
+Live refresh gate en/light: pause/resume success discarded
+Live refresh gate en/light: A/B/A success discarded
+Live refresh gate en/light: obsolete failure discarded
+Live refresh gate en/light: current failure retained and recovered
+Live token-flow gate en/light: baseline
+Live token-flow gate en/light: diagnostic response
+Live token-flow gate en/light: empty window
+Stable capture pass 1: en/light, 3 pages
+Live refresh gate th/dark: initial document
+Live refresh gate th/dark: initial settled
+Live refresh gate th/dark: pause/resume success discarded
+Live refresh gate th/dark: A/B/A success discarded
+Live refresh gate th/dark: obsolete failure discarded
+Live refresh gate th/dark: current failure retained and recovered
+Live token-flow gate th/dark: baseline
+Live token-flow gate th/dark: diagnostic response
+Live token-flow gate th/dark: empty window
+Stable capture pass 1: th/dark, 3 pages
+Live refresh gate th/light: initial document
+Live refresh gate th/light: initial settled
+Live refresh gate th/light: pause/resume success discarded
+Live refresh gate th/light: A/B/A success discarded
+Live refresh gate th/light: obsolete failure discarded
+Live refresh gate th/light: current failure retained and recovered
+Live token-flow gate th/light: baseline
+Live token-flow gate th/light: diagnostic response
+Live token-flow gate th/light: empty window
+Stable capture pass 1: th/light, 3 pages
+Stable capture pass 2: en/dark, 3 pages
+Stable capture pass 2: en/light, 3 pages
+Stable capture pass 2: th/dark, 3 pages
+Stable capture pass 2: th/light, 3 pages
+Stable captures passed: 12 pairs, 11 byte-identical, remaining pairs within recorded raster tolerance; no masks.

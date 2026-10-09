@@ -1,0 +1,38 @@
+{
+  "baseCommit": "e98819149dc5c6f253e40d6c56493fded46af2c7",
+  "productionIndexSha256": "e2dc6f98562957a3b562c479387094a52cd5ec4aa2f9740afd6fa3f7bae96157",
+  "buildAndWebUnit": {
+    "session": 20489,
+    "exitCode": 0,
+    "tests": 170
+  },
+  "ui": {
+    "session": 27703,
+    "exitCode": 0
+  },
+  "capture": {
+    "session": 96525,
+    "exitCode": null,
+    "terminalEvidence": "Process handle missing after final pass log and current completed manifest; exit code unavailable",
+    "scope": "Overview/Live/Models",
+    "pairs": 12,
+    "pngs": 24,
+    "byteIdentical": 11,
+    "hashesVerified": true
+  },
+  "sources": [
+    {
+      "path": "packages/web/src/redesign/live-token-flow.css",
+      "sha256": "3f8ba943135657bc9d928823a94e807458cdd757fd27a235d49290134bf7d2ec"
+    },
+    {
+      "path": "packages/web/src/redesign/models.css",
+      "sha256": "1c821d33f51d9f1752832e313140dfc37cd6f899b17626b1189b400c82c5848f"
+    },
+    {
+      "path": "scripts/check-live-token-flow.mts",
+      "sha256": "f4016e99de3e03c8e1abe7a5842ce75daa523e9f2511b0945ea95b94220abb22"
+    }
+  ],
+  "acceptance": "Incremental original-source repairs; not original99–100% or a new full40-pair run"
+}

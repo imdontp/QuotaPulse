@@ -109,7 +109,10 @@
   .qp-live-flow-latest-values small { font-size:7px; line-height:9px; text-align:center; }
   .qp-live-flow-latest-values strong,.qp-live-flow-latest-values [data-series=total] strong { font-size:10px; line-height:11px; text-align:center; }
 }
-@media(min-width:1280px) { .qp-live-flow-plot { height:118px; } }
+@media(min-width:1280px) {
+  .qp-live-flow-plot { grid-template-columns:15px minmax(0,1fr) 197px; height:118px; }
+  .qp-live-flow-latest { margin-left:12px; }
+}
 @media(min-width:1280px) {
   .qp-live-flow-latest { gap:1px; }
   .qp-live-flow-latest-heading { gap:0; }
