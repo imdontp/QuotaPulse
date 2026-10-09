@@ -1,0 +1,2529 @@
+{
+  "evidence": "measured application regions for source review; not whole-image similarity or acceptance",
+  "captures": [
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "regions": {
+        ".qp-live-top": {
+          "x": 238,
+          "y": 72,
+          "width": 1040.40625,
+          "height": 144,
+          "bottom": 216
+        },
+        ".qp-live-header": {
+          "x": 249,
+          "y": 83,
+          "width": 1018.40625,
+          "height": 34,
+          "bottom": 117
+        },
+        ".qp-live-metrics": {
+          "x": 249,
+          "y": 127,
+          "width": 1018.40625,
+          "height": 78,
+          "bottom": 205
+        },
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225.65625,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554.65625
+        },
+        ".qp-live-session-tools": {
+          "x": 249,
+          "y": 236.65625,
+          "width": 1018.40625,
+          "height": 28.5,
+          "bottom": 265.15625
+        },
+        ".qp-live-table": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 270,
+          "bottom": 541.15625
+        },
+        ".qp-live-table thead": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 29.5,
+          "bottom": 300.65625
+        },
+        ".qp-live-table tbody tr": {
+          "x": 249,
+          "y": 300.65625,
+          "width": 1018.40625,
+          "height": 30,
+          "bottom": 330.65625
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564.65625,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.84375
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.84375,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 931.34375
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 860,
+          "bottom": 932
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 343,
+          "bottom": 415
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 425,
+          "width": 371.578125,
+          "height": 507,
+          "bottom": 932
+        },
+        ".qp-live-matrix-heading": {
+          "x": 1299.40625,
+          "y": 436,
+          "width": 349.578125,
+          "height": 36,
+          "bottom": 472
+        },
+        ".qp-live-minute-range": {
+          "x": 1299.40625,
+          "y": 480,
+          "width": 349.578125,
+          "height": 13.5,
+          "bottom": 493.5
+        },
+        ".qp-live-matrix": {
+          "x": 1299.40625,
+          "y": 501.5,
+          "width": 349.578125,
+          "height": 328,
+          "bottom": 829.5
+        },
+        ".qp-live-matrix-row:first-child": {
+          "x": 1348.40625,
+          "y": 502.5,
+          "width": 299.578125,
+          "height": 48,
+          "bottom": 550.5
+        },
+        ".qp-live-matrix-coverage": {
+          "x": 1299.40625,
+          "y": 882,
+          "width": 349.578125,
+          "height": 20.5,
+          "bottom": 902.5
+        }
+      }
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "regions": {
+        ".qp-project-card": {
+          "x": 243,
+          "y": 206,
+          "width": 466.390625,
+          "height": 258,
+          "bottom": 464
+        },
+        ".qp-project-card .qp-project-icon": {
+          "x": 260,
+          "y": 221,
+          "width": 54,
+          "height": 54,
+          "bottom": 275
+        },
+        ".qp-project-card-identity>strong": {
+          "x": 330,
+          "y": 223,
+          "width": 163.09375,
+          "height": 24,
+          "bottom": 247
+        },
+        ".qp-project-detail": {
+          "x": 1126.6875,
+          "y": 206,
+          "width": 528.296875,
+          "height": 503.671875,
+          "bottom": 709.671875
+        },
+        ".qp-project-detail .qp-project-icon": {
+          "x": 1143.6875,
+          "y": 219,
+          "width": 60,
+          "height": 60,
+          "bottom": 279
+        },
+        ".qp-project-detail h2": {
+          "x": 1143.6875,
+          "y": 219,
+          "width": 494.296875,
+          "height": 60,
+          "bottom": 279
+        },
+        ".qp-project-rail": {
+          "x": 1126.6875,
+          "y": 206,
+          "width": 528.296875,
+          "height": 708.5625,
+          "bottom": 914.5625
+        }
+      }
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "regions": {
+        "scrollY": 0,
+        "documentHeight": 944,
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "cards": [
+          {
+            "title": "OpenAI Subscription",
+            "hasQuota": "true",
+            "top": 152,
+            "bottom": 512,
+            "height": 360
+          },
+          {
+            "title": "OpenCode Go Subscription",
+            "hasQuota": "true",
+            "top": 152,
+            "bottom": 512,
+            "height": 360
+          },
+          {
+            "title": "Claude Company Subscription",
+            "hasQuota": "false",
+            "top": 152,
+            "bottom": 308,
+            "height": 156
+          },
+          {
+            "title": "Claude Personal Subscription",
+            "hasQuota": "false",
+            "top": 152,
+            "bottom": 308,
+            "height": 156
+          }
+        ],
+        "gridColumns": "346px 346px 346px 346px",
+        "panels": [
+          {
+            "selector": ".qp-provider-header",
+            "exists": true,
+            "top": 72,
+            "bottom": 140,
+            "height": 68
+          },
+          {
+            "selector": ".qp-provider-grid",
+            "exists": true,
+            "top": 152,
+            "bottom": 637,
+            "height": 485
+          },
+          {
+            "selector": ".qp-provider-inspector",
+            "exists": true,
+            "top": 649,
+            "bottom": 683.5,
+            "height": 34.5,
+            "open": false
+          },
+          {
+            "selector": ".qp-provider-bottom",
+            "exists": true,
+            "top": 695.5,
+            "bottom": 931.5,
+            "height": 236
+          }
+        ]
+      }
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "regions": {
+        ".qp-model-comparison": {
+          "x": 238,
+          "y": 259,
+          "width": 1028.90625,
+          "height": 575,
+          "bottom": 834
+        },
+        ".qp-model-providers": {
+          "x": 238,
+          "y": 846,
+          "width": 1028.90625,
+          "height": 90,
+          "bottom": 936
+        },
+        ".qp-model-detail>.qp-panel:first-child": {
+          "x": 1278.90625,
+          "y": 72,
+          "width": 381.09375,
+          "height": 293.296875,
+          "bottom": 365.296875
+        },
+        ".qp-model-distribution": {
+          "x": 1278.90625,
+          "y": 375.296875,
+          "width": 381.09375,
+          "height": 147,
+          "bottom": 522.296875
+        },
+        ".qp-model-donut": {
+          "x": 1533,
+          "y": 390.796875,
+          "width": 116,
+          "height": 116,
+          "bottom": 506.796875
+        }
+      }
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "regions": {
+        ".qp-model-detail>.qp-panel:first-child": {
+          "x": 1278.90625,
+          "y": 72,
+          "width": 381.09375,
+          "height": 293.296875,
+          "bottom": 365.296875
+        },
+        ".qp-model-detail-identity": {
+          "x": 1295.90625,
+          "y": 121.796875,
+          "width": 347.09375,
+          "height": 56,
+          "bottom": 177.796875
+        },
+        ".qp-model-detail-provider": {
+          "x": 1295.90625,
+          "y": 121.796875,
+          "width": 56,
+          "height": 56,
+          "bottom": 177.796875
+        },
+        ".qp-model-detail-identity h3": {
+          "x": 1363.90625,
+          "y": 128.34375,
+          "width": 274.9375,
+          "height": 23.390625,
+          "bottom": 151.734375
+        },
+        ".qp-model-detail-stats": {
+          "x": 1295.90625,
+          "y": 251.296875,
+          "width": 347.09375,
+          "height": 68.5,
+          "bottom": 319.796875
+        },
+        ".qp-model-comparison": {
+          "x": 238,
+          "y": 259,
+          "width": 1028.90625,
+          "height": 575,
+          "bottom": 834
+        },
+        ".qp-model-maker-mark": {
+          "x": 252,
+          "y": 390,
+          "width": 22,
+          "height": 22,
+          "bottom": 412
+        }
+      }
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "dark",
+      "regions": {
+        ".qp-history-detail-record-meta": {
+          "x": 1391,
+          "y": 130,
+          "width": 258,
+          "height": 61,
+          "bottom": 191
+        },
+        ".qp-history-detail-identities": {
+          "x": 1391,
+          "y": 201,
+          "width": 258,
+          "height": 222,
+          "bottom": 423
+        },
+        ".qp-history-detail-identity[data-field=\"2\"]": {
+          "x": 1398,
+          "y": 201,
+          "width": 251,
+          "height": 40,
+          "bottom": 241
+        },
+        "[data-group=\"history.tokenBreakdown\"]": {
+          "x": 1391,
+          "y": 435,
+          "width": 258,
+          "height": 137,
+          "bottom": 572
+        },
+        "[data-group=\"history.pricingSource\"]": {
+          "x": 1391,
+          "y": 584,
+          "width": 258,
+          "height": 175.8125,
+          "bottom": 759.8125
+        }
+      }
+    },
+    {
+      "page": "history-summary",
+      "lang": "en",
+      "theme": "dark",
+      "regions": [
+        {
+          "article": {
+            "x": 251,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 262,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 318,
+            "y": 204.5,
+            "width": 265,
+            "height": 18.34375,
+            "bottom": 222.84375
+          },
+          "caption": null
+        },
+        {
+          "article": {
+            "x": 602,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 613,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 669,
+            "y": 200.40625,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 214.703125
+          },
+          "caption": {
+            "x": 669,
+            "y": 240.296875,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 254.59375
+          }
+        },
+        {
+          "article": {
+            "x": 953,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 964,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 1020,
+            "y": 200.40625,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 214.703125
+          },
+          "caption": {
+            "x": 1020,
+            "y": 240.296875,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 254.59375
+          }
+        },
+        {
+          "article": {
+            "x": 1304,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 1315,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 1371,
+            "y": 204.5,
+            "width": 265,
+            "height": 20.140625,
+            "bottom": 224.640625
+          },
+          "caption": null
+        }
+      ]
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "regions": {
+        ".qp-alert-top": {
+          "x": 239,
+          "y": 72,
+          "width": 958.9375,
+          "height": 163.6875,
+          "bottom": 235.6875
+        },
+        ".qp-alert-header": {
+          "x": 252,
+          "y": 84,
+          "width": 932.9375,
+          "height": 47.296875,
+          "bottom": 131.296875
+        },
+        ".qp-alert-summary": {
+          "x": 252,
+          "y": 154.6875,
+          "width": 932.9375,
+          "height": 69,
+          "bottom": 223.6875
+        },
+        ".qp-alert-chart": {
+          "x": 239,
+          "y": 243.6875,
+          "width": 958.9375,
+          "height": 204,
+          "bottom": 447.6875
+        },
+        ".qp-alert-forecast": {
+          "x": 1207.9375,
+          "y": 72,
+          "width": 454.0625,
+          "height": 338,
+          "bottom": 410
+        },
+        ".qp-alert-forecast-reading": {
+          "x": 1222.9375,
+          "y": 127.796875,
+          "width": 424.0625,
+          "height": 178,
+          "bottom": 305.796875
+        },
+        ".qp-alert-forecast-orb": {
+          "x": 1236.9375,
+          "y": 131.796875,
+          "width": 170,
+          "height": 170,
+          "bottom": 301.796875
+        },
+        ".qp-alert-forecast-facts": {
+          "x": 1446.9375,
+          "y": 131.59375,
+          "width": 200.0625,
+          "height": 170.390625,
+          "bottom": 301.984375
+        },
+        ".qp-alert-forecast-warning": {
+          "x": 1230.9375,
+          "y": 310.796875,
+          "width": 410.0625,
+          "height": 80,
+          "bottom": 390.796875
+        },
+        ".qp-alert-guidance": {
+          "x": 1207.9375,
+          "y": 419,
+          "width": 454.0625,
+          "height": 328,
+          "bottom": 747
+        },
+        ".qp-alert-guidance-heading": {
+          "x": 1218.9375,
+          "y": 430,
+          "width": 432.0625,
+          "height": 38.1875,
+          "bottom": 468.1875
+        },
+        ".qp-alert-guidance-list": {
+          "x": 1218.9375,
+          "y": 477.1875,
+          "width": 432.0625,
+          "height": 258,
+          "bottom": 735.1875
+        },
+        ".qp-alert-guidance-list>li:first-child": {
+          "x": 1218.9375,
+          "y": 477.1875,
+          "width": 432.0625,
+          "height": 60,
+          "bottom": 537.1875
+        },
+        ".qp-alert-history": {
+          "x": 1207.9375,
+          "y": 756,
+          "width": 454.0625,
+          "height": 169.390625,
+          "bottom": 925.390625
+        },
+        ".qp-alert-history-heading": {
+          "x": 1222.9375,
+          "y": 771,
+          "width": 424.0625,
+          "height": 24,
+          "bottom": 795
+        }
+      }
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "regions": {
+        ".qp-live-top": {
+          "x": 238,
+          "y": 72,
+          "width": 1040.40625,
+          "height": 144,
+          "bottom": 216
+        },
+        ".qp-live-header": {
+          "x": 249,
+          "y": 83,
+          "width": 1018.40625,
+          "height": 34,
+          "bottom": 117
+        },
+        ".qp-live-metrics": {
+          "x": 249,
+          "y": 127,
+          "width": 1018.40625,
+          "height": 78,
+          "bottom": 205
+        },
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225.65625,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554.65625
+        },
+        ".qp-live-session-tools": {
+          "x": 249,
+          "y": 236.65625,
+          "width": 1018.40625,
+          "height": 28.5,
+          "bottom": 265.15625
+        },
+        ".qp-live-table": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 270,
+          "bottom": 541.15625
+        },
+        ".qp-live-table thead": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 29.5,
+          "bottom": 300.65625
+        },
+        ".qp-live-table tbody tr": {
+          "x": 249,
+          "y": 300.65625,
+          "width": 1018.40625,
+          "height": 30,
+          "bottom": 330.65625
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564.65625,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.84375
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.84375,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 931.34375
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 860,
+          "bottom": 932
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 343,
+          "bottom": 415
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 425,
+          "width": 371.578125,
+          "height": 507,
+          "bottom": 932
+        },
+        ".qp-live-matrix-heading": {
+          "x": 1299.40625,
+          "y": 436,
+          "width": 349.578125,
+          "height": 36,
+          "bottom": 472
+        },
+        ".qp-live-minute-range": {
+          "x": 1299.40625,
+          "y": 480,
+          "width": 349.578125,
+          "height": 13.5,
+          "bottom": 493.5
+        },
+        ".qp-live-matrix": {
+          "x": 1299.40625,
+          "y": 501.5,
+          "width": 349.578125,
+          "height": 328,
+          "bottom": 829.5
+        },
+        ".qp-live-matrix-row:first-child": {
+          "x": 1348.40625,
+          "y": 502.5,
+          "width": 299.578125,
+          "height": 48,
+          "bottom": 550.5
+        },
+        ".qp-live-matrix-coverage": {
+          "x": 1299.40625,
+          "y": 882,
+          "width": 349.578125,
+          "height": 20.5,
+          "bottom": 902.5
+        }
+      }
+    },
+    {
+      "page": "projects",
+      "lang": "en",
+      "theme": "light",
+      "regions": {
+        ".qp-project-card": {
+          "x": 243,
+          "y": 206,
+          "width": 466.390625,
+          "height": 258,
+          "bottom": 464
+        },
+        ".qp-project-card .qp-project-icon": {
+          "x": 260,
+          "y": 221,
+          "width": 54,
+          "height": 54,
+          "bottom": 275
+        },
+        ".qp-project-card-identity>strong": {
+          "x": 330,
+          "y": 223,
+          "width": 163.09375,
+          "height": 24,
+          "bottom": 247
+        },
+        ".qp-project-detail": {
+          "x": 1126.6875,
+          "y": 206,
+          "width": 528.296875,
+          "height": 503.671875,
+          "bottom": 709.671875
+        },
+        ".qp-project-detail .qp-project-icon": {
+          "x": 1143.6875,
+          "y": 219,
+          "width": 60,
+          "height": 60,
+          "bottom": 279
+        },
+        ".qp-project-detail h2": {
+          "x": 1143.6875,
+          "y": 219,
+          "width": 494.296875,
+          "height": 60,
+          "bottom": 279
+        },
+        ".qp-project-rail": {
+          "x": 1126.6875,
+          "y": 206,
+          "width": 528.296875,
+          "height": 708.5625,
+          "bottom": 914.5625
+        }
+      }
+    },
+    {
+      "page": "providers",
+      "lang": "en",
+      "theme": "light",
+      "regions": {
+        "scrollY": 0,
+        "documentHeight": 944,
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "cards": [
+          {
+            "title": "OpenAI Subscription",
+            "hasQuota": "true",
+            "top": 152,
+            "bottom": 512,
+            "height": 360
+          },
+          {
+            "title": "OpenCode Go Subscription",
+            "hasQuota": "true",
+            "top": 152,
+            "bottom": 512,
+            "height": 360
+          },
+          {
+            "title": "Claude Company Subscription",
+            "hasQuota": "false",
+            "top": 152,
+            "bottom": 308,
+            "height": 156
+          },
+          {
+            "title": "Claude Personal Subscription",
+            "hasQuota": "false",
+            "top": 152,
+            "bottom": 308,
+            "height": 156
+          }
+        ],
+        "gridColumns": "346px 346px 346px 346px",
+        "panels": [
+          {
+            "selector": ".qp-provider-header",
+            "exists": true,
+            "top": 72,
+            "bottom": 140,
+            "height": 68
+          },
+          {
+            "selector": ".qp-provider-grid",
+            "exists": true,
+            "top": 152,
+            "bottom": 637,
+            "height": 485
+          },
+          {
+            "selector": ".qp-provider-inspector",
+            "exists": true,
+            "top": 649,
+            "bottom": 683.5,
+            "height": 34.5,
+            "open": false
+          },
+          {
+            "selector": ".qp-provider-bottom",
+            "exists": true,
+            "top": 695.5,
+            "bottom": 931.5,
+            "height": 236
+          }
+        ]
+      }
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "regions": {
+        ".qp-model-comparison": {
+          "x": 238,
+          "y": 259,
+          "width": 1028.90625,
+          "height": 575,
+          "bottom": 834
+        },
+        ".qp-model-providers": {
+          "x": 238,
+          "y": 846,
+          "width": 1028.90625,
+          "height": 90,
+          "bottom": 936
+        },
+        ".qp-model-detail>.qp-panel:first-child": {
+          "x": 1278.90625,
+          "y": 72,
+          "width": 381.09375,
+          "height": 293.296875,
+          "bottom": 365.296875
+        },
+        ".qp-model-distribution": {
+          "x": 1278.90625,
+          "y": 375.296875,
+          "width": 381.09375,
+          "height": 147,
+          "bottom": 522.296875
+        },
+        ".qp-model-donut": {
+          "x": 1533,
+          "y": 390.796875,
+          "width": 116,
+          "height": 116,
+          "bottom": 506.796875
+        }
+      }
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "light",
+      "regions": {
+        ".qp-model-detail>.qp-panel:first-child": {
+          "x": 1278.90625,
+          "y": 72,
+          "width": 381.09375,
+          "height": 293.296875,
+          "bottom": 365.296875
+        },
+        ".qp-model-detail-identity": {
+          "x": 1295.90625,
+          "y": 121.796875,
+          "width": 347.09375,
+          "height": 56,
+          "bottom": 177.796875
+        },
+        ".qp-model-detail-provider": {
+          "x": 1295.90625,
+          "y": 121.796875,
+          "width": 56,
+          "height": 56,
+          "bottom": 177.796875
+        },
+        ".qp-model-detail-identity h3": {
+          "x": 1363.90625,
+          "y": 128.34375,
+          "width": 274.9375,
+          "height": 23.390625,
+          "bottom": 151.734375
+        },
+        ".qp-model-detail-stats": {
+          "x": 1295.90625,
+          "y": 251.296875,
+          "width": 347.09375,
+          "height": 68.5,
+          "bottom": 319.796875
+        },
+        ".qp-model-comparison": {
+          "x": 238,
+          "y": 259,
+          "width": 1028.90625,
+          "height": 575,
+          "bottom": 834
+        },
+        ".qp-model-maker-mark": {
+          "x": 252,
+          "y": 390,
+          "width": 22,
+          "height": 22,
+          "bottom": 412
+        }
+      }
+    },
+    {
+      "page": "history",
+      "lang": "en",
+      "theme": "light",
+      "regions": {
+        ".qp-history-detail-record-meta": {
+          "x": 1391,
+          "y": 130,
+          "width": 258,
+          "height": 61,
+          "bottom": 191
+        },
+        ".qp-history-detail-identities": {
+          "x": 1391,
+          "y": 201,
+          "width": 258,
+          "height": 222,
+          "bottom": 423
+        },
+        ".qp-history-detail-identity[data-field=\"2\"]": {
+          "x": 1398,
+          "y": 201,
+          "width": 251,
+          "height": 40,
+          "bottom": 241
+        },
+        "[data-group=\"history.tokenBreakdown\"]": {
+          "x": 1391,
+          "y": 435,
+          "width": 258,
+          "height": 137,
+          "bottom": 572
+        },
+        "[data-group=\"history.pricingSource\"]": {
+          "x": 1391,
+          "y": 584,
+          "width": 258,
+          "height": 175.8125,
+          "bottom": 759.8125
+        }
+      }
+    },
+    {
+      "page": "history-summary",
+      "lang": "en",
+      "theme": "light",
+      "regions": [
+        {
+          "article": {
+            "x": 251,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 262,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 318,
+            "y": 204.5,
+            "width": 265,
+            "height": 18.34375,
+            "bottom": 222.84375
+          },
+          "caption": null
+        },
+        {
+          "article": {
+            "x": 602,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 613,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 669,
+            "y": 200.40625,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 214.703125
+          },
+          "caption": {
+            "x": 669,
+            "y": 240.296875,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 254.59375
+          }
+        },
+        {
+          "article": {
+            "x": 953,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 964,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 1020,
+            "y": 200.40625,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 214.703125
+          },
+          "caption": {
+            "x": 1020,
+            "y": 240.296875,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 254.59375
+          }
+        },
+        {
+          "article": {
+            "x": 1304,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 1315,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 1371,
+            "y": 204.5,
+            "width": 265,
+            "height": 20.140625,
+            "bottom": 224.640625
+          },
+          "caption": null
+        }
+      ]
+    },
+    {
+      "page": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "regions": {
+        ".qp-alert-top": {
+          "x": 239,
+          "y": 72,
+          "width": 958.9375,
+          "height": 163.6875,
+          "bottom": 235.6875
+        },
+        ".qp-alert-header": {
+          "x": 252,
+          "y": 84,
+          "width": 932.9375,
+          "height": 47.296875,
+          "bottom": 131.296875
+        },
+        ".qp-alert-summary": {
+          "x": 252,
+          "y": 154.6875,
+          "width": 932.9375,
+          "height": 69,
+          "bottom": 223.6875
+        },
+        ".qp-alert-chart": {
+          "x": 239,
+          "y": 243.6875,
+          "width": 958.9375,
+          "height": 204,
+          "bottom": 447.6875
+        },
+        ".qp-alert-forecast": {
+          "x": 1207.9375,
+          "y": 72,
+          "width": 454.0625,
+          "height": 338,
+          "bottom": 410
+        },
+        ".qp-alert-forecast-reading": {
+          "x": 1222.9375,
+          "y": 127.796875,
+          "width": 424.0625,
+          "height": 178,
+          "bottom": 305.796875
+        },
+        ".qp-alert-forecast-orb": {
+          "x": 1236.9375,
+          "y": 131.796875,
+          "width": 170,
+          "height": 170,
+          "bottom": 301.796875
+        },
+        ".qp-alert-forecast-facts": {
+          "x": 1446.9375,
+          "y": 131.59375,
+          "width": 200.0625,
+          "height": 170.390625,
+          "bottom": 301.984375
+        },
+        ".qp-alert-forecast-warning": {
+          "x": 1230.9375,
+          "y": 310.796875,
+          "width": 410.0625,
+          "height": 80,
+          "bottom": 390.796875
+        },
+        ".qp-alert-guidance": {
+          "x": 1207.9375,
+          "y": 419,
+          "width": 454.0625,
+          "height": 328,
+          "bottom": 747
+        },
+        ".qp-alert-guidance-heading": {
+          "x": 1218.9375,
+          "y": 430,
+          "width": 432.0625,
+          "height": 38.1875,
+          "bottom": 468.1875
+        },
+        ".qp-alert-guidance-list": {
+          "x": 1218.9375,
+          "y": 477.1875,
+          "width": 432.0625,
+          "height": 258,
+          "bottom": 735.1875
+        },
+        ".qp-alert-guidance-list>li:first-child": {
+          "x": 1218.9375,
+          "y": 477.1875,
+          "width": 432.0625,
+          "height": 60,
+          "bottom": 537.1875
+        },
+        ".qp-alert-history": {
+          "x": 1207.9375,
+          "y": 756,
+          "width": 454.0625,
+          "height": 169.390625,
+          "bottom": 925.390625
+        },
+        ".qp-alert-history-heading": {
+          "x": 1222.9375,
+          "y": 771,
+          "width": 424.0625,
+          "height": 24,
+          "bottom": 795
+        }
+      }
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "regions": {
+        ".qp-live-top": {
+          "x": 238,
+          "y": 72,
+          "width": 1040.40625,
+          "height": 144,
+          "bottom": 216
+        },
+        ".qp-live-header": {
+          "x": 249,
+          "y": 83,
+          "width": 1018.40625,
+          "height": 34,
+          "bottom": 117
+        },
+        ".qp-live-metrics": {
+          "x": 249,
+          "y": 127,
+          "width": 1018.40625,
+          "height": 78,
+          "bottom": 205
+        },
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225.65625,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554.65625
+        },
+        ".qp-live-session-tools": {
+          "x": 249,
+          "y": 236.65625,
+          "width": 1018.40625,
+          "height": 28.5,
+          "bottom": 265.15625
+        },
+        ".qp-live-table": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 270,
+          "bottom": 541.15625
+        },
+        ".qp-live-table thead": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 29.5,
+          "bottom": 300.65625
+        },
+        ".qp-live-table tbody tr": {
+          "x": 249,
+          "y": 300.65625,
+          "width": 1018.40625,
+          "height": 30,
+          "bottom": 330.65625
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564.65625,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.84375
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.84375,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 931.34375
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 860,
+          "bottom": 932
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 343,
+          "bottom": 415
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 425,
+          "width": 371.578125,
+          "height": 507,
+          "bottom": 932
+        },
+        ".qp-live-matrix-heading": {
+          "x": 1299.40625,
+          "y": 436,
+          "width": 349.578125,
+          "height": 36,
+          "bottom": 472
+        },
+        ".qp-live-minute-range": {
+          "x": 1299.40625,
+          "y": 480,
+          "width": 349.578125,
+          "height": 13.5,
+          "bottom": 493.5
+        },
+        ".qp-live-matrix": {
+          "x": 1299.40625,
+          "y": 501.5,
+          "width": 349.578125,
+          "height": 319,
+          "bottom": 820.5
+        },
+        ".qp-live-matrix-row:first-child": {
+          "x": 1348.40625,
+          "y": 502.5,
+          "width": 299.578125,
+          "height": 48,
+          "bottom": 550.5
+        },
+        ".qp-live-matrix-coverage": {
+          "x": 1299.40625,
+          "y": 873,
+          "width": 349.578125,
+          "height": 20.5,
+          "bottom": 893.5
+        }
+      }
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "regions": {
+        ".qp-project-card": {
+          "x": 243,
+          "y": 206,
+          "width": 466.390625,
+          "height": 258,
+          "bottom": 464
+        },
+        ".qp-project-card .qp-project-icon": {
+          "x": 260,
+          "y": 221,
+          "width": 54,
+          "height": 54,
+          "bottom": 275
+        },
+        ".qp-project-card-identity>strong": {
+          "x": 330,
+          "y": 223,
+          "width": 139.296875,
+          "height": 24,
+          "bottom": 247
+        },
+        ".qp-project-detail": {
+          "x": 1126.6875,
+          "y": 206,
+          "width": 528.296875,
+          "height": 503.671875,
+          "bottom": 709.671875
+        },
+        ".qp-project-detail .qp-project-icon": {
+          "x": 1143.6875,
+          "y": 219,
+          "width": 60,
+          "height": 60,
+          "bottom": 279
+        },
+        ".qp-project-detail h2": {
+          "x": 1143.6875,
+          "y": 219,
+          "width": 494.296875,
+          "height": 60,
+          "bottom": 279
+        },
+        ".qp-project-rail": {
+          "x": 1126.6875,
+          "y": 206,
+          "width": 528.296875,
+          "height": 708.5625,
+          "bottom": 914.5625
+        }
+      }
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "regions": {
+        "scrollY": 0,
+        "documentHeight": 944,
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "cards": [
+          {
+            "title": "OpenAI Subscription",
+            "hasQuota": "true",
+            "top": 152,
+            "bottom": 512,
+            "height": 360
+          },
+          {
+            "title": "OpenCode Go Subscription",
+            "hasQuota": "true",
+            "top": 152,
+            "bottom": 512,
+            "height": 360
+          },
+          {
+            "title": "Claude Company Subscription",
+            "hasQuota": "false",
+            "top": 152,
+            "bottom": 308,
+            "height": 156
+          },
+          {
+            "title": "Claude Personal Subscription",
+            "hasQuota": "false",
+            "top": 152,
+            "bottom": 308,
+            "height": 156
+          }
+        ],
+        "gridColumns": "346px 346px 346px 346px",
+        "panels": [
+          {
+            "selector": ".qp-provider-header",
+            "exists": true,
+            "top": 72,
+            "bottom": 140,
+            "height": 68
+          },
+          {
+            "selector": ".qp-provider-grid",
+            "exists": true,
+            "top": 152,
+            "bottom": 637,
+            "height": 485
+          },
+          {
+            "selector": ".qp-provider-inspector",
+            "exists": true,
+            "top": 649,
+            "bottom": 683.5,
+            "height": 34.5,
+            "open": false
+          },
+          {
+            "selector": ".qp-provider-bottom",
+            "exists": true,
+            "top": 695.5,
+            "bottom": 931.5,
+            "height": 236
+          }
+        ]
+      }
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "regions": {
+        ".qp-model-comparison": {
+          "x": 238,
+          "y": 259,
+          "width": 1028.90625,
+          "height": 575,
+          "bottom": 834
+        },
+        ".qp-model-providers": {
+          "x": 238,
+          "y": 846,
+          "width": 1028.90625,
+          "height": 90,
+          "bottom": 936
+        },
+        ".qp-model-detail>.qp-panel:first-child": {
+          "x": 1278.90625,
+          "y": 72,
+          "width": 381.09375,
+          "height": 293.296875,
+          "bottom": 365.296875
+        },
+        ".qp-model-distribution": {
+          "x": 1278.90625,
+          "y": 375.296875,
+          "width": 381.09375,
+          "height": 147,
+          "bottom": 522.296875
+        },
+        ".qp-model-donut": {
+          "x": 1533,
+          "y": 390.796875,
+          "width": 116,
+          "height": 116,
+          "bottom": 506.796875
+        }
+      }
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "dark",
+      "regions": {
+        ".qp-model-detail>.qp-panel:first-child": {
+          "x": 1278.90625,
+          "y": 72,
+          "width": 381.09375,
+          "height": 293.296875,
+          "bottom": 365.296875
+        },
+        ".qp-model-detail-identity": {
+          "x": 1295.90625,
+          "y": 121.796875,
+          "width": 347.09375,
+          "height": 56,
+          "bottom": 177.796875
+        },
+        ".qp-model-detail-provider": {
+          "x": 1295.90625,
+          "y": 121.796875,
+          "width": 56,
+          "height": 56,
+          "bottom": 177.796875
+        },
+        ".qp-model-detail-identity h3": {
+          "x": 1363.90625,
+          "y": 128.34375,
+          "width": 252.328125,
+          "height": 23.390625,
+          "bottom": 151.734375
+        },
+        ".qp-model-detail-stats": {
+          "x": 1295.90625,
+          "y": 251.296875,
+          "width": 347.09375,
+          "height": 68.5,
+          "bottom": 319.796875
+        },
+        ".qp-model-comparison": {
+          "x": 238,
+          "y": 259,
+          "width": 1028.90625,
+          "height": 575,
+          "bottom": 834
+        },
+        ".qp-model-maker-mark": {
+          "x": 252,
+          "y": 390,
+          "width": 22,
+          "height": 22,
+          "bottom": 412
+        }
+      }
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "dark",
+      "regions": {
+        ".qp-history-detail-record-meta": {
+          "x": 1391,
+          "y": 130,
+          "width": 258,
+          "height": 61,
+          "bottom": 191
+        },
+        ".qp-history-detail-identities": {
+          "x": 1391,
+          "y": 201,
+          "width": 258,
+          "height": 222,
+          "bottom": 423
+        },
+        ".qp-history-detail-identity[data-field=\"2\"]": {
+          "x": 1398,
+          "y": 201,
+          "width": 251,
+          "height": 40,
+          "bottom": 241
+        },
+        "[data-group=\"history.tokenBreakdown\"]": {
+          "x": 1391,
+          "y": 435,
+          "width": 258,
+          "height": 137,
+          "bottom": 572
+        },
+        "[data-group=\"history.pricingSource\"]": {
+          "x": 1391,
+          "y": 584,
+          "width": 258,
+          "height": 143.375,
+          "bottom": 727.375
+        }
+      }
+    },
+    {
+      "page": "history-summary",
+      "lang": "th",
+      "theme": "dark",
+      "regions": [
+        {
+          "article": {
+            "x": 251,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 262,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 318,
+            "y": 204.5,
+            "width": 265,
+            "height": 18.34375,
+            "bottom": 222.84375
+          },
+          "caption": null
+        },
+        {
+          "article": {
+            "x": 602,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 613,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 669,
+            "y": 200.40625,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 214.703125
+          },
+          "caption": {
+            "x": 669,
+            "y": 240.296875,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 254.59375
+          }
+        },
+        {
+          "article": {
+            "x": 953,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 964,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 1020,
+            "y": 200.40625,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 214.703125
+          },
+          "caption": {
+            "x": 1020,
+            "y": 240.296875,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 254.59375
+          }
+        },
+        {
+          "article": {
+            "x": 1304,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 1315,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 1371,
+            "y": 204.5,
+            "width": 265,
+            "height": 20.140625,
+            "bottom": 224.640625
+          },
+          "caption": null
+        }
+      ]
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "regions": {
+        ".qp-alert-top": {
+          "x": 239,
+          "y": 72,
+          "width": 958.9375,
+          "height": 163.6875,
+          "bottom": 235.6875
+        },
+        ".qp-alert-header": {
+          "x": 252,
+          "y": 84,
+          "width": 932.9375,
+          "height": 47.296875,
+          "bottom": 131.296875
+        },
+        ".qp-alert-summary": {
+          "x": 252,
+          "y": 154.6875,
+          "width": 932.9375,
+          "height": 69,
+          "bottom": 223.6875
+        },
+        ".qp-alert-chart": {
+          "x": 239,
+          "y": 243.6875,
+          "width": 958.9375,
+          "height": 204,
+          "bottom": 447.6875
+        },
+        ".qp-alert-forecast": {
+          "x": 1207.9375,
+          "y": 72,
+          "width": 454.0625,
+          "height": 338,
+          "bottom": 410
+        },
+        ".qp-alert-forecast-reading": {
+          "x": 1222.9375,
+          "y": 127.796875,
+          "width": 424.0625,
+          "height": 178,
+          "bottom": 305.796875
+        },
+        ".qp-alert-forecast-orb": {
+          "x": 1236.9375,
+          "y": 131.796875,
+          "width": 170,
+          "height": 170,
+          "bottom": 301.796875
+        },
+        ".qp-alert-forecast-facts": {
+          "x": 1446.9375,
+          "y": 131.59375,
+          "width": 200.0625,
+          "height": 170.390625,
+          "bottom": 301.984375
+        },
+        ".qp-alert-forecast-warning": {
+          "x": 1230.9375,
+          "y": 310.796875,
+          "width": 410.0625,
+          "height": 80,
+          "bottom": 390.796875
+        },
+        ".qp-alert-guidance": {
+          "x": 1207.9375,
+          "y": 419,
+          "width": 454.0625,
+          "height": 328,
+          "bottom": 747
+        },
+        ".qp-alert-guidance-heading": {
+          "x": 1218.9375,
+          "y": 430,
+          "width": 432.0625,
+          "height": 38.1875,
+          "bottom": 468.1875
+        },
+        ".qp-alert-guidance-list": {
+          "x": 1218.9375,
+          "y": 477.1875,
+          "width": 432.0625,
+          "height": 258,
+          "bottom": 735.1875
+        },
+        ".qp-alert-guidance-list>li:first-child": {
+          "x": 1218.9375,
+          "y": 477.1875,
+          "width": 432.0625,
+          "height": 60,
+          "bottom": 537.1875
+        },
+        ".qp-alert-history": {
+          "x": 1207.9375,
+          "y": 756,
+          "width": 454.0625,
+          "height": 169.390625,
+          "bottom": 925.390625
+        },
+        ".qp-alert-history-heading": {
+          "x": 1222.9375,
+          "y": 771,
+          "width": 424.0625,
+          "height": 24,
+          "bottom": 795
+        }
+      }
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "regions": {
+        ".qp-live-top": {
+          "x": 238,
+          "y": 72,
+          "width": 1040.40625,
+          "height": 144,
+          "bottom": 216
+        },
+        ".qp-live-header": {
+          "x": 249,
+          "y": 83,
+          "width": 1018.40625,
+          "height": 34,
+          "bottom": 117
+        },
+        ".qp-live-metrics": {
+          "x": 249,
+          "y": 127,
+          "width": 1018.40625,
+          "height": 78,
+          "bottom": 205
+        },
+        ".qp-live-sessions": {
+          "x": 238,
+          "y": 225.65625,
+          "width": 1040.40625,
+          "height": 329,
+          "bottom": 554.65625
+        },
+        ".qp-live-session-tools": {
+          "x": 249,
+          "y": 236.65625,
+          "width": 1018.40625,
+          "height": 28.5,
+          "bottom": 265.15625
+        },
+        ".qp-live-table": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 270,
+          "bottom": 541.15625
+        },
+        ".qp-live-table thead": {
+          "x": 249,
+          "y": 271.15625,
+          "width": 1018.40625,
+          "height": 29.5,
+          "bottom": 300.65625
+        },
+        ".qp-live-table tbody tr": {
+          "x": 249,
+          "y": 300.65625,
+          "width": 1018.40625,
+          "height": 30,
+          "bottom": 330.65625
+        },
+        ".qp-live-trend": {
+          "x": 238,
+          "y": 564.65625,
+          "width": 1040.40625,
+          "height": 197.1875,
+          "bottom": 761.84375
+        },
+        ".qp-live-records": {
+          "x": 238,
+          "y": 771.84375,
+          "width": 1040.40625,
+          "height": 159.5,
+          "bottom": 931.34375
+        },
+        ".qp-live-rail": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 860,
+          "bottom": 932
+        },
+        ".qp-live-rail>section:first-child": {
+          "x": 1288.40625,
+          "y": 72,
+          "width": 371.578125,
+          "height": 343,
+          "bottom": 415
+        },
+        ".qp-live-matrix-section": {
+          "x": 1288.40625,
+          "y": 425,
+          "width": 371.578125,
+          "height": 507,
+          "bottom": 932
+        },
+        ".qp-live-matrix-heading": {
+          "x": 1299.40625,
+          "y": 436,
+          "width": 349.578125,
+          "height": 36,
+          "bottom": 472
+        },
+        ".qp-live-minute-range": {
+          "x": 1299.40625,
+          "y": 480,
+          "width": 349.578125,
+          "height": 13.5,
+          "bottom": 493.5
+        },
+        ".qp-live-matrix": {
+          "x": 1299.40625,
+          "y": 501.5,
+          "width": 349.578125,
+          "height": 319,
+          "bottom": 820.5
+        },
+        ".qp-live-matrix-row:first-child": {
+          "x": 1348.40625,
+          "y": 502.5,
+          "width": 299.578125,
+          "height": 48,
+          "bottom": 550.5
+        },
+        ".qp-live-matrix-coverage": {
+          "x": 1299.40625,
+          "y": 873,
+          "width": 349.578125,
+          "height": 20.5,
+          "bottom": 893.5
+        }
+      }
+    },
+    {
+      "page": "projects",
+      "lang": "th",
+      "theme": "light",
+      "regions": {
+        ".qp-project-card": {
+          "x": 243,
+          "y": 206,
+          "width": 466.390625,
+          "height": 258,
+          "bottom": 464
+        },
+        ".qp-project-card .qp-project-icon": {
+          "x": 260,
+          "y": 221,
+          "width": 54,
+          "height": 54,
+          "bottom": 275
+        },
+        ".qp-project-card-identity>strong": {
+          "x": 330,
+          "y": 223,
+          "width": 139.296875,
+          "height": 24,
+          "bottom": 247
+        },
+        ".qp-project-detail": {
+          "x": 1126.6875,
+          "y": 206,
+          "width": 528.296875,
+          "height": 503.671875,
+          "bottom": 709.671875
+        },
+        ".qp-project-detail .qp-project-icon": {
+          "x": 1143.6875,
+          "y": 219,
+          "width": 60,
+          "height": 60,
+          "bottom": 279
+        },
+        ".qp-project-detail h2": {
+          "x": 1143.6875,
+          "y": 219,
+          "width": 494.296875,
+          "height": 60,
+          "bottom": 279
+        },
+        ".qp-project-rail": {
+          "x": 1126.6875,
+          "y": 206,
+          "width": 528.296875,
+          "height": 708.5625,
+          "bottom": 914.5625
+        }
+      }
+    },
+    {
+      "page": "providers",
+      "lang": "th",
+      "theme": "light",
+      "regions": {
+        "scrollY": 0,
+        "documentHeight": 944,
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "cards": [
+          {
+            "title": "OpenAI Subscription",
+            "hasQuota": "true",
+            "top": 152,
+            "bottom": 512,
+            "height": 360
+          },
+          {
+            "title": "OpenCode Go Subscription",
+            "hasQuota": "true",
+            "top": 152,
+            "bottom": 512,
+            "height": 360
+          },
+          {
+            "title": "Claude Company Subscription",
+            "hasQuota": "false",
+            "top": 152,
+            "bottom": 308,
+            "height": 156
+          },
+          {
+            "title": "Claude Personal Subscription",
+            "hasQuota": "false",
+            "top": 152,
+            "bottom": 308,
+            "height": 156
+          }
+        ],
+        "gridColumns": "346px 346px 346px 346px",
+        "panels": [
+          {
+            "selector": ".qp-provider-header",
+            "exists": true,
+            "top": 72,
+            "bottom": 140,
+            "height": 68
+          },
+          {
+            "selector": ".qp-provider-grid",
+            "exists": true,
+            "top": 152,
+            "bottom": 637,
+            "height": 485
+          },
+          {
+            "selector": ".qp-provider-inspector",
+            "exists": true,
+            "top": 649,
+            "bottom": 683.5,
+            "height": 34.5,
+            "open": false
+          },
+          {
+            "selector": ".qp-provider-bottom",
+            "exists": true,
+            "top": 695.5,
+            "bottom": 931.5,
+            "height": 236
+          }
+        ]
+      }
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "regions": {
+        ".qp-model-comparison": {
+          "x": 238,
+          "y": 259,
+          "width": 1028.90625,
+          "height": 575,
+          "bottom": 834
+        },
+        ".qp-model-providers": {
+          "x": 238,
+          "y": 846,
+          "width": 1028.90625,
+          "height": 90,
+          "bottom": 936
+        },
+        ".qp-model-detail>.qp-panel:first-child": {
+          "x": 1278.90625,
+          "y": 72,
+          "width": 381.09375,
+          "height": 293.296875,
+          "bottom": 365.296875
+        },
+        ".qp-model-distribution": {
+          "x": 1278.90625,
+          "y": 375.296875,
+          "width": 381.09375,
+          "height": 147,
+          "bottom": 522.296875
+        },
+        ".qp-model-donut": {
+          "x": 1533,
+          "y": 390.796875,
+          "width": 116,
+          "height": 116,
+          "bottom": 506.796875
+        }
+      }
+    },
+    {
+      "page": "models",
+      "lang": "th",
+      "theme": "light",
+      "regions": {
+        ".qp-model-detail>.qp-panel:first-child": {
+          "x": 1278.90625,
+          "y": 72,
+          "width": 381.09375,
+          "height": 293.296875,
+          "bottom": 365.296875
+        },
+        ".qp-model-detail-identity": {
+          "x": 1295.90625,
+          "y": 121.796875,
+          "width": 347.09375,
+          "height": 56,
+          "bottom": 177.796875
+        },
+        ".qp-model-detail-provider": {
+          "x": 1295.90625,
+          "y": 121.796875,
+          "width": 56,
+          "height": 56,
+          "bottom": 177.796875
+        },
+        ".qp-model-detail-identity h3": {
+          "x": 1363.90625,
+          "y": 128.34375,
+          "width": 252.328125,
+          "height": 23.390625,
+          "bottom": 151.734375
+        },
+        ".qp-model-detail-stats": {
+          "x": 1295.90625,
+          "y": 251.296875,
+          "width": 347.09375,
+          "height": 68.5,
+          "bottom": 319.796875
+        },
+        ".qp-model-comparison": {
+          "x": 238,
+          "y": 259,
+          "width": 1028.90625,
+          "height": 575,
+          "bottom": 834
+        },
+        ".qp-model-maker-mark": {
+          "x": 252,
+          "y": 390,
+          "width": 22,
+          "height": 22,
+          "bottom": 412
+        }
+      }
+    },
+    {
+      "page": "history",
+      "lang": "th",
+      "theme": "light",
+      "regions": {
+        ".qp-history-detail-record-meta": {
+          "x": 1391,
+          "y": 130,
+          "width": 258,
+          "height": 61,
+          "bottom": 191
+        },
+        ".qp-history-detail-identities": {
+          "x": 1391,
+          "y": 201,
+          "width": 258,
+          "height": 222,
+          "bottom": 423
+        },
+        ".qp-history-detail-identity[data-field=\"2\"]": {
+          "x": 1398,
+          "y": 201,
+          "width": 251,
+          "height": 40,
+          "bottom": 241
+        },
+        "[data-group=\"history.tokenBreakdown\"]": {
+          "x": 1391,
+          "y": 435,
+          "width": 258,
+          "height": 137,
+          "bottom": 572
+        },
+        "[data-group=\"history.pricingSource\"]": {
+          "x": 1391,
+          "y": 584,
+          "width": 258,
+          "height": 143.375,
+          "bottom": 727.375
+        }
+      }
+    },
+    {
+      "page": "history-summary",
+      "lang": "th",
+      "theme": "light",
+      "regions": [
+        {
+          "article": {
+            "x": 251,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 262,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 318,
+            "y": 204.5,
+            "width": 265,
+            "height": 18.34375,
+            "bottom": 222.84375
+          },
+          "caption": null
+        },
+        {
+          "article": {
+            "x": 602,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 613,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 669,
+            "y": 200.40625,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 214.703125
+          },
+          "caption": {
+            "x": 669,
+            "y": 240.296875,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 254.59375
+          }
+        },
+        {
+          "article": {
+            "x": 953,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 964,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 1020,
+            "y": 200.40625,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 214.703125
+          },
+          "caption": {
+            "x": 1020,
+            "y": 240.296875,
+            "width": 265,
+            "height": 14.296875,
+            "bottom": 254.59375
+          }
+        },
+        {
+          "article": {
+            "x": 1304,
+            "y": 194,
+            "width": 343,
+            "height": 67,
+            "bottom": 261
+          },
+          "plate": {
+            "x": 1315,
+            "y": 204.5,
+            "width": 46,
+            "height": 46,
+            "bottom": 250.5
+          },
+          "label": {
+            "x": 1371,
+            "y": 204.5,
+            "width": 265,
+            "height": 20.140625,
+            "bottom": 224.640625
+          },
+          "caption": null
+        }
+      ]
+    },
+    {
+      "page": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "regions": {
+        ".qp-alert-top": {
+          "x": 239,
+          "y": 72,
+          "width": 958.9375,
+          "height": 163.6875,
+          "bottom": 235.6875
+        },
+        ".qp-alert-header": {
+          "x": 252,
+          "y": 84,
+          "width": 932.9375,
+          "height": 47.296875,
+          "bottom": 131.296875
+        },
+        ".qp-alert-summary": {
+          "x": 252,
+          "y": 154.6875,
+          "width": 932.9375,
+          "height": 69,
+          "bottom": 223.6875
+        },
+        ".qp-alert-chart": {
+          "x": 239,
+          "y": 243.6875,
+          "width": 958.9375,
+          "height": 204,
+          "bottom": 447.6875
+        },
+        ".qp-alert-forecast": {
+          "x": 1207.9375,
+          "y": 72,
+          "width": 454.0625,
+          "height": 338,
+          "bottom": 410
+        },
+        ".qp-alert-forecast-reading": {
+          "x": 1222.9375,
+          "y": 127.796875,
+          "width": 424.0625,
+          "height": 178,
+          "bottom": 305.796875
+        },
+        ".qp-alert-forecast-orb": {
+          "x": 1236.9375,
+          "y": 131.796875,
+          "width": 170,
+          "height": 170,
+          "bottom": 301.796875
+        },
+        ".qp-alert-forecast-facts": {
+          "x": 1446.9375,
+          "y": 131.59375,
+          "width": 200.0625,
+          "height": 170.390625,
+          "bottom": 301.984375
+        },
+        ".qp-alert-forecast-warning": {
+          "x": 1230.9375,
+          "y": 310.796875,
+          "width": 410.0625,
+          "height": 80,
+          "bottom": 390.796875
+        },
+        ".qp-alert-guidance": {
+          "x": 1207.9375,
+          "y": 419,
+          "width": 454.0625,
+          "height": 328,
+          "bottom": 747
+        },
+        ".qp-alert-guidance-heading": {
+          "x": 1218.9375,
+          "y": 430,
+          "width": 432.0625,
+          "height": 38.1875,
+          "bottom": 468.1875
+        },
+        ".qp-alert-guidance-list": {
+          "x": 1218.9375,
+          "y": 477.1875,
+          "width": 432.0625,
+          "height": 258,
+          "bottom": 735.1875
+        },
+        ".qp-alert-guidance-list>li:first-child": {
+          "x": 1218.9375,
+          "y": 477.1875,
+          "width": 432.0625,
+          "height": 60,
+          "bottom": 537.1875
+        },
+        ".qp-alert-history": {
+          "x": 1207.9375,
+          "y": 756,
+          "width": 454.0625,
+          "height": 169.390625,
+          "bottom": 925.390625
+        },
+        ".qp-alert-history-heading": {
+          "x": 1222.9375,
+          "y": 771,
+          "width": 424.0625,
+          "height": 24,
+          "bottom": 795
+        }
+      }
+    }
+  ]
+}

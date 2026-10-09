@@ -1,0 +1,48 @@
+{
+    "sourceDiagnostics":  "All eight original refs; unmasked real-data differences included; not approved acceptance",
+    "unitRegression":  {
+                           "total":  457,
+                           "daemon":  101,
+                           "web":  158,
+                           "tray":  198,
+                           "command":  "npm test",
+                           "skipped":  0,
+                           "session":  67637,
+                           "failed":  0,
+                           "exitCode":  0
+                       },
+    "baseCommit":  "f2d72b98f167d0f21d711b30eba6a177c8e51a9d",
+    "sources":  [
+                    {
+                        "sha256":  "3deb5a6750573272ca0a5d8b743beb54cdcf61c6ca52ac0aca3a764c6828b5c4",
+                        "path":  "packages/web/src/redesign/models.css"
+                    },
+                    {
+                        "sha256":  "9dcb99c6f0f5f27ec8f86163bf7df961386acd21f58542681ee72f663efc351b",
+                        "path":  "packages/web/src/redesign/models.tsx"
+                    },
+                    {
+                        "sha256":  "777e36cddc64c4a91236711bf46e651eb8b5c5440df76b772ceb8ef6f7e85a02",
+                        "path":  "scripts/measure-reference-parity.mts"
+                    },
+                    {
+                        "sha256":  "4fb2d34c5bf6be4e44c4ea65eb994af818ef90afd0253747ed5f77f16fda2924",
+                        "path":  "scripts/check-stable-captures.mts"
+                    }
+                ],
+    "buildExitCode":  0,
+    "capture":  {
+                    "pairs":  40,
+                    "exitCode":  null,
+                    "state":  "complete final verifier recovered; process handle no longer available",
+                    "sourceDiagnosticHashesVerified":  true,
+                    "byteIdentical":  30,
+                    "allRasterHashesVerified":  true,
+                    "exitCodeNote":  "Terminal stdout/exit result unavailable after session boundary; final full verifier and all80 raster hashes independently verified",
+                    "session":  80972
+                },
+    "buildSession":  6353,
+    "productionIndexSha256":  "a65981fc09820fffe0d88a988568effc3174d13effca1ab3ba1c4074dc527b90",
+    "checkpoint":  "v1.85.43",
+    "review":  "Draft23-override/eight-page source ledger; OVR003 scope gap confirmed; no reviewer acceptance"
+}

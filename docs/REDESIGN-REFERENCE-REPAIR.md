@@ -14,7 +14,16 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest History identities and summary/detail spacing:
+Latest consolidated source review:
+[v1.85.43](redesign-v1.85.43/VALIDATION-STATE.md) collects all40 pairs on one
+production build, all eight original-source diagnostics,457 current unit passes
+and a23-override ledger. Selected DeepSeek lighting follows the source blue.
+[Compare all eight pages](redesign-v1.85.43/reference-review.html).
+[Override coverage and open scope gap](redesign-v1.85.43/OVERRIDE-COVERAGE.md).
+OVR-003 selected-scope QuickStats is the next substantive correction; full
+source/baseline/release acceptance remains open.
+
+Previous History identities and summary/detail spacing:
 [v1.85.42](redesign-v1.85.42/VALIDATION-STATE.md) adds actual model-maker plates,
 aligns selected identities and corrects summary caption layout. Eight production
 main/selected pairs are byte-identical; the frozen-source workflow passes.

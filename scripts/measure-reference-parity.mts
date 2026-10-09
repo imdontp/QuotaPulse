@@ -1,18 +1,20 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import { chromium } from 'playwright';
 
-const [referencePath, candidatePath, outputPath] = process.argv.slice(2);
+const [referencePath, candidatePath, outputPath, referencePage = 'overview'] = process.argv.slice(2);
 assert.ok(referencePath && candidatePath && outputPath,
-  'Usage: node --import tsx scripts/measure-reference-parity.mts <reference.png> <candidate.png> <output-directory>');
+  'Usage: node --import tsx scripts/measure-reference-parity.mts <reference.png> <candidate.png> <output-directory> [overview|live|projects|models|history|alerts|cost|providers]');
+assert.ok(['overview', 'live', 'projects', 'models', 'history', 'alerts', 'cost', 'providers'].includes(referencePage), 'Unknown reference page');
 const reference = readFileSync(resolve(referencePath));
 const candidate = readFileSync(resolve(candidatePath));
 const browser = await chromium.launch({ headless: true });
 
 try {
   const page = await browser.newPage();
-  const browserAnalysis = `async ({ referencePng, candidatePng }) => {
+  const browserAnalysis = `async ({ referencePng, candidatePng, referencePage }) => {
     async function decode(base64) {
       const image = new Image();
       image.src = "data:image/png;base64," + base64;
@@ -119,7 +121,7 @@ try {
       weightedSsim += sample.ssim * localPixels; comparedPixels += localPixels;
       tiles.push({ x, y, width: right - x, height: bottom - y, ssim: sample.ssim, meanAbsoluteRgbDelta: sample.meanAbsoluteRgbDelta });
     }
-    const regionBoxes = [
+    const regionBoxes = referencePage === 'overview' ? [
       { name: 'header', x: 0, y: 0, width: 1586, height: 60 },
       { name: 'sidebar', x: 0, y: 60, width: 216, height: 932 },
       { name: 'pulse-core', x: 228, y: 68, width: 977, height: 395 },
@@ -128,6 +130,10 @@ try {
       { name: 'quota-runway', x: 228, y: 714, width: 707, height: 176 },
       { name: 'pulse-insights', x: 947, y: 714, width: 618, height: 176 },
       { name: 'live-activity', x: 228, y: 899, width: 1337, height: 84 },
+    ] : [
+      { name: 'header', x: 0, y: 0, width, height: 60 },
+      { name: 'sidebar', x: 0, y: 60, width: 226, height: height - 60 },
+      { name: referencePage + '-workspace', x: 226, y: 60, width: width - 226, height: height - 60 },
     ];
     const regions = [];
     for (const region of regionBoxes) {
@@ -166,14 +172,20 @@ try {
   const result = await page.evaluate((input) => (window as any).__quotapulseAnalyze(input), {
     referencePng: reference.toString('base64'),
     candidatePng: candidate.toString('base64'),
+    referencePage,
   });
 
   const outputDir = resolve(outputPath);
   mkdirSync(outputDir, { recursive: true });
   const { heatmapBase64, ...report } = result;
   const verification = {
+    referencePage,
     reference: basename(referencePath),
     candidate: basename(candidatePath),
+    referenceSha256: createHash('sha256').update(reference).digest('hex'),
+    candidateSha256: createHash('sha256').update(candidate).digest('hex'),
+    masks: false,
+    acceptance: 'Source mismatch diagnostic only; real-data differences are included and no baseline or likeness threshold is approved by this report.',
     note: 'SSIM is averaged over sliding 11x11 uniform luminance windows; tile scores summarize those local values in non-overlapping 32x32 regions. The heatmap overlays relative tile mismatch on the reference. Dynamic real-data differences remain included.',
     ...report,
   };

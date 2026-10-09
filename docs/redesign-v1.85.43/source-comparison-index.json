@@ -1,0 +1,77 @@
+{
+    "classification":  "Unmasked original-source diagnostic, not acceptance, percentage likeness or approved-baseline gate",
+    "pages":  [
+                  {
+                      "candidateSha256":  "8080b522baf290e6c58f962583e909b0adf143c7ac02cfd116e05d4dd11769d4",
+                      "ssim":  0.5425938542824179,
+                      "report":  "parity/overview/reference-parity.json",
+                      "masks":  false,
+                      "page":  "overview",
+                      "referenceSha256":  "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+                      "meanAbsoluteRgbDelta":  15.918915637839158
+                  },
+                  {
+                      "candidateSha256":  "f49822b5e7499b4bae0d3e9f3e4ec8f6db514eb11e93e050d6bea5a6a69791eb",
+                      "ssim":  0.4737999357192328,
+                      "report":  "parity/live/reference-parity.json",
+                      "masks":  false,
+                      "page":  "live",
+                      "referenceSha256":  "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+                      "meanAbsoluteRgbDelta":  17.7156639666987
+                  },
+                  {
+                      "candidateSha256":  "1e398052ec11337dcf518524d621605319021593174e907fe7e2cbb735374903",
+                      "ssim":  0.5278586059191437,
+                      "report":  "parity/projects/reference-parity.json",
+                      "masks":  false,
+                      "page":  "projects",
+                      "referenceSha256":  "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+                      "meanAbsoluteRgbDelta":  17.177401073207605
+                  },
+                  {
+                      "candidateSha256":  "b1d30f76d59c733a12abed3a5c1851bd398c95710a82e59c829f8a800473a18c",
+                      "ssim":  0.5401577019017693,
+                      "report":  "parity/models/reference-parity.json",
+                      "masks":  false,
+                      "page":  "models",
+                      "referenceSha256":  "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+                      "meanAbsoluteRgbDelta":  15.783733498077142
+                  },
+                  {
+                      "candidateSha256":  "dcab65e5d4493520c595b056753dfa1b36deb5e60bebab8c16afa92a4a7014b1",
+                      "ssim":  0.4716091772668458,
+                      "report":  "parity/history/reference-parity.json",
+                      "masks":  false,
+                      "page":  "history",
+                      "referenceSha256":  "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+                      "meanAbsoluteRgbDelta":  18.95676894511421
+                  },
+                  {
+                      "candidateSha256":  "3fa27dcc3c70316fd8b1567b24cc3b673bddec749afc40d69f608e46b3e2a7a0",
+                      "ssim":  0.5228953258316413,
+                      "report":  "parity/alerts/reference-parity.json",
+                      "masks":  false,
+                      "page":  "alerts",
+                      "referenceSha256":  "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+                      "meanAbsoluteRgbDelta":  15.566686496939866
+                  },
+                  {
+                      "candidateSha256":  "5808652b13278e40c1b0de9688225c2330c6faf9c1dfd6ca1ea0fa4b8fa849b1",
+                      "ssim":  0.49425798387342534,
+                      "report":  "parity/cost/reference-parity.json",
+                      "masks":  false,
+                      "page":  "cost",
+                      "referenceSha256":  "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+                      "meanAbsoluteRgbDelta":  18.63751425830541
+                  },
+                  {
+                      "candidateSha256":  "185d6eb896047dead26ddc55bb4e4541e7db4c71b39f970341fe5c526587542a",
+                      "ssim":  0.5127223881469952,
+                      "report":  "parity/providers/reference-parity.json",
+                      "masks":  false,
+                      "page":  "providers",
+                      "referenceSha256":  "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6",
+                      "meanAbsoluteRgbDelta":  17.218389569954255
+                  }
+              ]
+}
