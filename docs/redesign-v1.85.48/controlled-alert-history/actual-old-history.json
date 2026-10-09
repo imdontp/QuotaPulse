@@ -1,0 +1,51 @@
+{
+  "now": 1747489320000,
+  "from": 1744897320000,
+  "to": 1747489320001,
+  "subscriptionKey": "openai:subscription",
+  "windowKind": "monthly",
+  "available": true,
+  "reader": {
+    "sourceId": 1,
+    "origin": "fixed-fixture",
+    "observedAt": 1747489290000,
+    "lastSeenAt": 1747489290000,
+    "sourceFetchedAt": 1747489290000,
+    "resetAt": 1748014920000,
+    "ageSeconds": 30,
+    "freshness": "live",
+    "forecast": {
+      "status": "ready",
+      "samples": 3,
+      "fromAt": 1747316520000,
+      "toAt": 1747489290000,
+      "percentPerHour": 0.2708803611738149,
+      "projectedFullAt": 1747861440000
+    }
+  },
+  "segments": [
+    {
+      "resetAt": 1748014920000,
+      "samples": [
+        {
+          "observedAt": 1747316520000,
+          "lastSeenAt": 1747316520000,
+          "usedPercent": 59,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747402920000,
+          "lastSeenAt": 1747402920000,
+          "usedPercent": 65.5,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747489290000,
+          "lastSeenAt": 1747489290000,
+          "usedPercent": 72,
+          "resetAt": 1748014920000
+        }
+      ]
+    }
+  ]
+}

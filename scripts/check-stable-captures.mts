@@ -13,7 +13,7 @@ import type { Overview, CompareResult, MinuteTrendResponse, ProviderModelMinuteR
 import { en } from '../packages/web/src/i18n/en.js';
 import { th } from '../packages/web/src/i18n/th.js';
 import { dimensions, runtimeActivityState, type RuntimeGraph } from '../packages/web/src/redesign/model.js';
-import { activeQuotaRiskCount } from '../packages/web/src/redesign/alert-risks.js';
+import { activeQuotaRiskCount, getQuotaRiskModel } from '../packages/web/src/redesign/alert-risks.js';
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from '../packages/web/src/redesign/metric-series.js';
 import { cacheSharePercent, percentagePointChange, relativeChangePercent } from '../packages/web/src/redesign/insight-model.js';
 import type { UsageEventsResponse } from '../packages/web/src/lib/usage-events.js';
@@ -530,6 +530,33 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
     return [selector, { x, y, width, height, bottom }];
   }))) });
   assert.deepEqual(await page.locator('.qp-alert-rules [data-threshold]').allTextContents(), ['50%', '80%', '95%']);
+  const copy = lang === 'th' ? th : en;
+  const overviewResult = await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  const overview = overviewResult.json<Overview>();
+  const risks = getQuotaRiskModel(overview.limits, overview.settings.hidden_subscriptions, overview.now).risks;
+  const riskRows = page.locator('.qp-alert-risk>ul>li[data-level]');
+  const summaryCount = await page.locator('[data-summary="redesign.alertCurrent"] strong').innerText();
+  for (const level of ['critical', 'warning', 'info', 'stale', 'all']) {
+    const button = page.locator(`.qp-alert-risk-filters button[data-level="${level}"]`);
+    await button.click();
+    assert.equal(await button.getAttribute('aria-pressed'), 'true');
+    assert.equal(await riskRows.count(), risks.filter(risk => level === 'all' || risk.level === level).length, 'Filtered rows must match actual quota risks');
+    assert.equal(await page.locator('[data-summary="redesign.alertCurrent"] strong').innerText(), summaryCount, 'Filtering must not change global risk count');
+  }
+  const search = page.locator('.qp-alert-risk-search input');
+  if (risks.length) {
+    await search.fill(risks[0].owner);
+    assert.deepEqual(await riskRows.evaluateAll(rows => rows.map(row => row.getAttribute('data-owner'))), risks.filter(risk => risk.owner.toLowerCase().includes(risks[0].owner.toLowerCase()) || [risk.title, risk.window, risk.reading.subscription_provider, risk.reading.account_provider].some(value => value?.toLowerCase().includes(risks[0].owner.toLowerCase()))).map(risk => risk.owner));
+  }
+  await search.fill('no-matching-quota-owner-7654321');
+  assert.equal(await riskRows.count(), 0);
+  await page.getByText(copy['redesign.alertNoMatch'], { exact: true }).waitFor();
+  await search.fill('');
+  const sort = page.locator('.qp-alert-risk-toolbar select');
+  await sort.selectOption('recent');
+  assert.deepEqual(await riskRows.evaluateAll(rows => rows.map(row => [row.getAttribute('data-owner'), row.getAttribute('data-window')])), [...risks].sort((a,b) => b.reading.last_seen_at-a.reading.last_seen_at || a.title.localeCompare(b.title)).map(risk => [risk.owner, risk.window]));
+  await sort.selectOption('severity');
+  await settled(page, pending);
   const forecastSelect = page.locator('.qp-alert-chart select');
   const initialWindow = await forecastSelect.inputValue();
   const forecastStates = new Set<string>();
@@ -537,8 +564,9 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
   const keys = await forecastSelect.locator('option').evaluateAll(options => options.map(option => (option as HTMLOptionElement).value));
   for (const key of keys) {
     if (await forecastSelect.inputValue() !== key) {
-      const quotaResponse = page.waitForResponse(response => response.url().includes('/api/quota-history?') && response.status() === 200);
-      await forecastSelect.selectOption(key); await quotaResponse; await settled(page, pending);
+      await forecastSelect.selectOption(key);
+      await page.waitForFunction(key => document.querySelector('.qp-alert-chart')?.getAttribute('data-history-key') === key, key);
+      await settled(page, pending);
     }
     const [owner, window] = JSON.parse(key) as [string, string];
     const params = new URLSearchParams({ subscription_key: owner, window_kind: window, from: String(Math.max(0, fixedNow - 30 * 86_400_000)), to: String(fixedNow + 1) });
@@ -551,8 +579,7 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
       ? new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 1 }).format(Math.max(0, (quota.reader.forecast.projectedFullAt - fixedNow) / 86_400_000))
       : lang === 'th' ? 'ไม่ทราบ' : 'Unknown';
     assert.equal(await page.getByTestId('alert-forecast-days').textContent(), expected, 'Forecast days differ from daemon result');
-    const copy = lang === 'th' ? th : en;
-    const facts = page.locator('.qp-alert-forecast-facts');
+      const facts = page.locator('.qp-alert-forecast-facts');
     const clock = new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     const projected = quota.reader?.forecast.status === 'ready' && quota.reader.forecast.projectedFullAt != null
       ? clock.format(quota.reader.forecast.projectedFullAt) : copy['redesign.alertForecastUnknown'];
@@ -580,8 +607,9 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
   assert.ok([...forecastStates].some(status => status !== 'ready'), 'Unavailable forecast fixture was not checked');
   assert.equal(initialWindow, forecastWindows[0] ?? keys[0], 'Alerts should default to the first quota window with an API-backed forecast');
   if (await forecastSelect.inputValue() !== initialWindow) {
-    const quotaResponse = page.waitForResponse(response => response.url().includes('/api/quota-history?') && response.status() === 200);
-    await forecastSelect.selectOption(initialWindow); await quotaResponse; await settled(page, pending);
+    await forecastSelect.selectOption(initialWindow);
+    await page.waitForFunction(key => document.querySelector('.qp-alert-chart')?.getAttribute('data-history-key') === key, initialWindow);
+    await settled(page, pending);
   }
   for (const [threshold, color] of [[80, '--qp-warning'], [95, '--qp-danger']] as const) {
     const swatch = await page.locator(`.qp-alert-rules [data-threshold="${threshold}"]`).first().evaluate((element, color) => ({ actual: getComputedStyle(element).color, expected: getComputedStyle(document.querySelector('.qp-redesign')!).getPropertyValue(color).trim() }), color);
@@ -623,7 +651,7 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
     } finally { await page.unroute(pattern); }
   }
   const notificationPattern = '**/api/notification-settings';
-  const copy = lang === 'th' ? th : en;
+
   for (const quietEnd of [420, 1320]) {
     const settings = { enabled: false, snooze_until: fixedNow + 3_600_000, quiet_start: 1320, quiet_end: quietEnd, updated_at: fixedNow };
     await page.route(notificationPattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(settings) }));

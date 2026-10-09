@@ -1,0 +1,1833 @@
+{
+  "now": 1747489320000,
+  "from": 1744897320000,
+  "to": 1747489320001,
+  "subscriptionKey": "openai:subscription",
+  "windowKind": "monthly",
+  "available": true,
+  "reader": {
+    "sourceId": 1,
+    "origin": "fixed-fixture",
+    "observedAt": 1747489310000,
+    "lastSeenAt": 1747489310000,
+    "sourceFetchedAt": 1747489310000,
+    "resetAt": 1748014920000,
+    "ageSeconds": 10,
+    "freshness": "live",
+    "forecast": {
+      "status": "ready",
+      "samples": 300,
+      "fromAt": 1747316520000,
+      "toAt": 1747489310000,
+      "percentPerHour": 0.5625325539672436,
+      "projectedFullAt": 1747662100000
+    }
+  },
+  "segments": [
+    {
+      "resetAt": 1748014920000,
+      "samples": [
+        {
+          "observedAt": 1747316520000,
+          "lastSeenAt": 1747316520000,
+          "usedPercent": 46,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747317097893,
+          "lastSeenAt": 1747317097893,
+          "usedPercent": 46.09030100334448,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747317675786,
+          "lastSeenAt": 1747317675786,
+          "usedPercent": 46.180602006688964,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747318253679,
+          "lastSeenAt": 1747318253679,
+          "usedPercent": 46.27090301003344,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747318831572,
+          "lastSeenAt": 1747318831572,
+          "usedPercent": 46.36120401337793,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747319409465,
+          "lastSeenAt": 1747319409465,
+          "usedPercent": 46.45150501672241,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747319987358,
+          "lastSeenAt": 1747319987358,
+          "usedPercent": 46.541806020066886,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747320565251,
+          "lastSeenAt": 1747320565251,
+          "usedPercent": 46.63210702341137,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747321143144,
+          "lastSeenAt": 1747321143144,
+          "usedPercent": 46.72240802675585,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747321721037,
+          "lastSeenAt": 1747321721037,
+          "usedPercent": 46.812709030100336,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747322298930,
+          "lastSeenAt": 1747322298930,
+          "usedPercent": 46.903010033444815,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747322876823,
+          "lastSeenAt": 1747322876823,
+          "usedPercent": 46.9933110367893,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747323454716,
+          "lastSeenAt": 1747323454716,
+          "usedPercent": 47.08361204013378,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747324032609,
+          "lastSeenAt": 1747324032609,
+          "usedPercent": 47.17391304347826,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747324610502,
+          "lastSeenAt": 1747324610502,
+          "usedPercent": 47.264214046822744,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747325188395,
+          "lastSeenAt": 1747325188395,
+          "usedPercent": 47.35451505016722,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747325766288,
+          "lastSeenAt": 1747325766288,
+          "usedPercent": 47.44481605351171,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747326344181,
+          "lastSeenAt": 1747326344181,
+          "usedPercent": 47.53511705685619,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747326922074,
+          "lastSeenAt": 1747326922074,
+          "usedPercent": 47.625418060200666,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747327499967,
+          "lastSeenAt": 1747327499967,
+          "usedPercent": 47.71571906354515,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747328077860,
+          "lastSeenAt": 1747328077860,
+          "usedPercent": 47.80602006688963,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747328655753,
+          "lastSeenAt": 1747328655753,
+          "usedPercent": 47.896321070234116,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747329233645,
+          "lastSeenAt": 1747329233645,
+          "usedPercent": 47.986622073578594,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747329811538,
+          "lastSeenAt": 1747329811538,
+          "usedPercent": 48.07692307692308,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747330389431,
+          "lastSeenAt": 1747330389431,
+          "usedPercent": 48.16722408026756,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747330967324,
+          "lastSeenAt": 1747330967324,
+          "usedPercent": 48.25752508361204,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747331545217,
+          "lastSeenAt": 1747331545217,
+          "usedPercent": 48.34782608695652,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747332123110,
+          "lastSeenAt": 1747332123110,
+          "usedPercent": 48.438127090301,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747332701003,
+          "lastSeenAt": 1747332701003,
+          "usedPercent": 48.52842809364549,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747333278896,
+          "lastSeenAt": 1747333278896,
+          "usedPercent": 48.618729096989966,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747333856789,
+          "lastSeenAt": 1747333856789,
+          "usedPercent": 48.709030100334445,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747334434682,
+          "lastSeenAt": 1747334434682,
+          "usedPercent": 48.79933110367893,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747335012575,
+          "lastSeenAt": 1747335012575,
+          "usedPercent": 48.88963210702341,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747335590468,
+          "lastSeenAt": 1747335590468,
+          "usedPercent": 48.979933110367895,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747336168361,
+          "lastSeenAt": 1747336168361,
+          "usedPercent": 49.070234113712374,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747336746254,
+          "lastSeenAt": 1747336746254,
+          "usedPercent": 49.16053511705685,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747337324147,
+          "lastSeenAt": 1747337324147,
+          "usedPercent": 49.25083612040134,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747337902040,
+          "lastSeenAt": 1747337902040,
+          "usedPercent": 49.34113712374582,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747338479933,
+          "lastSeenAt": 1747338479933,
+          "usedPercent": 49.4314381270903,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747339057826,
+          "lastSeenAt": 1747339057826,
+          "usedPercent": 49.52173913043478,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747339635719,
+          "lastSeenAt": 1747339635719,
+          "usedPercent": 49.61204013377927,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747340213612,
+          "lastSeenAt": 1747340213612,
+          "usedPercent": 49.702341137123746,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747340791505,
+          "lastSeenAt": 1747340791505,
+          "usedPercent": 49.792642140468224,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747341369398,
+          "lastSeenAt": 1747341369398,
+          "usedPercent": 49.88294314381271,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747341947291,
+          "lastSeenAt": 1747341947291,
+          "usedPercent": 49.97324414715719,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747342525184,
+          "lastSeenAt": 1747342525184,
+          "usedPercent": 50.063545150501675,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747343103077,
+          "lastSeenAt": 1747343103077,
+          "usedPercent": 50.15384615384615,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747343680970,
+          "lastSeenAt": 1747343680970,
+          "usedPercent": 50.24414715719064,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747344258863,
+          "lastSeenAt": 1747344258863,
+          "usedPercent": 50.33444816053512,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747344836756,
+          "lastSeenAt": 1747344836756,
+          "usedPercent": 50.424749163879596,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747345414649,
+          "lastSeenAt": 1747345414649,
+          "usedPercent": 50.51505016722408,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747345992542,
+          "lastSeenAt": 1747345992542,
+          "usedPercent": 50.60535117056856,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747346570435,
+          "lastSeenAt": 1747346570435,
+          "usedPercent": 50.69565217391305,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747347148328,
+          "lastSeenAt": 1747347148328,
+          "usedPercent": 50.785953177257525,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747347726221,
+          "lastSeenAt": 1747347726221,
+          "usedPercent": 50.876254180602004,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747348304114,
+          "lastSeenAt": 1747348304114,
+          "usedPercent": 50.96655518394649,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747348882007,
+          "lastSeenAt": 1747348882007,
+          "usedPercent": 51.05685618729097,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747349459900,
+          "lastSeenAt": 1747349459900,
+          "usedPercent": 51.147157190635454,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747350037793,
+          "lastSeenAt": 1747350037793,
+          "usedPercent": 51.23745819397993,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747350615686,
+          "lastSeenAt": 1747350615686,
+          "usedPercent": 51.32775919732441,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747351193579,
+          "lastSeenAt": 1747351193579,
+          "usedPercent": 51.4180602006689,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747351771472,
+          "lastSeenAt": 1747351771472,
+          "usedPercent": 51.508361204013376,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747352349365,
+          "lastSeenAt": 1747352349365,
+          "usedPercent": 51.59866220735786,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747352927258,
+          "lastSeenAt": 1747352927258,
+          "usedPercent": 51.68896321070234,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747353505151,
+          "lastSeenAt": 1747353505151,
+          "usedPercent": 51.77926421404682,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747354083043,
+          "lastSeenAt": 1747354083043,
+          "usedPercent": 51.869565217391305,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747354660936,
+          "lastSeenAt": 1747354660936,
+          "usedPercent": 51.95986622073578,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747355238829,
+          "lastSeenAt": 1747355238829,
+          "usedPercent": 52.05016722408027,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747355816722,
+          "lastSeenAt": 1747355816722,
+          "usedPercent": 52.14046822742475,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747356394615,
+          "lastSeenAt": 1747356394615,
+          "usedPercent": 52.23076923076923,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747356972508,
+          "lastSeenAt": 1747356972508,
+          "usedPercent": 52.32107023411371,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747357550401,
+          "lastSeenAt": 1747357550401,
+          "usedPercent": 52.4113712374582,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747358128294,
+          "lastSeenAt": 1747358128294,
+          "usedPercent": 52.50167224080268,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747358706187,
+          "lastSeenAt": 1747358706187,
+          "usedPercent": 52.591973244147155,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747359284080,
+          "lastSeenAt": 1747359284080,
+          "usedPercent": 52.68227424749164,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747359861973,
+          "lastSeenAt": 1747359861973,
+          "usedPercent": 52.77257525083612,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747360439866,
+          "lastSeenAt": 1747360439866,
+          "usedPercent": 52.862876254180605,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747361017759,
+          "lastSeenAt": 1747361017759,
+          "usedPercent": 52.953177257525084,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747361595652,
+          "lastSeenAt": 1747361595652,
+          "usedPercent": 53.04347826086956,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747362173545,
+          "lastSeenAt": 1747362173545,
+          "usedPercent": 53.13377926421405,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747362751438,
+          "lastSeenAt": 1747362751438,
+          "usedPercent": 53.22408026755853,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747363329331,
+          "lastSeenAt": 1747363329331,
+          "usedPercent": 53.31438127090301,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747363907224,
+          "lastSeenAt": 1747363907224,
+          "usedPercent": 53.40468227424749,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747364485117,
+          "lastSeenAt": 1747364485117,
+          "usedPercent": 53.49498327759197,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747365063010,
+          "lastSeenAt": 1747365063010,
+          "usedPercent": 53.585284280936456,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747365640903,
+          "lastSeenAt": 1747365640903,
+          "usedPercent": 53.675585284280935,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747366218796,
+          "lastSeenAt": 1747366218796,
+          "usedPercent": 53.76588628762542,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747366796689,
+          "lastSeenAt": 1747366796689,
+          "usedPercent": 53.8561872909699,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747367374582,
+          "lastSeenAt": 1747367374582,
+          "usedPercent": 53.94648829431438,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747367952475,
+          "lastSeenAt": 1747367952475,
+          "usedPercent": 54.03678929765886,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747368530368,
+          "lastSeenAt": 1747368530368,
+          "usedPercent": 54.12709030100334,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747369108261,
+          "lastSeenAt": 1747369108261,
+          "usedPercent": 54.21739130434783,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747369686154,
+          "lastSeenAt": 1747369686154,
+          "usedPercent": 54.30769230769231,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747370264047,
+          "lastSeenAt": 1747370264047,
+          "usedPercent": 54.397993311036785,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747370841940,
+          "lastSeenAt": 1747370841940,
+          "usedPercent": 54.48829431438127,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747371419833,
+          "lastSeenAt": 1747371419833,
+          "usedPercent": 54.57859531772576,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747371997726,
+          "lastSeenAt": 1747371997726,
+          "usedPercent": 54.668896321070235,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747372575619,
+          "lastSeenAt": 1747372575619,
+          "usedPercent": 54.759197324414714,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747373153512,
+          "lastSeenAt": 1747373153512,
+          "usedPercent": 54.8494983277592,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747373731405,
+          "lastSeenAt": 1747373731405,
+          "usedPercent": 54.93979933110368,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747374309298,
+          "lastSeenAt": 1747374309298,
+          "usedPercent": 55.030100334448164,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747374887191,
+          "lastSeenAt": 1747374887191,
+          "usedPercent": 55.12040133779264,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747375465084,
+          "lastSeenAt": 1747375465084,
+          "usedPercent": 55.21070234113712,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747376042977,
+          "lastSeenAt": 1747376042977,
+          "usedPercent": 55.30100334448161,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747376620870,
+          "lastSeenAt": 1747376620870,
+          "usedPercent": 55.391304347826086,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747377198763,
+          "lastSeenAt": 1747377198763,
+          "usedPercent": 55.48160535117057,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747377776656,
+          "lastSeenAt": 1747377776656,
+          "usedPercent": 55.57190635451505,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747378354548,
+          "lastSeenAt": 1747378354548,
+          "usedPercent": 55.66220735785953,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747378932441,
+          "lastSeenAt": 1747378932441,
+          "usedPercent": 55.752508361204015,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747379510334,
+          "lastSeenAt": 1747379510334,
+          "usedPercent": 55.84280936454849,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747380088227,
+          "lastSeenAt": 1747380088227,
+          "usedPercent": 55.93311036789298,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747380666120,
+          "lastSeenAt": 1747380666120,
+          "usedPercent": 56.02341137123746,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747381244013,
+          "lastSeenAt": 1747381244013,
+          "usedPercent": 56.11371237458194,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747381821906,
+          "lastSeenAt": 1747381821906,
+          "usedPercent": 56.20401337792642,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747382399799,
+          "lastSeenAt": 1747382399799,
+          "usedPercent": 56.2943143812709,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747382977692,
+          "lastSeenAt": 1747382977692,
+          "usedPercent": 56.38461538461539,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747383555585,
+          "lastSeenAt": 1747383555585,
+          "usedPercent": 56.474916387959865,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747384133478,
+          "lastSeenAt": 1747384133478,
+          "usedPercent": 56.565217391304344,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747384711371,
+          "lastSeenAt": 1747384711371,
+          "usedPercent": 56.65551839464883,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747385289264,
+          "lastSeenAt": 1747385289264,
+          "usedPercent": 56.74581939799331,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747385867157,
+          "lastSeenAt": 1747385867157,
+          "usedPercent": 56.836120401337794,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747386445050,
+          "lastSeenAt": 1747386445050,
+          "usedPercent": 56.92642140468227,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747387022943,
+          "lastSeenAt": 1747387022943,
+          "usedPercent": 57.01672240802675,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747387600836,
+          "lastSeenAt": 1747387600836,
+          "usedPercent": 57.10702341137124,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747388178729,
+          "lastSeenAt": 1747388178729,
+          "usedPercent": 57.19732441471572,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747388756622,
+          "lastSeenAt": 1747388756622,
+          "usedPercent": 57.2876254180602,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747389334515,
+          "lastSeenAt": 1747389334515,
+          "usedPercent": 57.37792642140468,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747389912408,
+          "lastSeenAt": 1747389912408,
+          "usedPercent": 57.468227424749166,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747390490301,
+          "lastSeenAt": 1747390490301,
+          "usedPercent": 57.558528428093645,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747391068194,
+          "lastSeenAt": 1747391068194,
+          "usedPercent": 57.64882943143813,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747391646087,
+          "lastSeenAt": 1747391646087,
+          "usedPercent": 57.73913043478261,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747392223980,
+          "lastSeenAt": 1747392223980,
+          "usedPercent": 57.82943143812709,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747392801873,
+          "lastSeenAt": 1747392801873,
+          "usedPercent": 57.919732441471574,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747393379766,
+          "lastSeenAt": 1747393379766,
+          "usedPercent": 58.01003344481605,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747393957659,
+          "lastSeenAt": 1747393957659,
+          "usedPercent": 58.10033444816054,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747394535552,
+          "lastSeenAt": 1747394535552,
+          "usedPercent": 58.19063545150502,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747395113445,
+          "lastSeenAt": 1747395113445,
+          "usedPercent": 58.280936454849495,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747395691338,
+          "lastSeenAt": 1747395691338,
+          "usedPercent": 58.37123745819398,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747396269231,
+          "lastSeenAt": 1747396269231,
+          "usedPercent": 58.46153846153846,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747396847124,
+          "lastSeenAt": 1747396847124,
+          "usedPercent": 58.551839464882946,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747397425017,
+          "lastSeenAt": 1747397425017,
+          "usedPercent": 58.642140468227424,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747398002910,
+          "lastSeenAt": 1747398002910,
+          "usedPercent": 58.7324414715719,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747398580803,
+          "lastSeenAt": 1747398580803,
+          "usedPercent": 58.82274247491639,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747399158696,
+          "lastSeenAt": 1747399158696,
+          "usedPercent": 58.91304347826087,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747399736589,
+          "lastSeenAt": 1747399736589,
+          "usedPercent": 59.00334448160535,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747400314482,
+          "lastSeenAt": 1747400314482,
+          "usedPercent": 59.09364548494983,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747400892375,
+          "lastSeenAt": 1747400892375,
+          "usedPercent": 59.18394648829431,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747401470268,
+          "lastSeenAt": 1747401470268,
+          "usedPercent": 59.274247491638796,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747402048161,
+          "lastSeenAt": 1747402048161,
+          "usedPercent": 59.36454849498328,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747402626054,
+          "lastSeenAt": 1747402626054,
+          "usedPercent": 59.45484949832776,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747403203946,
+          "lastSeenAt": 1747403203946,
+          "usedPercent": 59.54515050167224,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747403781839,
+          "lastSeenAt": 1747403781839,
+          "usedPercent": 59.63545150501672,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747404359732,
+          "lastSeenAt": 1747404359732,
+          "usedPercent": 59.725752508361204,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747404937625,
+          "lastSeenAt": 1747404937625,
+          "usedPercent": 59.81605351170569,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747405515518,
+          "lastSeenAt": 1747405515518,
+          "usedPercent": 59.90635451505017,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747406093411,
+          "lastSeenAt": 1747406093411,
+          "usedPercent": 59.99665551839465,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747406671304,
+          "lastSeenAt": 1747406671304,
+          "usedPercent": 60.08695652173913,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747407249197,
+          "lastSeenAt": 1747407249197,
+          "usedPercent": 60.17725752508361,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747407827090,
+          "lastSeenAt": 1747407827090,
+          "usedPercent": 60.2675585284281,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747408404983,
+          "lastSeenAt": 1747408404983,
+          "usedPercent": 60.357859531772576,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747408982876,
+          "lastSeenAt": 1747408982876,
+          "usedPercent": 60.448160535117054,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747409560769,
+          "lastSeenAt": 1747409560769,
+          "usedPercent": 60.53846153846154,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747410138662,
+          "lastSeenAt": 1747410138662,
+          "usedPercent": 60.62876254180602,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747410716555,
+          "lastSeenAt": 1747410716555,
+          "usedPercent": 60.719063545150505,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747411294448,
+          "lastSeenAt": 1747411294448,
+          "usedPercent": 60.80936454849498,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747411872341,
+          "lastSeenAt": 1747411872341,
+          "usedPercent": 60.89966555183946,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747412450234,
+          "lastSeenAt": 1747412450234,
+          "usedPercent": 60.98996655518395,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747413028127,
+          "lastSeenAt": 1747413028127,
+          "usedPercent": 61.080267558528426,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747413606020,
+          "lastSeenAt": 1747413606020,
+          "usedPercent": 61.17056856187291,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747414183913,
+          "lastSeenAt": 1747414183913,
+          "usedPercent": 61.26086956521739,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747414761806,
+          "lastSeenAt": 1747414761806,
+          "usedPercent": 61.35117056856187,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747415339699,
+          "lastSeenAt": 1747415339699,
+          "usedPercent": 61.441471571906355,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747415917592,
+          "lastSeenAt": 1747415917592,
+          "usedPercent": 61.531772575250834,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747416495485,
+          "lastSeenAt": 1747416495485,
+          "usedPercent": 61.62207357859532,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747417073378,
+          "lastSeenAt": 1747417073378,
+          "usedPercent": 61.7123745819398,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747417651271,
+          "lastSeenAt": 1747417651271,
+          "usedPercent": 61.80267558528428,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747418229164,
+          "lastSeenAt": 1747418229164,
+          "usedPercent": 61.89297658862876,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747418807057,
+          "lastSeenAt": 1747418807057,
+          "usedPercent": 61.98327759197325,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747419384950,
+          "lastSeenAt": 1747419384950,
+          "usedPercent": 62.07357859531773,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747419962843,
+          "lastSeenAt": 1747419962843,
+          "usedPercent": 62.163879598662206,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747420540736,
+          "lastSeenAt": 1747420540736,
+          "usedPercent": 62.254180602006684,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747421118629,
+          "lastSeenAt": 1747421118629,
+          "usedPercent": 62.34448160535117,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747421696522,
+          "lastSeenAt": 1747421696522,
+          "usedPercent": 62.434782608695656,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747422274415,
+          "lastSeenAt": 1747422274415,
+          "usedPercent": 62.525083612040135,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747422852308,
+          "lastSeenAt": 1747422852308,
+          "usedPercent": 62.61538461538461,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747423430201,
+          "lastSeenAt": 1747423430201,
+          "usedPercent": 62.70568561872909,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747424008094,
+          "lastSeenAt": 1747424008094,
+          "usedPercent": 62.79598662207358,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747424585987,
+          "lastSeenAt": 1747424585987,
+          "usedPercent": 62.88628762541806,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747425163880,
+          "lastSeenAt": 1747425163880,
+          "usedPercent": 62.97658862876254,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747425741773,
+          "lastSeenAt": 1747425741773,
+          "usedPercent": 63.06688963210702,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747426319666,
+          "lastSeenAt": 1747426319666,
+          "usedPercent": 63.15719063545151,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747426897559,
+          "lastSeenAt": 1747426897559,
+          "usedPercent": 63.247491638795985,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747427475452,
+          "lastSeenAt": 1747427475452,
+          "usedPercent": 63.33779264214047,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747428053344,
+          "lastSeenAt": 1747428053344,
+          "usedPercent": 63.42809364548495,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747428631237,
+          "lastSeenAt": 1747428631237,
+          "usedPercent": 63.51839464882943,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747429209130,
+          "lastSeenAt": 1747429209130,
+          "usedPercent": 63.608695652173914,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747429787023,
+          "lastSeenAt": 1747429787023,
+          "usedPercent": 63.6989966555184,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747430364916,
+          "lastSeenAt": 1747430364916,
+          "usedPercent": 63.78929765886288,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747430942809,
+          "lastSeenAt": 1747430942809,
+          "usedPercent": 63.87959866220736,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747431520702,
+          "lastSeenAt": 1747431520702,
+          "usedPercent": 63.969899665551836,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747432098595,
+          "lastSeenAt": 1747432098595,
+          "usedPercent": 64.06020066889633,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747432676488,
+          "lastSeenAt": 1747432676488,
+          "usedPercent": 64.15050167224081,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747433254381,
+          "lastSeenAt": 1747433254381,
+          "usedPercent": 64.24080267558529,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747433832274,
+          "lastSeenAt": 1747433832274,
+          "usedPercent": 64.33110367892976,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747434410167,
+          "lastSeenAt": 1747434410167,
+          "usedPercent": 64.42140468227424,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747434988060,
+          "lastSeenAt": 1747434988060,
+          "usedPercent": 64.51170568561872,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747435565953,
+          "lastSeenAt": 1747435565953,
+          "usedPercent": 64.60200668896321,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747436143846,
+          "lastSeenAt": 1747436143846,
+          "usedPercent": 64.6923076923077,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747436721739,
+          "lastSeenAt": 1747436721739,
+          "usedPercent": 64.78260869565217,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747437299632,
+          "lastSeenAt": 1747437299632,
+          "usedPercent": 64.87290969899665,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747437877525,
+          "lastSeenAt": 1747437877525,
+          "usedPercent": 64.96321070234114,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747438455418,
+          "lastSeenAt": 1747438455418,
+          "usedPercent": 65.05351170568562,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747439033311,
+          "lastSeenAt": 1747439033311,
+          "usedPercent": 65.1438127090301,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747439611204,
+          "lastSeenAt": 1747439611204,
+          "usedPercent": 65.23411371237458,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747440189097,
+          "lastSeenAt": 1747440189097,
+          "usedPercent": 65.32441471571906,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747440766990,
+          "lastSeenAt": 1747440766990,
+          "usedPercent": 65.41471571906354,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747441344883,
+          "lastSeenAt": 1747441344883,
+          "usedPercent": 65.50501672240803,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747441922776,
+          "lastSeenAt": 1747441922776,
+          "usedPercent": 65.59531772575251,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747442500669,
+          "lastSeenAt": 1747442500669,
+          "usedPercent": 65.68561872909699,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747443078562,
+          "lastSeenAt": 1747443078562,
+          "usedPercent": 65.77591973244148,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747443656455,
+          "lastSeenAt": 1747443656455,
+          "usedPercent": 65.86622073578596,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747444234348,
+          "lastSeenAt": 1747444234348,
+          "usedPercent": 65.95652173913044,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747444812241,
+          "lastSeenAt": 1747444812241,
+          "usedPercent": 66.04682274247492,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747445390134,
+          "lastSeenAt": 1747445390134,
+          "usedPercent": 66.1371237458194,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747445968027,
+          "lastSeenAt": 1747445968027,
+          "usedPercent": 66.22742474916387,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747446545920,
+          "lastSeenAt": 1747446545920,
+          "usedPercent": 66.31772575250837,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747447123813,
+          "lastSeenAt": 1747447123813,
+          "usedPercent": 66.40802675585284,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747447701706,
+          "lastSeenAt": 1747447701706,
+          "usedPercent": 66.49832775919732,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747448279599,
+          "lastSeenAt": 1747448279599,
+          "usedPercent": 66.5886287625418,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747448857492,
+          "lastSeenAt": 1747448857492,
+          "usedPercent": 66.6789297658863,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747449435385,
+          "lastSeenAt": 1747449435385,
+          "usedPercent": 66.76923076923077,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747450013278,
+          "lastSeenAt": 1747450013278,
+          "usedPercent": 66.85953177257525,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747450591171,
+          "lastSeenAt": 1747450591171,
+          "usedPercent": 66.94983277591973,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747451169064,
+          "lastSeenAt": 1747451169064,
+          "usedPercent": 67.04013377926421,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747451746957,
+          "lastSeenAt": 1747451746957,
+          "usedPercent": 67.13043478260869,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747452324849,
+          "lastSeenAt": 1747452324849,
+          "usedPercent": 67.22073578595318,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747452902742,
+          "lastSeenAt": 1747452902742,
+          "usedPercent": 67.31103678929766,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747453480635,
+          "lastSeenAt": 1747453480635,
+          "usedPercent": 67.40133779264214,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747454058528,
+          "lastSeenAt": 1747454058528,
+          "usedPercent": 67.49163879598662,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747454636421,
+          "lastSeenAt": 1747454636421,
+          "usedPercent": 67.58193979933111,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747455214314,
+          "lastSeenAt": 1747455214314,
+          "usedPercent": 67.67224080267559,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747455792207,
+          "lastSeenAt": 1747455792207,
+          "usedPercent": 67.76254180602007,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747456370100,
+          "lastSeenAt": 1747456370100,
+          "usedPercent": 67.85284280936455,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747456947993,
+          "lastSeenAt": 1747456947993,
+          "usedPercent": 67.94314381270902,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747457525886,
+          "lastSeenAt": 1747457525886,
+          "usedPercent": 68.0334448160535,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747458103779,
+          "lastSeenAt": 1747458103779,
+          "usedPercent": 68.123745819398,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747458681672,
+          "lastSeenAt": 1747458681672,
+          "usedPercent": 68.21404682274247,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747459259565,
+          "lastSeenAt": 1747459259565,
+          "usedPercent": 68.30434782608695,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747459837458,
+          "lastSeenAt": 1747459837458,
+          "usedPercent": 68.39464882943145,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747460415351,
+          "lastSeenAt": 1747460415351,
+          "usedPercent": 68.48494983277592,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747460993244,
+          "lastSeenAt": 1747460993244,
+          "usedPercent": 68.5752508361204,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747461571137,
+          "lastSeenAt": 1747461571137,
+          "usedPercent": 68.66555183946488,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747462149030,
+          "lastSeenAt": 1747462149030,
+          "usedPercent": 68.75585284280936,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747462726923,
+          "lastSeenAt": 1747462726923,
+          "usedPercent": 68.84615384615384,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747463304816,
+          "lastSeenAt": 1747463304816,
+          "usedPercent": 68.93645484949833,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747463882709,
+          "lastSeenAt": 1747463882709,
+          "usedPercent": 69.02675585284281,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747464460602,
+          "lastSeenAt": 1747464460602,
+          "usedPercent": 69.11705685618729,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747465038495,
+          "lastSeenAt": 1747465038495,
+          "usedPercent": 69.20735785953177,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747465616388,
+          "lastSeenAt": 1747465616388,
+          "usedPercent": 69.29765886287626,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747466194281,
+          "lastSeenAt": 1747466194281,
+          "usedPercent": 69.38795986622074,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747466772174,
+          "lastSeenAt": 1747466772174,
+          "usedPercent": 69.47826086956522,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747467350067,
+          "lastSeenAt": 1747467350067,
+          "usedPercent": 69.5685618729097,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747467927960,
+          "lastSeenAt": 1747467927960,
+          "usedPercent": 69.65886287625418,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747468505853,
+          "lastSeenAt": 1747468505853,
+          "usedPercent": 69.74916387959865,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747469083746,
+          "lastSeenAt": 1747469083746,
+          "usedPercent": 69.83946488294315,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747469661639,
+          "lastSeenAt": 1747469661639,
+          "usedPercent": 69.92976588628763,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747470239532,
+          "lastSeenAt": 1747470239532,
+          "usedPercent": 70.0200668896321,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747470817425,
+          "lastSeenAt": 1747470817425,
+          "usedPercent": 70.11036789297658,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747471395318,
+          "lastSeenAt": 1747471395318,
+          "usedPercent": 70.20066889632108,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747471973211,
+          "lastSeenAt": 1747471973211,
+          "usedPercent": 70.29096989966555,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747472551104,
+          "lastSeenAt": 1747472551104,
+          "usedPercent": 70.38127090301003,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747473128997,
+          "lastSeenAt": 1747473128997,
+          "usedPercent": 70.47157190635451,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747473706890,
+          "lastSeenAt": 1747473706890,
+          "usedPercent": 70.56187290969899,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747474284783,
+          "lastSeenAt": 1747474284783,
+          "usedPercent": 70.65217391304347,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747474862676,
+          "lastSeenAt": 1747474862676,
+          "usedPercent": 70.74247491638796,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747475440569,
+          "lastSeenAt": 1747475440569,
+          "usedPercent": 70.83277591973244,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747476018462,
+          "lastSeenAt": 1747476018462,
+          "usedPercent": 70.92307692307692,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747476596355,
+          "lastSeenAt": 1747476596355,
+          "usedPercent": 71.01337792642141,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747477174247,
+          "lastSeenAt": 1747477174247,
+          "usedPercent": 71.10367892976589,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747477752140,
+          "lastSeenAt": 1747477752140,
+          "usedPercent": 71.19397993311037,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747478330033,
+          "lastSeenAt": 1747478330033,
+          "usedPercent": 71.28428093645485,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747478907926,
+          "lastSeenAt": 1747478907926,
+          "usedPercent": 71.37458193979933,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747479485819,
+          "lastSeenAt": 1747479485819,
+          "usedPercent": 71.4648829431438,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747480063712,
+          "lastSeenAt": 1747480063712,
+          "usedPercent": 71.5551839464883,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747480641605,
+          "lastSeenAt": 1747480641605,
+          "usedPercent": 71.64548494983278,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747481219498,
+          "lastSeenAt": 1747481219498,
+          "usedPercent": 71.73578595317726,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747481797391,
+          "lastSeenAt": 1747481797391,
+          "usedPercent": 71.82608695652173,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747482375284,
+          "lastSeenAt": 1747482375284,
+          "usedPercent": 71.91638795986623,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747482953177,
+          "lastSeenAt": 1747482953177,
+          "usedPercent": 72.0066889632107,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747483531070,
+          "lastSeenAt": 1747483531070,
+          "usedPercent": 72.09698996655518,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747484108963,
+          "lastSeenAt": 1747484108963,
+          "usedPercent": 72.18729096989966,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747484686856,
+          "lastSeenAt": 1747484686856,
+          "usedPercent": 72.27759197324414,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747485264749,
+          "lastSeenAt": 1747485264749,
+          "usedPercent": 72.36789297658862,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747485842642,
+          "lastSeenAt": 1747485842642,
+          "usedPercent": 72.45819397993311,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747486420535,
+          "lastSeenAt": 1747486420535,
+          "usedPercent": 72.54849498327759,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747486998428,
+          "lastSeenAt": 1747486998428,
+          "usedPercent": 72.63879598662207,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747487576321,
+          "lastSeenAt": 1747487576321,
+          "usedPercent": 72.72909698996656,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747488154214,
+          "lastSeenAt": 1747488154214,
+          "usedPercent": 72.81939799331104,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747488732107,
+          "lastSeenAt": 1747488732107,
+          "usedPercent": 72.90969899665552,
+          "resetAt": 1748014920000
+        },
+        {
+          "observedAt": 1747489310000,
+          "lastSeenAt": 1747489310000,
+          "usedPercent": 73,
+          "resetAt": 1748014920000
+        }
+      ]
+    }
+  ]
+}

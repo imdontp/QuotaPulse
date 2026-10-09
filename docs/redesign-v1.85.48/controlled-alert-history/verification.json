@@ -1,0 +1,217 @@
+{
+  "classification": "Controlled frontend response/concurrency probes derived from authenticated owned fixture; not backend accuracy, live account data, canonical captures, or source likeness acceptance.",
+  "command": "node --import tsx tmp/check-alert-history-48.mts",
+  "origin": "http://127.0.0.1:7804",
+  "getOnly": true,
+  "browserVersion": "154.0.8037.97",
+  "nodeVersion": "v22.13.1",
+  "clock": 1747489320000,
+  "theme": "dark",
+  "language": "en",
+  "viewport": {
+    "width": 1672,
+    "height": 941
+  },
+  "builtIndexSha256": "a8c2a2ac9b28ced948a17dd50cd45708247a50534d539898c10451a1421e638f",
+  "scriptSha256": "d6ecdc5f78bacf9bd4842d13c132986fe141a27578419c9896a0a2667fe485e2",
+  "owner": "openai:subscription",
+  "windowKind": "monthly",
+  "historyCalls": 5,
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/overview",
+      "phase": "initial"
+    },
+    {
+      "method": "GET",
+      "path": "/api/runtime-summary",
+      "phase": "initial"
+    },
+    {
+      "method": "GET",
+      "path": "/api/overview",
+      "phase": "initial"
+    },
+    {
+      "method": "GET",
+      "path": "/api/alerts?limit=100",
+      "phase": "initial"
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "phase": "initial"
+    },
+    {
+      "method": "GET",
+      "path": "/api/settings",
+      "phase": "initial"
+    },
+    {
+      "method": "GET",
+      "path": "/api/events/stream?token=stable-capture-test",
+      "phase": "initial"
+    },
+    {
+      "method": "GET",
+      "path": "/api/quota-history?subscription_key=openai%3Asubscription&window_kind=monthly&from=1744897320000&to=1747489320001",
+      "phase": "initial"
+    },
+    {
+      "method": "GET",
+      "path": "/api/overview",
+      "phase": "new"
+    },
+    {
+      "method": "GET",
+      "path": "/api/runtime-summary",
+      "phase": "new"
+    },
+    {
+      "method": "GET",
+      "path": "/api/overview",
+      "phase": "new"
+    },
+    {
+      "method": "GET",
+      "path": "/api/alerts?limit=100",
+      "phase": "new"
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "phase": "new"
+    },
+    {
+      "method": "GET",
+      "path": "/api/quota-history?subscription_key=openai%3Asubscription&window_kind=monthly&from=1744897320000&to=1747489320001",
+      "phase": "new"
+    },
+    {
+      "method": "GET",
+      "path": "/api/overview",
+      "phase": "stale"
+    },
+    {
+      "method": "GET",
+      "path": "/api/runtime-summary",
+      "phase": "stale"
+    },
+    {
+      "method": "GET",
+      "path": "/api/overview",
+      "phase": "stale"
+    },
+    {
+      "method": "GET",
+      "path": "/api/alerts?limit=100",
+      "phase": "stale"
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "phase": "stale"
+    },
+    {
+      "method": "GET",
+      "path": "/api/quota-history?subscription_key=openai%3Asubscription&window_kind=monthly&from=1744897320000&to=1747489320001",
+      "phase": "stale"
+    },
+    {
+      "method": "GET",
+      "path": "/api/quota-history?subscription_key=openai%3Asubscription&window_kind=monthly&from=1744904520000&to=1747496520001",
+      "phase": "stale"
+    },
+    {
+      "method": "GET",
+      "path": "/api/overview",
+      "phase": "expired"
+    },
+    {
+      "method": "GET",
+      "path": "/api/runtime-summary",
+      "phase": "expired"
+    },
+    {
+      "method": "GET",
+      "path": "/api/overview",
+      "phase": "expired"
+    },
+    {
+      "method": "GET",
+      "path": "/api/alerts?limit=100",
+      "phase": "expired"
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "phase": "expired"
+    },
+    {
+      "method": "GET",
+      "path": "/api/quota-history?subscription_key=openai%3Asubscription&window_kind=monthly&from=1744904520000&to=1747496520001",
+      "phase": "expired"
+    },
+    {
+      "method": "GET",
+      "path": "/api/overview",
+      "phase": "unknown-suffix"
+    },
+    {
+      "method": "GET",
+      "path": "/api/runtime-summary",
+      "phase": "unknown-suffix"
+    },
+    {
+      "method": "GET",
+      "path": "/api/overview",
+      "phase": "unknown-suffix"
+    },
+    {
+      "method": "GET",
+      "path": "/api/alerts?limit=100",
+      "phase": "unknown-suffix"
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "phase": "unknown-suffix"
+    },
+    {
+      "method": "GET",
+      "path": "/api/settings",
+      "phase": "unknown-suffix"
+    },
+    {
+      "method": "GET",
+      "path": "/api/events/stream?token=stable-capture-test",
+      "phase": "unknown-suffix"
+    },
+    {
+      "method": "GET",
+      "path": "/api/quota-history?subscription_key=openai%3Asubscription&window_kind=monthly&from=1744897320000&to=1747489320001",
+      "phase": "unknown-suffix"
+    }
+  ],
+  "checks": [
+    "Delayed actual old selected-A history discarded after same-owner overview fingerprint changes; no published forecast before newest queued history response",
+    "Newest coherent controlled forecast publishes2days; actual last256 of300 observed samples disclosed in row provenance",
+    "Stale current reading invalidates a matching cached-ready forecast before replacement response: Unknown days/no warning, historical chart and row samples retained with stale provenance",
+    "Current clock past reset (expired and stale) cannot revive cached-ready forecast; historic chart/row data remain available",
+    "Unknown-only last256 suffix of257actual controlled samples remains Unknown with sample/time/source disclosure; no invented row zero points or empty-history caption; full chart retains older known50 sample"
+  ],
+  "samplesBeforeNewestResponse": [
+    "absent"
+  ],
+  "browserErrors": [],
+  "forbidden": [],
+  "screenshots": {
+    "fresh-new-history-controlled.png": "df277767a0cb801f03de5d30587e9b88efd2091999b83dc2426442567bded3d3",
+    "stale-cached-ready-controlled.png": "50b06a6140fa6a7643d7e1324e939cc0e5c29906796750fcdd2cc5e6ea16226c",
+    "expired-cached-ready-controlled.png": "aa1f424fde003ea558dd954b30ccd50f83f5f8cf4f63964ec61d4719e361c0c8",
+    "unknown-suffix-controlled.png": "9ecf0a55c16a494c0fab879a4908d5e7b9c352ed8739eab6aed65271748ee5ba"
+  },
+  "failure": null,
+  "passed": true
+}

@@ -1,0 +1,63 @@
+{
+  "outputDir": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\docs\\redesign-v1.85.48\\parity\\history",
+  "global": {
+    "pixels": 1573352,
+    "ssim": 0.47154826628898366,
+    "meanAbsoluteRgbDelta": 18.850871896435127,
+    "rootMeanSquareRgbDelta": 45.59208218891558,
+    "exactPixelPercent": 0.20618399442718477,
+    "withinTwoChannelsPercent": 19.124391744504727,
+    "singleWindowSsim": 0.11625264493420792
+  },
+  "tileWeightedSsim": 0.47154826628895585,
+  "regions": [
+    {
+      "name": "header",
+      "x": 0,
+      "y": 0,
+      "width": 1672,
+      "height": 60,
+      "comparison": {
+        "pixels": 100320,
+        "ssim": 0.5276102401711874,
+        "meanAbsoluteRgbDelta": 14.770461190855928,
+        "rootMeanSquareRgbDelta": 39.39781228662098,
+        "exactPixelPercent": 0.021929824561403508,
+        "withinTwoChannelsPercent": 10.150518341307816,
+        "singleWindowSsim": 0.34325793008229033
+      }
+    },
+    {
+      "name": "sidebar",
+      "x": 0,
+      "y": 60,
+      "width": 226,
+      "height": 881,
+      "comparison": {
+        "pixels": 199106,
+        "ssim": 0.6698050811068524,
+        "meanAbsoluteRgbDelta": 10.506309871793585,
+        "rootMeanSquareRgbDelta": 31.084080335301373,
+        "exactPixelPercent": 0.062278384378170425,
+        "withinTwoChannelsPercent": 44.50443482366177,
+        "singleWindowSsim": 0.1730033445200991
+      }
+    },
+    {
+      "name": "history-workspace",
+      "x": 226,
+      "y": 60,
+      "width": 1446,
+      "height": 881,
+      "comparison": {
+        "pixels": 1273926,
+        "ssim": 0.43708276687830316,
+        "meanAbsoluteRgbDelta": 20.476397373159823,
+        "rootMeanSquareRgbDelta": 47.89528799028531,
+        "exactPixelPercent": 0.24318523995899294,
+        "withinTwoChannelsPercent": 15.864343768790338,
+        "singleWindowSsim": 0.08585918994867617
+      }
+    }
+  ]
+}

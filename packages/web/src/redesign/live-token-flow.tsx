@@ -1,22 +1,25 @@
-import { useId, useMemo } from 'react';
+import { useId, useMemo, type ReactNode } from 'react';
 import type { MessageKey } from '@/i18n/en';
+import { tokens } from '@/format';
 import { liveTokenFlow, liveTokenFlowLatest, liveTokenFlowSegments, liveTokenFlowTicks, liveTokenFlowX, liveTokenFlowY, liveTokenFlowYTicks, type LiveTokenFlowPoint, type LiveTokenFlowResponse, type LiveTokenFlowSeries } from './live-token-flow-data';
 import './live-token-flow.css';
 
 type Translate = (key: MessageKey) => string;
 const labels: Record<LiveTokenFlowSeries, MessageKey> = { input: 'history.inputCombined', output: 'col.output', total: 'col.total' };
 const series: readonly LiveTokenFlowSeries[] = ['input', 'output', 'total'];
+const latestSeries: readonly LiveTokenFlowSeries[] = ['total', 'input', 'output'];
 
 /** Place this beside the existing Live heading when the plot renders with showLegend=false. */
 export function LiveTokenFlowLegend({ t }: { t: Translate }) {
   return <div className="qp-live-flow-legend">{series.map(key => <span key={key} data-series={key}><i aria-hidden="true"/>{t(labels[key])}</span>)}</div>;
 }
 
-export function LiveTokenFlow({ data, language, t, showLegend = true }: {
+export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDetails }: {
   data: LiveTokenFlowResponse;
   language: 'en' | 'th';
   t: Translate;
   showLegend?: boolean;
+  excludedDetails?: ReactNode;
 }) {
   const flow = useMemo(() => liveTokenFlow(data), [data]);
   const id = useId().replace(/:/g, '');
@@ -32,6 +35,8 @@ export function LiveTokenFlow({ data, language, t, showLegend = true }: {
   const yTicks = liveTokenFlowYTicks(flow.maximum);
   const state = (point: LiveTokenFlowPoint) => t(point.state === 'missing' ? 'redesign.liveMinuteMissing' : point.state === 'zero' ? 'redesign.liveMinuteZero' : 'redesign.liveMinuteRecorded');
   const cell = (point: LiveTokenFlowPoint, value: number | null) => point.state === 'missing' ? '—' : value === null ? t('redesign.unknownValue') : number(value);
+  const latestCompact = (value: number | null) => value === null ? t('redesign.unknownValue') : tokens(value);
+  const latestExact = (value: number | null) => value === null ? t('redesign.unknownValue') : value.toLocaleString(locale, { maximumFractionDigits: 20 });
   const partial = (point: LiveTokenFlowPoint, index: number) => t(index === flow.points.length - 1 && point.end === data.to && point.end % 60000 !== 0 ? 'redesign.liveMinuteCurrent' : 'redesign.liveMinutePartial');
   const describe = (point: LiveTokenFlowPoint, key: LiveTokenFlowSeries, index: number) => `${date.format(point.start)} – ${date.format(point.end)} · ${state(point)} · ${t(labels[key])}: ${cell(point, point[key])}${point.partial ? ` · ${partial(point, index)}` : ''}`;
 
@@ -56,12 +61,13 @@ export function LiveTokenFlow({ data, language, t, showLegend = true }: {
       {!!xTicks.length && <div className="qp-live-flow-axis" role="group" aria-label={t('redesign.liveChart')}>{xTicks.map((at, index) => <span key={`${at}-${index}`} data-at={at} title={date.format(at)} style={{ left: `${(x(at) - 8) / 984 * 100}%`, transform: index === 0 ? 'translateX(0)' : index === xTicks.length - 1 ? 'translateX(-100%)' : 'translateX(-50%)' }}>{clock.format(at)}</span>)}</div>}
       <section className="qp-live-flow-latest" data-at={latest?.at} data-start={latest?.start} data-end={latest?.end} data-partial={latest?.partial || undefined} data-input={latest?.input ?? undefined} data-output={latest?.output ?? undefined} data-total={latest?.total} aria-label={t('redesign.liveLatestMinute')}>
         <div className="qp-live-flow-latest-heading"><span>{t('redesign.liveLatestMinute')}</span>{latest && <time dateTime={new Date(latest.start).toISOString()} title={`${date.format(latest.start)} – ${date.format(latest.end)}`}>{clock.format(latest.start)} – {clock.format(latest.end)}{latest.partial ? ` · ${partial(latest, latest.index)}` : ''}</time>}</div>
-        {latest ? <div className="qp-live-flow-latest-values">{series.map(key => <span key={key} data-series={key}><small>{t(labels[key])}</small><strong data-long-value={key === 'total' && cell(latest, latest[key]).length > 10 || undefined} title={cell(latest, latest[key])}>{cell(latest, latest[key])}</strong></span>)}</div> : <small>{t('redesign.liveFlowNoLatest')}</small>}
+        {latest ? <div className="qp-live-flow-latest-values">{latestSeries.map(key => <span key={key} data-series={key}><small>{t(labels[key])}</small><strong data-long-value={key === 'total' && latestCompact(latest[key]).length > 10 || undefined} title={latestExact(latest[key])} aria-label={latestExact(latest[key])}>{latestCompact(latest[key])}</strong></span>)}</div> : <small>{t('redesign.liveFlowNoLatest')}</small>}
       </section>
     </div>
     {flow.hasPartialBreakdown && <p className="qp-footnote qp-live-flow-breakdown">{t('redesign.liveFlowBreakdown')}</p>}
     <details className="qp-live-flow-data" id={`${id}-data`}>
       <summary>{t('redesign.chartData')}</summary>
+      {excludedDetails && <div className="qp-live-flow-excluded-source-facts">{excludedDetails}</div>}
       <div className="qp-live-flow-table" tabIndex={0} role="region" aria-label={t('redesign.chartData')}>
         <table>
           <caption>{t('redesign.liveChart')}</caption>

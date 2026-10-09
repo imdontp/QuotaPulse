@@ -1,0 +1,1667 @@
+{
+  "initial": {
+    "now": 1747489320000,
+    "today": {
+      "calls": 78,
+      "input_tokens": 271817008.26199996,
+      "cached_input_tokens": 196833001.63799998,
+      "cache_write_tokens": 0,
+      "output_tokens": 252350002.10000002,
+      "reasoning_tokens": 0,
+      "total_tokens": 721000012,
+      "cost_usd": 14.560169186818463,
+      "cost_input_usd": 13.074816251866464,
+      "cost_cached_input_usd": 0.637738926552,
+      "cost_cache_write_usd": 0,
+      "cost_output_usd": 0.8176140084,
+      "cost_cache_saving_usd": 8.83023129072,
+      "cost_unknown_calls": 1,
+      "cost_estimated_calls": 0
+    },
+    "week": {
+      "calls": 79,
+      "input_tokens": 271817009.26199996,
+      "cached_input_tokens": 196833001.63799998,
+      "cache_write_tokens": 0,
+      "output_tokens": 252350002.10000002,
+      "reasoning_tokens": 0,
+      "total_tokens": 721000013,
+      "cost_usd": 14.560169186818463,
+      "cost_input_usd": 13.074816251866464,
+      "cost_cached_input_usd": 0.637738926552,
+      "cost_cache_write_usd": 0,
+      "cost_output_usd": 0.8176140084,
+      "cost_cache_saving_usd": 8.83023129072,
+      "cost_unknown_calls": 1,
+      "cost_estimated_calls": 0
+    },
+    "allTime": {
+      "calls": 79,
+      "input_tokens": 271817009.26199996,
+      "cached_input_tokens": 196833001.63799998,
+      "cache_write_tokens": 0,
+      "output_tokens": 252350002.10000002,
+      "reasoning_tokens": 0,
+      "total_tokens": 721000013,
+      "cost_usd": 14.560169186818463,
+      "cost_input_usd": 13.074816251866464,
+      "cost_cached_input_usd": 0.637738926552,
+      "cost_cache_write_usd": 0,
+      "cost_output_usd": 0.8176140084,
+      "cost_cache_saving_usd": 8.83023129072,
+      "cost_unknown_calls": 1,
+      "cost_estimated_calls": 0
+    },
+    "bySourceToday": [
+      {
+        "source_id": 2,
+        "harness": "hermes",
+        "profile": "fixed",
+        "display_name": "Hermes fixture",
+        "vendor": "nous",
+        "calls": 37,
+        "input_tokens": 135908502.13099998,
+        "cached_input_tokens": 98416500.81899999,
+        "cache_write_tokens": 0,
+        "output_tokens": 126175001.05000001,
+        "reasoning_tokens": 0,
+        "total_tokens": 360500004,
+        "cost_usd": 8.969240134024616,
+        "cost_input_usd": 8.070874126548617,
+        "cost_cached_input_usd": 0.393666003276,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.5047000042,
+        "cost_cache_saving_usd": 5.450760045360001,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 1,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "vendor": "openai",
+        "calls": 26,
+        "input_tokens": 123676737,
+        "cached_input_tokens": 89559015,
+        "cache_write_tokens": 0,
+        "output_tokens": 114819250,
+        "reasoning_tokens": 0,
+        "total_tokens": 328055002,
+        "cost_usd": 4.783697259384616,
+        "cost_input_usd": 4.277563279384617,
+        "cost_cached_input_usd": 0.20864298,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.26749100000000003,
+        "cost_cache_saving_usd": 2.8889028000000003,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 3,
+        "harness": "claude-code",
+        "profile": "fixed",
+        "display_name": "Claude Code fixture",
+        "vendor": "anthropic",
+        "calls": 13,
+        "input_tokens": 12231767.130999997,
+        "cached_input_tokens": 8857485.819,
+        "cache_write_tokens": 0,
+        "output_tokens": 11355751.05,
+        "reasoning_tokens": 0,
+        "total_tokens": 32445004,
+        "cost_usd": 0.8072317340246155,
+        "cost_input_usd": 0.7263787865486154,
+        "cost_cached_input_usd": 0.035429943276,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.0454230042,
+        "cost_cache_saving_usd": 0.49056844536000005,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 4,
+        "harness": "opencode",
+        "profile": "fixed",
+        "display_name": "OpenCode fixture",
+        "vendor": "opencode",
+        "calls": 2,
+        "input_tokens": 2,
+        "cached_input_tokens": 0,
+        "cache_write_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_tokens": 0,
+        "total_tokens": 2,
+        "cost_usd": 5.93846153846154e-8,
+        "cost_input_usd": 5.93846153846154e-8,
+        "cost_cached_input_usd": 0,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0,
+        "cost_cache_saving_usd": 0,
+        "cost_unknown_calls": 1,
+        "cost_estimated_calls": 0
+      }
+    ],
+    "bySourceAll": [
+      {
+        "source_id": 2,
+        "harness": "hermes",
+        "profile": "fixed",
+        "display_name": "Hermes fixture",
+        "vendor": "nous",
+        "calls": 37,
+        "input_tokens": 135908502.13099998,
+        "cached_input_tokens": 98416500.81899999,
+        "cache_write_tokens": 0,
+        "output_tokens": 126175001.05000001,
+        "reasoning_tokens": 0,
+        "total_tokens": 360500004,
+        "cost_usd": 8.969240134024616,
+        "cost_input_usd": 8.070874126548617,
+        "cost_cached_input_usd": 0.393666003276,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.5047000042,
+        "cost_cache_saving_usd": 5.450760045360001,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 1,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "vendor": "openai",
+        "calls": 27,
+        "input_tokens": 123676738,
+        "cached_input_tokens": 89559015,
+        "cache_write_tokens": 0,
+        "output_tokens": 114819250,
+        "reasoning_tokens": 0,
+        "total_tokens": 328055003,
+        "cost_usd": 4.783697259384616,
+        "cost_input_usd": 4.277563279384617,
+        "cost_cached_input_usd": 0.20864298,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.26749100000000003,
+        "cost_cache_saving_usd": 2.8889028000000003,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 3,
+        "harness": "claude-code",
+        "profile": "fixed",
+        "display_name": "Claude Code fixture",
+        "vendor": "anthropic",
+        "calls": 13,
+        "input_tokens": 12231767.130999997,
+        "cached_input_tokens": 8857485.819,
+        "cache_write_tokens": 0,
+        "output_tokens": 11355751.05,
+        "reasoning_tokens": 0,
+        "total_tokens": 32445004,
+        "cost_usd": 0.8072317340246155,
+        "cost_input_usd": 0.7263787865486154,
+        "cost_cached_input_usd": 0.035429943276,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.0454230042,
+        "cost_cache_saving_usd": 0.49056844536000005,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 4,
+        "harness": "opencode",
+        "profile": "fixed",
+        "display_name": "OpenCode fixture",
+        "vendor": "opencode",
+        "calls": 2,
+        "input_tokens": 2,
+        "cached_input_tokens": 0,
+        "cache_write_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_tokens": 0,
+        "total_tokens": 2,
+        "cost_usd": 5.93846153846154e-8,
+        "cost_input_usd": 5.93846153846154e-8,
+        "cost_cached_input_usd": 0,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0,
+        "cost_cache_saving_usd": 0,
+        "cost_unknown_calls": 1,
+        "cost_estimated_calls": 0
+      }
+    ],
+    "limits": [
+      {
+        "source_id": 1,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "window_kind": "monthly",
+        "used_percent": 72,
+        "resets_at": 1748014920000,
+        "severity": null,
+        "observed_at": 1747489290000,
+        "last_seen_at": 1747489290000,
+        "source_fetched_at": 1747489290000,
+        "origin": "fixed-fixture",
+        "account_key": "openai:subscription",
+        "account_provider": "openai",
+        "account_display_name": "OpenAI Subscription",
+        "subscription_key": "openai:subscription",
+        "subscription_provider": "openai",
+        "subscription_display_name": "OpenAI Subscription",
+        "ageSeconds": 30,
+        "valueAgeSeconds": 30,
+        "burn": {
+          "percentPerHour": 0.2708803611738149,
+          "projectedFullAt": 1747861440000,
+          "fromPercent": 59,
+          "fromAt": 1747316520000,
+          "samples": 2
+        },
+        "forecast": {
+          "status": "ready",
+          "samples": 3,
+          "fromAt": 1747316520000,
+          "toAt": 1747489290000,
+          "percentPerHour": 0.2708803611738149,
+          "projectedFullAt": 1747861440000
+        }
+      }
+    ],
+    "subscriptions": [
+      {
+        "account_key": "openai:subscription",
+        "provider": "openai",
+        "display_name": "OpenAI Subscription",
+        "state": "active",
+        "reason": null,
+        "last_success_at": 1747489320000,
+        "owners": [
+          {
+            "harness": "codex",
+            "profile": "fixed"
+          },
+          {
+            "harness": "opencode",
+            "profile": "fixed"
+          }
+        ],
+        "subscription_key": "openai:subscription",
+        "subscription_display_name": "OpenAI Subscription",
+        "linked_harness_keys": [
+          "codex-cli",
+          "hermes-delegate-codex-cli"
+        ],
+        "telemetry": {
+          "freshness": "live",
+          "latest_quota_at": 1747489290000,
+          "latest_source_fetched_at": 1747489290000,
+          "latest_usage_at": 1747489305000,
+          "gap": true,
+          "reason": "usage_newer_than_quota",
+          "origins": [
+            "fixed-fixture"
+          ],
+          "windows": [
+            {
+              "window_kind": "5h",
+              "freshness": "live",
+              "latest_quota_at": 1747489290000,
+              "latest_source_fetched_at": 1747489290000,
+              "latest_usage_at": 1747489305000,
+              "gap": true,
+              "reason": "usage_newer_than_quota",
+              "origins": [
+                "fixed-fixture"
+              ]
+            },
+            {
+              "window_kind": "weekly",
+              "freshness": "live",
+              "latest_quota_at": 1747489290000,
+              "latest_source_fetched_at": 1747489290000,
+              "latest_usage_at": 1747489305000,
+              "gap": true,
+              "reason": "usage_newer_than_quota",
+              "origins": [
+                "fixed-fixture"
+              ]
+            },
+            {
+              "window_kind": "monthly",
+              "freshness": "live",
+              "latest_quota_at": 1747489290000,
+              "latest_source_fetched_at": 1747489290000,
+              "latest_usage_at": 1747489305000,
+              "gap": true,
+              "reason": "usage_newer_than_quota",
+              "origins": [
+                "fixed-fixture"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "account_key": "anthropic:claude:company",
+        "provider": "anthropic",
+        "display_name": "Claude Company Subscription",
+        "state": "inactive",
+        "reason": "no-subscription",
+        "last_success_at": null,
+        "owners": [],
+        "subscription_key": "anthropic:claude:company",
+        "subscription_display_name": "Claude Company Subscription",
+        "linked_harness_keys": [
+          "claude-code-company",
+          "hermes-delegate-claude-code-company"
+        ],
+        "telemetry": {
+          "freshness": "unknown",
+          "latest_quota_at": null,
+          "latest_source_fetched_at": null,
+          "latest_usage_at": null,
+          "gap": false,
+          "reason": "no_quota_observed",
+          "origins": [],
+          "windows": []
+        }
+      },
+      {
+        "account_key": "anthropic:claude:personal",
+        "provider": "anthropic",
+        "display_name": "Claude Personal Subscription",
+        "state": "inactive",
+        "reason": "no-subscription",
+        "last_success_at": null,
+        "owners": [],
+        "subscription_key": "anthropic:claude:personal",
+        "subscription_display_name": "Claude Personal Subscription",
+        "linked_harness_keys": [
+          "claude-code-personal",
+          "hermes-delegate-claude-code-personal"
+        ],
+        "telemetry": {
+          "freshness": "unknown",
+          "latest_quota_at": null,
+          "latest_source_fetched_at": null,
+          "latest_usage_at": null,
+          "gap": false,
+          "reason": "no_quota_observed",
+          "origins": [],
+          "windows": []
+        }
+      },
+      {
+        "account_key": "opencode:go",
+        "provider": "opencode",
+        "display_name": "OpenCode Go Subscription",
+        "state": "active",
+        "reason": null,
+        "last_success_at": 1747489320000,
+        "owners": [
+          {
+            "harness": "claude-code",
+            "profile": "fixed"
+          },
+          {
+            "harness": "hermes",
+            "profile": "fixed"
+          }
+        ],
+        "subscription_key": "opencode:go",
+        "subscription_display_name": "OpenCode Go Subscription",
+        "linked_harness_keys": [
+          "opencode"
+        ],
+        "telemetry": {
+          "freshness": "live",
+          "latest_quota_at": 1747489290000,
+          "latest_source_fetched_at": 1747489290000,
+          "latest_usage_at": 1747489225000,
+          "gap": false,
+          "reason": null,
+          "origins": [
+            "fixed-fixture"
+          ],
+          "windows": [
+            {
+              "window_kind": "monthly",
+              "freshness": "live",
+              "latest_quota_at": 1747489290000,
+              "latest_source_fetched_at": 1747489290000,
+              "latest_usage_at": 1747489225000,
+              "gap": false,
+              "reason": null,
+              "origins": [
+                "fixed-fixture"
+              ]
+            },
+            {
+              "window_kind": "daily",
+              "freshness": "live",
+              "latest_quota_at": 1747489290000,
+              "latest_source_fetched_at": 1747489290000,
+              "latest_usage_at": 1747489225000,
+              "gap": false,
+              "reason": null,
+              "origins": [
+                "fixed-fixture"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "harnesses": [
+      {
+        "harness_key": "codex-cli",
+        "parent_harness_key": null,
+        "harness": "codex",
+        "profile": "default",
+        "display_name": "Codex CLI",
+        "vendor": "openai",
+        "source_ids": [],
+        "subscription_keys": [
+          "openai:subscription"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": true,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "claude-code-company",
+        "parent_harness_key": null,
+        "harness": "claude-code",
+        "profile": "company",
+        "display_name": "Claude Code Company",
+        "vendor": "anthropic",
+        "source_ids": [],
+        "subscription_keys": [
+          "anthropic:claude:company"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": true,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "claude-code-personal",
+        "parent_harness_key": null,
+        "harness": "claude-code",
+        "profile": "default",
+        "display_name": "Claude Code Personal",
+        "vendor": "anthropic",
+        "source_ids": [],
+        "subscription_keys": [
+          "anthropic:claude:personal"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": true,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "opencode",
+        "parent_harness_key": null,
+        "harness": "opencode",
+        "profile": "default",
+        "display_name": "OpenCode",
+        "vendor": "opencode",
+        "source_ids": [],
+        "subscription_keys": [
+          "opencode:go"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": true,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "hermes-agent",
+        "parent_harness_key": null,
+        "harness": "hermes",
+        "profile": null,
+        "display_name": "Hermes Agent",
+        "vendor": "nous",
+        "source_ids": [
+          2
+        ],
+        "subscription_keys": [],
+        "delegate_keys": [
+          "hermes-delegate-codex-cli",
+          "hermes-delegate-claude-code-company",
+          "hermes-delegate-claude-code-personal"
+        ],
+        "detected": true,
+        "usage_attributed": true,
+        "calls": 37,
+        "total_tokens": 360500004,
+        "last_event_ts": 1747489185000,
+        "limit_samples": 2
+      },
+      {
+        "harness_key": "hermes-delegate-codex-cli",
+        "parent_harness_key": "hermes-agent",
+        "harness": "codex",
+        "profile": "default",
+        "display_name": "Delegate Codex CLI",
+        "vendor": "openai",
+        "source_ids": [],
+        "subscription_keys": [
+          "openai:subscription"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": false,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "hermes-delegate-claude-code-company",
+        "parent_harness_key": "hermes-agent",
+        "harness": "claude-code",
+        "profile": "company",
+        "display_name": "Delegate Claude Code Company",
+        "vendor": "anthropic",
+        "source_ids": [],
+        "subscription_keys": [
+          "anthropic:claude:company"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": false,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "hermes-delegate-claude-code-personal",
+        "parent_harness_key": "hermes-agent",
+        "harness": "claude-code",
+        "profile": "default",
+        "display_name": "Delegate Claude Code Personal",
+        "vendor": "anthropic",
+        "source_ids": [],
+        "subscription_keys": [
+          "anthropic:claude:personal"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": false,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "source:1",
+        "parent_harness_key": null,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "vendor": "openai",
+        "source_ids": [
+          1
+        ],
+        "subscription_keys": [],
+        "delegate_keys": [],
+        "detected": true,
+        "usage_attributed": true,
+        "calls": 27,
+        "total_tokens": 328055003,
+        "last_event_ts": 1747489305000,
+        "limit_samples": 54
+      },
+      {
+        "harness_key": "source:3",
+        "parent_harness_key": null,
+        "harness": "claude-code",
+        "profile": "fixed",
+        "display_name": "Claude Code fixture",
+        "vendor": "anthropic",
+        "source_ids": [
+          3
+        ],
+        "subscription_keys": [],
+        "delegate_keys": [],
+        "detected": true,
+        "usage_attributed": true,
+        "calls": 13,
+        "total_tokens": 32445004,
+        "last_event_ts": 1747489225000,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "source:4",
+        "parent_harness_key": null,
+        "harness": "opencode",
+        "profile": "fixed",
+        "display_name": "OpenCode fixture",
+        "vendor": "opencode",
+        "source_ids": [
+          4
+        ],
+        "subscription_keys": [],
+        "delegate_keys": [],
+        "detected": true,
+        "usage_attributed": true,
+        "calls": 2,
+        "total_tokens": 2,
+        "last_event_ts": 1747488720000,
+        "limit_samples": 0
+      }
+    ],
+    "settings": {
+      "pet_enabled": true,
+      "tray_animation_enabled": true,
+      "hidden_subscriptions": [],
+      "updated_at": 0
+    },
+    "sources": [
+      {
+        "id": 1,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "root_path": "/synthetic/nonexistent"
+      },
+      {
+        "id": 2,
+        "harness": "hermes",
+        "profile": "fixed",
+        "display_name": "Hermes fixture",
+        "root_path": "/synthetic/nonexistent"
+      },
+      {
+        "id": 3,
+        "harness": "claude-code",
+        "profile": "fixed",
+        "display_name": "Claude Code fixture",
+        "root_path": "/synthetic/nonexistent"
+      },
+      {
+        "id": 4,
+        "harness": "opencode",
+        "profile": "fixed",
+        "display_name": "OpenCode fixture",
+        "root_path": "/synthetic/nonexistent"
+      }
+    ],
+    "sourceStatus": [
+      {
+        "source_id": 2,
+        "harness": "hermes",
+        "profile": "fixed",
+        "display_name": "Hermes fixture",
+        "root_path": "/synthetic/nonexistent",
+        "vendor": "nous",
+        "account_state": "active",
+        "enabled": 1,
+        "account_key": "opencode:go",
+        "calls": 37,
+        "total_tokens": 360500004,
+        "last_event_ts": 1747489185000,
+        "last_limit_at": 1747489290000,
+        "last_limit_source_fetched_at": 1747489290000,
+        "last_limit_reset_at": 1747515600000,
+        "limit_origins": "fixed-fixture",
+        "limit_samples": 2,
+        "telemetry": {
+          "freshness": "live",
+          "latest_quota_at": 1747489290000,
+          "latest_source_fetched_at": 1747489290000,
+          "latest_usage_at": 1747489185000,
+          "gap": false,
+          "reason": null,
+          "origins": [
+            "fixed-fixture"
+          ],
+          "windows": []
+        }
+      },
+      {
+        "source_id": 1,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "root_path": "/synthetic/nonexistent",
+        "vendor": "openai",
+        "account_state": "active",
+        "enabled": 1,
+        "account_key": "openai:subscription",
+        "calls": 27,
+        "total_tokens": 328055003,
+        "last_event_ts": 1747489305000,
+        "last_limit_at": 1747489290000,
+        "last_limit_source_fetched_at": 1747489290000,
+        "last_limit_reset_at": 1748014920000,
+        "limit_origins": "fixed-fixture",
+        "limit_samples": 54,
+        "telemetry": {
+          "freshness": "live",
+          "latest_quota_at": 1747489290000,
+          "latest_source_fetched_at": 1747489290000,
+          "latest_usage_at": 1747489305000,
+          "gap": true,
+          "reason": "usage_newer_than_quota",
+          "origins": [
+            "fixed-fixture"
+          ],
+          "windows": []
+        }
+      },
+      {
+        "source_id": 3,
+        "harness": "claude-code",
+        "profile": "fixed",
+        "display_name": "Claude Code fixture",
+        "root_path": "/synthetic/nonexistent",
+        "vendor": "anthropic",
+        "account_state": "active",
+        "enabled": 1,
+        "account_key": "opencode:go",
+        "calls": 13,
+        "total_tokens": 32445004,
+        "last_event_ts": 1747489225000,
+        "last_limit_at": null,
+        "last_limit_source_fetched_at": null,
+        "last_limit_reset_at": null,
+        "limit_origins": null,
+        "limit_samples": 0,
+        "telemetry": {
+          "freshness": "unknown",
+          "latest_quota_at": null,
+          "latest_source_fetched_at": null,
+          "latest_usage_at": 1747489225000,
+          "gap": true,
+          "reason": "usage_newer_than_quota",
+          "origins": [],
+          "windows": []
+        }
+      },
+      {
+        "source_id": 4,
+        "harness": "opencode",
+        "profile": "fixed",
+        "display_name": "OpenCode fixture",
+        "root_path": "/synthetic/nonexistent",
+        "vendor": "opencode",
+        "account_state": "active",
+        "enabled": 1,
+        "account_key": "openai:subscription",
+        "calls": 2,
+        "total_tokens": 2,
+        "last_event_ts": 1747488720000,
+        "last_limit_at": null,
+        "last_limit_source_fetched_at": null,
+        "last_limit_reset_at": null,
+        "limit_origins": null,
+        "limit_samples": 0,
+        "telemetry": {
+          "freshness": "unknown",
+          "latest_quota_at": null,
+          "latest_source_fetched_at": null,
+          "latest_usage_at": 1747488720000,
+          "gap": true,
+          "reason": "usage_newer_than_quota",
+          "origins": [],
+          "windows": []
+        }
+      }
+    ],
+    "lastPass": null
+  },
+  "next": {
+    "now": 1747489320000,
+    "today": {
+      "calls": 78,
+      "input_tokens": 271817008.26199996,
+      "cached_input_tokens": 196833001.63799998,
+      "cache_write_tokens": 0,
+      "output_tokens": 252350002.10000002,
+      "reasoning_tokens": 0,
+      "total_tokens": 721000012,
+      "cost_usd": 14.560169186818463,
+      "cost_input_usd": 13.074816251866464,
+      "cost_cached_input_usd": 0.637738926552,
+      "cost_cache_write_usd": 0,
+      "cost_output_usd": 0.8176140084,
+      "cost_cache_saving_usd": 8.83023129072,
+      "cost_unknown_calls": 1,
+      "cost_estimated_calls": 0
+    },
+    "week": {
+      "calls": 79,
+      "input_tokens": 271817009.26199996,
+      "cached_input_tokens": 196833001.63799998,
+      "cache_write_tokens": 0,
+      "output_tokens": 252350002.10000002,
+      "reasoning_tokens": 0,
+      "total_tokens": 721000013,
+      "cost_usd": 14.560169186818463,
+      "cost_input_usd": 13.074816251866464,
+      "cost_cached_input_usd": 0.637738926552,
+      "cost_cache_write_usd": 0,
+      "cost_output_usd": 0.8176140084,
+      "cost_cache_saving_usd": 8.83023129072,
+      "cost_unknown_calls": 1,
+      "cost_estimated_calls": 0
+    },
+    "allTime": {
+      "calls": 79,
+      "input_tokens": 271817009.26199996,
+      "cached_input_tokens": 196833001.63799998,
+      "cache_write_tokens": 0,
+      "output_tokens": 252350002.10000002,
+      "reasoning_tokens": 0,
+      "total_tokens": 721000013,
+      "cost_usd": 14.560169186818463,
+      "cost_input_usd": 13.074816251866464,
+      "cost_cached_input_usd": 0.637738926552,
+      "cost_cache_write_usd": 0,
+      "cost_output_usd": 0.8176140084,
+      "cost_cache_saving_usd": 8.83023129072,
+      "cost_unknown_calls": 1,
+      "cost_estimated_calls": 0
+    },
+    "bySourceToday": [
+      {
+        "source_id": 2,
+        "harness": "hermes",
+        "profile": "fixed",
+        "display_name": "Hermes fixture",
+        "vendor": "nous",
+        "calls": 37,
+        "input_tokens": 135908502.13099998,
+        "cached_input_tokens": 98416500.81899999,
+        "cache_write_tokens": 0,
+        "output_tokens": 126175001.05000001,
+        "reasoning_tokens": 0,
+        "total_tokens": 360500004,
+        "cost_usd": 8.969240134024616,
+        "cost_input_usd": 8.070874126548617,
+        "cost_cached_input_usd": 0.393666003276,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.5047000042,
+        "cost_cache_saving_usd": 5.450760045360001,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 1,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "vendor": "openai",
+        "calls": 26,
+        "input_tokens": 123676737,
+        "cached_input_tokens": 89559015,
+        "cache_write_tokens": 0,
+        "output_tokens": 114819250,
+        "reasoning_tokens": 0,
+        "total_tokens": 328055002,
+        "cost_usd": 4.783697259384616,
+        "cost_input_usd": 4.277563279384617,
+        "cost_cached_input_usd": 0.20864298,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.26749100000000003,
+        "cost_cache_saving_usd": 2.8889028000000003,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 3,
+        "harness": "claude-code",
+        "profile": "fixed",
+        "display_name": "Claude Code fixture",
+        "vendor": "anthropic",
+        "calls": 13,
+        "input_tokens": 12231767.130999997,
+        "cached_input_tokens": 8857485.819,
+        "cache_write_tokens": 0,
+        "output_tokens": 11355751.05,
+        "reasoning_tokens": 0,
+        "total_tokens": 32445004,
+        "cost_usd": 0.8072317340246155,
+        "cost_input_usd": 0.7263787865486154,
+        "cost_cached_input_usd": 0.035429943276,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.0454230042,
+        "cost_cache_saving_usd": 0.49056844536000005,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 4,
+        "harness": "opencode",
+        "profile": "fixed",
+        "display_name": "OpenCode fixture",
+        "vendor": "opencode",
+        "calls": 2,
+        "input_tokens": 2,
+        "cached_input_tokens": 0,
+        "cache_write_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_tokens": 0,
+        "total_tokens": 2,
+        "cost_usd": 5.93846153846154e-8,
+        "cost_input_usd": 5.93846153846154e-8,
+        "cost_cached_input_usd": 0,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0,
+        "cost_cache_saving_usd": 0,
+        "cost_unknown_calls": 1,
+        "cost_estimated_calls": 0
+      }
+    ],
+    "bySourceAll": [
+      {
+        "source_id": 2,
+        "harness": "hermes",
+        "profile": "fixed",
+        "display_name": "Hermes fixture",
+        "vendor": "nous",
+        "calls": 37,
+        "input_tokens": 135908502.13099998,
+        "cached_input_tokens": 98416500.81899999,
+        "cache_write_tokens": 0,
+        "output_tokens": 126175001.05000001,
+        "reasoning_tokens": 0,
+        "total_tokens": 360500004,
+        "cost_usd": 8.969240134024616,
+        "cost_input_usd": 8.070874126548617,
+        "cost_cached_input_usd": 0.393666003276,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.5047000042,
+        "cost_cache_saving_usd": 5.450760045360001,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 1,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "vendor": "openai",
+        "calls": 27,
+        "input_tokens": 123676738,
+        "cached_input_tokens": 89559015,
+        "cache_write_tokens": 0,
+        "output_tokens": 114819250,
+        "reasoning_tokens": 0,
+        "total_tokens": 328055003,
+        "cost_usd": 4.783697259384616,
+        "cost_input_usd": 4.277563279384617,
+        "cost_cached_input_usd": 0.20864298,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.26749100000000003,
+        "cost_cache_saving_usd": 2.8889028000000003,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 3,
+        "harness": "claude-code",
+        "profile": "fixed",
+        "display_name": "Claude Code fixture",
+        "vendor": "anthropic",
+        "calls": 13,
+        "input_tokens": 12231767.130999997,
+        "cached_input_tokens": 8857485.819,
+        "cache_write_tokens": 0,
+        "output_tokens": 11355751.05,
+        "reasoning_tokens": 0,
+        "total_tokens": 32445004,
+        "cost_usd": 0.8072317340246155,
+        "cost_input_usd": 0.7263787865486154,
+        "cost_cached_input_usd": 0.035429943276,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0.0454230042,
+        "cost_cache_saving_usd": 0.49056844536000005,
+        "cost_unknown_calls": 0,
+        "cost_estimated_calls": 0
+      },
+      {
+        "source_id": 4,
+        "harness": "opencode",
+        "profile": "fixed",
+        "display_name": "OpenCode fixture",
+        "vendor": "opencode",
+        "calls": 2,
+        "input_tokens": 2,
+        "cached_input_tokens": 0,
+        "cache_write_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_tokens": 0,
+        "total_tokens": 2,
+        "cost_usd": 5.93846153846154e-8,
+        "cost_input_usd": 5.93846153846154e-8,
+        "cost_cached_input_usd": 0,
+        "cost_cache_write_usd": 0,
+        "cost_output_usd": 0,
+        "cost_cache_saving_usd": 0,
+        "cost_unknown_calls": 1,
+        "cost_estimated_calls": 0
+      }
+    ],
+    "limits": [
+      {
+        "source_id": 1,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "window_kind": "monthly",
+        "used_percent": 73,
+        "resets_at": 1748014920000,
+        "severity": null,
+        "observed_at": 1747489310000,
+        "last_seen_at": 1747489310000,
+        "source_fetched_at": 1747489310000,
+        "origin": "fixed-fixture",
+        "account_key": "openai:subscription",
+        "account_provider": "openai",
+        "account_display_name": "OpenAI Subscription",
+        "subscription_key": "openai:subscription",
+        "subscription_provider": "openai",
+        "subscription_display_name": "OpenAI Subscription",
+        "ageSeconds": 10,
+        "valueAgeSeconds": 10,
+        "burn": {
+          "percentPerHour": 0.5625325539672436,
+          "projectedFullAt": 1747662100000,
+          "fromPercent": 46,
+          "fromAt": 1747316520000,
+          "samples": 300
+        },
+        "forecast": {
+          "status": "ready",
+          "samples": 300,
+          "fromAt": 1747316520000,
+          "toAt": 1747489310000,
+          "percentPerHour": 0.5625325539672436,
+          "projectedFullAt": 1747662100000
+        }
+      }
+    ],
+    "subscriptions": [
+      {
+        "account_key": "openai:subscription",
+        "provider": "openai",
+        "display_name": "OpenAI Subscription",
+        "state": "active",
+        "reason": null,
+        "last_success_at": 1747489320000,
+        "owners": [
+          {
+            "harness": "codex",
+            "profile": "fixed"
+          },
+          {
+            "harness": "opencode",
+            "profile": "fixed"
+          }
+        ],
+        "subscription_key": "openai:subscription",
+        "subscription_display_name": "OpenAI Subscription",
+        "linked_harness_keys": [
+          "codex-cli",
+          "hermes-delegate-codex-cli"
+        ],
+        "telemetry": {
+          "freshness": "live",
+          "latest_quota_at": 1747489290000,
+          "latest_source_fetched_at": 1747489290000,
+          "latest_usage_at": 1747489305000,
+          "gap": true,
+          "reason": "usage_newer_than_quota",
+          "origins": [
+            "fixed-fixture"
+          ],
+          "windows": [
+            {
+              "window_kind": "5h",
+              "freshness": "live",
+              "latest_quota_at": 1747489290000,
+              "latest_source_fetched_at": 1747489290000,
+              "latest_usage_at": 1747489305000,
+              "gap": true,
+              "reason": "usage_newer_than_quota",
+              "origins": [
+                "fixed-fixture"
+              ]
+            },
+            {
+              "window_kind": "weekly",
+              "freshness": "live",
+              "latest_quota_at": 1747489290000,
+              "latest_source_fetched_at": 1747489290000,
+              "latest_usage_at": 1747489305000,
+              "gap": true,
+              "reason": "usage_newer_than_quota",
+              "origins": [
+                "fixed-fixture"
+              ]
+            },
+            {
+              "window_kind": "monthly",
+              "freshness": "live",
+              "latest_quota_at": 1747489290000,
+              "latest_source_fetched_at": 1747489290000,
+              "latest_usage_at": 1747489305000,
+              "gap": true,
+              "reason": "usage_newer_than_quota",
+              "origins": [
+                "fixed-fixture"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "account_key": "anthropic:claude:company",
+        "provider": "anthropic",
+        "display_name": "Claude Company Subscription",
+        "state": "inactive",
+        "reason": "no-subscription",
+        "last_success_at": null,
+        "owners": [],
+        "subscription_key": "anthropic:claude:company",
+        "subscription_display_name": "Claude Company Subscription",
+        "linked_harness_keys": [
+          "claude-code-company",
+          "hermes-delegate-claude-code-company"
+        ],
+        "telemetry": {
+          "freshness": "unknown",
+          "latest_quota_at": null,
+          "latest_source_fetched_at": null,
+          "latest_usage_at": null,
+          "gap": false,
+          "reason": "no_quota_observed",
+          "origins": [],
+          "windows": []
+        }
+      },
+      {
+        "account_key": "anthropic:claude:personal",
+        "provider": "anthropic",
+        "display_name": "Claude Personal Subscription",
+        "state": "inactive",
+        "reason": "no-subscription",
+        "last_success_at": null,
+        "owners": [],
+        "subscription_key": "anthropic:claude:personal",
+        "subscription_display_name": "Claude Personal Subscription",
+        "linked_harness_keys": [
+          "claude-code-personal",
+          "hermes-delegate-claude-code-personal"
+        ],
+        "telemetry": {
+          "freshness": "unknown",
+          "latest_quota_at": null,
+          "latest_source_fetched_at": null,
+          "latest_usage_at": null,
+          "gap": false,
+          "reason": "no_quota_observed",
+          "origins": [],
+          "windows": []
+        }
+      },
+      {
+        "account_key": "opencode:go",
+        "provider": "opencode",
+        "display_name": "OpenCode Go Subscription",
+        "state": "active",
+        "reason": null,
+        "last_success_at": 1747489320000,
+        "owners": [
+          {
+            "harness": "claude-code",
+            "profile": "fixed"
+          },
+          {
+            "harness": "hermes",
+            "profile": "fixed"
+          }
+        ],
+        "subscription_key": "opencode:go",
+        "subscription_display_name": "OpenCode Go Subscription",
+        "linked_harness_keys": [
+          "opencode"
+        ],
+        "telemetry": {
+          "freshness": "live",
+          "latest_quota_at": 1747489290000,
+          "latest_source_fetched_at": 1747489290000,
+          "latest_usage_at": 1747489225000,
+          "gap": false,
+          "reason": null,
+          "origins": [
+            "fixed-fixture"
+          ],
+          "windows": [
+            {
+              "window_kind": "monthly",
+              "freshness": "live",
+              "latest_quota_at": 1747489290000,
+              "latest_source_fetched_at": 1747489290000,
+              "latest_usage_at": 1747489225000,
+              "gap": false,
+              "reason": null,
+              "origins": [
+                "fixed-fixture"
+              ]
+            },
+            {
+              "window_kind": "daily",
+              "freshness": "live",
+              "latest_quota_at": 1747489290000,
+              "latest_source_fetched_at": 1747489290000,
+              "latest_usage_at": 1747489225000,
+              "gap": false,
+              "reason": null,
+              "origins": [
+                "fixed-fixture"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "harnesses": [
+      {
+        "harness_key": "codex-cli",
+        "parent_harness_key": null,
+        "harness": "codex",
+        "profile": "default",
+        "display_name": "Codex CLI",
+        "vendor": "openai",
+        "source_ids": [],
+        "subscription_keys": [
+          "openai:subscription"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": true,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "claude-code-company",
+        "parent_harness_key": null,
+        "harness": "claude-code",
+        "profile": "company",
+        "display_name": "Claude Code Company",
+        "vendor": "anthropic",
+        "source_ids": [],
+        "subscription_keys": [
+          "anthropic:claude:company"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": true,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "claude-code-personal",
+        "parent_harness_key": null,
+        "harness": "claude-code",
+        "profile": "default",
+        "display_name": "Claude Code Personal",
+        "vendor": "anthropic",
+        "source_ids": [],
+        "subscription_keys": [
+          "anthropic:claude:personal"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": true,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "opencode",
+        "parent_harness_key": null,
+        "harness": "opencode",
+        "profile": "default",
+        "display_name": "OpenCode",
+        "vendor": "opencode",
+        "source_ids": [],
+        "subscription_keys": [
+          "opencode:go"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": true,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "hermes-agent",
+        "parent_harness_key": null,
+        "harness": "hermes",
+        "profile": null,
+        "display_name": "Hermes Agent",
+        "vendor": "nous",
+        "source_ids": [
+          2
+        ],
+        "subscription_keys": [],
+        "delegate_keys": [
+          "hermes-delegate-codex-cli",
+          "hermes-delegate-claude-code-company",
+          "hermes-delegate-claude-code-personal"
+        ],
+        "detected": true,
+        "usage_attributed": true,
+        "calls": 37,
+        "total_tokens": 360500004,
+        "last_event_ts": 1747489185000,
+        "limit_samples": 2
+      },
+      {
+        "harness_key": "hermes-delegate-codex-cli",
+        "parent_harness_key": "hermes-agent",
+        "harness": "codex",
+        "profile": "default",
+        "display_name": "Delegate Codex CLI",
+        "vendor": "openai",
+        "source_ids": [],
+        "subscription_keys": [
+          "openai:subscription"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": false,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "hermes-delegate-claude-code-company",
+        "parent_harness_key": "hermes-agent",
+        "harness": "claude-code",
+        "profile": "company",
+        "display_name": "Delegate Claude Code Company",
+        "vendor": "anthropic",
+        "source_ids": [],
+        "subscription_keys": [
+          "anthropic:claude:company"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": false,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "hermes-delegate-claude-code-personal",
+        "parent_harness_key": "hermes-agent",
+        "harness": "claude-code",
+        "profile": "default",
+        "display_name": "Delegate Claude Code Personal",
+        "vendor": "anthropic",
+        "source_ids": [],
+        "subscription_keys": [
+          "anthropic:claude:personal"
+        ],
+        "delegate_keys": [],
+        "detected": false,
+        "usage_attributed": false,
+        "calls": 0,
+        "total_tokens": 0,
+        "last_event_ts": null,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "source:1",
+        "parent_harness_key": null,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "vendor": "openai",
+        "source_ids": [
+          1
+        ],
+        "subscription_keys": [],
+        "delegate_keys": [],
+        "detected": true,
+        "usage_attributed": true,
+        "calls": 27,
+        "total_tokens": 328055003,
+        "last_event_ts": 1747489305000,
+        "limit_samples": 54
+      },
+      {
+        "harness_key": "source:3",
+        "parent_harness_key": null,
+        "harness": "claude-code",
+        "profile": "fixed",
+        "display_name": "Claude Code fixture",
+        "vendor": "anthropic",
+        "source_ids": [
+          3
+        ],
+        "subscription_keys": [],
+        "delegate_keys": [],
+        "detected": true,
+        "usage_attributed": true,
+        "calls": 13,
+        "total_tokens": 32445004,
+        "last_event_ts": 1747489225000,
+        "limit_samples": 0
+      },
+      {
+        "harness_key": "source:4",
+        "parent_harness_key": null,
+        "harness": "opencode",
+        "profile": "fixed",
+        "display_name": "OpenCode fixture",
+        "vendor": "opencode",
+        "source_ids": [
+          4
+        ],
+        "subscription_keys": [],
+        "delegate_keys": [],
+        "detected": true,
+        "usage_attributed": true,
+        "calls": 2,
+        "total_tokens": 2,
+        "last_event_ts": 1747488720000,
+        "limit_samples": 0
+      }
+    ],
+    "settings": {
+      "pet_enabled": true,
+      "tray_animation_enabled": true,
+      "hidden_subscriptions": [],
+      "updated_at": 0
+    },
+    "sources": [
+      {
+        "id": 1,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "root_path": "/synthetic/nonexistent"
+      },
+      {
+        "id": 2,
+        "harness": "hermes",
+        "profile": "fixed",
+        "display_name": "Hermes fixture",
+        "root_path": "/synthetic/nonexistent"
+      },
+      {
+        "id": 3,
+        "harness": "claude-code",
+        "profile": "fixed",
+        "display_name": "Claude Code fixture",
+        "root_path": "/synthetic/nonexistent"
+      },
+      {
+        "id": 4,
+        "harness": "opencode",
+        "profile": "fixed",
+        "display_name": "OpenCode fixture",
+        "root_path": "/synthetic/nonexistent"
+      }
+    ],
+    "sourceStatus": [
+      {
+        "source_id": 2,
+        "harness": "hermes",
+        "profile": "fixed",
+        "display_name": "Hermes fixture",
+        "root_path": "/synthetic/nonexistent",
+        "vendor": "nous",
+        "account_state": "active",
+        "enabled": 1,
+        "account_key": "opencode:go",
+        "calls": 37,
+        "total_tokens": 360500004,
+        "last_event_ts": 1747489185000,
+        "last_limit_at": 1747489290000,
+        "last_limit_source_fetched_at": 1747489290000,
+        "last_limit_reset_at": 1747515600000,
+        "limit_origins": "fixed-fixture",
+        "limit_samples": 2,
+        "telemetry": {
+          "freshness": "live",
+          "latest_quota_at": 1747489290000,
+          "latest_source_fetched_at": 1747489290000,
+          "latest_usage_at": 1747489185000,
+          "gap": false,
+          "reason": null,
+          "origins": [
+            "fixed-fixture"
+          ],
+          "windows": []
+        }
+      },
+      {
+        "source_id": 1,
+        "harness": "codex",
+        "profile": "fixed",
+        "display_name": "Codex fixture",
+        "root_path": "/synthetic/nonexistent",
+        "vendor": "openai",
+        "account_state": "active",
+        "enabled": 1,
+        "account_key": "openai:subscription",
+        "calls": 27,
+        "total_tokens": 328055003,
+        "last_event_ts": 1747489305000,
+        "last_limit_at": 1747489290000,
+        "last_limit_source_fetched_at": 1747489290000,
+        "last_limit_reset_at": 1748014920000,
+        "limit_origins": "fixed-fixture",
+        "limit_samples": 54,
+        "telemetry": {
+          "freshness": "live",
+          "latest_quota_at": 1747489290000,
+          "latest_source_fetched_at": 1747489290000,
+          "latest_usage_at": 1747489305000,
+          "gap": true,
+          "reason": "usage_newer_than_quota",
+          "origins": [
+            "fixed-fixture"
+          ],
+          "windows": []
+        }
+      },
+      {
+        "source_id": 3,
+        "harness": "claude-code",
+        "profile": "fixed",
+        "display_name": "Claude Code fixture",
+        "root_path": "/synthetic/nonexistent",
+        "vendor": "anthropic",
+        "account_state": "active",
+        "enabled": 1,
+        "account_key": "opencode:go",
+        "calls": 13,
+        "total_tokens": 32445004,
+        "last_event_ts": 1747489225000,
+        "last_limit_at": null,
+        "last_limit_source_fetched_at": null,
+        "last_limit_reset_at": null,
+        "limit_origins": null,
+        "limit_samples": 0,
+        "telemetry": {
+          "freshness": "unknown",
+          "latest_quota_at": null,
+          "latest_source_fetched_at": null,
+          "latest_usage_at": 1747489225000,
+          "gap": true,
+          "reason": "usage_newer_than_quota",
+          "origins": [],
+          "windows": []
+        }
+      },
+      {
+        "source_id": 4,
+        "harness": "opencode",
+        "profile": "fixed",
+        "display_name": "OpenCode fixture",
+        "root_path": "/synthetic/nonexistent",
+        "vendor": "opencode",
+        "account_state": "active",
+        "enabled": 1,
+        "account_key": "openai:subscription",
+        "calls": 2,
+        "total_tokens": 2,
+        "last_event_ts": 1747488720000,
+        "last_limit_at": null,
+        "last_limit_source_fetched_at": null,
+        "last_limit_reset_at": null,
+        "limit_origins": null,
+        "limit_samples": 0,
+        "telemetry": {
+          "freshness": "unknown",
+          "latest_quota_at": null,
+          "latest_source_fetched_at": null,
+          "latest_usage_at": 1747488720000,
+          "gap": true,
+          "reason": "usage_newer_than_quota",
+          "origins": [],
+          "windows": []
+        }
+      }
+    ],
+    "lastPass": null
+  },
+  "classification": "Controlled frontend responses derived from actual owned fixture. No database writes."
+}

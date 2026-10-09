@@ -1,0 +1,6 @@
+
+> quotapulse@0.1.0 test:runtime
+> node --import tsx scripts/check-production-runtime.mts
+
+09:06:13.931 INFO  [db] opened :memory:
+Production runtime passed: nine routes, 5,000 records, authenticated summary, no external or write requests.

@@ -14,21 +14,23 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest scoped source repair: [v1.85.47](redesign-v1.85.47/VALIDATION-STATE.md) refines Overview logo/caption/ring and Cost exact amount/basis/scope dates. Build and162 web tests pass;8 capture pairs and72 controlled frontend Cost cases pass. [Native comparison](redesign-v1.85.47/reference-review.html). This is incremental, with original-reference likeness and final release gates open.
+Latest full eight-page source checkpoint: [v1.85.48](redesign-v1.85.48/VALIDATION-STATE.md) repairs Alerts history/freshness controls and Live plotting hierarchy. Final build, authenticated16×9 workflows,40 capture pairs, five controlled Alerts cases and nine production routes with5,000 synthetic records pass. Repository regression passes473 tests before the final CSS-only28px mark restoration. [Current eight-page comparison](redesign-v1.85.48/reference-review.html). Original-reference likeness and final release gates remain open.
 
-Latest consolidated source review:
+Historical scoped source repair: [v1.85.47](redesign-v1.85.47/VALIDATION-STATE.md) refines Overview logo/caption/ring and Cost exact amount/basis/scope dates. Build and162 web tests pass;8 capture pairs and72 controlled frontend Cost cases pass. [Native comparison](redesign-v1.85.47/reference-review.html). This is incremental, with original-reference likeness and final release gates open.
+
+Historical consolidated source review:
 [v1.85.46](redesign-v1.85.46/VALIDATION-STATE.md) repairs Overview caption/glow,
 Models detail insets and Alerts risk-row hierarchy. Its changed-page matrix
 covers 12 pairs on one new build; web 162 tests and authenticated all-page
 responsive workflows pass. This is not a new full 40-pair matrix.
 [Source / before / after for the three repaired pages](redesign-v1.85.46/reference-review.html).
 
-Latest full eight-page capture:
+Historical full eight-page capture:
 [v1.85.45](redesign-v1.85.45/VALIDATION-STATE.md) repairs Projects footers,
 Cost insights, Providers bars, History grid/selection and Live series hierarchy.
 Its one-build full 40-pair matrix passes, all 80 PNG hashes are verified, and
 465 unit tests plus authenticated all-page and UI/Preview workflows pass.
-[Current eight-page source viewer](redesign-v1.85.45/reference-review.html).
+[Historical eight-page source viewer](redesign-v1.85.45/reference-review.html).
 The verified checkpoint is incremental; original-reference likeness remains open.
 
 Historical consolidated source review:

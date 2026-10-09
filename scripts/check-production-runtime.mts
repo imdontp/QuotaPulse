@@ -63,7 +63,12 @@ try {
     await page.evaluate(() => document.fonts.ready);
     const readyMs = performance.now() - started;
     assert.equal(await screen.locator('main h1').count(), 1);
-    if (destination === 'history') assert.equal(await screen.getByTestId('history-total-tokens').innerText(), '500,000');
+    if (destination === 'history') {
+      const total = screen.getByTestId('history-total-tokens');
+      assert.equal(await total.innerText(), '500.0k');
+      assert.equal(await total.getAttribute('title'), '500,000');
+      assert.equal(await total.getAttribute('aria-label'), '500000');
+    }
     measurements.push({ destination, readyMs, browser: await page.evaluate(() => ({
       navigation: performance.getEntriesByType('navigation').map(entry => entry.toJSON()),
       paint: performance.getEntriesByType('paint').map(entry => entry.toJSON()),

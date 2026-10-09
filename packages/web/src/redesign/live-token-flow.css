@@ -109,13 +109,15 @@
   .qp-live-flow-latest-values small { font-size:7px; line-height:9px; text-align:center; }
   .qp-live-flow-latest-values strong,.qp-live-flow-latest-values [data-series=total] strong { font-size:10px; line-height:11px; text-align:center; }
 }
-@media(min-width:1280px) { .qp-live-flow-plot { height:72px; } }
+@media(min-width:1280px) { .qp-live-flow-plot { height:118px; } }
 @media(min-width:1280px) {
   .qp-live-flow-latest { gap:1px; }
   .qp-live-flow-latest-heading { gap:0; }
-  .qp-live-flow-latest-values>span { line-height:11px; }
-  .qp-live-flow-latest-values strong { line-height:11px; }
-  .qp-live-flow-latest-values [data-series=total] { line-height:24px; }
-  .qp-live-flow-latest-values [data-series=total] strong { font-size:22px; line-height:24px; font-weight:550; }
+  .qp-live-flow-latest-values { gap:4px; }
+  .qp-live-flow-latest-values>span { line-height:16px; }
+  .qp-live-flow-latest-values strong { font-size:14px; line-height:16px; }
+  .qp-live-flow-latest-values [data-series=total] { display:grid; justify-content:start; gap:0; line-height:26px; }
+  .qp-live-flow-latest-values [data-series=total] small { font-size:9px; line-height:12px; }
+  .qp-live-flow-latest-values [data-series=total] strong { font-size:24px; line-height:26px; font-weight:550; }
   .qp-live-flow-latest-values [data-series=total] strong[data-long-value=true] { font-size:11px; }
 }

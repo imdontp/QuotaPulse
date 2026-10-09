@@ -1,0 +1,33 @@
+
+> quotapulse@0.1.0 test:runtime
+> node --import tsx scripts/check-production-runtime.mts
+
+09:00:21.404 INFO  [db] opened :memory:
+node.exe : node:internal/modules/run_main:122
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ '500.0k'
+- '500,000'
+      ^
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-production-runtime.mts:66:43)
+{
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '500.0k',
+  expected: '500,000',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

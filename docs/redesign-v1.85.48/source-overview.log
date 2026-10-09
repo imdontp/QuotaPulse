@@ -1,0 +1,143 @@
+{
+  "outputDir": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\docs\\redesign-v1.85.48\\parity\\overview",
+  "global": {
+    "pixels": 1573312,
+    "ssim": 0.5419676687917608,
+    "meanAbsoluteRgbDelta": 15.978211992704987,
+    "rootMeanSquareRgbDelta": 40.83181132307172,
+    "exactPixelPercent": 0.9855642110401497,
+    "withinTwoChannelsPercent": 31.841427510881502,
+    "singleWindowSsim": 0.35127684009211796
+  },
+  "tileWeightedSsim": 0.5419676687917546,
+  "regions": [
+    {
+      "name": "header",
+      "x": 0,
+      "y": 0,
+      "width": 1586,
+      "height": 60,
+      "comparison": {
+        "pixels": 95160,
+        "ssim": 0.5464745481512848,
+        "meanAbsoluteRgbDelta": 12.206802578114054,
+        "rootMeanSquareRgbDelta": 33.699661706065605,
+        "exactPixelPercent": 0.47393862967633454,
+        "withinTwoChannelsPercent": 19.113072719630097,
+        "singleWindowSsim": 0.5078642878053263
+      }
+    },
+    {
+      "name": "sidebar",
+      "x": 0,
+      "y": 60,
+      "width": 216,
+      "height": 932,
+      "comparison": {
+        "pixels": 201312,
+        "ssim": 0.7327844057805823,
+        "meanAbsoluteRgbDelta": 8.437503311609177,
+        "rootMeanSquareRgbDelta": 27.11916512588456,
+        "exactPixelPercent": 2.5542441583214117,
+        "withinTwoChannelsPercent": 50.37404625655698,
+        "singleWindowSsim": 0.3162545613796222
+      }
+    },
+    {
+      "name": "pulse-core",
+      "x": 228,
+      "y": 68,
+      "width": 977,
+      "height": 395,
+      "comparison": {
+        "pixels": 385915,
+        "ssim": 0.5119030941234939,
+        "meanAbsoluteRgbDelta": 19.156252024409522,
+        "rootMeanSquareRgbDelta": 44.49549289692504,
+        "exactPixelPercent": 0.4314421569516604,
+        "withinTwoChannelsPercent": 26.804088983325343,
+        "singleWindowSsim": 0.39962442257151937
+      }
+    },
+    {
+      "name": "subscriptions",
+      "x": 1217,
+      "y": 68,
+      "width": 348,
+      "height": 395,
+      "comparison": {
+        "pixels": 137460,
+        "ssim": 0.48612568271770634,
+        "meanAbsoluteRgbDelta": 20.06516077404336,
+        "rootMeanSquareRgbDelta": 49.63451089619554,
+        "exactPixelPercent": 0.03710170231340026,
+        "withinTwoChannelsPercent": 17.530918085261167,
+        "singleWindowSsim": 0.2914639527694898
+      }
+    },
+    {
+      "name": "runtime-map",
+      "x": 228,
+      "y": 473,
+      "width": 1337,
+      "height": 231,
+      "comparison": {
+        "pixels": 308847,
+        "ssim": 0.47558369840923553,
+        "meanAbsoluteRgbDelta": 18.002302110753867,
+        "rootMeanSquareRgbDelta": 42.746353416458895,
+        "exactPixelPercent": 1.0254268294657225,
+        "withinTwoChannelsPercent": 25.579655946148094,
+        "singleWindowSsim": 0.24255258539440397
+      }
+    },
+    {
+      "name": "quota-runway",
+      "x": 228,
+      "y": 714,
+      "width": 707,
+      "height": 176,
+      "comparison": {
+        "pixels": 124432,
+        "ssim": 0.5472115155850132,
+        "meanAbsoluteRgbDelta": 17.911459003043163,
+        "rootMeanSquareRgbDelta": 45.7631413180525,
+        "exactPixelPercent": 1.268966182332519,
+        "withinTwoChannelsPercent": 48.48350906519223,
+        "singleWindowSsim": 0.37450291359268517
+      }
+    },
+    {
+      "name": "pulse-insights",
+      "x": 947,
+      "y": 714,
+      "width": 618,
+      "height": 176,
+      "comparison": {
+        "pixels": 108768,
+        "ssim": 0.5506043710648577,
+        "meanAbsoluteRgbDelta": 15.753178018044522,
+        "rootMeanSquareRgbDelta": 41.47498905896666,
+        "exactPixelPercent": 1.2770300088261253,
+        "withinTwoChannelsPercent": 49.30678140629597,
+        "singleWindowSsim": 0.2750444302377451
+      }
+    },
+    {
+      "name": "live-activity",
+      "x": 228,
+      "y": 899,
+      "width": 1337,
+      "height": 84,
+      "comparison": {
+        "pixels": 112308,
+        "ssim": 0.44794727855648986,
+        "meanAbsoluteRgbDelta": 19.627019743324905,
+        "rootMeanSquareRgbDelta": 46.934531668775776,
+        "exactPixelPercent": 0.5191081668269402,
+        "withinTwoChannelsPercent": 29.626562666951596,
+        "singleWindowSsim": 0.23148317324726475
+      }
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+
+> quotapulse@0.1.0 test:history
+> node --import tsx scripts/check-history.mts
+
+08:13:59.694 INFO  [db] opened :memory:
+3:14:45 pm [vite] (client) hmr update /src/i18n/index.tsx, /src/index.css
+3:14:45 pm [vite] (client) hmr update /src/i18n/index.tsx, /src/index.css
+3:14:46 pm [vite] (client) hmr invalidate /src/i18n/index.tsx Could not Fast Refresh ("CURRENCIES" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+3:14:46 pm [vite] (client) hmr update /src/main.tsx, /src/index.css, /src/redesign/utility-pages.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\redesign\shell.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\health.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\history.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\settings.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\redesign\quick-stats.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\command-palette.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\primitives.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\redesign\history-timeline.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\redesign\history-record-details.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\alerts.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\sessions.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\live.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\usage.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\alert-bell.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\sources.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\limits.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\value-display.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\pulse-hero.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\projects.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\quota-overview.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\data-status.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\reset-timeline.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\source-table.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\models.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\live-ticker.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\trend-chart.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\sections\cost.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\gauge.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\session-detail-drawer.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\effort-breakdown.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\stacked-bars.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\redesign\quota-chart.tsx, /src/redesign/providers.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\usage-range.tsx, /src/App.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\settings-menu.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\pet-popup.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\progression-rail.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\vendor-filter.tsx, /@fs/C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\components\recorded-minute-trend.tsx, /src/redesign/production.tsx
+History teardown: browser closed
+History teardown: Vite closed
+History teardown: daemon closed
+History teardown: database closed
+node.exe : node:internal/modules/run_main:122
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+false !== true
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-history.mts:321:10) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

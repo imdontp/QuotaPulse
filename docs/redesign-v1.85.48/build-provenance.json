@@ -1,0 +1,121 @@
+{
+  "checkpoint": "v1.85.48",
+  "baseCommit": "3cba6d146fdc6f977cc5899c8719b23e099401dc",
+  "productionIndexSha256": "a8c2a2ac9b28ced948a17dd50cd45708247a50534d539898c10451a1421e638f",
+  "build": {
+    "session": 60090,
+    "exitCode": 0
+  },
+  "unitRegression": {
+    "session": 19903,
+    "exitCode": 0,
+    "daemon": 105,
+    "web": 170,
+    "tray": 198,
+    "total": 473,
+    "note": "Before the single CSS-only restoration of source tile28px; TypeScript implementation/tests unchanged"
+  },
+  "capture": {
+    "session": 20865,
+    "exitCode": 0,
+    "pairs": 40,
+    "pngs": 80,
+    "byteIdentical": 37,
+    "allHashesVerified": true
+  },
+  "authenticatedWorkflow": {
+    "session": 57900,
+    "exitCode": 0,
+    "responsiveCombinations": 16,
+    "routesPerCombination": 9,
+    "teardownComplete": true
+  },
+  "controlledFrontendProbe": {
+    "session": 98573,
+    "exitCode": 0,
+    "checks": 5,
+    "backendAcceptance": false
+  },
+  "sources": [
+    {
+      "path": "packages/web/src/i18n/en.ts",
+      "sha256": "32fc7f7bb61738de47b6978b68a36a731ba4164d0ddbf8bcece6beddeada1151"
+    },
+    {
+      "path": "packages/web/src/i18n/th.ts",
+      "sha256": "450a4b20a86a7d042d6019572aeb4a44fdb978e82009bf3bb69c8fe35cf40d5d"
+    },
+    {
+      "path": "packages/web/src/redesign/alerts.tsx",
+      "sha256": "5b3c542b5785e04e860314cd6ed8e7d5c284e17f9c1cd6d87098f8e21922610e"
+    },
+    {
+      "path": "packages/web/src/redesign/alerts.css",
+      "sha256": "681cc5607672a450feac580aff56727b3460f7e28c6277dc34730c0a949a3db6"
+    },
+    {
+      "path": "packages/web/src/redesign/alert-history.ts",
+      "sha256": "2c510bf47bb08159133e6bc49f36b9b559a1f3d405613a58c701807b13011376"
+    },
+    {
+      "path": "packages/web/test/alert-history.test.ts",
+      "sha256": "ea3c1adf283d352cf443e5134ec2bf167898310aabbf4954387956897e5b9fd0"
+    },
+    {
+      "path": "packages/web/src/redesign/live-token-flow.tsx",
+      "sha256": "833d26a5c40e20ecdd8b4dc44ada8e3869b61dd9d665f1a3f59e2fb3ff342c8b"
+    },
+    {
+      "path": "packages/web/src/redesign/live-token-flow.css",
+      "sha256": "0a2dc896d9904b7b64b66852e8dd5b326df776a63b68d5aae63a8795c21f5943"
+    },
+    {
+      "path": "packages/web/src/redesign/live.tsx",
+      "sha256": "3e68226e277e8e73bb8553d7a742a61864bd65730b0ff2d7b14b9d7fce1a3679"
+    },
+    {
+      "path": "packages/web/src/redesign/live.css",
+      "sha256": "5b02dbff7750dbe7dbe06c27e470b12796e4b462aed397d792dc7a74611489a9"
+    },
+    {
+      "path": "scripts/check-stable-captures.mts",
+      "sha256": "a6722225854ee368850c58b401cb1b8772e0faad74a1178f3cf93f3b2d2093c0"
+    },
+    {
+      "path": "scripts/check-live-token-flow.mts",
+      "sha256": "c90de4182ed159c2caaf176a0b3d2a058181482a3c63a77db9c2e368a68c7630"
+    },
+    {
+      "path": "scripts/check-section-marks.mts",
+      "sha256": "58ee3ed078e336432f7bb2771eca829a7281e43554d2552fd8ead0d6ba58f4ce"
+    },
+    {
+      "path": "scripts/check-production-runtime.mts",
+      "sha256": "4c7bd8add4675baeac3713d4076249b23371bad4f009ae6655533345090bb1f5"
+    }
+  ],
+  "logRetention": "Trailing whitespace normalized in documentation copies; raw logs retained under tmp.",
+  "acceptance": "Incremental source repair; original99–100% likeness, approved baseline and final release gates remain open",
+  "productionRuntime": {
+    "session": 4667,
+    "exitCode": 0,
+    "routes": 9,
+    "records": 5000,
+    "limitations": [
+      "single local machine and one browser run",
+      "first document cold; later routes share browser cache",
+      "route ready is selector readiness, not every asynchronous detail panel",
+      "no comparison against prior version; no CPU improvement claim",
+      "not packaged Electron or installed tray verification"
+    ]
+  },
+  "sourceDiagnostics": {
+    "sessions": [
+      91016,
+      95824
+    ],
+    "exitCode": 0,
+    "pages": 8,
+    "additionalHistorySelected": true
+  }
+}

@@ -181,6 +181,9 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
   const date = new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'medium', timeZone });
   const clock = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone });
   const value = (point: ExpectedMinute, amount: number | null) => point.state === 'missing' ? '—' : amount === null ? messages['redesign.unknownValue'] : number.format(amount);
+  // Independent display contract: compact magnitudes; exact values remain in metadata/accessible text.
+  const compact = (amount: number) => amount >= 1e9 ? `${(amount / 1e9).toFixed(2)}B` : amount >= 1e6 ? `${(amount / 1e6).toFixed(1)}M` : amount >= 1e3 ? `${(amount / 1e3).toFixed(1)}k` : String(Math.round(amount));
+  const preciseNumber = new Intl.NumberFormat(locale, { maximumFractionDigits: 20 });
   const partial = (point: ExpectedMinute, index: number) => messages[index === expected.length - 1 && point.end === data.to && point.end % 60000 !== 0 ? 'redesign.liveMinuteCurrent' : 'redesign.liveMinutePartial'];
   const states = { missing: messages['redesign.liveMinuteMissing'], zero: messages['redesign.liveMinuteZero'], recorded: messages['redesign.liveMinuteRecorded'] };
   const snapshot = await page.evaluate(() => {
@@ -202,6 +205,7 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
           time: element.querySelector('.qp-live-flow-latest-heading>time')?.textContent ?? null,
           values: Array.from(element.querySelectorAll('.qp-live-flow-latest-values>[data-series]')).map(value => ({
             series: value.getAttribute('data-series'), label: value.querySelector('small')?.textContent, value: value.querySelector('strong')?.textContent,
+            title: value.querySelector('strong')?.getAttribute('title'), accessible: value.querySelector('strong')?.getAttribute('aria-label'),
           })), empty: element.querySelector(':scope>small')?.textContent ?? null };
       })(),
       note: root.querySelector('.qp-live-flow-breakdown')?.textContent ?? null,
@@ -260,11 +264,13 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
   if (latest) {
     const expectedTime = `${clock.format(latest.start)} – ${clock.format(latest.end)}${latest.partial ? ` · ${partial(latest, latestIndex)}` : ''}`;
     assert.equal(snapshot.latest.time, expectedTime, `${state}: latest interval and partial status must remain visible`);
-    assert.deepEqual(snapshot.latest.values, ['input', 'output', 'total'].map((key, index) => ({
+    assert.deepEqual(snapshot.latest.values, ['total', 'input', 'output'].map((key, index) => ({
       series: key,
-      label: messages[[ 'history.inputCombined', 'col.output', 'col.total' ][index] as keyof typeof messages],
-      value: latest[key as Series] === null ? messages['redesign.unknownValue'] : number.format(latest[key as Series]!),
-    })), `${state}: latest rail values must match the last recorded minute and preserve unknowns`);
+      label: messages[[ 'col.total', 'history.inputCombined', 'col.output' ][index] as keyof typeof messages],
+      value: latest[key as Series] === null ? messages['redesign.unknownValue'] : compact(latest[key as Series]!),
+      title: latest[key as Series] === null ? messages['redesign.unknownValue'] : preciseNumber.format(latest[key as Series]!),
+      accessible: latest[key as Series] === null ? messages['redesign.unknownValue'] : preciseNumber.format(latest[key as Series]!),
+    })), `${state}: latest rail must present compact actual values with exact accessible amounts and preserve unknowns`);
     assert.equal(snapshot.latest.empty, null);
   } else {
     assert.equal(snapshot.latest.time, null);
@@ -273,11 +279,15 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
   }
   assert.equal(snapshot.note, expected.some(point => point.partialBreakdown) ? messages['redesign.liveFlowBreakdown'] : null);
 
+  const collapsedComposition = await page.locator('.qp-live-trend').evaluate(element => { const r = element.getBoundingClientRect(); return { height: r.height, excludedVisible: !!element.querySelector('.qp-live-excluded')?.getBoundingClientRect().height }; });
+  assert.ok(collapsedComposition.excludedVisible, 'Aggregate/unknown exclusion counts must stay visible before opening chart data');
+  if (state === 'baseline' && lang === 'en') assert.ok(collapsedComposition.height <= 200, `Native chart panel must retain its approximately197px composition: ${JSON.stringify(collapsedComposition)}`);
   const disclosure = page.locator('.qp-live-flow-data'), summary = disclosure.locator('summary');
   assert.equal(await disclosure.getAttribute('open'), null, 'Token-flow data must start collapsed');
   await summary.focus(); await page.keyboard.press('Enter');
   assert.equal(await disclosure.getAttribute('open'), '');
   assert.ok(await disclosure.locator('table').isVisible());
+  assert.deepEqual(await disclosure.locator('.qp-live-flow-excluded-source-facts small').allTextContents(), data.coverage.excludedSources.map(source => `${source.source_name}: ${number.format(source.records)} ${messages['redesign.records']}`), 'Every excluded source fact remains accessible in the chart disclosure');
   assert.equal(await disclosure.locator('thead th').count(), 9);
   assert.deepEqual(await disclosure.locator('thead th').allTextContents(), [messages['redesign.liveMinuteInterval'], messages['history.inputCombined'], messages['col.freshIn'], messages['col.cacheRead'], messages['col.cacheWrite'], messages['col.output'], messages['col.total'], messages['redesign.records'], messages['col.calls']]);
   const table = await disclosure.locator('tbody tr').evaluateAll(elements => elements.map(element => ({
@@ -324,7 +334,11 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
         tableWidth: table.clientWidth, horizontal: table.scrollWidth > table.clientWidth,
       };
     });
-    assert.equal(bounds.plot.height, width >= 1280 ? 72 : width <= 540 ? 132 : 124, 'Token-flow plot exceeded its bounded height');
+    assert.equal(bounds.plot.height, width >= 1280 ? 118 : width <= 540 ? 132 : 124, 'Token-flow plot exceeded its bounded height');
+    if (width >= 1280) {
+      assert.equal(bounds.canvas.height, 104, 'Desktop plot must restore the source-sized 104px plotting area');
+      if (latest) assert.equal(bounds.latestValues[0]!.fontSize, '24px', 'Compact latest total must remain prominent');
+    }
     assert.equal(bounds.traces.length, 3);
     for (const trace of bounds.traces) for (const dimension of ['x', 'y', 'width', 'height'] as const) assert.ok(Math.abs(trace[dimension] - bounds.canvas[dimension]) < .1, 'Input/output/total SVGs use different screen scales');
     assert.ok(bounds.latest.x >= bounds.plot.x - .1 && bounds.latest.right <= bounds.plot.x + bounds.plot.width + .1 && bounds.latest.bottom <= bounds.plot.y + bounds.plot.height + .1,

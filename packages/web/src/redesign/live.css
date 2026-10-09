@@ -299,3 +299,16 @@
   .qp-live-matrix .qp-live-provider-group { grid-template-columns:44px minmax(0,1fr); }
   .qp-live-matrix-provider-models .qp-live-matrix-row-body { grid-template-columns:minmax(0,1fr) minmax(35px,48px); }
 }
+
+/* Native Live chart keeps its 197px composition while restoring the source plot height. */
+@media(min-width:1280px) {
+  .qp-live-main .qp-live-trend { grid-template-columns:minmax(0,1fr) auto; min-height:197px; padding:10px; gap:3px 8px; align-content:start; }
+  .qp-live-trend>.qp-live-section-head { grid-column:1/-1; grid-row:1; min-height:24px; }
+  .qp-live-trend .qp-live-token-flow { display:contents; }
+  .qp-live-trend .qp-live-flow-plot { grid-column:1/-1; grid-row:2; }
+  .qp-live-main .qp-live-trend .qp-live-flow-breakdown { grid-column:1/-1; grid-row:3; font-size:9px; line-height:11px; margin:0; }
+  .qp-live-trend>.qp-live-excluded { grid-column:1; grid-row:4; padding:0; border:0; gap:3px 8px; align-items:center; font-size:9px; line-height:12px; }
+  .qp-live-trend .qp-live-flow-data { grid-column:2; grid-row:4; font-size:9px; line-height:12px; }
+  .qp-live-trend .qp-live-flow-data[open] { grid-column:1/-1; grid-row:5; }
+}
+.qp-live-flow-excluded-source-facts { display:flex; flex-wrap:wrap; gap:4px 12px; margin-top:8px; }

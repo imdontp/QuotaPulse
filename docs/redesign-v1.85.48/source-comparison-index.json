@@ -1,0 +1,67 @@
+{
+  "pages": [
+    {
+      "page": "overview",
+      "referenceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+      "captureSha256": "0687322abc777a51d48c32cfe1002a9cc469b84fdf4936e1f6a5ca8ba547295c",
+      "diagnostic": "parity/overview/reference-parity.json",
+      "unmaskedDiagnosticSsim": 0.5419676687917608
+    },
+    {
+      "page": "live",
+      "referenceSha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+      "captureSha256": "f5f7da17264e95c5347cc5b9d561252f992d38b13ff3b3aa04ae42c33687a4f4",
+      "diagnostic": "parity/live/reference-parity.json",
+      "unmaskedDiagnosticSsim": 0.47684499637882544
+    },
+    {
+      "page": "projects",
+      "referenceSha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "captureSha256": "0bfde60ea4b64c967dcd3e87a53a7422e241c1002d40307ca70439738e0958cc",
+      "diagnostic": "parity/projects/reference-parity.json",
+      "unmaskedDiagnosticSsim": 0.5274305059695832
+    },
+    {
+      "page": "models",
+      "referenceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "captureSha256": "3045976d423be749ee88494936b404137bb05d79ec542ca43c2d8258f7746cc7",
+      "diagnostic": "parity/models/reference-parity.json",
+      "unmaskedDiagnosticSsim": 0.541976591197054
+    },
+    {
+      "page": "history",
+      "referenceSha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+      "captureSha256": "fefa518fe6da4f516f896cdc7f3d5e47631e643ef5f20d3728d88a3c0b1afade",
+      "diagnostic": "parity/history/reference-parity.json",
+      "unmaskedDiagnosticSsim": 0.47154826628898366
+    },
+    {
+      "page": "alerts",
+      "referenceSha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+      "captureSha256": "3458c4169b7c0e0427674b015f15cf68a05a92c70bf1e09e653bc0f68ccb6a92",
+      "diagnostic": "parity/alerts/reference-parity.json",
+      "unmaskedDiagnosticSsim": 0.5176880610960893
+    },
+    {
+      "page": "providers",
+      "referenceSha256": "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6",
+      "captureSha256": "f41a3426603cbbdffb4664e27f1d0a754a47d8727ba3347747bb2a54943d8f2b",
+      "diagnostic": "parity/providers/reference-parity.json",
+      "unmaskedDiagnosticSsim": 0.5131842412781978
+    },
+    {
+      "page": "cost",
+      "referenceSha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+      "captureSha256": "a6ce5bfa8fa249781aa5720c24e957a2f28642b581d5a444c0b0c3272e1aba97",
+      "diagnostic": "parity/cost/reference-parity.json",
+      "unmaskedDiagnosticSsim": 0.498367695988351
+    }
+  ],
+  "masks": false,
+  "acceptance": "Unmasked diagnostic; neither a likeness percentage nor approved baseline",
+  "additionalHistorySelected": {
+    "referenceSha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+    "captureSha256": "5c40ce00ddb7dc9ace4c82e39e744358b2f977b00f2e8b843146137b76ee0ad4",
+    "diagnostic": "parity/history-selected/reference-parity.json"
+  }
+}
