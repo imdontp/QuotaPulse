@@ -1,0 +1,255 @@
+{
+  "productionIndexSha256": "828a2c2bbb4ac9b60ffa10a0a928d69f52c64547b3e082284abffc592a21a833",
+  "inputs": {
+    "source": {
+      "path": "docs\\redesign-v1.85.43\\refs\\projects.png",
+      "sha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75"
+    },
+    "before": {
+      "path": "docs\\redesign-v1.85.52\\menus\\projects-default-en-dark.png",
+      "sha256": "96f026a8e11193b06e274c4414eabc2fe58874c3d27405457b9b062b108cf1ad"
+    },
+    "after": {
+      "path": "tmp\\project-paint53-en-dark\\projects-default.png",
+      "sha256": "ad835eced4a88f8484ee75f3d417278ee2d0f06619a38bd789023c217ceeb01e"
+    }
+  },
+  "regionMedianRGB": {
+    "upper": {
+      "source": [
+        5.0,
+        19.0,
+        49.0
+      ],
+      "before": [
+        6.0,
+        19.0,
+        38.0
+      ],
+      "after": [
+        4.0,
+        18.0,
+        48.0
+      ]
+    },
+    "right": {
+      "source": [
+        6.0,
+        18.0,
+        41.0
+      ],
+      "before": [
+        7.0,
+        17.0,
+        29.0
+      ],
+      "after": [
+        6.0,
+        18.0,
+        41.0
+      ]
+    },
+    "bottom": {
+      "source": [
+        3.0,
+        20.0,
+        59.0
+      ],
+      "before": [
+        6.0,
+        16.0,
+        30.0
+      ],
+      "after": [
+        2.0,
+        20.0,
+        60.0
+      ]
+    },
+    "left": {
+      "source": [
+        2.0,
+        19.0,
+        61.5
+      ],
+      "before": [
+        6.0,
+        21.0,
+        43.0
+      ],
+      "after": [
+        4.0,
+        17.0,
+        61.0
+      ]
+    }
+  },
+  "rimSamples": {
+    "(300, 207)": {
+      "source": [
+        30,
+        166,
+        254
+      ],
+      "before": [
+        5,
+        24,
+        50
+      ],
+      "after": [
+        4,
+        21,
+        54
+      ]
+    },
+    "(475, 207)": {
+      "source": [
+        91,
+        110,
+        250
+      ],
+      "before": [
+        7,
+        22,
+        44
+      ],
+      "after": [
+        4,
+        21,
+        55
+      ]
+    },
+    "(675, 207)": {
+      "source": [
+        57,
+        141,
+        255
+      ],
+      "before": [
+        7,
+        20,
+        38
+      ],
+      "after": [
+        4,
+        21,
+        55
+      ]
+    },
+    "(243, 280)": {
+      "source": [
+        35,
+        187,
+        246
+      ],
+      "before": [
+        22,
+        132,
+        255
+      ],
+      "after": [
+        35,
+        186,
+        246
+      ]
+    },
+    "(243, 330)": {
+      "source": [
+        34,
+        187,
+        245
+      ],
+      "before": [
+        22,
+        132,
+        255
+      ],
+      "after": [
+        34,
+        186,
+        246
+      ]
+    },
+    "(243, 400)": {
+      "source": [
+        13,
+        204,
+        241
+      ],
+      "before": [
+        22,
+        132,
+        255
+      ],
+      "after": [
+        35,
+        186,
+        246
+      ]
+    }
+  },
+  "homologousTopRimSamples": {
+    "300": {
+      "sourceY": 207,
+      "currentY": 206,
+      "source": [
+        30,
+        166,
+        254
+      ],
+      "before": [
+        22,
+        132,
+        255
+      ],
+      "after": [
+        30,
+        166,
+        254
+      ]
+    },
+    "475": {
+      "sourceY": 207,
+      "currentY": 206,
+      "source": [
+        91,
+        110,
+        250
+      ],
+      "before": [
+        22,
+        132,
+        255
+      ],
+      "after": [
+        91,
+        110,
+        250
+      ]
+    },
+    "675": {
+      "sourceY": 207,
+      "currentY": 206,
+      "source": [
+        57,
+        141,
+        255
+      ],
+      "before": [
+        22,
+        132,
+        255
+      ],
+      "after": [
+        58,
+        141,
+        255
+      ]
+    }
+  },
+  "regionMedianChannelMAE": {
+    "before": 7.208333333333333,
+    "after": 0.7916666666666666
+  },
+  "measurementLimits": "Four small common blank regions and three homologous straight top-edge samples; not whole-card similarity or source acceptance. Current physical top border y206 vs sourcey207 remains. Source values/labels differ from live facts by approved overrides."
+}

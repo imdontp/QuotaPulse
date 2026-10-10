@@ -396,3 +396,15 @@
   .qp-project-detail { padding-inline:16px; }
   .qp-project-trend-panel { margin:7px -3px 0 -7px; }
 }
+
+/* Native selected-project paint follows measured concept rim and interior samples. */
+@media (min-width: 1536px) {
+  .qp-redesign[data-testid="production-projects"][data-theme="dark"] button.qp-project-card[aria-pressed="true"] {
+    border-color: transparent;
+    background:
+      linear-gradient(90deg, #0a519d 0px, #0a519d00 1px, #000d9e2f 1px, #000d9e00 8%) padding-box,
+      linear-gradient(180deg, #051331 0%, #061229 32%, #03143b 100%) padding-box,
+      linear-gradient(90deg, #23bbf6 0%, #1ea6fe 12.3%, #5b6efa 50%, #398dff 92.9%, #398dff 100%) border-box;
+    box-shadow: inset 0 0 18px #1766ff12, 0 0 20px #126cff22;
+  }
+}
