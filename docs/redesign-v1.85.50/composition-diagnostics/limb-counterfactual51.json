@@ -1,0 +1,122 @@
+{
+  "center": [
+    734.5468707084656,
+    242.99999618530273
+  ],
+  "scale": 1.025,
+  "ridgeDistances": {
+    "710": {
+      "pixel": [
+        710,
+        354
+      ],
+      "centerPixelRadiusSVG": 111.28155240780556,
+      "targetLuma": 99.06
+    },
+    "735": {
+      "pixel": [
+        735,
+        357
+      ],
+      "centerPixelRadiusSVG": 111.71119102458118,
+      "targetLuma": 71.78
+    },
+    "760": {
+      "pixel": [
+        760,
+        353
+      ],
+      "centerPixelRadiusSVG": 110.73843651228857,
+      "targetLuma": 87.23
+    }
+  },
+  "variants": {
+    "r114-w4": {
+      "samples": {
+        "710": {
+          "before": 157.49759999999998,
+          "predicted": 157.49759999999998,
+          "currentActual": 157.49759999999998,
+          "referenceTarget": 99.06,
+          "coverage": 0.0
+        },
+        "735": {
+          "before": 136.3946,
+          "predicted": 125.563094375,
+          "currentActual": 122.09259999999999,
+          "referenceTarget": 71.78,
+          "coverage": 0.1875
+        },
+        "760": {
+          "before": 151.1558,
+          "predicted": 151.1558,
+          "currentActual": 151.1558,
+          "referenceTarget": 87.23,
+          "coverage": 0.0
+        }
+      },
+      "lowerInteriorMean": 10.474636681803903,
+      "coveredPixels": 1184,
+      "innerRadius": 112.0,
+      "outerRadiusAfterClip": 114
+    },
+    "r112-w4": {
+      "samples": {
+        "710": {
+          "before": 157.49759999999998,
+          "predicted": 90.23322,
+          "currentActual": 157.49759999999998,
+          "referenceTarget": 99.06,
+          "coverage": 1.0
+        },
+        "735": {
+          "before": 136.3946,
+          "predicted": 78.62657,
+          "currentActual": 122.09259999999999,
+          "referenceTarget": 71.78,
+          "coverage": 1.0
+        },
+        "760": {
+          "before": 151.1558,
+          "predicted": 86.74523,
+          "currentActual": 151.1558,
+          "referenceTarget": 87.23,
+          "coverage": 1.0
+        }
+      },
+      "lowerInteriorMean": 10.341584625925927,
+      "coveredPixels": 1909,
+      "innerRadius": 110.0,
+      "outerRadiusAfterClip": 114
+    },
+    "r114-w8": {
+      "samples": {
+        "710": {
+          "before": 157.49759999999998,
+          "predicted": 90.23322,
+          "currentActual": 157.49759999999998,
+          "referenceTarget": 99.06,
+          "coverage": 1.0
+        },
+        "735": {
+          "before": 136.3946,
+          "predicted": 78.62657,
+          "currentActual": 122.09259999999999,
+          "referenceTarget": 71.78,
+          "coverage": 1.0
+        },
+        "760": {
+          "before": 151.1558,
+          "predicted": 86.74523,
+          "currentActual": 151.1558,
+          "referenceTarget": 87.23,
+          "coverage": 1.0
+        }
+      },
+      "lowerInteriorMean": 10.341584625925927,
+      "coveredPixels": 1909,
+      "innerRadius": 110.0,
+      "outerRadiusAfterClip": 114
+    }
+  }
+}

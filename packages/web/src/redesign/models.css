@@ -174,3 +174,18 @@
 .qp-model-detail-mark-defs { position:absolute; width:0; height:0; overflow:hidden; pointer-events:none; }
 .qp-redesign[data-theme=dark] .qp-model-detail-provider[data-vendor=deepseek] { border-color:#18387855; background:radial-gradient(ellipse at 45% 52%,#174cce24,transparent 73%),linear-gradient(135deg,#0b1839,#06112f); box-shadow:inset 0 1px 0 #23459c24,inset 0 0 12px #1542b31c; }
 .qp-redesign[data-theme=dark] .qp-model-detail-provider[data-vendor=deepseek]>svg { filter:drop-shadow(0 0 3px #176aff60); }
+
+/* One continuous source rail behind the existing identity and inset fact panels. */
+@media(min-width:1280px) {
+  .qp-model-detail { position:relative; isolation:isolate; }
+  .qp-model-detail::before { content:""; position:absolute; inset:0 1px -4px 2px; z-index:-1; pointer-events:none; border:1px solid var(--qp-border); border-radius:10px; background:var(--qp-panel); }
+  .qp-model-detail>.qp-panel:first-child { border-color:transparent; background:transparent; box-shadow:none; }
+}
+
+/* Native reference spacing; factual content and expanded tables remain intrinsic. */
+@media(min-width:1536px) {
+  [data-testid=production-models] .qp-model-detail { min-height:858px; align-content:start; }
+  [data-testid=production-models] .qp-model-detail::before { bottom:-1px; }
+  [data-testid=production-models] .qp-model-detail>.qp-model-distribution { margin-block-start:-5px; margin-block-end:1px; }
+  [data-testid=production-models] .qp-model-detail>.qp-panel:has(>.qp-model-trend) { row-gap:4px; padding-bottom:9px; }
+}

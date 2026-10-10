@@ -1,6 +1,6 @@
 /** Local browser regression checks. All API responses are fixtures; no account probes. */
 import assert from 'node:assert/strict';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
@@ -225,7 +225,15 @@ async function contextFor(lang = 'en', theme = 'dark', width = 1440, hiddenSubsc
   return { context, page };
 }
 async function settle(page) {
-  await page.getByTestId('stat-1').waitFor();
+  try {
+    await page.getByTestId('stat-1').waitFor();
+  } catch (error) {
+    const state = await page.evaluate(() => ({ url: location.href, readyState: document.readyState, text: document.body.innerText, statCount: document.querySelectorAll('[data-testid="stat-1"]').length }));
+    writeFileSync(resolve(output, 'settle-failure.json'), JSON.stringify({ state, errors, externalRequests, apiMethods }, null, 2));
+    await page.screenshot({ path: resolve(output, 'settle-failure.png') });
+    console.error('UI settle failure evidence:', JSON.stringify({ ...state, errors }));
+    throw error;
+  }
   await page.evaluate(() => document.fonts.ready);
 }
 async function noOverflow(page, label) {
@@ -235,6 +243,10 @@ async function noOverflow(page, label) {
 try {
   server = await createServer({ root: resolve(repo, 'packages/web'), server: { host: '127.0.0.1', port: 7798, strictPort: true } });
   await server.listen();
+  // Prepare the lazy legacy module before semantic assertions. Cold Vite
+  // compilation is separate from API/render readiness and startup profiling.
+  await server.transformRequest('/src/App.tsx');
+  await server.waitForRequestsIdle();
   /*
    * `--lang=en-US` is not cosmetic. Six date call sites used to pass no locale to Intl,
    * which means "the operating system's", and on a machine whose OS happens to be English
@@ -717,6 +729,10 @@ try {
     for (const limit of limits) limit.used_percent = fill;
     const { context, page } = await contextFor();
     await page.goto('http://127.0.0.1:7798/?mode=legacy#live');
+    await settle(page);
+    // The backdrop exists during loading with idle tone; require this fixture's
+    // actual quota snapshot before checking its response to the reading values.
+    await page.waitForFunction(() => Number(document.querySelector('[data-testid="pulse-ring"]')?.getAttribute('data-pulse-arcs')) > 0);
     const field = page.locator('[data-ambient]');
     await field.waitFor({ timeout: 10000 });
     const tone = await field.getAttribute('data-tone');

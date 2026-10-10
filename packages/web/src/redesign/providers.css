@@ -138,3 +138,12 @@
 .qp-redesign[data-theme=dark] .qp-provider-comparison [data-vendor=openai] .qp-bar>span { background:linear-gradient(to top,#3910c7,#a03eff); box-shadow:inset 0 1px 0 #d7b9ff70,0 0 10px #7337ff70; }
 .qp-redesign[data-theme=dark] .qp-provider-comparison [data-vendor=opencode] .qp-bar>span { background:linear-gradient(to top,#005c9a,#00d8ff); box-shadow:inset 0 1px 0 #aeffff70,0 0 10px #00bfff60; }
 @media(max-width:730px) { .qp-provider-grid { grid-template-columns:1fr; } .qp-provider-header { align-items:start; flex-direction:column; } }
+
+/* Match the native OpenAI card mark while retaining its published SVG geometry. */
+.qp-provider-card[data-vendor=openai] .qp-provider-card-head { grid-template-columns:48px minmax(0,1fr) auto; }
+.qp-provider-card[data-vendor=openai] .qp-provider-icon { width:48px; height:48px; font-size:38px; }
+.qp-redesign[data-theme=dark] .qp-provider-card[data-vendor=openai] .qp-provider-icon {
+  border-color:transparent;
+  background:radial-gradient(ellipse at 50% 50%,#121d32,#08111e);
+  box-shadow:none;
+}

@@ -166,6 +166,8 @@ const quotaGroupChecks: Array<{ lang: string; theme: string; owners: number; win
 const recentActivityChecks: Array<{ lang: string; theme: string; records: number; keyboardHistory: boolean; unknownGrain: boolean; largeTokens: boolean; perHarnessLatestQueries: boolean; futureRangeEmpty: boolean }> = [];
 const iconViewports = new Map<string, unknown>();
 const overviewVectors = new Map<string, unknown>();
+const sidebarRasterStates = new Map<string, unknown>();
+const sidebarRasterEvidence: Array<{ filename: string; pass: number; state: unknown }> = [];
 const activityBitmapChecks: Array<{ lang: string; theme: string; recordId: number; points: number; width: number; height: number; paintedPixels: number; sha256: string }> = [];
 const activityRendererChecks: Array<{ lang: string; theme: string; accessibleValues: boolean; themeRedraw: boolean; resized: boolean; singlePoint: boolean; zeroBaseline: boolean }> = [];
 const runtimeChecks: Array<{ lang: string; theme: string; nodes: number; edges: number; inspected: number; modelShares: number; directionArrows: boolean; nativeMotion: boolean }> = [];
@@ -915,11 +917,17 @@ async function checkProjectCards(page: Page, lang: string, theme: string, pendin
   const data = result.json<DetailedProjectResponse>();
   const cards = page.locator('.qp-project-card');
   assert.equal(await cards.count(), 5);
-  referenceDetailRegions.push({ page: 'projects', lang, theme, regions: await page.locator('.qp-project-layout').evaluate(element => Object.fromEntries(['.qp-project-card', '.qp-project-card .qp-project-icon', '.qp-project-card-identity>strong', '.qp-project-detail', '.qp-project-detail .qp-project-icon', '.qp-project-detail h2', '.qp-project-rail'].map(selector => {
+  referenceDetailRegions.push({ page: 'projects', lang, theme, regions: await page.locator('.qp-project-layout').evaluate(element => Object.fromEntries(['.qp-project-card', '.qp-project-card .qp-project-icon', '.qp-project-card-identity>strong', '.qp-project-detail', '.qp-project-detail .qp-project-icon', '.qp-project-detail h2', '.qp-project-trend-panel', '.qp-project-rail'].map(selector => {
     const node = element.querySelector(selector)!; const { x, y, width, height, bottom } = node.getBoundingClientRect();
     return [selector, { x, y, width, height, bottom }];
   }))) });
   const bottom = await page.locator('.qp-project-cards').evaluate(element => element.getBoundingClientRect().bottom);
+  const trendPanel = await page.locator('.qp-project-trend-panel').evaluate(element => {
+    const panel = element.getBoundingClientRect();
+    return { x: panel.x, width: panel.width, enclosed: Array.from(element.querySelectorAll('h3,svg,.qp-chart-access,.qp-footnote')).every(child => { const r = child.getBoundingClientRect(); return r.left >= panel.left && r.right <= panel.right + .1 && r.top >= panel.top && r.bottom <= panel.bottom + .1; }) };
+  });
+  assert.ok(Math.abs(trendPanel.x - 1137) <= 2 && Math.abs(trendPanel.width - 503) <= 2, `Project trend enclosure differs from original source horizontal geometry: ${JSON.stringify(trendPanel)}`);
+  assert.ok(trendPanel.enclosed, 'Actual trend, scale, chart-data action and pricing coverage must stay inside the project trend enclosure');
   const sourceTopCards = await page.locator('.qp-project-card').evaluateAll(elements => elements.slice(0, 2).map(element => {
     const rect = element.getBoundingClientRect(); return { x: rect.x, width: rect.width };
   }));
@@ -1153,7 +1161,9 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
       const edgeShares = await page.locator('.qp-cost-donut-edge:not(.qp-cost-donut-inner-edge)').evaluateAll(nodes => nodes.map(node => Number(node.getAttribute('stroke-dasharray')?.split(' ')[0])));
       assert.deepEqual(edgeShares, cost.totals.amount > 0 ? positiveProviders.map(row => row.amount / cost.totals.amount) : [], 'Decorative Cost edges must retain actual provider amount fractions');
       const edgeColors = await page.locator('.qp-cost-donut-edge:not(.qp-cost-donut-inner-edge)').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).color));
-      assert.deepEqual(edgeColors.map(rgb), cost.totals.amount > 0 ? positiveProviders.map(row => rgb(sourcePalette.get(row.provider?.toLowerCase() ?? '') ?? '#7d8ba0')) : [], 'Cost ring edges and legend must identify the same actual providers');
+      // Original sector rims are brighter than their independently sampled legend dots.
+      const sourceRims = new Map([['openai', '#2ad1fb'], ['anthropic', '#a35ffa'], ['google', '#00bfed'], ['deepseek', '#f89840']]);
+      assert.deepEqual(edgeColors.map(rgb), cost.totals.amount > 0 ? positiveProviders.map(row => rgb(sourceRims.get(row.provider?.toLowerCase() ?? '') ?? '#75879d')) : [], 'Cost ring rims must follow independently sampled source colors in actual provider order');
       assert.equal(await page.locator('.qp-cost-donut-seam').count(), cost.totals.amount > 0 && positiveProviders.length > 1 ? positiveProviders.length : 0, 'Zero or single-provider cost must not invent sector boundaries');
       const expectedBucket = route.includes('bucket=week') ? 'week' : 'day';
       assert.equal(cost.bucket, expectedBucket, `${route}: response bucket must match the selected interval`);
@@ -1915,7 +1925,7 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
   const response = await page.request.get(assetUrl);
   assert.equal(response.status(), 200);
   assert.ok(response.headers()['content-type']?.startsWith('image/png'));
-  const assetSha256 = sha(readFileSync(resolve(root, 'packages/web/public/redesign/pulse-earth-v3.png')));
+  const assetSha256 = sha(readFileSync(resolve(root, 'packages/web/public/redesign/pulse-earth-v4.png')));
   assert.equal(sha(await response.body()), assetSha256, 'Served Earth asset differs from the retained source');
   const imageWidth = await page.evaluate(url => new Promise<number>((resolve, reject) => {
     const image = new Image(); image.onload = () => resolve(image.naturalWidth);
@@ -3026,6 +3036,18 @@ try {
           await page.waitForTimeout(200);
           await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important;caret-color:transparent!important}' });
           await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+          // Retain DOM paint inputs independently of the unmasked pixel gate.
+          // This diagnoses rounded-edge raster differences without relaxing them.
+          const sidebarState = await page.locator('.qp-nav-count,.qp-sidebar .qp-nav-active,.qp-quick-stats,.qp-sidebar-brand').evaluateAll(elements => elements.map(element => {
+            const rect = element.getBoundingClientRect(); const style = getComputedStyle(element);
+            return { className: element.className, text: element.textContent, x: rect.x, y: rect.y, width: rect.width, height: rect.height,
+              radius: style.borderRadius, background: style.background, border: style.border, transform: style.transform,
+              font: style.font, lineHeight: style.lineHeight, dpr: devicePixelRatio };
+          }));
+          sidebarRasterEvidence.push({ filename, pass: pass + 1, state: sidebarState });
+          writeFileSync(resolve(output, 'sidebar-raster-state.json'), JSON.stringify(sidebarRasterEvidence, null, 2));
+          if (pass === 0) sidebarRasterStates.set(filename, sidebarState);
+          else assert.deepEqual(sidebarState, sidebarRasterStates.get(filename), `${filename}: sidebar DOM paint inputs changed between captures`);
           const screenshot = await page.screenshot({ path: resolve(output, pass === 0 ? filename : `repeat-${filename}`), animations: 'disabled' });
           if (pass === 0) cases.push({ page: destination, lang, theme, filename, sha256: sha(screenshot), ...contrastEvidence });
           else {

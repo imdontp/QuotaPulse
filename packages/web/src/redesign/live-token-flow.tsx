@@ -1,8 +1,18 @@
-import { useId, useMemo, type ReactNode } from 'react';
+import { useId, useMemo, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react';
 import type { MessageKey } from '@/i18n/en';
 import { tokens } from '@/format';
 import { liveTokenFlow, liveTokenFlowLatest, liveTokenFlowSegments, liveTokenFlowTicks, liveTokenFlowX, liveTokenFlowY, liveTokenFlowYTicks, type LiveTokenFlowPoint, type LiveTokenFlowResponse, type LiveTokenFlowSeries } from './live-token-flow-data';
 import './live-token-flow.css';
+
+const summaryMedia = '(min-width:1536px)';
+const subscribeSummaryMedia = (notify: () => void) => {
+  const query = window.matchMedia(summaryMedia);
+  query.addEventListener('change', notify);
+  return () => query.removeEventListener('change', notify);
+};
+const summaryMediaSnapshot = () => window.matchMedia(summaryMedia).matches;
+const summaryServerSnapshot = () => false;
+const noSummarySubscription = () => () => {};
 
 type Translate = (key: MessageKey) => string;
 const labels: Record<LiveTokenFlowSeries, MessageKey> = { input: 'history.inputCombined', output: 'col.output', total: 'col.total' };
@@ -14,18 +24,20 @@ export function LiveTokenFlowLegend({ t }: { t: Translate }) {
   return <div className="qp-live-flow-legend">{series.map(key => <span key={key} data-series={key}><i aria-hidden="true"/>{t(labels[key])}</span>)}</div>;
 }
 
-export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDetails }: {
+export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDetails, panelSummary = false }: {
   data: LiveTokenFlowResponse;
   language: 'en' | 'th';
   t: Translate;
   showLegend?: boolean;
   excludedDetails?: ReactNode;
+  panelSummary?: boolean;
 }) {
+  const wideSummary = useSyncExternalStore(panelSummary ? subscribeSummaryMedia : noSummarySubscription, panelSummary ? summaryMediaSnapshot : summaryServerSnapshot, summaryServerSnapshot);
   const flow = useMemo(() => liveTokenFlow(data), [data]);
   const id = useId().replace(/:/g, '');
   const locale = language === 'th' ? 'th-TH' : 'en-US';
   const number = (value: number) => value.toLocaleString(locale);
-  const axisNumber = new Intl.NumberFormat('en-US', { notation: 'compact', maximumSignificantDigits: 3 });
+  const axisNumber = new Intl.NumberFormat('en-US', { notation: 'compact', maximumSignificantDigits: 2 });
   const date = new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'medium' });
   const clock = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
   const x = (at: number) => liveTokenFlowX(at, data.from, data.to);
@@ -40,10 +52,16 @@ export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDe
   const partial = (point: LiveTokenFlowPoint, index: number) => t(index === flow.points.length - 1 && point.end === data.to && point.end % 60000 !== 0 ? 'redesign.liveMinuteCurrent' : 'redesign.liveMinutePartial');
   const describe = (point: LiveTokenFlowPoint, key: LiveTokenFlowSeries, index: number) => `${date.format(point.start)} – ${date.format(point.end)} · ${state(point)} · ${t(labels[key])}: ${cell(point, point[key])}${point.partial ? ` · ${partial(point, index)}` : ''}`;
 
-  return <div className="qp-live-token-flow" data-maximum={flow.maximum}>
+  const summaryInPanel = panelSummary && wideSummary;
+  const latestSummary = <section className="qp-live-flow-latest" data-at={latest?.at} data-start={latest?.start} data-end={latest?.end} data-partial={latest?.partial || undefined} data-input={latest?.input ?? undefined} data-output={latest?.output ?? undefined} data-total={latest?.total} aria-label={t('redesign.liveLatestMinute')}>
+        <div className="qp-live-flow-latest-heading"><span>{t('redesign.liveLatestMinute')}</span>{latest && <time dateTime={new Date(latest.start).toISOString()} title={`${date.format(latest.start)} – ${date.format(latest.end)}`}>{clock.format(latest.start)} – {clock.format(latest.end)}{latest.partial ? ` · ${partial(latest, latest.index)}` : ''}</time>}</div>
+        {latest ? <div className="qp-live-flow-latest-values">{latestSeries.map(key => <span key={key} data-series={key}><small>{t(labels[key])}</small><strong data-long-value={key === 'total' && latestCompact(latest[key]).length > 10 || undefined} title={latestExact(latest[key])} aria-label={latestExact(latest[key])}>{latestCompact(latest[key])}</strong></span>)}</div> : <small>{t('redesign.liveFlowNoLatest')}</small>}
+      </section>;
+
+  return <div className="qp-live-token-flow" data-maximum={flow.maximum} data-panel-summary={summaryInPanel || undefined}>
     {showLegend && <LiveTokenFlowLegend t={t}/>}
     <div className="qp-live-flow-plot">
-      <div className="qp-live-flow-y-axis" aria-hidden="true">{yTicks.map((value, index) => <span key={`${value}-${index}`} data-value={value} title={number(value)} style={{ top: `${y(value)}%` }}>{axisNumber.format(value)}</span>)}</div>
+      <div className="qp-live-flow-y-axis" aria-hidden="true">{yTicks.map((value, index) => <span key={`${value}-${index}`} data-value={value} title={number(value)} style={{ top: `${y(value)}%`, '--qp-live-flow-y': y(value) } as CSSProperties}>{axisNumber.format(value).length > 4 ? value.toExponential(0).replace('e+', 'e') : axisNumber.format(value)}</span>)}</div>
       <div className="qp-live-flow-canvas" role="img" aria-label={`${t('redesign.liveChart')} · ${series.map(key => t(labels[key])).join(' · ')} · 0 – ${number(flow.maximum)}`} aria-describedby={`${id}-data`}>
       {/* The total SVG retains the existing total-point selector; the other traces use separate SVGs. */}
       <svg className="qp-live-chart qp-live-flow-total" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
@@ -59,11 +77,9 @@ export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDe
       </svg>)}
       </div>
       {!!xTicks.length && <div className="qp-live-flow-axis" role="group" aria-label={t('redesign.liveChart')}>{xTicks.map((at, index) => <span key={`${at}-${index}`} data-at={at} title={date.format(at)} style={{ left: `${(x(at) - 8) / 984 * 100}%`, transform: index === 0 ? 'translateX(0)' : index === xTicks.length - 1 ? 'translateX(-100%)' : 'translateX(-50%)' }}>{clock.format(at)}</span>)}</div>}
-      <section className="qp-live-flow-latest" data-at={latest?.at} data-start={latest?.start} data-end={latest?.end} data-partial={latest?.partial || undefined} data-input={latest?.input ?? undefined} data-output={latest?.output ?? undefined} data-total={latest?.total} aria-label={t('redesign.liveLatestMinute')}>
-        <div className="qp-live-flow-latest-heading"><span>{t('redesign.liveLatestMinute')}</span>{latest && <time dateTime={new Date(latest.start).toISOString()} title={`${date.format(latest.start)} – ${date.format(latest.end)}`}>{clock.format(latest.start)} – {clock.format(latest.end)}{latest.partial ? ` · ${partial(latest, latest.index)}` : ''}</time>}</div>
-        {latest ? <div className="qp-live-flow-latest-values">{latestSeries.map(key => <span key={key} data-series={key}><small>{t(labels[key])}</small><strong data-long-value={key === 'total' && latestCompact(latest[key]).length > 10 || undefined} title={latestExact(latest[key])} aria-label={latestExact(latest[key])}>{latestCompact(latest[key])}</strong></span>)}</div> : <small>{t('redesign.liveFlowNoLatest')}</small>}
-      </section>
+      {!summaryInPanel && latestSummary}
     </div>
+    {summaryInPanel && latestSummary}
     {flow.hasPartialBreakdown && <p className="qp-footnote qp-live-flow-breakdown">{t('redesign.liveFlowBreakdown')}</p>}
     <details className="qp-live-flow-data" id={`${id}-data`}>
       <summary>{t('redesign.chartData')}</summary>

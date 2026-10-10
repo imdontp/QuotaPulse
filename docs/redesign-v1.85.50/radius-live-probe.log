@@ -1,0 +1,17 @@
+
+> quotapulse@0.1.0 test:stable
+> node --import tsx scripts/check-stable-captures.mts
+
+13:42:00.000 INFO  [db] opened :memory:
+Live refresh gate th/dark: initial document
+Live refresh gate th/dark: initial settled
+Live refresh gate th/dark: pause/resume success discarded
+Live refresh gate th/dark: A/B/A success discarded
+Live refresh gate th/dark: obsolete failure discarded
+Live refresh gate th/dark: current failure retained and recovered
+Live token-flow gate th/dark: baseline
+Live token-flow gate th/dark: diagnostic response
+Live token-flow gate th/dark: empty window
+Stable capture pass 1: th/dark, 1 pages
+Stable capture pass 2: th/dark, 1 pages
+Stable captures passed: 1 pairs, 1 byte-identical, remaining pairs within recorded raster tolerance; no masks.

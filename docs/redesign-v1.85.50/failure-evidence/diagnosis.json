@@ -1,0 +1,46 @@
+{
+  "fullMatrixFailure": {
+    "session": 37746,
+    "exitCode": 1,
+    "changedPixels": 35,
+    "maxChannelDelta": 28,
+    "over10": 6,
+    "mainContentChangedPixels": 0,
+    "badgeSupportBoundsBoth": [
+      183,
+      327,
+      202,
+      344
+    ],
+    "textAndInteriorUnchanged": true,
+    "leadingDiagnosis": "Rounded-edge raster variation; precise mechanism unproven",
+    "toleranceUnchanged": true
+  },
+  "focusedModelsReplay": {
+    "session": 69859,
+    "exitCode": 0,
+    "pairs": 1,
+    "byteIdentical": 1
+  },
+  "uiRegression": {
+    "session": 39002,
+    "exitCode": 0,
+    "strictToneAssertionsRetained": true,
+    "originalStatTimeoutMs": 10000,
+    "preparation": "Vite transformRequest App.tsx and waitForRequestsIdle before semantic tests"
+  },
+  "controlledReadiness": {
+    "session": 26610,
+    "exitCode": 0,
+    "beforeHeldApiRelease": {
+      "tone": "idle",
+      "statCount": 0
+    },
+    "afterReleaseAndPositiveQuotaArcs": {
+      "tone": "ok",
+      "statCount": 1
+    },
+    "runOriginalCommand": "node tmp/check-ui50-tone-probe.mjs",
+    "archivedScriptNote": "Archived script derives root from parent; copy to tmp before executing."
+  }
+}

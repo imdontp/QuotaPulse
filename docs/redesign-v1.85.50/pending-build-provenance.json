@@ -1,0 +1,79 @@
+{
+  "status": "Both full runs failed on sidebar raster edges; explicit radius hypothesis under validation",
+  "productionIndexSha256": "a5a3bbe877da54dd3945ea7397bf1a28a8db17fa5eb7d35a2c7c9cebc2d9a9a9",
+  "buildAndWebUnit": {
+    "session": 56498,
+    "exitCode": 0,
+    "tests": 170
+  },
+  "ui": {
+    "session": 39002,
+    "exitCode": 0
+  },
+  "fullCapture": {
+    "session": 65842,
+    "exitCode": 1,
+    "status": "failed"
+  },
+  "previousFailedFullCapture": {
+    "session": 37746,
+    "exitCode": 1
+  },
+  "sourceHashes": [
+    {
+      "path": "packages/web/src/redesign/cost.css",
+      "sha256": "d359cb1ea04033b679f46d011f5cd6ec940ba08baa4ea7ca34450f9ba864b4d1"
+    },
+    {
+      "path": "packages/web/src/redesign/cost.tsx",
+      "sha256": "d86056fcd20ce8dc186ff697f95a53430dce792a0be52cd4930d44c13d3c59bc"
+    },
+    {
+      "path": "packages/web/src/redesign/models.css",
+      "sha256": "2a5131589c3703e0b5fcbff5dc1cb70cf245548cf2d1dee7fb6a36b61e0affea"
+    },
+    {
+      "path": "packages/web/src/redesign/overview.tsx",
+      "sha256": "a95b1f9ea117b62d879e2e1813115ded0bec508ef9c99a69072a113f85f1c9df"
+    },
+    {
+      "path": "packages/web/src/redesign/projects.css",
+      "sha256": "7ffab427ccee3c6e00096675c0784db19017c51ab7bc687f44a86c796547343f"
+    },
+    {
+      "path": "packages/web/src/redesign/projects.tsx",
+      "sha256": "6991f59389a4483c1f45ff4024427adc67a6c4fe7015bd02e4c2c827c52ff36f"
+    },
+    {
+      "path": "packages/web/src/redesign/providers.css",
+      "sha256": "605f36f9b20e389ef8987addb7f50be0ff115e6990710be0daba17a33c2cdec5"
+    },
+    {
+      "path": "packages/web/public/redesign/pulse-earth-v4.png",
+      "sha256": "43680a68501609dd2e6b5d21c01495d7c5b239f9d92655c33f47625238597bf2"
+    },
+    {
+      "path": "scripts/check-stable-captures.mts",
+      "sha256": "1bef00b15e0ab115413bfe92e74eeafc76ccd599013de1e76d5f460499ec7d0d"
+    },
+    {
+      "path": "scripts/check-ui.mjs",
+      "sha256": "764449f7c29e6e52c3d9f11115690da591d56439b31e9aef853f726ab3879e95"
+    }
+  ],
+  "radiusProbe": {
+    "session": 38810,
+    "exitCode": 0,
+    "status": "focused original case passed byte-identical; counterfactual paint diagnosis pending",
+    "productionIndexSha256": "73d4088b3864812ce3655e4a9257d9f7fcf9e0ae24b46d87cdbd052c8554351a",
+    "source": "packages/web/src/redesign/overview.css",
+    "sourceSha256": "09cf8e7da757a9bf7237b01f9c9add2b9c4124a8191def1d9ac2a1e97424be9e",
+    "pairs": 1,
+    "byteIdentical": 1,
+    "webUnit": {
+      "session": 58650,
+      "exitCode": 0,
+      "tests": 170
+    }
+  }
+}

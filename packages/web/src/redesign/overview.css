@@ -139,6 +139,8 @@
   flex-shrink:0;
 }
 .qp-sidebar nav .qp-nav-count {
+  position:relative;
+  isolation:isolate;
   display:flex;
   align-items:center;
   min-width:19px;
@@ -147,8 +149,8 @@
   justify-content:center;
   margin-left:auto;
   padding:0;
-  border-radius:999px;
-  background:#ed8a36;
+  border-radius:9px;
+  background:transparent;
   color:#111827;
   font-size:10px;
   font-weight:750;
@@ -156,6 +158,15 @@
   text-align:center;
   white-space:nowrap;
   font-variant-numeric:tabular-nums;
+}
+.qp-sidebar nav .qp-nav-count>svg { position:absolute; inset:0; z-index:-1; width:100%; height:100%; pointer-events:none; }
+@media(min-width:1536px) {
+  .qp-redesign[data-testid^=production-] .qp-sidebar nav>a,
+  .qp-redesign[data-testid^=production-] .qp-sidebar nav details>summary { padding-left:16px; padding-right:14px; gap:14px; }
+  .qp-redesign[data-testid=production-overview] .qp-sidebar nav>a,
+  .qp-redesign[data-testid=production-overview] .qp-sidebar nav details>summary { padding-right:13px; gap:11px; }
+  .qp-redesign[data-testid^=production-] .qp-sidebar nav .qp-nav-count { width:21px; min-width:21px; height:21px; border-radius:10.5px; line-height:21px; color:#17121c; }
+  .qp-redesign[data-testid^=production-] .qp-sidebar nav .qp-nav-count>svg>rect { rx:10.5px; ry:10.5px; fill:var(--qp-nav-count-paint,#f8a33e); }
 }
 .qp-sidebar nav details { min-width:0; }
 .qp-sidebar nav details>summary { min-height:32px; padding:4px 10px; list-style:none; cursor:pointer; color:var(--qp-muted); }
@@ -424,6 +435,11 @@
 .qp-redesign[data-theme=dark] .qp-core-surface-shade,
 .qp-redesign[data-theme=dark] .qp-core-north-shade { display:block; }
 .qp-core-progress { filter:drop-shadow(0 0 6px #238dffcc) drop-shadow(0 0 12px #844cffb0); transition:stroke-dasharray var(--motion-slow) var(--ease-motion); }
+.qp-core-bottom-limb-shade,.qp-core-spatial-progress { display:none; }
+.qp-redesign[data-theme=dark] .qp-core-bottom-limb-shade,
+.qp-redesign[data-theme=dark] .qp-core-spatial-progress { display:block; }
+.qp-core-progress-mask { transition:stroke-dasharray var(--motion-slow) var(--ease-motion); }
+@media(prefers-reduced-motion:reduce) { .qp-core-progress-mask { transition:none; } }
 .qp-redesign[data-theme=dark] .qp-pulse-art { filter:drop-shadow(0 0 12px #368cff30); }
 .qp-redesign[data-theme=dark] .qp-core-track { stroke-opacity:.16; filter:none; }
 .qp-redesign[data-theme=dark] :is(.qp-core-track,.qp-core-progress) { r:126px; }
@@ -1055,6 +1071,7 @@
     font-size:8px;
     line-height:14px;
   }
+  .qp-sidebar nav .qp-nav-count>svg>rect { rx:7px; ry:7px; }
   .qp-hero-grid {
     grid-template-columns:minmax(0,1fr) 240px;
   }

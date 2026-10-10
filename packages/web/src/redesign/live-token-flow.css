@@ -124,3 +124,88 @@
   .qp-live-flow-latest-values [data-series=total] strong { font-size:24px; line-height:26px; font-weight:550; }
   .qp-live-flow-latest-values [data-series=total] strong[data-long-value=true] { font-size:11px; }
 }
+
+/* Native plot, full metadata, and an intrinsic summary share the reference panel. */
+@media(min-width:1536px) {
+  [data-testid=production-live] .qp-live-main .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) {
+    grid-template-columns:minmax(0,1fr) 197px;
+    grid-template-rows:minmax(24px,auto) minmax(14px,auto) auto auto;
+    min-height:197px;
+    row-gap:0;
+    padding-bottom:9px;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-breakdown {
+    grid-column:1;
+    grid-row:2;
+    margin-top:3px;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-plot {
+    grid-column:1/-1;
+    grid-row:3;
+    margin-top:8px;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-y-axis>span {
+    top:calc((var(--qp-live-flow-y) - 6) * 100% / 88) !important;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-canvas,
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-canvas>svg {
+    overflow:visible;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-canvas>svg>:is(line,polygon,polyline,circle) {
+    transform:matrix(1,0,0,1.1363636364,0,-6.8181818182);
+    transform-origin:0 0;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-latest {
+    position:relative;
+    grid-column:2;
+    grid-row:2 / span 3;
+    width:185px;
+    min-height:154px;
+    height:auto;
+    margin:-19px 0 17px 12px;
+    padding:10px 0 0 11px;
+    border-left:0;
+    align-self:start;
+    justify-self:end;
+    justify-content:flex-start;
+    gap:0;
+    overflow:visible;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-latest::before {
+    content:"";
+    position:absolute;
+    top:0;
+    bottom:-15px;
+    left:0;
+    border-left:1px solid var(--qp-border);
+    pointer-events:none;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-latest-values {
+    order:1;
+    gap:12px;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-latest-values>span {
+    display:grid;
+    justify-content:start;
+    gap:0;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-latest-values small {
+    font-size:9px;
+    line-height:12px;
+    white-space:normal;
+    overflow:visible;
+    text-overflow:clip;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-latest-heading {
+    order:2;
+    margin-top:6px;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-latest-heading>time {
+    white-space:normal;
+    overflow:visible;
+    text-overflow:clip;
+  }
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-data:not([open]) {
+    align-self:end;
+  }
+}

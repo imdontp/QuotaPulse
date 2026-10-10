@@ -1,0 +1,68 @@
+{
+  "status": "Decorativebitmap verified; spatialringbodyhue/lowerlimbridge refined in source; fullcurrentcapturematrixrunning, residualglow/geometryopen",
+  "tool": "built-in image_gen",
+  "operation": "edit",
+  "promptSummary": "Edit the supplied QuotaPulse reference globe crop into one transparent decorative globe-only bitmap. Preserve its foreshortened geography, dense tiny dotted surface, upper-left land/cyan illumination, dark central face and violet right limb. Remove all text/numbers, external quota arcs, orbits, stars and background. Inpaint text removal with continuous dark dotted surface. Center the full globe in a square canvas with transparent exterior; no baked data, symbols, text or progress indicators. Independently render actual quota data in application code.",
+  "referenceCrop": "tmp/overview-artwork-audit50/reference-globe-crop.png",
+  "referenceCropSha256": "c937808612109a92cd72029383991654def8c0a83209d129b6e188a261f09c04",
+  "originalReference": "docs/redesign-v1.85.43/refs/overview.png",
+  "originalReferenceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+  "savedPath": "packages/web/public/redesign/pulse-earth-v4.png",
+  "sha256": "43680a68501609dd2e6b5d21c01495d7c5b239f9d92655c33f47625238597bf2",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "format": "RGBA PNG",
+  "alpha128Bounds": [
+    68,
+    67,
+    1185,
+    1175
+  ],
+  "svg": {
+    "x": 52,
+    "y": 33,
+    "width": 256,
+    "height": 256,
+    "clipCenter": [
+      180,
+      160
+    ],
+    "clipRadius": 114
+  },
+  "mappedVisibleBounds": [
+    65.88,
+    46.68,
+    293.91,
+    272.87
+  ],
+  "previousAssetRetained": "packages/web/public/redesign/pulse-earth-v3.png",
+  "limitations": [
+    "Not exact whole-page acceptance",
+    "Inpainted center is decorative; actual numeric data is rendered separately",
+    "Bottom surface rim remains brighter than original sampled peaks; independent progress ring hue remains different"
+  ],
+  "paintRefinement": {
+    "productionIndexSha256": "8e081b56bc2bcdea1a420d0dbc5b033f590e28d2d267c25690ae9720eb8a34c1",
+    "lowerLimbWidth": 8,
+    "lowerLimbRadius": 114,
+    "lowerLimbOpacity": 0.45,
+    "endpointFadeSvgY": [
+      160,
+      184
+    ],
+    "bottomProgressBody": "#5b9cff",
+    "referenceBodyRgb": [
+      91,
+      156,
+      254
+    ],
+    "quickProbeBodyRgb": [
+      91,
+      156,
+      255
+    ],
+    "canonicalStateComparisonPending": true
+  }
+}

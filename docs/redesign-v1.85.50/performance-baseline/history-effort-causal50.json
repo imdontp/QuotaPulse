@@ -1,0 +1,184 @@
+{
+  "status": "passed",
+  "method": "Direct historySummary on one in-memory synthetic database, no server/browser/network",
+  "fixture": {
+    "records": 5000,
+    "scope": {
+      "from": 0,
+      "to": 5001
+    },
+    "changedOnly": "usage_event.effort",
+    "repeated": "same",
+    "distinct": "category-00001..category-05000"
+  },
+  "assertions": [
+    "all event fields except effort unchanged",
+    "totals deeply equal",
+    "timeline deeply equal",
+    "bucketMs equal",
+    "effort records/calls reconcile",
+    "source/dist tree hashes unchanged"
+  ],
+  "repeated": {
+    "summaryUtf8Bytes": 588,
+    "effortUtf8Bytes": 47,
+    "categories": 1,
+    "timelineRows": 1,
+    "timingsMs": [
+      15.174399999999991,
+      14.437200000000075,
+      14.520999999999958,
+      10.994000000000028,
+      10.631399999999985,
+      9.669499999999971,
+      10.52800000000002,
+      12.771999999999935,
+      11.012299999999982,
+      8.890999999999963
+    ],
+    "minMs": 8.890999999999963,
+    "medianMs": 11.003150000000005,
+    "maxMs": 15.174399999999991,
+    "effortQueryPlan": [
+      {
+        "id": 10,
+        "parent": 0,
+        "notused": 162,
+        "detail": "SEARCH u USING INDEX idx_usage_ts (ts>? AND ts<?)"
+      },
+      {
+        "id": 20,
+        "parent": 0,
+        "notused": 45,
+        "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+      },
+      {
+        "id": 23,
+        "parent": 0,
+        "notused": 45,
+        "detail": "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+      },
+      {
+        "id": 28,
+        "parent": 0,
+        "notused": 0,
+        "detail": "USE TEMP B-TREE FOR GROUP BY"
+      },
+      {
+        "id": 73,
+        "parent": 0,
+        "notused": 0,
+        "detail": "USE TEMP B-TREE FOR ORDER BY"
+      }
+    ],
+    "firstCategory": {
+      "effort": "same",
+      "records": 5000,
+      "calls": 5000
+    },
+    "lastCategory": {
+      "effort": "same",
+      "records": 5000,
+      "calls": 5000
+    }
+  },
+  "distinct": {
+    "summaryUtf8Bytes": 250542,
+    "effortUtf8Bytes": 250001,
+    "categories": 5000,
+    "timelineRows": 1,
+    "timingsMs": [
+      20.15949999999998,
+      18.192999999999984,
+      15.932999999999993,
+      15.607799999999997,
+      14.593200000000024,
+      16.704200000000014,
+      18.571300000000065,
+      15.41210000000001,
+      15.826900000000023,
+      19.988599999999906
+    ],
+    "minMs": 14.593200000000024,
+    "medianMs": 16.318600000000004,
+    "maxMs": 20.15949999999998,
+    "effortQueryPlan": [
+      {
+        "id": 10,
+        "parent": 0,
+        "notused": 162,
+        "detail": "SEARCH u USING INDEX idx_usage_ts (ts>? AND ts<?)"
+      },
+      {
+        "id": 20,
+        "parent": 0,
+        "notused": 45,
+        "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+      },
+      {
+        "id": 23,
+        "parent": 0,
+        "notused": 45,
+        "detail": "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+      },
+      {
+        "id": 28,
+        "parent": 0,
+        "notused": 0,
+        "detail": "USE TEMP B-TREE FOR GROUP BY"
+      },
+      {
+        "id": 73,
+        "parent": 0,
+        "notused": 0,
+        "detail": "USE TEMP B-TREE FOR ORDER BY"
+      }
+    ],
+    "firstCategory": {
+      "effort": "category-00001",
+      "records": 1,
+      "calls": 1
+    },
+    "lastCategory": {
+      "effort": "category-05000",
+      "records": 1,
+      "calls": 1
+    }
+  },
+  "payloadGrowthRatio": 426.09183673469386,
+  "unchangedEventFieldsSha256": "399b6561ccad232f273ed0c9126ddaa4cc370e838b81d500dcd8c59e1b6da84d",
+  "frozenBefore": {
+    "packages/web/src": {
+      "files": 135,
+      "sha256": "02a15ae2f6da54d2e06d324542db414ed913a8e6bd6091ab715791ccc8505ed3"
+    },
+    "packages/daemon/src": {
+      "files": 45,
+      "sha256": "3e1642a9810c9c11965e5a470bfd67aae923309bd2aae0b1d6e2242c1104b269"
+    },
+    "packages/web/dist": {
+      "files": 70,
+      "sha256": "79581eb6cf2336dcfd262f05850f3301fc7d35ee70eb3690090d6b94793bd2f6"
+    }
+  },
+  "frozenAfter": {
+    "packages/web/src": {
+      "files": 135,
+      "sha256": "02a15ae2f6da54d2e06d324542db414ed913a8e6bd6091ab715791ccc8505ed3"
+    },
+    "packages/daemon/src": {
+      "files": 45,
+      "sha256": "3e1642a9810c9c11965e5a470bfd67aae923309bd2aae0b1d6e2242c1104b269"
+    },
+    "packages/web/dist": {
+      "files": 70,
+      "sha256": "79581eb6cf2336dcfd262f05850f3301fc7d35ee70eb3690090d6b94793bd2f6"
+    }
+  },
+  "limitations": [
+    "single-process local in-memory SQLite",
+    "timings describe the full historySummary function; no browser CPU/render/DOM measurement",
+    "repeated measured first, distinct second; no timing regression conclusion from ordering",
+    "categories are deliberately synthetic valid source strings, not a production distribution claim"
+  ]
+}

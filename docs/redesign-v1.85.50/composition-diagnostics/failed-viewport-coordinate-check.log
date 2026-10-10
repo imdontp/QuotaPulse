@@ -1,0 +1,40 @@
+
+> quotapulse@0.1.0 test:stable
+> node --import tsx scripts/check-stable-captures.mts
+
+13:42:00.000 INFO  [db] opened :memory:
+Live refresh gate en/dark: initial document
+Live refresh gate en/dark: initial settled
+Live refresh gate en/dark: pause/resume success discarded
+Live refresh gate en/dark: A/B/A success discarded
+Live refresh gate en/dark: obsolete failure discarded
+Live refresh gate en/dark: current failure retained and recovered
+Live token-flow gate en/dark: baseline
+node.exe : node:internal/modules/run_main:122
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Native Live top differs from original source:
+{"left":277.33925,"top":618.750000000208,"right":1057.067,"bottom":722.750000003536,"divider":1082.40625}
+    at checkValues
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-live-token-flow.mts:296:14)
+    at async checkLiveTokenFlow
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-live-token-flow.mts:461:22)
+    at async checkChartAccess
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-stable-captures.mts:1102:26)
+    at async <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-stable-captures.mts:3072:85) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.13.1

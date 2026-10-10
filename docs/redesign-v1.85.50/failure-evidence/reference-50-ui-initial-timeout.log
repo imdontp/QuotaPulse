@@ -1,0 +1,25 @@
+
+> quotapulse@0.1.0 test:ui
+> node scripts/check-ui.mjs
+
+node.exe : node:internal/modules/run_main:122
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for getByTestId('stat-1') to be visible[22m
+
+    at settle (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-ui.mjs:228:36)
+    at C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-ui.mjs:247:69 {
+  log: [ "  - waiting for getByTestId('stat-1') to be visible" ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.13.1

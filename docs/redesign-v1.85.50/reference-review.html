@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QuotaPulse · Eight-page source review v1.85.50</title>
+<style>
+body{margin:0;background:#090f19;color:#e5edff;font:14px system-ui,sans-serif}header{padding:16px;position:sticky;top:0;z-index:2;background:#090f19;border-bottom:1px solid #30445b}h1{font-size:20px;margin:0 0 8px}p{max-width:1100px;line-height:1.5}label{display:inline-flex;gap:8px;align-items:center;margin:8px 14px 0 0}select{background:#132036;color:inherit;border:1px solid #45617e;border-radius:4px;padding:6px}.viewport{overflow:auto;padding:16px}.frame{position:relative;width:1672px;height:941px}img{position:absolute;inset:0;width:100%;height:100%}.source{opacity:0;pointer-events:none}a{color:#60ccff}
+</style>
+<header>
+<h1>QuotaPulse v1.85.50 · ตรวจเทียบต้นฉบับทั้ง 8 หน้า</h1>
+<p>All eight dashboard pages use real API bindings with synthetic test data on one build50. The current40-pair repeatability matrix and UI gate passed. Source references retain actual data differences. These checks do not constitute approval of99–100% concept fidelity.</p>
+<label>หน้า <select id="page"><option>overview</option><option>live</option><option>projects</option><option>models</option><option>history</option><option>alerts</option><option>cost</option><option>providers</option></select></label>
+<label>ภาษา <select id="lang"><option value="en">EN</option><option value="th">TH</option></select></label>
+<label>ธีม <select id="theme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+<label>History <select id="history"><option value="history-selected">เปิดรายละเอียด</option><option value="history">ตาราง</option></select></label>
+<label>ภาพ <select id="view"><option value="actual">หลังแก้ v1.85.50</option><option value="before">ภาพก่อนหน้าแต่ละหน้า</option><option value="source">Concept ต้นฉบับ</option><option value="overlay">ซ้อนภาพ 50%</option></select></label>
+<p><a href="VALIDATION-STATE.md">ผลตรวจ</a> · <a href="SOURCE-CHANGES.md">จุดที่แก้และงานที่ยังเหลือ</a> · <a id="parity" href="parity/overview/reference-parity.json">ผลเทียบต้นฉบับ EN/Dark</a> · <a id="heatmap" href="parity/overview/reference-heatmap.png">ภาพพื้นที่แตกต่าง EN/Dark</a></p>
+<p id="dimensions">แสดงภาพตามขนาดจริง</p>
+</header>
+<main class="viewport"><div class="frame"><img id="actual" alt="ภาพแอป build ที่ตรวจ"><img id="source" class="source" alt="ภาพ concept ต้นฉบับ"></div></main>
+<script>
+const controls=['page','lang','theme','history','view'].map(id=>document.getElementById(id));
+const [page,lang,theme,history,view]=controls;
+const actual=document.getElementById('actual'),source=document.getElementById('source');
+function update(){
+ const width=page.value==='overview'?1586:1672,height=page.value==='overview'?992:941;
+ actual.parentElement.style.width=`${width}px`;actual.parentElement.style.height=`${height}px`;
+ history.disabled=page.value!=='history';
+ const earlier={overview:'49',cost:'48',models:'49',alerts:'48',live:'49',projects:'48',history:'48',providers:'48'};
+ const prefix=view.value==='before'?`../redesign-v1.85.${earlier[page.value]}/captures/`:'captures/';
+ actual.src=`${prefix}${page.value==='history'?history.value:page.value}-${lang.value}-${theme.value}.png`;
+ source.src=`../redesign-v1.85.43/refs/${page.value}.png`;
+ source.style.opacity=view.value==='source'?'1':view.value==='overlay'?'.5':'0';
+ const comparison=page.value==='history'&&history.value==='history-selected'?'history-selected':page.value;
+ document.getElementById('parity').href=`parity/${comparison}/reference-parity.json`;
+ document.getElementById('heatmap').href=`parity/${comparison}/reference-heatmap.png`;
+ document.getElementById('dimensions').textContent=`${width} × ${height}px ตามขนาดจริง · ผลเทียบตัวเลข/heatmap ใช้ EN/Dark เท่านั้น · History มีผลเทียบแยกสำหรับตารางและรายละเอียด`;
+}
+controls.forEach(control=>control.addEventListener('change',update));update();
+</script>
+</html>

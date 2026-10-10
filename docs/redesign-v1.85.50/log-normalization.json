@@ -1,0 +1,41 @@
+{
+  "purpose": "Whitespace-only source-control formatting; exact original log bytes preserved in raw-log-evidence.zip",
+  "archiveSha256": "d4bd32e3adb86656c5ab6a3469e1cb0ba0bfbc92684972b45f2919e871565472",
+  "files": [
+    {
+      "path": "composition-diagnostics/build.log",
+      "originalSha256": "53f303c00b498b6c8113bc7cbd73cbbdc1300764323308b8e33d30b423d4c8bb",
+      "normalizedSha256": "af5a9713c2216cf1dd7d775b7a339863c60fbc1eb52822e9849fca0b315f64fa"
+    },
+    {
+      "path": "composition-diagnostics/failed-browser-helper.log",
+      "originalSha256": "646623070a79a9b27c274a98f8707072a9ed0c0745d2caf415744732a775cd9e",
+      "normalizedSha256": "f498a71c937cbd941576bde9afb65c19776b2eab267b8c93caf618df36d2dcc0"
+    },
+    {
+      "path": "composition-diagnostics/failed-viewport-coordinate-check.log",
+      "originalSha256": "0f285b20fb7002ab8690e01fbd1331174895c5d48a21c0c297400a4423bc9a5f",
+      "normalizedSha256": "b9a1fd6005f1a0d12bbe2c7a4f3f8414df12740a6441138923de09f6c27eb98c"
+    },
+    {
+      "path": "composition-diagnostics/feather-build.log",
+      "originalSha256": "70915f22a46f4717f045e720e2d75ff546e47a9e3461ce915cc5b4cfeb1ce64a",
+      "normalizedSha256": "4983b7e39b52eeaacb4316d3889a9e4999e81d8b6b678f9b28e6534bb4cf893e"
+    },
+    {
+      "path": "final-matrix-failure/full-matrix.log",
+      "originalSha256": "28eabba94f49aeb95cfb1fc1fa1a4639710713b61574d36c1f20eac37934629c",
+      "normalizedSha256": "908d3aa0c1c5ada69660b72f2719aba445d439ec3190c437965ac48c692a6d77"
+    },
+    {
+      "path": "replay-failure/full-matrix-replay.log",
+      "originalSha256": "63c8a92a2cab4cfb9096be373d0e35dc3db0d525adc1797885293f48032e4d28",
+      "normalizedSha256": "48bda71f378438bf53401cfa538ed4d004314a7b5604942ea38dced77d575fa6"
+    },
+    {
+      "path": "svg-matrix-failure/full-matrix.log",
+      "originalSha256": "2fa737b513599bb77d3ff1d5280c0b2489eb2c3cc730aeb60f9e8f6789d841a3",
+      "normalizedSha256": "9bbb7f152371cf5893200e0884580b6b9edf25e3be8dec0e2babfdfef77efd04"
+    }
+  ]
+}

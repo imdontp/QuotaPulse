@@ -124,6 +124,13 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
         <radialGradient id={`${id}-fill`}><stop stopColor="#225575" stopOpacity=".7"/><stop offset=".75" stopColor="#071f43" stopOpacity=".5"/><stop offset="1" stopColor="#32cdff" stopOpacity=".2"/></radialGradient>
         <linearGradient id={`${id}-arc`}><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop offset="1" stopColor="#a26aff"/></linearGradient>
         <linearGradient id={`${id}-progress-arc`} gradientTransform="rotate(90 .5 .5)"><stop stopColor="#26dcff"/><stop offset=".55" stopColor="#367aff"/><stop className="qp-core-progress-end" offset="1" stopColor="#a26aff"/></linearGradient>
+        <linearGradient id={`${id}-ring-tr`} gradientUnits="userSpaceOnUse" x1="180" y1="34" x2="306" y2="160"><stop stopColor="#26dcff"/><stop offset="1" stopColor="#b664ff"/></linearGradient>
+        <linearGradient id={`${id}-ring-br`} gradientUnits="userSpaceOnUse" x1="306" y1="160" x2="180" y2="286"><stop stopColor="#b664ff"/><stop offset="1" stopColor="#5b9cff"/></linearGradient>
+        <linearGradient id={`${id}-ring-bl`} gradientUnits="userSpaceOnUse" x1="180" y1="286" x2="54" y2="160"><stop stopColor="#5b9cff"/><stop offset="1" stopColor="#26dcff"/></linearGradient>
+        <linearGradient id={`${id}-bottom-limb-fade`} gradientUnits="userSpaceOnUse" x1="180" y1="160" x2="180" y2="184"><stop stopColor="#010913" stopOpacity="0"/><stop offset="1" stopColor="#010913"/></linearGradient>
+        <mask id={`${id}-ring-used`} maskUnits="userSpaceOnUse" x="45" y="25" width="270" height="270" style={{ maskType: 'alpha' }}>
+          <circle className="qp-core-progress-mask" cx="180" cy="160" r="126" pathLength="100" fill="none" stroke="white" strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used ?? 0)} 100`} transform="rotate(-90 180 160)"/>
+        </mask>
         <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <clipPath id={`${id}-world`}><circle cx="180" cy="160" r="114"/></clipPath>
         <radialGradient id={`${id}-surface-shade`}><stop stopColor="#010913" stopOpacity=".28"/><stop offset=".7" stopColor="#010913" stopOpacity=".1"/><stop offset="1" stopColor="#010913" stopOpacity="0"/></radialGradient>
@@ -134,9 +141,10 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
         <ellipse cx="180" cy="160" rx="165" ry="96" transform="rotate(30 180 160)"/>
       </g>
       <circle cx="180" cy="160" r="117" fill={`url(#${id}-fill)`} stroke="#51b9ef" strokeOpacity=".4"/>
-      <image data-testid="pulse-earth" href="/redesign/pulse-earth-v3.png" x="38" y="19" width="284" height="284" clipPath={`url(#${id}-world)`}/>
+      <image data-testid="pulse-earth" href="/redesign/pulse-earth-v4.png" x="52" y="33" width="256" height="256" clipPath={`url(#${id}-world)`}/>
       <circle className="qp-core-surface-shade" cx="180" cy="160" r="114" fill={`url(#${id}-surface-shade)`}/>
       <circle className="qp-core-north-shade" cx="180" cy="160" r="114" fill={`url(#${id}-north-shade)`}/>
+      <path className="qp-core-bottom-limb-shade" d="M66 160 A114 114 0 0 0 294 160" fill="none" stroke={`url(#${id}-bottom-limb-fade)`} strokeWidth="8" strokeOpacity=".45" clipPath={`url(#${id}-world)`}/>
       <g fill="none" stroke={`url(#${id}-arc)`} filter={`url(#${id}-glow)`}>
         <circle cx="180" cy="160" r="119" strokeWidth="1" opacity=".5"/>
         <circle cx="180" cy="160" r="137" strokeWidth="1" opacity=".12"/>
@@ -158,6 +166,12 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
       <circle className="qp-core-track" cx="180" cy="160" r="129" fill="none" stroke={`url(#${id}-arc)`} strokeOpacity=".4" strokeWidth="8"/>
       <circle className="qp-core-halo" cx="180" cy="160" r="120" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="2"/>
       {used !== null && <circle className="qp-core-progress" data-testid="pulse-progress" cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-progress-arc)`} strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used)} 100`} transform="rotate(-90 180 160)" filter={`url(#${id}-glow)`}/>}
+      {used !== null && <g className="qp-core-spatial-progress" fill="none" strokeWidth="8" mask={`url(#${id}-ring-used)`}>
+        <path d="M180 34 A126 126 0 0 1 306 160" stroke={`url(#${id}-ring-tr)`}/>
+        <path d="M306 160 A126 126 0 0 1 180 286" stroke={`url(#${id}-ring-br)`}/>
+        <path d="M180 286 A126 126 0 0 1 54 160" stroke={`url(#${id}-ring-bl)`}/>
+        <path d="M54 160 A126 126 0 0 1 180 34" stroke="#26dcff"/>
+      </g>}
     </svg>
     <div className="qp-pulse-label"><strong>{used === null ? '—' : `${used}%`}</strong><span className="qp-pulse-state">{t(quota?.window === 'monthly' ? 'redesign.monthlyUsed' : 'redesign.quotaUsed')}</span><span>{tokenTotal} {t('redesign.tokens')} · {period}</span></div>
     <div className="qp-pulse-runway" data-testid="pulse-runway" data-projected-at={projectedAt ?? undefined} data-reset-at={resetAt ?? undefined}>

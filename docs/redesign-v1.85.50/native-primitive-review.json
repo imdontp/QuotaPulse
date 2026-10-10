@@ -1,0 +1,127 @@
+{
+  "status": "Read-only native EN/Dark measurements; full matrix remains pending",
+  "productionIndexSha256": "a5a3bbe877da54dd3945ea7397bf1a28a8db17fa5eb7d35a2c7c9cebc2d9a9a9",
+  "captures": {
+    "overview": "140c210c7a8e4edc6f08d576a3fde3f437f7864ff9fc9a2b1363cc03ee093276",
+    "models": "7a12e6f1bb7a16c5b88196b80d479fa592f35744906dd352b1442f2bb79cee5d",
+    "providers": "6f5f6b16690c7fd27b86f989a7ee429d7bbd5a332f915f28449b126e6fe16451",
+    "cost": "5f500b48a331550bb502f116130daf7dfc4c688b5af4d19934d27d6acc2b07c9"
+  },
+  "providers": {
+    "referenceWhiteGlyph": [
+      37,
+      39
+    ],
+    "prior": [
+      28,
+      27
+    ],
+    "current": [
+      38,
+      37
+    ],
+    "threshold": "all RGB>=180 and channel spread<=55",
+    "clippingObserved": false
+  },
+  "cost": {
+    "provider": "openai",
+    "actualAngleDegrees": 182,
+    "limitation": "Exact API JSON not retained for this pixel probe; unchanged fixture angle was previously verified",
+    "bodyR80": {
+      "reference": [
+        13,
+        135,
+        253
+      ],
+      "prior": [
+        23,
+        122,
+        246
+      ],
+      "current": [
+        13,
+        136,
+        253
+      ]
+    },
+    "outerRimR91": {
+      "reference": [
+        42,
+        209,
+        251
+      ],
+      "prior": [
+        76,
+        156,
+        245
+      ],
+      "current": [
+        41,
+        207,
+        250
+      ]
+    }
+  },
+  "models": {
+    "outerRailCurrent": [
+      1281,
+      72,
+      1658,
+      933
+    ],
+    "outerBottomReference": 930,
+    "insetTopsCurrent": [
+      375,
+      532,
+      740
+    ],
+    "insetTopsReference": [
+      370,
+      528,
+      731
+    ]
+  },
+  "overview": {
+    "referenceAndCurrentWeightedLuma": {
+      "north": [
+        51.3,
+        44.1
+      ],
+      "left": [
+        39,
+        43.2
+      ],
+      "right": [
+        20.4,
+        24.2
+      ],
+      "lower": [
+        12.5,
+        10.5
+      ],
+      "center": [
+        9.4,
+        5.2
+      ]
+    },
+    "bottomSurfacePeakAt735": {
+      "referenceY": 357,
+      "currentY": 357,
+      "referenceLuma": 71.8,
+      "currentLuma": 136.4
+    },
+    "progressTopMean": {
+      "referenceRgb": [
+        29,
+        160,
+        244
+      ],
+      "currentRgb": [
+        57,
+        110,
+        232
+      ]
+    },
+    "open": "Reduce bottom surface limb separately from correcting progress-ring hue/glow; no uniform brightness adjustment"
+  }
+}

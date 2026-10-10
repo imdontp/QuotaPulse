@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode, type RefObject } from 'react';
+import { useEffect, useId, useState, type CSSProperties, type ReactNode, type RefObject } from 'react';
 import { Activity, ArrowUpRight, BarChart3, BellRing, Box, CircleGauge, GitBranch, Layers, Monitor, Moon, Radio, Settings, Sun, House, Folder, History, MoreHorizontal } from 'lucide-react';
 import type { MessageKey } from '@/i18n/en';
 import { CommandPalette } from '@/components/command-palette';
@@ -50,6 +50,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
 }) {
   const [clock, setClock] = useState(() => Date.now());
   const [alertCount, setAlertCount] = useState<number | null>(null);
+  const badgePaintId = `qp-alert-count-${useId().replace(/:/g, '')}`;
   const localizedAlertCount = alertCount === null ? null : new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US').format(alertCount);
   const alertCountBadge = alertCount !== null && alertCount > 0 ? (alertCount > 99 ? '99+' : String(alertCount)) : null;
   useEffect(() => { const timer = window.setInterval(() => setClock(Date.now()), 30_000); return () => window.clearInterval(timer); }, []);
@@ -88,7 +89,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
           {PRIMARY_NAV.map(({ id, href, label, icon: Icon }) => {
             const hasAlertCount = id === 'alerts' && alertCountBadge !== null && localizedAlertCount !== null;
             const accessibleLabel = hasAlertCount ? `${t(label)} · ${t('redesign.currentQuotaRisks')}: ${localizedAlertCount}` : t(label);
-            return <a key={id} href={href} aria-label={accessibleLabel} title={hasAlertCount ? accessibleLabel : undefined} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined} data-alert-count={hasAlertCount ? alertCountBadge : undefined}><Icon/><span>{t(label)}</span>{hasAlertCount && <span className="qp-nav-count" aria-hidden="true">{alertCountBadge}</span>}</a>;
+            return <a key={id} href={href} aria-label={accessibleLabel} title={hasAlertCount ? accessibleLabel : undefined} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined} data-alert-count={hasAlertCount ? alertCountBadge : undefined}><Icon/><span>{t(label)}</span>{hasAlertCount && <span className="qp-nav-count" aria-hidden="true"><svg aria-hidden="true" focusable="false" style={{ '--qp-nav-count-paint': `url(#${badgePaintId})` } as CSSProperties}><defs><radialGradient id={badgePaintId} cx="35%" cy="25%" r="85%"><stop stopColor="#ffb65a"/><stop offset=".55" stopColor="#f8a33e"/><stop offset="1" stopColor="#f39a38"/></radialGradient></defs><rect width="100%" height="100%" rx="9" ry="9" fill="#ed8a36"/></svg>{alertCountBadge}</span>}</a>;
           })}
           <details className="qp-nav-more" open={MORE_NAV.some(item => item.id === active)}>
             <summary aria-label={t('redesign.more')}><MoreHorizontal aria-hidden="true"/><span>{t('redesign.more')}</span></summary>

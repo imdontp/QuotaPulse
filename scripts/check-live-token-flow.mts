@@ -220,7 +220,10 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
   const expectedYTicks = maximum > 0 ? [maximum, Math.round(maximum * 2 / 3), Math.round(maximum / 3), 0].filter((value, index, values) => index === 0 || value < values[index - 1]!) : [0];
   assert.deepEqual(snapshot.yAxis.map(item => item.exact), expectedYTicks, `${state}: compact y-axis labels must retain the exact shared scale`);
   assert.deepEqual(snapshot.yAxis.map(item => item.title), expectedYTicks.map(value => number.format(value)), `${state}: y-axis titles must retain full localized values`);
-  assert.deepEqual(snapshot.yAxis.map(item => item.value), expectedYTicks.map(value => new Intl.NumberFormat('en-US', { notation: 'compact', maximumSignificantDigits: 3 }).format(value)), `${state}: y-axis labels must use compact notation`);
+  assert.deepEqual(snapshot.yAxis.map(item => item.value), expectedYTicks.map(value => {
+    const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumSignificantDigits: 2 }).format(value);
+    return compact.length > 4 ? value.toExponential(0).replace('e+', 'e') : compact;
+  }), `${state}: approximate tick labels must fit the source axis while raw scale values remain exact`);
   assert.ok(snapshot.yAxis.every((item, index) => Math.abs(item.top - (94 - 88 * expectedYTicks[index]! / (maximum || 1))) < .0001), `${state}: y-axis labels must align to the actual gridlines`);
   const pointCounts: Record<Series, number> = { input: 0, output: 0, total: 0 };
   const segmentCounts: Record<Series, number> = { input: 0, output: 0, total: 0 };
@@ -279,6 +282,7 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
   }
   assert.equal(snapshot.note, expected.some(point => point.partialBreakdown) ? messages['redesign.liveFlowBreakdown'] : null);
 
+  let nativeSourceGeometry: { left:number; top:number; right:number; bottom:number; divider:number; scrollX:number; scrollY:number } | null = null;
   if (state === 'baseline' && lang === 'en') {
     const painted = await page.locator('.qp-live-flow-total').evaluate(svg => {
       const grid = Array.from(svg.querySelectorAll(':scope>line'));
@@ -287,13 +291,35 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
       const topLeft = new DOMPoint(first.x1.baseVal.value, first.y1.baseVal.value).matrixTransform(matrix);
       const bottomRight = new DOMPoint(last.x2.baseVal.value, last.y2.baseVal.value).matrixTransform(matrix);
       const divider = document.querySelector('.qp-live-flow-latest')!.getBoundingClientRect().left;
-      return { left:topLeft.x, top:topLeft.y, right:bottomRight.x, bottom:bottomRight.y, divider };
+      // Source coordinates are measured from the document origin. Keyboard checks
+      // can leave a small restored scroll offset after navigation.
+      return { left:topLeft.x + scrollX, top:topLeft.y + scrollY, right:bottomRight.x + scrollX, bottom:bottomRight.y + scrollY, divider:divider + scrollX, scrollX, scrollY };
     });
-    for (const [edge, target] of Object.entries({ left:278, right:1057, divider:1083 })) {
+    for (const [edge, target] of Object.entries({ left:278, right:1057, divider:1083, top:622, bottom:726 })) {
       assert.ok(Math.abs(painted[edge as keyof typeof painted]-target)<=2, `Native Live ${edge} differs from original source: ${JSON.stringify(painted)}`);
     }
-    // Vertical source geometry remains a separate recorded gap; keep the truthful footer visible.
+    nativeSourceGeometry = painted;
   }
+  const tickAlignment = await page.locator('.qp-live-flow-total').evaluate(svg => {
+    const grid = Array.from(svg.querySelectorAll(':scope>line')) as SVGLineElement[];
+    const labels = Array.from(document.querySelectorAll('.qp-live-flow-y-axis>span'));
+    return grid.map((line, index) => {
+      const painted = new DOMPoint(line.x1.baseVal.value, line.y1.baseVal.value).matrixTransform(line.getScreenCTM()!);
+      const label = labels[index].getBoundingClientRect();
+      return Math.abs(painted.y - (label.y + label.height / 2));
+    });
+  });
+  assert.ok(tickAlignment.every(error => error <= 1), `${state}: displayed tick labels do not align with actual painted gridlines: ${JSON.stringify(tickAlignment)}`);
+  const nativeSummaryContained = await page.locator('.qp-live-token-flow').evaluate(root => {
+    if (!root.hasAttribute('data-panel-summary')) return null;
+    const summary = root.querySelector('.qp-live-flow-latest')!.getBoundingClientRect();
+    const panel = root.closest('.qp-live-trend')!.getBoundingClientRect();
+    return summary.left >= panel.left - 1 && summary.right <= panel.right + 1 && summary.top >= panel.top - 1 && summary.bottom <= panel.bottom + 1 && Array.from(root.querySelectorAll('.qp-live-flow-latest small,.qp-live-flow-latest strong,.qp-live-flow-latest time')).every(element => {
+      const child = element.getBoundingClientRect();
+      return child.left >= summary.left - 1 && child.right <= summary.right + 1 && child.top >= summary.top - 1 && child.bottom <= summary.bottom + 1;
+    });
+  });
+  assert.notEqual(nativeSummaryContained, false, `${state}: latest-minute facts overflow the intrinsic native summary or panel`);
   const collapsedComposition = await page.locator('.qp-live-trend').evaluate(element => { const r = element.getBoundingClientRect(); return { height: r.height, excludedVisible: !!element.querySelector('.qp-live-excluded')?.getBoundingClientRect().height }; });
   assert.ok(collapsedComposition.excludedVisible, 'Aggregate/unknown exclusion counts must stay visible before opening chart data');
   if (state === 'baseline' && lang === 'en') assert.ok(collapsedComposition.height <= 200, `Native chart panel must retain its approximately197px composition: ${JSON.stringify(collapsedComposition)}`);
@@ -410,7 +436,7 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
     mismatchedMinutes: expected.filter(point => point.input !== null && point.output !== null && point.input + point.output !== point.total).length,
     sharedMaximum: maximum, recordedTotalTokens: expected.reduce((sum, point) => sum + point.total, 0), pointCounts, segmentCounts,
     exactApiValues: true, unknownLineGaps: true, totalSelectorPreserved: true, clippedIntervals: true, tableColumns: 9,
-    keyboardOpenedAndClosed: true, keyboardFinalMinute: expected.length > 0, widths, colorEvidence,
+    keyboardOpenedAndClosed: true, keyboardFinalMinute: expected.length > 0, widths, colorEvidence, nativeSourceGeometry, tickAlignment, nativeSummaryContained,
     backgroundLayers: styles.backgroundLayers.map(layer => ({ ...layer, parsedColor: rgba(layer.color) })), resolvedPlotBackgrounds: plotBackgrounds };
 }
 

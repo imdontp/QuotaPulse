@@ -1,0 +1,30 @@
+
+> quotapulse@0.1.0 test:ui
+> node scripts/check-ui.mjs
+
+PASS navigation, filters, cost states, periods, and all sections
+PASS a loading view claims nothing about the data it is still waiting for
+PASS every tab has a heading outline under its title, with no skipped levels
+PASS every tab carries a data-driven ambient backdrop
+PASS the ambient backdrop follows the data rather than a constant
+PASS a figure that moved is highlighted, and one that merely drifted is not
+PASS dates follow the chosen language, not the operating system
+PASS every column header is scoped, and none claims to be sortable
+PASS en dark 390px Live + Limits
+PASS en dark 900px Live + Limits
+PASS en dark 1280px Live + Limits
+PASS en dark 1440px Live + Limits
+PASS en light 390px Live + Limits
+PASS en light 900px Live + Limits
+PASS en light 1280px Live + Limits
+PASS en light 1440px Live + Limits
+PASS th dark 390px Live + Limits
+PASS th dark 900px Live + Limits
+PASS th dark 1280px Live + Limits
+PASS th dark 1440px Live + Limits
+PASS th light 390px Live + Limits
+PASS th light 900px Live + Limits
+PASS th light 1280px Live + Limits
+PASS th light 1440px Live + Limits
+PASS PulsePet popup renders and follows the hidden-subscription preference
+PASS empty, unavailable, recovery; no page errors. Screenshots: C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\screens\quota-redesign

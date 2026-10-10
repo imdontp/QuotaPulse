@@ -1,0 +1,128 @@
+{
+  "status": "Validated incremental source repairs; whole-goal visual acceptance remains open",
+  "productionIndexSha256": "ebd7e3f68172b25fcfaff66924d0580dc59b8493d929bbc25edd168894edde1a",
+  "sourceSha256": {
+    "packages/web/src/redesign/cost.css": "d359cb1ea04033b679f46d011f5cd6ec940ba08baa4ea7ca34450f9ba864b4d1",
+    "packages/web/src/redesign/cost.tsx": "d86056fcd20ce8dc186ff697f95a53430dce792a0be52cd4930d44c13d3c59bc",
+    "packages/web/src/redesign/live-token-flow.css": "634fdf7fd96c6b6423981292507edb5f9ffedb283224923d73beb5fca30655ea",
+    "packages/web/src/redesign/live-token-flow.tsx": "c8a05969ee55603a7c8b9fc6bb4fc81037832b25bcb31f7e0ecb31d888ed4507",
+    "packages/web/src/redesign/live.css": "97896bc10883ae22bb3a0641edc437f72f2a16f6bd5576bad2fd191e9deecc15",
+    "packages/web/src/redesign/live.tsx": "28fc27a665b6e995acd6ac32feb5dc634f12b7a1b0d392d24da9432199659fce",
+    "packages/web/src/redesign/models.css": "5249f1a76882d592d91413f872ecc80b3bd79fc06d19a78b886c8a8c9cde029d",
+    "packages/web/src/redesign/overview.css": "3236bd6923d655b3db8a04be1836873e57f569553b79b03d9b9f11a630b41cc3",
+    "packages/web/src/redesign/overview.tsx": "5a5803ab44c88134377bee3789a9e0412ada6d7886282ef4f90bc264ecd73fc2",
+    "packages/web/src/redesign/projects.css": "7ffab427ccee3c6e00096675c0784db19017c51ab7bc687f44a86c796547343f",
+    "packages/web/src/redesign/projects.tsx": "6991f59389a4483c1f45ff4024427adc67a6c4fe7015bd02e4c2c827c52ff36f",
+    "packages/web/src/redesign/providers.css": "605f36f9b20e389ef8987addb7f50be0ff115e6990710be0daba17a33c2cdec5",
+    "scripts/check-live-token-flow.mts": "686cfd691aee33a5b1feec82624a71c46ccabd5ab43005acdc40501878330902",
+    "scripts/check-stable-captures.mts": "1bef00b15e0ab115413bfe92e74eeafc76ccd599013de1e76d5f460499ec7d0d",
+    "scripts/check-ui.mjs": "764449f7c29e6e52c3d9f11115690da591d56439b31e9aef853f726ab3879e95",
+    "packages/web/public/redesign/pulse-earth-v4.png": "43680a68501609dd2e6b5d21c01495d7c5b239f9d92655c33f47625238597bf2",
+    "packages/web/src/redesign/shell.tsx": "78bf9e5549f5833c05b957320b3be7bdd67aa3fb0354c3d4a8b9b576e137fc2a"
+  },
+  "build": {
+    "session": 10716,
+    "exitCode": null,
+    "status": "terminal success log; process exit unavailable after context truncation",
+    "log": "reference-50-sidebar-source-build.log"
+  },
+  "webUnit": {
+    "session": 10716,
+    "exitCode": null,
+    "tests": 170,
+    "passed": 170,
+    "failed": 0,
+    "log": "reference-50-sidebar-source-unit.log"
+  },
+  "uiBeforeFinalGlobePaint": {
+    "session": 39807,
+    "exitCode": 0,
+    "matrixCombinations": 16,
+    "log": "reference-50-current-ui.log"
+  },
+  "expectedCaptureTolerance": {
+    "maxChannelDelta": 10,
+    "maxChangedPixelFraction": 5e-05,
+    "masks": false
+  },
+  "baseCommit": "e5f777aa9754114169159871bc8e791b81ebca6e",
+  "visualProbe": {
+    "session": 36405,
+    "exitCode": 0,
+    "imageSha256": "c8ee74c8de2fbf356067be0768fc72289a3c9a3e8355b29788800f88c91426f9",
+    "sourceMatchedFixture": true,
+    "functionalMatrix": false
+  },
+  "failedFullBeforeHelperFix": {
+    "session": 66418,
+    "exitCode": 1,
+    "reason": "tsx named-function helper injected into browser closure; appbuildunchanged"
+  },
+  "badgeProbe": {
+    "session": 81269,
+    "exitCode": 0,
+    "viewports": [
+      1672,
+      900,
+      390
+    ],
+    "nativeBadgeChangedPixelsVsPrevious": 0,
+    "maxChannelDelta": 0,
+    "causeOfPreviousFailureProven": false
+  },
+  "previousFinalFullMatrix": {
+    "session": 86777,
+    "exitCode": null,
+    "status": "terminalassertionfailure",
+    "changedPixels": 24,
+    "mainContentChangedPixels": 0,
+    "maxDelta": 28,
+    "evidence": "final-matrix-failure/diagnosis.json"
+  },
+  "svgPaintFullMatrix": {
+    "session": 54220,
+    "exitCode": 1,
+    "page": "models-th-dark",
+    "changedPixels": 24,
+    "maxDelta": 28,
+    "hypothesis": "SVGsamegeometry paint does not eliminate observedintermittency"
+  },
+  "sourceSidebarProbe": {
+    "exitCode": null,
+    "status": "terminal states artifact and log present; exact process handle unavailable",
+    "viewports": [
+      1672,
+      900,
+      390
+    ],
+    "log": "reference-50-sidebar-source-probe.log",
+    "statesSha256": "e42d434612a567de8e9b54e2f3f7198f3d12dec8d9b0e3ca983e38653b15026a"
+  },
+  "sourceSidebarFullMatrix": {
+    "session": 56304,
+    "exitCode": 0,
+    "pairs": 40,
+    "pngs": 80,
+    "byteIdentical": 34,
+    "nonIdenticalPairs": 6,
+    "maxChannelDelta": 1,
+    "allHashesVerified": true,
+    "log": "reference-50-source-sidebar-full-matrix.log",
+    "causeOfPreviousIntermittencyProven": false
+  },
+  "fullCapture": {
+    "exitCode": 0,
+    "pairs": 40,
+    "pngs": 80,
+    "byteIdentical": 34,
+    "allHashesVerified": true
+  },
+  "currentValidationProcess": {
+    "uiExitCode": 0,
+    "captureExitCode": 0,
+    "captureLog": "reference-50-source-sidebar-full-matrix.log",
+    "stage": "all-terminal",
+    "uiLog": "reference-50-source-sidebar-ui.log"
+  },
+  "sourceReports": 9
+}

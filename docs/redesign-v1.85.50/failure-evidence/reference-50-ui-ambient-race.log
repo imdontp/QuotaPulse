@@ -1,0 +1,31 @@
+
+> quotapulse@0.1.0 test:ui
+> node scripts/check-ui.mjs
+
+PASS navigation, filters, cost states, periods, and all sections
+PASS a loading view claims nothing about the data it is still waiting for
+PASS every tab has a heading outline under its title, with no skipped levels
+PASS every tab carries a data-driven ambient backdrop
+node.exe : node:internal/modules/run_main:122
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: a dashboard with quota to spare is calm
+
+'idle' !== 'ok'
+
+    at file:///C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-foundation/scripts/check-ui.mjs:737:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'idle',
+  expected: 'ok',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1
