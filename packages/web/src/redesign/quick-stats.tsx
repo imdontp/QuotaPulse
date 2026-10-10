@@ -18,6 +18,16 @@ export function DaemonConnection() {
   return <span className="qp-daemon-status"><span className="qp-daemon-badge" data-state={state} role="status" aria-label={description} title={description}><i aria-hidden="true"/>{stateLabel}</span><span className="qp-daemon-caption" aria-hidden="true">{status}</span></span>;
 }
 
+/** Decorative reference marks; the link, label and counts retain their data semantics. */
+function QuickStatMark({ kind }: { kind: 'namedProjects' | 'models' | 'providers' | 'recentSessions' }) {
+  return <svg className="qp-native-stat-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false" data-kind={kind}>
+    {kind === 'namedProjects' && <><path d="M1 4a1 1 0 0 1 1-1h4l2 2h6a1 1 0 0 1 1 1v7H1Z" fill="currentColor"/><path d="M3 7h10v4H3Z" fill="none" stroke="#a4d9ff" strokeWidth="1"/><path d="M3 3v3h4" fill="none" stroke="#a4d9ff" strokeWidth="1"/></>}
+    {kind === 'models' && <><path d="m8 0 7 4v8l-7 4-7-4V4Z" fill="currentColor"/><path d="m8 2 5 3-5 3-5-3Zm0 6v6" fill="none" stroke="#092451" strokeWidth="1.4"/><path d="M5 7v4l3 2" fill="none" stroke="#c5e9ff" strokeWidth="1"/></>}
+    {kind === 'providers' && <><path d="M2 10V7a6 6 0 0 1 12 0v3M2 8H1v4h3V8Zm12 0h1v4h-3V8Zm-1 4c0 2-2 3-5 3" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><circle cx="8" cy="14" r="1" fill="currentColor"/></>}
+    {kind === 'recentSessions' && <circle cx="8" cy="8" r="3.5" fill="currentColor"/>}
+  </svg>;
+}
+
 export function QuickStats({ t, language, scope, paused = false, onAlertCountChange }: { t: RedesignTranslate; language: 'en' | 'th'; scope?: UsageEventScope | null; paused?: boolean; onAlertCountChange: (count: number | null) => void }) {
   const scopeKey = scope === null ? 'pending' : scope === undefined ? 'machine' : usageEventParams(scope).toString();
   const current = useRef({ key: scopeKey, generation: 0 });
@@ -67,7 +77,7 @@ export function QuickStats({ t, language, scope, paused = false, onAlertCountCha
   ] as const;
   return <section className="qp-quick-stats" aria-label={t('redesign.quickStats')} aria-describedby="qp-quick-stats-note" data-stale={stale}>
     <h2>{t('redesign.quickStats')}</h2>
-    <dl>{rows.map(({ key, label, icon: Icon, href }) => <div key={key}><dt><a href={href} aria-disabled={href === undefined || undefined} title={key === 'recentSessions' ? note : undefined}><Icon aria-hidden="true"/><span>{t(label)}</span></a></dt><dd data-stat={key}>{number(data?.[key])}</dd></div>)}</dl>
+    <dl>{rows.map(({ key, label, icon: Icon, href }) => <div key={key}><dt><a href={href} aria-disabled={href === undefined || undefined} title={key === 'recentSessions' ? note : undefined}><Icon className="qp-legacy-stat-mark" aria-hidden="true"/><QuickStatMark kind={key}/><span>{t(label)}</span></a></dt><dd data-stat={key}>{number(data?.[key])}</dd></div>)}</dl>
     <small id="qp-quick-stats-note" className="qp-visually-hidden">{note}</small>
     {stale && <small role="status">{t('redesign.staleSnapshot')}</small>}
   </section>;

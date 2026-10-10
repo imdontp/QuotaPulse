@@ -28,7 +28,7 @@ export const en = {
   'redesign.quickProjects': 'Projects',
   'redesign.quickModels': 'Models',
   'redesign.quickProviders': 'Providers',
-  'redesign.quickSessions': 'Active sessions',
+  'redesign.quickSessions': 'Active Sessions',
   'redesign.keepFlowing': 'Keep the flow going.',
   'redesign.namedProjects': 'Named projects',
   'redesign.recordedModels': 'Recorded models',

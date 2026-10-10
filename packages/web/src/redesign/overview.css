@@ -1443,3 +1443,85 @@
   border:0;
 }
 @media(max-width:1279px) { .qp-metric-trace { display:none; } }
+
+/* Native sidebar interiors measured against the original dashboard references. */
+.qp-quick-stats dt .qp-native-stat-mark { display:none; }
+@media(min-width:1536px) {
+  .qp-redesign[data-testid^=production-] {
+    --qp-stat-inset:16px;
+    --qp-stat-header-gap:15px;
+    --qp-stat-row-gap:16px;
+    --qp-stat-column-gap:12px;
+  }
+  .qp-redesign[data-testid=production-overview] { --qp-stat-inset:15px; --qp-stat-header-gap:14px; --qp-stat-column-gap:10px; }
+  .qp-redesign[data-testid=production-projects] { --qp-stat-inset:17px; --qp-stat-row-gap:18px; }
+  .qp-redesign[data-testid=production-models],
+  .qp-redesign[data-testid=production-providers],
+  .qp-redesign[data-testid=production-history] { --qp-stat-inset:17px; --qp-stat-header-gap:16px; --qp-stat-row-gap:20px; }
+  .qp-redesign[data-testid^=production-] .qp-quick-stats {
+    padding:18px var(--qp-stat-inset) 24px;
+    gap:var(--qp-stat-header-gap);
+  }
+  .qp-redesign[data-testid^=production-] .qp-quick-stats h2 { font-size:13px; line-height:18px; font-weight:400; color:var(--qp-muted); }
+  .qp-redesign[data-testid^=production-] .qp-quick-stats dl,
+  .qp-redesign[data-testid^=production-] .qp-sidebar:has(.qp-nav-more[open]) .qp-quick-stats dl { gap:var(--qp-stat-row-gap); }
+  .qp-redesign[data-testid^=production-] .qp-quick-stats dl>div,
+  .qp-redesign[data-testid^=production-] .qp-quick-stats dt a { grid-template-columns:28px minmax(0,1fr); grid-template-rows:22px 16px; column-gap:var(--qp-stat-column-gap); }
+  .qp-redesign[data-testid^=production-] .qp-quick-stats dt a { min-height:40px; }
+  .qp-redesign[data-testid^=production-] .qp-quick-stats dt .qp-legacy-stat-mark { display:none; }
+  .qp-redesign[data-testid^=production-] .qp-quick-stats dt .qp-native-stat-mark { display:block; width:28px; height:28px; padding:7px; }
+  .qp-redesign[data-testid^=production-] .qp-quick-stats dd { font-weight:500; }
+  .qp-redesign[data-testid^=production-] .qp-sidebar:has(.qp-nav-more[open])>.qp-quick-stats { min-height:289px; }
+  .qp-redesign[data-testid^=production-] .qp-sidebar-brand { padding-left:18px; gap:10px; font-size:11px; }
+  .qp-redesign[data-testid^=production-] .qp-sidebar-brand svg { filter:drop-shadow(0 0 1px #087fff); }
+  .qp-redesign[data-testid^=production-] .qp-sidebar-brand small { color:var(--qp-muted); }
+  .qp-redesign[data-testid=production-overview] .qp-sidebar-brand { font-size:10.5px; padding-bottom:12px; gap:6px; }
+  .qp-redesign[data-testid=production-projects] .qp-sidebar-brand { padding-bottom:13px; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-quick-stats,
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-sidebar-brand { background:#030a13; }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-quick-stats,
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-sidebar-brand { background:#050b15; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-quick-stats h2 { color:#8eb5df; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-quick-stats dt a { color:#86a6ce; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-quick-stats dd { color:#d4eeff; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-quick-stats dt .qp-native-stat-mark { background:#02163b; color:#319fff; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-quick-stats dt [data-kind=models] { color:#8ac0ff; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-quick-stats dt [data-kind=providers] { color:#00bdff; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-quick-stats dt [data-kind=recentSessions] { background:#012220; color:#00eeab; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-sidebar-brand { color:#88a8d1; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-sidebar-brand svg { color:#1285fb; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-sidebar-brand small { color:#708eb5; }
+}
+
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-providers],
+  .qp-redesign[data-testid=production-history] { --qp-stat-inset:16px; --qp-stat-row-gap:19px; }
+  .qp-redesign[data-testid=production-cost] { --qp-stat-inset:17px; --qp-stat-row-gap:17px; --qp-stat-header-gap:17px; }
+  .qp-redesign[data-testid=production-cost] .qp-quick-stats { padding-top:15px; }
+  .qp-redesign[data-testid=production-alerts] { --qp-stat-inset:17px; --qp-stat-header-gap:13px; }
+  .qp-redesign[data-testid=production-providers] .qp-sidebar-brand,
+  .qp-redesign[data-testid=production-alerts] .qp-sidebar-brand { padding-bottom:12px; }
+  .qp-redesign[data-testid=production-cost] .qp-sidebar-brand { padding-bottom:15px; }
+  .qp-redesign[data-testid=production-history] .qp-sidebar-brand { padding-bottom:10px; }
+  .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-quick-stats,
+  .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-sidebar-brand { background:#030b16; }
+  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-quick-stats,
+  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-sidebar-brand { background:#040b14; }
+  .qp-redesign[data-testid=production-history][data-theme=dark] .qp-quick-stats,
+  .qp-redesign[data-testid=production-history][data-theme=dark] .qp-sidebar-brand { background:#030b14; }
+  .qp-redesign[data-testid=production-alerts][data-theme=dark] .qp-quick-stats,
+  .qp-redesign[data-testid=production-alerts][data-theme=dark] .qp-sidebar-brand { background:#050c15; }
+}
+
+/* Native rim uses a rasterized copy of the original decorative vector path. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid^=production-] .qp-sidebar .qp-nav-active { position:relative; box-shadow:none; }
+  .qp-redesign[data-testid^=production-] .qp-sidebar .qp-nav-active::before {
+    content:"";
+    position:absolute;
+    inset:-1px auto -1px -1px;
+    width:8px;
+    pointer-events:none;
+    background:url("./assets/native-active-rim.png") 0 0/100% 100% no-repeat;
+  }
+}

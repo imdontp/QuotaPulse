@@ -1,0 +1,247 @@
+
+> quotapulse@0.1.0 test:stable
+> node --import tsx scripts/check-stable-captures.mts
+
+13:42:00.000 INFO  [db] opened :memory:
+Live refresh gate en/dark: initial document
+Live refresh gate en/dark: initial settled
+Live refresh gate en/dark: pause/resume success discarded
+Live refresh gate en/dark: A/B/A success discarded
+Live refresh gate en/dark: obsolete failure discarded
+Live refresh gate en/dark: current failure retained and recovered
+Live token-flow gate en/dark: baseline
+Live token-flow gate en/dark: diagnostic response
+Live token-flow gate en/dark: empty window
+History occupied geometry en dark {
+  bottom: 936,
+  visibleRows: 10,
+  records: 43,
+  table: { top: 523, bottom: 889, headerHeight: 33.5 },
+  firstRows: [
+    { top: 557, bottom: 590, height: 33 },
+    { top: 590, bottom: 623, height: 33 },
+    { top: 623, bottom: 656, height: 33 },
+    { top: 656, bottom: 689, height: 33 },
+    { top: 689, bottom: 722, height: 33 },
+    { top: 722, bottom: 755, height: 33 },
+    { top: 755, bottom: 788, height: 33 },
+    { top: 788, bottom: 821, height: 33 },
+    { top: 821, bottom: 854, height: 33 },
+    { top: 854, bottom: 887, height: 33 }
+  ],
+  cellContents: [
+    {
+      selector: '.qp-history-harness',
+      height: 24,
+      lineHeight: '18px',
+      verticalAlign: 'middle'
+    },
+    {
+      selector: '.qp-history-project',
+      height: 18,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    },
+    {
+      selector: '.qp-history-provider',
+      height: 18,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    },
+    {
+      selector: 'button',
+      height: 24,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    }
+  ]
+}
+History summary geometry [{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 2"},{"tag":"SPAN","text":"Total","y":204.5,"height":18.34375,"column":"2","row":"auto"},{"tag":"STRONG","text":"721.0M","y":224.84375,"height":25.65625,"column":"2","row":"auto"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 3"},{"tag":"SPAN","text":"Calls","y":200.40625,"height":14.296875,"column":"2","row":"auto"},{"tag":"STRONG","text":"79","y":216.703125,"height":21.59375,"column":"2","row":"auto"},{"tag":"SMALL","text":"43 Usage records · 17 Distinct sessions","y":240.296875,"height":14.296875,"column":"2","row":"3"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 3"},{"tag":"SPAN","text":"Calculated / estimated API value","y":200.40625,"height":14.296875,"column":"2 / -1","row":"auto"},{"tag":"STRONG","text":"$14.53+","y":216.703125,"height":21.59375,"column":"2","row":"auto"},{"tag":"SMALL","text":"Reported native cost: $0.0300+","y":240.296875,"height":14.296875,"column":"2 / -1","row":"3"},{"tag":"SMALL","text":"72 / 79 Calls","y":220.34375,"height":14.296875,"column":"3","row":"2"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 2"},{"tag":"SPAN","text":"Recorded effort categories","y":204.5,"height":20.140625,"column":"2","row":"auto"},{"tag":"UL","text":"Unknown: 79","y":226.640625,"height":23.859375,"column":"2","row":"auto"}]}]
+Stable capture pass 1: en/dark, 9 pages
+Live refresh gate en/light: initial document
+Live refresh gate en/light: initial settled
+Live refresh gate en/light: pause/resume success discarded
+Live refresh gate en/light: A/B/A success discarded
+Live refresh gate en/light: obsolete failure discarded
+Live refresh gate en/light: current failure retained and recovered
+Live token-flow gate en/light: baseline
+Live token-flow gate en/light: diagnostic response
+Live token-flow gate en/light: empty window
+History occupied geometry en light {
+  bottom: 936,
+  visibleRows: 10,
+  records: 43,
+  table: { top: 523, bottom: 889, headerHeight: 33.5 },
+  firstRows: [
+    { top: 557, bottom: 590, height: 33 },
+    { top: 590, bottom: 623, height: 33 },
+    { top: 623, bottom: 656, height: 33 },
+    { top: 656, bottom: 689, height: 33 },
+    { top: 689, bottom: 722, height: 33 },
+    { top: 722, bottom: 755, height: 33 },
+    { top: 755, bottom: 788, height: 33 },
+    { top: 788, bottom: 821, height: 33 },
+    { top: 821, bottom: 854, height: 33 },
+    { top: 854, bottom: 887, height: 33 }
+  ],
+  cellContents: [
+    {
+      selector: '.qp-history-harness',
+      height: 24,
+      lineHeight: '18px',
+      verticalAlign: 'middle'
+    },
+    {
+      selector: '.qp-history-project',
+      height: 18,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    },
+    {
+      selector: '.qp-history-provider',
+      height: 18,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    },
+    {
+      selector: 'button',
+      height: 24,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    }
+  ]
+}
+History summary geometry [{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 2"},{"tag":"SPAN","text":"Total","y":204.5,"height":18.34375,"column":"2","row":"auto"},{"tag":"STRONG","text":"721.0M","y":224.84375,"height":25.65625,"column":"2","row":"auto"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 3"},{"tag":"SPAN","text":"Calls","y":200.40625,"height":14.296875,"column":"2","row":"auto"},{"tag":"STRONG","text":"79","y":216.703125,"height":21.59375,"column":"2","row":"auto"},{"tag":"SMALL","text":"43 Usage records · 17 Distinct sessions","y":240.296875,"height":14.296875,"column":"2","row":"3"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 3"},{"tag":"SPAN","text":"Calculated / estimated API value","y":200.40625,"height":14.296875,"column":"2 / -1","row":"auto"},{"tag":"STRONG","text":"$14.53+","y":216.703125,"height":21.59375,"column":"2","row":"auto"},{"tag":"SMALL","text":"Reported native cost: $0.0300+","y":240.296875,"height":14.296875,"column":"2 / -1","row":"3"},{"tag":"SMALL","text":"72 / 79 Calls","y":220.34375,"height":14.296875,"column":"3","row":"2"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 2"},{"tag":"SPAN","text":"Recorded effort categories","y":204.5,"height":20.140625,"column":"2","row":"auto"},{"tag":"UL","text":"Unknown: 79","y":226.640625,"height":23.859375,"column":"2","row":"auto"}]}]
+Stable capture pass 1: en/light, 9 pages
+Live refresh gate th/dark: initial document
+Live refresh gate th/dark: initial settled
+Live refresh gate th/dark: pause/resume success discarded
+Live refresh gate th/dark: A/B/A success discarded
+Live refresh gate th/dark: obsolete failure discarded
+Live refresh gate th/dark: current failure retained and recovered
+Live token-flow gate th/dark: baseline
+Live token-flow gate th/dark: diagnostic response
+Live token-flow gate th/dark: empty window
+History occupied geometry th dark {
+  bottom: 936,
+  visibleRows: 10,
+  records: 43,
+  table: { top: 523, bottom: 889, headerHeight: 33.5 },
+  firstRows: [
+    { top: 557, bottom: 590, height: 33 },
+    { top: 590, bottom: 623, height: 33 },
+    { top: 623, bottom: 656, height: 33 },
+    { top: 656, bottom: 689, height: 33 },
+    { top: 689, bottom: 722, height: 33 },
+    { top: 722, bottom: 755, height: 33 },
+    { top: 755, bottom: 788, height: 33 },
+    { top: 788, bottom: 821, height: 33 },
+    { top: 821, bottom: 854, height: 33 },
+    { top: 854, bottom: 887, height: 33 }
+  ],
+  cellContents: [
+    {
+      selector: '.qp-history-harness',
+      height: 24,
+      lineHeight: '18px',
+      verticalAlign: 'middle'
+    },
+    {
+      selector: '.qp-history-project',
+      height: 18,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    },
+    {
+      selector: '.qp-history-provider',
+      height: 18,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    },
+    {
+      selector: 'button',
+      height: 24,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    }
+  ]
+}
+History summary geometry [{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 2"},{"tag":"SPAN","text":"รวม","y":204.5,"height":18.34375,"column":"2","row":"auto"},{"tag":"STRONG","text":"721.0M","y":224.84375,"height":25.65625,"column":"2","row":"auto"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 3"},{"tag":"SPAN","text":"ครั้ง","y":200.40625,"height":14.296875,"column":"2","row":"auto"},{"tag":"STRONG","text":"79","y":216.703125,"height":21.59375,"column":"2","row":"auto"},{"tag":"SMALL","text":"43 รายการใช้งาน · 17 เซสชันไม่ซ้ำ","y":240.296875,"height":14.296875,"column":"2","row":"3"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 3"},{"tag":"SPAN","text":"มูลค่า API ที่คำนวณ / ประมาณ","y":200.40625,"height":14.296875,"column":"2 / -1","row":"auto"},{"tag":"STRONG","text":"$14.53+","y":216.703125,"height":21.59375,"column":"2","row":"auto"},{"tag":"SMALL","text":"ค่าใช้จ่ายที่ต้นทางรายงาน: $0.0300+","y":240.296875,"height":14.296875,"column":"2 / -1","row":"3"},{"tag":"SMALL","text":"72 / 79 ครั้ง","y":220.34375,"height":14.296875,"column":"3","row":"2"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 2"},{"tag":"SPAN","text":"หมวด effort ที่บันทึก","y":204.5,"height":20.140625,"column":"2","row":"auto"},{"tag":"UL","text":"ไม่ทราบ: 79","y":226.640625,"height":23.859375,"column":"2","row":"auto"}]}]
+Stable capture pass 1: th/dark, 9 pages
+Live refresh gate th/light: initial document
+Live refresh gate th/light: initial settled
+Live refresh gate th/light: pause/resume success discarded
+Live refresh gate th/light: A/B/A success discarded
+Live refresh gate th/light: obsolete failure discarded
+Live refresh gate th/light: current failure retained and recovered
+Live token-flow gate th/light: baseline
+Live token-flow gate th/light: diagnostic response
+Live token-flow gate th/light: empty window
+History occupied geometry th light {
+  bottom: 936,
+  visibleRows: 10,
+  records: 43,
+  table: { top: 523, bottom: 889, headerHeight: 33.5 },
+  firstRows: [
+    { top: 557, bottom: 590, height: 33 },
+    { top: 590, bottom: 623, height: 33 },
+    { top: 623, bottom: 656, height: 33 },
+    { top: 656, bottom: 689, height: 33 },
+    { top: 689, bottom: 722, height: 33 },
+    { top: 722, bottom: 755, height: 33 },
+    { top: 755, bottom: 788, height: 33 },
+    { top: 788, bottom: 821, height: 33 },
+    { top: 821, bottom: 854, height: 33 },
+    { top: 854, bottom: 887, height: 33 }
+  ],
+  cellContents: [
+    {
+      selector: '.qp-history-harness',
+      height: 24,
+      lineHeight: '18px',
+      verticalAlign: 'middle'
+    },
+    {
+      selector: '.qp-history-project',
+      height: 18,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    },
+    {
+      selector: '.qp-history-provider',
+      height: 18,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    },
+    {
+      selector: 'button',
+      height: 24,
+      lineHeight: '18px',
+      verticalAlign: 'baseline'
+    }
+  ]
+}
+History summary geometry [{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 2"},{"tag":"SPAN","text":"รวม","y":204.5,"height":18.34375,"column":"2","row":"auto"},{"tag":"STRONG","text":"721.0M","y":224.84375,"height":25.65625,"column":"2","row":"auto"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 3"},{"tag":"SPAN","text":"ครั้ง","y":200.40625,"height":14.296875,"column":"2","row":"auto"},{"tag":"STRONG","text":"79","y":216.703125,"height":21.59375,"column":"2","row":"auto"},{"tag":"SMALL","text":"43 รายการใช้งาน · 17 เซสชันไม่ซ้ำ","y":240.296875,"height":14.296875,"column":"2","row":"3"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 3"},{"tag":"SPAN","text":"มูลค่า API ที่คำนวณ / ประมาณ","y":200.40625,"height":14.296875,"column":"2 / -1","row":"auto"},{"tag":"STRONG","text":"$14.53+","y":216.703125,"height":21.59375,"column":"2","row":"auto"},{"tag":"SMALL","text":"ค่าใช้จ่ายที่ต้นทางรายงาน: $0.0300+","y":240.296875,"height":14.296875,"column":"2 / -1","row":"3"},{"tag":"SMALL","text":"72 / 79 ครั้ง","y":220.34375,"height":14.296875,"column":"3","row":"2"}]},{"height":67,"children":[{"tag":"I","text":"","y":204.5,"height":46,"column":"auto","row":"1 / span 2"},{"tag":"SPAN","text":"หมวด effort ที่บันทึก","y":204.5,"height":20.140625,"column":"2","row":"auto"},{"tag":"UL","text":"ไม่ทราบ: 79","y":226.640625,"height":23.859375,"column":"2","row":"auto"}]}]
+Stable capture pass 1: th/light, 9 pages
+node.exe : node:internal/modules/run_main:122
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: models-en-dark.png: capture differs beyond raster tolerance
+({"changedPixels":34,"maxChannelDelta":20,"pixelCount":1573352})
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-stable-captures.mts:3060:20) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.13.1

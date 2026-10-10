@@ -1,0 +1,6 @@
+
+> quotapulse@0.1.0 test:quickstats
+> node --import tsx scripts/check-quickstats-scope.mts
+
+09:05:40.059 INFO  [db] opened :memory:
+QuickStats scoped production workflow passed.

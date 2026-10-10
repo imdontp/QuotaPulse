@@ -1,0 +1,32 @@
+{
+  "database": "isolated in-memory synthetic",
+  "clock": 1791547200000,
+  "productionIndexSha256": "a7cb8c83cef42ceb390b6031e4a7938e3b51f94dee375aa451690f19deb90916",
+  "checks": [
+    "legacy machine metadata-only counts",
+    "selected source/time counts",
+    "pending scoped state never global",
+    "actual delayed A/B/A response rejected",
+    "supported navigation preserves scope",
+    "unsupported navigation non-action",
+    "History committed scope not dirty draft",
+    "History rejects pre-pause in-flight response",
+    "History pause snapshot and resume",
+    "Live pause snapshot and resume",
+    "no browser errors"
+  ],
+  "summaryRequests": [
+    "http://127.0.0.1:7806/api/runtime-summary",
+    "http://127.0.0.1:7806/api/runtime-summary?from=1791543600000&to=1791547200001&source_id=1",
+    "http://127.0.0.1:7806/api/runtime-summary?from=1791543600000&to=1791547200001&source_id=1",
+    "http://127.0.0.1:7806/api/runtime-summary?from=1791543600000&to=1791547200001&grain=all",
+    "http://127.0.0.1:7806/api/runtime-summary?from=1791543600000&to=1791547200001&provider=openai&grain=all",
+    "http://127.0.0.1:7806/api/runtime-summary?from=1791543600000&to=1791547200001&provider=openai&grain=all",
+    "http://127.0.0.1:7806/api/runtime-summary?from=1791543600000&to=1791547200001&provider=openai&grain=all",
+    "http://127.0.0.1:7806/api/runtime-summary?from=1791545400000&to=1791547200001&provider=openai",
+    "http://127.0.0.1:7806/api/runtime-summary?from=1791545400000&to=1791547200001&provider=openai"
+  ],
+  "samples": [
+    "2"
+  ]
+}

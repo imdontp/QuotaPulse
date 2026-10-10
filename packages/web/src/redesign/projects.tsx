@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Activity, ArrowDownUp, BarChart3, Folder, Layers, RefreshCw, Search, Settings, Users } from 'lucide-react';
+import { Activity, ArrowDownUp, BarChart3, Box, Folder, Layers, RefreshCw, Search, Settings, Users } from 'lucide-react';
 import { api, type DetailedProjectResponse, type Overview as OverviewData, type ProjectDetailResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
@@ -181,7 +181,7 @@ export function ProductionProjects() {
           const share = data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0;
           const rows = data?.rows.filter(row => row.project === group.key) ?? [];
           return <button key={JSON.stringify(group.key)} className="qp-project-card qp-panel" data-tone={projectTone(group.key)} aria-pressed={selected?.key === group.key} onClick={() => update({ project: group.key, offset: 0 })}>
-            <span className="qp-project-card-heading"><span className="qp-project-icon" aria-hidden="true"><Folder size={21}/></span><span className="qp-project-card-identity"><strong>{projectName(group.key)}</strong><span className="qp-project-card-meta">{t('redesign.sortRecent')} · {date(group.lastObservedAt)}</span></span></span>
+            <span className="qp-project-card-heading"><span className="qp-project-icon" aria-hidden="true">{group.key === 'QuotaPulse' ? <Box size={21}/> : <Folder size={21}/>}</span><span className="qp-project-card-identity"><strong>{projectName(group.key)}</strong><span className="qp-project-card-meta">{t('redesign.sortRecent')} · {date(group.lastObservedAt)}</span></span></span>
             <span className="qp-project-card-summary"><span className="qp-project-card-usage"><span className="qp-project-card-tokens"><strong title={number(group.tokens)} aria-label={`${t('redesign.tokens')}: ${number(group.tokens)}`} data-value={group.tokens}>{compactTokens(group.tokens)}</strong><small title={t('redesign.projectShare')} aria-label={`${number(share)}% ${t('redesign.projectShare')}`}>{number(share)}%</small></span><span className="qp-bar"><span style={{ width: `${share}%` }}/></span><small>{t('redesign.tokens')}</small><span className="qp-project-card-share-label">{t('redesign.projectShare')}</span></span>
             <span className="qp-project-card-money"><span><strong><CostValue amount={group.reported_native_usd} priced={group.native_calls} total={group.calls} money={money} t={t}/></strong><small>{t('redesign.reported')}</small></span><span><strong><CostValue amount={group.api_value_usd} priced={group.computed_calls + group.estimated_calls} total={group.calls} money={money} t={t}/></strong><small>{t('redesign.value')}</small></span></span></span>
             {data?.trends && <ObservedTrend className="qp-project-spark" language={lang} label={`${t('redesign.projectTrend')}: ${projectName(group.key)}`} points={Array.from({ length: Math.ceil((data.scope.to - data.scope.from) / data.trends.bucketMs) }, (_, index) => { const at = data.scope.from + index * data.trends!.bucketMs; return { at, value: trendLookup.get(group.key)?.get(at) ?? 0 }; })}/>}
@@ -195,7 +195,7 @@ export function ProductionProjects() {
       </section>
       <div className="qp-project-rail"><aside className="qp-panel qp-project-detail" data-tone={selected ? projectTone(selected.key) : undefined} aria-label={t('redesign.projectDetails')}>
         {selected ? <>
-          <h2><span className="qp-project-icon" aria-hidden="true"><Folder size={26}/></span>{projectName(selected.key)}</h2>
+          <h2><span className="qp-project-icon" aria-hidden="true">{selected.key === 'QuotaPulse' ? <Box size={26}/> : <Folder size={26}/>}</span>{projectName(selected.key)}</h2>
           <nav className="qp-project-detail-tabs" aria-label={t('redesign.projectDetails')}>{(['overview', 'sessions', 'usage', 'details'] as const).map(tab =>
             <button key={tab} aria-current={route.detail === tab ? 'page' : undefined} onClick={() => update({ detail: tab, offset: 0 })}>{tab === 'overview' ? <Layers size={15} aria-hidden="true"/> : tab === 'sessions' ? <Users size={15} aria-hidden="true"/> : tab === 'usage' ? <BarChart3 size={15} aria-hidden="true"/> : <Settings size={15} aria-hidden="true"/>}{t(tab === 'overview' ? 'redesign.projectOverviewTab' : tab === 'sessions' ? 'redesign.projectSessionsTab' : tab === 'usage' ? 'redesign.projectUsageTab' : 'redesign.projectMetadataTab')}</button>)}</nav>
           {detailError && <p role="status" className="qp-project-error">{detailError}</p>}

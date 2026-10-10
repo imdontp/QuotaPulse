@@ -1,0 +1,67 @@
+{
+  "status": "Validated scoped implementation; full concept and release acceptance open",
+  "baseCommit": "a9cd137",
+  "tag": "redesign-visual-fidelity-v1.85.52",
+  "productionIndexSha256": "a7cb8c83cef42ceb390b6031e4a7938e3b51f94dee375aa451690f19deb90916",
+  "sourceHashes": {
+    "packages/web/src/redesign/overview.css": "05d2d344601820bcd7d735d1cce487766c6c4481cc7f7c191220a930eb3b6ff4",
+    "packages/web/src/redesign/quick-stats.tsx": "55395174b56eeafa2c1fadd38e1fbc2d4e2bd623c7e4428645394d652f8cd180",
+    "packages/web/src/redesign/projects.tsx": "06bfeba3a72a79ae6ec1f300cd007cadc0ca32aac2da62f94d138380b11cdd15",
+    "packages/web/src/i18n/en.ts": "8b7ec7500505fa7fd797ddd9181a69a0ca7e71d8a080fde8a93685b25244ac96",
+    "packages/web/src/redesign/assets/native-active-rim.png": "8966cded741f9d391779453d60b447ea9eb90bf605ab0c18a94b3ea384bf67d1",
+    "packages/web/src/redesign/assets/native-active-rim.svg": "4fbf8b471c761081d72aec78718ccceaead75abc7bd98edf4faad65a2effcbf7"
+  },
+  "build170Units": {
+    "session": 82911,
+    "exitCode": 0
+  },
+  "finalFocusedMatrixNativeScopeUi": {
+    "session": 31387,
+    "terminalStatus": {
+      "stage": "all-terminal",
+      "focusExit": 0,
+      "nativeExit": 0,
+      "thaiLightExit": 0,
+      "quickStatsExit": 0,
+      "uiExit": 0,
+      "matrixExit": 0
+    },
+    "note": "Original thaiLight step repeated EN/dark because it set capture variables instead of native-helper sidebar variables; TH/light separately corrected."
+  },
+  "correctedThaiLightNative": {
+    "session": 79813,
+    "stage": "terminal",
+    "exitCode": 0,
+    "language": "th",
+    "theme": "light",
+    "reason": "Original pipeline set capture variables but the native helper reads sidebar variables."
+  },
+  "pairs": 40,
+  "byteIdenticalPairs": 35,
+  "tolerance": {
+    "maxChannelDelta": 10,
+    "maxChangedPixelFraction": 5e-05,
+    "masks": false
+  },
+  "paintMeasurementCount": 64,
+  "meanAbsoluteCountLabelVerticalOffsetPx": 0.875,
+  "historicalFailedMatrix": {
+    "session": 58195,
+    "exitCode": 1,
+    "changedPixels": 18,
+    "maxChannelDelta": 29
+  },
+  "secondFailedMatrix": {
+    "session": 8256,
+    "exitCode": 1,
+    "changedPixels": 34,
+    "maxChannelDelta": 20
+  },
+  "failedPixelAlignmentCandidate": {
+    "session": 88928,
+    "exitCode": 1,
+    "changedPixels": 12,
+    "maxChannelDelta": 20
+  },
+  "rootCause": "Not established; controlled clean-process baseline and no-shadow comparisons did not reproduce the initial failure"
+}

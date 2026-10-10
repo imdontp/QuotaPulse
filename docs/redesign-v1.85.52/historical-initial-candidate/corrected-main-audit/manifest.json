@@ -1,0 +1,129 @@
+﻿{
+    "audit":  "main source residuals after sidebar v1.52 refinement",
+    "head":  "a9cd137",
+    "productionIndexSha256":  "0712f130caab5adbc3815f955c26fa728bb1537118b134e8fe9e68fec2540c40",
+    "candidateEvidence":  "screens/stable-captures EN/dark route captures observed after parent-reported gate start 2026-10-10 04:56 UTC; full 40-pair gate status remains unconfirmed",
+    "comparisonMethod":  "Native-size unscaled coordinate crops; no masks; source left and candidate right. This is visual review evidence, not an acceptance score.",
+    "captures":  [
+                     {
+                         "page":  "overview",
+                         "sourcePath":  "docs/redesign-v1.85.43/refs/overview.png",
+                         "candidatePath":  "screens/stable-captures/overview-en-dark.png",
+                         "cropRectangle":  {
+                                               "x":  228,
+                                               "y":  68,
+                                               "width":  1338,
+                                               "height":  638
+                                           },
+                         "sourceSha256":  "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+                         "candidateSha256":  "038e86663d3c6d43f17aecb969cfb8a0a17c51da402461a616edd20b2623146e",
+                         "comparisonCrop":  "crops/overview-comparison.png",
+                         "comparisonCropSha256":  "0cfd7c8ff9afae927e0563dbcafa00d9532ff9571d419f130948e5ee16092d38"
+                     },
+                     {
+                         "page":  "live",
+                         "sourcePath":  "docs/redesign-v1.85.43/refs/live.png",
+                         "candidatePath":  "screens/stable-captures/live-en-dark.png",
+                         "cropRectangle":  {
+                                               "x":  238,
+                                               "y":  72,
+                                               "width":  1422,
+                                               "height":  859
+                                           },
+                         "sourceSha256":  "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+                         "candidateSha256":  "f702ca8dcae63c8b5f3ec0ae8f38b2f2c9d16ab4f2c4c7817287338471d85e85",
+                         "comparisonCrop":  "crops/live-comparison.png",
+                         "comparisonCropSha256":  "aac9b500fc691e8063ae6d41dc094e1e0fdfd04d9735b6634ce6aa150b36e5ef"
+                     },
+                     {
+                         "page":  "projects",
+                         "sourcePath":  "docs/redesign-v1.85.43/refs/projects.png",
+                         "candidatePath":  "screens/stable-captures/projects-en-dark.png",
+                         "cropRectangle":  {
+                                               "x":  238,
+                                               "y":  72,
+                                               "width":  1422,
+                                               "height":  859
+                                           },
+                         "sourceSha256":  "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+                         "candidateSha256":  "5ee17a2dbdad5f6242c293dac4933f45a8f23c3c52d3d0997f6ca9b602d943e8",
+                         "comparisonCrop":  "crops/projects-comparison.png",
+                         "comparisonCropSha256":  "ab9194558b39b7d6a4ca7c838e56ee91472ab344fe392b73dfc0938d8b330248"
+                     },
+                     {
+                         "page":  "models",
+                         "sourcePath":  "docs/redesign-v1.85.43/refs/models.png",
+                         "candidatePath":  "screens/stable-captures/models-en-dark.png",
+                         "cropRectangle":  {
+                                               "x":  238,
+                                               "y":  72,
+                                               "width":  1422,
+                                               "height":  859
+                                           },
+                         "sourceSha256":  "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+                         "candidateSha256":  "170c95be05857f8f63bb51dd8d5df9c54c5cdb7ec001e835ccaa407b42cdddd3",
+                         "comparisonCrop":  "crops/models-comparison.png",
+                         "comparisonCropSha256":  "faeeb40bf4772be0866a815352cffb1198673d6713dd92c38179a068089cee93"
+                     },
+                     {
+                         "page":  "providers",
+                         "sourcePath":  "docs/redesign-v1.85.43/refs/providers.png",
+                         "candidatePath":  "screens/stable-captures/providers-en-dark.png",
+                         "cropRectangle":  {
+                                               "x":  238,
+                                               "y":  72,
+                                               "width":  1422,
+                                               "height":  859
+                                           },
+                         "sourceSha256":  "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6",
+                         "candidateSha256":  "aac7ebde2b66f9cd984536b3c69ac79d36dab1f95d04b5387d4d4ef9a9581c2e",
+                         "comparisonCrop":  "crops/providers-comparison.png",
+                         "comparisonCropSha256":  "f20466c8ad003708ea6c62a24dd21f7e3d3ad531ccd0aec76e98b191d338a902"
+                     },
+                     {
+                         "page":  "cost",
+                         "sourcePath":  "docs/redesign-v1.85.43/refs/cost.png",
+                         "candidatePath":  "screens/stable-captures/cost-en-dark.png",
+                         "cropRectangle":  {
+                                               "x":  238,
+                                               "y":  72,
+                                               "width":  1422,
+                                               "height":  859
+                                           },
+                         "sourceSha256":  "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+                         "candidateSha256":  "372f3692d8ca685f1b5f9036dc04fad04478d5eef716284d4d8a5b0f08f51bc5",
+                         "comparisonCrop":  "crops/cost-comparison.png",
+                         "comparisonCropSha256":  "bafbc2347c0b56c79c01f143af27c607e4fb44a6c5720f2ab4ff529d9cce6849"
+                     },
+                     {
+                         "page":  "history",
+                         "sourcePath":  "docs/redesign-v1.85.43/refs/history.png",
+                         "candidatePath":  "screens/stable-captures/history-en-dark.png",
+                         "cropRectangle":  {
+                                               "x":  238,
+                                               "y":  72,
+                                               "width":  1422,
+                                               "height":  859
+                                           },
+                         "sourceSha256":  "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+                         "candidateSha256":  "0bb6efb2e1a53750fded1a455c65b61f2c6e44d63c392505674a90f5bc07500d",
+                         "comparisonCrop":  "crops/history-comparison.png",
+                         "comparisonCropSha256":  "3b6420686cbbcea2cbd73094aa88af47e72feb232397256a4bbff4f2f7cbdc90"
+                     },
+                     {
+                         "page":  "alerts",
+                         "sourcePath":  "docs/redesign-v1.85.43/refs/alerts.png",
+                         "candidatePath":  "screens/stable-captures/alerts-en-dark.png",
+                         "cropRectangle":  {
+                                               "x":  238,
+                                               "y":  72,
+                                               "width":  1422,
+                                               "height":  859
+                                           },
+                         "sourceSha256":  "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+                         "candidateSha256":  "28caf0637dee0d460755693db965b6f305dd054002b34033656cbbaaa602803a",
+                         "comparisonCrop":  "crops/alerts-comparison.png",
+                         "comparisonCropSha256":  "2e726c85dd82d45510a9bcce0ea819f447831b18449e11dc99805c61b446bb69"
+                     }
+                 ]
+}
