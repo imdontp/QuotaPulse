@@ -1,0 +1,100 @@
+{
+  "scope": "eight native EN/dark frames, independent isolated renderer processes; not full40 matrix",
+  "productionIndexSha256": "59d998e03d16dcefac7d5a8d209b8a78c013d3f27906d5553656e16995a2b127",
+  "tolerance": {
+    "maxChannelDelta": 10,
+    "maxChangedPixelFraction": 5e-05,
+    "masks": false
+  },
+  "cases": [
+    {
+      "page": "overview",
+      "canonical": "tmp\\sidebar-native51\\overview-default.png",
+      "repeat": "tmp\\sidebar-native51-en-dark\\overview-default.png",
+      "canonicalSha256": "33ebf94d89beacf58b188628379e8aeb1cf93ac7b81d2be97955b97cc1aea406",
+      "repeatSha256": "33ebf94d89beacf58b188628379e8aeb1cf93ac7b81d2be97955b97cc1aea406",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "pixelCount": 1573312,
+      "passed": true
+    },
+    {
+      "page": "live",
+      "canonical": "tmp\\sidebar-native51\\live-default.png",
+      "repeat": "tmp\\sidebar-native51-en-dark\\live-default.png",
+      "canonicalSha256": "0f145404e89da4f31a2475e741cecf8a406910a2819f8efc0011d9a18bbd5188",
+      "repeatSha256": "0f145404e89da4f31a2475e741cecf8a406910a2819f8efc0011d9a18bbd5188",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "pixelCount": 1573352,
+      "passed": true
+    },
+    {
+      "page": "projects",
+      "canonical": "tmp\\sidebar-native51\\projects-default.png",
+      "repeat": "tmp\\sidebar-native51-en-dark\\projects-default.png",
+      "canonicalSha256": "a98e1730d3230d4c6ba31ec095dae29acdb4bc9ce1609d0718a0bbe57c7128e2",
+      "repeatSha256": "a98e1730d3230d4c6ba31ec095dae29acdb4bc9ce1609d0718a0bbe57c7128e2",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "pixelCount": 1573352,
+      "passed": true
+    },
+    {
+      "page": "models",
+      "canonical": "tmp\\sidebar-native51\\models-default.png",
+      "repeat": "tmp\\sidebar-native51-en-dark\\models-default.png",
+      "canonicalSha256": "7e513eaffc4e49a234fcf5057e6f45a0b1dba844b36aa411dfb5657b4d5a3f6c",
+      "repeatSha256": "7e513eaffc4e49a234fcf5057e6f45a0b1dba844b36aa411dfb5657b4d5a3f6c",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "pixelCount": 1573352,
+      "passed": true
+    },
+    {
+      "page": "providers",
+      "canonical": "tmp\\sidebar-native51\\providers-default.png",
+      "repeat": "tmp\\sidebar-native51-en-dark\\providers-default.png",
+      "canonicalSha256": "da751d5f6d02d570b56824f6ac775b93c32032c43586eb795c6a7cb5dd6f8d82",
+      "repeatSha256": "da751d5f6d02d570b56824f6ac775b93c32032c43586eb795c6a7cb5dd6f8d82",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "pixelCount": 1573352,
+      "passed": true
+    },
+    {
+      "page": "cost",
+      "canonical": "tmp\\sidebar-native51\\cost-default.png",
+      "repeat": "tmp\\sidebar-native51-en-dark\\cost-default.png",
+      "canonicalSha256": "bf27c4e7d09c37c96f44b84e88919fb373c06a262cd7acd4c54447ab8e15ee84",
+      "repeatSha256": "bf27c4e7d09c37c96f44b84e88919fb373c06a262cd7acd4c54447ab8e15ee84",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "pixelCount": 1573352,
+      "passed": true
+    },
+    {
+      "page": "history",
+      "canonical": "tmp\\sidebar-native51\\history-default.png",
+      "repeat": "tmp\\sidebar-native51-en-dark\\history-default.png",
+      "canonicalSha256": "54efc69aa72bc8e82fc9a0a1f9e30249bc315b61fa6b8041062657a5541ebe60",
+      "repeatSha256": "54efc69aa72bc8e82fc9a0a1f9e30249bc315b61fa6b8041062657a5541ebe60",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "pixelCount": 1573352,
+      "passed": true
+    },
+    {
+      "page": "alerts",
+      "canonical": "tmp\\sidebar-native51\\alerts-default.png",
+      "repeat": "tmp\\sidebar-native51-en-dark\\alerts-default.png",
+      "canonicalSha256": "8f665b33a5589a67e3e3024b08e1df90652643bb1533ef62e70fd3e0095dbdf1",
+      "repeatSha256": "8f665b33a5589a67e3e3024b08e1df90652643bb1533ef62e70fd3e0095dbdf1",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "pixelCount": 1573352,
+      "passed": true
+    }
+  ],
+  "passed": true
+}

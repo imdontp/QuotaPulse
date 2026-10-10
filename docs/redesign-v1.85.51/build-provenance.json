@@ -1,0 +1,38 @@
+{
+  "status": "Validated scoped native sidebar refinement; whole-goal acceptance open",
+  "tag": "redesign-visual-fidelity-v1.85.51",
+  "baseCommit": "a3c985c",
+  "productionIndexSha256": "59d998e03d16dcefac7d5a8d209b8a78c013d3f27906d5553656e16995a2b127",
+  "overviewCssSha256": "794b64ec5f70889e846d5876251d1caaa6bd378593915bb172c92776bc2d4d50",
+  "buildAnd170WebTests": {
+    "session": 82096,
+    "exitCode": 0
+  },
+  "nativeEightPagesAllNineLinksOpenClosedMoreCompact": {
+    "session": 64622,
+    "exitCode": 0
+  },
+  "thaiLightAnd16UiCombinations": {
+    "session": 34553,
+    "exitCode": 0
+  },
+  "independentRendererRepeat": {
+    "session": 59317,
+    "exitCode": 0,
+    "pairs": 8,
+    "pixelIdentical": 8,
+    "byteIdentical": 8,
+    "tolerance": {
+      "maxChannelDelta": 10,
+      "maxChangedPixelFraction": 5e-05,
+      "masks": false
+    }
+  },
+  "latestFull40PairMatrix": "../redesign-v1.85.50/capture-verification.json",
+  "limitations": [
+    "This is eight native EN/dark repeat pairs, not a current-build full40 matrix.",
+    "Sidebar probe Overview uses actual default5h83% fixture, unlike previous full-matrix monthly72%; sidebar coordinates are independent of quota selection.",
+    "Providers/Cost default expandedMore cannot be presented as their closed-source layout.",
+    "Original99\u2013100% likeness, interiors/paint/icons, approved baseline/SSIM, performance/manual accessibility/final release remain open."
+  ]
+}
