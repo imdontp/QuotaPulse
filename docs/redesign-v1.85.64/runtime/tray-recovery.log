@@ -1,0 +1,6 @@
+
+> quotapulse@0.1.0 test:tray-recovery
+> node --import tsx scripts/check-tray-recovery.mts
+
+17:21:51.898 INFO  [db] opened :memory:
+Tray recovery passed: 4 checks through real compiled main.

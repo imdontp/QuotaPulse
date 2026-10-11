@@ -1,0 +1,26 @@
+{
+  "applicationCommit": "e2ea4e1",
+  "productionIndexSha256": "c118de8dec77029c9178d6cd633e2860640e32f86dafdd9a81811c9a3ea8a45d",
+  "desktopRuntimeTerminalSession": 96910,
+  "recoveryTerminalSession": 94580,
+  "terminalExitCodes": [
+    0,
+    0
+  ],
+  "compiledAndTestHashes": {
+    "packages/tray/dist/main.js": "14c204c87ef50bb80bd04d126479d13ec3bd374d332281b390a9bb7ee0d1f852",
+    "packages/tray/dist/instance-profile.js": "37497839475563529ac2d3bc807488daf715a14787a79f6a98880f0bc70c654a",
+    "packages/tray/dist-preload/dashboard-preload.js": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+    "packages/tray/dist-preload/popup-preload.js": "b4fa7c970c40ab64961e6bfbbf08b339cdc21c5cd0cf9c1087c2c098298f9319",
+    "scripts/check-desktop-runtime.mts": "ed3dea09f5151d49a20bc3a7dbd9ce1731627ed989373ecce6ac561da3f53939",
+    "scripts/check-production-runtime.mts": "4c7bd8add4675baeac3713d4076249b23371bad4f009ae6655533345090bb1f5",
+    "scripts/check-tray-recovery.mts": "90e789609ede2171868b93ffeb5899551b2c25029129271405603e1d5dd4b11d"
+  },
+  "originalLogHashes": {
+    "tray-build": "dc27bfd6c564dae1f869882b21b58fc32d3a9a82ca97c39e8f0ce27980a05c66",
+    "desktop": "40aaf01680fa0eb303c0e72d9a1aea7a56051d7b1c26575afdc523b432e61e8a",
+    "runtime": "8b9012eb5a5a793ba3ac3ae1a79f67ee03885ac04389e8d737e8985b9f9f88cb",
+    "tray-recovery": "1258a545bb73a1b5a6775c8f156d9e9a0f50ee2f1054c10294291df1f1d215ad"
+  },
+  "note": "Web code/dist stayed frozen through all three checks. Electron profiles and synthetic databases were isolated; tests closed their instances."
+}

@@ -1,0 +1,6 @@
+
+> quotapulse@0.1.0 test:desktop
+> node --import tsx scripts/check-desktop-runtime.mts
+
+17:20:31.167 INFO  [db] opened :memory:
+Desktop runtime passed: isolated dashboard/popup, compiled preloads and readiness/action IPC.

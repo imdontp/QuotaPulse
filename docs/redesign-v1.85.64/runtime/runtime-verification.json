@@ -1,0 +1,5188 @@
+{
+  "status": "passed",
+  "browser": "154.0.8037.97",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "records": 5000,
+    "tokens": 500000
+  },
+  "build": "production web assets served by authenticated daemon; no Vite proxy",
+  "webRoot": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\dist",
+  "limitations": [
+    "single local machine and one browser run",
+    "first document cold; later routes share browser cache",
+    "route ready is selector readiness, not every asynchronous detail panel",
+    "no comparison against prior version; no CPU improvement claim",
+    "not packaged Electron or installed tray verification"
+  ],
+  "externalRequests": [],
+  "writeRequests": [],
+  "errors": [],
+  "httpErrors": [],
+  "historySummaryHttpMs": [
+    33.97949999999946,
+    26.014600000000428,
+    20.365600000000995,
+    24.756199999999808,
+    33.26499999999942,
+    29.019900000001144,
+    30.016900000000533,
+    28.37760000000162,
+    32.66330000000016,
+    24.26009999999951
+  ],
+  "routes": [
+    {
+      "destination": "overview",
+      "readyMs": 2477.7176,
+      "browser": {
+        "navigation": [
+          {
+            "name": "http://127.0.0.1:7802/#overview",
+            "entryType": "navigation",
+            "startTime": 0,
+            "duration": 162.5,
+            "navigationId": 5612,
+            "initiatorType": "navigation",
+            "deliveryType": "",
+            "nextHopProtocol": "http/1.1",
+            "renderBlockingStatus": "non-blocking",
+            "contentType": "text/html",
+            "contentEncoding": "",
+            "workerStart": 0,
+            "workerRouterEvaluationStart": 0,
+            "workerCacheLookupStart": 0,
+            "workerMatchedSourceType": "",
+            "workerFinalSourceType": "",
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 1.2000000476837158,
+            "domainLookupStart": 1.2000000476837158,
+            "domainLookupEnd": 1.2000000476837158,
+            "connectStart": 1.2000000476837158,
+            "secureConnectionStart": 0,
+            "connectEnd": 1.2000000476837158,
+            "requestStart": 31.800000071525574,
+            "responseStart": 60.5,
+            "firstInterimResponseStart": 0,
+            "finalResponseHeadersStart": 60.5,
+            "responseEnd": 61.700000047683716,
+            "transferSize": 2235,
+            "encodedBodySize": 1935,
+            "decodedBodySize": 1935,
+            "responseStatus": 200,
+            "serverTiming": [],
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "domInteractive": 139.90000009536743,
+            "domContentLoadedEventStart": 159,
+            "domContentLoadedEventEnd": 159.20000004768372,
+            "domComplete": 162.40000009536743,
+            "loadEventStart": 162.5,
+            "loadEventEnd": 162.5,
+            "type": "navigate",
+            "redirectCount": 0,
+            "activationStart": 0,
+            "criticalCHRestart": 0,
+            "notRestoredReasons": null,
+            "confidence": {
+              "randomizedTriggerRate": 0.4994798,
+              "value": "low"
+            }
+          }
+        ],
+        "paint": [
+          {
+            "name": "first-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          },
+          {
+            "name": "first-contentful-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          }
+        ],
+        "resources": [
+          {
+            "path": "/assets/index-BulTTdp8.js",
+            "durationMs": 53.60000002384186,
+            "transferBytes": 304840,
+            "decodedBytes": 304540
+          },
+          {
+            "path": "/assets/index-VOvS51-H.css",
+            "durationMs": 57.200000047683716,
+            "transferBytes": 64316,
+            "decodedBytes": 64016
+          },
+          {
+            "path": "/assets/production-BO30KCoc.js",
+            "durationMs": 804.3000000715256,
+            "transferBytes": 71219,
+            "decodedBytes": 70919
+          },
+          {
+            "path": "/assets/command-palette-Dos42Sr9.js",
+            "durationMs": 815.7000000476837,
+            "transferBytes": 163331,
+            "decodedBytes": 163031
+          },
+          {
+            "path": "/assets/command-palette-BlVnp0iG.css",
+            "durationMs": 808.1999999284744,
+            "transferBytes": 1158,
+            "decodedBytes": 858
+          },
+          {
+            "path": "/assets/harness-icon-B9AxT87T.js",
+            "durationMs": 821.5,
+            "transferBytes": 20705,
+            "decodedBytes": 20405
+          },
+          {
+            "path": "/assets/chart-data-tqqWKQdJ.js",
+            "durationMs": 819.6000000238419,
+            "transferBytes": 1058,
+            "decodedBytes": 758
+          },
+          {
+            "path": "/assets/chart-data-AgyWygLH.css",
+            "durationMs": 809.1000000238419,
+            "transferBytes": 944,
+            "decodedBytes": 644
+          },
+          {
+            "path": "/assets/shell-CiMTIAah.js",
+            "durationMs": 849.8000000715256,
+            "transferBytes": 14704,
+            "decodedBytes": 14404
+          },
+          {
+            "path": "/assets/shell-B-48w8Yh.css",
+            "durationMs": 827.9000000953674,
+            "transferBytes": 77831,
+            "decodedBytes": 77531
+          },
+          {
+            "path": "/assets/quota-chart-DKiBS4pO.js",
+            "durationMs": 863.8999999761581,
+            "transferBytes": 3866,
+            "decodedBytes": 3566
+          },
+          {
+            "path": "/assets/format-Ez_F9x7g.js",
+            "durationMs": 981.7999999523163,
+            "transferBytes": 2733,
+            "decodedBytes": 2433
+          },
+          {
+            "path": "/assets/quota-chart-D8HC5jl7.css",
+            "durationMs": 842.3000000715256,
+            "transferBytes": 1305,
+            "decodedBytes": 1005
+          },
+          {
+            "path": "/assets/trending-up-SphbULb5.js",
+            "durationMs": 987,
+            "transferBytes": 979,
+            "decodedBytes": 679
+          },
+          {
+            "path": "/assets/coins-B5U79lzS.js",
+            "durationMs": 924.8000000715256,
+            "transferBytes": 762,
+            "decodedBytes": 462
+          },
+          {
+            "path": "/assets/database-965M3LsW.js",
+            "durationMs": 925.2000000476837,
+            "transferBytes": 725,
+            "decodedBytes": 425
+          },
+          {
+            "path": "/assets/lightbulb-C3if9xdR.js",
+            "durationMs": 948.2999999523163,
+            "transferBytes": 763,
+            "decodedBytes": 463
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 961.1999999284744,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+            "durationMs": 142.5,
+            "transferBytes": 29700,
+            "decodedBytes": 29400
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 96.29999995231628,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/settings",
+            "durationMs": 96.89999997615814,
+            "transferBytes": 391,
+            "decodedBytes": 91
+          },
+          {
+            "path": "/api/compare",
+            "durationMs": 61.5,
+            "transferBytes": 1358,
+            "decodedBytes": 1058
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 224.70000004768372,
+            "transferBytes": 2799,
+            "decodedBytes": 2499
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 246.39999997615814,
+            "transferBytes": 2422,
+            "decodedBytes": 2122
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 335.2999999523163,
+            "transferBytes": 1475,
+            "decodedBytes": 1175
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 17.799999952316284,
+            "transferBytes": 1084,
+            "decodedBytes": 784
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 19.899999976158142,
+            "transferBytes": 2483,
+            "decodedBytes": 2183
+          },
+          {
+            "path": "/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2",
+            "durationMs": 219.10000002384186,
+            "transferBytes": 23428,
+            "decodedBytes": 23128
+          },
+          {
+            "path": "/fonts/noto-sans-thai/NotoSansThai-variable.ttf",
+            "durationMs": 194.19999992847443,
+            "transferBytes": 218952,
+            "decodedBytes": 218652
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 72.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 82.39999997615814,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/redesign/pulse-earth-v4.png",
+            "durationMs": 88.40000009536743,
+            "transferBytes": 1689774,
+            "decodedBytes": 1689474
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 117.60000002384186,
+            "transferBytes": 2827,
+            "decodedBytes": 2527
+          }
+        ]
+      }
+    },
+    {
+      "destination": "live",
+      "readyMs": 828.5013999999992,
+      "browser": {
+        "navigation": [
+          {
+            "name": "http://127.0.0.1:7802/#overview",
+            "entryType": "navigation",
+            "startTime": 0,
+            "duration": 162.5,
+            "navigationId": 5612,
+            "initiatorType": "navigation",
+            "deliveryType": "",
+            "nextHopProtocol": "http/1.1",
+            "renderBlockingStatus": "non-blocking",
+            "contentType": "text/html",
+            "contentEncoding": "",
+            "workerStart": 0,
+            "workerRouterEvaluationStart": 0,
+            "workerCacheLookupStart": 0,
+            "workerMatchedSourceType": "",
+            "workerFinalSourceType": "",
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 1.2000000476837158,
+            "domainLookupStart": 1.2000000476837158,
+            "domainLookupEnd": 1.2000000476837158,
+            "connectStart": 1.2000000476837158,
+            "secureConnectionStart": 0,
+            "connectEnd": 1.2000000476837158,
+            "requestStart": 31.800000071525574,
+            "responseStart": 60.5,
+            "firstInterimResponseStart": 0,
+            "finalResponseHeadersStart": 60.5,
+            "responseEnd": 61.700000047683716,
+            "transferSize": 2235,
+            "encodedBodySize": 1935,
+            "decodedBodySize": 1935,
+            "responseStatus": 200,
+            "serverTiming": [],
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "domInteractive": 139.90000009536743,
+            "domContentLoadedEventStart": 159,
+            "domContentLoadedEventEnd": 159.20000004768372,
+            "domComplete": 162.40000009536743,
+            "loadEventStart": 162.5,
+            "loadEventEnd": 162.5,
+            "type": "navigate",
+            "redirectCount": 0,
+            "activationStart": 0,
+            "criticalCHRestart": 0,
+            "notRestoredReasons": null,
+            "confidence": {
+              "randomizedTriggerRate": 0.4994798,
+              "value": "low"
+            }
+          }
+        ],
+        "paint": [
+          {
+            "name": "first-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          },
+          {
+            "name": "first-contentful-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          }
+        ],
+        "resources": [
+          {
+            "path": "/assets/index-BulTTdp8.js",
+            "durationMs": 53.60000002384186,
+            "transferBytes": 304840,
+            "decodedBytes": 304540
+          },
+          {
+            "path": "/assets/index-VOvS51-H.css",
+            "durationMs": 57.200000047683716,
+            "transferBytes": 64316,
+            "decodedBytes": 64016
+          },
+          {
+            "path": "/assets/production-BO30KCoc.js",
+            "durationMs": 804.3000000715256,
+            "transferBytes": 71219,
+            "decodedBytes": 70919
+          },
+          {
+            "path": "/assets/command-palette-Dos42Sr9.js",
+            "durationMs": 815.7000000476837,
+            "transferBytes": 163331,
+            "decodedBytes": 163031
+          },
+          {
+            "path": "/assets/command-palette-BlVnp0iG.css",
+            "durationMs": 808.1999999284744,
+            "transferBytes": 1158,
+            "decodedBytes": 858
+          },
+          {
+            "path": "/assets/harness-icon-B9AxT87T.js",
+            "durationMs": 821.5,
+            "transferBytes": 20705,
+            "decodedBytes": 20405
+          },
+          {
+            "path": "/assets/chart-data-tqqWKQdJ.js",
+            "durationMs": 819.6000000238419,
+            "transferBytes": 1058,
+            "decodedBytes": 758
+          },
+          {
+            "path": "/assets/chart-data-AgyWygLH.css",
+            "durationMs": 809.1000000238419,
+            "transferBytes": 944,
+            "decodedBytes": 644
+          },
+          {
+            "path": "/assets/shell-CiMTIAah.js",
+            "durationMs": 849.8000000715256,
+            "transferBytes": 14704,
+            "decodedBytes": 14404
+          },
+          {
+            "path": "/assets/shell-B-48w8Yh.css",
+            "durationMs": 827.9000000953674,
+            "transferBytes": 77831,
+            "decodedBytes": 77531
+          },
+          {
+            "path": "/assets/quota-chart-DKiBS4pO.js",
+            "durationMs": 863.8999999761581,
+            "transferBytes": 3866,
+            "decodedBytes": 3566
+          },
+          {
+            "path": "/assets/format-Ez_F9x7g.js",
+            "durationMs": 981.7999999523163,
+            "transferBytes": 2733,
+            "decodedBytes": 2433
+          },
+          {
+            "path": "/assets/quota-chart-D8HC5jl7.css",
+            "durationMs": 842.3000000715256,
+            "transferBytes": 1305,
+            "decodedBytes": 1005
+          },
+          {
+            "path": "/assets/trending-up-SphbULb5.js",
+            "durationMs": 987,
+            "transferBytes": 979,
+            "decodedBytes": 679
+          },
+          {
+            "path": "/assets/coins-B5U79lzS.js",
+            "durationMs": 924.8000000715256,
+            "transferBytes": 762,
+            "decodedBytes": 462
+          },
+          {
+            "path": "/assets/database-965M3LsW.js",
+            "durationMs": 925.2000000476837,
+            "transferBytes": 725,
+            "decodedBytes": 425
+          },
+          {
+            "path": "/assets/lightbulb-C3if9xdR.js",
+            "durationMs": 948.2999999523163,
+            "transferBytes": 763,
+            "decodedBytes": 463
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 961.1999999284744,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+            "durationMs": 142.5,
+            "transferBytes": 29700,
+            "decodedBytes": 29400
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 96.29999995231628,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/settings",
+            "durationMs": 96.89999997615814,
+            "transferBytes": 391,
+            "decodedBytes": 91
+          },
+          {
+            "path": "/api/compare",
+            "durationMs": 61.5,
+            "transferBytes": 1358,
+            "decodedBytes": 1058
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 224.70000004768372,
+            "transferBytes": 2799,
+            "decodedBytes": 2499
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 246.39999997615814,
+            "transferBytes": 2422,
+            "decodedBytes": 2122
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 335.2999999523163,
+            "transferBytes": 1475,
+            "decodedBytes": 1175
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 17.799999952316284,
+            "transferBytes": 1084,
+            "decodedBytes": 784
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 19.899999976158142,
+            "transferBytes": 2483,
+            "decodedBytes": 2183
+          },
+          {
+            "path": "/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2",
+            "durationMs": 219.10000002384186,
+            "transferBytes": 23428,
+            "decodedBytes": 23128
+          },
+          {
+            "path": "/fonts/noto-sans-thai/NotoSansThai-variable.ttf",
+            "durationMs": 194.19999992847443,
+            "transferBytes": 218952,
+            "decodedBytes": 218652
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 72.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 82.39999997615814,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/redesign/pulse-earth-v4.png",
+            "durationMs": 88.40000009536743,
+            "transferBytes": 1689774,
+            "decodedBytes": 1689474
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 117.60000002384186,
+            "transferBytes": 2827,
+            "decodedBytes": 2527
+          },
+          {
+            "path": "/assets/live-DxQse_jK.js",
+            "durationMs": 38.89999997615814,
+            "transferBytes": 32701,
+            "decodedBytes": 32401
+          },
+          {
+            "path": "/assets/page-heading--9DlK1z8.js",
+            "durationMs": 50.89999997615814,
+            "transferBytes": 770,
+            "decodedBytes": 470
+          },
+          {
+            "path": "/assets/page-heading-B6srWc0E.css",
+            "durationMs": 44.89999997615814,
+            "transferBytes": 7682,
+            "decodedBytes": 7382
+          },
+          {
+            "path": "/assets/heading-reference-icon-CQzoG3VN.js",
+            "durationMs": 53.59999990463257,
+            "transferBytes": 2245,
+            "decodedBytes": 1945
+          },
+          {
+            "path": "/assets/section-mark-CiNhrCYK.js",
+            "durationMs": 60.699999928474426,
+            "transferBytes": 569,
+            "decodedBytes": 269
+          },
+          {
+            "path": "/assets/section-mark-D9p1fSvH.css",
+            "durationMs": 65.30000007152557,
+            "transferBytes": 2109,
+            "decodedBytes": 1809
+          },
+          {
+            "path": "/assets/refresh-cw-CqJ6e4Lb.js",
+            "durationMs": 84,
+            "transferBytes": 803,
+            "decodedBytes": 503
+          },
+          {
+            "path": "/assets/triangle-alert-CDJ3xTiq.js",
+            "durationMs": 92.39999997615814,
+            "transferBytes": 1034,
+            "decodedBytes": 734
+          },
+          {
+            "path": "/assets/info-7VoHXq0d.js",
+            "durationMs": 94.89999997615814,
+            "transferBytes": 681,
+            "decodedBytes": 381
+          },
+          {
+            "path": "/assets/live-DqdmQgrV.css",
+            "durationMs": 80.20000004768372,
+            "transferBytes": 32802,
+            "decodedBytes": 32502
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 89.5,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 73.19999992847443,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 117.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 27,
+            "transferBytes": 2407,
+            "decodedBytes": 2107
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 34.39999997615814,
+            "transferBytes": 5630,
+            "decodedBytes": 5330
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 60.199999928474426,
+            "transferBytes": 3266,
+            "decodedBytes": 2966
+          },
+          {
+            "path": "/api/live-sessions",
+            "durationMs": 75.60000002384186,
+            "transferBytes": 719,
+            "decodedBytes": 419
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 7.800000071525574,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          }
+        ]
+      }
+    },
+    {
+      "destination": "projects",
+      "readyMs": 299.5716000000011,
+      "browser": {
+        "navigation": [
+          {
+            "name": "http://127.0.0.1:7802/#overview",
+            "entryType": "navigation",
+            "startTime": 0,
+            "duration": 162.5,
+            "navigationId": 5612,
+            "initiatorType": "navigation",
+            "deliveryType": "",
+            "nextHopProtocol": "http/1.1",
+            "renderBlockingStatus": "non-blocking",
+            "contentType": "text/html",
+            "contentEncoding": "",
+            "workerStart": 0,
+            "workerRouterEvaluationStart": 0,
+            "workerCacheLookupStart": 0,
+            "workerMatchedSourceType": "",
+            "workerFinalSourceType": "",
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 1.2000000476837158,
+            "domainLookupStart": 1.2000000476837158,
+            "domainLookupEnd": 1.2000000476837158,
+            "connectStart": 1.2000000476837158,
+            "secureConnectionStart": 0,
+            "connectEnd": 1.2000000476837158,
+            "requestStart": 31.800000071525574,
+            "responseStart": 60.5,
+            "firstInterimResponseStart": 0,
+            "finalResponseHeadersStart": 60.5,
+            "responseEnd": 61.700000047683716,
+            "transferSize": 2235,
+            "encodedBodySize": 1935,
+            "decodedBodySize": 1935,
+            "responseStatus": 200,
+            "serverTiming": [],
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "domInteractive": 139.90000009536743,
+            "domContentLoadedEventStart": 159,
+            "domContentLoadedEventEnd": 159.20000004768372,
+            "domComplete": 162.40000009536743,
+            "loadEventStart": 162.5,
+            "loadEventEnd": 162.5,
+            "type": "navigate",
+            "redirectCount": 0,
+            "activationStart": 0,
+            "criticalCHRestart": 0,
+            "notRestoredReasons": null,
+            "confidence": {
+              "randomizedTriggerRate": 0.4994798,
+              "value": "low"
+            }
+          }
+        ],
+        "paint": [
+          {
+            "name": "first-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          },
+          {
+            "name": "first-contentful-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          }
+        ],
+        "resources": [
+          {
+            "path": "/assets/index-BulTTdp8.js",
+            "durationMs": 53.60000002384186,
+            "transferBytes": 304840,
+            "decodedBytes": 304540
+          },
+          {
+            "path": "/assets/index-VOvS51-H.css",
+            "durationMs": 57.200000047683716,
+            "transferBytes": 64316,
+            "decodedBytes": 64016
+          },
+          {
+            "path": "/assets/production-BO30KCoc.js",
+            "durationMs": 804.3000000715256,
+            "transferBytes": 71219,
+            "decodedBytes": 70919
+          },
+          {
+            "path": "/assets/command-palette-Dos42Sr9.js",
+            "durationMs": 815.7000000476837,
+            "transferBytes": 163331,
+            "decodedBytes": 163031
+          },
+          {
+            "path": "/assets/command-palette-BlVnp0iG.css",
+            "durationMs": 808.1999999284744,
+            "transferBytes": 1158,
+            "decodedBytes": 858
+          },
+          {
+            "path": "/assets/harness-icon-B9AxT87T.js",
+            "durationMs": 821.5,
+            "transferBytes": 20705,
+            "decodedBytes": 20405
+          },
+          {
+            "path": "/assets/chart-data-tqqWKQdJ.js",
+            "durationMs": 819.6000000238419,
+            "transferBytes": 1058,
+            "decodedBytes": 758
+          },
+          {
+            "path": "/assets/chart-data-AgyWygLH.css",
+            "durationMs": 809.1000000238419,
+            "transferBytes": 944,
+            "decodedBytes": 644
+          },
+          {
+            "path": "/assets/shell-CiMTIAah.js",
+            "durationMs": 849.8000000715256,
+            "transferBytes": 14704,
+            "decodedBytes": 14404
+          },
+          {
+            "path": "/assets/shell-B-48w8Yh.css",
+            "durationMs": 827.9000000953674,
+            "transferBytes": 77831,
+            "decodedBytes": 77531
+          },
+          {
+            "path": "/assets/quota-chart-DKiBS4pO.js",
+            "durationMs": 863.8999999761581,
+            "transferBytes": 3866,
+            "decodedBytes": 3566
+          },
+          {
+            "path": "/assets/format-Ez_F9x7g.js",
+            "durationMs": 981.7999999523163,
+            "transferBytes": 2733,
+            "decodedBytes": 2433
+          },
+          {
+            "path": "/assets/quota-chart-D8HC5jl7.css",
+            "durationMs": 842.3000000715256,
+            "transferBytes": 1305,
+            "decodedBytes": 1005
+          },
+          {
+            "path": "/assets/trending-up-SphbULb5.js",
+            "durationMs": 987,
+            "transferBytes": 979,
+            "decodedBytes": 679
+          },
+          {
+            "path": "/assets/coins-B5U79lzS.js",
+            "durationMs": 924.8000000715256,
+            "transferBytes": 762,
+            "decodedBytes": 462
+          },
+          {
+            "path": "/assets/database-965M3LsW.js",
+            "durationMs": 925.2000000476837,
+            "transferBytes": 725,
+            "decodedBytes": 425
+          },
+          {
+            "path": "/assets/lightbulb-C3if9xdR.js",
+            "durationMs": 948.2999999523163,
+            "transferBytes": 763,
+            "decodedBytes": 463
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 961.1999999284744,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+            "durationMs": 142.5,
+            "transferBytes": 29700,
+            "decodedBytes": 29400
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 96.29999995231628,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/settings",
+            "durationMs": 96.89999997615814,
+            "transferBytes": 391,
+            "decodedBytes": 91
+          },
+          {
+            "path": "/api/compare",
+            "durationMs": 61.5,
+            "transferBytes": 1358,
+            "decodedBytes": 1058
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 224.70000004768372,
+            "transferBytes": 2799,
+            "decodedBytes": 2499
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 246.39999997615814,
+            "transferBytes": 2422,
+            "decodedBytes": 2122
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 335.2999999523163,
+            "transferBytes": 1475,
+            "decodedBytes": 1175
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 17.799999952316284,
+            "transferBytes": 1084,
+            "decodedBytes": 784
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 19.899999976158142,
+            "transferBytes": 2483,
+            "decodedBytes": 2183
+          },
+          {
+            "path": "/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2",
+            "durationMs": 219.10000002384186,
+            "transferBytes": 23428,
+            "decodedBytes": 23128
+          },
+          {
+            "path": "/fonts/noto-sans-thai/NotoSansThai-variable.ttf",
+            "durationMs": 194.19999992847443,
+            "transferBytes": 218952,
+            "decodedBytes": 218652
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 72.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 82.39999997615814,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/redesign/pulse-earth-v4.png",
+            "durationMs": 88.40000009536743,
+            "transferBytes": 1689774,
+            "decodedBytes": 1689474
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 117.60000002384186,
+            "transferBytes": 2827,
+            "decodedBytes": 2527
+          },
+          {
+            "path": "/assets/live-DxQse_jK.js",
+            "durationMs": 38.89999997615814,
+            "transferBytes": 32701,
+            "decodedBytes": 32401
+          },
+          {
+            "path": "/assets/page-heading--9DlK1z8.js",
+            "durationMs": 50.89999997615814,
+            "transferBytes": 770,
+            "decodedBytes": 470
+          },
+          {
+            "path": "/assets/page-heading-B6srWc0E.css",
+            "durationMs": 44.89999997615814,
+            "transferBytes": 7682,
+            "decodedBytes": 7382
+          },
+          {
+            "path": "/assets/heading-reference-icon-CQzoG3VN.js",
+            "durationMs": 53.59999990463257,
+            "transferBytes": 2245,
+            "decodedBytes": 1945
+          },
+          {
+            "path": "/assets/section-mark-CiNhrCYK.js",
+            "durationMs": 60.699999928474426,
+            "transferBytes": 569,
+            "decodedBytes": 269
+          },
+          {
+            "path": "/assets/section-mark-D9p1fSvH.css",
+            "durationMs": 65.30000007152557,
+            "transferBytes": 2109,
+            "decodedBytes": 1809
+          },
+          {
+            "path": "/assets/refresh-cw-CqJ6e4Lb.js",
+            "durationMs": 84,
+            "transferBytes": 803,
+            "decodedBytes": 503
+          },
+          {
+            "path": "/assets/triangle-alert-CDJ3xTiq.js",
+            "durationMs": 92.39999997615814,
+            "transferBytes": 1034,
+            "decodedBytes": 734
+          },
+          {
+            "path": "/assets/info-7VoHXq0d.js",
+            "durationMs": 94.89999997615814,
+            "transferBytes": 681,
+            "decodedBytes": 381
+          },
+          {
+            "path": "/assets/live-DqdmQgrV.css",
+            "durationMs": 80.20000004768372,
+            "transferBytes": 32802,
+            "decodedBytes": 32502
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 89.5,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 73.19999992847443,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 117.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 27,
+            "transferBytes": 2407,
+            "decodedBytes": 2107
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 34.39999997615814,
+            "transferBytes": 5630,
+            "decodedBytes": 5330
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 60.199999928474426,
+            "transferBytes": 3266,
+            "decodedBytes": 2966
+          },
+          {
+            "path": "/api/live-sessions",
+            "durationMs": 75.60000002384186,
+            "transferBytes": 719,
+            "decodedBytes": 419
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 7.800000071525574,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/assets/projects-gsDyhI7p.js",
+            "durationMs": 17.09999990463257,
+            "transferBytes": 19838,
+            "decodedBytes": 19538
+          },
+          {
+            "path": "/assets/scope-notice-CCZn88bc.js",
+            "durationMs": 19,
+            "transferBytes": 2720,
+            "decodedBytes": 2420
+          },
+          {
+            "path": "/assets/scope-notice-SMVc0RpX.css",
+            "durationMs": 20.5,
+            "transferBytes": 471,
+            "decodedBytes": 171
+          },
+          {
+            "path": "/assets/chart-data-IxPunNas.js",
+            "durationMs": 23.399999976158142,
+            "transferBytes": 2324,
+            "decodedBytes": 2024
+          },
+          {
+            "path": "/assets/projects-Bp-IfMps.css",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 15521,
+            "decodedBytes": 15221
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 24.399999976158142,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 43.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/projects",
+            "durationMs": 138.90000009536743,
+            "transferBytes": 1744,
+            "decodedBytes": 1444
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 168.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 10.5,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/project-detail",
+            "durationMs": 26.299999952316284,
+            "transferBytes": 2146,
+            "decodedBytes": 1846
+          }
+        ]
+      }
+    },
+    {
+      "destination": "providers",
+      "readyMs": 253.66769999999997,
+      "browser": {
+        "navigation": [
+          {
+            "name": "http://127.0.0.1:7802/#overview",
+            "entryType": "navigation",
+            "startTime": 0,
+            "duration": 162.5,
+            "navigationId": 5612,
+            "initiatorType": "navigation",
+            "deliveryType": "",
+            "nextHopProtocol": "http/1.1",
+            "renderBlockingStatus": "non-blocking",
+            "contentType": "text/html",
+            "contentEncoding": "",
+            "workerStart": 0,
+            "workerRouterEvaluationStart": 0,
+            "workerCacheLookupStart": 0,
+            "workerMatchedSourceType": "",
+            "workerFinalSourceType": "",
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 1.2000000476837158,
+            "domainLookupStart": 1.2000000476837158,
+            "domainLookupEnd": 1.2000000476837158,
+            "connectStart": 1.2000000476837158,
+            "secureConnectionStart": 0,
+            "connectEnd": 1.2000000476837158,
+            "requestStart": 31.800000071525574,
+            "responseStart": 60.5,
+            "firstInterimResponseStart": 0,
+            "finalResponseHeadersStart": 60.5,
+            "responseEnd": 61.700000047683716,
+            "transferSize": 2235,
+            "encodedBodySize": 1935,
+            "decodedBodySize": 1935,
+            "responseStatus": 200,
+            "serverTiming": [],
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "domInteractive": 139.90000009536743,
+            "domContentLoadedEventStart": 159,
+            "domContentLoadedEventEnd": 159.20000004768372,
+            "domComplete": 162.40000009536743,
+            "loadEventStart": 162.5,
+            "loadEventEnd": 162.5,
+            "type": "navigate",
+            "redirectCount": 0,
+            "activationStart": 0,
+            "criticalCHRestart": 0,
+            "notRestoredReasons": null,
+            "confidence": {
+              "randomizedTriggerRate": 0.4994798,
+              "value": "low"
+            }
+          }
+        ],
+        "paint": [
+          {
+            "name": "first-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          },
+          {
+            "name": "first-contentful-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          }
+        ],
+        "resources": [
+          {
+            "path": "/assets/index-BulTTdp8.js",
+            "durationMs": 53.60000002384186,
+            "transferBytes": 304840,
+            "decodedBytes": 304540
+          },
+          {
+            "path": "/assets/index-VOvS51-H.css",
+            "durationMs": 57.200000047683716,
+            "transferBytes": 64316,
+            "decodedBytes": 64016
+          },
+          {
+            "path": "/assets/production-BO30KCoc.js",
+            "durationMs": 804.3000000715256,
+            "transferBytes": 71219,
+            "decodedBytes": 70919
+          },
+          {
+            "path": "/assets/command-palette-Dos42Sr9.js",
+            "durationMs": 815.7000000476837,
+            "transferBytes": 163331,
+            "decodedBytes": 163031
+          },
+          {
+            "path": "/assets/command-palette-BlVnp0iG.css",
+            "durationMs": 808.1999999284744,
+            "transferBytes": 1158,
+            "decodedBytes": 858
+          },
+          {
+            "path": "/assets/harness-icon-B9AxT87T.js",
+            "durationMs": 821.5,
+            "transferBytes": 20705,
+            "decodedBytes": 20405
+          },
+          {
+            "path": "/assets/chart-data-tqqWKQdJ.js",
+            "durationMs": 819.6000000238419,
+            "transferBytes": 1058,
+            "decodedBytes": 758
+          },
+          {
+            "path": "/assets/chart-data-AgyWygLH.css",
+            "durationMs": 809.1000000238419,
+            "transferBytes": 944,
+            "decodedBytes": 644
+          },
+          {
+            "path": "/assets/shell-CiMTIAah.js",
+            "durationMs": 849.8000000715256,
+            "transferBytes": 14704,
+            "decodedBytes": 14404
+          },
+          {
+            "path": "/assets/shell-B-48w8Yh.css",
+            "durationMs": 827.9000000953674,
+            "transferBytes": 77831,
+            "decodedBytes": 77531
+          },
+          {
+            "path": "/assets/quota-chart-DKiBS4pO.js",
+            "durationMs": 863.8999999761581,
+            "transferBytes": 3866,
+            "decodedBytes": 3566
+          },
+          {
+            "path": "/assets/format-Ez_F9x7g.js",
+            "durationMs": 981.7999999523163,
+            "transferBytes": 2733,
+            "decodedBytes": 2433
+          },
+          {
+            "path": "/assets/quota-chart-D8HC5jl7.css",
+            "durationMs": 842.3000000715256,
+            "transferBytes": 1305,
+            "decodedBytes": 1005
+          },
+          {
+            "path": "/assets/trending-up-SphbULb5.js",
+            "durationMs": 987,
+            "transferBytes": 979,
+            "decodedBytes": 679
+          },
+          {
+            "path": "/assets/coins-B5U79lzS.js",
+            "durationMs": 924.8000000715256,
+            "transferBytes": 762,
+            "decodedBytes": 462
+          },
+          {
+            "path": "/assets/database-965M3LsW.js",
+            "durationMs": 925.2000000476837,
+            "transferBytes": 725,
+            "decodedBytes": 425
+          },
+          {
+            "path": "/assets/lightbulb-C3if9xdR.js",
+            "durationMs": 948.2999999523163,
+            "transferBytes": 763,
+            "decodedBytes": 463
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 961.1999999284744,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+            "durationMs": 142.5,
+            "transferBytes": 29700,
+            "decodedBytes": 29400
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 96.29999995231628,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/settings",
+            "durationMs": 96.89999997615814,
+            "transferBytes": 391,
+            "decodedBytes": 91
+          },
+          {
+            "path": "/api/compare",
+            "durationMs": 61.5,
+            "transferBytes": 1358,
+            "decodedBytes": 1058
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 224.70000004768372,
+            "transferBytes": 2799,
+            "decodedBytes": 2499
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 246.39999997615814,
+            "transferBytes": 2422,
+            "decodedBytes": 2122
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 335.2999999523163,
+            "transferBytes": 1475,
+            "decodedBytes": 1175
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 17.799999952316284,
+            "transferBytes": 1084,
+            "decodedBytes": 784
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 19.899999976158142,
+            "transferBytes": 2483,
+            "decodedBytes": 2183
+          },
+          {
+            "path": "/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2",
+            "durationMs": 219.10000002384186,
+            "transferBytes": 23428,
+            "decodedBytes": 23128
+          },
+          {
+            "path": "/fonts/noto-sans-thai/NotoSansThai-variable.ttf",
+            "durationMs": 194.19999992847443,
+            "transferBytes": 218952,
+            "decodedBytes": 218652
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 72.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 82.39999997615814,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/redesign/pulse-earth-v4.png",
+            "durationMs": 88.40000009536743,
+            "transferBytes": 1689774,
+            "decodedBytes": 1689474
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 117.60000002384186,
+            "transferBytes": 2827,
+            "decodedBytes": 2527
+          },
+          {
+            "path": "/assets/live-DxQse_jK.js",
+            "durationMs": 38.89999997615814,
+            "transferBytes": 32701,
+            "decodedBytes": 32401
+          },
+          {
+            "path": "/assets/page-heading--9DlK1z8.js",
+            "durationMs": 50.89999997615814,
+            "transferBytes": 770,
+            "decodedBytes": 470
+          },
+          {
+            "path": "/assets/page-heading-B6srWc0E.css",
+            "durationMs": 44.89999997615814,
+            "transferBytes": 7682,
+            "decodedBytes": 7382
+          },
+          {
+            "path": "/assets/heading-reference-icon-CQzoG3VN.js",
+            "durationMs": 53.59999990463257,
+            "transferBytes": 2245,
+            "decodedBytes": 1945
+          },
+          {
+            "path": "/assets/section-mark-CiNhrCYK.js",
+            "durationMs": 60.699999928474426,
+            "transferBytes": 569,
+            "decodedBytes": 269
+          },
+          {
+            "path": "/assets/section-mark-D9p1fSvH.css",
+            "durationMs": 65.30000007152557,
+            "transferBytes": 2109,
+            "decodedBytes": 1809
+          },
+          {
+            "path": "/assets/refresh-cw-CqJ6e4Lb.js",
+            "durationMs": 84,
+            "transferBytes": 803,
+            "decodedBytes": 503
+          },
+          {
+            "path": "/assets/triangle-alert-CDJ3xTiq.js",
+            "durationMs": 92.39999997615814,
+            "transferBytes": 1034,
+            "decodedBytes": 734
+          },
+          {
+            "path": "/assets/info-7VoHXq0d.js",
+            "durationMs": 94.89999997615814,
+            "transferBytes": 681,
+            "decodedBytes": 381
+          },
+          {
+            "path": "/assets/live-DqdmQgrV.css",
+            "durationMs": 80.20000004768372,
+            "transferBytes": 32802,
+            "decodedBytes": 32502
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 89.5,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 73.19999992847443,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 117.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 27,
+            "transferBytes": 2407,
+            "decodedBytes": 2107
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 34.39999997615814,
+            "transferBytes": 5630,
+            "decodedBytes": 5330
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 60.199999928474426,
+            "transferBytes": 3266,
+            "decodedBytes": 2966
+          },
+          {
+            "path": "/api/live-sessions",
+            "durationMs": 75.60000002384186,
+            "transferBytes": 719,
+            "decodedBytes": 419
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 7.800000071525574,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/assets/projects-gsDyhI7p.js",
+            "durationMs": 17.09999990463257,
+            "transferBytes": 19838,
+            "decodedBytes": 19538
+          },
+          {
+            "path": "/assets/scope-notice-CCZn88bc.js",
+            "durationMs": 19,
+            "transferBytes": 2720,
+            "decodedBytes": 2420
+          },
+          {
+            "path": "/assets/scope-notice-SMVc0RpX.css",
+            "durationMs": 20.5,
+            "transferBytes": 471,
+            "decodedBytes": 171
+          },
+          {
+            "path": "/assets/chart-data-IxPunNas.js",
+            "durationMs": 23.399999976158142,
+            "transferBytes": 2324,
+            "decodedBytes": 2024
+          },
+          {
+            "path": "/assets/projects-Bp-IfMps.css",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 15521,
+            "decodedBytes": 15221
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 24.399999976158142,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 43.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/projects",
+            "durationMs": 138.90000009536743,
+            "transferBytes": 1744,
+            "decodedBytes": 1444
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 168.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 10.5,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/project-detail",
+            "durationMs": 26.299999952316284,
+            "transferBytes": 2146,
+            "decodedBytes": 1846
+          },
+          {
+            "path": "/assets/providers-D-mHS7pq.js",
+            "durationMs": 17.90000009536743,
+            "transferBytes": 13172,
+            "decodedBytes": 12872
+          },
+          {
+            "path": "/assets/shield-check-0nPZx4gM.js",
+            "durationMs": 19.700000047683716,
+            "transferBytes": 797,
+            "decodedBytes": 497
+          },
+          {
+            "path": "/assets/providers-IAxQqJzR.css",
+            "durationMs": 22.90000009536743,
+            "transferBytes": 14145,
+            "decodedBytes": 13845
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 20.100000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 53.200000047683716,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 55.90000009536743,
+            "transferBytes": 410,
+            "decodedBytes": 110
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 88.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          }
+        ]
+      }
+    },
+    {
+      "destination": "models",
+      "readyMs": 518.1723999999995,
+      "browser": {
+        "navigation": [
+          {
+            "name": "http://127.0.0.1:7802/#overview",
+            "entryType": "navigation",
+            "startTime": 0,
+            "duration": 162.5,
+            "navigationId": 5612,
+            "initiatorType": "navigation",
+            "deliveryType": "",
+            "nextHopProtocol": "http/1.1",
+            "renderBlockingStatus": "non-blocking",
+            "contentType": "text/html",
+            "contentEncoding": "",
+            "workerStart": 0,
+            "workerRouterEvaluationStart": 0,
+            "workerCacheLookupStart": 0,
+            "workerMatchedSourceType": "",
+            "workerFinalSourceType": "",
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 1.2000000476837158,
+            "domainLookupStart": 1.2000000476837158,
+            "domainLookupEnd": 1.2000000476837158,
+            "connectStart": 1.2000000476837158,
+            "secureConnectionStart": 0,
+            "connectEnd": 1.2000000476837158,
+            "requestStart": 31.800000071525574,
+            "responseStart": 60.5,
+            "firstInterimResponseStart": 0,
+            "finalResponseHeadersStart": 60.5,
+            "responseEnd": 61.700000047683716,
+            "transferSize": 2235,
+            "encodedBodySize": 1935,
+            "decodedBodySize": 1935,
+            "responseStatus": 200,
+            "serverTiming": [],
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "domInteractive": 139.90000009536743,
+            "domContentLoadedEventStart": 159,
+            "domContentLoadedEventEnd": 159.20000004768372,
+            "domComplete": 162.40000009536743,
+            "loadEventStart": 162.5,
+            "loadEventEnd": 162.5,
+            "type": "navigate",
+            "redirectCount": 0,
+            "activationStart": 0,
+            "criticalCHRestart": 0,
+            "notRestoredReasons": null,
+            "confidence": {
+              "randomizedTriggerRate": 0.4994798,
+              "value": "low"
+            }
+          }
+        ],
+        "paint": [
+          {
+            "name": "first-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          },
+          {
+            "name": "first-contentful-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          }
+        ],
+        "resources": [
+          {
+            "path": "/assets/index-BulTTdp8.js",
+            "durationMs": 53.60000002384186,
+            "transferBytes": 304840,
+            "decodedBytes": 304540
+          },
+          {
+            "path": "/assets/index-VOvS51-H.css",
+            "durationMs": 57.200000047683716,
+            "transferBytes": 64316,
+            "decodedBytes": 64016
+          },
+          {
+            "path": "/assets/production-BO30KCoc.js",
+            "durationMs": 804.3000000715256,
+            "transferBytes": 71219,
+            "decodedBytes": 70919
+          },
+          {
+            "path": "/assets/command-palette-Dos42Sr9.js",
+            "durationMs": 815.7000000476837,
+            "transferBytes": 163331,
+            "decodedBytes": 163031
+          },
+          {
+            "path": "/assets/command-palette-BlVnp0iG.css",
+            "durationMs": 808.1999999284744,
+            "transferBytes": 1158,
+            "decodedBytes": 858
+          },
+          {
+            "path": "/assets/harness-icon-B9AxT87T.js",
+            "durationMs": 821.5,
+            "transferBytes": 20705,
+            "decodedBytes": 20405
+          },
+          {
+            "path": "/assets/chart-data-tqqWKQdJ.js",
+            "durationMs": 819.6000000238419,
+            "transferBytes": 1058,
+            "decodedBytes": 758
+          },
+          {
+            "path": "/assets/chart-data-AgyWygLH.css",
+            "durationMs": 809.1000000238419,
+            "transferBytes": 944,
+            "decodedBytes": 644
+          },
+          {
+            "path": "/assets/shell-CiMTIAah.js",
+            "durationMs": 849.8000000715256,
+            "transferBytes": 14704,
+            "decodedBytes": 14404
+          },
+          {
+            "path": "/assets/shell-B-48w8Yh.css",
+            "durationMs": 827.9000000953674,
+            "transferBytes": 77831,
+            "decodedBytes": 77531
+          },
+          {
+            "path": "/assets/quota-chart-DKiBS4pO.js",
+            "durationMs": 863.8999999761581,
+            "transferBytes": 3866,
+            "decodedBytes": 3566
+          },
+          {
+            "path": "/assets/format-Ez_F9x7g.js",
+            "durationMs": 981.7999999523163,
+            "transferBytes": 2733,
+            "decodedBytes": 2433
+          },
+          {
+            "path": "/assets/quota-chart-D8HC5jl7.css",
+            "durationMs": 842.3000000715256,
+            "transferBytes": 1305,
+            "decodedBytes": 1005
+          },
+          {
+            "path": "/assets/trending-up-SphbULb5.js",
+            "durationMs": 987,
+            "transferBytes": 979,
+            "decodedBytes": 679
+          },
+          {
+            "path": "/assets/coins-B5U79lzS.js",
+            "durationMs": 924.8000000715256,
+            "transferBytes": 762,
+            "decodedBytes": 462
+          },
+          {
+            "path": "/assets/database-965M3LsW.js",
+            "durationMs": 925.2000000476837,
+            "transferBytes": 725,
+            "decodedBytes": 425
+          },
+          {
+            "path": "/assets/lightbulb-C3if9xdR.js",
+            "durationMs": 948.2999999523163,
+            "transferBytes": 763,
+            "decodedBytes": 463
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 961.1999999284744,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+            "durationMs": 142.5,
+            "transferBytes": 29700,
+            "decodedBytes": 29400
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 96.29999995231628,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/settings",
+            "durationMs": 96.89999997615814,
+            "transferBytes": 391,
+            "decodedBytes": 91
+          },
+          {
+            "path": "/api/compare",
+            "durationMs": 61.5,
+            "transferBytes": 1358,
+            "decodedBytes": 1058
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 224.70000004768372,
+            "transferBytes": 2799,
+            "decodedBytes": 2499
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 246.39999997615814,
+            "transferBytes": 2422,
+            "decodedBytes": 2122
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 335.2999999523163,
+            "transferBytes": 1475,
+            "decodedBytes": 1175
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 17.799999952316284,
+            "transferBytes": 1084,
+            "decodedBytes": 784
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 19.899999976158142,
+            "transferBytes": 2483,
+            "decodedBytes": 2183
+          },
+          {
+            "path": "/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2",
+            "durationMs": 219.10000002384186,
+            "transferBytes": 23428,
+            "decodedBytes": 23128
+          },
+          {
+            "path": "/fonts/noto-sans-thai/NotoSansThai-variable.ttf",
+            "durationMs": 194.19999992847443,
+            "transferBytes": 218952,
+            "decodedBytes": 218652
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 72.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 82.39999997615814,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/redesign/pulse-earth-v4.png",
+            "durationMs": 88.40000009536743,
+            "transferBytes": 1689774,
+            "decodedBytes": 1689474
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 117.60000002384186,
+            "transferBytes": 2827,
+            "decodedBytes": 2527
+          },
+          {
+            "path": "/assets/live-DxQse_jK.js",
+            "durationMs": 38.89999997615814,
+            "transferBytes": 32701,
+            "decodedBytes": 32401
+          },
+          {
+            "path": "/assets/page-heading--9DlK1z8.js",
+            "durationMs": 50.89999997615814,
+            "transferBytes": 770,
+            "decodedBytes": 470
+          },
+          {
+            "path": "/assets/page-heading-B6srWc0E.css",
+            "durationMs": 44.89999997615814,
+            "transferBytes": 7682,
+            "decodedBytes": 7382
+          },
+          {
+            "path": "/assets/heading-reference-icon-CQzoG3VN.js",
+            "durationMs": 53.59999990463257,
+            "transferBytes": 2245,
+            "decodedBytes": 1945
+          },
+          {
+            "path": "/assets/section-mark-CiNhrCYK.js",
+            "durationMs": 60.699999928474426,
+            "transferBytes": 569,
+            "decodedBytes": 269
+          },
+          {
+            "path": "/assets/section-mark-D9p1fSvH.css",
+            "durationMs": 65.30000007152557,
+            "transferBytes": 2109,
+            "decodedBytes": 1809
+          },
+          {
+            "path": "/assets/refresh-cw-CqJ6e4Lb.js",
+            "durationMs": 84,
+            "transferBytes": 803,
+            "decodedBytes": 503
+          },
+          {
+            "path": "/assets/triangle-alert-CDJ3xTiq.js",
+            "durationMs": 92.39999997615814,
+            "transferBytes": 1034,
+            "decodedBytes": 734
+          },
+          {
+            "path": "/assets/info-7VoHXq0d.js",
+            "durationMs": 94.89999997615814,
+            "transferBytes": 681,
+            "decodedBytes": 381
+          },
+          {
+            "path": "/assets/live-DqdmQgrV.css",
+            "durationMs": 80.20000004768372,
+            "transferBytes": 32802,
+            "decodedBytes": 32502
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 89.5,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 73.19999992847443,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 117.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 27,
+            "transferBytes": 2407,
+            "decodedBytes": 2107
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 34.39999997615814,
+            "transferBytes": 5630,
+            "decodedBytes": 5330
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 60.199999928474426,
+            "transferBytes": 3266,
+            "decodedBytes": 2966
+          },
+          {
+            "path": "/api/live-sessions",
+            "durationMs": 75.60000002384186,
+            "transferBytes": 719,
+            "decodedBytes": 419
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 7.800000071525574,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/assets/projects-gsDyhI7p.js",
+            "durationMs": 17.09999990463257,
+            "transferBytes": 19838,
+            "decodedBytes": 19538
+          },
+          {
+            "path": "/assets/scope-notice-CCZn88bc.js",
+            "durationMs": 19,
+            "transferBytes": 2720,
+            "decodedBytes": 2420
+          },
+          {
+            "path": "/assets/scope-notice-SMVc0RpX.css",
+            "durationMs": 20.5,
+            "transferBytes": 471,
+            "decodedBytes": 171
+          },
+          {
+            "path": "/assets/chart-data-IxPunNas.js",
+            "durationMs": 23.399999976158142,
+            "transferBytes": 2324,
+            "decodedBytes": 2024
+          },
+          {
+            "path": "/assets/projects-Bp-IfMps.css",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 15521,
+            "decodedBytes": 15221
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 24.399999976158142,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 43.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/projects",
+            "durationMs": 138.90000009536743,
+            "transferBytes": 1744,
+            "decodedBytes": 1444
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 168.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 10.5,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/project-detail",
+            "durationMs": 26.299999952316284,
+            "transferBytes": 2146,
+            "decodedBytes": 1846
+          },
+          {
+            "path": "/assets/providers-D-mHS7pq.js",
+            "durationMs": 17.90000009536743,
+            "transferBytes": 13172,
+            "decodedBytes": 12872
+          },
+          {
+            "path": "/assets/shield-check-0nPZx4gM.js",
+            "durationMs": 19.700000047683716,
+            "transferBytes": 797,
+            "decodedBytes": 497
+          },
+          {
+            "path": "/assets/providers-IAxQqJzR.css",
+            "durationMs": 22.90000009536743,
+            "transferBytes": 14145,
+            "decodedBytes": 13845
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 20.100000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 53.200000047683716,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 55.90000009536743,
+            "transferBytes": 410,
+            "decodedBytes": 110
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 88.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/assets/models-C1_RW3Nc.js",
+            "durationMs": 18.09999990463257,
+            "transferBytes": 21655,
+            "decodedBytes": 21355
+          },
+          {
+            "path": "/assets/models-BJCsWNHa.css",
+            "durationMs": 20.5,
+            "transferBytes": 16878,
+            "decodedBytes": 16578
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 19.600000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 49.10000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/models",
+            "durationMs": 315.6999999284744,
+            "transferBytes": 1897,
+            "decodedBytes": 1597
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/model-detail",
+            "durationMs": 34.60000002384186,
+            "transferBytes": 745,
+            "decodedBytes": 445
+          }
+        ]
+      }
+    },
+    {
+      "destination": "cost",
+      "readyMs": 402.3037999999997,
+      "browser": {
+        "navigation": [
+          {
+            "name": "http://127.0.0.1:7802/#overview",
+            "entryType": "navigation",
+            "startTime": 0,
+            "duration": 162.5,
+            "navigationId": 5612,
+            "initiatorType": "navigation",
+            "deliveryType": "",
+            "nextHopProtocol": "http/1.1",
+            "renderBlockingStatus": "non-blocking",
+            "contentType": "text/html",
+            "contentEncoding": "",
+            "workerStart": 0,
+            "workerRouterEvaluationStart": 0,
+            "workerCacheLookupStart": 0,
+            "workerMatchedSourceType": "",
+            "workerFinalSourceType": "",
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 1.2000000476837158,
+            "domainLookupStart": 1.2000000476837158,
+            "domainLookupEnd": 1.2000000476837158,
+            "connectStart": 1.2000000476837158,
+            "secureConnectionStart": 0,
+            "connectEnd": 1.2000000476837158,
+            "requestStart": 31.800000071525574,
+            "responseStart": 60.5,
+            "firstInterimResponseStart": 0,
+            "finalResponseHeadersStart": 60.5,
+            "responseEnd": 61.700000047683716,
+            "transferSize": 2235,
+            "encodedBodySize": 1935,
+            "decodedBodySize": 1935,
+            "responseStatus": 200,
+            "serverTiming": [],
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "domInteractive": 139.90000009536743,
+            "domContentLoadedEventStart": 159,
+            "domContentLoadedEventEnd": 159.20000004768372,
+            "domComplete": 162.40000009536743,
+            "loadEventStart": 162.5,
+            "loadEventEnd": 162.5,
+            "type": "navigate",
+            "redirectCount": 0,
+            "activationStart": 0,
+            "criticalCHRestart": 0,
+            "notRestoredReasons": null,
+            "confidence": {
+              "randomizedTriggerRate": 0.4994798,
+              "value": "low"
+            }
+          }
+        ],
+        "paint": [
+          {
+            "name": "first-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          },
+          {
+            "name": "first-contentful-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          }
+        ],
+        "resources": [
+          {
+            "path": "/assets/index-BulTTdp8.js",
+            "durationMs": 53.60000002384186,
+            "transferBytes": 304840,
+            "decodedBytes": 304540
+          },
+          {
+            "path": "/assets/index-VOvS51-H.css",
+            "durationMs": 57.200000047683716,
+            "transferBytes": 64316,
+            "decodedBytes": 64016
+          },
+          {
+            "path": "/assets/production-BO30KCoc.js",
+            "durationMs": 804.3000000715256,
+            "transferBytes": 71219,
+            "decodedBytes": 70919
+          },
+          {
+            "path": "/assets/command-palette-Dos42Sr9.js",
+            "durationMs": 815.7000000476837,
+            "transferBytes": 163331,
+            "decodedBytes": 163031
+          },
+          {
+            "path": "/assets/command-palette-BlVnp0iG.css",
+            "durationMs": 808.1999999284744,
+            "transferBytes": 1158,
+            "decodedBytes": 858
+          },
+          {
+            "path": "/assets/harness-icon-B9AxT87T.js",
+            "durationMs": 821.5,
+            "transferBytes": 20705,
+            "decodedBytes": 20405
+          },
+          {
+            "path": "/assets/chart-data-tqqWKQdJ.js",
+            "durationMs": 819.6000000238419,
+            "transferBytes": 1058,
+            "decodedBytes": 758
+          },
+          {
+            "path": "/assets/chart-data-AgyWygLH.css",
+            "durationMs": 809.1000000238419,
+            "transferBytes": 944,
+            "decodedBytes": 644
+          },
+          {
+            "path": "/assets/shell-CiMTIAah.js",
+            "durationMs": 849.8000000715256,
+            "transferBytes": 14704,
+            "decodedBytes": 14404
+          },
+          {
+            "path": "/assets/shell-B-48w8Yh.css",
+            "durationMs": 827.9000000953674,
+            "transferBytes": 77831,
+            "decodedBytes": 77531
+          },
+          {
+            "path": "/assets/quota-chart-DKiBS4pO.js",
+            "durationMs": 863.8999999761581,
+            "transferBytes": 3866,
+            "decodedBytes": 3566
+          },
+          {
+            "path": "/assets/format-Ez_F9x7g.js",
+            "durationMs": 981.7999999523163,
+            "transferBytes": 2733,
+            "decodedBytes": 2433
+          },
+          {
+            "path": "/assets/quota-chart-D8HC5jl7.css",
+            "durationMs": 842.3000000715256,
+            "transferBytes": 1305,
+            "decodedBytes": 1005
+          },
+          {
+            "path": "/assets/trending-up-SphbULb5.js",
+            "durationMs": 987,
+            "transferBytes": 979,
+            "decodedBytes": 679
+          },
+          {
+            "path": "/assets/coins-B5U79lzS.js",
+            "durationMs": 924.8000000715256,
+            "transferBytes": 762,
+            "decodedBytes": 462
+          },
+          {
+            "path": "/assets/database-965M3LsW.js",
+            "durationMs": 925.2000000476837,
+            "transferBytes": 725,
+            "decodedBytes": 425
+          },
+          {
+            "path": "/assets/lightbulb-C3if9xdR.js",
+            "durationMs": 948.2999999523163,
+            "transferBytes": 763,
+            "decodedBytes": 463
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 961.1999999284744,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+            "durationMs": 142.5,
+            "transferBytes": 29700,
+            "decodedBytes": 29400
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 96.29999995231628,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/settings",
+            "durationMs": 96.89999997615814,
+            "transferBytes": 391,
+            "decodedBytes": 91
+          },
+          {
+            "path": "/api/compare",
+            "durationMs": 61.5,
+            "transferBytes": 1358,
+            "decodedBytes": 1058
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 224.70000004768372,
+            "transferBytes": 2799,
+            "decodedBytes": 2499
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 246.39999997615814,
+            "transferBytes": 2422,
+            "decodedBytes": 2122
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 335.2999999523163,
+            "transferBytes": 1475,
+            "decodedBytes": 1175
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 17.799999952316284,
+            "transferBytes": 1084,
+            "decodedBytes": 784
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 19.899999976158142,
+            "transferBytes": 2483,
+            "decodedBytes": 2183
+          },
+          {
+            "path": "/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2",
+            "durationMs": 219.10000002384186,
+            "transferBytes": 23428,
+            "decodedBytes": 23128
+          },
+          {
+            "path": "/fonts/noto-sans-thai/NotoSansThai-variable.ttf",
+            "durationMs": 194.19999992847443,
+            "transferBytes": 218952,
+            "decodedBytes": 218652
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 72.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 82.39999997615814,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/redesign/pulse-earth-v4.png",
+            "durationMs": 88.40000009536743,
+            "transferBytes": 1689774,
+            "decodedBytes": 1689474
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 117.60000002384186,
+            "transferBytes": 2827,
+            "decodedBytes": 2527
+          },
+          {
+            "path": "/assets/live-DxQse_jK.js",
+            "durationMs": 38.89999997615814,
+            "transferBytes": 32701,
+            "decodedBytes": 32401
+          },
+          {
+            "path": "/assets/page-heading--9DlK1z8.js",
+            "durationMs": 50.89999997615814,
+            "transferBytes": 770,
+            "decodedBytes": 470
+          },
+          {
+            "path": "/assets/page-heading-B6srWc0E.css",
+            "durationMs": 44.89999997615814,
+            "transferBytes": 7682,
+            "decodedBytes": 7382
+          },
+          {
+            "path": "/assets/heading-reference-icon-CQzoG3VN.js",
+            "durationMs": 53.59999990463257,
+            "transferBytes": 2245,
+            "decodedBytes": 1945
+          },
+          {
+            "path": "/assets/section-mark-CiNhrCYK.js",
+            "durationMs": 60.699999928474426,
+            "transferBytes": 569,
+            "decodedBytes": 269
+          },
+          {
+            "path": "/assets/section-mark-D9p1fSvH.css",
+            "durationMs": 65.30000007152557,
+            "transferBytes": 2109,
+            "decodedBytes": 1809
+          },
+          {
+            "path": "/assets/refresh-cw-CqJ6e4Lb.js",
+            "durationMs": 84,
+            "transferBytes": 803,
+            "decodedBytes": 503
+          },
+          {
+            "path": "/assets/triangle-alert-CDJ3xTiq.js",
+            "durationMs": 92.39999997615814,
+            "transferBytes": 1034,
+            "decodedBytes": 734
+          },
+          {
+            "path": "/assets/info-7VoHXq0d.js",
+            "durationMs": 94.89999997615814,
+            "transferBytes": 681,
+            "decodedBytes": 381
+          },
+          {
+            "path": "/assets/live-DqdmQgrV.css",
+            "durationMs": 80.20000004768372,
+            "transferBytes": 32802,
+            "decodedBytes": 32502
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 89.5,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 73.19999992847443,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 117.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 27,
+            "transferBytes": 2407,
+            "decodedBytes": 2107
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 34.39999997615814,
+            "transferBytes": 5630,
+            "decodedBytes": 5330
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 60.199999928474426,
+            "transferBytes": 3266,
+            "decodedBytes": 2966
+          },
+          {
+            "path": "/api/live-sessions",
+            "durationMs": 75.60000002384186,
+            "transferBytes": 719,
+            "decodedBytes": 419
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 7.800000071525574,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/assets/projects-gsDyhI7p.js",
+            "durationMs": 17.09999990463257,
+            "transferBytes": 19838,
+            "decodedBytes": 19538
+          },
+          {
+            "path": "/assets/scope-notice-CCZn88bc.js",
+            "durationMs": 19,
+            "transferBytes": 2720,
+            "decodedBytes": 2420
+          },
+          {
+            "path": "/assets/scope-notice-SMVc0RpX.css",
+            "durationMs": 20.5,
+            "transferBytes": 471,
+            "decodedBytes": 171
+          },
+          {
+            "path": "/assets/chart-data-IxPunNas.js",
+            "durationMs": 23.399999976158142,
+            "transferBytes": 2324,
+            "decodedBytes": 2024
+          },
+          {
+            "path": "/assets/projects-Bp-IfMps.css",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 15521,
+            "decodedBytes": 15221
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 24.399999976158142,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 43.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/projects",
+            "durationMs": 138.90000009536743,
+            "transferBytes": 1744,
+            "decodedBytes": 1444
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 168.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 10.5,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/project-detail",
+            "durationMs": 26.299999952316284,
+            "transferBytes": 2146,
+            "decodedBytes": 1846
+          },
+          {
+            "path": "/assets/providers-D-mHS7pq.js",
+            "durationMs": 17.90000009536743,
+            "transferBytes": 13172,
+            "decodedBytes": 12872
+          },
+          {
+            "path": "/assets/shield-check-0nPZx4gM.js",
+            "durationMs": 19.700000047683716,
+            "transferBytes": 797,
+            "decodedBytes": 497
+          },
+          {
+            "path": "/assets/providers-IAxQqJzR.css",
+            "durationMs": 22.90000009536743,
+            "transferBytes": 14145,
+            "decodedBytes": 13845
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 20.100000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 53.200000047683716,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 55.90000009536743,
+            "transferBytes": 410,
+            "decodedBytes": 110
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 88.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/assets/models-C1_RW3Nc.js",
+            "durationMs": 18.09999990463257,
+            "transferBytes": 21655,
+            "decodedBytes": 21355
+          },
+          {
+            "path": "/assets/models-BJCsWNHa.css",
+            "durationMs": 20.5,
+            "transferBytes": 16878,
+            "decodedBytes": 16578
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 19.600000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 49.10000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/models",
+            "durationMs": 315.6999999284744,
+            "transferBytes": 1897,
+            "decodedBytes": 1597
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/model-detail",
+            "durationMs": 34.60000002384186,
+            "transferBytes": 745,
+            "decodedBytes": 445
+          },
+          {
+            "path": "/assets/cost-DfAePibx.js",
+            "durationMs": 18.699999928474426,
+            "transferBytes": 21599,
+            "decodedBytes": 21299
+          },
+          {
+            "path": "/assets/wallet-BvTO8FZR.js",
+            "durationMs": 20.799999952316284,
+            "transferBytes": 1139,
+            "decodedBytes": 839
+          },
+          {
+            "path": "/assets/cost-CTSsdqgG.css",
+            "durationMs": 24.299999952316284,
+            "transferBytes": 17126,
+            "decodedBytes": 16826
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 21.200000047683716,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 50.60000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/cost-analysis",
+            "durationMs": 237,
+            "transferBytes": 1493,
+            "decodedBytes": 1193
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 33.200000047683716,
+            "transferBytes": 448,
+            "decodedBytes": 148
+          }
+        ]
+      }
+    },
+    {
+      "destination": "history",
+      "readyMs": 907.3869999999988,
+      "browser": {
+        "navigation": [
+          {
+            "name": "http://127.0.0.1:7802/#overview",
+            "entryType": "navigation",
+            "startTime": 0,
+            "duration": 162.5,
+            "navigationId": 5612,
+            "initiatorType": "navigation",
+            "deliveryType": "",
+            "nextHopProtocol": "http/1.1",
+            "renderBlockingStatus": "non-blocking",
+            "contentType": "text/html",
+            "contentEncoding": "",
+            "workerStart": 0,
+            "workerRouterEvaluationStart": 0,
+            "workerCacheLookupStart": 0,
+            "workerMatchedSourceType": "",
+            "workerFinalSourceType": "",
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 1.2000000476837158,
+            "domainLookupStart": 1.2000000476837158,
+            "domainLookupEnd": 1.2000000476837158,
+            "connectStart": 1.2000000476837158,
+            "secureConnectionStart": 0,
+            "connectEnd": 1.2000000476837158,
+            "requestStart": 31.800000071525574,
+            "responseStart": 60.5,
+            "firstInterimResponseStart": 0,
+            "finalResponseHeadersStart": 60.5,
+            "responseEnd": 61.700000047683716,
+            "transferSize": 2235,
+            "encodedBodySize": 1935,
+            "decodedBodySize": 1935,
+            "responseStatus": 200,
+            "serverTiming": [],
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "domInteractive": 139.90000009536743,
+            "domContentLoadedEventStart": 159,
+            "domContentLoadedEventEnd": 159.20000004768372,
+            "domComplete": 162.40000009536743,
+            "loadEventStart": 162.5,
+            "loadEventEnd": 162.5,
+            "type": "navigate",
+            "redirectCount": 0,
+            "activationStart": 0,
+            "criticalCHRestart": 0,
+            "notRestoredReasons": null,
+            "confidence": {
+              "randomizedTriggerRate": 0.4994798,
+              "value": "low"
+            }
+          }
+        ],
+        "paint": [
+          {
+            "name": "first-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          },
+          {
+            "name": "first-contentful-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          }
+        ],
+        "resources": [
+          {
+            "path": "/assets/index-BulTTdp8.js",
+            "durationMs": 53.60000002384186,
+            "transferBytes": 304840,
+            "decodedBytes": 304540
+          },
+          {
+            "path": "/assets/index-VOvS51-H.css",
+            "durationMs": 57.200000047683716,
+            "transferBytes": 64316,
+            "decodedBytes": 64016
+          },
+          {
+            "path": "/assets/production-BO30KCoc.js",
+            "durationMs": 804.3000000715256,
+            "transferBytes": 71219,
+            "decodedBytes": 70919
+          },
+          {
+            "path": "/assets/command-palette-Dos42Sr9.js",
+            "durationMs": 815.7000000476837,
+            "transferBytes": 163331,
+            "decodedBytes": 163031
+          },
+          {
+            "path": "/assets/command-palette-BlVnp0iG.css",
+            "durationMs": 808.1999999284744,
+            "transferBytes": 1158,
+            "decodedBytes": 858
+          },
+          {
+            "path": "/assets/harness-icon-B9AxT87T.js",
+            "durationMs": 821.5,
+            "transferBytes": 20705,
+            "decodedBytes": 20405
+          },
+          {
+            "path": "/assets/chart-data-tqqWKQdJ.js",
+            "durationMs": 819.6000000238419,
+            "transferBytes": 1058,
+            "decodedBytes": 758
+          },
+          {
+            "path": "/assets/chart-data-AgyWygLH.css",
+            "durationMs": 809.1000000238419,
+            "transferBytes": 944,
+            "decodedBytes": 644
+          },
+          {
+            "path": "/assets/shell-CiMTIAah.js",
+            "durationMs": 849.8000000715256,
+            "transferBytes": 14704,
+            "decodedBytes": 14404
+          },
+          {
+            "path": "/assets/shell-B-48w8Yh.css",
+            "durationMs": 827.9000000953674,
+            "transferBytes": 77831,
+            "decodedBytes": 77531
+          },
+          {
+            "path": "/assets/quota-chart-DKiBS4pO.js",
+            "durationMs": 863.8999999761581,
+            "transferBytes": 3866,
+            "decodedBytes": 3566
+          },
+          {
+            "path": "/assets/format-Ez_F9x7g.js",
+            "durationMs": 981.7999999523163,
+            "transferBytes": 2733,
+            "decodedBytes": 2433
+          },
+          {
+            "path": "/assets/quota-chart-D8HC5jl7.css",
+            "durationMs": 842.3000000715256,
+            "transferBytes": 1305,
+            "decodedBytes": 1005
+          },
+          {
+            "path": "/assets/trending-up-SphbULb5.js",
+            "durationMs": 987,
+            "transferBytes": 979,
+            "decodedBytes": 679
+          },
+          {
+            "path": "/assets/coins-B5U79lzS.js",
+            "durationMs": 924.8000000715256,
+            "transferBytes": 762,
+            "decodedBytes": 462
+          },
+          {
+            "path": "/assets/database-965M3LsW.js",
+            "durationMs": 925.2000000476837,
+            "transferBytes": 725,
+            "decodedBytes": 425
+          },
+          {
+            "path": "/assets/lightbulb-C3if9xdR.js",
+            "durationMs": 948.2999999523163,
+            "transferBytes": 763,
+            "decodedBytes": 463
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 961.1999999284744,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+            "durationMs": 142.5,
+            "transferBytes": 29700,
+            "decodedBytes": 29400
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 96.29999995231628,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/settings",
+            "durationMs": 96.89999997615814,
+            "transferBytes": 391,
+            "decodedBytes": 91
+          },
+          {
+            "path": "/api/compare",
+            "durationMs": 61.5,
+            "transferBytes": 1358,
+            "decodedBytes": 1058
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 224.70000004768372,
+            "transferBytes": 2799,
+            "decodedBytes": 2499
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 246.39999997615814,
+            "transferBytes": 2422,
+            "decodedBytes": 2122
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 335.2999999523163,
+            "transferBytes": 1475,
+            "decodedBytes": 1175
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 17.799999952316284,
+            "transferBytes": 1084,
+            "decodedBytes": 784
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 19.899999976158142,
+            "transferBytes": 2483,
+            "decodedBytes": 2183
+          },
+          {
+            "path": "/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2",
+            "durationMs": 219.10000002384186,
+            "transferBytes": 23428,
+            "decodedBytes": 23128
+          },
+          {
+            "path": "/fonts/noto-sans-thai/NotoSansThai-variable.ttf",
+            "durationMs": 194.19999992847443,
+            "transferBytes": 218952,
+            "decodedBytes": 218652
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 72.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 82.39999997615814,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/redesign/pulse-earth-v4.png",
+            "durationMs": 88.40000009536743,
+            "transferBytes": 1689774,
+            "decodedBytes": 1689474
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 117.60000002384186,
+            "transferBytes": 2827,
+            "decodedBytes": 2527
+          },
+          {
+            "path": "/assets/live-DxQse_jK.js",
+            "durationMs": 38.89999997615814,
+            "transferBytes": 32701,
+            "decodedBytes": 32401
+          },
+          {
+            "path": "/assets/page-heading--9DlK1z8.js",
+            "durationMs": 50.89999997615814,
+            "transferBytes": 770,
+            "decodedBytes": 470
+          },
+          {
+            "path": "/assets/page-heading-B6srWc0E.css",
+            "durationMs": 44.89999997615814,
+            "transferBytes": 7682,
+            "decodedBytes": 7382
+          },
+          {
+            "path": "/assets/heading-reference-icon-CQzoG3VN.js",
+            "durationMs": 53.59999990463257,
+            "transferBytes": 2245,
+            "decodedBytes": 1945
+          },
+          {
+            "path": "/assets/section-mark-CiNhrCYK.js",
+            "durationMs": 60.699999928474426,
+            "transferBytes": 569,
+            "decodedBytes": 269
+          },
+          {
+            "path": "/assets/section-mark-D9p1fSvH.css",
+            "durationMs": 65.30000007152557,
+            "transferBytes": 2109,
+            "decodedBytes": 1809
+          },
+          {
+            "path": "/assets/refresh-cw-CqJ6e4Lb.js",
+            "durationMs": 84,
+            "transferBytes": 803,
+            "decodedBytes": 503
+          },
+          {
+            "path": "/assets/triangle-alert-CDJ3xTiq.js",
+            "durationMs": 92.39999997615814,
+            "transferBytes": 1034,
+            "decodedBytes": 734
+          },
+          {
+            "path": "/assets/info-7VoHXq0d.js",
+            "durationMs": 94.89999997615814,
+            "transferBytes": 681,
+            "decodedBytes": 381
+          },
+          {
+            "path": "/assets/live-DqdmQgrV.css",
+            "durationMs": 80.20000004768372,
+            "transferBytes": 32802,
+            "decodedBytes": 32502
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 89.5,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 73.19999992847443,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 117.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 27,
+            "transferBytes": 2407,
+            "decodedBytes": 2107
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 34.39999997615814,
+            "transferBytes": 5630,
+            "decodedBytes": 5330
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 60.199999928474426,
+            "transferBytes": 3266,
+            "decodedBytes": 2966
+          },
+          {
+            "path": "/api/live-sessions",
+            "durationMs": 75.60000002384186,
+            "transferBytes": 719,
+            "decodedBytes": 419
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 7.800000071525574,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/assets/projects-gsDyhI7p.js",
+            "durationMs": 17.09999990463257,
+            "transferBytes": 19838,
+            "decodedBytes": 19538
+          },
+          {
+            "path": "/assets/scope-notice-CCZn88bc.js",
+            "durationMs": 19,
+            "transferBytes": 2720,
+            "decodedBytes": 2420
+          },
+          {
+            "path": "/assets/scope-notice-SMVc0RpX.css",
+            "durationMs": 20.5,
+            "transferBytes": 471,
+            "decodedBytes": 171
+          },
+          {
+            "path": "/assets/chart-data-IxPunNas.js",
+            "durationMs": 23.399999976158142,
+            "transferBytes": 2324,
+            "decodedBytes": 2024
+          },
+          {
+            "path": "/assets/projects-Bp-IfMps.css",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 15521,
+            "decodedBytes": 15221
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 24.399999976158142,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 43.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/projects",
+            "durationMs": 138.90000009536743,
+            "transferBytes": 1744,
+            "decodedBytes": 1444
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 168.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 10.5,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/project-detail",
+            "durationMs": 26.299999952316284,
+            "transferBytes": 2146,
+            "decodedBytes": 1846
+          },
+          {
+            "path": "/assets/providers-D-mHS7pq.js",
+            "durationMs": 17.90000009536743,
+            "transferBytes": 13172,
+            "decodedBytes": 12872
+          },
+          {
+            "path": "/assets/shield-check-0nPZx4gM.js",
+            "durationMs": 19.700000047683716,
+            "transferBytes": 797,
+            "decodedBytes": 497
+          },
+          {
+            "path": "/assets/providers-IAxQqJzR.css",
+            "durationMs": 22.90000009536743,
+            "transferBytes": 14145,
+            "decodedBytes": 13845
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 20.100000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 53.200000047683716,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 55.90000009536743,
+            "transferBytes": 410,
+            "decodedBytes": 110
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 88.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/assets/models-C1_RW3Nc.js",
+            "durationMs": 18.09999990463257,
+            "transferBytes": 21655,
+            "decodedBytes": 21355
+          },
+          {
+            "path": "/assets/models-BJCsWNHa.css",
+            "durationMs": 20.5,
+            "transferBytes": 16878,
+            "decodedBytes": 16578
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 19.600000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 49.10000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/models",
+            "durationMs": 315.6999999284744,
+            "transferBytes": 1897,
+            "decodedBytes": 1597
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/model-detail",
+            "durationMs": 34.60000002384186,
+            "transferBytes": 745,
+            "decodedBytes": 445
+          },
+          {
+            "path": "/assets/cost-DfAePibx.js",
+            "durationMs": 18.699999928474426,
+            "transferBytes": 21599,
+            "decodedBytes": 21299
+          },
+          {
+            "path": "/assets/wallet-BvTO8FZR.js",
+            "durationMs": 20.799999952316284,
+            "transferBytes": 1139,
+            "decodedBytes": 839
+          },
+          {
+            "path": "/assets/cost-CTSsdqgG.css",
+            "durationMs": 24.299999952316284,
+            "transferBytes": 17126,
+            "decodedBytes": 16826
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 21.200000047683716,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 50.60000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/cost-analysis",
+            "durationMs": 237,
+            "transferBytes": 1493,
+            "decodedBytes": 1193
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 33.200000047683716,
+            "transferBytes": 448,
+            "decodedBytes": 148
+          },
+          {
+            "path": "/assets/utility-pages-B1Eod8Z3.js",
+            "durationMs": 157.39999997615814,
+            "transferBytes": 2384,
+            "decodedBytes": 2084
+          },
+          {
+            "path": "/assets/settings-D2Y8iZK-.js",
+            "durationMs": 173.89999997615814,
+            "transferBytes": 234840,
+            "decodedBytes": 234540
+          },
+          {
+            "path": "/assets/settings-66clFK0d.css",
+            "durationMs": 224.20000004768372,
+            "transferBytes": 19216,
+            "decodedBytes": 18916
+          },
+          {
+            "path": "/assets/utility-pages-rQmk3yrA.css",
+            "durationMs": 228,
+            "transferBytes": 2815,
+            "decodedBytes": 2515
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 246.60000002384186,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 119.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 145.5,
+            "transferBytes": 1466,
+            "decodedBytes": 1166
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 251.69999992847443,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 251.20000004768372,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 133.20000004768372,
+            "transferBytes": 33070,
+            "decodedBytes": 32770
+          },
+          {
+            "path": "/api/history-summary",
+            "durationMs": 155.20000004768372,
+            "transferBytes": 943,
+            "decodedBytes": 643
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 10.600000023841858,
+            "transferBytes": 474,
+            "decodedBytes": 174
+          }
+        ]
+      }
+    },
+    {
+      "destination": "alerts",
+      "readyMs": 217.45809999999983,
+      "browser": {
+        "navigation": [
+          {
+            "name": "http://127.0.0.1:7802/#overview",
+            "entryType": "navigation",
+            "startTime": 0,
+            "duration": 162.5,
+            "navigationId": 5612,
+            "initiatorType": "navigation",
+            "deliveryType": "",
+            "nextHopProtocol": "http/1.1",
+            "renderBlockingStatus": "non-blocking",
+            "contentType": "text/html",
+            "contentEncoding": "",
+            "workerStart": 0,
+            "workerRouterEvaluationStart": 0,
+            "workerCacheLookupStart": 0,
+            "workerMatchedSourceType": "",
+            "workerFinalSourceType": "",
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 1.2000000476837158,
+            "domainLookupStart": 1.2000000476837158,
+            "domainLookupEnd": 1.2000000476837158,
+            "connectStart": 1.2000000476837158,
+            "secureConnectionStart": 0,
+            "connectEnd": 1.2000000476837158,
+            "requestStart": 31.800000071525574,
+            "responseStart": 60.5,
+            "firstInterimResponseStart": 0,
+            "finalResponseHeadersStart": 60.5,
+            "responseEnd": 61.700000047683716,
+            "transferSize": 2235,
+            "encodedBodySize": 1935,
+            "decodedBodySize": 1935,
+            "responseStatus": 200,
+            "serverTiming": [],
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "domInteractive": 139.90000009536743,
+            "domContentLoadedEventStart": 159,
+            "domContentLoadedEventEnd": 159.20000004768372,
+            "domComplete": 162.40000009536743,
+            "loadEventStart": 162.5,
+            "loadEventEnd": 162.5,
+            "type": "navigate",
+            "redirectCount": 0,
+            "activationStart": 0,
+            "criticalCHRestart": 0,
+            "notRestoredReasons": null,
+            "confidence": {
+              "randomizedTriggerRate": 0.4994798,
+              "value": "low"
+            }
+          }
+        ],
+        "paint": [
+          {
+            "name": "first-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          },
+          {
+            "name": "first-contentful-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          }
+        ],
+        "resources": [
+          {
+            "path": "/assets/index-BulTTdp8.js",
+            "durationMs": 53.60000002384186,
+            "transferBytes": 304840,
+            "decodedBytes": 304540
+          },
+          {
+            "path": "/assets/index-VOvS51-H.css",
+            "durationMs": 57.200000047683716,
+            "transferBytes": 64316,
+            "decodedBytes": 64016
+          },
+          {
+            "path": "/assets/production-BO30KCoc.js",
+            "durationMs": 804.3000000715256,
+            "transferBytes": 71219,
+            "decodedBytes": 70919
+          },
+          {
+            "path": "/assets/command-palette-Dos42Sr9.js",
+            "durationMs": 815.7000000476837,
+            "transferBytes": 163331,
+            "decodedBytes": 163031
+          },
+          {
+            "path": "/assets/command-palette-BlVnp0iG.css",
+            "durationMs": 808.1999999284744,
+            "transferBytes": 1158,
+            "decodedBytes": 858
+          },
+          {
+            "path": "/assets/harness-icon-B9AxT87T.js",
+            "durationMs": 821.5,
+            "transferBytes": 20705,
+            "decodedBytes": 20405
+          },
+          {
+            "path": "/assets/chart-data-tqqWKQdJ.js",
+            "durationMs": 819.6000000238419,
+            "transferBytes": 1058,
+            "decodedBytes": 758
+          },
+          {
+            "path": "/assets/chart-data-AgyWygLH.css",
+            "durationMs": 809.1000000238419,
+            "transferBytes": 944,
+            "decodedBytes": 644
+          },
+          {
+            "path": "/assets/shell-CiMTIAah.js",
+            "durationMs": 849.8000000715256,
+            "transferBytes": 14704,
+            "decodedBytes": 14404
+          },
+          {
+            "path": "/assets/shell-B-48w8Yh.css",
+            "durationMs": 827.9000000953674,
+            "transferBytes": 77831,
+            "decodedBytes": 77531
+          },
+          {
+            "path": "/assets/quota-chart-DKiBS4pO.js",
+            "durationMs": 863.8999999761581,
+            "transferBytes": 3866,
+            "decodedBytes": 3566
+          },
+          {
+            "path": "/assets/format-Ez_F9x7g.js",
+            "durationMs": 981.7999999523163,
+            "transferBytes": 2733,
+            "decodedBytes": 2433
+          },
+          {
+            "path": "/assets/quota-chart-D8HC5jl7.css",
+            "durationMs": 842.3000000715256,
+            "transferBytes": 1305,
+            "decodedBytes": 1005
+          },
+          {
+            "path": "/assets/trending-up-SphbULb5.js",
+            "durationMs": 987,
+            "transferBytes": 979,
+            "decodedBytes": 679
+          },
+          {
+            "path": "/assets/coins-B5U79lzS.js",
+            "durationMs": 924.8000000715256,
+            "transferBytes": 762,
+            "decodedBytes": 462
+          },
+          {
+            "path": "/assets/database-965M3LsW.js",
+            "durationMs": 925.2000000476837,
+            "transferBytes": 725,
+            "decodedBytes": 425
+          },
+          {
+            "path": "/assets/lightbulb-C3if9xdR.js",
+            "durationMs": 948.2999999523163,
+            "transferBytes": 763,
+            "decodedBytes": 463
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 961.1999999284744,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+            "durationMs": 142.5,
+            "transferBytes": 29700,
+            "decodedBytes": 29400
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 96.29999995231628,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/settings",
+            "durationMs": 96.89999997615814,
+            "transferBytes": 391,
+            "decodedBytes": 91
+          },
+          {
+            "path": "/api/compare",
+            "durationMs": 61.5,
+            "transferBytes": 1358,
+            "decodedBytes": 1058
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 224.70000004768372,
+            "transferBytes": 2799,
+            "decodedBytes": 2499
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 246.39999997615814,
+            "transferBytes": 2422,
+            "decodedBytes": 2122
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 335.2999999523163,
+            "transferBytes": 1475,
+            "decodedBytes": 1175
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 17.799999952316284,
+            "transferBytes": 1084,
+            "decodedBytes": 784
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 19.899999976158142,
+            "transferBytes": 2483,
+            "decodedBytes": 2183
+          },
+          {
+            "path": "/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2",
+            "durationMs": 219.10000002384186,
+            "transferBytes": 23428,
+            "decodedBytes": 23128
+          },
+          {
+            "path": "/fonts/noto-sans-thai/NotoSansThai-variable.ttf",
+            "durationMs": 194.19999992847443,
+            "transferBytes": 218952,
+            "decodedBytes": 218652
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 72.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 82.39999997615814,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/redesign/pulse-earth-v4.png",
+            "durationMs": 88.40000009536743,
+            "transferBytes": 1689774,
+            "decodedBytes": 1689474
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 117.60000002384186,
+            "transferBytes": 2827,
+            "decodedBytes": 2527
+          },
+          {
+            "path": "/assets/live-DxQse_jK.js",
+            "durationMs": 38.89999997615814,
+            "transferBytes": 32701,
+            "decodedBytes": 32401
+          },
+          {
+            "path": "/assets/page-heading--9DlK1z8.js",
+            "durationMs": 50.89999997615814,
+            "transferBytes": 770,
+            "decodedBytes": 470
+          },
+          {
+            "path": "/assets/page-heading-B6srWc0E.css",
+            "durationMs": 44.89999997615814,
+            "transferBytes": 7682,
+            "decodedBytes": 7382
+          },
+          {
+            "path": "/assets/heading-reference-icon-CQzoG3VN.js",
+            "durationMs": 53.59999990463257,
+            "transferBytes": 2245,
+            "decodedBytes": 1945
+          },
+          {
+            "path": "/assets/section-mark-CiNhrCYK.js",
+            "durationMs": 60.699999928474426,
+            "transferBytes": 569,
+            "decodedBytes": 269
+          },
+          {
+            "path": "/assets/section-mark-D9p1fSvH.css",
+            "durationMs": 65.30000007152557,
+            "transferBytes": 2109,
+            "decodedBytes": 1809
+          },
+          {
+            "path": "/assets/refresh-cw-CqJ6e4Lb.js",
+            "durationMs": 84,
+            "transferBytes": 803,
+            "decodedBytes": 503
+          },
+          {
+            "path": "/assets/triangle-alert-CDJ3xTiq.js",
+            "durationMs": 92.39999997615814,
+            "transferBytes": 1034,
+            "decodedBytes": 734
+          },
+          {
+            "path": "/assets/info-7VoHXq0d.js",
+            "durationMs": 94.89999997615814,
+            "transferBytes": 681,
+            "decodedBytes": 381
+          },
+          {
+            "path": "/assets/live-DqdmQgrV.css",
+            "durationMs": 80.20000004768372,
+            "transferBytes": 32802,
+            "decodedBytes": 32502
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 89.5,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 73.19999992847443,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 117.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 27,
+            "transferBytes": 2407,
+            "decodedBytes": 2107
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 34.39999997615814,
+            "transferBytes": 5630,
+            "decodedBytes": 5330
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 60.199999928474426,
+            "transferBytes": 3266,
+            "decodedBytes": 2966
+          },
+          {
+            "path": "/api/live-sessions",
+            "durationMs": 75.60000002384186,
+            "transferBytes": 719,
+            "decodedBytes": 419
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 7.800000071525574,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/assets/projects-gsDyhI7p.js",
+            "durationMs": 17.09999990463257,
+            "transferBytes": 19838,
+            "decodedBytes": 19538
+          },
+          {
+            "path": "/assets/scope-notice-CCZn88bc.js",
+            "durationMs": 19,
+            "transferBytes": 2720,
+            "decodedBytes": 2420
+          },
+          {
+            "path": "/assets/scope-notice-SMVc0RpX.css",
+            "durationMs": 20.5,
+            "transferBytes": 471,
+            "decodedBytes": 171
+          },
+          {
+            "path": "/assets/chart-data-IxPunNas.js",
+            "durationMs": 23.399999976158142,
+            "transferBytes": 2324,
+            "decodedBytes": 2024
+          },
+          {
+            "path": "/assets/projects-Bp-IfMps.css",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 15521,
+            "decodedBytes": 15221
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 24.399999976158142,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 43.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/projects",
+            "durationMs": 138.90000009536743,
+            "transferBytes": 1744,
+            "decodedBytes": 1444
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 168.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 10.5,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/project-detail",
+            "durationMs": 26.299999952316284,
+            "transferBytes": 2146,
+            "decodedBytes": 1846
+          },
+          {
+            "path": "/assets/providers-D-mHS7pq.js",
+            "durationMs": 17.90000009536743,
+            "transferBytes": 13172,
+            "decodedBytes": 12872
+          },
+          {
+            "path": "/assets/shield-check-0nPZx4gM.js",
+            "durationMs": 19.700000047683716,
+            "transferBytes": 797,
+            "decodedBytes": 497
+          },
+          {
+            "path": "/assets/providers-IAxQqJzR.css",
+            "durationMs": 22.90000009536743,
+            "transferBytes": 14145,
+            "decodedBytes": 13845
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 20.100000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 53.200000047683716,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 55.90000009536743,
+            "transferBytes": 410,
+            "decodedBytes": 110
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 88.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/assets/models-C1_RW3Nc.js",
+            "durationMs": 18.09999990463257,
+            "transferBytes": 21655,
+            "decodedBytes": 21355
+          },
+          {
+            "path": "/assets/models-BJCsWNHa.css",
+            "durationMs": 20.5,
+            "transferBytes": 16878,
+            "decodedBytes": 16578
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 19.600000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 49.10000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/models",
+            "durationMs": 315.6999999284744,
+            "transferBytes": 1897,
+            "decodedBytes": 1597
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/model-detail",
+            "durationMs": 34.60000002384186,
+            "transferBytes": 745,
+            "decodedBytes": 445
+          },
+          {
+            "path": "/assets/cost-DfAePibx.js",
+            "durationMs": 18.699999928474426,
+            "transferBytes": 21599,
+            "decodedBytes": 21299
+          },
+          {
+            "path": "/assets/wallet-BvTO8FZR.js",
+            "durationMs": 20.799999952316284,
+            "transferBytes": 1139,
+            "decodedBytes": 839
+          },
+          {
+            "path": "/assets/cost-CTSsdqgG.css",
+            "durationMs": 24.299999952316284,
+            "transferBytes": 17126,
+            "decodedBytes": 16826
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 21.200000047683716,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 50.60000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/cost-analysis",
+            "durationMs": 237,
+            "transferBytes": 1493,
+            "decodedBytes": 1193
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 33.200000047683716,
+            "transferBytes": 448,
+            "decodedBytes": 148
+          },
+          {
+            "path": "/assets/utility-pages-B1Eod8Z3.js",
+            "durationMs": 157.39999997615814,
+            "transferBytes": 2384,
+            "decodedBytes": 2084
+          },
+          {
+            "path": "/assets/settings-D2Y8iZK-.js",
+            "durationMs": 173.89999997615814,
+            "transferBytes": 234840,
+            "decodedBytes": 234540
+          },
+          {
+            "path": "/assets/settings-66clFK0d.css",
+            "durationMs": 224.20000004768372,
+            "transferBytes": 19216,
+            "decodedBytes": 18916
+          },
+          {
+            "path": "/assets/utility-pages-rQmk3yrA.css",
+            "durationMs": 228,
+            "transferBytes": 2815,
+            "decodedBytes": 2515
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 246.60000002384186,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 119.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 145.5,
+            "transferBytes": 1466,
+            "decodedBytes": 1166
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 251.69999992847443,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 251.20000004768372,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 133.20000004768372,
+            "transferBytes": 33070,
+            "decodedBytes": 32770
+          },
+          {
+            "path": "/api/history-summary",
+            "durationMs": 155.20000004768372,
+            "transferBytes": 943,
+            "decodedBytes": 643
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 10.600000023841858,
+            "transferBytes": 474,
+            "decodedBytes": 174
+          },
+          {
+            "path": "/assets/alerts-ftIKq4Pg.js",
+            "durationMs": 17.5,
+            "transferBytes": 24324,
+            "decodedBytes": 24024
+          },
+          {
+            "path": "/assets/gauge-BRFxe1rQ.js",
+            "durationMs": 20.199999928474426,
+            "transferBytes": 911,
+            "decodedBytes": 611
+          },
+          {
+            "path": "/assets/alerts-6US0husU.css",
+            "durationMs": 23.799999952316284,
+            "transferBytes": 21480,
+            "decodedBytes": 21180
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 23.600000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 64.39999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 67,
+            "transferBytes": 410,
+            "decodedBytes": 110
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 112.60000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/alerts",
+            "durationMs": 114.5,
+            "transferBytes": 313,
+            "decodedBytes": 13
+          },
+          {
+            "path": "/api/notification-settings",
+            "durationMs": 117.10000002384186,
+            "transferBytes": 387,
+            "decodedBytes": 87
+          }
+        ]
+      }
+    },
+    {
+      "destination": "settings",
+      "readyMs": 186.29550000000017,
+      "browser": {
+        "navigation": [
+          {
+            "name": "http://127.0.0.1:7802/#overview",
+            "entryType": "navigation",
+            "startTime": 0,
+            "duration": 162.5,
+            "navigationId": 5612,
+            "initiatorType": "navigation",
+            "deliveryType": "",
+            "nextHopProtocol": "http/1.1",
+            "renderBlockingStatus": "non-blocking",
+            "contentType": "text/html",
+            "contentEncoding": "",
+            "workerStart": 0,
+            "workerRouterEvaluationStart": 0,
+            "workerCacheLookupStart": 0,
+            "workerMatchedSourceType": "",
+            "workerFinalSourceType": "",
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 1.2000000476837158,
+            "domainLookupStart": 1.2000000476837158,
+            "domainLookupEnd": 1.2000000476837158,
+            "connectStart": 1.2000000476837158,
+            "secureConnectionStart": 0,
+            "connectEnd": 1.2000000476837158,
+            "requestStart": 31.800000071525574,
+            "responseStart": 60.5,
+            "firstInterimResponseStart": 0,
+            "finalResponseHeadersStart": 60.5,
+            "responseEnd": 61.700000047683716,
+            "transferSize": 2235,
+            "encodedBodySize": 1935,
+            "decodedBodySize": 1935,
+            "responseStatus": 200,
+            "serverTiming": [],
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "domInteractive": 139.90000009536743,
+            "domContentLoadedEventStart": 159,
+            "domContentLoadedEventEnd": 159.20000004768372,
+            "domComplete": 162.40000009536743,
+            "loadEventStart": 162.5,
+            "loadEventEnd": 162.5,
+            "type": "navigate",
+            "redirectCount": 0,
+            "activationStart": 0,
+            "criticalCHRestart": 0,
+            "notRestoredReasons": null,
+            "confidence": {
+              "randomizedTriggerRate": 0.4994798,
+              "value": "low"
+            }
+          }
+        ],
+        "paint": [
+          {
+            "name": "first-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          },
+          {
+            "name": "first-contentful-paint",
+            "entryType": "paint",
+            "startTime": 1640,
+            "duration": 0,
+            "navigationId": 5612,
+            "paintTime": 1107,
+            "presentationTime": 1640
+          }
+        ],
+        "resources": [
+          {
+            "path": "/assets/index-BulTTdp8.js",
+            "durationMs": 53.60000002384186,
+            "transferBytes": 304840,
+            "decodedBytes": 304540
+          },
+          {
+            "path": "/assets/index-VOvS51-H.css",
+            "durationMs": 57.200000047683716,
+            "transferBytes": 64316,
+            "decodedBytes": 64016
+          },
+          {
+            "path": "/assets/production-BO30KCoc.js",
+            "durationMs": 804.3000000715256,
+            "transferBytes": 71219,
+            "decodedBytes": 70919
+          },
+          {
+            "path": "/assets/command-palette-Dos42Sr9.js",
+            "durationMs": 815.7000000476837,
+            "transferBytes": 163331,
+            "decodedBytes": 163031
+          },
+          {
+            "path": "/assets/command-palette-BlVnp0iG.css",
+            "durationMs": 808.1999999284744,
+            "transferBytes": 1158,
+            "decodedBytes": 858
+          },
+          {
+            "path": "/assets/harness-icon-B9AxT87T.js",
+            "durationMs": 821.5,
+            "transferBytes": 20705,
+            "decodedBytes": 20405
+          },
+          {
+            "path": "/assets/chart-data-tqqWKQdJ.js",
+            "durationMs": 819.6000000238419,
+            "transferBytes": 1058,
+            "decodedBytes": 758
+          },
+          {
+            "path": "/assets/chart-data-AgyWygLH.css",
+            "durationMs": 809.1000000238419,
+            "transferBytes": 944,
+            "decodedBytes": 644
+          },
+          {
+            "path": "/assets/shell-CiMTIAah.js",
+            "durationMs": 849.8000000715256,
+            "transferBytes": 14704,
+            "decodedBytes": 14404
+          },
+          {
+            "path": "/assets/shell-B-48w8Yh.css",
+            "durationMs": 827.9000000953674,
+            "transferBytes": 77831,
+            "decodedBytes": 77531
+          },
+          {
+            "path": "/assets/quota-chart-DKiBS4pO.js",
+            "durationMs": 863.8999999761581,
+            "transferBytes": 3866,
+            "decodedBytes": 3566
+          },
+          {
+            "path": "/assets/format-Ez_F9x7g.js",
+            "durationMs": 981.7999999523163,
+            "transferBytes": 2733,
+            "decodedBytes": 2433
+          },
+          {
+            "path": "/assets/quota-chart-D8HC5jl7.css",
+            "durationMs": 842.3000000715256,
+            "transferBytes": 1305,
+            "decodedBytes": 1005
+          },
+          {
+            "path": "/assets/trending-up-SphbULb5.js",
+            "durationMs": 987,
+            "transferBytes": 979,
+            "decodedBytes": 679
+          },
+          {
+            "path": "/assets/coins-B5U79lzS.js",
+            "durationMs": 924.8000000715256,
+            "transferBytes": 762,
+            "decodedBytes": 462
+          },
+          {
+            "path": "/assets/database-965M3LsW.js",
+            "durationMs": 925.2000000476837,
+            "transferBytes": 725,
+            "decodedBytes": 425
+          },
+          {
+            "path": "/assets/lightbulb-C3if9xdR.js",
+            "durationMs": 948.2999999523163,
+            "transferBytes": 763,
+            "decodedBytes": 463
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 961.1999999284744,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+            "durationMs": 142.5,
+            "transferBytes": 29700,
+            "decodedBytes": 29400
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 96.29999995231628,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/settings",
+            "durationMs": 96.89999997615814,
+            "transferBytes": 391,
+            "decodedBytes": 91
+          },
+          {
+            "path": "/api/compare",
+            "durationMs": 61.5,
+            "transferBytes": 1358,
+            "decodedBytes": 1058
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 224.70000004768372,
+            "transferBytes": 2799,
+            "decodedBytes": 2499
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 246.39999997615814,
+            "transferBytes": 2422,
+            "decodedBytes": 2122
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 335.2999999523163,
+            "transferBytes": 1475,
+            "decodedBytes": 1175
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 17.799999952316284,
+            "transferBytes": 1084,
+            "decodedBytes": 784
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 19.899999976158142,
+            "transferBytes": 2483,
+            "decodedBytes": 2183
+          },
+          {
+            "path": "/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2",
+            "durationMs": 219.10000002384186,
+            "transferBytes": 23428,
+            "decodedBytes": 23128
+          },
+          {
+            "path": "/fonts/noto-sans-thai/NotoSansThai-variable.ttf",
+            "durationMs": 194.19999992847443,
+            "transferBytes": 218952,
+            "decodedBytes": 218652
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 72.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 82.39999997615814,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/redesign/pulse-earth-v4.png",
+            "durationMs": 88.40000009536743,
+            "transferBytes": 1689774,
+            "decodedBytes": 1689474
+          },
+          {
+            "path": "/api/runtime-map",
+            "durationMs": 117.60000002384186,
+            "transferBytes": 2827,
+            "decodedBytes": 2527
+          },
+          {
+            "path": "/assets/live-DxQse_jK.js",
+            "durationMs": 38.89999997615814,
+            "transferBytes": 32701,
+            "decodedBytes": 32401
+          },
+          {
+            "path": "/assets/page-heading--9DlK1z8.js",
+            "durationMs": 50.89999997615814,
+            "transferBytes": 770,
+            "decodedBytes": 470
+          },
+          {
+            "path": "/assets/page-heading-B6srWc0E.css",
+            "durationMs": 44.89999997615814,
+            "transferBytes": 7682,
+            "decodedBytes": 7382
+          },
+          {
+            "path": "/assets/heading-reference-icon-CQzoG3VN.js",
+            "durationMs": 53.59999990463257,
+            "transferBytes": 2245,
+            "decodedBytes": 1945
+          },
+          {
+            "path": "/assets/section-mark-CiNhrCYK.js",
+            "durationMs": 60.699999928474426,
+            "transferBytes": 569,
+            "decodedBytes": 269
+          },
+          {
+            "path": "/assets/section-mark-D9p1fSvH.css",
+            "durationMs": 65.30000007152557,
+            "transferBytes": 2109,
+            "decodedBytes": 1809
+          },
+          {
+            "path": "/assets/refresh-cw-CqJ6e4Lb.js",
+            "durationMs": 84,
+            "transferBytes": 803,
+            "decodedBytes": 503
+          },
+          {
+            "path": "/assets/triangle-alert-CDJ3xTiq.js",
+            "durationMs": 92.39999997615814,
+            "transferBytes": 1034,
+            "decodedBytes": 734
+          },
+          {
+            "path": "/assets/info-7VoHXq0d.js",
+            "durationMs": 94.89999997615814,
+            "transferBytes": 681,
+            "decodedBytes": 381
+          },
+          {
+            "path": "/assets/live-DqdmQgrV.css",
+            "durationMs": 80.20000004768372,
+            "transferBytes": 32802,
+            "decodedBytes": 32502
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 89.5,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 73.19999992847443,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 117.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 27,
+            "transferBytes": 2407,
+            "decodedBytes": 2107
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 34.39999997615814,
+            "transferBytes": 5630,
+            "decodedBytes": 5330
+          },
+          {
+            "path": "/api/trend",
+            "durationMs": 60.199999928474426,
+            "transferBytes": 3266,
+            "decodedBytes": 2966
+          },
+          {
+            "path": "/api/live-sessions",
+            "durationMs": 75.60000002384186,
+            "transferBytes": 719,
+            "decodedBytes": 419
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 7.800000071525574,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/assets/projects-gsDyhI7p.js",
+            "durationMs": 17.09999990463257,
+            "transferBytes": 19838,
+            "decodedBytes": 19538
+          },
+          {
+            "path": "/assets/scope-notice-CCZn88bc.js",
+            "durationMs": 19,
+            "transferBytes": 2720,
+            "decodedBytes": 2420
+          },
+          {
+            "path": "/assets/scope-notice-SMVc0RpX.css",
+            "durationMs": 20.5,
+            "transferBytes": 471,
+            "decodedBytes": 171
+          },
+          {
+            "path": "/assets/chart-data-IxPunNas.js",
+            "durationMs": 23.399999976158142,
+            "transferBytes": 2324,
+            "decodedBytes": 2024
+          },
+          {
+            "path": "/assets/projects-Bp-IfMps.css",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 15521,
+            "decodedBytes": 15221
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 24.399999976158142,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 43.5,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/projects",
+            "durationMs": 138.90000009536743,
+            "transferBytes": 1744,
+            "decodedBytes": 1444
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 168.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 10.5,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/project-detail",
+            "durationMs": 26.299999952316284,
+            "transferBytes": 2146,
+            "decodedBytes": 1846
+          },
+          {
+            "path": "/assets/providers-D-mHS7pq.js",
+            "durationMs": 17.90000009536743,
+            "transferBytes": 13172,
+            "decodedBytes": 12872
+          },
+          {
+            "path": "/assets/shield-check-0nPZx4gM.js",
+            "durationMs": 19.700000047683716,
+            "transferBytes": 797,
+            "decodedBytes": 497
+          },
+          {
+            "path": "/assets/providers-IAxQqJzR.css",
+            "durationMs": 22.90000009536743,
+            "transferBytes": 14145,
+            "decodedBytes": 13845
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 20.100000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 53.200000047683716,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 55.90000009536743,
+            "transferBytes": 410,
+            "decodedBytes": 110
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 88.89999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/assets/models-C1_RW3Nc.js",
+            "durationMs": 18.09999990463257,
+            "transferBytes": 21655,
+            "decodedBytes": 21355
+          },
+          {
+            "path": "/assets/models-BJCsWNHa.css",
+            "durationMs": 20.5,
+            "transferBytes": 16878,
+            "decodedBytes": 16578
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 19.600000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 49.10000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/models",
+            "durationMs": 315.6999999284744,
+            "transferBytes": 1897,
+            "decodedBytes": 1597
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 25.199999928474426,
+            "transferBytes": 460,
+            "decodedBytes": 160
+          },
+          {
+            "path": "/api/model-detail",
+            "durationMs": 34.60000002384186,
+            "transferBytes": 745,
+            "decodedBytes": 445
+          },
+          {
+            "path": "/assets/cost-DfAePibx.js",
+            "durationMs": 18.699999928474426,
+            "transferBytes": 21599,
+            "decodedBytes": 21299
+          },
+          {
+            "path": "/assets/wallet-BvTO8FZR.js",
+            "durationMs": 20.799999952316284,
+            "transferBytes": 1139,
+            "decodedBytes": 839
+          },
+          {
+            "path": "/assets/cost-CTSsdqgG.css",
+            "durationMs": 24.299999952316284,
+            "transferBytes": 17126,
+            "decodedBytes": 16826
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 21.200000047683716,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 50.60000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/cost-analysis",
+            "durationMs": 237,
+            "transferBytes": 1493,
+            "decodedBytes": 1193
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 33.200000047683716,
+            "transferBytes": 448,
+            "decodedBytes": 148
+          },
+          {
+            "path": "/assets/utility-pages-B1Eod8Z3.js",
+            "durationMs": 157.39999997615814,
+            "transferBytes": 2384,
+            "decodedBytes": 2084
+          },
+          {
+            "path": "/assets/settings-D2Y8iZK-.js",
+            "durationMs": 173.89999997615814,
+            "transferBytes": 234840,
+            "decodedBytes": 234540
+          },
+          {
+            "path": "/assets/settings-66clFK0d.css",
+            "durationMs": 224.20000004768372,
+            "transferBytes": 19216,
+            "decodedBytes": 18916
+          },
+          {
+            "path": "/assets/utility-pages-rQmk3yrA.css",
+            "durationMs": 228,
+            "transferBytes": 2815,
+            "decodedBytes": 2515
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 246.60000002384186,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 119.70000004768372,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/usage",
+            "durationMs": 145.5,
+            "transferBytes": 1466,
+            "decodedBytes": 1166
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 251.69999992847443,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 251.20000004768372,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/usage-events",
+            "durationMs": 133.20000004768372,
+            "transferBytes": 33070,
+            "decodedBytes": 32770
+          },
+          {
+            "path": "/api/history-summary",
+            "durationMs": 155.20000004768372,
+            "transferBytes": 943,
+            "decodedBytes": 643
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 10.600000023841858,
+            "transferBytes": 474,
+            "decodedBytes": 174
+          },
+          {
+            "path": "/assets/alerts-ftIKq4Pg.js",
+            "durationMs": 17.5,
+            "transferBytes": 24324,
+            "decodedBytes": 24024
+          },
+          {
+            "path": "/assets/gauge-BRFxe1rQ.js",
+            "durationMs": 20.199999928474426,
+            "transferBytes": 911,
+            "decodedBytes": 611
+          },
+          {
+            "path": "/assets/alerts-6US0husU.css",
+            "durationMs": 23.799999952316284,
+            "transferBytes": 21480,
+            "decodedBytes": 21180
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 23.600000023841858,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 64.39999997615814,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 67,
+            "transferBytes": 410,
+            "decodedBytes": 110
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 112.60000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/alerts",
+            "durationMs": 114.5,
+            "transferBytes": 313,
+            "decodedBytes": 13
+          },
+          {
+            "path": "/api/notification-settings",
+            "durationMs": 117.10000002384186,
+            "transferBytes": 387,
+            "decodedBytes": 87
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 62.199999928474426,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/api/runtime-summary",
+            "durationMs": 65.09999990463257,
+            "transferBytes": 410,
+            "decodedBytes": 110
+          },
+          {
+            "path": "/api/settings",
+            "durationMs": 65.20000004768372,
+            "transferBytes": 391,
+            "decodedBytes": 91
+          },
+          {
+            "path": "/api/notification-settings",
+            "durationMs": 66,
+            "transferBytes": 387,
+            "decodedBytes": 87
+          },
+          {
+            "path": "/api/overview",
+            "durationMs": 106.60000002384186,
+            "transferBytes": 8050,
+            "decodedBytes": 7750
+          },
+          {
+            "path": "/favicon.svg",
+            "durationMs": 102.70000004768372,
+            "transferBytes": 2460,
+            "decodedBytes": 2160
+          }
+        ]
+      }
+    }
+  ],
+  "assets": [
+    {
+      "path": "index.html",
+      "bytes": 1865,
+      "sha256": "c118de8dec77029c9178d6cd633e2860640e32f86dafdd9a81811c9a3ea8a45d"
+    },
+    {
+      "path": "assets/alerts-6US0husU.css",
+      "bytes": 21180,
+      "sha256": "16083a4fc47b7d24b9e08a48dc94861855b787f7b89e8856e6e0566775e7c617"
+    },
+    {
+      "path": "assets/alerts-ftIKq4Pg.js",
+      "bytes": 24024,
+      "sha256": "d8dd7dbbadf82685745b16ef4ceca635166e9cb272ebc11906be8205c4329be8"
+    },
+    {
+      "path": "assets/App-AFO74nTo.css",
+      "bytes": 1306,
+      "sha256": "ccaa8babe011c6c6cfac77a0e8f6d09ffae867dbcb94c4c699d17cf1f4373720"
+    },
+    {
+      "path": "assets/App-EcTOH-bo.js",
+      "bytes": 532300,
+      "sha256": "23445cbda1c58f7a89fd37cc7e925a8596f371449dc51f585ae39c8a7c59c656"
+    },
+    {
+      "path": "assets/chart-data-AgyWygLH.css",
+      "bytes": 644,
+      "sha256": "e4bacbb935d7cb79ba192d904186580e342bac9586e2b92f70f5de17f6133231"
+    },
+    {
+      "path": "assets/chart-data-IxPunNas.js",
+      "bytes": 2024,
+      "sha256": "a5d150372285f8010108cd365105e92eaf12a0e070bd8590b05b85c757b782ae"
+    },
+    {
+      "path": "assets/chart-data-tqqWKQdJ.js",
+      "bytes": 758,
+      "sha256": "52619d8a6f3e5ac63b75c06788ae41bb19e1a4c4427830459a45e4faa55b7b1d"
+    },
+    {
+      "path": "assets/coins-B5U79lzS.js",
+      "bytes": 462,
+      "sha256": "23b5e22a4877bfdfb65dcb0d45ddacf607c40b0bdf6e5422990593d118334f7e"
+    },
+    {
+      "path": "assets/command-palette-BlVnp0iG.css",
+      "bytes": 858,
+      "sha256": "5e22698ac405e81a4ca52e96e875a606b1d4c41ae18c4f2428b448262806b37d"
+    },
+    {
+      "path": "assets/command-palette-Dos42Sr9.js",
+      "bytes": 163031,
+      "sha256": "4ba3d783e67f5418f413ce662fca4766377d284eaae8b0a21c62ddeafe101d0f"
+    },
+    {
+      "path": "assets/cost-CTSsdqgG.css",
+      "bytes": 16826,
+      "sha256": "56cf90f70ad3689f2479f67c72ed6043e8c8860fb3dce770f93928aa7c21b558"
+    },
+    {
+      "path": "assets/cost-DfAePibx.js",
+      "bytes": 21299,
+      "sha256": "20b8509773617a47584f71325646df0c607b8875bd8eaf0633ab03e9c26d30be"
+    },
+    {
+      "path": "assets/database-965M3LsW.js",
+      "bytes": 425,
+      "sha256": "39d75453f174b414994ffba4e5da305f228964188d7316847275d327b12e10bb"
+    },
+    {
+      "path": "assets/format-Ez_F9x7g.js",
+      "bytes": 2433,
+      "sha256": "242d4e677dcc7ea8aef73b9d6fab70a4304fb7d29c2b10bbb07c8e22f9d333dd"
+    },
+    {
+      "path": "assets/gauge-BRFxe1rQ.js",
+      "bytes": 611,
+      "sha256": "f0a95b0ac76be600df1cb0bfd26ee85827f087ba957e05f152fb537708057950"
+    },
+    {
+      "path": "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2",
+      "bytes": 7420,
+      "sha256": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e"
+    },
+    {
+      "path": "assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2",
+      "bytes": 15084,
+      "sha256": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09"
+    },
+    {
+      "path": "assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2",
+      "bytes": 16512,
+      "sha256": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f"
+    },
+    {
+      "path": "assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+      "bytes": 29400,
+      "sha256": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1"
+    },
+    {
+      "path": "assets/geist-mono-cyrillic-ext-wght-normal-X_5orZeX.woff2",
+      "bytes": 6176,
+      "sha256": "cd8800999070b729e1cc0bf7a48da6c3ac096a044251171b9a7574b56d96d4b4"
+    },
+    {
+      "path": "assets/geist-mono-cyrillic-wght-normal-DiZS0aHC.woff2",
+      "bytes": 12940,
+      "sha256": "4866787fc952dbdbd591d6923d67bc21c2d894b93f34ab69d0cdf25d47bfb2df"
+    },
+    {
+      "path": "assets/geist-mono-latin-ext-wght-normal-Bwz-egvJ.woff2",
+      "bytes": 14696,
+      "sha256": "1a189eb997c3e2ece68373e387afaec9e8617424186c4b1ab3cff7c54ba6223b"
+    },
+    {
+      "path": "assets/geist-mono-latin-wght-normal-XN7g48iV.woff2",
+      "bytes": 23128,
+      "sha256": "684ad5b531f81d43c1e8c7038262d5db7cdc1f68006e04d6c7769efa8d33c8cc"
+    },
+    {
+      "path": "assets/geist-mono-symbols2-wght-normal-CO5SzqOn.woff2",
+      "bytes": 5812,
+      "sha256": "5bb66d8319ba1602bb2eb67dce8d79c2b4687be8ce183a0574433e949b3c60ad"
+    },
+    {
+      "path": "assets/geist-mono-vietnamese-wght-normal-DadHysG0.woff2",
+      "bytes": 7696,
+      "sha256": "d39b60889a94a527a7f73c7988a2d6efb6c081614aef683b0b386c02d74c2175"
+    },
+    {
+      "path": "assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2",
+      "bytes": 8004,
+      "sha256": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1"
+    },
+    {
+      "path": "assets/harness-icon-B9AxT87T.js",
+      "bytes": 20405,
+      "sha256": "921eeb6400b30462993519ac889a4afc7814c4056a9697d3674aad6b160d5d47"
+    },
+    {
+      "path": "assets/heading-reference-icon-CQzoG3VN.js",
+      "bytes": 1945,
+      "sha256": "45b86254629b4fe98c119710d5f141868eb9e4ab5a66b03319f572d92de92f3f"
+    },
+    {
+      "path": "assets/index-BulTTdp8.js",
+      "bytes": 304540,
+      "sha256": "b751774e99c6ffb0c0bacb6bcb5d1ad75ba9707d92bb88fd9fb193e0b162a5fb"
+    },
+    {
+      "path": "assets/index-VOvS51-H.css",
+      "bytes": 64016,
+      "sha256": "d9ccfc36bd9c4cb1c20033f3fb2f51e8eed37956b2d3287a4426db6d45b3aebe"
+    },
+    {
+      "path": "assets/info-7VoHXq0d.js",
+      "bytes": 381,
+      "sha256": "1c2a7ac232a32f7bfcbf9ed178fd1e0c42a1cb5e11796b0443a90422768f43b9"
+    },
+    {
+      "path": "assets/lightbulb-C3if9xdR.js",
+      "bytes": 463,
+      "sha256": "152793206f74e4cb18aa9064923e88466497224840260a34a0da745b365d9989"
+    },
+    {
+      "path": "assets/live-DqdmQgrV.css",
+      "bytes": 32502,
+      "sha256": "a3e00b660beb231e034e2cf9eb1e05736dae6605b843f634ef2db7d0cf66d388"
+    },
+    {
+      "path": "assets/live-DxQse_jK.js",
+      "bytes": 32401,
+      "sha256": "a86d22d3ea6ee0d077f344d72f632570e724ae59460d666eb7ef0e54a9e4372c"
+    },
+    {
+      "path": "assets/models-BJCsWNHa.css",
+      "bytes": 16578,
+      "sha256": "283153297300166e3f9512831d4e1e7ec0026943e8892eac4314bd43ee72e18b"
+    },
+    {
+      "path": "assets/models-C1_RW3Nc.js",
+      "bytes": 21355,
+      "sha256": "3584248afaedf28c5ec42de8d8e9261fd676c3d72447f203f106a67fd74f89ee"
+    },
+    {
+      "path": "assets/page-heading--9DlK1z8.js",
+      "bytes": 470,
+      "sha256": "8168a4193efdb708dd40e4f742f227ac6dae72175ca19c7ecb89814e43c966cc"
+    },
+    {
+      "path": "assets/page-heading-B6srWc0E.css",
+      "bytes": 7382,
+      "sha256": "7cb8d4d004bbb79c8c8ad8b079202feef05a0926a6dde4b4e4f7b1d49dab2435"
+    },
+    {
+      "path": "assets/production-BO30KCoc.js",
+      "bytes": 70919,
+      "sha256": "0f29ecd4cfab1ab61bae41b0658beb281cd013f24847d3fede4452500b5c9d7b"
+    },
+    {
+      "path": "assets/projects-Bp-IfMps.css",
+      "bytes": 15221,
+      "sha256": "2372856d810fe71cd914d945cb58992da740d8fa0468a4f16d64f6c26ba5f4a4"
+    },
+    {
+      "path": "assets/projects-gsDyhI7p.js",
+      "bytes": 19538,
+      "sha256": "1a76f36a86b85bdfccdabce193f4cc22c4712ac23be4abc56beeebae32758f97"
+    },
+    {
+      "path": "assets/providers-D-mHS7pq.js",
+      "bytes": 12872,
+      "sha256": "b0e2fa87fef1cc0ec379887f7cf7c34176fb629c752b20988174c20bbf8272c0"
+    },
+    {
+      "path": "assets/providers-IAxQqJzR.css",
+      "bytes": 13845,
+      "sha256": "99b326c867024d00b5b6c5b41e6b339352d6734d9dd6e4978c2f0dc35ccd200d"
+    },
+    {
+      "path": "assets/quota-chart-D8HC5jl7.css",
+      "bytes": 1005,
+      "sha256": "8cd814f625d04da0c30f19ad2c4b4882916d37af0106f42353050e44c1b78236"
+    },
+    {
+      "path": "assets/quota-chart-DKiBS4pO.js",
+      "bytes": 3566,
+      "sha256": "e25ac0a64d6fef149024c9d1d23995ec698599373f75eb6cfc8578c92db9769a"
+    },
+    {
+      "path": "assets/refresh-cw-CqJ6e4Lb.js",
+      "bytes": 503,
+      "sha256": "a2a2f9fb2b8dc0d6b100154029458bc47d4295d911beed96c7a9dc300f16893f"
+    },
+    {
+      "path": "assets/scope-notice-CCZn88bc.js",
+      "bytes": 2420,
+      "sha256": "3fa229321b3a94218a91d4d7e6a9cdc6d792e7e3265a214ce8cd523faa833490"
+    },
+    {
+      "path": "assets/scope-notice-SMVc0RpX.css",
+      "bytes": 171,
+      "sha256": "07b85b64ca507753859209dec03dfb47ed3c8d40f0ac14d94e75de2cfdb33c94"
+    },
+    {
+      "path": "assets/section-mark-CiNhrCYK.js",
+      "bytes": 269,
+      "sha256": "978755125544ffb724840d9f2ec4faccea72d2214bc346990e2b967996b2011e"
+    },
+    {
+      "path": "assets/section-mark-D9p1fSvH.css",
+      "bytes": 1809,
+      "sha256": "c08b2da031c71509e1e6821b0ac257b65e497676ada243a3be0eb5029ea63def"
+    },
+    {
+      "path": "assets/settings-66clFK0d.css",
+      "bytes": 18916,
+      "sha256": "d226dae868ee51ae4ae34605e2ecbdb7ce2eb1fa65d88536c0e16cf6d65dafec"
+    },
+    {
+      "path": "assets/settings-D2Y8iZK-.js",
+      "bytes": 234540,
+      "sha256": "828ef318f3acc701d452a4dc00d2dcd8a9b8ba1597868cfe7921f95b6ffb08db"
+    },
+    {
+      "path": "assets/shell-B-48w8Yh.css",
+      "bytes": 77531,
+      "sha256": "17cf159c42b72f7e955844fc188ead771ed1d479e2fbc5639906ce5bedffd21a"
+    },
+    {
+      "path": "assets/shell-CiMTIAah.js",
+      "bytes": 14404,
+      "sha256": "cb54761278bd40bd4ef92672e03e941ec6d2d2bb31c1f6ec8586d07eaac45c33"
+    },
+    {
+      "path": "assets/shield-check-0nPZx4gM.js",
+      "bytes": 497,
+      "sha256": "6495ca233fdfc94b398e8fd9c571acbf334d999e6554062e3708737a65d21eee"
+    },
+    {
+      "path": "assets/trending-up-SphbULb5.js",
+      "bytes": 679,
+      "sha256": "2474172411ed9378cddc01374c2daa18d8ea3cb74744c0d3a194483d9cfeba5f"
+    },
+    {
+      "path": "assets/triangle-alert-CDJ3xTiq.js",
+      "bytes": 734,
+      "sha256": "363a7ec8f46e605abc0c10c0ed006fceb4a640ff1b720016eca44c650982ad49"
+    },
+    {
+      "path": "assets/utility-pages-B1Eod8Z3.js",
+      "bytes": 2084,
+      "sha256": "a72f5ec6bf91a0031e3bd524e30fe85cfb17ed7b9076230e43b76b5a81756349"
+    },
+    {
+      "path": "assets/utility-pages-rQmk3yrA.css",
+      "bytes": 2515,
+      "sha256": "08e4afaf80b63623c64fa9a26d02e18ec4c4789673bed5e3139bf03ff5d40028"
+    },
+    {
+      "path": "assets/wallet-BvTO8FZR.js",
+      "bytes": 839,
+      "sha256": "d4ae2e4ac3c5d84ceadb7d9d4a5982ad65d00733296d3dbd69e3ad25d9d4cf63"
+    }
+  ]
+}
