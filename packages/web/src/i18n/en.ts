@@ -443,6 +443,7 @@ export const en = {
   'redesign.costBucketDay': 'Daily',
   'redesign.costBucketWeek': 'Weekly',
   'redesign.costPricedTokens': 'Priced tokens',
+  'redesign.rowNumber': 'Row number',
   'redesign.costAllTokens': 'All recorded tokens',
   'redesign.costCoverage': 'Priced calls / all calls',
   'redesign.costOtherBasis': 'Other basis or unknown calls excluded',

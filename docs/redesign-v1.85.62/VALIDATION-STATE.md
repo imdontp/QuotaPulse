@@ -1,0 +1,13 @@
+# v1.85.62: Cost table facts and reference dollar artwork
+
+Validated local implementation checkpoint; full redesign and release acceptance remain open.
+
+Models now shows row number / model / recorded provider / recorded tokens / known value / share. Projects adds recorded tokens. Sessions adds row number and recorded tokens while retaining its actual project identity. Values use the existing scoped API allTokens, including calls without known prices, not pricedTokens. Amount coverage, scope, currency, sorting, drill-through links, chart/export and unknown markers are unchanged. Row numbers describe displayed order. Native dark heading uses a decorative dollar mark; light and compact retain the former bar-chart fallback.
+
+Correction to the earlier v1.85.60 note: token columns were omitted from the UI even though allTokens was already available in the API. They are supported facts and are implemented here. Fake session descriptions, model identity absent from the session response and speculative savings remain excluded under the factual overrides.
+
+The current build passes TypeScript/Vite, EN-dark and TH-dark/light native Cost probes at 1672 and 1536 plus compact 1280/900/390, complete 40 repeat capture pairs with the original tolerance and no masks, UI compatibility and 473 repository tests. The new token and row-number assertions ran in all 12 API/native/unknown-source Cost cases across both languages and themes. All 80 repeat capture hashes were checked. Native tables have 6/4/5 columns and 6/5/10 fixture rows; no cell overflow at 1672, and keyboard access reaches the final session. All seven other native EN-dark frames are byte-identical to v1.85.61. An initial sandbox esbuild spawn EPERM was resolved by running the same local build with authorized subprocess access.
+
+See [all-eight comparison viewer](reference-review.html), [previous Cost frame](../redesign-v1.85.61/native-en-dark/cost-default.png), native Cost geometry, capture manifest and logs. Captures exercise actual application code with isolated deterministic fixtures; they are not production data or a Concept Preview mode. Repeatability is not a source likeness score.
+
+Remaining: exact regional source alignment/artwork, Thai donut-center monetary text wrapping observed in the unchanged chart center, approved reference baseline and SSIM >= .985, manual accessibility, measured performance, current Electron/recovery/rollback and release bundle acceptance. The root reviewed current Cost EN/TH screenshots and the full diff; no independent review of this checkpoint is claimed. Main and unrelated .zed files remain untouched.

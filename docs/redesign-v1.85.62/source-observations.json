@@ -1,0 +1,92 @@
+{
+  "checkpoint": "v1.85.62",
+  "productionIndexSha256": "f3fa4b07f02ad9863d3f71e50ed6201ba9a5c2b51eaddaf5e0fb7df28b4009c8",
+  "columns": {
+    "qp-panel qp-cost-models": [
+      [
+        "#",
+        1048.828125,
+        40
+      ],
+      [
+        "Model",
+        1088.828125,
+        93.75
+      ],
+      [
+        "Recorded provider",
+        1182.578125,
+        106.09375
+      ],
+      [
+        "Recorded tokens",
+        1288.671875,
+        98.78125
+      ],
+      [
+        "Known value in scope",
+        1387.453125,
+        123.6875
+      ],
+      [
+        "Share",
+        1511.140625,
+        133.84375
+      ]
+    ],
+    "qp-panel qp-cost-projects": [
+      [
+        "Project",
+        253,
+        125.015625
+      ],
+      [
+        "Known value in scope",
+        378.015625,
+        117.34375
+      ],
+      [
+        "Recorded tokens",
+        495.359375,
+        93.703125
+      ],
+      [
+        "Share",
+        589.0625,
+        122.78125
+      ]
+    ],
+    "qp-panel qp-cost-sessions": [
+      [
+        "#",
+        749.84375,
+        40
+      ],
+      [
+        "Session",
+        789.84375,
+        107.0625
+      ],
+      [
+        "Project",
+        896.90625,
+        71.515625
+      ],
+      [
+        "Known value in scope",
+        968.421875,
+        116.734375
+      ],
+      [
+        "Recorded tokens",
+        1085.15625,
+        93.265625
+      ]
+    ]
+  },
+  "reviewNotes": [
+    "Model label left edge is approximately 1093px, close to the original 1094px anchor; actual provider/token/value headings remain wider and affect subsequent columns.",
+    "No source fake costs, session descriptions, hypothetical savings or missing session model identity were inserted.",
+    "Existing Thai USD donut amount wraps; next targeted fix must preserve unknown and partial-price markers."
+  ]
+}

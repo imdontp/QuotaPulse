@@ -1,0 +1,65 @@
+{
+  "baseCommit": "ddd498c",
+  "productionIndexSha256": "f3fa4b07f02ad9863d3f71e50ed6201ba9a5c2b51eaddaf5e0fb7df28b4009c8",
+  "sourceHashes": {
+    "packages/web/src/i18n/en.ts": "cb6723b921fc224f4965dfdca639bb3cb3ef92ee7f18cab9a9225bd2ad4550e2",
+    "packages/web/src/i18n/th.ts": "8667b94ad9ff6b7835905ad483fa6ce5121b769844a36ca44bd66d8b1c347d1b",
+    "packages/web/src/redesign/cost.tsx": "87f719555936471aa5f6a65078c1abb42a2bef6dea2af7fd9b9a79a5baa82b7b",
+    "packages/web/src/redesign/cost.css": "b6390ad014a2d2de943319e8f0f152010aa84bb02fed920922f22b96a6887be4",
+    "packages/web/src/redesign/heading-reference-icon.tsx": "a2d0b1597d63ddcf90c950f46cf2abf1efebd69f08980a85757f3aecae07d841",
+    "packages/web/src/redesign/page-heading.css": "0bc54b139005fb9544a86dda807d18c666501b42dba12292b31457dd7d7ceb1f",
+    "scripts/check-stable-captures.mts": "f3823aa75331b5939582b23fb88e8ac180a354106a3d2ff17df6e273aedcf210"
+  },
+  "buildNativeSession": 52243,
+  "gatesSession": 39370,
+  "gates": {
+    "stage": "terminal",
+    "nativeThaiDarkExit": 0,
+    "nativeThaiLightExit": 0,
+    "nativeAll8Exit": 0,
+    "Full40Exit": 0,
+    "UIExit": 0,
+    "RepositoryExit": 0
+  },
+  "capturePairs": 40,
+  "byteIdentical": 36,
+  "verifiedPngHashes": 80,
+  "repositoryCounts": {
+    "tests": [
+      105,
+      170,
+      198
+    ],
+    "pass": [
+      105,
+      170,
+      198
+    ],
+    "fail": [
+      0,
+      0,
+      0
+    ]
+  },
+  "unchangedNativePagesFrom61": [
+    "alerts-default.png",
+    "history-default.png",
+    "live-default.png",
+    "models-default.png",
+    "overview-default.png",
+    "projects-default.png",
+    "providers-default.png"
+  ],
+  "review": "root reviewed; no independent final62 review claimed",
+  "originalLogHashes": {
+    "build-authorized": "de48ca46acabc24c7feb1b0635161e802a64a737d16b2bc40c311c0e670c01e6",
+    "native-en": "6a0b1c835c19ce3174ebab099446e261645c0fcc214db5bbcf6188ecdf48d4b6",
+    "nativeThaiDark": "5958e415a8bcf56e0b9ca4f22dc4e6c7f9ad7adaa3ae50ac5f1d923b1906844a",
+    "nativeThaiLight": "5958e415a8bcf56e0b9ca4f22dc4e6c7f9ad7adaa3ae50ac5f1d923b1906844a",
+    "nativeAll8": "4008df21203542303ced704f1cf7d02ea8d3fcbc62ce3131b173d945b75d73db",
+    "Full40": "54422736776a024fa0917f86e6cffd6e1b6f33b1daef683adeb21e0327b6edf4",
+    "UI": "1ebed53d68ce5f8849c3e3d090c364136b925c3f059697f05374d68cc393b6f5",
+    "Repository": "2ccd3c132444cadf84c5df9183e2be7ad8a3fd07ca597a5e1958083d9554930b"
+  },
+  "logArchiveFormat": "UTF-8 LF, original BOM decoded and trailing line whitespace removed; original hashes recorded above"
+}

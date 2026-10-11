@@ -210,7 +210,12 @@
 
 /* Native reference name tone, with visible interactive hover feedback. */
 @media(min-width:1536px) {
- .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table tbody td:first-child a { color:var(--qp-text); }
- .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table tbody td:first-child a:hover { color:var(--qp-accent); }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table tbody td.qp-cost-name a { color:var(--qp-text); }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table tbody td.qp-cost-name a:hover { color:var(--qp-accent); }
  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-project-link svg { color:var(--qp-accent); }
+}
+
+.qp-cost-table .qp-cost-rank { width:32px; box-sizing:border-box; color:var(--qp-muted); font-variant-numeric:tabular-nums; }
+@media(min-width:1536px) {
+ .qp-redesign[data-testid=production-cost] .qp-cost-table .qp-cost-rank { width:40px; padding-left:11px; padding-right:0; }
 }

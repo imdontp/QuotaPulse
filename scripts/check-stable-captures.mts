@@ -1213,6 +1213,13 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
         assert.equal(bars.length, expected.length);
         bars.forEach((width, index) => assert.ok(Math.abs(width - (cost.totals.amount > 0 ? expected[index].amount / cost.totals.amount * 100 : 0)) < 0.0001, 'Share bar differs from recorded amount fraction'));
       }
+      // Row token totals include all recorded calls, independently of price coverage.
+      for (const [selector, groups] of [['.qp-cost-models', cost.models.filter(group => group.pricedCalls > 0).slice(0, 8)], ['.qp-cost-projects', cost.projects.filter(group => group.pricedCalls > 0).slice(0, 8)], ['.qp-cost-sessions', cost.sessions]] as const) {
+        const cells = page.locator(`${selector} [data-testid="cost-row-tokens"]`);
+        assert.deepEqual(await cells.evaluateAll(elements => elements.map(element => Number(element.getAttribute('data-value')))), groups.map(group => group.allTokens), 'Table token totals must match the scoped API response');
+        assert.deepEqual(await cells.allTextContents(), groups.map(group => formatTokens(group.allTokens)));
+        if (selector !== '.qp-cost-projects') assert.deepEqual(await page.locator(`${selector} tbody .qp-cost-rank`).allTextContents(), groups.map((_, index) => String(index + 1)), 'Row numbers must follow the displayed cost order');
+      }
       if (cost.sessions.length > 0) {
         const table = page.locator('.qp-cost-sessions .qp-cost-table');
         assert.equal(await table.locator('tbody tr').count(), cost.sessions.length);

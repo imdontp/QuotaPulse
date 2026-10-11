@@ -111,3 +111,11 @@
   .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-header .qp-heading-reference-svg { width:28px; height:28px; color:#09aaff; stroke-width:1.65; filter:drop-shadow(0 0 2px #147eff88); }
   .qp-redesign[data-testid=production-alerts][data-theme=dark] .qp-alert-header .qp-heading-reference-svg { width:32px; height:32px; color:#19c9ff; stroke-width:1.8; transform:translate(2px,1px); filter:drop-shadow(0 0 2px #08b6ff) drop-shadow(0 0 6px #087effaa); }
 }
+
+/* Native Cost identity follows the reference dollar mark; fallback remains unchanged. */
+@media(min-width:1536px) {
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-heading .qp-heading-reference-svg>:not(.qp-heading-reference-mark) { display:none; }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-heading .qp-heading-reference-mark { display:inline; }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-heading .qp-heading-reference-svg { width:20px; height:20px; color:#37c8ff; stroke-width:2.2; filter:drop-shadow(0 0 1px #37baff) drop-shadow(0 0 4px #137aff88); }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-heading .qp-page-heading-icon { border-color:transparent; background:linear-gradient(135deg,#061430,#0b2252); box-shadow:inset 0 0 10px #1452b422; }
+}

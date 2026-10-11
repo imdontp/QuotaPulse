@@ -1,0 +1,38 @@
+
+> @quotapulse/web@0.1.0 build
+> tsc -b && vite build
+
+node.exe : failed to load config from
+C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\vite.config.ts
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (failed to load ...\vite.config.ts:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+error during build:
+Error: spawn EPERM
+    at ChildProcess.spawn (node:internal/child_process:420:11)
+    at Object.spawn (node:child_process:753:9)
+    at ensureServiceIsRunning
+(C:\Users\TH12367283\Projects\QuotaPulse\node_modules\vite\node_modules\esbuild\lib\main.js:1978:29)
+    at build (C:\Users\TH12367283\Projects\QuotaPulse\node_modules\vite\node_modules\esbuild\lib\main.js:1876:26)
+    at bundleConfigFile
+(file:///C:/Users/TH12367283/Projects/QuotaPulse/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:49448:24)
+    at async bundleAndLoadConfigFile
+(file:///C:/Users/TH12367283/Projects/QuotaPulse/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:49432:19)
+    at async loadConfigFromFile
+(file:///C:/Users/TH12367283/Projects/QuotaPulse/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:49396:44)
+    at async resolveConfig
+(file:///C:/Users/TH12367283/Projects/QuotaPulse/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:48891:24)
+    at async createBuilder
+(file:///C:/Users/TH12367283/Projects/QuotaPulse/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:46866:18)
+    at async CAC.<anonymous>
+(file:///C:/Users/TH12367283/Projects/QuotaPulse/node_modules/vite/dist/node/cli.js:862:23)
+npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web
+npm error workspace @quotapulse/web@0.1.0
+npm error location C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c tsc -b && vite build

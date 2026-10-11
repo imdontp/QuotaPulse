@@ -447,6 +447,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.costBucketDay': 'รายวัน',
   'redesign.costBucketWeek': 'รายสัปดาห์',
   'redesign.costPricedTokens': 'โทเคนที่มีราคา',
+  'redesign.rowNumber': 'ลำดับแถว',
   'redesign.costAllTokens': 'โทเค็นที่บันทึกทั้งหมด',
   'redesign.costCoverage': 'คำขอที่มีราคา / คำขอทั้งหมด',
   'redesign.costOtherBasis': 'คำขออีกฐานหรือไม่ทราบราคาที่ไม่รวม',
