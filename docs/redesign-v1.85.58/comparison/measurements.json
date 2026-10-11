@@ -1,0 +1,1390 @@
+{
+  "index": "5fb94cf5025ec73eff18841abfe966c9fbd846669229ddf95f19bfb98f9b06da",
+  "inputs": {
+    "source": {
+      "path": "docs\\redesign-v1.85.43\\refs\\projects.png",
+      "sha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75"
+    },
+    "before": {
+      "path": "tmp\\project-rhythm58-before-archive\\native-en-dark\\projects-default.png",
+      "sha256": "be042cb2856188bdba2655b638a8721313a5df315c7a7f5b47e50f17ff3e35bf"
+    },
+    "after": {
+      "path": "tmp\\project-rhythm58-en-dark\\projects-default.png",
+      "sha256": "ceefc690397a86d78db3681e72d5d4a61b79c78b710a07eab8627cd6241b7765"
+    }
+  },
+  "cards": [
+    {
+      "card": 0,
+      "selected": "true",
+      "frame": {
+        "x": 243,
+        "y": 206,
+        "width": 466.390625,
+        "height": 258,
+        "bottom": 464
+      },
+      "before": {
+        ".qp-project-card-heading": {
+          "x": 260,
+          "y": 221,
+          "width": 432.390625,
+          "height": 61.296875,
+          "bottom": 282.296875,
+          "display": "flex",
+          "gap": "16px",
+          "padding": "0px",
+          "minHeight": "60px"
+        },
+        ".qp-project-card-summary": {
+          "x": 260,
+          "y": 288.296875,
+          "width": 432.390625,
+          "height": 75.078125,
+          "bottom": 363.375,
+          "display": "grid",
+          "gap": "14px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage": {
+          "x": 260,
+          "y": 288.296875,
+          "width": 263.421875,
+          "height": 70.1875,
+          "bottom": 358.484375,
+          "display": "grid",
+          "gap": "5px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-tokens": {
+          "x": 260,
+          "y": 288.296875,
+          "width": 263.421875,
+          "height": 25.5,
+          "bottom": 313.796875,
+          "display": "flex",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage>.qp-bar": {
+          "x": 260,
+          "y": 318.796875,
+          "width": 263.421875,
+          "height": 5,
+          "bottom": 323.796875,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-spark": {
+          "x": 260,
+          "y": 369.375,
+          "width": 432.390625,
+          "height": 36,
+          "bottom": 405.375,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-facts": {
+          "x": 260,
+          "y": 412.6875,
+          "width": 432.390625,
+          "height": 36.3125,
+          "bottom": 449,
+          "display": "flex",
+          "gap": "6px",
+          "padding": "6px 0px 0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-money": {
+          "x": 537.421875,
+          "y": 288.296875,
+          "width": 154.953125,
+          "height": 73.78125,
+          "bottom": 362.078125,
+          "display": "grid",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        }
+      },
+      "after": {
+        ".qp-project-card-heading": {
+          "x": 260,
+          "y": 221,
+          "width": 432.390625,
+          "height": 69.296875,
+          "bottom": 290.296875,
+          "display": "flex",
+          "gap": "16px",
+          "padding": "0px",
+          "minHeight": "68px"
+        },
+        ".qp-project-card-summary": {
+          "x": 260,
+          "y": 296.296875,
+          "width": 432.390625,
+          "height": 75.078125,
+          "bottom": 371.375,
+          "display": "grid",
+          "gap": "14px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage": {
+          "x": 260,
+          "y": 296.296875,
+          "width": 270.015625,
+          "height": 67.1875,
+          "bottom": 363.484375,
+          "display": "grid",
+          "gap": "3px",
+          "padding": "0px 0px 0px 3px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-tokens": {
+          "x": 263,
+          "y": 296.296875,
+          "width": 267.015625,
+          "height": 25.5,
+          "bottom": 321.796875,
+          "display": "flex",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage>.qp-bar": {
+          "x": 263,
+          "y": 324.796875,
+          "width": 267.015625,
+          "height": 8,
+          "bottom": 332.796875,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-spark": {
+          "x": 263,
+          "y": 377.375,
+          "width": 233.484375,
+          "height": 28,
+          "bottom": 405.375,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-facts": {
+          "x": 260,
+          "y": 412.6875,
+          "width": 432.390625,
+          "height": 36.3125,
+          "bottom": 449,
+          "display": "grid",
+          "gap": "6px",
+          "padding": "6px 0px 0px 3px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-money": {
+          "x": 544.015625,
+          "y": 296.296875,
+          "width": 148.359375,
+          "height": 73.78125,
+          "bottom": 370.078125,
+          "display": "grid",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        }
+      },
+      "factGroups": [
+        {
+          "text": "13 Distinct sessions",
+          "x": 263,
+          "y": 419.6875,
+          "width": 118.25,
+          "height": 29.3125,
+          "small": {
+            "x": 298,
+            "y": 436.171875,
+            "width": 83.25,
+            "height": 12,
+            "scrollWidth": 83,
+            "clientWidth": 83,
+            "lines": [
+              {
+                "width": 77.5,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 263,
+            "y": 420.34375,
+            "width": 28,
+            "height": 28
+          }
+        },
+        {
+          "text": "75 Calls",
+          "x": 387.25,
+          "y": 419.6875,
+          "width": 139.140625,
+          "height": 29.3125,
+          "small": {
+            "x": 422.25,
+            "y": 436.171875,
+            "width": 104.140625,
+            "height": 12,
+            "scrollWidth": 104,
+            "clientWidth": 104,
+            "lines": [
+              {
+                "width": 22.78125,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 387.25,
+            "y": 420.34375,
+            "width": 28,
+            "height": 28
+          }
+        },
+        {
+          "text": "4 Harnesses observed",
+          "x": 532.390625,
+          "y": 419.6875,
+          "width": 159.984375,
+          "height": 29.3125,
+          "small": {
+            "x": 567.390625,
+            "y": 436.171875,
+            "width": 124.984375,
+            "height": 12,
+            "scrollWidth": 125,
+            "clientWidth": 125,
+            "lines": [
+              {
+                "width": 92.703125,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 532.390625,
+            "y": 420.34375,
+            "width": 28,
+            "height": 28
+          }
+        }
+      ]
+    },
+    {
+      "card": 1,
+      "selected": "false",
+      "frame": {
+        "x": 717.390625,
+        "y": 206,
+        "width": 397.296875,
+        "height": 258,
+        "bottom": 464
+      },
+      "before": {
+        ".qp-project-card-heading": {
+          "x": 734.390625,
+          "y": 221,
+          "width": 363.296875,
+          "height": 61.296875,
+          "bottom": 282.296875,
+          "display": "flex",
+          "gap": "16px",
+          "padding": "0px",
+          "minHeight": "60px"
+        },
+        ".qp-project-card-summary": {
+          "x": 734.390625,
+          "y": 288.296875,
+          "width": 363.296875,
+          "height": 75.078125,
+          "bottom": 363.375,
+          "display": "grid",
+          "gap": "14px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage": {
+          "x": 734.390625,
+          "y": 288.296875,
+          "width": 219.921875,
+          "height": 70.1875,
+          "bottom": 358.484375,
+          "display": "grid",
+          "gap": "5px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-tokens": {
+          "x": 734.390625,
+          "y": 288.296875,
+          "width": 219.921875,
+          "height": 25.5,
+          "bottom": 313.796875,
+          "display": "flex",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage>.qp-bar": {
+          "x": 734.390625,
+          "y": 318.796875,
+          "width": 219.921875,
+          "height": 5,
+          "bottom": 323.796875,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-spark": {
+          "x": 734.390625,
+          "y": 369.375,
+          "width": 363.296875,
+          "height": 36,
+          "bottom": 405.375,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-facts": {
+          "x": 734.390625,
+          "y": 412.6875,
+          "width": 363.296875,
+          "height": 36.3125,
+          "bottom": 449,
+          "display": "flex",
+          "gap": "6px",
+          "padding": "6px 0px 0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-money": {
+          "x": 968.3125,
+          "y": 288.296875,
+          "width": 129.375,
+          "height": 73.78125,
+          "bottom": 362.078125,
+          "display": "grid",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        }
+      },
+      "after": {
+        ".qp-project-card-heading": {
+          "x": 734.390625,
+          "y": 221,
+          "width": 363.296875,
+          "height": 69.296875,
+          "bottom": 290.296875,
+          "display": "flex",
+          "gap": "16px",
+          "padding": "0px",
+          "minHeight": "68px"
+        },
+        ".qp-project-card-summary": {
+          "x": 734.390625,
+          "y": 296.296875,
+          "width": 363.296875,
+          "height": 75.078125,
+          "bottom": 371.375,
+          "display": "grid",
+          "gap": "14px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage": {
+          "x": 734.390625,
+          "y": 296.296875,
+          "width": 225.421875,
+          "height": 67.1875,
+          "bottom": 363.484375,
+          "display": "grid",
+          "gap": "3px",
+          "padding": "0px 0px 0px 3px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-tokens": {
+          "x": 737.390625,
+          "y": 296.296875,
+          "width": 222.421875,
+          "height": 25.5,
+          "bottom": 321.796875,
+          "display": "flex",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage>.qp-bar": {
+          "x": 737.390625,
+          "y": 324.796875,
+          "width": 222.421875,
+          "height": 8,
+          "bottom": 332.796875,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-spark": {
+          "x": 737.390625,
+          "y": 377.375,
+          "width": 196.171875,
+          "height": 28,
+          "bottom": 405.375,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-facts": {
+          "x": 734.390625,
+          "y": 412.6875,
+          "width": 363.296875,
+          "height": 36.3125,
+          "bottom": 449,
+          "display": "grid",
+          "gap": "6px",
+          "padding": "6px 0px 0px 3px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-money": {
+          "x": 973.8125,
+          "y": 296.296875,
+          "width": 123.875,
+          "height": 73.78125,
+          "bottom": 370.078125,
+          "display": "grid",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        }
+      },
+      "factGroups": [
+        {
+          "text": "1 Distinct sessions",
+          "x": 737.390625,
+          "y": 419.6875,
+          "width": 118,
+          "height": 29.3125,
+          "small": {
+            "x": 772.390625,
+            "y": 436.171875,
+            "width": 83,
+            "height": 12,
+            "scrollWidth": 83,
+            "clientWidth": 83,
+            "lines": [
+              {
+                "width": 77.5,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 737.390625,
+            "y": 420.34375,
+            "width": 28,
+            "height": 28
+          }
+        },
+        {
+          "text": "1 Calls",
+          "x": 861.390625,
+          "y": 419.6875,
+          "width": 101.28125,
+          "height": 29.3125,
+          "small": {
+            "x": 896.390625,
+            "y": 436.171875,
+            "width": 66.28125,
+            "height": 12,
+            "scrollWidth": 66,
+            "clientWidth": 66,
+            "lines": [
+              {
+                "width": 22.78125,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 861.390625,
+            "y": 420.34375,
+            "width": 28,
+            "height": 28
+          }
+        },
+        {
+          "text": "1 Harnesses observed",
+          "x": 968.671875,
+          "y": 419.6875,
+          "width": 129,
+          "height": 29.3125,
+          "small": {
+            "x": 1003.671875,
+            "y": 436.171875,
+            "width": 94,
+            "height": 12,
+            "scrollWidth": 94,
+            "clientWidth": 94,
+            "lines": [
+              {
+                "width": 92.703125,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 968.671875,
+            "y": 420.34375,
+            "width": 28,
+            "height": 28
+          }
+        }
+      ]
+    },
+    {
+      "card": 2,
+      "selected": "false",
+      "frame": {
+        "x": 243,
+        "y": 476,
+        "width": 466.390625,
+        "height": 258,
+        "bottom": 734
+      },
+      "before": {
+        ".qp-project-card-heading": {
+          "x": 260,
+          "y": 491,
+          "width": 432.390625,
+          "height": 61.296875,
+          "bottom": 552.296875,
+          "display": "flex",
+          "gap": "16px",
+          "padding": "0px",
+          "minHeight": "60px"
+        },
+        ".qp-project-card-summary": {
+          "x": 260,
+          "y": 558.296875,
+          "width": 432.390625,
+          "height": 75.078125,
+          "bottom": 633.375,
+          "display": "grid",
+          "gap": "14px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage": {
+          "x": 260,
+          "y": 558.296875,
+          "width": 263.421875,
+          "height": 70.1875,
+          "bottom": 628.484375,
+          "display": "grid",
+          "gap": "5px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-tokens": {
+          "x": 260,
+          "y": 558.296875,
+          "width": 263.421875,
+          "height": 25.5,
+          "bottom": 583.796875,
+          "display": "flex",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage>.qp-bar": {
+          "x": 260,
+          "y": 588.796875,
+          "width": 263.421875,
+          "height": 5,
+          "bottom": 593.796875,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-spark": {
+          "x": 260,
+          "y": 639.375,
+          "width": 432.390625,
+          "height": 36,
+          "bottom": 675.375,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-facts": {
+          "x": 260,
+          "y": 682.6875,
+          "width": 432.390625,
+          "height": 36.3125,
+          "bottom": 719,
+          "display": "flex",
+          "gap": "6px",
+          "padding": "6px 0px 0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-money": {
+          "x": 537.421875,
+          "y": 558.296875,
+          "width": 154.953125,
+          "height": 73.78125,
+          "bottom": 632.078125,
+          "display": "grid",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        }
+      },
+      "after": {
+        ".qp-project-card-heading": {
+          "x": 260,
+          "y": 491,
+          "width": 432.390625,
+          "height": 69.296875,
+          "bottom": 560.296875,
+          "display": "flex",
+          "gap": "16px",
+          "padding": "0px",
+          "minHeight": "68px"
+        },
+        ".qp-project-card-summary": {
+          "x": 260,
+          "y": 566.296875,
+          "width": 432.390625,
+          "height": 75.078125,
+          "bottom": 641.375,
+          "display": "grid",
+          "gap": "14px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage": {
+          "x": 260,
+          "y": 566.296875,
+          "width": 270.015625,
+          "height": 67.1875,
+          "bottom": 633.484375,
+          "display": "grid",
+          "gap": "3px",
+          "padding": "0px 0px 0px 3px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-tokens": {
+          "x": 263,
+          "y": 566.296875,
+          "width": 267.015625,
+          "height": 25.5,
+          "bottom": 591.796875,
+          "display": "flex",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage>.qp-bar": {
+          "x": 263,
+          "y": 594.796875,
+          "width": 267.015625,
+          "height": 8,
+          "bottom": 602.796875,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-spark": {
+          "x": 263,
+          "y": 647.375,
+          "width": 233.484375,
+          "height": 28,
+          "bottom": 675.375,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-facts": {
+          "x": 260,
+          "y": 682.6875,
+          "width": 432.390625,
+          "height": 36.3125,
+          "bottom": 719,
+          "display": "grid",
+          "gap": "6px",
+          "padding": "6px 0px 0px 3px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-money": {
+          "x": 544.015625,
+          "y": 566.296875,
+          "width": 148.359375,
+          "height": 73.78125,
+          "bottom": 640.078125,
+          "display": "grid",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        }
+      },
+      "factGroups": [
+        {
+          "text": "1 Distinct sessions",
+          "x": 263,
+          "y": 689.6875,
+          "width": 118.25,
+          "height": 29.3125,
+          "small": {
+            "x": 298,
+            "y": 706.171875,
+            "width": 83.25,
+            "height": 12,
+            "scrollWidth": 83,
+            "clientWidth": 83,
+            "lines": [
+              {
+                "width": 77.5,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 263,
+            "y": 690.34375,
+            "width": 28,
+            "height": 28
+          }
+        },
+        {
+          "text": "1 Calls",
+          "x": 387.25,
+          "y": 689.6875,
+          "width": 139.140625,
+          "height": 29.3125,
+          "small": {
+            "x": 422.25,
+            "y": 706.171875,
+            "width": 104.140625,
+            "height": 12,
+            "scrollWidth": 104,
+            "clientWidth": 104,
+            "lines": [
+              {
+                "width": 22.78125,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 387.25,
+            "y": 690.34375,
+            "width": 28,
+            "height": 28
+          }
+        },
+        {
+          "text": "1 Harnesses observed",
+          "x": 532.390625,
+          "y": 689.6875,
+          "width": 159.984375,
+          "height": 29.3125,
+          "small": {
+            "x": 567.390625,
+            "y": 706.171875,
+            "width": 124.984375,
+            "height": 12,
+            "scrollWidth": 125,
+            "clientWidth": 125,
+            "lines": [
+              {
+                "width": 92.703125,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 532.390625,
+            "y": 690.34375,
+            "width": 28,
+            "height": 28
+          }
+        }
+      ]
+    },
+    {
+      "card": 3,
+      "selected": "false",
+      "frame": {
+        "x": 717.390625,
+        "y": 476,
+        "width": 397.296875,
+        "height": 258,
+        "bottom": 734
+      },
+      "before": {
+        ".qp-project-card-heading": {
+          "x": 734.390625,
+          "y": 491,
+          "width": 363.296875,
+          "height": 61.296875,
+          "bottom": 552.296875,
+          "display": "flex",
+          "gap": "16px",
+          "padding": "0px",
+          "minHeight": "60px"
+        },
+        ".qp-project-card-summary": {
+          "x": 734.390625,
+          "y": 558.296875,
+          "width": 363.296875,
+          "height": 75.078125,
+          "bottom": 633.375,
+          "display": "grid",
+          "gap": "14px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage": {
+          "x": 734.390625,
+          "y": 558.296875,
+          "width": 219.921875,
+          "height": 70.1875,
+          "bottom": 628.484375,
+          "display": "grid",
+          "gap": "5px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-tokens": {
+          "x": 734.390625,
+          "y": 558.296875,
+          "width": 219.921875,
+          "height": 25.5,
+          "bottom": 583.796875,
+          "display": "flex",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage>.qp-bar": {
+          "x": 734.390625,
+          "y": 588.796875,
+          "width": 219.921875,
+          "height": 5,
+          "bottom": 593.796875,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-spark": {
+          "x": 734.390625,
+          "y": 639.375,
+          "width": 363.296875,
+          "height": 36,
+          "bottom": 675.375,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-facts": {
+          "x": 734.390625,
+          "y": 682.6875,
+          "width": 363.296875,
+          "height": 36.3125,
+          "bottom": 719,
+          "display": "flex",
+          "gap": "6px",
+          "padding": "6px 0px 0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-money": {
+          "x": 968.3125,
+          "y": 558.296875,
+          "width": 129.375,
+          "height": 73.78125,
+          "bottom": 632.078125,
+          "display": "grid",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        }
+      },
+      "after": {
+        ".qp-project-card-heading": {
+          "x": 734.390625,
+          "y": 491,
+          "width": 363.296875,
+          "height": 69.296875,
+          "bottom": 560.296875,
+          "display": "flex",
+          "gap": "16px",
+          "padding": "0px",
+          "minHeight": "68px"
+        },
+        ".qp-project-card-summary": {
+          "x": 734.390625,
+          "y": 566.296875,
+          "width": 363.296875,
+          "height": 75.078125,
+          "bottom": 641.375,
+          "display": "grid",
+          "gap": "14px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage": {
+          "x": 734.390625,
+          "y": 566.296875,
+          "width": 225.421875,
+          "height": 67.1875,
+          "bottom": 633.484375,
+          "display": "grid",
+          "gap": "3px",
+          "padding": "0px 0px 0px 3px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-tokens": {
+          "x": 737.390625,
+          "y": 566.296875,
+          "width": 222.421875,
+          "height": 25.5,
+          "bottom": 591.796875,
+          "display": "flex",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage>.qp-bar": {
+          "x": 737.390625,
+          "y": 594.796875,
+          "width": 222.421875,
+          "height": 8,
+          "bottom": 602.796875,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-spark": {
+          "x": 737.390625,
+          "y": 647.375,
+          "width": 196.171875,
+          "height": 28,
+          "bottom": 675.375,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-facts": {
+          "x": 734.390625,
+          "y": 682.6875,
+          "width": 363.296875,
+          "height": 36.3125,
+          "bottom": 719,
+          "display": "grid",
+          "gap": "6px",
+          "padding": "6px 0px 0px 3px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-money": {
+          "x": 973.8125,
+          "y": 566.296875,
+          "width": 123.875,
+          "height": 73.78125,
+          "bottom": 640.078125,
+          "display": "grid",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        }
+      },
+      "factGroups": [
+        {
+          "text": "1 Distinct sessions",
+          "x": 737.390625,
+          "y": 689.6875,
+          "width": 118,
+          "height": 29.3125,
+          "small": {
+            "x": 772.390625,
+            "y": 706.171875,
+            "width": 83,
+            "height": 12,
+            "scrollWidth": 83,
+            "clientWidth": 83,
+            "lines": [
+              {
+                "width": 77.5,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 737.390625,
+            "y": 690.34375,
+            "width": 28,
+            "height": 28
+          }
+        },
+        {
+          "text": "1 Calls",
+          "x": 861.390625,
+          "y": 689.6875,
+          "width": 101.28125,
+          "height": 29.3125,
+          "small": {
+            "x": 896.390625,
+            "y": 706.171875,
+            "width": 66.28125,
+            "height": 12,
+            "scrollWidth": 66,
+            "clientWidth": 66,
+            "lines": [
+              {
+                "width": 22.78125,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 861.390625,
+            "y": 690.34375,
+            "width": 28,
+            "height": 28
+          }
+        },
+        {
+          "text": "1 Harnesses observed",
+          "x": 968.671875,
+          "y": 689.6875,
+          "width": 129,
+          "height": 29.3125,
+          "small": {
+            "x": 1003.671875,
+            "y": 706.171875,
+            "width": 94,
+            "height": 12,
+            "scrollWidth": 94,
+            "clientWidth": 94,
+            "lines": [
+              {
+                "width": 92.703125,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 968.671875,
+            "y": 690.34375,
+            "width": 28,
+            "height": 28
+          }
+        }
+      ]
+    },
+    {
+      "card": 4,
+      "selected": "false",
+      "frame": {
+        "x": 243,
+        "y": 746,
+        "width": 466.390625,
+        "height": 258,
+        "bottom": 1004
+      },
+      "before": {
+        ".qp-project-card-heading": {
+          "x": 260,
+          "y": 761,
+          "width": 432.390625,
+          "height": 61.296875,
+          "bottom": 822.296875,
+          "display": "flex",
+          "gap": "16px",
+          "padding": "0px",
+          "minHeight": "60px"
+        },
+        ".qp-project-card-summary": {
+          "x": 260,
+          "y": 828.296875,
+          "width": 432.390625,
+          "height": 75.078125,
+          "bottom": 903.375,
+          "display": "grid",
+          "gap": "14px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage": {
+          "x": 260,
+          "y": 828.296875,
+          "width": 263.421875,
+          "height": 70.1875,
+          "bottom": 898.484375,
+          "display": "grid",
+          "gap": "5px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-tokens": {
+          "x": 260,
+          "y": 828.296875,
+          "width": 263.421875,
+          "height": 25.5,
+          "bottom": 853.796875,
+          "display": "flex",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage>.qp-bar": {
+          "x": 260,
+          "y": 858.796875,
+          "width": 263.421875,
+          "height": 5,
+          "bottom": 863.796875,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-spark": {
+          "x": 260,
+          "y": 909.375,
+          "width": 432.390625,
+          "height": 36,
+          "bottom": 945.375,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-facts": {
+          "x": 260,
+          "y": 952.6875,
+          "width": 432.390625,
+          "height": 36.3125,
+          "bottom": 989,
+          "display": "flex",
+          "gap": "6px",
+          "padding": "6px 0px 0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-money": {
+          "x": 537.421875,
+          "y": 828.296875,
+          "width": 154.953125,
+          "height": 73.78125,
+          "bottom": 902.078125,
+          "display": "grid",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        }
+      },
+      "after": {
+        ".qp-project-card-heading": {
+          "x": 260,
+          "y": 761,
+          "width": 432.390625,
+          "height": 69.296875,
+          "bottom": 830.296875,
+          "display": "flex",
+          "gap": "16px",
+          "padding": "0px",
+          "minHeight": "68px"
+        },
+        ".qp-project-card-summary": {
+          "x": 260,
+          "y": 836.296875,
+          "width": 432.390625,
+          "height": 75.078125,
+          "bottom": 911.375,
+          "display": "grid",
+          "gap": "14px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage": {
+          "x": 260,
+          "y": 836.296875,
+          "width": 270.015625,
+          "height": 67.1875,
+          "bottom": 903.484375,
+          "display": "grid",
+          "gap": "3px",
+          "padding": "0px 0px 0px 3px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-tokens": {
+          "x": 263,
+          "y": 836.296875,
+          "width": 267.015625,
+          "height": 25.5,
+          "bottom": 861.796875,
+          "display": "flex",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-usage>.qp-bar": {
+          "x": 263,
+          "y": 864.796875,
+          "width": 267.015625,
+          "height": 8,
+          "bottom": 872.796875,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-spark": {
+          "x": 263,
+          "y": 917.375,
+          "width": 233.484375,
+          "height": 28,
+          "bottom": 945.375,
+          "display": "block",
+          "gap": "normal",
+          "padding": "0px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-facts": {
+          "x": 260,
+          "y": 952.6875,
+          "width": 432.390625,
+          "height": 36.3125,
+          "bottom": 989,
+          "display": "grid",
+          "gap": "6px",
+          "padding": "6px 0px 0px 3px",
+          "minHeight": "auto"
+        },
+        ".qp-project-card-money": {
+          "x": 544.015625,
+          "y": 836.296875,
+          "width": 148.359375,
+          "height": 73.78125,
+          "bottom": 910.078125,
+          "display": "grid",
+          "gap": "8px",
+          "padding": "0px",
+          "minHeight": "auto"
+        }
+      },
+      "factGroups": [
+        {
+          "text": "1 Distinct sessions",
+          "x": 263,
+          "y": 959.6875,
+          "width": 118.25,
+          "height": 29.3125,
+          "small": {
+            "x": 298,
+            "y": 976.171875,
+            "width": 83.25,
+            "height": 12,
+            "scrollWidth": 83,
+            "clientWidth": 83,
+            "lines": [
+              {
+                "width": 77.5,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 263,
+            "y": 960.34375,
+            "width": 28,
+            "height": 28
+          }
+        },
+        {
+          "text": "1 Calls",
+          "x": 387.25,
+          "y": 959.6875,
+          "width": 139.140625,
+          "height": 29.3125,
+          "small": {
+            "x": 422.25,
+            "y": 976.171875,
+            "width": 104.140625,
+            "height": 12,
+            "scrollWidth": 104,
+            "clientWidth": 104,
+            "lines": [
+              {
+                "width": 22.78125,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 387.25,
+            "y": 960.34375,
+            "width": 28,
+            "height": 28
+          }
+        },
+        {
+          "text": "1 Harnesses observed",
+          "x": 532.390625,
+          "y": 959.6875,
+          "width": 159.984375,
+          "height": 29.3125,
+          "small": {
+            "x": 567.390625,
+            "y": 976.171875,
+            "width": 124.984375,
+            "height": 12,
+            "scrollWidth": 125,
+            "clientWidth": 125,
+            "lines": [
+              {
+                "width": 92.703125,
+                "height": 13
+              }
+            ]
+          },
+          "icon": {
+            "x": 532.390625,
+            "y": 960.34375,
+            "width": 28,
+            "height": 28
+          }
+        }
+      ]
+    }
+  ],
+  "method": "Native paired crops and actual DOM geometry. Original source fields differ from real facts; not whole-source likeness."
+}

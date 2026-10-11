@@ -1,0 +1,5 @@
+# Final bounded review
+
+Root reviewed the complete CSS diff and source/before/after card crops. Independent read-only final review by project_rhythm58_review found no concrete blocker in native dark scope, readable TH labels/costs, intrinsic growth or decorative divider behavior. Final TH geometry and screenshots bind5fb94cf5. The prior first/third-column width concern is resolved by minimum118/129px widths. Thai dark1536 cards expand where necessary; source-width cards remain258px. No data calculation, event handling, request, dependency, light/compact CSS or card selection changed.
+
+English1536 was pending during the independent review, then passed root session2840. Fixtures do not prove arbitrary large counts and long real names. The middle fact column is flexible and may wrap; no fixed row height was introduced. Source fake descriptions/amounts and sparse chart differences remain factual substitutions, not accepted source likeness. All four original repeat pairs passed without masks/tolerance changes. Repeated raster identity does not prove99% resemblance.

@@ -1,0 +1,1379 @@
+{
+  "language": "en",
+  "theme": "dark",
+  "productionIndexSha256": "5fb94cf5025ec73eff18841abfe966c9fbd846669229ddf95f19bfb98f9b06da",
+  "results": [
+    {
+      "route": "overview",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 211,
+              "height": 932,
+              "bottom": 992
+            },
+            "clientHeight": 932,
+            "scrollHeight": 932,
+            "nav": {
+              "x": 12,
+              "y": 84,
+              "width": 190,
+              "height": 308,
+              "bottom": 392
+            },
+            "quick": {
+              "x": 12,
+              "y": 421,
+              "width": 190,
+              "height": 289,
+              "bottom": 710
+            },
+            "footer": {
+              "x": 12,
+              "y": 916,
+              "width": 190,
+              "height": 64,
+              "bottom": 980
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 84,
+                "width": 190,
+                "height": 43,
+                "bottom": 127
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 129,
+                "width": 190,
+                "height": 43,
+                "bottom": 172
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 174,
+                "width": 190,
+                "height": 43,
+                "bottom": 217
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 219,
+                "width": 190,
+                "height": 43,
+                "bottom": 262
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 264,
+                "width": 190,
+                "height": 43,
+                "bottom": 307
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 309,
+                "width": 190,
+                "height": 43,
+                "bottom": 352
+              }
+            ],
+            "badge": {
+              "x": 168,
+              "y": 320,
+              "width": 21,
+              "height": 21,
+              "bottom": 341
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "Your AI operations, in focus.",
+          "x": 228,
+          "y": 68,
+          "width": 1,
+          "height": 142.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "19px",
+          "fontWeight": "550",
+          "lineHeight": "28.5px",
+          "transform": "none"
+        }
+      ],
+      "controls": [
+        {
+          "text": "DeepSeek V4.138%",
+          "x": 993.09375,
+          "y": 166,
+          "width": 186,
+          "height": 46.796875
+        },
+        {
+          "text": "GPT-5.x24%",
+          "x": 993.09375,
+          "y": 212.796875,
+          "width": 186,
+          "height": 46.796875
+        },
+        {
+          "text": "Claude 3.718%",
+          "x": 993.09375,
+          "y": 259.59375,
+          "width": 186,
+          "height": 46.796875
+        },
+        {
+          "text": "Claude 3.511%",
+          "x": 993.09375,
+          "y": 306.390625,
+          "width": 186,
+          "height": 46.796875
+        },
+        {
+          "text": "Others9%",
+          "x": 993.09375,
+          "y": 353.1875,
+          "width": 186,
+          "height": 46.796875
+        },
+        {
+          "text": "5h quotaWarning83%Quota usedReset in2h 17m",
+          "x": 1236.09375,
+          "y": 144.5,
+          "width": 320.90625,
+          "height": 53
+        },
+        {
+          "text": "Weekly quota62%Quota usedReset in3d 5h",
+          "x": 1236.09375,
+          "y": 197.5,
+          "width": 320.90625,
+          "height": 53
+        },
+        {
+          "text": "Monthly quotaCritical72%Quota usedReset in6d 2h",
+          "x": 1236.09375,
+          "y": 250.5,
+          "width": 320.90625,
+          "height": 53
+        }
+      ],
+      "warning": null,
+      "headingArt": null
+    },
+    {
+      "route": "live",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 881,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 317,
+              "bottom": 406
+            },
+            "quick": {
+              "x": 12,
+              "y": 442,
+              "width": 201,
+              "height": 291,
+              "bottom": 733
+            },
+            "footer": {
+              "x": 12,
+              "y": 870,
+              "width": 201,
+              "height": 59,
+              "bottom": 929
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "Live Monitoring",
+          "x": 292,
+          "y": 84.59375,
+          "width": 155.359375,
+          "height": 28.796875,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "24px",
+          "fontWeight": "300",
+          "lineHeight": "28.8px",
+          "transform": "matrix(1, 0, 0, 1, 1, -1)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Pause view",
+          "x": 1049.578125,
+          "y": 83.75,
+          "width": 99.875,
+          "height": 32.5
+        },
+        {
+          "text": "Refresh now",
+          "x": 1161.453125,
+          "y": 83.75,
+          "width": 105.953125,
+          "height": 32.5
+        },
+        {
+          "text": "Recent (5 min)",
+          "x": 499.09375,
+          "y": 236.75,
+          "width": 88.6875,
+          "height": 28.5
+        },
+        {
+          "text": "All observed",
+          "x": 591.78125,
+          "y": 236.75,
+          "width": 78.0625,
+          "height": 28.5
+        },
+        {
+          "text": "Apply search",
+          "x": 910.34375,
+          "y": 236.75,
+          "width": 81.25,
+          "height": 28.5
+        },
+        {
+          "text": "Previous page",
+          "x": 1001.59375,
+          "y": 236.75,
+          "width": 87.09375,
+          "height": 28.5
+        },
+        {
+          "text": "Next page",
+          "x": 1199.625,
+          "y": 236.75,
+          "width": 67.78125,
+          "height": 28.5
+        },
+        {
+          "text": "fixture-session-0",
+          "x": 257,
+          "y": 307.25,
+          "width": 94.828125,
+          "height": 17
+        }
+      ],
+      "warning": null,
+      "headingArt": {
+        "width": 28,
+        "height": 28,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "inline",
+        "fallbackDisplays": [
+          "none"
+        ]
+      }
+    },
+    {
+      "route": "projects",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 881,
+            "nav": {
+              "x": 12,
+              "y": 79,
+              "width": 201,
+              "height": 311,
+              "bottom": 390
+            },
+            "quick": {
+              "x": 12,
+              "y": 408,
+              "width": 201,
+              "height": 299,
+              "bottom": 707
+            },
+            "footer": {
+              "x": 12,
+              "y": 864,
+              "width": 201,
+              "height": 65,
+              "bottom": 929
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 79,
+                "width": 201,
+                "height": 44,
+                "bottom": 123
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 125.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 169.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 172,
+                "width": 201,
+                "height": 44,
+                "bottom": 216
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 218.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 262.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 265,
+                "width": 201,
+                "height": 44,
+                "bottom": 309
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 311.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 355.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 323,
+              "width": 21,
+              "height": 21,
+              "bottom": 344
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "Projects",
+          "x": 304,
+          "y": 79.34375,
+          "width": 287.625,
+          "height": 27.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "25px",
+          "fontWeight": "300",
+          "lineHeight": "27.5px",
+          "transform": "matrix(1, 0, 0, 1, 3, -3)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Refresh now",
+          "x": 1531.59375,
+          "y": 86.25,
+          "width": 123.40625,
+          "height": 39.5
+        },
+        {
+          "text": "All projects",
+          "x": 243,
+          "y": 154.5,
+          "width": 92.59375,
+          "height": 39.5
+        },
+        {
+          "text": "Recent activity",
+          "x": 340.59375,
+          "y": 154.5,
+          "width": 114.421875,
+          "height": 39.5
+        },
+        {
+          "text": "Unassigned",
+          "x": 460.015625,
+          "y": 154.5,
+          "width": 95.796875,
+          "height": 39.5
+        },
+        {
+          "text": "QuotaPulseLast observed · 5/17/25, 8:41 PM721M100%Recorded tokensShare of scoped usage$0.03+ (Priced coverage: 6 / 75 Calls. + marks a subtotal. Native and API price bases are separate.)Source-reported cost$14.53+ (Priced coverage: 68 / 75 Calls. + marks a subtotal. Native and API price bases are separate.)Calculated API value5/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 721,000,00813 Distinct sessions75 Calls4 Harnesses observed",
+          "x": 243,
+          "y": 206,
+          "width": 466.390625,
+          "height": 258
+        },
+        {
+          "text": "Agent PlatformLast observed · 5/17/25, 8:32 PM10%Recorded tokensShare of scoped usageUnknown (Priced coverage: 0 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)Source-reported cost$0.00 (Priced coverage: 1 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)Calculated API value5/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 05/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 11 Distinct sessions1 Calls1 Harnesses observed",
+          "x": 717.390625,
+          "y": 206,
+          "width": 397.296875,
+          "height": 258
+        },
+        {
+          "text": "Developer ToolsLast observed · 5/17/25, 8:32 PM10%Recorded tokensShare of scoped usageUnknown (Priced coverage: 0 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)Source-reported cost$0.00 (Priced coverage: 1 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)Calculated API value5/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 05/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 11 Distinct sessions1 Calls1 Harnesses observed",
+          "x": 243,
+          "y": 476,
+          "width": 466.390625,
+          "height": 258
+        },
+        {
+          "text": "Edge ServicesLast observed · 5/17/25, 8:32 PM10%Recorded tokensShare of scoped usageUnknown (Priced coverage: 0 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)Source-reported cost$0.00 (Priced coverage: 1 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)Calculated API value5/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 05/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 11 Distinct sessions1 Calls1 Harnesses observed",
+          "x": 717.390625,
+          "y": 476,
+          "width": 397.296875,
+          "height": 258
+        }
+      ],
+      "warning": null,
+      "headingArt": null
+    },
+    {
+      "route": "models",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 881,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 317,
+              "bottom": 406
+            },
+            "quick": {
+              "x": 12,
+              "y": 443,
+              "width": 201,
+              "height": 305,
+              "bottom": 748
+            },
+            "footer": {
+              "x": 12,
+              "y": 865,
+              "width": 201,
+              "height": 64,
+              "bottom": 929
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "Models",
+          "x": 289,
+          "y": 87.25,
+          "width": 73.984375,
+          "height": 27.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "22px",
+          "fontWeight": "325",
+          "lineHeight": "27.5px",
+          "transform": "matrix(1, 0, 0, 1, 1, 6)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Refresh now",
+          "x": 1151.953125,
+          "y": 72,
+          "width": 106.953125,
+          "height": 34.5
+        },
+        {
+          "text": "DeepSeek V4.1",
+          "x": 252,
+          "y": 390,
+          "width": 105.703125,
+          "height": 22
+        },
+        {
+          "text": "GPT-5.x",
+          "x": 252,
+          "y": 429,
+          "width": 69.578125,
+          "height": 22
+        },
+        {
+          "text": "Claude 3.7",
+          "x": 252,
+          "y": 468,
+          "width": 81.265625,
+          "height": 22
+        },
+        {
+          "text": "Claude 3.5",
+          "x": 252,
+          "y": 507,
+          "width": 83.125,
+          "height": 22
+        },
+        {
+          "text": "Others",
+          "x": 252,
+          "y": 546,
+          "width": 62.75,
+          "height": 22
+        },
+        {
+          "text": "GPT-4.1 mini",
+          "x": 252,
+          "y": 585,
+          "width": 90.984375,
+          "height": 22
+        },
+        {
+          "text": "deepseek274.0M · 1 Model and route pairs38%5/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 273,980,003",
+          "x": 247,
+          "y": 879,
+          "width": 245.21875,
+          "height": 60.5
+        }
+      ],
+      "warning": null,
+      "headingArt": {
+        "width": 28,
+        "height": 28,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "inline",
+        "fallbackDisplays": [
+          "none",
+          "none",
+          "none"
+        ]
+      }
+    },
+    {
+      "route": "providers",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": true,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 895,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 442,
+              "bottom": 531
+            },
+            "quick": {
+              "x": 12,
+              "y": 546,
+              "width": 201,
+              "height": 295,
+              "bottom": 841
+            },
+            "footer": {
+              "x": 12,
+              "y": 879,
+              "width": 201,
+              "height": 64,
+              "bottom": 943
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "Providers & Subscriptions",
+          "x": 307,
+          "y": 86.34375,
+          "width": 297.09375,
+          "height": 27.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "23px",
+          "fontWeight": "350",
+          "lineHeight": "27.5px",
+          "transform": "matrix(1, 0, 0, 1, -2, 4)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Refresh now",
+          "x": 1540.046875,
+          "y": 88.75,
+          "width": 106.953125,
+          "height": 34.5
+        },
+        {
+          "text": "OpenAI Subscription",
+          "x": 313,
+          "y": 167,
+          "width": 195.671875,
+          "height": 21
+        },
+        {
+          "text": "OpenCode Go Subscription",
+          "x": 665,
+          "y": 167,
+          "width": 199.671875,
+          "height": 21
+        },
+        {
+          "text": "Claude Company Subscription",
+          "x": 1021,
+          "y": 167,
+          "width": 191.515625,
+          "height": 42
+        },
+        {
+          "text": "Claude Personal Subscription",
+          "x": 1377,
+          "y": 167,
+          "width": 191.515625,
+          "height": 42
+        },
+        {
+          "text": "OpenAI Subscription",
+          "x": 291,
+          "y": 881,
+          "width": 313,
+          "height": 24
+        },
+        {
+          "text": "OpenCode Go Subscription",
+          "x": 616,
+          "y": 881,
+          "width": 313,
+          "height": 24
+        }
+      ],
+      "warning": null,
+      "headingArt": null
+    },
+    {
+      "route": "cost",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": true,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 889,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 442,
+              "bottom": 531
+            },
+            "quick": {
+              "x": 12,
+              "y": 546,
+              "width": 201,
+              "height": 289,
+              "bottom": 835
+            },
+            "footer": {
+              "x": 12,
+              "y": 873,
+              "width": 201,
+              "height": 64,
+              "bottom": 937
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "Cost Overview",
+          "x": 293,
+          "y": 86.75,
+          "width": 103.0625,
+          "height": 22.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "22.5px",
+          "transform": "matrix(1, 0, 0, 1, -2, -4)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Refresh now",
+          "x": 755.0625,
+          "y": 85,
+          "width": 34,
+          "height": 34
+        }
+      ],
+      "warning": null,
+      "headingArt": null
+    },
+    {
+      "route": "history",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 881,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 317,
+              "bottom": 406
+            },
+            "quick": {
+              "x": 12,
+              "y": 444,
+              "width": 201,
+              "height": 305,
+              "bottom": 749
+            },
+            "footer": {
+              "x": 12,
+              "y": 864,
+              "width": 201,
+              "height": 65,
+              "bottom": 929
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "History & Logs",
+          "x": 305,
+          "y": 78.046875,
+          "width": 328.421875,
+          "height": 31.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "22.5px",
+          "fontWeight": "350",
+          "lineHeight": "31.5px",
+          "transform": "matrix(1, 0, 0, 1, 3, 0)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Pause view",
+          "x": 998.453125,
+          "y": 86.5,
+          "width": 87.21875,
+          "height": 32
+        },
+        {
+          "text": "Export matching records",
+          "x": 1091.671875,
+          "y": 86.5,
+          "width": 165.421875,
+          "height": 32
+        },
+        {
+          "text": "Apply filters",
+          "x": 1507.328125,
+          "y": 472,
+          "width": 152.671875,
+          "height": 35
+        },
+        {
+          "text": "#1",
+          "x": 1538.046875,
+          "y": 561.5,
+          "width": 36.359375,
+          "height": 24
+        },
+        {
+          "text": "#4",
+          "x": 1538.046875,
+          "y": 594.5,
+          "width": 39.140625,
+          "height": 24
+        },
+        {
+          "text": "#7",
+          "x": 1538.046875,
+          "y": 627.5,
+          "width": 38.046875,
+          "height": 24
+        },
+        {
+          "text": "#10",
+          "x": 1538.046875,
+          "y": 660.5,
+          "width": 44.203125,
+          "height": 24
+        },
+        {
+          "text": "#13",
+          "x": 1538.046875,
+          "y": 693.5,
+          "width": 43.71875,
+          "height": 24
+        }
+      ],
+      "warning": null,
+      "headingArt": null
+    },
+    {
+      "route": "alerts",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 881,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 317,
+              "bottom": 406
+            },
+            "quick": {
+              "x": 12,
+              "y": 416,
+              "width": 201,
+              "height": 289,
+              "bottom": 705
+            },
+            "footer": {
+              "x": 12,
+              "y": 861,
+              "width": 201,
+              "height": 68,
+              "bottom": 929
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 177,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "Alerts & Quota Guard",
+          "x": 310,
+          "y": 87,
+          "width": 399.84375,
+          "height": 27.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "24.5px",
+          "fontWeight": "400",
+          "lineHeight": "27.5px",
+          "transform": "matrix(1, 0, 0, 1, 0, 3)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Refresh now",
+          "x": 1077.984375,
+          "y": 84,
+          "width": 106.953125,
+          "height": 34.5
+        },
+        {
+          "text": "All 4",
+          "x": 554.65625,
+          "y": 470.6875,
+          "width": 38.28125,
+          "height": 29
+        },
+        {
+          "text": "Critical 1",
+          "x": 596.9375,
+          "y": 470.6875,
+          "width": 56.640625,
+          "height": 29
+        },
+        {
+          "text": "Warning 1",
+          "x": 657.578125,
+          "y": 470.6875,
+          "width": 62.21875,
+          "height": 29
+        },
+        {
+          "text": "Notice 2",
+          "x": 723.796875,
+          "y": 470.6875,
+          "width": 56.421875,
+          "height": 29
+        },
+        {
+          "text": "Stale 0",
+          "x": 784.21875,
+          "y": 470.6875,
+          "width": 50.59375,
+          "height": 29
+        },
+        {
+          "text": "Show more history",
+          "x": 1543,
+          "y": 771.75,
+          "width": 104,
+          "height": 22.5
+        }
+      ],
+      "warning": {
+        "text": "Forecast reaches full use before reset1d 18h before reset",
+        "x": 1230.9375,
+        "y": 310.796875,
+        "width": 409.0625,
+        "height": 80,
+        "background": "rgb(25, 16, 25) none repeat scroll 0% 0% / auto padding-box border-box",
+        "alignment": "flex-start",
+        "mark": {
+          "display": "grid",
+          "x": 1243.9375,
+          "y": 323.796875,
+          "width": 44,
+          "height": 44,
+          "ariaHidden": "true",
+          "svgWidth": 28,
+          "svgHeight": 28,
+          "focusable": "false"
+        }
+      },
+      "headingArt": {
+        "width": 32,
+        "height": 32,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "inline",
+        "fallbackDisplays": [
+          "none",
+          "none",
+          "none",
+          "none"
+        ]
+      }
+    }
+  ]
+}
