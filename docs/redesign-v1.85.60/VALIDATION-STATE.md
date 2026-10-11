@@ -1,0 +1,11 @@
+# Cost table typography v1.85.60
+
+Validated scoped CSS implementation. Full concept and release acceptance remain open.
+
+Native dark Cost body text is now12px with inherited link sizing. Table headers remain11px but use regular weight and a taller header band; body cell padding/line height bring models/projects/sessions to measured30/35/25px row heights, with27.5px headers. Source measurements are approximately30-31/34-35/25-26px. Actual cell text, four model columns, three lower columns, row order, values and icons are preserved. Source-only rank/token columns and fabricated session descriptions were not introduced.
+
+Final web build/native session56306 passed. Session1348 passed native EN-dark and TH-dark/light,1536 breakpoint and1280/900/390 compact checks, all-eight EN-dark native frames and original Cost four repeated pairs. All four pairs are byte-identical; eight hashes verified with unchanged unmasked tolerance. Source-width cells show no horizontal overflow in these fixtures. All10 session records remain reachable with Control+End in210px scrolling; native dark client210/scroll278 reaches the last row at scrollTop68. Light styles retain their prior row rhythm. Arbitrary longer monetary captions and unknown live datasets remain outside the fixture proof.
+
+See [all-eight viewer](reference-review.html), [models crop](comparison/models.png), [lower tables crop](comparison/lower.png), [row invariants](row-invariants.json), [native keyboard checks](native-table-checks.json) and [provenance](build-provenance.json). All-eight heading/control/warning/sidebar geometry matches59. Captures use deterministic synthetic data through real app code, not a Concept Preview mode. A temporary baseline helper syntax error was corrected before the successful baseline; its separate log does not indicate an app failure.
+
+Residual source differences include cyan rather than white links, rank-column offsets, real row counts, factual headings and section artwork. Current full40/UI/unit/Electron/release gates were not rerun in this scoped checkpoint;55 evidence binds its earlier build. No99-100% or source SSIM result is claimed. Continue remaining source alignment, manual accessibility and current packaging/recovery verification. Main worktree and unrelated .zed files remain untouched.

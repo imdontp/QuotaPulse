@@ -1,0 +1,5 @@
+# Bounded source and render review
+
+Root reviewed four scoped CSS rules, source/before/after crops, EN/TH table geometry, preserved real row text and keyboard last-row reach. Independent remaining_visual_gaps58 review of the frozen EN candidate found no blocker: body scale, regular headers and row rhythm move toward source; link inheritance applies the new body size consistently. Thai gates were pending during that review and later passed root session1348. No independent final-TH review is claimed.
+
+Native dark production Cost and min-width1536 scope preserve light/compact styles. Existing210px lower-table scrolling and minimum panel sizes remain. Recorded providers, actual model/project/session identities, cost basis, plus/unknown notation, order and row counts remain intact. Rank-column differences explain source label bearings, so arbitrary padding was not added to conceal absent columns. Link colors and section art remain open candidates. Repeatability proves stable rendering, not source likeness or release acceptance.

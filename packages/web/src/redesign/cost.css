@@ -199,3 +199,11 @@
   .qp-cost-donut-basis { font-size:11px; line-height:14px; }
   .qp-cost-donut-range { font-size:10px; line-height:13px; }
 }
+
+/* Native reference table text and row rhythm. */
+@media(min-width:1536px) {
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table table { font-size:12px; }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table a { font-size:inherit; }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table tbody td { padding:4px 4px; line-height:16px; }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table thead th { font-size:11px; font-weight:400; line-height:15px; padding:6px 4px; }
+}

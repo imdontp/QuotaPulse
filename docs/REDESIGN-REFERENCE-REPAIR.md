@@ -16,6 +16,8 @@ that harness must never be reported as a reference fidelity percentage.
 
 Latest scoped source repair: [v1.85.49](redesign-v1.85.49/VALIDATION-STATE.md) aligns painted Live horizontal bounds/divider and Models lower-detail typography. Build170 web tests, UI compatibility and12 production capture pairs pass. [Current/historical eight-page comparison](redesign-v1.85.49/reference-review.html) labels unchanged pages as build48. Vertical Live and other source artwork/geometry remain open.
 
+Latest native Cost table checkpoint: [v1.85.60](redesign-v1.85.60/VALIDATION-STATE.md) refines body text, header weight and measured row rhythm; all real rows remain reachable in210px scrolling. Native EN/TH/breakpoint/compact, all-eight and four original repeated pairs pass. Full concept and release acceptance remain open.
+
 Latest native Runtime typography checkpoint: [v1.85.59](redesign-v1.85.59/VALIDATION-STATE.md) refines harness colors, session metadata and single-project text. Native EN/TH/breakpoint/compact, all-eight and four original repeated pairs pass;15 runtime node fact/geometry records are preserved. Full concept and release acceptance remain open.
 
 Latest native Projects rhythm checkpoint: [v1.85.58](redesign-v1.85.58/VALIDATION-STATE.md) aligns usage bars, observed sparklines and facts with refs while preserving real data and intrinsic card growth. Native all-eight, EN/TH compact/breakpoint and four original repeated pairs pass. Full concept and release acceptance remain open.

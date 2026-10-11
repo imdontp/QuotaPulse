@@ -1,0 +1,1507 @@
+{
+  "language": "en",
+  "theme": "dark",
+  "productionIndexSha256": "928db44343d4602a5a1be422ffff1b80630c5f2d86db2d0842f28ac9fafdb264",
+  "results": [
+    {
+      "route": "cost",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": true,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 889,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 442,
+              "bottom": 531
+            },
+            "quick": {
+              "x": 12,
+              "y": 546,
+              "width": 201,
+              "height": 289,
+              "bottom": 835
+            },
+            "footer": {
+              "x": 12,
+              "y": 873,
+              "width": 201,
+              "height": 64,
+              "bottom": 937
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "Cost Overview",
+          "x": 293,
+          "y": 86.75,
+          "width": 103.0625,
+          "height": 22.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "22.5px",
+          "transform": "matrix(1, 0, 0, 1, -2, -4)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Refresh now",
+          "x": 755.0625,
+          "y": 85,
+          "width": 34,
+          "height": 34
+        }
+      ],
+      "warning": null,
+      "headingArt": null,
+      "costTables": [
+        {
+          "section": "qp-panel qp-cost-models",
+          "x": 1048.828125,
+          "y": 391.796875,
+          "width": 596.15625,
+          "height": 185.078125,
+          "clientHeight": 185,
+          "scrollHeight": 185,
+          "maxHeight": "none",
+          "tabIndex": 0,
+          "rows": [
+            {
+              "text": "ModelRecorded providerKnown value in scopeShare",
+              "x": 1048.828125,
+              "y": 391.796875,
+              "width": 596.15625,
+              "height": 20.796875,
+              "cells": [
+                {
+                  "text": "Model",
+                  "x": 1048.828125,
+                  "y": 391.796875,
+                  "width": 111.65625,
+                  "height": 20.796875,
+                  "fontSize": "11px",
+                  "fontWeight": "700",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 112,
+                  "clientWidth": 112
+                },
+                {
+                  "text": "Recorded provider",
+                  "x": 1160.484375,
+                  "y": 391.796875,
+                  "width": 146.78125,
+                  "height": 20.796875,
+                  "fontSize": "11px",
+                  "fontWeight": "700",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "Known value in scope",
+                  "x": 1307.265625,
+                  "y": 391.796875,
+                  "width": 169.140625,
+                  "height": 20.796875,
+                  "fontSize": "11px",
+                  "fontWeight": "700",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                },
+                {
+                  "text": "Share",
+                  "x": 1476.40625,
+                  "y": 391.796875,
+                  "width": 168.578125,
+                  "height": 20.796875,
+                  "fontSize": "11px",
+                  "fontWeight": "700",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                }
+              ]
+            },
+            {
+              "text": "GPT-5.xopenai$4.31 (Priced coverage: 13 / 13 Calls. + marks a subtotal. Native and API price bases are separate.)29.6%",
+              "x": 1048.828125,
+              "y": 412.59375,
+              "width": 596.15625,
+              "height": 27.296875,
+              "cells": [
+                {
+                  "text": "GPT-5.x",
+                  "x": 1048.828125,
+                  "y": 412.59375,
+                  "width": 111.65625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 112,
+                  "clientWidth": 112
+                },
+                {
+                  "text": "openai",
+                  "x": 1160.484375,
+                  "y": 412.59375,
+                  "width": 146.78125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "$4.31 (Priced coverage: 13 / 13 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 1307.265625,
+                  "y": 412.59375,
+                  "width": 169.140625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                },
+                {
+                  "text": "29.6%",
+                  "x": 1476.40625,
+                  "y": 412.59375,
+                  "width": 168.578125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                }
+              ]
+            },
+            {
+              "text": "DeepSeek V4.1deepseek$3.41+ (Priced coverage: 9 / 16 Calls. + marks a subtotal. Native and API price bases are separate.)23.5%",
+              "x": 1048.828125,
+              "y": 439.890625,
+              "width": 596.15625,
+              "height": 27.296875,
+              "cells": [
+                {
+                  "text": "DeepSeek V4.1",
+                  "x": 1048.828125,
+                  "y": 439.890625,
+                  "width": 111.65625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 112,
+                  "clientWidth": 112
+                },
+                {
+                  "text": "deepseek",
+                  "x": 1160.484375,
+                  "y": 439.890625,
+                  "width": 146.78125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "$3.41+ (Priced coverage: 9 / 16 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 1307.265625,
+                  "y": 439.890625,
+                  "width": 169.140625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                },
+                {
+                  "text": "23.5%",
+                  "x": 1476.40625,
+                  "y": 439.890625,
+                  "width": 168.578125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                }
+              ]
+            },
+            {
+              "text": "Claude 3.7anthropic$3.23 (Priced coverage: 13 / 13 Calls. + marks a subtotal. Native and API price bases are separate.)22.2%",
+              "x": 1048.828125,
+              "y": 467.1875,
+              "width": 596.15625,
+              "height": 27.296875,
+              "cells": [
+                {
+                  "text": "Claude 3.7",
+                  "x": 1048.828125,
+                  "y": 467.1875,
+                  "width": 111.65625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 112,
+                  "clientWidth": 112
+                },
+                {
+                  "text": "anthropic",
+                  "x": 1160.484375,
+                  "y": 467.1875,
+                  "width": 146.78125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "$3.23 (Priced coverage: 13 / 13 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 1307.265625,
+                  "y": 467.1875,
+                  "width": 169.140625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                },
+                {
+                  "text": "22.2%",
+                  "x": 1476.40625,
+                  "y": 467.1875,
+                  "width": 168.578125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                }
+              ]
+            },
+            {
+              "text": "Claude 3.5anthropic$1.97 (Priced coverage: 13 / 13 Calls. + marks a subtotal. Native and API price bases are separate.)13.6%",
+              "x": 1048.828125,
+              "y": 494.484375,
+              "width": 596.15625,
+              "height": 27.296875,
+              "cells": [
+                {
+                  "text": "Claude 3.5",
+                  "x": 1048.828125,
+                  "y": 494.484375,
+                  "width": 111.65625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 112,
+                  "clientWidth": 112
+                },
+                {
+                  "text": "anthropic",
+                  "x": 1160.484375,
+                  "y": 494.484375,
+                  "width": 146.78125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "$1.97 (Priced coverage: 13 / 13 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 1307.265625,
+                  "y": 494.484375,
+                  "width": 169.140625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                },
+                {
+                  "text": "13.6%",
+                  "x": 1476.40625,
+                  "y": 494.484375,
+                  "width": 168.578125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                }
+              ]
+            },
+            {
+              "text": "Othersopenrouter$1.61 (Priced coverage: 12 / 12 Calls. + marks a subtotal. Native and API price bases are separate.)11.1%",
+              "x": 1048.828125,
+              "y": 521.78125,
+              "width": 596.15625,
+              "height": 27.296875,
+              "cells": [
+                {
+                  "text": "Others",
+                  "x": 1048.828125,
+                  "y": 521.78125,
+                  "width": 111.65625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 112,
+                  "clientWidth": 112
+                },
+                {
+                  "text": "openrouter",
+                  "x": 1160.484375,
+                  "y": 521.78125,
+                  "width": 146.78125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "$1.61 (Priced coverage: 12 / 12 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 1307.265625,
+                  "y": 521.78125,
+                  "width": 169.140625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                },
+                {
+                  "text": "11.1%",
+                  "x": 1476.40625,
+                  "y": 521.78125,
+                  "width": 168.578125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                }
+              ]
+            },
+            {
+              "text": "GPT-4.1 miniopenai$0.00 (Priced coverage: 12 / 12 Calls. + marks a subtotal. Native and API price bases are separate.)0%",
+              "x": 1048.828125,
+              "y": 549.078125,
+              "width": 596.15625,
+              "height": 27.296875,
+              "cells": [
+                {
+                  "text": "GPT-4.1 mini",
+                  "x": 1048.828125,
+                  "y": 549.078125,
+                  "width": 111.65625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 112,
+                  "clientWidth": 112
+                },
+                {
+                  "text": "openai",
+                  "x": 1160.484375,
+                  "y": 549.078125,
+                  "width": 146.78125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "$0.00 (Priced coverage: 12 / 12 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 1307.265625,
+                  "y": 549.078125,
+                  "width": 169.140625,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                },
+                {
+                  "text": "0%",
+                  "x": 1476.40625,
+                  "y": 549.078125,
+                  "width": 168.578125,
+                  "height": 27.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 169,
+                  "clientWidth": 169
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "section": "qp-panel qp-cost-projects",
+          "x": 253,
+          "y": 702.796875,
+          "width": 458.84375,
+          "height": 182.78125,
+          "clientHeight": 183,
+          "scrollHeight": 183,
+          "maxHeight": "210px",
+          "tabIndex": 0,
+          "rows": [
+            {
+              "text": "ProjectKnown value in scopeShare",
+              "x": 253,
+              "y": 702.796875,
+              "width": 458.84375,
+              "height": 20.796875,
+              "cells": [
+                {
+                  "text": "Project",
+                  "x": 253,
+                  "y": 702.796875,
+                  "width": 149,
+                  "height": 20.796875,
+                  "fontSize": "11px",
+                  "fontWeight": "700",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 149,
+                  "clientWidth": 149
+                },
+                {
+                  "text": "Known value in scope",
+                  "x": 402,
+                  "y": 702.796875,
+                  "width": 157.625,
+                  "height": 20.796875,
+                  "fontSize": "11px",
+                  "fontWeight": "700",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 158,
+                  "clientWidth": 158
+                },
+                {
+                  "text": "Share",
+                  "x": 559.625,
+                  "y": 702.796875,
+                  "width": 152.21875,
+                  "height": 20.796875,
+                  "fontSize": "11px",
+                  "fontWeight": "700",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 152,
+                  "clientWidth": 152
+                }
+              ]
+            },
+            {
+              "text": "QuotaPulse$14.53+ (Priced coverage: 68 / 75 Calls. + marks a subtotal. Native and API price bases are separate.)100%",
+              "x": 253,
+              "y": 723.59375,
+              "width": 458.84375,
+              "height": 32.296875,
+              "cells": [
+                {
+                  "text": "QuotaPulse",
+                  "x": 253,
+                  "y": 723.59375,
+                  "width": 149,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 149,
+                  "clientWidth": 149
+                },
+                {
+                  "text": "$14.53+ (Priced coverage: 68 / 75 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 402,
+                  "y": 723.59375,
+                  "width": 157.625,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 158,
+                  "clientWidth": 158
+                },
+                {
+                  "text": "100%",
+                  "x": 559.625,
+                  "y": 723.59375,
+                  "width": 152.21875,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 152,
+                  "clientWidth": 152
+                }
+              ]
+            },
+            {
+              "text": "Agent Platform$0.00 (Priced coverage: 1 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)0%",
+              "x": 253,
+              "y": 755.890625,
+              "width": 458.84375,
+              "height": 32.296875,
+              "cells": [
+                {
+                  "text": "Agent Platform",
+                  "x": 253,
+                  "y": 755.890625,
+                  "width": 149,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 149,
+                  "clientWidth": 149
+                },
+                {
+                  "text": "$0.00 (Priced coverage: 1 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 402,
+                  "y": 755.890625,
+                  "width": 157.625,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 158,
+                  "clientWidth": 158
+                },
+                {
+                  "text": "0%",
+                  "x": 559.625,
+                  "y": 755.890625,
+                  "width": 152.21875,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 152,
+                  "clientWidth": 152
+                }
+              ]
+            },
+            {
+              "text": "Developer Tools$0.00 (Priced coverage: 1 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)0%",
+              "x": 253,
+              "y": 788.1875,
+              "width": 458.84375,
+              "height": 32.296875,
+              "cells": [
+                {
+                  "text": "Developer Tools",
+                  "x": 253,
+                  "y": 788.1875,
+                  "width": 149,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 149,
+                  "clientWidth": 149
+                },
+                {
+                  "text": "$0.00 (Priced coverage: 1 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 402,
+                  "y": 788.1875,
+                  "width": 157.625,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 158,
+                  "clientWidth": 158
+                },
+                {
+                  "text": "0%",
+                  "x": 559.625,
+                  "y": 788.1875,
+                  "width": 152.21875,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 152,
+                  "clientWidth": 152
+                }
+              ]
+            },
+            {
+              "text": "Edge Services$0.00 (Priced coverage: 1 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)0%",
+              "x": 253,
+              "y": 820.484375,
+              "width": 458.84375,
+              "height": 32.296875,
+              "cells": [
+                {
+                  "text": "Edge Services",
+                  "x": 253,
+                  "y": 820.484375,
+                  "width": 149,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 149,
+                  "clientWidth": 149
+                },
+                {
+                  "text": "$0.00 (Priced coverage: 1 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 402,
+                  "y": 820.484375,
+                  "width": 157.625,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 158,
+                  "clientWidth": 158
+                },
+                {
+                  "text": "0%",
+                  "x": 559.625,
+                  "y": 820.484375,
+                  "width": 152.21875,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 152,
+                  "clientWidth": 152
+                }
+              ]
+            },
+            {
+              "text": "Research Lab$0.00 (Priced coverage: 1 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)0%",
+              "x": 253,
+              "y": 852.78125,
+              "width": 458.84375,
+              "height": 32.296875,
+              "cells": [
+                {
+                  "text": "Research Lab",
+                  "x": 253,
+                  "y": 852.78125,
+                  "width": 149,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 149,
+                  "clientWidth": 149
+                },
+                {
+                  "text": "$0.00 (Priced coverage: 1 / 1 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 402,
+                  "y": 852.78125,
+                  "width": 157.625,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 158,
+                  "clientWidth": 158
+                },
+                {
+                  "text": "0%",
+                  "x": 559.625,
+                  "y": 852.78125,
+                  "width": 152.21875,
+                  "height": 32.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 152,
+                  "clientWidth": 152
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "section": "qp-panel qp-cost-sessions",
+          "x": 749.84375,
+          "y": 702.796875,
+          "width": 428.578125,
+          "height": 210,
+          "clientHeight": 210,
+          "scrollHeight": 234,
+          "maxHeight": "210px",
+          "tabIndex": 0,
+          "rows": [
+            {
+              "text": "SessionProjectKnown value in scope",
+              "x": 749.84375,
+              "y": 702.796875,
+              "width": 428.578125,
+              "height": 20.796875,
+              "cells": [
+                {
+                  "text": "Session",
+                  "x": 749.84375,
+                  "y": 702.796875,
+                  "width": 146.5625,
+                  "height": 20.796875,
+                  "fontSize": "11px",
+                  "fontWeight": "700",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "Project",
+                  "x": 896.40625,
+                  "y": 702.796875,
+                  "width": 98.21875,
+                  "height": 20.796875,
+                  "fontSize": "11px",
+                  "fontWeight": "700",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 98,
+                  "clientWidth": 98
+                },
+                {
+                  "text": "Known value in scope",
+                  "x": 994.625,
+                  "y": 702.796875,
+                  "width": 183.796875,
+                  "height": 20.796875,
+                  "fontSize": "11px",
+                  "fontWeight": "700",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 184,
+                  "clientWidth": 184
+                }
+              ]
+            },
+            {
+              "text": "fixture-session-6QuotaPulse$3.41 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+              "x": 749.84375,
+              "y": 723.59375,
+              "width": 428.578125,
+              "height": 21.296875,
+              "cells": [
+                {
+                  "text": "fixture-session-6",
+                  "x": 749.84375,
+                  "y": 723.59375,
+                  "width": 146.5625,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "QuotaPulse",
+                  "x": 896.40625,
+                  "y": 723.59375,
+                  "width": 98.21875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 98,
+                  "clientWidth": 98
+                },
+                {
+                  "text": "$3.41 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 994.625,
+                  "y": 723.59375,
+                  "width": 183.796875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 184,
+                  "clientWidth": 184
+                }
+              ]
+            },
+            {
+              "text": "fixture-session-1QuotaPulse$2.15 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+              "x": 749.84375,
+              "y": 744.890625,
+              "width": 428.578125,
+              "height": 21.296875,
+              "cells": [
+                {
+                  "text": "fixture-session-1",
+                  "x": 749.84375,
+                  "y": 744.890625,
+                  "width": 146.5625,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "QuotaPulse",
+                  "x": 896.40625,
+                  "y": 744.890625,
+                  "width": 98.21875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 98,
+                  "clientWidth": 98
+                },
+                {
+                  "text": "$2.15 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 994.625,
+                  "y": 744.890625,
+                  "width": 183.796875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 184,
+                  "clientWidth": 184
+                }
+              ]
+            },
+            {
+              "text": "fixture-session-7QuotaPulse$2.15 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+              "x": 749.84375,
+              "y": 766.1875,
+              "width": 428.578125,
+              "height": 21.296875,
+              "cells": [
+                {
+                  "text": "fixture-session-7",
+                  "x": 749.84375,
+                  "y": 766.1875,
+                  "width": 146.5625,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "QuotaPulse",
+                  "x": 896.40625,
+                  "y": 766.1875,
+                  "width": 98.21875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 98,
+                  "clientWidth": 98
+                },
+                {
+                  "text": "$2.15 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 994.625,
+                  "y": 766.1875,
+                  "width": 183.796875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 184,
+                  "clientWidth": 184
+                }
+              ]
+            },
+            {
+              "text": "fixture-session-2QuotaPulse$1.61 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+              "x": 749.84375,
+              "y": 787.484375,
+              "width": 428.578125,
+              "height": 21.296875,
+              "cells": [
+                {
+                  "text": "fixture-session-2",
+                  "x": 749.84375,
+                  "y": 787.484375,
+                  "width": 146.5625,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "QuotaPulse",
+                  "x": 896.40625,
+                  "y": 787.484375,
+                  "width": 98.21875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 98,
+                  "clientWidth": 98
+                },
+                {
+                  "text": "$1.61 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 994.625,
+                  "y": 787.484375,
+                  "width": 183.796875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 184,
+                  "clientWidth": 184
+                }
+              ]
+            },
+            {
+              "text": "fixture-session-8QuotaPulse$1.61 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+              "x": 749.84375,
+              "y": 808.78125,
+              "width": 428.578125,
+              "height": 21.296875,
+              "cells": [
+                {
+                  "text": "fixture-session-8",
+                  "x": 749.84375,
+                  "y": 808.78125,
+                  "width": 146.5625,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "QuotaPulse",
+                  "x": 896.40625,
+                  "y": 808.78125,
+                  "width": 98.21875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 98,
+                  "clientWidth": 98
+                },
+                {
+                  "text": "$1.61 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 994.625,
+                  "y": 808.78125,
+                  "width": 183.796875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 184,
+                  "clientWidth": 184
+                }
+              ]
+            },
+            {
+              "text": "fixture-session-3QuotaPulse$0.99 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+              "x": 749.84375,
+              "y": 830.078125,
+              "width": 428.578125,
+              "height": 21.296875,
+              "cells": [
+                {
+                  "text": "fixture-session-3",
+                  "x": 749.84375,
+                  "y": 830.078125,
+                  "width": 146.5625,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "QuotaPulse",
+                  "x": 896.40625,
+                  "y": 830.078125,
+                  "width": 98.21875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 98,
+                  "clientWidth": 98
+                },
+                {
+                  "text": "$0.99 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 994.625,
+                  "y": 830.078125,
+                  "width": 183.796875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 184,
+                  "clientWidth": 184
+                }
+              ]
+            },
+            {
+              "text": "fixture-session-9QuotaPulse$0.99 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+              "x": 749.84375,
+              "y": 851.375,
+              "width": 428.578125,
+              "height": 21.296875,
+              "cells": [
+                {
+                  "text": "fixture-session-9",
+                  "x": 749.84375,
+                  "y": 851.375,
+                  "width": 146.5625,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "QuotaPulse",
+                  "x": 896.40625,
+                  "y": 851.375,
+                  "width": 98.21875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 98,
+                  "clientWidth": 98
+                },
+                {
+                  "text": "$0.99 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 994.625,
+                  "y": 851.375,
+                  "width": 183.796875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 184,
+                  "clientWidth": 184
+                }
+              ]
+            },
+            {
+              "text": "fixture-session-4QuotaPulse$0.81 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+              "x": 749.84375,
+              "y": 872.671875,
+              "width": 428.578125,
+              "height": 21.296875,
+              "cells": [
+                {
+                  "text": "fixture-session-4",
+                  "x": 749.84375,
+                  "y": 872.671875,
+                  "width": 146.5625,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "QuotaPulse",
+                  "x": 896.40625,
+                  "y": 872.671875,
+                  "width": 98.21875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 98,
+                  "clientWidth": 98
+                },
+                {
+                  "text": "$0.81 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 994.625,
+                  "y": 872.671875,
+                  "width": 183.796875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 184,
+                  "clientWidth": 184
+                }
+              ]
+            },
+            {
+              "text": "fixture-session-10QuotaPulse$0.81 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+              "x": 749.84375,
+              "y": 893.96875,
+              "width": 428.578125,
+              "height": 21.296875,
+              "cells": [
+                {
+                  "text": "fixture-session-10",
+                  "x": 749.84375,
+                  "y": 893.96875,
+                  "width": 146.5625,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "QuotaPulse",
+                  "x": 896.40625,
+                  "y": 893.96875,
+                  "width": 98.21875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 98,
+                  "clientWidth": 98
+                },
+                {
+                  "text": "$0.81 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 994.625,
+                  "y": 893.96875,
+                  "width": 183.796875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 184,
+                  "clientWidth": 184
+                }
+              ]
+            },
+            {
+              "text": "fixture-session-5QuotaPulse$0.00 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+              "x": 749.84375,
+              "y": 915.265625,
+              "width": 428.578125,
+              "height": 21.296875,
+              "cells": [
+                {
+                  "text": "fixture-session-5",
+                  "x": 749.84375,
+                  "y": 915.265625,
+                  "width": 146.5625,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 147,
+                  "clientWidth": 147
+                },
+                {
+                  "text": "QuotaPulse",
+                  "x": 896.40625,
+                  "y": 915.265625,
+                  "width": 98.21875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 98,
+                  "clientWidth": 98
+                },
+                {
+                  "text": "$0.00 (Priced coverage: 6 / 6 Calls. + marks a subtotal. Native and API price bases are separate.)",
+                  "x": 994.625,
+                  "y": 915.265625,
+                  "width": 183.796875,
+                  "height": 21.296875,
+                  "fontSize": "11px",
+                  "fontWeight": "400",
+                  "lineHeight": "14.3px",
+                  "padding": "3px 4px",
+                  "scrollWidth": 184,
+                  "clientWidth": 184
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1536,
+      "compact": {
+        "nativeVariable": "29px",
+        "badgeWidth": 21
+      }
+    },
+    {
+      "width": 1536,
+      "route": "cost",
+      "heading": {
+        "text": "Cost Overview",
+        "x": 283,
+        "y": 81.328125,
+        "width": 103.0625,
+        "height": 22.5,
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "transform": "matrix(1, 0, 0, 1, -2, -4)"
+      },
+      "headingArt": null,
+      "runtimeLeaves": []
+    },
+    {
+      "width": 1280,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 20
+      }
+    },
+    {
+      "width": 1280,
+      "route": "cost",
+      "heading": {
+        "text": "Cost Overview",
+        "x": 285,
+        "y": 85,
+        "width": 122.75,
+        "height": 22.5,
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": null,
+      "runtimeLeaves": []
+    },
+    {
+      "width": 900,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 18
+      }
+    },
+    {
+      "width": 900,
+      "route": "cost",
+      "heading": {
+        "text": "Cost Overview",
+        "x": 145,
+        "y": 97,
+        "width": 331.609375,
+        "height": 27.5,
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": null,
+      "runtimeLeaves": []
+    },
+    {
+      "width": 390,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 18
+      }
+    },
+    {
+      "width": 390,
+      "route": "cost",
+      "heading": {
+        "text": "Cost Overview",
+        "x": 115,
+        "y": 92,
+        "width": 248,
+        "height": 25,
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": null,
+      "runtimeLeaves": []
+    }
+  ]
+}
