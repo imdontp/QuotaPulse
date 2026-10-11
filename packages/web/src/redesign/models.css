@@ -189,3 +189,8 @@
   [data-testid=production-models] .qp-model-detail>.qp-model-distribution { margin-block-start:-5px; margin-block-end:1px; }
   [data-testid=production-models] .qp-model-detail>.qp-panel:has(>.qp-model-trend) { row-gap:4px; padding-bottom:9px; }
 }
+
+/* Reference comparison headers retain body sizing and factual columns. */
+@media(min-width:1536px) {
+ .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-table-wrap th { font-weight:400; }
+}

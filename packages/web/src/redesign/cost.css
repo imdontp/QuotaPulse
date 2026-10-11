@@ -207,3 +207,10 @@
  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table tbody td { padding:4px 4px; line-height:16px; }
  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table thead th { font-size:11px; font-weight:400; line-height:15px; padding:6px 4px; }
 }
+
+/* Native reference name tone, with visible interactive hover feedback. */
+@media(min-width:1536px) {
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table tbody td:first-child a { color:var(--qp-text); }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table tbody td:first-child a:hover { color:var(--qp-accent); }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-project-link svg { color:var(--qp-accent); }
+}

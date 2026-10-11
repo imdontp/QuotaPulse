@@ -1,0 +1,975 @@
+{
+  "language": "th",
+  "theme": "light",
+  "productionIndexSha256": "3bd36f9bb5c4e5c2627a28fd97346bfa15b5904d839aefbd906312564f84c31f",
+  "results": [
+    {
+      "route": "models",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 881,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 317,
+              "bottom": 406
+            },
+            "quick": {
+              "x": 12,
+              "y": 443,
+              "width": 201,
+              "height": 305,
+              "bottom": 748
+            },
+            "footer": {
+              "x": 12,
+              "y": 865,
+              "width": 201,
+              "height": 64,
+              "bottom": 929
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "ภาพรวม",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "สด",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "โปรเจกต์",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "โมเดล",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "ประวัติ",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "การแจ้งเตือน",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "โมเดล",
+          "x": 288,
+          "y": 81.25,
+          "width": 53.6875,
+          "height": 27.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "22px",
+          "fontWeight": "600",
+          "lineHeight": "27.5px",
+          "transform": "none"
+        }
+      ],
+      "controls": [
+        {
+          "text": "รีเฟรชตอนนี้",
+          "x": 1160.78125,
+          "y": 72,
+          "width": 98.125,
+          "height": 34.5
+        },
+        {
+          "text": "DeepSeek V4.1",
+          "x": 252,
+          "y": 390,
+          "width": 105.703125,
+          "height": 22
+        },
+        {
+          "text": "GPT-5.x",
+          "x": 252,
+          "y": 429,
+          "width": 69.578125,
+          "height": 22
+        },
+        {
+          "text": "Claude 3.7",
+          "x": 252,
+          "y": 468,
+          "width": 81.265625,
+          "height": 22
+        },
+        {
+          "text": "Claude 3.5",
+          "x": 252,
+          "y": 507,
+          "width": 83.125,
+          "height": 22
+        },
+        {
+          "text": "Others",
+          "x": 252,
+          "y": 546,
+          "width": 62.75,
+          "height": 22
+        },
+        {
+          "text": "GPT-4.1 mini",
+          "x": 252,
+          "y": 585,
+          "width": 90.984375,
+          "height": 22
+        },
+        {
+          "text": "deepseek274.0M · 1 คู่โมเดลและเส้นทาง38%1/5/2568 00:00:00 · 01/5/2568 13:30:00 · 02/5/2568 03:00:00 · 02/5/2568 16:30:00 · 03/5/2568 06:00:00 · 03/5/2568 19:30:00 · 04/5/2568 09:00:00 · 04/5/2568 22:30:00 · 05/5/2568 12:00:00 · 06/5/2568 01:30:00 · 06/5/2568 15:00:00 · 07/5/2568 04:30:00 · 07/5/2568 18:00:00 · 08/5/2568 07:30:00 · 08/5/2568 21:00:00 · 09/5/2568 10:30:00 · 010/5/2568 00:00:00 · 010/5/2568 13:30:00 · 011/5/2568 03:00:00 · 011/5/2568 16:30:00 · 012/5/2568 06:00:00 · 012/5/2568 19:30:00 · 013/5/2568 09:00:00 · 013/5/2568 22:30:00 · 014/5/2568 12:00:00 · 115/5/2568 01:30:00 · 015/5/2568 15:00:00 · 016/5/2568 04:30:00 · 016/5/2568 18:00:00 · 017/5/2568 07:30:00 · 273,980,003",
+          "x": 247,
+          "y": 879,
+          "width": 245.21875,
+          "height": 60.5
+        }
+      ],
+      "warning": null,
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline"
+        ]
+      },
+      "tables": [
+        {
+          "x": 247,
+          "y": 347.5,
+          "width": 1010.90625,
+          "height": 452.5,
+          "rows": [
+            {
+              "text": "โมเดลผู้ให้บริการที่บันทึกผู้สร้างโมเดลโทเค็นที่บันทึกคำขอเซสชันไม่ซ้ำสัดส่วนอ่านแคชคำขอที่มีราคามูลค่า API",
+              "x": 247,
+              "y": 347.5,
+              "width": 1010.90625,
+              "height": 35
+            },
+            {
+              "text": "DeepSeek V4.1deepseekdeepseek274.0M16442%94%US$3.41+ (ข้อมูลที่มีราคา: 9 / 16 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 247,
+              "y": 382.5,
+              "width": 1010.90625,
+              "height": 39
+            },
+            {
+              "text": "GPT-5.xopenaiopenai173.0M13342%100%US$4.31 (ข้อมูลที่มีราคา: 13 / 13 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 247,
+              "y": 421.5,
+              "width": 1010.90625,
+              "height": 39
+            },
+            {
+              "text": "Claude 3.7anthropicanthropic129.8M13342%100%US$3.23 (ข้อมูลที่มีราคา: 13 / 13 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 247,
+              "y": 460.5,
+              "width": 1010.90625,
+              "height": 39
+            },
+            {
+              "text": "Claude 3.5anthropicanthropic79.3M13342%100%US$1.97 (ข้อมูลที่มีราคา: 13 / 13 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 247,
+              "y": 499.5,
+              "width": 1010.90625,
+              "height": 39
+            },
+            {
+              "text": "Othersopenrouterunknown64.9M12242%100%US$1.61 (ข้อมูลที่มีราคา: 12 / 12 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 247,
+              "y": 538.5,
+              "width": 1010.90625,
+              "height": 39
+            },
+            {
+              "text": "GPT-4.1 miniopenaiopenai612242%100%US$0.00 (ข้อมูลที่มีราคา: 12 / 12 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 247,
+              "y": 577.5,
+              "width": 1010.90625,
+              "height": 39
+            }
+          ],
+          "headers": [
+            {
+              "text": "โมเดล",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "ผู้ให้บริการที่บันทึก",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "ผู้สร้างโมเดล",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "โทเค็นที่บันทึก",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "คำขอ",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "เซสชันไม่ซ้ำ",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "สัดส่วนอ่านแคช",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "คำขอที่มีราคา",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "มูลค่า API",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            }
+          ],
+          "names": []
+        }
+      ]
+    },
+    {
+      "route": "cost",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": true,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 889,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 442,
+              "bottom": 531
+            },
+            "quick": {
+              "x": 12,
+              "y": 546,
+              "width": 201,
+              "height": 289,
+              "bottom": 835
+            },
+            "footer": {
+              "x": 12,
+              "y": 873,
+              "width": 201,
+              "height": 64,
+              "bottom": 937
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "ภาพรวม",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "สด",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "โปรเจกต์",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "โมเดล",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "ประวัติ",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "การแจ้งเตือน",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "ภาพรวมต้นทุน",
+          "x": 295,
+          "y": 90.75,
+          "width": 104.71875,
+          "height": 22.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "lineHeight": "22.5px",
+          "transform": "none"
+        }
+      ],
+      "controls": [
+        {
+          "text": "รีเฟรชตอนนี้",
+          "x": 755.0625,
+          "y": 85,
+          "width": 34,
+          "height": 34
+        }
+      ],
+      "warning": null,
+      "headingArt": null,
+      "tables": [
+        {
+          "x": 1048.828125,
+          "y": 391.796875,
+          "width": 596.15625,
+          "height": 185.078125,
+          "rows": [
+            {
+              "text": "โมเดลผู้ให้บริการที่บันทึกมูลค่าที่ทราบในขอบเขตสัดส่วน",
+              "x": 1048.828125,
+              "y": 391.796875,
+              "width": 596.15625,
+              "height": 20.796875
+            },
+            {
+              "text": "GPT-5.xopenaiUS$4.31 (ข้อมูลที่มีราคา: 13 / 13 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)29.6%",
+              "x": 1048.828125,
+              "y": 412.59375,
+              "width": 596.15625,
+              "height": 27.296875
+            },
+            {
+              "text": "DeepSeek V4.1deepseekUS$3.41+ (ข้อมูลที่มีราคา: 9 / 16 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)23.5%",
+              "x": 1048.828125,
+              "y": 439.890625,
+              "width": 596.15625,
+              "height": 27.296875
+            },
+            {
+              "text": "Claude 3.7anthropicUS$3.23 (ข้อมูลที่มีราคา: 13 / 13 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)22.2%",
+              "x": 1048.828125,
+              "y": 467.1875,
+              "width": 596.15625,
+              "height": 27.296875
+            },
+            {
+              "text": "Claude 3.5anthropicUS$1.97 (ข้อมูลที่มีราคา: 13 / 13 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)13.6%",
+              "x": 1048.828125,
+              "y": 494.484375,
+              "width": 596.15625,
+              "height": 27.296875
+            },
+            {
+              "text": "OthersopenrouterUS$1.61 (ข้อมูลที่มีราคา: 12 / 12 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)11.1%",
+              "x": 1048.828125,
+              "y": 521.78125,
+              "width": 596.15625,
+              "height": 27.296875
+            },
+            {
+              "text": "GPT-4.1 miniopenaiUS$0.00 (ข้อมูลที่มีราคา: 12 / 12 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)0%",
+              "x": 1048.828125,
+              "y": 549.078125,
+              "width": 596.15625,
+              "height": 27.296875
+            }
+          ],
+          "headers": [
+            {
+              "text": "โมเดล",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "ผู้ให้บริการที่บันทึก",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "มูลค่าที่ทราบในขอบเขต",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "สัดส่วน",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            }
+          ],
+          "names": [
+            {
+              "text": "GPT-5.x",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&model=GPT-5.x&provider=openai"
+            },
+            {
+              "text": "DeepSeek V4.1",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&model=DeepSeek+V4.1&provider=deepseek"
+            },
+            {
+              "text": "Claude 3.7",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&model=Claude+3.7&provider=anthropic"
+            },
+            {
+              "text": "Claude 3.5",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&model=Claude+3.5&provider=anthropic"
+            },
+            {
+              "text": "Others",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&model=Others&provider=openrouter"
+            },
+            {
+              "text": "GPT-4.1 mini",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&model=GPT-4.1+mini&provider=openai"
+            }
+          ]
+        },
+        {
+          "x": 253,
+          "y": 702.796875,
+          "width": 458.84375,
+          "height": 182.78125,
+          "rows": [
+            {
+              "text": "โปรเจกต์มูลค่าที่ทราบในขอบเขตสัดส่วน",
+              "x": 253,
+              "y": 702.796875,
+              "width": 458.84375,
+              "height": 20.796875
+            },
+            {
+              "text": "QuotaPulseUS$14.53+ (ข้อมูลที่มีราคา: 68 / 75 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)100%",
+              "x": 253,
+              "y": 723.59375,
+              "width": 458.84375,
+              "height": 32.296875
+            },
+            {
+              "text": "Agent PlatformUS$0.00 (ข้อมูลที่มีราคา: 1 / 1 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)0%",
+              "x": 253,
+              "y": 755.890625,
+              "width": 458.84375,
+              "height": 32.296875
+            },
+            {
+              "text": "Developer ToolsUS$0.00 (ข้อมูลที่มีราคา: 1 / 1 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)0%",
+              "x": 253,
+              "y": 788.1875,
+              "width": 458.84375,
+              "height": 32.296875
+            },
+            {
+              "text": "Edge ServicesUS$0.00 (ข้อมูลที่มีราคา: 1 / 1 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)0%",
+              "x": 253,
+              "y": 820.484375,
+              "width": 458.84375,
+              "height": 32.296875
+            },
+            {
+              "text": "Research LabUS$0.00 (ข้อมูลที่มีราคา: 1 / 1 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)0%",
+              "x": 253,
+              "y": 852.78125,
+              "width": 458.84375,
+              "height": 32.296875
+            }
+          ],
+          "headers": [
+            {
+              "text": "โปรเจกต์",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "มูลค่าที่ทราบในขอบเขต",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "สัดส่วน",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            }
+          ],
+          "names": [
+            {
+              "text": "QuotaPulse",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&project=QuotaPulse"
+            },
+            {
+              "text": "Agent Platform",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&project=Agent+Platform"
+            },
+            {
+              "text": "Developer Tools",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&project=Developer+Tools"
+            },
+            {
+              "text": "Edge Services",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&project=Edge+Services"
+            },
+            {
+              "text": "Research Lab",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&project=Research+Lab"
+            }
+          ]
+        },
+        {
+          "x": 749.84375,
+          "y": 702.796875,
+          "width": 428.578125,
+          "height": 210,
+          "rows": [
+            {
+              "text": "เซสชันโปรเจกต์มูลค่าที่ทราบในขอบเขต",
+              "x": 749.84375,
+              "y": 702.796875,
+              "width": 428.578125,
+              "height": 20.796875
+            },
+            {
+              "text": "fixture-session-6QuotaPulseUS$3.41 (ข้อมูลที่มีราคา: 6 / 6 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 749.84375,
+              "y": 723.59375,
+              "width": 428.578125,
+              "height": 21.296875
+            },
+            {
+              "text": "fixture-session-1QuotaPulseUS$2.15 (ข้อมูลที่มีราคา: 6 / 6 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 749.84375,
+              "y": 744.890625,
+              "width": 428.578125,
+              "height": 21.296875
+            },
+            {
+              "text": "fixture-session-7QuotaPulseUS$2.15 (ข้อมูลที่มีราคา: 6 / 6 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 749.84375,
+              "y": 766.1875,
+              "width": 428.578125,
+              "height": 21.296875
+            },
+            {
+              "text": "fixture-session-2QuotaPulseUS$1.61 (ข้อมูลที่มีราคา: 6 / 6 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 749.84375,
+              "y": 787.484375,
+              "width": 428.578125,
+              "height": 21.296875
+            },
+            {
+              "text": "fixture-session-8QuotaPulseUS$1.61 (ข้อมูลที่มีราคา: 6 / 6 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 749.84375,
+              "y": 808.78125,
+              "width": 428.578125,
+              "height": 21.296875
+            },
+            {
+              "text": "fixture-session-3QuotaPulseUS$0.99 (ข้อมูลที่มีราคา: 6 / 6 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 749.84375,
+              "y": 830.078125,
+              "width": 428.578125,
+              "height": 21.296875
+            },
+            {
+              "text": "fixture-session-9QuotaPulseUS$0.99 (ข้อมูลที่มีราคา: 6 / 6 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 749.84375,
+              "y": 851.375,
+              "width": 428.578125,
+              "height": 21.296875
+            },
+            {
+              "text": "fixture-session-4QuotaPulseUS$0.81 (ข้อมูลที่มีราคา: 6 / 6 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 749.84375,
+              "y": 872.671875,
+              "width": 428.578125,
+              "height": 21.296875
+            },
+            {
+              "text": "fixture-session-10QuotaPulseUS$0.81 (ข้อมูลที่มีราคา: 6 / 6 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 749.84375,
+              "y": 893.96875,
+              "width": 428.578125,
+              "height": 21.296875
+            },
+            {
+              "text": "fixture-session-5QuotaPulseUS$0.00 (ข้อมูลที่มีราคา: 6 / 6 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+              "x": 749.84375,
+              "y": 915.265625,
+              "width": 428.578125,
+              "height": 21.296875
+            }
+          ],
+          "headers": [
+            {
+              "text": "เซสชัน",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "โปรเจกต์",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            },
+            {
+              "text": "มูลค่าที่ทราบในขอบเขต",
+              "fontWeight": "700",
+              "fontSize": "11px"
+            }
+          ],
+          "names": [
+            {
+              "text": "fixture-session-6",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&session_id=7"
+            },
+            {
+              "text": "fixture-session-1",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&session_id=2"
+            },
+            {
+              "text": "fixture-session-7",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&session_id=8"
+            },
+            {
+              "text": "fixture-session-2",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&session_id=3"
+            },
+            {
+              "text": "fixture-session-8",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&session_id=9"
+            },
+            {
+              "text": "fixture-session-3",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&session_id=4"
+            },
+            {
+              "text": "fixture-session-9",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&session_id=10"
+            },
+            {
+              "text": "fixture-session-4",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&session_id=5"
+            },
+            {
+              "text": "fixture-session-10",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&session_id=11"
+            },
+            {
+              "text": "fixture-session-5",
+              "color": "rgb(6, 101, 139)",
+              "href": "#history?range=custom&from=1746032400000&to=1747489320001&session_id=6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1536,
+      "compact": {
+        "nativeVariable": "29px",
+        "badgeWidth": 21
+      }
+    },
+    {
+      "width": 1536,
+      "route": "models",
+      "heading": {
+        "text": "โมเดล",
+        "x": 278,
+        "y": 59.25,
+        "width": 53.6875,
+        "height": 27.5,
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 1536,
+      "route": "cost",
+      "heading": {
+        "text": "ภาพรวมต้นทุน",
+        "x": 285,
+        "y": 90.75,
+        "width": 104.71875,
+        "height": 22.5,
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": null
+    },
+    {
+      "width": 1280,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 20
+      }
+    },
+    {
+      "width": 1280,
+      "route": "models",
+      "heading": {
+        "text": "โมเดล",
+        "x": 278,
+        "y": 21.25,
+        "width": 53.6875,
+        "height": 27.5,
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 1280,
+      "route": "cost",
+      "heading": {
+        "text": "ภาพรวมต้นทุน",
+        "x": 285,
+        "y": 85,
+        "width": 104.71875,
+        "height": 22.5,
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": null
+    },
+    {
+      "width": 900,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 18
+      }
+    },
+    {
+      "width": 900,
+      "route": "models",
+      "heading": {
+        "text": "โมเดล",
+        "x": 128,
+        "y": 20,
+        "width": 243.203125,
+        "height": 27.5,
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 900,
+      "route": "cost",
+      "heading": {
+        "text": "ภาพรวมต้นทุน",
+        "x": 145,
+        "y": 97,
+        "width": 247.9375,
+        "height": 27.5,
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": null
+    },
+    {
+      "width": 390,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 18
+      }
+    },
+    {
+      "width": 390,
+      "route": "models",
+      "heading": {
+        "text": "โมเดล",
+        "x": 98,
+        "y": 15,
+        "width": 243.203125,
+        "height": 25,
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 390,
+      "route": "cost",
+      "heading": {
+        "text": "ภาพรวมต้นทุน",
+        "x": 115,
+        "y": 92,
+        "width": 247.9375,
+        "height": 25,
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": null
+    }
+  ]
+}

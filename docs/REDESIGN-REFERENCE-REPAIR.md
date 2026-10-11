@@ -14,7 +14,9 @@ captures with each other. It proves repeatability and specified functional/layou
 checks; it does not compare the application with the original concept. Passing
 that harness must never be reported as a reference fidelity percentage.
 
-Latest scoped source repair: [v1.85.49](redesign-v1.85.49/VALIDATION-STATE.md) aligns painted Live horizontal bounds/divider and Models lower-detail typography. Build170 web tests, UI compatibility and12 production capture pairs pass. [Current/historical eight-page comparison](redesign-v1.85.49/reference-review.html) labels unchanged pages as build48. Vertical Live and other source artwork/geometry remain open.
+Historical scoped source repair: [v1.85.49](redesign-v1.85.49/VALIDATION-STATE.md) aligns painted Live horizontal bounds/divider and Models lower-detail typography. Build170 web tests, UI compatibility and12 production capture pairs pass. [Current/historical eight-page comparison](redesign-v1.85.49/reference-review.html) labels unchanged pages as build48. Vertical Live and other source artwork/geometry remain open.
+
+Current native table tone and full regression checkpoint: [v1.85.61](redesign-v1.85.61/VALIDATION-STATE.md) refines Models header weight and Cost name color. Current web/native, complete40 capture pairs, UI compatibility and repository tests pass. Full source and release acceptance remain open.
 
 Latest native Cost table checkpoint: [v1.85.60](redesign-v1.85.60/VALIDATION-STATE.md) refines body text, header weight and measured row rhythm; all real rows remain reachable in210px scrolling. Native EN/TH/breakpoint/compact, all-eight and four original repeated pairs pass. Full concept and release acceptance remain open.
 
