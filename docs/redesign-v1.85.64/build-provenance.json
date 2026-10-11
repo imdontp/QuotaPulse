@@ -1,0 +1,32 @@
+{
+  "baseCommit": "a233bec",
+  "productionIndexSha256": "c118de8dec77029c9178d6cd633e2860640e32f86dafdd9a81811c9a3ea8a45d",
+  "sourceHashes": {
+    "packages/web/src/redesign/providers.tsx": "3762edf01116b8e9d6a37a0b8d57bad81f8d25b29310c04f2a59faa60a4ab44d",
+    "packages/web/src/redesign/providers.css": "304c1c7554753699e8453bdb97c0b9ce11a961358a92abca852b5798be5e983e",
+    "scripts/check-stable-captures.mts": "a5415986b82590cac7d0a33e9a6f59842bbe7549890a35ecc60ef99846f863a7"
+  },
+  "gates": {
+    "stage": "terminal",
+    "nativeThaiDarkExit": 0,
+    "nativeThaiLightExit": 0,
+    "nativeAll8Exit": 0,
+    "providersExit": 0
+  },
+  "verifiedRepeatImageHashes": 8,
+  "repeatPairs": 4,
+  "byteIdenticalPairs": 4,
+  "originalLogHashes": {
+    "build": "e496d6e3042b6ff063989af846fe6c62954b8b12f0b433c6e15778923f1b10c0",
+    "native-en": "f124dbe93aa1283d31bc4e0103bfa7d673f5e6f90d04cbe0fb928be2a692542a",
+    "nativeThaiDark": "f124dbe93aa1283d31bc4e0103bfa7d673f5e6f90d04cbe0fb928be2a692542a",
+    "nativeThaiLight": "f124dbe93aa1283d31bc4e0103bfa7d673f5e6f90d04cbe0fb928be2a692542a",
+    "nativeAll8": "204264ae35b6e183a455564d4ef6447be9d597ccabb30625c9861e36e097df94",
+    "providers": "0bd5a02219efe7ace8ab027c0e0a97f20b4a1cc87bb1a1029638f04fd01adf51",
+    "mobile-initial-failure": "e082b960de84a2efde9454aea389c0e0fb5618b61c7c49e12aeb94db4b9fd9c9",
+    "mobile-overflow-diagnosis": "ed8624138a21e221190ab8f38a8fbc1a03f106b3b4f0d7e6fd30c7488f587f4f"
+  },
+  "logArchiveFormat": "UTF-8 LF; original BOM decoded and trailing line whitespace removed",
+  "processEvidence": "Final inherited process handle was unavailable after output truncation; terminal gate status, complete logs, matching build/geometry/verification hashes checked. No replacement test process started.",
+  "review": "Root reviewed the three-file diff and measured source/current colors and geometry; no independent final64 review claimed."
+}

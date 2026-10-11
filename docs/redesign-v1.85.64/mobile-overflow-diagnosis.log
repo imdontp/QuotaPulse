@@ -1,0 +1,48 @@
+13:42:00.000 INFO  [db] opened :memory:
+Sidebar geometry passed: providers
+node : node:internal/modules/run_main:122
+At line:9 char:1
++ node --import tsx tmp/provider-actions64.mts *> tmp/provider-actions6 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: {"width":390,"scroll":545,"items":[{"tag":"DIV","class":"qp-provider-actions","x":392,"
+width":152.953125,"right":544.953125,"display":"flex","flex":"0 0 auto","minWidth":"auto","maxWidth":"none"},{"tag":"BU
+TTON","class":"","x":392,"width":106.953125,"right":498.953125,"display":"flex","flex":"0 1 auto","minWidth":"auto","ma
+xWidth":"none"},{"tag":"svg","class":{},"x":403,"width":16,"right":419,"display":"block","flex":"0 1 auto","minWidth":"
+auto","maxWidth":"none"},{"tag":"path","class":{},"x":405,"width":12,"right":417,"display":"inline","flex":"0 1 auto","
+minWidth":"0px","maxWidth":"none"},{"tag":"path","class":{},"x":413.6666564941406,"width":3.333343505859375,"right":417
+,"display":"inline","flex":"0 1 auto","minWidth":"0px","maxWidth":"none"},{"tag":"path","class":{},"x":405,"width":12,"
+right":417,"display":"inline","flex":"0 1 auto","minWidth":"0px","maxWidth":"none"},{"tag":"path","class":{},"x":405,"w
+idth":3.333343505859375,"right":408.3333435058594,"display":"inline","flex":"0 1 auto","minWidth":"0px","maxWidth":"non
+e"},{"tag":"A","class":"","x":510.953125,"width":34,"right":544.953125,"display":"grid","flex":"0 1 auto","minWidth":"a
+uto","maxWidth":"none"},{"tag":"svg","class":{},"x":518.953125,"width":18,"right":536.953125,"display":"block","flex":"
+0 1 auto","minWidth":"auto","maxWidth":"none"},{"tag":"circle","class":{},"x":527.203125,"width":1.5,"right":528.703125
+,"display":"inline","flex":"0 1 auto","minWidth":"0px","maxWidth":"none"},{"tag":"circle","class":{},"x":532.453125,"wi
+dth":1.5,"right":533.953125,"display":"inline","flex":"0 1 auto","minWidth":"0px","maxWidth":"none"},{"tag":"circle","c
+lass":{},"x":521.953125,"width":1.5,"right":523.453125,"display":"inline","flex":"0 1 auto","minWidth":"0px","maxWidth"
+:"none"},{"tag":"TABLE","class":"","x":75,"width":423.90625,"right":498.90625,"display":"table","flex":"0 1 auto","minW
+idth":"0px","maxWidth":"none"},{"tag":"THEAD","class":"","x":75,"width":423.90625,"right":498.90625,"display":"table-he
+ader-group","flex":"0 1 auto","minWidth":"0px","maxWidth":"none"},{"tag":"TR","class":"","x":75,"width":423.90625,"righ
+t":498.90625,"display":"table-row","flex":"0 1 auto","minWidth":"0px","maxWidth":"none"},{"tag":"TH","class":"","x":370
+.734375,"width":66.59375,"right":437.328125,"display":"table-cell","flex":"0 1 auto","minWidth":"0px","maxWidth":"none"
+},{"tag":"TH","class":"","x":437.328125,"width":61.578125,"right":498.90625,"display":"table-cell","flex":"0 1 auto","m
+inWidth":"0px","maxWidth":"none"},{"tag":"TBODY","class":"","x":75,"width":423.90625,"right":498.90625,"display":"table
+-row-group","flex":"0 1 auto","minWidth":"0px","maxWidth":"none"}]}
+
+false !== true
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\provider-actions64.mts:2707:11) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

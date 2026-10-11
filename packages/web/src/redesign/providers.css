@@ -147,3 +147,18 @@
   background:radial-gradient(ellipse at 50% 50%,#121d32,#08111e);
   box-shadow:none;
 }
+
+/* Supported header actions follow the reference primary/secondary hierarchy. */
+.qp-provider-actions { display:flex; align-items:center; gap:12px; flex:none; }
+.qp-provider-actions>a { display:grid; place-items:center; width:34px; min-height:34px; box-sizing:border-box; border:1px solid var(--qp-border); border-radius:7px; color:var(--qp-text); background:var(--qp-panel); }
+.qp-provider-actions>a:focus-visible { outline:2px solid var(--qp-accent); outline-offset:3px; }
+@media(min-width:1536px) {
+ .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-actions { transform:translateY(3px); }
+ .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-actions>button { min-width:151px; height:36px; justify-content:center; padding:0 12px; font-size:13px; border-color:#1486ff; color:#fff; background:linear-gradient(175deg,#005cfe,#003ef5); box-shadow:0 0 12px #075fff66,inset 0 1px #67beff44; }
+ .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-actions>a { height:36px; background:linear-gradient(135deg,#07172b,#07111f); border-color:#234168; }
+}
+@media(max-width:600px) {
+ .qp-provider-header { flex-wrap:nowrap; align-items:stretch; }
+ .qp-provider-header .qp-page-heading { width:100%; flex-basis:auto; }
+ .qp-provider-actions { align-self:flex-end; }
+}

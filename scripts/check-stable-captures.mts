@@ -839,6 +839,18 @@ async function checkHistoryDensity(page: Page, lang: string, theme: string) {
   historyDensityChecks.push({ lang, theme, bottom, ...geometry, keyboardScrolled: true });
 }
 async function checkProviders(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  const providerUrl = page.url();
+  const providerMessages = lang === 'th' ? th : en;
+  const diagnostics = page.locator('.qp-provider-actions>a');
+  assert.equal(await diagnostics.getAttribute('aria-label'), providerMessages['redesign.providerDiagnostics']);
+  assert.equal(await diagnostics.getAttribute('href'), '#settings?section=diagnostics');
+  await diagnostics.focus(); await page.keyboard.press('Enter');
+  await page.getByTestId('production-settings').waitFor(); await settled(page, pending);
+  assert.equal(await page.locator('.qp-settings-nav a[href="#settings?section=diagnostics"]').getAttribute('aria-current'), 'page');
+  await page.getByRole('heading', { name: providerMessages['health.coverage'], exact: true }).waitFor();
+  await page.goto(providerUrl, { waitUntil: 'domcontentloaded' });
+  await page.getByTestId('production-providers').waitFor(); await settled(page, pending);
+
   await page.setViewportSize({ width: 1672, height: 941 });
   await page.evaluate(() => window.scrollTo(0, 0));
   const bottom = await page.locator('.qp-provider-bottom').evaluate(element => element.getBoundingClientRect().bottom);

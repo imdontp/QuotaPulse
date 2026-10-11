@@ -1,0 +1,26 @@
+13:42:00.000 INFO  [db] opened :memory:
+Sidebar geometry passed: providers
+node : node:internal/modules/run_main:122
+At line:30 char:1
++ node --import tsx tmp/provider-actions64.mts *> tmp/provider-actions6 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: providers: document overflow at 390
+
+false !== true
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\provider-actions64.mts:2706:11) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

@@ -16,7 +16,9 @@ that harness must never be reported as a reference fidelity percentage.
 
 Historical scoped source repair: [v1.85.49](redesign-v1.85.49/VALIDATION-STATE.md) aligns painted Live horizontal bounds/divider and Models lower-detail typography. Build170 web tests, UI compatibility and12 production capture pairs pass. [Current/historical eight-page comparison](redesign-v1.85.49/reference-review.html) labels unchanged pages as build48. Vertical Live and other source artwork/geometry remain open.
 
-Current localized amount and heading artwork checkpoint: [v1.85.63](redesign-v1.85.63/VALIDATION-STATE.md) fixes current Thai USD amount wrapping and improves Providers/History native artwork. Current build, affected three-page 16 repeat pairs and responsive native probes pass. Full source/release acceptance remains open.
+Current Providers action checkpoint: [v1.85.64](redesign-v1.85.64/VALIDATION-STATE.md) aligns supported Refresh/Diagnostics actions with reference geometry and measured color. Current build, four Providers repeat pairs, keyboard navigation and responsive native probes pass. Full source/release acceptance remains open.
+
+Historical localized amount and heading artwork checkpoint: [v1.85.63](redesign-v1.85.63/VALIDATION-STATE.md) fixes current Thai USD amount wrapping and improves Providers/History native artwork. Current build, affected three-page 16 repeat pairs and responsive native probes pass. Full source/release acceptance remains open.
 
 Historical Cost data and heading checkpoint: [v1.85.62](redesign-v1.85.62/VALIDATION-STATE.md) adds supported actual token totals, row numbers and native reference dollar artwork. Current build, all40 repeat pairs, UI compatibility and repository tests pass. Source/release acceptance remains open.
 
