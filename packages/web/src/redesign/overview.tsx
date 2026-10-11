@@ -187,7 +187,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
         <path d="M54 160 A126 126 0 0 1 180 34" stroke="#26dcff"/>
       </g>}
     </svg>
-    <div className="qp-pulse-label"><strong>{used === null ? '—' : `${used}%`}</strong><span className="qp-pulse-state">{t(quota?.window === 'monthly' ? 'redesign.monthlyUsed' : 'redesign.quotaUsed')}</span><span>{tokenTotal} {t('redesign.tokens')} · {period}</span></div>
+    <div className="qp-pulse-label"><strong>{used === null ? '—' : <>{used}<span className="qp-pulse-percent">%</span></>}</strong><span className="qp-pulse-state">{t(quota?.window === 'monthly' ? 'redesign.monthlyUsed' : 'redesign.quotaUsed')}</span><span>{tokenTotal} {t('redesign.tokens')} · {period}</span></div>
     <div className="qp-pulse-runway" data-testid="pulse-runway" data-projected-at={projectedAt ?? undefined} data-reset-at={resetAt ?? undefined}>
       <span>{t('redesign.runwayShort')} <strong title={exact(projectedAt)}>{duration(projectedAt)}</strong></span>
       <span>{t('redesign.resetShort')} <strong title={exact(resetAt)}>{duration(resetAt)}</strong></span>

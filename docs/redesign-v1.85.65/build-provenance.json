@@ -1,0 +1,39 @@
+{
+  "baseCommit": "1891721",
+  "productionIndexSha256": "e8614d42eb195ca4375206ccb28474efd9b1a080345ba358701e2760134d9d68",
+  "buildNativeTerminalSession": 73253,
+  "gatesTerminalSession": 83690,
+  "gates": {
+    "stage": "terminal",
+    "nativeThaiDarkExit": 0,
+    "nativeThaiLightExit": 0,
+    "overviewExit": 0,
+    "webTestsExit": 0,
+    "uiExit": 0
+  },
+  "verifiedRepeatImageHashes": 8,
+  "sourceHashes": {
+    "packages/web/src/redesign/overview.tsx": "8cfc47e6eb29e67ccb6ea3c86fcad18823a1f61e25893f2c12209ffdf45064a8",
+    "packages/web/src/redesign/overview.css": "6abe09683569a39fef472d46055d435afd64d937b5a28266137700c503763f48"
+  },
+  "referenceHashes": {
+    "alerts.png": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+    "cost.png": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+    "history.png": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+    "live.png": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+    "models.png": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+    "overview.png": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+    "projects.png": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+    "providers.png": "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6"
+  },
+  "originalLogHashes": {
+    "build": "842623e6d1e72a52c489248355aa30f15b76e8dde43b977366411c2601226ea2",
+    "native-en": "204264ae35b6e183a455564d4ef6447be9d597ccabb30625c9861e36e097df94",
+    "nativeThaiDark": "defa599597c7f03f7db3f811175cc5b32b4140e7bbc031ece895c6f8d22fd196",
+    "nativeThaiLight": "defa599597c7f03f7db3f811175cc5b32b4140e7bbc031ece895c6f8d22fd196",
+    "overview": "0bd5a02219efe7ace8ab027c0e0a97f20b4a1cc87bb1a1029638f04fd01adf51",
+    "webTests": "4fd8a6c42465bf03cf70f48ce47f80ae3cef3024400f611dbd1270b8ddedd96a",
+    "ui": "cc331bc9ef1a5c8038b25360067cc97800900a307fc0b079321f6195223bff1b"
+  },
+  "review": "Root inspected the two-file diff, source/before/after crop and geometry; no independent final65 review claimed."
+}

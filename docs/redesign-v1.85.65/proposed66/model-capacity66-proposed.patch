@@ -1,0 +1,139 @@
+--- a/packages/daemon/src/api/model-detail.ts
++++ b/packages/daemon/src/api/model-detail.ts
+@@ -21,8 +21,21 @@
+       ${from} AND u.context_window IS NOT NULL
+       ORDER BY u.context_window DESC, u.ts DESC, u.id DESC LIMIT 1`)
+       .get(where.params) as { observedWindow: number; observedAt: number } | undefined;
++    // Capacity is catalog metadata for the exact recorded route, independent of pricing basis.
++    // Never use PriceResolver: its aliases and cross-provider fallback are monetary estimates.
++    const catalog = !identity.modelMissing && !identity.modelEmpty && !identity.providerMissing && !identity.providerEmpty
++      && scope.model !== undefined && scope.provider !== undefined
++      ? db.prepare(`SELECT context_window AS window, origin, updated_at AS loadedAt
++          FROM price WHERE provider = ? AND model = ?`).get(scope.provider, scope.model)
++        as { window: number | null; origin: string; loadedAt: number } | undefined
++      : undefined;
++    const catalogContext = catalog && Number.isSafeInteger(catalog.window) && catalog.window! > 0
++      ? { window: catalog.window!, origin: typeof catalog.origin === 'string' && catalog.origin.trim() ? catalog.origin : null,
++          loadedAt: Number.isSafeInteger(catalog.loadedAt) && catalog.loadedAt >= 0 && catalog.loadedAt <= 8_640_000_000_000_000 ? catalog.loadedAt : null }
++      : null;
+     return {
+       bucketMs,
++      catalogContext,
+       points: points.map(point => ({ start: scope.from + point.bin * bucketMs, tokens: point.tokens, calls: point.calls, records: point.records })),
+       efforts,
+       observedContext: { window: context?.observedWindow ?? null, at: context?.observedAt ?? null, origin: 'recorded usage event' },
+--- a/packages/web/src/api.ts
++++ b/packages/web/src/api.ts
+@@ -234,6 +234,9 @@
+   bucketMs: number;
+   points: Array<{ start: number; tokens: number; calls: number; records: number }>;
+   efforts: Array<{ effort: string | null; tokens: number; calls: number; sessions: number }>;
++  /** Exact recorded provider/model catalog metadata; optional for prior daemon compatibility.
++   * loadedAt is the local catalog load/update time, not its publication date. */
++  catalogContext?: { window: number; origin: string | null; loadedAt: number | null } | null;
+   observedContext: { window: number | null; at: number | null; origin: string };
+ }
+ export interface CostAnalysisResponse {
+--- a/packages/web/src/redesign/models.tsx
++++ b/packages/web/src/redesign/models.tsx
+@@ -156,7 +156,7 @@
+       {current && <aside className="qp-model-detail">{selected && <><section className="qp-panel"><h2>{t('redesign.modelsDetails')}</h2><div className="qp-model-detail-identity"><svg className="qp-model-detail-mark-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id={detailMarkGradient} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#2585ff"/><stop offset=".45" stopColor="#2166ff"/><stop offset="1" stopColor="#1747eb"/></linearGradient></defs></svg><span className="qp-model-detail-provider" data-vendor={selected.provider ?? selected.vendor ?? 'unknown'} aria-hidden="true"><VendorIcon vendor={selected.provider ?? selected.vendor ?? 'unknown'} mono={(selected.provider ?? selected.vendor ?? 'unknown') === 'deepseek'} style={(selected.provider ?? selected.vendor ?? 'unknown') === 'deepseek' ? { fill: `url(#${detailMarkGradient})` } : undefined}/></span><div><h3>{name(selected.model)}</h3><p>{t('redesign.modelsProvider')}: {name(selected.provider)} · {t('redesign.modelsVendor')}: {name(selected.vendor)}</p></div></div><div className="qp-model-recorded-facts"><span>{t('redesign.modelsFreshInput')} <strong>{f.tokens(selected.inputTokens)}</strong></span><span>{t('redesign.modelsOutput')} <strong>{f.tokens(selected.outputTokens)}</strong></span><span>{t('redesign.modelsCache')} <strong>{cacheShare(selected) === null ? t('redesign.unknownValue') : f.pct(cacheShare(selected)!)}</strong></span><p>{t('redesign.modelsNative')}: <CostValue amount={selected.reported_native_usd} priced={selected.native_calls} total={selected.calls} money={money} t={t}/></p></div><div className="qp-model-detail-stats"><div><span>{t('redesign.modelsCalls')}</span><strong>{number(selected.calls)}</strong></div><div><span>{t('redesign.modelsSessions')}</span><strong>{number(selected.sessions)}</strong></div><div><span>{t('redesign.modelsCoverage')}</span><strong>{coverage(selected) === null ? '—' : f.pct(coverage(selected))}</strong></div><div><span>{t('redesign.modelsValue')}</span><strong>{apiValue(selected)}</strong></div></div>{historyHref ? <a href={historyHref}>{t('redesign.modelsHistory')}</a> : <small>{t('redesign.modelsNoExactHistory')}</small>}</section>
+         <section className="qp-panel qp-model-distribution"><h2>{t('redesign.modelsDistribution')}</h2>{distributionTotal > 0 ? <><div className="qp-model-donut" style={{ background: `conic-gradient(${distribution.map((part, index) => `${part.color} ${distribution.slice(0, index).reduce((sum, prior) => sum + prior.value, 0) / distributionTotal * 100}% ${(distribution.slice(0, index).reduce((sum, prior) => sum + prior.value, 0) + part.value) / distributionTotal * 100}%`).join(',')})` }}><span>{f.tokens(distributionTotal)}</span></div><ul>{distribution.map(part => <li key={part.label}><i style={{ background: part.color }}/><span>{part.label}</span><strong>{f.tokens(part.value)}</strong></li>)}</ul></> : <p>{t('redesign.unknownValue')}</p>}</section>
+         <section className="qp-panel"><h2>{t('redesign.modelsTrend')}</h2>{detailError && <p role="status">{detailError}</p>}{!detail && !detailError ? <p>{t('app.loading')}</p> : trend.length === 0 ? <p>{t('redesign.modelsNoTrend')}</p> : <><ObservedTrend className="qp-model-trend" points={trend.map(point => ({ at: point.start, value: route.metric === 'calls' ? point.calls : point.tokens }))} language={lang} label={`${t('redesign.modelsTrend')}: ${t(route.metric === 'calls' ? 'redesign.modelsCalls' : 'redesign.modelsTokens')} 0 – ${number(trendMax)}`}/><ChartData title={t('redesign.modelsTrend')} points={trend.map(point => ({ at: point.start, value: route.metric === 'calls' ? point.calls : point.tokens }))} valueLabel={t(route.metric === 'calls' ? 'redesign.modelsCalls' : 'redesign.modelsTokens')} language={lang} t={t}/></>}</section>
+-        <section className="qp-panel"><h2>{t('redesign.modelsEffort')}</h2>{detail?.efforts.length ? <ul className="qp-model-efforts">{detail.efforts.map(row => <li key={row.effort ?? 'null'}><span>{row.effort || t('redesign.modelsUnspecified')}</span><strong>{f.tokens(row.tokens)} · {number(row.calls)} {t('redesign.modelsCalls')}</strong><span className="qp-bar qp-model-effort-share" aria-hidden="true"><span style={{ width: `${effortTotal > 0 ? row.tokens / effortTotal * 100 : 0}%` }}/></span></li>)}</ul> : <p>{t('redesign.unknownValue')}</p>}<dl><dt>{t('redesign.modelsContext')}</dt><dd>{t('redesign.unknownValue')}</dd><dt>{t('redesign.modelsObservedContext')}</dt><dd>{detail?.observedContext.window == null ? t('redesign.unknownValue') : `${f.tokens(detail.observedContext.window)} · ${t('redesign.modelsOrigin')} · ${f.clock(detail.observedContext.at)}`}</dd></dl></section></>}</aside>}
++        <section className="qp-panel"><h2>{t('redesign.modelsEffort')}</h2>{detail?.efforts.length ? <ul className="qp-model-efforts">{detail.efforts.map(row => <li key={JSON.stringify(row.effort)}><span>{row.effort === null ? t('redesign.modelsUnspecified') : row.effort === '' ? t('redesign.modelsEmptyEffort') : row.effort}</span><strong>{f.tokens(row.tokens)} · {number(row.calls)} {t('redesign.modelsCalls')}</strong><span className="qp-bar qp-model-effort-share" aria-hidden="true"><span style={{ width: `${effortTotal > 0 ? row.tokens / effortTotal * 100 : 0}%` }}/></span></li>)}</ul> : <p>{t('redesign.unknownValue')}</p>}<dl><dt>{t('redesign.modelsContext')}</dt><dd data-testid="model-catalog-context">{detail?.catalogContext ? <>{f.tokens(detail.catalogContext.window)}<br/><small>{detail.catalogContext.origin ?? t('redesign.unknownValue')} · {t('redesign.modelsCatalogLoaded')}: {detail.catalogContext.loadedAt === null ? t('redesign.unknownValue') : new Date(detail.catalogContext.loadedAt).toLocaleString(lang === 'th' ? 'th-TH' : 'en-US')}</small></> : t('redesign.unknownValue')}</dd><dt>{t('redesign.modelsObservedContext')}</dt><dd>{detail?.observedContext.window == null ? t('redesign.unknownValue') : `${f.tokens(detail.observedContext.window)} · ${t('redesign.modelsOrigin')} · ${f.clock(detail.observedContext.at)}`}</dd></dl></section></>}</aside>}
+     </div>
+   </RedesignShell>;
+ }
+--- a/packages/web/src/i18n/en.ts
++++ b/packages/web/src/i18n/en.ts
+@@ -413,6 +413,8 @@
+   'redesign.modelsTrend': 'Usage trend',
+   'redesign.modelsEffort': 'Recorded effort categories',
+   'redesign.modelsUnspecified': 'Unspecified',
++  'redesign.modelsEmptyEffort': 'Empty category',
++  'redesign.modelsCatalogLoaded': 'Catalog loaded',
+   'redesign.modelsContext': 'Catalog context capacity',
+   'redesign.modelsObservedContext': 'Largest observed context window',
+   'redesign.modelsOrigin': 'Recorded event',
+--- a/packages/web/src/i18n/th.ts
++++ b/packages/web/src/i18n/th.ts
+@@ -417,6 +417,8 @@
+   'redesign.modelsTrend': 'แนวโน้มการใช้',
+   'redesign.modelsEffort': 'ระดับ effort ที่บันทึก',
+   'redesign.modelsUnspecified': 'ไม่ระบุ',
++  'redesign.modelsEmptyEffort': 'หมวดหมู่ว่าง',
++  'redesign.modelsCatalogLoaded': 'โหลดแค็ตตาล็อกเมื่อ',
+   'redesign.modelsContext': 'ความจุบริบทจากแค็ตตาล็อก',
+   'redesign.modelsObservedContext': 'หน้าต่างบริบทสูงสุดที่พบ',
+   'redesign.modelsOrigin': 'บันทึกการใช้งาน',
+--- /dev/null
++++ b/packages/daemon/test/model-catalog-context.test.ts
+@@ -0,0 +1,67 @@
++import { test } from 'node:test';
++import assert from 'node:assert/strict';
++import { openDb } from '../src/db/index.js';
++import { buildServer } from '../src/api/server.js';
++import { Scheduler } from '../src/ingest/scheduler.js';
++
++test('model detail exposes only exact catalog capacity, independently of observed usage and monetary basis', async () => {
++  const db = openDb(':memory:');
++  db.exec(`INSERT INTO source(id,harness,profile,root_path,display_name,detected_at)
++    VALUES(1,'codex','test','/private/catalog-test','Test',0);
++    INSERT INTO session(id,source_id,native_session_id) VALUES(1,1,'catalog-session');`);
++  const event = db.prepare(`INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,effort,context_window,cost_source)
++    VALUES(1,1,?,100,?,?,?,10000,'native')`);
++  for (const [i, effort] of [null, '', 'null', ' high ', 'high', 'HIGH'].entries()) event.run(`effort-${i}`, 'same', 'openai', effort);
++  event.run('second-route', 'same', 'openrouter', null);
++  const price = db.prepare(`INSERT INTO price(model,provider,context_window,origin,updated_at) VALUES(?,?,?,'models.dev',123456)
++    ON CONFLICT(provider,model) DO UPDATE SET context_window=excluded.context_window`);
++  price.run('same', 'openai', 128000);
++  price.run('same', 'openrouter', 64000);
++  price.run('', 'openai', 256000);
++  price.run('same', '', 256000);
++  const app = buildServer(db, new Scheduler(db, [], { pollMs: 1_000_000, detectMs: 1_000_000 }), { port: 0, token: 'catalog-test', webRoot: '.' });
++  const headers = { 'x-quotapulse-token': 'catalog-test' };
++  const endpoint = '/api/model-detail?from=0&to=200';
++  const read = async (identity: string) => {
++    const response = await app.inject({ url: `${endpoint}&${identity}`, headers });
++    assert.equal(response.statusCode, 200, response.body);
++    return response.json();
++  };
++  try {
++    const one = await read('model=same&provider=openai');
++    assert.deepEqual(one.catalogContext, { window: 128000, origin: 'models.dev', loadedAt: 123456 });
++    assert.deepEqual(one.observedContext, { window: 10000, at: 100, origin: 'recorded usage event' });
++    assert.equal(one.efforts.length, 6);
++    assert.deepEqual(one.efforts.map((row: { effort: string | null }) => row.effort).sort(), [null, '', 'null', ' high ', 'high', 'HIGH'].sort());
++    assert.equal(one.efforts.reduce((sum: number, row: { calls: number }) => sum + row.calls, 0), 6);
++    assert.deepEqual((await read('model=same&provider=openrouter')).catalogContext, { window: 64000, origin: 'models.dev', loadedAt: 123456 });
++    for (const identity of [
++      'model=same&provider=missing', 'model=same&provider=openai-codex',
++      'model=same-20260101&provider=openai', 'model=openai%2Fsame&provider=openai',
++      'model=Same&provider=openai', 'model=%20same%20&provider=openai',
++      'model_missing=1&provider=openai', 'model_empty=1&provider=openai',
++      'model=same&provider_missing=1', 'model=same&provider_empty=1',
++      'model_missing=1&provider_missing=1', 'model_empty=1&provider_empty=1',
++    ]) assert.equal((await read(identity)).catalogContext, null, identity);
++    for (const invalid of [null, 0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1, 'invalid']) {
++      price.run('same', 'openai', invalid);
++      assert.equal((await read('model=same&provider=openai')).catalogContext, null, String(invalid));
++    }
++    price.run('same', 'openai', 1);
++    assert.equal((await read('model=same&provider=openai')).catalogContext.window, 1, 'A positive integer capacity is not an unavailable zero');
++    db.prepare(`UPDATE price SET updated_at=-1, origin='' WHERE provider='openai' AND model='same'`).run();
++    assert.deepEqual((await read('model=same&provider=openai')).catalogContext, { window: 1, origin: null, loadedAt: null });
++    const response = await read('model=same&provider=openrouter');
++    assert.equal(JSON.stringify(response).includes('/private/'), false);
++    assert.deepEqual(Object.keys(response.catalogContext).sort(), ['loadedAt', 'origin', 'window']);
++    assert.equal((await app.inject(`${endpoint}&model=same&provider=openai`)).statusCode, 401);
++    assert.equal((await app.inject({ url: `${endpoint}&model=same&provider=openai&provider_missing=1`, headers })).statusCode, 400);
++    const legacy = await app.inject({ url: '/api/models?from=0&to=200', headers });
++    assert.equal(legacy.statusCode, 200);
++    assert.equal('catalogContext' in legacy.json(), false);
++    assert.equal('totals' in legacy.json(), false);
++  } finally {
++    await app.close();
++    db.close();
++  }
++});
