@@ -22,6 +22,20 @@ function ModelMark({ node, size }: { node: Pick<UsageNode, 'key' | 'vendor'>; si
     ? <span className="qp-model-mark" style={{ fontSize: size }}><VendorIcon vendor={node.vendor}/></span>
     : <Box size={size}/>;
 }
+function OverviewHeadingReferenceMark({ kind }: { kind: 'core' | 'runtime' }) {
+  return <span className={`qp-overview-reference-mark qp-overview-reference-mark--${kind}`} aria-hidden="true">
+    <svg viewBox="0 0 18 18" focusable="false">
+      {kind === 'core' ? <>
+        <path d="M3 13.35H5.7 M4.1 13.35V10.2L5.2 9.7 6.3 8.1 7.6 7.5 8.5 6.4 10.1 5.9 11.1 5.4 11.9 5.4 12.5 4.6 13.2 4.6 13.7 5.1V6.7L13 8.2V10.6 M8.3 7.3 9.2 8 9.3 10.2"/>
+      </> : <>
+        <path d="M3.1 8.8 5.2 5.5 9.1 4l3.4.8 2.7 3 .6 3.6-2.1 3.4-3.4 1.3-3.1-.6-2.8-2.5-.8-2.7"/>
+        <circle cx="5.2" cy="5.5" r="1.1"/><circle cx="12.5" cy="4.8" r="1.25"/>
+        <circle cx="15.4" cy="11.4" r="1.35"/><circle cx="4.4" cy="12.8" r="1.1"/>
+      </>}
+    </svg>
+  </span>;
+}
+
 const runtimeNodeNames = {
   harness: { hermes: 'Hermes Agent', codex: 'Codex CLI', 'claude-code': 'Claude Code', opencode: 'OpenCode' },
   provider: { deepseek: 'DeepSeek', openai: 'OpenAI', anthropic: 'Anthropic', openrouter: 'OpenRouter' },
@@ -260,7 +274,7 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
   return <section className="qp-panel qp-runtime" id="runtime">
     <div className="qp-section-heading">
       <div className="qp-runtime-heading-main">
-        <h2><GitBranch size={18}/>{t('redesign.liveRuntimeMap')}</h2>
+        <h2><GitBranch size={18} className="qp-overview-reference-fallback" aria-hidden="true"/><OverviewHeadingReferenceMark kind="runtime"/><span className="qp-overview-heading-title">{t('redesign.liveRuntimeMap')}</span></h2>
         <p>{t('redesign.connections')}</p>
         {(projectFilter || recordCount > 0) && <details className="qp-runtime-options">
           <summary aria-label={t('redesign.mapOptions')} title={t('redesign.mapOptions')}><SlidersHorizontal size={14} aria-hidden="true"/></summary>
@@ -335,7 +349,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   const marker = runway.status === 'ready' && runway.projectedBeforeReset && runway.projectedFullAt !== null
     ? (runway.projectedFullAt - now) / (quota!.resetAt - now) * 100 : null;
   return <section className="qp-panel qp-runway" data-testid="quota-runway">
-    <div className="qp-runway-heading"><h2><CircleGauge size={18}/>{t('redesign.runway')}</h2><span className="qp-runway-subtitle">{t('redesign.runwaySubtitle')}</span>{!preview && <details className="qp-quota-history" data-testid="quota-history" onToggle={event => setHistoryOpen(event.currentTarget.open)}>
+    <div className="qp-runway-heading"><h2><CircleGauge size={18}/><span className="qp-overview-heading-title">{t('redesign.runway')}</span></h2><span className="qp-runway-subtitle">{t('redesign.runwaySubtitle')}</span>{!preview && <details className="qp-quota-history" data-testid="quota-history" onToggle={event => setHistoryOpen(event.currentTarget.open)}>
       <summary aria-label={t('redesign.observedHistory')} title={t('redesign.observedHistory')}><History size={14}/></summary>
       <div className="qp-quota-history-panel">
         {historyError && history?.reader && <p role="status" className="qp-footnote">{t('redesign.historyUnavailable')}</p>}
@@ -473,7 +487,7 @@ export function Overview({ quickStatsScope, records = [], graph, runtimeGraph, q
         <div className="qp-page-heading"><h1>{t('redesign.title')}</h1><span className="qp-chip">{period ?? new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(now)}</span></div>
         <div className="qp-hero-grid">
           <section className="qp-panel qp-hero">
-            <div className="qp-section-heading"><div className="qp-hero-heading-copy"><h2><Activity size={18}/>{t('redesign.core')}</h2><small className="qp-hero-tagline">{t('redesign.coreSubtitle')}</small></div>{periodControl ?? (period && <span className="qp-chip">{period}</span>)}</div>
+            <div className="qp-section-heading"><div className="qp-hero-heading-copy"><h2><Activity size={18} className="qp-overview-reference-fallback" aria-hidden="true"/><OverviewHeadingReferenceMark kind="core"/><span className="qp-overview-heading-title">{t('redesign.core')}</span></h2><small className="qp-hero-tagline">{t('redesign.coreSubtitle')}</small></div>{periodControl ?? (period && <span className="qp-chip">{period}</span>)}</div>
             <div className="qp-core-grid"><div className="qp-metrics">
               <MetricRailItem metric="tokens" icon={<CircleGauge size={21}/>} label={t('redesign.tokenUsage')} value={compactNumber(totals.tokens)} rawValue={totals.tokens} meter={quotaPercent} meterCaption={quota ? quotaWindowLabel(quota.window, t) : t('redesign.quotaUsed')} meterLabel={quota ? `${quota.owner} · ${quotaWindowLabel(quota.window, t)} · ${t('redesign.quotaUsed')}` : t('redesign.quotaUsed')}/>
               <MetricRailItem metric="pace" icon={<Flame size={21}/>} label={t('redesign.averageTokenPace')} value={metricPace === null ? '—' : compactNumber(metricPace)} rawValue={metricPace} support={t('redesign.tokensPerDay')} trend={metricTokenSeries} trendLabel={metricTrendLabel}/>
@@ -508,7 +522,7 @@ export function Overview({ quickStatsScope, records = [], graph, runtimeGraph, q
         <RuntimeMap nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} enabledHarnesses={runtimeHarnesses} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
         <div className="qp-bottom-grid">
           <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
-          <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Sparkles size={18}/>{t('redesign.insights')}</h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>
+          <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Sparkles size={18}/><span className="qp-overview-heading-title">{t('redesign.insights')}</span></h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>
             <div className="qp-insight-grid">
               <article className="qp-insight-card" data-insight="burn" data-state={tokenPeriodChange === null ? 'unknown' : tokenPeriodChange > 0 ? 'increase' : tokenPeriodChange < 0 ? 'decrease' : 'steady'} data-value={tokenPeriodChange ?? undefined}><i aria-hidden="true"><Flame size={18}/></i><div><header><h3>{t('redesign.tokenUsageChange')}</h3><strong>{signedPercent(tokenPeriodChange)}</strong></header><p>{tokenPeriodChange === null ? t('redesign.noComparisonBaseline') : `${t('redesign.comparedWithPrevious')} · ${period ?? t('redesign.allTime')}`}</p></div></article>
               <article className="qp-insight-card" data-insight="cache" data-state={cacheShare === null ? 'unavailable' : 'measured'} data-value={cacheShare ?? undefined}><i aria-hidden="true"><Database size={18}/></i><div><header><h3>{t('redesign.cacheEfficiency')}</h3><strong>{cacheShare === null ? '—' : `${number(cacheShare)}%`}</strong></header><p>{cacheInsightSupport}</p>{cacheShareChange !== null && <small className="qp-insight-delta" data-direction={cacheShareChange > 0 ? 'up' : cacheShareChange < 0 ? 'down' : 'steady'}>{signedPoints(cacheShareChange)}</small>}</div></article>

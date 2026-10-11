@@ -1,0 +1,134 @@
+{
+  "index": "ae1103a2b3aa2323bb43d80ef3430376c2dd606366b8213a3b76b94eeeb03118",
+  "inputs": {
+    "source": {
+      "path": "docs\\redesign-v1.85.43\\refs\\overview.png",
+      "sha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce"
+    },
+    "before": {
+      "path": "docs\\redesign-v1.85.52\\menus\\overview-default-en-dark.png",
+      "sha256": "7387aa3aa289cacee7458fb2c8950ecf884682625ef19045ab10c6fb2d53234a"
+    },
+    "after": {
+      "path": "tmp\\overview-heading54-en-dark\\overview-default.png",
+      "sha256": "b0e0c38cecf1f141eb67943fe8a13a28c1f519aeb33c6d6258af7dc29e9ca150"
+    }
+  },
+  "titleMasks": {
+    "core": {
+      "source": {
+        "bounds": [
+          273,
+          87,
+          346,
+          98
+        ],
+        "pixels": 231,
+        "density": 0.26013513513513514
+      },
+      "after": {
+        "bounds": [
+          273,
+          87,
+          346,
+          98
+        ],
+        "pixels": 240,
+        "density": 0.2702702702702703
+      }
+    },
+    "runtime": {
+      "source": {
+        "bounds": [
+          273,
+          489,
+          395,
+          502
+        ],
+        "pixels": 371,
+        "density": 0.21544715447154472
+      },
+      "after": {
+        "bounds": [
+          273,
+          489,
+          394,
+          502
+        ],
+        "pixels": 399,
+        "density": 0.2336065573770492
+      }
+    },
+    "runway": {
+      "source": {
+        "bounds": [
+          277,
+          730,
+          372,
+          743
+        ],
+        "pixels": 293,
+        "density": 0.21800595238095238
+      },
+      "after": {
+        "bounds": [
+          277,
+          730,
+          373,
+          743
+        ],
+        "pixels": 316,
+        "density": 0.23269513991163476
+      }
+    },
+    "insights": {
+      "source": {
+        "bounds": [
+          995,
+          730,
+          1089,
+          743
+        ],
+        "pixels": 346,
+        "density": 0.26015037593984963
+      },
+      "after": {
+        "bounds": [
+          995,
+          730,
+          1088,
+          743
+        ],
+        "pixels": 339,
+        "density": 0.25759878419452886
+      }
+    }
+  },
+  "titleROIs": {
+    "core": [
+      270,
+      80,
+      352,
+      107
+    ],
+    "runtime": [
+      269,
+      483,
+      403,
+      512
+    ],
+    "runway": [
+      277,
+      722,
+      384,
+      752
+    ],
+    "insights": [
+      991,
+      720,
+      1105,
+      752
+    ]
+  },
+  "method": "Common documented ROI; relative-luma>=175 AND red>=150 pixels and inclusive bounds. Runway ROI begins at277 to exclude adjacent source gauge/glow ink at274. All other ROIs use the same luma/red cutoff. Raster diagnostic only, not full source acceptance."
+}

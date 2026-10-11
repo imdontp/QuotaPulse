@@ -455,6 +455,41 @@
   color:var(--qp-accent); background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 22%,var(--qp-panel)),color-mix(in srgb,var(--qp-series) 16%,var(--qp-panel)));
 }
 [data-testid=production-overview] .qp-insights-heading>h2>svg { flex:none; width:26px; height:26px; padding:4px; margin-block:-3px; border-radius:8px; color:var(--qp-accent); background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 22%,var(--qp-panel)),color-mix(in srgb,var(--qp-series) 16%,var(--qp-panel))); }
+.qp-overview-reference-mark { display:none; }
+
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-overview][data-theme=dark] :is(.qp-hero,.qp-runtime) .qp-section-heading h2>.qp-overview-reference-fallback { display:none; }
+
+  .qp-redesign[data-testid=production-overview][data-theme=dark] :is(.qp-hero,.qp-runtime) .qp-section-heading h2>.qp-overview-reference-mark {
+    display:inline-grid;
+    place-items:center;
+    flex:none;
+    width:26px; height:26px; padding:1px; margin-block:-3px; border-radius:8px;
+    color:#3476f6; background:linear-gradient(135deg,color-mix(in srgb,#2767e8 22%,var(--qp-panel)),color-mix(in srgb,#875cff 20%,var(--qp-panel))); box-shadow:0 0 12px color-mix(in srgb,#3476f6 20%,transparent);
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-hero .qp-section-heading h2>.qp-overview-reference-mark.qp-overview-reference-mark--core { padding:2px; }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-overview-reference-mark>svg {
+    display:block; width:100%; height:100%; fill:none; color:inherit; stroke:currentColor; stroke-width:1.65; stroke-linecap:round; stroke-linejoin:round; filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 55%,transparent));
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-overview-reference-mark circle { fill:currentColor; }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-hero .qp-section-heading h2 { transform:translateX(-6px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-section-heading h2 { transform:translateX(-5px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] :is(.qp-hero,.qp-runtime,.qp-runway,.qp-insights) .qp-overview-heading-title {
+    font-weight:400; color:#f0feff; letter-spacing:-.3px;
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-overview-reference-mark--core { transform:translateY(-2px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-overview-reference-mark--runtime { transform:translateY(-6px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] :is(.qp-hero,.qp-runtime) .qp-overview-heading-title { font-size:16px; font-weight:325; }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-hero-tagline { color:#7b96af; transform:translate(-6px,-3px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-section-heading p { color:#8fa3cd; transform:translate(-5px,-5px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runway-subtitle { color:#88a1cb; }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-hero .qp-overview-heading-title { transform:translateY(-2px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-overview-heading-title { font-size:16.5px; font-weight:275; letter-spacing:-.55px; transform:translateY(-6px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runway .qp-overview-heading-title { font-size:16px; font-weight:300; letter-spacing:-.65px; transform:translate(-1px,-4px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-insights .qp-overview-heading-title { font-size:15.75px; transform:translate(-3px,-5px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-overview-reference-mark--runtime>svg { transform:translateX(-2px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-overview-reference-mark--runtime circle { fill:#4acbff; stroke:#2585ff; }
+}
 .qp-pulse svg {
   width:100%;
   display:block;

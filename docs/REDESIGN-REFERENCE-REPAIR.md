@@ -16,6 +16,8 @@ that harness must never be reported as a reference fidelity percentage.
 
 Latest scoped source repair: [v1.85.49](redesign-v1.85.49/VALIDATION-STATE.md) aligns painted Live horizontal bounds/divider and Models lower-detail typography. Build170 web tests, UI compatibility and12 production capture pairs pass. [Current/historical eight-page comparison](redesign-v1.85.49/reference-review.html) labels unchanged pages as build48. Vertical Live and other source artwork/geometry remain open.
 
+Latest measured Overview heading checkpoint: [v1.85.54](redesign-v1.85.54/VALIDATION-STATE.md) improves native dark title/mark/subtitle paint. Build, native EN-dark/TH-light and Overview four-pair gates pass. Whole-source fidelity remains open.
+
 Latest measured Projects paint checkpoint: [v1.85.53](redesign-v1.85.53/VALIDATION-STATE.md) refines selected-card edge and blue interior from measured source regions. Build/native and Projects four-pair EN/TH dark/light gates pass. Current full40 remains separately bound to v1.85.52. Full concept and release acceptance remain open.
 
 Latest current-build sidebar checkpoint: [v1.85.52](redesign-v1.85.52/VALIDATION-STATE.md) updates native QuickStats interiors, footer paint and the rasterized active rim. Build/170 web tests, full 40 pairs (35 byte-identical), native EN/dark+TH/light, scoped HTTP and UI compatibility gates pass. Historical failure and evidence corrections are retained. [Current source viewer](redesign-v1.85.52/reference-review.html). Full concept and release acceptance remain open.
