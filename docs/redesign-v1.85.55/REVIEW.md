@@ -1,0 +1,13 @@
+# Scoped final source and rendered review
+
+Root reviewed the complete four-file diff, catalog uses, final measured title crops and native frames. Earlier agents supplied read-only source/paint audits and bounded candidate patches; no completed independent final55 diff review is claimed.
+
+The catalog diff contains three English replacements and one Thai replacement, preserving the original mixed line endings. Providers key also names the card grid; Cost heading also names its summary. Cost navigation key updates the existing navigation, command palette, page context and main accessible name consistently. Only the original Cost reference visibly exposes Cost Analysis; the other seven omit Cost. Approved OVR-001 requires common nine destinations, so no varying original menu structure was recreated.
+
+CSS selectors are limited to production page identity, native breakpoint and dark theme. History uses its own h1, not PageHeading. Projects/Providers maintain27.5px lines; History31.5px; Cost22.5px. Transform affects title paint without moving panel/control flow. No global family, chart/data geometry, metric, query, focus target or click handler was changed. Native TH-dark and compact checks confirm actual text remains within its viewport; current UI and40-case gates cover the changed shared copy/navigation.
+
+Four title source/before/after crops were inspected. Refined titles are closer in baseline, dimensions and density. Source icons and glows remain different and source subtitles contain capabilities not provided by this app; factual explanatory subtitles are retained. Before strings differ for Providers/Cost, so the diagnostic does not infer identical-string improvement from their widths. Shared title ROIs exclude the first line of subtitle; luma>=175 and red>=150 yields inclusive bounds. Raster density cannot identify source family or weight.
+
+## Paint-audit corrections for the next step
+
+The prior tmp/main-paint-next54-audit is a regional color observation, not proof of each owning background. Current native geometry traces identify the Overview785,76 sample under the overflowing Pulse SVG/Core hero, not an uncovered main canvas. It cannot justify a global canvas edit; source illustration glow may contribute too. The Cost873,284 source sample lies inside the projected-spend mini-chart's shaded area. Current real projection is unknown and has no series. Its blue-violet difference cannot establish a missing card gradient or justify fabricated chart fill. Alerts1601,316 is inside the actual forecast-warning div, whose background can be inspected separately. Preserve those distinctions before applying any color proposal.

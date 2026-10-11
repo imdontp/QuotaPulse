@@ -1,0 +1,45 @@
+{
+  "baseCommit": "1b11ebe",
+  "tag": "redesign-visual-fidelity-v1.85.55",
+  "productionIndexSha256": "8937542ddb3902ba0a0df4c62be6038bd952f8b01eada0aa809c28bb04ffab3f",
+  "sourceHashes": {
+    "packages/web/src/i18n/en.ts": "994348d52c30b437802f5f97bb8aae12e5f3ca95e1497337712673fb7883eef8",
+    "packages/web/src/i18n/th.ts": "4a322347275543c56916ef0f767ba81c8ade7802f3709139ae62c988a03da68a",
+    "packages/web/src/redesign/page-heading.css": "d29d6748f04e9ffd8b31bad59ac42628702a3078c185e141a7f4a0ae971b3731",
+    "packages/web/src/redesign/history.css": "7ac538d82890d4233b3b470853437de8afc92003bb82fdea914921449241bcb0"
+  },
+  "buildNative": {
+    "session": 88037,
+    "status": {
+      "stage": "terminal",
+      "buildExit": 0,
+      "nativeExit": 0
+    }
+  },
+  "finalGates": {
+    "session": 46272,
+    "status": {
+      "stage": "terminal",
+      "nativeAll8Exit": 0,
+      "nativeThaiDarkExit": 0,
+      "nativeThaiLightExit": 0,
+      "uiExit": 0,
+      "matrixExit": 0
+    }
+  },
+  "capturePairs": 40,
+  "byteIdentical": 36,
+  "verifiedPngHashes": 80,
+  "initial170Unit": {
+    "session": 13056,
+    "index": "09ee4044e48b9b207b02104cb0cd30d45841976716cfb22643e340b58df35578",
+    "status": {
+      "stage": "terminal",
+      "buildExit": 0,
+      "unitExit": 0,
+      "nativeExit": 0
+    },
+    "note": "Predates subsequent CSS-only title refinement; not the final build unit result."
+  },
+  "scope": "Four-page heading typography and catalog copy; no whole-source or release acceptance verdict."
+}

@@ -427,7 +427,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.modelsNoExactHistory': 'กรองประวัติแบบตรงตัวไม่ได้เมื่อขาดชื่อโมเดลหรือผู้ให้บริการ',
   'redesign.modelsNoTrend': 'ไม่พบจุดข้อมูลแนวโน้มในช่วงนี้',
   'redesign.modelsPartialValue': 'บางคำขอไม่มีราคา มูลค่านี้ครอบคลุมเฉพาะคำขอที่มีราคา',
-  'redesign.costHeading': 'วิเคราะห์ต้นทุน',
+  'redesign.costHeading': 'ภาพรวมต้นทุน',
   'redesign.costSubtitle': 'มูลค่าที่บันทึกพร้อมต้นทางและความครอบคลุมชัดเจน',
   'redesign.costBasis': 'ฐานการเงิน',
   'redesign.costApiBasis': 'มูลค่าเทียบราคา API',

@@ -1,0 +1,218 @@
+{
+  "index": "8937542ddb3902ba0a0df4c62be6038bd952f8b01eada0aa809c28bb04ffab3f",
+  "inputs": {
+    "projects": {
+      "source": {
+        "path": "docs\\redesign-v1.85.43\\refs\\projects.png",
+        "sha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75"
+      },
+      "before": {
+        "path": "docs\\redesign-v1.85.52\\menus\\projects-default-en-dark.png",
+        "sha256": "96f026a8e11193b06e274c4414eabc2fe58874c3d27405457b9b062b108cf1ad"
+      },
+      "after": {
+        "path": "tmp\\page-heading55-quick-en-dark\\projects-default.png",
+        "sha256": "be042cb2856188bdba2655b638a8721313a5df315c7a7f5b47e50f17ff3e35bf"
+      }
+    },
+    "history": {
+      "source": {
+        "path": "docs\\redesign-v1.85.43\\refs\\history.png",
+        "sha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf"
+      },
+      "before": {
+        "path": "docs\\redesign-v1.85.52\\menus\\history-default-en-dark.png",
+        "sha256": "ded8b183152203e977f4c091124e6905bcd88720210eff250fb06d569c04624c"
+      },
+      "after": {
+        "path": "tmp\\page-heading55-quick-en-dark\\history-default.png",
+        "sha256": "8614596d99ec9f8fbb5e576d89ae410e401b943e7545d463c2d50f5d7382c881"
+      }
+    },
+    "providers": {
+      "source": {
+        "path": "docs\\redesign-v1.85.43\\refs\\providers.png",
+        "sha256": "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6"
+      },
+      "before": {
+        "path": "docs\\redesign-v1.85.52\\menus\\providers-default-en-dark.png",
+        "sha256": "eecead692933af70dfea650a97e24be1f9c983fcc57214aa04e909039a8341f5"
+      },
+      "after": {
+        "path": "tmp\\page-heading55-quick-en-dark\\providers-default.png",
+        "sha256": "6dfa1693f9d4da8bfa67fc3f291f26ff74be266a9396c0ce9ce8b08cf05b61fe"
+      }
+    },
+    "cost": {
+      "source": {
+        "path": "docs\\redesign-v1.85.43\\refs\\cost.png",
+        "sha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a"
+      },
+      "before": {
+        "path": "docs\\redesign-v1.85.52\\menus\\cost-default-en-dark.png",
+        "sha256": "3674a4b272b6c7de2d461efbf7632fb4ceb22dd140dc41986174d9894f1d500b"
+      },
+      "after": {
+        "path": "tmp\\page-heading55-quick-en-dark\\cost-default.png",
+        "sha256": "557236a17cc4f4ee346af72ed2f5ce4183be6e1903a41311c5873da0c9ae0859"
+      }
+    }
+  },
+  "rois": {
+    "projects": [
+      300,
+      74,
+      450,
+      110
+    ],
+    "history": [
+      300,
+      75,
+      470,
+      110
+    ],
+    "providers": [
+      294,
+      76,
+      800,
+      119
+    ],
+    "cost": [
+      274,
+      76,
+      430,
+      119
+    ]
+  },
+  "titleMasks": {
+    "projects": {
+      "source": {
+        "bounds": [
+          306,
+          83,
+          389,
+          104
+        ],
+        "pixels": 470,
+        "density": 0.25432900432900435
+      },
+      "before": {
+        "bounds": [
+          303,
+          87,
+          385,
+          105
+        ],
+        "pixels": 564,
+        "density": 0.35764109067850347
+      },
+      "after": {
+        "bounds": [
+          306,
+          83,
+          389,
+          104
+        ],
+        "pixels": 452,
+        "density": 0.24458874458874458
+      }
+    },
+    "history": {
+      "source": {
+        "bounds": [
+          307,
+          85,
+          444,
+          104
+        ],
+        "pixels": 669,
+        "density": 0.24239130434782608
+      },
+      "before": {
+        "bounds": [
+          304,
+          86,
+          445,
+          103
+        ],
+        "pixels": 834,
+        "density": 0.32629107981220656
+      },
+      "after": {
+        "bounds": [
+          307,
+          85,
+          442,
+          104
+        ],
+        "pixels": 667,
+        "density": 0.2452205882352941
+      }
+    },
+    "providers": {
+      "source": {
+        "bounds": [
+          309,
+          90,
+          561,
+          109
+        ],
+        "pixels": 1218,
+        "density": 0.24071146245059288
+      },
+      "before": {
+        "bounds": [
+          311,
+          87,
+          594,
+          105
+        ],
+        "pixels": 1782,
+        "density": 0.3302446256486286
+      },
+      "after": {
+        "bounds": [
+          309,
+          90,
+          560,
+          109
+        ],
+        "pixels": 1193,
+        "density": 0.2367063492063492
+      }
+    },
+    "cost": {
+      "source": {
+        "bounds": [
+          294,
+          91,
+          413,
+          103
+        ],
+        "pixels": 349,
+        "density": 0.22371794871794873
+      },
+      "before": {
+        "bounds": [
+          296,
+          95,
+          423,
+          110
+        ],
+        "pixels": 589,
+        "density": 0.28759765625
+      },
+      "after": {
+        "bounds": [
+          294,
+          91,
+          414,
+          103
+        ],
+        "pixels": 344,
+        "density": 0.21869040050858232
+      }
+    }
+  },
+  "method": "Shared ROI luma>=175 and red>=150; inclusive bounds; measure localized title ink only. Providers/Cost before copy differs, so before widths/densities are not exact-string fidelity comparisons. Source/current may include subtitle if ROI overlaps; inspect crops before conclusions."
+}
