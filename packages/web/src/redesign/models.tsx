@@ -15,6 +15,7 @@ import { ObservedTrend } from './observed-trend';
 import { modelProviderTrends, modelTrendBuckets } from './model-trends';
 import { VendorIcon } from '@/components/vendor-icon';
 import { PageHeading } from './page-heading';
+import { HeadingReferenceIcon } from './heading-reference-icon';
 import { SectionMark } from './section-mark';
 
 type Range = ScopeRange;
@@ -128,7 +129,7 @@ export function ProductionModels() {
     <div className="qp-model-layout">
       <div className="qp-model-primary">
         <div className="qp-model-overview">
-        <header className="qp-model-header"><PageHeading icon={<Box size={24}/>} title={t('redesign.modelsHeading')} subtitle={t('redesign.modelsSubtitle')} compact/><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
+        <header className="qp-model-header"><PageHeading icon={<HeadingReferenceIcon kind="models"/>} title={t('redesign.modelsHeading')} subtitle={t('redesign.modelsSubtitle')} compact/><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
         {error && <p className="qp-model-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
         {!current ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> :
           <section className="qp-model-summary" aria-label={t('redesign.modelsHeading')}>

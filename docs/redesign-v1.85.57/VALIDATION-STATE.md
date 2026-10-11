@@ -1,0 +1,13 @@
+# Native heading artwork v1.85.57
+
+Validated scoped implementation; full concept and release acceptance remain open.
+
+Live now uses the source's eight-dot central-ring identity instead of the activity waveform at native dark width. Models uses the larger cube with the source-aligned lower placement and darker plate. Alerts uses the plain blue bell with top loop, base and glow instead of ringing side lines. One SVG per heading retains the original Lucide paths as the light/compact fallback; custom art is hidden there. Icons remain decorative and nonfocusable. Existing real text, data, routes, state and controls are preserved.
+
+Final TypeScript/Vite build and native EN-dark all-eight checks session90974 passed with exit0. Session54066 passed actual TH-dark/light and1280/900/390 compact checks, plus the original Live/Models/Alerts EN/TH dark/light repeated capture gates. All12 pairs passed under unchanged unmasked tolerance; 10 are byte-identical, all24 PNG hashes verified. Across the14 native route/language/theme cases, h1 geometry/font/transform, visible control boxes and forecast warning geometry/text are exactly equal to checkpoint56 fixtures. This validates preserved surrounding layout in those captures, not every runtime state.
+
+See [three-page source/before/after crops](comparison/inputs.json), [all-eight comparison viewer](reference-review.html), [build provenance](build-provenance.json) and [review](REVIEW.md). Captures exercise real application code with deterministic synthetic HTTP/database fixtures. Source descriptions and fabricated amounts are not inserted. This is a review artifact, not a Concept Preview app mode. Native14 frames and repeat manifests are archived;24 repeated PNGs remain local in screens folders.
+
+Artwork topology and placement are closer, with remaining source raster/glow/bevel and font differences. No99-100% claim or source SSIM result is established. Current full40/UI/Electron/release gates were not rerun here; checkpoint55 has its separately bound full40/UI result. Remaining work includes main-page card/layout/typography/art details, sidebar residuals, approved source-baseline acceptance, manual accessibility and current release/recovery/package checks. A Projects card-rhythm candidate is prepared in tmp only and has not been applied.
+
+All eight original Downloads refs were freshly verified byte-for-byte against the archived source. Reproduction: copy archived helpers to worktree tmp, build the web workspace, run the all-eight native helper, then the gates runner. The helpers use isolated deterministic fixtures; do not connect them to a customer database.

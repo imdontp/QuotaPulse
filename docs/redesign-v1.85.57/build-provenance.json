@@ -1,0 +1,177 @@
+{
+  "baseCommit": "289fb88",
+  "tag": "redesign-visual-fidelity-v1.85.57",
+  "productionIndexSha256": "5376995d9add928cb424f1bdf5c7dfaef56fbcbbb760cb42ef231ef6e7a1e4d2",
+  "sourceHashes": {
+    "packages/web/src/redesign/live.tsx": "b32e2a9f138edc965a60319fc2f264fae60c73a8762b6142f6d8cb00056f1fe1",
+    "packages/web/src/redesign/models.tsx": "3e8bc6cb9beec2a7a1522d47bf3c285ed37b014ed0bef22a557db2a56ed3edc4",
+    "packages/web/src/redesign/alerts.tsx": "8964e38ac141024c425c41fe057d2dc2dbdd7a358127fa6c91aeefddc8471f1a",
+    "packages/web/src/redesign/page-heading.css": "cc82b709c69ab22dc68c560c89d81006958d68eab11753277cf1b1a2e55cd5a1",
+    "packages/web/src/redesign/heading-reference-icon.tsx": "609e64d30b1d9f1785661c71025925cb16712ba2b513ab39d9ae92f00749c403"
+  },
+  "buildNative": {
+    "session": 90974,
+    "status": {
+      "stage": "native-terminal",
+      "buildExit": 0,
+      "nativeAll8Exit": 0
+    }
+  },
+  "gates": {
+    "session": 54066,
+    "status": {
+      "stage": "terminal",
+      "nativeThaiDarkExit": 0,
+      "nativeThaiLightExit": 0,
+      "live-FourPairsExit": 0,
+      "models-FourPairsExit": 0,
+      "alerts-FourPairsExit": 0
+    }
+  },
+  "capturePairs": 12,
+  "byteIdentical": 10,
+  "verifiedPngHashes": 24,
+  "preservedNativeGeometry": [
+    {
+      "route": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "live",
+      "lang": "en",
+      "theme": "dark",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "models",
+      "lang": "en",
+      "theme": "dark",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "history",
+      "lang": "en",
+      "theme": "dark",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "live",
+      "lang": "th",
+      "theme": "dark",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "models",
+      "lang": "th",
+      "theme": "dark",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "live",
+      "lang": "th",
+      "theme": "light",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "models",
+      "lang": "th",
+      "theme": "light",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    },
+    {
+      "route": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "identicalFields": [
+        "heading",
+        "controls",
+        "warning"
+      ]
+    }
+  ],
+  "scope": "Native three-page heading art; scoped repeatability, not original-source or release acceptance."
+}

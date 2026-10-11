@@ -1,0 +1,822 @@
+{
+  "language": "th",
+  "theme": "light",
+  "productionIndexSha256": "5376995d9add928cb424f1bdf5c7dfaef56fbcbbb760cb42ef231ef6e7a1e4d2",
+  "results": [
+    {
+      "route": "live",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 881,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 317,
+              "bottom": 406
+            },
+            "quick": {
+              "x": 12,
+              "y": 442,
+              "width": 201,
+              "height": 291,
+              "bottom": 733
+            },
+            "footer": {
+              "x": 12,
+              "y": 870,
+              "width": 201,
+              "height": 59,
+              "bottom": 929
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "ภาพรวม",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "สด",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "โปรเจกต์",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "โมเดล",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "ประวัติ",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "การแจ้งเตือน",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "ติดตามการใช้งานสด",
+          "x": 291,
+          "y": 85.59375,
+          "width": 193.90625,
+          "height": 28.796875,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "24px",
+          "fontWeight": "600",
+          "lineHeight": "28.8px",
+          "transform": "none"
+        }
+      ],
+      "controls": [
+        {
+          "text": "หยุดภาพชั่วคราว",
+          "x": 1043.296875,
+          "y": 83.75,
+          "width": 114.984375,
+          "height": 32.5
+        },
+        {
+          "text": "รีเฟรชตอนนี้",
+          "x": 1170.28125,
+          "y": 83.75,
+          "width": 97.125,
+          "height": 32.5
+        },
+        {
+          "text": "ล่าสุด (5 นาที)",
+          "x": 542.921875,
+          "y": 236.75,
+          "width": 76.140625,
+          "height": 28.5
+        },
+        {
+          "text": "ทั้งหมดที่ตรวจพบ",
+          "x": 623.0625,
+          "y": 236.75,
+          "width": 93.21875,
+          "height": 28.5
+        },
+        {
+          "text": "ใช้การค้นหา",
+          "x": 1006.484375,
+          "y": 236.75,
+          "width": 65.953125,
+          "height": 28.5
+        },
+        {
+          "text": "หน้าก่อน",
+          "x": 1082.4375,
+          "y": 236.75,
+          "width": 53.328125,
+          "height": 28.5
+        },
+        {
+          "text": "หน้าถัดไป",
+          "x": 1210.453125,
+          "y": 236.75,
+          "width": 56.953125,
+          "height": 28.5
+        },
+        {
+          "text": "fixture-session-0",
+          "x": 257,
+          "y": 307.25,
+          "width": 94.828125,
+          "height": 17
+        }
+      ],
+      "warning": null,
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline"
+        ]
+      }
+    },
+    {
+      "route": "models",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 881,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 317,
+              "bottom": 406
+            },
+            "quick": {
+              "x": 12,
+              "y": 443,
+              "width": 201,
+              "height": 305,
+              "bottom": 748
+            },
+            "footer": {
+              "x": 12,
+              "y": 865,
+              "width": 201,
+              "height": 64,
+              "bottom": 929
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "ภาพรวม",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "สด",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "โปรเจกต์",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "โมเดล",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "ประวัติ",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "การแจ้งเตือน",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "โมเดล",
+          "x": 288,
+          "y": 81.25,
+          "width": 53.6875,
+          "height": 27.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "22px",
+          "fontWeight": "600",
+          "lineHeight": "27.5px",
+          "transform": "none"
+        }
+      ],
+      "controls": [
+        {
+          "text": "รีเฟรชตอนนี้",
+          "x": 1160.78125,
+          "y": 72,
+          "width": 98.125,
+          "height": 34.5
+        },
+        {
+          "text": "DeepSeek V4.1",
+          "x": 252,
+          "y": 390,
+          "width": 105.703125,
+          "height": 22
+        },
+        {
+          "text": "GPT-5.x",
+          "x": 252,
+          "y": 429,
+          "width": 69.578125,
+          "height": 22
+        },
+        {
+          "text": "Claude 3.7",
+          "x": 252,
+          "y": 468,
+          "width": 81.265625,
+          "height": 22
+        },
+        {
+          "text": "Claude 3.5",
+          "x": 252,
+          "y": 507,
+          "width": 83.125,
+          "height": 22
+        },
+        {
+          "text": "Others",
+          "x": 252,
+          "y": 546,
+          "width": 62.75,
+          "height": 22
+        },
+        {
+          "text": "GPT-4.1 mini",
+          "x": 252,
+          "y": 585,
+          "width": 90.984375,
+          "height": 22
+        },
+        {
+          "text": "deepseek274.0M · 1 คู่โมเดลและเส้นทาง38%1/5/2568 00:00:00 · 01/5/2568 13:30:00 · 02/5/2568 03:00:00 · 02/5/2568 16:30:00 · 03/5/2568 06:00:00 · 03/5/2568 19:30:00 · 04/5/2568 09:00:00 · 04/5/2568 22:30:00 · 05/5/2568 12:00:00 · 06/5/2568 01:30:00 · 06/5/2568 15:00:00 · 07/5/2568 04:30:00 · 07/5/2568 18:00:00 · 08/5/2568 07:30:00 · 08/5/2568 21:00:00 · 09/5/2568 10:30:00 · 010/5/2568 00:00:00 · 010/5/2568 13:30:00 · 011/5/2568 03:00:00 · 011/5/2568 16:30:00 · 012/5/2568 06:00:00 · 012/5/2568 19:30:00 · 013/5/2568 09:00:00 · 013/5/2568 22:30:00 · 014/5/2568 12:00:00 · 115/5/2568 01:30:00 · 015/5/2568 15:00:00 · 016/5/2568 04:30:00 · 016/5/2568 18:00:00 · 017/5/2568 07:30:00 · 273,980,003",
+          "x": 247,
+          "y": 879,
+          "width": 245.21875,
+          "height": 60.5
+        }
+      ],
+      "warning": null,
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    },
+    {
+      "route": "alerts",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 881,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 317,
+              "bottom": 406
+            },
+            "quick": {
+              "x": 12,
+              "y": 416,
+              "width": 201,
+              "height": 289,
+              "bottom": 705
+            },
+            "footer": {
+              "x": 12,
+              "y": 861,
+              "width": 201,
+              "height": 68,
+              "bottom": 929
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "ภาพรวม",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "สด",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "โปรเจกต์",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "โมเดล",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "ประวัติ",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "การแจ้งเตือน",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 177,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "การแจ้งเตือนและเฝ้าโควตา",
+          "x": 310,
+          "y": 84,
+          "width": 301.78125,
+          "height": 27.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "22px",
+          "fontWeight": "600",
+          "lineHeight": "27.5px",
+          "transform": "none"
+        }
+      ],
+      "controls": [
+        {
+          "text": "รีเฟรชตอนนี้",
+          "x": 1086.8125,
+          "y": 84,
+          "width": 98.125,
+          "height": 34.5
+        },
+        {
+          "text": "ทั้งหมด 4",
+          "x": 568.3125,
+          "y": 470.6875,
+          "width": 56.1875,
+          "height": 29
+        },
+        {
+          "text": "วิกฤต 1",
+          "x": 628.5,
+          "y": 470.6875,
+          "width": 47.78125,
+          "height": 29
+        },
+        {
+          "text": "เตือน 1",
+          "x": 680.28125,
+          "y": 470.6875,
+          "width": 45.5625,
+          "height": 29
+        },
+        {
+          "text": "แจ้งทราบ 2",
+          "x": 729.84375,
+          "y": 470.6875,
+          "width": 63.734375,
+          "height": 29
+        },
+        {
+          "text": "ข้อมูลเก่า 0",
+          "x": 797.578125,
+          "y": 470.6875,
+          "width": 63.046875,
+          "height": 29
+        },
+        {
+          "text": "แสดงประวัติเพิ่ม",
+          "x": 1566.296875,
+          "y": 771.75,
+          "width": 80.703125,
+          "height": 22.5
+        }
+      ],
+      "warning": {
+        "text": "คาดว่าใช้เต็มก่อนรีเซ็ต1d 18h ก่อนรีเซ็ต",
+        "x": 1230.9375,
+        "y": 310.796875,
+        "width": 410.0625,
+        "height": 80,
+        "background": "rgba(0, 0, 0, 0) radial-gradient(at 20% 50%, color(srgb 0.970588 0.913725 0.920784), rgb(255, 255, 255)) repeat scroll 0% 0% / auto padding-box border-box",
+        "alignment": "center",
+        "mark": {
+          "display": "contents",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "ariaHidden": "true",
+          "svgWidth": 28,
+          "svgHeight": 28,
+          "focusable": "false"
+        }
+      },
+      "headingArt": {
+        "width": 26,
+        "height": 26,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 1280,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 20
+      }
+    },
+    {
+      "width": 1280,
+      "route": "live",
+      "heading": {
+        "text": "ติดตามการใช้งานสด",
+        "x": 291,
+        "y": 93,
+        "width": 193.90625,
+        "height": 28.796875,
+        "fontSize": "24px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 1280,
+      "route": "models",
+      "heading": {
+        "text": "โมเดล",
+        "x": 278,
+        "y": 81.25,
+        "width": 53.6875,
+        "height": 27.5,
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 1280,
+      "route": "alerts",
+      "heading": {
+        "text": "การแจ้งเตือนและเฝ้าโควตา",
+        "x": 301,
+        "y": 87,
+        "width": 301.78125,
+        "height": 27.5,
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 26,
+        "height": 26,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 900,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 18
+      }
+    },
+    {
+      "width": 900,
+      "route": "live",
+      "heading": {
+        "text": "ติดตามการใช้งานสด",
+        "x": 145,
+        "y": 97,
+        "width": 177.4375,
+        "height": 27.5,
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 900,
+      "route": "models",
+      "heading": {
+        "text": "โมเดล",
+        "x": 128,
+        "y": 80,
+        "width": 243.203125,
+        "height": 27.5,
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 900,
+      "route": "alerts",
+      "heading": {
+        "text": "การแจ้งเตือนและเฝ้าโควตา",
+        "x": 161,
+        "y": 97,
+        "width": 301.78125,
+        "height": 27.5,
+        "fontSize": "22px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 26,
+        "height": 26,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 390,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 18
+      }
+    },
+    {
+      "width": 390,
+      "route": "live",
+      "heading": {
+        "text": "ติดตามการใช้งานสด",
+        "x": 115,
+        "y": 92,
+        "width": 160.96875,
+        "height": 25,
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 390,
+      "route": "models",
+      "heading": {
+        "text": "โมเดล",
+        "x": 98,
+        "y": 75,
+        "width": 243.203125,
+        "height": 25,
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    },
+    {
+      "width": 390,
+      "route": "alerts",
+      "heading": {
+        "text": "การแจ้งเตือนและเฝ้าโควตา",
+        "x": 131,
+        "y": 92,
+        "width": 232,
+        "height": 25,
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "transform": "none"
+      },
+      "headingArt": {
+        "width": 26,
+        "height": 26,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline",
+          "inline"
+        ]
+      }
+    }
+  ]
+}

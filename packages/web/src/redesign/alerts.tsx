@@ -10,6 +10,7 @@ import { RedesignShell } from './shell';
 import { VendorIcon } from '@/components/vendor-icon';
 import { QuotaChart } from './quota-chart';
 import { PageHeading } from './page-heading';
+import { HeadingReferenceIcon } from './heading-reference-icon';
 import { getQuotaRiskModel, isQuotaReadingFresh, quotaOwnerKey as ownerKey, quotaWindowKey as windowKey, type QuotaRisk as Risk } from './alert-risks';
 import { AlertHistoryCache, currentQuotaForecast, observedQuotaSeries, type AlertHistoryResult } from './alert-history';
 import './alerts.css';
@@ -124,7 +125,7 @@ export function ProductionAlerts() {
   ].join(' · ') : t('redesign.providerUnavailable');
 
   return <RedesignShell active="alerts" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-alerts">
-    <div className="qp-alert-layout"><div className="qp-alert-main"><section className="qp-panel qp-alert-top"><header className="qp-alert-header"><PageHeading icon={<BellRing size={24}/>} title={t('redesign.alertHeading')} subtitle={t('redesign.alertSubtitle')}/><div className="qp-alert-controls"><label><input type="checkbox" checked={notification?.enabled ?? false} disabled={!notification || busy} onChange={() => void changeNotifications()}/><span>{t('redesign.alertNotifications')}</span></label><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></div></header>
+    <div className="qp-alert-layout"><div className="qp-alert-main"><section className="qp-panel qp-alert-top"><header className="qp-alert-header"><PageHeading icon={<HeadingReferenceIcon kind="alerts"/>} title={t('redesign.alertHeading')} subtitle={t('redesign.alertSubtitle')}/><div className="qp-alert-controls"><label><input type="checkbox" checked={notification?.enabled ?? false} disabled={!notification || busy} onChange={() => void changeNotifications()}/><span>{t('redesign.alertNotifications')}</span></label><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></div></header>
     <p className="qp-footnote">{t('redesign.alertCollectionNote')} · <a href="#settings">{t('redesign.alertSettings')}</a></p>
     {error && <p className="qp-alert-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     {!overview ? <p role="status">{error ?? t('app.loading')}</p> :

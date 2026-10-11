@@ -1,0 +1,11 @@
+# Root source and rendered review
+
+Root reviewed the complete five-file implementation diff and source/native crops before and after refinement. No independent final review is claimed.
+
+HeadingReferenceIcon renders the existing Lucide SVG with custom child g. The custom g defaults hidden; only native dark production Live/Models/Alerts selectors show it and hide original direct paths. All defaults and compact/light shapes use the original paths. The helper asserts a single heading SVG, aria-hidden true, focusable false, custom-group visibility, fallback visibility and actual width in each tested native/compact state. PageHeading still supplies its existing cloneElement accessibility props. No extra heading, focus target, wrapper flow box or application data was added.
+
+Original-source crop inspection corrected the prepared Live candidate: the reference has eight outer dots, not seven, and no orbit arcs. Native central ring and dot highlights were refined from that evidence. Models' first candidate was five pixels too high; its plate now moves down while the h1 line box is held fixed. Alerts' first plain bell lacked the source top loop and adequate base length; the native path now includes them. All plate/glow/size transforms remain inside the native dark media block, so they do not change existing light/compact flow.
+
+The small native SVG gradient ID is present only in the one Live heading and its use is local. CSS does not target generic SVG children outside the new component. Existing Activity/Box/BellRing imports remain because the pages use those glyphs elsewhere. No dependency, request, calculation, refresh hook or event handler changed. The tracked stable helper's precise forecast text selector from checkpoint56 remains in force; no tolerance/mask changes were made.
+
+Earlier rendered candidate a00c1250 is retained locally under tmp/header-icons57-first-rendered. Final captures and manifests bind5376995d; no early-candidate pass is presented as final evidence. Before/after crops bind exact source and image hashes. These native raster comparisons do not prove source font identity, exact vector extraction or full-source likeness. Original generated artwork still has softer bevels and irregular glow. Common h1/control/warning geometry equality is verified by the finalizer for14 native cases.

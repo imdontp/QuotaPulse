@@ -16,6 +16,8 @@ that harness must never be reported as a reference fidelity percentage.
 
 Latest scoped source repair: [v1.85.49](redesign-v1.85.49/VALIDATION-STATE.md) aligns painted Live horizontal bounds/divider and Models lower-detail typography. Build170 web tests, UI compatibility and12 production capture pairs pass. [Current/historical eight-page comparison](redesign-v1.85.49/reference-review.html) labels unchanged pages as build48. Vertical Live and other source artwork/geometry remain open.
 
+Latest native heading-art checkpoint: [v1.85.57](redesign-v1.85.57/VALIDATION-STATE.md) brings Live ring/dots, Models cube/plate and Alerts bell nearer original refs. Build/native all-eight, TH themes/compact and12 scoped pairs pass; measured surrounding headings/controls/warning remain unchanged. Full source and release acceptance remain open.
+
 Latest scoped three-page title/warning checkpoint: [v1.85.56](redesign-v1.85.56/VALIDATION-STATE.md) aligns Live/Models/Alerts native headings and measured forecast-warning paint. Build, native EN-dark all-eight, TH-dark/light and12 scoped pairs pass after a precise Alerts text-locator correction. Current full40/UI remains separately bound to checkpoint55. Full source and release acceptance remain open.
 
 Latest current-build main-page heading checkpoint: [v1.85.55](redesign-v1.85.55/VALIDATION-STATE.md) aligns four native headings and source copy. Final build/native/UI/full40 pass; all-eight current source comparison is linked. Whole-source fidelity and release remain open.

@@ -1,0 +1,48 @@
+{
+  "index": "5376995d9add928cb424f1bdf5c7dfaef56fbcbbb760cb42ef231ef6e7a1e4d2",
+  "inputs": {
+    "live": {
+      "source": {
+        "path": "docs/redesign-v1.85.43/refs/live.png",
+        "sha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6"
+      },
+      "before": {
+        "path": "docs/redesign-v1.85.56/native-en-dark/live-default.png",
+        "sha256": "a929a88ec1548ddf68ba8241f6f3a76843e2e4f81a59f254327af0140c850a7a"
+      },
+      "after": {
+        "path": "tmp/header-icons57-all8-en-dark/live-default.png",
+        "sha256": "e27237546c7d5b130d1b36a1261989241470b28320f414654f4e068d2b4229f9"
+      }
+    },
+    "models": {
+      "source": {
+        "path": "docs/redesign-v1.85.43/refs/models.png",
+        "sha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c"
+      },
+      "before": {
+        "path": "docs/redesign-v1.85.56/native-en-dark/models-default.png",
+        "sha256": "59792b6d70bb89f86794058b1f04ac93a10e80686e59ae63e04c0c207b96284b"
+      },
+      "after": {
+        "path": "tmp/header-icons57-all8-en-dark/models-default.png",
+        "sha256": "f5384fdbb163093fa7edf59590445f0a700af0592d1ae024cdc9a2babcb64934"
+      }
+    },
+    "alerts": {
+      "source": {
+        "path": "docs/redesign-v1.85.43/refs/alerts.png",
+        "sha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104"
+      },
+      "before": {
+        "path": "docs/redesign-v1.85.56/native-en-dark/alerts-default.png",
+        "sha256": "1a7ae54fea361b03f5659413a6c0ae47e2988584306ce25966a28a92a18ccaab"
+      },
+      "after": {
+        "path": "tmp/header-icons57-all8-en-dark/alerts-default.png",
+        "sha256": "1e11d3acfbd00a4ef19501d36fe0383050e7bec8303a318c1304bf62405651ca"
+      }
+    }
+  },
+  "method": "Read-only paired native screenshot crops. No app image editing or likeness score."
+}

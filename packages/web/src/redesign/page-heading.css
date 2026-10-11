@@ -96,3 +96,18 @@
     transform:translateY(3px);
   }
 }
+
+.qp-heading-reference-mark { display:none; }
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-live][data-theme=dark] .qp-live-header .qp-heading-reference-svg>:not(.qp-heading-reference-mark),
+  .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-header .qp-heading-reference-svg>:not(.qp-heading-reference-mark),
+  .qp-redesign[data-testid=production-alerts][data-theme=dark] .qp-alert-header .qp-heading-reference-svg>:not(.qp-heading-reference-mark) { display:none; }
+  .qp-redesign[data-testid=production-live][data-theme=dark] .qp-live-header .qp-heading-reference-mark,
+  .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-header .qp-heading-reference-mark,
+  .qp-redesign[data-testid=production-alerts][data-theme=dark] .qp-alert-header .qp-heading-reference-mark { display:inline; }
+  .qp-redesign[data-testid=production-live][data-theme=dark] .qp-live-header .qp-page-heading-icon { transform:translate(-1px,-1px); border-color:#0b2c66; background:linear-gradient(135deg,#021a4b,#02163c); box-shadow:inset 0 1px #2a6cb32b,0 0 5px #1857ba22; }
+  .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-header .qp-page-heading-icon { transform:translate(1px,5px); border-color:transparent; background:linear-gradient(135deg,#031439,#00133c); box-shadow:0 0 9px #0c48cb20; }
+  .qp-redesign[data-testid=production-live][data-theme=dark] .qp-live-header .qp-heading-reference-svg { width:28px; height:28px; color:#16a6ff; stroke-width:1.5; filter:drop-shadow(0 0 1px #20b3ff99) drop-shadow(0 0 3px #178aff66); }
+  .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-header .qp-heading-reference-svg { width:28px; height:28px; color:#09aaff; stroke-width:1.65; filter:drop-shadow(0 0 2px #147eff88); }
+  .qp-redesign[data-testid=production-alerts][data-theme=dark] .qp-alert-header .qp-heading-reference-svg { width:32px; height:32px; color:#19c9ff; stroke-width:1.8; transform:translate(2px,1px); filter:drop-shadow(0 0 2px #08b6ff) drop-shadow(0 0 6px #087effaa); }
+}
