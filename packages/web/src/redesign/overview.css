@@ -1560,3 +1560,12 @@
     background:url("./assets/native-active-rim.png") 0 0/100% 100% no-repeat;
   }
 }
+
+/* Reference runtime typography, scoped to the native dark dashboard. */
+@media(min-width:1536px) {
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map-node[data-dimension=harness] .qp-node-label-main { color:var(--qp-node-tone); }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map-node[data-dimension=harness] .qp-node-meta { font-size:10px; line-height:10.5px; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map[data-single-project=true] .qp-map-node[data-dimension=project] .qp-node-label-main { font-size:15px; line-height:16px; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map[data-single-project=true] .qp-map-node[data-dimension=project] .qp-node-meta { font-size:11px; line-height:12px; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map[data-single-project=true] .qp-map-node[data-dimension=project] .qp-node-kicker { font-size:10px; line-height:11px; }
+}

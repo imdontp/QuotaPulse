@@ -1,0 +1,2618 @@
+{
+  "language": "en",
+  "theme": "dark",
+  "productionIndexSha256": "928db44343d4602a5a1be422ffff1b80630c5f2d86db2d0842f28ac9fafdb264",
+  "results": [
+    {
+      "route": "overview",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 211,
+              "height": 932,
+              "bottom": 992
+            },
+            "clientHeight": 932,
+            "scrollHeight": 932,
+            "nav": {
+              "x": 12,
+              "y": 84,
+              "width": 190,
+              "height": 308,
+              "bottom": 392
+            },
+            "quick": {
+              "x": 12,
+              "y": 421,
+              "width": 190,
+              "height": 289,
+              "bottom": 710
+            },
+            "footer": {
+              "x": 12,
+              "y": 916,
+              "width": 190,
+              "height": 64,
+              "bottom": 980
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 84,
+                "width": 190,
+                "height": 43,
+                "bottom": 127
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 129,
+                "width": 190,
+                "height": 43,
+                "bottom": 172
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 174,
+                "width": 190,
+                "height": 43,
+                "bottom": 217
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 219,
+                "width": 190,
+                "height": 43,
+                "bottom": 262
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 264,
+                "width": 190,
+                "height": 43,
+                "bottom": 307
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 309,
+                "width": 190,
+                "height": 43,
+                "bottom": 352
+              }
+            ],
+            "badge": {
+              "x": 168,
+              "y": 320,
+              "width": 21,
+              "height": 21,
+              "bottom": 341
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "Your AI operations, in focus.",
+          "x": 228,
+          "y": 68,
+          "width": 1,
+          "height": 142.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "19px",
+          "fontWeight": "550",
+          "lineHeight": "28.5px",
+          "transform": "none"
+        }
+      ],
+      "controls": [
+        {
+          "text": "DeepSeek V4.138%",
+          "x": 993.09375,
+          "y": 166,
+          "width": 186,
+          "height": 46.796875
+        },
+        {
+          "text": "GPT-5.x24%",
+          "x": 993.09375,
+          "y": 212.796875,
+          "width": 186,
+          "height": 46.796875
+        },
+        {
+          "text": "Claude 3.718%",
+          "x": 993.09375,
+          "y": 259.59375,
+          "width": 186,
+          "height": 46.796875
+        },
+        {
+          "text": "Claude 3.511%",
+          "x": 993.09375,
+          "y": 306.390625,
+          "width": 186,
+          "height": 46.796875
+        },
+        {
+          "text": "Others9%",
+          "x": 993.09375,
+          "y": 353.1875,
+          "width": 186,
+          "height": 46.796875
+        },
+        {
+          "text": "5h quotaWarning83%Quota usedReset in2h 17m",
+          "x": 1236.09375,
+          "y": 144.5,
+          "width": 320.90625,
+          "height": 53
+        },
+        {
+          "text": "Weekly quota62%Quota usedReset in3d 5h",
+          "x": 1236.09375,
+          "y": 197.5,
+          "width": 320.90625,
+          "height": 53
+        },
+        {
+          "text": "Monthly quotaCritical72%Quota usedReset in6d 2h",
+          "x": 1236.09375,
+          "y": 250.5,
+          "width": 320.90625,
+          "height": 53
+        }
+      ],
+      "warning": null,
+      "headingArt": null,
+      "runtimeNodes": [
+        {
+          "dimension": "project",
+          "name": "quotapulse",
+          "tokens": "721000008",
+          "sessions": "13",
+          "activeSessions": "12",
+          "label": "QuotaPulse · 721,000,008 Recorded tokens · 12 active sessions",
+          "x": 282,
+          "y": 562.75,
+          "width": 208.359375,
+          "height": 80,
+          "leaves": [
+            {
+              "class": "qp-node-kicker",
+              "text": "Project",
+              "x": 330,
+              "y": 580.25,
+              "width": 150.359375,
+              "height": 11,
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(54, 201, 255)",
+              "scrollWidth": 150,
+              "clientWidth": 150
+            },
+            {
+              "class": "qp-node-label-main",
+              "text": "QuotaPulse",
+              "x": 330,
+              "y": 594.25,
+              "width": 150.359375,
+              "height": 16,
+              "fontSize": "15px",
+              "fontWeight": "400",
+              "lineHeight": "16px",
+              "color": "rgb(238, 243, 255)",
+              "scrollWidth": 150,
+              "clientWidth": 150
+            },
+            {
+              "class": "qp-node-meta",
+              "text": "12 active sessions",
+              "x": 330,
+              "y": 613.25,
+              "width": 150.359375,
+              "height": 12,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "12px",
+              "color": "rgb(166, 185, 220)",
+              "scrollWidth": 150,
+              "clientWidth": 150
+            }
+          ]
+        },
+        {
+          "dimension": "harness",
+          "name": "hermes",
+          "tokens": "360500003",
+          "sessions": "6",
+          "activeSessions": "6",
+          "label": "Hermes Agent · 360,500,003 Recorded tokens · 6 active sessions",
+          "x": 633,
+          "y": 527.25,
+          "width": 153.078125,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "Hermes Agent",
+              "x": 672,
+              "y": 533,
+              "width": 104.078125,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(20, 203, 182)",
+              "scrollWidth": 104,
+              "clientWidth": 104
+            },
+            {
+              "class": "qp-node-meta",
+              "text": "6 active sessions",
+              "x": 672,
+              "y": 545,
+              "width": 104.078125,
+              "height": 10.5,
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "lineHeight": "10.5px",
+              "color": "rgb(166, 185, 220)",
+              "scrollWidth": 104,
+              "clientWidth": 104
+            }
+          ]
+        },
+        {
+          "dimension": "harness",
+          "name": "codex",
+          "tokens": "328055001",
+          "sessions": "4",
+          "activeSessions": "4",
+          "label": "Codex CLI · 328,055,001 Recorded tokens · 4 active sessions",
+          "x": 633,
+          "y": 570.25,
+          "width": 153.078125,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "Codex CLI",
+              "x": 672,
+              "y": 576,
+              "width": 104.078125,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(154, 105, 255)",
+              "scrollWidth": 104,
+              "clientWidth": 104
+            },
+            {
+              "class": "qp-node-meta",
+              "text": "4 active sessions",
+              "x": 672,
+              "y": 588,
+              "width": 104.078125,
+              "height": 10.5,
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "lineHeight": "10.5px",
+              "color": "rgb(166, 185, 220)",
+              "scrollWidth": 104,
+              "clientWidth": 104
+            }
+          ]
+        },
+        {
+          "dimension": "harness",
+          "name": "claude-code",
+          "tokens": "32445003",
+          "sessions": "2",
+          "activeSessions": "2",
+          "label": "Claude Code · 32,445,003 Recorded tokens · 2 active sessions",
+          "x": 633,
+          "y": 613.25,
+          "width": 153.078125,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "Claude Code",
+              "x": 672,
+              "y": 619,
+              "width": 104.078125,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(255, 150, 93)",
+              "scrollWidth": 104,
+              "clientWidth": 104
+            },
+            {
+              "class": "qp-node-meta",
+              "text": "2 active sessions",
+              "x": 672,
+              "y": 631,
+              "width": 104.078125,
+              "height": 10.5,
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "lineHeight": "10.5px",
+              "color": "rgb(166, 185, 220)",
+              "scrollWidth": 104,
+              "clientWidth": 104
+            }
+          ]
+        },
+        {
+          "dimension": "harness",
+          "name": "opencode",
+          "tokens": "1",
+          "sessions": "1",
+          "activeSessions": "0",
+          "label": "OpenCode · 1 Recorded tokens · 0 active sessions",
+          "x": 633,
+          "y": 656.25,
+          "width": 153.078125,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "OpenCode",
+              "x": 672,
+              "y": 662,
+              "width": 104.078125,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(57, 142, 255)",
+              "scrollWidth": 104,
+              "clientWidth": 104
+            },
+            {
+              "class": "qp-node-meta",
+              "text": "0 active sessions",
+              "x": 672,
+              "y": 674,
+              "width": 104.078125,
+              "height": 10.5,
+              "fontSize": "10px",
+              "fontWeight": "400",
+              "lineHeight": "10.5px",
+              "color": "rgb(166, 185, 220)",
+              "scrollWidth": 104,
+              "clientWidth": 104
+            }
+          ]
+        },
+        {
+          "dimension": "provider",
+          "name": "deepseek",
+          "tokens": "273980002",
+          "sessions": "3",
+          "activeSessions": "2",
+          "label": "DeepSeek · 273,980,002 Recorded tokens · 3 sessions · Active. Based on usage records saved within the last 5 minutes; this does not mean a process is running.",
+          "x": 953,
+          "y": 527.25,
+          "width": 159.75,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "DeepSeek",
+              "x": 992,
+              "y": 533.84375,
+              "width": 110.75,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(238, 243, 255)",
+              "scrollWidth": 111,
+              "clientWidth": 111
+            },
+            {
+              "class": "qp-node-activity",
+              "text": "Active",
+              "x": 992,
+              "y": 545.84375,
+              "width": 110.75,
+              "height": 8.796875,
+              "fontSize": "8px",
+              "fontWeight": "400",
+              "lineHeight": "8.8px",
+              "color": "rgb(56, 212, 179)",
+              "scrollWidth": 111,
+              "clientWidth": 111
+            }
+          ]
+        },
+        {
+          "dimension": "provider",
+          "name": "anthropic",
+          "tokens": "209090000",
+          "sessions": "4",
+          "activeSessions": "4",
+          "label": "Anthropic · 209,090,000 Recorded tokens · 4 sessions · Active. Based on usage records saved within the last 5 minutes; this does not mean a process is running.",
+          "x": 953,
+          "y": 570.25,
+          "width": 159.75,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "Anthropic",
+              "x": 992,
+              "y": 576.84375,
+              "width": 110.75,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(238, 243, 255)",
+              "scrollWidth": 111,
+              "clientWidth": 111
+            },
+            {
+              "class": "qp-node-activity",
+              "text": "Active",
+              "x": 992,
+              "y": 588.84375,
+              "width": 110.75,
+              "height": 8.796875,
+              "fontSize": "8px",
+              "fontWeight": "400",
+              "lineHeight": "8.8px",
+              "color": "rgb(56, 212, 179)",
+              "scrollWidth": 111,
+              "clientWidth": 111
+            }
+          ]
+        },
+        {
+          "dimension": "provider",
+          "name": "openai",
+          "tokens": "173040006",
+          "sessions": "4",
+          "activeSessions": "4",
+          "label": "OpenAI · 173,040,006 Recorded tokens · 4 sessions · Active. Based on usage records saved within the last 5 minutes; this does not mean a process is running.",
+          "x": 953,
+          "y": 613.25,
+          "width": 159.75,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "OpenAI",
+              "x": 992,
+              "y": 619.84375,
+              "width": 110.75,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(238, 243, 255)",
+              "scrollWidth": 111,
+              "clientWidth": 111
+            },
+            {
+              "class": "qp-node-activity",
+              "text": "Active",
+              "x": 992,
+              "y": 631.84375,
+              "width": 110.75,
+              "height": 8.796875,
+              "fontSize": "8px",
+              "fontWeight": "400",
+              "lineHeight": "8.8px",
+              "color": "rgb(56, 212, 179)",
+              "scrollWidth": 111,
+              "clientWidth": 111
+            }
+          ]
+        },
+        {
+          "dimension": "provider",
+          "name": "openrouter",
+          "tokens": "64890000",
+          "sessions": "2",
+          "activeSessions": "2",
+          "label": "OpenRouter · 64,890,000 Recorded tokens · 2 sessions · Active. Based on usage records saved within the last 5 minutes; this does not mean a process is running.",
+          "x": 953,
+          "y": 656.25,
+          "width": 159.75,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "OpenRouter",
+              "x": 992,
+              "y": 662.84375,
+              "width": 110.75,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(238, 243, 255)",
+              "scrollWidth": 111,
+              "clientWidth": 111
+            },
+            {
+              "class": "qp-node-activity",
+              "text": "Active",
+              "x": 992,
+              "y": 674.84375,
+              "width": 110.75,
+              "height": 8.796875,
+              "fontSize": "8px",
+              "fontWeight": "400",
+              "lineHeight": "8.8px",
+              "color": "rgb(56, 212, 179)",
+              "scrollWidth": 111,
+              "clientWidth": 111
+            }
+          ]
+        },
+        {
+          "dimension": "model",
+          "name": "deepseek v4.1",
+          "tokens": "273980002",
+          "sessions": "3",
+          "activeSessions": "2",
+          "label": "DeepSeek V4.1 · 273,980,002 Recorded tokens · 3 sessions · 38%",
+          "x": 1245,
+          "y": 527.25,
+          "width": 298.921875,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "DeepSeek V4.1",
+              "x": 1284,
+              "y": 538.75,
+              "width": 137.9375,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(238, 243, 255)",
+              "scrollWidth": 138,
+              "clientWidth": 138
+            }
+          ]
+        },
+        {
+          "dimension": "model",
+          "name": "gpt-5.x",
+          "tokens": "173040000",
+          "sessions": "2",
+          "activeSessions": "2",
+          "label": "GPT-5.x · 173,040,000 Recorded tokens · 2 sessions · 24%",
+          "x": 1245,
+          "y": 570.25,
+          "width": 298.921875,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "GPT-5.x",
+              "x": 1284,
+              "y": 581.75,
+              "width": 137.9375,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(238, 243, 255)",
+              "scrollWidth": 138,
+              "clientWidth": 138
+            }
+          ]
+        },
+        {
+          "dimension": "model",
+          "name": "claude 3.7",
+          "tokens": "129780000",
+          "sessions": "2",
+          "activeSessions": "2",
+          "label": "Claude 3.7 · 129,780,000 Recorded tokens · 2 sessions · 18%",
+          "x": 1245,
+          "y": 613.25,
+          "width": 298.921875,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "Claude 3.7",
+              "x": 1284,
+              "y": 624.75,
+              "width": 137.9375,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(238, 243, 255)",
+              "scrollWidth": 138,
+              "clientWidth": 138
+            }
+          ]
+        },
+        {
+          "dimension": "model",
+          "name": "claude 3.5",
+          "tokens": "79310000",
+          "sessions": "2",
+          "activeSessions": "2",
+          "label": "Claude 3.5 · 79,310,000 Recorded tokens · 2 sessions · 11%",
+          "x": 1245,
+          "y": 656.25,
+          "width": 298.921875,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "Claude 3.5",
+              "x": 1284,
+              "y": 667.75,
+              "width": 137.9375,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(238, 243, 255)",
+              "scrollWidth": 138,
+              "clientWidth": 138
+            }
+          ]
+        },
+        {
+          "dimension": "model",
+          "name": "others",
+          "tokens": "64890000",
+          "sessions": "2",
+          "activeSessions": "2",
+          "label": "Others · 64,890,000 Recorded tokens · 2 sessions · 9%",
+          "x": 1245,
+          "y": 699.25,
+          "width": 298.921875,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "Others",
+              "x": 1284,
+              "y": 710.75,
+              "width": 137.9375,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(238, 243, 255)",
+              "scrollWidth": 138,
+              "clientWidth": 138
+            }
+          ]
+        },
+        {
+          "dimension": "model",
+          "name": "gpt-4.1 mini",
+          "tokens": "6",
+          "sessions": "2",
+          "activeSessions": "2",
+          "label": "GPT-4.1 mini · 6 Recorded tokens · 2 sessions · 0%",
+          "x": 1245,
+          "y": 742.25,
+          "width": 298.921875,
+          "height": 34,
+          "leaves": [
+            {
+              "class": "qp-node-label-main",
+              "text": "GPT-4.1 mini",
+              "x": 1284,
+              "y": 753.75,
+              "width": 137.9375,
+              "height": 11,
+              "fontSize": "11px",
+              "fontWeight": "400",
+              "lineHeight": "11px",
+              "color": "rgb(238, 243, 255)",
+              "scrollWidth": 138,
+              "clientWidth": 138
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1536,
+      "compact": {
+        "nativeVariable": "29px",
+        "badgeWidth": 21
+      }
+    },
+    {
+      "width": 1536,
+      "route": "overview",
+      "heading": {
+        "text": "Your AI operations, in focus.",
+        "x": 228,
+        "y": 68,
+        "width": 1,
+        "height": 142.5,
+        "fontSize": "19px",
+        "fontWeight": "550",
+        "transform": "none"
+      },
+      "headingArt": null,
+      "runtimeLeaves": [
+        {
+          "x": 328.5,
+          "y": 580.25,
+          "width": 142.28125,
+          "height": 45,
+          "leaves": [
+            {
+              "text": "Project",
+              "class": "qp-node-kicker",
+              "x": 328.5,
+              "y": 580.25,
+              "width": 142.28125,
+              "height": 11,
+              "scrollWidth": 142,
+              "clientWidth": 142,
+              "fontSize": "10px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            },
+            {
+              "text": "QuotaPulse",
+              "class": "qp-node-label-main",
+              "x": 328.5,
+              "y": 594.25,
+              "width": 142.28125,
+              "height": 16,
+              "scrollWidth": 142,
+              "clientWidth": 142,
+              "fontSize": "15px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "12 active sessions",
+              "class": "qp-node-meta",
+              "x": 328.5,
+              "y": 613.25,
+              "width": 142.28125,
+              "height": 12,
+              "scrollWidth": 142,
+              "clientWidth": 142,
+              "fontSize": "11px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 657,
+          "y": 533,
+          "width": 98.140625,
+          "height": 22.5,
+          "leaves": [
+            {
+              "text": "Hermes Agent",
+              "class": "qp-node-label-main",
+              "x": 657,
+              "y": 533,
+              "width": 98.140625,
+              "height": 11,
+              "scrollWidth": 98,
+              "clientWidth": 98,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "6 active sessions",
+              "class": "qp-node-meta",
+              "x": 657,
+              "y": 545,
+              "width": 98.140625,
+              "height": 10.5,
+              "scrollWidth": 98,
+              "clientWidth": 98,
+              "fontSize": "10px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 657,
+          "y": 576,
+          "width": 98.140625,
+          "height": 22.5,
+          "leaves": [
+            {
+              "text": "Codex CLI",
+              "class": "qp-node-label-main",
+              "x": 657,
+              "y": 576,
+              "width": 98.140625,
+              "height": 11,
+              "scrollWidth": 98,
+              "clientWidth": 98,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "4 active sessions",
+              "class": "qp-node-meta",
+              "x": 657,
+              "y": 588,
+              "width": 98.140625,
+              "height": 10.5,
+              "scrollWidth": 98,
+              "clientWidth": 98,
+              "fontSize": "10px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 657,
+          "y": 619,
+          "width": 98.140625,
+          "height": 22.5,
+          "leaves": [
+            {
+              "text": "Claude Code",
+              "class": "qp-node-label-main",
+              "x": 657,
+              "y": 619,
+              "width": 98.140625,
+              "height": 11,
+              "scrollWidth": 98,
+              "clientWidth": 98,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "2 active sessions",
+              "class": "qp-node-meta",
+              "x": 657,
+              "y": 631,
+              "width": 98.140625,
+              "height": 10.5,
+              "scrollWidth": 98,
+              "clientWidth": 98,
+              "fontSize": "10px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 657,
+          "y": 662,
+          "width": 98.140625,
+          "height": 22.5,
+          "leaves": [
+            {
+              "text": "OpenCode",
+              "class": "qp-node-label-main",
+              "x": 657,
+              "y": 662,
+              "width": 98.140625,
+              "height": 11,
+              "scrollWidth": 98,
+              "clientWidth": 98,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "0 active sessions",
+              "class": "qp-node-meta",
+              "x": 657,
+              "y": 674,
+              "width": 98.140625,
+              "height": 10.5,
+              "scrollWidth": 98,
+              "clientWidth": 98,
+              "fontSize": "10px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 964.75,
+          "y": 533.84375,
+          "width": 104.5625,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "DeepSeek",
+              "class": "qp-node-label-main",
+              "x": 964.75,
+              "y": 533.84375,
+              "width": 104.5625,
+              "height": 11,
+              "scrollWidth": 105,
+              "clientWidth": 105,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 964.75,
+              "y": 545.84375,
+              "width": 104.5625,
+              "height": 8.796875,
+              "scrollWidth": 105,
+              "clientWidth": 105,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 964.75,
+          "y": 576.84375,
+          "width": 104.5625,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Anthropic",
+              "class": "qp-node-label-main",
+              "x": 964.75,
+              "y": 576.84375,
+              "width": 104.5625,
+              "height": 11,
+              "scrollWidth": 105,
+              "clientWidth": 105,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 964.75,
+              "y": 588.84375,
+              "width": 104.5625,
+              "height": 8.796875,
+              "scrollWidth": 105,
+              "clientWidth": 105,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 964.75,
+          "y": 619.84375,
+          "width": 104.5625,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "OpenAI",
+              "class": "qp-node-label-main",
+              "x": 964.75,
+              "y": 619.84375,
+              "width": 104.5625,
+              "height": 11,
+              "scrollWidth": 105,
+              "clientWidth": 105,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 964.75,
+              "y": 631.84375,
+              "width": 104.5625,
+              "height": 8.796875,
+              "scrollWidth": 105,
+              "clientWidth": 105,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 964.75,
+          "y": 662.84375,
+          "width": 104.5625,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "OpenRouter",
+              "class": "qp-node-label-main",
+              "x": 964.75,
+              "y": 662.84375,
+              "width": 104.5625,
+              "height": 11,
+              "scrollWidth": 105,
+              "clientWidth": 105,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 964.75,
+              "y": 674.84375,
+              "width": 104.5625,
+              "height": 8.796875,
+              "scrollWidth": 105,
+              "clientWidth": 105,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 1245.5,
+          "y": 538.75,
+          "width": 130.8125,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "DeepSeek V4.1",
+              "class": "qp-node-label-main",
+              "x": 1245.5,
+              "y": 538.75,
+              "width": 130.8125,
+              "height": 11,
+              "scrollWidth": 131,
+              "clientWidth": 131,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 1245.5,
+          "y": 581.75,
+          "width": 130.8125,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "GPT-5.x",
+              "class": "qp-node-label-main",
+              "x": 1245.5,
+              "y": 581.75,
+              "width": 130.8125,
+              "height": 11,
+              "scrollWidth": 131,
+              "clientWidth": 131,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 1245.5,
+          "y": 624.75,
+          "width": 130.8125,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Claude 3.7",
+              "class": "qp-node-label-main",
+              "x": 1245.5,
+              "y": 624.75,
+              "width": 130.8125,
+              "height": 11,
+              "scrollWidth": 131,
+              "clientWidth": 131,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 1245.5,
+          "y": 667.75,
+          "width": 130.8125,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Claude 3.5",
+              "class": "qp-node-label-main",
+              "x": 1245.5,
+              "y": 667.75,
+              "width": 130.8125,
+              "height": 11,
+              "scrollWidth": 131,
+              "clientWidth": 131,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 1245.5,
+          "y": 710.75,
+          "width": 130.8125,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Others",
+              "class": "qp-node-label-main",
+              "x": 1245.5,
+              "y": 710.75,
+              "width": 130.8125,
+              "height": 11,
+              "scrollWidth": 131,
+              "clientWidth": 131,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 1245.5,
+          "y": 753.75,
+          "width": 130.8125,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "GPT-4.1 mini",
+              "class": "qp-node-label-main",
+              "x": 1245.5,
+              "y": 753.75,
+              "width": 130.8125,
+              "height": 11,
+              "scrollWidth": 131,
+              "clientWidth": 131,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 20
+      }
+    },
+    {
+      "width": 1280,
+      "route": "overview",
+      "heading": {
+        "text": "Your AI operations, in focus.",
+        "x": 228,
+        "y": 68,
+        "width": 1,
+        "height": 142.5,
+        "fontSize": "19px",
+        "fontWeight": "550",
+        "transform": "none"
+      },
+      "headingArt": null,
+      "runtimeLeaves": [
+        {
+          "x": 322.1875,
+          "y": 590.59375,
+          "width": 107.359375,
+          "height": 33.796875,
+          "leaves": [
+            {
+              "text": "Project",
+              "class": "qp-node-kicker",
+              "x": 322.1875,
+              "y": 590.59375,
+              "width": 107.359375,
+              "height": 8,
+              "scrollWidth": 107,
+              "clientWidth": 107,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            },
+            {
+              "text": "QuotaPulse",
+              "class": "qp-node-label-main",
+              "x": 322.1875,
+              "y": 601.59375,
+              "width": 107.359375,
+              "height": 11,
+              "scrollWidth": 107,
+              "clientWidth": 107,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "12 active sessions",
+              "class": "qp-node-meta",
+              "x": 322.1875,
+              "y": 615.59375,
+              "width": 107.359375,
+              "height": 8.796875,
+              "scrollWidth": 107,
+              "clientWidth": 107,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 594,
+          "y": 536.09375,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Hermes Agent",
+              "class": "qp-node-label-main",
+              "x": 594,
+              "y": 536.09375,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "6 active sessions",
+              "class": "qp-node-meta",
+              "x": 594,
+              "y": 548.09375,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 594,
+          "y": 579.09375,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Codex CLI",
+              "class": "qp-node-label-main",
+              "x": 594,
+              "y": 579.09375,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "4 active sessions",
+              "class": "qp-node-meta",
+              "x": 594,
+              "y": 591.09375,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 594,
+          "y": 622.09375,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Claude Code",
+              "class": "qp-node-label-main",
+              "x": 594,
+              "y": 622.09375,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "2 active sessions",
+              "class": "qp-node-meta",
+              "x": 594,
+              "y": 634.09375,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 594,
+          "y": 665.09375,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "OpenCode",
+              "class": "qp-node-label-main",
+              "x": 594,
+              "y": 665.09375,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "0 active sessions",
+              "class": "qp-node-meta",
+              "x": 594,
+              "y": 677.09375,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 848.796875,
+          "y": 536.09375,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "DeepSeek",
+              "class": "qp-node-label-main",
+              "x": 848.796875,
+              "y": 536.09375,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 848.796875,
+              "y": 548.09375,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 848.796875,
+          "y": 579.09375,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Anthropic",
+              "class": "qp-node-label-main",
+              "x": 848.796875,
+              "y": 579.09375,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 848.796875,
+              "y": 591.09375,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 848.796875,
+          "y": 622.09375,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "OpenAI",
+              "class": "qp-node-label-main",
+              "x": 848.796875,
+              "y": 622.09375,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 848.796875,
+              "y": 634.09375,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 848.796875,
+          "y": 665.09375,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "OpenRouter",
+              "class": "qp-node-label-main",
+              "x": 848.796875,
+              "y": 665.09375,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 848.796875,
+              "y": 677.09375,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 1082.796875,
+          "y": 541,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "DeepSeek V4.1",
+              "class": "qp-node-label-main",
+              "x": 1082.796875,
+              "y": 541,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 1082.796875,
+          "y": 584,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "GPT-5.x",
+              "class": "qp-node-label-main",
+              "x": 1082.796875,
+              "y": 584,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 1082.796875,
+          "y": 627,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Claude 3.7",
+              "class": "qp-node-label-main",
+              "x": 1082.796875,
+              "y": 627,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 1082.796875,
+          "y": 670,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Claude 3.5",
+              "class": "qp-node-label-main",
+              "x": 1082.796875,
+              "y": 670,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 1082.796875,
+          "y": 713,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Others",
+              "class": "qp-node-label-main",
+              "x": 1082.796875,
+              "y": 713,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 1082.796875,
+          "y": 756,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "GPT-4.1 mini",
+              "class": "qp-node-label-main",
+              "x": 1082.796875,
+              "y": 756,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 900,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 18
+      }
+    },
+    {
+      "width": 900,
+      "route": "overview",
+      "heading": {
+        "text": "Your AI operations, in focus.",
+        "x": 86,
+        "y": 80,
+        "width": 1,
+        "height": 142.5,
+        "fontSize": "19px",
+        "fontWeight": "550",
+        "transform": "none"
+      },
+      "headingArt": null,
+      "runtimeLeaves": [
+        {
+          "x": 184.1875,
+          "y": 1087.3125,
+          "width": 107.359375,
+          "height": 33.796875,
+          "leaves": [
+            {
+              "text": "Project",
+              "class": "qp-node-kicker",
+              "x": 184.1875,
+              "y": 1087.3125,
+              "width": 107.359375,
+              "height": 8,
+              "scrollWidth": 107,
+              "clientWidth": 107,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            },
+            {
+              "text": "QuotaPulse",
+              "class": "qp-node-label-main",
+              "x": 184.1875,
+              "y": 1098.3125,
+              "width": 107.359375,
+              "height": 11,
+              "scrollWidth": 107,
+              "clientWidth": 107,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "12 active sessions",
+              "class": "qp-node-meta",
+              "x": 184.1875,
+              "y": 1112.3125,
+              "width": 107.359375,
+              "height": 8.796875,
+              "scrollWidth": 107,
+              "clientWidth": 107,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 456,
+          "y": 1032.8125,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Hermes Agent",
+              "class": "qp-node-label-main",
+              "x": 456,
+              "y": 1032.8125,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "6 active sessions",
+              "class": "qp-node-meta",
+              "x": 456,
+              "y": 1044.8125,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 456,
+          "y": 1075.8125,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Codex CLI",
+              "class": "qp-node-label-main",
+              "x": 456,
+              "y": 1075.8125,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "4 active sessions",
+              "class": "qp-node-meta",
+              "x": 456,
+              "y": 1087.8125,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 456,
+          "y": 1118.8125,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Claude Code",
+              "class": "qp-node-label-main",
+              "x": 456,
+              "y": 1118.8125,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "2 active sessions",
+              "class": "qp-node-meta",
+              "x": 456,
+              "y": 1130.8125,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 456,
+          "y": 1161.8125,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "OpenCode",
+              "class": "qp-node-label-main",
+              "x": 456,
+              "y": 1161.8125,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "0 active sessions",
+              "class": "qp-node-meta",
+              "x": 456,
+              "y": 1173.8125,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 710.796875,
+          "y": 1032.8125,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "DeepSeek",
+              "class": "qp-node-label-main",
+              "x": 710.796875,
+              "y": 1032.8125,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 710.796875,
+              "y": 1044.8125,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 710.796875,
+          "y": 1075.8125,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Anthropic",
+              "class": "qp-node-label-main",
+              "x": 710.796875,
+              "y": 1075.8125,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 710.796875,
+              "y": 1087.8125,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 710.796875,
+          "y": 1118.8125,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "OpenAI",
+              "class": "qp-node-label-main",
+              "x": 710.796875,
+              "y": 1118.8125,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 710.796875,
+              "y": 1130.8125,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 710.796875,
+          "y": 1161.8125,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "OpenRouter",
+              "class": "qp-node-label-main",
+              "x": 710.796875,
+              "y": 1161.8125,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 710.796875,
+              "y": 1173.8125,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 944.796875,
+          "y": 1037.71875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "DeepSeek V4.1",
+              "class": "qp-node-label-main",
+              "x": 944.796875,
+              "y": 1037.71875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 944.796875,
+          "y": 1080.71875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "GPT-5.x",
+              "class": "qp-node-label-main",
+              "x": 944.796875,
+              "y": 1080.71875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 944.796875,
+          "y": 1123.71875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Claude 3.7",
+              "class": "qp-node-label-main",
+              "x": 944.796875,
+              "y": 1123.71875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 944.796875,
+          "y": 1166.71875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Claude 3.5",
+              "class": "qp-node-label-main",
+              "x": 944.796875,
+              "y": 1166.71875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 944.796875,
+          "y": 1209.71875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Others",
+              "class": "qp-node-label-main",
+              "x": 944.796875,
+              "y": 1209.71875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 944.796875,
+          "y": 1252.71875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "GPT-4.1 mini",
+              "class": "qp-node-label-main",
+              "x": 944.796875,
+              "y": 1252.71875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "compact": {
+        "nativeVariable": "",
+        "badgeWidth": 18
+      }
+    },
+    {
+      "width": 390,
+      "route": "overview",
+      "heading": {
+        "text": "Your AI operations, in focus.",
+        "x": 58,
+        "y": 75,
+        "width": 1,
+        "height": 165,
+        "fontSize": "22px",
+        "fontWeight": "550",
+        "transform": "none"
+      },
+      "headingArt": null,
+      "runtimeLeaves": [
+        {
+          "x": 156.1875,
+          "y": 1716.46875,
+          "width": 107.359375,
+          "height": 33.796875,
+          "leaves": [
+            {
+              "text": "Project",
+              "class": "qp-node-kicker",
+              "x": 156.1875,
+              "y": 1716.46875,
+              "width": 107.359375,
+              "height": 8,
+              "scrollWidth": 107,
+              "clientWidth": 107,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            },
+            {
+              "text": "QuotaPulse",
+              "class": "qp-node-label-main",
+              "x": 156.1875,
+              "y": 1727.46875,
+              "width": 107.359375,
+              "height": 11,
+              "scrollWidth": 107,
+              "clientWidth": 107,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "12 active sessions",
+              "class": "qp-node-meta",
+              "x": 156.1875,
+              "y": 1741.46875,
+              "width": 107.359375,
+              "height": 8.796875,
+              "scrollWidth": 107,
+              "clientWidth": 107,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 428,
+          "y": 1661.96875,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Hermes Agent",
+              "class": "qp-node-label-main",
+              "x": 428,
+              "y": 1661.96875,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "6 active sessions",
+              "class": "qp-node-meta",
+              "x": 428,
+              "y": 1673.96875,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 428,
+          "y": 1704.96875,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Codex CLI",
+              "class": "qp-node-label-main",
+              "x": 428,
+              "y": 1704.96875,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "4 active sessions",
+              "class": "qp-node-meta",
+              "x": 428,
+              "y": 1716.96875,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 428,
+          "y": 1747.96875,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Claude Code",
+              "class": "qp-node-label-main",
+              "x": 428,
+              "y": 1747.96875,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "2 active sessions",
+              "class": "qp-node-meta",
+              "x": 428,
+              "y": 1759.96875,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 428,
+          "y": 1790.96875,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "OpenCode",
+              "class": "qp-node-label-main",
+              "x": 428,
+              "y": 1790.96875,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "0 active sessions",
+              "class": "qp-node-meta",
+              "x": 428,
+              "y": 1802.96875,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 682.796875,
+          "y": 1661.96875,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "DeepSeek",
+              "class": "qp-node-label-main",
+              "x": 682.796875,
+              "y": 1661.96875,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 682.796875,
+              "y": 1673.96875,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 682.796875,
+          "y": 1704.96875,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "Anthropic",
+              "class": "qp-node-label-main",
+              "x": 682.796875,
+              "y": 1704.96875,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 682.796875,
+              "y": 1716.96875,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 682.796875,
+          "y": 1747.96875,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "OpenAI",
+              "class": "qp-node-label-main",
+              "x": 682.796875,
+              "y": 1747.96875,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 682.796875,
+              "y": 1759.96875,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 682.796875,
+          "y": 1790.96875,
+          "width": 91,
+          "height": 20.796875,
+          "leaves": [
+            {
+              "text": "OpenRouter",
+              "class": "qp-node-label-main",
+              "x": 682.796875,
+              "y": 1790.96875,
+              "width": 91,
+              "height": 11,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            },
+            {
+              "text": "Active",
+              "class": "qp-node-activity",
+              "x": 682.796875,
+              "y": 1802.96875,
+              "width": 91,
+              "height": 8.796875,
+              "scrollWidth": 91,
+              "clientWidth": 91,
+              "fontSize": "8px",
+              "textOverflow": "clip",
+              "overflow": "visible"
+            }
+          ]
+        },
+        {
+          "x": 916.796875,
+          "y": 1666.875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "DeepSeek V4.1",
+              "class": "qp-node-label-main",
+              "x": 916.796875,
+              "y": 1666.875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 916.796875,
+          "y": 1709.875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "GPT-5.x",
+              "class": "qp-node-label-main",
+              "x": 916.796875,
+              "y": 1709.875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 916.796875,
+          "y": 1752.875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Claude 3.7",
+              "class": "qp-node-label-main",
+              "x": 916.796875,
+              "y": 1752.875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 916.796875,
+          "y": 1795.875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Claude 3.5",
+              "class": "qp-node-label-main",
+              "x": 916.796875,
+              "y": 1795.875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 916.796875,
+          "y": 1838.875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "Others",
+              "class": "qp-node-label-main",
+              "x": 916.796875,
+              "y": 1838.875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        },
+        {
+          "x": 916.796875,
+          "y": 1881.875,
+          "width": 100.90625,
+          "height": 11,
+          "leaves": [
+            {
+              "text": "GPT-4.1 mini",
+              "class": "qp-node-label-main",
+              "x": 916.796875,
+              "y": 1881.875,
+              "width": 100.90625,
+              "height": 11,
+              "scrollWidth": 101,
+              "clientWidth": 101,
+              "fontSize": "11px",
+              "textOverflow": "ellipsis",
+              "overflow": "hidden"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
