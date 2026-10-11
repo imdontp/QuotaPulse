@@ -119,3 +119,11 @@
  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-heading .qp-heading-reference-svg { width:20px; height:20px; color:#37c8ff; stroke-width:2.2; filter:drop-shadow(0 0 1px #37baff) drop-shadow(0 0 4px #137aff88); }
  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-heading .qp-page-heading-icon { border-color:transparent; background:linear-gradient(135deg,#061430,#0b2252); box-shadow:inset 0 0 10px #1452b422; }
 }
+
+/* Native Providers cloud silhouette and paint, measured against the original ref. */
+@media(min-width:1536px) {
+ .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-header .qp-heading-reference-svg>:not(.qp-heading-reference-mark) { display:none; }
+ .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-header .qp-heading-reference-mark { display:inline; }
+ .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-header .qp-page-heading-icon { transform:translate(-3px,2px); border-color:transparent; background:linear-gradient(135deg,#031a3c,#03152f); box-shadow:inset 0 0 12px #1245a422; }
+ .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-header .qp-heading-reference-svg { width:30px; height:30px; color:#00bfff; stroke-width:1.7; filter:drop-shadow(0 0 1px #00aaff99) drop-shadow(0 0 3px #007aff55); }
+}

@@ -1,0 +1,300 @@
+{
+  "language": "th",
+  "theme": "dark",
+  "productionIndexSha256": "c8fd161b2b0c2a2f7cfab918529d2345cd69ecd69f30e0bff69004839d211905",
+  "results": [
+    {
+      "route": "cost",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": true,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 889,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 442,
+              "bottom": 531
+            },
+            "quick": {
+              "x": 12,
+              "y": 546,
+              "width": 201,
+              "height": 289,
+              "bottom": 835
+            },
+            "footer": {
+              "x": 12,
+              "y": 873,
+              "width": 201,
+              "height": 64,
+              "bottom": 937
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "ภาพรวม",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "สด",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "โปรเจกต์",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "โมเดล",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "ประวัติ",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "การแจ้งเตือน",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "ภาพรวมต้นทุน",
+          "x": 293,
+          "y": 86.75,
+          "width": 89.8125,
+          "height": 22.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "22.5px",
+          "transform": "matrix(1, 0, 0, 1, -2, -4)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "รีเฟรชตอนนี้",
+          "x": 755.0625,
+          "y": 85,
+          "width": 34,
+          "height": 34
+        }
+      ],
+      "warning": null,
+      "headingArt": {
+        "width": 20,
+        "height": 20,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "inline",
+        "fallbackDisplays": [
+          "none",
+          "none",
+          "none",
+          "none"
+        ]
+      },
+      "paint": [
+        {
+          "className": "qp-page-heading-icon",
+          "x": 251,
+          "y": 86,
+          "width": 32,
+          "height": 32,
+          "color": "rgb(54, 201, 255)",
+          "background": "rgba(0, 0, 0, 0) linear-gradient(135deg, rgb(6, 20, 48), rgb(11, 34, 82)) repeat scroll 0% 0% / auto padding-box border-box",
+          "border": "1px solid rgba(0, 0, 0, 0)",
+          "filter": "none",
+          "fontSize": "13px",
+          "lineHeight": "19.5px",
+          "naturalTextWidth": null,
+          "textRects": [],
+          "svg": {
+            "x": 257,
+            "y": 92,
+            "width": 20,
+            "height": 20,
+            "color": "rgb(55, 200, 255)",
+            "strokeWidth": "2.2px",
+            "filter": "drop-shadow(rgb(55, 186, 255) 0px 0px 1px) drop-shadow(rgba(19, 122, 255, 0.533) 0px 0px 4px)",
+            "paths": [
+              "M3 3v16a2 2 0 0 0 2 2h16",
+              "M18 17V9",
+              "M13 17V5",
+              "M8 17v-3",
+              "M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+            ]
+          }
+        },
+        {
+          "className": "qp-cost-donut-amount",
+          "text": "US$0.03+",
+          "x": 1268.0625,
+          "y": 198.390625,
+          "width": 110,
+          "height": 22,
+          "color": "rgb(238, 243, 255)",
+          "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+          "border": "0px solid oklch(0.266 0.024 256)",
+          "filter": "none",
+          "fontSize": "18px",
+          "lineHeight": "22px",
+          "naturalTextWidth": 86.70591735839844,
+          "textRects": [
+            {
+              "x": 1279.703125,
+              "y": 197.390625,
+              "width": 86.71875,
+              "height": 23
+            }
+          ],
+          "svg": null
+        }
+      ]
+    },
+    {
+      "width": 1536,
+      "route": "cost",
+      "native": true,
+      "art": {
+        "width": 20,
+        "height": 20,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "inline",
+        "fallbackDisplays": [
+          "none",
+          "none",
+          "none",
+          "none"
+        ]
+      },
+      "amount": {
+        "text": "US$0.03+",
+        "lines": 1,
+        "width": 110,
+        "fontSize": "18px",
+        "size": "medium"
+      }
+    },
+    {
+      "width": 1280,
+      "route": "cost",
+      "native": false,
+      "art": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline",
+          "inline"
+        ]
+      },
+      "amount": {
+        "text": "US$0.03+",
+        "lines": 1,
+        "width": 110,
+        "fontSize": "18px",
+        "size": "medium"
+      }
+    },
+    {
+      "width": 900,
+      "route": "cost",
+      "native": false,
+      "art": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline",
+          "inline"
+        ]
+      },
+      "amount": {
+        "text": "US$0.03+",
+        "lines": 1,
+        "width": 82,
+        "fontSize": "15px",
+        "size": "medium"
+      }
+    },
+    {
+      "width": 390,
+      "route": "cost",
+      "native": false,
+      "art": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline",
+          "inline"
+        ]
+      },
+      "amount": {
+        "text": "US$0.03+",
+        "lines": 1,
+        "width": 82,
+        "fontSize": "15px",
+        "size": "medium"
+      }
+    }
+  ]
+}

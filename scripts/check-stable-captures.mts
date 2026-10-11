@@ -1157,6 +1157,10 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
       const pricedProviders = cost.providers.filter(row => row.pricedCalls > 0);
       const legendColors = await page.locator('.qp-cost-providers ol>li>i').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).backgroundColor));
       assert.deepEqual(legendColors.map(rgb), pricedProviders.map(row => rgb(sourcePalette.get(row.provider?.toLowerCase() ?? '') ?? '#7d8ba0')), 'Cost legend colors must follow source provider identities regardless of actual rank');
+      if (pricedProviders.length > 0) {
+        const amount = page.locator('.qp-cost-donut-amount .qp-cost-value>span:first-child');
+        assert.equal(await amount.evaluate(element => { const range = document.createRange(); range.selectNodeContents(element); return range.getClientRects().length; }), 1, 'Localized known Cost amount and its partial-price marker must fit on one line');
+      }
       const positiveProviders = cost.providers.filter(row => row.pricedCalls > 0 && row.amount > 0);
       const edgeShares = await page.locator('.qp-cost-donut-edge:not(.qp-cost-donut-inner-edge)').evaluateAll(nodes => nodes.map(node => Number(node.getAttribute('stroke-dasharray')?.split(' ')[0])));
       assert.deepEqual(edgeShares, cost.totals.amount > 0 ? positiveProviders.map(row => row.amount / cost.totals.amount) : [], 'Decorative Cost edges must retain actual provider amount fractions');

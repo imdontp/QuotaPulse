@@ -1,0 +1,56 @@
+{
+  "baseCommit": "2632787",
+  "productionIndexSha256": "c8fd161b2b0c2a2f7cfab918529d2345cd69ecd69f30e0bff69004839d211905",
+  "sourceHashes": {
+    "packages/web/src/redesign/cost.tsx": "313942d7c37a5721bc5ad2e8150ea7b07a262fc25229a50f2070aa2c87580b8d",
+    "packages/web/src/redesign/providers.tsx": "b597135cd84e40de734e5abca835aec13ad55247d782041ea0984fbc26c198f7",
+    "packages/web/src/redesign/heading-reference-icon.tsx": "de34bea897aec9a6ba3047d338d0901c36cc108f7cc30a6b3ff5bb82ece131e0",
+    "packages/web/src/redesign/page-heading.css": "09e612966aaab6775218303e14c3812cffc43ebf9eb5421255778a3ae7e2552d",
+    "packages/web/src/redesign/history.css": "4393bbef193cd8e0220e2cb8396b1a1e0c6fc7cbecd23f3bbe1ebc814db2f139",
+    "scripts/check-stable-captures.mts": "c0a61576842a12d81899b2f1fdebb26df0daa8d1de53182465661165cd479f49"
+  },
+  "gatesSession": 74211,
+  "buildNativeSession": 74211,
+  "gates": {
+    "stage": "terminal",
+    "nativeThaiDarkExit": 0,
+    "moneyNativeThaiExit": 0,
+    "nativeThaiLightExit": 0,
+    "nativeAll8Exit": 0,
+    "providersExit": 0,
+    "costExit": 0,
+    "historyExit": 0
+  },
+  "captures": [
+    {
+      "scope": "providers",
+      "pairs": 4,
+      "byteIdentical": 3
+    },
+    {
+      "scope": "cost",
+      "pairs": 4,
+      "byteIdentical": 4
+    },
+    {
+      "scope": "history",
+      "pairs": 8,
+      "byteIdentical": 8
+    }
+  ],
+  "verifiedPngHashes": 32,
+  "originalLogHashes": {
+    "build": "1be7724eea8bd8b6622b913cbdb000a67f4ba806cda934e7112daa41999982a9",
+    "native-en": "37cbc34893321215548d2084b4947024c27daacac8d275aacd6367e79aafe8c9",
+    "nativeThaiDark": "37cbc34893321215548d2084b4947024c27daacac8d275aacd6367e79aafe8c9",
+    "moneyNativeThai": "6a0b1c835c19ce3174ebab099446e261645c0fcc214db5bbcf6188ecdf48d4b6",
+    "nativeThaiLight": "37cbc34893321215548d2084b4947024c27daacac8d275aacd6367e79aafe8c9",
+    "nativeAll8": "204264ae35b6e183a455564d4ef6447be9d597ccabb30625c9861e36e097df94",
+    "providers": "24e4c91920c959c4a7e35551f6e992abb9c4bb7b6d003e32a6776c3a3d1687ec",
+    "cost": "0bd5a02219efe7ace8ab027c0e0a97f20b4a1cc87bb1a1029638f04fd01adf51",
+    "history": "ea7797df2dbe70afece4833338ab7d3f659705789d8cf998d2d39df13a8ba24c"
+  },
+  "logArchiveFormat": "UTF-8 LF, decoded BOM and trailing line whitespace removed",
+  "review": "root reviewed source/before/after crops; no independent final63 review claimed",
+  "historicalFullRegression": "v1.85.62: full40/UI/473 tests; not rerun as the current63 full regression"
+}

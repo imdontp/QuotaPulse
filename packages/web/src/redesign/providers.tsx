@@ -1,5 +1,5 @@
 import { useEffect, useState, type CSSProperties } from 'react';
-import { Activity, Cloud, RefreshCw, ShieldCheck } from 'lucide-react';
+import { Activity, RefreshCw, ShieldCheck } from 'lucide-react';
 import { HarnessIcon } from '@/components/harness-icon';
 import { VendorIcon } from '@/components/vendor-icon';
 import { isExpired, primaryLimits, windowRank, type WindowReadings } from '@/format';
@@ -12,6 +12,7 @@ import { RedesignShell } from './shell';
 import './providers.css';
 import { SectionMark } from './section-mark';
 import { PageHeading } from './page-heading';
+import { HeadingReferenceIcon } from './heading-reference-icon';
 
 interface OwnerCard {
   key: string;
@@ -100,7 +101,7 @@ export function ProductionProviders() {
   const manageHref = (card: OwnerCard) => card.subscription ? `#settings?subscription=${encodeURIComponent(card.key)}` : `#settings?section=diagnostics&source=${card.sources[0]?.source_id ?? ''}`;
 
   return <RedesignShell active="providers" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-providers">
-    <header className="qp-provider-header"><PageHeading icon={<Cloud size={26}/>} title={t('redesign.providerHeading')} subtitle={t('redesign.providerSubtitle')}/><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
+    <header className="qp-provider-header"><PageHeading icon={<HeadingReferenceIcon kind="providers"/>} title={t('redesign.providerHeading')} subtitle={t('redesign.providerSubtitle')}/><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
     {error && <p className="qp-provider-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     {!overview ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : cards.length === 0 ? <p className="qp-panel">{t('redesign.providerNoAccounts')}</p> : <>
       <section className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{cards.map(card => <article key={card.key} className="qp-panel qp-provider-card" data-vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'} data-has-quota={card.readings.length > 0} data-selected={selected?.key === card.key}>

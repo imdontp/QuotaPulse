@@ -126,7 +126,7 @@ export function ProductionCost() {
   const date = (at: number) => new Date(at).toLocaleString(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' });
   const centerBasis = t(data?.basis === 'native' ? 'redesign.costNativeBasis' : 'redesign.costApiBasis');
   const centerAmount = total ? costValue(total.amount, total.pricedCalls, total.allCalls, money, t('redesign.unknownValue')) : '';
-  const centerAmountSize = centerAmount.length > 15 ? 'long' : centerAmount.length > 9 ? 'medium' : 'normal';
+  const centerAmountSize = centerAmount.length > 15 ? 'long' : centerAmount.length > 7 ? 'medium' : 'normal';
   let centerRange = '';
   let centerRangeTitle = '';
   if (data) {

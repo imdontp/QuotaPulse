@@ -1,0 +1,813 @@
+{
+  "language": "en",
+  "theme": "dark",
+  "productionIndexSha256": "c8fd161b2b0c2a2f7cfab918529d2345cd69ecd69f30e0bff69004839d211905",
+  "results": [
+    {
+      "route": "providers",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": true,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 895,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 442,
+              "bottom": 531
+            },
+            "quick": {
+              "x": 12,
+              "y": 546,
+              "width": 201,
+              "height": 295,
+              "bottom": 841
+            },
+            "footer": {
+              "x": 12,
+              "y": 879,
+              "width": 201,
+              "height": 64,
+              "bottom": 943
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "Providers & Subscriptions",
+          "x": 307,
+          "y": 86.34375,
+          "width": 297.09375,
+          "height": 27.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "23px",
+          "fontWeight": "350",
+          "lineHeight": "27.5px",
+          "transform": "matrix(1, 0, 0, 1, -2, 4)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Refresh now",
+          "x": 1540.046875,
+          "y": 88.75,
+          "width": 106.953125,
+          "height": 34.5
+        },
+        {
+          "text": "OpenAI Subscription",
+          "x": 313,
+          "y": 167,
+          "width": 195.671875,
+          "height": 21
+        },
+        {
+          "text": "OpenCode Go Subscription",
+          "x": 665,
+          "y": 167,
+          "width": 199.671875,
+          "height": 21
+        },
+        {
+          "text": "Claude Company Subscription",
+          "x": 1021,
+          "y": 167,
+          "width": 191.515625,
+          "height": 42
+        },
+        {
+          "text": "Claude Personal Subscription",
+          "x": 1377,
+          "y": 167,
+          "width": 191.515625,
+          "height": 42
+        },
+        {
+          "text": "OpenAI Subscription",
+          "x": 291,
+          "y": 881,
+          "width": 313,
+          "height": 24
+        },
+        {
+          "text": "OpenCode Go Subscription",
+          "x": 616,
+          "y": 881,
+          "width": 313,
+          "height": 24
+        }
+      ],
+      "warning": null,
+      "headingArt": {
+        "width": 30,
+        "height": 30,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "inline",
+        "fallbackDisplays": [
+          "none"
+        ]
+      },
+      "paint": [
+        {
+          "className": "qp-page-heading-icon",
+          "x": 248,
+          "y": 84.984375,
+          "width": 46,
+          "height": 46,
+          "color": "rgb(54, 201, 255)",
+          "background": "rgba(0, 0, 0, 0) linear-gradient(135deg, rgb(3, 26, 60), rgb(3, 21, 47)) repeat scroll 0% 0% / auto padding-box border-box",
+          "border": "1px solid rgba(0, 0, 0, 0)",
+          "filter": "none",
+          "fontSize": "13px",
+          "lineHeight": "19.5px",
+          "naturalTextWidth": null,
+          "textRects": [],
+          "svg": {
+            "x": 256,
+            "y": 92.984375,
+            "width": 30,
+            "height": 30,
+            "color": "rgb(0, 191, 255)",
+            "strokeWidth": "1.7px",
+            "filter": "drop-shadow(rgba(0, 170, 255, 0.6) 0px 0px 1px) drop-shadow(rgba(0, 122, 255, 0.333) 0px 0px 3px)",
+            "paths": [
+              "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z",
+              "M6 20h12a4 4 0 0 0 .7-7.94A6.5 6.5 0 0 0 6 10a5 5 0 0 0 0 10Z"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "route": "cost",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": true,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 889,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 442,
+              "bottom": 531
+            },
+            "quick": {
+              "x": 12,
+              "y": 546,
+              "width": 201,
+              "height": 289,
+              "bottom": 835
+            },
+            "footer": {
+              "x": 12,
+              "y": 873,
+              "width": 201,
+              "height": 64,
+              "bottom": 937
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "Cost Overview",
+          "x": 293,
+          "y": 86.75,
+          "width": 103.0625,
+          "height": 22.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "22.5px",
+          "transform": "matrix(1, 0, 0, 1, -2, -4)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Refresh now",
+          "x": 755.0625,
+          "y": 85,
+          "width": 34,
+          "height": 34
+        }
+      ],
+      "warning": null,
+      "headingArt": {
+        "width": 20,
+        "height": 20,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "inline",
+        "fallbackDisplays": [
+          "none",
+          "none",
+          "none",
+          "none"
+        ]
+      },
+      "paint": [
+        {
+          "className": "qp-page-heading-icon",
+          "x": 251,
+          "y": 86,
+          "width": 32,
+          "height": 32,
+          "color": "rgb(54, 201, 255)",
+          "background": "rgba(0, 0, 0, 0) linear-gradient(135deg, rgb(6, 20, 48), rgb(11, 34, 82)) repeat scroll 0% 0% / auto padding-box border-box",
+          "border": "1px solid rgba(0, 0, 0, 0)",
+          "filter": "none",
+          "fontSize": "13px",
+          "lineHeight": "19.5px",
+          "naturalTextWidth": null,
+          "textRects": [],
+          "svg": {
+            "x": 257,
+            "y": 92,
+            "width": 20,
+            "height": 20,
+            "color": "rgb(55, 200, 255)",
+            "strokeWidth": "2.2px",
+            "filter": "drop-shadow(rgb(55, 186, 255) 0px 0px 1px) drop-shadow(rgba(19, 122, 255, 0.533) 0px 0px 4px)",
+            "paths": [
+              "M3 3v16a2 2 0 0 0 2 2h16",
+              "M18 17V9",
+              "M13 17V5",
+              "M8 17v-3",
+              "M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+            ]
+          }
+        },
+        {
+          "className": "qp-cost-donut-amount",
+          "text": "$14.53+",
+          "x": 1268.0625,
+          "y": 194.890625,
+          "width": 110,
+          "height": 29,
+          "color": "rgb(238, 243, 255)",
+          "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+          "border": "0px solid oklch(0.266 0.024 256)",
+          "filter": "none",
+          "fontSize": "24px",
+          "lineHeight": "29px",
+          "naturalTextWidth": 90.95994567871094,
+          "textRects": [
+            {
+              "x": 1277.578125,
+              "y": 193.890625,
+              "width": 90.96875,
+              "height": 31
+            }
+          ],
+          "svg": null
+        }
+      ]
+    },
+    {
+      "route": "history",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 881,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 317,
+              "bottom": 406
+            },
+            "quick": {
+              "x": 12,
+              "y": 444,
+              "width": 201,
+              "height": 305,
+              "bottom": 749
+            },
+            "footer": {
+              "x": 12,
+              "y": 864,
+              "width": 201,
+              "height": 65,
+              "bottom": 929
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "heading": [
+        {
+          "text": "History & Logs",
+          "x": 305,
+          "y": 78.046875,
+          "width": 328.421875,
+          "height": 31.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "22.5px",
+          "fontWeight": "350",
+          "lineHeight": "31.5px",
+          "transform": "matrix(1, 0, 0, 1, 3, 0)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Pause view",
+          "x": 998.453125,
+          "y": 86.5,
+          "width": 87.21875,
+          "height": 32
+        },
+        {
+          "text": "Export matching records",
+          "x": 1091.671875,
+          "y": 86.5,
+          "width": 165.421875,
+          "height": 32
+        },
+        {
+          "text": "Apply filters",
+          "x": 1507.328125,
+          "y": 472,
+          "width": 152.671875,
+          "height": 35
+        },
+        {
+          "text": "#1",
+          "x": 1538.046875,
+          "y": 561.5,
+          "width": 36.359375,
+          "height": 24
+        },
+        {
+          "text": "#4",
+          "x": 1538.046875,
+          "y": 594.5,
+          "width": 39.140625,
+          "height": 24
+        },
+        {
+          "text": "#7",
+          "x": 1538.046875,
+          "y": 627.5,
+          "width": 38.046875,
+          "height": 24
+        },
+        {
+          "text": "#10",
+          "x": 1538.046875,
+          "y": 660.5,
+          "width": 44.203125,
+          "height": 24
+        },
+        {
+          "text": "#13",
+          "x": 1538.046875,
+          "y": 693.5,
+          "width": 43.71875,
+          "height": 24
+        }
+      ],
+      "warning": null,
+      "headingArt": null,
+      "paint": [
+        {
+          "className": "",
+          "x": 241,
+          "y": 76.5,
+          "width": 52,
+          "height": 52,
+          "color": "rgb(9, 171, 255)",
+          "background": "rgba(0, 0, 0, 0) linear-gradient(135deg, rgb(3, 27, 72), rgb(3, 22, 47)) repeat scroll 0% 0% / auto padding-box border-box",
+          "border": "0px solid oklch(0.266 0.024 256)",
+          "filter": "none",
+          "fontSize": "13px",
+          "lineHeight": "19.5px",
+          "naturalTextWidth": null,
+          "textRects": [],
+          "svg": {
+            "x": 252,
+            "y": 87.5,
+            "width": 30,
+            "height": 30,
+            "color": "rgb(9, 171, 255)",
+            "strokeWidth": "1.7px",
+            "filter": "drop-shadow(rgba(21, 154, 255, 0.6) 0px 0px 1px)",
+            "paths": [
+              "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8",
+              "M3 3v5h5",
+              "M12 7v5l4 2"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "width": 1536,
+      "route": "providers",
+      "native": true,
+      "art": {
+        "width": 30,
+        "height": 30,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "inline",
+        "fallbackDisplays": [
+          "none"
+        ]
+      },
+      "amount": null
+    },
+    {
+      "width": 1536,
+      "route": "cost",
+      "native": true,
+      "art": {
+        "width": 20,
+        "height": 20,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "inline",
+        "fallbackDisplays": [
+          "none",
+          "none",
+          "none",
+          "none"
+        ]
+      },
+      "amount": {
+        "text": "$14.53+",
+        "lines": 1,
+        "width": 110,
+        "fontSize": "24px",
+        "size": "normal"
+      }
+    },
+    {
+      "width": 1536,
+      "route": "history",
+      "native": true,
+      "art": {
+        "transform": "matrix(1, 0, 0, 1, 3, 0)",
+        "svgWidth": 30
+      },
+      "amount": null
+    },
+    {
+      "width": 1280,
+      "route": "providers",
+      "native": false,
+      "art": {
+        "width": 26,
+        "height": 26,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline"
+        ]
+      },
+      "amount": null
+    },
+    {
+      "width": 1280,
+      "route": "cost",
+      "native": false,
+      "art": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline",
+          "inline"
+        ]
+      },
+      "amount": {
+        "text": "$14.53+",
+        "lines": 1,
+        "width": 110,
+        "fontSize": "24px",
+        "size": "normal"
+      }
+    },
+    {
+      "width": 1280,
+      "route": "history",
+      "native": false,
+      "art": {
+        "transform": "none",
+        "svgWidth": 27
+      },
+      "amount": null
+    },
+    {
+      "width": 900,
+      "route": "providers",
+      "native": false,
+      "art": {
+        "width": 26,
+        "height": 26,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline"
+        ]
+      },
+      "amount": null
+    },
+    {
+      "width": 900,
+      "route": "cost",
+      "native": false,
+      "art": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline",
+          "inline"
+        ]
+      },
+      "amount": {
+        "text": "$14.53+",
+        "lines": 1,
+        "width": 82,
+        "fontSize": "15px",
+        "size": "normal"
+      }
+    },
+    {
+      "width": 900,
+      "route": "history",
+      "native": false,
+      "art": {
+        "transform": "none",
+        "svgWidth": 27
+      },
+      "amount": null
+    },
+    {
+      "width": 390,
+      "route": "providers",
+      "native": false,
+      "art": {
+        "width": 26,
+        "height": 26,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline"
+        ]
+      },
+      "amount": null
+    },
+    {
+      "width": 390,
+      "route": "cost",
+      "native": false,
+      "art": {
+        "width": 21,
+        "height": 21,
+        "ariaHidden": "true",
+        "focusable": "false",
+        "nativeDisplay": "none",
+        "fallbackDisplays": [
+          "inline",
+          "inline",
+          "inline",
+          "inline"
+        ]
+      },
+      "amount": {
+        "text": "$14.53+",
+        "lines": 1,
+        "width": 82,
+        "fontSize": "15px",
+        "size": "normal"
+      }
+    },
+    {
+      "width": 390,
+      "route": "history",
+      "native": false,
+      "art": {
+        "transform": "none",
+        "svgWidth": 27
+      },
+      "amount": null
+    }
+  ]
+}
