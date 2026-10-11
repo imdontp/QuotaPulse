@@ -1,0 +1,236 @@
+{
+  "index": "d8521ac61f5ab757178368361c1bd8f05c37391ba7754bdcceadf833c98d9320",
+  "inputs": {
+    "live": {
+      "source": {
+        "path": "docs\\redesign-v1.85.43\\refs\\live.png",
+        "sha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6"
+      },
+      "before": {
+        "path": "docs\\redesign-v1.85.55\\native-en-dark\\live-default.png",
+        "sha256": "a8834571262fb99c260fa485651060b65672951b2b2a695b927a6b98b0355b02"
+      },
+      "after": {
+        "path": "tmp\\main-heading56-all8-en-dark\\live-default.png",
+        "sha256": "a929a88ec1548ddf68ba8241f6f3a76843e2e4f81a59f254327af0140c850a7a"
+      }
+    },
+    "models": {
+      "source": {
+        "path": "docs\\redesign-v1.85.43\\refs\\models.png",
+        "sha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c"
+      },
+      "before": {
+        "path": "docs\\redesign-v1.85.55\\native-en-dark\\models-default.png",
+        "sha256": "c057f24c3cc4180830ed1a2e437da2ae9d47f9a71e7e1aa30765bb3e3778dc81"
+      },
+      "after": {
+        "path": "tmp\\main-heading56-all8-en-dark\\models-default.png",
+        "sha256": "59792b6d70bb89f86794058b1f04ac93a10e80686e59ae63e04c0c207b96284b"
+      }
+    },
+    "alerts": {
+      "source": {
+        "path": "docs\\redesign-v1.85.43\\refs\\alerts.png",
+        "sha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104"
+      },
+      "before": {
+        "path": "docs\\redesign-v1.85.55\\native-en-dark\\alerts-default.png",
+        "sha256": "3700aba5b46f201e77d854aa70461591d913dfb690bd8e2ab9e32d7e199c68b7"
+      },
+      "after": {
+        "path": "tmp\\main-heading56-all8-en-dark\\alerts-default.png",
+        "sha256": "1a7ae54fea361b03f5659413a6c0ae47e2988584306ce25966a28a92a18ccaab"
+      }
+    }
+  },
+  "rois": {
+    "live": [
+      289,
+      80,
+      457,
+      113
+    ],
+    "models": [
+      286,
+      80,
+      369,
+      111
+    ],
+    "alerts": [
+      306,
+      80,
+      553,
+      114
+    ]
+  },
+  "titles": {
+    "live": {
+      "source": {
+        "bounds": [
+          294,
+          90,
+          446,
+          110
+        ],
+        "pixels": 765,
+        "density": 0.23809523809523808
+      },
+      "before": {
+        "bounds": [
+          293,
+          91,
+          456,
+          111
+        ],
+        "pixels": 1059,
+        "density": 0.3074912891986063
+      },
+      "after": {
+        "bounds": [
+          294,
+          90,
+          445,
+          110
+        ],
+        "pixels": 742,
+        "density": 0.2324561403508772
+      }
+    },
+    "models": {
+      "source": {
+        "bounds": [
+          291,
+          92,
+          360,
+          107
+        ],
+        "pixels": 373,
+        "density": 0.33303571428571427
+      },
+      "before": {
+        "bounds": [
+          290,
+          86,
+          362,
+          101
+        ],
+        "pixels": 563,
+        "density": 0.4820205479452055
+      },
+      "after": {
+        "bounds": [
+          291,
+          92,
+          361,
+          107
+        ],
+        "pixels": 372,
+        "density": 0.3274647887323944
+      }
+    },
+    "alerts": {
+      "source": {
+        "bounds": [
+          311,
+          91,
+          544,
+          110
+        ],
+        "pixels": 1201,
+        "density": 0.2566239316239316
+      },
+      "before": {
+        "bounds": [
+          311,
+          89,
+          525,
+          105
+        ],
+        "pixels": 1369,
+        "density": 0.3745554035567715
+      },
+      "after": {
+        "bounds": [
+          311,
+          91,
+          545,
+          110
+        ],
+        "pixels": 1242,
+        "density": 0.2642553191489362
+      }
+    }
+  },
+  "warningRegionMedians": {
+    "upper-right": {
+      "source": [
+        25.0,
+        16.0,
+        25.0
+      ],
+      "before": [
+        12.0,
+        18.0,
+        30.0
+      ],
+      "after": [
+        25.0,
+        16.0,
+        25.0
+      ]
+    },
+    "lower-right": {
+      "source": [
+        25.0,
+        16.0,
+        25.0
+      ],
+      "before": [
+        11.0,
+        17.0,
+        29.0
+      ],
+      "after": [
+        25.0,
+        16.0,
+        25.0
+      ]
+    },
+    "upper-middle": {
+      "source": [
+        25.0,
+        16.0,
+        26.0
+      ],
+      "before": [
+        16.0,
+        19.0,
+        31.0
+      ],
+      "after": [
+        25.0,
+        16.0,
+        25.0
+      ]
+    },
+    "lower-middle": {
+      "source": [
+        24.0,
+        15.0,
+        24.0
+      ],
+      "before": [
+        16.0,
+        19.0,
+        31.0
+      ],
+      "after": [
+        25.0,
+        16.0,
+        25.0
+      ]
+    }
+  },
+  "method": "Shared title ROI, luma>=175 and red>=150; inclusive bounds. Live BEFORE ROI truncates its old wider title and capitalization differs: do not use that before width/density as exact parity. Source/after words match. Warning medians use four paired blank rectangles from measured56 audit."
+}

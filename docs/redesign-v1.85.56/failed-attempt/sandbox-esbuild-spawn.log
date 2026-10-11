@@ -1,0 +1,32 @@
+﻿
+> quotapulse@0.1.0 test:stable
+> node --import tsx scripts/check-stable-captures.mts
+
+node.exe : 
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+node:internal/modules/run_main:122
+    triggerUncaughtException(
+    ^
+Error [TransformError]: spawn EPERM
+    at ChildProcess.spawn (node:internal/child_process:420:11)
+    at Object.spawn (node:child_process:753:9)
+    at ensureServiceIsRunning (C:\Users\TH12367283\Projects\QuotaPulse\node_modules\esbuild\lib\main.js:2272:29)
+    at transform (C:\Users\TH12367283\Projects\QuotaPulse\node_modules\esbuild\lib\main.js:2172:37)
+    at file:///C:/Users/TH12367283/Projects/QuotaPulse/node_modules/tsx/dist/index-DCefr8NP.mjs:14:4161
+    at applyTransformers 
+(file:///C:/Users/TH12367283/Projects/QuotaPulse/node_modules/tsx/dist/index-DCefr8NP.mjs:14:1266)
+    at transform (file:///C:/Users/TH12367283/Projects/QuotaPulse/node_modules/tsx/dist/index-DCefr8NP.mjs:14:4108)
+    at load (file:///C:/Users/TH12367283/Projects/QuotaPulse/node_modules/tsx/dist/register-SoqaU4rg.mjs:2:5262)
+    at async nextLoad (node:internal/modules/esm/hooks:748:22)
+    at async Hooks.load (node:internal/modules/esm/hooks:385:20) {
+  errno: -4048,
+  code: 'EPERM',
+  syscall: 'spawn'
+}
+
+Node.js v22.13.1

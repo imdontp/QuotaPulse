@@ -1,0 +1,11 @@
+{
+  "index": "d8521ac61f5ab757178368361c1bd8f05c37391ba7754bdcceadf833c98d9320",
+  "sourceHashes": {
+    "packages/web/src/i18n/en.ts": "096a89e7ff57c9dc890ef752574a83c13f4ab4a6c7f23f8b458eb0f4c3a55ef7",
+    "packages/web/src/redesign/alerts.css": "c59e24b871f4256d1bb001b0ee4f3e63e97ee99aece8de81135ec2906a029fa9",
+    "packages/web/src/redesign/alerts.tsx": "f4362bac7da3d0f286f598b46c27abb0f94e08f028c7b37165c2055180b73a9b",
+    "packages/web/src/redesign/page-heading.css": "d10083d7f0deb1e2bea48b3930712273c7eb030e06edb2ecde2372845a867a56",
+    "scripts/check-stable-captures.mts": "1bef00b15e0ab115413bfe92e74eeafc76ccd599013de1e76d5f460499ec7d0d"
+  },
+  "diagnosis": "New decorative icon span makes all-descendant-span text locator ambiguous. Failure precedes capture comparison; not a screenshot tolerance failure."
+}

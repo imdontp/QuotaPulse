@@ -125,7 +125,8 @@
 .qp-alert-forecast-facts dd { margin:0; color:var(--qp-text); font-size:13px; }
 .qp-alert-forecast-facts :is(strong,dd,small) { overflow-wrap:anywhere; }
 .qp-alert-forecast-warning { display:flex; align-items:center; gap:12px; min-height:80px; padding:12px; border:1px solid color-mix(in srgb,var(--qp-danger) 35%,var(--qp-border)); border-radius:8px; background:radial-gradient(ellipse at 20% 50%,color-mix(in srgb,var(--qp-danger) 10%,var(--qp-panel)),var(--qp-panel)); }
-.qp-alert-forecast-warning>svg { flex:none; color:var(--qp-danger); }
+.qp-alert-forecast-warning-icon { display:contents; }
+.qp-alert-forecast-warning-icon>svg { flex:none; color:var(--qp-danger); }
 .qp-alert-forecast-warning>div { display:grid; gap:4px; min-width:0; overflow-wrap:anywhere; }
 .qp-alert-forecast-warning strong { color:var(--qp-danger); font-size:13px; line-height:1.4; }
 .qp-alert-forecast-warning span { color:var(--qp-muted); font-size:11px; line-height:1.4; }
@@ -211,4 +212,23 @@
   .qp-alert-forecast-warning { margin: -3px 6px 0 8px; }
   .qp-alert-forecast-reading { grid-template-columns:170px minmax(0,1fr); gap:40px; align-items:center; margin-top:12px; padding-left:14px; }
   .qp-alert-forecast-orb { margin:4px 0; }
+}
+
+/* Native reference warning paint; actual forecast state and content remain intrinsic. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-alerts][data-theme=dark] .qp-alert-forecast-warning {
+    --qp-danger:#ff5558;
+    align-items:flex-start;
+    margin-right:7px;
+    border-color:#64242b;
+    background:#191019;
+  }
+  .qp-redesign[data-testid=production-alerts][data-theme=dark] .qp-alert-forecast-warning-icon {
+    display:inline-grid; place-items:center; flex:none;
+    width:44px; height:44px; border-radius:10px;
+    background:radial-gradient(ellipse at center,color-mix(in srgb,var(--qp-danger) 18%,transparent),color-mix(in srgb,var(--qp-danger) 7%,transparent));
+  }
+  .qp-redesign[data-testid=production-alerts][data-theme=dark] .qp-alert-forecast-warning-icon>svg {
+    filter:drop-shadow(0 0 5px color-mix(in srgb,var(--qp-danger) 65%,transparent));
+  }
 }

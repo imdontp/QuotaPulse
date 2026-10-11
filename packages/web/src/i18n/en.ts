@@ -283,7 +283,7 @@ export const en = {
   'redesign.projectEstimated': 'Reference-priced calls',
   'redesign.projectCostNotReported': 'Not reported',
   'redesign.projectValueUnavailable': 'Value unavailable',
-  'redesign.liveHeading': 'Live monitoring',
+  'redesign.liveHeading': 'Live Monitoring',
   'redesign.liveSubtitle': 'Recorded activity from the last 30 minutes',
   'redesign.livePause': 'Pause view',
   'redesign.liveResume': 'Resume latest',

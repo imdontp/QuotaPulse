@@ -602,7 +602,7 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
     assert.equal(await warning.count(), beforeReset ? 1 : 0, 'Forecast warning must follow the selected daemon forecast');
     if (beforeReset) {
       assert.equal(await warning.locator('strong').innerText(), copy['redesign.alertForecast']);
-      assert.equal(await warning.locator('span').innerText(), `${resetAt - fullAt < 60_000 ? '<1m' : countdown(resetAt, fullAt)} ${copy['redesign.beforeReset']}`);
+      assert.equal(await warning.locator(':scope > div > span').innerText(), `${resetAt - fullAt < 60_000 ? '<1m' : countdown(resetAt, fullAt)} ${copy['redesign.beforeReset']}`);
     }
   }
   assert.ok(forecastStates.has('ready'), 'Ready forecast fixture was not checked');
