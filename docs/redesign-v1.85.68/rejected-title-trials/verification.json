@@ -1,0 +1,1090 @@
+{
+  "status": "rendered controlled trials; not approved baseline",
+  "productionIndexSha256": "88edb8dc8ec17f96c7face5327ac3892953eb2bb227cd68848f4620ac3acbcad",
+  "browser": "154.0.8037.98",
+  "viewport": {
+    "width": 1672,
+    "height": 941
+  },
+  "dpr": 1,
+  "language": "en",
+  "theme": "dark",
+  "timezone": "Asia/Bangkok",
+  "fixedNow": 1747489320000,
+  "fixture": "isolated synthetic SQLite through actual API and unchanged production assets",
+  "domOverridesOnly": true,
+  "errors": [],
+  "forbidden": [],
+  "results": [
+    {
+      "route": "models",
+      "trial": {
+        "name": "baseline"
+      },
+      "filename": "models-baseline.png",
+      "sha256": "cce7be85cfe03812eb0ce885205aee0f5e2b14788ce8c7533a18e452906901c6",
+      "geometry": {
+        "h1": {
+          "text": "Models",
+          "rect": {
+            "x": 289,
+            "y": 87.25,
+            "width": 73.984375,
+            "height": 27.5,
+            "top": 87.25,
+            "right": 362.984375,
+            "bottom": 114.75,
+            "left": 289
+          },
+          "fontSize": "22px",
+          "fontWeight": "325",
+          "letterSpacing": "0.15px",
+          "transform": "matrix(1, 0, 0, 1, 1, 6)"
+        },
+        ".qp-page-heading-copy": {
+          "text": "ModelsRecorded model and route identities in the selected period",
+          "rect": {
+            "x": 288,
+            "y": 81.25,
+            "width": 409.375,
+            "height": 27.5,
+            "top": 81.25,
+            "right": 697.375,
+            "bottom": 108.75,
+            "left": 288
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-copy>p": {
+          "text": "Recorded model and route identities in the selected period",
+          "rect": {
+            "x": 377.984375,
+            "y": 91.25,
+            "width": 319.390625,
+            "height": 16.796875,
+            "top": 91.25,
+            "right": 697.375,
+            "bottom": 108.046875,
+            "left": 377.984375
+          },
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "matrix(1, 0, 0, 1, 0, 1)"
+        },
+        ".qp-page-heading-icon": {
+          "text": "",
+          "rect": {
+            "x": 247,
+            "y": 85,
+            "width": 30,
+            "height": 30,
+            "top": 85,
+            "right": 277,
+            "bottom": 115,
+            "left": 247
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "matrix(1, 0, 0, 1, 1, 5)"
+        },
+        ".qp-model-summary": {
+          "text": "Model and route pairs65/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 6Recorded tokens721.0MCalls: 795/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 721,000,012Distinct sessions175/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 17Calculated API value$14.53+ (Priced coverage: 72 / 79 Calls. + marks a subtotal. Native and API price bases are separate.)Reported native cost: $0.03+ (Priced coverage: 6 / 79 Calls. + marks a subtotal. Native and API price bases are separate.)5/14/2025, 12:00:00 PM · 05/17/2025, 7:30:00 AM · 14.53",
+          "rect": {
+            "x": 238,
+            "y": 130,
+            "width": 1028.90625,
+            "height": 106,
+            "top": 130,
+            "right": 1266.90625,
+            "bottom": 236,
+            "left": 238
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-project-tabs": null
+      }
+    },
+    {
+      "route": "models",
+      "trial": {
+        "name": "tracking-minus045",
+        "tracking": -0.45
+      },
+      "filename": "models-tracking-minus045.png",
+      "sha256": "e794386fbb039abd44881b609f9fe0618d5df5f91e4e3f66189e31fb43768086",
+      "geometry": {
+        "h1": {
+          "text": "Models",
+          "rect": {
+            "x": 289,
+            "y": 87.25,
+            "width": 70.390625,
+            "height": 27.5,
+            "top": 87.25,
+            "right": 359.390625,
+            "bottom": 114.75,
+            "left": 289
+          },
+          "fontSize": "22px",
+          "fontWeight": "325",
+          "letterSpacing": "-0.45px",
+          "transform": "matrix(1, 0, 0, 1, 1, 6)"
+        },
+        ".qp-page-heading-copy": {
+          "text": "ModelsRecorded model and route identities in the selected period",
+          "rect": {
+            "x": 288,
+            "y": 81.25,
+            "width": 405.78125,
+            "height": 27.5,
+            "top": 81.25,
+            "right": 693.78125,
+            "bottom": 108.75,
+            "left": 288
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-copy>p": {
+          "text": "Recorded model and route identities in the selected period",
+          "rect": {
+            "x": 374.390625,
+            "y": 91.25,
+            "width": 319.390625,
+            "height": 16.796875,
+            "top": 91.25,
+            "right": 693.78125,
+            "bottom": 108.046875,
+            "left": 374.390625
+          },
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "matrix(1, 0, 0, 1, 0, 1)"
+        },
+        ".qp-page-heading-icon": {
+          "text": "",
+          "rect": {
+            "x": 247,
+            "y": 85,
+            "width": 30,
+            "height": 30,
+            "top": 85,
+            "right": 277,
+            "bottom": 115,
+            "left": 247
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "matrix(1, 0, 0, 1, 1, 5)"
+        },
+        ".qp-model-summary": {
+          "text": "Model and route pairs65/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 6Recorded tokens721.0MCalls: 795/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 721,000,012Distinct sessions175/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 17Calculated API value$14.53+ (Priced coverage: 72 / 79 Calls. + marks a subtotal. Native and API price bases are separate.)Reported native cost: $0.03+ (Priced coverage: 6 / 79 Calls. + marks a subtotal. Native and API price bases are separate.)5/14/2025, 12:00:00 PM · 05/17/2025, 7:30:00 AM · 14.53",
+          "rect": {
+            "x": 238,
+            "y": 130,
+            "width": 1028.90625,
+            "height": 106,
+            "top": 130,
+            "right": 1266.90625,
+            "bottom": 236,
+            "left": 238
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-project-tabs": null
+      }
+    },
+    {
+      "route": "models",
+      "trial": {
+        "name": "translate-y5",
+        "y": 5
+      },
+      "filename": "models-translate-y5.png",
+      "sha256": "f7c505a7e20681ec12ee6bf32bae011cf85ff3839a7352da9bf617e3ccd4a5ba",
+      "geometry": {
+        "h1": {
+          "text": "Models",
+          "rect": {
+            "x": 289,
+            "y": 86.25,
+            "width": 73.984375,
+            "height": 27.5,
+            "top": 86.25,
+            "right": 362.984375,
+            "bottom": 113.75,
+            "left": 289
+          },
+          "fontSize": "22px",
+          "fontWeight": "325",
+          "letterSpacing": "0.15px",
+          "transform": "matrix(1, 0, 0, 1, 1, 5)"
+        },
+        ".qp-page-heading-copy": {
+          "text": "ModelsRecorded model and route identities in the selected period",
+          "rect": {
+            "x": 288,
+            "y": 81.25,
+            "width": 409.375,
+            "height": 27.5,
+            "top": 81.25,
+            "right": 697.375,
+            "bottom": 108.75,
+            "left": 288
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-copy>p": {
+          "text": "Recorded model and route identities in the selected period",
+          "rect": {
+            "x": 377.984375,
+            "y": 91.25,
+            "width": 319.390625,
+            "height": 16.796875,
+            "top": 91.25,
+            "right": 697.375,
+            "bottom": 108.046875,
+            "left": 377.984375
+          },
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "matrix(1, 0, 0, 1, 0, 1)"
+        },
+        ".qp-page-heading-icon": {
+          "text": "",
+          "rect": {
+            "x": 247,
+            "y": 85,
+            "width": 30,
+            "height": 30,
+            "top": 85,
+            "right": 277,
+            "bottom": 115,
+            "left": 247
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "matrix(1, 0, 0, 1, 1, 5)"
+        },
+        ".qp-model-summary": {
+          "text": "Model and route pairs65/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 6Recorded tokens721.0MCalls: 795/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 721,000,012Distinct sessions175/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 17Calculated API value$14.53+ (Priced coverage: 72 / 79 Calls. + marks a subtotal. Native and API price bases are separate.)Reported native cost: $0.03+ (Priced coverage: 6 / 79 Calls. + marks a subtotal. Native and API price bases are separate.)5/14/2025, 12:00:00 PM · 05/17/2025, 7:30:00 AM · 14.53",
+          "rect": {
+            "x": 238,
+            "y": 130,
+            "width": 1028.90625,
+            "height": 106,
+            "top": 130,
+            "right": 1266.90625,
+            "bottom": 236,
+            "left": 238
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-project-tabs": null
+      }
+    },
+    {
+      "route": "models",
+      "trial": {
+        "name": "tracking-minus045-y5",
+        "tracking": -0.45,
+        "y": 5
+      },
+      "filename": "models-tracking-minus045-y5.png",
+      "sha256": "36e2b9eb8980922762290f6fcebdda51a92570aaaf18666bdab010f076369720",
+      "geometry": {
+        "h1": {
+          "text": "Models",
+          "rect": {
+            "x": 289,
+            "y": 86.25,
+            "width": 70.390625,
+            "height": 27.5,
+            "top": 86.25,
+            "right": 359.390625,
+            "bottom": 113.75,
+            "left": 289
+          },
+          "fontSize": "22px",
+          "fontWeight": "325",
+          "letterSpacing": "-0.45px",
+          "transform": "matrix(1, 0, 0, 1, 1, 5)"
+        },
+        ".qp-page-heading-copy": {
+          "text": "ModelsRecorded model and route identities in the selected period",
+          "rect": {
+            "x": 288,
+            "y": 81.25,
+            "width": 405.78125,
+            "height": 27.5,
+            "top": 81.25,
+            "right": 693.78125,
+            "bottom": 108.75,
+            "left": 288
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-copy>p": {
+          "text": "Recorded model and route identities in the selected period",
+          "rect": {
+            "x": 374.390625,
+            "y": 91.25,
+            "width": 319.390625,
+            "height": 16.796875,
+            "top": 91.25,
+            "right": 693.78125,
+            "bottom": 108.046875,
+            "left": 374.390625
+          },
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "matrix(1, 0, 0, 1, 0, 1)"
+        },
+        ".qp-page-heading-icon": {
+          "text": "",
+          "rect": {
+            "x": 247,
+            "y": 85,
+            "width": 30,
+            "height": 30,
+            "top": 85,
+            "right": 277,
+            "bottom": 115,
+            "left": 247
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "matrix(1, 0, 0, 1, 1, 5)"
+        },
+        ".qp-model-summary": {
+          "text": "Model and route pairs65/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 6Recorded tokens721.0MCalls: 795/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 721,000,012Distinct sessions175/1/2025, 12:00:00 AM · 05/1/2025, 1:30:00 PM · 05/2/2025, 3:00:00 AM · 05/2/2025, 4:30:00 PM · 05/3/2025, 6:00:00 AM · 05/3/2025, 7:30:00 PM · 05/4/2025, 9:00:00 AM · 05/4/2025, 10:30:00 PM · 05/5/2025, 12:00:00 PM · 05/6/2025, 1:30:00 AM · 05/6/2025, 3:00:00 PM · 05/7/2025, 4:30:00 AM · 05/7/2025, 6:00:00 PM · 05/8/2025, 7:30:00 AM · 05/8/2025, 9:00:00 PM · 05/9/2025, 10:30:00 AM · 05/10/2025, 12:00:00 AM · 05/10/2025, 1:30:00 PM · 05/11/2025, 3:00:00 AM · 05/11/2025, 4:30:00 PM · 05/12/2025, 6:00:00 AM · 05/12/2025, 7:30:00 PM · 05/13/2025, 9:00:00 AM · 05/13/2025, 10:30:00 PM · 05/14/2025, 12:00:00 PM · 15/15/2025, 1:30:00 AM · 05/15/2025, 3:00:00 PM · 05/16/2025, 4:30:00 AM · 05/16/2025, 6:00:00 PM · 05/17/2025, 7:30:00 AM · 17Calculated API value$14.53+ (Priced coverage: 72 / 79 Calls. + marks a subtotal. Native and API price bases are separate.)Reported native cost: $0.03+ (Priced coverage: 6 / 79 Calls. + marks a subtotal. Native and API price bases are separate.)5/14/2025, 12:00:00 PM · 05/17/2025, 7:30:00 AM · 14.53",
+          "rect": {
+            "x": 238,
+            "y": 130,
+            "width": 1028.90625,
+            "height": 106,
+            "top": 130,
+            "right": 1266.90625,
+            "bottom": 236,
+            "left": 238
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-project-tabs": null
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "baseline"
+      },
+      "filename": "projects-baseline.png",
+      "sha256": "ceefc690397a86d78db3681e72d5d4a61b79c78b710a07eab8627cd6241b7765",
+      "geometry": {
+        "h1": {
+          "text": "Projects",
+          "rect": {
+            "x": 304,
+            "y": 79.34375,
+            "width": 287.625,
+            "height": 27.5,
+            "top": 79.34375,
+            "right": 591.625,
+            "bottom": 106.84375,
+            "left": 304
+          },
+          "fontSize": "25px",
+          "fontWeight": "300",
+          "letterSpacing": "-0.8px",
+          "transform": "matrix(1, 0, 0, 1, 3, -3)"
+        },
+        ".qp-page-heading-copy": {
+          "text": "ProjectsDiscovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 82.34375,
+            "width": 287.625,
+            "height": 47.296875,
+            "top": 82.34375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-copy>p": {
+          "text": "Discovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 112.84375,
+            "width": 287.625,
+            "height": 16.796875,
+            "top": 112.84375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-icon": {
+          "text": "",
+          "rect": {
+            "x": 243,
+            "y": 82.984375,
+            "width": 46,
+            "height": 46,
+            "top": 82.984375,
+            "right": 289,
+            "bottom": 128.984375,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-model-summary": null,
+        ".qp-project-tabs": {
+          "text": "All projectsRecent activityUnassigned",
+          "rect": {
+            "x": 243,
+            "y": 154.5,
+            "width": 312.8125,
+            "height": 39.5,
+            "top": 154.5,
+            "right": 555.8125,
+            "bottom": 194,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        }
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size26",
+        "size": 26
+      },
+      "filename": "projects-size26.png",
+      "sha256": "a2974dd9d7c7197d9f8b96104576e32ee32897bf88dddedc25c3b9fcf3e400de",
+      "geometry": {
+        "h1": {
+          "text": "Projects",
+          "rect": {
+            "x": 304,
+            "y": 79.34375,
+            "width": 287.625,
+            "height": 27.5,
+            "top": 79.34375,
+            "right": 591.625,
+            "bottom": 106.84375,
+            "left": 304
+          },
+          "fontSize": "26px",
+          "fontWeight": "300",
+          "letterSpacing": "-0.8px",
+          "transform": "matrix(1, 0, 0, 1, 3, -3)"
+        },
+        ".qp-page-heading-copy": {
+          "text": "ProjectsDiscovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 82.34375,
+            "width": 287.625,
+            "height": 47.296875,
+            "top": 82.34375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-copy>p": {
+          "text": "Discovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 112.84375,
+            "width": 287.625,
+            "height": 16.796875,
+            "top": 112.84375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-icon": {
+          "text": "",
+          "rect": {
+            "x": 243,
+            "y": 82.984375,
+            "width": 46,
+            "height": 46,
+            "top": 82.984375,
+            "right": 289,
+            "bottom": 128.984375,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-model-summary": null,
+        ".qp-project-tabs": {
+          "text": "All projectsRecent activityUnassigned",
+          "rect": {
+            "x": 243,
+            "y": 154.5,
+            "width": 312.8125,
+            "height": 39.5,
+            "top": 154.5,
+            "right": 555.8125,
+            "bottom": 194,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        }
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size26-tracking-minus095",
+        "size": 26,
+        "tracking": -0.95
+      },
+      "filename": "projects-size26-tracking-minus095.png",
+      "sha256": "cf2145334cf44e5c93b9b7a55146d62e0de37664e7dfb2b681b201281535146b",
+      "geometry": {
+        "h1": {
+          "text": "Projects",
+          "rect": {
+            "x": 304,
+            "y": 79.34375,
+            "width": 287.625,
+            "height": 27.5,
+            "top": 79.34375,
+            "right": 591.625,
+            "bottom": 106.84375,
+            "left": 304
+          },
+          "fontSize": "26px",
+          "fontWeight": "300",
+          "letterSpacing": "-0.95px",
+          "transform": "matrix(1, 0, 0, 1, 3, -3)"
+        },
+        ".qp-page-heading-copy": {
+          "text": "ProjectsDiscovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 82.34375,
+            "width": 287.625,
+            "height": 47.296875,
+            "top": 82.34375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-copy>p": {
+          "text": "Discovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 112.84375,
+            "width": 287.625,
+            "height": 16.796875,
+            "top": 112.84375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-icon": {
+          "text": "",
+          "rect": {
+            "x": 243,
+            "y": 82.984375,
+            "width": 46,
+            "height": 46,
+            "top": 82.984375,
+            "right": 289,
+            "bottom": 128.984375,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-model-summary": null,
+        ".qp-project-tabs": {
+          "text": "All projectsRecent activityUnassigned",
+          "rect": {
+            "x": 243,
+            "y": 154.5,
+            "width": 312.8125,
+            "height": 39.5,
+            "top": 154.5,
+            "right": 555.8125,
+            "bottom": 194,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        }
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size26-tracking-minus105",
+        "size": 26,
+        "tracking": -1.05
+      },
+      "filename": "projects-size26-tracking-minus105.png",
+      "sha256": "c20d74474a32ec57012a3ec54eac39860763202f9664a71d34bf494250bdcb9a",
+      "geometry": {
+        "h1": {
+          "text": "Projects",
+          "rect": {
+            "x": 304,
+            "y": 79.34375,
+            "width": 287.625,
+            "height": 27.5,
+            "top": 79.34375,
+            "right": 591.625,
+            "bottom": 106.84375,
+            "left": 304
+          },
+          "fontSize": "26px",
+          "fontWeight": "300",
+          "letterSpacing": "-1.05px",
+          "transform": "matrix(1, 0, 0, 1, 3, -3)"
+        },
+        ".qp-page-heading-copy": {
+          "text": "ProjectsDiscovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 82.34375,
+            "width": 287.625,
+            "height": 47.296875,
+            "top": 82.34375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-copy>p": {
+          "text": "Discovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 112.84375,
+            "width": 287.625,
+            "height": 16.796875,
+            "top": 112.84375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-icon": {
+          "text": "",
+          "rect": {
+            "x": 243,
+            "y": 82.984375,
+            "width": 46,
+            "height": 46,
+            "top": 82.984375,
+            "right": 289,
+            "bottom": 128.984375,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-model-summary": null,
+        ".qp-project-tabs": {
+          "text": "All projectsRecent activityUnassigned",
+          "rect": {
+            "x": 243,
+            "y": 154.5,
+            "width": 312.8125,
+            "height": 39.5,
+            "top": 154.5,
+            "right": 555.8125,
+            "bottom": 194,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        }
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size265",
+        "size": 26.5
+      },
+      "filename": "projects-size265.png",
+      "sha256": "34e4ede915fe6d605c2c85dd1127bb9edf236b6a9d567c042f2fe0c93fcf87f5",
+      "geometry": {
+        "h1": {
+          "text": "Projects",
+          "rect": {
+            "x": 304,
+            "y": 79.34375,
+            "width": 287.625,
+            "height": 27.5,
+            "top": 79.34375,
+            "right": 591.625,
+            "bottom": 106.84375,
+            "left": 304
+          },
+          "fontSize": "26.5px",
+          "fontWeight": "300",
+          "letterSpacing": "-0.8px",
+          "transform": "matrix(1, 0, 0, 1, 3, -3)"
+        },
+        ".qp-page-heading-copy": {
+          "text": "ProjectsDiscovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 82.34375,
+            "width": 287.625,
+            "height": 47.296875,
+            "top": 82.34375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-copy>p": {
+          "text": "Discovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 112.84375,
+            "width": 287.625,
+            "height": 16.796875,
+            "top": 112.84375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-icon": {
+          "text": "",
+          "rect": {
+            "x": 243,
+            "y": 82.984375,
+            "width": 46,
+            "height": 46,
+            "top": 82.984375,
+            "right": 289,
+            "bottom": 128.984375,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-model-summary": null,
+        ".qp-project-tabs": {
+          "text": "All projectsRecent activityUnassigned",
+          "rect": {
+            "x": 243,
+            "y": 154.5,
+            "width": 312.8125,
+            "height": 39.5,
+            "top": 154.5,
+            "right": 555.8125,
+            "bottom": 194,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        }
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size265-tracking-minus105",
+        "size": 26.5,
+        "tracking": -1.05
+      },
+      "filename": "projects-size265-tracking-minus105.png",
+      "sha256": "b0efae3fb5566403af8339d1a3377cf995b510f3972b6608bab0aa487e7365bf",
+      "geometry": {
+        "h1": {
+          "text": "Projects",
+          "rect": {
+            "x": 304,
+            "y": 79.34375,
+            "width": 287.625,
+            "height": 27.5,
+            "top": 79.34375,
+            "right": 591.625,
+            "bottom": 106.84375,
+            "left": 304
+          },
+          "fontSize": "26.5px",
+          "fontWeight": "300",
+          "letterSpacing": "-1.05px",
+          "transform": "matrix(1, 0, 0, 1, 3, -3)"
+        },
+        ".qp-page-heading-copy": {
+          "text": "ProjectsDiscovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 82.34375,
+            "width": 287.625,
+            "height": 47.296875,
+            "top": 82.34375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-copy>p": {
+          "text": "Discovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 112.84375,
+            "width": 287.625,
+            "height": 16.796875,
+            "top": 112.84375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-icon": {
+          "text": "",
+          "rect": {
+            "x": 243,
+            "y": 82.984375,
+            "width": 46,
+            "height": 46,
+            "top": 82.984375,
+            "right": 289,
+            "bottom": 128.984375,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-model-summary": null,
+        ".qp-project-tabs": {
+          "text": "All projectsRecent activityUnassigned",
+          "rect": {
+            "x": 243,
+            "y": 154.5,
+            "width": 312.8125,
+            "height": 39.5,
+            "top": 154.5,
+            "right": 555.8125,
+            "bottom": 194,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        }
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size265-tracking-minus120",
+        "size": 26.5,
+        "tracking": -1.2
+      },
+      "filename": "projects-size265-tracking-minus120.png",
+      "sha256": "d2bfe48f3b2e725795865ff5e5c6cf98038e37ed8759a715fe14487f9e1979ed",
+      "geometry": {
+        "h1": {
+          "text": "Projects",
+          "rect": {
+            "x": 304,
+            "y": 79.34375,
+            "width": 287.625,
+            "height": 27.5,
+            "top": 79.34375,
+            "right": 591.625,
+            "bottom": 106.84375,
+            "left": 304
+          },
+          "fontSize": "26.5px",
+          "fontWeight": "300",
+          "letterSpacing": "-1.2px",
+          "transform": "matrix(1, 0, 0, 1, 3, -3)"
+        },
+        ".qp-page-heading-copy": {
+          "text": "ProjectsDiscovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 82.34375,
+            "width": 287.625,
+            "height": 47.296875,
+            "top": 82.34375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-copy>p": {
+          "text": "Discovered project metadata and its recorded usage.",
+          "rect": {
+            "x": 301,
+            "y": 112.84375,
+            "width": 287.625,
+            "height": 16.796875,
+            "top": 112.84375,
+            "right": 588.625,
+            "bottom": 129.640625,
+            "left": 301
+          },
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-page-heading-icon": {
+          "text": "",
+          "rect": {
+            "x": 243,
+            "y": 82.984375,
+            "width": 46,
+            "height": 46,
+            "top": 82.984375,
+            "right": 289,
+            "bottom": 128.984375,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        },
+        ".qp-model-summary": null,
+        ".qp-project-tabs": {
+          "text": "All projectsRecent activityUnassigned",
+          "rect": {
+            "x": 243,
+            "y": 154.5,
+            "width": 312.8125,
+            "height": 39.5,
+            "top": 154.5,
+            "right": 555.8125,
+            "bottom": 194,
+            "left": 243
+          },
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "transform": "none"
+        }
+      }
+    }
+  ]
+}

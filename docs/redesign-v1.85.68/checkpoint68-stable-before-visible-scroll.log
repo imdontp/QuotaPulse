@@ -1,0 +1,28 @@
+
+> quotapulse@0.1.0 test:stable
+> node --import tsx scripts/check-stable-captures.mts
+
+13:42:00.000 INFO  [db] opened :memory:
+npm.cmd : node:internal/modules/run_main:122
+At C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\run-checkpoint68-integration.ps1:9
+char:35
++ Invoke-Checkpoint68Gate 'stable' {npm.cmd run test:stable}
++                                   ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+page.waitForFunction: Timeout 30000ms exceeded.
+    at checkActivityRenderer
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-stable-captures.mts:2288:14)
+    at async checkRecentActivity
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-stable-captures.mts:2205:3)
+    at async <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-stable-captures.mts:3104:79) {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v22.13.1

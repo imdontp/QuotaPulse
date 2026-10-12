@@ -16,7 +16,9 @@ that harness must never be reported as a reference fidelity percentage.
 
 Historical scoped source repair: [v1.85.49](redesign-v1.85.49/VALIDATION-STATE.md) aligns painted Live horizontal bounds/divider and Models lower-detail typography. Build170 web tests, UI compatibility and12 production capture pairs pass. [Current/historical eight-page comparison](redesign-v1.85.49/reference-review.html) labels unchanged pages as build48. Vertical Live and other source artwork/geometry remain open.
 
-Current chart/table paint checkpoint: [v1.85.67](redesign-v1.85.67/VALIDATION-STATE.md) matches native Cost width and measured History blue surfaces while preserving centers, heights, cells and selection. Current build,12 Cost/History pairs, localized native, web170 and UI checks pass. Full source/release acceptance remains open.
+Current Activity visibility and integration checkpoint: [v1.85.68](redesign-v1.85.68/VALIDATION-STATE.md) stops offscreen/hidden canvas work and resumes current data. All three builds, repository474, full40 repeat pairs, UI, isolated Electron and both regression modes pass. Hidden browser state is emulated in the isolated probe; whole-source/release acceptance remains open.
+
+Historical chart/table paint checkpoint: [v1.85.67](redesign-v1.85.67/VALIDATION-STATE.md) matches native Cost width and measured History blue surfaces while preserving centers, heights, cells and selection. Current build,12 Cost/History pairs, localized native, web170 and UI checks pass. Full source/release acceptance remains open.
 
 Historical Models capacity and Cost paint checkpoint: [v1.85.66](redesign-v1.85.66/VALIDATION-STATE.md) adds exact catalog metadata/effort identities and measured chart colors. Current build, eight Cost/Models pairs, localized catalog/keyboard probes, UI and repository474 pass. Full source/release acceptance remains open.
 

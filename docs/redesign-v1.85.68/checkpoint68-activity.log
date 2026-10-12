@@ -1,0 +1,64 @@
+
+> quotapulse@0.1.0 test:activity-visibility
+> node --import tsx scripts/check-activity-visibility.mts
+
+{
+  "noIntersectionObserver": false,
+  "visibilityMode": "EMULATED-document-getters-and-event",
+  "assertions": [
+    {
+      "name": "visible paints real supplied buckets",
+      "pass": true
+    },
+    {
+      "name": "fixture actually offscreen",
+      "pass": true
+    },
+    {
+      "name": "offscreen points update does not paint",
+      "pass": true,
+      "before": 3,
+      "after": 3
+    },
+    {
+      "name": "offscreen theme update does not paint",
+      "pass": true,
+      "before": 3,
+      "after": 3
+    },
+    {
+      "name": "offscreen resize update does not paint",
+      "pass": true,
+      "before": 3,
+      "after": 3
+    },
+    {
+      "name": "reentry repaints latest data/theme/size",
+      "pass": true,
+      "before": 3,
+      "after": 4
+    },
+    {
+      "name": "document hidden during probe",
+      "pass": true
+    },
+    {
+      "name": "hidden updates do not paint",
+      "pass": true,
+      "before": 4,
+      "after": 4
+    },
+    {
+      "name": "visibility resume repaints latest data",
+      "pass": true,
+      "before": 4,
+      "after": 5
+    },
+    {
+      "name": "unmount disconnects listeners/observers and prevents detached paint",
+      "pass": true,
+      "before": 5
+    }
+  ],
+  "proof": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\screens\\activity-visibility\\intersection-observer.json"
+}

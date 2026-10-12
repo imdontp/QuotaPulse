@@ -2285,6 +2285,8 @@ async function checkActivityRenderer(page: Page, lang: string, theme: string, pe
   await themeButton.click();
   await page.waitForFunction(prior => (document.querySelector('canvas.qp-activity-sparkline') as HTMLCanvasElement).toDataURL() === prior, before.pixels);
   await page.setViewportSize({ width: 390, height: 992 });
+  // A responsive activity chart paints its latest bitmap when scrolled into view.
+  await chart.scrollIntoViewIfNeeded();
   await page.waitForFunction(() => {
     const canvas = document.querySelector('canvas.qp-activity-sparkline') as HTMLCanvasElement;
     return canvas.width === Math.round(canvas.getBoundingClientRect().width * devicePixelRatio);

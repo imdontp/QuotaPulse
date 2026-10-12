@@ -24,9 +24,14 @@ export function ActivitySparkline({ points, label, language }: {
     const canvas = canvasRef.current;
     if (!canvas) return;
     canvas.title = label;
+    let disposed = false;
+    let intersecting = true;
 
     const draw = () => {
-      const width = canvas.getBoundingClientRect().width;
+      if (disposed || !canvas.isConnected || document.hidden || !intersecting) return;
+      const rectangle = canvas.getBoundingClientRect();
+      if (rectangle.width <= 0 || rectangle.height <= 0 || rectangle.bottom <= 0 || rectangle.top >= window.innerHeight || rectangle.right <= 0 || rectangle.left >= window.innerWidth) return;
+      const width = rectangle.width;
       const dpr = window.devicePixelRatio || 1;
       const bitmapWidth = Math.max(1, Math.round(width * dpr));
       const bitmapHeight = Math.max(1, Math.round(HEIGHT * dpr));
@@ -103,6 +108,14 @@ export function ActivitySparkline({ points, label, language }: {
     };
 
     draw();
+    const intersectionObserver = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(([entry]) => {
+      intersecting = entry.isIntersecting;
+      if (intersecting) draw();
+    });
+    intersectionObserver?.observe(canvas);
+    document.addEventListener('visibilitychange', draw);
+    // Older embedded browsers still resume charts when scrolling back into view.
+    if (!intersectionObserver) window.addEventListener('scroll', draw, true);
     const resizeObserver = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(draw);
     resizeObserver?.observe(canvas);
     const themeRoot = canvas.closest('.qp-redesign');
@@ -125,6 +138,10 @@ export function ActivitySparkline({ points, label, language }: {
     watchResolution();
 
     return () => {
+      disposed = true;
+      intersectionObserver?.disconnect();
+      document.removeEventListener('visibilitychange', draw);
+      if (!intersectionObserver) window.removeEventListener('scroll', draw, true);
       resizeObserver?.disconnect();
       themeObserver?.disconnect();
       resolution?.removeEventListener('change', onResolutionChange);

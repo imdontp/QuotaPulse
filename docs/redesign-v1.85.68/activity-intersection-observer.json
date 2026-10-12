@@ -1,0 +1,1693 @@
+{
+  "browser": "151.0.7922.34",
+  "viewport": {
+    "width": 700,
+    "height": 500
+  },
+  "deviceScaleFactor": 1,
+  "noIntersectionObserver": false,
+  "source": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\src\\redesign\\activity-sparkline.tsx",
+  "sourceSha256": "b8f809d26fd5d4abc8e6a4f0a85f63e4792e1524751d158abb4b9472a508f4a8",
+  "fixture": "isolated actual-source React mount, supplied three buckets; not production-data/performance acceptance",
+  "visibilityMode": "EMULATED-document-getters-and-event",
+  "stages": [
+    {
+      "name": "visible-initial",
+      "clear": 3,
+      "stroke": 3,
+      "fill": 3,
+      "hidden": false,
+      "visibility": "visible",
+      "rect": {
+        "top": 0,
+        "bottom": 22,
+        "width": 300
+      },
+      "title": "Actual source visibility probe",
+      "points": 3,
+      "listeners": 3,
+      "observers": 3,
+      "events": [
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.40000000037253
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.70000000018626
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.79999999981374
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.29999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.79999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        }
+      ]
+    },
+    {
+      "name": "offscreen-settled",
+      "clear": 3,
+      "stroke": 3,
+      "fill": 3,
+      "hidden": false,
+      "visibility": "visible",
+      "rect": {
+        "top": 1800,
+        "bottom": 1822,
+        "width": 300
+      },
+      "title": "Actual source visibility probe",
+      "points": 3,
+      "listeners": 3,
+      "observers": 3,
+      "events": [
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.40000000037253
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.70000000018626
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.79999999981374
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.29999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.79999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        }
+      ]
+    },
+    {
+      "name": "offscreen-points-update",
+      "clear": 3,
+      "stroke": 3,
+      "fill": 3,
+      "hidden": false,
+      "visibility": "visible",
+      "rect": {
+        "top": 1800,
+        "bottom": 1822,
+        "width": 300
+      },
+      "title": "Actual source visibility probe",
+      "points": 3,
+      "listeners": 3,
+      "observers": 3,
+      "events": [
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.40000000037253
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.70000000018626
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.79999999981374
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.29999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.79999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        }
+      ]
+    },
+    {
+      "name": "offscreen-theme-update",
+      "clear": 3,
+      "stroke": 3,
+      "fill": 3,
+      "hidden": false,
+      "visibility": "visible",
+      "rect": {
+        "top": 1800,
+        "bottom": 1822,
+        "width": 300
+      },
+      "title": "Actual source visibility probe",
+      "points": 3,
+      "listeners": 3,
+      "observers": 3,
+      "events": [
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.40000000037253
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.70000000018626
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.79999999981374
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.29999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.79999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        }
+      ]
+    },
+    {
+      "name": "offscreen-resize-update",
+      "clear": 3,
+      "stroke": 3,
+      "fill": 3,
+      "hidden": false,
+      "visibility": "visible",
+      "rect": {
+        "top": 1800,
+        "bottom": 1822,
+        "width": 360
+      },
+      "title": "Actual source visibility probe",
+      "points": 3,
+      "listeners": 3,
+      "observers": 3,
+      "events": [
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.40000000037253
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.70000000018626
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.79999999981374
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.29999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.79999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        }
+      ]
+    },
+    {
+      "name": "visible-reentry",
+      "clear": 4,
+      "stroke": 4,
+      "fill": 4,
+      "hidden": false,
+      "visibility": "visible",
+      "rect": {
+        "top": 0,
+        "bottom": 22,
+        "width": 360
+      },
+      "title": "Actual source visibility probe",
+      "points": 3,
+      "listeners": 3,
+      "observers": 3,
+      "events": [
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.40000000037253
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.70000000018626
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.79999999981374
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.29999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.79999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.7999999998137
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        }
+      ]
+    },
+    {
+      "name": "hidden-settled",
+      "clear": 4,
+      "stroke": 4,
+      "fill": 4,
+      "hidden": true,
+      "visibility": "hidden",
+      "rect": {
+        "top": 0,
+        "bottom": 22,
+        "width": 360
+      },
+      "title": "Actual source visibility probe",
+      "points": 3,
+      "listeners": 3,
+      "observers": 3,
+      "events": [
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.40000000037253
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.70000000018626
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.79999999981374
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.29999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.79999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.7999999998137
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        }
+      ]
+    },
+    {
+      "name": "hidden-points-theme-resize",
+      "clear": 4,
+      "stroke": 4,
+      "fill": 4,
+      "hidden": true,
+      "visibility": "hidden",
+      "rect": {
+        "top": 0,
+        "bottom": 22,
+        "width": 360
+      },
+      "title": "Actual source visibility probe",
+      "points": 3,
+      "listeners": 3,
+      "observers": 3,
+      "events": [
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.40000000037253
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.70000000018626
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 143.79999999981374
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.29999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.79999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.7999999998137
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        }
+      ]
+    },
+    {
+      "name": "visible-after-hidden",
+      "clear": 5,
+      "stroke": 5,
+      "fill": 5,
+      "hidden": false,
+      "visibility": "visible",
+      "rect": {
+        "top": 0,
+        "bottom": 22,
+        "width": 360
+      },
+      "title": "Actual source visibility probe",
+      "points": 3,
+      "listeners": 3,
+      "observers": 3,
+      "events": [
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.29999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.79999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.7999999998137
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 4055.4000000003725
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 4055.4000000003725
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 4055.5
+        }
+      ]
+    },
+    {
+      "name": "unmounted",
+      "clear": 5,
+      "stroke": 5,
+      "fill": 5,
+      "hidden": false,
+      "visibility": "visible",
+      "rect": null,
+      "points": 0,
+      "listeners": 0,
+      "observers": 0,
+      "events": [
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.29999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.79999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.7999999998137
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 4055.4000000003725
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 4055.4000000003725
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 4055.5
+        }
+      ]
+    },
+    {
+      "name": "post-unmount-events",
+      "clear": 5,
+      "stroke": 5,
+      "fill": 5,
+      "hidden": false,
+      "visibility": "visible",
+      "rect": null,
+      "points": 0,
+      "listeners": 0,
+      "observers": 0,
+      "events": [
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.29999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 145.40000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.79999999981374
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 146.90000000037253
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.7999999998137
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 1505.9000000003725
+        },
+        {
+          "method": "clearRect",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 4055.4000000003725
+        },
+        {
+          "method": "fill",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 4055.4000000003725
+        },
+        {
+          "method": "stroke",
+          "connected": true,
+          "hidden": false,
+          "visibility": "visible",
+          "top": 0,
+          "bottom": 22,
+          "time": 4055.5
+        }
+      ]
+    }
+  ],
+  "assertions": [
+    {
+      "name": "visible paints real supplied buckets",
+      "pass": true,
+      "evidence": {
+        "clear": 3,
+        "stroke": 3,
+        "fill": 3,
+        "hidden": false,
+        "visibility": "visible",
+        "rect": {
+          "top": 0,
+          "bottom": 22,
+          "width": 300
+        },
+        "title": "Actual source visibility probe",
+        "points": 3,
+        "listeners": 3,
+        "observers": 3,
+        "events": [
+          {
+            "method": "clearRect",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 143.40000000037253
+          },
+          {
+            "method": "fill",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 143.70000000018626
+          },
+          {
+            "method": "stroke",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 143.79999999981374
+          },
+          {
+            "method": "clearRect",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 145.29999999981374
+          },
+          {
+            "method": "fill",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 145.40000000037253
+          },
+          {
+            "method": "stroke",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 145.40000000037253
+          },
+          {
+            "method": "clearRect",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 146.79999999981374
+          },
+          {
+            "method": "fill",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 146.90000000037253
+          },
+          {
+            "method": "stroke",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 146.90000000037253
+          }
+        ]
+      }
+    },
+    {
+      "name": "fixture actually offscreen",
+      "pass": true,
+      "evidence": {
+        "top": 1800,
+        "bottom": 1822,
+        "width": 300
+      }
+    },
+    {
+      "name": "offscreen points update does not paint",
+      "pass": true,
+      "evidence": {
+        "before": 3,
+        "after": 3
+      }
+    },
+    {
+      "name": "offscreen theme update does not paint",
+      "pass": true,
+      "evidence": {
+        "before": 3,
+        "after": 3
+      }
+    },
+    {
+      "name": "offscreen resize update does not paint",
+      "pass": true,
+      "evidence": {
+        "before": 3,
+        "after": 3
+      }
+    },
+    {
+      "name": "reentry repaints latest data/theme/size",
+      "pass": true,
+      "evidence": {
+        "before": 3,
+        "after": 4,
+        "rect": {
+          "top": 0,
+          "bottom": 22,
+          "width": 360
+        }
+      }
+    },
+    {
+      "name": "document hidden during probe",
+      "pass": true,
+      "evidence": {
+        "mode": "EMULATED-document-getters-and-event",
+        "clear": 4,
+        "stroke": 4,
+        "fill": 4,
+        "hidden": true,
+        "visibility": "hidden",
+        "rect": {
+          "top": 0,
+          "bottom": 22,
+          "width": 360
+        },
+        "title": "Actual source visibility probe",
+        "points": 3,
+        "listeners": 3,
+        "observers": 3,
+        "events": [
+          {
+            "method": "clearRect",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 143.40000000037253
+          },
+          {
+            "method": "fill",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 143.70000000018626
+          },
+          {
+            "method": "stroke",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 143.79999999981374
+          },
+          {
+            "method": "clearRect",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 145.29999999981374
+          },
+          {
+            "method": "fill",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 145.40000000037253
+          },
+          {
+            "method": "stroke",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 145.40000000037253
+          },
+          {
+            "method": "clearRect",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 146.79999999981374
+          },
+          {
+            "method": "fill",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 146.90000000037253
+          },
+          {
+            "method": "stroke",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 146.90000000037253
+          },
+          {
+            "method": "clearRect",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 1505.7999999998137
+          },
+          {
+            "method": "fill",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 1505.9000000003725
+          },
+          {
+            "method": "stroke",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 1505.9000000003725
+          }
+        ]
+      }
+    },
+    {
+      "name": "hidden updates do not paint",
+      "pass": true,
+      "evidence": {
+        "mode": "EMULATED-document-getters-and-event",
+        "before": 4,
+        "after": 4
+      }
+    },
+    {
+      "name": "visibility resume repaints latest data",
+      "pass": true,
+      "evidence": {
+        "mode": "EMULATED-document-getters-and-event",
+        "before": 4,
+        "after": 5
+      }
+    },
+    {
+      "name": "unmount disconnects listeners/observers and prevents detached paint",
+      "pass": true,
+      "evidence": {
+        "before": 5,
+        "clear": 5,
+        "stroke": 5,
+        "fill": 5,
+        "hidden": false,
+        "visibility": "visible",
+        "rect": null,
+        "points": 0,
+        "listeners": 0,
+        "observers": 0,
+        "events": [
+          {
+            "method": "clearRect",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 145.29999999981374
+          },
+          {
+            "method": "fill",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 145.40000000037253
+          },
+          {
+            "method": "stroke",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 145.40000000037253
+          },
+          {
+            "method": "clearRect",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 146.79999999981374
+          },
+          {
+            "method": "fill",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 146.90000000037253
+          },
+          {
+            "method": "stroke",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 146.90000000037253
+          },
+          {
+            "method": "clearRect",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 1505.7999999998137
+          },
+          {
+            "method": "fill",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 1505.9000000003725
+          },
+          {
+            "method": "stroke",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 1505.9000000003725
+          },
+          {
+            "method": "clearRect",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 4055.4000000003725
+          },
+          {
+            "method": "fill",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 4055.4000000003725
+          },
+          {
+            "method": "stroke",
+            "connected": true,
+            "hidden": false,
+            "visibility": "visible",
+            "top": 0,
+            "bottom": 22,
+            "time": 4055.5
+          }
+        ]
+      }
+    }
+  ]
+}

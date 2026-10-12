@@ -1,0 +1,67 @@
+{
+  "checkpoint": "v1.85.68",
+  "baseCommit": "9011fd8",
+  "productionIndexSha256": "f7d1206ef4ddf75c6fc2f1ee6c36cc5e6d22fe45338b19caefea9a6e50922b5a",
+  "sourceHashes": {
+    "package.json": "a9f7ae60b77bae1b76bef974dd285b5e8ba8774d756763d0b23bd5139976fe63",
+    "packages/web/src/redesign/activity-sparkline.tsx": "b8f809d26fd5d4abc8e6a4f0a85f63e4792e1524751d158abb4b9472a508f4a8",
+    "scripts/check-stable-captures.mts": "4611940cd3f164c992c287f82c71dad6cacea61d5fe9105b6f6d57d7123ea903",
+    "scripts/check-activity-visibility.mts": "11d23a64321cbce1eb2a4a29279a7dc0a0b760ef4476146357dfe8204893f818"
+  },
+  "logProvenance": {
+    "checkpoint68-activity-no-io.log": {
+      "rawSha256": "66d6b313f80ca2a497e4eaa42a14f90b3d75b269a896087f4cbab482aebce0d1",
+      "archivedSha256": "3009b0f806e7a6ebf1ca0c2896117d899fbb75c24405b4de5a13b8f260cf7d78",
+      "sourceEncoding": "utf-8-sig"
+    },
+    "checkpoint68-activity.log": {
+      "rawSha256": "650190e13db5137d877ebf393011039da637d2a57337ff65b491f6c930cea583",
+      "archivedSha256": "936e51a740dd5b7ad7e02031b2bbf7be8f197233dd2590ebd902fab87320d0d1",
+      "sourceEncoding": "utf-8-sig"
+    },
+    "checkpoint68-daemonBuild.log": {
+      "rawSha256": "72339db69a4bd28d15984477d7c43fa96f5b7555c30e3e96332cdec0527dd4ed",
+      "archivedSha256": "bf380a2312e9ac7076fbb56f55f8f78c5ae40b84357a7835e68804575d287b94",
+      "sourceEncoding": "utf-8-sig"
+    },
+    "checkpoint68-desktop.log": {
+      "rawSha256": "7e9ed6d546da052aab867acdfb89412a90f23a849ab5bec9b94b66426fdfff3e",
+      "archivedSha256": "20836d398e744b9cdea1b5d96853bd1fbf481da55529b87ef72b0f4f2d2f7ea0",
+      "sourceEncoding": "utf-8-sig"
+    },
+    "checkpoint68-repositoryTests.log": {
+      "rawSha256": "b58d50267495ccdb6f8d7a2187d0e6b9bd7737da8718d06e2b614c8dee9ef81a",
+      "archivedSha256": "6ba846c8133337013b990be029bd389cc4225dcea85785a18de234b9f26ed139",
+      "sourceEncoding": "utf-8-sig"
+    },
+    "checkpoint68-stable-before-visible-scroll.log": {
+      "rawSha256": "3fe457e2816664012b3d3a90ca88130d960308603b50e081cdf7b729a113ab7a",
+      "archivedSha256": "e04cccc7f6fb6c6af5e20bcd9c7b5887e5e5f92c82ae91ed9f0de2e1bb332bd8",
+      "sourceEncoding": "utf-8-sig"
+    },
+    "checkpoint68-stable.log": {
+      "rawSha256": "b2c7c12af5f3d129ee18b92643de52ad9ec5fe09d89cc3fb3035ecf06f968465",
+      "archivedSha256": "2e33ba47b3750118ff2411bfa70b92f75fef9f977cd9234546225006cf159d84",
+      "sourceEncoding": "utf-8-sig"
+    },
+    "checkpoint68-trayBuild.log": {
+      "rawSha256": "dc27bfd6c564dae1f869882b21b58fc32d3a9a82ca97c39e8f0ce27980a05c66",
+      "archivedSha256": "94242f1d0af848318b417b3e20f8944e28358ab1dca2a5837c5624552d8b0c1d",
+      "sourceEncoding": "utf-8-sig"
+    },
+    "checkpoint68-ui.log": {
+      "rawSha256": "cc331bc9ef1a5c8038b25360067cc97800900a307fc0b079321f6195223bff1b",
+      "archivedSha256": "5548d406bc9fb7939b73abcdd074746009fee1da108877dacc6de84b26cc2162",
+      "sourceEncoding": "utf-8-sig"
+    },
+    "checkpoint68-webBuild.log": {
+      "rawSha256": "9c459fd01d7930832ccc6414fe2c2ed7262be697a83e646f59696eaa7a582c4f",
+      "archivedSha256": "792e9a51f1f137356eff73935073f58797fc2624a76804577189cb6994600ed2",
+      "sourceEncoding": "utf-8-sig"
+    }
+  },
+  "titleTrialsBuild": "v1.85.67",
+  "isolatedDesktop": "current web assets and newly compiled tray/preloads; fixture main only",
+  "testedActivityProbeSha256": "11d23a64321cbce1eb2a4a29279a7dc0a0b760ef4476146357dfe8204893f818",
+  "textNormalization": "Archived text normalized to LF after execution; tested Activity source hash is unchanged. Other sourceHashes identify locally tested working bytes; Git may normalize text on checkout."
+}

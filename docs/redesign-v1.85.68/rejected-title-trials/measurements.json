@@ -1,0 +1,1069 @@
+{
+  "method": "Tight same-text neutral title crop, opacity inferred from crop background/95th percentile foreground; glyph bounds at .2/.5/.8; icons/subtitles excluded. Diagnostic raster metrics, not whole-page similarity.",
+  "browser": "154.0.8037.98",
+  "productionIndexSha256": "88edb8dc8ec17f96c7face5327ac3892953eb2bb227cd68848f4620ac3acbcad",
+  "sourceInputs": {
+    "models": {
+      "path": "C:\\Users\\TH12367283\\Downloads\\quotapulse_build_blueprint\\refs\\models.png",
+      "sha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "metric": {
+        "crop": [
+          287,
+          88,
+          370,
+          112
+        ],
+        "cropSha256": "57ce409cfd0befe1e64cdecaf88deb279c8db533d7b65bd4adf88580309e4795",
+        "backgroundLuminance": 11.8086,
+        "foregroundLuminance": 254.99999999999997,
+        "normalizedInk": 467.87947271161727,
+        "bounds": {
+          "0.2": {
+            "x": 291,
+            "y": 91,
+            "width": 70,
+            "height": 17,
+            "pixels": 629
+          },
+          "0.5": {
+            "x": 291,
+            "y": 92,
+            "width": 70,
+            "height": 16,
+            "pixels": 468
+          },
+          "0.8": {
+            "x": 292,
+            "y": 92,
+            "width": 69,
+            "height": 15,
+            "pixels": 294
+          }
+        }
+      }
+    },
+    "projects": {
+      "path": "C:\\Users\\TH12367283\\Downloads\\quotapulse_build_blueprint\\refs\\projects.png",
+      "sha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "metric": {
+        "crop": [
+          300,
+          79,
+          403,
+          109
+        ],
+        "cropSha256": "d33012805a14ef1971e8fb8530b959b79f5f2cbb0632142581db732090b56d15",
+        "backgroundLuminance": 12.169599999999999,
+        "foregroundLuminance": 254.99999999999997,
+        "normalizedInk": 582.4799514393585,
+        "bounds": {
+          "0.2": {
+            "x": 305,
+            "y": 82,
+            "width": 86,
+            "height": 24,
+            "pixels": 758
+          },
+          "0.5": {
+            "x": 305,
+            "y": 83,
+            "width": 86,
+            "height": 22,
+            "pixels": 565
+          },
+          "0.8": {
+            "x": 306,
+            "y": 83,
+            "width": 84,
+            "height": 22,
+            "pixels": 401
+          }
+        }
+      }
+    }
+  },
+  "results": [
+    {
+      "route": "models",
+      "trial": {
+        "name": "baseline"
+      },
+      "filename": "models-baseline.png",
+      "sha256": "cce7be85cfe03812eb0ce885205aee0f5e2b14788ce8c7533a18e452906901c6",
+      "metric": {
+        "crop": [
+          287,
+          88,
+          370,
+          112
+        ],
+        "cropSha256": "f8e927fffad00b019466f8a00fe3626ea62e35ac174a1cabec1506be47bcf826",
+        "backgroundLuminance": 17.6,
+        "foregroundLuminance": 245.59199999999998,
+        "normalizedInk": 442.83810835467915,
+        "bounds": {
+          "0.2": {
+            "x": 290,
+            "y": 92,
+            "width": 73,
+            "height": 17,
+            "pixels": 602
+          },
+          "0.5": {
+            "x": 291,
+            "y": 92,
+            "width": 71,
+            "height": 16,
+            "pixels": 480
+          },
+          "0.8": {
+            "x": 291,
+            "y": 92,
+            "width": 71,
+            "height": 16,
+            "pixels": 318
+          }
+        },
+        "sameCoordinatesAlphaMAE": 0.09022782009567429,
+        "normalizedInkRatio": 0.9464790275756068,
+        "glyphEdgeDelta": {
+          "x": -1,
+          "y": 1,
+          "width": 3,
+          "height": 0
+        },
+        "surroundingGeometryDeltas": {
+          "h1": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy>p": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-icon": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          ".qp-model-summary": {
+            "x": 0,
+            "y": 0,
+            "width": 0.0,
+            "height": 0
+          }
+        },
+        "bestTranslationAlphaMAE": 0.09022782009567429,
+        "bestTranslation": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "route": "models",
+      "trial": {
+        "name": "tracking-minus045",
+        "tracking": -0.45
+      },
+      "filename": "models-tracking-minus045.png",
+      "sha256": "e794386fbb039abd44881b609f9fe0618d5df5f91e4e3f66189e31fb43768086",
+      "metric": {
+        "crop": [
+          287,
+          88,
+          370,
+          112
+        ],
+        "cropSha256": "1fdb1fb0676592f79165653bb171a64953acd9e4e641a2bb1a5a4af3ee6e46f0",
+        "backgroundLuminance": 17.6,
+        "foregroundLuminance": 246.29199999999997,
+        "normalizedInk": 441.0250231752751,
+        "bounds": {
+          "0.2": {
+            "x": 290,
+            "y": 92,
+            "width": 70,
+            "height": 17,
+            "pixels": 604
+          },
+          "0.5": {
+            "x": 291,
+            "y": 92,
+            "width": 68,
+            "height": 16,
+            "pixels": 469
+          },
+          "0.8": {
+            "x": 291,
+            "y": 92,
+            "width": 68,
+            "height": 16,
+            "pixels": 316
+          }
+        },
+        "sameCoordinatesAlphaMAE": 0.18066900550377166,
+        "normalizedInkRatio": 0.9426039159600101,
+        "glyphEdgeDelta": {
+          "x": -1,
+          "y": 1,
+          "width": 0,
+          "height": 0
+        },
+        "surroundingGeometryDeltas": {
+          "h1": {
+            "x": 0,
+            "y": 0.0,
+            "width": -3.59375,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy": {
+            "x": 0,
+            "y": 0.0,
+            "width": -3.59375,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy>p": {
+            "x": -3.59375,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-icon": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          ".qp-model-summary": {
+            "x": 0,
+            "y": 0,
+            "width": 0.0,
+            "height": 0
+          }
+        },
+        "bestTranslationAlphaMAE": 0.12194441734955228,
+        "bestTranslation": [
+          1,
+          -1
+        ]
+      }
+    },
+    {
+      "route": "models",
+      "trial": {
+        "name": "translate-y5",
+        "y": 5
+      },
+      "filename": "models-translate-y5.png",
+      "sha256": "f7c505a7e20681ec12ee6bf32bae011cf85ff3839a7352da9bf617e3ccd4a5ba",
+      "metric": {
+        "crop": [
+          287,
+          88,
+          370,
+          112
+        ],
+        "cropSha256": "371de58dbe85df63ea8e839361820379b181f8a401250cbe9abadecc5f587efa",
+        "backgroundLuminance": 17.6,
+        "foregroundLuminance": 245.59199999999998,
+        "normalizedInk": 442.8302966770764,
+        "bounds": {
+          "0.2": {
+            "x": 290,
+            "y": 91,
+            "width": 73,
+            "height": 17,
+            "pixels": 602
+          },
+          "0.5": {
+            "x": 291,
+            "y": 91,
+            "width": 71,
+            "height": 16,
+            "pixels": 479
+          },
+          "0.8": {
+            "x": 291,
+            "y": 91,
+            "width": 71,
+            "height": 16,
+            "pixels": 319
+          }
+        },
+        "sameCoordinatesAlphaMAE": 0.09539248273269522,
+        "normalizedInkRatio": 0.9464623316569816,
+        "glyphEdgeDelta": {
+          "x": -1,
+          "y": 0,
+          "width": 3,
+          "height": 0
+        },
+        "surroundingGeometryDeltas": {
+          "h1": {
+            "x": 0,
+            "y": -1.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy>p": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-icon": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          ".qp-model-summary": {
+            "x": 0,
+            "y": 0,
+            "width": 0.0,
+            "height": 0
+          }
+        },
+        "bestTranslationAlphaMAE": 0.09019838410507057,
+        "bestTranslation": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "route": "models",
+      "trial": {
+        "name": "tracking-minus045-y5",
+        "tracking": -0.45,
+        "y": 5
+      },
+      "filename": "models-tracking-minus045-y5.png",
+      "sha256": "36e2b9eb8980922762290f6fcebdda51a92570aaaf18666bdab010f076369720",
+      "metric": {
+        "crop": [
+          287,
+          88,
+          370,
+          112
+        ],
+        "cropSha256": "dbfd88c495a8e69a1b71882fab87ade177a75aec8039939a7c212863c239e4a0",
+        "backgroundLuminance": 17.6,
+        "foregroundLuminance": 246.29199999999997,
+        "normalizedInk": 441.01344340860203,
+        "bounds": {
+          "0.2": {
+            "x": 290,
+            "y": 91,
+            "width": 70,
+            "height": 17,
+            "pixels": 604
+          },
+          "0.5": {
+            "x": 291,
+            "y": 91,
+            "width": 68,
+            "height": 16,
+            "pixels": 469
+          },
+          "0.8": {
+            "x": 291,
+            "y": 91,
+            "width": 68,
+            "height": 16,
+            "pixels": 316
+          }
+        },
+        "sameCoordinatesAlphaMAE": 0.17316804118837403,
+        "normalizedInkRatio": 0.9425791664949268,
+        "glyphEdgeDelta": {
+          "x": -1,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "surroundingGeometryDeltas": {
+          "h1": {
+            "x": 0,
+            "y": -1.0,
+            "width": -3.59375,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy": {
+            "x": 0,
+            "y": 0.0,
+            "width": -3.59375,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy>p": {
+            "x": -3.59375,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-icon": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          ".qp-model-summary": {
+            "x": 0,
+            "y": 0,
+            "width": 0.0,
+            "height": 0
+          }
+        },
+        "bestTranslationAlphaMAE": 0.12193528586906237,
+        "bestTranslation": [
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "baseline"
+      },
+      "filename": "projects-baseline.png",
+      "sha256": "ceefc690397a86d78db3681e72d5d4a61b79c78b710a07eab8627cd6241b7765",
+      "metric": {
+        "crop": [
+          300,
+          79,
+          403,
+          109
+        ],
+        "cropSha256": "c8ee1b789286d5cd3b177e7e519cb8cf1124334dd12d6f0fb15224b07652e040",
+        "backgroundLuminance": 12.306,
+        "foregroundLuminance": 252.00399999999996,
+        "normalizedInk": 525.2449857737654,
+        "bounds": {
+          "0.2": {
+            "x": 306,
+            "y": 83,
+            "width": 84,
+            "height": 22,
+            "pixels": 718
+          },
+          "0.5": {
+            "x": 306,
+            "y": 83,
+            "width": 84,
+            "height": 22,
+            "pixels": 527
+          },
+          "0.8": {
+            "x": 306,
+            "y": 83,
+            "width": 83,
+            "height": 22,
+            "pixels": 384
+          }
+        },
+        "sameCoordinatesAlphaMAE": 0.12170104267356821,
+        "normalizedInkRatio": 0.9017391662594385,
+        "glyphEdgeDelta": {
+          "x": 1,
+          "y": 1,
+          "width": -2,
+          "height": -2
+        },
+        "surroundingGeometryDeltas": {
+          "h1": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy>p": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-icon": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0,
+            "height": 0
+          },
+          ".qp-project-tabs": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          }
+        },
+        "bestTranslationAlphaMAE": 0.12170104267356821,
+        "bestTranslation": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size26",
+        "size": 26
+      },
+      "filename": "projects-size26.png",
+      "sha256": "a2974dd9d7c7197d9f8b96104576e32ee32897bf88dddedc25c3b9fcf3e400de",
+      "metric": {
+        "crop": [
+          300,
+          79,
+          403,
+          109
+        ],
+        "cropSha256": "a3bb265229d4340214da8812667dc5727086e269df99576e3fd8a2b5db66be49",
+        "backgroundLuminance": 12.306,
+        "foregroundLuminance": 252.00399999999996,
+        "normalizedInk": 563.1071731929345,
+        "bounds": {
+          "0.2": {
+            "x": 306,
+            "y": 82,
+            "width": 88,
+            "height": 23,
+            "pixels": 750
+          },
+          "0.5": {
+            "x": 306,
+            "y": 82,
+            "width": 88,
+            "height": 23,
+            "pixels": 608
+          },
+          "0.8": {
+            "x": 307,
+            "y": 83,
+            "width": 86,
+            "height": 22,
+            "pixels": 404
+          }
+        },
+        "sameCoordinatesAlphaMAE": 0.17129590311588833,
+        "normalizedInkRatio": 0.9667408668769591,
+        "glyphEdgeDelta": {
+          "x": 1,
+          "y": 0,
+          "width": 2,
+          "height": -1
+        },
+        "surroundingGeometryDeltas": {
+          "h1": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy>p": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-icon": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0,
+            "height": 0
+          },
+          ".qp-project-tabs": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          }
+        },
+        "bestTranslationAlphaMAE": 0.12734278983432845,
+        "bestTranslation": [
+          -1,
+          0
+        ]
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size26-tracking-minus095",
+        "size": 26,
+        "tracking": -0.95
+      },
+      "filename": "projects-size26-tracking-minus095.png",
+      "sha256": "cf2145334cf44e5c93b9b7a55146d62e0de37664e7dfb2b681b201281535146b",
+      "metric": {
+        "crop": [
+          300,
+          79,
+          403,
+          109
+        ],
+        "cropSha256": "38b11fecfe43d6bfe0c41e90282e5eaf31df611ade4b8ef9f6bcc0a3bfbea050",
+        "backgroundLuminance": 12.306,
+        "foregroundLuminance": 252.00399999999996,
+        "normalizedInk": 564.9276598052551,
+        "bounds": {
+          "0.2": {
+            "x": 306,
+            "y": 82,
+            "width": 87,
+            "height": 23,
+            "pixels": 764
+          },
+          "0.5": {
+            "x": 306,
+            "y": 82,
+            "width": 87,
+            "height": 23,
+            "pixels": 598
+          },
+          "0.8": {
+            "x": 307,
+            "y": 83,
+            "width": 85,
+            "height": 22,
+            "pixels": 413
+          }
+        },
+        "sameCoordinatesAlphaMAE": 0.14451007097983903,
+        "normalizedInkRatio": 0.9698662733528765,
+        "glyphEdgeDelta": {
+          "x": 1,
+          "y": 0,
+          "width": 1,
+          "height": -1
+        },
+        "surroundingGeometryDeltas": {
+          "h1": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy>p": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-icon": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0,
+            "height": 0
+          },
+          ".qp-project-tabs": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          }
+        },
+        "bestTranslationAlphaMAE": 0.1232823282216847,
+        "bestTranslation": [
+          -1,
+          0
+        ]
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size26-tracking-minus105",
+        "size": 26,
+        "tracking": -1.05
+      },
+      "filename": "projects-size26-tracking-minus105.png",
+      "sha256": "c20d74474a32ec57012a3ec54eac39860763202f9664a71d34bf494250bdcb9a",
+      "metric": {
+        "crop": [
+          300,
+          79,
+          403,
+          109
+        ],
+        "cropSha256": "58294d611c8847e2e301d0af0e152c20ee28bafc4b8b46ffc5bc034a8654a6ea",
+        "backgroundLuminance": 12.306,
+        "foregroundLuminance": 252.00399999999996,
+        "normalizedInk": 562.4442047910287,
+        "bounds": {
+          "0.2": {
+            "x": 306,
+            "y": 82,
+            "width": 86,
+            "height": 23,
+            "pixels": 750
+          },
+          "0.5": {
+            "x": 306,
+            "y": 82,
+            "width": 86,
+            "height": 23,
+            "pixels": 621
+          },
+          "0.8": {
+            "x": 307,
+            "y": 83,
+            "width": 84,
+            "height": 22,
+            "pixels": 391
+          }
+        },
+        "sameCoordinatesAlphaMAE": 0.13919084620124542,
+        "normalizedInkRatio": 0.9656026845236136,
+        "glyphEdgeDelta": {
+          "x": 1,
+          "y": 0,
+          "width": 0,
+          "height": -1
+        },
+        "surroundingGeometryDeltas": {
+          "h1": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy>p": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-icon": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0,
+            "height": 0
+          },
+          ".qp-project-tabs": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          }
+        },
+        "bestTranslationAlphaMAE": 0.12885757411497525,
+        "bestTranslation": [
+          -1,
+          0
+        ]
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size265",
+        "size": 26.5
+      },
+      "filename": "projects-size265.png",
+      "sha256": "34e4ede915fe6d605c2c85dd1127bb9edf236b6a9d567c042f2fe0c93fcf87f5",
+      "metric": {
+        "crop": [
+          300,
+          79,
+          403,
+          109
+        ],
+        "cropSha256": "ee26cb57316ffcbba3ecb061039490dab4d0a9a21207d4b36122c45230c008d0",
+        "backgroundLuminance": 12.306,
+        "foregroundLuminance": 252.00399999999996,
+        "normalizedInk": 588.5893115503677,
+        "bounds": {
+          "0.2": {
+            "x": 306,
+            "y": 83,
+            "width": 90,
+            "height": 23,
+            "pixels": 784
+          },
+          "0.5": {
+            "x": 306,
+            "y": 83,
+            "width": 89,
+            "height": 23,
+            "pixels": 643
+          },
+          "0.8": {
+            "x": 307,
+            "y": 83,
+            "width": 88,
+            "height": 23,
+            "pixels": 382
+          }
+        },
+        "sameCoordinatesAlphaMAE": 0.22005793595961437,
+        "normalizedInkRatio": 1.0104885328600794,
+        "glyphEdgeDelta": {
+          "x": 1,
+          "y": 1,
+          "width": 4,
+          "height": -1
+        },
+        "surroundingGeometryDeltas": {
+          "h1": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy>p": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-icon": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0,
+            "height": 0
+          },
+          ".qp-project-tabs": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          }
+        },
+        "bestTranslationAlphaMAE": 0.1469145833163104,
+        "bestTranslation": [
+          -2,
+          0
+        ]
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size265-tracking-minus105",
+        "size": 26.5,
+        "tracking": -1.05
+      },
+      "filename": "projects-size265-tracking-minus105.png",
+      "sha256": "b0efae3fb5566403af8339d1a3377cf995b510f3972b6608bab0aa487e7365bf",
+      "metric": {
+        "crop": [
+          300,
+          79,
+          403,
+          109
+        ],
+        "cropSha256": "42a9d32898a2f5a90b0592692b5b3242a248bee60ce737f071c10ba95b36c787",
+        "backgroundLuminance": 12.306,
+        "foregroundLuminance": 252.00399999999996,
+        "normalizedInk": 590.5938956520288,
+        "bounds": {
+          "0.2": {
+            "x": 306,
+            "y": 83,
+            "width": 88,
+            "height": 23,
+            "pixels": 793
+          },
+          "0.5": {
+            "x": 306,
+            "y": 83,
+            "width": 88,
+            "height": 23,
+            "pixels": 632
+          },
+          "0.8": {
+            "x": 307,
+            "y": 83,
+            "width": 86,
+            "height": 23,
+            "pixels": 391
+          }
+        },
+        "sameCoordinatesAlphaMAE": 0.18792283279601832,
+        "normalizedInkRatio": 1.0139299974061253,
+        "glyphEdgeDelta": {
+          "x": 1,
+          "y": 1,
+          "width": 2,
+          "height": -1
+        },
+        "surroundingGeometryDeltas": {
+          "h1": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy>p": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-icon": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0,
+            "height": 0
+          },
+          ".qp-project-tabs": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          }
+        },
+        "bestTranslationAlphaMAE": 0.13889704987329202,
+        "bestTranslation": [
+          -2,
+          0
+        ]
+      }
+    },
+    {
+      "route": "projects",
+      "trial": {
+        "name": "size265-tracking-minus120",
+        "size": 26.5,
+        "tracking": -1.2
+      },
+      "filename": "projects-size265-tracking-minus120.png",
+      "sha256": "d2bfe48f3b2e725795865ff5e5c6cf98038e37ed8759a715fe14487f9e1979ed",
+      "metric": {
+        "crop": [
+          300,
+          79,
+          403,
+          109
+        ],
+        "cropSha256": "523cf1dcd01969ebc3efe2fe0bbfa0ca2b822a2eb8793a111a3313fc22d7cf0e",
+        "backgroundLuminance": 12.306,
+        "foregroundLuminance": 252.00399999999996,
+        "normalizedInk": 591.2460045557326,
+        "bounds": {
+          "0.2": {
+            "x": 306,
+            "y": 83,
+            "width": 87,
+            "height": 23,
+            "pixels": 799
+          },
+          "0.5": {
+            "x": 306,
+            "y": 83,
+            "width": 87,
+            "height": 23,
+            "pixels": 628
+          },
+          "0.8": {
+            "x": 307,
+            "y": 83,
+            "width": 85,
+            "height": 23,
+            "pixels": 400
+          }
+        },
+        "sameCoordinatesAlphaMAE": 0.16344994594714254,
+        "normalizedInkRatio": 1.0150495362024263,
+        "glyphEdgeDelta": {
+          "x": 1,
+          "y": 1,
+          "width": 1,
+          "height": -1
+        },
+        "surroundingGeometryDeltas": {
+          "h1": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-copy>p": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          },
+          ".qp-page-heading-icon": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0,
+            "height": 0
+          },
+          ".qp-project-tabs": {
+            "x": 0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+          }
+        },
+        "bestTranslationAlphaMAE": 0.13531622657344056,
+        "bestTranslation": [
+          -1,
+          -1
+        ]
+      }
+    }
+  ]
+}
