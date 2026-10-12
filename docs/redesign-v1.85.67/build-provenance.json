@@ -1,0 +1,45 @@
+{
+  "baseCommit": "c1df69e",
+  "productionIndexSha256": "88edb8dc8ec17f96c7face5327ac3892953eb2bb227cd68848f4620ac3acbcad",
+  "beforeTerminalSession": 45765,
+  "buildNativeTerminalSession": 53607,
+  "gatesTerminalSession": 74512,
+  "gates": {
+    "stage": "terminal",
+    "nativeThaiDarkExit": 0,
+    "nativeThaiLightExit": 0,
+    "costExit": 0,
+    "historyExit": 0,
+    "webTestsExit": 0,
+    "uiExit": 0
+  },
+  "sourceHashes": {
+    "packages/web/src/redesign/cost.css": "622b1c80dabab7d68980dcd8a60ea251da95fbcdc37f529674db99b192a6bdbf",
+    "packages/web/src/redesign/history.css": "74b0b48f746a7a63427dc9b46f98982619e6381f322ad42d9552b6ec1ff916d5"
+  },
+  "captures": [
+    {
+      "scope": "cost",
+      "pairs": 4,
+      "byteIdentical": 3
+    },
+    {
+      "scope": "history",
+      "pairs": 8,
+      "byteIdentical": 8
+    }
+  ],
+  "verifiedRepeatImageHashes": 24,
+  "originalLogHashes": {
+    "build": "0cec0294bbc11a60a60881e4d856fd0a9071341deef1650a78621197517ff75c",
+    "native-en": "204264ae35b6e183a455564d4ef6447be9d597ccabb30625c9861e36e097df94",
+    "nativeThaiDark": "eed92a43ed260a8bb5799b69ba810d3c865d0fa6f656c3c48fb9bf42278bbb4d",
+    "nativeThaiLight": "eed92a43ed260a8bb5799b69ba810d3c865d0fa6f656c3c48fb9bf42278bbb4d",
+    "cost": "24e4c91920c959c4a7e35551f6e992abb9c4bb7b6d003e32a6776c3a3d1687ec",
+    "history": "ea7797df2dbe70afece4833338ab7d3f659705789d8cf998d2d39df13a8ba24c",
+    "webTests": "415bf4c0732e8364a1eceb508c0be28a8f7e4c426394b5d2a466d4759c05ff6c",
+    "ui": "cc331bc9ef1a5c8038b25360067cc97800900a307fc0b079321f6195223bff1b",
+    "before": "eed92a43ed260a8bb5799b69ba810d3c865d0fa6f656c3c48fb9bf42278bbb4d"
+  },
+  "review": "blueprint65_completion_audit independently reviewed two-file diff; no blocker found; root ran runtime/geometry/source-pixel checks. Full-goal acceptance not claimed."
+}

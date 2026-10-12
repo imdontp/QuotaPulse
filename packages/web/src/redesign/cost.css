@@ -27,6 +27,8 @@
 /* Native dark reference bar paint; keep recorded heights and zero-height boxes. */
 @media(min-width:1536px) {
   .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-column {
+    max-width:24px;
+    margin-inline:auto;
     background:linear-gradient(180deg,#0bd3ff 0%,#09b1fb 25%,#088af1 50%,#0766d1 75%,#0653ba 90%,#0651b5 100%);
     box-shadow:
       inset 1px 0 0 #22caff80,

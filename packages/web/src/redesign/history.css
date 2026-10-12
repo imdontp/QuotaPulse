@@ -190,3 +190,10 @@
  .qp-redesign[data-testid=production-history][data-theme=dark] .qp-history-heading-identity>i { transform:translateX(3px); color:#09abff; background:linear-gradient(135deg,#031b48,#03162f); box-shadow:inset 0 0 12px #10469b22; }
  .qp-redesign[data-testid=production-history][data-theme=dark] .qp-history-heading-identity>i>svg { width:30px; height:30px; stroke-width:1.7; filter:drop-shadow(0 0 1px #159aff99); }
 }
+
+/* Native dark History rows use the reference's restrained blue surface. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-history][data-theme=dark] .qp-history-records { background:#050e1a; }
+  .qp-redesign[data-testid=production-history][data-theme=dark] .qp-history-records tbody tr:not([data-selected=true]):not(:hover):not(:focus-within) { background:#06101c; }
+  .qp-redesign[data-testid=production-history][data-theme=dark] .qp-history-records tbody tr:nth-child(even):not([data-selected=true]):not(:hover):not(:focus-within) { background:#06101d; }
+}
