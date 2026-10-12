@@ -1,0 +1,68 @@
+{
+  "baseCommit": "7a590ab",
+  "productionIndexSha256": "9ddf1033f8443cb0667ae8d79fa55cc6e2a5ae3edb1ef06808c585a2a1a85a23",
+  "sourceHashes": {
+    "packages/daemon/src/api/model-detail.ts": "99f56403e17c9971c6f07463de3c3ee4bd96794aa0c8448cdab15c0ba7852daa",
+    "packages/daemon/test/model-catalog-context.test.ts": "38f082714572548e3f1328b3f0973e010a8240ba8da1bf93a6fd44fea770c057",
+    "packages/web/src/api.ts": "28ff5e3ecbf51fb2439001cd367901d0f6fec9dbfe1a77a76dbe7bd7d236d41b",
+    "packages/web/src/redesign/models.tsx": "a96dc49acf0f0a9a5b46f6059c88e5ba09d6e00efa787566087e5648bd00c09d",
+    "packages/web/src/i18n/en.ts": "804b3ae5e7cdf1370c6c489f64434a3495181cd32005e4359e8a9b403b180006",
+    "packages/web/src/i18n/th.ts": "513745238af0c2b91d68bf374e568df5a564bd383329d67a7d61d80daa4cb64e",
+    "packages/web/src/redesign/cost.css": "e8c584907ee9ef6d11848494877bc4fffb5c32fc4e85dbf033054840bc7f2ada"
+  },
+  "buildTerminalSession": 23264,
+  "finalBuildAndCatalogUITerminalSession": 83357,
+  "gatesTerminalSession": 22874,
+  "keyboardSupplementTerminalSession": 99929,
+  "gates": {
+    "stage": "terminal",
+    "nativeENExit": 0,
+    "nativeThaiDarkExit": 0,
+    "capacityThaiDarkExit": 0,
+    "nativeThaiLightExit": 0,
+    "capacityThaiLightExit": 0,
+    "costExit": 0,
+    "modelsExit": 0,
+    "uiExit": 0,
+    "repositoryExit": 0
+  },
+  "captures": [
+    {
+      "scope": "cost",
+      "pairs": 4,
+      "byteIdentical": 3
+    },
+    {
+      "scope": "models",
+      "pairs": 4,
+      "byteIdentical": 4
+    }
+  ],
+  "verifiedRepeatImageHashes": 16,
+  "repositoryTests": {
+    "daemon": 106,
+    "web": 170,
+    "tray": 198,
+    "total": 474
+  },
+  "originalLogHashes": {
+    "daemon-build": "72339db69a4bd28d15984477d7c43fa96f5b7555c30e3e96332cdec0527dd4ed",
+    "web-build": "dfcf7f86589f931f2a348cec8cfdd2a3b255d9f34835b5812ec5625467455c44",
+    "catalog-api-tests": "ec983bec22e9ec78018a057cb6933867b50c3627bb0156830ce77aea5d856673",
+    "catalog-ui-en": "bf5ebb17365731e1f6d38ad23da781a3b9fa8c28f6fd99086599230a175d3f47",
+    "legacy-probe-diagnosis": "deb2a1b20efe280fa06a229ac6bae2401f116b31d019c931ab3b31ccc619cdb7",
+    "keyboard-initial-diagnosis": "fbbcc9f73fb70572341279b75a866973c58de343999274c485eef8402b3d3c63",
+    "keyboard-en": "f19f9c579e97f9871798defc5c9996be2b0354c8c89c5beba1d7edc3ea6b2bce",
+    "keyboard-th": "5d80fe02baae1f01ef7fc0f061f6b1fd1ff7ff3579aed52ba08f4ac0771c1b90",
+    "nativeEN": "204264ae35b6e183a455564d4ef6447be9d597ccabb30625c9861e36e097df94",
+    "nativeThaiDark": "1a94fa7c5330211ab002f496bd2fc2d1c05670eb3047b200004c4d641c2380e9",
+    "capacityThaiDark": "bf5ebb17365731e1f6d38ad23da781a3b9fa8c28f6fd99086599230a175d3f47",
+    "nativeThaiLight": "1a94fa7c5330211ab002f496bd2fc2d1c05670eb3047b200004c4d641c2380e9",
+    "capacityThaiLight": "bf5ebb17365731e1f6d38ad23da781a3b9fa8c28f6fd99086599230a175d3f47",
+    "cost": "24e4c91920c959c4a7e35551f6e992abb9c4bb7b6d003e32a6776c3a3d1687ec",
+    "models": "0bd5a02219efe7ace8ab027c0e0a97f20b4a1cc87bb1a1029638f04fd01adf51",
+    "ui": "cc331bc9ef1a5c8038b25360067cc97800900a307fc0b079321f6195223bff1b",
+    "repository": "7a8c24e3472917827461491852901666181dbfb0b0e13be19959abff26509995"
+  },
+  "review": "source65_remaining_review independently reviewed seven-file diff and found no blockers; did not execute browser/tests. Root performed current runtime/geometry/color checks. This is not whole-goal acceptance."
+}

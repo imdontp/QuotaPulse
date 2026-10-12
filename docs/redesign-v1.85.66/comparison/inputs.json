@@ -1,0 +1,171 @@
+{
+  "productionIndexSha256": "9ddf1033f8443cb0667ae8d79fa55cc6e2a5ae3edb1ef06808c585a2a1a85a23",
+  "order": [
+    "original source",
+    "before65",
+    "current66"
+  ],
+  "crop": [
+    900,
+    380,
+    970,
+    610
+  ],
+  "inputs": [
+    {
+      "path": "C:\\Users\\TH12367283\\Downloads\\quotapulse_build_blueprint\\refs\\cost.png",
+      "sha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a"
+    },
+    {
+      "path": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\docs\\redesign-v1.85.65\\native-en-dark\\cost-default.png",
+      "sha256": "2e2414e3a0e1f9385fca392f04a097e83d0b4977c07cd84d73b74f9432ff5226"
+    },
+    {
+      "path": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\cost-catalog66-native-en-dark\\cost-default.png",
+      "sha256": "099e0fdfab125e280880f3c78f40b57bb5b4976559fe3da8d889708109b08d30"
+    }
+  ],
+  "currentBarRectangle": {
+    "x": 916.078125,
+    "y": 391.796875,
+    "width": 33.75,
+    "height": 189,
+    "top": 391.796875,
+    "right": 949.828125,
+    "bottom": 580.796875,
+    "left": 916.078125
+  },
+  "normalizedInteriorMedianSamples": [
+    {
+      "depth": 0.1,
+      "sourcePoint": [
+        933,
+        511
+      ],
+      "applicationPoint": [
+        933,
+        411
+      ],
+      "sourceRgb": [
+        11,
+        196,
+        253
+      ],
+      "before65Rgb": [
+        46,
+        176,
+        239
+      ],
+      "current66Rgb": [
+        10,
+        197,
+        254
+      ]
+    },
+    {
+      "depth": 0.25,
+      "sourcePoint": [
+        933,
+        526
+      ],
+      "applicationPoint": [
+        933,
+        439
+      ],
+      "sourceRgb": [
+        9,
+        177,
+        251
+      ],
+      "before65Rgb": [
+        51,
+        165,
+        240
+      ],
+      "current66Rgb": [
+        9,
+        177,
+        251
+      ]
+    },
+    {
+      "depth": 0.5,
+      "sourcePoint": [
+        933,
+        550
+      ],
+      "applicationPoint": [
+        933,
+        486
+      ],
+      "sourceRgb": [
+        8,
+        138,
+        241
+      ],
+      "before65Rgb": [
+        60,
+        146,
+        241
+      ],
+      "current66Rgb": [
+        8,
+        138,
+        241
+      ]
+    },
+    {
+      "depth": 0.75,
+      "sourcePoint": [
+        933,
+        575
+      ],
+      "applicationPoint": [
+        933,
+        533
+      ],
+      "sourceRgb": [
+        7,
+        102,
+        209
+      ],
+      "before65Rgb": [
+        68,
+        128,
+        241
+      ],
+      "current66Rgb": [
+        7,
+        102,
+        209
+      ]
+    },
+    {
+      "depth": 0.9,
+      "sourcePoint": [
+        933,
+        590
+      ],
+      "applicationPoint": [
+        933,
+        561
+      ],
+      "sourceRgb": [
+        6,
+        83,
+        186
+      ],
+      "before65Rgb": [
+        73,
+        117,
+        242
+      ],
+      "current66Rgb": [
+        6,
+        83,
+        186
+      ]
+    }
+  ],
+  "note": "Actual heights/buckets differ from concept; samples normalize each bar height. Current painted width still exceeds reference and is a recorded next task."
+}

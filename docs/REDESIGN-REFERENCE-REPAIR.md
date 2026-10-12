@@ -16,7 +16,9 @@ that harness must never be reported as a reference fidelity percentage.
 
 Historical scoped source repair: [v1.85.49](redesign-v1.85.49/VALIDATION-STATE.md) aligns painted Live horizontal bounds/divider and Models lower-detail typography. Build170 web tests, UI compatibility and12 production capture pairs pass. [Current/historical eight-page comparison](redesign-v1.85.49/reference-review.html) labels unchanged pages as build48. Vertical Live and other source artwork/geometry remain open.
 
-Current Overview typography checkpoint: [v1.85.65](redesign-v1.85.65/VALIDATION-STATE.md) aligns native globe digits/percentage suffix with refs while retaining actual quota/progress and surrounding geometry. Current build, web tests, UI, four Overview pairs and responsive native probes pass. Full source/release acceptance remains open.
+Current Models capacity and Cost paint checkpoint: [v1.85.66](redesign-v1.85.66/VALIDATION-STATE.md) adds exact catalog metadata/effort identities and measured chart colors. Current build, eight Cost/Models pairs, localized catalog/keyboard probes, UI and repository474 pass. Full source/release acceptance remains open.
+
+Historical Overview typography checkpoint: [v1.85.65](redesign-v1.85.65/VALIDATION-STATE.md) aligns native globe digits/percentage suffix with refs while retaining actual quota/progress and surrounding geometry. Current build, web tests, UI, four Overview pairs and responsive native probes pass. Full source/release acceptance remains open.
 
 Historical Providers action checkpoint: [v1.85.64](redesign-v1.85.64/VALIDATION-STATE.md) aligns supported Refresh/Diagnostics actions with reference geometry and measured color. Current build, four Providers repeat pairs, keyboard navigation and responsive native probes pass. Full source/release acceptance remains open.
 

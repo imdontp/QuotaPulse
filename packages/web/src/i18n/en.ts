@@ -413,6 +413,8 @@ export const en = {
   'redesign.modelsTrend': 'Usage trend',
   'redesign.modelsEffort': 'Recorded effort categories',
   'redesign.modelsUnspecified': 'Unspecified',
+  'redesign.modelsEmptyEffort': 'Empty category',
+  'redesign.modelsCatalogLoaded': 'Catalog loaded',
   'redesign.modelsContext': 'Catalog context capacity',
   'redesign.modelsObservedContext': 'Largest observed context window',
   'redesign.modelsOrigin': 'Recorded event',

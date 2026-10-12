@@ -1,0 +1,23 @@
+13:42:00.000 INFO  [db] opened :memory:
+Keyboard diagnostic {"width":1672,"scrollY":60,"rect":{"x":1472.953125,"y":891.671875,"width":166.046875,"height":49.5,"top":891.671875,"right":1639,"bottom":941.171875,"left":1472.953125},"viewport":941,"visible":false,"notOccluded":true,"document":{"height":1064,"client":941,"scrolling":"HTML"}}
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx tmp/model-capacity66-ui-supplement.mts *> tmp/model ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Capacity/provenance is reachable and unobscured by keyboard scrolling
+    at <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\model-capacity66-ui-s
+upplement.mts:2704:356) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.13.1

@@ -21,8 +21,20 @@ export function modelDetail(db: DB, scope: UsageScope, identity: { modelMissing:
       ${from} AND u.context_window IS NOT NULL
       ORDER BY u.context_window DESC, u.ts DESC, u.id DESC LIMIT 1`)
       .get(where.params) as { observedWindow: number; observedAt: number } | undefined;
+    // Capacity is catalog metadata for the exact recorded route, independent of pricing basis.
+    // Never use PriceResolver: its aliases and cross-provider fallback are monetary estimates.
+    const catalog = !identity.modelMissing && !identity.modelEmpty && !identity.providerMissing && !identity.providerEmpty
+      && scope.model !== undefined && scope.provider !== undefined
+      ? db.prepare(`SELECT context_window AS window, origin, updated_at AS loadedAt
+          FROM price WHERE provider = ? AND model = ?`).get(scope.provider, scope.model) as { window: number | null; origin: string; loadedAt: number } | undefined
+      : undefined;
+    const catalogContext = catalog && Number.isSafeInteger(catalog.window) && catalog.window! > 0
+      ? { window: catalog.window!, origin: typeof catalog.origin === 'string' && catalog.origin.trim() ? catalog.origin : null,
+          loadedAt: Number.isSafeInteger(catalog.loadedAt) && catalog.loadedAt >= 0 && catalog.loadedAt <= 8_640_000_000_000_000 ? catalog.loadedAt : null }
+      : null;
     return {
       bucketMs,
+      catalogContext,
       points: points.map(point => ({ start: scope.from + point.bin * bucketMs, tokens: point.tokens, calls: point.calls, records: point.records })),
       efforts,
       observedContext: { window: context?.observedWindow ?? null, at: context?.observedAt ?? null, origin: 'recorded usage event' },

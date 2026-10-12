@@ -417,6 +417,8 @@ export const th: Record<MessageKey, string> = {
   'redesign.modelsTrend': 'แนวโน้มการใช้',
   'redesign.modelsEffort': 'ระดับ effort ที่บันทึก',
   'redesign.modelsUnspecified': 'ไม่ระบุ',
+  'redesign.modelsEmptyEffort': 'หมวดหมู่ว่าง',
+  'redesign.modelsCatalogLoaded': 'โหลดแค็ตตาล็อกเมื่อ',
   'redesign.modelsContext': 'ความจุบริบทจากแค็ตตาล็อก',
   'redesign.modelsObservedContext': 'หน้าต่างบริบทสูงสุดที่พบ',
   'redesign.modelsOrigin': 'บันทึกการใช้งาน',

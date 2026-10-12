@@ -234,6 +234,9 @@ export interface ModelDetailResponse {
   bucketMs: number;
   points: Array<{ start: number; tokens: number; calls: number; records: number }>;
   efforts: Array<{ effort: string | null; tokens: number; calls: number; sessions: number }>;
+  /** Exact recorded provider/model catalog metadata; optional for prior daemon compatibility.
+   * loadedAt is the local catalog load/update time, not its publication date. */
+  catalogContext?: { window: number; origin: string | null; loadedAt: number | null } | null;
   observedContext: { window: number | null; at: number | null; origin: string };
 }
 export interface CostAnalysisResponse {

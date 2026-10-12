@@ -1,0 +1,28 @@
+13:42:00.000 INFO  [db] opened :memory:
+Omission diagnostic {"omissionRequests":0,"url":"http://127.0.0.1:7816/#models?range=all&model=DeepSeek%20V4.1&selected_provider=deepseek","display":"128.0k\nmodels.dev · Catalog loaded: 5/17/2025, 8:41:57 PM"}
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx tmp/model-capacity66-ui-diagnostic.mts *> tmp/model ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ '128.0k\nmodels.dev · Catalog loaded: 5/17/2025, 8:41:57 PM'
+- 'Unknown'
+
+    at <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\model-capacity66-ui-d
+iagnostic.mts:2682:185) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '128.0k\nmodels.dev · Catalog loaded: 5/17/2025, 8:41:57 PM',
+  expected: 'Unknown',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

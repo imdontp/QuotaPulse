@@ -1,0 +1,22 @@
+TAP version 13
+# 17:47:18.041 INFO  [db] opened :memory:
+# Subtest: opt-in project/model aggregates preserve identity, sessions and money coverage
+ok 1 - opt-in project/model aggregates preserve identity, sessions and money coverage
+  ---
+  duration_ms: 703.5924
+  ...
+# 17:47:18.212 INFO  [db] opened :memory:
+# Subtest: model detail exposes only exact catalog capacity, independently of observed usage and monetary basis
+ok 2 - model detail exposes only exact catalog capacity, independently of observed usage and monetary basis
+  ---
+  duration_ms: 485.5409
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2077.9833
