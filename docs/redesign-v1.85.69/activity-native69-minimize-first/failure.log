@@ -1,0 +1,18 @@
+10:43:18.514 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx tmp/activity-electron-native69-probe.mts *> tmp/sou ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+Error: Native visibility predicate timeout: real native minimize visibility, last=false
+    at wait (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\activity-electron-native69-p
+robe.mts:37:197)
+    at async <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\activity-electr
+on-native69-probe.mts:59:33)
+
+Node.js v22.13.1

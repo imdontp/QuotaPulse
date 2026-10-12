@@ -1,0 +1,438 @@
+{
+  "status": "offline proposal; not rendered or applied",
+  "source": "C:\\Users\\TH12367283\\Downloads\\quotapulse_build_blueprint\\refs\\models.png",
+  "sourceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+  "sourceLegendText": [
+    "Input Tokens 68% 189M",
+    "Output Tokens 32% 89M"
+  ],
+  "sourceRingApproximateCenter": [
+    1572.5,
+    451.5
+  ],
+  "samples": [
+    {
+      "name": "input-legend-core",
+      "coordinate": [
+        1314,
+        432
+      ],
+      "sampleBox": [
+        1313,
+        431,
+        1316,
+        434
+      ],
+      "sourceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "pixels": [
+        [
+          1,
+          152,
+          253
+        ],
+        [
+          1,
+          149,
+          252
+        ],
+        [
+          1,
+          148,
+          249
+        ],
+        [
+          1,
+          150,
+          252
+        ],
+        [
+          1,
+          149,
+          251
+        ],
+        [
+          0,
+          148,
+          249
+        ],
+        [
+          1,
+          150,
+          251
+        ],
+        [
+          0,
+          149,
+          250
+        ],
+        [
+          0,
+          147,
+          249
+        ]
+      ],
+      "medianRgb": [
+        1,
+        149,
+        251
+      ],
+      "minRgb": [
+        0,
+        147,
+        249
+      ],
+      "maxRgb": [
+        1,
+        152,
+        253
+      ],
+      "medianHex": "#0195fb",
+      "semanticEvidence": "Input Tokens: printed source legend,68%,189M",
+      "selection": "3x3 interior filled region, away from rim/segment boundary/text/background; measured gradient core, not glow edge"
+    },
+    {
+      "name": "output-legend-core",
+      "coordinate": [
+        1314,
+        466
+      ],
+      "sampleBox": [
+        1313,
+        465,
+        1316,
+        468
+      ],
+      "sourceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "pixels": [
+        [
+          117,
+          57,
+          252
+        ],
+        [
+          117,
+          56,
+          252
+        ],
+        [
+          116,
+          55,
+          250
+        ],
+        [
+          116,
+          54,
+          251
+        ],
+        [
+          115,
+          53,
+          250
+        ],
+        [
+          115,
+          53,
+          250
+        ],
+        [
+          116,
+          51,
+          251
+        ],
+        [
+          115,
+          51,
+          251
+        ],
+        [
+          116,
+          51,
+          248
+        ]
+      ],
+      "medianRgb": [
+        116,
+        53,
+        251
+      ],
+      "minRgb": [
+        115,
+        51,
+        248
+      ],
+      "maxRgb": [
+        117,
+        57,
+        252
+      ],
+      "medianHex": "#7435fb",
+      "semanticEvidence": "Output Tokens: printed source legend,32%,89M",
+      "selection": "3x3 interior filled region, away from rim/segment boundary/text/background; measured gradient core, not glow edge"
+    },
+    {
+      "name": "input-right-ring-core",
+      "coordinate": [
+        1624,
+        452
+      ],
+      "sampleBox": [
+        1623,
+        451,
+        1626,
+        454
+      ],
+      "sourceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "pixels": [
+        [
+          1,
+          178,
+          253
+        ],
+        [
+          2,
+          176,
+          250
+        ],
+        [
+          6,
+          176,
+          249
+        ],
+        [
+          1,
+          178,
+          252
+        ],
+        [
+          3,
+          177,
+          252
+        ],
+        [
+          8,
+          176,
+          249
+        ],
+        [
+          1,
+          178,
+          252
+        ],
+        [
+          5,
+          177,
+          252
+        ],
+        [
+          9,
+          177,
+          249
+        ]
+      ],
+      "medianRgb": [
+        3,
+        177,
+        252
+      ],
+      "minRgb": [
+        1,
+        176,
+        249
+      ],
+      "maxRgb": [
+        9,
+        178,
+        253
+      ],
+      "medianHex": "#03b1fc",
+      "semanticEvidence": "Input blue/cyan ring sector; source legend identifies input",
+      "selection": "3x3 interior filled region, away from rim/segment boundary/text/background; measured gradient core, not glow edge"
+    },
+    {
+      "name": "input-bottom-left-ring-core",
+      "coordinate": [
+        1546,
+        497
+      ],
+      "sampleBox": [
+        1545,
+        496,
+        1548,
+        499
+      ],
+      "sourceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "pixels": [
+        [
+          58,
+          124,
+          253
+        ],
+        [
+          58,
+          124,
+          253
+        ],
+        [
+          59,
+          124,
+          254
+        ],
+        [
+          58,
+          125,
+          254
+        ],
+        [
+          60,
+          126,
+          254
+        ],
+        [
+          61,
+          126,
+          254
+        ],
+        [
+          58,
+          123,
+          253
+        ],
+        [
+          58,
+          125,
+          253
+        ],
+        [
+          60,
+          127,
+          253
+        ]
+      ],
+      "medianRgb": [
+        58,
+        125,
+        253
+      ],
+      "minRgb": [
+        58,
+        123,
+        253
+      ],
+      "maxRgb": [
+        61,
+        127,
+        254
+      ],
+      "medianHex": "#3a7dfd",
+      "semanticEvidence": "Input blue ring sector before its visible boundary",
+      "selection": "3x3 interior filled region, away from rim/segment boundary/text/background; measured gradient core, not glow edge"
+    },
+    {
+      "name": "output-left-ring-core",
+      "coordinate": [
+        1520,
+        452
+      ],
+      "sampleBox": [
+        1519,
+        451,
+        1522,
+        454
+      ],
+      "sourceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "pixels": [
+        [
+          122,
+          50,
+          250
+        ],
+        [
+          121,
+          50,
+          251
+        ],
+        [
+          120,
+          53,
+          251
+        ],
+        [
+          121,
+          49,
+          250
+        ],
+        [
+          120,
+          49,
+          251
+        ],
+        [
+          119,
+          52,
+          251
+        ],
+        [
+          120,
+          48,
+          250
+        ],
+        [
+          119,
+          48,
+          251
+        ],
+        [
+          118,
+          52,
+          251
+        ]
+      ],
+      "medianRgb": [
+        120,
+        50,
+        251
+      ],
+      "minRgb": [
+        118,
+        48,
+        250
+      ],
+      "maxRgb": [
+        122,
+        53,
+        251
+      ],
+      "medianHex": "#7832fb",
+      "semanticEvidence": "Output violet ring sector; source legend identifies output",
+      "selection": "3x3 interior filled region, away from rim/segment boundary/text/background; measured gradient core, not glow edge"
+    }
+  ],
+  "proposedTokens": {
+    "freshInput": {
+      "token": "--qp-model-fresh-input",
+      "nativeDark": "#03b1fc",
+      "unchangedFallback": "#2bb8ef",
+      "sourceSample": "input-right-ring-core"
+    },
+    "cachedInput": {
+      "token": "--qp-model-cached-input",
+      "nativeDark": "#3a7dfd",
+      "unchangedFallback": "#775cf6",
+      "sourceSample": "input-bottom-left-ring-core"
+    },
+    "cacheWrite": {
+      "token": "--qp-model-cache-write",
+      "nativeDark": "#0195fb",
+      "unchangedFallback": "#ad6be8",
+      "sourceSample": "input-legend-core"
+    },
+    "output": {
+      "token": "--qp-model-output",
+      "nativeDark": "#7832fb",
+      "unchangedFallback": "#18cfa9",
+      "sourceSample": "output-left-ring-core"
+    }
+  },
+  "scope": "Only production Models dark at min-width1536; other themes/widths retain existing fallback palette",
+  "semanticLimit": "Reference has no individual cached-input/cache-write legend. Three input-family assignments are explicit design choices from measured input-sector tones; no claim reference directly names those subcomponents."
+}

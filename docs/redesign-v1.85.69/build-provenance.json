@@ -1,0 +1,107 @@
+{
+  "productionIndexSha256": "4371ebf043748302ef259375e08c0dde6a1dccd3e1f7abc7cad72d69085a3c48",
+  "logs": [
+    {
+      "file": "build.log",
+      "rawSha256": "4b7d7673cd8b35a75ea637094f63455bab44902d28de010b999e765c046997e6",
+      "normalizedSha256": "c577fb491761ddaff3b93ac4fda32296ba164e76c8dea8d82a2cfaa7ad0025e0",
+      "normalization": "UTF8 LF, trailing whitespace stripped"
+    },
+    {
+      "file": "nativeAll8.log",
+      "rawSha256": "204264ae35b6e183a455564d4ef6447be9d597ccabb30625c9861e36e097df94",
+      "normalizedSha256": "352b21f0792c2f153a24aeb93fb3534b65cb71b4dd4e086b8adf708ae7315fd1",
+      "normalization": "UTF8 LF, trailing whitespace stripped"
+    },
+    {
+      "file": "modelPalette.log",
+      "rawSha256": "be94ad7f0a598a966080e859adb830d9f35a25a7971a5dfcf1a79b09a05891e7",
+      "normalizedSha256": "c516f8253bc859645ceb23a991ce3f720c7294bbbed5602fa83ef9a4a32a0aeb",
+      "normalization": "UTF8 LF, trailing whitespace stripped"
+    },
+    {
+      "file": "overview.log",
+      "rawSha256": "0bd5a02219efe7ace8ab027c0e0a97f20b4a1cc87bb1a1029638f04fd01adf51",
+      "normalizedSha256": "19e1b1f86ae92587c82c9668f1c8f8664e578962dd902c527f0668936d2ae5df",
+      "normalization": "UTF8 LF, trailing whitespace stripped"
+    },
+    {
+      "file": "models.log",
+      "rawSha256": "24e4c91920c959c4a7e35551f6e992abb9c4bb7b6d003e32a6776c3a3d1687ec",
+      "normalizedSha256": "f973f6aee17066a0d990718095a83589236ff37f416e27b7d0a8f7489e1e0f97",
+      "normalization": "UTF8 LF, trailing whitespace stripped"
+    },
+    {
+      "file": "webTests.log",
+      "rawSha256": "ccdd8ae532576fd35f7f603963260120e5e459f68377dcade55905459394f0be",
+      "normalizedSha256": "ed124602414dadb079c7774e07f139f6fa95d1bbccc87ccfe9b5bb2e0ff0a4d4",
+      "normalization": "UTF8 LF, trailing whitespace stripped"
+    },
+    {
+      "file": "ui.log",
+      "rawSha256": "cc331bc9ef1a5c8038b25360067cc97800900a307fc0b079321f6195223bff1b",
+      "normalizedSha256": "5548d406bc9fb7939b73abcdd074746009fee1da108877dacc6de84b26cc2162",
+      "normalization": "UTF8 LF, trailing whitespace stripped"
+    },
+    {
+      "file": "electronActivity.log",
+      "rawSha256": "0516f21ac92c957ad23bf59f99c2ce53d56e641bc896d179490dde5cb2e89333",
+      "normalizedSha256": "f23630ea9b621b073b5f3d40ec288d8c88224ae3843b932d83bc5d15f4cf4f36",
+      "normalization": "UTF8 LF, trailing whitespace stripped"
+    }
+  ],
+  "limitations": [
+    "scoped current Overview/Models gates; full40 and repository474 from68 are historical",
+    "actual Electron fixture main, not installed tray/installer acceptance",
+    "local diagnostics do not establish source99-100%"
+  ],
+  "sources": [
+    {
+      "path": "packages/web/src/redesign/overview.tsx",
+      "sha256": "4067af640c9b5e3c5130951d014c096f6fd132e06252b222a1e2287b97699cdd"
+    },
+    {
+      "path": "packages/web/src/redesign/overview.css",
+      "sha256": "2103b5fd9fc3786fabecef41e7772e9f9f97a511dea486ed44bd53322f737152"
+    },
+    {
+      "path": "packages/web/src/redesign/models.tsx",
+      "sha256": "a7bc1539c99291fd9285d9a32c0cf538674bc61e2b419b448c78972d13d6a899"
+    },
+    {
+      "path": "packages/web/src/redesign/models.css",
+      "sha256": "b8b20c127c86f9992494dbf163cd1af491b2f44368cfb04da41e7d17a5b57aaa"
+    },
+    {
+      "path": "scripts/check-stable-captures.mts",
+      "sha256": "a3e0fe3df0c60b81cb5f6bf0b8332d6163ea761ef3a91c0c0e620999111c2503"
+    },
+    {
+      "path": "packages/tray/dist-preload/dashboard-preload.js",
+      "sha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f"
+    },
+    {
+      "path": "packages/tray/dist/instance-profile.js",
+      "sha256": "37497839475563529ac2d3bc807488daf715a14787a79f6a98880f0bc70c654a"
+    }
+  ],
+  "sourceHashScope": "tested working bytes; Git normalizes repository text to LF",
+  "nativeLifecycleStatus": "partial hide/show pass, minimize visibility timeout; restore and unmount not reached",
+  "diagnosticLogNormalization": [
+    {
+      "path": "activity-native69-minimize-first/failure.log",
+      "preWhitespaceCleanupSha256": "3da1b0bc379746a25397d777c86f54ecedc1b79b5de7d8e3be80cf3948c31c0e",
+      "normalizedSha256": "81334dcd6198a774b9fe7bcf6738fedb99eddd900cfef202e5dacb7431ad78d6"
+    },
+    {
+      "path": "activity-native69-show-control/failure.log",
+      "preWhitespaceCleanupSha256": "c6fb5984c42c35bbc232cba3b657855aea9af08b51d46bd3bfb6e3a138e1afd6",
+      "normalizedSha256": "ad75f6f2902922e75a6f4fc35db730668900c0bd4f32651df3fe6eb254f1f58a"
+    },
+    {
+      "path": "models-repeat-diagnostic/failure.log",
+      "preWhitespaceCleanupSha256": "27e74e4541c844d8b66db1b652c212e8e7838ff8f22bc1dde4a94355da1cd471",
+      "normalizedSha256": "17297e042dbbc9a6c5fad2b1aabc741789f427515e1175578bc4e4534fc13487"
+    }
+  ]
+}

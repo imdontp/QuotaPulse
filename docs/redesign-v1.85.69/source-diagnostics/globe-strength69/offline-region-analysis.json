@@ -1,0 +1,585 @@
+{
+  "regions": {
+    "lower": [
+      680,
+      345,
+      798,
+      366
+    ],
+    "annulus": [
+      680,
+      356,
+      798,
+      367
+    ],
+    "inside-limb": [
+      680,
+      336,
+      798,
+      350
+    ],
+    "progress": [
+      680,
+      369,
+      798,
+      376
+    ],
+    "meridian": [
+      840,
+      240,
+      864,
+      244
+    ],
+    "right-lower": [
+      840,
+      245,
+      864,
+      268
+    ],
+    "top-right": [
+      780,
+      145,
+      836,
+      188
+    ]
+  },
+  "sourceMedian": {
+    "lower": [
+      12.0,
+      28.0,
+      115.0
+    ],
+    "annulus": [
+      13.0,
+      31.0,
+      142.0
+    ],
+    "inside-limb": [
+      6.0,
+      19.0,
+      65.0
+    ],
+    "progress": [
+      76.0,
+      143.0,
+      253.0
+    ],
+    "meridian": [
+      109.5,
+      55.0,
+      234.5
+    ],
+    "right-lower": [
+      88.0,
+      39.0,
+      210.0
+    ],
+    "top-right": [
+      36.0,
+      25.0,
+      165.0
+    ]
+  },
+  "results": {
+    "baseline": {
+      "lower": {
+        "median": [
+          46.0,
+          82.0,
+          179.0
+        ],
+        "mae": 48.972,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0
+      },
+      "annulus": {
+        "median": [
+          55.0,
+          106.0,
+          213.0
+        ],
+        "mae": 58.28,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0
+      },
+      "inside-limb": {
+        "median": [
+          11.0,
+          20.0,
+          100.0
+        ],
+        "mae": 25.096,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0
+      },
+      "progress": {
+        "median": [
+          63.0,
+          122.0,
+          227.0
+        ],
+        "mae": 39.692,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0
+      },
+      "meridian": {
+        "median": [
+          119.5,
+          87.5,
+          240.0
+        ],
+        "mae": 29.264,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0
+      },
+      "right-lower": {
+        "median": [
+          113.0,
+          96.0,
+          221.0
+        ],
+        "mae": 30.533,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0
+      },
+      "top-right": {
+        "median": [
+          42.0,
+          31.0,
+          161.0
+        ],
+        "mae": 27.653,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0
+      }
+    },
+    "lower-black-055": {
+      "lower": {
+        "median": [
+          38.0,
+          63.0,
+          164.0
+        ],
+        "mae": 37.86,
+        "maeImprovementAllRegistered": [
+          9.373,
+          11.114
+        ],
+        "changed": 1116,
+        "maxDelta": 75
+      },
+      "annulus": {
+        "median": [
+          43.0,
+          82.0,
+          169.0
+        ],
+        "mae": 42.669,
+        "maeImprovementAllRegistered": [
+          13.686,
+          15.61
+        ],
+        "changed": 814,
+        "maxDelta": 75
+      },
+      "inside-limb": {
+        "median": [
+          11.0,
+          20.0,
+          100.0
+        ],
+        "mae": 23.742,
+        "maeImprovementAllRegistered": [
+          0.744,
+          1.355
+        ],
+        "changed": 120,
+        "maxDelta": 75
+      },
+      "progress": {
+        "median": [
+          63.0,
+          122.0,
+          227.0
+        ],
+        "mae": 39.611,
+        "maeImprovementAllRegistered": [
+          0.052,
+          0.119
+        ],
+        "changed": 262,
+        "maxDelta": 2
+      },
+      "meridian": {
+        "median": [
+          119.0,
+          87.5,
+          240.0
+        ],
+        "mae": 29.257,
+        "maeImprovementAllRegistered": [
+          0.007,
+          0.035
+        ],
+        "changed": 12,
+        "maxDelta": 2
+      },
+      "right-lower": {
+        "median": [
+          100.5,
+          82.0,
+          205.0
+        ],
+        "mae": 27.452,
+        "maeImprovementAllRegistered": [
+          -1.272,
+          4.288
+        ],
+        "changed": 213,
+        "maxDelta": 72
+      },
+      "top-right": {
+        "median": [
+          42.0,
+          31.0,
+          161.0
+        ],
+        "mae": 27.653,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0
+      }
+    },
+    "lower-black-070": {
+      "lower": {
+        "median": [
+          35.0,
+          58.0,
+          156.0
+        ],
+        "mae": 34.735,
+        "maeImprovementAllRegistered": [
+          11.856,
+          14.251
+        ],
+        "changed": 1940,
+        "maxDelta": 97
+      },
+      "annulus": {
+        "median": [
+          40.0,
+          74.0,
+          159.0
+        ],
+        "mae": 38.27,
+        "maeImprovementAllRegistered": [
+          17.366,
+          20.026
+        ],
+        "changed": 992,
+        "maxDelta": 96
+      },
+      "inside-limb": {
+        "median": [
+          11.0,
+          20.0,
+          99.5
+        ],
+        "mae": 23.363,
+        "maeImprovementAllRegistered": [
+          0.897,
+          1.74
+        ],
+        "changed": 1168,
+        "maxDelta": 96
+      },
+      "progress": {
+        "median": [
+          62.5,
+          122.0,
+          228.0
+        ],
+        "mae": 39.575,
+        "maeImprovementAllRegistered": [
+          0.084,
+          0.173
+        ],
+        "changed": 406,
+        "maxDelta": 4
+      },
+      "meridian": {
+        "median": [
+          119.0,
+          88.0,
+          239.5
+        ],
+        "mae": 29.247,
+        "maeImprovementAllRegistered": [
+          -0.01,
+          0.045
+        ],
+        "changed": 63,
+        "maxDelta": 2
+      },
+      "right-lower": {
+        "median": [
+          98.0,
+          78.0,
+          201.0
+        ],
+        "mae": 27.947,
+        "maeImprovementAllRegistered": [
+          -2.278,
+          4.526
+        ],
+        "changed": 402,
+        "maxDelta": 93
+      },
+      "top-right": {
+        "median": [
+          42.0,
+          31.0,
+          161.0
+        ],
+        "mae": 27.653,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0
+      }
+    },
+    "lower-black-085": {
+      "lower": {
+        "median": [
+          33.0,
+          54.0,
+          142.0
+        ],
+        "mae": 31.81,
+        "maeImprovementAllRegistered": [
+          14.083,
+          17.223
+        ],
+        "changed": 1944,
+        "maxDelta": 117
+      },
+      "annulus": {
+        "median": [
+          36.0,
+          66.0,
+          142.5
+        ],
+        "mae": 34.158,
+        "maeImprovementAllRegistered": [
+          19.001,
+          24.222
+        ],
+        "changed": 997,
+        "maxDelta": 116
+      },
+      "inside-limb": {
+        "median": [
+          11.0,
+          20.0,
+          97.0
+        ],
+        "mae": 22.99,
+        "maeImprovementAllRegistered": [
+          1.04,
+          2.107
+        ],
+        "changed": 1168,
+        "maxDelta": 117
+      },
+      "progress": {
+        "median": [
+          62.5,
+          122.0,
+          228.0
+        ],
+        "mae": 39.538,
+        "maeImprovementAllRegistered": [
+          0.115,
+          0.211
+        ],
+        "changed": 442,
+        "maxDelta": 4
+      },
+      "meridian": {
+        "median": [
+          119.0,
+          88.0,
+          239.5
+        ],
+        "mae": 29.247,
+        "maeImprovementAllRegistered": [
+          -0.003,
+          0.052
+        ],
+        "changed": 64,
+        "maxDelta": 3
+      },
+      "right-lower": {
+        "median": [
+          96.5,
+          76.0,
+          198.0
+        ],
+        "mae": 28.704,
+        "maeImprovementAllRegistered": [
+          -3.279,
+          4.176
+        ],
+        "changed": 402,
+        "maxDelta": 112
+      },
+      "top-right": {
+        "median": [
+          42.0,
+          31.0,
+          161.0
+        ],
+        "mae": 27.653,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0
+      }
+    },
+    "lower-black-100": {
+      "lower": {
+        "median": [
+          31.0,
+          50.0,
+          132.0
+        ],
+        "mae": 29.756,
+        "maeImprovementAllRegistered": [
+          14.547,
+          19.608
+        ],
+        "changed": 1948,
+        "maxDelta": 137
+      },
+      "annulus": {
+        "median": [
+          33.0,
+          58.0,
+          128.0
+        ],
+        "mae": 31.348,
+        "maeImprovementAllRegistered": [
+          19.329,
+          27.701
+        ],
+        "changed": 1004,
+        "maxDelta": 137
+      },
+      "inside-limb": {
+        "median": [
+          11.0,
+          20.0,
+          95.0
+        ],
+        "mae": 22.688,
+        "maeImprovementAllRegistered": [
+          1.178,
+          2.423
+        ],
+        "changed": 1168,
+        "maxDelta": 137
+      },
+      "progress": {
+        "median": [
+          62.5,
+          122.0,
+          228.0
+        ],
+        "mae": 39.51,
+        "maeImprovementAllRegistered": [
+          0.136,
+          0.242
+        ],
+        "changed": 449,
+        "maxDelta": 4
+      },
+      "meridian": {
+        "median": [
+          119.0,
+          88.0,
+          239.5
+        ],
+        "mae": 29.243,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.056
+        ],
+        "changed": 63,
+        "maxDelta": 3
+      },
+      "right-lower": {
+        "median": [
+          96.0,
+          73.0,
+          195.5
+        ],
+        "mae": 29.499,
+        "maeImprovementAllRegistered": [
+          -4.301,
+          3.524
+        ],
+        "changed": 402,
+        "maxDelta": 132
+      },
+      "top-right": {
+        "median": [
+          42.0,
+          31.0,
+          161.0
+        ],
+        "mae": 27.653,
+        "maeImprovementAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0
+      }
+    }
+  }
+}

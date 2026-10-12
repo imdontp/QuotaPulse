@@ -1576,3 +1576,14 @@
  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-pulse-label strong { font-style:italic; font-weight:500; }
  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-pulse-label strong>.qp-pulse-percent { font-size:.7em; }
 }
+
+/* Darken only the fixed lower atmosphere; the quota stroke stays above this layer. */
+.qp-core-lower-atmosphere-shade { display:none; }
+.qp-redesign[data-testid=production-overview][data-theme=dark] .qp-core-lower-atmosphere-shade { display:block; }
+
+/* Reference primary arrows and resting rims retain real flow weights and anchors. */
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-map-edges path[data-flow-priority=primary] { marker-end:var(--qp-native-flow-marker); }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-map-edges path[data-flow-priority=primary][data-column="0"] { stroke:#18edfa; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-map-edges path[data-flow-priority=primary][data-column="1"] { stroke:#3fa3f9; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-map-edges path[data-flow-priority=primary][data-column="2"] { stroke:#5756ec; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-map-node[data-activity-state=active]:not(:hover):not(:focus-visible) { border-color:color-mix(in srgb,var(--qp-node-tone,var(--qp-accent)) 30%,#102039); }

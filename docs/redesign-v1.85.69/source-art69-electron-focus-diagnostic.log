@@ -1,0 +1,20 @@
+10:36:30.636 INFO  [db] opened :memory:
+Actual hidden state before RAF wait { hidden: false, visibility: 'visible' }
+node : node:internal/modules/run_main:122
+At line:12 char:1
++ node --import tsx tmp/activity-electron69-probe.mts *> tmp/source-art ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+page.waitForFunction: Timeout 30000ms exceeded.
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\activity-electron69-probe.mts:42:196) {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v22.13.1

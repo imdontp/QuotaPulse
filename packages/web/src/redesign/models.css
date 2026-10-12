@@ -194,3 +194,11 @@
 @media(min-width:1536px) {
  .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-table-wrap th { font-weight:400; }
 }
+
+/* Reference input/output color families stay consistent throughout the dark dashboard. */
+.qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-distribution {
+  --qp-model-fresh-input:#03b1fc;
+  --qp-model-cached-input:#3a7dfd;
+  --qp-model-cache-write:#0195fb;
+  --qp-model-output:#7832fb;
+}

@@ -108,10 +108,10 @@ export function ProductionModels() {
   const effortTotal = detail?.efforts.reduce((sum, effort) => sum + effort.tokens, 0) ?? 0;
   const trendMax = Math.max(0, ...trend.map(point => route.metric === 'calls' ? point.calls : point.tokens));
   const distribution = selected ? [
-    { label: t('redesign.modelsFreshInput'), value: selected.inputTokens, color: '#2bb8ef' },
-    { label: t('redesign.modelsCachedInput'), value: selected.cachedInputTokens, color: '#775cf6' },
-    { label: t('redesign.modelsCacheWrite'), value: selected.cacheWriteTokens, color: '#ad6be8' },
-    { label: t('redesign.modelsOutput'), value: selected.outputTokens, color: '#18cfa9' },
+    { label: t('redesign.modelsFreshInput'), value: selected.inputTokens, color: 'var(--qp-model-fresh-input,#2bb8ef)' },
+    { label: t('redesign.modelsCachedInput'), value: selected.cachedInputTokens, color: 'var(--qp-model-cached-input,#775cf6)' },
+    { label: t('redesign.modelsCacheWrite'), value: selected.cacheWriteTokens, color: 'var(--qp-model-cache-write,#ad6be8)' },
+    { label: t('redesign.modelsOutput'), value: selected.outputTokens, color: 'var(--qp-model-output,#18cfa9)' },
   ] : [];
   const distributionTotal = distribution.reduce((sum, part) => sum + part.value, 0);
   const summaryBuckets = data ? modelTrendBuckets(data) : [];

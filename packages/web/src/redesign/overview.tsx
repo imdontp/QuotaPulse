@@ -1,4 +1,4 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Database, Flame, Folder, GitBranch, History, Layers, Lightbulb, SlidersHorizontal, Sparkles, Star, TrendingUp, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
@@ -179,6 +179,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
       })}</g>
       <circle className="qp-core-track" cx="180" cy="160" r="129" fill="none" stroke={`url(#${id}-arc)`} strokeOpacity=".4" strokeWidth="8"/>
       <circle className="qp-core-halo" cx="180" cy="160" r="120" fill="none" stroke={`url(#${id}-arc)`} strokeWidth="2"/>
+      <path className="qp-core-lower-atmosphere-shade" d="M62 160 A118 118 0 0 0 298 160" fill="none" stroke={`url(#${id}-bottom-limb-fade)`} strokeWidth="8" strokeOpacity="1"/>
       {used !== null && <circle className="qp-core-progress" data-testid="pulse-progress" cx="180" cy="160" r="129" pathLength="100" fill="none" stroke={`url(#${id}-progress-arc)`} strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used)} 100`} transform="rotate(-90 180 160)" filter={`url(#${id}-glow)`}/>}
       {used !== null && <g className="qp-core-spatial-progress" fill="none" strokeWidth="8" mask={`url(#${id}-ring-used)`}>
         <path d="M180 34 A126 126 0 0 1 306 160" stroke={`url(#${id}-ring-tr)`}/>
@@ -295,8 +296,13 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
 
     {recordCount === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
       <div ref={map} className="qp-map" data-single-project={singleProject} style={{ height: height + 24 }}>
-        <svg className="qp-map-edges" viewBox={`0 0 ${geometry.width} ${geometry.height}`} preserveAspectRatio="none" aria-hidden="true">
-          <defs><marker id={arrowId} viewBox="0 0 8 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth"><polygon points="0,0 8,4 0,8 2,4" fill="context-stroke"/></marker></defs>
+        <svg className="qp-map-edges" style={{ '--qp-native-flow-marker': `url(#${arrowId}-native)` } as CSSProperties} viewBox={`0 0 ${geometry.width} ${geometry.height}`} preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <marker id={arrowId} viewBox="0 0 8 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth"><polygon points="0,0 8,4 0,8 2,4" fill="context-stroke"/></marker>
+            <marker id={`${arrowId}-native`} viewBox="0 0 8 8" refX="8" refY="4" markerWidth="12" markerHeight="12" orient="auto" markerUnits="userSpaceOnUse">
+              <polyline points="1,1 8,4 1,7" fill="none" stroke="context-stroke" strokeWidth="1.1" strokeLinejoin="round" strokeLinecap="round"/>
+            </marker>
+          </defs>
           {geometry.paths.map(({ edge, x, y, endX, endY }) => {
             const bend = (endX - x) * .55;
             const total = columnTokenTotals[edge.column] ?? 0;

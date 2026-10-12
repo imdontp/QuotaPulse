@@ -1,0 +1,224 @@
+{
+  "status": "offline reviewed; source-informed candidate, not accepted visual baseline",
+  "authoritativeTrial": "tmp/map-refine-tip69; supersedes tmp/map-refine69 vertex7 experiment",
+  "source": "C:\\Users\\TH12367283\\Downloads\\quotapulse_build_blueprint\\refs\\overview.png",
+  "sourceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+  "productionIndexSha256": "f7d1206ef4ddf75c6fc2f1ee6c36cc5e6d22fe45338b19caefea9a6e50922b5a",
+  "regions": {
+    "arrow0": [
+      610,
+      528,
+      634,
+      556
+    ],
+    "arrow0b": [
+      610,
+      574,
+      634,
+      599
+    ],
+    "arrow2": [
+      1222,
+      529,
+      1248,
+      557
+    ],
+    "wire0": [
+      568,
+      537,
+      613,
+      568
+    ],
+    "wire1": [
+      811,
+      534,
+      938,
+      592
+    ],
+    "wire2": [
+      1123,
+      537,
+      1238,
+      595
+    ],
+    "all-visible": [
+      244,
+      520,
+      1545,
+      696
+    ]
+  },
+  "results": [
+    {
+      "trial": {
+        "name": "baseline"
+      },
+      "sha256": "2e7fad627231729d9935a769f905fbf957ed466babc1b00bfd9a1bece11a4c4f",
+      "rgbMAE": {
+        "arrow0": 40.76438492063492,
+        "arrow0b": 46.065,
+        "arrow2": 54.00503663003663,
+        "wire0": 25.617443249701314,
+        "wire1": 29.261743144175945,
+        "wire2": 24.093903048475763,
+        "all-visible": 20.807610113432556
+      }
+    },
+    {
+      "trial": {
+        "name": "filled14-border30",
+        "size": 14,
+        "border": 30
+      },
+      "sha256": "5219250051b5b36e5f517ad573931efdd9108fefe38d3ec01574449fd32e68ec",
+      "rgbMAE": {
+        "arrow0": 34.34077380952381,
+        "arrow0b": 39.11555555555555,
+        "arrow2": 42.11675824175824,
+        "wire0": 25.696774193548386,
+        "wire1": 29.3376323649199,
+        "wire2": 23.50549725137431,
+        "all-visible": 17.937454871544034
+      }
+    },
+    {
+      "trial": {
+        "name": "filled12-border30",
+        "size": 12,
+        "border": 30
+      },
+      "sha256": "33c564ff83653e4960097796cd62403cddbc229e0975689dc5491ed954df4ff7",
+      "rgbMAE": {
+        "arrow0": 33.46279761904762,
+        "arrow0b": 37.708888888888886,
+        "arrow2": 39.09798534798535,
+        "wire0": 25.726642771804062,
+        "wire1": 29.268847859534798,
+        "wire2": 22.975212393803098,
+        "all-visible": 17.892209955046233
+      }
+    },
+    {
+      "trial": {
+        "name": "open14-border30",
+        "size": 14,
+        "border": 30,
+        "open": true
+      },
+      "sha256": "7f242e445fa7be426154fb6cde5491b5bffaca5f7b568fa83e2ed88a153f009e",
+      "rgbMAE": {
+        "arrow0": 35.31150793650794,
+        "arrow0b": 40.211666666666666,
+        "arrow2": 42.428113553113555,
+        "wire0": 25.708721624850657,
+        "wire1": 29.3107973572269,
+        "wire2": 23.321089455272364,
+        "all-visible": 17.943213844827987
+      }
+    },
+    {
+      "trial": {
+        "name": "open12-border30",
+        "size": 12,
+        "border": 30,
+        "open": true
+      },
+      "sha256": "35eb34dad19658b303c73ff327daf37b68ecb7c1d1200aa9bf174afd024a61f5",
+      "rgbMAE": {
+        "arrow0": 33.729166666666664,
+        "arrow0b": 38.02333333333333,
+        "arrow2": 38.98122710622711,
+        "wire0": 25.729749103942652,
+        "wire1": 29.253145081002806,
+        "wire2": 22.73698150924538,
+        "all-visible": 17.887857242680454
+      }
+    },
+    {
+      "trial": {
+        "name": "filled14-border30-tones",
+        "size": 14,
+        "border": 30,
+        "tones": true
+      },
+      "sha256": "5fd34873d60f6fca9f3b07436881c777b15df611ff3cfae64e2901cbbf8418f4",
+      "rgbMAE": {
+        "arrow0": 32.43452380952381,
+        "arrow0b": 37.681666666666665,
+        "arrow2": 34.684065934065934,
+        "wire0": 23.985185185185184,
+        "wire1": 28.11091501493348,
+        "wire2": 20.172113943028485,
+        "all-visible": 17.695656604476742
+      }
+    },
+    {
+      "trial": {
+        "name": "open14-border30-tones",
+        "size": 14,
+        "border": 30,
+        "open": true,
+        "tones": true
+      },
+      "sha256": "44e663faed9f6a5a92fd7c82dfab7f9d2446a62275678e4bfe15d930debd9a01",
+      "rgbMAE": {
+        "arrow0": 33.39732142857143,
+        "arrow0b": 38.702222222222225,
+        "arrow2": 35.125457875457876,
+        "wire0": 23.997132616487455,
+        "wire1": 28.08326545388723,
+        "wire2": 20.103448275862068,
+        "all-visible": 17.70238947895558
+      }
+    },
+    {
+      "trial": {
+        "name": "filled12-border30-tones",
+        "size": 12,
+        "border": 30,
+        "tones": true
+      },
+      "sha256": "7a3bbcf10c554993135f80046ccd671fdacfb8edb35c38eb7d2e40e22f22ad74",
+      "rgbMAE": {
+        "arrow0": 31.82986111111111,
+        "arrow0b": 36.519444444444446,
+        "arrow2": 32.54120879120879,
+        "wire0": 24.015770609318995,
+        "wire1": 28.041225450266992,
+        "wire2": 19.823238380809595,
+        "all-visible": 17.658284419910093
+      }
+    },
+    {
+      "trial": {
+        "name": "open12-border30-tones",
+        "size": 12,
+        "border": 30,
+        "open": true,
+        "tones": true
+      },
+      "sha256": "96b48b9f721d9ed171435129f4ec1de7720881f69f9d82b62bd96f0d36d7e836",
+      "rgbMAE": {
+        "arrow0": 32.10962301587302,
+        "arrow0b": 36.846111111111114,
+        "arrow2": 32.516941391941394,
+        "wire0": 24.019115890083633,
+        "wire1": 28.025341659878723,
+        "wire2": 19.68215892053973,
+        "all-visible": 17.655419490834557
+      }
+    }
+  ],
+  "recommended": "open12-border30-tones",
+  "reason": "All local crops improve versus baseline; source open-chevron shape better represented. Aggregate error tied with filled12-border30-tones, so shape evidence decides, not insignificant .003 RGB MAE difference.",
+  "tipAudit": {
+    "id": "trial-primary69",
+    "units": "userSpaceOnUse",
+    "width": "12",
+    "height": "12",
+    "head": "<polyline points=\"1,1 8,4 1,7\" fill=\"none\" stroke=\"context-stroke\" stroke-width=\"1.1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"></polyline>",
+    "refX": "8",
+    "refY": "4"
+  },
+  "invariants": "All PNG hashes, SVG rect/CTM/path-width-priority arrays verified; harness deepEqual protects20edge d/tokens/identities/weights and15node rect/labels/state each trial. Source-tone variations intentionally change primary stroke only."
+}

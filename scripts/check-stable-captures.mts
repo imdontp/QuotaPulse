@@ -1729,7 +1729,21 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
     for (const path of await paths.all()) {
       const marker = await path.getAttribute('marker-end');
       assert.ok(marker?.startsWith('url(#'));
-      assert.equal(await page.locator('.qp-map-edges marker').getAttribute('orient'), 'auto');
+      const arrow = await path.evaluate(element => {
+        const resolved = getComputedStyle(element).markerEnd;
+        const fragment = resolved.slice(resolved.lastIndexOf('#') + 1).replace(/[)'"\s]/g, '');
+        const target = document.getElementById(decodeURIComponent(fragment));
+        return target ? { orient: target.getAttribute('orient'), units: target.getAttribute('markerUnits'),
+          width: Number(target.getAttribute('markerWidth')), height: Number(target.getAttribute('markerHeight')),
+          refX: target.getAttribute('refX'), refY: target.getAttribute('refY'),
+          points: target.querySelector('polyline')?.getAttribute('points'), stroke: target.querySelector('polyline')?.getAttribute('stroke') } : null;
+      });
+      assert.ok(arrow, 'Each rendered edge must resolve its actual computed marker');
+      assert.equal(arrow.orient, 'auto'); assert.equal(arrow.refX, '8'); assert.equal(arrow.refY, '4');
+      const primary = theme === 'dark' && await path.getAttribute('data-flow-priority') === 'primary';
+      assert.equal(arrow.units, primary ? 'userSpaceOnUse' : 'strokeWidth');
+      assert.equal(arrow.width, primary ? 12 : 5); assert.equal(arrow.height, primary ? 12 : 5);
+      if (primary) { assert.equal(arrow.points, '1,1 8,4 1,7'); assert.equal(arrow.stroke, 'context-stroke'); }
     }
     const visibleKeys = dimensions.map(dimension => new Set(graph.nodes[dimension].slice(0, 8).map(node => JSON.stringify(node.key))));
     const expectedFlowEdges = dimensions.slice(0, 3).flatMap((_, column) => graph.edges
@@ -3073,6 +3087,16 @@ try {
           writeFileSync(resolve(output, 'sidebar-raster-state.json'), JSON.stringify(sidebarRasterEvidence, null, 2));
           if (pass === 0) sidebarRasterStates.set(filename, sidebarState);
           else assert.deepEqual(sidebarState, sidebarRasterStates.get(filename), `${filename}: sidebar DOM paint inputs changed between captures`);
+          if (destination === 'models') {
+            const ringPaint = await page.locator('.qp-model-donut').evaluateAll(elements => elements.map(element => {
+              const style = getComputedStyle(element); const after = getComputedStyle(element, '::after');
+              return { rect: element.getBoundingClientRect().toJSON(), background: style.backgroundImage,
+                radius: style.borderRadius, shadow: style.boxShadow, outline: style.outline, transform: style.transform,
+                pseudo: { border: after.border, inset: after.inset, radius: after.borderRadius }, text: element.textContent };
+            }));
+            writeFileSync(resolve(output, `${pass === 0 ? '' : 'repeat-'}${filename}.ring.json`), JSON.stringify(ringPaint, null, 2));
+            if (pass === 1) assert.deepEqual(ringPaint, JSON.parse(readFileSync(resolve(output, `${filename}.ring.json`), 'utf8')), 'Models ring geometry and computed paint inputs changed between captures');
+          }
           const screenshot = await page.screenshot({ path: resolve(output, pass === 0 ? filename : `repeat-${filename}`), animations: 'disabled' });
           if (pass === 0) cases.push({ page: destination, lang, theme, filename, sha256: sha(screenshot), ...contrastEvidence });
           else {
