@@ -17,6 +17,7 @@ import { VendorIcon } from '@/components/vendor-icon';
 import { PageHeading } from './page-heading';
 import { HeadingReferenceIcon } from './heading-reference-icon';
 import { SectionMark } from './section-mark';
+import { selectModelGroup } from './model-selection';
 
 type Range = ScopeRange;
 type Metric = 'tokens' | 'calls' | 'api_value_usd';
@@ -89,7 +90,7 @@ export function ProductionModels() {
   const needle = search.toLocaleLowerCase(lang);
   const visible = groups.filter(group => !needle || [group.model, group.provider, group.vendor].some(value => (value ?? '').toLocaleLowerCase(lang).includes(needle)))
     .sort((a, b) => b[route.metric] - a[route.metric] || identityKey(a).localeCompare(identityKey(b)));
-  const selected = visible.find(group => group.model === route.model && group.provider === route.selectedProvider) ?? visible[0];
+  const selected = selectModelGroup(visible, route.model, route.selectedProvider);
   const detailKey = JSON.stringify([data?.scope, selected && identityKey(selected)]);
   useEffect(() => {
     if (!data || !selected) return;

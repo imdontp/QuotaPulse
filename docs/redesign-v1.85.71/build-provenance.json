@@ -1,0 +1,114 @@
+{
+  "productionIndexSha256": "5a94d0182f597a19acd3f776b756a3fc2ae626c103b4c8c17df8c2376716fc08",
+  "sourceHashScope": "tested working bytes; Git normalizes text to LF",
+  "sources": [
+    {
+      "path": "packages/web/src/redesign/overview.tsx",
+      "sha256": "ccbf59d9ceaabbe37b832e07430b7d51f3e4e7626c201f4c9fb86bb7234cc09a"
+    },
+    {
+      "path": "packages/web/src/redesign/models.tsx",
+      "sha256": "5c220384418777db538491f6a4780a4eadb8e6d6a5f83d05eeaabf9365d4557c"
+    },
+    {
+      "path": "packages/web/src/redesign/model-drilldown.ts",
+      "sha256": "7ae42cdb9d33b805aaf619826a67382a8a39a1e51abd32d744a63b2a4ccddd37"
+    },
+    {
+      "path": "packages/web/src/redesign/model-selection.ts",
+      "sha256": "514505aebc36f1b3c9eb95c77313fd5101d423773929bf9a4da59c65ce6a9955"
+    },
+    {
+      "path": "packages/web/test/model-drilldown.test.ts",
+      "sha256": "4ef94cc8e84cc217b433c24ed5f72db23486e932219e302b2b7f83fb04a3c0e1"
+    },
+    {
+      "path": "packages/web/test/model-selection.test.ts",
+      "sha256": "09099044b883ce0a97f2fae37496865b5f56537f9b567468e85c5bd087c45a82"
+    },
+    {
+      "path": "scripts/check-stable-captures.mts",
+      "sha256": "056141dbc96c99acdf07e1ce86bafe5efd562b0f1ad45dd5f1b95946e37ef1f9"
+    }
+  ],
+  "logs": [
+    {
+      "commandLog": "webTests.log",
+      "originalRawSha256": "4dfb18a01261ed77a215ed52ea02e264b2375d9e85b6e55e624cef339fc0c6b5",
+      "archiveSha256": "281a9cade3fdcd5ba0dcdb25f9a14e6e464bd2c589034dc6f09c17d69d9a9302",
+      "normalization": "UTF8 LF; trailing whitespace removed",
+      "evidence": "Prior terminal result: 180 passed",
+      "exitCode": 0,
+      "command": "npm.cmd run test -w @quotapulse/web",
+      "session": 8677
+    },
+    {
+      "commandLog": "build.log",
+      "originalRawSha256": "c857315bef9556293e737b159f2caa93cb7fc7606465014812984675288ec96d",
+      "archiveSha256": "8339abf261608bb05abdc30deec46aaca7ef5d44e76c2c8b39e74512ffa3ddfb",
+      "normalization": "UTF8 LF; trailing whitespace removed",
+      "evidence": "Prior terminal result: web build passed; existing chunk warning",
+      "exitCode": 0,
+      "command": "npm.cmd run build -w @quotapulse/web",
+      "session": 8677
+    },
+    {
+      "commandLog": "overview.log",
+      "originalRawSha256": "0bd5a02219efe7ace8ab027c0e0a97f20b4a1cc87bb1a1029638f04fd01adf51",
+      "archiveSha256": "19e1b1f86ae92587c82c9668f1c8f8664e578962dd902c527f0668936d2ae5df",
+      "normalization": "UTF8 LF; trailing whitespace removed",
+      "evidence": "Observed terminal0 session14672: four byte-identical repeat pairs; eight foreign-project scope cases",
+      "exitCode": 0,
+      "command": "QUOTAPULSE_CAPTURE_SCOPE=overview npm.cmd run test:stable",
+      "session": 14672
+    },
+    {
+      "commandLog": "models.log",
+      "originalRawSha256": "24e4c91920c959c4a7e35551f6e992abb9c4bb7b6d003e32a6776c3a3d1687ec",
+      "archiveSha256": "f973f6aee17066a0d990718095a83589236ff37f416e27b7d0a8f7489e1e0f97",
+      "normalization": "UTF8 LF; trailing whitespace removed",
+      "command": "QUOTAPULSE_CAPTURE_SCOPE=models npm.cmd run test:stable",
+      "exitCode": 0
+    },
+    {
+      "commandLog": "all8.log",
+      "originalRawSha256": "204264ae35b6e183a455564d4ef6447be9d597ccabb30625c9861e36e097df94",
+      "archiveSha256": "352b21f0792c2f153a24aeb93fb3534b65cb71b4dd4e086b8adf708ae7315fd1",
+      "normalization": "UTF8 LF; trailing whitespace removed",
+      "scope": "Chrome production fixture at original reference dimensions; not Electron lifecycle",
+      "exitCode": 0,
+      "command": "node --import tsx tmp/source-art71-all8.mts"
+    },
+    {
+      "commandLog": "ui.log",
+      "originalRawSha256": "cc331bc9ef1a5c8038b25360067cc97800900a307fc0b079321f6195223bff1b",
+      "archiveSha256": "5548d406bc9fb7939b73abcdd074746009fee1da108877dacc6de84b26cc2162",
+      "normalization": "UTF8 LF; trailing whitespace removed",
+      "scope": "Vite fixture compatibility gate; not production artifact proof",
+      "exitCode": 0,
+      "command": "npm.cmd run test:ui"
+    },
+    {
+      "commandLog": "model-drilldown71-overview-first-failure.log",
+      "originalRawSha256": "ccfda7130779e9d17782a5bbc4f31609c36de8dc54ea82fb34323462ed897e22",
+      "archiveSha256": "8ed5639c9e33a5c1736b4adce683929e9b83aea8424690a92b20011405e0b137",
+      "normalization": "UTF8 LF; trailing whitespace removed",
+      "scope": "failed first Overview gate or bounded unchanged-app diagnostic; not a successful gate"
+    },
+    {
+      "commandLog": "map-selection71-probe.log",
+      "originalRawSha256": "7a5dad3a4731f3a832a84d707de8404f9b0d3b3906b4771ae30b2226760247f0",
+      "archiveSha256": "b02459d8f3fbfe3f201861dadf88f847013a31183738f9a7c650a3464ea98d1c",
+      "normalization": "UTF8 LF; trailing whitespace removed",
+      "scope": "failed first Overview gate or bounded unchanged-app diagnostic; not a successful gate"
+    },
+    {
+      "commandLog": "map-selection71-probe.json",
+      "originalRawSha256": "1315ed50a40efe14dbc3b9610d75b0ceb0ddc98d9b29719961be80ba2a4249c0",
+      "archiveSha256": "95a4b18a252af71d522594949c819c90c6bb4039701ca59a30c3f01aae1e90ca",
+      "normalization": "UTF8 LF; trailing whitespace removed",
+      "scope": "failed first Overview gate or bounded unchanged-app diagnostic; not a successful gate"
+    }
+  ],
+  "scope": "scoped model navigation repair; not full-goal or release acceptance"
+}

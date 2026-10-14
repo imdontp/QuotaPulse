@@ -1,0 +1,32 @@
+
+> quotapulse@0.1.0 test:stable
+> node --import tsx scripts/check-stable-captures.mts
+
+13:42:00.000 INFO  [db] opened :memory:
+Stable capture pass 1: en/dark, 1 pages
+Stable capture pass 1: en/light, 1 pages
+Stable capture pass 1: th/dark, 1 pages
+npm.cmd : node:internal/modules/run_main:122
+At line:2 char:49
++ ... 'overview'; npm.cmd run test:stable *> tmp/model-drilldown71-overview ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Selecting a project must filter the runtime graph through the API
+
+5 !== 1
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-stable-captures.mts:3003:20) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 5,
+  expected: 1,
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

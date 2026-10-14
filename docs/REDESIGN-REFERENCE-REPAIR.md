@@ -16,6 +16,8 @@ that harness must never be reported as a reference fidelity percentage.
 
 Historical scoped source repair: [v1.85.49](redesign-v1.85.49/VALIDATION-STATE.md) aligns painted Live horizontal bounds/divider and Models lower-detail typography. Build170 web tests, UI compatibility and12 production capture pairs pass. [Current/historical eight-page comparison](redesign-v1.85.49/reference-review.html) labels unchanged pages as build48. Vertical Live and other source artwork/geometry remain open.
 
+Current scoped model navigation checkpoint: [v1.85.71 validation](redesign-v1.85.71/VALIDATION-STATE.md) and [all-eight reference review](redesign-v1.85.71/review.html). Overview Top Models opens Models with its period/source independently of the Runtime Map project. This bounded fix does not close whole-source, loading, motion or release acceptance.
+
 Current upper-world lighting checkpoint: [v1.85.70 validation](redesign-v1.85.70/VALIDATION-STATE.md) and [all-eight source comparison](redesign-v1.85.70/review.html). Actual compiled source gain and current native/Overview/web gates verified; full-goal motion, drill-down and release work remain open.
 
 Historical Overview/Models artwork work: [v1.85.69 validation](redesign-v1.85.69/VALIDATION-STATE.md) and [all-eight reference comparison](redesign-v1.85.69/review.html). Source-inspired lower globe shade, open primary chevrons and dark donut palette retain real data. Whole-reference/release acceptance remains open.

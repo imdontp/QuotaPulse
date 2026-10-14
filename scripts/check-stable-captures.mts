@@ -159,7 +159,8 @@ const modelCostChecks: Array<{ route: string; lang: string; theme: string; bucke
 const quotaChecks: Array<{ page: string; lang: string; theme: string; segments: number; samples: number; unknown: number }> = [];
 const pulseCoreChecks: Array<{ lang: string; theme: string; assetSha256: string; imageWidth: number; selectedUsed: number[]; boundaries: number[]; unknown: boolean; reducedMotion: boolean }> = [];
 const pulseAmbientChecks: Array<{ lang: string; theme: string; width: number; height: number; centerError: number; decorative: boolean; staticArtwork: boolean }> = [];
-const modelMarkChecks: Array<{ lang: string; theme: string; vendors: string[]; unknown: number; tokens: number; legacyFallback: boolean; keyboardDetail: boolean; framedMarkContained: boolean }> = [];
+const topModelScopeChecks: Array<{ lang: string; theme: string; model: string; source: number | null; tokens: number; runtimeProject: string; customBoundsPreserved: boolean }> = [];
+const modelMarkChecks: Array<{ lang: string; theme: string; vendors: string[]; unknown: number; tokens: number; legacyFallback: boolean; keyboardDrilldown: boolean; framedMarkContained: boolean }> = [];
 const overviewPeriodChecks: Array<{ lang: string; theme: string; tokensByRange: Record<string, number>; selectedQuotaPreserved: boolean; customSourcePreserved: boolean; focusRestored: boolean }> = [];
 const overviewInsightChecks: Array<{ lang: string; theme: string; cards: number; cacheShare: number | null; pricedCalls: number; totalCalls: number; states: string[] }> = [];
 const quotaGroupChecks: Array<{ lang: string; theme: string; owners: number; windows: number; sameNameSeparate: boolean; keyboardScrolled: boolean; historyIdentity: boolean }> = [];
@@ -1873,6 +1874,75 @@ async function checkSingleProjectRuntime(page: Page, lang: string, theme: string
   }
 }
 
+async function waitForRuntimeProject(page: Page, project: string) {
+  // Network idle alone does not assert the asynchronous React scope commit.
+  await page.waitForFunction(project => {
+    const nodes = [...document.querySelectorAll('.qp-runtime .qp-map-node[data-dimension=project]')];
+    return nodes.length === 1 && nodes[0].getAttribute('data-key') === JSON.stringify(project);
+  }, project, { timeout: 5_000 });
+}
+
+async function checkTopModelNavigation(page: Page, target: ReturnType<Page['locator']>, model: string | null, pending: Set<Request>) {
+  const overviewUrl = page.url();
+  const originalScope = new URLSearchParams(new URL(overviewUrl).hash.split('?')[1] ?? '');
+  assert.equal(await target.evaluate(element => element.tagName), 'A', 'Top Models uses a native link');
+  const href = await target.getAttribute('href'); assert.ok(href?.startsWith('#models?'));
+  const query = new URLSearchParams(href.slice('#models?'.length));
+  assert.equal(query.get('range'), originalScope.get('range') ?? 'today');
+  for (const key of ['from', 'to', 'source', 'bucket']) assert.equal(query.get(key), originalScope.get(key), `Model drill-down preserves ${key}`);
+  if (model === null) assert.equal(query.get('model_missing'), '1'); else assert.equal(query.get('model'), model);
+  assert.equal(query.has('project'), false, 'Selected runtime project must not narrow a global top model');
+  const response = page.waitForResponse(reply => {
+    const url = new URL(reply.url());
+    return url.pathname === '/api/model-detail' && reply.status() === 200 && (model === null ? url.searchParams.get('model_missing') === '1' : model === '' ? url.searchParams.get('model_empty') === '1' : url.searchParams.get('model') === model);
+  });
+  await target.focus(); await page.keyboard.press('Enter');
+  await page.getByTestId('production-models').waitFor(); await settled(page, pending);
+  const detailReply = await response; const requestScope = new URL(detailReply.url()).searchParams;
+  if (originalScope.get('range') === 'custom') {
+    assert.equal(requestScope.get('from'), originalScope.get('from'));
+    assert.equal(requestScope.get('to'), originalScope.get('to'));
+  }
+  assert.equal(requestScope.get('source_id'), originalScope.get('source'));
+  assert.equal(await page.getByRole('dialog').count(), 0, 'Top Models must not open the map-project detail dialog');
+  if (model !== null && model !== '') assert.equal(await page.locator('.qp-model-table-wrap tr[data-selected=true] .qp-model-name').textContent(), model);
+  const result = await detailReply.json() as ModelDetailResponse;
+  await page.goto(overviewUrl, { waitUntil: 'domcontentloaded' });
+  await page.getByTestId('production-overview').waitFor(); await settled(page, pending);
+  await page.evaluate(() => document.fonts.ready);
+  return result;
+}
+
+async function checkTopModelProjectScope(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  const row = db.prepare('SELECT u.* FROM usage_event u JOIN session s ON s.id=u.session_id WHERE s.project=? ORDER BY u.id LIMIT 1').get(referenceProjects[1]) as Record<string, unknown> & { id: number; source_id: number };
+  assert.ok(row);
+  const model = 'Outside project & β / model';
+  const values: Record<string, unknown> = { model, ts: fixedNow - 15_000, input_tokens: 150_000_000, cached_input_tokens: 0, output_tokens: 50_000_000, total_tokens: 200_000_000, cost_source: 'unknown', cost_usd: null, cost_input_usd: null, cost_cached_input_usd: null, cost_cache_write_usd: null, cost_output_usd: null, cost_cache_saving_usd: null, price_provider: null };
+  const keys = Object.keys(values); const update = db.prepare(`UPDATE usage_event SET ${keys.map(key => `${key}=?`).join(',')} WHERE id=?`);
+  const originalUrl = page.url(); const day = new Date(fixedNow); day.setHours(0, 0, 0, 0);
+  try {
+    update.run(...keys.map(key => values[key]) as any[], row.id);
+    for (const source of [null, row.source_id]) {
+      const params = new URLSearchParams({ range: 'custom', from: String(day.getTime()), to: String(fixedNow + 1), bucket: 'hour' });
+      if (source !== null) params.set('source', String(source));
+      await page.goto(`http://127.0.0.1:7804/?model-drilldown-scope=foreign#overview?${params}`, { waitUntil: 'domcontentloaded' });
+      await page.getByTestId('production-overview').waitFor(); await settled(page, pending);
+      await openRuntimeMapOptions(page); await page.locator('.qp-runtime-project select').selectOption(referenceProjects[0]); await settled(page, pending); await waitForRuntimeProject(page, referenceProjects[0]);
+      const foreignInMap = await page.locator('.qp-map-node[data-dimension=model]').evaluateAll(elements => elements.some(element => element.getAttribute('data-key') === JSON.stringify('Outside project & β / model')));
+      assert.equal(foreignInMap, false, 'Regression fixture must keep the global model outside the selected map project');
+      const target = page.locator('.qp-model-row').filter({ hasText: model }); assert.equal(await target.count(), 1);
+      const detail = await checkTopModelNavigation(page, target, model, pending);
+      assert.equal(detail.points.reduce((sum, point) => sum + point.tokens, 0), 200_000_000, 'Drill-down must expose the real global model total, not map-project fallback zero');
+      assert.equal(detail.scope.from, day.getTime()); assert.equal(detail.scope.to, fixedNow + 1);
+      assert.equal(detail.scope.sourceId ?? null, source);
+      topModelScopeChecks.push({ lang, theme, model, source, tokens: 200_000_000, runtimeProject: referenceProjects[0], customBoundsPreserved: true });
+    }
+  } finally {
+    update.run(...keys.map(key => row[key]) as any[], row.id);
+    await page.goto(originalUrl, { waitUntil: 'domcontentloaded' }); await settled(page, pending);
+  }
+}
+
 async function checkModelMarks(page: Page, lang: string, theme: string, pending: Set<Request>) {
   const saved = db.prepare('SELECT id,model FROM usage_event ORDER BY id').all() as Array<{ id: number; model: string | null }>;
   const replacements = [
@@ -1933,10 +2003,7 @@ async function checkModelMarks(page: Page, lang: string, theme: string, pending:
     await page.screenshot({ path: resolve(output, `model-marks-${lang}-${theme}.png`), animations: 'disabled' });
     const selected = displayedModels.findIndex(node => node.vendor === 'openai');
     const target = hero.nth(selected);
-    await target.focus(); await page.keyboard.press('Enter'); await page.getByRole('dialog').waitFor();
-    assert.equal(await page.locator('#qp-detail-title').textContent(), graph.nodes.model[selected].key);
-    await page.keyboard.press('Escape'); await page.getByRole('dialog').waitFor({ state: 'hidden' });
-    assert.equal(await target.evaluate(element => element === document.activeElement), true);
+    await checkTopModelNavigation(page, target, graph.nodes.model[selected].key, pending);
     // An older daemon may omit the additive maker field. Keep its real totals and names.
     const legacy = { ...graph, nodes: { ...graph.nodes, model: graph.nodes.model.map(({ vendor: _vendor, ...node }) => node) } };
     await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(legacy) })); routed = true;
@@ -1945,7 +2012,7 @@ async function checkModelMarks(page: Page, lang: string, theme: string, pending:
     assert.equal(await page.locator('.qp-model-identity i svg.lucide-box').count(), displayedModels.length);
     assert.equal(await page.locator('.qp-map-node[data-dimension=model] .qp-node-icon svg.lucide-box').count(), graph.nodes.model.length);
     assert.deepEqual(await page.locator('.qp-map-node[data-dimension=model]').evaluateAll(elements => elements.map(element => ({ key: element.getAttribute('data-key'), tokens: element.getAttribute('data-tokens') }))), graph.nodes.model.map(node => ({ key: JSON.stringify(node.key), tokens: String(node.tokens) })));
-    modelMarkChecks.push({ lang, theme, vendors: replacements.map(([, , vendor]) => vendor), unknown: 1, tokens: graph.totals.tokens, legacyFallback: true, keyboardDetail: true, framedMarkContained: true });
+    modelMarkChecks.push({ lang, theme, vendors: replacements.map(([, , vendor]) => vendor), unknown: 1, tokens: graph.totals.tokens, legacyFallback: true, keyboardDrilldown: true, framedMarkContained: true });
   } finally {
     if (routed) await page.unroute(pattern);
     db.transaction(() => { const restore = db.prepare('UPDATE usage_event SET model=? WHERE id=?'); for (const row of saved) restore.run(row.model, row.id); })();
@@ -2940,7 +3007,7 @@ try {
             assert.equal(await page.locator('.qp-map-edges>path').evaluateAll(paths => paths.some(path => [path.getAttribute('data-from'), path.getAttribute('data-to')].some(value => value?.toLowerCase().includes('opencode')))), false, 'An enabled source without project events must not acquire a fabricated route');
             await runtimeProjectSelect.selectOption(''); await settled(page, pending);
             assert.equal(await page.locator('.qp-runtime .qp-map-node[data-dimension=project]').count(), monthGraph.nodes.project.length, 'All-project scope must restore every project node');
-            await runtimeProjectSelect.selectOption('QuotaPulse'); await settled(page, pending);
+            await runtimeProjectSelect.selectOption('QuotaPulse'); await settled(page, pending); await waitForRuntimeProject(page, 'QuotaPulse');
             assert.equal(await page.locator('.qp-runtime .qp-map-node[data-dimension=project]').count(), 1, 'Selecting a project must filter the runtime graph through the API');
             await closeRuntimeMapOptions(page);
             overviewConceptDataChecks.push({ lang, theme, periodRange: conceptData.periodRange, modelNames, modelShares, quotaGroups: conceptData.quotaGroups, quotaContentHeight: conceptData.quotaContentHeight, quotaViewportHeight: conceptData.quotaViewportHeight, selectedWindow: conceptData.selectedWindow, pulsePercent: conceptData.pulsePercent, pulseLabel: conceptData.pulseLabel, pulseDetail: conceptData.pulseDetail, cacheShare: conceptData.cacheShare, cacheSavingsUsd: expectedCacheSavings, cacheSavingsKnownCalls: monthGraph.totals.cacheSavingKnownCalls, mapProject: 'QuotaPulse', mapProjects: focusedGraph.nodes.project.length, mapRecords: focusedGraph.totals.records, mapSessions: focusedGraph.totals.sessions, mapActiveSessions: focusedGraph.nodes.project[0]?.activeSessions, mapHarnessSessions });
@@ -2978,16 +3045,11 @@ try {
             assert.ok(activity.y + activity.height <= 992, `Overview activity is outside concept viewport: ${activity.y + activity.height}`);
             assert.equal(await rail.locator('.qp-model-row').count(), 5);
             assert.ok(await rail.evaluate(element => element.scrollHeight <= element.clientHeight), 'The five reference top models should fit without a clipped or scroll-only row');
-            // Prime the same keyboard detail and paint state in both captures.
+            // Prime the same real model drill-down and paint state in both captures.
             // The canonical/repeat images must have identical preparation.
             {
               const last = rail.locator('.qp-model-row').last();
-              await last.focus(); await page.keyboard.press('Enter');
-              await page.getByRole('dialog').waitFor();
-              assert.equal(await page.locator('#qp-detail-title').textContent(), 'Others');
-              await page.keyboard.press('Escape'); await page.getByRole('dialog').waitFor({ state: 'hidden' });
-              assert.equal(await last.evaluate(element => element === document.activeElement), true);
-              await last.evaluate(element => (element as HTMLElement).blur());
+              await checkTopModelNavigation(page, last, 'Others', pending);
               await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300);
               const composition = await page.evaluate(() => {
                 const viewport = document.querySelector('.qp-runtime .qp-map-scroll')!.getBoundingClientRect();
@@ -3121,7 +3183,7 @@ try {
           if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme, pending);
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
           if (pass === 0 && destination === 'overview') { await checkRuntimeAccess(page, lang, theme, pending); await checkSingleProjectRuntime(page, lang, theme, pending); }
-          if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkModelMarks(page, lang, theme, pending);
+          if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') { await checkModelMarks(page, lang, theme, pending); await checkTopModelProjectScope(page, lang, theme, pending); }
           if (pass === 0 && !runtimeLayoutOnly && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
           if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkPulseCore(page, lang, theme, pending);
           if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkOverviewPeriod(page, lang, theme, pending);
@@ -3142,7 +3204,7 @@ try {
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
   if (referenceDetailRegions.length) writeFileSync(resolve(output, 'reference-detail-regions.json'), JSON.stringify({ evidence: 'measured application regions for source review; not whole-image similarity or acceptance', captures: referenceDetailRegions }, null, 2));
   if (costReferenceRegions.length) writeFileSync(resolve(output, 'cost-reference-layout.json'), JSON.stringify({ source: 'quotapulse_build_blueprint/refs/cost.png', evidence: 'region estimates within 3px, not whole-image similarity or visual acceptance', captures: costReferenceRegions }, null, 2));
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', captureMatrix: { languages: captureLanguages, themes: captureThemes, complete: captureLanguages.length === 2 && captureThemes.length === 2 }, clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 10, maxChangedPixelFraction: 0.00005, masks: false }, captureNormalization: ['CSS transitions disabled and caret hidden before screenshot only', 'Playwright animations disabled during screenshot'], productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, runtimeMapProject: 'QuotaPulse', runtimeMapSessions: 12, runtimeMapRecords: 39, allRangeProjects: 5, allRangeRecords: 43, namedProjects: referenceProjects.length, projectNames: referenceProjects, models: referenceModels.length, modelNames: referenceModels.map(model => model.name), modelShares: referenceModels.map(model => model.share), providers: 4, records: 39, quotaOwners: ['OpenAI Subscription', 'OpenCode Go Subscription'], cacheSharePercent: 42, monthlySelection: 'OpenAI Subscription · monthly' }, checks: ['frozen daemon and browser Date', 'source-matched date on the screenshot clock', 'reference-matched Overview section labels and model rail accessible name', 'reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 2px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry, keyboard scrolling and last-model detail/focus restoration', 'complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, overviewReferenceLabelChecks, overviewConceptDataChecks, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, workspaceChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', captureMatrix: { languages: captureLanguages, themes: captureThemes, complete: captureLanguages.length === 2 && captureThemes.length === 2 }, clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 10, maxChangedPixelFraction: 0.00005, masks: false }, captureNormalization: ['CSS transitions disabled and caret hidden before screenshot only', 'Playwright animations disabled during screenshot'], productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, runtimeMapProject: 'QuotaPulse', runtimeMapSessions: 12, runtimeMapRecords: 39, allRangeProjects: 5, allRangeRecords: 43, namedProjects: referenceProjects.length, projectNames: referenceProjects, models: referenceModels.length, modelNames: referenceModels.map(model => model.name), modelShares: referenceModels.map(model => model.share), providers: 4, records: 39, quotaOwners: ['OpenAI Subscription', 'OpenCode Go Subscription'], cacheSharePercent: 42, monthlySelection: 'OpenAI Subscription · monthly' }, checks: ['frozen daemon and browser Date', 'source-matched date on the screenshot clock', 'reference-matched Overview section labels and model rail accessible name', 'reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 2px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry and keyboard navigation to Models with the same period/source', 'complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, overviewReferenceLabelChecks, overviewConceptDataChecks, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, topModelScopeChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeGeometryChecks, shellChecks, headerChecks, workspaceChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;
