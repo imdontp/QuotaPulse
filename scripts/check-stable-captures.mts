@@ -1746,39 +1746,11 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
       assert.equal(arrow.width, primary ? 12 : 5); assert.equal(arrow.height, primary ? 12 : 5);
       if (primary) { assert.equal(arrow.points, '1,1 8,4 1,7'); assert.equal(arrow.stroke, 'context-stroke'); }
     }
-    const visibleKeys = dimensions.map(dimension => new Set(graph.nodes[dimension].slice(0, 8).map(node => JSON.stringify(node.key))));
-    const expectedFlowEdges = dimensions.slice(0, 3).flatMap((_, column) => graph.edges
-      .filter(edge => edge.column === column && visibleKeys[column].has(JSON.stringify(edge.from)) && visibleKeys[column + 1].has(JSON.stringify(edge.to)))
-      .sort((a, b) => b.tokens - a.tokens || JSON.stringify([a.from, a.to]).localeCompare(JSON.stringify([b.from, b.to])))
-      .slice(0, 2)
-      .map(edge => ({ column: String(edge.column), from: JSON.stringify(edge.from), to: JSON.stringify(edge.to), tokens: String(edge.tokens) })));
-    const flowEdges = await page.locator('.qp-map-flow-dot').evaluateAll(elements => elements.map(element => ({ column: element.getAttribute('data-column'), from: element.getAttribute('data-from'), to: element.getAttribute('data-to'), tokens: element.getAttribute('data-tokens') })));
-    assert.deepEqual(flowEdges, expectedFlowEdges);
-    assert.equal(await page.locator('.qp-map-flow-dot animateMotion').count(), 0, 'Reduced motion must keep flow particles static');
+    // Existing aggregate paths remain visible; motion requires a newly observed actual record.
+    assert.equal(await page.locator('.qp-map-flow-dot').count(), 0, 'Accepted initial snapshots must not invent idle particles');
     await page.emulateMedia({ reducedMotion: 'no-preference' });
-    const flowDot = page.locator('.qp-map-flow-dot').first();
-    const map = page.locator('.qp-map');
-    const originalTransform = await map.evaluate(element => (element as HTMLElement).style.transform);
-    try {
-      await flowDot.locator('animateMotion').waitFor({ state: 'attached' });
-      const position = () => flowDot.evaluate(element => {
-        const circle = element as SVGCircleElement;
-        const point = new DOMPoint(circle.cx.baseVal.value, circle.cy.baseVal.value).matrixTransform(circle.getScreenCTM()!);
-        return { x: point.x, y: point.y };
-      });
-      const before = await position();
-      await page.waitForTimeout(400);
-      const after = await position();
-      assert.ok(Math.hypot(after.x - before.x, after.y - before.y) > 2, 'Active flow particle must travel along its recorded edge');
-      await map.evaluate(element => { (element as HTMLElement).style.transform = 'translateY(2000px)'; });
-      await page.waitForFunction(() => document.querySelectorAll('.qp-map-flow-dot animateMotion').length === 0);
-      await map.evaluate((element, transform) => { (element as HTMLElement).style.transform = transform; }, originalTransform);
-      await flowDot.locator('animateMotion').waitFor({ state: 'attached' });
-    } finally {
-      await map.evaluate((element, transform) => { (element as HTMLElement).style.transform = transform; }, originalTransform);
-      await page.emulateMedia({ reducedMotion: 'reduce' });
-      await page.waitForFunction(() => document.querySelectorAll('.qp-map-flow-dot animateMotion').length === 0);
-    }
+    assert.equal(await page.locator('.qp-map-flow-dot animateMotion').count(), 0, 'Preference changes must not replay old calls');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     const disclosure = page.locator('.qp-runtime-data'); const summary = disclosure.locator('summary');
     assert.equal(await disclosure.locator('table').count(), 0);
     await summary.focus(); await page.keyboard.press('Enter');

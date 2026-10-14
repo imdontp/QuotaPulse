@@ -1,0 +1,194 @@
+{
+  "productionIndexSha256": "deeeb8ba6635166d75724d662e95a0d1c04caf4f1cb4c1c2d8c7f13ef182a4e3",
+  "sourceWorkingHashes": {
+    "packages/web/src/redesign/runtime-motion.ts": "ecfafe6cb29ef43cdabe3055584f76bee0a11c520ec1f2dfa5452ec043562a75",
+    "packages/web/src/redesign/use-runtime-motion.ts": "0f47d25b97c153fc6191d78002de3bfe5de12c1a8675285757f458f503076160",
+    "packages/web/src/redesign/runtime-activity.ts": "b2eb0c0a6808ceee12fba9cf57be8034887a4c511f48773bbfecd6fa4ded7365",
+    "packages/web/src/redesign/use-runtime-activity.ts": "53d932c669128a574892b1f92be0c0bf5124e64cca25ddc856301eaf5caff5d4",
+    "packages/web/src/redesign/production.tsx": "3a9361616bfd74539f49385dda0c0148b6d76857e03c32b9617e82f7675cf009",
+    "packages/web/src/redesign/overview.tsx": "9e3dcb8efc9b8730fec7af00ba773b2aa6ebcbae127780e4081466694be33367",
+    "packages/web/src/redesign/overview.css": "7ed821153482bb779290a4ad16613ac99116f679f2229a3eb9ab3fb35dd9599c",
+    "packages/web/test/runtime-motion.test.ts": "84eb71609c9b62631a1604aac8c4b9a5fee135e1f8eccd5c4e46a9422185214b",
+    "packages/web/test/runtime-activity.test.ts": "50df25a02b4e6312d55a5420c80ab6d410c20fabd1e305df407fc7c59e83726f",
+    "scripts/check-stable-captures.mts": "8543b1bd78a5dd649071d8a1d5fd950af4c19807ef03b4258d12b1c239a1006b"
+  },
+  "sourceGitContentHashes": {
+    "packages/web/src/redesign/runtime-motion.ts": "ecfafe6cb29ef43cdabe3055584f76bee0a11c520ec1f2dfa5452ec043562a75",
+    "packages/web/src/redesign/use-runtime-motion.ts": "0f47d25b97c153fc6191d78002de3bfe5de12c1a8675285757f458f503076160",
+    "packages/web/src/redesign/runtime-activity.ts": "b2eb0c0a6808ceee12fba9cf57be8034887a4c511f48773bbfecd6fa4ded7365",
+    "packages/web/src/redesign/use-runtime-activity.ts": "53d932c669128a574892b1f92be0c0bf5124e64cca25ddc856301eaf5caff5d4",
+    "packages/web/src/redesign/production.tsx": "3a9361616bfd74539f49385dda0c0148b6d76857e03c32b9617e82f7675cf009",
+    "packages/web/src/redesign/overview.tsx": "9e3dcb8efc9b8730fec7af00ba773b2aa6ebcbae127780e4081466694be33367",
+    "packages/web/src/redesign/overview.css": "94cf6bda3af9f3911444c4ae7c12acdc4c89fe9cc4a6c26f4185504f8644af08",
+    "packages/web/test/runtime-motion.test.ts": "84eb71609c9b62631a1604aac8c4b9a5fee135e1f8eccd5c4e46a9422185214b",
+    "packages/web/test/runtime-activity.test.ts": "50df25a02b4e6312d55a5420c80ab6d410c20fabd1e305df407fc7c59e83726f",
+    "scripts/check-stable-captures.mts": "0c09b4b0e6ea7388513b01786873e71d684a8027a1a83f1f43bfcf2a29aef64f"
+  },
+  "probeWorkingHashes": {
+    "tmp/motion74-browser.mts": "250b73196b31e02a21ef5ee4f16d2de900fdb6e2f0074379e10e14c0672f886d",
+    "tmp/source-art74-all8.mts": "ef5fb1a954c27719b7a0d12afbc6a30b2071ac8014bfd0930b71c8fd6a9a9754"
+  },
+  "archiveOrigins": [
+    {
+      "source": "tmp/source-art74-final-en-dark/overview-default.png",
+      "path": "after/overview.png",
+      "rawSha256": "ab56a9b7bed676517820966a123805327eeb3b485e8f24617867c054fb45750b",
+      "archiveSha256": "ab56a9b7bed676517820966a123805327eeb3b485e8f24617867c054fb45750b"
+    },
+    {
+      "source": "tmp/source-art74-final-en-dark/live-default.png",
+      "path": "after/live.png",
+      "rawSha256": "c2fc7f6e3071264765d693c4bae924b7d3a5be1fc5c372f8c174855950029df9",
+      "archiveSha256": "c2fc7f6e3071264765d693c4bae924b7d3a5be1fc5c372f8c174855950029df9"
+    },
+    {
+      "source": "tmp/source-art74-final-en-dark/projects-default.png",
+      "path": "after/projects.png",
+      "rawSha256": "5911f47e79e50f2f1822f20ce8878f7671621893acece1af9f355bc0458e856d",
+      "archiveSha256": "5911f47e79e50f2f1822f20ce8878f7671621893acece1af9f355bc0458e856d"
+    },
+    {
+      "source": "tmp/source-art74-final-en-dark/models-default.png",
+      "path": "after/models.png",
+      "rawSha256": "c65ac494cbb69f93ed0f1477290c5b7a4381a65a842f92095f492ac02c93e7c2",
+      "archiveSha256": "c65ac494cbb69f93ed0f1477290c5b7a4381a65a842f92095f492ac02c93e7c2"
+    },
+    {
+      "source": "tmp/source-art74-final-en-dark/providers-default.png",
+      "path": "after/providers.png",
+      "rawSha256": "74b7c9e4a2f48574125c28d75b30dc09a9041243fcdcb726f2ecfef361fcf944",
+      "archiveSha256": "74b7c9e4a2f48574125c28d75b30dc09a9041243fcdcb726f2ecfef361fcf944"
+    },
+    {
+      "source": "tmp/source-art74-final-en-dark/cost-default.png",
+      "path": "after/cost.png",
+      "rawSha256": "b918b3d271307b49e2aa5aa339fa6d690ca26442a0f190112b3c3874ac4df3cc",
+      "archiveSha256": "b918b3d271307b49e2aa5aa339fa6d690ca26442a0f190112b3c3874ac4df3cc"
+    },
+    {
+      "source": "tmp/source-art74-final-en-dark/history-default.png",
+      "path": "after/history.png",
+      "rawSha256": "6b12e0c81bb35e96325a97d164ea1c0d9a95561dda9ba61919561c14d8a300ea",
+      "archiveSha256": "6b12e0c81bb35e96325a97d164ea1c0d9a95561dda9ba61919561c14d8a300ea"
+    },
+    {
+      "source": "tmp/source-art74-final-en-dark/alerts-default.png",
+      "path": "after/alerts.png",
+      "rawSha256": "4b133b0942c85d10f9b02ef4c4bf8f5abecad03d5946b5fb7fa342514635da2f",
+      "archiveSha256": "4b133b0942c85d10f9b02ef4c4bf8f5abecad03d5946b5fb7fa342514635da2f"
+    },
+    {
+      "source": "tmp/motion74-browser/verification.json",
+      "path": "motion-verification.json",
+      "rawSha256": "dae14ca316e89811cbcc45f626f61f3b5f915858e149deddb6bedef6c8702d71",
+      "archiveSha256": "8a6b534c1c0146b9b4721905af6e252352ebc7ad931e79c0a9f97dc8b472c2eb"
+    },
+    {
+      "source": "tmp/source-art74-final-en-dark/geometry.json",
+      "path": "current-reference-geometry.json",
+      "rawSha256": "3551214b397f970fb1e64ea425cd8c4b5bf71a379ed16d3ff54680e7bddf6a0f",
+      "archiveSha256": "83362dafb61e5fdc77b179bc5e3f430029907c7cea7b6bec52b93bfc9eb1f8e1"
+    },
+    {
+      "source": "tmp/motion74-native-diff.json",
+      "path": "native-diff.json",
+      "rawSha256": "f9a2312127cf0071dd19711444efb428014980e5f0d75c1e0c3210a1405637b7",
+      "archiveSha256": "44d85d8633f263634d8a195088bf0025a1752528ac677f3a62a5f330a313d0ac"
+    },
+    {
+      "source": "tmp/motion74-intermediate-overview.json",
+      "path": "intermediate-overview-verification.json",
+      "rawSha256": "33cd90ea23ea7868f53261690e85d0582e1f3839590aa1af6aa8b508d197486c",
+      "archiveSha256": "db20e1922fbf781593d40558d421ce46c8d301df3bdbdac0b016f61b13b712da"
+    },
+    {
+      "source": "tmp/motion74-build.log",
+      "path": "build.log",
+      "rawSha256": "25606529eca82fab7652d9f01a1e5a151954777b1f6b7efb789918c13354f10d",
+      "archiveSha256": "2fe7cc373f89968d721bd4670629243f6954a8da2890285577e89838bd7def65"
+    },
+    {
+      "source": "tmp/motion74-web.log",
+      "path": "web-tests.log",
+      "rawSha256": "a9d64956ace13d556ab8d988c288fa94df43cbc298d4709d95db7a74c7bead21",
+      "archiveSha256": "6f6e7acfca11dc9a8149134ab0af919bb4d86341be475799802e1b81daa6fd4c"
+    },
+    {
+      "source": "tmp/motion74-browser.log",
+      "path": "motion.log",
+      "rawSha256": "333f7878fd6f05ab8864c0988a8ce406ef5e67ba360af8354a24fa0127121efe",
+      "archiveSha256": "1d6407e9fddc86ca7e5dcc695a779d65697459403fd2901e0650aab8f9713e92"
+    },
+    {
+      "source": "tmp/motion74-all8-final.log",
+      "path": "all-eight.log",
+      "rawSha256": "204264ae35b6e183a455564d4ef6447be9d597ccabb30625c9861e36e097df94",
+      "archiveSha256": "352b21f0792c2f153a24aeb93fb3534b65cb71b4dd4e086b8adf708ae7315fd1"
+    },
+    {
+      "source": "tmp/motion74-overview.log",
+      "path": "intermediate-overview.log",
+      "rawSha256": "dbfbd4421e8d9748c37b34f19dd817f93df8769b745eddb757b76bfc70fec883",
+      "archiveSha256": "74b5ff1664be1a12febf030dc8672369e8eec0dc1d49822368c7ecbe8db3a7dc"
+    },
+    {
+      "source": "tmp/motion74-build-failure.log",
+      "path": "diagnostics/build-failure.log",
+      "rawSha256": "67824905b65ed7bc6ce54b563dff2db0f4aa05dad83cf8f7f0e7c3cc618e5add",
+      "archiveSha256": "5a0c730521395b6f90d2c915d5cc2930d444218fd8aed1f67d0f608a20538859"
+    },
+    {
+      "source": "tmp/motion74-browser-boundary-failure.log",
+      "path": "diagnostics/browser-boundary-failure.log",
+      "rawSha256": "3d70a76e4dae8c2502779b69aa8df08ce38515ae3d1139fc31b6169b8d8d59ba",
+      "archiveSha256": "7d601c60444ee0cdc2b6a260c713e53885ae9942ba99a853802e1ca00c4e470a"
+    },
+    {
+      "source": "tmp/motion74-motion-travel-failure.log",
+      "path": "diagnostics/motion-travel-failure.log",
+      "rawSha256": "43a08f3ac2f7d62844de6e7b19442e02743227bbe2153d461d3c5ba724644ef1",
+      "archiveSha256": "2ab1e5173e977a6b9ed5971641686754ba0a66d300fd01e88ceb81d0f55f67c3"
+    },
+    {
+      "source": "tmp/motion74-smil-start-failure.log",
+      "path": "diagnostics/smil-start-failure.log",
+      "rawSha256": "8c83ef86aa81d3b6b6230818f2db3eb51b2a63e0bf8aefb4e5eaf67389d6b4d0",
+      "archiveSha256": "ab6bcc592aff3d37ff72680a05b3d390bd2e9bc4ceb2fe8ea1d6c1030568cec3"
+    },
+    {
+      "source": "tmp/motion74-reduced-duration-failure.log",
+      "path": "diagnostics/reduced-duration-failure.log",
+      "rawSha256": "3c34e512bd726c627926a6f167663515a198097d5b630d124bab3b7591015419",
+      "archiveSha256": "8afd7e5145011e9ec0be0f6554d4c133f661e690d439f5945aa12f22939cdbe2"
+    },
+    {
+      "source": "tmp/motion74-stale-fixture-failure.log",
+      "path": "diagnostics/stale-fixture-failure.log",
+      "rawSha256": "8972ac42b3a7f6930317ca12a1e9eeaa14e08ddb0a4991f135e77cc555d10c81",
+      "archiveSha256": "38dff3be5b2bbac9b47dc24035c86fa6b3ecfaa808ad3ca2ba03a812ef1ab06a"
+    }
+  ],
+  "terminalResults": {
+    "currentBuild": {
+      "session": 64016,
+      "exitCode": 0
+    },
+    "currentWeb205": {
+      "session": 68631,
+      "exitCode": 0
+    },
+    "currentMotionAndPulse": {
+      "session": 86802,
+      "exitCode": 0
+    },
+    "currentAllEight": {
+      "session": 48158,
+      "exitCode": 0
+    },
+    "intermediateOverviewAndAllEight": {
+      "session": 40525,
+      "exitCode": 0
+    }
+  },
+  "scope": "Current build/web/motion/Pulse/native capture proof. Four Overview repeat pairs are an explicitly intermediate pre-Pulse/pre-final-resume build, not current full release acceptance."
+}

@@ -1,0 +1,26 @@
+13:42:00.000 INFO  [db] opened :memory:
+Mount ready; inserting actual first call.
+SMIL positions/timeline: {"p0":{"x":798.7662963867188,"y":587.4529075622559},"p1":{"x":851.2149658203125,"y":575.9507598876953},"timeline":{"svg":3.29980206489563,"start":3.0165019035339355}}
+node :
+At line:6 char:1
++ node --import tsx tmp/motion74-browser.mts *> tmp/motion74-browser.lo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\motion74-browser.mts:2698
+ db.prepare('UPDATE limit_sample SET last_seen_at=?,observed_at=?,source_fetched_at=?').run(fixedNow-2*3_600_000,fixedN
+ow-2*3_600_000,fixedNow-2*3_600_000);const staleCall=insert('motion74-stale-quota');await observe(staleCall);await
+page.waitForFunction(()=>document.querySelector('.qp-pulse')?.getAttribute('data-stale')==='true');assert.equal(await
+pulse.getAttribute('data-runtime-activity'),'recent-observation');assert.equal(await
+orbit.evaluate(e=>getComputedStyle(e).animationPlayState),'paused');await dots.waitFor({state:'detached'});
+                                                                                        ^
+
+SqliteError: UNIQUE constraint failed: limit_sample.source_id, limit_sample.window_kind, limit_sample.observed_at,
+limit_sample.origin
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\motion74-browser.mts:2698:89) {
+  code: 'SQLITE_CONSTRAINT_UNIQUE'
+}
+
+Node.js v22.13.1

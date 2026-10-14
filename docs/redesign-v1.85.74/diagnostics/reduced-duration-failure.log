@@ -1,0 +1,27 @@
+13:42:00.000 INFO  [db] opened :memory:
+Mount ready; inserting actual first call.
+SMIL positions/timeline: {"p0":{"x":798.7662963867188,"y":587.4529075622559},"p1":{"x":854.9093017578125,"y":574.204460144043},"timeline":{"svg":3.4165079593658447,"start":3.099842071533203}}
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx tmp/motion74-browser.mts *> tmp/motion74-browser.lo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+'1e-06s' !== '0s'
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\motion74-browser.mts:2685:139) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '1e-06s',
+  expected: '0s',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

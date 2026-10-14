@@ -1,0 +1,19 @@
+
+> @quotapulse/web@0.1.0 build
+> tsc -b && vite build
+
+src/redesign/use-runtime-motion.ts(40,114): error TS2322: Type 'number | undefined' is not assignable to type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+npm.cmd : npm error Lifecycle script `build` failed with error:
+At line:27 char:1
++ npm.cmd run build -w @quotapulse/web *> tmp/motion74-build.log; exit  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm error Lifec...led with error::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+npm error code 1
+npm error path C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web
+npm error workspace @quotapulse/web@0.1.0
+npm error location C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c tsc -b && vite build

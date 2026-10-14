@@ -1,0 +1,26 @@
+13:42:00.000 INFO  [db] opened :memory:
+Mount ready; inserting actual first call.
+node : node:internal/modules/run_main:122
+At line:6 char:1
++ node --import tsx tmp/motion74-browser.mts *> tmp/motion74-browser.lo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  pixels.slice(0, 4 * canvas.width * 4)
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\motion74-browser.mts:2682:363) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.13.1

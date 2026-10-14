@@ -14,11 +14,17 @@ import { QuotaChart } from './quota-chart';
 import { RuntimeData } from './runtime-data';
 import { ActivitySparkline } from './activity-sparkline';
 import { modelDrilldownHref } from './model-drilldown';
+import { useRuntimeActivity } from './use-runtime-activity';
+import { useRuntimeMotion } from './use-runtime-motion';
+import type { RuntimeMotionBatch } from './runtime-motion';
 import { PulseAmbient } from './pulse-ambient';
 import type { UsageEventScope } from '@/lib/usage-events';
 import { activityMinutePoints, activityTokensPerMinute } from './activity-trend';
 
 type Translate = RedesignTranslate;
+function beginObservedMotion(element: SVGAnimateMotionElement | null) {
+  element?.beginElement();
+}
 function ModelMark({ node, size }: { node: Pick<UsageNode, 'key' | 'vendor'>; size: number }) {
   return node.key && node.vendor && node.vendor !== 'unknown'
     ? <span className="qp-model-mark" style={{ fontSize: size }}><VendorIcon vendor={node.vendor}/></span>
@@ -67,6 +73,8 @@ interface OverviewProps {
   records?: readonly UsageRecord[];
   graph?: RuntimeGraph;
   runtimeGraph?: RuntimeGraph;
+  runtimeMotion?: RuntimeMotionBatch;
+  runtimeMotionGraphReady?: boolean;
   quotas: readonly QuotaWindow[];
   quotaAccountStates?: Readonly<Record<string, AccountState>>;
   now: number;
@@ -124,7 +132,7 @@ function ActivityTrend({ item, language }: { item: ActivityItem; language: 'en' 
   </div>;
 }
 
-function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { quota: QuotaWindow | undefined; now: number; t: Translate; language: 'en' | 'th'; staleAfterMs: number; tokens: number; period: string }) {
+function PulseCore({ recentRuntime, quota, now, t, language, staleAfterMs, tokens, period }: { recentRuntime: boolean; quota: QuotaWindow | undefined; now: number; t: Translate; language: 'en' | 'th'; staleAfterMs: number; tokens: number; period: string }) {
   const id = useId().replace(/:/g, '');
   const state = quota ? quotaState(quota, now, staleAfterMs) : null;
   const used = state?.remaining == null ? null : quota?.usedPercent ?? null;
@@ -134,7 +142,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
   const duration = (at: number | null) => quotaDuration(at, now, t('redesign.unknownValue'));
   const exact = (at: number | null) => at === null ? t('redesign.unavailable') : new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(at);
   const tokenTotal = new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(tokens);
-  return <div className="qp-pulse" data-stale={!state || state.stale}>
+  return <div className="qp-pulse" data-runtime-activity={recentRuntime ? 'recent-observation' : 'idle-or-unknown'} data-idle={!recentRuntime || used === null} data-stale={!state || state.stale}>
     <PulseAmbient/>
     <svg className="qp-pulse-art" viewBox="0 0 360 320" aria-hidden="true">
       <defs>
@@ -207,10 +215,11 @@ function emptyHarnessNode(key: string): RuntimeGraph['nodes']['harness'][number]
     nativeCalls: 0, computedCalls: 0, estimatedCalls: 0, unknownCalls: 0, lastActivityAt: null, activeSessions: 0 };
 }
 
-function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, enabledHarnesses, onInspect, projects, selectedProject, onProjectChange }: { nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; enabledHarnesses?: readonly string[]; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
+function RuntimeMap({ motionBatch, motionGraphReady = false, nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, enabledHarnesses, onInspect, projects, selectedProject, onProjectChange }: { motionBatch?: RuntimeMotionBatch; motionGraphReady?: boolean; nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; enabledHarnesses?: readonly string[]; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
   const arrowId = useId();
   const map = useRef<HTMLDivElement>(null);
-  const [flowMotionEnabled, setFlowMotionEnabled] = useState(false);
+  const motionRegion = useRef<HTMLElement>(null);
+  const motionSignals = useRuntimeMotion(motionRegion, motionBatch, selectedProject, { nodes, edges, activityWindowMs }, motionGraphReady);
   const [geometry, setGeometry] = useState<{ width: number; height: number; paths: Array<{ edge: RuntimeGraph['edges'][number]; x: number; y: number; endX: number; endY: number }> }>({ width: 1, height: 1, paths: [] });
   const modelTokens = nodes.model.reduce((total, node) => total + node.tokens, 0);
   const locale = language === 'th' ? 'th-TH' : 'en-US';
@@ -241,19 +250,6 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
         y: u ** 3 * y + 3 * u ** 2 * t * y + 3 * u * t ** 2 * endY + t ** 3 * endY };
     }));
   const featuredFlowEdges = new Set(flowPaths.map(({ edge }) => JSON.stringify([edge.column, edge.from, edge.to])));
-  useEffect(() => {
-    const element = map.current;
-    if (!element) { setFlowMotionEnabled(false); return; }
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let visible = false;
-    const update = () => setFlowMotionEnabled(visible && !document.hidden && !reduced.matches);
-    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; update(); });
-    observer.observe(element);
-    document.addEventListener('visibilitychange', update);
-    reduced.addEventListener('change', update);
-    update();
-    return () => { observer.disconnect(); document.removeEventListener('visibilitychange', update); reduced.removeEventListener('change', update); };
-  }, [recordCount === 0]);
   const projectFilter = onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>;
   useLayoutEffect(() => {
     const element = map.current;
@@ -277,7 +273,7 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
     element.querySelectorAll('.qp-map-node').forEach(node => observer.observe(node));
     return () => observer.disconnect();
   }, [nodes, edges, recordCount, height, singleProject]);
-  return <section className="qp-panel qp-runtime" id="runtime">
+  return <section ref={motionRegion} data-observation-batch={motionBatch?.serial} className="qp-panel qp-runtime" id="runtime">
     <div className="qp-section-heading">
       <div className="qp-runtime-heading-main">
         <h2><GitBranch size={18} className="qp-overview-reference-fallback" aria-hidden="true"/><OverviewHeadingReferenceMark kind="runtime"/><span className="qp-overview-heading-title">{t('redesign.liveRuntimeMap')}</span></h2>
@@ -316,7 +312,15 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
             const identity = JSON.stringify([edge.column, edge.from, edge.to]);
             return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-last-activity-at={edge.lastActivityAt ?? undefined} data-active-sessions={edge.activeSessions} data-activity-state={activityState} data-flow-priority={featuredFlowEdges.has(identity) ? 'primary' : 'secondary'} key={identity} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth={strokeWidth} markerEnd={`url(#${arrowId})`}/>;
           })}
-          {flowPaths.map(({ edge, path, x, y }) => <circle className="qp-map-flow-dot" data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-activity-state="active" data-motion-state={flowMotionEnabled ? 'running' : 'static'} key={JSON.stringify([edge.column, edge.from, edge.to])} cx={flowMotionEnabled ? 0 : x} cy={flowMotionEnabled ? 0 : y} r="2.8">{flowMotionEnabled && <animateMotion path={path} dur={`${3.2 + edge.column * .45}s`} repeatCount="indefinite"/>}</circle>)}
+          {motionSignals.flatMap(signal => {
+            if (signal.kind !== 'edge') return [];
+            const route = geometry.paths.find(p => p.edge.column === signal.column && p.edge.from === signal.from && p.edge.to === signal.to);
+            if (!route) return [];
+            const { edge, x, y, endX, endY } = route;
+            const bend = (endX - x) * .55;
+            const path = `M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`;
+            return [<circle className="qp-map-flow-dot" data-event-id={signal.eventId} data-source-id={signal.sourceId} data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-motion-state={signal.presentation === 'moving' ? 'running' : 'static'} key={JSON.stringify([signal.sourceId, signal.eventId])} cx={signal.presentation === 'moving' ? 0 : (x + endX) / 2} cy={signal.presentation === 'moving' ? 0 : (y + endY) / 2} r="2.8">{signal.presentation === 'moving' && <animateMotion ref={beginObservedMotion} begin="indefinite" path={path} dur=".7s" repeatCount="1"/>}</circle>];
+          })}
         </svg>
         {dimensions.map((dimension, index) => <div className="qp-map-column" data-dimension={dimension} key={dimension}>
           <h3>{singleProject && dimension === 'project' ? <span className="qp-visually-hidden">{t(runtimeHeadingKeys.project)}</span> : t(runtimeHeadingKeys[dimension])}</h3>
@@ -332,7 +336,7 @@ function RuntimeMap({ nodes, edges, recordCount, now, activityWindowMs, t, langu
             const sessionLabel = usesActiveSessions ? 'redesign.runtimeNodeActiveSessions' : 'redesign.runtimeNodeSessions';
             const exact = `${label} · ${number.format(node.tokens)} ${t('redesign.tokens')} · ${number.format(sessionValue)} ${t(sessionLabel)}${dimension === 'provider' ? ` · ${activityLabel}. ${t('redesign.runtimeActivityNote')}` : ''}`;
             const nodeStyle = dimension === 'project' && singleProject ? { height: 80, marginTop: Math.max(0, (Math.min(4, maxRows) * 43 - 80) / 2 - 8) } : undefined;
-            return <button className="qp-map-node" style={nodeStyle} data-dimension={dimension} data-runtime-name={node.key?.trim().toLowerCase() ?? undefined} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-sessions={node.sessions} data-active-sessions={activeSessions ?? undefined} data-last-activity-at={node.lastActivityAt ?? undefined} data-activity-state={activityState} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" data-model-vendor={dimension === 'model' && node.key ? node.vendor : undefined} aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <ModelMark node={node} size={15}/>}</span><span className="qp-node-label">{dimension === 'project' && singleProject && <small className="qp-node-kicker">{language === 'th' ? 'โปรเจกต์' : 'Project'}</small>}<span className="qp-node-label-main">{label}</span>{dimension === 'provider' ? <small className="qp-node-activity" data-testid="runtime-node-activity" data-state={activityState} title={t('redesign.runtimeActivityNote')}><i aria-hidden="true"/>{activityLabel}</small> : dimension !== 'model' && <small className="qp-node-meta" data-testid="runtime-node-sessions">{number.format(sessionValue)} {t(sessionLabel)}</small>}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : null}</button>;
+            return <button className="qp-map-node" data-motion-event-id={motionSignals.find(signal => signal.kind === 'node' && signal.dimension === dimension && signal.key === node.key)?.eventId} data-motion-highlight={motionSignals.some(signal => signal.kind === 'node' && signal.dimension === dimension && signal.key === node.key) ? 'aggregate' : undefined} style={nodeStyle} data-dimension={dimension} data-runtime-name={node.key?.trim().toLowerCase() ?? undefined} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-sessions={node.sessions} data-active-sessions={activeSessions ?? undefined} data-last-activity-at={node.lastActivityAt ?? undefined} data-activity-state={activityState} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" data-model-vendor={dimension === 'model' && node.key ? node.vendor : undefined} aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <ModelMark node={node} size={15}/>}</span><span className="qp-node-label">{dimension === 'project' && singleProject && <small className="qp-node-kicker">{language === 'th' ? 'โปรเจกต์' : 'Project'}</small>}<span className="qp-node-label-main">{label}</span>{dimension === 'provider' ? <small className="qp-node-activity" data-testid="runtime-node-activity" data-state={activityState} title={t('redesign.runtimeActivityNote')}><i aria-hidden="true"/>{activityLabel}</small> : dimension !== 'model' && <small className="qp-node-meta" data-testid="runtime-node-sessions">{number.format(sessionValue)} {t(sessionLabel)}</small>}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : null}</button>;
           })}
         </div>)}
       </div>
@@ -386,13 +390,15 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ initialState, quickStatsScope, records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
+export function Overview({ initialState, quickStatsScope, records = [], graph, runtimeGraph, runtimeMotion, runtimeMotionGraphReady, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
   const [selection, setSelection] = useState<{ dimension: Dimension; key: string | null } | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const shell = useRef<HTMLDivElement>(null);
+  const [pulseVisible, setPulseVisible] = useState(false);
+  const recentRuntime = useRuntimeActivity(runtimeMotion?.rows, graph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS, pulseVisible);
   const quotaKey = selectedQuotaId !== undefined ? selectedQuotaId : quotaId;
   const quota = (quotaKey && quotas.find(item => item.id === quotaKey)) || defaultQuota(quotas, now, preview ? 300000 : 3600000);
   const totals = graph?.totals ?? { ...summarize(records), records: records.length };
@@ -489,8 +495,8 @@ export function Overview({ initialState, quickStatsScope, records = [], graph, r
   useEffect(() => {
     const node = shell.current;
     if (!node) return;
-    let intersecting = true;
-    const update = () => { node.dataset.paused = String(document.hidden || !intersecting); };
+    let intersecting = false;
+    const update = () => { const visible = !document.hidden && intersecting; node.dataset.paused = String(!visible); setPulseVisible(visible); };
     const observer = new IntersectionObserver(([entry]) => { intersecting = entry.isIntersecting; update(); });
     observer.observe(node.querySelector('.qp-pulse') ?? node);
     document.addEventListener('visibilitychange', update);
@@ -508,7 +514,7 @@ export function Overview({ initialState, quickStatsScope, records = [], graph, r
               <MetricRailItem metric="pace" icon={<Flame size={21}/>} label={t('redesign.averageTokenPace')} value={metricPace === null ? '—' : compactNumber(metricPace)} rawValue={metricPace} support={t('redesign.tokensPerDay')} trend={metricTokenSeries} trendLabel={metricTrendLabel}/>
               <MetricRailItem metric="cost" icon={<Coins size={21}/>} label={t('redesign.knownCost')} value={<CostValue amount={knownCost} priced={prices.native + prices.api} total={prices.total} money={money} t={t} unit={graph ? 'calls' : 'records'}/>} rawValue={knownCost} support={costSupport} trend={metricCostSeries} trendLabel={metricTrendLabel}/>
               <MetricRailItem metric="cache" icon={<Star size={21}/>} label={t('redesign.cacheSaving')} labelTitle={t('redesign.cacheValueNote')} value={cacheSavings === null ? '—' : money(cacheSavings)} rawValue={cacheSavings} support={cacheMetricSupport} supportText={cacheMetricShareText} supportDetail={cacheMetricPricingText} trend={metricCacheSeries} trendLabel={cacheMetricTrendLabel} scale="percent"/>
-                </div><PulseCore quota={quota} now={now} t={t} language={language} staleAfterMs={preview ? 300000 : 3600000} tokens={totals.tokens} period={period ?? t('redesign.allTime')}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.topModelsByTokens')}><h3>{t('redesign.topModelsByTokens')}</h3><div className="qp-top-model-list">{models.slice(0, 5).map(model => <a className="qp-model-row" key={JSON.stringify(model.key)} href={modelDrilldownHref(historyHref, model.key)}><span className="qp-model-identity"><i data-model-vendor={model.key ? model.vendor : undefined} aria-hidden="true"><ModelMark node={model} size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></a>)}</div></section></div>
+                </div><PulseCore recentRuntime={recentRuntime} quota={quota} now={now} t={t} language={language} staleAfterMs={preview ? 300000 : 3600000} tokens={totals.tokens} period={period ?? t('redesign.allTime')}/><section className="qp-top-models" id="model-usage" tabIndex={0} aria-label={t('redesign.topModelsByTokens')}><h3>{t('redesign.topModelsByTokens')}</h3><div className="qp-top-model-list">{models.slice(0, 5).map(model => <a className="qp-model-row" key={JSON.stringify(model.key)} href={modelDrilldownHref(historyHref, model.key)}><span className="qp-model-identity"><i data-model-vendor={model.key ? model.vendor : undefined} aria-hidden="true"><ModelMark node={model} size={18}/></i><span>{model.key ?? t('redesign.unknownValue')}</span></span><strong title={number(model.tokens)}>{totals.tokens ? number(model.tokens / totals.tokens * 100) : '0'}%</strong><span className="qp-bar"><span style={{ width: `${totals.tokens ? model.tokens / totals.tokens * 100 : 0}%` }}/></span></a>)}</div></section></div>
             <div className="qp-hero-notes">
               {projectionMessage && <p className="qp-hero-projection" data-testid="pulse-projection">{projectionMessage}</p>}
               <p className="qp-footnote">{t('redesign.scope')}</p>
@@ -534,7 +540,7 @@ export function Overview({ initialState, quickStatsScope, records = [], graph, r
             </div>}
           </section>
         </div>
-        <RuntimeMap nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} enabledHarnesses={runtimeHarnesses} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
+        <RuntimeMap motionBatch={runtimeMotion} motionGraphReady={runtimeMotionGraphReady} nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} enabledHarnesses={runtimeHarnesses} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
         <div className="qp-bottom-grid">
           <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
           <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Sparkles size={18}/><span className="qp-overview-heading-title">{t('redesign.insights')}</span></h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>

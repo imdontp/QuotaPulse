@@ -10,6 +10,7 @@ import { defaultQuota, type QuotaWindow, type RuntimeGraph } from './model';
 import { readScope, selectedScope, writeScope, type ScopeRange } from './scope';
 import { activityTrendScope, latestActivityByHarness, recentActivityCallScope, recentActivityScope } from './activity-trend';
 import { usageEventParams } from '@/lib/usage-events';
+import type { RuntimeMotionBatch } from './runtime-motion';
 import { supportedForecastPace } from './insight-model';
 
 function readRoute() {
@@ -30,12 +31,13 @@ export function ProductionOverview() {
     if (!node && periodSelect.current === document.activeElement) restorePeriodFocus.current = true;
     periodSelect.current = node;
   }, []);
+  const acceptedSerial = useRef(0);
   const routeKey = JSON.stringify(route);
   const currentKey = useRef(routeKey);
   const scopeEpoch = useRef(0);
   if (currentKey.current !== routeKey) scopeEpoch.current++;
   currentKey.current = routeKey;
-  const [snapshot, setSnapshot] = useState<{ key: string; overview: OverviewData; graph: RuntimeGraph; recent: ActivityItem[]; recentTrend: Awaited<ReturnType<typeof api.minuteTrend>> | null; metricUsage: UsageResponse | null; metricComparison: CompareResult | null } | null>(null);
+  const [snapshot, setSnapshot] = useState<{ key: string; motion: RuntimeMotionBatch; overview: OverviewData; graph: RuntimeGraph; recent: ActivityItem[]; recentTrend: Awaited<ReturnType<typeof api.minuteTrend>> | null; metricUsage: UsageResponse | null; metricComparison: CompareResult | null } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedQuotaId, setSelectedQuotaId] = useState<string | null>(null);
   const [history, setHistory] = useState<QuotaHistoryResponse | null>(null);
@@ -45,7 +47,7 @@ export function ProductionOverview() {
     addEventListener('hashchange', sync);
     return () => removeEventListener('hashchange', sync);
   }, []);
-  useLiveRefresh(async () => {
+  useLiveRefresh(async ctx => {
     const key = routeKey;
     const requestedEpoch = scopeEpoch.current;
     try {
@@ -85,7 +87,7 @@ export function ProductionOverview() {
         // A chart failure must not discard the real activity records or quota snapshot.
         try { item.trend = await request; } catch { item.trendError = true; }
       }));
-      if (currentKey.current === key && scopeEpoch.current === requestedEpoch) { setSnapshot({ key, overview, graph, recent, recentTrend, metricUsage, metricComparison }); setError(null); }
+      if (currentKey.current === key && scopeEpoch.current === requestedEpoch) { setSnapshot({ key, motion: { serial: ++acceptedSerial.current, reason: ctx.reason, scopeKey: key, sourceId: route.sourceId, rows: activityRows }, overview, graph, recent, recentTrend, metricUsage, metricComparison }); setError(null); }
     } catch (cause) {
       if (!(currentKey.current === key && scopeEpoch.current === requestedEpoch)) return;
       setError(String(cause));
@@ -96,7 +98,7 @@ export function ProductionOverview() {
   const projectNames = current?.graph.nodes.project.map(node => node.key).filter((project): project is string => project !== null) ?? [];
   const mostActiveProject = current?.graph.nodes.project.slice().sort((a, b) => b.sessions - a.sessions || b.tokens - a.tokens)[0]?.key ?? null;
   const selectedRuntimeProject = mapProject === 'auto' || (mapProject !== null && !projectNames.includes(mapProject)) ? mostActiveProject : mapProject;
-  const mapGraphKey = current ? `${current.key}|${current.overview.now}|${selectedRuntimeProject ?? ''}` : '';
+  const mapGraphKey = current ? JSON.stringify([current.key, current.motion.serial, selectedRuntimeProject]) : '';
   useEffect(() => {
     if (!current) return;
     if (mapProject !== selectedRuntimeProject) { setMapProject(selectedRuntimeProject); return; }
@@ -109,7 +111,7 @@ export function ProductionOverview() {
       if (active) { setMapGraphSnapshot(null); setError(String(cause)); }
     });
     return () => { active = false; };
-  }, [current?.key, current?.overview.now, mapProject, selectedRuntimeProject, routeKey]);
+  }, [current?.key, current?.motion.serial, mapProject, selectedRuntimeProject, routeKey]);
   useEffect(() => {
     if (current && restorePeriodFocus.current) {
       // Data arriving must not take focus from a control chosen while loading.
@@ -207,6 +209,6 @@ export function ProductionOverview() {
   const mapGraph = mapGraphSnapshot?.key === mapGraphKey ? mapGraphSnapshot.graph : graph;
   return <>
     {current && error && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
-    <Overview initialState={initialState} quickStatsScope={current ? selectedScope(route, current.overview.now) : null} graph={graph} runtimeGraph={mapGraph} runtimeHarnesses={[...new Set((overview?.sources ?? []).map(source => source.harness))]} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} metricComparison={metricComparison} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
+    <Overview initialState={initialState} quickStatsScope={current ? selectedScope(route, current.overview.now) : null} graph={graph} runtimeMotion={current?.motion} runtimeMotionGraphReady={Boolean(current && mapGraphSnapshot?.key === mapGraphKey)} runtimeGraph={mapGraph} runtimeHarnesses={[...new Set((overview?.sources ?? []).map(source => source.harness))]} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} metricComparison={metricComparison} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
   </>;
 }

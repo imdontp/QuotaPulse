@@ -1,0 +1,74 @@
+{
+  "productionIndexSha256": "deeeb8ba6635166d75724d662e95a0d1c04caf4f1cb4c1c2d8c7f13ef182a4e3",
+  "scope": "Actual local API/SSE and synthetic DB; Scheduler notification manually emitted; no adapter/native-minimize claim",
+  "records": [
+    {
+      "id": "44",
+      "kind": "edge",
+      "state": "running",
+      "from": "\"codex\"",
+      "to": "\"deepseek\"",
+      "repeat": "1",
+      "duration": ".7s"
+    },
+    {
+      "id": "45",
+      "kind": "edge",
+      "state": "static",
+      "from": "\"codex\"",
+      "to": "\"deepseek\""
+    },
+    {
+      "id": "46",
+      "kind": "node",
+      "state": null,
+      "from": null,
+      "to": null
+    },
+    {
+      "id": "46",
+      "kind": "node",
+      "state": null,
+      "from": null,
+      "to": null
+    },
+    {
+      "id": "48",
+      "kind": "edge",
+      "state": "running",
+      "from": "\"codex\"",
+      "to": "\"deepseek\"",
+      "repeat": "1",
+      "duration": ".7s"
+    },
+    {
+      "id": "50",
+      "kind": "edge",
+      "state": "running",
+      "from": "\"codex\"",
+      "to": "\"deepseek\"",
+      "repeat": "1",
+      "duration": ".7s"
+    },
+    {
+      "id": "51",
+      "kind": "edge",
+      "state": "running",
+      "from": "\"codex\"",
+      "to": "\"deepseek\"",
+      "repeat": "1",
+      "duration": ".7s"
+    }
+  ],
+  "offscreenId": 47,
+  "inFlightId": 49,
+  "pulse": {
+    "durationSeconds": 6,
+    "idle": true,
+    "stale": true,
+    "unavailable": true,
+    "reduced": true,
+    "offscreen": true
+  },
+  "cleanup": true
+}
