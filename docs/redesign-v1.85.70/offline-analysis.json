@@ -1,0 +1,226 @@
+{
+  "indexes": {
+    "before69": "4371ebf043748302ef259375e08c0dde6a1dccd3e1f7abc7cad72d69085a3c48",
+    "compiled70": "149bd0a514bd39442b0a7c42cf4ef828628d17ea42766147eeddca906df2d452"
+  },
+  "inputHashes": {
+    "tmp\\globe-right70-compiled\\baseline.png": "10aee67e92b2ffbfa10504f419d1fa2719e2ee9d0aa8014c8137258a7cb4a25a",
+    "tmp\\globe-right70\\baseline.png": "446fdfcb0a17f61325c04e0e34722311996b7328e76cad047d4b9c9caeb04e3c",
+    "tmp\\globe-right70\\veil-blue050.png": "80b07b84be1f9c761ab0d8dd264ea20546023ae275b617eb89515863e580986d",
+    "C:\\Users\\TH12367283\\Downloads\\quotapulse_build_blueprint\\refs\\overview.png": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+    "packages\\web\\public\\redesign\\pulse-earth-v4.png": "43680a68501609dd2e6b5d21c01495d7c5b239f9d92655c33f47625238597bf2",
+    "packages\\web\\dist\\redesign\\pulse-earth-v4.png": "43680a68501609dd2e6b5d21c01495d7c5b239f9d92655c33f47625238597bf2",
+    "packages\\web\\src\\redesign\\overview.tsx": "ad967be7d22f4bc1c025abfb20d7675a95f44b295ea7b1a236968305583662da",
+    "packages\\web\\src\\redesign\\overview.css": "ceedf8bee5e7f0ada17e5fbb4505f5c0689ba78a80c802b918dd530f824ab12d"
+  },
+  "recordedProtectedStateEqual": true,
+  "recordedGeometryEqual": true,
+  "regions": {
+    "wholeupper": [
+      755,
+      105,
+      875,
+      220
+    ],
+    "wholeglobe": [
+      600,
+      110,
+      875,
+      390
+    ],
+    "lower": [
+      680,
+      345,
+      798,
+      366
+    ],
+    "meridian": [
+      840,
+      240,
+      864,
+      244
+    ],
+    "lowerprogress": [
+      680,
+      369,
+      798,
+      376
+    ]
+  },
+  "ctm": {
+    "a": 1.024999976158142,
+    "b": 0,
+    "c": 0,
+    "d": 1.024999976158142,
+    "e": 550.046875,
+    "f": 79
+  },
+  "results": {
+    "world-limb": {
+      "beforeMaetoSource": 56.93122489959839,
+      "compiledMaetoSource": 45.31726907630522,
+      "registeredGainRange": [
+        5.59889558232932,
+        27.804718875502004
+      ],
+      "compiledMedian": [
+        98.0,
+        64.0,
+        224.0
+      ],
+      "changedFrom69": 657,
+      "maxDeltaFrom69": 104,
+      "changedFromTrial": 236,
+      "maxDeltaFromTrial": 2
+    },
+    "shell": {
+      "beforeMaetoSource": 33.32409381663113,
+      "compiledMaetoSource": 32.80952380952381,
+      "registeredGainRange": [
+        0.19331911869225138,
+        0.5245202558635427
+      ],
+      "compiledMedian": [
+        44.0,
+        84.0,
+        167.0
+      ],
+      "changedFrom69": 125,
+      "maxDeltaFrom69": 18,
+      "changedFromTrial": 86,
+      "maxDeltaFromTrial": 2
+    },
+    "halo": {
+      "beforeMaetoSource": 35.30800821355236,
+      "compiledMaetoSource": 35.31622176591376,
+      "registeredGainRange": [
+        -0.012320328542095638,
+        0.008213552361397092
+      ],
+      "compiledMedian": [
+        75.0,
+        101.0,
+        225.0
+      ],
+      "changedFrom69": 38,
+      "maxDeltaFrom69": 1,
+      "changedFromTrial": 91,
+      "maxDeltaFromTrial": 2
+    },
+    "progress": {
+      "beforeMaetoSource": 32.999670619235836,
+      "compiledMaetoSource": 32.99934123847167,
+      "registeredGainRange": [
+        0.0003293807641640001,
+        0.0003293807641640001
+      ],
+      "compiledMedian": [
+        105.0,
+        160.0,
+        255.0
+      ],
+      "changedFrom69": 1,
+      "maxDeltaFrom69": 1,
+      "changedFromTrial": 224,
+      "maxDeltaFromTrial": 1
+    },
+    "wholeupper": {
+      "beforeMaetoSource": 25.785917874396134,
+      "compiledMaetoSource": 25.20026570048309,
+      "registeredGainRange": [
+        0.2966183574879224,
+        1.3457487922705305
+      ],
+      "compiledMedian": [
+        20.0,
+        30.0,
+        85.0
+      ],
+      "changedFrom69": 922,
+      "maxDeltaFrom69": 104,
+      "changedFromTrial": 2359,
+      "maxDeltaFromTrial": 3
+    },
+    "wholeglobe": {
+      "beforeMaetoSource": 29.314398268398268,
+      "compiledMaetoSource": 29.209437229437228,
+      "registeredGainRange": [
+        0.05316017316017252,
+        0.2411861471861485
+      ],
+      "compiledMedian": [
+        11.0,
+        29.0,
+        72.0
+      ],
+      "changedFrom69": 919,
+      "maxDeltaFrom69": 104,
+      "changedFromTrial": 7393,
+      "maxDeltaFromTrial": 6
+    },
+    "lower": {
+      "beforeMaetoSource": 29.74791498520312,
+      "compiledMaetoSource": 29.74791498520312,
+      "registeredGainRange": [
+        0.0,
+        0.0
+      ],
+      "compiledMedian": [
+        31.0,
+        50.0,
+        132.0
+      ],
+      "changedFrom69": 0,
+      "maxDeltaFrom69": 0,
+      "changedFromTrial": 0,
+      "maxDeltaFromTrial": 0
+    },
+    "meridian": {
+      "beforeMaetoSource": 29.239583333333332,
+      "compiledMaetoSource": 29.239583333333332,
+      "registeredGainRange": [
+        0.0,
+        0.0
+      ],
+      "compiledMedian": [
+        119.0,
+        87.5,
+        240.0
+      ],
+      "changedFrom69": 0,
+      "maxDeltaFrom69": 0,
+      "changedFromTrial": 23,
+      "maxDeltaFromTrial": 1
+    },
+    "lowerprogress": {
+      "beforeMaetoSource": 39.512106537530265,
+      "compiledMaetoSource": 39.512106537530265,
+      "registeredGainRange": [
+        0.0,
+        0.0
+      ],
+      "compiledMedian": [
+        63.0,
+        122.0,
+        228.0
+      ],
+      "changedFrom69": 0,
+      "maxDeltaFrom69": 0,
+      "changedFromTrial": 0,
+      "maxDeltaFromTrial": 0
+    }
+  },
+  "trialCompiledDifference": {
+    "changedPixels": 7621,
+    "oneChannelDeltaPixels": 7407,
+    "maxChannelDelta": 8,
+    "bounds": [
+      681,
+      94,
+      906,
+      296
+    ],
+    "currentIndexSha256": "149bd0a514bd39442b0a7c42cf4ef828628d17ea42766147eeddca906df2d452",
+    "samePublicDistEarthAsset": true
+  }
+}

@@ -142,6 +142,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
         <linearGradient id={`${id}-ring-br`} gradientUnits="userSpaceOnUse" x1="306" y1="160" x2="180" y2="286"><stop stopColor="#b664ff"/><stop offset="1" stopColor="#5b9cff"/></linearGradient>
         <linearGradient id={`${id}-ring-bl`} gradientUnits="userSpaceOnUse" x1="180" y1="286" x2="54" y2="160"><stop stopColor="#5b9cff"/><stop offset="1" stopColor="#26dcff"/></linearGradient>
         <linearGradient id={`${id}-bottom-limb-fade`} gradientUnits="userSpaceOnUse" x1="180" y1="160" x2="180" y2="184"><stop stopColor="#010913" stopOpacity="0"/><stop offset="1" stopColor="#010913"/></linearGradient>
+        <linearGradient id={`${id}-upper-limb-veil`} gradientUnits="userSpaceOnUse" x1="208.729" y1="52.782" x2="284.306" y2="122.032"><stop stopColor="#0109bd" stopOpacity="0"/><stop offset=".18" stopColor="#0109bd"/><stop offset=".82" stopColor="#0109bd"/><stop offset="1" stopColor="#0109bd" stopOpacity="0"/></linearGradient>
         <mask id={`${id}-ring-used`} maskUnits="userSpaceOnUse" x="45" y="25" width="270" height="270" style={{ maskType: 'alpha' }}>
           <circle className="qp-core-progress-mask" cx="180" cy="160" r="126" pathLength="100" fill="none" stroke="white" strokeWidth="8" strokeLinecap={used === 0 ? 'butt' : 'round'} strokeDasharray={`${Math.min(100, used ?? 0)} 100`} transform="rotate(-90 180 160)"/>
         </mask>
@@ -159,6 +160,7 @@ function PulseCore({ quota, now, t, language, staleAfterMs, tokens, period }: { 
       <circle className="qp-core-surface-shade" cx="180" cy="160" r="114" fill={`url(#${id}-surface-shade)`}/>
       <circle className="qp-core-north-shade" cx="180" cy="160" r="114" fill={`url(#${id}-north-shade)`}/>
       <path className="qp-core-bottom-limb-shade" d="M66 160 A114 114 0 0 0 294 160" fill="none" stroke={`url(#${id}-bottom-limb-fade)`} strokeWidth="8" strokeOpacity=".45" clipPath={`url(#${id}-world)`}/>
+      <path className="qp-core-upper-limb-veil" d="M208.729 52.782 A111 111 0 0 1 284.306 122.032" fill="none" stroke={`url(#${id}-upper-limb-veil)`} strokeWidth="6" strokeOpacity=".5" clipPath={`url(#${id}-world)`}/>
       <g fill="none" stroke={`url(#${id}-arc)`} filter={`url(#${id}-glow)`}>
         <circle cx="180" cy="160" r="119" strokeWidth="1" opacity=".5"/>
         <circle cx="180" cy="160" r="137" strokeWidth="1" opacity=".12"/>

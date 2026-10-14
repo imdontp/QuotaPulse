@@ -1587,3 +1587,7 @@
  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-map-edges path[data-flow-priority=primary][data-column="1"] { stroke:#3fa3f9; }
  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-map-edges path[data-flow-priority=primary][data-column="2"] { stroke:#5756ec; }
  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-map-node[data-activity-state=active]:not(:hover):not(:focus-visible) { border-color:color-mix(in srgb,var(--qp-node-tone,var(--qp-accent)) 30%,#102039); }
+
+/* Tapered local veil preserves the world texture and the separate quota stroke. */
+.qp-core-upper-limb-veil { display:none; }
+.qp-redesign[data-testid=production-overview][data-theme=dark] .qp-core-upper-limb-veil { display:block; }

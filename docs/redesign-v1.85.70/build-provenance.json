@@ -1,0 +1,45 @@
+{
+  "productionIndexSha256": "149bd0a514bd39442b0a7c42cf4ef828628d17ea42766147eeddca906df2d452",
+  "sources": [
+    {
+      "path": "packages/web/src/redesign/overview.tsx",
+      "sha256": "ad967be7d22f4bc1c025abfb20d7675a95f44b295ea7b1a236968305583662da"
+    },
+    {
+      "path": "packages/web/src/redesign/overview.css",
+      "sha256": "ceedf8bee5e7f0ada17e5fbb4505f5c0689ba78a80c802b918dd530f824ab12d"
+    },
+    {
+      "path": "scripts/check-stable-captures.mts",
+      "sha256": "a3e0fe3df0c60b81cb5f6bf0b8332d6163ea761ef3a91c0c0e620999111c2503"
+    }
+  ],
+  "sourceHashScope": "tested working bytes; Git normalizes text to LF",
+  "logs": [
+    {
+      "commandLog": "build.log",
+      "originalRawSha256": "0f8acb396d8d0cf4e62aebfd0c4aabee69d8d247ac016a2ff0d98ae39b654376",
+      "archiveSha256": "2074d54e06640e7da0ca84957045154b5abad8a26889d8d87b09ec5c1d9e8c12",
+      "normalization": "UTF8 LF, trailing whitespace removed"
+    },
+    {
+      "commandLog": "overview.log",
+      "originalRawSha256": "0bd5a02219efe7ace8ab027c0e0a97f20b4a1cc87bb1a1029638f04fd01adf51",
+      "archiveSha256": "19e1b1f86ae92587c82c9668f1c8f8664e578962dd902c527f0668936d2ae5df",
+      "normalization": "UTF8 LF, trailing whitespace removed"
+    },
+    {
+      "commandLog": "all8.log",
+      "originalRawSha256": "204264ae35b6e183a455564d4ef6447be9d597ccabb30625c9861e36e097df94",
+      "archiveSha256": "352b21f0792c2f153a24aeb93fb3534b65cb71b4dd4e086b8adf708ae7315fd1",
+      "normalization": "UTF8 LF, trailing whitespace removed"
+    },
+    {
+      "commandLog": "webTests.log",
+      "originalRawSha256": "2720019d3c0f7e4f570538d1e0273045e50fceed78d7823ed69dac7c3347203b",
+      "archiveSha256": "255593363573a5fac850b8fed66068c8a114089c06150debacdadab4e3ce13fb",
+      "normalization": "UTF8 LF, trailing whitespace removed"
+    }
+  ],
+  "scope": "build70 current all8 native capture / Overview4 repeat pairs / web170; native69 lifecycle evidence historical after build changed"
+}

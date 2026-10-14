@@ -1,0 +1,1214 @@
+{
+  "index": "4371ebf043748302ef259375e08c0dde6a1dccd3e1f7abc7cad72d69085a3c48",
+  "ctm": {
+    "a": 1.024999976158142,
+    "b": 0,
+    "c": 0,
+    "d": 1.024999976158142,
+    "e": 550.046875,
+    "f": 79
+  },
+  "center": {
+    "x": 734.5468707084656,
+    "y": 242.99999618530273
+  },
+  "allHashesVerified": true,
+  "allGeometryCtmCenterIdentical": true,
+  "sourceShiftOffsets": [
+    -2,
+    -1,
+    0,
+    1,
+    2
+  ],
+  "rects": {
+    "wholeupper": [
+      755,
+      105,
+      875,
+      220
+    ],
+    "wholeglobe": [
+      600,
+      110,
+      875,
+      390
+    ],
+    "lower": [
+      680,
+      345,
+      798,
+      366
+    ],
+    "meridian": [
+      840,
+      240,
+      864,
+      244
+    ],
+    "lowerprogress": [
+      680,
+      369,
+      798,
+      376
+    ]
+  },
+  "sectorAngles": [
+    -75,
+    -20
+  ],
+  "results": {
+    "baseline": {
+      "world-limb": {
+        "mae": 56.931,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          163.5,
+          94.0,
+          246.0
+        ]
+      },
+      "shell": {
+        "mae": 33.324,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          44.0,
+          84.0,
+          165.0
+        ]
+      },
+      "halo": {
+        "mae": 35.308,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          75.0,
+          101.0,
+          224.0
+        ]
+      },
+      "progress": {
+        "mae": 33.0,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          105.0,
+          160.0,
+          255.0
+        ]
+      },
+      "wholeupper": {
+        "mae": 25.786,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          20.0,
+          30.0,
+          85.0
+        ]
+      },
+      "wholeglobe": {
+        "mae": 29.314,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          11.0,
+          29.0,
+          72.0
+        ]
+      },
+      "lower": {
+        "mae": 29.748,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          31.0,
+          50.0,
+          132.0
+        ]
+      },
+      "meridian": {
+        "mae": 29.24,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          119.0,
+          87.5,
+          240.0
+        ]
+      },
+      "lowerprogress": {
+        "mae": 39.512,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          63.0,
+          122.0,
+          228.0
+        ]
+      }
+    },
+    "veil-blue025": {
+      "world-limb": {
+        "mae": 49.204,
+        "gainAllRegistered": [
+          5.496,
+          14.317
+        ],
+        "changed": 657,
+        "maxDelta": 52,
+        "median": [
+          131.5,
+          80.0,
+          235.0
+        ]
+      },
+      "shell": {
+        "mae": 33.057,
+        "gainAllRegistered": [
+          0.082,
+          0.276
+        ],
+        "changed": 162,
+        "maxDelta": 10,
+        "median": [
+          44.0,
+          84.0,
+          166.0
+        ]
+      },
+      "halo": {
+        "mae": 35.305,
+        "gainAllRegistered": [
+          -0.01,
+          0.007
+        ],
+        "changed": 106,
+        "maxDelta": 2,
+        "median": [
+          75.0,
+          101.0,
+          224.0
+        ]
+      },
+      "progress": {
+        "mae": 33.004,
+        "gainAllRegistered": [
+          -0.008,
+          0.002
+        ],
+        "changed": 224,
+        "maxDelta": 1,
+        "median": [
+          105.0,
+          160.0,
+          255.0
+        ]
+      },
+      "wholeupper": {
+        "mae": 25.4,
+        "gainAllRegistered": [
+          0.278,
+          0.693
+        ],
+        "changed": 2925,
+        "maxDelta": 52,
+        "median": [
+          20.0,
+          30.0,
+          85.0
+        ]
+      },
+      "wholeglobe": {
+        "mae": 29.245,
+        "gainAllRegistered": [
+          0.05,
+          0.124
+        ],
+        "changed": 7957,
+        "maxDelta": 52,
+        "median": [
+          11.0,
+          29.0,
+          72.0
+        ]
+      },
+      "lower": {
+        "mae": 29.748,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          31.0,
+          50.0,
+          132.0
+        ]
+      },
+      "meridian": {
+        "mae": 29.247,
+        "gainAllRegistered": [
+          -0.007,
+          0.035
+        ],
+        "changed": 23,
+        "maxDelta": 1,
+        "median": [
+          119.0,
+          88.0,
+          239.5
+        ]
+      },
+      "lowerprogress": {
+        "mae": 39.512,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          63.0,
+          122.0,
+          228.0
+        ]
+      }
+    },
+    "veil-blue040": {
+      "world-limb": {
+        "mae": 46.298,
+        "gainAllRegistered": [
+          6.221,
+          22.457
+        ],
+        "changed": 659,
+        "maxDelta": 83,
+        "median": [
+          112.0,
+          70.5,
+          228.0
+        ]
+      },
+      "shell": {
+        "mae": 32.91,
+        "gainAllRegistered": [
+          0.15,
+          0.42
+        ],
+        "changed": 173,
+        "maxDelta": 15,
+        "median": [
+          44.0,
+          84.0,
+          167.0
+        ]
+      },
+      "halo": {
+        "mae": 35.309,
+        "gainAllRegistered": [
+          -0.014,
+          0.009
+        ],
+        "changed": 114,
+        "maxDelta": 2,
+        "median": [
+          75.0,
+          101.0,
+          225.0
+        ]
+      },
+      "progress": {
+        "mae": 33.004,
+        "gainAllRegistered": [
+          -0.008,
+          0.002
+        ],
+        "changed": 224,
+        "maxDelta": 1,
+        "median": [
+          105.0,
+          160.0,
+          255.0
+        ]
+      },
+      "wholeupper": {
+        "mae": 25.253,
+        "gainAllRegistered": [
+          0.321,
+          1.087
+        ],
+        "changed": 2967,
+        "maxDelta": 83,
+        "median": [
+          20.0,
+          30.0,
+          85.0
+        ]
+      },
+      "wholeglobe": {
+        "mae": 29.219,
+        "gainAllRegistered": [
+          0.058,
+          0.195
+        ],
+        "changed": 7999,
+        "maxDelta": 83,
+        "median": [
+          11.0,
+          29.0,
+          72.0
+        ]
+      },
+      "lower": {
+        "mae": 29.748,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          31.0,
+          50.0,
+          132.0
+        ]
+      },
+      "meridian": {
+        "mae": 29.247,
+        "gainAllRegistered": [
+          -0.007,
+          0.035
+        ],
+        "changed": 23,
+        "maxDelta": 1,
+        "median": [
+          119.0,
+          88.0,
+          239.5
+        ]
+      },
+      "lowerprogress": {
+        "mae": 39.512,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          63.0,
+          122.0,
+          228.0
+        ]
+      }
+    },
+    "veil-blue050": {
+      "world-limb": {
+        "mae": 45.328,
+        "gainAllRegistered": [
+          5.582,
+          27.8
+        ],
+        "changed": 660,
+        "maxDelta": 104,
+        "median": [
+          98.0,
+          64.0,
+          224.0
+        ]
+      },
+      "shell": {
+        "mae": 32.817,
+        "gainAllRegistered": [
+          0.184,
+          0.514
+        ],
+        "changed": 181,
+        "maxDelta": 18,
+        "median": [
+          44.0,
+          84.0,
+          167.0
+        ]
+      },
+      "halo": {
+        "mae": 35.31,
+        "gainAllRegistered": [
+          -0.016,
+          0.012
+        ],
+        "changed": 120,
+        "maxDelta": 2,
+        "median": [
+          75.0,
+          101.0,
+          225.0
+        ]
+      },
+      "progress": {
+        "mae": 33.004,
+        "gainAllRegistered": [
+          -0.007,
+          0.003
+        ],
+        "changed": 225,
+        "maxDelta": 1,
+        "median": [
+          105.0,
+          160.0,
+          255.0
+        ]
+      },
+      "wholeupper": {
+        "mae": 25.201,
+        "gainAllRegistered": [
+          0.296,
+          1.345
+        ],
+        "changed": 2997,
+        "maxDelta": 104,
+        "median": [
+          20.0,
+          30.0,
+          85.0
+        ]
+      },
+      "wholeglobe": {
+        "mae": 29.21,
+        "gainAllRegistered": [
+          0.054,
+          0.241
+        ],
+        "changed": 8029,
+        "maxDelta": 104,
+        "median": [
+          11.0,
+          29.0,
+          72.0
+        ]
+      },
+      "lower": {
+        "mae": 29.748,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          31.0,
+          50.0,
+          132.0
+        ]
+      },
+      "meridian": {
+        "mae": 29.247,
+        "gainAllRegistered": [
+          -0.007,
+          0.035
+        ],
+        "changed": 23,
+        "maxDelta": 1,
+        "median": [
+          119.0,
+          88.0,
+          239.5
+        ]
+      },
+      "lowerprogress": {
+        "mae": 39.512,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          63.0,
+          122.0,
+          228.0
+        ]
+      }
+    },
+    "veil-black025": {
+      "world-limb": {
+        "mae": 50.534,
+        "gainAllRegistered": [
+          2.6,
+          19.292
+        ],
+        "changed": 660,
+        "maxDelta": 52,
+        "median": [
+          131.5,
+          80.0,
+          201.0
+        ]
+      },
+      "shell": {
+        "mae": 33.38,
+        "gainAllRegistered": [
+          -0.258,
+          0.063
+        ],
+        "changed": 164,
+        "maxDelta": 13,
+        "median": [
+          44.0,
+          84.0,
+          166.0
+        ]
+      },
+      "halo": {
+        "mae": 35.305,
+        "gainAllRegistered": [
+          -0.01,
+          0.007
+        ],
+        "changed": 106,
+        "maxDelta": 2,
+        "median": [
+          75.0,
+          101.0,
+          224.0
+        ]
+      },
+      "progress": {
+        "mae": 33.004,
+        "gainAllRegistered": [
+          -0.008,
+          0.002
+        ],
+        "changed": 224,
+        "maxDelta": 1,
+        "median": [
+          105.0,
+          160.0,
+          255.0
+        ]
+      },
+      "wholeupper": {
+        "mae": 25.472,
+        "gainAllRegistered": [
+          0.137,
+          0.917
+        ],
+        "changed": 2931,
+        "maxDelta": 52,
+        "median": [
+          20.0,
+          30.0,
+          85.0
+        ]
+      },
+      "wholeglobe": {
+        "mae": 29.258,
+        "gainAllRegistered": [
+          0.025,
+          0.164
+        ],
+        "changed": 7963,
+        "maxDelta": 52,
+        "median": [
+          11.0,
+          29.0,
+          72.0
+        ]
+      },
+      "lower": {
+        "mae": 29.748,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          31.0,
+          50.0,
+          132.0
+        ]
+      },
+      "meridian": {
+        "mae": 29.247,
+        "gainAllRegistered": [
+          -0.007,
+          0.035
+        ],
+        "changed": 23,
+        "maxDelta": 1,
+        "median": [
+          119.0,
+          88.0,
+          239.5
+        ]
+      },
+      "lowerprogress": {
+        "mae": 39.512,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          63.0,
+          122.0,
+          228.0
+        ]
+      }
+    },
+    "phase-early30": {
+      "world-limb": {
+        "mae": 56.933,
+        "gainAllRegistered": [
+          -0.006,
+          0.009
+        ],
+        "changed": 114,
+        "maxDelta": 1,
+        "median": [
+          163.0,
+          94.0,
+          246.0
+        ]
+      },
+      "shell": {
+        "mae": 33.333,
+        "gainAllRegistered": [
+          -0.011,
+          0.001
+        ],
+        "changed": 85,
+        "maxDelta": 2,
+        "median": [
+          44.0,
+          84.0,
+          165.0
+        ]
+      },
+      "halo": {
+        "mae": 35.283,
+        "gainAllRegistered": [
+          0.002,
+          0.049
+        ],
+        "changed": 113,
+        "maxDelta": 6,
+        "median": [
+          75.0,
+          101.0,
+          224.0
+        ]
+      },
+      "progress": {
+        "mae": 29.783,
+        "gainAllRegistered": [
+          -0.044,
+          6.901
+        ],
+        "changed": 1012,
+        "maxDelta": 101,
+        "median": [
+          182.0,
+          100.0,
+          255.0
+        ]
+      },
+      "wholeupper": {
+        "mae": 25.602,
+        "gainAllRegistered": [
+          -0.113,
+          0.494
+        ],
+        "changed": 3389,
+        "maxDelta": 101,
+        "median": [
+          20.0,
+          30.0,
+          85.0
+        ]
+      },
+      "wholeglobe": {
+        "mae": 29.283,
+        "gainAllRegistered": [
+          -0.025,
+          0.089
+        ],
+        "changed": 8693,
+        "maxDelta": 101,
+        "median": [
+          11.0,
+          29.0,
+          72.0
+        ]
+      },
+      "lower": {
+        "mae": 29.748,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          31.0,
+          50.0,
+          132.0
+        ]
+      },
+      "meridian": {
+        "mae": 29.219,
+        "gainAllRegistered": [
+          -0.014,
+          0.111
+        ],
+        "changed": 29,
+        "maxDelta": 4,
+        "median": [
+          119.0,
+          88.0,
+          239.5
+        ]
+      },
+      "lowerprogress": {
+        "mae": 39.512,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          63.0,
+          122.0,
+          228.0
+        ]
+      }
+    },
+    "phase-early20-45": {
+      "world-limb": {
+        "mae": 56.933,
+        "gainAllRegistered": [
+          -0.006,
+          0.009
+        ],
+        "changed": 114,
+        "maxDelta": 1,
+        "median": [
+          163.0,
+          94.0,
+          246.0
+        ]
+      },
+      "shell": {
+        "mae": 33.333,
+        "gainAllRegistered": [
+          -0.011,
+          0.001
+        ],
+        "changed": 85,
+        "maxDelta": 2,
+        "median": [
+          44.0,
+          84.0,
+          165.0
+        ]
+      },
+      "halo": {
+        "mae": 35.28,
+        "gainAllRegistered": [
+          0.002,
+          0.051
+        ],
+        "changed": 114,
+        "maxDelta": 6,
+        "median": [
+          75.0,
+          101.0,
+          224.0
+        ]
+      },
+      "progress": {
+        "mae": 32.699,
+        "gainAllRegistered": [
+          -3.135,
+          5.1
+        ],
+        "changed": 1012,
+        "maxDelta": 140,
+        "median": [
+          178.0,
+          99.0,
+          255.0
+        ]
+      },
+      "wholeupper": {
+        "mae": 25.923,
+        "gainAllRegistered": [
+          -0.459,
+          0.322
+        ],
+        "changed": 3392,
+        "maxDelta": 140,
+        "median": [
+          20.0,
+          30.0,
+          85.0
+        ]
+      },
+      "wholeglobe": {
+        "mae": 29.344,
+        "gainAllRegistered": [
+          -0.095,
+          0.06
+        ],
+        "changed": 8701,
+        "maxDelta": 140,
+        "median": [
+          11.0,
+          29.0,
+          72.0
+        ]
+      },
+      "lower": {
+        "mae": 29.748,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          31.0,
+          50.0,
+          132.0
+        ]
+      },
+      "meridian": {
+        "mae": 29.219,
+        "gainAllRegistered": [
+          -0.014,
+          0.111
+        ],
+        "changed": 29,
+        "maxDelta": 4,
+        "median": [
+          119.0,
+          88.0,
+          239.5
+        ]
+      },
+      "lowerprogress": {
+        "mae": 39.512,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          63.0,
+          122.0,
+          228.0
+        ]
+      }
+    },
+    "hide-legacy-underlay": {
+      "world-limb": {
+        "mae": 61.435,
+        "gainAllRegistered": [
+          -5.645,
+          -2.753
+        ],
+        "changed": 664,
+        "maxDelta": 33,
+        "median": [
+          173.5,
+          95.0,
+          245.0
+        ]
+      },
+      "shell": {
+        "mae": 44.603,
+        "gainAllRegistered": [
+          -11.792,
+          -8.072
+        ],
+        "changed": 469,
+        "maxDelta": 50,
+        "median": [
+          26.0,
+          76.0,
+          128.0
+        ]
+      },
+      "halo": {
+        "mae": 45.17,
+        "gainAllRegistered": [
+          -12.733,
+          -6.42
+        ],
+        "changed": 487,
+        "maxDelta": 98,
+        "median": [
+          74.0,
+          91.0,
+          202.0
+        ]
+      },
+      "progress": {
+        "mae": 35.646,
+        "gainAllRegistered": [
+          -3.534,
+          -0.984
+        ],
+        "changed": 114,
+        "maxDelta": 101,
+        "median": [
+          102.0,
+          159.0,
+          255.0
+        ]
+      },
+      "wholeupper": {
+        "mae": 31.675,
+        "gainAllRegistered": [
+          -6.184,
+          -4.714
+        ],
+        "changed": 9970,
+        "maxDelta": 124,
+        "median": [
+          8.0,
+          24.0,
+          53.0
+        ]
+      },
+      "wholeglobe": {
+        "mae": 33.287,
+        "gainAllRegistered": [
+          -4.084,
+          -3.697
+        ],
+        "changed": 45959,
+        "maxDelta": 150,
+        "median": [
+          6.0,
+          23.0,
+          51.0
+        ]
+      },
+      "lower": {
+        "mae": 35.975,
+        "gainAllRegistered": [
+          -8.456,
+          -2.958
+        ],
+        "changed": 2159,
+        "maxDelta": 145,
+        "median": [
+          6.0,
+          24.0,
+          94.0
+        ]
+      },
+      "meridian": {
+        "mae": 34.042,
+        "gainAllRegistered": [
+          -6.483,
+          -4.628
+        ],
+        "changed": 80,
+        "maxDelta": 76,
+        "median": [
+          141.0,
+          78.0,
+          237.0
+        ]
+      },
+      "lowerprogress": {
+        "mae": 59.167,
+        "gainAllRegistered": [
+          -21.535,
+          -16.479
+        ],
+        "changed": 448,
+        "maxDelta": 120,
+        "median": [
+          44.5,
+          84.5,
+          145.5
+        ]
+      }
+    },
+    "veil040-phase20-45": {
+      "world-limb": {
+        "mae": 46.292,
+        "gainAllRegistered": [
+          6.219,
+          22.455
+        ],
+        "changed": 656,
+        "maxDelta": 83,
+        "median": [
+          112.0,
+          70.5,
+          228.0
+        ]
+      },
+      "shell": {
+        "mae": 32.903,
+        "gainAllRegistered": [
+          0.158,
+          0.428
+        ],
+        "changed": 116,
+        "maxDelta": 15,
+        "median": [
+          44.0,
+          84.0,
+          167.0
+        ]
+      },
+      "halo": {
+        "mae": 35.293,
+        "gainAllRegistered": [
+          -0.01,
+          0.041
+        ],
+        "changed": 53,
+        "maxDelta": 6,
+        "median": [
+          75.0,
+          101.0,
+          225.0
+        ]
+      },
+      "progress": {
+        "mae": 32.7,
+        "gainAllRegistered": [
+          -3.136,
+          5.101
+        ],
+        "changed": 1012,
+        "maxDelta": 140,
+        "median": [
+          178.0,
+          99.0,
+          255.0
+        ]
+      },
+      "wholeupper": {
+        "mae": 25.389,
+        "gainAllRegistered": [
+          0.124,
+          0.837
+        ],
+        "changed": 2330,
+        "maxDelta": 140,
+        "median": [
+          20.0,
+          30.0,
+          85.0
+        ]
+      },
+      "wholeglobe": {
+        "mae": 29.249,
+        "gainAllRegistered": [
+          0.013,
+          0.152
+        ],
+        "changed": 2691,
+        "maxDelta": 140,
+        "median": [
+          11.0,
+          29.0,
+          72.0
+        ]
+      },
+      "lower": {
+        "mae": 29.748,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          31.0,
+          50.0,
+          132.0
+        ]
+      },
+      "meridian": {
+        "mae": 29.219,
+        "gainAllRegistered": [
+          -0.014,
+          0.09
+        ],
+        "changed": 12,
+        "maxDelta": 4,
+        "median": [
+          119.0,
+          87.5,
+          240.0
+        ]
+      },
+      "lowerprogress": {
+        "mae": 39.512,
+        "gainAllRegistered": [
+          0.0,
+          0.0
+        ],
+        "changed": 0,
+        "maxDelta": 0,
+        "median": [
+          63.0,
+          122.0,
+          228.0
+        ]
+      }
+    }
+  }
+}
