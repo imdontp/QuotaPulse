@@ -1650,3 +1650,10 @@
   [data-testid=production-overview] [data-overview-initial-state] .qp-metric-rail:last-child { min-height:61px; }
   [data-testid=production-overview] [data-overview-initial-state] .qp-initial-model-bar { display:none; }
 }
+
+/* Shared dark production waveform, traced from the supplied decorative reference. */
+.qp-brand-mark-source { display:none; }
+.qp-redesign[data-testid^=production-][data-theme=dark] .qp-brand-mark-legacy { display:none; }
+.qp-redesign[data-testid^=production-][data-theme=dark] .qp-brand-mark-source { display:inline; }
+.qp-redesign[data-testid^=production-][data-theme=dark] .qp-brand>svg { color:#1285fb; filter:drop-shadow(0 0 4px rgba(18,107,255,.75)); }
+.qp-redesign[data-testid^=production-][data-theme=dark] .qp-sidebar-brand>svg { color:#1285fb; filter:drop-shadow(0 0 1px rgba(18,107,255,.75)); }

@@ -1,0 +1,162 @@
+{
+  "status": "TEMP candidate proposals; not implemented or browser rendered; Source acceptance pending",
+  "sourceBaseline": "docs/redesign-v1.85.69/refs/overview.png",
+  "currentBaseline": "docs/redesign-v1.85.70/after/overview.png",
+  "currentCommit": "285b3ff",
+  "boundsPolicy": "Keep existing 40 x 40 viewBox, 42px header box, 30px footer box and all flex/wordmark geometry. Source-only group applies to dark; exact original legacy group remains light fallback. No CSS width, height, offset, font or layout change proposed. Append CSS after existing overrides to avoid cascade ambiguity.",
+  "registration": {
+    "sourceInspectedCrop": [
+      12,
+      2,
+      64,
+      58
+    ],
+    "proposedSourceToViewBox": {
+      "x": "(Source x - 20) / 1.05",
+      "y": "(Source y - 9) / 1.05"
+    },
+    "referenceAssumption": "42px header viewport at x20,y9. This is a measured artwork registration proposal, not an assertion that every screen header uses identical Source placement. Verify actual current SVG rect and all eight Source origins before choosing.",
+    "pixelThreshold": "B > 170 and B > 1.1*G and R < 0.8*B; eight-connected components; boxes half-open; tiny <=4 pixel components excluded",
+    "brightComponents": [
+      {
+        "pixels": 165,
+        "box": [
+          39,
+          11,
+          45,
+          51
+        ]
+      },
+      {
+        "pixels": 61,
+        "box": [
+          48,
+          22,
+          52,
+          39
+        ]
+      },
+      {
+        "pixels": 71,
+        "box": [
+          31,
+          23,
+          39,
+          39
+        ]
+      },
+      {
+        "pixels": 21,
+        "box": [
+          54,
+          28,
+          58,
+          36
+        ]
+      },
+      {
+        "pixels": 23,
+        "box": [
+          22,
+          29,
+          29,
+          35
+        ]
+      },
+      {
+        "pixels": 6,
+        "box": [
+          60,
+          31,
+          63,
+          33
+        ]
+      }
+    ],
+    "limit": "Source right endpoint has a bright pixel at x62 and thus extends ~1px beyond the hypothesized current box right edge x62. Candidate trims its line end to x61.4 before cap to keep the unchanged box. Trial must record this residual rather than claim exact reconstruction."
+  },
+  "geometry": {
+    "id": "source-rounded-lobes",
+    "sourceCoordinatePaths": [
+      {
+        "name": "left-wave",
+        "d": "M31.9 38.0 C31.7 31.3 31.5 23.0 33.0 23.2 C34.8 23.5 35.6 32.8 36.7 37.1 C38.0 36.1 39.0 27.1 39.7 20.7",
+        "viewboxPath": "M11.333 27.619 C11.143 21.238 10.952 13.333 12.381 13.524 C14.095 13.81 14.857 22.667 15.905 26.762 C17.143 25.81 18.095 17.238 18.762 11.143"
+      },
+      {
+        "name": "central-loop",
+        "d": "M42.2 11.8 C40.8 20.1 40.0 40.9 42.5 49.5 C45.0 42.3 44.7 23.1 42.2 11.8 Z",
+        "viewboxPath": "M21.143 2.667 C19.81 10.571 19.048 30.381 21.429 38.571 C23.81 31.714 23.524 13.429 21.143 2.667 Z"
+      },
+      {
+        "name": "right-lobe",
+        "d": "M50.2 22.9 C48.4 24.3 47.8 34.6 49.1 37.4 C51.6 36.8 52.0 27.5 50.2 22.9 Z",
+        "viewboxPath": "M28.762 13.238 C27.048 14.571 26.476 24.381 27.714 27.048 C30.095 26.476 30.476 17.619 28.762 13.238 Z"
+      },
+      {
+        "name": "left-endpoint",
+        "d": "M22.5 31.7 L25.8 31.7 M26.6 29.6 C25.7 30.8 25.7 32.6 26.7 33.7 C28.6 32.8 28.8 30.9 26.6 29.6 Z",
+        "viewboxPath": "M2.381 21.619 L5.524 21.619 M6.286 19.619 C5.429 20.762 5.429 22.476 6.381 23.524 C8.19 22.667 8.381 20.857 6.286 19.619 Z"
+      },
+      {
+        "name": "right-endpoint",
+        "d": "M56.1 28.9 C54.7 30.2 54.9 33.8 56.2 34.9 C57.3 33.7 57.7 30.5 56.1 28.9 Z M59.8 31.8 L61.4 31.8",
+        "viewboxPath": "M34.381 18.952 C33.048 20.19 33.238 23.619 34.476 24.667 C35.524 23.524 35.905 20.476 34.381 18.952 Z M37.905 21.714 L39.429 21.714"
+      }
+    ],
+    "svg": "<svg viewBox=\"0 0 40 40\" aria-hidden=\"true\"><g class=\"qp-brand-mark-legacy\"><path d=\"M1 22h6l3-10 4 22 5-31 5 34 4-25 4 16 3-8h4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g><g class=\"qp-brand-mark-source\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.095\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M11.333 27.619 C11.143 21.238 10.952 13.333 12.381 13.524 C14.095 13.81 14.857 22.667 15.905 26.762 C17.143 25.81 18.095 17.238 18.762 11.143\"/><path d=\"M21.143 2.667 C19.81 10.571 19.048 30.381 21.429 38.571 C23.81 31.714 23.524 13.429 21.143 2.667 Z\"/><path d=\"M28.762 13.238 C27.048 14.571 26.476 24.381 27.714 27.048 C30.095 26.476 30.476 17.619 28.762 13.238 Z\"/><path d=\"M2.381 21.619 L5.524 21.619 M6.286 19.619 C5.429 20.762 5.429 22.476 6.381 23.524 C8.19 22.667 8.381 20.857 6.286 19.619 Z\"/><path d=\"M34.381 18.952 C33.048 20.19 33.238 23.619 34.476 24.667 C35.524 23.524 35.905 20.476 34.381 18.952 Z M37.905 21.714 L39.429 21.714\"/></g></svg>",
+    "jsxAdaptation": "SVG string is portable proposal markup; translate stroke-width/stroke-linecap/stroke-linejoin to strokeWidth/strokeLinecap/strokeLinejoin when embedding in TSX. Existing svg aria-hidden stays. Use exactly the same paths for header and footer.",
+    "rationale": "Source threshold components show one narrow 40px-high central loop, a separate rounded right lobe, a left rise/fall and two small endpoint lobes rather than the existing connected angular zigzag. Cubic paths approximate these components using Source pixel coordinates. This is a manually traced candidate, not a demonstrated pixel winner."
+  },
+  "toneVariants": [
+    {
+      "id": "blue-soft",
+      "tone": "#1285fb",
+      "headerGlowRadiusCssPx": 4,
+      "footerGlowRadiusCssPx": 1,
+      "glow": "rgba(18,107,255,.75)",
+      "css": ".qp-brand-mark-source { display:none; }\n.qp-redesign[data-theme=dark] .qp-brand-mark-legacy { display:none; }\n.qp-redesign[data-theme=dark] .qp-brand-mark-source { display:inline; }\n.qp-redesign[data-theme=dark] .qp-brand>svg { color:#1285fb; filter:drop-shadow(0 0 4px rgba(18,107,255,.75)); }\n.qp-redesign[data-theme=dark] .qp-sidebar-brand>svg { color:#1285fb; filter:drop-shadow(0 0 1px rgba(18,107,255,.75)); }"
+    },
+    {
+      "id": "blue-lit",
+      "tone": "#239aff",
+      "headerGlowRadiusCssPx": 4,
+      "footerGlowRadiusCssPx": 1,
+      "glow": "rgba(21,116,255,.85)",
+      "css": ".qp-brand-mark-source { display:none; }\n.qp-redesign[data-theme=dark] .qp-brand-mark-legacy { display:none; }\n.qp-redesign[data-theme=dark] .qp-brand-mark-source { display:inline; }\n.qp-redesign[data-theme=dark] .qp-brand>svg { color:#239aff; filter:drop-shadow(0 0 4px rgba(21,116,255,.85)); }\n.qp-redesign[data-theme=dark] .qp-sidebar-brand>svg { color:#239aff; filter:drop-shadow(0 0 1px rgba(21,116,255,.85)); }"
+    }
+  ],
+  "recommendedTrialMatrix": [
+    {
+      "id": "current-baseline",
+      "geometry": "current legacy",
+      "tone": "current unchanged"
+    },
+    {
+      "id": "path-only",
+      "geometry": "source-rounded-lobes",
+      "tone": "current unchanged"
+    },
+    {
+      "id": "tone-soft-only",
+      "geometry": "current legacy",
+      "tone": "blue-soft"
+    },
+    {
+      "id": "tone-lit-only",
+      "geometry": "current legacy",
+      "tone": "blue-lit"
+    },
+    {
+      "id": "combined-soft",
+      "geometry": "source-rounded-lobes",
+      "tone": "blue-soft"
+    },
+    {
+      "id": "combined-lit",
+      "geometry": "source-rounded-lobes",
+      "tone": "blue-lit"
+    }
+  ],
+  "validation": "Render candidates with frozen tested production fixture/build. Compare unscaled Source crops at actual SVG registration (including +/-2 pixel offset robustness), isolated waveform mask and glow region; keep typography/text/data excluded. Verify current SVG/layout rectangles identical, light legacy path/tone byte unchanged, all eight pages, footer readable at30px, Thai and narrow compatibility. Repeatability does not prove source likeness. Do not append raster reference overlay or new image asset."
+}

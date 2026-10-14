@@ -6,6 +6,7 @@ import { useT } from '@/i18n';
 import { DaemonConnection, QuickStats } from './quick-stats';
 import webPackage from '../../package.json';
 import type { UsageEventScope } from '@/lib/usage-events';
+import { BrandMark } from './brand-mark';
 import './overview.css';
 
 export type RedesignTranslate = (key: Extract<MessageKey, `redesign.${string}`>) => string;
@@ -59,7 +60,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
   return <div ref={rootRef} className="qp-redesign" data-theme={theme} lang={language} data-testid={testId}>
     <a className="qp-skip" href={`#${active}`} onClick={event => { event.preventDefault(); document.getElementById(active)?.focus(); }}>{t('redesign.skipContent')}</a>
     <header className="qp-topbar">
-      <a className="qp-brand" href="#overview" aria-label="QuotaPulse"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M1 22h6l3-10 4 22 5-31 5 34 4-25 4 16 3-8h4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span>Quota<strong>Pulse</strong><small>AI RUNTIME MISSION CONTROL</small></span></a>
+      <a className="qp-brand" href="#overview" aria-label="QuotaPulse"><BrandMark/><span>Quota<strong>Pulse</strong><small>AI RUNTIME MISSION CONTROL</small></span></a>
       <div className="qp-topbar-body">
         <div className="qp-topbar-context">
           {!preview && <DaemonConnection/>}
@@ -98,7 +99,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
         </>}
       </nav>
       {!preview && <QuickStats t={t} language={language} scope={quickStatsScope} paused={quickStatsPaused} onAlertCountChange={setAlertCount}/>}
-      {!preview && <div className="qp-sidebar-brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M1 22h6l3-10 4 22 5-31 5 34 4-25 4 16 3-8h4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span>{t('redesign.keepFlowing')}<small>QuotaPulse v{webPackage.version}</small></span></div>}
+      {!preview && <div className="qp-sidebar-brand"><BrandMark/><span>{t('redesign.keepFlowing')}<small>QuotaPulse v{webPackage.version}</small></span></div>}
       {preview && <a className="qp-exit" href="./#overview" aria-label={t('redesign.dashboard')}><ArrowUpRight/><span>{t('redesign.dashboard')}</span></a>}
     </aside>
     <div className="qp-workspace">
