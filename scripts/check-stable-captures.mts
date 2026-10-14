@@ -1908,7 +1908,7 @@ async function checkTopModelNavigation(page: Page, target: ReturnType<Page['loca
   if (model !== null && model !== '') assert.equal(await page.locator('.qp-model-table-wrap tr[data-selected=true] .qp-model-name').textContent(), model);
   const result = await detailReply.json() as ModelDetailResponse;
   await page.goto(overviewUrl, { waitUntil: 'domcontentloaded' });
-  await page.getByTestId('production-overview').waitFor(); await settled(page, pending);
+  await page.getByTestId('production-overview').locator('.qp-pulse-art').waitFor(); await settled(page, pending);
   await page.evaluate(() => document.fonts.ready);
   return result;
 }
@@ -1926,7 +1926,7 @@ async function checkTopModelProjectScope(page: Page, lang: string, theme: string
       const params = new URLSearchParams({ range: 'custom', from: String(day.getTime()), to: String(fixedNow + 1), bucket: 'hour' });
       if (source !== null) params.set('source', String(source));
       await page.goto(`http://127.0.0.1:7804/?model-drilldown-scope=foreign#overview?${params}`, { waitUntil: 'domcontentloaded' });
-      await page.getByTestId('production-overview').waitFor(); await settled(page, pending);
+      await page.getByTestId('production-overview').locator('.qp-pulse-art').waitFor(); await settled(page, pending);
       await openRuntimeMapOptions(page); await page.locator('.qp-runtime-project select').selectOption(referenceProjects[0]); await settled(page, pending); await waitForRuntimeProject(page, referenceProjects[0]);
       const foreignInMap = await page.locator('.qp-map-node[data-dimension=model]').evaluateAll(elements => elements.some(element => element.getAttribute('data-key') === JSON.stringify('Outside project & β / model')));
       assert.equal(foreignInMap, false, 'Regression fixture must keep the global model outside the selected map project');
@@ -2328,7 +2328,7 @@ async function checkRecentActivity(page: Page, lang: string, theme: string, pend
   };
   page.on('request', collectFutureActivity);
   await page.goto(`http://127.0.0.1:7804/#overview?range=custom&from=${futureFrom}&to=${futureTo}`, { waitUntil: 'domcontentloaded' });
-  await page.getByTestId('production-overview').waitFor({ timeout: 15000 });
+  await page.getByTestId('production-overview').locator('.qp-pulse-art').waitFor({ timeout: 15000 });
   await settled(page, pending);
   page.off('request', collectFutureActivity);
   assert.equal(futureRequests.length, 0, 'A future-only custom range must skip the empty activity query');

@@ -9,6 +9,7 @@ import { defaultQuota, dimensions, groupUsage, quotaState, RUNTIME_ACTIVITY_WIND
 import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from './metric-series';
 import { cacheSharePercent, paceAboveSafePercent, percentagePointChange, recommendationKind, relativeChangePercent, supportedForecastPace } from './insight-model';
 import { RedesignShell, type RedesignTranslate } from './shell';
+import { OverviewPendingRegions, type OverviewInitialState } from './overview-pending';
 import { QuotaChart } from './quota-chart';
 import { RuntimeData } from './runtime-data';
 import { ActivitySparkline } from './activity-sparkline';
@@ -61,6 +62,7 @@ const quotaWindowLabel = (window: string, t: Translate) => window === '5h' ? t('
       : window === 'daily' ? t('redesign.windowQuotaDaily') : window;
 const quotaDuration = (at: number | null, now: number, unknown: string) => at === null ? unknown : at - now < 60_000 ? '<1m' : countdown(at, now);
 interface OverviewProps {
+  initialState?: OverviewInitialState;
   quickStatsScope?: UsageEventScope | null;
   records?: readonly UsageRecord[];
   graph?: RuntimeGraph;
@@ -384,7 +386,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ quickStatsScope, records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
+export function Overview({ initialState, quickStatsScope, records = [], graph, runtimeGraph, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -479,8 +481,11 @@ export function Overview({ quickStatsScope, records = [], graph, runtimeGraph, q
     : t('redesign.noCachePrice')}`;
   const activities: readonly ActivityItem[] = recent ?? records.slice(0, 4).map((record, index) => ({ id: record.id, timestamp: now - index * 60_000, harness: record.harness, provider: record.provider, model: record.model, tokens: record.tokens, grain: record.grain === 'call' ? 'call' : 'session_aggregate', sessionKey: null }));
   useEffect(() => {
-    if (selection && !dialog.current?.open) dialog.current?.showModal();
-  }, [selection]);
+    if (selection && !initialState && !dialog.current?.open) dialog.current?.showModal();
+  }, [selection, initialState?.kind]);
+  useEffect(() => {
+    if (initialState) { dialog.current?.close(); setSelection(null); }
+  }, [initialState?.kind]);
   useEffect(() => {
     const node = shell.current;
     if (!node) return;
@@ -491,9 +496,10 @@ export function Overview({ quickStatsScope, records = [], graph, runtimeGraph, q
     document.addEventListener('visibilitychange', update);
     update();
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', update); };
-  }, []);
-  return <RedesignShell quickStatsScope={quickStatsScope} active="overview" rootRef={shell} theme={theme} language={language} onLanguage={onLanguage} onTheme={() => onTheme ? onTheme() : setLocalTheme(theme === 'dark' ? 'light' : 'dark')} t={t} preview={preview} testId={preview ? 'redesign-preview' : 'production-overview'}>
+  }, [initialState?.kind]);
+  return <RedesignShell quickStatsScope={initialState ? null : quickStatsScope} active="overview" rootRef={shell} theme={theme} language={language} onLanguage={onLanguage} onTheme={() => onTheme ? onTheme() : setLocalTheme(theme === 'dark' ? 'light' : 'dark')} t={t} preview={preview} testId={preview ? 'redesign-preview' : 'production-overview'}>
         <div className="qp-page-heading"><h1>{t('redesign.title')}</h1><span className="qp-chip">{period ?? new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(now)}</span></div>
+        {initialState ? <OverviewPendingRegions state={initialState} t={t} periodControl={periodControl} historyHref={historyHref}/> : <>
         <div className="qp-hero-grid">
           <section className="qp-panel qp-hero">
             <div className="qp-section-heading"><div className="qp-hero-heading-copy"><h2><Activity size={18} className="qp-overview-reference-fallback" aria-hidden="true"/><OverviewHeadingReferenceMark kind="core"/><span className="qp-overview-heading-title">{t('redesign.core')}</span></h2><small className="qp-hero-tagline">{t('redesign.coreSubtitle')}</small></div>{periodControl ?? (period && <span className="qp-chip">{period}</span>)}</div>
@@ -565,6 +571,7 @@ export function Overview({ quickStatsScope, records = [], graph, runtimeGraph, q
       <p>{selection && t(`redesign.${selection.dimension}`)}</p><div className="qp-detail-grid"><Metric label={t('redesign.tokens')} value={number(detail?.tokens ?? 0)}/><Metric label={t('redesign.sessions')} value={number(detail?.sessions ?? 0)}/><Metric label={t('redesign.calls')} value={number(detail?.callRecords ?? 0)}/><Metric label={t('redesign.aggregates')} value={number(detail?.aggregateRecords ?? 0)}/></div>
       <p className="qp-footnote">{t('redesign.coverage')}</p>
     </dialog>
+        </>}
   </RedesignShell>;
 }
 

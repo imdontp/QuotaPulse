@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { api, type CompareResult, type Overview as OverviewData, type QuotaHistoryResponse, type UsageRangeKey, type UsageResponse } from '@/api';
 import { isExpired, primaryLimits } from '@/format';
 import { useI18n, useT } from '@/i18n';
-import { useLiveRefresh } from '@/lib/use-live';
+import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import { Overview } from './overview';
 import type { ActivityItem } from './overview';
@@ -18,13 +18,18 @@ function readRoute() {
 
 export function ProductionOverview() {
   const t = useT();
+  const refresh = useRefreshStatus();
   const { lang, setLang, currency, rate } = useI18n();
   const [theme, toggleTheme] = useTheme();
   const [route, setRoute] = useState(readRoute);
   const [mapProject, setMapProject] = useState<string | null | 'auto'>('auto');
   const [mapGraphSnapshot, setMapGraphSnapshot] = useState<{ key: string; graph: RuntimeGraph } | null>(null);
-  const periodSelect = useRef<HTMLSelectElement>(null);
+  const periodSelect = useRef<HTMLSelectElement | null>(null);
   const restorePeriodFocus = useRef(false);
+  const periodRef = useCallback((node: HTMLSelectElement | null) => {
+    if (!node && periodSelect.current === document.activeElement) restorePeriodFocus.current = true;
+    periodSelect.current = node;
+  }, []);
   const routeKey = JSON.stringify(route);
   const currentKey = useRef(routeKey);
   const scopeEpoch = useRef(0);
@@ -107,7 +112,11 @@ export function ProductionOverview() {
   }, [current?.key, current?.overview.now, mapProject, selectedRuntimeProject, routeKey]);
   useEffect(() => {
     if (current && restorePeriodFocus.current) {
-      periodSelect.current?.focus({ preventScroll: true }); restorePeriodFocus.current = false;
+      // Data arriving must not take focus from a control chosen while loading.
+      if (document.activeElement === document.body || document.activeElement === periodSelect.current) {
+        periodSelect.current?.focus({ preventScroll: true });
+      }
+      restorePeriodFocus.current = false;
     }
   }, [current?.key]);
   const overview = current?.overview;
@@ -160,15 +169,29 @@ export function ProductionOverview() {
     }).catch(() => { if (current) setHistoryError(true); });
     return () => { current = false; };
   }, [activeQuota?.id, overview?.now]);
-  if (!current) return <main className="p-6" role="status">{error ?? t('app.loading')}</main>;
-  const { graph, recent, metricUsage, metricComparison } = current;
+  const graph = current?.graph;
+  const recent = current?.recent;
+  const metricUsage = current?.metricUsage;
+  const metricComparison = current?.metricComparison;
+  const initialState = current ? undefined : {
+    kind: error ? 'error' as const : 'loading' as const,
+    label: t(error ? 'app.couldNotLoad' : 'app.loading'),
+    detail: error ?? undefined,
+    retryLabel: t('app.refreshNow'),
+    retrying: refresh.refreshing,
+    onRetry: () => {
+      restorePeriodFocus.current = false;
+      document.getElementById('overview')?.focus({ preventScroll: true });
+      setError(null); void refresh.refreshNow();
+    },
+  };
   const period = route.range === 'custom'
     ? `${new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(route.from!)} – ${new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(route.to!)}`
     : t(route.range === 'today' ? 'redesign.today' : route.range === 'week' ? 'redesign.thisWeek' : route.range === 'month' ? 'redesign.thisMonth' : 'redesign.allTime');
   const historyParams = writeScope(new URLSearchParams(), route);
   const scopeLabel = route.sourceId ? `${period} · ${t('analysis.source')} #${route.sourceId}` : period;
   const periodControl = <div className="qp-overview-period">
-    <select ref={periodSelect} aria-label={t('redesign.period')} title={scopeLabel} value={route.range} onChange={event => {
+    <select ref={periodRef} aria-label={t('redesign.period')} title={scopeLabel} value={route.range} onChange={event => {
       const range = event.currentTarget.value as ScopeRange;
       const next = { ...route, range, ...(range !== 'custom' ? { from: undefined, to: undefined } : {}) };
       const params = writeScope(new URLSearchParams(location.hash.split('?')[1] ?? ''), next);
@@ -183,7 +206,7 @@ export function ProductionOverview() {
   </div>;
   const mapGraph = mapGraphSnapshot?.key === mapGraphKey ? mapGraphSnapshot.graph : graph;
   return <>
-    {error && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
-    <Overview quickStatsScope={current ? selectedScope(route, current.overview.now) : null} graph={graph} runtimeGraph={mapGraph} runtimeHarnesses={[...new Set((overview?.sources ?? []).map(source => source.harness))]} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} metricComparison={metricComparison} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
+    {current && error && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
+    <Overview initialState={initialState} quickStatsScope={current ? selectedScope(route, current.overview.now) : null} graph={graph} runtimeGraph={mapGraph} runtimeHarnesses={[...new Set((overview?.sources ?? []).map(source => source.harness))]} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} metricComparison={metricComparison} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
   </>;
 }

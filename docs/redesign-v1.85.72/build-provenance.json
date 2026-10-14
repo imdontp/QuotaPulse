@@ -1,0 +1,168 @@
+{
+  "productionIndexSha256": "7b3de8d1d080cc6e89e6017f7961e2f0a44c5e00722d762b7dc34e1c1e9c9e04",
+  "testedWorkingSources": [
+    {
+      "path": "packages/web/src/redesign/production.tsx",
+      "sha256": "6891b89154d25688130444a142462108b14f002c2dcadf681281d9f4e9d30cc2"
+    },
+    {
+      "path": "packages/web/src/redesign/overview.tsx",
+      "sha256": "3d8927c6691f95f861639352e35878e91d07707068062889eadbbf3a47f164c0"
+    },
+    {
+      "path": "packages/web/src/redesign/overview-pending.tsx",
+      "sha256": "db420f7d64ba160d0bdc4c437430c8abfbdf318b6e6fc48cbc3fbb3ccff3411a"
+    },
+    {
+      "path": "packages/web/src/redesign/overview.css",
+      "sha256": "edde31c8ad6a85e9a1df9b7c0f0b116e8de6c701d2e2beb0630ef67ceec6e895"
+    },
+    {
+      "path": "scripts/check-stable-captures.mts",
+      "sha256": "c54acfca2774bcfe5e75445e90ff7ebfdd293fc88113d1d3ada3980b00d5d343"
+    }
+  ],
+  "archiveOrigins": [
+    {
+      "path": "lifecycle-verification.json",
+      "rawSha256": "4b31401fda9dacca3e67873d69ed8466c0ea8760807e45c081999e4c7b8700a8",
+      "archiveSha256": "ff9ee8af74b3e6e087ba61c09717ff2653495ee8442fe785715527b37bbae282",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "overview-verification.json",
+      "rawSha256": "000f5aedf5955e2acff74bbc6fe0d5efee3e413f0426b306817b032749fa1056",
+      "archiveSha256": "3cb511bcf9811e277d9b4763eef6dbe7563bcb815716ea5fe51a6c952ab5bf64",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "current-reference-geometry.json",
+      "rawSha256": "bf0d4487aa6e410a0c0c2032a294efce28f27c00ebe957c23dcefb97faa53bab",
+      "archiveSha256": "ca2a5b987f0b4065273b70ac97721ed62ae4818fa39033a059e094f138372c75",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "reference-capture-diff.json",
+      "rawSha256": "c207bb1b43ab40968341e8c070ef8dc114c2306e502c48771cd9522576e22e16",
+      "archiveSha256": "c207bb1b43ab40968341e8c070ef8dc114c2306e502c48771cd9522576e22e16",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "build.log",
+      "rawSha256": "6240c8d4c556693a5532cb13901a0effe361d24f9ab706e9c8ddca2043f47b5b",
+      "archiveSha256": "900b569f50220b656da98025d9bbe9d6920675740ef8001c25381da19da9cb5d",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "webTests.log",
+      "rawSha256": "f4051a8c2e9e90c342900afba8c00a44d70a16e6a2170c4de5aafef700b6feba",
+      "archiveSha256": "7e5b9b9a0ae6c3b98dddca31d2d106a72f3e1eb9eef8ecacd6a4bec8610ef608",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "overview.log",
+      "rawSha256": "24e4c91920c959c4a7e35551f6e992abb9c4bb7b6d003e32a6776c3a3d1687ec",
+      "archiveSha256": "f973f6aee17066a0d990718095a83589236ff37f416e27b7d0a8f7489e1e0f97",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "all8.log",
+      "rawSha256": "204264ae35b6e183a455564d4ef6447be9d597ccabb30625c9861e36e097df94",
+      "archiveSha256": "352b21f0792c2f153a24aeb93fb3534b65cb71b4dd4e086b8adf708ae7315fd1",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "probe.log",
+      "rawSha256": "246718afbe28ed20dd625f395a24b8d4faf3b3dabbae15a68382db0e1327e623",
+      "archiveSha256": "306c2dda4851f084bc391f1e9e3aad88d8241309b50622fd0f8930a76620c1a2",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "loading72-code-review.md",
+      "rawSha256": "bfd5ab39af561bad85ec630253771cfd6b7fff59718bf0f0d31bd5b48863e24b",
+      "archiveSha256": "bfd5ab39af561bad85ec630253771cfd6b7fff59718bf0f0d31bd5b48863e24b",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "loading72-diagnosis.md",
+      "rawSha256": "937ee3cd9a93fbbfec7d24f7d017fd280b571f0bd6796590ce17ddee131758b2",
+      "archiveSha256": "bf1d68c40fb02aed667bdd23fe65719ed621037870823e05ae59b9c373dd3090",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "loading72-narrow-diagnosis.md",
+      "rawSha256": "f06b14a6ef97dc39592347539c287916aaefb1205eab418c590b23b7652cfc69",
+      "archiveSha256": "3f8d1159487b5e6ffef32d5de10de2b659dfaa1de9adbf9864b1e1326d87b39a",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "loading72-case-isolation.md",
+      "rawSha256": "2caef17435444b816f7586480901ae02795e95047418573019103136ecea4207",
+      "archiveSha256": "2caef17435444b816f7586480901ae02795e95047418573019103136ecea4207",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "probe-source/loading72-probe.mts",
+      "rawSha256": "b1dcd303d993d73dab27d3dcb46ab1f653fbd369115e6bba0774aaadd2c25656",
+      "archiveSha256": "d34f997d58ae828fdaa050ae20011c2265483beed77b0d9c5d60c0a25af8169a",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "probe-source/loading72-fixture.mts",
+      "rawSha256": "4ea5ec17d9c1b0347593188fdc2c93e598da568d01f3fb80cfc2b38e3fb63a08",
+      "archiveSha256": "8791a0881e38ce36ec5f0d532ab99270d2d551e769b2db6ef880f6b5d0898915",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "diagnostics/loading72-geometry-measured-failure.log",
+      "rawSha256": "86753c34cb8f12d6a9b7f358e897445fdae933aaeeaad51528a8cdf3332b40aa",
+      "archiveSha256": "5a4873efb190b431b3295cb25077592dfc079c2ff4c4bca05f805c9add366ab7",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "diagnostics/loading72-geometry-font-ready-failure.log",
+      "rawSha256": "06ba017d11610538937960cbbec4b04f294a1b6b896c3e4f25e4f16c5bbe9f6d",
+      "archiveSha256": "b32cd42873c20ff05d9b97c5602047dcb623fec0c651d0780029c0d502eb08b3",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "diagnostics/loading72-native-pass-narrow-failure.log",
+      "rawSha256": "7149398c20bb29735e9f62024ca278321429eff9f477a30c26fc0e78f9d011b7",
+      "archiveSha256": "b9c23e33a3ac397e80bbad5dc57ac6e3f26a0bcef4cb961a898b3655120e55b7",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "diagnostics/loading72-narrow-measured-failure.log",
+      "rawSha256": "52994399140b3ed961a1fcedfffda1f0b72d0d4becd03c3e988fbbc8dedfcf8a",
+      "archiveSha256": "da1d60c065af7da3767508fba3b3838ff8e8f53f45ccfb954299366a00dba646",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "diagnostics/loading72-narrow-row-specificity-failure.log",
+      "rawSha256": "babc6c12ba393124663c5c187a95814965ee250b0049acc652f462c585ca7a66",
+      "archiveSha256": "5751ebf9278787c49b2253c8d4c1962574df52f8d24086b63ad2eacbdc4e3e25",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    },
+    {
+      "path": "diagnostics/loading72-probe-import-failure.log",
+      "rawSha256": "eb97b037b3116e20a4ea8758ab54eaf59b7fe44092503c8ef53f34827b7d8ebb",
+      "archiveSha256": "a61363860bbe6f703247c40a66073a8de50ea91244877dd4995473676ac72fc3",
+      "normalization": "UTF8 LF; trailing whitespace removed"
+    }
+  ],
+  "terminalResults": {
+    "build": {
+      "session": 43721,
+      "exitCode": 0
+    },
+    "sixCaseLifecycle": {
+      "session": 97034,
+      "exitCode": 0
+    },
+    "overviewAll8WebPipeline": {
+      "session": 19386,
+      "exitCode": 0
+    }
+  },
+  "scope": "Bounded Overview pending/error, source disappearance on real retry, focus and reference frame repair. Historical71 UI/Models gates do not certify current full RC."
+}
