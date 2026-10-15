@@ -1,0 +1,25 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx scripts/check-dashboard-loading.mts *> tmp/pulse79- ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+locator.textContent: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-initial-state=error] button').first()[22m
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-dashboard-loading.mts:229:30)
+{
+  log: [
+    "  - waiting for locator('[data-initial-state=error] button').first()"
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.13.1

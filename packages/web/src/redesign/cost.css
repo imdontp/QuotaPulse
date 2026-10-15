@@ -80,6 +80,12 @@
 @media(max-width:730px) { .qp-cost-header { grid-template-columns:1fr; } .qp-cost-toolbar { grid-template-columns:repeat(2,minmax(0,1fr)); } .qp-cost-lower { grid-template-columns:1fr; } }
 @media(max-width:450px) { .qp-cost-toolbar { grid-template-columns:1fr; } .qp-cost-providers li { grid-template-columns:8px minmax(0,1fr); } .qp-cost-providers li strong { grid-column:2; } }
 .qp-cost-layout { display:grid; gap:12px; min-width:0; }
+.qp-cost-initial-summary { min-height:187px; }
+.qp-cost-initial-summary-grid>[data-initial-region] { padding:12px; }
+.qp-cost-error button { padding:4px 8px; border:1px solid var(--qp-border); border-radius:6px; }
+.qp-redesign .qp-cost-providers[data-initial-region] { display:flex; min-height:258px; }
+.qp-cost-upper>[data-initial-region] { min-height:302px; }
+.qp-cost-lower>[data-initial-region] { min-height:274px; }
 .qp-cost-top-row,.qp-cost-overview { display:grid; gap:12px; min-width:0; }
 .qp-cost-heading { position:relative; min-width:0; }
 .qp-cost-heading>[data-testid=scope-notice] { margin:4px 0 0 42px; }

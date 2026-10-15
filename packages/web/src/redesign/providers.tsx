@@ -13,6 +13,7 @@ import './providers.css';
 import { SectionMark } from './section-mark';
 import { PageHeading } from './page-heading';
 import { HeadingReferenceIcon } from './heading-reference-icon';
+import { InitialRegion, type InitialRegionState } from './initial-region';
 
 interface OwnerCard {
   key: string;
@@ -40,6 +41,8 @@ export function ProductionProviders() {
   const [inspectorOpen, setInspectorOpen] = useState(Boolean(route.owner || route.source));
   const [overview, setOverview] = useState<Overview | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [queryRetry, setQueryRetry] = useState(0);
+  const [queryBusy, setQueryBusy] = useState(false);
   const refresh = useRefreshStatus();
   useEffect(() => {
     const sync = () => { if (location.hash.slice(1).split('?')[0] === 'providers') { const next = routeState(); setRoute(next); if (next.owner || next.source) setInspectorOpen(true); } };
@@ -58,9 +61,11 @@ export function ProductionProviders() {
     setRoute(next);
   };
   useLiveRefresh(async () => {
+    setQueryBusy(true);
     try { setOverview(await api.overview()); setError(null); }
     catch (cause) { setError(String(cause)); throw cause; }
-  }, []);
+    finally { setQueryBusy(false); }
+  }, [queryRetry]);
   const now = overview?.now ?? Date.now();
   const allReadings = overview ? primaryLimits(overview.limits, now) : [];
   const cards: OwnerCard[] = overview ? [
@@ -100,10 +105,22 @@ export function ProductionProviders() {
   const used = (reading: Limit) => reading.used_percent === null || isExpired(reading, now) || reading.last_seen_at > now ? null : reading.used_percent;
   const manageHref = (card: OwnerCard) => card.subscription ? `#settings?subscription=${encodeURIComponent(card.key)}` : `#settings?section=diagnostics&source=${card.sources[0]?.source_id ?? ''}`;
 
-  return <RedesignShell active="providers" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-providers">
-    <header className="qp-provider-header"><PageHeading icon={<HeadingReferenceIcon kind="providers"/>} title={t('redesign.providerHeading')} subtitle={t('redesign.providerSubtitle')}/><div className="qp-provider-actions"><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/>{t('app.refreshNow')}</button><a href="#settings?section=diagnostics" aria-label={t('redesign.providerDiagnostics')} title={t('redesign.providerDiagnostics')}><MoreHorizontal size={18} aria-hidden="true"/></a></div></header>
-    {error && <p className="qp-provider-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
-    {!overview ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : cards.length === 0 ? <p className="qp-panel">{t('redesign.providerNoAccounts')}</p> : <>
+  const initialState: InitialRegionState = {
+    kind: error ? 'error' : 'loading', label: t(error ? 'app.couldNotLoad' : 'app.loading'), detail: error ?? undefined,
+    retryLabel: t('app.retry'), retrying: queryBusy,
+    onRetry: () => { document.getElementById('providers')?.focus({ preventScroll: true }); setError(null); setQueryRetry(value => value + 1); },
+  };
+  return <RedesignShell quickStatsScope={overview ? undefined : null} active="providers" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-providers">
+    <header className="qp-provider-header"><PageHeading icon={<HeadingReferenceIcon kind="providers"/>} title={t('redesign.providerHeading')} subtitle={t('redesign.providerSubtitle')}/><div className="qp-provider-actions"><button onClick={() => overview ? void refresh.refreshNow() : initialState.onRetry()} disabled={refresh.refreshing || (!overview && queryBusy)}><RefreshCw size={16}/>{t('app.refreshNow')}</button><a href="#settings?section=diagnostics" aria-label={t('redesign.providerDiagnostics')} title={t('redesign.providerDiagnostics')}><MoreHorizontal size={18} aria-hidden="true"/></a></div></header>
+    {overview && error && <p className="qp-provider-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
+    {!overview ? <>
+      <section className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{Array.from({ length: 4 }, (_, index) => <InitialRegion key={index} id={`providers-card-${index}`} label={t('redesign.providerHeading')} state={initialState} status={index === 0} className="qp-provider-card qp-provider-card-pending"/>)}</section>
+      <InitialRegion id="providers-inspector" label={t('redesign.providerDetails')} state={initialState} className={`qp-provider-inspector-pending${inspectorOpen ? ' qp-provider-inspector-pending-open' : ''}`}/>
+      <div className="qp-provider-bottom">
+        <div id="provider-quotas"><InitialRegion id="providers-comparison" label={t('redesign.providerComparison')} state={initialState} className="qp-provider-comparison"/></div>
+        <InitialRegion id="providers-health" label={t('redesign.providerReaderHealth')} state={initialState} className="qp-provider-health" slots={5}/>
+      </div>
+    </> : cards.length === 0 ? <p className="qp-panel">{t('redesign.providerNoAccounts')}</p> : <>
       <section className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{cards.map(card => <article key={card.key} className="qp-panel qp-provider-card" data-vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'} data-has-quota={card.readings.length > 0} data-selected={selected?.key === card.key}>
         <div className="qp-provider-card-head"><span className="qp-provider-icon" aria-hidden="true"><VendorIcon vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'}/></span><div className="qp-provider-card-copy"><button aria-pressed={selected?.key === card.key} onClick={() => update({ owner: card.key })}>{card.title}</button><p className="qp-provider-linked">{t('redesign.providerLinked')}: {card.linked.join(', ') || t('redesign.unknownValue')}</p></div><span className="qp-provider-state" data-state={card.sources.length > 0 && card.sources.every(source => !source.enabled) ? 'inactive' : card.state}>{card.sources.length > 0 && card.sources.every(source => !source.enabled) ? t('redesign.providerInactive') : stateLabel(card.state)}</span></div>
         {card.hidden && <p className="qp-provider-hidden">{t('redesign.providerHidden')}</p>}

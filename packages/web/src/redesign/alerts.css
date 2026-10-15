@@ -248,3 +248,14 @@
 .qp-redesign[data-testid=production-alerts][data-theme=dark] .qp-alert-forecast-orb>div>:is(strong,span) {
   position:relative; z-index:2;
 }
+
+/* Pending-only regions preserve the dashboard main/rail composition. */
+.qp-alert-initial-summary>.qp-initial-region { min-height:84px; }
+.qp-alert-initial-chart { min-height:225px; }
+.qp-alert-initial-risks { min-height:245px; }
+.qp-alert-initial-rules { min-height:145px; }
+.qp-alert-initial-history { min-height:170px; }
+.qp-alert-initial-forecast { min-height:338px; }
+.qp-alert-initial-guidance { min-height:328px; }
+.qp-alert-initial-events { min-height:180px; }
+.qp-alert-initial-forecast-body { min-height:240px; }

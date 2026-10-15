@@ -1,0 +1,9 @@
+.qp-redesign .qp-initial-region { min-width:0; display:flex; flex-direction:column; gap:12px; }
+.qp-redesign .qp-initial-region h2 { margin:0; font-size:15px; font-weight:500; }
+.qp-redesign .qp-initial-region-status { min-height:60px; color:var(--qp-muted); font-size:12px; overflow-wrap:anywhere; }
+.qp-redesign .qp-initial-region-status p { margin:0 0 8px; }
+.qp-redesign .qp-initial-region-status button { padding:7px 12px; border:1px solid var(--qp-border); border-radius:7px; color:var(--qp-text); background:var(--qp-panel); }
+.qp-redesign .qp-initial-region-status button:disabled { opacity:.5; }
+.qp-redesign .qp-initial-region-slots { display:grid; align-content:start; gap:16px; flex:1; padding:12px 0; }
+.qp-redesign .qp-initial-region-slots>span { display:block; width:80%; height:10px; border-radius:4px; background:color-mix(in srgb,var(--qp-muted) 12%,var(--qp-panel)); }
+.qp-redesign .qp-initial-region-slots>span:nth-child(even) { width:60%; }

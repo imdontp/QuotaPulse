@@ -354,3 +354,12 @@
   [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-latest-values { gap:10px; }
   [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-latest-heading { margin-top:2px; }
 }
+
+/* Pending-only reservations follow the loaded dashboard columns. */
+.qp-live-initial-metrics>.qp-initial-region { min-height:84px; }
+.qp-redesign .qp-live-initial-session-body { min-height:220px; padding:0; border:0; background:none; box-shadow:none; }
+.qp-live-initial-flow { min-height:197px; }
+.qp-live-initial-feed { min-height:186px; }
+.qp-live-initial-advisories { min-height:180px; }
+.qp-live-initial-matrix { min-height:450px; }
+@media(max-width:700px) { .qp-live-initial-metrics>.qp-initial-region { min-height:110px; } }

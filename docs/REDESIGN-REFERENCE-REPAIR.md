@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.78
+## Current checkpoint: v1.85.79
+
+[Dashboard API loading/recovery validation](redesign-v1.85.79/VALIDATION-STATE.md) · [Loading/error/recovery images](redesign-v1.85.79/loading-review.html) · [Eight-page reference review](redesign-v1.85.79/review.html). Seven route API layouts and retry behavior advance the blueprint; original-reference and full release acceptance remain open.
+
+## Previous checkpoint: v1.85.78
 
 [Overview filament geometry and current validation](redesign-v1.85.78/VALIDATION-STATE.md) · [Eight-page reference review](redesign-v1.85.78/review.html). This is a bounded Source-shaped decoration improvement; whole-concept and release acceptance remain open.
 

@@ -1,0 +1,6618 @@
+{
+  "scope": "seven-route initial API layout and keyboard query-only recovery",
+  "productionIndexSha256": "d2f7c7648bc45e352471d15b1743e330544c93879616ca8d9d816d134fa5a423",
+  "browser": "155.0.8059.41",
+  "matrix": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1586
+    }
+  ],
+  "results": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "route": "live",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "live-metric-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recent sessions",
+          "box": {
+            "x": 239,
+            "y": 127,
+            "width": 231.59375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Reporting sources",
+          "box": {
+            "x": 482.59375,
+            "y": 127,
+            "width": 231.609375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Stale sources",
+          "box": {
+            "x": 726.203125,
+            "y": 127,
+            "width": 231.59375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Reader errors",
+          "box": {
+            "x": 969.796875,
+            "y": 127,
+            "width": 231.609375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-sessions",
+          "state": "loading",
+          "busy": "true",
+          "label": "Observed sessions",
+          "box": {
+            "x": 239,
+            "y": 303,
+            "width": 962.40625,
+            "height": 220
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-flow",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded tokens per minute",
+          "box": {
+            "x": 228,
+            "y": 596.5,
+            "width": 984.40625,
+            "height": 197
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-feed",
+          "state": "loading",
+          "busy": "true",
+          "label": "Usage record feed",
+          "box": {
+            "x": 228,
+            "y": 803.5,
+            "width": 984.40625,
+            "height": 188.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-advisories",
+          "state": "loading",
+          "busy": "true",
+          "label": "Source advisories",
+          "box": {
+            "x": 1222.40625,
+            "y": 72,
+            "width": 351.578125,
+            "height": 343
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-matrix",
+          "state": "loading",
+          "busy": "true",
+          "label": "Observed provider and model activity",
+          "box": {
+            "x": 1222.40625,
+            "y": 425,
+            "width": 351.578125,
+            "height": 450
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "live-metric-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Recent sessions",
+          "box": {
+            "x": 239,
+            "y": 127,
+            "width": 231.59375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Reporting sources",
+          "box": {
+            "x": 482.59375,
+            "y": 127,
+            "width": 231.609375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Stale sources",
+          "box": {
+            "x": 726.203125,
+            "y": 127,
+            "width": 231.59375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Reader errors",
+          "box": {
+            "x": 969.796875,
+            "y": 127,
+            "width": 231.609375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-sessions",
+          "state": "error",
+          "busy": "false",
+          "label": "Observed sessions",
+          "box": {
+            "x": 239,
+            "y": 303,
+            "width": 962.40625,
+            "height": 220
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-flow",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded tokens per minute",
+          "box": {
+            "x": 228,
+            "y": 596.5,
+            "width": 984.40625,
+            "height": 197
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-feed",
+          "state": "error",
+          "busy": "false",
+          "label": "Usage record feed",
+          "box": {
+            "x": 228,
+            "y": 803.5,
+            "width": 984.40625,
+            "height": 188.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-advisories",
+          "state": "error",
+          "busy": "false",
+          "label": "Source advisories",
+          "box": {
+            "x": 1222.40625,
+            "y": 72,
+            "width": 351.578125,
+            "height": 343
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-matrix",
+          "state": "error",
+          "busy": "false",
+          "label": "Observed provider and model activity",
+          "box": {
+            "x": 1222.40625,
+            "y": 425,
+            "width": 351.578125,
+            "height": 450
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "7ee7703198960088d5e06044fcc7e9b25bef4a2966ca75fd26980996f761cdc3"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "route": "projects",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "project-card-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Projects",
+          "box": {
+            "x": 233,
+            "y": 206,
+            "width": 440.828125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Projects",
+          "box": {
+            "x": 681.828125,
+            "y": 206,
+            "width": 375.53125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Projects",
+          "box": {
+            "x": 233,
+            "y": 476,
+            "width": 440.828125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Projects",
+          "box": {
+            "x": 681.828125,
+            "y": 476,
+            "width": 375.53125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-details",
+          "state": "loading",
+          "busy": "true",
+          "label": "Project details",
+          "box": {
+            "x": 1069.375,
+            "y": 206,
+            "width": 499.609375,
+            "height": 550
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-top",
+          "state": "loading",
+          "busy": "true",
+          "label": "Top consuming projects in this selection",
+          "box": {
+            "x": 1069.375,
+            "y": 768,
+            "width": 499.609375,
+            "height": 210
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "project-card-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Projects",
+          "box": {
+            "x": 233,
+            "y": 206,
+            "width": 440.828125,
+            "height": 286.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Projects",
+          "box": {
+            "x": 681.828125,
+            "y": 206,
+            "width": 375.53125,
+            "height": 286.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Projects",
+          "box": {
+            "x": 233,
+            "y": 504.5,
+            "width": 440.828125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Projects",
+          "box": {
+            "x": 681.828125,
+            "y": 504.5,
+            "width": 375.53125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-details",
+          "state": "error",
+          "busy": "false",
+          "label": "Project details",
+          "box": {
+            "x": 1069.375,
+            "y": 206,
+            "width": 499.609375,
+            "height": 550
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-top",
+          "state": "error",
+          "busy": "false",
+          "label": "Top consuming projects in this selection",
+          "box": {
+            "x": 1069.375,
+            "y": 768,
+            "width": 499.609375,
+            "height": 210
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "73a207e4a3a42fa301b61254ad46b4944d171a69f3c7e6a3c7ba5f7ff226ad60"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "route": "models",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "models-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Model and route pairs",
+          "box": {
+            "x": 228,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded tokens",
+          "box": {
+            "x": 474.359375,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Distinct sessions",
+          "box": {
+            "x": 720.71875,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Calculated API value",
+          "box": {
+            "x": 967.078125,
+            "y": 130,
+            "width": 234.375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-comparison",
+          "state": "loading",
+          "busy": "true",
+          "label": "Model comparison",
+          "box": {
+            "x": 237,
+            "y": 378,
+            "width": 955.453125,
+            "height": 475.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-providers",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded provider distribution",
+          "box": {
+            "x": 237,
+            "y": 909.5,
+            "width": 955.453125,
+            "height": 49
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Selected model",
+          "box": {
+            "x": 1213.453125,
+            "y": 72,
+            "width": 360.53125,
+            "height": 284
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded token components",
+          "box": {
+            "x": 1223.453125,
+            "y": 366,
+            "width": 340.53125,
+            "height": 147
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Usage trend",
+          "box": {
+            "x": 1223.453125,
+            "y": 523,
+            "width": 340.53125,
+            "height": 160
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded effort categories",
+          "box": {
+            "x": 1223.453125,
+            "y": 693,
+            "width": 340.53125,
+            "height": 190
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "models-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Model and route pairs",
+          "box": {
+            "x": 228,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded tokens",
+          "box": {
+            "x": 474.359375,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Distinct sessions",
+          "box": {
+            "x": 720.71875,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Calculated API value",
+          "box": {
+            "x": 967.078125,
+            "y": 130,
+            "width": 234.375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-comparison",
+          "state": "error",
+          "busy": "false",
+          "label": "Model comparison",
+          "box": {
+            "x": 237,
+            "y": 378,
+            "width": 955.453125,
+            "height": 475.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-providers",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded provider distribution",
+          "box": {
+            "x": 237,
+            "y": 909.5,
+            "width": 955.453125,
+            "height": 49
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Selected model",
+          "box": {
+            "x": 1213.453125,
+            "y": 72,
+            "width": 360.53125,
+            "height": 284
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded token components",
+          "box": {
+            "x": 1223.453125,
+            "y": 366,
+            "width": 340.53125,
+            "height": 147
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Usage trend",
+          "box": {
+            "x": 1223.453125,
+            "y": 523,
+            "width": 340.53125,
+            "height": 160
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded effort categories",
+          "box": {
+            "x": 1223.453125,
+            "y": 693,
+            "width": 340.53125,
+            "height": 190
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "6832d110c384992c89a43985f67d6aa5e5739ca9f6e2b7b876fbc2e0ff92b246"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "route": "providers",
+      "calls": 6,
+      "pending": [
+        {
+          "id": "providers-card-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 232,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 569,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 906,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 1243,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-inspector",
+          "state": "loading",
+          "busy": "true",
+          "label": "Selected owner details",
+          "box": {
+            "x": 228,
+            "y": 649,
+            "width": 1346,
+            "height": 34.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-comparison",
+          "state": "loading",
+          "busy": "true",
+          "label": "Compare one quota window",
+          "box": {
+            "x": 228,
+            "y": 695.5,
+            "width": 666,
+            "height": 236
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-health",
+          "state": "loading",
+          "busy": "true",
+          "label": "Reader health and freshness",
+          "box": {
+            "x": 908,
+            "y": 695.5,
+            "width": 666,
+            "height": 236
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "providers-card-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 232,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 569,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 906,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 1243,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-inspector",
+          "state": "error",
+          "busy": "false",
+          "label": "Selected owner details",
+          "box": {
+            "x": 228,
+            "y": 649,
+            "width": 1346,
+            "height": 34.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-comparison",
+          "state": "error",
+          "busy": "false",
+          "label": "Compare one quota window",
+          "box": {
+            "x": 228,
+            "y": 695.5,
+            "width": 666,
+            "height": 236
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-health",
+          "state": "error",
+          "busy": "false",
+          "label": "Reader health and freshness",
+          "box": {
+            "x": 908,
+            "y": 695.5,
+            "width": 666,
+            "height": 236
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "b47c77a39fb0ac9004844904a0109671b448664ebca2d5620764b15b18a11467"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "route": "cost",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "cost-summary",
+          "state": "loading",
+          "busy": "true",
+          "label": "Known value in scope",
+          "box": {
+            "x": 241,
+            "y": 131,
+            "width": 211.609375,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Average per elapsed 24h",
+          "box": {
+            "x": 464.609375,
+            "y": 131,
+            "width": 211.609375,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Projected monthly API value",
+          "box": {
+            "x": 688.21875,
+            "y": 131,
+            "width": 211.609375,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Per 1K priced tokens",
+          "box": {
+            "x": 911.828125,
+            "y": 131,
+            "width": 211.625,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-providers",
+          "state": "loading",
+          "busy": "true",
+          "label": "Value by recorded provider",
+          "box": {
+            "x": 1144.453125,
+            "y": 72,
+            "width": 429.546875,
+            "height": 259
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-trend",
+          "state": "loading",
+          "busy": "true",
+          "label": "Value and priced-token trend",
+          "box": {
+            "x": 228,
+            "y": 343,
+            "width": 743.53125,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-models",
+          "state": "loading",
+          "busy": "true",
+          "label": "Value by model and route",
+          "box": {
+            "x": 981.53125,
+            "y": 343,
+            "width": 592.453125,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-projects",
+          "state": "loading",
+          "busy": "true",
+          "label": "Value by project",
+          "box": {
+            "x": 228,
+            "y": 657,
+            "width": 462.40625,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-sessions",
+          "state": "loading",
+          "busy": "true",
+          "label": "Most expensive recorded sessions",
+          "box": {
+            "x": 698.40625,
+            "y": 657,
+            "width": 433.796875,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-insights",
+          "state": "loading",
+          "busy": "true",
+          "label": "Coverage insights",
+          "box": {
+            "x": 1140.203125,
+            "y": 657,
+            "width": 433.78125,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "cost-summary",
+          "state": "error",
+          "busy": "false",
+          "label": "Known value in scope",
+          "box": {
+            "x": 241,
+            "y": 131,
+            "width": 211.609375,
+            "height": 215.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Average per elapsed 24h",
+          "box": {
+            "x": 464.609375,
+            "y": 131,
+            "width": 211.609375,
+            "height": 215.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Projected monthly API value",
+          "box": {
+            "x": 688.21875,
+            "y": 131,
+            "width": 211.609375,
+            "height": 215.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Per 1K priced tokens",
+          "box": {
+            "x": 911.828125,
+            "y": 131,
+            "width": 211.625,
+            "height": 215.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-providers",
+          "state": "error",
+          "busy": "false",
+          "label": "Value by recorded provider",
+          "box": {
+            "x": 1144.453125,
+            "y": 72,
+            "width": 429.546875,
+            "height": 287.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-trend",
+          "state": "error",
+          "busy": "false",
+          "label": "Value and priced-token trend",
+          "box": {
+            "x": 228,
+            "y": 371.5,
+            "width": 743.53125,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-models",
+          "state": "error",
+          "busy": "false",
+          "label": "Value by model and route",
+          "box": {
+            "x": 981.53125,
+            "y": 371.5,
+            "width": 592.453125,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-projects",
+          "state": "error",
+          "busy": "false",
+          "label": "Value by project",
+          "box": {
+            "x": 228,
+            "y": 685.5,
+            "width": 462.40625,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-sessions",
+          "state": "error",
+          "busy": "false",
+          "label": "Most expensive recorded sessions",
+          "box": {
+            "x": 698.40625,
+            "y": 685.5,
+            "width": 433.796875,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-insights",
+          "state": "error",
+          "busy": "false",
+          "label": "Coverage insights",
+          "box": {
+            "x": 1140.203125,
+            "y": 685.5,
+            "width": 433.78125,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "9caa5b73f0b51409d11da15be6379cea524c33f687a3abf08e342202323f4d97"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "route": "history",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "history-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Total",
+          "box": {
+            "x": 241,
+            "y": 219,
+            "width": 250,
+            "height": 85
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Calls",
+          "box": {
+            "x": 499,
+            "y": 219,
+            "width": 250,
+            "height": 85
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Calculated / estimated API value",
+          "box": {
+            "x": 757,
+            "y": 219,
+            "width": 250,
+            "height": 85
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded effort categories",
+          "box": {
+            "x": 1015,
+            "y": 219,
+            "width": 250,
+            "height": 85
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-timeline",
+          "state": "loading",
+          "busy": "true",
+          "label": "Usage timeline",
+          "box": {
+            "x": 241,
+            "y": 314,
+            "width": 1024,
+            "height": 168
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-records",
+          "state": "loading",
+          "busy": "true",
+          "label": "Usage records",
+          "box": {
+            "x": 228,
+            "y": 565,
+            "width": 1050,
+            "height": 414
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-detail",
+          "state": "loading",
+          "busy": "true",
+          "label": "Record details",
+          "box": {
+            "x": 1290,
+            "y": 60,
+            "width": 288,
+            "height": 918
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "history-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Total",
+          "box": {
+            "x": 241,
+            "y": 219,
+            "width": 250,
+            "height": 85
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Calls",
+          "box": {
+            "x": 499,
+            "y": 219,
+            "width": 250,
+            "height": 85
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Calculated / estimated API value",
+          "box": {
+            "x": 757,
+            "y": 219,
+            "width": 250,
+            "height": 85
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded effort categories",
+          "box": {
+            "x": 1015,
+            "y": 219,
+            "width": 250,
+            "height": 85
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-timeline",
+          "state": "error",
+          "busy": "false",
+          "label": "Usage timeline",
+          "box": {
+            "x": 241,
+            "y": 314,
+            "width": 1024,
+            "height": 200
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-records",
+          "state": "error",
+          "busy": "false",
+          "label": "Usage records",
+          "box": {
+            "x": 228,
+            "y": 597,
+            "width": 1050,
+            "height": 414
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-detail",
+          "state": "error",
+          "busy": "false",
+          "label": "Record details",
+          "box": {
+            "x": 1290,
+            "y": 60,
+            "width": 288,
+            "height": 918
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "985e0673075c10cf7f2a435eda229aac6b1b97610492b03a539ff2ffd353b129"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "route": "alerts",
+      "calls": 6,
+      "pending": [
+        {
+          "id": "alert-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Current quota risks",
+          "box": {
+            "x": 242,
+            "y": 154.6875,
+            "width": 211.328125,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Known owner windows",
+          "box": {
+            "x": 465.328125,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Fixed thresholds",
+          "box": {
+            "x": 688.671875,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Fresh-reading coverage",
+          "box": {
+            "x": 912.015625,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-chart",
+          "state": "loading",
+          "busy": "true",
+          "label": "Observed quota history",
+          "box": {
+            "x": 229,
+            "y": 266.1875,
+            "width": 907.359375,
+            "height": 229.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-risks",
+          "state": "loading",
+          "busy": "true",
+          "label": "Current risk and reader advisories",
+          "box": {
+            "x": 229,
+            "y": 503.6875,
+            "width": 907.359375,
+            "height": 245
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-rules",
+          "state": "loading",
+          "busy": "true",
+          "label": "Read-only threshold rules",
+          "box": {
+            "x": 229,
+            "y": 756.6875,
+            "width": 907.359375,
+            "height": 145
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-forecast",
+          "state": "loading",
+          "busy": "true",
+          "label": "Usage forecast",
+          "box": {
+            "x": 1146.359375,
+            "y": 72,
+            "width": 429.640625,
+            "height": 338
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-guidance",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recommended actions",
+          "box": {
+            "x": 1146.359375,
+            "y": 419,
+            "width": 429.640625,
+            "height": 328
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-events",
+          "state": "loading",
+          "busy": "true",
+          "label": "Threshold event history",
+          "box": {
+            "x": 1146.359375,
+            "y": 756,
+            "width": 429.640625,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "alert-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Current quota risks",
+          "box": {
+            "x": 242,
+            "y": 154.6875,
+            "width": 211.328125,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Known owner windows",
+          "box": {
+            "x": 465.328125,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Fixed thresholds",
+          "box": {
+            "x": 688.671875,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Fresh-reading coverage",
+          "box": {
+            "x": 912.015625,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-chart",
+          "state": "error",
+          "busy": "false",
+          "label": "Observed quota history",
+          "box": {
+            "x": 229,
+            "y": 266.1875,
+            "width": 907.359375,
+            "height": 263.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-risks",
+          "state": "error",
+          "busy": "false",
+          "label": "Current risk and reader advisories",
+          "box": {
+            "x": 229,
+            "y": 537.6875,
+            "width": 907.359375,
+            "height": 245
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-rules",
+          "state": "error",
+          "busy": "false",
+          "label": "Read-only threshold rules",
+          "box": {
+            "x": 229,
+            "y": 790.6875,
+            "width": 907.359375,
+            "height": 145
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-forecast",
+          "state": "error",
+          "busy": "false",
+          "label": "Usage forecast",
+          "box": {
+            "x": 1146.359375,
+            "y": 72,
+            "width": 429.640625,
+            "height": 338
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-guidance",
+          "state": "error",
+          "busy": "false",
+          "label": "Recommended actions",
+          "box": {
+            "x": 1146.359375,
+            "y": 419,
+            "width": 429.640625,
+            "height": 328
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-events",
+          "state": "error",
+          "busy": "false",
+          "label": "Threshold event history",
+          "box": {
+            "x": 1146.359375,
+            "y": 756,
+            "width": 429.640625,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "f44be3c8e2b16b0356811611359779b928e03de780b09424b31bfc9b4fd2f5cd"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "route": "live",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "live-metric-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "เซสชันล่าสุด",
+          "box": {
+            "x": 75,
+            "y": 196.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "แหล่งข้อมูลที่รายงาน",
+          "box": {
+            "x": 225,
+            "y": 196.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "แหล่งข้อมูลที่ล้าสมัย",
+          "box": {
+            "x": 75,
+            "y": 333.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "ข้อผิดพลาดของตัวอ่าน",
+          "box": {
+            "x": 225,
+            "y": 333.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-sessions",
+          "state": "loading",
+          "busy": "true",
+          "label": "เซสชันที่ตรวจพบ",
+          "box": {
+            "x": 75,
+            "y": 695,
+            "width": 288,
+            "height": 220
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-flow",
+          "state": "loading",
+          "busy": "true",
+          "label": "โทเคนที่บันทึกต่อนาที",
+          "box": {
+            "x": 58,
+            "y": 948,
+            "width": 322,
+            "height": 197
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-feed",
+          "state": "loading",
+          "busy": "true",
+          "label": "รายการใช้งานที่บันทึก",
+          "box": {
+            "x": 58,
+            "y": 1161,
+            "width": 322,
+            "height": 186
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-advisories",
+          "state": "loading",
+          "busy": "true",
+          "label": "คำเตือนของแหล่งข้อมูล",
+          "box": {
+            "x": 58,
+            "y": 1363,
+            "width": 322,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-matrix",
+          "state": "loading",
+          "busy": "true",
+          "label": "กิจกรรมผู้ให้บริการและโมเดลที่ตรวจพบ",
+          "box": {
+            "x": 58,
+            "y": 1559,
+            "width": 322,
+            "height": 450
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "live-metric-0",
+          "state": "error",
+          "busy": "false",
+          "label": "เซสชันล่าสุด",
+          "box": {
+            "x": 75,
+            "y": 196.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-1",
+          "state": "error",
+          "busy": "false",
+          "label": "แหล่งข้อมูลที่รายงาน",
+          "box": {
+            "x": 225,
+            "y": 196.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-2",
+          "state": "error",
+          "busy": "false",
+          "label": "แหล่งข้อมูลที่ล้าสมัย",
+          "box": {
+            "x": 75,
+            "y": 333.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-3",
+          "state": "error",
+          "busy": "false",
+          "label": "ข้อผิดพลาดของตัวอ่าน",
+          "box": {
+            "x": 225,
+            "y": 333.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-sessions",
+          "state": "error",
+          "busy": "false",
+          "label": "เซสชันที่ตรวจพบ",
+          "box": {
+            "x": 75,
+            "y": 695,
+            "width": 288,
+            "height": 220
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-flow",
+          "state": "error",
+          "busy": "false",
+          "label": "โทเคนที่บันทึกต่อนาที",
+          "box": {
+            "x": 58,
+            "y": 948,
+            "width": 322,
+            "height": 197
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-feed",
+          "state": "error",
+          "busy": "false",
+          "label": "รายการใช้งานที่บันทึก",
+          "box": {
+            "x": 58,
+            "y": 1161,
+            "width": 322,
+            "height": 186
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-advisories",
+          "state": "error",
+          "busy": "false",
+          "label": "คำเตือนของแหล่งข้อมูล",
+          "box": {
+            "x": 58,
+            "y": 1363,
+            "width": 322,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-matrix",
+          "state": "error",
+          "busy": "false",
+          "label": "กิจกรรมผู้ให้บริการและโมเดลที่ตรวจพบ",
+          "box": {
+            "x": 58,
+            "y": 1559,
+            "width": 322,
+            "height": 450
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "38f33fde63ba9feca7635cf7e4277f7ccf7e6b0280a783dadb5d57cb34a86741"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "route": "projects",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "project-card-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 336.5,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 606.5,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 876.5,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 1146.5,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-details",
+          "state": "loading",
+          "busy": "true",
+          "label": "รายละเอียดโปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 1420.5,
+            "width": 322,
+            "height": 550
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-top",
+          "state": "loading",
+          "busy": "true",
+          "label": "โปรเจกต์ที่ใช้โทเคนมากที่สุดในช่วงที่เลือก",
+          "box": {
+            "x": 58,
+            "y": 1982.5,
+            "width": 322,
+            "height": 210
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "project-card-0",
+          "state": "error",
+          "busy": "false",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 336.5,
+            "width": 322,
+            "height": 278.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-1",
+          "state": "error",
+          "busy": "false",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 627,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-2",
+          "state": "error",
+          "busy": "false",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 897,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-3",
+          "state": "error",
+          "busy": "false",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 1167,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-details",
+          "state": "error",
+          "busy": "false",
+          "label": "รายละเอียดโปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 1441,
+            "width": 322,
+            "height": 550
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-top",
+          "state": "error",
+          "busy": "false",
+          "label": "โปรเจกต์ที่ใช้โทเคนมากที่สุดในช่วงที่เลือก",
+          "box": {
+            "x": 58,
+            "y": 2003,
+            "width": 322,
+            "height": 210
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "d4dbc8958a4835a070f98fbbd9d373e5e3b7dd76b1256fe4df0d9882650b409d"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "route": "models",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "models-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "คู่โมเดลและเส้นทาง",
+          "box": {
+            "x": 58,
+            "y": 179.5,
+            "width": 155,
+            "height": 128.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "โทเค็นที่บันทึก",
+          "box": {
+            "x": 225,
+            "y": 179.5,
+            "width": 155,
+            "height": 128.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "เซสชันไม่ซ้ำ",
+          "box": {
+            "x": 58,
+            "y": 320,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่าเทียบราคา API",
+          "box": {
+            "x": 225,
+            "y": 320,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-comparison",
+          "state": "loading",
+          "busy": "true",
+          "label": "เปรียบเทียบโมเดล",
+          "box": {
+            "x": 75,
+            "y": 848.5,
+            "width": 288,
+            "height": 260
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-providers",
+          "state": "loading",
+          "busy": "true",
+          "label": "สัดส่วนผู้ให้บริการที่บันทึก",
+          "box": {
+            "x": 75,
+            "y": 1190.5,
+            "width": 288,
+            "height": 60
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "โมเดลที่เลือก",
+          "box": {
+            "x": 58,
+            "y": 1279.5,
+            "width": 322,
+            "height": 284
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "ส่วนประกอบโทเค็นที่บันทึก",
+          "box": {
+            "x": 58,
+            "y": 1575.5,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "แนวโน้มการใช้",
+          "box": {
+            "x": 58,
+            "y": 1742,
+            "width": 322,
+            "height": 160
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "ระดับ effort ที่บันทึก",
+          "box": {
+            "x": 58,
+            "y": 1914,
+            "width": 322,
+            "height": 190
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "models-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "คู่โมเดลและเส้นทาง",
+          "box": {
+            "x": 58,
+            "y": 179.5,
+            "width": 155,
+            "height": 128.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "โทเค็นที่บันทึก",
+          "box": {
+            "x": 225,
+            "y": 179.5,
+            "width": 155,
+            "height": 128.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "เซสชันไม่ซ้ำ",
+          "box": {
+            "x": 58,
+            "y": 320,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่าเทียบราคา API",
+          "box": {
+            "x": 225,
+            "y": 320,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-comparison",
+          "state": "error",
+          "busy": "false",
+          "label": "เปรียบเทียบโมเดล",
+          "box": {
+            "x": 75,
+            "y": 848.5,
+            "width": 288,
+            "height": 288
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-providers",
+          "state": "error",
+          "busy": "false",
+          "label": "สัดส่วนผู้ให้บริการที่บันทึก",
+          "box": {
+            "x": 75,
+            "y": 1218.5,
+            "width": 288,
+            "height": 60
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-0",
+          "state": "error",
+          "busy": "false",
+          "label": "โมเดลที่เลือก",
+          "box": {
+            "x": 58,
+            "y": 1307.5,
+            "width": 322,
+            "height": 284
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-1",
+          "state": "error",
+          "busy": "false",
+          "label": "ส่วนประกอบโทเค็นที่บันทึก",
+          "box": {
+            "x": 58,
+            "y": 1603.5,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-2",
+          "state": "error",
+          "busy": "false",
+          "label": "แนวโน้มการใช้",
+          "box": {
+            "x": 58,
+            "y": 1770,
+            "width": 322,
+            "height": 160
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-3",
+          "state": "error",
+          "busy": "false",
+          "label": "ระดับ effort ที่บันทึก",
+          "box": {
+            "x": 58,
+            "y": 1942,
+            "width": 322,
+            "height": 190
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "7f6f225797fad669011d5b80ac1f1cbcd1b2a826e5cac85ed6059846441f7e00"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "route": "providers",
+      "calls": 6,
+      "pending": [
+        {
+          "id": "providers-card-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 58,
+            "y": 181.5,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 58,
+            "y": 423.5,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 58,
+            "y": 665.5,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 58,
+            "y": 907.5,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-inspector",
+          "state": "loading",
+          "busy": "true",
+          "label": "รายละเอียดเจ้าของสิทธิที่เลือก",
+          "box": {
+            "x": 58,
+            "y": 1151.5,
+            "width": 322,
+            "height": 34.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-comparison",
+          "state": "loading",
+          "busy": "true",
+          "label": "เปรียบเทียบโควตาหนึ่งช่วง",
+          "box": {
+            "x": 58,
+            "y": 1200,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-health",
+          "state": "loading",
+          "busy": "true",
+          "label": "สถานะตัวอ่านและความสดของข้อมูล",
+          "box": {
+            "x": 58,
+            "y": 1368.5,
+            "width": 322,
+            "height": 206.5
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "providers-card-0",
+          "state": "error",
+          "busy": "false",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 58,
+            "y": 181.5,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-1",
+          "state": "error",
+          "busy": "false",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 58,
+            "y": 423.5,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-2",
+          "state": "error",
+          "busy": "false",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 58,
+            "y": 665.5,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-3",
+          "state": "error",
+          "busy": "false",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 58,
+            "y": 907.5,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-inspector",
+          "state": "error",
+          "busy": "false",
+          "label": "รายละเอียดเจ้าของสิทธิที่เลือก",
+          "box": {
+            "x": 58,
+            "y": 1151.5,
+            "width": 322,
+            "height": 34.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-comparison",
+          "state": "error",
+          "busy": "false",
+          "label": "เปรียบเทียบโควตาหนึ่งช่วง",
+          "box": {
+            "x": 58,
+            "y": 1200,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-health",
+          "state": "error",
+          "busy": "false",
+          "label": "สถานะตัวอ่านและความสดของข้อมูล",
+          "box": {
+            "x": 58,
+            "y": 1368.5,
+            "width": 322,
+            "height": 206.5
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "bd4e62e8160cf3adc1f2129bbc2243fc7cc85954cdf8b5dd8b4d57bae7c443f2"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "route": "cost",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "cost-summary",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่าที่ทราบในขอบเขต",
+          "box": {
+            "x": 75,
+            "y": 399,
+            "width": 138,
+            "height": 207
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "เฉลี่ยต่อ 24 ชั่วโมงที่ผ่านไป",
+          "box": {
+            "x": 225,
+            "y": 399,
+            "width": 138,
+            "height": 207
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "คาดการณ์มูลค่า API ทั้งเดือน",
+          "box": {
+            "x": 75,
+            "y": 618,
+            "width": 138,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "ต่อโทเค็นที่มีราคา 1,000 หน่วย",
+          "box": {
+            "x": 225,
+            "y": 618,
+            "width": 138,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-providers",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่าตามผู้ให้บริการที่บันทึก",
+          "box": {
+            "x": 58,
+            "y": 834,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-trend",
+          "state": "loading",
+          "busy": "true",
+          "label": "แนวโน้มมูลค่าและโทเค็นที่มีราคา",
+          "box": {
+            "x": 58,
+            "y": 1104,
+            "width": 322,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-models",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่าตามโมเดลและเส้นทาง",
+          "box": {
+            "x": 58,
+            "y": 1418,
+            "width": 322,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-projects",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่าตามโปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 1732,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-sessions",
+          "state": "loading",
+          "busy": "true",
+          "label": "เซสชันที่มีมูลค่าสูงสุด",
+          "box": {
+            "x": 58,
+            "y": 2018,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-insights",
+          "state": "loading",
+          "busy": "true",
+          "label": "ข้อมูลความครอบคลุม",
+          "box": {
+            "x": 58,
+            "y": 2304,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "cost-summary",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่าที่ทราบในขอบเขต",
+          "box": {
+            "x": 75,
+            "y": 399,
+            "width": 138,
+            "height": 241
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "เฉลี่ยต่อ 24 ชั่วโมงที่ผ่านไป",
+          "box": {
+            "x": 225,
+            "y": 399,
+            "width": 138,
+            "height": 241
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "คาดการณ์มูลค่า API ทั้งเดือน",
+          "box": {
+            "x": 75,
+            "y": 652,
+            "width": 138,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "ต่อโทเค็นที่มีราคา 1,000 หน่วย",
+          "box": {
+            "x": 225,
+            "y": 652,
+            "width": 138,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-providers",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่าตามผู้ให้บริการที่บันทึก",
+          "box": {
+            "x": 58,
+            "y": 868,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-trend",
+          "state": "error",
+          "busy": "false",
+          "label": "แนวโน้มมูลค่าและโทเค็นที่มีราคา",
+          "box": {
+            "x": 58,
+            "y": 1138,
+            "width": 322,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-models",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่าตามโมเดลและเส้นทาง",
+          "box": {
+            "x": 58,
+            "y": 1452,
+            "width": 322,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-projects",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่าตามโปรเจกต์",
+          "box": {
+            "x": 58,
+            "y": 1766,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-sessions",
+          "state": "error",
+          "busy": "false",
+          "label": "เซสชันที่มีมูลค่าสูงสุด",
+          "box": {
+            "x": 58,
+            "y": 2052,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-insights",
+          "state": "error",
+          "busy": "false",
+          "label": "ข้อมูลความครอบคลุม",
+          "box": {
+            "x": 58,
+            "y": 2338,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "0d6e1143379f0e5fe5f73393f63ae104c871d246795136aac04de2cce2574e3f"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "route": "history",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "history-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "รวม",
+          "box": {
+            "x": 71,
+            "y": 393.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "ครั้ง",
+          "box": {
+            "x": 71,
+            "y": 470.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่า API ที่คำนวณ / ประมาณ",
+          "box": {
+            "x": 71,
+            "y": 547.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "หมวด effort ที่บันทึก",
+          "box": {
+            "x": 71,
+            "y": 624.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-timeline",
+          "state": "loading",
+          "busy": "true",
+          "label": "ไทม์ไลน์การใช้งาน",
+          "box": {
+            "x": 71,
+            "y": 701.15625,
+            "width": 296,
+            "height": 168
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-records",
+          "state": "loading",
+          "busy": "true",
+          "label": "รายการใช้งาน",
+          "box": {
+            "x": 58,
+            "y": 1424.15625,
+            "width": 322,
+            "height": 300
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-detail",
+          "state": "loading",
+          "busy": "true",
+          "label": "รายละเอียดรายการ",
+          "box": {
+            "x": 58,
+            "y": 1791.15625,
+            "width": 322,
+            "height": 300
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "history-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "รวม",
+          "box": {
+            "x": 71,
+            "y": 393.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "ครั้ง",
+          "box": {
+            "x": 71,
+            "y": 470.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่า API ที่คำนวณ / ประมาณ",
+          "box": {
+            "x": 71,
+            "y": 547.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "หมวด effort ที่บันทึก",
+          "box": {
+            "x": 71,
+            "y": 624.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-timeline",
+          "state": "error",
+          "busy": "false",
+          "label": "ไทม์ไลน์การใช้งาน",
+          "box": {
+            "x": 71,
+            "y": 701.15625,
+            "width": 296,
+            "height": 192
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-records",
+          "state": "error",
+          "busy": "false",
+          "label": "รายการใช้งาน",
+          "box": {
+            "x": 58,
+            "y": 1448.15625,
+            "width": 322,
+            "height": 300
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-detail",
+          "state": "error",
+          "busy": "false",
+          "label": "รายละเอียดรายการ",
+          "box": {
+            "x": 58,
+            "y": 1815.15625,
+            "width": 322,
+            "height": 300
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "26cbfc3cada3f0f4a43784d0d655fe5cded958de25aeea3dddd817e2c2de78d2"
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "route": "alerts",
+      "calls": 6,
+      "pending": [
+        {
+          "id": "alert-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "ความเสี่ยงโควตาปัจจุบัน",
+          "box": {
+            "x": 75,
+            "y": 289.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "หน้าต่างโควตาที่ทราบเจ้าของ",
+          "box": {
+            "x": 225,
+            "y": 289.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "เกณฑ์คงที่",
+          "box": {
+            "x": 75,
+            "y": 426.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "ความครอบคลุมของค่าที่สด",
+          "box": {
+            "x": 225,
+            "y": 426.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-chart",
+          "state": "loading",
+          "busy": "true",
+          "label": "ประวัติโควตาที่อ่านได้",
+          "box": {
+            "x": 58,
+            "y": 580.96875,
+            "width": 322,
+            "height": 244.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-risks",
+          "state": "loading",
+          "busy": "true",
+          "label": "ความเสี่ยงปัจจุบันและข้อสังเกตจากตัวอ่าน",
+          "box": {
+            "x": 58,
+            "y": 837.46875,
+            "width": 322,
+            "height": 245
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-rules",
+          "state": "loading",
+          "busy": "true",
+          "label": "กฎเกณฑ์แบบอ่านอย่างเดียว",
+          "box": {
+            "x": 58,
+            "y": 1094.46875,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-forecast",
+          "state": "loading",
+          "busy": "true",
+          "label": "คาดการณ์การใช้งาน",
+          "box": {
+            "x": 58,
+            "y": 1260.96875,
+            "width": 322,
+            "height": 338
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-guidance",
+          "state": "loading",
+          "busy": "true",
+          "label": "การดำเนินการที่แนะนำ",
+          "box": {
+            "x": 58,
+            "y": 1610.96875,
+            "width": 322,
+            "height": 328
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-events",
+          "state": "loading",
+          "busy": "true",
+          "label": "ประวัติเหตุการณ์ผ่านเกณฑ์",
+          "box": {
+            "x": 58,
+            "y": 1950.96875,
+            "width": 322,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "alert-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "ความเสี่ยงโควตาปัจจุบัน",
+          "box": {
+            "x": 75,
+            "y": 289.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "หน้าต่างโควตาที่ทราบเจ้าของ",
+          "box": {
+            "x": 225,
+            "y": 289.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "เกณฑ์คงที่",
+          "box": {
+            "x": 75,
+            "y": 426.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "ความครอบคลุมของค่าที่สด",
+          "box": {
+            "x": 225,
+            "y": 426.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-chart",
+          "state": "error",
+          "busy": "false",
+          "label": "ประวัติโควตาที่อ่านได้",
+          "box": {
+            "x": 58,
+            "y": 580.96875,
+            "width": 322,
+            "height": 278.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-risks",
+          "state": "error",
+          "busy": "false",
+          "label": "ความเสี่ยงปัจจุบันและข้อสังเกตจากตัวอ่าน",
+          "box": {
+            "x": 58,
+            "y": 871.46875,
+            "width": 322,
+            "height": 245
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-rules",
+          "state": "error",
+          "busy": "false",
+          "label": "กฎเกณฑ์แบบอ่านอย่างเดียว",
+          "box": {
+            "x": 58,
+            "y": 1128.46875,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-forecast",
+          "state": "error",
+          "busy": "false",
+          "label": "คาดการณ์การใช้งาน",
+          "box": {
+            "x": 58,
+            "y": 1294.96875,
+            "width": 322,
+            "height": 338
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-guidance",
+          "state": "error",
+          "busy": "false",
+          "label": "การดำเนินการที่แนะนำ",
+          "box": {
+            "x": 58,
+            "y": 1644.96875,
+            "width": 322,
+            "height": 328
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-events",
+          "state": "error",
+          "busy": "false",
+          "label": "ประวัติเหตุการณ์ผ่านเกณฑ์",
+          "box": {
+            "x": 58,
+            "y": 1984.96875,
+            "width": 322,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "55524cee727ae3184893869c95f4b86f2a0a376417dc94730ef2f7b9147b6ca9"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "route": "live",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "live-metric-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recent sessions",
+          "box": {
+            "x": 75,
+            "y": 196.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Reporting sources",
+          "box": {
+            "x": 225,
+            "y": 196.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Stale sources",
+          "box": {
+            "x": 75,
+            "y": 333.5,
+            "width": 138,
+            "height": 110
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Reader errors",
+          "box": {
+            "x": 225,
+            "y": 333.5,
+            "width": 138,
+            "height": 110
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-sessions",
+          "state": "loading",
+          "busy": "true",
+          "label": "Observed sessions",
+          "box": {
+            "x": 75,
+            "y": 708.5,
+            "width": 288,
+            "height": 220
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-flow",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded tokens per minute",
+          "box": {
+            "x": 58,
+            "y": 961.5,
+            "width": 322,
+            "height": 197
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-feed",
+          "state": "loading",
+          "busy": "true",
+          "label": "Usage record feed",
+          "box": {
+            "x": 58,
+            "y": 1174.5,
+            "width": 322,
+            "height": 186
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-advisories",
+          "state": "loading",
+          "busy": "true",
+          "label": "Source advisories",
+          "box": {
+            "x": 58,
+            "y": 1376.5,
+            "width": 322,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-matrix",
+          "state": "loading",
+          "busy": "true",
+          "label": "Observed provider and model activity",
+          "box": {
+            "x": 58,
+            "y": 1572.5,
+            "width": 322,
+            "height": 450
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "live-metric-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Recent sessions",
+          "box": {
+            "x": 75,
+            "y": 196.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Reporting sources",
+          "box": {
+            "x": 225,
+            "y": 196.5,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Stale sources",
+          "box": {
+            "x": 75,
+            "y": 333.5,
+            "width": 138,
+            "height": 110
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Reader errors",
+          "box": {
+            "x": 225,
+            "y": 333.5,
+            "width": 138,
+            "height": 110
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-sessions",
+          "state": "error",
+          "busy": "false",
+          "label": "Observed sessions",
+          "box": {
+            "x": 75,
+            "y": 708.5,
+            "width": 288,
+            "height": 220
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-flow",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded tokens per minute",
+          "box": {
+            "x": 58,
+            "y": 961.5,
+            "width": 322,
+            "height": 197
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-feed",
+          "state": "error",
+          "busy": "false",
+          "label": "Usage record feed",
+          "box": {
+            "x": 58,
+            "y": 1174.5,
+            "width": 322,
+            "height": 186
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-advisories",
+          "state": "error",
+          "busy": "false",
+          "label": "Source advisories",
+          "box": {
+            "x": 58,
+            "y": 1376.5,
+            "width": 322,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-matrix",
+          "state": "error",
+          "busy": "false",
+          "label": "Observed provider and model activity",
+          "box": {
+            "x": 58,
+            "y": 1572.5,
+            "width": 322,
+            "height": 450
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "7ee7703198960088d5e06044fcc7e9b25bef4a2966ca75fd26980996f761cdc3"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "route": "projects",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "project-card-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Projects",
+          "box": {
+            "x": 58,
+            "y": 398.09375,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Projects",
+          "box": {
+            "x": 58,
+            "y": 668.09375,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Projects",
+          "box": {
+            "x": 58,
+            "y": 938.09375,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Projects",
+          "box": {
+            "x": 58,
+            "y": 1208.09375,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-details",
+          "state": "loading",
+          "busy": "true",
+          "label": "Project details",
+          "box": {
+            "x": 58,
+            "y": 1482.09375,
+            "width": 322,
+            "height": 550
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-top",
+          "state": "loading",
+          "busy": "true",
+          "label": "Top consuming projects in this selection",
+          "box": {
+            "x": 58,
+            "y": 2044.09375,
+            "width": 322,
+            "height": 210
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "project-card-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Projects",
+          "box": {
+            "x": 58,
+            "y": 398.09375,
+            "width": 322,
+            "height": 278.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Projects",
+          "box": {
+            "x": 58,
+            "y": 688.59375,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Projects",
+          "box": {
+            "x": 58,
+            "y": 958.59375,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Projects",
+          "box": {
+            "x": 58,
+            "y": 1228.59375,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-details",
+          "state": "error",
+          "busy": "false",
+          "label": "Project details",
+          "box": {
+            "x": 58,
+            "y": 1502.59375,
+            "width": 322,
+            "height": 550
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-top",
+          "state": "error",
+          "busy": "false",
+          "label": "Top consuming projects in this selection",
+          "box": {
+            "x": 58,
+            "y": 2064.59375,
+            "width": 322,
+            "height": 210
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "73a207e4a3a42fa301b61254ad46b4944d171a69f3c7e6a3c7ba5f7ff226ad60"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "route": "models",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "models-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Model and route pairs",
+          "box": {
+            "x": 58,
+            "y": 195.09375,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded tokens",
+          "box": {
+            "x": 225,
+            "y": 195.09375,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Distinct sessions",
+          "box": {
+            "x": 58,
+            "y": 358.09375,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Calculated API value",
+          "box": {
+            "x": 225,
+            "y": 358.09375,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-comparison",
+          "state": "loading",
+          "busy": "true",
+          "label": "Model comparison",
+          "box": {
+            "x": 75,
+            "y": 886.59375,
+            "width": 288,
+            "height": 260
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-providers",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded provider distribution",
+          "box": {
+            "x": 75,
+            "y": 1228.59375,
+            "width": 288,
+            "height": 60
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Selected model",
+          "box": {
+            "x": 58,
+            "y": 1317.59375,
+            "width": 322,
+            "height": 284
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded token components",
+          "box": {
+            "x": 58,
+            "y": 1613.59375,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Usage trend",
+          "box": {
+            "x": 58,
+            "y": 1780.09375,
+            "width": 322,
+            "height": 160
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded effort categories",
+          "box": {
+            "x": 58,
+            "y": 1952.09375,
+            "width": 322,
+            "height": 190
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "models-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Model and route pairs",
+          "box": {
+            "x": 58,
+            "y": 195.09375,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded tokens",
+          "box": {
+            "x": 225,
+            "y": 195.09375,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Distinct sessions",
+          "box": {
+            "x": 58,
+            "y": 358.09375,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Calculated API value",
+          "box": {
+            "x": 225,
+            "y": 358.09375,
+            "width": 155,
+            "height": 151
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-comparison",
+          "state": "error",
+          "busy": "false",
+          "label": "Model comparison",
+          "box": {
+            "x": 75,
+            "y": 886.59375,
+            "width": 288,
+            "height": 288
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-providers",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded provider distribution",
+          "box": {
+            "x": 75,
+            "y": 1256.59375,
+            "width": 288,
+            "height": 60
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Selected model",
+          "box": {
+            "x": 58,
+            "y": 1345.59375,
+            "width": 322,
+            "height": 284
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded token components",
+          "box": {
+            "x": 58,
+            "y": 1641.59375,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Usage trend",
+          "box": {
+            "x": 58,
+            "y": 1808.09375,
+            "width": 322,
+            "height": 160
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded effort categories",
+          "box": {
+            "x": 58,
+            "y": 1980.09375,
+            "width": 322,
+            "height": 190
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "6832d110c384992c89a43985f67d6aa5e5739ca9f6e2b7b876fbc2e0ff92b246"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "route": "providers",
+      "calls": 6,
+      "pending": [
+        {
+          "id": "providers-card-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 58,
+            "y": 197.09375,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 58,
+            "y": 439.09375,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 58,
+            "y": 681.09375,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 58,
+            "y": 923.09375,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-inspector",
+          "state": "loading",
+          "busy": "true",
+          "label": "Selected owner details",
+          "box": {
+            "x": 58,
+            "y": 1167.09375,
+            "width": 322,
+            "height": 34.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-comparison",
+          "state": "loading",
+          "busy": "true",
+          "label": "Compare one quota window",
+          "box": {
+            "x": 58,
+            "y": 1215.59375,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-health",
+          "state": "loading",
+          "busy": "true",
+          "label": "Reader health and freshness",
+          "box": {
+            "x": 58,
+            "y": 1384.09375,
+            "width": 322,
+            "height": 206.5
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "providers-card-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 58,
+            "y": 197.09375,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 58,
+            "y": 439.09375,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 58,
+            "y": 681.09375,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Providers & Subscriptions",
+          "box": {
+            "x": 58,
+            "y": 923.09375,
+            "width": 322,
+            "height": 230
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-inspector",
+          "state": "error",
+          "busy": "false",
+          "label": "Selected owner details",
+          "box": {
+            "x": 58,
+            "y": 1167.09375,
+            "width": 322,
+            "height": 34.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-comparison",
+          "state": "error",
+          "busy": "false",
+          "label": "Compare one quota window",
+          "box": {
+            "x": 58,
+            "y": 1215.59375,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-health",
+          "state": "error",
+          "busy": "false",
+          "label": "Reader health and freshness",
+          "box": {
+            "x": 58,
+            "y": 1384.09375,
+            "width": 322,
+            "height": 206.5
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "b47c77a39fb0ac9004844904a0109671b448664ebca2d5620764b15b18a11467"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "route": "cost",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "cost-summary",
+          "state": "loading",
+          "busy": "true",
+          "label": "Known value in scope",
+          "box": {
+            "x": 75,
+            "y": 414.59375,
+            "width": 138,
+            "height": 207
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Average per elapsed 24h",
+          "box": {
+            "x": 225,
+            "y": 414.59375,
+            "width": 138,
+            "height": 207
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Projected monthly API value",
+          "box": {
+            "x": 75,
+            "y": 633.59375,
+            "width": 138,
+            "height": 191.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Per 1K priced tokens",
+          "box": {
+            "x": 225,
+            "y": 633.59375,
+            "width": 138,
+            "height": 191.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-providers",
+          "state": "loading",
+          "busy": "true",
+          "label": "Value by recorded provider",
+          "box": {
+            "x": 58,
+            "y": 854.09375,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-trend",
+          "state": "loading",
+          "busy": "true",
+          "label": "Value and priced-token trend",
+          "box": {
+            "x": 58,
+            "y": 1124.09375,
+            "width": 322,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-models",
+          "state": "loading",
+          "busy": "true",
+          "label": "Value by model and route",
+          "box": {
+            "x": 58,
+            "y": 1438.09375,
+            "width": 322,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-projects",
+          "state": "loading",
+          "busy": "true",
+          "label": "Value by project",
+          "box": {
+            "x": 58,
+            "y": 1752.09375,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-sessions",
+          "state": "loading",
+          "busy": "true",
+          "label": "Most expensive recorded sessions",
+          "box": {
+            "x": 58,
+            "y": 2038.09375,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-insights",
+          "state": "loading",
+          "busy": "true",
+          "label": "Coverage insights",
+          "box": {
+            "x": 58,
+            "y": 2324.09375,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "cost-summary",
+          "state": "error",
+          "busy": "false",
+          "label": "Known value in scope",
+          "box": {
+            "x": 75,
+            "y": 414.59375,
+            "width": 138,
+            "height": 259
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Average per elapsed 24h",
+          "box": {
+            "x": 225,
+            "y": 414.59375,
+            "width": 138,
+            "height": 259
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Projected monthly API value",
+          "box": {
+            "x": 75,
+            "y": 685.59375,
+            "width": 138,
+            "height": 191.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Per 1K priced tokens",
+          "box": {
+            "x": 225,
+            "y": 685.59375,
+            "width": 138,
+            "height": 191.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-providers",
+          "state": "error",
+          "busy": "false",
+          "label": "Value by recorded provider",
+          "box": {
+            "x": 58,
+            "y": 906.09375,
+            "width": 322,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-trend",
+          "state": "error",
+          "busy": "false",
+          "label": "Value and priced-token trend",
+          "box": {
+            "x": 58,
+            "y": 1176.09375,
+            "width": 322,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-models",
+          "state": "error",
+          "busy": "false",
+          "label": "Value by model and route",
+          "box": {
+            "x": 58,
+            "y": 1490.09375,
+            "width": 322,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-projects",
+          "state": "error",
+          "busy": "false",
+          "label": "Value by project",
+          "box": {
+            "x": 58,
+            "y": 1804.09375,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-sessions",
+          "state": "error",
+          "busy": "false",
+          "label": "Most expensive recorded sessions",
+          "box": {
+            "x": 58,
+            "y": 2090.09375,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-insights",
+          "state": "error",
+          "busy": "false",
+          "label": "Coverage insights",
+          "box": {
+            "x": 58,
+            "y": 2376.09375,
+            "width": 322,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "9caa5b73f0b51409d11da15be6379cea524c33f687a3abf08e342202323f4d97"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "route": "history",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "history-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Total",
+          "box": {
+            "x": 71,
+            "y": 393.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Calls",
+          "box": {
+            "x": 71,
+            "y": 470.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Calculated / estimated API value",
+          "box": {
+            "x": 71,
+            "y": 547.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recorded effort categories",
+          "box": {
+            "x": 71,
+            "y": 624.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-timeline",
+          "state": "loading",
+          "busy": "true",
+          "label": "Usage timeline",
+          "box": {
+            "x": 71,
+            "y": 701.15625,
+            "width": 296,
+            "height": 168
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-records",
+          "state": "loading",
+          "busy": "true",
+          "label": "Usage records",
+          "box": {
+            "x": 58,
+            "y": 1424.15625,
+            "width": 322,
+            "height": 300
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-detail",
+          "state": "loading",
+          "busy": "true",
+          "label": "Record details",
+          "box": {
+            "x": 58,
+            "y": 1810.65625,
+            "width": 322,
+            "height": 300
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "history-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Total",
+          "box": {
+            "x": 71,
+            "y": 393.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Calls",
+          "box": {
+            "x": 71,
+            "y": 470.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Calculated / estimated API value",
+          "box": {
+            "x": 71,
+            "y": 547.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Recorded effort categories",
+          "box": {
+            "x": 71,
+            "y": 624.15625,
+            "width": 296,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-timeline",
+          "state": "error",
+          "busy": "false",
+          "label": "Usage timeline",
+          "box": {
+            "x": 71,
+            "y": 701.15625,
+            "width": 296,
+            "height": 192
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-records",
+          "state": "error",
+          "busy": "false",
+          "label": "Usage records",
+          "box": {
+            "x": 58,
+            "y": 1448.15625,
+            "width": 322,
+            "height": 300
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-detail",
+          "state": "error",
+          "busy": "false",
+          "label": "Record details",
+          "box": {
+            "x": 58,
+            "y": 1834.65625,
+            "width": 322,
+            "height": 300
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "985e0673075c10cf7f2a435eda229aac6b1b97610492b03a539ff2ffd353b129"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "route": "alerts",
+      "calls": 6,
+      "pending": [
+        {
+          "id": "alert-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "Current quota risks",
+          "box": {
+            "x": 75,
+            "y": 289.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "Known owner windows",
+          "box": {
+            "x": 225,
+            "y": 289.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "Fixed thresholds",
+          "box": {
+            "x": 75,
+            "y": 426.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "Fresh-reading coverage",
+          "box": {
+            "x": 225,
+            "y": 426.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-chart",
+          "state": "loading",
+          "busy": "true",
+          "label": "Observed quota history",
+          "box": {
+            "x": 58,
+            "y": 580.96875,
+            "width": 322,
+            "height": 244.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-risks",
+          "state": "loading",
+          "busy": "true",
+          "label": "Current risk and reader advisories",
+          "box": {
+            "x": 58,
+            "y": 837.46875,
+            "width": 322,
+            "height": 245
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-rules",
+          "state": "loading",
+          "busy": "true",
+          "label": "Read-only threshold rules",
+          "box": {
+            "x": 58,
+            "y": 1094.46875,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-forecast",
+          "state": "loading",
+          "busy": "true",
+          "label": "Usage forecast",
+          "box": {
+            "x": 58,
+            "y": 1260.96875,
+            "width": 322,
+            "height": 338
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-guidance",
+          "state": "loading",
+          "busy": "true",
+          "label": "Recommended actions",
+          "box": {
+            "x": 58,
+            "y": 1610.96875,
+            "width": 322,
+            "height": 328
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-events",
+          "state": "loading",
+          "busy": "true",
+          "label": "Threshold event history",
+          "box": {
+            "x": 58,
+            "y": 1950.96875,
+            "width": 322,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "alert-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "Current quota risks",
+          "box": {
+            "x": 75,
+            "y": 289.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "Known owner windows",
+          "box": {
+            "x": 225,
+            "y": 289.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "Fixed thresholds",
+          "box": {
+            "x": 75,
+            "y": 426.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "Fresh-reading coverage",
+          "box": {
+            "x": 225,
+            "y": 426.96875,
+            "width": 138,
+            "height": 125
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-chart",
+          "state": "error",
+          "busy": "false",
+          "label": "Observed quota history",
+          "box": {
+            "x": 58,
+            "y": 580.96875,
+            "width": 322,
+            "height": 278.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-risks",
+          "state": "error",
+          "busy": "false",
+          "label": "Current risk and reader advisories",
+          "box": {
+            "x": 58,
+            "y": 871.46875,
+            "width": 322,
+            "height": 245
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-rules",
+          "state": "error",
+          "busy": "false",
+          "label": "Read-only threshold rules",
+          "box": {
+            "x": 58,
+            "y": 1128.46875,
+            "width": 322,
+            "height": 154.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-forecast",
+          "state": "error",
+          "busy": "false",
+          "label": "Usage forecast",
+          "box": {
+            "x": 58,
+            "y": 1294.96875,
+            "width": 322,
+            "height": 338
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-guidance",
+          "state": "error",
+          "busy": "false",
+          "label": "Recommended actions",
+          "box": {
+            "x": 58,
+            "y": 1644.96875,
+            "width": 322,
+            "height": 328
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-events",
+          "state": "error",
+          "busy": "false",
+          "label": "Threshold event history",
+          "box": {
+            "x": 58,
+            "y": 1984.96875,
+            "width": 322,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "f44be3c8e2b16b0356811611359779b928e03de780b09424b31bfc9b4fd2f5cd"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "route": "live",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "live-metric-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "เซสชันล่าสุด",
+          "box": {
+            "x": 239,
+            "y": 127,
+            "width": 231.59375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "แหล่งข้อมูลที่รายงาน",
+          "box": {
+            "x": 482.59375,
+            "y": 127,
+            "width": 231.609375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "แหล่งข้อมูลที่ล้าสมัย",
+          "box": {
+            "x": 726.203125,
+            "y": 127,
+            "width": 231.59375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "ข้อผิดพลาดของตัวอ่าน",
+          "box": {
+            "x": 969.796875,
+            "y": 127,
+            "width": 231.609375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-sessions",
+          "state": "loading",
+          "busy": "true",
+          "label": "เซสชันที่ตรวจพบ",
+          "box": {
+            "x": 239,
+            "y": 303,
+            "width": 962.40625,
+            "height": 220
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-flow",
+          "state": "loading",
+          "busy": "true",
+          "label": "โทเคนที่บันทึกต่อนาที",
+          "box": {
+            "x": 228,
+            "y": 596.5,
+            "width": 984.40625,
+            "height": 197
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-feed",
+          "state": "loading",
+          "busy": "true",
+          "label": "รายการใช้งานที่บันทึก",
+          "box": {
+            "x": 228,
+            "y": 803.5,
+            "width": 984.40625,
+            "height": 188.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-advisories",
+          "state": "loading",
+          "busy": "true",
+          "label": "คำเตือนของแหล่งข้อมูล",
+          "box": {
+            "x": 1222.40625,
+            "y": 72,
+            "width": 351.578125,
+            "height": 343
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-matrix",
+          "state": "loading",
+          "busy": "true",
+          "label": "กิจกรรมผู้ให้บริการและโมเดลที่ตรวจพบ",
+          "box": {
+            "x": 1222.40625,
+            "y": 425,
+            "width": 351.578125,
+            "height": 450
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "live-metric-0",
+          "state": "error",
+          "busy": "false",
+          "label": "เซสชันล่าสุด",
+          "box": {
+            "x": 239,
+            "y": 127,
+            "width": 231.59375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-1",
+          "state": "error",
+          "busy": "false",
+          "label": "แหล่งข้อมูลที่รายงาน",
+          "box": {
+            "x": 482.59375,
+            "y": 127,
+            "width": 231.609375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-2",
+          "state": "error",
+          "busy": "false",
+          "label": "แหล่งข้อมูลที่ล้าสมัย",
+          "box": {
+            "x": 726.203125,
+            "y": 127,
+            "width": 231.59375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-metric-3",
+          "state": "error",
+          "busy": "false",
+          "label": "ข้อผิดพลาดของตัวอ่าน",
+          "box": {
+            "x": 969.796875,
+            "y": 127,
+            "width": 231.609375,
+            "height": 110.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-sessions",
+          "state": "error",
+          "busy": "false",
+          "label": "เซสชันที่ตรวจพบ",
+          "box": {
+            "x": 239,
+            "y": 303,
+            "width": 962.40625,
+            "height": 220
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-flow",
+          "state": "error",
+          "busy": "false",
+          "label": "โทเคนที่บันทึกต่อนาที",
+          "box": {
+            "x": 228,
+            "y": 596.5,
+            "width": 984.40625,
+            "height": 197
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-feed",
+          "state": "error",
+          "busy": "false",
+          "label": "รายการใช้งานที่บันทึก",
+          "box": {
+            "x": 228,
+            "y": 803.5,
+            "width": 984.40625,
+            "height": 188.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-advisories",
+          "state": "error",
+          "busy": "false",
+          "label": "คำเตือนของแหล่งข้อมูล",
+          "box": {
+            "x": 1222.40625,
+            "y": 72,
+            "width": 351.578125,
+            "height": 343
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "live-matrix",
+          "state": "error",
+          "busy": "false",
+          "label": "กิจกรรมผู้ให้บริการและโมเดลที่ตรวจพบ",
+          "box": {
+            "x": 1222.40625,
+            "y": 425,
+            "width": 351.578125,
+            "height": 450
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "38f33fde63ba9feca7635cf7e4277f7ccf7e6b0280a783dadb5d57cb34a86741"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "route": "projects",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "project-card-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 233,
+            "y": 206,
+            "width": 440.828125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 681.828125,
+            "y": 206,
+            "width": 375.53125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 233,
+            "y": 476,
+            "width": 440.828125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 681.828125,
+            "y": 476,
+            "width": 375.53125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-details",
+          "state": "loading",
+          "busy": "true",
+          "label": "รายละเอียดโปรเจกต์",
+          "box": {
+            "x": 1069.375,
+            "y": 206,
+            "width": 499.609375,
+            "height": 550
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-top",
+          "state": "loading",
+          "busy": "true",
+          "label": "โปรเจกต์ที่ใช้โทเคนมากที่สุดในช่วงที่เลือก",
+          "box": {
+            "x": 1069.375,
+            "y": 768,
+            "width": 499.609375,
+            "height": 210
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "project-card-0",
+          "state": "error",
+          "busy": "false",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 233,
+            "y": 206,
+            "width": 440.828125,
+            "height": 286.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-1",
+          "state": "error",
+          "busy": "false",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 681.828125,
+            "y": 206,
+            "width": 375.53125,
+            "height": 286.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-2",
+          "state": "error",
+          "busy": "false",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 233,
+            "y": 504.5,
+            "width": 440.828125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-card-3",
+          "state": "error",
+          "busy": "false",
+          "label": "โปรเจกต์",
+          "box": {
+            "x": 681.828125,
+            "y": 504.5,
+            "width": 375.53125,
+            "height": 258
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-details",
+          "state": "error",
+          "busy": "false",
+          "label": "รายละเอียดโปรเจกต์",
+          "box": {
+            "x": 1069.375,
+            "y": 206,
+            "width": 499.609375,
+            "height": 550
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "project-top",
+          "state": "error",
+          "busy": "false",
+          "label": "โปรเจกต์ที่ใช้โทเคนมากที่สุดในช่วงที่เลือก",
+          "box": {
+            "x": 1069.375,
+            "y": 768,
+            "width": 499.609375,
+            "height": 210
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "d4dbc8958a4835a070f98fbbd9d373e5e3b7dd76b1256fe4df0d9882650b409d"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "route": "models",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "models-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "คู่โมเดลและเส้นทาง",
+          "box": {
+            "x": 228,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "โทเค็นที่บันทึก",
+          "box": {
+            "x": 474.359375,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "เซสชันไม่ซ้ำ",
+          "box": {
+            "x": 720.71875,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่าเทียบราคา API",
+          "box": {
+            "x": 967.078125,
+            "y": 130,
+            "width": 234.375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-comparison",
+          "state": "loading",
+          "busy": "true",
+          "label": "เปรียบเทียบโมเดล",
+          "box": {
+            "x": 237,
+            "y": 378,
+            "width": 955.453125,
+            "height": 475.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-providers",
+          "state": "loading",
+          "busy": "true",
+          "label": "สัดส่วนผู้ให้บริการที่บันทึก",
+          "box": {
+            "x": 237,
+            "y": 909.5,
+            "width": 955.453125,
+            "height": 49
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "โมเดลที่เลือก",
+          "box": {
+            "x": 1213.453125,
+            "y": 72,
+            "width": 360.53125,
+            "height": 284
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "ส่วนประกอบโทเค็นที่บันทึก",
+          "box": {
+            "x": 1223.453125,
+            "y": 366,
+            "width": 340.53125,
+            "height": 147
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "แนวโน้มการใช้",
+          "box": {
+            "x": 1223.453125,
+            "y": 523,
+            "width": 340.53125,
+            "height": 160
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "ระดับ effort ที่บันทึก",
+          "box": {
+            "x": 1223.453125,
+            "y": 693,
+            "width": 340.53125,
+            "height": 190
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "models-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "คู่โมเดลและเส้นทาง",
+          "box": {
+            "x": 228,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "โทเค็นที่บันทึก",
+          "box": {
+            "x": 474.359375,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "เซสชันไม่ซ้ำ",
+          "box": {
+            "x": 720.71875,
+            "y": 130,
+            "width": 234.359375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่าเทียบราคา API",
+          "box": {
+            "x": 967.078125,
+            "y": 130,
+            "width": 234.375,
+            "height": 136.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-comparison",
+          "state": "error",
+          "busy": "false",
+          "label": "เปรียบเทียบโมเดล",
+          "box": {
+            "x": 237,
+            "y": 378,
+            "width": 955.453125,
+            "height": 475.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-providers",
+          "state": "error",
+          "busy": "false",
+          "label": "สัดส่วนผู้ให้บริการที่บันทึก",
+          "box": {
+            "x": 237,
+            "y": 909.5,
+            "width": 955.453125,
+            "height": 49
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-0",
+          "state": "error",
+          "busy": "false",
+          "label": "โมเดลที่เลือก",
+          "box": {
+            "x": 1213.453125,
+            "y": 72,
+            "width": 360.53125,
+            "height": 284
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-1",
+          "state": "error",
+          "busy": "false",
+          "label": "ส่วนประกอบโทเค็นที่บันทึก",
+          "box": {
+            "x": 1223.453125,
+            "y": 366,
+            "width": 340.53125,
+            "height": 147
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-2",
+          "state": "error",
+          "busy": "false",
+          "label": "แนวโน้มการใช้",
+          "box": {
+            "x": 1223.453125,
+            "y": 523,
+            "width": 340.53125,
+            "height": 160
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "models-detail-3",
+          "state": "error",
+          "busy": "false",
+          "label": "ระดับ effort ที่บันทึก",
+          "box": {
+            "x": 1223.453125,
+            "y": 693,
+            "width": 340.53125,
+            "height": 190
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "7f6f225797fad669011d5b80ac1f1cbcd1b2a826e5cac85ed6059846441f7e00"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "route": "providers",
+      "calls": 6,
+      "pending": [
+        {
+          "id": "providers-card-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 232,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 569,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 906,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 1243,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-inspector",
+          "state": "loading",
+          "busy": "true",
+          "label": "รายละเอียดเจ้าของสิทธิที่เลือก",
+          "box": {
+            "x": 228,
+            "y": 649,
+            "width": 1346,
+            "height": 34.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-comparison",
+          "state": "loading",
+          "busy": "true",
+          "label": "เปรียบเทียบโควตาหนึ่งช่วง",
+          "box": {
+            "x": 228,
+            "y": 695.5,
+            "width": 666,
+            "height": 236
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-health",
+          "state": "loading",
+          "busy": "true",
+          "label": "สถานะตัวอ่านและความสดของข้อมูล",
+          "box": {
+            "x": 908,
+            "y": 695.5,
+            "width": 666,
+            "height": 236
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "providers-card-0",
+          "state": "error",
+          "busy": "false",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 232,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-1",
+          "state": "error",
+          "busy": "false",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 569,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-2",
+          "state": "error",
+          "busy": "false",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 906,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-card-3",
+          "state": "error",
+          "busy": "false",
+          "label": "ผู้ให้บริการและสมาชิก",
+          "box": {
+            "x": 1243,
+            "y": 152,
+            "width": 327,
+            "height": 360
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-inspector",
+          "state": "error",
+          "busy": "false",
+          "label": "รายละเอียดเจ้าของสิทธิที่เลือก",
+          "box": {
+            "x": 228,
+            "y": 649,
+            "width": 1346,
+            "height": 34.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-comparison",
+          "state": "error",
+          "busy": "false",
+          "label": "เปรียบเทียบโควตาหนึ่งช่วง",
+          "box": {
+            "x": 228,
+            "y": 695.5,
+            "width": 666,
+            "height": 236
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "providers-health",
+          "state": "error",
+          "busy": "false",
+          "label": "สถานะตัวอ่านและความสดของข้อมูล",
+          "box": {
+            "x": 908,
+            "y": 695.5,
+            "width": 666,
+            "height": 236
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "bd4e62e8160cf3adc1f2129bbc2243fc7cc85954cdf8b5dd8b4d57bae7c443f2"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "route": "cost",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "cost-summary",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่าที่ทราบในขอบเขต",
+          "box": {
+            "x": 241,
+            "y": 131,
+            "width": 211.609375,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "เฉลี่ยต่อ 24 ชั่วโมงที่ผ่านไป",
+          "box": {
+            "x": 464.609375,
+            "y": 131,
+            "width": 211.609375,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "คาดการณ์มูลค่า API ทั้งเดือน",
+          "box": {
+            "x": 688.21875,
+            "y": 131,
+            "width": 211.609375,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "ต่อโทเค็นที่มีราคา 1,000 หน่วย",
+          "box": {
+            "x": 911.828125,
+            "y": 131,
+            "width": 211.625,
+            "height": 187
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-providers",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่าตามผู้ให้บริการที่บันทึก",
+          "box": {
+            "x": 1144.453125,
+            "y": 72,
+            "width": 429.546875,
+            "height": 259
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-trend",
+          "state": "loading",
+          "busy": "true",
+          "label": "แนวโน้มมูลค่าและโทเค็นที่มีราคา",
+          "box": {
+            "x": 228,
+            "y": 343,
+            "width": 743.53125,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-models",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่าตามโมเดลและเส้นทาง",
+          "box": {
+            "x": 981.53125,
+            "y": 343,
+            "width": 592.453125,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-projects",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่าตามโปรเจกต์",
+          "box": {
+            "x": 228,
+            "y": 657,
+            "width": 462.40625,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-sessions",
+          "state": "loading",
+          "busy": "true",
+          "label": "เซสชันที่มีมูลค่าสูงสุด",
+          "box": {
+            "x": 698.40625,
+            "y": 657,
+            "width": 433.796875,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-insights",
+          "state": "loading",
+          "busy": "true",
+          "label": "ข้อมูลความครอบคลุม",
+          "box": {
+            "x": 1140.203125,
+            "y": 657,
+            "width": 433.78125,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "cost-summary",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่าที่ทราบในขอบเขต",
+          "box": {
+            "x": 241,
+            "y": 131,
+            "width": 211.609375,
+            "height": 215.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "เฉลี่ยต่อ 24 ชั่วโมงที่ผ่านไป",
+          "box": {
+            "x": 464.609375,
+            "y": 131,
+            "width": 211.609375,
+            "height": 215.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "คาดการณ์มูลค่า API ทั้งเดือน",
+          "box": {
+            "x": 688.21875,
+            "y": 131,
+            "width": 211.609375,
+            "height": 215.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "ต่อโทเค็นที่มีราคา 1,000 หน่วย",
+          "box": {
+            "x": 911.828125,
+            "y": 131,
+            "width": 211.625,
+            "height": 215.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-providers",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่าตามผู้ให้บริการที่บันทึก",
+          "box": {
+            "x": 1144.453125,
+            "y": 72,
+            "width": 429.546875,
+            "height": 287.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-trend",
+          "state": "error",
+          "busy": "false",
+          "label": "แนวโน้มมูลค่าและโทเค็นที่มีราคา",
+          "box": {
+            "x": 228,
+            "y": 371.5,
+            "width": 743.53125,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-models",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่าตามโมเดลและเส้นทาง",
+          "box": {
+            "x": 981.53125,
+            "y": 371.5,
+            "width": 592.453125,
+            "height": 302
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-projects",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่าตามโปรเจกต์",
+          "box": {
+            "x": 228,
+            "y": 685.5,
+            "width": 462.40625,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-sessions",
+          "state": "error",
+          "busy": "false",
+          "label": "เซสชันที่มีมูลค่าสูงสุด",
+          "box": {
+            "x": 698.40625,
+            "y": 685.5,
+            "width": 433.796875,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "cost-insights",
+          "state": "error",
+          "busy": "false",
+          "label": "ข้อมูลความครอบคลุม",
+          "box": {
+            "x": 1140.203125,
+            "y": 685.5,
+            "width": 433.78125,
+            "height": 274
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "0d6e1143379f0e5fe5f73393f63ae104c871d246795136aac04de2cce2574e3f"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "route": "history",
+      "calls": 3,
+      "pending": [
+        {
+          "id": "history-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "รวม",
+          "box": {
+            "x": 241,
+            "y": 194,
+            "width": 250,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "ครั้ง",
+          "box": {
+            "x": 499,
+            "y": 194,
+            "width": 250,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "มูลค่า API ที่คำนวณ / ประมาณ",
+          "box": {
+            "x": 757,
+            "y": 194,
+            "width": 250,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "หมวด effort ที่บันทึก",
+          "box": {
+            "x": 1015,
+            "y": 194,
+            "width": 250,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-timeline",
+          "state": "loading",
+          "busy": "true",
+          "label": "ไทม์ไลน์การใช้งาน",
+          "box": {
+            "x": 241,
+            "y": 271,
+            "width": 1024,
+            "height": 168
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-records",
+          "state": "loading",
+          "busy": "true",
+          "label": "รายการใช้งาน",
+          "box": {
+            "x": 228,
+            "y": 522,
+            "width": 1050,
+            "height": 414
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-detail",
+          "state": "loading",
+          "busy": "true",
+          "label": "รายละเอียดรายการ",
+          "box": {
+            "x": 1290,
+            "y": 60,
+            "width": 288,
+            "height": 918
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "history-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "รวม",
+          "box": {
+            "x": 241,
+            "y": 194,
+            "width": 250,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "ครั้ง",
+          "box": {
+            "x": 499,
+            "y": 194,
+            "width": 250,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "มูลค่า API ที่คำนวณ / ประมาณ",
+          "box": {
+            "x": 757,
+            "y": 194,
+            "width": 250,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "หมวด effort ที่บันทึก",
+          "box": {
+            "x": 1015,
+            "y": 194,
+            "width": 250,
+            "height": 67
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-timeline",
+          "state": "error",
+          "busy": "false",
+          "label": "ไทม์ไลน์การใช้งาน",
+          "box": {
+            "x": 241,
+            "y": 271,
+            "width": 1024,
+            "height": 200
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-records",
+          "state": "error",
+          "busy": "false",
+          "label": "รายการใช้งาน",
+          "box": {
+            "x": 228,
+            "y": 554,
+            "width": 1050,
+            "height": 414
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "history-detail",
+          "state": "error",
+          "busy": "false",
+          "label": "รายละเอียดรายการ",
+          "box": {
+            "x": 1290,
+            "y": 60,
+            "width": 288,
+            "height": 918
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "26cbfc3cada3f0f4a43784d0d655fe5cded958de25aeea3dddd817e2c2de78d2"
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1586,
+      "route": "alerts",
+      "calls": 6,
+      "pending": [
+        {
+          "id": "alert-summary-0",
+          "state": "loading",
+          "busy": "true",
+          "label": "ความเสี่ยงโควตาปัจจุบัน",
+          "box": {
+            "x": 242,
+            "y": 154.6875,
+            "width": 211.328125,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-1",
+          "state": "loading",
+          "busy": "true",
+          "label": "หน้าต่างโควตาที่ทราบเจ้าของ",
+          "box": {
+            "x": 465.328125,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-2",
+          "state": "loading",
+          "busy": "true",
+          "label": "เกณฑ์คงที่",
+          "box": {
+            "x": 688.671875,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-3",
+          "state": "loading",
+          "busy": "true",
+          "label": "ความครอบคลุมของค่าที่สด",
+          "box": {
+            "x": 912.015625,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-chart",
+          "state": "loading",
+          "busy": "true",
+          "label": "ประวัติโควตาที่อ่านได้",
+          "box": {
+            "x": 229,
+            "y": 266.1875,
+            "width": 907.359375,
+            "height": 229.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-risks",
+          "state": "loading",
+          "busy": "true",
+          "label": "ความเสี่ยงปัจจุบันและข้อสังเกตจากตัวอ่าน",
+          "box": {
+            "x": 229,
+            "y": 503.6875,
+            "width": 907.359375,
+            "height": 245
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-rules",
+          "state": "loading",
+          "busy": "true",
+          "label": "กฎเกณฑ์แบบอ่านอย่างเดียว",
+          "box": {
+            "x": 229,
+            "y": 756.6875,
+            "width": 907.359375,
+            "height": 145
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-forecast",
+          "state": "loading",
+          "busy": "true",
+          "label": "คาดการณ์การใช้งาน",
+          "box": {
+            "x": 1146.359375,
+            "y": 72,
+            "width": 429.640625,
+            "height": 338
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-guidance",
+          "state": "loading",
+          "busy": "true",
+          "label": "การดำเนินการที่แนะนำ",
+          "box": {
+            "x": 1146.359375,
+            "y": 419,
+            "width": 429.640625,
+            "height": 328
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-events",
+          "state": "loading",
+          "busy": "true",
+          "label": "ประวัติเหตุการณ์ผ่านเกณฑ์",
+          "box": {
+            "x": 1146.359375,
+            "y": 756,
+            "width": 429.640625,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "failed": [
+        {
+          "id": "alert-summary-0",
+          "state": "error",
+          "busy": "false",
+          "label": "ความเสี่ยงโควตาปัจจุบัน",
+          "box": {
+            "x": 242,
+            "y": 154.6875,
+            "width": 211.328125,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-1",
+          "state": "error",
+          "busy": "false",
+          "label": "หน้าต่างโควตาที่ทราบเจ้าของ",
+          "box": {
+            "x": 465.328125,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-2",
+          "state": "error",
+          "busy": "false",
+          "label": "เกณฑ์คงที่",
+          "box": {
+            "x": 688.671875,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-summary-3",
+          "state": "error",
+          "busy": "false",
+          "label": "ความครอบคลุมของค่าที่สด",
+          "box": {
+            "x": 912.015625,
+            "y": 154.6875,
+            "width": 211.34375,
+            "height": 91.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-chart",
+          "state": "error",
+          "busy": "false",
+          "label": "ประวัติโควตาที่อ่านได้",
+          "box": {
+            "x": 229,
+            "y": 266.1875,
+            "width": 907.359375,
+            "height": 263.5
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-risks",
+          "state": "error",
+          "busy": "false",
+          "label": "ความเสี่ยงปัจจุบันและข้อสังเกตจากตัวอ่าน",
+          "box": {
+            "x": 229,
+            "y": 537.6875,
+            "width": 907.359375,
+            "height": 245
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-rules",
+          "state": "error",
+          "busy": "false",
+          "label": "กฎเกณฑ์แบบอ่านอย่างเดียว",
+          "box": {
+            "x": 229,
+            "y": 790.6875,
+            "width": 907.359375,
+            "height": 145
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-forecast",
+          "state": "error",
+          "busy": "false",
+          "label": "คาดการณ์การใช้งาน",
+          "box": {
+            "x": 1146.359375,
+            "y": 72,
+            "width": 429.640625,
+            "height": 338
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-guidance",
+          "state": "error",
+          "busy": "false",
+          "label": "การดำเนินการที่แนะนำ",
+          "box": {
+            "x": 1146.359375,
+            "y": 419,
+            "width": 429.640625,
+            "height": 328
+          },
+          "hiddenSlots": "true"
+        },
+        {
+          "id": "alert-events",
+          "state": "error",
+          "busy": "false",
+          "label": "ประวัติเหตุการณ์ผ่านเกณฑ์",
+          "box": {
+            "x": 1146.359375,
+            "y": 756,
+            "width": 429.640625,
+            "height": 180
+          },
+          "hiddenSlots": "true"
+        }
+      ],
+      "backgroundFailureKeptAcceptedData": true,
+      "recoveredTextSha256": "55524cee727ae3184893869c95f4b86f2a0a376417dc94730ef2f7b9147b6ca9"
+    },
+    {
+      "kind": "detail-retry",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "route": "projects",
+      "endpoint": "/api/project-detail",
+      "calls": 2,
+      "fixedScope": true,
+      "primaryFactsPreserved": true
+    },
+    {
+      "kind": "detail-retry",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "route": "models",
+      "endpoint": "/api/model-detail",
+      "calls": 2,
+      "fixedScope": true,
+      "primaryFactsPreserved": true
+    },
+    {
+      "kind": "detail-retry",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "route": "alerts",
+      "endpoint": "/api/quota-history",
+      "calls": 8,
+      "fixedScope": true,
+      "primaryFactsPreserved": true
+    },
+    {
+      "kind": "detail-retry",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "route": "projects",
+      "endpoint": "/api/project-detail",
+      "calls": 2,
+      "fixedScope": true,
+      "primaryFactsPreserved": true
+    },
+    {
+      "kind": "detail-retry",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "route": "models",
+      "endpoint": "/api/model-detail",
+      "calls": 2,
+      "fixedScope": true,
+      "primaryFactsPreserved": true
+    },
+    {
+      "kind": "detail-retry",
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "route": "alerts",
+      "endpoint": "/api/quota-history",
+      "calls": 8,
+      "fixedScope": true,
+      "primaryFactsPreserved": true
+    },
+    {
+      "kind": "cold-pause-resume",
+      "route": "live",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "ignoredResponseWhilePaused": true
+    },
+    {
+      "kind": "cold-pause-resume",
+      "route": "history",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "ignoredResponseWhilePaused": true
+    }
+  ],
+  "browserErrors": [],
+  "forbiddenRequests": [],
+  "limits": [
+    "This matrix pairs language/theme/width; it is not every combination.",
+    "Native loaded-image parity, scope races and detail replacement identities require additional checks.",
+    "Static slot counts are neutral decoration and do not report account, model or project counts."
+  ]
+}

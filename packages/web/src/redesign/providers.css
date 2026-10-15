@@ -1,4 +1,11 @@
 .qp-provider-header,.qp-provider-card-head,.qp-provider-section-head,.qp-provider-card footer { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+/* Neutral artwork reserves owner regions without claiming a known account count. */
+.qp-redesign .qp-provider-card-pending { min-height:230px; }
+.qp-redesign .qp-provider-inspector-pending { min-height:34px; padding:8px 12px; gap:0; }
+.qp-redesign .qp-provider-inspector-pending h2 { font-size:11px; }
+.qp-redesign .qp-provider-inspector-pending:not(.qp-provider-inspector-pending-open) .qp-initial-region-slots { display:none; }
+.qp-redesign .qp-provider-inspector-pending-open { min-height:200px; }
+@media(min-width:1280px) { .qp-redesign .qp-provider-card-pending { min-height:360px; } }
 .qp-provider-header h1 { display:flex; align-items:center; gap:9px; font-size:22px; }
 .qp-provider-header h1 svg { color:var(--qp-accent); }
 .qp-provider-header p,.qp-provider-linked,.qp-provider-hidden,.qp-provider-detail p,.qp-provider-windows small { color:var(--qp-muted); font-size:11px; }

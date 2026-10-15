@@ -1,4 +1,15 @@
 .qp-model-header,.qp-model-toolbar,.qp-model-summary,.qp-model-layout,.qp-model-detail-stats { display:grid; gap:12px; }
+/* Only unresolved API regions reserve neutral geometry; accepted content keeps its existing rules. */
+.qp-redesign .qp-model-summary-pending { min-height:106px; }
+.qp-redesign .qp-model-table-pending { flex:1; min-height:260px; }
+.qp-redesign :is(.qp-model-table-pending,.qp-model-providers-pending,.qp-model-trend-pending,.qp-model-effort-pending) { padding:0; border:0; background:none; box-shadow:none; }
+.qp-redesign .qp-model-providers-pending { min-height:32px; grid-column:1/-1; }
+.qp-redesign .qp-model-detail-pending-0 { min-height:284px; }
+.qp-redesign .qp-model-detail-pending-1 { min-height:147px; }
+.qp-redesign .qp-model-detail-pending-2 { min-height:160px; }
+.qp-redesign .qp-model-detail-pending-3 { min-height:190px; }
+.qp-redesign .qp-model-trend-pending { min-height:112px; }
+.qp-redesign .qp-model-effort-pending { min-height:145px; }
 .qp-model-header { grid-template-columns:minmax(0,1fr) auto; align-items:start; }
 .qp-model-header h1 { display:flex; align-items:center; gap:9px; font-size:22px; }
 .qp-model-header h1 svg { color:var(--qp-accent); }

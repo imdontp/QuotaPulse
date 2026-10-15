@@ -12,6 +12,7 @@ import { ChartData } from './chart-data';
 import { readScope, selectedScope, writeScope, type ScopeSelection, type ScopeRange } from './scope';
 import { ScopeNotice } from './scope-notice';
 import { PageHeading } from './page-heading';
+import { InitialRegion, type InitialRegionState } from './initial-region';
 import './projects.css';
 import { CostValue } from './cost-value';
 
@@ -68,15 +69,18 @@ export function ProductionProjects() {
   const [snapshot, setSnapshot] = useState<{ key: string; data: DetailedProjectResponse; overview: OverviewData } | null>(null);
   const [detailSnapshot, setDetailSnapshot] = useState<{ key: string; data: ProjectDetailResponse } | null>(null);
   const [detailError, setDetailError] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [detailErrorKey, setDetailErrorKey] = useState<string | null>(null);
+  const [failure, setFailure] = useState<{ key: string; epoch: number; message: string } | null>(null);
   const refresh = useRefreshStatus();
+  const [retry, setRetry] = useState(0);
+  const [detailRetry, setDetailRetry] = useState(0);
   const requestKey = JSON.stringify([route.range, route.from, route.to, route.sourceId, route.harness]);
   const currentKey = useRef(requestKey);
   const scopeEpoch = useRef(0);
   if (currentKey.current !== requestKey) scopeEpoch.current++;
   currentKey.current = requestKey;
   useEffect(() => {
-    const sync = () => { setRoute(readRoute()); setError(null); };
+    const sync = () => { setRoute(readRoute()); };
     addEventListener('hashchange', sync);
     return () => removeEventListener('hashchange', sync);
   }, []);
@@ -84,7 +88,6 @@ export function ProductionProjects() {
     const next = { ...route, ...patch };
     history.replaceState(null, '', `${location.pathname}${location.search}${routeHash(next)}`);
     setRoute(next);
-    setError(null);
   };
   useLiveRefresh(async () => {
     const requestedKey = requestKey;
@@ -92,15 +95,16 @@ export function ProductionProjects() {
     try {
       const scope = { ...selectedScope(route, Date.now()), ...(route.harness ? { harness: route.harness } : {}) };
       const [data, overview] = await Promise.all([api.detailedProjects(scope, true), api.overview()]);
-      if (currentKey.current === requestedKey && scopeEpoch.current === requestedEpoch) { setSnapshot({ key: requestedKey, data, overview }); setError(null); }
+      if (currentKey.current === requestedKey && scopeEpoch.current === requestedEpoch) { setSnapshot({ key: requestedKey, data, overview }); setFailure(null); }
     } catch (cause) {
       if (!(currentKey.current === requestedKey && scopeEpoch.current === requestedEpoch)) return;
-      setError(String(cause));
+      setFailure({ key: requestedKey, epoch: requestedEpoch, message: String(cause) });
       throw cause;
     }
-  }, [requestKey]);
+  }, [requestKey, retry]);
 
   const currentSnapshot = snapshot?.key === requestKey ? snapshot : null;
+  const error = failure?.key === requestKey && failure.epoch === scopeEpoch.current ? failure.message : null;
   const groups = currentSnapshot?.data.groups ?? [];
   const data = currentSnapshot?.data;
   const trendLookup = new Map<string | null, Map<number, number>>();
@@ -137,10 +141,11 @@ export function ProductionProjects() {
     setDetailError(null);
     void api.projectDetail(detailScope, route.offset).then(result => {
       if (!cancelled) setDetailSnapshot({ key: detailKey, data: result });
-    }).catch(cause => { if (!cancelled) setDetailError(String(cause)); });
+    }).catch(cause => { if (!cancelled) { setDetailErrorKey(detailKey); setDetailError(String(cause)); } });
     return () => { cancelled = true; };
-  }, [detailKey]);
+  }, [detailKey, detailRetry]);
   const detail = detailSnapshot?.key === detailKey ? detailSnapshot.data : null;
+  const currentDetailError = detailErrorKey === detailKey ? detailError : null;
   const trendBins = detail ? Array.from({ length: Math.ceil((detail.scope.to - detail.scope.from) / detail.bucketMs) }, (_, index) => {
     const start = detail.scope.from + index * detail.bucketMs;
     return { start, tokens: detail.points.find(point => point.start === start)?.tokens ?? 0 };
@@ -163,9 +168,12 @@ export function ProductionProjects() {
   const date = (ms: number | null) => ms == null ? '—' : new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(ms);
   const projectName = (key: string | null) => key === null ? t('redesign.unassigned') : key === '' ? t('redesign.emptyProject') : key;
 
+  const initialState: InitialRegionState = { kind: error ? 'error' : 'loading', label: error ? t('app.couldNotLoad') : t('app.loading'), detail: error ?? undefined, retryLabel: t('app.retry'), retrying: false, onRetry: () => { document.querySelector<HTMLElement>('[data-testid=production-projects] main')?.focus(); scopeEpoch.current++; setFailure(null); setRetry(value => value + 1); } };
+  const detailState: InitialRegionState = { kind: currentDetailError ? 'error' : 'loading', label: currentDetailError ? t('app.couldNotLoad') : t('app.loading'), detail: currentDetailError ?? undefined, retryLabel: t('app.retry'), retrying: false, onRetry: () => { document.querySelector<HTMLElement>('[data-testid=production-projects] main')?.focus(); setDetailError(null); setDetailRetry(value => value + 1); } };
+
   return <RedesignShell quickStatsScope={data?.scope ?? null} active="projects" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-projects">
     <header className="qp-project-header"><PageHeading icon={<Folder size={24}/>} title={t('redesign.projectHeading')} subtitle={t('redesign.projectSubtitle')}/><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing} aria-label={t('app.refreshNow')}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
-    {error && <p className="qp-project-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
+    {error && currentSnapshot && <p className="qp-project-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     <div className="qp-project-toolbar">
       <div className="qp-project-tabs" role="group" aria-label={t('redesign.projectHeading')}>{(['all', 'recent', 'unassigned'] as const).map(tab => <button key={tab} aria-pressed={route.tab === tab} onClick={() => update({ tab, project: undefined, offset: 0 })}>{t(tab === 'all' ? 'redesign.allProjects' : tab === 'recent' ? 'redesign.recentProjects' : 'redesign.unassignedProjects')}</button>)}</div>
       <label className="qp-project-search"><Search size={16}/><span className="qp-visually-hidden">{t('redesign.searchProjects')}</span><input value={search} onChange={event => setSearch(event.target.value)} placeholder={t('redesign.searchProjects')} maxLength={4096}/></label>
@@ -174,7 +182,7 @@ export function ProductionProjects() {
       <label><ArrowDownUp size={15}/>{t('redesign.projectSort')}<select value={route.sort} onChange={event => update({ sort: event.target.value as Sort })}><option value="tokens">{t('redesign.sortTokens')}</option><option value="recent">{t('redesign.sortRecent')}</option><option value="value">{t('redesign.sortValue')}</option></select></label>
     </div>
     <ScopeNotice scope={route}/>
-    {!currentSnapshot ? <p className="qp-panel" role="status">{error ?? t('app.loading')}</p> : <div className="qp-project-layout">
+    {!currentSnapshot ? <div className="qp-project-layout qp-project-initial-layout"><section className="qp-project-cards" aria-label={t('redesign.allProjects')}>{Array.from({ length: 4 }, (_, index) => <InitialRegion key={index} id={`project-card-${index}`} label={t('redesign.projectHeading')} state={initialState} className="qp-project-initial-card" status={index === 0} slots={5}/>)}</section><div className="qp-project-rail"><InitialRegion id="project-details" label={t('redesign.projectDetails')} state={initialState} className="qp-project-initial-detail" slots={8}/><InitialRegion id="project-top" label={t('redesign.projectTop')} state={initialState} className="qp-project-initial-top" slots={4}/></div></div> : <div className="qp-project-layout">
       <section className="qp-project-cards" tabIndex={0} aria-label={t('redesign.allProjects')}>
         {visible.length === 0 && <p className="qp-panel">{t('redesign.noProjects')}</p>}
         {visible.map(group => {
@@ -198,14 +206,14 @@ export function ProductionProjects() {
           <h2><span className="qp-project-icon" aria-hidden="true">{selected.key === 'QuotaPulse' ? <Box size={26}/> : <Folder size={26}/>}</span>{projectName(selected.key)}</h2>
           <nav className="qp-project-detail-tabs" aria-label={t('redesign.projectDetails')}>{(['overview', 'sessions', 'usage', 'details'] as const).map(tab =>
             <button key={tab} aria-current={route.detail === tab ? 'page' : undefined} onClick={() => update({ detail: tab, offset: 0 })}>{tab === 'overview' ? <Layers size={15} aria-hidden="true"/> : tab === 'sessions' ? <Users size={15} aria-hidden="true"/> : tab === 'usage' ? <BarChart3 size={15} aria-hidden="true"/> : <Settings size={15} aria-hidden="true"/>}{t(tab === 'overview' ? 'redesign.projectOverviewTab' : tab === 'sessions' ? 'redesign.projectSessionsTab' : tab === 'usage' ? 'redesign.projectUsageTab' : 'redesign.projectMetadataTab')}</button>)}</nav>
-          {detailError && <p role="status" className="qp-project-error">{detailError}</p>}
+          {currentDetailError && detail && <p role="status" className="qp-project-error">{t('redesign.staleSnapshot')} · {currentDetailError} <button onClick={detailState.onRetry} disabled={detailState.retrying}>{t('app.retry')}</button></p>}
           {route.detail === 'overview' && <>
           <div className="qp-project-detail-metrics"><div><small>{t('redesign.tokens')}</small><strong title={number(selected.tokens)} aria-label={`${t('redesign.tokens')}: ${number(selected.tokens)}`} data-value={selected.tokens}>{compactTokens(selected.tokens)}</strong></div><div><small>{t('redesign.sessions')}</small><strong>{number(selected.sessions)}</strong></div><div><small>{t('redesign.modelsCalls')}</small><strong>{number(selected.calls)}</strong></div><div><small>{t('redesign.providersUsed')}</small><strong>{new Set(detailRows.map(row => row.provider).filter(Boolean)).size}</strong></div></div>
           <div className="qp-project-money"><div><small>{t('redesign.reported')}</small><strong>{selected.native_calls > 0 ? <CostValue amount={selected.reported_native_usd} priced={selected.native_calls} total={selected.calls} money={money} t={t}/> : t('redesign.projectCostNotReported')}</strong></div><div><small>{t('redesign.value')}</small><strong>{selected.computed_calls + selected.estimated_calls > 0 ? <CostValue amount={selected.api_value_usd} priced={selected.computed_calls + selected.estimated_calls} total={selected.calls} money={money} t={t}/> : t('redesign.projectValueUnavailable')}</strong></div></div>
           <section className="qp-project-trend-panel" aria-label={t('redesign.projectTrend')}>
           <h3>{t('redesign.projectTrend')}</h3>
           {detail ? detail.points.length ? <><ObservedTrend className="qp-project-trend" points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} language={lang} label={`${t('redesign.projectTrend')}: ${t('redesign.tokens')} 0 – ${number(trendMaximum)}`}/><ChartData title={t('redesign.projectTrend')} points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} language={lang} t={t}/></>
-            : <p>{t('redesign.projectNoTrend')}</p> : detailError ? null : <p>{t('app.loading')}</p>}
+            : <p>{t('redesign.projectNoTrend')}</p> : <InitialRegion id="project-trend" label={t('redesign.projectTrend')} state={detailState} className="qp-project-initial-trend" status slots={3}/>}
           {(selected.unknown_calls > 0 || selected.estimated_calls > 0) && <p className="qp-footnote">{number(selected.unknown_calls)} {t('redesign.projectUnpriced')} · {number(selected.estimated_calls)} {t('redesign.projectEstimated')}</p>}
           </section>
           <div className="qp-project-observed-identities">
@@ -218,18 +226,18 @@ export function ProductionProjects() {
             {detail.sessions.total === 0 && <p>{t('redesign.projectNoSessions')}</p>}
             <ol className="qp-project-breakdown">{detail.sessions.rows.map(session => <li key={session.sessionKey}><a href={historyHref(session.sessionKey)}>{session.nativeSessionId}<small>{session.sourceName} · {date(session.lastObservedAt)}</small></a><strong>{number(session.tokens)}</strong></li>)}</ol>
             <div className="qp-project-pagination"><button disabled={route.offset === 0} onClick={() => update({ offset: Math.max(0, route.offset - 20) })}>{t('redesign.projectSessionBack')}</button><span>{number(route.offset + 1)}–{number(Math.min(route.offset + detail.sessions.rows.length, detail.sessions.total))} / {number(detail.sessions.total)}</span><button disabled={route.offset + detail.sessions.rows.length >= detail.sessions.total} onClick={() => update({ offset: route.offset + 20 })}>{t('redesign.projectSessionMore')}</button></div>
-          </> : detailError ? null : <p>{t('app.loading')}</p>)}
+          </> : <InitialRegion id="project-sessions" label={t('redesign.sessions')} state={detailState} className="qp-project-initial-tab" status slots={4}/>)}
           {route.detail === 'usage' && (detail ? <>
             <h3>{t('redesign.projectRecent')}</h3>
             {detail.recent.length === 0 && <p>{t('redesign.projectNoRecords')}</p>}
             <ol className="qp-project-breakdown">{detail.recent.map(record => <li key={record.eventId}><span>{date(record.timestamp)} · {record.harness} · {record.provider ?? t('redesign.unknownValue')} · {record.model ?? t('redesign.unknownValue')}</span><strong>{number(record.tokens)}</strong></li>)}</ol>
             <a className="qp-project-link" href={historyHref()}>{t('redesign.projectOpenHistory')}</a>
-          </> : detailError ? null : <p>{t('app.loading')}</p>)}
+          </> : <InitialRegion id="project-usage" label={t('redesign.tokens')} state={detailState} className="qp-project-initial-tab" status slots={4}/>)}
           {route.detail === 'details' && <>
             <div><h3>{t('redesign.projectFullIdentity')}</h3><p className="qp-project-identity">{selected.key ?? t('redesign.unassigned')}</p></div>
             <div><h3>{t('redesign.projectBreakdown')}</h3><ol className="qp-project-breakdown qp-project-full-breakdown">{detailRows.map(row => <li key={JSON.stringify([row.sourceId, row.provider, row.model])}><span className="qp-project-route"><HarnessIcon harness={row.harness} vendor={currentSnapshot.overview.harnesses.find(harness => harness.harness === row.harness)?.vendor}/>{row.sourceName} · <VendorIcon vendor={row.provider ?? 'unknown'}/>{row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}</span><strong>{number(row.tokens)}</strong></li>)}</ol></div>
             <div><h3>{t('redesign.projectSources')}</h3><ol className="qp-project-breakdown">{[...new Map(detailRows.map(row => [row.sourceId, row])).values()].map(row => <li key={row.sourceId}><span>{row.sourceName}</span><strong>{row.harness}</strong></li>)}</ol></div>
-            <div><h3>{t('redesign.projectObservedPaths')}</h3>{detail ? <ol className="qp-project-paths">{[...new Set(detail.sessions.rows.map(session => session.cwd).filter((cwd): cwd is string => Boolean(cwd)))].slice(0, 5).map(cwd => <li key={cwd}>{cwd}</li>)}</ol> : detailError ? null : <p>{t('app.loading')}</p>}{detail?.sessions.rows.every(session => !session.cwd) && <p>{t('redesign.projectUnknownPath')}</p>}</div>
+            <div><h3>{t('redesign.projectObservedPaths')}</h3>{detail ? <ol className="qp-project-paths">{[...new Set(detail.sessions.rows.map(session => session.cwd).filter((cwd): cwd is string => Boolean(cwd)))].slice(0, 5).map(cwd => <li key={cwd}>{cwd}</li>)}</ol> : <InitialRegion id="project-paths" label={t('redesign.projectObservedPaths')} state={detailState} className="qp-project-initial-tab" status slots={4}/>}{detail?.sessions.rows.every(session => !session.cwd) && <p>{t('redesign.projectUnknownPath')}</p>}</div>
             <p className="qp-footnote">{t('redesign.projectCoverage')}</p>
           </>}
         </> : <p>{t('redesign.noProjects')}</p>}
