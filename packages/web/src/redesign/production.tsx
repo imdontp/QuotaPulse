@@ -13,6 +13,8 @@ import { usageEventParams } from '@/lib/usage-events';
 import type { RuntimeMotionBatch } from './runtime-motion';
 import { supportedForecastPace } from './insight-model';
 
+const AUTO_RUNTIME_PROJECT = Symbol('initial runtime project');
+
 function readRoute() {
   return readScope(new URLSearchParams(location.hash.split('?')[1] ?? ''), 'today');
 }
@@ -23,7 +25,7 @@ export function ProductionOverview() {
   const { lang, setLang, currency, rate } = useI18n();
   const [theme, toggleTheme] = useTheme();
   const [route, setRoute] = useState(readRoute);
-  const [mapProject, setMapProject] = useState<string | null | 'auto'>('auto');
+  const [mapProject, setMapProject] = useState<string | null | typeof AUTO_RUNTIME_PROJECT>(AUTO_RUNTIME_PROJECT);
   const [mapGraphSnapshot, setMapGraphSnapshot] = useState<{ key: string; graph: RuntimeGraph } | null>(null);
   const periodSelect = useRef<HTMLSelectElement | null>(null);
   const restorePeriodFocus = useRef(false);
@@ -97,12 +99,12 @@ export function ProductionOverview() {
   const current = snapshot?.key === routeKey ? snapshot : null;
   const projectNames = current?.graph.nodes.project.map(node => node.key).filter((project): project is string => project !== null) ?? [];
   const mostActiveProject = current?.graph.nodes.project.slice().sort((a, b) => b.sessions - a.sessions || b.tokens - a.tokens)[0]?.key ?? null;
-  const selectedRuntimeProject = mapProject === 'auto' || (mapProject !== null && !projectNames.includes(mapProject)) ? mostActiveProject : mapProject;
+  const selectedRuntimeProject = mapProject === AUTO_RUNTIME_PROJECT || (mapProject !== null && !projectNames.includes(mapProject)) ? mostActiveProject : mapProject;
   const mapGraphKey = current ? JSON.stringify([current.key, current.motion.serial, selectedRuntimeProject]) : '';
   useEffect(() => {
     if (!current) return;
     if (mapProject !== selectedRuntimeProject) { setMapProject(selectedRuntimeProject); return; }
-    if (!selectedRuntimeProject) { setMapGraphSnapshot({ key: mapGraphKey, graph: current.graph }); return; }
+    if (selectedRuntimeProject === null) { setMapGraphSnapshot({ key: mapGraphKey, graph: current.graph }); return; }
     let active = true;
     const scope = { ...selectedScope(route, current.overview.now), project: selectedRuntimeProject };
     void api.runtimeMap(scope).then(graph => {

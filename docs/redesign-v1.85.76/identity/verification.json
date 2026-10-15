@@ -1,0 +1,1267 @@
+{
+  "phase": "final",
+  "productionIndexSha256": "d566cf0ac1d9182ede9d8ec91482c131096147be05488b5b7dec40eb3c526e20",
+  "browser": "155.0.8059.41",
+  "records": [
+    {
+      "lang": "en",
+      "width": 1672,
+      "identity": "",
+      "expected": [
+        ""
+      ],
+      "actual": [
+        ""
+      ],
+      "selection": "\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 1672,
+      "identity": "auto",
+      "expected": [
+        "auto"
+      ],
+      "actual": [
+        "auto"
+      ],
+      "selection": "\"auto\"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "auto"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 1672,
+      "identity": "null",
+      "expected": [
+        "null"
+      ],
+      "actual": [
+        "null"
+      ],
+      "selection": "\"null\"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "null"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 1672,
+      "identity": "\"quoted\"",
+      "expected": [
+        "\"quoted\""
+      ],
+      "actual": [
+        "\"quoted\""
+      ],
+      "selection": "\"\\\"quoted\\\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "\"quoted\""
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 1672,
+      "identity": " ไทย / & ",
+      "expected": [
+        " ไทย / & "
+      ],
+      "actual": [
+        " ไทย / & "
+      ],
+      "selection": "\" ไทย / & \"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": " ไทย / & "
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 1672,
+      "identity": null,
+      "expected": [
+        "",
+        "auto",
+        "null",
+        "\"quoted\"",
+        " ไทย / & ",
+        null
+      ],
+      "actual": [
+        "",
+        "auto",
+        "null",
+        "\"quoted\"",
+        " ไทย / & ",
+        null
+      ],
+      "selection": "",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 1672,
+      "identity": "",
+      "expected": [
+        ""
+      ],
+      "actual": [
+        ""
+      ],
+      "selection": "\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": ""
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "identity": "",
+      "expected": [
+        ""
+      ],
+      "actual": [
+        ""
+      ],
+      "selection": "\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "identity": "auto",
+      "expected": [
+        "auto"
+      ],
+      "actual": [
+        "auto"
+      ],
+      "selection": "\"auto\"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "auto"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "identity": "null",
+      "expected": [
+        "null"
+      ],
+      "actual": [
+        "null"
+      ],
+      "selection": "\"null\"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "null"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "identity": "\"quoted\"",
+      "expected": [
+        "\"quoted\""
+      ],
+      "actual": [
+        "\"quoted\""
+      ],
+      "selection": "\"\\\"quoted\\\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "\"quoted\""
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "identity": " ไทย / & ",
+      "expected": [
+        " ไทย / & "
+      ],
+      "actual": [
+        " ไทย / & "
+      ],
+      "selection": "\" ไทย / & \"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": " ไทย / & "
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "identity": null,
+      "expected": [
+        "",
+        "auto",
+        "null",
+        "\"quoted\"",
+        " ไทย / & ",
+        null
+      ],
+      "actual": [
+        "",
+        "auto",
+        "null",
+        "\"quoted\"",
+        " ไทย / & ",
+        null
+      ],
+      "selection": "",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [],
+      "pass": true
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "identity": "",
+      "expected": [
+        ""
+      ],
+      "actual": [
+        ""
+      ],
+      "selection": "\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "All projects"
+        },
+        {
+          "value": "\"\"",
+          "text": "Empty name"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": ""
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 1672,
+      "identity": "",
+      "expected": [
+        ""
+      ],
+      "actual": [
+        ""
+      ],
+      "selection": "\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 1672,
+      "identity": "auto",
+      "expected": [
+        "auto"
+      ],
+      "actual": [
+        "auto"
+      ],
+      "selection": "\"auto\"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "auto"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 1672,
+      "identity": "null",
+      "expected": [
+        "null"
+      ],
+      "actual": [
+        "null"
+      ],
+      "selection": "\"null\"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "null"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 1672,
+      "identity": "\"quoted\"",
+      "expected": [
+        "\"quoted\""
+      ],
+      "actual": [
+        "\"quoted\""
+      ],
+      "selection": "\"\\\"quoted\\\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "\"quoted\""
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 1672,
+      "identity": " ไทย / & ",
+      "expected": [
+        " ไทย / & "
+      ],
+      "actual": [
+        " ไทย / & "
+      ],
+      "selection": "\" ไทย / & \"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": " ไทย / & "
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 1672,
+      "identity": null,
+      "expected": [
+        "",
+        "auto",
+        "null",
+        "\"quoted\"",
+        " ไทย / & ",
+        null
+      ],
+      "actual": [
+        "",
+        "auto",
+        "null",
+        "\"quoted\"",
+        " ไทย / & ",
+        null
+      ],
+      "selection": "",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 1672,
+      "identity": "",
+      "expected": [
+        ""
+      ],
+      "actual": [
+        ""
+      ],
+      "selection": "\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": ""
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 390,
+      "identity": "",
+      "expected": [
+        ""
+      ],
+      "actual": [
+        ""
+      ],
+      "selection": "\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 390,
+      "identity": "auto",
+      "expected": [
+        "auto"
+      ],
+      "actual": [
+        "auto"
+      ],
+      "selection": "\"auto\"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "auto"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 390,
+      "identity": "null",
+      "expected": [
+        "null"
+      ],
+      "actual": [
+        "null"
+      ],
+      "selection": "\"null\"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "null"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 390,
+      "identity": "\"quoted\"",
+      "expected": [
+        "\"quoted\""
+      ],
+      "actual": [
+        "\"quoted\""
+      ],
+      "selection": "\"\\\"quoted\\\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": "\"quoted\""
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 390,
+      "identity": " ไทย / & ",
+      "expected": [
+        " ไทย / & "
+      ],
+      "actual": [
+        " ไทย / & "
+      ],
+      "selection": "\" ไทย / & \"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": " ไทย / & "
+        }
+      ],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 390,
+      "identity": null,
+      "expected": [
+        "",
+        "auto",
+        "null",
+        "\"quoted\"",
+        " ไทย / & ",
+        null
+      ],
+      "actual": [
+        "",
+        "auto",
+        "null",
+        "\"quoted\"",
+        " ไทย / & ",
+        null
+      ],
+      "selection": "",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [],
+      "pass": true
+    },
+    {
+      "lang": "th",
+      "width": 390,
+      "identity": "",
+      "expected": [
+        ""
+      ],
+      "actual": [
+        ""
+      ],
+      "selection": "\"\"",
+      "options": [
+        {
+          "value": "",
+          "text": "ทุกโปรเจกต์"
+        },
+        {
+          "value": "\"\"",
+          "text": "ชื่อว่าง"
+        },
+        {
+          "value": "\"auto\"",
+          "text": "auto"
+        },
+        {
+          "value": "\"null\"",
+          "text": "null"
+        },
+        {
+          "value": "\"\\\"quoted\\\"\"",
+          "text": "\"quoted\""
+        },
+        {
+          "value": "\" ไทย / & \"",
+          "text": " ไทย / & "
+        }
+      ],
+      "requests": [
+        {
+          "hasProject": true,
+          "project": ""
+        }
+      ],
+      "pass": true
+    }
+  ]
+}

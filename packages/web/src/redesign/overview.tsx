@@ -250,7 +250,7 @@ function RuntimeMap({ motionBatch, motionGraphReady = false, nodes, edges, recor
         y: u ** 3 * y + 3 * u ** 2 * t * y + 3 * u * t ** 2 * endY + t ** 3 * endY };
     }));
   const featuredFlowEdges = new Set(flowPaths.map(({ edge }) => JSON.stringify([edge.column, edge.from, edge.to])));
-  const projectFilter = onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject ?? ''} onChange={event => onProjectChange(event.currentTarget.value || null)}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={project}>{project}</option>)}</select></label>;
+  const projectFilter = onProjectChange && (projects?.length ?? 0) > 1 && <label className="qp-runtime-project"><span className="qp-visually-hidden">{t('redesign.runtimeProject')}</span><select aria-label={t('redesign.runtimeProject')} value={selectedProject == null ? '' : JSON.stringify(selectedProject)} onChange={event => onProjectChange(event.currentTarget.value === '' ? null : JSON.parse(event.currentTarget.value))}><option value="">{t('redesign.allProjects')}</option>{projects!.map(project => <option key={project} value={JSON.stringify(project)}>{project === '' ? t('redesign.emptyIdentity') : project}</option>)}</select></label>;
   useLayoutEffect(() => {
     const element = map.current;
     if (!element) { setGeometry(previous => previous.paths.length ? { width: 1, height: 1, paths: [] } : previous); return; }
