@@ -1,0 +1,25 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx scripts/check-route-loading.mts *> tmp/lazy77-lifec ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+'light' !== 'dark'
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-route-loading.mts:88:12) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'light',
+  expected: 'dark',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

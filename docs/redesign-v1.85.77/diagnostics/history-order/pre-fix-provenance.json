@@ -1,0 +1,6334 @@
+{
+  "productionIndexSha256": "b1f5ab961404c22ca53b124939760cd3f2d24937596460ad69be08e290842043",
+  "historyResult": [
+    {
+      "route": "history",
+      "states": [
+        {
+          "state": "default",
+          "geometry": {
+            "open": false,
+            "sidebar": {
+              "x": 0,
+              "y": 60,
+              "width": 226,
+              "height": 881,
+              "bottom": 941
+            },
+            "clientHeight": 881,
+            "scrollHeight": 881,
+            "nav": {
+              "x": 12,
+              "y": 89,
+              "width": 201,
+              "height": 317,
+              "bottom": 406
+            },
+            "quick": {
+              "x": 12,
+              "y": 444,
+              "width": 201,
+              "height": 305,
+              "bottom": 749
+            },
+            "footer": {
+              "x": 12,
+              "y": 864,
+              "width": 201,
+              "height": 65,
+              "bottom": 929
+            },
+            "links": 9,
+            "rows": [
+              {
+                "label": "Overview",
+                "x": 12,
+                "y": 89,
+                "width": 201,
+                "height": 44,
+                "bottom": 133
+              },
+              {
+                "label": "Live",
+                "x": 12,
+                "y": 136.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 180.5
+              },
+              {
+                "label": "Projects",
+                "x": 12,
+                "y": 184,
+                "width": 201,
+                "height": 44,
+                "bottom": 228
+              },
+              {
+                "label": "Models",
+                "x": 12,
+                "y": 231.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 275.5
+              },
+              {
+                "label": "History",
+                "x": 12,
+                "y": 279,
+                "width": 201,
+                "height": 44,
+                "bottom": 323
+              },
+              {
+                "label": "Alerts",
+                "x": 12,
+                "y": 326.5,
+                "width": 201,
+                "height": 44,
+                "bottom": 370.5
+              }
+            ],
+            "badge": {
+              "x": 178,
+              "y": 338,
+              "width": 21,
+              "height": 21,
+              "bottom": 359
+            }
+          }
+        }
+      ],
+      "brandMarks": [
+        {
+          "rect": {
+            "x": 20,
+            "y": 8.5,
+            "width": 42,
+            "height": 42,
+            "top": 8.5,
+            "right": 62,
+            "bottom": 50.5,
+            "left": 20
+          },
+          "legacy": "none",
+          "source": "inline",
+          "focusable": "false",
+          "hidden": "true"
+        },
+        {
+          "rect": {
+            "x": 31,
+            "y": 880.5,
+            "width": 30,
+            "height": 30,
+            "top": 880.5,
+            "right": 61,
+            "bottom": 910.5,
+            "left": 31
+          },
+          "legacy": "none",
+          "source": "inline",
+          "focusable": "false",
+          "hidden": "true"
+        }
+      ],
+      "heading": [
+        {
+          "text": "History & Logs",
+          "x": 305,
+          "y": 78.046875,
+          "width": 328.421875,
+          "height": 31.5,
+          "font": "\"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "fontSize": "22.5px",
+          "fontWeight": "350",
+          "lineHeight": "31.5px",
+          "transform": "matrix(1, 0, 0, 1, 3, 0)"
+        }
+      ],
+      "controls": [
+        {
+          "text": "Pause view",
+          "x": 1031.171875,
+          "y": 86.5,
+          "width": 76.875,
+          "height": 32
+        },
+        {
+          "text": "Export matching records",
+          "x": 1114.046875,
+          "y": 86.5,
+          "width": 143.046875,
+          "height": 32
+        },
+        {
+          "text": "Apply filters",
+          "x": 1507.328125,
+          "y": 472,
+          "width": 152.671875,
+          "height": 35
+        },
+        {
+          "text": "#1",
+          "x": 1538.046875,
+          "y": 561.5,
+          "width": 36.359375,
+          "height": 24
+        },
+        {
+          "text": "#4",
+          "x": 1538.046875,
+          "y": 594.5,
+          "width": 39.140625,
+          "height": 24
+        },
+        {
+          "text": "#7",
+          "x": 1538.046875,
+          "y": 627.5,
+          "width": 38.046875,
+          "height": 24
+        },
+        {
+          "text": "#10",
+          "x": 1538.046875,
+          "y": 660.5,
+          "width": 44.203125,
+          "height": 24
+        },
+        {
+          "text": "#13",
+          "x": 1538.046875,
+          "y": 693.5,
+          "width": 43.71875,
+          "height": 24
+        }
+      ],
+      "warning": null,
+      "headingArt": null,
+      "costPaint": null,
+      "historyPaint": {
+        "card": {
+          "x": 238,
+          "y": 522,
+          "width": 1422,
+          "height": 414,
+          "top": 522,
+          "right": 1660,
+          "bottom": 936,
+          "left": 238
+        },
+        "background": "rgb(5, 14, 26)",
+        "rows": [
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 557,
+              "width": 1420,
+              "height": 33,
+              "top": 557,
+              "right": 1659,
+              "bottom": 590,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:41:45 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 557,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 557,
+                  "right": 414.265625,
+                  "bottom": 590,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 557,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 557,
+                  "right": 571.1875,
+                  "bottom": 590,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 557,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 557,
+                  "right": 741,
+                  "bottom": 590,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 557,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 557,
+                  "right": 907.46875,
+                  "bottom": 590,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "deepseek",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 557,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 557,
+                  "right": 1049.71875,
+                  "bottom": 590,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "DeepSeek V4.1",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 557,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 557,
+                  "right": 1215.03125,
+                  "bottom": 590,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "45.7M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 557,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 557,
+                  "right": 1285.203125,
+                  "bottom": 590,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Reported cost$0.0100",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 557,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 557,
+                  "right": 1528.046875,
+                  "bottom": 590,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#1",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 557,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 557,
+                  "right": 1659,
+                  "bottom": 590,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 590,
+              "width": 1420,
+              "height": 33,
+              "top": 590,
+              "right": 1659,
+              "bottom": 623,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:41:25 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 590,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 590,
+                  "right": 414.265625,
+                  "bottom": 623,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 590,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 590,
+                  "right": 571.1875,
+                  "bottom": 623,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 590,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 590,
+                  "right": 741,
+                  "bottom": 623,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 590,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 590,
+                  "right": 907.46875,
+                  "bottom": 623,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 590,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 590,
+                  "right": 1049.71875,
+                  "bottom": 623,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-5.x",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 590,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 590,
+                  "right": 1215.03125,
+                  "bottom": 623,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "28.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 590,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 590,
+                  "right": 1285.203125,
+                  "bottom": 623,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.7175",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 590,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 590,
+                  "right": 1528.046875,
+                  "bottom": 623,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#4",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 590,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 590,
+                  "right": 1659,
+                  "bottom": 623,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 623,
+              "width": 1420,
+              "height": 33,
+              "top": 623,
+              "right": 1659,
+              "bottom": 656,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:41:05 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 623,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 623,
+                  "right": 414.265625,
+                  "bottom": 656,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 623,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 623,
+                  "right": 571.1875,
+                  "bottom": 656,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 623,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 623,
+                  "right": 741,
+                  "bottom": 656,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 623,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 623,
+                  "right": 907.46875,
+                  "bottom": 656,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 623,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 623,
+                  "right": 1049.71875,
+                  "bottom": 656,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.7",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 623,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 623,
+                  "right": 1215.03125,
+                  "bottom": 656,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "21.6M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 623,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 623,
+                  "right": 1285.203125,
+                  "bottom": 656,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.5729",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 623,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 623,
+                  "right": 1528.046875,
+                  "bottom": 656,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#7",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 623,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 623,
+                  "right": 1659,
+                  "bottom": 656,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 656,
+              "width": 1420,
+              "height": 33,
+              "top": 656,
+              "right": 1659,
+              "bottom": 689,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:40:45 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 656,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 656,
+                  "right": 414.265625,
+                  "bottom": 689,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 656,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 656,
+                  "right": 571.1875,
+                  "bottom": 689,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 656,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 656,
+                  "right": 741,
+                  "bottom": 689,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 656,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 656,
+                  "right": 907.46875,
+                  "bottom": 689,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 656,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 656,
+                  "right": 1049.71875,
+                  "bottom": 689,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.5",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 656,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 656,
+                  "right": 1215.03125,
+                  "bottom": 689,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "13.2M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 656,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 656,
+                  "right": 1285.203125,
+                  "bottom": 689,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.3076",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 656,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 656,
+                  "right": 1528.046875,
+                  "bottom": 689,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#10",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 656,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 656,
+                  "right": 1659,
+                  "bottom": 689,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 689,
+              "width": 1420,
+              "height": 33,
+              "top": 689,
+              "right": 1659,
+              "bottom": 722,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:40:25 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 689,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 689,
+                  "right": 414.265625,
+                  "bottom": 722,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 689,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 689,
+                  "right": 571.1875,
+                  "bottom": 722,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude Code fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 689,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 689,
+                  "right": 741,
+                  "bottom": 722,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 689,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 689,
+                  "right": 907.46875,
+                  "bottom": 722,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openrouter",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 689,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 689,
+                  "right": 1049.71875,
+                  "bottom": 722,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "UOthers",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 689,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 689,
+                  "right": 1215.03125,
+                  "bottom": 722,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "10.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 689,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 689,
+                  "right": 1285.203125,
+                  "bottom": 722,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.2691",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 689,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 689,
+                  "right": 1528.046875,
+                  "bottom": 722,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#13",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 689,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 689,
+                  "right": 1659,
+                  "bottom": 722,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 722,
+              "width": 1420,
+              "height": 33,
+              "top": 722,
+              "right": 1659,
+              "bottom": 755,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:40:05 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 722,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 722,
+                  "right": 414.265625,
+                  "bottom": 755,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 722,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 722,
+                  "right": 571.1875,
+                  "bottom": 755,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude Code fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 722,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 722,
+                  "right": 741,
+                  "bottom": 755,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 722,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 722,
+                  "right": 907.46875,
+                  "bottom": 755,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 722,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 722,
+                  "right": 1049.71875,
+                  "bottom": 755,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-4.1 mini",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 722,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 722,
+                  "right": 1215.03125,
+                  "bottom": 755,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 722,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 722,
+                  "right": 1285.203125,
+                  "bottom": 755,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 722,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 722,
+                  "right": 1528.046875,
+                  "bottom": 755,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#16",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 722,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 722,
+                  "right": 1659,
+                  "bottom": 755,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 755,
+              "width": 1420,
+              "height": 33,
+              "top": 755,
+              "right": 1659,
+              "bottom": 788,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:39:45 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 755,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 755,
+                  "right": 414.265625,
+                  "bottom": 788,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 755,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 755,
+                  "right": 571.1875,
+                  "bottom": 788,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 755,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 755,
+                  "right": 741,
+                  "bottom": 788,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 755,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 755,
+                  "right": 907.46875,
+                  "bottom": 788,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "deepseek",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 755,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 755,
+                  "right": 1049.71875,
+                  "bottom": 788,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "DeepSeek V4.1",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 755,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 755,
+                  "right": 1215.03125,
+                  "bottom": 788,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "45.7M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 755,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 755,
+                  "right": 1285.203125,
+                  "bottom": 788,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$1.06",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 755,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 755,
+                  "right": 1528.046875,
+                  "bottom": 788,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#19",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 755,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 755,
+                  "right": 1659,
+                  "bottom": 788,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 788,
+              "width": 1420,
+              "height": 33,
+              "top": 788,
+              "right": 1659,
+              "bottom": 821,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:39:25 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 788,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 788,
+                  "right": 414.265625,
+                  "bottom": 821,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 788,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 788,
+                  "right": 571.1875,
+                  "bottom": 821,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 788,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 788,
+                  "right": 741,
+                  "bottom": 821,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 788,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 788,
+                  "right": 907.46875,
+                  "bottom": 821,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 788,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 788,
+                  "right": 1049.71875,
+                  "bottom": 821,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-5.x",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 788,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 788,
+                  "right": 1215.03125,
+                  "bottom": 821,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "28.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 788,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 788,
+                  "right": 1285.203125,
+                  "bottom": 821,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.7175",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 788,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 788,
+                  "right": 1528.046875,
+                  "bottom": 821,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#22",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 788,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 788,
+                  "right": 1659,
+                  "bottom": 821,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 821,
+              "width": 1420,
+              "height": 33,
+              "top": 821,
+              "right": 1659,
+              "bottom": 854,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:39:05 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 821,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 821,
+                  "right": 414.265625,
+                  "bottom": 854,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 821,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 821,
+                  "right": 571.1875,
+                  "bottom": 854,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 821,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 821,
+                  "right": 741,
+                  "bottom": 854,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 821,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 821,
+                  "right": 907.46875,
+                  "bottom": 854,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 821,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 821,
+                  "right": 1049.71875,
+                  "bottom": 854,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.7",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 821,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 821,
+                  "right": 1215.03125,
+                  "bottom": 854,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "21.6M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 821,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 821,
+                  "right": 1285.203125,
+                  "bottom": 854,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.5729",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 821,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 821,
+                  "right": 1528.046875,
+                  "bottom": 854,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#25",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 821,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 821,
+                  "right": 1659,
+                  "bottom": 854,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 854,
+              "width": 1420,
+              "height": 33,
+              "top": 854,
+              "right": 1659,
+              "bottom": 887,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:38:45 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 854,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 854,
+                  "right": 414.265625,
+                  "bottom": 887,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 854,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 854,
+                  "right": 571.1875,
+                  "bottom": 887,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 854,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 854,
+                  "right": 741,
+                  "bottom": 887,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 854,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 854,
+                  "right": 907.46875,
+                  "bottom": 887,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 854,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 854,
+                  "right": 1049.71875,
+                  "bottom": 887,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.5",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 854,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 854,
+                  "right": 1215.03125,
+                  "bottom": 887,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "13.2M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 854,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 854,
+                  "right": 1285.203125,
+                  "bottom": 887,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.3076",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 854,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 854,
+                  "right": 1528.046875,
+                  "bottom": 887,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#28",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 854,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 854,
+                  "right": 1659,
+                  "bottom": 887,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 887,
+              "width": 1420,
+              "height": 33,
+              "top": 887,
+              "right": 1659,
+              "bottom": 920,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:38:25 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 887,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 887,
+                  "right": 414.265625,
+                  "bottom": 920,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 887,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 887,
+                  "right": 571.1875,
+                  "bottom": 920,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 887,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 887,
+                  "right": 741,
+                  "bottom": 920,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 887,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 887,
+                  "right": 907.46875,
+                  "bottom": 920,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openrouter",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 887,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 887,
+                  "right": 1049.71875,
+                  "bottom": 920,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "UOthers",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 887,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 887,
+                  "right": 1215.03125,
+                  "bottom": 920,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "10.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 887,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 887,
+                  "right": 1285.203125,
+                  "bottom": 920,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.2691",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 887,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 887,
+                  "right": 1528.046875,
+                  "bottom": 920,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#31",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 887,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 887,
+                  "right": 1659,
+                  "bottom": 920,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 920,
+              "width": 1420,
+              "height": 33,
+              "top": 920,
+              "right": 1659,
+              "bottom": 953,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:38:05 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 920,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 920,
+                  "right": 414.265625,
+                  "bottom": 953,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 920,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 920,
+                  "right": 571.1875,
+                  "bottom": 953,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 920,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 920,
+                  "right": 741,
+                  "bottom": 953,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 920,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 920,
+                  "right": 907.46875,
+                  "bottom": 953,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 920,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 920,
+                  "right": 1049.71875,
+                  "bottom": 953,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-4.1 mini",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 920,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 920,
+                  "right": 1215.03125,
+                  "bottom": 953,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 920,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 920,
+                  "right": 1285.203125,
+                  "bottom": 953,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 920,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 920,
+                  "right": 1528.046875,
+                  "bottom": 953,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#34",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 920,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 920,
+                  "right": 1659,
+                  "bottom": 953,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 953,
+              "width": 1420,
+              "height": 33,
+              "top": 953,
+              "right": 1659,
+              "bottom": 986,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:37:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 953,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 953,
+                  "right": 414.265625,
+                  "bottom": 986,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 953,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 953,
+                  "right": 571.1875,
+                  "bottom": 986,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 953,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 953,
+                  "right": 741,
+                  "bottom": 986,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 953,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 953,
+                  "right": 907.46875,
+                  "bottom": 986,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "deepseek",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 953,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 953,
+                  "right": 1049.71875,
+                  "bottom": 986,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "DeepSeek V4.1",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 953,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 953,
+                  "right": 1215.03125,
+                  "bottom": 986,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "45.7M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 953,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 953,
+                  "right": 1285.203125,
+                  "bottom": 986,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Reported cost$0.0100",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 953,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 953,
+                  "right": 1528.046875,
+                  "bottom": 986,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#2",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 953,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 953,
+                  "right": 1659,
+                  "bottom": 986,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 986,
+              "width": 1420,
+              "height": 33,
+              "top": 986,
+              "right": 1659,
+              "bottom": 1019,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:35:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 986,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 986,
+                  "right": 414.265625,
+                  "bottom": 1019,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 986,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 986,
+                  "right": 571.1875,
+                  "bottom": 1019,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 986,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 986,
+                  "right": 741,
+                  "bottom": 1019,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 986,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 986,
+                  "right": 907.46875,
+                  "bottom": 1019,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "deepseek",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 986,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 986,
+                  "right": 1049.71875,
+                  "bottom": 1019,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "DeepSeek V4.1",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 986,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 986,
+                  "right": 1215.03125,
+                  "bottom": 1019,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "45.7M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 986,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 986,
+                  "right": 1285.203125,
+                  "bottom": 1019,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Reported cost$0.0100",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 986,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 986,
+                  "right": 1528.046875,
+                  "bottom": 1019,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#3",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 986,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 986,
+                  "right": 1659,
+                  "bottom": 1019,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1019,
+              "width": 1420,
+              "height": 33,
+              "top": 1019,
+              "right": 1659,
+              "bottom": 1052,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:33:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1019,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1019,
+                  "right": 414.265625,
+                  "bottom": 1052,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1019,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1019,
+                  "right": 571.1875,
+                  "bottom": 1052,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1019,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1019,
+                  "right": 741,
+                  "bottom": 1052,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1019,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1019,
+                  "right": 907.46875,
+                  "bottom": 1052,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1019,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1019,
+                  "right": 1049.71875,
+                  "bottom": 1052,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-5.x",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1019,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1019,
+                  "right": 1215.03125,
+                  "bottom": 1052,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "28.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1019,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1019,
+                  "right": 1285.203125,
+                  "bottom": 1052,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.7639",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1019,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1019,
+                  "right": 1528.046875,
+                  "bottom": 1052,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#5",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1019,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1019,
+                  "right": 1659,
+                  "bottom": 1052,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1052,
+              "width": 1420,
+              "height": 33,
+              "top": 1052,
+              "right": 1659,
+              "bottom": 1085,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:32:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1052,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1052,
+                  "right": 414.265625,
+                  "bottom": 1085,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1052,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1052,
+                  "right": 571.1875,
+                  "bottom": 1085,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1052,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1052,
+                  "right": 741,
+                  "bottom": 1085,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Research Lab",
+                "rect": {
+                  "x": 741,
+                  "y": 1052,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1052,
+                  "right": 907.46875,
+                  "bottom": 1085,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1052,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1052,
+                  "right": 1049.71875,
+                  "bottom": 1085,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.5",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1052,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1052,
+                  "right": 1215.03125,
+                  "bottom": 1085,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1052,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1052,
+                  "right": 1285.203125,
+                  "bottom": 1085,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1052,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1052,
+                  "right": 1528.046875,
+                  "bottom": 1085,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#41",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1052,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1052,
+                  "right": 1659,
+                  "bottom": 1085,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1085,
+              "width": 1420,
+              "height": 33,
+              "top": 1085,
+              "right": 1659,
+              "bottom": 1118,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:32:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1085,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1085,
+                  "right": 414.265625,
+                  "bottom": 1118,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1085,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1085,
+                  "right": 571.1875,
+                  "bottom": 1118,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "OpenCode fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1085,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1085,
+                  "right": 741,
+                  "bottom": 1118,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Developer Tools",
+                "rect": {
+                  "x": 741,
+                  "y": 1085,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1085,
+                  "right": 907.46875,
+                  "bottom": 1118,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1085,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1085,
+                  "right": 1049.71875,
+                  "bottom": 1118,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.7",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1085,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1085,
+                  "right": 1215.03125,
+                  "bottom": 1118,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1085,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1085,
+                  "right": 1285.203125,
+                  "bottom": 1118,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1085,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1085,
+                  "right": 1528.046875,
+                  "bottom": 1118,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#40",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1085,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1085,
+                  "right": 1659,
+                  "bottom": 1118,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1118,
+              "width": 1420,
+              "height": 33,
+              "top": 1118,
+              "right": 1659,
+              "bottom": 1151,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:32:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1118,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1118,
+                  "right": 414.265625,
+                  "bottom": 1151,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1118,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1118,
+                  "right": 571.1875,
+                  "bottom": 1151,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude Code fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1118,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1118,
+                  "right": 741,
+                  "bottom": 1151,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Edge Services",
+                "rect": {
+                  "x": 741,
+                  "y": 1118,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1118,
+                  "right": 907.46875,
+                  "bottom": 1151,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1118,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1118,
+                  "right": 1049.71875,
+                  "bottom": 1151,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-5.x",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1118,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1118,
+                  "right": 1215.03125,
+                  "bottom": 1151,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1118,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1118,
+                  "right": 1285.203125,
+                  "bottom": 1151,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1118,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1118,
+                  "right": 1528.046875,
+                  "bottom": 1151,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#39",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1118,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1118,
+                  "right": 1659,
+                  "bottom": 1151,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1151,
+              "width": 1420,
+              "height": 33,
+              "top": 1151,
+              "right": 1659,
+              "bottom": 1184,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:32:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1151,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1151,
+                  "right": 414.265625,
+                  "bottom": 1184,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1151,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1151,
+                  "right": 571.1875,
+                  "bottom": 1184,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1151,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1151,
+                  "right": 741,
+                  "bottom": 1184,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Agent Platform",
+                "rect": {
+                  "x": 741,
+                  "y": 1151,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1151,
+                  "right": 907.46875,
+                  "bottom": 1184,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "deepseek",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1151,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1151,
+                  "right": 1049.71875,
+                  "bottom": 1184,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "DeepSeek V4.1",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1151,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1151,
+                  "right": 1215.03125,
+                  "bottom": 1184,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1151,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1151,
+                  "right": 1285.203125,
+                  "bottom": 1184,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1151,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1151,
+                  "right": 1528.046875,
+                  "bottom": 1184,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#38",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1151,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1151,
+                  "right": 1659,
+                  "bottom": 1184,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1184,
+              "width": 1420,
+              "height": 33,
+              "top": 1184,
+              "right": 1659,
+              "bottom": 1217,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:32:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1184,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1184,
+                  "right": 414.265625,
+                  "bottom": 1217,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1184,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1184,
+                  "right": 571.1875,
+                  "bottom": 1217,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "OpenCode fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1184,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1184,
+                  "right": 741,
+                  "bottom": 1217,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1184,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1184,
+                  "right": 907.46875,
+                  "bottom": 1217,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "deepseek",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1184,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1184,
+                  "right": 1049.71875,
+                  "bottom": 1217,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "DeepSeek V4.1",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1184,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1184,
+                  "right": 1215.03125,
+                  "bottom": 1217,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1184,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1184,
+                  "right": 1285.203125,
+                  "bottom": 1217,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Cost unavailable\u2014",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1184,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1184,
+                  "right": 1528.046875,
+                  "bottom": 1217,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#37",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1184,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1184,
+                  "right": 1659,
+                  "bottom": 1217,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1217,
+              "width": 1420,
+              "height": 33,
+              "top": 1217,
+              "right": 1659,
+              "bottom": 1250,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:31:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1217,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1217,
+                  "right": 414.265625,
+                  "bottom": 1250,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1217,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1217,
+                  "right": 571.1875,
+                  "bottom": 1250,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1217,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1217,
+                  "right": 741,
+                  "bottom": 1250,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1217,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1217,
+                  "right": 907.46875,
+                  "bottom": 1250,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1217,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1217,
+                  "right": 1049.71875,
+                  "bottom": 1250,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-5.x",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1217,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1217,
+                  "right": 1215.03125,
+                  "bottom": 1250,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "28.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1217,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1217,
+                  "right": 1285.203125,
+                  "bottom": 1250,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.6712",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1217,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1217,
+                  "right": 1528.046875,
+                  "bottom": 1250,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#6",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1217,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1217,
+                  "right": 1659,
+                  "bottom": 1250,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1250,
+              "width": 1420,
+              "height": 33,
+              "top": 1250,
+              "right": 1659,
+              "bottom": 1283,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:29:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1250,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1250,
+                  "right": 414.265625,
+                  "bottom": 1283,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1250,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1250,
+                  "right": 571.1875,
+                  "bottom": 1283,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1250,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1250,
+                  "right": 741,
+                  "bottom": 1283,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1250,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1250,
+                  "right": 907.46875,
+                  "bottom": 1283,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1250,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1250,
+                  "right": 1049.71875,
+                  "bottom": 1283,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.7",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1250,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1250,
+                  "right": 1215.03125,
+                  "bottom": 1283,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "21.6M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1250,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1250,
+                  "right": 1285.203125,
+                  "bottom": 1283,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.5034",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1250,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1250,
+                  "right": 1528.046875,
+                  "bottom": 1283,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#8",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1250,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1250,
+                  "right": 1659,
+                  "bottom": 1283,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1283,
+              "width": 1420,
+              "height": 33,
+              "top": 1283,
+              "right": 1659,
+              "bottom": 1316,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:27:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1283,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1283,
+                  "right": 414.265625,
+                  "bottom": 1316,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1283,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1283,
+                  "right": 571.1875,
+                  "bottom": 1316,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1283,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1283,
+                  "right": 741,
+                  "bottom": 1316,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1283,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1283,
+                  "right": 907.46875,
+                  "bottom": 1316,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1283,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1283,
+                  "right": 1049.71875,
+                  "bottom": 1316,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.7",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1283,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1283,
+                  "right": 1215.03125,
+                  "bottom": 1316,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "21.6M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1283,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1283,
+                  "right": 1285.203125,
+                  "bottom": 1316,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.5382",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1283,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1283,
+                  "right": 1528.046875,
+                  "bottom": 1316,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#9",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1283,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1283,
+                  "right": 1659,
+                  "bottom": 1316,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1316,
+              "width": 1420,
+              "height": 33,
+              "top": 1316,
+              "right": 1659,
+              "bottom": 1349,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:27:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1316,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1316,
+                  "right": 414.265625,
+                  "bottom": 1349,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1316,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1316,
+                  "right": 571.1875,
+                  "bottom": 1349,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1316,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1316,
+                  "right": 741,
+                  "bottom": 1349,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1316,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1316,
+                  "right": 907.46875,
+                  "bottom": 1349,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "deepseek",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1316,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1316,
+                  "right": 1049.71875,
+                  "bottom": 1349,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "DeepSeek V4.1",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1316,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1316,
+                  "right": 1215.03125,
+                  "bottom": 1349,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1316,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1316,
+                  "right": 1285.203125,
+                  "bottom": 1349,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1316,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1316,
+                  "right": 1528.046875,
+                  "bottom": 1349,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#42",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1316,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1316,
+                  "right": 1659,
+                  "bottom": 1349,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1349,
+              "width": 1420,
+              "height": 33,
+              "top": 1349,
+              "right": 1659,
+              "bottom": 1382,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:25:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1349,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1349,
+                  "right": 414.265625,
+                  "bottom": 1382,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1349,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1349,
+                  "right": 571.1875,
+                  "bottom": 1382,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1349,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1349,
+                  "right": 741,
+                  "bottom": 1382,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1349,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1349,
+                  "right": 907.46875,
+                  "bottom": 1382,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "deepseek",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1349,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1349,
+                  "right": 1049.71875,
+                  "bottom": 1382,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "DeepSeek V4.1",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1349,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1349,
+                  "right": 1215.03125,
+                  "bottom": 1382,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "45.7M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1349,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1349,
+                  "right": 1285.203125,
+                  "bottom": 1382,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$1.14",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1349,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1349,
+                  "right": 1528.046875,
+                  "bottom": 1382,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#20",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1349,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1349,
+                  "right": 1659,
+                  "bottom": 1382,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1382,
+              "width": 1420,
+              "height": 33,
+              "top": 1382,
+              "right": 1659,
+              "bottom": 1415,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:25:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1382,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1382,
+                  "right": 414.265625,
+                  "bottom": 1415,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1382,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1382,
+                  "right": 571.1875,
+                  "bottom": 1415,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1382,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1382,
+                  "right": 741,
+                  "bottom": 1415,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1382,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1382,
+                  "right": 907.46875,
+                  "bottom": 1415,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1382,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1382,
+                  "right": 1049.71875,
+                  "bottom": 1415,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.5",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1382,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1382,
+                  "right": 1215.03125,
+                  "bottom": 1415,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "13.2M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1382,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1382,
+                  "right": 1285.203125,
+                  "bottom": 1415,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.3289",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1382,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1382,
+                  "right": 1528.046875,
+                  "bottom": 1415,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#11",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1382,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1382,
+                  "right": 1659,
+                  "bottom": 1415,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1415,
+              "width": 1420,
+              "height": 33,
+              "top": 1415,
+              "right": 1659,
+              "bottom": 1448,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:24:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1415,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1415,
+                  "right": 414.265625,
+                  "bottom": 1448,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1415,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1415,
+                  "right": 571.1875,
+                  "bottom": 1448,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1415,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1415,
+                  "right": 741,
+                  "bottom": 1448,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1415,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1415,
+                  "right": 907.46875,
+                  "bottom": 1448,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "deepseek",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1415,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1415,
+                  "right": 1049.71875,
+                  "bottom": 1448,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "DeepSeek V4.1",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1415,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1415,
+                  "right": 1215.03125,
+                  "bottom": 1448,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "45.7M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1415,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1415,
+                  "right": 1285.203125,
+                  "bottom": 1448,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$1.21",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1415,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1415,
+                  "right": 1528.046875,
+                  "bottom": 1448,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#21",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1415,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1415,
+                  "right": 1659,
+                  "bottom": 1448,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1448,
+              "width": 1420,
+              "height": 33,
+              "top": 1448,
+              "right": 1659,
+              "bottom": 1481,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:23:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1448,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1448,
+                  "right": 414.265625,
+                  "bottom": 1481,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1448,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1448,
+                  "right": 571.1875,
+                  "bottom": 1481,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1448,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1448,
+                  "right": 741,
+                  "bottom": 1481,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1448,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1448,
+                  "right": 907.46875,
+                  "bottom": 1481,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1448,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1448,
+                  "right": 1049.71875,
+                  "bottom": 1481,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.5",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1448,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1448,
+                  "right": 1215.03125,
+                  "bottom": 1481,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "13.2M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1448,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1448,
+                  "right": 1285.203125,
+                  "bottom": 1481,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.3501",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1448,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1448,
+                  "right": 1528.046875,
+                  "bottom": 1481,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#12",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1448,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1448,
+                  "right": 1659,
+                  "bottom": 1481,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1481,
+              "width": 1420,
+              "height": 33,
+              "top": 1481,
+              "right": 1659,
+              "bottom": 1514,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:23:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1481,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1481,
+                  "right": 414.265625,
+                  "bottom": 1514,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1481,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1481,
+                  "right": 571.1875,
+                  "bottom": 1514,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1481,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1481,
+                  "right": 741,
+                  "bottom": 1514,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1481,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1481,
+                  "right": 907.46875,
+                  "bottom": 1514,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1481,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1481,
+                  "right": 1049.71875,
+                  "bottom": 1514,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-5.x",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1481,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1481,
+                  "right": 1215.03125,
+                  "bottom": 1514,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "28.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1481,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1481,
+                  "right": 1285.203125,
+                  "bottom": 1514,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.7639",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1481,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1481,
+                  "right": 1528.046875,
+                  "bottom": 1514,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#23",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1481,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1481,
+                  "right": 1659,
+                  "bottom": 1514,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1514,
+              "width": 1420,
+              "height": 33,
+              "top": 1514,
+              "right": 1659,
+              "bottom": 1547,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:22:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1514,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1514,
+                  "right": 414.265625,
+                  "bottom": 1547,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1514,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1514,
+                  "right": 571.1875,
+                  "bottom": 1547,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1514,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1514,
+                  "right": 741,
+                  "bottom": 1547,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1514,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1514,
+                  "right": 907.46875,
+                  "bottom": 1547,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1514,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1514,
+                  "right": 1049.71875,
+                  "bottom": 1547,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-5.x",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1514,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1514,
+                  "right": 1215.03125,
+                  "bottom": 1547,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "28.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1514,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1514,
+                  "right": 1285.203125,
+                  "bottom": 1547,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.6712",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1514,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1514,
+                  "right": 1528.046875,
+                  "bottom": 1547,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#24",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1514,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1514,
+                  "right": 1659,
+                  "bottom": 1547,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1547,
+              "width": 1420,
+              "height": 33,
+              "top": 1547,
+              "right": 1659,
+              "bottom": 1580,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:21:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1547,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1547,
+                  "right": 414.265625,
+                  "bottom": 1580,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1547,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1547,
+                  "right": 571.1875,
+                  "bottom": 1580,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1547,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1547,
+                  "right": 741,
+                  "bottom": 1580,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1547,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1547,
+                  "right": 907.46875,
+                  "bottom": 1580,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1547,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1547,
+                  "right": 1049.71875,
+                  "bottom": 1580,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.7",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1547,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1547,
+                  "right": 1215.03125,
+                  "bottom": 1580,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "21.6M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1547,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1547,
+                  "right": 1285.203125,
+                  "bottom": 1580,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.5034",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1547,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1547,
+                  "right": 1528.046875,
+                  "bottom": 1580,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#26",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1547,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1547,
+                  "right": 1659,
+                  "bottom": 1580,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1580,
+              "width": 1420,
+              "height": 33,
+              "top": 1580,
+              "right": 1659,
+              "bottom": 1613,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:21:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1580,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1580,
+                  "right": 414.265625,
+                  "bottom": 1613,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1580,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1580,
+                  "right": 571.1875,
+                  "bottom": 1613,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude Code fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1580,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1580,
+                  "right": 741,
+                  "bottom": 1613,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1580,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1580,
+                  "right": 907.46875,
+                  "bottom": 1613,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openrouter",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1580,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1580,
+                  "right": 1049.71875,
+                  "bottom": 1613,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "UOthers",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1580,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1580,
+                  "right": 1215.03125,
+                  "bottom": 1613,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "10.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1580,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1580,
+                  "right": 1285.203125,
+                  "bottom": 1613,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.2864",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1580,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1580,
+                  "right": 1528.046875,
+                  "bottom": 1613,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#14",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1580,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1580,
+                  "right": 1659,
+                  "bottom": 1613,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1613,
+              "width": 1420,
+              "height": 33,
+              "top": 1613,
+              "right": 1659,
+              "bottom": 1646,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:20:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1613,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1613,
+                  "right": 414.265625,
+                  "bottom": 1646,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1613,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1613,
+                  "right": 571.1875,
+                  "bottom": 1646,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1613,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1613,
+                  "right": 741,
+                  "bottom": 1646,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1613,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1613,
+                  "right": 907.46875,
+                  "bottom": 1646,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1613,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1613,
+                  "right": 1049.71875,
+                  "bottom": 1646,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.7",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1613,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1613,
+                  "right": 1215.03125,
+                  "bottom": 1646,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "21.6M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1613,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1613,
+                  "right": 1285.203125,
+                  "bottom": 1646,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.5382",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1613,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1613,
+                  "right": 1528.046875,
+                  "bottom": 1646,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#27",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1613,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1613,
+                  "right": 1659,
+                  "bottom": 1646,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1646,
+              "width": 1420,
+              "height": 33,
+              "top": 1646,
+              "right": 1659,
+              "bottom": 1679,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:19:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1646,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1646,
+                  "right": 414.265625,
+                  "bottom": 1679,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1646,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1646,
+                  "right": 571.1875,
+                  "bottom": 1679,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude Code fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1646,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1646,
+                  "right": 741,
+                  "bottom": 1679,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1646,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1646,
+                  "right": 907.46875,
+                  "bottom": 1679,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openrouter",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1646,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1646,
+                  "right": 1049.71875,
+                  "bottom": 1679,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "UOthers",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1646,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1646,
+                  "right": 1215.03125,
+                  "bottom": 1679,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "10.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1646,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1646,
+                  "right": 1285.203125,
+                  "bottom": 1679,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.2517",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1646,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1646,
+                  "right": 1528.046875,
+                  "bottom": 1679,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#15",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1646,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1646,
+                  "right": 1659,
+                  "bottom": 1679,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1679,
+              "width": 1420,
+              "height": 33,
+              "top": 1679,
+              "right": 1659,
+              "bottom": 1712,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:19:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1679,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1679,
+                  "right": 414.265625,
+                  "bottom": 1712,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1679,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1679,
+                  "right": 571.1875,
+                  "bottom": 1712,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1679,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1679,
+                  "right": 741,
+                  "bottom": 1712,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1679,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1679,
+                  "right": 907.46875,
+                  "bottom": 1712,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1679,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1679,
+                  "right": 1049.71875,
+                  "bottom": 1712,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.5",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1679,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1679,
+                  "right": 1215.03125,
+                  "bottom": 1712,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "13.2M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1679,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1679,
+                  "right": 1285.203125,
+                  "bottom": 1712,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.3289",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1679,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1679,
+                  "right": 1528.046875,
+                  "bottom": 1712,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#29",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1679,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1679,
+                  "right": 1659,
+                  "bottom": 1712,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1712,
+              "width": 1420,
+              "height": 33,
+              "top": 1712,
+              "right": 1659,
+              "bottom": 1745,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:18:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1712,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1712,
+                  "right": 414.265625,
+                  "bottom": 1745,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1712,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1712,
+                  "right": 571.1875,
+                  "bottom": 1745,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1712,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1712,
+                  "right": 741,
+                  "bottom": 1745,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1712,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1712,
+                  "right": 907.46875,
+                  "bottom": 1745,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "anthropic",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1712,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1712,
+                  "right": 1049.71875,
+                  "bottom": 1745,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude 3.5",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1712,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1712,
+                  "right": 1215.03125,
+                  "bottom": 1745,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "13.2M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1712,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1712,
+                  "right": 1285.203125,
+                  "bottom": 1745,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.3501",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1712,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1712,
+                  "right": 1528.046875,
+                  "bottom": 1745,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#30",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1712,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1712,
+                  "right": 1659,
+                  "bottom": 1745,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1745,
+              "width": 1420,
+              "height": 33,
+              "top": 1745,
+              "right": 1659,
+              "bottom": 1778,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:17:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1745,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1745,
+                  "right": 414.265625,
+                  "bottom": 1778,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1745,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1745,
+                  "right": 571.1875,
+                  "bottom": 1778,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1745,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1745,
+                  "right": 741,
+                  "bottom": 1778,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1745,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1745,
+                  "right": 907.46875,
+                  "bottom": 1778,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openrouter",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1745,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1745,
+                  "right": 1049.71875,
+                  "bottom": 1778,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "UOthers",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1745,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1745,
+                  "right": 1215.03125,
+                  "bottom": 1778,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "10.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1745,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1745,
+                  "right": 1285.203125,
+                  "bottom": 1778,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.2864",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1745,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1745,
+                  "right": 1528.046875,
+                  "bottom": 1778,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#32",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1745,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1745,
+                  "right": 1659,
+                  "bottom": 1778,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1778,
+              "width": 1420,
+              "height": 33,
+              "top": 1778,
+              "right": 1659,
+              "bottom": 1811,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:17:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1778,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1778,
+                  "right": 414.265625,
+                  "bottom": 1811,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1778,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1778,
+                  "right": 571.1875,
+                  "bottom": 1811,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude Code fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1778,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1778,
+                  "right": 741,
+                  "bottom": 1811,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1778,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1778,
+                  "right": 907.46875,
+                  "bottom": 1811,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1778,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1778,
+                  "right": 1049.71875,
+                  "bottom": 1811,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-4.1 mini",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1778,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1778,
+                  "right": 1215.03125,
+                  "bottom": 1811,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1778,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1778,
+                  "right": 1285.203125,
+                  "bottom": 1811,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1778,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1778,
+                  "right": 1528.046875,
+                  "bottom": 1811,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#17",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1778,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1778,
+                  "right": 1659,
+                  "bottom": 1811,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1811,
+              "width": 1420,
+              "height": 33,
+              "top": 1811,
+              "right": 1659,
+              "bottom": 1844,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:16:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1811,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1811,
+                  "right": 414.265625,
+                  "bottom": 1844,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1811,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1811,
+                  "right": 571.1875,
+                  "bottom": 1844,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1811,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1811,
+                  "right": 741,
+                  "bottom": 1844,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1811,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1811,
+                  "right": 907.46875,
+                  "bottom": 1844,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openrouter",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1811,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1811,
+                  "right": 1049.71875,
+                  "bottom": 1844,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "UOthers",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1811,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1811,
+                  "right": 1215.03125,
+                  "bottom": 1844,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "10.8M",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1811,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1811,
+                  "right": 1285.203125,
+                  "bottom": 1844,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.2517",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1811,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1811,
+                  "right": 1528.046875,
+                  "bottom": 1844,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#33",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1811,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1811,
+                  "right": 1659,
+                  "bottom": 1844,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1844,
+              "width": 1420,
+              "height": 33,
+              "top": 1844,
+              "right": 1659,
+              "bottom": 1877,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:15:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1844,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1844,
+                  "right": 414.265625,
+                  "bottom": 1877,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1844,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1844,
+                  "right": 571.1875,
+                  "bottom": 1877,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Claude Code fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1844,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1844,
+                  "right": 741,
+                  "bottom": 1877,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1844,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1844,
+                  "right": 907.46875,
+                  "bottom": 1877,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1844,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1844,
+                  "right": 1049.71875,
+                  "bottom": 1877,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-4.1 mini",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1844,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1844,
+                  "right": 1215.03125,
+                  "bottom": 1877,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1844,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1844,
+                  "right": 1285.203125,
+                  "bottom": 1877,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1844,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1844,
+                  "right": 1528.046875,
+                  "bottom": 1877,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#18",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1844,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1844,
+                  "right": 1659,
+                  "bottom": 1877,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1877,
+              "width": 1420,
+              "height": 33,
+              "top": 1877,
+              "right": 1659,
+              "bottom": 1910,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:15:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1877,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1877,
+                  "right": 414.265625,
+                  "bottom": 1910,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1877,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1877,
+                  "right": 571.1875,
+                  "bottom": 1910,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1877,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1877,
+                  "right": 741,
+                  "bottom": 1910,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1877,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1877,
+                  "right": 907.46875,
+                  "bottom": 1910,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1877,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1877,
+                  "right": 1049.71875,
+                  "bottom": 1910,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-4.1 mini",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1877,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1877,
+                  "right": 1215.03125,
+                  "bottom": 1910,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1877,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1877,
+                  "right": 1285.203125,
+                  "bottom": 1910,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1877,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1877,
+                  "right": 1528.046875,
+                  "bottom": 1910,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#35",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1877,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1877,
+                  "right": 1659,
+                  "bottom": 1910,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1910,
+              "width": 1420,
+              "height": 33,
+              "top": 1910,
+              "right": 1659,
+              "bottom": 1943,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 29)",
+            "cells": [
+              {
+                "text": "5/17/25, 8:14:30 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1910,
+                  "width": 175.265625,
+                  "height": 33,
+                  "top": 1910,
+                  "right": 414.265625,
+                  "bottom": 1943,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Session aggregate",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1910,
+                  "width": 156.921875,
+                  "height": 33,
+                  "top": 1910,
+                  "right": 571.1875,
+                  "bottom": 1943,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Hermes fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1910,
+                  "width": 169.8125,
+                  "height": 33,
+                  "top": 1910,
+                  "right": 741,
+                  "bottom": 1943,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1910,
+                  "width": 166.46875,
+                  "height": 33,
+                  "top": 1910,
+                  "right": 907.46875,
+                  "bottom": 1943,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "openai",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1910,
+                  "width": 142.25,
+                  "height": 33,
+                  "top": 1910,
+                  "right": 1049.71875,
+                  "bottom": 1943,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "GPT-4.1 mini",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1910,
+                  "width": 165.3125,
+                  "height": 33,
+                  "top": 1910,
+                  "right": 1215.03125,
+                  "bottom": 1943,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1910,
+                  "width": 70.171875,
+                  "height": 33,
+                  "top": 1910,
+                  "right": 1285.203125,
+                  "bottom": 1943,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1910,
+                  "width": 242.84375,
+                  "height": 33,
+                  "top": 1910,
+                  "right": 1528.046875,
+                  "bottom": 1943,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#36",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1910,
+                  "width": 130.953125,
+                  "height": 33,
+                  "top": 1910,
+                  "right": 1659,
+                  "bottom": 1943,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          },
+          {
+            "selected": null,
+            "rect": {
+              "x": 239,
+              "y": 1943,
+              "width": 1420,
+              "height": 32.5,
+              "top": 1943,
+              "right": 1659,
+              "bottom": 1975.5,
+              "left": 239
+            },
+            "background": "rgb(6, 16, 28)",
+            "cells": [
+              {
+                "text": "5/14/25, 8:42:00 PM",
+                "rect": {
+                  "x": 239,
+                  "y": 1943,
+                  "width": 175.265625,
+                  "height": 32.5,
+                  "top": 1943,
+                  "right": 414.265625,
+                  "bottom": 1975.5,
+                  "left": 239
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Call",
+                "rect": {
+                  "x": 414.265625,
+                  "y": 1943,
+                  "width": 156.921875,
+                  "height": 32.5,
+                  "top": 1943,
+                  "right": 571.1875,
+                  "bottom": 1975.5,
+                  "left": 414.265625
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Codex fixture",
+                "rect": {
+                  "x": 571.1875,
+                  "y": 1943,
+                  "width": 169.8125,
+                  "height": 32.5,
+                  "top": 1943,
+                  "right": 741,
+                  "bottom": 1975.5,
+                  "left": 571.1875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "QuotaPulse",
+                "rect": {
+                  "x": 741,
+                  "y": 1943,
+                  "width": 166.46875,
+                  "height": 32.5,
+                  "top": 1943,
+                  "right": 907.46875,
+                  "bottom": 1975.5,
+                  "left": 741
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "deepseek",
+                "rect": {
+                  "x": 907.46875,
+                  "y": 1943,
+                  "width": 142.25,
+                  "height": 32.5,
+                  "top": 1943,
+                  "right": 1049.71875,
+                  "bottom": 1975.5,
+                  "left": 907.46875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "DeepSeek V4.1",
+                "rect": {
+                  "x": 1049.71875,
+                  "y": 1943,
+                  "width": 165.3125,
+                  "height": 32.5,
+                  "top": 1943,
+                  "right": 1215.03125,
+                  "bottom": 1975.5,
+                  "left": 1049.71875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "1",
+                "rect": {
+                  "x": 1215.03125,
+                  "y": 1943,
+                  "width": 70.171875,
+                  "height": 32.5,
+                  "top": 1943,
+                  "right": 1285.203125,
+                  "bottom": 1975.5,
+                  "left": 1215.03125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "Calculated API value$0.0000",
+                "rect": {
+                  "x": 1285.203125,
+                  "y": 1943,
+                  "width": 242.84375,
+                  "height": 32.5,
+                  "top": 1943,
+                  "right": 1528.046875,
+                  "bottom": 1975.5,
+                  "left": 1285.203125
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              },
+              {
+                "text": "#43",
+                "rect": {
+                  "x": 1528.046875,
+                  "y": 1943,
+                  "width": 130.953125,
+                  "height": 32.5,
+                  "top": 1943,
+                  "right": 1659,
+                  "bottom": 1975.5,
+                  "left": 1528.046875
+                },
+                "background": "rgba(0, 0, 0, 0)"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

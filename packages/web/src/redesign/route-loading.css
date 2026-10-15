@@ -1,0 +1,12 @@
+.qp-redesign .qp-route-load { min-width:0; }
+.qp-redesign[data-testid=production-overview] .qp-route-load { display:grid; gap:20px; }
+.qp-redesign .qp-route-load-title { margin:10px 0 20px; font-size:24px; font-weight:300; }
+.qp-redesign .qp-route-load-region { min-height:360px; padding:24px; }
+.qp-redesign .qp-route-load-status { min-height:72px; color:var(--qp-muted); }
+.qp-redesign .qp-route-load-status button { margin-top:8px; }
+.qp-redesign .qp-route-load-slots { display:grid; gap:24px; max-width:760px; padding-top:20px; }
+.qp-redesign .qp-route-load-slots>span { display:block; width:80%; height:14px; border-radius:4px; background:color-mix(in srgb,var(--qp-muted) 12%,var(--qp-panel)); }
+.qp-redesign .qp-route-load-slots>span:nth-child(2) { width:60%; }
+@media(max-width:600px) {
+  .qp-redesign .qp-route-load-region { min-height:360px; padding:16px; }
+}

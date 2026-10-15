@@ -1,0 +1,35 @@
+13:42:00.000 INFO  [db] opened :memory:
+Unexpected initial theme {
+  destination: 'overview',
+  lang: 'en',
+  faults: [ '__name is not defined' ],
+  storage: {
+    prefs: '{"lang":"en","currency":"USD","rate":1,"hiddenSubscriptions":[]}',
+    theme: 'light',
+    bridge: 'undefined'
+  }
+}
+node : node:internal/modules/run_main:122
+At line:3 char:1
++ node --import tsx scripts/check-route-loading.mts *> tmp/lazy77-diagn ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+'light' !== 'dark'
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-route-loading.mts:91:12) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'light',
+  expected: 'dark',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1
