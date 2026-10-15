@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import { referenceJunctionY, referenceWavePaths } from './pulse-ambient-reference';
 
 const WIDTH = 760;
 const HEIGHT = 320;
@@ -38,10 +39,10 @@ const junctions = [
 ] as const;
 
 /** Static decoration behind Pulse Core; no account state, chart values or live-flow signal. */
-export function PulseAmbient() {
+export function PulseAmbient({ reference = false }: { reference?: boolean }) {
   const id = useId().replace(/:/g, '');
   return <svg className="qp-pulse-ambient" viewBox={`0 0 ${WIDTH} ${HEIGHT}`} width={WIDTH} height={HEIGHT}
-    aria-hidden="true" focusable="false" preserveAspectRatio="none" style={{ pointerEvents: 'none' }}>
+    data-reference-art={reference || undefined} aria-hidden="true" focusable="false" preserveAspectRatio="none" style={{ pointerEvents: 'none' }}>
     <defs>
       <linearGradient id={`${id}-waves`} x1="0" y1="0" x2={WIDTH} y2="0" gradientUnits="userSpaceOnUse">
         <stop stopColor="#16c9ff" stopOpacity="0"/>
@@ -71,10 +72,10 @@ export function PulseAmbient() {
       cx={64 + index * 137.508 % 550} cy={42 + index * 71.31 % 236}
       r={index % 7 === 0 ? .7 : .4} opacity={.12 + index % 5 * .045}/>)}</g>
     <g fill="none" stroke={`url(#${id}-waves)`} strokeLinecap="round" filter={`url(#${id}-soft-glow)`}>
-      {waves.map((wave, index) => <path key={index} d={wavePath(wave)} strokeWidth={wave.width} opacity={wave.opacity}/>)}
+      {waves.map((wave, index) => <path key={index} d={reference ? referenceWavePaths[index] : wavePath(wave)} strokeWidth={wave.width} opacity={wave.opacity}/>)}
     </g>
-    <g filter={`url(#${id}-star-glow)`}>{junctions.map(({ x, wave, color }) => {
-      const y = waveY(waves[wave], x);
+    <g filter={`url(#${id}-star-glow)`}>{junctions.map(({ x, wave, color }, index) => {
+      const y = reference ? referenceJunctionY[index] : waveY(waves[wave], x);
       return <g key={x} fill={color} stroke={color}>
         <circle cx={x} cy={y} r="2.2" stroke="none"/>
         <circle cx={x} cy={y} r=".65" fill="#eefaff" stroke="none"/>

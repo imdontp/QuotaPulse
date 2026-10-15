@@ -1,0 +1,25 @@
+13:42:00.000 INFO  [db] opened :memory:
+tsx.cmd : node:internal/modules/run_main:122
+At line:3 char:1
++ & C:/Users/TH12367283/Projects/QuotaPulse/node_modules/.bin/tsx.cmd - ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: th-dark-1586: independent foreground must be unchanged
+
+4 !== 0
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\pulse78-compat.mts:2663:402) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 4,
+  expected: 0,
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

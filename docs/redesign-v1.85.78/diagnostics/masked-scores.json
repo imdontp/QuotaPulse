@@ -1,0 +1,3047 @@
+{
+  "mask": "tmp/pulse78-mask.png",
+  "thresholds": [
+    80,
+    90,
+    110
+  ],
+  "registrationShifts": [
+    -1,
+    0,
+    1
+  ],
+  "scores": {
+    "baseline": [
+      {
+        "dx": -1,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.355548469387756,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 179,
+                "sourceRecall1": 0.20599250936329588,
+                "sourceRecall2": 0.2808988764044944,
+                "sourceRecall3": 0.36704119850187267,
+                "sourceDistanceMean": 5.83678052537775,
+                "candidateDistanceMean": 21.734180275971237,
+                "symmetricMean": 13.785480400674494,
+                "symmetricP95": 44.557825562097385
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 154,
+                "sourceRecall1": 0.20454545454545456,
+                "sourceRecall2": 0.2909090909090909,
+                "sourceRecall3": 0.38636363636363635,
+                "sourceDistanceMean": 5.546720522577851,
+                "candidateDistanceMean": 21.722521034704744,
+                "symmetricMean": 13.634620778641297,
+                "symmetricP95": 44.01590088188167
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 106,
+                "sourceRecall1": 0.1417910447761194,
+                "sourceRecall2": 0.23880597014925373,
+                "sourceRecall3": 0.3582089552238806,
+                "sourceDistanceMean": 5.819897571353313,
+                "candidateDistanceMean": 22.8397199850736,
+                "symmetricMean": 14.329808778213456,
+                "symmetricP95": 44.92195148575217
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 20.202464788732396,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 318,
+                "sourceRecall1": 0.40867992766726946,
+                "sourceRecall2": 0.5551537070524413,
+                "sourceRecall3": 0.7106690777576854,
+                "sourceDistanceMean": 2.4671765089381825,
+                "candidateDistanceMean": 2.565386619312947,
+                "symmetricMean": 2.5162815641255647,
+                "symmetricP95": 8.246211251235321
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 288,
+                "sourceRecall1": 0.4470046082949309,
+                "sourceRecall2": 0.5944700460829493,
+                "sourceRecall3": 0.7488479262672811,
+                "sourceDistanceMean": 2.358250120723369,
+                "candidateDistanceMean": 2.974340541254174,
+                "symmetricMean": 2.6662953309887714,
+                "symmetricP95": 10.295630140987
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 229,
+                "sourceRecall1": 0.4855072463768116,
+                "sourceRecall2": 0.644927536231884,
+                "sourceRecall3": 0.7717391304347826,
+                "sourceDistanceMean": 2.2557377021328393,
+                "candidateDistanceMean": 3.6436882644156756,
+                "symmetricMean": 2.9497129832742575,
+                "symmetricP95": 11.180339887498949
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.258397108843537,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 173,
+                "sourceRecall1": 0.19101123595505617,
+                "sourceRecall2": 0.25842696629213485,
+                "sourceRecall3": 0.3408239700374532,
+                "sourceDistanceMean": 6.047383533196591,
+                "candidateDistanceMean": 21.644862142349535,
+                "symmetricMean": 13.846122837773063,
+                "symmetricP95": 44.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 148,
+                "sourceRecall1": 0.18636363636363637,
+                "sourceRecall2": 0.2636363636363636,
+                "sourceRecall3": 0.35909090909090907,
+                "sourceDistanceMean": 5.73742699396511,
+                "candidateDistanceMean": 21.63788385259716,
+                "symmetricMean": 13.687655423281136,
+                "symmetricP95": 44.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 100,
+                "sourceRecall1": 0.11194029850746269,
+                "sourceRecall2": 0.20149253731343283,
+                "sourceRecall3": 0.3208955223880597,
+                "sourceDistanceMean": 6.0274875563351,
+                "candidateDistanceMean": 22.791103605171678,
+                "symmetricMean": 14.409295580753389,
+                "symmetricP95": 44.60268622700817
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 20.790933098591548,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 318,
+                "sourceRecall1": 0.39783001808318263,
+                "sourceRecall2": 0.538878842676311,
+                "sourceRecall3": 0.6889692585895117,
+                "sourceDistanceMean": 2.534607620243781,
+                "candidateDistanceMean": 2.711183449899375,
+                "symmetricMean": 2.622895535071578,
+                "symmetricP95": 8.53209893136019
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 285,
+                "sourceRecall1": 0.42626728110599077,
+                "sourceRecall2": 0.5714285714285714,
+                "sourceRecall3": 0.728110599078341,
+                "sourceDistanceMean": 2.4329346649735575,
+                "candidateDistanceMean": 3.093352166126791,
+                "symmetricMean": 2.763143415550174,
+                "symmetricP95": 10.276111918226716
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 228,
+                "sourceRecall1": 0.44565217391304346,
+                "sourceRecall2": 0.6304347826086957,
+                "sourceRecall3": 0.7608695652173914,
+                "sourceDistanceMean": 2.3648610312818312,
+                "candidateDistanceMean": 3.8005975307352062,
+                "symmetricMean": 3.0827292810085187,
+                "symmetricP95": 11.324259223769024
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.160501700680273,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 165,
+                "sourceRecall1": 0.17228464419475656,
+                "sourceRecall2": 0.23595505617977527,
+                "sourceRecall3": 0.3146067415730337,
+                "sourceDistanceMean": 6.320334871025938,
+                "candidateDistanceMean": 21.61398186289676,
+                "symmetricMean": 13.96715836696135,
+                "symmetricP95": 43.98635305459552
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 140,
+                "sourceRecall1": 0.16363636363636364,
+                "sourceRecall2": 0.23636363636363636,
+                "sourceRecall3": 0.32727272727272727,
+                "sourceDistanceMean": 5.984107540336031,
+                "candidateDistanceMean": 21.625349138416095,
+                "symmetricMean": 13.804728339376062,
+                "symmetricP95": 43.93517700932871
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 96,
+                "sourceRecall1": 0.08208955223880597,
+                "sourceRecall2": 0.17164179104477612,
+                "sourceRecall3": 0.291044776119403,
+                "sourceDistanceMean": 6.208333381528422,
+                "candidateDistanceMean": 22.414318985172542,
+                "symmetricMean": 14.311326183350483,
+                "symmetricP95": 44.01135777277262
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.27274061032864,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 318,
+                "sourceRecall1": 0.38698010849909587,
+                "sourceRecall2": 0.5207956600361664,
+                "sourceRecall3": 0.6618444846292948,
+                "sourceDistanceMean": 2.6443126519685474,
+                "candidateDistanceMean": 2.8788111464498973,
+                "symmetricMean": 2.761561899209222,
+                "symmetricP95": 8.602325267042627
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 287,
+                "sourceRecall1": 0.3986175115207373,
+                "sourceRecall2": 0.543778801843318,
+                "sourceRecall3": 0.6981566820276498,
+                "sourceDistanceMean": 2.530472082169491,
+                "candidateDistanceMean": 3.269873664125,
+                "symmetricMean": 2.9001728731472456,
+                "symmetricP95": 10.198039027185569
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 228,
+                "sourceRecall1": 0.40217391304347827,
+                "sourceRecall2": 0.5833333333333334,
+                "sourceRecall3": 0.7463768115942029,
+                "sourceDistanceMean": 2.5079107844888178,
+                "candidateDistanceMean": 3.968040777394131,
+                "symmetricMean": 3.2379757809414746,
+                "symmetricP95": 11.570851451145868
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": -1,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.249468537414966,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 184,
+                "sourceRecall1": 0.23220973782771537,
+                "sourceRecall2": 0.3146067415730337,
+                "sourceRecall3": 0.4232209737827715,
+                "sourceDistanceMean": 5.42079069485172,
+                "candidateDistanceMean": 20.237012161729773,
+                "symmetricMean": 12.828901428290747,
+                "symmetricP95": 43.74237423303781
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 157,
+                "sourceRecall1": 0.22727272727272727,
+                "sourceRecall2": 0.3181818181818182,
+                "sourceRecall3": 0.41818181818181815,
+                "sourceDistanceMean": 5.715812300776772,
+                "candidateDistanceMean": 20.31397188402135,
+                "symmetricMean": 13.01489209239906,
+                "symmetricP95": 43.204150614055656
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 108,
+                "sourceRecall1": 0.1865671641791045,
+                "sourceRecall2": 0.27611940298507465,
+                "sourceRecall3": 0.35074626865671643,
+                "sourceDistanceMean": 6.138933376792475,
+                "candidateDistanceMean": 21.333789860158966,
+                "symmetricMean": 13.736361618475721,
+                "symmetricP95": 43.976117845542156
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 20.855046948356808,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 306,
+                "sourceRecall1": 0.4050632911392405,
+                "sourceRecall2": 0.5406871609403255,
+                "sourceRecall3": 0.674502712477396,
+                "sourceDistanceMean": 2.56724431087949,
+                "candidateDistanceMean": 2.5706814465583188,
+                "symmetricMean": 2.5689628787189043,
+                "symmetricP95": 8.567332354007567
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 277,
+                "sourceRecall1": 0.42626728110599077,
+                "sourceRecall2": 0.5668202764976958,
+                "sourceRecall3": 0.716589861751152,
+                "sourceDistanceMean": 2.4766746902529824,
+                "candidateDistanceMean": 2.9947152560238006,
+                "symmetricMean": 2.7356949731383917,
+                "symmetricP95": 9.486832980505138
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 220,
+                "sourceRecall1": 0.427536231884058,
+                "sourceRecall2": 0.6086956521739131,
+                "sourceRecall3": 0.7681159420289855,
+                "sourceDistanceMean": 2.4121142089021204,
+                "candidateDistanceMean": 3.6622806135531696,
+                "symmetricMean": 3.0371974112276447,
+                "symmetricP95": 10.20291858287564
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.19111394557823,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 177,
+                "sourceRecall1": 0.21348314606741572,
+                "sourceRecall2": 0.299625468164794,
+                "sourceRecall3": 0.3970037453183521,
+                "sourceDistanceMean": 5.533936450738843,
+                "candidateDistanceMean": 20.031613288815073,
+                "symmetricMean": 12.782774869776958,
+                "symmetricP95": 43.14857652887246
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 150,
+                "sourceRecall1": 0.22272727272727272,
+                "sourceRecall2": 0.30454545454545456,
+                "sourceRecall3": 0.40454545454545454,
+                "sourceDistanceMean": 5.529148274561492,
+                "candidateDistanceMean": 20.09348483707982,
+                "symmetricMean": 12.811316555820657,
+                "symmetricP95": 43.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 101,
+                "sourceRecall1": 0.1417910447761194,
+                "sourceRecall2": 0.22388059701492538,
+                "sourceRecall3": 0.31343283582089554,
+                "sourceDistanceMean": 6.367514471763923,
+                "candidateDistanceMean": 21.452778024767337,
+                "symmetricMean": 13.91014624826563,
+                "symmetricP95": 43.86342439892262
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.250146713615024,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 306,
+                "sourceRecall1": 0.38155515370705245,
+                "sourceRecall2": 0.5135623869801085,
+                "sourceRecall3": 0.6582278481012658,
+                "sourceDistanceMean": 2.6770381821338636,
+                "candidateDistanceMean": 2.7113767596478144,
+                "symmetricMean": 2.694207470890839,
+                "symmetricP95": 8.739103924225232
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 275,
+                "sourceRecall1": 0.391705069124424,
+                "sourceRecall2": 0.5345622119815668,
+                "sourceRecall3": 0.6912442396313364,
+                "sourceDistanceMean": 2.601654924387259,
+                "candidateDistanceMean": 3.123605951888951,
+                "symmetricMean": 2.862630438138105,
+                "symmetricP95": 9.449836686591164
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 220,
+                "sourceRecall1": 0.39492753623188404,
+                "sourceRecall2": 0.5688405797101449,
+                "sourceRecall3": 0.7427536231884058,
+                "sourceDistanceMean": 2.5376383786622267,
+                "candidateDistanceMean": 3.8265321448751095,
+                "symmetricMean": 3.182085261768668,
+                "symmetricP95": 10.295630140987
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.10905612244898,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 169,
+                "sourceRecall1": 0.1947565543071161,
+                "sourceRecall2": 0.27715355805243447,
+                "sourceRecall3": 0.35580524344569286,
+                "sourceDistanceMean": 5.714778179640519,
+                "candidateDistanceMean": 19.957601525557255,
+                "symmetricMean": 12.836189852598887,
+                "symmetricP95": 43.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 141,
+                "sourceRecall1": 0.19090909090909092,
+                "sourceRecall2": 0.2772727272727273,
+                "sourceRecall3": 0.36363636363636365,
+                "sourceDistanceMean": 5.712488509695615,
+                "candidateDistanceMean": 20.1672205005433,
+                "symmetricMean": 12.939854505119458,
+                "symmetricP95": 43.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 96,
+                "sourceRecall1": 0.1044776119402985,
+                "sourceRecall2": 0.1865671641791045,
+                "sourceRecall3": 0.29850746268656714,
+                "sourceDistanceMean": 6.566521346411726,
+                "candidateDistanceMean": 21.294159172270984,
+                "symmetricMean": 13.930340259341355,
+                "symmetricP95": 43.20877682672498
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.599911971830984,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 306,
+                "sourceRecall1": 0.35804701627486435,
+                "sourceRecall2": 0.47920433996383366,
+                "sourceRecall3": 0.6292947558770343,
+                "sourceDistanceMean": 2.8268245027612213,
+                "candidateDistanceMean": 2.85663546979846,
+                "symmetricMean": 2.841729986279841,
+                "symmetricP95": 8.739103924225232
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 276,
+                "sourceRecall1": 0.3617511520737327,
+                "sourceRecall2": 0.5023041474654378,
+                "sourceRecall3": 0.6497695852534562,
+                "sourceDistanceMean": 2.754924361366122,
+                "candidateDistanceMean": 3.3065489207534027,
+                "symmetricMean": 3.0307366410597623,
+                "symmetricP95": 9.447194094168736
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 219,
+                "sourceRecall1": 0.33695652173913043,
+                "sourceRecall2": 0.5217391304347826,
+                "sourceRecall3": 0.6956521739130435,
+                "sourceDistanceMean": 2.700985722965966,
+                "candidateDistanceMean": 3.9735674336962963,
+                "symmetricMean": 3.337276578331131,
+                "symmetricP95": 10.310097777779355
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": -1,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.105973639455783,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 190,
+                "sourceRecall1": 0.2696629213483146,
+                "sourceRecall2": 0.3782771535580524,
+                "sourceRecall3": 0.4606741573033708,
+                "sourceDistanceMean": 5.612507682268845,
+                "candidateDistanceMean": 18.45856286527075,
+                "symmetricMean": 12.035535273769797,
+                "symmetricP95": 42.752486749112
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 161,
+                "sourceRecall1": 0.2727272727272727,
+                "sourceRecall2": 0.37727272727272726,
+                "sourceRecall3": 0.45,
+                "sourceDistanceMean": 5.709992205609231,
+                "candidateDistanceMean": 18.71692130071655,
+                "symmetricMean": 12.213456753162891,
+                "symmetricP95": 42.44997055358225
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 110,
+                "sourceRecall1": 0.2537313432835821,
+                "sourceRecall2": 0.30597014925373134,
+                "sourceRecall3": 0.3582089552238806,
+                "sourceDistanceMean": 6.523001447128552,
+                "candidateDistanceMean": 19.979127896120804,
+                "symmetricMean": 13.251064671624679,
+                "symmetricP95": 43.0
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.152288732394368,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 294,
+                "sourceRecall1": 0.3779385171790235,
+                "sourceRecall2": 0.5099457504520796,
+                "sourceRecall3": 0.6419529837251357,
+                "sourceDistanceMean": 2.700307925829235,
+                "candidateDistanceMean": 2.5416860230287663,
+                "symmetricMean": 2.6209969744290005,
+                "symmetricP95": 8.341839300436614
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 267,
+                "sourceRecall1": 0.3778801843317972,
+                "sourceRecall2": 0.5276497695852534,
+                "sourceRecall3": 0.6774193548387096,
+                "sourceDistanceMean": 2.6382644826240607,
+                "candidateDistanceMean": 2.9609150713647012,
+                "symmetricMean": 2.799589776994381,
+                "symmetricP95": 8.7220065920774
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 213,
+                "sourceRecall1": 0.33695652173913043,
+                "sourceRecall2": 0.5362318840579711,
+                "sourceRecall3": 0.7246376811594203,
+                "sourceDistanceMean": 2.6420623347887826,
+                "candidateDistanceMean": 3.6152524679090465,
+                "symmetricMean": 3.1286574013489146,
+                "symmetricP95": 9.05488611432322
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.081632653061224,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 182,
+                "sourceRecall1": 0.2546816479400749,
+                "sourceRecall2": 0.352059925093633,
+                "sourceRecall3": 0.43820224719101125,
+                "sourceDistanceMean": 5.707478853456042,
+                "candidateDistanceMean": 18.331802090275847,
+                "symmetricMean": 12.019640471865944,
+                "symmetricP95": 42.40508652763321
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 153,
+                "sourceRecall1": 0.2409090909090909,
+                "sourceRecall2": 0.34545454545454546,
+                "sourceRecall3": 0.42727272727272725,
+                "sourceDistanceMean": 5.798988950475316,
+                "candidateDistanceMean": 18.58149167203726,
+                "symmetricMean": 12.190240311256288,
+                "symmetricP95": 42.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 102,
+                "sourceRecall1": 0.1791044776119403,
+                "sourceRecall2": 0.2462686567164179,
+                "sourceRecall3": 0.29850746268656714,
+                "sourceDistanceMean": 6.773392228064618,
+                "candidateDistanceMean": 20.22266666467011,
+                "symmetricMean": 13.498029446367365,
+                "symmetricP95": 42.97602916254692
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.422975352112676,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 293,
+                "sourceRecall1": 0.35443037974683544,
+                "sourceRecall2": 0.48282097649186256,
+                "sourceRecall3": 0.6166365280289331,
+                "sourceDistanceMean": 2.8370578006349647,
+                "candidateDistanceMean": 2.6657472028915326,
+                "symmetricMean": 2.7514025017632484,
+                "symmetricP95": 8.508770322670152
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 265,
+                "sourceRecall1": 0.35253456221198154,
+                "sourceRecall2": 0.49078341013824883,
+                "sourceRecall3": 0.6405529953917051,
+                "sourceDistanceMean": 2.7890802767219984,
+                "candidateDistanceMean": 3.100895271256878,
+                "symmetricMean": 2.944987773989438,
+                "symmetricP95": 8.963776741499451
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 211,
+                "sourceRecall1": 0.322463768115942,
+                "sourceRecall2": 0.4927536231884058,
+                "sourceRecall3": 0.677536231884058,
+                "sourceDistanceMean": 2.7715245964555857,
+                "candidateDistanceMean": 3.765989058569461,
+                "symmetricMean": 3.268756827512523,
+                "symmetricP95": 9.137464797715152
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.064413265306122,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 174,
+                "sourceRecall1": 0.2209737827715356,
+                "sourceRecall2": 0.30337078651685395,
+                "sourceRecall3": 0.40074906367041196,
+                "sourceDistanceMean": 5.861038961132142,
+                "candidateDistanceMean": 18.36480857795907,
+                "symmetricMean": 12.112923769545606,
+                "symmetricP95": 42.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 145,
+                "sourceRecall1": 0.21363636363636362,
+                "sourceRecall2": 0.3090909090909091,
+                "sourceRecall3": 0.40454545454545454,
+                "sourceDistanceMean": 5.934872284795187,
+                "candidateDistanceMean": 18.67500253779212,
+                "symmetricMean": 12.304937411293654,
+                "symmetricP95": 41.973768566183324
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 98,
+                "sourceRecall1": 0.1417910447761194,
+                "sourceRecall2": 0.22388059701492538,
+                "sourceRecall3": 0.2835820895522388,
+                "sourceDistanceMean": 6.9622757394717745,
+                "candidateDistanceMean": 20.145557086356472,
+                "symmetricMean": 13.553916412914123,
+                "symmetricP95": 42.4605624581857
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.586854460093896,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 291,
+                "sourceRecall1": 0.321880650994575,
+                "sourceRecall2": 0.45027124773960214,
+                "sourceRecall3": 0.5913200723327305,
+                "sourceDistanceMean": 3.0246072873211083,
+                "candidateDistanceMean": 2.805960807778454,
+                "symmetricMean": 2.915284047549781,
+                "symmetricP95": 8.573164506180078
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 264,
+                "sourceRecall1": 0.31797235023041476,
+                "sourceRecall2": 0.45622119815668205,
+                "sourceRecall3": 0.6082949308755761,
+                "sourceDistanceMean": 2.9579540080185125,
+                "candidateDistanceMean": 3.2799167151646187,
+                "symmetricMean": 3.1189353615915656,
+                "symmetricP95": 8.94427190999916
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 211,
+                "sourceRecall1": 0.2898550724637681,
+                "sourceRecall2": 0.43478260869565216,
+                "sourceRecall3": 0.6231884057971014,
+                "sourceDistanceMean": 2.916576077283552,
+                "candidateDistanceMean": 3.899998182836452,
+                "symmetricMean": 3.408287130060002,
+                "symmetricP95": 9.219544457292887
+              }
+            }
+          }
+        }
+      }
+    ],
+    "tone-only": [
+      {
+        "dx": -1,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 11.066326530612244,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 204,
+                "sourceRecall1": 0.20973782771535582,
+                "sourceRecall2": 0.2808988764044944,
+                "sourceRecall3": 0.36704119850187267,
+                "sourceDistanceMean": 5.827738527016801,
+                "candidateDistanceMean": 22.146821829719755,
+                "symmetricMean": 13.987280178368279,
+                "symmetricP95": 44.47715266057085
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 182,
+                "sourceRecall1": 0.20909090909090908,
+                "sourceRecall2": 0.29545454545454547,
+                "sourceRecall3": 0.39090909090909093,
+                "sourceDistanceMean": 5.507320646111293,
+                "candidateDistanceMean": 22.664177167110772,
+                "symmetricMean": 14.085748906611032,
+                "symmetricP95": 44.57056748441226
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 143,
+                "sourceRecall1": 0.14925373134328357,
+                "sourceRecall2": 0.26119402985074625,
+                "sourceRecall3": 0.3880597014925373,
+                "sourceDistanceMean": 5.635661049626765,
+                "candidateDistanceMean": 23.06573545080969,
+                "symmetricMean": 14.350698250218228,
+                "symmetricP95": 44.678845972903346
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.478286384976524,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 361,
+                "sourceRecall1": 0.4484629294755877,
+                "sourceRecall2": 0.5822784810126582,
+                "sourceRecall3": 0.7341772151898734,
+                "sourceDistanceMean": 2.3277882836598787,
+                "candidateDistanceMean": 2.5100316159223013,
+                "symmetricMean": 2.41890994979109,
+                "symmetricP95": 8.48528137423857
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 315,
+                "sourceRecall1": 0.4792626728110599,
+                "sourceRecall2": 0.6129032258064516,
+                "sourceRecall3": 0.7580645161290323,
+                "sourceDistanceMean": 2.263295464453859,
+                "candidateDistanceMean": 2.9346147724165808,
+                "symmetricMean": 2.59895511843522,
+                "symmetricP95": 10.339033051364067
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 257,
+                "sourceRecall1": 0.5072463768115942,
+                "sourceRecall2": 0.6630434782608695,
+                "sourceRecall3": 0.7753623188405797,
+                "sourceDistanceMean": 2.1391601861617047,
+                "candidateDistanceMean": 3.5333814242613926,
+                "symmetricMean": 2.836270805211549,
+                "symmetricP95": 11.40175425099138
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.942389455782314,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 197,
+                "sourceRecall1": 0.19101123595505617,
+                "sourceRecall2": 0.25842696629213485,
+                "sourceRecall3": 0.3408239700374532,
+                "sourceDistanceMean": 6.039892896492471,
+                "candidateDistanceMean": 22.01826424092058,
+                "symmetricMean": 14.029078568706526,
+                "symmetricP95": 44.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 176,
+                "sourceRecall1": 0.19090909090909092,
+                "sourceRecall2": 0.2681818181818182,
+                "sourceRecall3": 0.36363636363636365,
+                "sourceDistanceMean": 5.6922811246346905,
+                "candidateDistanceMean": 22.59203416620953,
+                "symmetricMean": 14.14215764542211,
+                "symmetricP95": 44.01135777277262
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 136,
+                "sourceRecall1": 0.11194029850746269,
+                "sourceRecall2": 0.22388059701492538,
+                "sourceRecall3": 0.35074626865671643,
+                "sourceDistanceMean": 5.821856861733088,
+                "candidateDistanceMean": 22.92082943560357,
+                "symmetricMean": 14.371343148668329,
+                "symmetricP95": 44.18362487880674
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 22.134829812206572,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 363,
+                "sourceRecall1": 0.4412296564195298,
+                "sourceRecall2": 0.5678119349005425,
+                "sourceRecall3": 0.7088607594936709,
+                "sourceDistanceMean": 2.393568143556168,
+                "candidateDistanceMean": 2.662766660963468,
+                "symmetricMean": 2.528167402259818,
+                "symmetricP95": 8.54400374531753
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 315,
+                "sourceRecall1": 0.45161290322580644,
+                "sourceRecall2": 0.5921658986175116,
+                "sourceRecall3": 0.7442396313364056,
+                "sourceDistanceMean": 2.328337672067287,
+                "candidateDistanceMean": 3.080446121077145,
+                "symmetricMean": 2.704391896572216,
+                "symmetricP95": 10.295630140987
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 255,
+                "sourceRecall1": 0.4746376811594203,
+                "sourceRecall2": 0.6485507246376812,
+                "sourceRecall3": 0.7681159420289855,
+                "sourceDistanceMean": 2.243616036621568,
+                "candidateDistanceMean": 3.6778227909447154,
+                "symmetricMean": 2.9607194137831416,
+                "symmetricP95": 11.47979911260114
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.812925170068027,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 187,
+                "sourceRecall1": 0.17228464419475656,
+                "sourceRecall2": 0.23595505617977527,
+                "sourceRecall3": 0.3146067415730337,
+                "sourceDistanceMean": 6.316589552673878,
+                "candidateDistanceMean": 22.0210058256168,
+                "symmetricMean": 14.16879768914534,
+                "symmetricP95": 43.979529581893274
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 168,
+                "sourceRecall1": 0.16818181818181818,
+                "sourceRecall2": 0.2409090909090909,
+                "sourceRecall3": 0.33181818181818185,
+                "sourceDistanceMean": 5.935873799968553,
+                "candidateDistanceMean": 22.59183206935142,
+                "symmetricMean": 14.263852934659987,
+                "symmetricP95": 44.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 128,
+                "sourceRecall1": 0.08208955223880597,
+                "sourceRecall2": 0.1791044776119403,
+                "sourceRecall3": 0.30597014925373134,
+                "sourceDistanceMean": 6.085328260762318,
+                "candidateDistanceMean": 22.944232775252686,
+                "symmetricMean": 14.514780518007502,
+                "symmetricP95": 44.0
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 22.720217136150236,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 360,
+                "sourceRecall1": 0.4267631103074141,
+                "sourceRecall2": 0.5497287522603979,
+                "sourceRecall3": 0.6799276672694394,
+                "sourceDistanceMean": 2.4912375145928283,
+                "candidateDistanceMean": 2.767694077059738,
+                "symmetricMean": 2.629465795826283,
+                "symmetricP95": 8.546919821403787
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 314,
+                "sourceRecall1": 0.41935483870967744,
+                "sourceRecall2": 0.5622119815668203,
+                "sourceRecall3": 0.7119815668202765,
+                "sourceDistanceMean": 2.446372393058713,
+                "candidateDistanceMean": 3.258185887618284,
+                "symmetricMean": 2.8522791403384984,
+                "symmetricP95": 10.295630140987
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 257,
+                "sourceRecall1": 0.427536231884058,
+                "sourceRecall2": 0.6014492753623188,
+                "sourceRecall3": 0.7608695652173914,
+                "sourceDistanceMean": 2.383305941529027,
+                "candidateDistanceMean": 3.8827173617857818,
+                "symmetricMean": 3.1330116516574043,
+                "symmetricP95": 11.661903789690601
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": -1,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.941220238095237,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 210,
+                "sourceRecall1": 0.23595505617977527,
+                "sourceRecall2": 0.31835205992509363,
+                "sourceRecall3": 0.4232209737827715,
+                "sourceDistanceMean": 5.401179953362957,
+                "candidateDistanceMean": 20.533243721352314,
+                "symmetricMean": 12.967211837357635,
+                "symmetricP95": 43.587517746005425
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 186,
+                "sourceRecall1": 0.24545454545454545,
+                "sourceRecall2": 0.33636363636363636,
+                "sourceRecall3": 0.43636363636363634,
+                "sourceDistanceMean": 5.362884843030127,
+                "candidateDistanceMean": 21.09104018668387,
+                "symmetricMean": 13.226962514856998,
+                "symmetricP95": 43.717110803383164
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 145,
+                "sourceRecall1": 0.208955223880597,
+                "sourceRecall2": 0.30597014925373134,
+                "sourceRecall3": 0.39552238805970147,
+                "sourceDistanceMean": 5.801034565031659,
+                "candidateDistanceMean": 21.64003821972397,
+                "symmetricMean": 13.720536392377815,
+                "symmetricP95": 43.9180970981666
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 22.203051643192488,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 344,
+                "sourceRecall1": 0.4448462929475588,
+                "sourceRecall2": 0.569620253164557,
+                "sourceRecall3": 0.6980108499095841,
+                "sourceDistanceMean": 2.4209369364300413,
+                "candidateDistanceMean": 2.4561778471592532,
+                "symmetricMean": 2.4385573917946473,
+                "symmetricP95": 8.54400374531753
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 303,
+                "sourceRecall1": 0.44930875576036866,
+                "sourceRecall2": 0.5898617511520737,
+                "sourceRecall3": 0.728110599078341,
+                "sourceDistanceMean": 2.381700301226196,
+                "candidateDistanceMean": 2.9400817293845622,
+                "symmetricMean": 2.660891015305379,
+                "symmetricP95": 9.486832980505138
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 247,
+                "sourceRecall1": 0.4601449275362319,
+                "sourceRecall2": 0.6340579710144928,
+                "sourceRecall3": 0.7753623188405797,
+                "sourceDistanceMean": 2.3298198206346017,
+                "candidateDistanceMean": 3.5475591816244627,
+                "symmetricMean": 2.938689501129532,
+                "symmetricP95": 10.295630140987
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.86267006802721,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 202,
+                "sourceRecall1": 0.21348314606741572,
+                "sourceRecall2": 0.299625468164794,
+                "sourceRecall3": 0.3970037453183521,
+                "sourceDistanceMean": 5.522700495682663,
+                "candidateDistanceMean": 20.314204253031352,
+                "symmetricMean": 12.918452374357008,
+                "symmetricP95": 43.132343759233684
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 179,
+                "sourceRecall1": 0.22727272727272727,
+                "sourceRecall2": 0.3090909090909091,
+                "sourceRecall3": 0.4090909090909091,
+                "sourceDistanceMean": 5.477240858508074,
+                "candidateDistanceMean": 20.908303082645787,
+                "symmetricMean": 13.192771970576931,
+                "symmetricP95": 43.19489818871701
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 137,
+                "sourceRecall1": 0.1791044776119403,
+                "sourceRecall2": 0.27611940298507465,
+                "sourceRecall3": 0.39552238805970147,
+                "sourceDistanceMean": 5.9405151286015965,
+                "candidateDistanceMean": 21.627711601679298,
+                "symmetricMean": 13.784113365140447,
+                "symmetricP95": 43.39522089319636
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 22.680604460093896,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 348,
+                "sourceRecall1": 0.41952983725135623,
+                "sourceRecall2": 0.5424954792043399,
+                "sourceRecall3": 0.6799276672694394,
+                "sourceDistanceMean": 2.5200677418559314,
+                "candidateDistanceMean": 2.6178438017208925,
+                "symmetricMean": 2.5689557717884117,
+                "symmetricP95": 8.602325267042627
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 303,
+                "sourceRecall1": 0.41244239631336405,
+                "sourceRecall2": 0.5599078341013825,
+                "sourceRecall3": 0.7050691244239631,
+                "sourceDistanceMean": 2.4916075332006202,
+                "candidateDistanceMean": 3.082210098820214,
+                "symmetricMean": 2.786908816010417,
+                "symmetricP95": 9.486832980505138
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 246,
+                "sourceRecall1": 0.42028985507246375,
+                "sourceRecall2": 0.5942028985507246,
+                "sourceRecall3": 0.7572463768115942,
+                "sourceDistanceMean": 2.4517704488839547,
+                "candidateDistanceMean": 3.704436684328664,
+                "symmetricMean": 3.078103566606309,
+                "symmetricP95": 10.404137416929663
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.756164965986395,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 193,
+                "sourceRecall1": 0.19850187265917604,
+                "sourceRecall2": 0.27715355805243447,
+                "sourceRecall3": 0.3595505617977528,
+                "sourceDistanceMean": 5.697404587989433,
+                "candidateDistanceMean": 20.145788807972846,
+                "symmetricMean": 12.921596697981139,
+                "symmetricP95": 43.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 171,
+                "sourceRecall1": 0.2,
+                "sourceRecall2": 0.2818181818181818,
+                "sourceRecall3": 0.36818181818181817,
+                "sourceDistanceMean": 5.65525397797779,
+                "candidateDistanceMean": 20.865273406247262,
+                "symmetricMean": 13.260263692112526,
+                "symmetricP95": 43.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 128,
+                "sourceRecall1": 0.13432835820895522,
+                "sourceRecall2": 0.23880597014925373,
+                "sourceRecall3": 0.3582089552238806,
+                "sourceDistanceMean": 6.129631691429861,
+                "candidateDistanceMean": 21.776855712228866,
+                "symmetricMean": 13.953243701829363,
+                "symmetricP95": 43.12066974619594
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 23.071596244131456,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 346,
+                "sourceRecall1": 0.39421338155515373,
+                "sourceRecall2": 0.5099457504520796,
+                "sourceRecall3": 0.6491862567811935,
+                "sourceDistanceMean": 2.6627638946251113,
+                "candidateDistanceMean": 2.7438167751718545,
+                "symmetricMean": 2.703290334898483,
+                "symmetricP95": 8.54400374531753
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 302,
+                "sourceRecall1": 0.38018433179723504,
+                "sourceRecall2": 0.5207373271889401,
+                "sourceRecall3": 0.6705069124423964,
+                "sourceDistanceMean": 2.668274885301528,
+                "candidateDistanceMean": 3.2548334623461517,
+                "symmetricMean": 2.96155417382384,
+                "symmetricP95": 9.486832980505138
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 247,
+                "sourceRecall1": 0.358695652173913,
+                "sourceRecall2": 0.5434782608695652,
+                "sourceRecall3": 0.7137681159420289,
+                "sourceDistanceMean": 2.609746872372761,
+                "candidateDistanceMean": 3.905259839535652,
+                "symmetricMean": 3.2575033559542064,
+                "symmetricP95": 10.671322682661467
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": -1,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.784757653061224,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 217,
+                "sourceRecall1": 0.27340823970037453,
+                "sourceRecall2": 0.38202247191011235,
+                "sourceRecall3": 0.4606741573033708,
+                "sourceDistanceMean": 5.592872323890122,
+                "candidateDistanceMean": 18.862354578924155,
+                "symmetricMean": 12.227613451407137,
+                "symmetricP95": 42.616466600750876
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 192,
+                "sourceRecall1": 0.3,
+                "sourceRecall2": 0.38636363636363635,
+                "sourceRecall3": 0.45454545454545453,
+                "sourceDistanceMean": 5.625147983727777,
+                "candidateDistanceMean": 19.273044398501128,
+                "symmetricMean": 12.449096191114453,
+                "symmetricP95": 42.73632078801622
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 146,
+                "sourceRecall1": 0.2835820895522388,
+                "sourceRecall2": 0.35074626865671643,
+                "sourceRecall3": 0.39552238805970147,
+                "sourceDistanceMean": 6.157295811776489,
+                "candidateDistanceMean": 20.24614851633073,
+                "symmetricMean": 13.20172216405361,
+                "symmetricP95": 43.0
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 22.577464788732396,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 329,
+                "sourceRecall1": 0.4177215189873418,
+                "sourceRecall2": 0.5424954792043399,
+                "sourceRecall3": 0.6636528028933092,
+                "sourceDistanceMean": 2.5578000315280542,
+                "candidateDistanceMean": 2.4103788543521194,
+                "symmetricMean": 2.484089442940087,
+                "symmetricP95": 8.341839300436614
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 291,
+                "sourceRecall1": 0.4009216589861751,
+                "sourceRecall2": 0.5506912442396313,
+                "sourceRecall3": 0.6935483870967742,
+                "sourceDistanceMean": 2.546183854060575,
+                "candidateDistanceMean": 2.932313288003579,
+                "symmetricMean": 2.7392485710320766,
+                "symmetricP95": 8.602325267042627
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 238,
+                "sourceRecall1": 0.3695652173913043,
+                "sourceRecall2": 0.5652173913043478,
+                "sourceRecall3": 0.7391304347826086,
+                "sourceDistanceMean": 2.5421699156834263,
+                "candidateDistanceMean": 3.489253206462667,
+                "symmetricMean": 3.0157115610730467,
+                "symmetricP95": 9.080009036010734
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.750744047619047,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 208,
+                "sourceRecall1": 0.2546816479400749,
+                "sourceRecall2": 0.352059925093633,
+                "sourceRecall3": 0.43820224719101125,
+                "sourceDistanceMean": 5.696242898399862,
+                "candidateDistanceMean": 18.83550650339386,
+                "symmetricMean": 12.26587470089686,
+                "symmetricP95": 42.277164466275345
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 184,
+                "sourceRecall1": 0.2727272727272727,
+                "sourceRecall2": 0.36818181818181817,
+                "sourceRecall3": 0.43636363636363634,
+                "sourceDistanceMean": 5.708078848270392,
+                "candidateDistanceMean": 19.17158327908093,
+                "symmetricMean": 12.439831063675662,
+                "symmetricP95": 42.382474970544905
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 137,
+                "sourceRecall1": 0.22388059701492538,
+                "sourceRecall2": 0.3208955223880597,
+                "sourceRecall3": 0.373134328358209,
+                "sourceDistanceMean": 6.305169551631442,
+                "candidateDistanceMean": 20.312639550386336,
+                "symmetricMean": 13.30890455100889,
+                "symmetricP95": 42.616466600750876
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 22.840522300469484,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 331,
+                "sourceRecall1": 0.39059674502712477,
+                "sourceRecall2": 0.5135623869801085,
+                "sourceRecall3": 0.6419529837251357,
+                "sourceDistanceMean": 2.686811114888939,
+                "candidateDistanceMean": 2.5413838305661938,
+                "symmetricMean": 2.6140974727275665,
+                "symmetricP95": 8.508770322670152
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 290,
+                "sourceRecall1": 0.37557603686635943,
+                "sourceRecall2": 0.511520737327189,
+                "sourceRecall3": 0.6589861751152074,
+                "sourceDistanceMean": 2.675085005291494,
+                "candidateDistanceMean": 3.0513077315247608,
+                "symmetricMean": 2.8631963684081274,
+                "symmetricP95": 8.94427190999916
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 237,
+                "sourceRecall1": 0.3442028985507246,
+                "sourceRecall2": 0.5181159420289855,
+                "sourceRecall3": 0.6920289855072463,
+                "sourceDistanceMean": 2.6709582257188416,
+                "candidateDistanceMean": 3.6329530371149716,
+                "symmetricMean": 3.1519556314169064,
+                "symmetricP95": 9.262431792245629
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.71513605442177,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 199,
+                "sourceRecall1": 0.2247191011235955,
+                "sourceRecall2": 0.30711610486891383,
+                "sourceRecall3": 0.40074906367041196,
+                "sourceDistanceMean": 5.84335600475859,
+                "candidateDistanceMean": 18.76455139396807,
+                "symmetricMean": 12.30395369936333,
+                "symmetricP95": 42.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 176,
+                "sourceRecall1": 0.2318181818181818,
+                "sourceRecall2": 0.3181818181818182,
+                "sourceRecall3": 0.40454545454545454,
+                "sourceDistanceMean": 5.86338035197074,
+                "candidateDistanceMean": 19.2587119069107,
+                "symmetricMean": 12.56104612944072,
+                "symmetricP95": 42.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 129,
+                "sourceRecall1": 0.1791044776119403,
+                "sourceRecall2": 0.2835820895522388,
+                "sourceRecall3": 0.35074626865671643,
+                "sourceDistanceMean": 6.481657301881487,
+                "candidateDistanceMean": 20.488976712624673,
+                "symmetricMean": 13.48531700725308,
+                "symmetricP95": 42.26998233214935
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 22.985181924882628,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 329,
+                "sourceRecall1": 0.35804701627486435,
+                "sourceRecall2": 0.47920433996383366,
+                "sourceRecall3": 0.6130198915009042,
+                "sourceDistanceMean": 2.8568091106407514,
+                "candidateDistanceMean": 2.659515597962126,
+                "symmetricMean": 2.7581623543014384,
+                "symmetricP95": 8.520514796885944
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 287,
+                "sourceRecall1": 0.33640552995391704,
+                "sourceRecall2": 0.47465437788018433,
+                "sourceRecall3": 0.6290322580645161,
+                "sourceDistanceMean": 2.8637404275887133,
+                "candidateDistanceMean": 3.20810844794242,
+                "symmetricMean": 3.0359244377655665,
+                "symmetricP95": 8.983281572999747
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 236,
+                "sourceRecall1": 0.3115942028985507,
+                "sourceRecall2": 0.45652173913043476,
+                "sourceRecall3": 0.644927536231884,
+                "sourceDistanceMean": 2.822995366782255,
+                "candidateDistanceMean": 3.823103460469435,
+                "symmetricMean": 3.323049413625845,
+                "symmetricP95": 9.447194094168736
+              }
+            }
+          }
+        }
+      }
+    ],
+    "registration-only": [
+      {
+        "dx": -1,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 11.90954506802721,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 245,
+                "sourceRecall1": 0.15355805243445692,
+                "sourceRecall2": 0.24344569288389514,
+                "sourceRecall3": 0.3295880149812734,
+                "sourceDistanceMean": 7.5152491199916875,
+                "candidateDistanceMean": 11.674424179724065,
+                "symmetricMean": 9.594836649857877,
+                "symmetricP95": 22.77229646492222
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 198,
+                "sourceRecall1": 0.11818181818181818,
+                "sourceRecall2": 0.19545454545454546,
+                "sourceRecall3": 0.29545454545454547,
+                "sourceDistanceMean": 8.244041960446701,
+                "candidateDistanceMean": 11.218807535572672,
+                "symmetricMean": 9.731424748009687,
+                "symmetricP95": 21.884671760842114
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 134,
+                "sourceRecall1": 0.08955223880597014,
+                "sourceRecall2": 0.15671641791044777,
+                "sourceRecall3": 0.26119402985074625,
+                "sourceDistanceMean": 8.813704055467213,
+                "candidateDistanceMean": 12.075841614353726,
+                "symmetricMean": 10.44477283491047,
+                "symmetricP95": 22.60349504641585
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 19.35137910798122,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 149,
+                "sourceRecall1": 0.10488245931283906,
+                "sourceRecall2": 0.13381555153707053,
+                "sourceRecall3": 0.15913200723327306,
+                "sourceDistanceMean": 9.382145494972473,
+                "candidateDistanceMean": 4.044187537922831,
+                "symmetricMean": 6.713166516447652,
+                "symmetricP95": 16.55294535724685
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 132,
+                "sourceRecall1": 0.10138248847926268,
+                "sourceRecall2": 0.1336405529953917,
+                "sourceRecall3": 0.16129032258064516,
+                "sourceDistanceMean": 9.432200704987341,
+                "candidateDistanceMean": 4.314747473873934,
+                "symmetricMean": 6.873474089430638,
+                "symmetricP95": 15.652475842498529
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 105,
+                "sourceRecall1": 0.06521739130434782,
+                "sourceRecall2": 0.10144927536231885,
+                "sourceRecall3": 0.14492753623188406,
+                "sourceDistanceMean": 9.704692137366388,
+                "candidateDistanceMean": 5.119842956042277,
+                "symmetricMean": 7.412267546704332,
+                "symmetricP95": 15.231546211727817
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 11.817602040816327,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 245,
+                "sourceRecall1": 0.1647940074906367,
+                "sourceRecall2": 0.24344569288389514,
+                "sourceRecall3": 0.3295880149812734,
+                "sourceDistanceMean": 7.4545048017571505,
+                "candidateDistanceMean": 11.330338162753684,
+                "symmetricMean": 9.392421482255417,
+                "symmetricP95": 22.77229646492222
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 200,
+                "sourceRecall1": 0.12272727272727273,
+                "sourceRecall2": 0.20454545454545456,
+                "sourceRecall3": 0.3,
+                "sourceDistanceMean": 7.675178179760505,
+                "candidateDistanceMean": 10.890834247114816,
+                "symmetricMean": 9.28300621343766,
+                "symmetricP95": 21.840329667841555
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 132,
+                "sourceRecall1": 0.08955223880597014,
+                "sourceRecall2": 0.15671641791044777,
+                "sourceRecall3": 0.23880597014925373,
+                "sourceDistanceMean": 8.758942911316167,
+                "candidateDistanceMean": 11.6430741975054,
+                "symmetricMean": 10.201008554410784,
+                "symmetricP95": 22.27428771989504
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 19.289319248826292,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 149,
+                "sourceRecall1": 0.09945750452079566,
+                "sourceRecall2": 0.1301989150090416,
+                "sourceRecall3": 0.1609403254972875,
+                "sourceDistanceMean": 9.550732038620533,
+                "candidateDistanceMean": 3.9258265321154187,
+                "symmetricMean": 6.738279285367976,
+                "symmetricP95": 17.0
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 131,
+                "sourceRecall1": 0.0944700460829493,
+                "sourceRecall2": 0.1313364055299539,
+                "sourceRecall3": 0.16129032258064516,
+                "sourceDistanceMean": 9.62314256609274,
+                "candidateDistanceMean": 4.174843250518041,
+                "symmetricMean": 6.898992908305391,
+                "symmetricP95": 16.1245154965971
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 105,
+                "sourceRecall1": 0.07608695652173914,
+                "sourceRecall2": 0.10869565217391304,
+                "sourceRecall3": 0.14855072463768115,
+                "sourceDistanceMean": 9.895790360508014,
+                "candidateDistanceMean": 4.991498173724246,
+                "symmetricMean": 7.44364426711613,
+                "symmetricP95": 15.652475842498529
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 11.708758503401361,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 243,
+                "sourceRecall1": 0.1647940074906367,
+                "sourceRecall2": 0.24344569288389514,
+                "sourceRecall3": 0.3258426966292135,
+                "sourceDistanceMean": 7.429623225634896,
+                "candidateDistanceMean": 11.117315572723008,
+                "symmetricMean": 9.273469399178952,
+                "symmetricP95": 22.755758605778663
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 197,
+                "sourceRecall1": 0.12727272727272726,
+                "sourceRecall2": 0.20909090909090908,
+                "sourceRecall3": 0.3,
+                "sourceDistanceMean": 7.680617935437323,
+                "candidateDistanceMean": 10.69070910865356,
+                "symmetricMean": 9.185663522045441,
+                "symmetricP95": 21.840329667841555
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 129,
+                "sourceRecall1": 0.08208955223880597,
+                "sourceRecall2": 0.16417910447761194,
+                "sourceRecall3": 0.22388059701492538,
+                "sourceDistanceMean": 8.268919086910833,
+                "candidateDistanceMean": 11.465323001273253,
+                "symmetricMean": 9.867121044092043,
+                "symmetricP95": 22.15845080045452
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 19.214642018779344,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 149,
+                "sourceRecall1": 0.09764918625678119,
+                "sourceRecall2": 0.13200723327305605,
+                "sourceRecall3": 0.15551537070524413,
+                "sourceDistanceMean": 9.70495522578958,
+                "candidateDistanceMean": 3.777980246135153,
+                "symmetricMean": 6.741467735962367,
+                "symmetricP95": 17.46424919657298
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 130,
+                "sourceRecall1": 0.08986175115207373,
+                "sourceRecall2": 0.12903225806451613,
+                "sourceRecall3": 0.15898617511520738,
+                "sourceDistanceMean": 9.795216361258177,
+                "candidateDistanceMean": 4.005004717274495,
+                "symmetricMean": 6.900110539266336,
+                "symmetricP95": 16.55294535724685
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 105,
+                "sourceRecall1": 0.07971014492753623,
+                "sourceRecall2": 0.11594202898550725,
+                "sourceRecall3": 0.14855072463768115,
+                "sourceDistanceMean": 10.05284892603783,
+                "candidateDistanceMean": 4.898038892195286,
+                "symmetricMean": 7.475443909116558,
+                "symmetricP95": 16.1245154965971
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": -1,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 11.9421768707483,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 247,
+                "sourceRecall1": 0.17228464419475656,
+                "sourceRecall2": 0.24719101123595505,
+                "sourceRecall3": 0.3258426966292135,
+                "sourceDistanceMean": 7.1775257346063315,
+                "candidateDistanceMean": 11.910234876311781,
+                "symmetricMean": 9.543880305459057,
+                "symmetricP95": 23.661630000038368
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 202,
+                "sourceRecall1": 0.12272727272727273,
+                "sourceRecall2": 0.20454545454545456,
+                "sourceRecall3": 0.29545454545454547,
+                "sourceDistanceMean": 7.762549708212018,
+                "candidateDistanceMean": 11.538342655674757,
+                "symmetricMean": 9.650446181943387,
+                "symmetricP95": 22.45539198259095
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 136,
+                "sourceRecall1": 0.08208955223880597,
+                "sourceRecall2": 0.15671641791044777,
+                "sourceRecall3": 0.23134328358208955,
+                "sourceDistanceMean": 8.271128489299189,
+                "candidateDistanceMean": 12.428117359901464,
+                "symmetricMean": 10.349622924600325,
+                "symmetricP95": 23.499482028081793
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 19.084213615023476,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 136,
+                "sourceRecall1": 0.0922242314647378,
+                "sourceRecall2": 0.11754068716094032,
+                "sourceRecall3": 0.1410488245931284,
+                "sourceDistanceMean": 10.18475681775892,
+                "candidateDistanceMean": 3.9966662817816117,
+                "symmetricMean": 7.0907115497702655,
+                "symmetricP95": 17.46424919657298
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 120,
+                "sourceRecall1": 0.08755760368663594,
+                "sourceRecall2": 0.11981566820276497,
+                "sourceRecall3": 0.14516129032258066,
+                "sourceDistanceMean": 10.185882062634564,
+                "candidateDistanceMean": 4.262463299107292,
+                "symmetricMean": 7.224172680870928,
+                "symmetricP95": 16.55294535724685
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 96,
+                "sourceRecall1": 0.06521739130434782,
+                "sourceRecall2": 0.09057971014492754,
+                "sourceRecall3": 0.12681159420289856,
+                "sourceDistanceMean": 10.52929747157174,
+                "candidateDistanceMean": 5.120631429379446,
+                "symmetricMean": 7.824964450475592,
+                "symmetricP95": 16.239726441670292
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 11.857993197278912,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 247,
+                "sourceRecall1": 0.15730337078651685,
+                "sourceRecall2": 0.24719101123595505,
+                "sourceRecall3": 0.3295880149812734,
+                "sourceDistanceMean": 7.208389868792291,
+                "candidateDistanceMean": 11.645338497690235,
+                "symmetricMean": 9.426864183241262,
+                "symmetricP95": 23.661630000038368
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 201,
+                "sourceRecall1": 0.11363636363636363,
+                "sourceRecall2": 0.19090909090909092,
+                "sourceRecall3": 0.30454545454545456,
+                "sourceDistanceMean": 7.45141415564107,
+                "candidateDistanceMean": 11.287445567423294,
+                "symmetricMean": 9.369429861532183,
+                "symmetricP95": 22.47220505424423
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 133,
+                "sourceRecall1": 0.08208955223880597,
+                "sourceRecall2": 0.15671641791044777,
+                "sourceRecall3": 0.208955223880597,
+                "sourceDistanceMean": 8.495073524375377,
+                "candidateDistanceMean": 12.076531019362521,
+                "symmetricMean": 10.285802271868949,
+                "symmetricP95": 23.220658885382246
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 19.076437793427232,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 137,
+                "sourceRecall1": 0.0867992766726944,
+                "sourceRecall2": 0.11211573236889692,
+                "sourceRecall3": 0.13743218806509946,
+                "sourceDistanceMean": 10.325275134491957,
+                "candidateDistanceMean": 3.848703911298305,
+                "symmetricMean": 7.086989522895131,
+                "symmetricP95": 17.88854381999832
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 120,
+                "sourceRecall1": 0.08525345622119816,
+                "sourceRecall2": 0.1152073732718894,
+                "sourceRecall3": 0.14055299539170507,
+                "sourceDistanceMean": 10.336626949816212,
+                "candidateDistanceMean": 4.12144835756308,
+                "symmetricMean": 7.229037653689646,
+                "symmetricP95": 17.0
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 96,
+                "sourceRecall1": 0.06521739130434782,
+                "sourceRecall2": 0.10144927536231885,
+                "sourceRecall3": 0.11956521739130435,
+                "sourceDistanceMean": 10.654405233779116,
+                "candidateDistanceMean": 5.019828854830654,
+                "symmetricMean": 7.837117044304884,
+                "symmetricP95": 16.55294535724685
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 11.792942176870747,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 246,
+                "sourceRecall1": 0.15730337078651685,
+                "sourceRecall2": 0.2397003745318352,
+                "sourceRecall3": 0.3408239700374532,
+                "sourceDistanceMean": 6.760746220839568,
+                "candidateDistanceMean": 11.404310492544164,
+                "symmetricMean": 9.082528356691867,
+                "symmetricP95": 23.539126315405
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 200,
+                "sourceRecall1": 0.12272727272727273,
+                "sourceRecall2": 0.2,
+                "sourceRecall3": 0.30454545454545456,
+                "sourceDistanceMean": 7.411332779657989,
+                "candidateDistanceMean": 10.995624370371551,
+                "symmetricMean": 9.20347857501477,
+                "symmetricP95": 22.47220505424423
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 133,
+                "sourceRecall1": 0.08955223880597014,
+                "sourceRecall2": 0.1417910447761194,
+                "sourceRecall3": 0.22388059701492538,
+                "sourceDistanceMean": 7.91330031335552,
+                "candidateDistanceMean": 11.816760470144287,
+                "symmetricMean": 9.865030391749903,
+                "symmetricP95": 23.130006460532794
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 19.068661971830984,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 137,
+                "sourceRecall1": 0.081374321880651,
+                "sourceRecall2": 0.10488245931283906,
+                "sourceRecall3": 0.12839059674502712,
+                "sourceDistanceMean": 10.467885573836217,
+                "candidateDistanceMean": 3.711794224884868,
+                "symmetricMean": 7.089839899360542,
+                "symmetricP95": 18.35755975068582
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 119,
+                "sourceRecall1": 0.07834101382488479,
+                "sourceRecall2": 0.10368663594470046,
+                "sourceRecall3": 0.1336405529953917,
+                "sourceDistanceMean": 10.483069933301309,
+                "candidateDistanceMean": 3.9964227368162533,
+                "symmetricMean": 7.239746335058781,
+                "symmetricP95": 17.46424919657298
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 97,
+                "sourceRecall1": 0.06884057971014493,
+                "sourceRecall2": 0.09782608695652174,
+                "sourceRecall3": 0.11594202898550725,
+                "sourceDistanceMean": 10.781873737712885,
+                "candidateDistanceMean": 4.9289766709384,
+                "symmetricMean": 7.855425204325643,
+                "symmetricP95": 17.0
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": -1,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 12.032312925170068,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 247,
+                "sourceRecall1": 0.17228464419475656,
+                "sourceRecall2": 0.24719101123595505,
+                "sourceRecall3": 0.33707865168539325,
+                "sourceDistanceMean": 6.820021697925073,
+                "candidateDistanceMean": 12.351011883442563,
+                "symmetricMean": 9.585516790683819,
+                "symmetricP95": 24.594202046451404
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 202,
+                "sourceRecall1": 0.1318181818181818,
+                "sourceRecall2": 0.21363636363636362,
+                "sourceRecall3": 0.3090909090909091,
+                "sourceDistanceMean": 6.992767205631706,
+                "candidateDistanceMean": 12.034354680723338,
+                "symmetricMean": 9.513560943177522,
+                "symmetricP95": 23.393269468428805
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 137,
+                "sourceRecall1": 0.08955223880597014,
+                "sourceRecall2": 0.15671641791044777,
+                "sourceRecall3": 0.23134328358208955,
+                "sourceDistanceMean": 7.891488953844382,
+                "candidateDistanceMean": 12.929571810944172,
+                "symmetricMean": 10.410530382394278,
+                "symmetricP95": 24.42090867310886
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 19.079958920187792,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 129,
+                "sourceRecall1": 0.07414104882459313,
+                "sourceRecall2": 0.10126582278481013,
+                "sourceRecall3": 0.12296564195298372,
+                "sourceDistanceMean": 10.656013873354986,
+                "candidateDistanceMean": 3.8137628447505376,
+                "symmetricMean": 7.234888359052762,
+                "symmetricP95": 18.35755975068582
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 113,
+                "sourceRecall1": 0.06682027649769585,
+                "sourceRecall2": 0.09907834101382489,
+                "sourceRecall3": 0.1313364055299539,
+                "sourceDistanceMean": 10.621059939018313,
+                "candidateDistanceMean": 4.095776350154751,
+                "symmetricMean": 7.3584181445865315,
+                "symmetricP95": 17.46424919657298
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 91,
+                "sourceRecall1": 0.057971014492753624,
+                "sourceRecall2": 0.07971014492753623,
+                "sourceRecall3": 0.10869565217391304,
+                "sourceDistanceMean": 10.912379442483248,
+                "candidateDistanceMean": 4.9740139178353635,
+                "symmetricMean": 7.943196680159305,
+                "symmetricP95": 17.08800749063506
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 11.995535714285714,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 249,
+                "sourceRecall1": 0.16853932584269662,
+                "sourceRecall2": 0.24344569288389514,
+                "sourceRecall3": 0.33707865168539325,
+                "sourceDistanceMean": 6.85242289978208,
+                "candidateDistanceMean": 12.0644709633703,
+                "symmetricMean": 9.458446931576189,
+                "symmetricP95": 24.559543371782897
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 203,
+                "sourceRecall1": 0.11818181818181818,
+                "sourceRecall2": 0.20454545454545456,
+                "sourceRecall3": 0.30454545454545456,
+                "sourceDistanceMean": 7.068280272237722,
+                "candidateDistanceMean": 11.762535723028531,
+                "symmetricMean": 9.415407997633126,
+                "symmetricP95": 23.37713911541836
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 136,
+                "sourceRecall1": 0.08208955223880597,
+                "sourceRecall2": 0.15671641791044777,
+                "sourceRecall3": 0.2462686567164179,
+                "sourceDistanceMean": 7.446671903212498,
+                "candidateDistanceMean": 12.552515316122978,
+                "symmetricMean": 9.999593609667738,
+                "symmetricP95": 24.17126227161577
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 19.070715962441316,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 130,
+                "sourceRecall1": 0.07233273056057866,
+                "sourceRecall2": 0.09403254972875226,
+                "sourceRecall3": 0.11754068716094032,
+                "sourceDistanceMean": 10.801635647035619,
+                "candidateDistanceMean": 3.7216592512938513,
+                "symmetricMean": 7.261647449164736,
+                "symmetricP95": 18.788294228055936
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 113,
+                "sourceRecall1": 0.06682027649769585,
+                "sourceRecall2": 0.0944700460829493,
+                "sourceRecall3": 0.12211981566820276,
+                "sourceDistanceMean": 10.781283702169949,
+                "candidateDistanceMean": 4.031649198458362,
+                "symmetricMean": 7.406466450314156,
+                "symmetricP95": 17.88854381999832
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 91,
+                "sourceRecall1": 0.057971014492753624,
+                "sourceRecall2": 0.07608695652173914,
+                "sourceRecall3": 0.10507246376811594,
+                "sourceDistanceMean": 11.056297136462618,
+                "candidateDistanceMean": 4.934267853972525,
+                "symmetricMean": 7.995282495217571,
+                "symmetricP95": 17.46424919657298
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 11.940901360544217,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 250,
+                "sourceRecall1": 0.15355805243445692,
+                "sourceRecall2": 0.2397003745318352,
+                "sourceRecall3": 0.33707865168539325,
+                "sourceDistanceMean": 6.524588037100389,
+                "candidateDistanceMean": 11.804592604290857,
+                "symmetricMean": 9.164590320695623,
+                "symmetricP95": 24.280375830355542
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 204,
+                "sourceRecall1": 0.12272727272727273,
+                "sourceRecall2": 0.20909090909090908,
+                "sourceRecall3": 0.30454545454545456,
+                "sourceDistanceMean": 7.0457808814029015,
+                "candidateDistanceMean": 11.466849248123946,
+                "symmetricMean": 9.256315064763424,
+                "symmetricP95": 23.36100876240792
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 136,
+                "sourceRecall1": 0.05970149253731343,
+                "sourceRecall2": 0.14925373134328357,
+                "sourceRecall3": 0.23880597014925373,
+                "sourceDistanceMean": 7.588437439558462,
+                "candidateDistanceMean": 12.285404576601412,
+                "symmetricMean": 9.936921008079937,
+                "symmetricP95": 24.10391485498573
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 19.036678403755868,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 130,
+                "sourceRecall1": 0.0650994575045208,
+                "sourceRecall2": 0.08499095840867993,
+                "sourceRecall3": 0.11030741410488246,
+                "sourceDistanceMean": 10.949267951863057,
+                "candidateDistanceMean": 3.6292344635810165,
+                "symmetricMean": 7.289251207722037,
+                "symmetricP95": 19.235384061671343
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 112,
+                "sourceRecall1": 0.06221198156682028,
+                "sourceRecall2": 0.08525345622119816,
+                "sourceRecall3": 0.11290322580645161,
+                "sourceDistanceMean": 10.938583025872205,
+                "candidateDistanceMean": 3.9772655060001787,
+                "symmetricMean": 7.457924265936192,
+                "symmetricP95": 18.35755975068582
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 91,
+                "sourceRecall1": 0.05434782608695652,
+                "sourceRecall2": 0.07246376811594203,
+                "sourceRecall3": 0.09782608695652174,
+                "sourceDistanceMean": 11.200843971307725,
+                "candidateDistanceMean": 4.873819361175499,
+                "symmetricMean": 8.037331666241613,
+                "symmetricP95": 17.88854381999832
+              }
+            }
+          }
+        }
+      }
+    ],
+    "irregularity-only": [
+      {
+        "dx": -1,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.475977891156463,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 166,
+                "sourceRecall1": 0.16853932584269662,
+                "sourceRecall2": 0.23595505617977527,
+                "sourceRecall3": 0.30711610486891383,
+                "sourceDistanceMean": 6.489379005216478,
+                "candidateDistanceMean": 21.743913381352627,
+                "symmetricMean": 14.116646193284552,
+                "symmetricP95": 44.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 147,
+                "sourceRecall1": 0.1590909090909091,
+                "sourceRecall2": 0.2318181818181818,
+                "sourceRecall3": 0.31363636363636366,
+                "sourceDistanceMean": 6.233369198820316,
+                "candidateDistanceMean": 22.250821456980542,
+                "symmetricMean": 14.24209532790043,
+                "symmetricP95": 44.03180176376333
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 117,
+                "sourceRecall1": 0.09701492537313433,
+                "sourceRecall2": 0.16417910447761194,
+                "sourceRecall3": 0.29850746268656714,
+                "sourceDistanceMean": 6.422606039703698,
+                "candidateDistanceMean": 21.777073225376338,
+                "symmetricMean": 14.099839632540018,
+                "symmetricP95": 44.15598612126348
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.417106807511736,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 310,
+                "sourceRecall1": 0.3833634719710669,
+                "sourceRecall2": 0.5117540687160941,
+                "sourceRecall3": 0.6401446654611211,
+                "sourceDistanceMean": 2.818771349344013,
+                "candidateDistanceMean": 2.938069245319479,
+                "symmetricMean": 2.878420297331746,
+                "symmetricP95": 9.0
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 274,
+                "sourceRecall1": 0.39631336405529954,
+                "sourceRecall2": 0.5253456221198156,
+                "sourceRecall3": 0.6751152073732719,
+                "sourceDistanceMean": 2.767837340251238,
+                "candidateDistanceMean": 3.4641555701396554,
+                "symmetricMean": 3.1159964551954467,
+                "symmetricP95": 11.676882432050759
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 221,
+                "sourceRecall1": 0.39492753623188404,
+                "sourceRecall2": 0.5579710144927537,
+                "sourceRecall3": 0.7210144927536232,
+                "sourceDistanceMean": 2.734067618398835,
+                "candidateDistanceMean": 4.234205214225756,
+                "symmetricMean": 3.484136416312295,
+                "symmetricP95": 12.529964086141668
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.380846088435375,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 161,
+                "sourceRecall1": 0.15730337078651685,
+                "sourceRecall2": 0.21722846441947566,
+                "sourceRecall3": 0.2846441947565543,
+                "sourceDistanceMean": 6.726579500753752,
+                "candidateDistanceMean": 21.745139759177015,
+                "symmetricMean": 14.235859629965383,
+                "symmetricP95": 44.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 142,
+                "sourceRecall1": 0.14545454545454545,
+                "sourceRecall2": 0.20909090909090908,
+                "sourceRecall3": 0.2863636363636364,
+                "sourceDistanceMean": 6.454052004231273,
+                "candidateDistanceMean": 22.2999595931217,
+                "symmetricMean": 14.377005798676485,
+                "symmetricP95": 44.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 112,
+                "sourceRecall1": 0.07462686567164178,
+                "sourceRecall2": 0.13432835820895522,
+                "sourceRecall3": 0.2537313432835821,
+                "sourceDistanceMean": 6.619032010615091,
+                "candidateDistanceMean": 21.8457399343835,
+                "symmetricMean": 14.232385972499294,
+                "symmetricP95": 44.0
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.80663145539906,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 314,
+                "sourceRecall1": 0.38155515370705245,
+                "sourceRecall2": 0.49909584086799275,
+                "sourceRecall3": 0.620253164556962,
+                "sourceDistanceMean": 2.911815352886369,
+                "candidateDistanceMean": 3.082638953281622,
+                "symmetricMean": 2.9972271530839953,
+                "symmetricP95": 9.0
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 275,
+                "sourceRecall1": 0.38018433179723504,
+                "sourceRecall2": 0.5046082949308756,
+                "sourceRecall3": 0.6497695852534562,
+                "sourceDistanceMean": 2.8463002731191054,
+                "candidateDistanceMean": 3.558951951310336,
+                "symmetricMean": 3.2026261122147206,
+                "symmetricP95": 11.67474262599931
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 221,
+                "sourceRecall1": 0.34057971014492755,
+                "sourceRecall2": 0.5144927536231884,
+                "sourceRecall3": 0.7065217391304348,
+                "sourceDistanceMean": 2.894674563754681,
+                "candidateDistanceMean": 4.356880404381034,
+                "symmetricMean": 3.625777484067857,
+                "symmetricP95": 12.529964086141668
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": -1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.291772959183673,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 156,
+                "sourceRecall1": 0.14606741573033707,
+                "sourceRecall2": 0.20224719101123595,
+                "sourceRecall3": 0.26591760299625467,
+                "sourceDistanceMean": 6.926208627155815,
+                "candidateDistanceMean": 21.53583731446599,
+                "symmetricMean": 14.231022970810903,
+                "symmetricP95": 43.89756829919196
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 137,
+                "sourceRecall1": 0.1318181818181818,
+                "sourceRecall2": 0.19090909090909092,
+                "sourceRecall3": 0.2636363636363636,
+                "sourceDistanceMean": 6.639369813040141,
+                "candidateDistanceMean": 22.112030976706613,
+                "symmetricMean": 14.375700394873377,
+                "symmetricP95": 43.945412218382074
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 107,
+                "sourceRecall1": 0.06716417910447761,
+                "sourceRecall2": 0.1044776119402985,
+                "sourceRecall3": 0.208955223880597,
+                "sourceDistanceMean": 6.839992653064749,
+                "candidateDistanceMean": 21.61903423754693,
+                "symmetricMean": 14.22951344530584,
+                "symmetricP95": 43.979529581893274
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 22.067194835680752,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 315,
+                "sourceRecall1": 0.37251356238698013,
+                "sourceRecall2": 0.4810126582278481,
+                "sourceRecall3": 0.6039783001808319,
+                "sourceDistanceMean": 2.9679336499270814,
+                "candidateDistanceMean": 3.1707860565718415,
+                "symmetricMean": 3.0693598532494617,
+                "symmetricP95": 8.94427190999916
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 275,
+                "sourceRecall1": 0.35714285714285715,
+                "sourceRecall2": 0.4792626728110599,
+                "sourceRecall3": 0.6267281105990783,
+                "sourceDistanceMean": 2.953699869812464,
+                "candidateDistanceMean": 3.6823950768922202,
+                "symmetricMean": 3.318047473352342,
+                "symmetricP95": 11.47979911260115
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 221,
+                "sourceRecall1": 0.30434782608695654,
+                "sourceRecall2": 0.4673913043478261,
+                "sourceRecall3": 0.6594202898550725,
+                "sourceDistanceMean": 3.016870942788354,
+                "candidateDistanceMean": 4.48373962978139,
+                "symmetricMean": 3.750305286284872,
+                "symmetricP95": 12.36931687685298
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": -1,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.431016156462585,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 172,
+                "sourceRecall1": 0.18352059925093633,
+                "sourceRecall2": 0.25842696629213485,
+                "sourceRecall3": 0.34831460674157305,
+                "sourceDistanceMean": 6.525314663878587,
+                "candidateDistanceMean": 20.074999561810788,
+                "symmetricMean": 13.300157112844687,
+                "symmetricP95": 43.16016066465556
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 152,
+                "sourceRecall1": 0.19090909090909092,
+                "sourceRecall2": 0.2636363636363636,
+                "sourceRecall3": 0.35909090909090907,
+                "sourceDistanceMean": 6.346421868717477,
+                "candidateDistanceMean": 20.712044582742255,
+                "symmetricMean": 13.529233225729866,
+                "symmetricP95": 43.22728167740226
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 119,
+                "sourceRecall1": 0.17164179104477612,
+                "sourceRecall2": 0.2537313432835821,
+                "sourceRecall3": 0.3208955223880597,
+                "sourceDistanceMean": 6.5744286791269015,
+                "candidateDistanceMean": 20.473431126642915,
+                "symmetricMean": 13.523929902884909,
+                "symmetricP95": 43.336695454980585
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.6299882629108,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 297,
+                "sourceRecall1": 0.3707052441229656,
+                "sourceRecall2": 0.4864376130198915,
+                "sourceRecall3": 0.6184448462929476,
+                "sourceDistanceMean": 2.9282384032181787,
+                "candidateDistanceMean": 2.921259412496363,
+                "symmetricMean": 2.924748907857271,
+                "symmetricP95": 8.966563145999494
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 261,
+                "sourceRecall1": 0.3617511520737327,
+                "sourceRecall2": 0.4930875576036866,
+                "sourceRecall3": 0.6428571428571429,
+                "sourceDistanceMean": 2.8927959683101028,
+                "candidateDistanceMean": 3.4219946456783834,
+                "symmetricMean": 3.157395306994243,
+                "symmetricP95": 10.770329614269007
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 211,
+                "sourceRecall1": 0.32971014492753625,
+                "sourceRecall2": 0.5036231884057971,
+                "sourceRecall3": 0.6811594202898551,
+                "sourceDistanceMean": 2.8640421711180535,
+                "candidateDistanceMean": 4.181461115757475,
+                "symmetricMean": 3.5227516434377644,
+                "symmetricP95": 12.062320276193434
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.367134353741497,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 167,
+                "sourceRecall1": 0.1797752808988764,
+                "sourceRecall2": 0.250936329588015,
+                "sourceRecall3": 0.33707865168539325,
+                "sourceDistanceMean": 6.133588269292572,
+                "candidateDistanceMean": 19.84434736500679,
+                "symmetricMean": 12.988967817149682,
+                "symmetricP95": 43.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 147,
+                "sourceRecall1": 0.18636363636363637,
+                "sourceRecall2": 0.2590909090909091,
+                "sourceRecall3": 0.33636363636363636,
+                "sourceDistanceMean": 6.159076839773301,
+                "candidateDistanceMean": 20.501871583308166,
+                "symmetricMean": 13.330474211540734,
+                "symmetricP95": 43.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 114,
+                "sourceRecall1": 0.13432835820895522,
+                "sourceRecall2": 0.21641791044776118,
+                "sourceRecall3": 0.30597014925373134,
+                "sourceDistanceMean": 6.731756628850318,
+                "candidateDistanceMean": 20.23620376966158,
+                "symmetricMean": 13.48398019925595,
+                "symmetricP95": 43.06497601718243
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.937059859154928,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 301,
+                "sourceRecall1": 0.3508137432188065,
+                "sourceRecall2": 0.4665461121157324,
+                "sourceRecall3": 0.5913200723327305,
+                "sourceDistanceMean": 3.0644427699823376,
+                "candidateDistanceMean": 3.067842440797645,
+                "symmetricMean": 3.066142605389991,
+                "symmetricP95": 9.0
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 264,
+                "sourceRecall1": 0.33410138248847926,
+                "sourceRecall2": 0.4631336405529954,
+                "sourceRecall3": 0.6129032258064516,
+                "sourceDistanceMean": 3.0236512973640832,
+                "candidateDistanceMean": 3.6104400652093105,
+                "symmetricMean": 3.3170456812866966,
+                "symmetricP95": 10.770329614269007
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 213,
+                "sourceRecall1": 0.2826086956521739,
+                "sourceRecall2": 0.4384057971014493,
+                "sourceRecall3": 0.6413043478260869,
+                "sourceDistanceMean": 3.0597725997443836,
+                "candidateDistanceMean": 4.404325992250462,
+                "symmetricMean": 3.732049295997423,
+                "symmetricP95": 12.083045973594572
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": 0,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.25499574829932,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 162,
+                "sourceRecall1": 0.16853932584269662,
+                "sourceRecall2": 0.2397003745318352,
+                "sourceRecall3": 0.31835205992509363,
+                "sourceDistanceMean": 6.238498372397973,
+                "candidateDistanceMean": 19.609495679408735,
+                "symmetricMean": 12.923997025903354,
+                "symmetricP95": 43.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 140,
+                "sourceRecall1": 0.16363636363636364,
+                "sourceRecall2": 0.23636363636363636,
+                "sourceRecall3": 0.31363636363636366,
+                "sourceDistanceMean": 6.294013964224279,
+                "candidateDistanceMean": 20.558594367793013,
+                "symmetricMean": 13.426304166008645,
+                "symmetricP95": 43.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 107,
+                "sourceRecall1": 0.09701492537313433,
+                "sourceRecall2": 0.1791044776119403,
+                "sourceRecall3": 0.26865671641791045,
+                "sourceDistanceMean": 6.906356392904677,
+                "candidateDistanceMean": 20.30119860823961,
+                "symmetricMean": 13.603777500572143,
+                "symmetricP95": 43.0
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 22.155223004694836,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 303,
+                "sourceRecall1": 0.32730560578661844,
+                "sourceRecall2": 0.4412296564195298,
+                "sourceRecall3": 0.569620253164557,
+                "sourceDistanceMean": 3.165851144714364,
+                "candidateDistanceMean": 3.1696046275359206,
+                "symmetricMean": 3.1677278861251423,
+                "symmetricP95": 8.94427190999916
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 263,
+                "sourceRecall1": 0.30414746543778803,
+                "sourceRecall2": 0.42857142857142855,
+                "sourceRecall3": 0.5852534562211982,
+                "sourceDistanceMean": 3.175819115429075,
+                "candidateDistanceMean": 3.739574711565499,
+                "symmetricMean": 3.457696913497287,
+                "symmetricP95": 10.44030650891055
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 212,
+                "sourceRecall1": 0.2427536231884058,
+                "sourceRecall2": 0.39855072463768115,
+                "sourceRecall3": 0.605072463768116,
+                "sourceDistanceMean": 3.1851754828202803,
+                "candidateDistanceMean": 4.529023207836992,
+                "symmetricMean": 3.8570993453286357,
+                "symmetricP95": 11.704699910719626
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": -1,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.32110969387755,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 181,
+                "sourceRecall1": 0.22846441947565543,
+                "sourceRecall2": 0.3295880149812734,
+                "sourceRecall3": 0.4157303370786517,
+                "sourceDistanceMean": 6.163143722247908,
+                "candidateDistanceMean": 18.12025270019098,
+                "symmetricMean": 12.141698211219445,
+                "symmetricP95": 42.42640687119285
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 157,
+                "sourceRecall1": 0.22272727272727272,
+                "sourceRecall2": 0.31363636363636366,
+                "sourceRecall3": 0.4,
+                "sourceDistanceMean": 6.325980055638118,
+                "candidateDistanceMean": 19.149317080126266,
+                "symmetricMean": 12.737648567882193,
+                "symmetricP95": 42.46409309305351
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 121,
+                "sourceRecall1": 0.2462686567164179,
+                "sourceRecall2": 0.30597014925373134,
+                "sourceRecall3": 0.34328358208955223,
+                "sourceDistanceMean": 6.846496809618641,
+                "candidateDistanceMean": 19.042367250047175,
+                "symmetricMean": 12.944432029832907,
+                "symmetricP95": 42.5205832509386
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.720070422535212,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 286,
+                "sourceRecall1": 0.3345388788426763,
+                "sourceRecall2": 0.45207956600361665,
+                "sourceRecall3": 0.5877034358047016,
+                "sourceDistanceMean": 3.0894924329267948,
+                "candidateDistanceMean": 2.83492569563414,
+                "symmetricMean": 2.9622090642804677,
+                "symmetricP95": 9.0
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 251,
+                "sourceRecall1": 0.32027649769585254,
+                "sourceRecall2": 0.44930875576036866,
+                "sourceRecall3": 0.5990783410138248,
+                "sourceDistanceMean": 3.0882432782715523,
+                "candidateDistanceMean": 3.400925805373642,
+                "symmetricMean": 3.244584541822597,
+                "symmetricP95": 9.924428900898052
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 202,
+                "sourceRecall1": 0.27898550724637683,
+                "sourceRecall2": 0.4311594202898551,
+                "sourceRecall3": 0.6123188405797102,
+                "sourceDistanceMean": 3.0801849132518164,
+                "candidateDistanceMean": 4.158859339737464,
+                "symmetricMean": 3.61952212649464,
+                "symmetricP95": 10.816653826391969
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 0,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.30187074829932,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 175,
+                "sourceRecall1": 0.20973782771535582,
+                "sourceRecall2": 0.29213483146067415,
+                "sourceRecall3": 0.3857677902621723,
+                "sourceDistanceMean": 6.262157798397659,
+                "candidateDistanceMean": 18.11827981056357,
+                "symmetricMean": 12.190218804480615,
+                "symmetricP95": 42.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 152,
+                "sourceRecall1": 0.20909090909090908,
+                "sourceRecall2": 0.2863636363636364,
+                "sourceRecall3": 0.37727272727272726,
+                "sourceDistanceMean": 6.427323432616498,
+                "candidateDistanceMean": 19.096611760487402,
+                "symmetricMean": 12.76196759655195,
+                "symmetricP95": 42.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 116,
+                "sourceRecall1": 0.21641791044776118,
+                "sourceRecall2": 0.291044776119403,
+                "sourceRecall3": 0.34328358208955223,
+                "sourceDistanceMean": 6.93332960989732,
+                "candidateDistanceMean": 18.980687230011988,
+                "symmetricMean": 12.957008419954654,
+                "symmetricP95": 42.112492638395565
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 21.923415492957748,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 288,
+                "sourceRecall1": 0.31103074141048825,
+                "sourceRecall2": 0.4231464737793852,
+                "sourceRecall3": 0.5587703435804702,
+                "sourceDistanceMean": 3.2531668348354317,
+                "candidateDistanceMean": 2.9769564377395885,
+                "symmetricMean": 3.11506163628751,
+                "symmetricP95": 9.0
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 253,
+                "sourceRecall1": 0.2857142857142857,
+                "sourceRecall2": 0.4147465437788018,
+                "sourceRecall3": 0.5714285714285714,
+                "sourceDistanceMean": 3.2341834751571237,
+                "candidateDistanceMean": 3.5735603865537455,
+                "symmetricMean": 3.4038719308554346,
+                "symmetricP95": 10.0
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 203,
+                "sourceRecall1": 0.2318840579710145,
+                "sourceRecall2": 0.38405797101449274,
+                "sourceRecall3": 0.5760869565217391,
+                "sourceDistanceMean": 3.2487138203627284,
+                "candidateDistanceMean": 4.329134528252786,
+                "symmetricMean": 3.7889241743077573,
+                "symmetricP95": 11.180339887498949
+              }
+            }
+          }
+        }
+      },
+      {
+        "dx": 1,
+        "dy": 1,
+        "wings": {
+          "left": {
+            "rgbMAE": 10.300276360544217,
+            "pixels": 3136,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 267,
+                "candidateSupport": 170,
+                "sourceRecall1": 0.19850187265917604,
+                "sourceRecall2": 0.27340823970037453,
+                "sourceRecall3": 0.3595505617977528,
+                "sourceDistanceMean": 6.339964436015562,
+                "candidateDistanceMean": 18.0131783022094,
+                "symmetricMean": 12.17657136911248,
+                "symmetricP95": 42.0
+              },
+              "90": {
+                "sourceSupport": 220,
+                "candidateSupport": 146,
+                "sourceRecall1": 0.18181818181818182,
+                "sourceRecall2": 0.2636363636363636,
+                "sourceRecall3": 0.35,
+                "sourceDistanceMean": 6.540609159874465,
+                "candidateDistanceMean": 19.188199043289387,
+                "symmetricMean": 12.864404101581925,
+                "symmetricP95": 42.0
+              },
+              "110": {
+                "sourceSupport": 134,
+                "candidateSupport": 110,
+                "sourceRecall1": 0.17164179104477612,
+                "sourceRecall2": 0.26119402985074625,
+                "sourceRecall3": 0.3358208955223881,
+                "sourceDistanceMean": 7.074465971686942,
+                "candidateDistanceMean": 19.122940741379317,
+                "symmetricMean": 13.098703356533129,
+                "symmetricP95": 42.0
+              }
+            }
+          },
+          "right": {
+            "rgbMAE": 22.167840375586856,
+            "pixels": 2272,
+            "thresholds": {
+              "80": {
+                "sourceSupport": 553,
+                "candidateSupport": 290,
+                "sourceRecall1": 0.28933092224231466,
+                "sourceRecall2": 0.39783001808318263,
+                "sourceRecall3": 0.5334538878842676,
+                "sourceDistanceMean": 3.3871376529861013,
+                "candidateDistanceMean": 3.1115237342736077,
+                "symmetricMean": 3.2493306936298545,
+                "symmetricP95": 8.94427190999916
+              },
+              "90": {
+                "sourceSupport": 434,
+                "candidateSupport": 253,
+                "sourceRecall1": 0.2511520737327189,
+                "sourceRecall2": 0.38018433179723504,
+                "sourceRecall3": 0.543778801843318,
+                "sourceDistanceMean": 3.3971676809366507,
+                "candidateDistanceMean": 3.7419569016436336,
+                "symmetricMean": 3.569562291290142,
+                "symmetricP95": 9.848857801796104
+              },
+              "110": {
+                "sourceSupport": 276,
+                "candidateSupport": 203,
+                "sourceRecall1": 0.21014492753623187,
+                "sourceRecall2": 0.35144927536231885,
+                "sourceRecall3": 0.5434782608695652,
+                "sourceDistanceMean": 3.378288789305238,
+                "candidateDistanceMean": 4.542333592315479,
+                "symmetricMean": 3.9603111908103585,
+                "symmetricP95": 11.613747399471425
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

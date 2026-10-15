@@ -1,0 +1,190 @@
+{
+  "status": "unexecuted trials; no gain approved",
+  "baseline": "docs/redesign-v1.85.75/after/overview.png",
+  "reference": "docs/redesign-v1.85.69/refs/overview.png",
+  "viewport": {
+    "width": 1586,
+    "height": 992,
+    "dpr": 1
+  },
+  "inspection": [
+    "tmp/pulse78-inspect/source-wings.png",
+    "tmp/pulse78-inspect/current75-wings.png"
+  ],
+  "scope": {
+    "file": "packages/web/src/redesign/pulse-ambient.tsx",
+    "cssFile": "packages/web/src/redesign/overview.css",
+    "allowed": "Decorative wave paths and their existing four static junctions only; dark production Overview scope.",
+    "preserve": [
+      "760x320 SVG viewBox and DOM box",
+      "pulse-earth and quota rings",
+      "orbit geometry and timing",
+      "all real labels/numbers and observed charts",
+      "58 existing decorative background stars",
+      "static aria-hidden, pointer-events:none behavior",
+      "light opacity .45 and <=900px hidden fallback",
+      "no additional particles or animation"
+    ]
+  },
+  "caveat": "Earlier bright-count/envelope ROI [500,180,560,320) includes Source dotted orbital curves. Its 567 versus 425 pixels and 63.4 versus 42px y10–90 span do not isolate PulseAmbient. Do not optimize amplitude from that statistic.",
+  "current": {
+    "waveFormula": "y=160+offset+A*sin(2*pi*cycles*x/760+phase)",
+    "amplitudes": [
+      18,
+      26,
+      32,
+      39,
+      22,
+      31
+    ],
+    "cycles": [
+      4.1,
+      3.2,
+      2.7,
+      2.2,
+      3.7,
+      2.9
+    ],
+    "phases": [
+      0.3,
+      1.2,
+      2.4,
+      3.1,
+      4.2,
+      5.3
+    ],
+    "offsets": [
+      7,
+      -4,
+      4,
+      -7,
+      11,
+      -3
+    ],
+    "widths": [
+      0.8,
+      1.1,
+      0.9,
+      0.7,
+      1.2,
+      0.8
+    ],
+    "opacities": [
+      0.55,
+      0.8,
+      0.65,
+      0.38,
+      0.7,
+      0.5
+    ],
+    "glowStdDeviation": 1.6,
+    "placement": "left:calc(50% - 375px); width:760px; height:100%; canonical production top:-9px; parent transform translate(21px,-19px)"
+  },
+  "trials": [
+    {
+      "id": "tone-only",
+      "purpose": "Test whether sharper, brighter existing filaments reduce the gap independently of geometry.",
+      "exactChanges": {
+        "wavePathOpacity": [
+          0.66,
+          0.96,
+          0.78,
+          0.456,
+          0.84,
+          0.6
+        ],
+        "waveGlowStdDeviation": 1.25
+      },
+      "unchanged": "All path d, widths, gradient stops, stars and junctions. Target only six wave paths and their soft-glow filter; not star-glow."
+    },
+    {
+      "id": "registration-only",
+      "purpose": "Test Source crossing-band placement; current visible left lobes sit higher.",
+      "exactChanges": {
+        "waveGroupTransform": "translate(0 16)",
+        "existingJunctionGroupTransform": "translate(0 16)"
+      },
+      "unchanged": "No SVG root/parent/CSS movement, orbit movement, atmosphere or star movement. All path shape, paint, junction count and junction shape unchanged."
+    },
+    {
+      "id": "irregularity-only",
+      "purpose": "Test bounded nonuniform curvature while keeping each original fundamental and mean band.",
+      "exactChanges": {
+        "harmonicCoefficients": [
+          0.22,
+          -0.16,
+          0.26,
+          -0.21,
+          0.18,
+          -0.24
+        ],
+        "harmonicPhase": [
+          0.7,
+          2.1,
+          3.8,
+          1.4,
+          4.6,
+          5.5
+        ],
+        "formula": "theta=2*pi*cycles*x/760+phase; e=sin(pi*x/760)^2; y=160+offset+A*(sin(theta)+h*e*sin(2.15*theta+q))",
+        "slope": "omega=2*pi*cycles/760; ePrime=(pi/760)*sin(2*pi*x/760); dy/dx=A*(omega*cos(theta)+h*(ePrime*sin(2.15*theta+q)+e*2.15*omega*cos(2.15*theta+q)))",
+        "cubicConstruction": "Keep WIDTH/64 Hermite segments and use exact dy/dx above for both control handles.",
+        "junctionY": "Use modified waveY at existing junction x; no extra junctions."
+      },
+      "unchanged": "No group translation, paint changes, CSS box or orbit change. Maximum perturbation <=0.26*A; no unbounded amplitude multiplier."
+    },
+    {
+      "id": "conditional-combined",
+      "purpose": "Only evaluate combination after individual trials show which changes help.",
+      "exactChanges": {
+        "composition": "Combine only individually supported tone-only, registration-only, irregularity-only changes; report the exact included trial IDs. Do not automatically combine all three."
+      },
+      "gate": "Skip if no isolated trial improves masked spatial/photometric comparison without spill."
+    }
+  ],
+  "measurement": {
+    "coordinates": "Half-open pixel rectangles at immutable Source viewport; never rescale screenshots independently.",
+    "inspectionRoi": [
+      350,
+      150,
+      982,
+      335
+    ],
+    "primaryRois": {
+      "leftLowerWing": [
+        500,
+        235,
+        560,
+        285
+      ],
+      "rightWing": [
+        920,
+        200,
+        978,
+        310
+      ]
+    },
+    "secondaryRoi": {
+      "leftBand": [
+        465,
+        205,
+        560,
+        300
+      ]
+    },
+    "masks": [
+      "Exclude all metric text, quota numbers, progress arcs, model panel, metric traces, globe and orbit ridges with >=3px dilation.",
+      "Manually identify orbital/dotted arcs from enlarged Source/current crops before measuring. A simple radial exclusion cannot separate tilted ellipses.",
+      "Use the union of source/current excluded ridge masks so one image does not benefit from asymmetrical masking.",
+      "Use broad context ROI only for inspection, never raw score; Source factual text and ring progress differ."
+    ],
+    "registration": "Use unchanged panel/header anchors to register entire screenshots with only global dx,dy in {-1,0,1}. Retain same ROIs for baseline and trials. Do not independently translate wings to maximize match, because registration-only trial itself is under test. For geometry-isolated paint analysis only, additionally report ridge-normal profiles after matching the same decorative filament; clearly separate this from fixed-position results.",
+    "metrics": [
+      "Masked RGB absolute error with paired registration results, not overall app percent.",
+      "Cyan/violet ridge y-centroid and y10–90 span in each primary ROI after orbit exclusion; report bright-pixel count only as a diagnostic.",
+      "Perpendicular ridge core width and brightness/halo falloff on several manually paired unoccluded filaments; distinguish shape error from hue.",
+      "Changed-pixel mask: six waves/junctions may change, text/ring/globe/model paint may not. Any spill invalidates the trial."
+    ],
+    "acceptance": "No candidate is approved now. Inspect both wings; reject gains caused by masking away a misplaced lobe or by brighter bloom washing into text/core. Require repeatable improvement across paired +/-1px registrations, with no new semantic/motion or light/narrow regression. Root chooses production changes only after actual trial evidence."
+  }
+}

@@ -1,3 +1,7 @@
+## Current checkpoint: v1.85.78
+
+[Overview filament geometry and current validation](redesign-v1.85.78/VALIDATION-STATE.md) · [Eight-page reference review](redesign-v1.85.78/review.html). This is a bounded Source-shaped decoration improvement; whole-concept and release acceptance remain open.
+
 # Reference fidelity repair
 
 ## Acceptance reopened

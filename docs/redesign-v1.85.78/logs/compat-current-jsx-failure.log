@@ -1,0 +1,36 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\redesign\pulse-ambien
+t.tsx:44
+At line:7 char:1
++ node --import tsx tmp/pulse78-compat.mts *> tmp/pulse78-compat.log
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\TH1236...-ambient.tsx:44:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+  return <svg className="qp-pulse-ambient" viewBox={`0 0 ${WIDTH} ${HEIGHT}`} width={WIDTH} height={HEIGHT}
+  ^
+
+
+ReferenceError: React is not defined
+    at PulseAmbient (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\src\redesig
+n\pulse-ambient.tsx:44:3)
+    at renderWithHooks (C:\Users\TH12367283\Projects\QuotaPulse\node_modules\react-dom\cjs\react-dom-server-legacy.node
+.development.js:5662:16)
+    at renderIndeterminateComponent (C:\Users\TH12367283\Projects\QuotaPulse\node_modules\react-dom\cjs\react-dom-serve
+r-legacy.node.development.js:5736:15)
+    at renderElement
+(C:\Users\TH12367283\Projects\QuotaPulse\node_modules\react-dom\cjs\react-dom-server-legacy.node.development.js:5961:7)
+    at renderNodeDestructiveImpl (C:\Users\TH12367283\Projects\QuotaPulse\node_modules\react-dom\cjs\react-dom-server-l
+egacy.node.development.js:6119:11)
+    at renderNodeDestructive (C:\Users\TH12367283\Projects\QuotaPulse\node_modules\react-dom\cjs\react-dom-server-legac
+y.node.development.js:6091:14)
+    at retryTask
+(C:\Users\TH12367283\Projects\QuotaPulse\node_modules\react-dom\cjs\react-dom-server-legacy.node.development.js:6543:5)
+    at performWork
+(C:\Users\TH12367283\Projects\QuotaPulse\node_modules\react-dom\cjs\react-dom-server-legacy.node.development.js:6591:7)
+    at
+C:\Users\TH12367283\Projects\QuotaPulse\node_modules\react-dom\cjs\react-dom-server-legacy.node.development.js:6915:12
+    at scheduleWork
+(C:\Users\TH12367283\Projects\QuotaPulse\node_modules\react-dom\cjs\react-dom-server-legacy.node.development.js:78:3)
+
+Node.js v22.13.1

@@ -1,0 +1,133 @@
+{
+  "status": "predeclared mask before trial screenshots; conservative manual exclusions; not gain approval",
+  "reference": "docs/redesign-v1.85.69/refs/overview.png",
+  "baseline": "docs/redesign-v1.85.77/after/overview.png",
+  "viewport": [
+    1586,
+    992
+  ],
+  "coordinates": "Half-open x0,y0,x1,y1; exact same mask on source, baseline, every candidate. Mask exclusions union across Source and baseline77; never regenerate from candidate.",
+  "includeRectangles": [
+    [
+      416,
+      200,
+      476,
+      300
+    ],
+    [
+      916,
+      202,
+      977,
+      260
+    ]
+  ],
+  "excludeRectangles": [
+    {
+      "box": [
+        398,
+        231,
+        463,
+        261
+      ],
+      "reason": "Union of Source metric label/value and baseline orange metric trace, including glow"
+    },
+    {
+      "box": [
+        463,
+        200,
+        476,
+        221
+      ],
+      "reason": "Left source orbital diagonal entrance ambiguity"
+    }
+  ],
+  "excludePolylines": [
+    {
+      "points": [
+        [
+          451,
+          268
+        ],
+        [
+          459,
+          258
+        ],
+        [
+          467,
+          245
+        ],
+        [
+          475,
+          231
+        ],
+        [
+          484,
+          215
+        ]
+      ],
+      "width": 9,
+      "reason": "Source tilted orbital ridge; conservative union exclusion at crossing with filaments"
+    },
+    {
+      "points": [
+        [
+          923,
+          176
+        ],
+        [
+          934,
+          188
+        ],
+        [
+          944,
+          202
+        ],
+        [
+          954,
+          218
+        ],
+        [
+          963,
+          235
+        ],
+        [
+          972,
+          251
+        ],
+        [
+          980,
+          267
+        ]
+      ],
+      "width": 9,
+      "reason": "Source dotted tilted orbital ridge crossing the right upper filament"
+    }
+  ],
+  "erodeIncludedBoundaryPixels": 2,
+  "excludedOutside": "All other pixels, including core, progress, source factual text, top-model list, and atmosphere. These may only be inspected for spill, not scored.",
+  "caveats": [
+    "These small masks do not represent the complete wing field; acceptance requires broad unmasked contextual inspection too.",
+    "The left primary region has less usable area because current metric trace overlays decorative filaments.",
+    "Right upper lobe in current77 already resembles Source location. A global downward translation may lose there.",
+    "Earlier [500,180,560,320) envelope count includes orbit and is not used."
+  ],
+  "registration": {
+    "shifts": [
+      -1,
+      0,
+      1
+    ],
+    "rule": "Source and baseline coordinate system is fixed by unchanged global anchors; evaluate all nine candidate shifts against source using the same mask eroded by2px. Compare candidate and baseline under the same shifts; never optimize masks or move each wing independently.",
+    "resampling": "Integer pixels only; no scaling or image warping."
+  },
+  "metrics": {
+    "fixedSourceSupport": "Before seeing candidates, source pixels inside fixed mask with B>90 and B-R>35 and B-G>5. Excludes white/gray labels; report sensitivity at B>80 and B>110 too. Freeze support.",
+    "candidateSupport": "Same thresholds on baseline/candidate within fixed mask. Empty support is a failure, not zero distance.",
+    "sourceRecall": "Fraction of fixed source-support pixels having candidate support within 2px; also report within1px and3px. Recall must not decline from baseline for either wing; this prevents gain by erasing required source details.",
+    "symmetricDistance": "Mean and 95th-percentile Euclidean nearest-support distances both directions, computed separately by wing. No empty-set shortcut. Recall gate applies even if average improves.",
+    "photometric": "Masked RGB MAE and blue/cyan/violet channel profile summaries; report separately per wing and for all9 paired registrations. MAE improvement without sourceRecall/symmetricDistance evidence is insufficient.",
+    "ridgeProfile": "Inspect several unoccluded ridge cross-sections selected from baseline/Source before trial evaluation. Report sharp-core width, peak/halo luminance, and position. Do not register away the vertical-translation candidate.",
+    "spill": "Root must compare changed pixels outside allowed decorative wave/junction layer against baseline. Geometry trials can occupy newly empty wing background but may not overwrite metric text, core paint or orbit. Mask cannot establish this by itself."
+  },
+  "decision": "Trials only. Require no sourceRecall regression per wing, no worsening symmetric p95 per wing, and repeatable paired photometric/spatial benefit; inspect full context. If brightness and spatial metrics conflict, report conflict and retain baseline unless visual evidence resolves it. Report metric denominators/visible support sizes; no whole-source percentage."
+}
