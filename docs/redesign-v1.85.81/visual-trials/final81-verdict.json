@@ -1,0 +1,131 @@
+{
+  "status": "No atmospheric artwork candidate accepted; appsource unchanged",
+  "scope": "Native1586x992 EN-dark Overview, production singleproject, frozen80 build; 3pre-frozenROIs totalling16137pixels. Decorativebackdrop only; realedges/nodes/tokens/widths/actions/motion excluded.",
+  "sourceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+  "baseline79Sha256": "71ed9296e0b627403da0f40973593a35c3857ac9b37cf109b473c98047170e61",
+  "frozenBuildIndexSha256": "a6a1432f550d0967c329537915d204fd73b1da144aea56b145b1bb5f971c19a1",
+  "frozenMaskSha256": "9972930dc6f8961872750a3a05c0943c4c94726a8615820509085158085c20a4",
+  "rounds": [
+    {
+      "round": 1,
+      "candidates": [
+        "wash-only",
+        "source-traces",
+        "source-combined"
+      ],
+      "browserDirectory": "tmp/map81-trials",
+      "scoreFile": "initial-rejected-scores.json",
+      "verdict": "Rejected. All leave Sourceupper115support@55 as0. Combinedlowerp95~31.56 worsebaseline14.87. Tracealone improveslower butnotupper."
+    },
+    {
+      "round": 2,
+      "candidates": [
+        "source-envelope2",
+        "source-envelope2-conservative"
+      ],
+      "browserDirectory": "tmp/map81-refined",
+      "verdict": "Strongpassesall9x3frozenmetrics, but actualcontextshows newflatpolygonalcaps/blobs. Conservativealsofails3upper@70dy+1candidate-emptycases. Bothrejected visually; localizedmetricsnotwholepatchapproval."
+    },
+    {
+      "round": 3,
+      "candidates": [
+        "source-feather3-soft",
+        "source-feather3-diffuse",
+        "source-feather3-soft-local",
+        "source-feather3-diffuse-local"
+      ],
+      "browserDirectory": "tmp/map81-feather",
+      "verdict": "Global/localrendersdiffer(soft2234px/max31;diffuse4249/max33), causeunproved. Localscoredontheirown:softzero metricviolationsbutflatcapstillvisible atnormalview;diffusehelpssoftness but3upper@70dy+1emptycases. Bothlocalcandidatesrejected visually."
+    },
+    {
+      "round": 4,
+      "candidates": [
+        "source-gradient4",
+        "source-gradient4-muted"
+      ],
+      "browserDirectory": "tmp/map81-gradient",
+      "scoreFile": "gradient4-scores.json",
+      "verdict": "ContinuousSourcefitfieldsremoveflatcap, butstronghas3upperMAEregressions atdy-1(dx-1/0/+1);mutedhasthese3plus3upper@70dy+1emptycases. Noacceptance.",
+      "upperNominalMae": {
+        "baseline": 2.4623481781376517,
+        "strong": 1.98552,
+        "muted": 1.85281
+      },
+      "upperDx0DyMinus1Mae": {
+        "baseline": 2.41071,
+        "strong": 2.70616,
+        "muted": 2.53396
+      }
+    }
+  ],
+  "sourceSelfCalibration": {
+    "evidence": "source-self-registration-calibration.json",
+    "sourceUpper70Support": 1,
+    "sourcePixel": [
+      429,
+      549
+    ],
+    "upperRoi": [
+      285,
+      531,
+      480,
+      550
+    ],
+    "rows": [
+      {
+        "dx": -1,
+        "dy": -1,
+        "perfectSourceCandidateSupport70": 9
+      },
+      {
+        "dx": 0,
+        "dy": -1,
+        "perfectSourceCandidateSupport70": 9
+      },
+      {
+        "dx": 1,
+        "dy": -1,
+        "perfectSourceCandidateSupport70": 9
+      },
+      {
+        "dx": -1,
+        "dy": 0,
+        "perfectSourceCandidateSupport70": 1
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "perfectSourceCandidateSupport70": 1
+      },
+      {
+        "dx": 1,
+        "dy": 0,
+        "perfectSourceCandidateSupport70": 1
+      },
+      {
+        "dx": -1,
+        "dy": 1,
+        "perfectSourceCandidateSupport70": 0
+      },
+      {
+        "dx": 0,
+        "dy": 1,
+        "perfectSourceCandidateSupport70": 0
+      },
+      {
+        "dx": 1,
+        "dy": 1,
+        "perfectSourceCandidateSupport70": 0
+      }
+    ],
+    "finding": "ImmutableSourceitselfasperfectcandidate yields0upper70supportatdy+1(all3dx). FrozenemptyrulethereforerejectsSourceperfectrenderbecauseonlySourcepixelcrossesROIbottom. Do notinventextrasupporttoforcepass.",
+    "effect": "Diagnosticinterpretationgap; noROI/mask/tolerancechangesmade andnorejectedcandidate retroactivelyaccepted. V4strongstillhas3independentMAEregressions."
+  },
+  "sourceBasedDiagnosis": {
+    "confirmed": "Large45ribbonsB51 correctlywithinexclusive45..55;fillmedian>55hypothesisnotcauseofmajorcaps. Originaltraceexclusiony558truncatedSourcefieldwhichcontinuesintobrighternodeborderaroundy562. ContinuousGaussianfieldsfittedSourceoutsideforegroundnode improvecontext.",
+    "unproven": "Exactcauseofglobal/localrasterdifference; relativecontributionofexistingnodeglowandSVGgradientrastertoV4shoulderoverbrightness. No causal appbug claim."
+  },
+  "recommendation": "Retain currentart, archive allrejections and calibration. Before furtheracceptance, calibrate regionalSourceuncertainty/boundarycases explicitlywithouttuningtoluckycandidate; use actualSource/currentcompositeprofiles tocorrect remainingfieldshoulder, then rerunlocalactualmetrics, normalcontextreview andforeground/factinvariants. Do nottranslatefavorableregionalmetricsinto99percentlikeness.",
+  "invariantDisclosure": "Rootreports node/pathmarkup/styles/facts unchanged;17pixels/max1 modelrowrightcornerAAfringe outsidepatch. Notzero fullframeraster.",
+  "mutations": "Onlytmpdiagnostic/proposal/evidencefiles by reviewer; noappsource/browser/build/Gitmutations. NoV5created."
+}

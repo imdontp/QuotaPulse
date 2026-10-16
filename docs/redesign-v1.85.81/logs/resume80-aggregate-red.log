@@ -1,0 +1,200 @@
+TAP version 13
+# Subtest: existing mount has no particles; one new observed call emits one bounded known edge
+ok 1 - existing mount has no particles; one new observed call emits one bounded known edge
+  ---
+  duration_ms: 2.0688
+  ...
+# Subtest: initial/dependency/visible/online causes consume history without replay
+ok 2 - initial/dependency/visible/online causes consume history without replay
+  ---
+  duration_ms: 0.4964
+  ...
+# Subtest: hidden/offscreen backlog is consumed and the first resumed batch seeds
+ok 3 - hidden/offscreen backlog is consumed and the first resumed batch seeds
+  ---
+  duration_ms: 0.3434
+  ...
+# Subtest: aggregate revisions with stable ID cause only an actual harness node highlight
+ok 4 - aggregate revisions with stable ID cause only an actual harness node highlight
+  ---
+  duration_ms: 0.2937
+  ...
+# Subtest: unknown grain and old/future observations never fabricate flow
+ok 5 - unknown grain and old/future observations never fabricate flow
+  ---
+  duration_ms: 0.2496
+  ...
+# Subtest: project/source filters are exact; foreign records cannot pulse selected project
+ok 6 - project/source filters are exact; foreign records cannot pulse selected project
+  ---
+  duration_ms: 0.254
+  ...
+# Subtest: all-project scope is different from exact NULL and empty project identity
+ok 7 - all-project scope is different from exact NULL and empty project identity
+  ---
+  duration_ms: 0.2286
+  ...
+# Subtest: unknown or invented route edges are not rendered; exact graph route is mandatory
+ok 8 - unknown or invented route edges are not rendered; exact graph route is mandatory
+  ---
+  duration_ms: 0.1229
+  ...
+# Subtest: reduced motion emits static actual-call highlight and never moving presentation
+ok 9 - reduced motion emits static actual-call highlight and never moving presentation
+  ---
+  duration_ms: 0.4586
+  ...
+# Subtest: one visible pending batch waits for matching graph serial/context and emits once
+ok 10 - one visible pending batch waits for matching graph serial/context and emits once
+  ---
+  duration_ms: 0.4941
+  ...
+# Subtest: visibility loss cancels a pending readygraph wait with no later replay
+ok 11 - visibility loss cancels a pending readygraph wait with no later replay
+  ---
+  duration_ms: 0.1481
+  ...
+# Subtest: new batch replaces pending batch; stale graph arrival cannot replay older IDs
+ok 12 - new batch replaces pending batch; stale graph arrival cannot replay older IDs
+  ---
+  duration_ms: 0.8389
+  ...
+# Subtest: scope/project change cancels pending and seeds the new view
+ok 13 - scope/project change cancels pending and seeds the new view
+  ---
+  duration_ms: 0.1422
+  ...
+# Subtest: bounded source/aggregate ledgers do not replay an evicted source or aggregate version
+ok 14 - bounded source/aggregate ledgers do not replay an evicted source or aggregate version
+  ---
+  duration_ms: 0.2786
+  ...
+# Subtest: reset releases pure ledger state and next mount seeds instead of replays
+ok 15 - reset releases pure ledger state and next mount seeds instead of replays
+  ---
+  duration_ms: 0.1275
+  ...
+# Subtest: late graph completion cannot play a pending observation after its recent window expires
+ok 16 - late graph completion cannot play a pending observation after its recent window expires
+  ---
+  duration_ms: 0.1068
+  ...
+# Subtest: empty initial snapshot and new profile sources accept their first returned eligible call
+ok 17 - empty initial snapshot and new profile sources accept their first returned eligible call
+  ---
+  duration_ms: 0.0983
+  ...
+# Subtest: a new lower numeric identity is observed, not treated as an insertion sequence
+ok 18 - a new lower numeric identity is observed, not treated as an insertion sequence
+  ---
+  duration_ms: 0.0786
+  ...
+# Subtest: more than 32 distinct profiles do not cyclically disable new observations
+ok 19 - more than 32 distinct profiles do not cyclically disable new observations
+  ---
+  duration_ms: 0.4307
+  ...
+# Subtest: aggregate reasoning component revisions are node-only even if total is unchanged
+ok 20 - aggregate reasoning component revisions are node-only even if total is unchanged
+  ---
+  duration_ms: 0.1008
+  ...
+# Subtest: pending overflow is consumed and cannot replay on subsequent frames
+ok 21 - pending overflow is consumed and cannot replay on subsequent frames
+  ---
+  duration_ms: 0.1032
+  ...
+# Subtest: same-serial reentry cannot replay a query that started while offscreen
+ok 22 - same-serial reentry cannot replay a query that started while offscreen
+  ---
+  duration_ms: 0.1017
+  ...
+# Subtest: first post-return request presents only fresh calls, while held requests stay consumed
+ok 23 - first post-return request presents only fresh calls, while held requests stay consumed
+  ---
+  duration_ms: 0.3297
+  ...
+# Subtest: post-return epoch cancels pending graph even when no hidden frame was rendered
+ok 24 - post-return epoch cancels pending graph even when no hidden frame was rendered
+  ---
+  duration_ms: 0.221
+  ...
+# Subtest: first accepted ordinary batch after eligibility return can present the genuinely new call
+ok 25 - first accepted ordinary batch after eligibility return can present the genuinely new call
+  ---
+  duration_ms: 0.1628
+  ...
+# Subtest: eligibility snapshots are immutable copies and epochs change only on eligibility transitions
+ok 26 - eligibility snapshots are immutable copies and epochs change only on eligibility transitions
+  ---
+  duration_ms: 0.1628
+  ...
+# Subtest: offscreen request and missing request provenance suppress without disabling a later fresh first call
+ok 27 - offscreen request and missing request provenance suppress without disabling a later fresh first call
+  ---
+  duration_ms: 0.1539
+  ...
+# Subtest: provenance preserves catch-up seeding and conservative old-timestamp aggregate revisions
+ok 28 - provenance preserves catch-up seeding and conservative old-timestamp aggregate revisions
+  ---
+  duration_ms: 0.1901
+  ...
+# Subtest: known aggregate revisions during continuous eligibility highlight even when session timestamp predates mount
+not ok 29 - known aggregate revisions during continuous eligibility highlight even when session timestamp predates mount
+  ---
+  duration_ms: 0.9934
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\runtime-motion.test.ts:192:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    0 !== 1
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\test\runtime-motion.test.ts:198:10)
+    Test.runInAsyncScope (node:async_hooks:211:14)
+    Test.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    Test.postRun (node:internal/test_runner/test:1042:19)
+    Test.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: old-timestamp aggregate needs a valid current-epoch baseline before post-return revisions can highlight
+not ok 30 - old-timestamp aggregate needs a valid current-epoch baseline before post-return revisions can highlight
+  ---
+  duration_ms: 0.3961
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\runtime-motion.test.ts:201:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    0 !== 1
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\test\runtime-motion.test.ts:211:10)
+    Test.runInAsyncScope (node:async_hooks:211:14)
+    Test.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    Test.postRun (node:internal/test_runner/test:1042:19)
+    Test.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+1..30
+# tests 30
+# suites 0
+# pass 28
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 742.9929

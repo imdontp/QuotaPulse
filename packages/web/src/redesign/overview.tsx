@@ -16,7 +16,7 @@ import { ActivitySparkline } from './activity-sparkline';
 import { modelDrilldownHref } from './model-drilldown';
 import { useRuntimeActivity } from './use-runtime-activity';
 import { useRuntimeMotion } from './use-runtime-motion';
-import type { RuntimeMotionBatch } from './runtime-motion';
+import type { RuntimeMotionBatch, RuntimeMotionEligibility } from './runtime-motion';
 import { PulseAmbient } from './pulse-ambient';
 import type { UsageEventScope } from '@/lib/usage-events';
 import { activityMinutePoints, activityTokensPerMinute } from './activity-trend';
@@ -74,6 +74,7 @@ interface OverviewProps {
   graph?: RuntimeGraph;
   runtimeGraph?: RuntimeGraph;
   runtimeMotion?: RuntimeMotionBatch;
+  runtimeMotionEligibility?: RuntimeMotionEligibility;
   runtimeMotionGraphReady?: boolean;
   quotas: readonly QuotaWindow[];
   quotaAccountStates?: Readonly<Record<string, AccountState>>;
@@ -215,11 +216,11 @@ function emptyHarnessNode(key: string): RuntimeGraph['nodes']['harness'][number]
     nativeCalls: 0, computedCalls: 0, estimatedCalls: 0, unknownCalls: 0, lastActivityAt: null, activeSessions: 0 };
 }
 
-function RuntimeMap({ motionBatch, motionGraphReady = false, nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, enabledHarnesses, onInspect, projects, selectedProject, onProjectChange }: { motionBatch?: RuntimeMotionBatch; motionGraphReady?: boolean; nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; enabledHarnesses?: readonly string[]; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
+function RuntimeMap({ motionBatch, motionEligibility, motionGraphReady = false, nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, enabledHarnesses, onInspect, projects, selectedProject, onProjectChange }: { motionBatch?: RuntimeMotionBatch; motionEligibility?: RuntimeMotionEligibility; motionGraphReady?: boolean; nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; enabledHarnesses?: readonly string[]; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
   const arrowId = useId();
   const map = useRef<HTMLDivElement>(null);
   const motionRegion = useRef<HTMLElement>(null);
-  const motionSignals = useRuntimeMotion(motionRegion, motionBatch, selectedProject, { nodes, edges, activityWindowMs }, motionGraphReady);
+  const motionSignals = useRuntimeMotion(motionRegion, motionBatch, selectedProject, { nodes, edges, activityWindowMs }, motionGraphReady, motionEligibility);
   const [geometry, setGeometry] = useState<{ width: number; height: number; paths: Array<{ edge: RuntimeGraph['edges'][number]; x: number; y: number; endX: number; endY: number }> }>({ width: 1, height: 1, paths: [] });
   const modelTokens = nodes.model.reduce((total, node) => total + node.tokens, 0);
   const locale = language === 'th' ? 'th-TH' : 'en-US';
@@ -390,7 +391,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ initialState, quickStatsScope, records = [], graph, runtimeGraph, runtimeMotion, runtimeMotionGraphReady, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
+export function Overview({ initialState, quickStatsScope, records = [], graph, runtimeGraph, runtimeMotion, runtimeMotionEligibility, runtimeMotionGraphReady, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -540,7 +541,7 @@ export function Overview({ initialState, quickStatsScope, records = [], graph, r
             </div>}
           </section>
         </div>
-        <RuntimeMap motionBatch={runtimeMotion} motionGraphReady={runtimeMotionGraphReady} nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} enabledHarnesses={runtimeHarnesses} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
+        <RuntimeMap motionBatch={runtimeMotion} motionEligibility={runtimeMotionEligibility} motionGraphReady={runtimeMotionGraphReady} nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} enabledHarnesses={runtimeHarnesses} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
         <div className="qp-bottom-grid">
           <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
           <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Sparkles size={18}/><span className="qp-overview-heading-title">{t('redesign.insights')}</span></h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>

@@ -1,0 +1,171 @@
+{
+  "status": "frozen before candidate construction; no browser trials executed",
+  "source": {
+    "path": "docs\\redesign-v1.85.69\\refs\\overview.png",
+    "sha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce"
+  },
+  "baseline": {
+    "path": "docs\\redesign-v1.85.79\\after\\overview.png",
+    "sha256": "71ed9296e0b627403da0f40973593a35c3857ac9b37cf109b473c98047170e61"
+  },
+  "productionIndexSha256": "a6a1432f550d0967c329537915d204fd73b1da144aea56b145b1bb5f971c19a1",
+  "nativeViewport": [
+    1586,
+    992
+  ],
+  "rectangles": [
+    {
+      "name": "left-gutter",
+      "rect": [
+        244,
+        526,
+        277,
+        690
+      ],
+      "pixels": 5412,
+      "baselineRgbMae": 5.009485094850948,
+      "sourceMedianRgb": [
+        8.0,
+        15.0,
+        29.0
+      ],
+      "baselineMedianRgb": [
+        10.0,
+        18.0,
+        34.0
+      ],
+      "support": {
+        "55": {
+          "source": 142,
+          "baseline": 34
+        },
+        "70": {
+          "source": 52,
+          "baseline": 0
+        },
+        "90": {
+          "source": 28,
+          "baseline": 0
+        }
+      }
+    },
+    {
+      "name": "upper-gap",
+      "rect": [
+        285,
+        531,
+        480,
+        550
+      ],
+      "pixels": 3705,
+      "baselineRgbMae": 2.4623481781376517,
+      "sourceMedianRgb": [
+        8.0,
+        16.0,
+        30.0
+      ],
+      "baselineMedianRgb": [
+        7.0,
+        16.0,
+        29.0
+      ],
+      "support": {
+        "55": {
+          "source": 115,
+          "baseline": 0
+        },
+        "70": {
+          "source": 1,
+          "baseline": 0
+        },
+        "90": {
+          "source": 0,
+          "baseline": 0
+        }
+      }
+    },
+    {
+      "name": "lower-gap",
+      "rect": [
+        285,
+        654,
+        480,
+        690
+      ],
+      "pixels": 7020,
+      "baselineRgbMae": 7.627207977207977,
+      "sourceMedianRgb": [
+        8.0,
+        16.0,
+        32.0
+      ],
+      "baselineMedianRgb": [
+        15.0,
+        21.0,
+        41.0
+      ],
+      "support": {
+        "55": {
+          "source": 252,
+          "baseline": 126
+        },
+        "70": {
+          "source": 43,
+          "baseline": 0
+        },
+        "90": {
+          "source": 7,
+          "baseline": 0
+        }
+      }
+    }
+  ],
+  "includedPixels": 16137,
+  "maskSha256": "9972930dc6f8961872750a3a05c0943c4c94726a8615820509085158085c20a4",
+  "supportDefinition": "B>threshold && B>1.35*G && B>1.6*R",
+  "registrationOffsets": [
+    [
+      -1,
+      -1
+    ],
+    [
+      0,
+      -1
+    ],
+    [
+      1,
+      -1
+    ],
+    [
+      -1,
+      0
+    ],
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      -1,
+      1
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ]
+  ],
+  "metrics": [
+    "RGB MAE per rectangle",
+    "source support recall within2px",
+    "symmetric support mean distance",
+    "symmetric support p95 distance"
+  ],
+  "selectionRule": "No worse MAE, recall or p95 in each wing at thresholds55/70/90 over all9 paired offsets; report zero-support separately. Baseline foreground and graph facts require separate actualbrowser invariance."
+}

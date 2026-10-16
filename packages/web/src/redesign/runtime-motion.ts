@@ -15,6 +15,20 @@ export interface ReadyMotionGraph {
   edges: readonly { column: number; from: string | null; to: string | null }[];
   harnesses: readonly (string | null)[];
 }
+export interface MotionEligibilitySnapshot {
+  epoch: number;
+  eligible: boolean;
+  sinceWallMs: number;
+}
+/** Synchronous visibility provenance, shared by request start and presentation. */
+export class RuntimeMotionEligibility {
+  private value: MotionEligibilitySnapshot = { epoch: 0, eligible: false, sinceWallMs: Infinity };
+  snapshot(): MotionEligibilitySnapshot { return { ...this.value }; }
+  update(eligible: boolean, now: number): MotionEligibilitySnapshot {
+    if (eligible !== this.value.eligible) this.value = { epoch: this.value.epoch + 1, eligible, sinceWallMs: eligible ? now : this.value.sinceWallMs };
+    return this.snapshot();
+  }
+}
 export interface MotionFrame {
   batchSerial: number;
   reason: RefreshReason;
@@ -26,6 +40,8 @@ export interface MotionFrame {
   reduced: boolean;
   rows: readonly RuntimeObservation[];
   graph?: ReadyMotionGraph;
+  eligibility?: MotionEligibilitySnapshot;
+  requestEligibility?: MotionEligibilitySnapshot;
 }
 export type MotionSignal =
   | { kind: 'edge'; eventId: number; sourceId: number; column: number; from: string; to: string; presentation: 'moving' | 'static'; durationMs: 700 }
@@ -43,25 +59,38 @@ export class RuntimeMotionGate {
   private context: string | undefined;
   private lastSerial = -1;
   private resumeSeed = true;
-  private observations = new Map<string, { eventId: number; version: string }>();
+  private eligibilityEpoch: number | undefined;
+  private observations = new Map<string, { eventId: number; version: string; eligibilityEpoch?: number }>();
   private evictedIdFloor = 0;
   private pending?: { serial: number; rows: RuntimeObservation[] };
   constructor(private readonly limits = { observations: 512, pending: 16 }) {
     if (Object.values(limits).some(n => !Number.isSafeInteger(n) || n < 1)) throw new Error('Positive finite motion ledger bounds required');
   }
   reset() {
-    this.context = undefined; this.lastSerial = -1; this.resumeSeed = true;
+    this.context = undefined; this.lastSerial = -1; this.resumeSeed = true; this.eligibilityEpoch = undefined;
     this.observations.clear(); this.evictedIdFloor = 0; this.pending = undefined;
   }
   sizes() { return { observations: this.observations.size, pending: this.pending?.rows.length ?? 0 }; }
   observe(frame: MotionFrame): MotionSignal[] {
     const context = motionContextKey(frame.scope);
     if (context !== this.context) { this.reset(); this.context = context; }
-    const eligible = frame.visible && frame.intersecting;
+    const provenance = frame.eligibility;
+    const request = frame.requestEligibility;
+    if (provenance && provenance.epoch !== this.eligibilityEpoch) {
+      this.pending = undefined;
+      this.eligibilityEpoch = provenance.epoch;
+    }
+    const eligible = frame.visible && frame.intersecting && (!provenance || provenance.eligible);
+    const validRequest = provenance && request && request.eligible && provenance.eligible && request.epoch === provenance.epoch && Number.isFinite(provenance.sinceWallMs);
     if (!eligible) { this.pending = undefined; this.resumeSeed = true; }
     // Scope/visibility updates also use this method; repeated serial never consumes twice.
     if (frame.batchSerial > this.lastSerial) {
-      const seed = this.resumeSeed || !eligible || seedReasons.has(frame.reason);
+      // The first initial/context request can precede its section's first IO result.
+      // One false-to-true transition may seed a baseline, never a presentation.
+      // Re-observing an old serial or crossing an eligible loss cannot promote it.
+      const coldBaseline = this.lastSerial < 0 && (frame.reason === 'initial' || frame.reason === 'dependency') && eligible && provenance && request && !request.eligible && provenance.epoch === request.epoch + 1 && Number.isFinite(provenance.sinceWallMs);
+      // Callers without provenance retain conservative first-return seeding.
+      const seed = this.lastSerial < 0 || (provenance ? !validRequest : this.resumeSeed) || !eligible || seedReasons.has(frame.reason);
       const previous = new Map(this.observations);
       const dedup = new Set<string>(); const candidates: RuntimeObservation[] = [];
       for (const row of frame.rows) {
@@ -76,9 +105,13 @@ export class RuntimeMotionGate {
         const newIdentity = before === undefined && row.event_id > this.evictedIdFloor;
         const isNewCall = row.grain === 'call' && newIdentity;
         const isNewAggregate = row.grain === 'session_aggregate' && (newIdentity || (before !== undefined && before.version !== version));
-        if (!seed && recent && (isNewCall || isNewAggregate) && candidates.length < this.limits.pending) candidates.push(row);
+        const withinEligibility = !provenance || row.timestamp_ms >= provenance.sinceWallMs;
+        // A changed aggregate observed twice through eligible requests in this epoch
+        // proves a new observation even if its session timestamp stays unchanged.
+        const aggregateBaseline = provenance && before?.eligibilityEpoch === provenance.epoch;
+        if (!seed && recent && ((isNewCall && withinEligibility) || (isNewAggregate && (withinEligibility || aggregateBaseline))) && candidates.length < this.limits.pending) candidates.push(row);
         // Overflow observations are consumed without a later replay queue.
-        this.observations.delete(id); this.observations.set(id, { eventId: row.event_id, version });
+        this.observations.delete(id); this.observations.set(id, { eventId: row.event_id, version, eligibilityEpoch: validRequest || coldBaseline ? provenance!.epoch : undefined });
         while (this.observations.size > this.limits.observations) {
           const oldest = this.observations.keys().next().value!;
           this.evictedIdFloor = Math.max(this.evictedIdFloor, this.observations.get(oldest)!.eventId);
@@ -89,7 +122,7 @@ export class RuntimeMotionGate {
       this.lastSerial = frame.batchSerial;
       if (eligible) this.resumeSeed = false;
     }
-    if (!eligible || !this.pending || frame.batchSerial !== this.pending.serial || frame.graph?.batchSerial !== frame.batchSerial || frame.graph.contextKey !== context) return [];
+    if (!eligible || (provenance && !validRequest) || !this.pending || frame.batchSerial !== this.pending.serial || frame.graph?.batchSerial !== frame.batchSerial || frame.graph.contextKey !== context) return [];
     const rows = this.pending.rows; this.pending = undefined;
     return rows.flatMap(row => {
       if (!isRecent(row, frame.now, frame.activityWindowMs)) return [];
@@ -111,4 +144,5 @@ export interface RuntimeMotionBatch {
   scopeKey: string;
   sourceId?: number;
   rows: readonly RuntimeObservation[];
+  requestEligibility?: MotionEligibilitySnapshot;
 }

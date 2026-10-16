@@ -10,7 +10,7 @@ import { defaultQuota, type QuotaWindow, type RuntimeGraph } from './model';
 import { readScope, selectedScope, writeScope, type ScopeRange } from './scope';
 import { activityTrendScope, latestActivityByHarness, recentActivityCallScope, recentActivityScope } from './activity-trend';
 import { usageEventParams } from '@/lib/usage-events';
-import type { RuntimeMotionBatch } from './runtime-motion';
+import { RuntimeMotionEligibility, type RuntimeMotionBatch } from './runtime-motion';
 import { supportedForecastPace } from './insight-model';
 
 const AUTO_RUNTIME_PROJECT = Symbol('initial runtime project');
@@ -34,6 +34,7 @@ export function ProductionOverview() {
     periodSelect.current = node;
   }, []);
   const acceptedSerial = useRef(0);
+  const motionEligibility = useRef(new RuntimeMotionEligibility());
   const routeKey = JSON.stringify(route);
   const currentKey = useRef(routeKey);
   const scopeEpoch = useRef(0);
@@ -50,6 +51,7 @@ export function ProductionOverview() {
     return () => removeEventListener('hashchange', sync);
   }, []);
   useLiveRefresh(async ctx => {
+    const requestEligibility = motionEligibility.current.snapshot();
     const key = routeKey;
     const requestedEpoch = scopeEpoch.current;
     try {
@@ -89,7 +91,7 @@ export function ProductionOverview() {
         // A chart failure must not discard the real activity records or quota snapshot.
         try { item.trend = await request; } catch { item.trendError = true; }
       }));
-      if (currentKey.current === key && scopeEpoch.current === requestedEpoch) { setSnapshot({ key, motion: { serial: ++acceptedSerial.current, reason: ctx.reason, scopeKey: key, sourceId: route.sourceId, rows: activityRows }, overview, graph, recent, recentTrend, metricUsage, metricComparison }); setError(null); }
+      if (currentKey.current === key && scopeEpoch.current === requestedEpoch) { setSnapshot({ key, motion: { serial: ++acceptedSerial.current, reason: ctx.reason, scopeKey: key, sourceId: route.sourceId, rows: activityRows, requestEligibility }, overview, graph, recent, recentTrend, metricUsage, metricComparison }); setError(null); }
     } catch (cause) {
       if (!(currentKey.current === key && scopeEpoch.current === requestedEpoch)) return;
       setError(String(cause));
@@ -211,6 +213,6 @@ export function ProductionOverview() {
   const mapGraph = mapGraphSnapshot?.key === mapGraphKey ? mapGraphSnapshot.graph : graph;
   return <>
     {current && error && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
-    <Overview initialState={initialState} quickStatsScope={current ? selectedScope(route, current.overview.now) : null} graph={graph} runtimeMotion={current?.motion} runtimeMotionGraphReady={Boolean(current && mapGraphSnapshot?.key === mapGraphKey)} runtimeGraph={mapGraph} runtimeHarnesses={[...new Set((overview?.sources ?? []).map(source => source.harness))]} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} metricComparison={metricComparison} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
+    <Overview initialState={initialState} quickStatsScope={current ? selectedScope(route, current.overview.now) : null} graph={graph} runtimeMotion={current?.motion} runtimeMotionEligibility={motionEligibility.current} runtimeMotionGraphReady={Boolean(current && mapGraphSnapshot?.key === mapGraphKey)} runtimeGraph={mapGraph} runtimeHarnesses={[...new Set((overview?.sources ?? []).map(source => source.harness))]} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} metricComparison={metricComparison} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
   </>;
 }

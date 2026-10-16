@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { RuntimeMotionGate, motionContextKey, type MotionFrame } from '../src/redesign/runtime-motion';
+import { RuntimeMotionGate, RuntimeMotionEligibility, motionContextKey, type MotionFrame } from '../src/redesign/runtime-motion';
 
 type Row = MotionFrame['rows'][number];
 const row = (event_id: number, patch: Partial<Row> = {}): Row => ({ event_id, source_id: 7, timestamp_ms: 1000, grain: 'call', project: 'A', harness: 'codex', provider: 'openai', model: 'M', call_count: 1, total_tokens: 10, input_tokens: 4, output_tokens: 6, cached_input_tokens: 0, cache_write_tokens: 0, reasoning_tokens: 0, ...patch });
@@ -118,4 +118,131 @@ test('pending overflow is consumed and cannot replay on subsequent frames',()=>{
 
 test('same-serial reentry cannot replay a query that started while offscreen',()=>{
  const gate=started();gate.observe(frame(1,[row(1)],{intersecting:false}));assert.deepEqual(gate.observe(frame(1,[row(1)])),[]);assert.deepEqual(gate.observe(frame(2,[row(2)])),[]);assert.equal(gate.observe(frame(3,[row(3)])).length,1);
+});
+
+
+test('first post-return request presents only fresh calls, while held requests stay consumed', () => {
+  for (const reason of ['sse', 'fallback', 'manual'] as const) {
+    const gate = started();
+    const before = { epoch: 1, eligible: true, sinceWallMs: 900 };
+    const after = { epoch: 3, eligible: true, sinceWallMs: 1050 };
+    gate.observe(frame(1, [row(1)], { intersecting: false, eligibility: { epoch: 2, eligible: false, sinceWallMs: 900 } }));
+    assert.deepEqual(gate.observe(frame(2, [row(2, { timestamp_ms: 1060 })], { eligibility: after, requestEligibility: before })), []);
+    const result = gate.observe(frame(3, [row(2, { timestamp_ms: 1060 }), row(3), row(4, { timestamp_ms: 1070 })], { reason, eligibility: after, requestEligibility: after }));
+    assert.deepEqual(result.map(signal => signal.eventId), [4]);
+    assert.deepEqual(gate.observe(frame(4, [row(3), row(4, { timestamp_ms: 1070 })], { eligibility: after, requestEligibility: after })), []);
+  }
+});
+
+test('post-return epoch cancels pending graph even when no hidden frame was rendered', () => {
+  const gate = started();
+  const before = { epoch: 1, eligible: true, sinceWallMs: 900 };
+  const f = frame(2, [row(2)], { eligibility: before, requestEligibility: before }); f.graph = undefined;
+  gate.observe(f); assert.equal(gate.sizes().pending, 1);
+  const after = { epoch: 3, eligible: true, sinceWallMs: 1050 };
+  assert.deepEqual(gate.observe(frame(2, [row(2)], { eligibility: after, requestEligibility: before })), []);
+  assert.equal(gate.sizes().pending, 0);
+  const fresh = frame(3, [row(3, { timestamp_ms: 1060 })], { eligibility: after, requestEligibility: after }); fresh.graph = undefined;
+  gate.observe(fresh); assert.equal(gate.sizes().pending, 1);
+  assert.equal(gate.observe(frame(3, fresh.rows as Row[], { eligibility: after, requestEligibility: after }))[0].eventId, 3);
+});
+
+
+test('first accepted ordinary batch after eligibility return can present the genuinely new call', () => {
+  for (const reason of ['sse', 'fallback', 'manual'] as const) {
+    const gate = started();
+    gate.observe(frame(1, [row(1)], { visible: false, eligibility: { epoch: 2, eligible: false, sinceWallMs: 900 } }));
+    const returned = { epoch: 3, eligible: true, sinceWallMs: 1050 };
+    assert.equal(gate.observe(frame(2, [row(2, { timestamp_ms: 1060 })], { reason, eligibility: returned, requestEligibility: returned }))[0]?.eventId, 2);
+  }
+});
+
+test('eligibility snapshots are immutable copies and epochs change only on eligibility transitions', () => {
+  const eligibility = new RuntimeMotionEligibility();
+  const initial = eligibility.snapshot(); assert.equal(initial.eligible, false);
+  const entered = eligibility.update(true, 1000); assert.equal(entered.epoch, 1); assert.equal(entered.sinceWallMs, 1000);
+  assert.deepEqual(eligibility.update(true, 1010), entered);
+  entered.epoch = 999; assert.equal(eligibility.snapshot().epoch, 1);
+  assert.equal(eligibility.update(false, 1020).epoch, 2);
+  const returned = eligibility.update(true, 1050); assert.equal(returned.epoch, 3); assert.equal(returned.sinceWallMs, 1050);
+  assert.equal(initial.eligible, false);
+});
+
+test('offscreen request and missing request provenance suppress without disabling a later fresh first call', () => {
+  for (const requestEligibility of [undefined, { epoch: 2, eligible: false, sinceWallMs: 900 }]) {
+    const gate = started();
+    const eligibility = { epoch: 3, eligible: true, sinceWallMs: 1050 };
+    assert.deepEqual(gate.observe(frame(2, [row(2, { timestamp_ms: 1060 })], { eligibility, requestEligibility })), []);
+    assert.equal(gate.observe(frame(3, [row(3, { timestamp_ms: 1070 })], { eligibility, requestEligibility: eligibility }))[0].eventId, 3);
+  }
+});
+
+test('provenance preserves catch-up seeding and conservative old-timestamp aggregate revisions', () => {
+  const eligibility = { epoch: 3, eligible: true, sinceWallMs: 1050 };
+  for (const reason of ['initial', 'dependency', 'visible', 'online'] as const) {
+    const gate = started();
+    assert.deepEqual(gate.observe(frame(2, [row(2, { timestamp_ms: 1060 })], { reason, eligibility, requestEligibility: eligibility })), []);
+    assert.equal(gate.observe(frame(3, [row(3, { timestamp_ms: 1070 })], { eligibility, requestEligibility: eligibility })).length, 1);
+  }
+  const gate = started();
+  assert.deepEqual(gate.observe(frame(2, [row(1, { grain: 'session_aggregate', total_tokens: 99 })], { eligibility, requestEligibility: eligibility })), []);
+});
+
+
+test('known aggregate revisions during continuous eligibility highlight even when session timestamp predates mount', () => {
+  const gate = new RuntimeMotionGate();
+  const eligibility = { epoch: 1, eligible: true, sinceWallMs: 1050 };
+  const aggregate = row(1, { grain: 'session_aggregate', timestamp_ms: 1000 });
+  gate.observe(frame(1, [aggregate], { reason: 'initial', eligibility, requestEligibility: eligibility }));
+  const result = gate.observe(frame(2, [{ ...aggregate, total_tokens: 20 }], { eligibility, requestEligibility: eligibility }));
+  assert.equal(result.length, 1); assert.equal(result[0].kind, 'node'); assert.equal(result[0].presentation, 'static');
+});
+
+test('old-timestamp aggregate needs a valid current-epoch baseline before post-return revisions can highlight', () => {
+  const gate = new RuntimeMotionGate();
+  const before = { epoch: 1, eligible: true, sinceWallMs: 900 };
+  const after = { epoch: 3, eligible: true, sinceWallMs: 1050 };
+  const aggregate = row(1, { grain: 'session_aggregate', timestamp_ms: 1000 });
+  gate.observe(frame(1, [aggregate], { reason: 'initial', eligibility: before, requestEligibility: before }));
+  // A response held across eligibility loss cannot establish a return baseline.
+  assert.deepEqual(gate.observe(frame(2, [{ ...aggregate, total_tokens: 20 }], { eligibility: after, requestEligibility: before })), []);
+  assert.deepEqual(gate.observe(frame(3, [{ ...aggregate, total_tokens: 30 }], { eligibility: after, requestEligibility: after })), []);
+  const result = gate.observe(frame(4, [{ ...aggregate, total_tokens: 40 }], { eligibility: after, requestEligibility: after }));
+  assert.equal(result.length, 1); assert.equal(result[0].kind, 'node');
+  assert.deepEqual(gate.observe(frame(5, [{ ...aggregate, total_tokens: 40 }], { eligibility: after, requestEligibility: after })), []);
+});
+
+
+test('cold initial request preceding first intersection seeds an aggregate baseline for its first ordinary revision', () => {
+  for (const reason of ['initial', 'dependency'] as const) {
+    const gate = new RuntimeMotionGate();
+    const requestEligibility = { epoch: 0, eligible: false, sinceWallMs: Infinity };
+    const eligibility = { epoch: 1, eligible: true, sinceWallMs: 1050 };
+    const aggregate = row(1, { grain: 'session_aggregate', timestamp_ms: 1000 });
+    assert.deepEqual(gate.observe(frame(1, [aggregate], { reason, eligibility, requestEligibility })), []);
+    const result = gate.observe(frame(2, [{ ...aggregate, total_tokens: 20 }], { eligibility, requestEligibility: eligibility }));
+    assert.equal(result.length, 1); assert.equal(result[0].kind, 'node');
+  }
+});
+
+test('reobserving an initial serial after hide and return cannot promote an old aggregate baseline', () => {
+  const gate = new RuntimeMotionGate();
+  const firstRequest = { epoch: 0, eligible: false, sinceWallMs: Infinity };
+  const before = { epoch: 1, eligible: true, sinceWallMs: 900 };
+  const after = { epoch: 3, eligible: true, sinceWallMs: 1050 };
+  const aggregate = row(1, { grain: 'session_aggregate', timestamp_ms: 1000 });
+  gate.observe(frame(1, [aggregate], { reason: 'initial', eligibility: before, requestEligibility: firstRequest }));
+  gate.observe(frame(1, [aggregate], { reason: 'initial', eligibility: { epoch: 2, eligible: false, sinceWallMs: 900 }, requestEligibility: firstRequest, visible: false }));
+  gate.observe(frame(1, [aggregate], { reason: 'initial', eligibility: after, requestEligibility: firstRequest }));
+  assert.deepEqual(gate.observe(frame(2, [{ ...aggregate, total_tokens: 20 }], { eligibility: after, requestEligibility: after })), []);
+  assert.equal(gate.observe(frame(3, [{ ...aggregate, total_tokens: 30 }], { eligibility: after, requestEligibility: after }))[0].kind, 'node');
+});
+
+test('held initial request spanning an eligibility loss cannot establish a returned aggregate baseline', () => {
+  const gate = new RuntimeMotionGate();
+  const requestEligibility = { epoch: 1, eligible: true, sinceWallMs: 900 };
+  const eligibility = { epoch: 3, eligible: true, sinceWallMs: 1050 };
+  const aggregate = row(1, { grain: 'session_aggregate', timestamp_ms: 1000 });
+  gate.observe(frame(1, [aggregate], { reason: 'initial', eligibility, requestEligibility }));
+  assert.deepEqual(gate.observe(frame(2, [{ ...aggregate, total_tokens: 20 }], { eligibility, requestEligibility: eligibility })), []);
 });

@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.80
+## Current checkpoint: v1.85.81
+
+[First-return motion validation](redesign-v1.85.81/VALIDATION-STATE.md) | [Current eight-page review](redesign-v1.85.81/review.html). Build,520 repository tests, compiled API/SSE motion races and four Overview repeat pairs pass. Artwork trials remain unaccepted; original-reference and full release acceptance remain open.
+
+## Previous checkpoint: v1.85.80
 
 [Full40 integration validation](redesign-v1.85.80/VALIDATION-STATE.md) · [Current capture review](redesign-v1.85.80/review.html). All40 pairs pass original tolerance on unchanged79 application source; original-reference and full release acceptance remain open.
 
