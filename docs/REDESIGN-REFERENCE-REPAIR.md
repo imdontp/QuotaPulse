@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.79
+## Current checkpoint: v1.85.80
+
+[Full40 integration validation](redesign-v1.85.80/VALIDATION-STATE.md) · [Current capture review](redesign-v1.85.80/review.html). All40 pairs pass original tolerance on unchanged79 application source; original-reference and full release acceptance remain open.
+
+## Previous checkpoint: v1.85.79
 
 [Dashboard API loading/recovery validation](redesign-v1.85.79/VALIDATION-STATE.md) · [Loading/error/recovery images](redesign-v1.85.79/loading-review.html) · [Eight-page reference review](redesign-v1.85.79/review.html). Seven route API layouts and retry behavior advance the blueprint; original-reference and full release acceptance remain open.
 
