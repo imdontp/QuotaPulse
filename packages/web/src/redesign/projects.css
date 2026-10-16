@@ -427,3 +427,12 @@
 .qp-project-initial-top { min-height:210px; }
 .qp-project-initial-trend { min-height:115px; }
 .qp-project-initial-tab { min-height:200px; }
+
+/* Native selected identity: Source cube occupies ~30px inside the existing 54px plate. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-card[aria-pressed=true] .qp-project-card-heading .qp-project-icon>svg.lucide-box {
+    width:30px;
+    height:30px;
+    filter:drop-shadow(0 0 3px #087cff) drop-shadow(0 0 1px #20d2ff66);
+  }
+}

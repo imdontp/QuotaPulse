@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.81
+## Current checkpoint: v1.85.82
+
+[Source artwork implementation and validation](redesign-v1.85.82/VALIDATION-STATE.md) | [All-eight original/current review](redesign-v1.85.82/review.html). Runtime Map plate/filaments, Cost plates and selected Projects cube now follow Source more closely. Current build/web216/four exact runtime-layout pairs/all-eight captures pass. Full original-reference and release acceptance remain open.
+
+## Previous checkpoint: v1.85.81
 
 [First-return motion validation](redesign-v1.85.81/VALIDATION-STATE.md) | [Current eight-page review](redesign-v1.85.81/review.html). Build,520 repository tests, compiled API/SSE motion races and four Overview repeat pairs pass. Artwork trials remain unaccepted; original-reference and full release acceptance remain open.
 

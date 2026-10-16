@@ -1,0 +1,55 @@
+{
+  "scope": "Fresh-document Projects compact/light; rawSVG/child/ancestor paint inputs retained. Comparison canonizes only generated qp-alert-count-r identifiers in DOM metadata, never image pixels. Performance navigation entries empty; fresh documents proved by independent newPages and initUUIDs. Initial SPA pair failures retained.",
+  "rows": [
+    {
+      "config": "compact-dark",
+      "factsEqual": true,
+      "sidebarPaintInputsEqualApartFromLocalReactGradientIds": true,
+      "independentDocuments": true,
+      "navigationTimingEntries": [
+        [],
+        []
+      ],
+      "crossBuild": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "withinOriginalTolerance": true
+      },
+      "beforeRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "withinOriginalTolerance": true
+      },
+      "afterRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "withinOriginalTolerance": true
+      }
+    },
+    {
+      "config": "native-light",
+      "factsEqual": true,
+      "sidebarPaintInputsEqualApartFromLocalReactGradientIds": true,
+      "independentDocuments": true,
+      "navigationTimingEntries": [
+        [],
+        []
+      ],
+      "crossBuild": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "withinOriginalTolerance": true
+      },
+      "beforeRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "withinOriginalTolerance": true
+      },
+      "afterRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "withinOriginalTolerance": true
+      }
+    }
+  ]
+}

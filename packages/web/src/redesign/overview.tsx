@@ -20,6 +20,7 @@ import type { RuntimeMotionBatch, RuntimeMotionEligibility } from './runtime-mot
 import { PulseAmbient } from './pulse-ambient';
 import type { UsageEventScope } from '@/lib/usage-events';
 import { activityMinutePoints, activityTokensPerMinute } from './activity-trend';
+import './runtime-flow-reference.css';
 
 type Translate = RedesignTranslate;
 function beginObservedMotion(element: SVGAnimateMotionElement | null) {
@@ -309,9 +310,13 @@ function RuntimeMap({ motionBatch, motionEligibility, motionGraphReady = false, 
             const bend = (endX - x) * .55;
             const total = columnTokenTotals[edge.column] ?? 0;
             const strokeWidth = total > 0 ? Math.max(1.2, Math.min(4.4, 1.2 + edge.tokens / total * 6)) : 1.2;
+            // The native reference uses thin filaments. Keep token share ordered while
+            // retaining the original width as the light/compact/legacy fallback.
+            const flowShare = total > 0 ? Math.max(0, Math.min(1, edge.tokens / total)) : 0;
+            const referenceFlowStyle = { '--qp-reference-flow-width': `${(.7 + 1.15 * Math.sqrt(flowShare)).toFixed(3)}px` } as CSSProperties;
             const activityState = runtimeActivityState(edge.lastActivityAt, now, activityWindowMs);
             const identity = JSON.stringify([edge.column, edge.from, edge.to]);
-            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-last-activity-at={edge.lastActivityAt ?? undefined} data-active-sessions={edge.activeSessions} data-activity-state={activityState} data-flow-priority={featuredFlowEdges.has(identity) ? 'primary' : 'secondary'} key={identity} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth={strokeWidth} markerEnd={`url(#${arrowId})`}/>;
+            return <path data-column={edge.column} data-from={JSON.stringify(edge.from)} data-to={JSON.stringify(edge.to)} data-tokens={edge.tokens} data-last-activity-at={edge.lastActivityAt ?? undefined} data-active-sessions={edge.activeSessions} data-activity-state={activityState} data-flow-priority={featuredFlowEdges.has(identity) ? 'primary' : 'secondary'} key={identity} d={`M ${x} ${y} C ${x + bend} ${y}, ${endX - bend} ${endY}, ${endX} ${endY}`} fill="none" stroke="currentColor" strokeWidth={strokeWidth} style={referenceFlowStyle} markerEnd={`url(#${arrowId})`}/>;
           })}
           {motionSignals.flatMap(signal => {
             if (signal.kind !== 'edge') return [];

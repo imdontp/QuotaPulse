@@ -240,3 +240,32 @@
 @media(min-width:1536px) {
  .qp-redesign[data-testid=production-cost] .qp-cost-table .qp-cost-rank { width:40px; padding-left:11px; padding-right:0; }
 }
+
+/* Native reference metric plates: measured 44px surfaces and distinct semantic paint. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-summary article {
+    grid-template-columns:44px minmax(0,1fr);
+    column-gap:10px;
+  }
+  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-metric-icon {
+    position:relative;
+    left:-1px;
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#072454,#052250);
+    box-shadow:inset 0 0 14px #078cff12;
+  }
+  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-summary article:first-child .qp-cost-metric-icon {
+    background:linear-gradient(135deg,#013e39,#01302d);
+    box-shadow:inset 0 0 14px #00e6a510;
+  }
+  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-summary article:nth-child(3) .qp-cost-metric-icon {
+    background:linear-gradient(135deg,#241250,#26124e);
+    box-shadow:inset 0 0 14px #b545ff18;
+  }
+  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-summary article:nth-child(4) .qp-cost-metric-icon {
+    background:linear-gradient(135deg,#26211f,#242221);
+    box-shadow:inset 0 0 14px #ffb2570c;
+  }
+}

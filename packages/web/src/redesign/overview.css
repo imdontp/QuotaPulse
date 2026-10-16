@@ -1659,3 +1659,30 @@
 .qp-redesign[data-testid^=production-][data-theme=dark] .qp-sidebar-brand>svg { color:#1285fb; filter:drop-shadow(0 0 1px rgba(18,107,255,.75)); }
 
 .qp-map-node[data-motion-highlight=aggregate] { outline:2px solid var(--qp-accent); outline-offset:1px; }
+
+/* Single-project card measured from overview.png: rounded navy plate and blue glyph. */
+@media(min-width:1536px) {
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map[data-single-project=true] .qp-map-node[data-dimension=project] {
+  padding-left:15px;
+  padding-right:13px;
+  gap:14px;
+  border-radius:27px;
+  border-color:#29349c;
+  background:radial-gradient(ellipse at 55% 0%,#252b8b52,transparent 56%),linear-gradient(135deg,#0a1231,#070e20 72%,#081326);
+  box-shadow:inset 0 0 16px #191a583d,0 0 13px #242ab03b,0 0 28px #15276426;
+ }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map[data-single-project=true] .qp-map-node[data-dimension=project] .qp-node-icon {
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  color:#e7ecff;
+  background:url('./assets/project-reference-mark.svg') center/20px 20px no-repeat,radial-gradient(ellipse at 45% 30%,#443bff,#2521ce 78%);
+  box-shadow:inset 0 0 0 1px #5c53ff,0 0 7px #3021e880;
+ }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map[data-single-project=true] .qp-map-node[data-dimension=project] .qp-node-icon>svg { visibility:hidden; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map[data-single-project=true] .qp-map-node[data-dimension=project] .qp-node-label { gap:4.5px; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map[data-single-project=true] .qp-map-node[data-dimension=project] .qp-node-kicker { color:#b7a8f8; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map[data-single-project=true] .qp-map-node[data-dimension=project] .qp-node-label-main { color:#e0e7ff; font-size:14px; font-weight:500; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map[data-single-project=true] .qp-map-node[data-dimension=project] .qp-node-meta { color:#c2d2ff; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map[data-single-project=true] .qp-map-node[data-dimension=project]:hover { border-color:#6377ff; }
+}

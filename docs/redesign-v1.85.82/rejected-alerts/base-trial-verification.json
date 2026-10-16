@@ -1,0 +1,53 @@
+{
+  "phase": "base-trial",
+  "indexSha256": "513f92c99b036219570812a9996355e829668b1079588cee6407ab9726da8070",
+  "rows": [
+    {
+      "route": "alerts",
+      "config": "native-dark",
+      "filename": "alerts-native-dark.png",
+      "facts": "Alerts & Quota Guard\n\nCurrent quota observations, fixed thresholds and desktop delivery history\n\nDesktop notifications\nRefresh now\n\nThis switch changes delivery only; collection continues · Manage snooze and quiet hours\n\nCurrent quota risks\n4\nKnown owner windows\n5\nFixed thresholds\n3\n50% · 80% · 95%\nFresh-reading coverage\n100%\n5 / 5\nObserved quota history\n\nA new segment starts at a reset or counter drop\n\nObserved quota history\nOpenAI Subscription · 5-hour\nOpenAI Subscription · Weekly\nOpenAI Subscription · Monthly\nOpenCode Go Subscription · Monthly\nOpenCode Go Subscription · daily\nQuota used (%)\n0%\n25%\n50%\n75%\n100%\nMay 15, 08:42 PM\nMay 17, 08:41 PM\nObserved samples (3)\nCurrent risk and reader advisories\nAll\n4\nCritical\n1\nWarning\n1\nNotice\n2\nStale\n0\nSearch metadata\nSort quota risks\nSeverity\nLast observed\nForecast reaches full use before reset\nCritical\n\nMay 17, 08:41 PM\n\nOpenAI Subscription\nMonthly\n30s\n72%\nQuota used (%)\nInspect owner and reader\nCurrent reading crossed a fixed threshold\nWarning\n\nMay 17, 08:41 PM\n\nOpenAI Subscription\n5-hour\n30s\n83%\nQuota used (%)\nInspect owner and reader\nCurrent reading crossed a fixed threshold\nNotice\n\nMay 17, 08:41 PM\n\nOpenAI Subscription\nWeekly\n30s\n62%\nQuota used (%)\nInspect owner and reader\nCurrent reading crossed a fixed threshold\nNotice\n\nMay 17, 08:41 PM\n\nOpenCode Go Subscription\nMonthly\n30s\n58%\nQuota used (%)\nInspect owner and reader\nRead-only threshold rules\n\n50%, 80% and 95% crossings are recorded once per reset period\n\nRead-only threshold rules\tCurrent risk and reader advisories\n50%\tNotice\n80%\tWarning\n95%\tCritical\nUsage forecast\n4.3\nForecast days until full use\nOpenAI Subscription · Monthly\nProjected exhaustion\nMay 22, 04:04 AM\nNext reset\nMay 23, 10:42 PM\nfixed-fixture · 30s\nForecast reaches full use before reset\n1d 18h before reset\nRecommended actions\n\nReview local details; changes stay manual.\n\nReview selected quota\n\nOpenAI Subscription · Monthly · 72%\n\nOpen\nCheck the reset\n\nReported reset: May 23, 10:42 PM\n\nView\nReview the reader\n\nCodex fixture · Inspect source diagnostics\n\nOpen\nReview desktop notifications\n\nNotifications enabled\n\nSettings\nThreshold event history\nShow more history\n\nFacts remain after recovery. Desktop delivery needs the tray to be running.\n\n80%\nOpenAI Subscription · 5-hour\nMay 17, 08:42 PM · Detected\n50%\nOpenAI Subscription · 5-hour\nMay 17, 08:42 PM · Detected",
+      "details": {
+        "project": [],
+        "paths": [],
+        "cost": [],
+        "forecast": {
+          "days": "4.3",
+          "reading": {
+            "x": 1222.9375,
+            "y": 127.796875,
+            "width": 424.0625,
+            "height": 178,
+            "top": 127.796875,
+            "right": 1647,
+            "bottom": 305.796875,
+            "left": 1222.9375
+          },
+          "atmosphere": [
+            {
+              "rect": {
+                "x": 1222.9375,
+                "y": 115.796875,
+                "width": 424.0625,
+                "height": 194,
+                "top": 115.796875,
+                "right": 1647,
+                "bottom": 309.796875,
+                "left": 1222.9375
+              },
+              "display": "block",
+              "hidden": "true"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "route": "alerts",
+      "config": "unknown",
+      "days": "Unknown"
+    }
+  ],
+  "errors": [],
+  "forbidden": []
+}

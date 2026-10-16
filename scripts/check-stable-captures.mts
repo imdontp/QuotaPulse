@@ -1654,11 +1654,16 @@ async function checkRuntimeGeometry(page: Page, graph: RuntimeGraph, lang: strin
     column: Number((path as SVGPathElement).dataset.column),
     tokens: Number((path as SVGPathElement).dataset.tokens),
     width: Number.parseFloat(getComputedStyle(path).strokeWidth),
+    fallbackWidth: Number(path.getAttribute('stroke-width')),
   })));
   assert.equal(weightedPaths.length, expected.length);
   for (const [index, path] of weightedPaths.entries()) {
     const columnTotal = graph.nodes[dimensions[path.column]!].reduce((total, node) => total + node.tokens, 0);
-    const expectedWidth = columnTotal > 0 ? Math.max(1.2, Math.min(4.4, 1.2 + path.tokens / columnTotal * 6)) : 1.2;
+    const fallbackWidth = columnTotal > 0 ? Math.max(1.2, Math.min(4.4, 1.2 + path.tokens / columnTotal * 6)) : 1.2;
+    assert.ok(Math.abs(path.fallbackWidth - fallbackWidth) < 0.01, `Runtime edge ${index} retains the token-share fallback width`);
+    const nativeFlow = theme === 'dark' && (page.viewportSize()?.width ?? 0) >= 1536;
+    const share = columnTotal > 0 ? Math.max(0, Math.min(1, path.tokens / columnTotal)) : 0;
+    const expectedWidth = nativeFlow ? Number((.7 + 1.15 * Math.sqrt(share)).toFixed(3)) : fallbackWidth;
     assert.ok(Math.abs(path.width - expectedWidth) < 0.01, `Runtime edge ${index} width must encode its share of recorded token flow (${path.width} != ${expectedWidth})`);
   }
   const maxError = await page.locator('.qp-map-edges>path').evaluateAll(paths => {

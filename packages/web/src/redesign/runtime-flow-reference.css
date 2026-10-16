@@ -1,0 +1,23 @@
+/* Source Overview: fine luminous filaments rather than broad resting ribbons.
+ * Width remains a monotonic encoding of the real column token share. Geometry,
+ * arrow direction and newly observed CALL particles belong to the existing map.
+ * Compact, light and standalone preview keep the original presentation width.
+ */
+@media (min-width:1536px) {
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map-edges>path {
+    stroke-width:var(--qp-reference-flow-width);
+    stroke-linecap:round;
+  }
+
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map-edges>path[data-flow-priority=primary] {
+    filter:drop-shadow(0 0 1px #17d9ff) drop-shadow(0 0 5px #078dffb3);
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map-edges>path[data-flow-priority=primary][data-column="1"] {
+    stroke:#63b7ff;
+    filter:drop-shadow(0 0 1px #6cbdff) drop-shadow(0 0 5px #187bffb3);
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map-edges>path[data-flow-priority=primary][data-column="2"] {
+    stroke:#a58aff;
+    filter:drop-shadow(0 0 1px #b69bff) drop-shadow(0 0 5px #7953ffb3);
+  }
+}
