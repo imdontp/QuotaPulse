@@ -1,0 +1,25 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx tmp/cost83-unit-final.mts *> tmp/cost83-unit-final. ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: {"lang":"en","theme":"dark","width":1500,"original":{"text":"$0.000025","width":129.015
+625,"height":57.59375,"lineHeight":28.8,"fontSize":"24px","gridColumn":"2","scrollWidth":129,"rects":[{"x":923.046875,"
+y":172.171875,"w":121.296875,"h":31},{"x":923.046875,"y":200.96875,"w":16.109375,"h":31}],"parentWidth":197.015625,"par
+entColumns":"36px 129.016px"}}
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\cost83-unit-final.mts:169:9) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.13.1

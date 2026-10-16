@@ -21,6 +21,7 @@ import { PulseAmbient } from './pulse-ambient';
 import type { UsageEventScope } from '@/lib/usage-events';
 import { activityMinutePoints, activityTokensPerMinute } from './activity-trend';
 import './runtime-flow-reference.css';
+import './overview-metric-reference.css';
 
 type Translate = RedesignTranslate;
 function beginObservedMotion(element: SVGAnimateMotionElement | null) {
@@ -43,6 +44,27 @@ function OverviewHeadingReferenceMark({ kind }: { kind: 'core' | 'runtime' }) {
       </>}
     </svg>
   </span>;
+}
+
+// Decorative native marks traced from the supplied Overview concept. Metric copy,
+// values and trends remain owned by MetricRailItem and the real usage data.
+function OverviewMetricReferenceMark({ metric }: { metric: string }) {
+  if (!['tokens', 'pace', 'cost', 'cache'].includes(metric)) return null;
+  return <svg className="qp-overview-metric-reference" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+    {metric === 'tokens' ? <g fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" stroke="#409dff" strokeWidth="1.6"/>
+      <path d="M12 2.2v3.4M12 18.6v3.2M3.8 8l2.5 1.5M17.8 14.5l2.4 1.4" stroke="#2d8cff" strokeWidth="1.2"/>
+      <path d="m12 8.3 3 3.5-3 4.1-3-4.1Z" fill="#12376b" stroke="#70c3ff" strokeWidth="1.3"/>
+      <path d="M12 5.7v2.6M12 16v2.4" stroke="#68bbff" strokeWidth="1.2"/>
+    </g> : metric === 'pace' ? <>
+      <path d="M13.2 2.2c1.1 4-2.1 5.2-1 8.2 1.5-.8 2.4-2.6 2.2-4.4 2.7 2.6 5.3 5.9 5.3 9.2a7.5 7.5 0 0 1-15 0c0-3.2 2-6.4 4.5-9.2-.3 3.1-.2 4.7 1.1 5.9-.1-3.4 3.1-5.5 2.9-9.7Z" fill="#ef644c"/>
+      <path d="M11.7 12.4c.2 2-2.5 3.5-2.5 5.2a3.1 3.1 0 0 0 6.2 0c0-1.6-1-2.7-1.8-3.8.1 1.7-.7 2.3-1.3 2.5.3-1.7-.3-2.8-.6-3.9Z" fill="#1b1924"/>
+    </> : metric === 'cost' ? <g strokeWidth="1.6" strokeLinejoin="round">
+      <path d="M4.3 7.3v11.1c0 2 3.5 3.5 7.7 3.5s7.7-1.5 7.7-3.5V7.3" fill="#27212b" stroke="#e5b363"/>
+      <path d="M4.3 11c0 2 3.5 3.5 7.7 3.5s7.7-1.5 7.7-3.5M4.3 14.8c0 2 3.5 3.5 7.7 3.5s7.7-1.5 7.7-3.5" fill="none" stroke="#e7b96d"/>
+      <ellipse cx="12" cy="7.3" rx="7.7" ry="3.5" fill="#553044" stroke="#e8a66b"/>
+    </g> : <path d="m12 2.5 3 6.2 6.8 1-4.9 4.8 1.2 6.8-6.1-3.2-6.1 3.2 1.2-6.8-4.9-4.8 6.8-1Z" fill="#12b7ae" stroke="#21d5c4" strokeWidth="1.05" strokeLinejoin="round"/>}
+  </svg>;
 }
 
 const runtimeNodeNames = {
@@ -618,7 +640,7 @@ function MetricRailItem({ metric, label, labelTitle, value, rawValue, icon, supp
   const hasMeter = meter != null && Number.isFinite(meter);
   const visibleMeter = hasMeter ? `${Math.round(meter)}%` : null;
   return <div className="qp-metric-rail" data-metric={metric} data-value={rawValue ?? undefined}>
-    <i className="qp-metric-rail-icon" aria-hidden="true">{icon}</i>
+    <i className="qp-metric-rail-icon" aria-hidden="true"><span className="qp-overview-metric-fallback">{icon}</span><OverviewMetricReferenceMark metric={metric}/></i>
     <div className="qp-metric-rail-copy">
       <span className="qp-metric-rail-label" title={labelTitle}>{label}</span>
       <div className="qp-metric-rail-main"><strong>{value}</strong>{trend && trendLabel && <MetricTrace values={trend} label={trendLabel} scale={scale}/>}</div>

@@ -3,11 +3,11 @@ import { api, type HarnessStatus, type HistorySummaryResponse } from '@/api';
 import { HistoryTimeline } from '@/redesign/history-timeline';
 import { InitialRegion, type InitialRegionState } from '@/redesign/initial-region';
 import { HistoryRecordDetails } from '@/redesign/history-record-details';
+import { refreshedHistorySelection, historyRelatedSessionHref, type HistorySelection } from '@/redesign/history-selection';
 import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
 import { useLiveRefresh } from '@/lib/use-live';
 import type { UsageEventRow, UsageEventScope, UsageEventsResponse, UsageGrain } from '@/lib/usage-events';
-import { usageEventParams } from '@/lib/usage-events';
 import { UsageRangeBar, useUsageRoute } from '@/components/usage-range';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -35,9 +35,9 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
   const t = useT();
   const f = useFormat();
   const { lang } = useI18n();
-  const [route, updateRoute] = useUsageRoute('history');
   const rawSessionId = new URLSearchParams(location.hash.split('?')[1] ?? '').get('session_id');
   const sessionId = rawSessionId && /^\d+$/.test(rawSessionId) && Number.isSafeInteger(Number(rawSessionId)) && Number(rawSessionId) > 0 ? Number(rawSessionId) : undefined;
+  const [route, updateRoute] = useUsageRoute('history', { sessionId });
   const [draft, setDraft] = useState<Filters>(routeFilters);
   const [filters, setFilters] = useState<Filters>(routeFilters);
   const [offset, setOffset] = useState(0);
@@ -52,7 +52,8 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
   const [errorEpoch, setErrorEpoch] = useState(-1);
   const [retryAttempt, setRetryAttempt] = useState(0);
   const [exporting, setExporting] = useState(false);
-  const [selected, setSelected] = useState<UsageEventRow | null>(null);
+  const [selection, setSelection] = useState<HistorySelection | null>(null);
+  const selected = selection?.row ?? null;
   const initialSelection = useRef(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const returnFocus = useRef<HTMLButtonElement | null>(null);
@@ -109,9 +110,12 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
       if (result.total > 0 && offset >= result.total) { setOffset(0); return; }
       setSnapshot(result);
       setSummary(fullRange);
+      // Refresh only the existing identity; an absent event retains the exact
+      // snapshot scope from which it was selected for its related-record link.
+      if (redesign) setSelection(selected => refreshedHistorySelection(selected, result));
       if (redesign && !initialSelection.current) {
         initialSelection.current = true;
-        setSelected(result.rows[0] ?? null);
+        setSelection(result.rows[0] ? { row: result.rows[0], scope: result.scope } : null);
       }
       setSnapshotKey(queryKey);
       setError(null);
@@ -181,13 +185,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
     try { await navigator.clipboard.writeText(JSON.stringify(Object.fromEntries(fields.map(field => [field, selected[field]])), null, 2)); setCopyState('copied'); }
     catch { setCopyState('failed'); }
   };
-  const relatedSession = (() => {
-    if (!selected?.session_key || !snapshot) return null;
-    const params = usageEventParams({ ...snapshot.scope, sessionId: selected.session_key });
-    params.set('range', 'custom');
-    if (params.has('source_id')) { params.set('source', params.get('source_id')!); params.delete('source_id'); }
-    return `#history?${params}`;
-  })();
+  const relatedSession = historyRelatedSessionHref(selection);
   return <div className="flex min-w-0 flex-col gap-3.5" data-testid="usage-history">
     {sessionId !== undefined && <div className="flex items-center gap-3 text-xs" role="status"><span>{t('history.session')} #{sessionId}</span><a className="underline" href="#history?range=all">{t('history.clearSession')}</a></div>}
     <div className={redesign ? 'qp-history-heading' : undefined}>{redesign && <><div className="qp-history-heading-identity"><i aria-hidden="true"><History size={27}/></i><div><h1>{t('history.redesignTitle')}</h1><p>{t('history.redesignSubtitle')}</p></div></div>{viewActions}</>}<fieldset disabled={paused} className="min-w-0 border-0 p-0"><UsageRangeBar route={route} sources={sources} showBucket={false} showHeading={!redesign} onChange={next => { setOffset(0); updateRoute(next); }}/></fieldset></div>
@@ -213,7 +211,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
       {!snapshot?.rows.length ? !currentError && <Empty>{t(loading ? 'app.loading' : 'history.empty')}</Empty> : <Table>
         <TableHeader><TableRow><TableHead>{t('history.recordedAt')}</TableHead><TableHead>{t('history.kind')}</TableHead><TableHead>{t('col.harness')}</TableHead><TableHead>{t('col.project')}</TableHead><TableHead>{t('history.provider')}</TableHead><TableHead>{t('col.model')}</TableHead><TableHead>{t('col.total')}</TableHead><TableHead>{t('history.basis')}</TableHead><TableHead>{t('history.detail')}</TableHead></TableRow></TableHeader>
         <TableBody>{snapshot.rows.map(row => <TableRow key={row.event_id} data-selected={redesign && selected?.event_id === row.event_id ? 'true' : undefined}>
-          <TableCell className="whitespace-nowrap">{date(row.timestamp_ms)}</TableCell><TableCell>{t(`history.${row.grain}`)}</TableCell><TableCell>{redesign ? <span className="qp-history-harness" data-harness={row.harness} title={row.source_name}><HarnessIcon harness={row.harness} vendor={harnessVendor(row)} label={row.harness}/>{row.source_name}</span> : row.source_name}</TableCell><TableCell className="max-w-48 break-all">{redesign ? <span className="qp-history-project"><Folder size={16} aria-hidden="true"/>{row.project ?? t('redesign.unassigned')}</span> : row.project ?? t('redesign.unassigned')}</TableCell><TableCell>{redesign ? <span className="qp-history-provider"><VendorIcon vendor={row.provider ?? 'unknown'}/>{row.provider ?? '—'}</span> : row.provider ?? '—'}</TableCell><TableCell className={redesign ? "qp-history-model" : undefined} title={row.model ?? undefined}>{redesign ? <span className="qp-history-model-identity"><i className="qp-history-model-maker" data-vendor={row.vendor} aria-hidden="true"><VendorIcon vendor={row.vendor}/></i><span className="qp-history-model-name">{row.model ?? '—'}</span></span> : row.model ?? '—'}</TableCell><TableCell><span className={redesign ? "qp-history-token-value" : undefined} title={String(row.total_tokens)} aria-label={String(row.total_tokens)}>{redesign ? f.tokens(row.total_tokens) : row.total_tokens.toLocaleString(lang)}</span></TableCell><TableCell><span>{basis(row)}</span><br/><span title={f.explain(row.cost_usd) ?? undefined}>{row.cost_usd !== null && ['native', 'computed', 'estimated'].includes(row.cost_source) ? f.money(row.cost_usd) : '—'}</span></TableCell><TableCell><Button onClick={event => { returnFocus.current = event.currentTarget; setCopyState('idle'); setSelected(row); }} aria-label={`${t('history.detail')} ${row.event_id}`}>#{row.event_id}</Button></TableCell>
+          <TableCell className="whitespace-nowrap">{date(row.timestamp_ms)}</TableCell><TableCell>{t(`history.${row.grain}`)}</TableCell><TableCell>{redesign ? <span className="qp-history-harness" data-harness={row.harness} title={row.source_name}><HarnessIcon harness={row.harness} vendor={harnessVendor(row)} label={row.harness}/>{row.source_name}</span> : row.source_name}</TableCell><TableCell className="max-w-48 break-all">{redesign ? <span className="qp-history-project"><Folder size={16} aria-hidden="true"/>{row.project ?? t('redesign.unassigned')}</span> : row.project ?? t('redesign.unassigned')}</TableCell><TableCell>{redesign ? <span className="qp-history-provider"><VendorIcon vendor={row.provider ?? 'unknown'}/>{row.provider ?? '—'}</span> : row.provider ?? '—'}</TableCell><TableCell className={redesign ? "qp-history-model" : undefined} title={row.model ?? undefined}>{redesign ? <span className="qp-history-model-identity"><i className="qp-history-model-maker" data-vendor={row.vendor} aria-hidden="true"><VendorIcon vendor={row.vendor}/></i><span className="qp-history-model-name">{row.model ?? '—'}</span></span> : row.model ?? '—'}</TableCell><TableCell><span className={redesign ? "qp-history-token-value" : undefined} title={String(row.total_tokens)} aria-label={String(row.total_tokens)}>{redesign ? f.tokens(row.total_tokens) : row.total_tokens.toLocaleString(lang)}</span></TableCell><TableCell><span>{basis(row)}</span><br/><span title={f.explain(row.cost_usd) ?? undefined}>{row.cost_usd !== null && ['native', 'computed', 'estimated'].includes(row.cost_source) ? f.money(row.cost_usd) : '—'}</span></TableCell><TableCell><Button onClick={event => { returnFocus.current = event.currentTarget; setCopyState('idle'); setSelection({ row, scope: snapshot!.scope }); }} aria-label={`${t('history.detail')} ${row.event_id}`}>#{row.event_id}</Button></TableCell>
         </TableRow>)}</TableBody>
       </Table>}
       </div>
@@ -221,7 +219,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
     </Card>}
     <p className="text-xs leading-relaxed text-muted-foreground">{t('history.coverage')}</p>
     {redesign && !snapshot && <InitialRegion id="history-detail" label={t('history.detail')} state={initialState} className="qp-history-initial-detail" slots={6}/>}
-    <dialog ref={dialog} onClose={() => { setSelected(null); returnFocus.current?.focus(); }} aria-labelledby="history-detail-title" className="m-auto max-h-[85vh] w-[min(640px,92vw)] overflow-auto rounded-xl border bg-background p-5 text-foreground backdrop:bg-black/60">
+    <dialog ref={dialog} onClose={() => { setSelection(null); returnFocus.current?.focus(); }} aria-labelledby="history-detail-title" className="m-auto max-h-[85vh] w-[min(640px,92vw)] overflow-auto rounded-xl border bg-background p-5 text-foreground backdrop:bg-black/60">
       <div className={redesign ? 'qp-history-detail-heading' : 'flex items-center justify-between gap-3'}><h2 id="history-detail-title">{t('history.detail')} <span>#{selected?.event_id}</span></h2><Button autoFocus onClick={() => dialog.current?.close()}>{t('history.close')}</Button></div>
       {!redesign && <p className="my-3 text-xs text-muted-foreground">{t('history.coverage')}</p>}
       {selected && redesign && <HistoryRecordDetails row={selected} harnessVendor={harnessVendor(selected)} basis={basis(selected)} date={date(selected.timestamp_ms)}/>}

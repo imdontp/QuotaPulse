@@ -1,0 +1,1467 @@
+{
+  "auditVersion": 2,
+  "observedDate": "2026-10-16",
+  "mode": "Read-only source/evidence audit; only these temp artifacts written; no build/browser/service/Git mutation",
+  "worktree": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-foundation/",
+  "reportedHead": "9e54fd61a79f2b3530c62412bec77adf6f04635b",
+  "reportedTag": "redesign-visual-fidelity-v1.85.82",
+  "uncommittedScope": "Parent concurrent Overview83 TSX and overview-metric-reference.css draft; unrelated .zed retained; audit writes only tmp evidence.",
+  "buildIndexSha256": "2745fb4d452476c930089630042f7afa93784ecee8948dc6b177e0f1d6a684dd",
+  "blueprintSha256": "28bc63571ddf7ecda1e12e8821c6184378ccfe6c3a599d6ccec29bf17fedb054",
+  "goalComplete": false,
+  "statusDefinitions": {
+    "proven": "Requirement mechanism and meaningful cited execution/source evidence within expressly limited scope.",
+    "incomplete": "Partial implementation or incomplete required coverage/evidence.",
+    "contradicted": "Direct authoritative rule differs from actual source mechanism.",
+    "weak": "Implemented/plausible with historical, partial, ambiguous or instrument-limited validation.",
+    "missing": "Required accepted gate/deliverable not established by inspected current evidence; not a universal filesystem absence claim."
+  },
+  "statusCounts": {
+    "proven": 53,
+    "incomplete": 22,
+    "weak": 21,
+    "missing": 5
+  },
+  "scorePolicy": "Counts are audit rows, not progress percentages. No raw-source whole-image SSIM demand and no99–100% success claim.",
+  "requirements": [
+    {
+      "id": "A01",
+      "group": "authority",
+      "requirement": "Blueprint ZIP reopened, JSON readable, eight source hashes/dimensions preserved",
+      "status": "proven",
+      "evidence": [
+        "tmp/full-goal83-authority.json",
+        "docs/quotapulse_build_blueprint_v1.1.zip"
+      ],
+      "evidenceScope": "Direct audit83: ZIP CRC clean;36 files;3 JSON parsed;8 PNGs match Downloads bytes and dimensions.",
+      "nextAction": "Preserve immutable authority in final RC.",
+      "authority": "08 Definition of Done / blueprint",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "A02",
+      "group": "authority",
+      "requirement": "Blueprint arithmetic fixture and every relative link have execution evidence",
+      "status": "proven",
+      "evidence": [
+        "tmp/full-goal83-authority.json"
+      ],
+      "evidenceScope": "Direct audit83:77 relative links resolve; all11 expected arithmetic fields recomputed exactly. This is artifact validation, not app behavior.",
+      "nextAction": "Retain this exact report and authority hash in RC index.",
+      "authority": "08 Definition of Done / blueprint",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "A03",
+      "group": "isolation",
+      "requirement": "Separate worktree/branch/tag; original QuotaPulse origin and main protected",
+      "status": "proven",
+      "evidence": [
+        "docs/redesign-v1.85.82/build-provenance.json"
+      ],
+      "evidenceScope": "Read-only Git confirms HEAD9e54fd61a79f2b3530c62412bec77adf6f04635b. Branch/tag recorded82; origin isolation inherited. Parent now has Overview83 draft; not part of82 build.",
+      "nextAction": "Record final branch/tag/commit/origin; preserve unrelated .zed.",
+      "authority": "00_MASTER_BUILD_CONTRACT.md / 08_DEFINITION_OF_DONE.md",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "A04",
+      "group": "architecture",
+      "requirement": "Collector→SQLite→authenticated REST/SSE→React/Electron; dashboard owns no credentials/collection",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/server.ts",
+        "packages/web/src/lib/use-live.ts",
+        "packages/web/src/main.tsx"
+      ],
+      "evidenceScope": "Source-level architecture; no new collection backend needed.",
+      "nextAction": "Keep this ownership during remaining fixes.",
+      "authority": "00_MASTER_BUILD_CONTRACT.md / 08_DEFINITION_OF_DONE.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "A05",
+      "group": "scope",
+      "requirement": "Additive reads; no schema migration; no execution/budget/benchmark/credential/custom-rule/external-notification workflows",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/usage-scope.ts",
+        "packages/web/src/redesign/alerts.tsx",
+        "packages/web/src/redesign/providers.tsx"
+      ],
+      "evidenceScope": "Current source with dated execution evidence; not a full final RC certification.",
+      "nextAction": "Continue monitoring/advisory scope; verify final package migration-free.",
+      "authority": "00_MASTER_BUILD_CONTRACT.md / 08_DEFINITION_OF_DONE.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "A06",
+      "group": "authority",
+      "requirement": "Every visible value/action maps source, scope, transform, fallback and phase",
+      "status": "incomplete",
+      "evidence": [
+        "docs/quotapulse_build_blueprint_v1.1.zip",
+        "docs/redesign-v1.85.82/VALIDATION-STATE.md",
+        "packages/web/src/sections/history.tsx"
+      ],
+      "evidenceScope": "Scoped tests substantial; no exhaustive current accepted eight-screen field/action/state inventory. TopModels old scope defect resolved71. Current History selection/scope risk is separate.",
+      "nextAction": "Create per-field/action inventory linking source,scope,transform,fallback,phase and actual verification; prioritize History scope then remaining state/motion.",
+      "authority": "00_MASTER_BUILD_CONTRACT.md / 08_DEFINITION_OF_DONE.md",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "OVR-001",
+      "group": "reference overrides",
+      "requirement": "Same nine destinations",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/shell.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Retain shell on delayed initial loading.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-002",
+      "group": "reference overrides",
+      "requirement": "Static workspace, command search, display-only brand/avatar",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/redesign/shell.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Reconcile brand home-link behavior with literal display-only action contract; search is functional, no workspace/account backend.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-003",
+      "group": "reference overrides",
+      "requirement": "Connection/source freshness separate; scoped QuickStats",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/quick-stats-scope.ts"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Retest source/range/null scope and delayed A/B/A at final build.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-004",
+      "group": "reference overrides",
+      "requirement": "Selected owner/window core, honest period tokens",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/overview.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Retain selection/reset/expired tests.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-005",
+      "group": "reference overrides",
+      "requirement": "Cache savings/read proportion/coverage, no ROI",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/overview.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Keep both pricing bases/call coverage explicit.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-006",
+      "group": "reference overrides",
+      "requirement": "Observed route graph and deterministic insights",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/overview.tsx:328",
+        "docs/redesign-v1.85.81/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.82/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Real graph facts preserved;74/81 one-shot/aggregate gates and82 token-share width curve checked against actual API. Not evidence every ingested CALL reaches observation.",
+      "nextAction": "Preserve observed graph facts; assess newest-per-harness sampling against per-event requirement.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "OVR-007",
+      "group": "reference overrides",
+      "requirement": "Owner-window runway, no inferred global denominator",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/quota-history.ts"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Keep invalid/stale/insufficient fallback.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-008",
+      "group": "reference overrides",
+      "requirement": "Live recent/reporting/stale/error counts can overlap",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/live.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Retain valid five-minute/null/future tests.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-009",
+      "group": "reference overrides",
+      "requirement": "Call-grain minute chart and observed route matrix",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/test/usage-events.test.ts"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Keep exclusions and temporal caveat visible.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-010",
+      "group": "reference overrides",
+      "requirement": "Usage records/aggregate updates, no fake lifecycle",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/live.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Do not add fabricated start/end/failed events.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-011",
+      "group": "reference overrides",
+      "requirement": "Projects refresh/recent/unassigned/harness/usage share",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/projects.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Retest full-result filtering and null bucket at final build.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-012",
+      "group": "reference overrides",
+      "requirement": "Project metadata/last-observed/details, no authoring",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/projects.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Preserve full metadata identity behind basename display.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-013",
+      "group": "reference overrides",
+      "requirement": "Providers supported owners/refresh/diagnostics",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/providers.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Do not fill sparse unsupported source rows.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-014",
+      "group": "reference overrides",
+      "requirement": "Provider origin/freshness/reader-health, no plan/latency invention",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/providers.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Retain unknown windows instead of zero.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-015",
+      "group": "reference overrides",
+      "requirement": "Models calls/coverage/exact context provenance",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/model-detail.ts"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Keep catalog capacity distinct from observed and old-field omission.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-016",
+      "group": "reference overrides",
+      "requirement": "Effort categories and identity metadata, no benchmarks",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/models.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Preserve null/empty identity and route-specific selections.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-017",
+      "group": "reference overrides",
+      "requirement": "Separate native/API basis and historical known savings",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/cost.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Retest partial/native/cache coverage and sorted full-result sessions.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-018",
+      "group": "reference overrides",
+      "requirement": "Safe History metadata/detail/copy; no raw prompts",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/sections/history.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Retain allowlist and selected detail rail keyboard proof.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-019",
+      "group": "reference overrides",
+      "requirement": "History categorical effort/grain/search/full-range CSV",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/test/usage-events.test.ts:340"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Bound category work separately without losing full-record export.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-020",
+      "group": "reference overrides",
+      "requirement": "Alerts real notification settings/read-only rules/local actions",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/alerts.tsx"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Retain PUT loading/retry tests and prohibit execution controls.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-021",
+      "group": "reference overrides",
+      "requirement": "Current risks vs retained history; desktop-only delivery",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/alert-risks.ts"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Retest dedup/recovery/snooze/quiet-hours and tray requirement.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-022",
+      "group": "reference overrides",
+      "requirement": "Real fixture facts replace inconsistent original numbers",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/detailed-aggregates.ts"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Never copy source counts/curves to increase similarity.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "OVR-023",
+      "group": "reference overrides",
+      "requirement": "Dashboard pet decoration removed; popup/themes/languages/narrow retained",
+      "status": "weak",
+      "evidence": [
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Current implementation and cited scoped historical tests. Literal source substitutions supersede original facts.",
+      "nextAction": "Complete current native minimized/restore/unmount and final all-language/theme/narrow gates.",
+      "authority": "11_REFERENCE_OVERRIDES.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-overview-data",
+      "group": "screen data",
+      "requirement": "Owner/window core, period money/tokens, graph, share and activity use real scoped facts",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/overview.tsx",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.66/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Implemented source; execution is page-specific/historical unless cited70. Data availability changes source numbers by approved overrides.",
+      "nextAction": "Preserve actual facts and test full scope/unknowns during final RC.",
+      "authority": "screens/overview.md / 12 API contracts",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-overview-actions",
+      "group": "screen actions",
+      "requirement": "Top Models navigates Models with exact model and period/source; independent of selected Map project",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/overview.tsx:523",
+        "docs/redesign-v1.85.71/VALIDATION-STATE.md",
+        "scripts/check-stable-captures.mts"
+      ],
+      "evidenceScope": "Current native anchor uses modelDrilldownHref(historyHref,model.key);71 cross-project actual200million-token detail8scope cases and pure null/empty identity tests. Navigation Back not independently established by71.",
+      "nextAction": "Retain final current route/back-forward/action regression.",
+      "authority": "screens/overview.md",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "S-overview-visual",
+      "group": "visual/layout",
+      "requirement": "overview: original composition outside overrides matches measured approved geometry, hierarchy, styling and typography",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.82/review.html",
+        "docs/redesign-v1.85.82/after",
+        "docs/redesign-v1.85.82/SOURCE-REVIEW.md"
+      ],
+      "evidenceScope": "82 all8native captured; scoped RuntimeMap project/paths,Cost44pxplates,selectedProjects30pxcube corrections. Original likeness still explicitly unaccepted. Unchanged factual differences follow23 overrides; repeatability is not whole Source acceptance.",
+      "nextAction": "Compare current native and selected-state regional crops to immutable original, excluding approved factual substitutions; lock explicit accepted measurements and obtain review.",
+      "authority": "00 measurable acceptance / screens/overview.md",
+      "evidenceRecency": "82 current compiled artifact inspected via provenance and documented review; no fresh browser or independent pixel audit by83."
+    },
+    {
+      "id": "S-live-data",
+      "group": "screen data",
+      "requirement": "Five-minute sessions, source status, call-only minute/exclusion coverage and paused snapshots",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/live.tsx",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.66/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Implemented source; execution is page-specific/historical unless cited70. Data availability changes source numbers by approved overrides.",
+      "nextAction": "Preserve actual facts and test full scope/unknowns during final RC.",
+      "authority": "screens/live.md / 12 API contracts",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-live-actions",
+      "group": "screen actions",
+      "requirement": "Verify session details, route matrix filters, pause/resume and local diagnostics at final build",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/redesign/live.tsx"
+      ],
+      "evidenceScope": "Existing actions are functional; exhaustive current all-actions gate is not established.",
+      "nextAction": "Complete actual action table with current browser/API observations; fix explicit contradiction before approval.",
+      "authority": "screens/live.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-live-visual",
+      "group": "visual/layout",
+      "requirement": "live: original composition outside overrides matches measured approved geometry, hierarchy, styling and typography",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.82/review.html",
+        "docs/redesign-v1.85.82/after",
+        "docs/redesign-v1.85.82/SOURCE-REVIEW.md"
+      ],
+      "evidenceScope": "82 all8native captured; scoped RuntimeMap project/paths,Cost44pxplates,selectedProjects30pxcube corrections. Original likeness still explicitly unaccepted. Unchanged factual differences follow23 overrides; repeatability is not whole Source acceptance.",
+      "nextAction": "Compare current native and selected-state regional crops to immutable original, excluding approved factual substitutions; lock explicit accepted measurements and obtain review.",
+      "authority": "00 measurable acceptance / screens/live.md",
+      "evidenceRecency": "82 current compiled artifact inspected via provenance and documented review; no fresh browser or independent pixel audit by83."
+    },
+    {
+      "id": "S-projects-data",
+      "group": "screen data",
+      "requirement": "Full scoped filtering/sort, null identity, distinct counts/share, project detail tabs",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/projects.tsx",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.66/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Implemented source; execution is page-specific/historical unless cited70. Data availability changes source numbers by approved overrides.",
+      "nextAction": "Preserve actual facts and test full scope/unknowns during final RC.",
+      "authority": "screens/projects.md / 12 API contracts",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-projects-actions",
+      "group": "screen actions",
+      "requirement": "Verify scoped detail tabs and metadata search across more than one page/project",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/redesign/projects.tsx"
+      ],
+      "evidenceScope": "Existing actions are functional; exhaustive current all-actions gate is not established.",
+      "nextAction": "Complete actual action table with current browser/API observations; fix explicit contradiction before approval.",
+      "authority": "screens/projects.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-projects-visual",
+      "group": "visual/layout",
+      "requirement": "projects: original composition outside overrides matches measured approved geometry, hierarchy, styling and typography",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.82/review.html",
+        "docs/redesign-v1.85.82/after",
+        "docs/redesign-v1.85.82/SOURCE-REVIEW.md"
+      ],
+      "evidenceScope": "82 all8native captured; scoped RuntimeMap project/paths,Cost44pxplates,selectedProjects30pxcube corrections. Original likeness still explicitly unaccepted. Unchanged factual differences follow23 overrides; repeatability is not whole Source acceptance.",
+      "nextAction": "Compare current native and selected-state regional crops to immutable original, excluding approved factual substitutions; lock explicit accepted measurements and obtain review.",
+      "authority": "00 measurable acceptance / screens/projects.md",
+      "evidenceRecency": "82 current compiled artifact inspected via provenance and documented review; no fresh browser or independent pixel audit by83."
+    },
+    {
+      "id": "S-providers-data",
+      "group": "screen data",
+      "requirement": "Supported subscription windows, authoritative origin/age/health, hidden preferences",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/providers.tsx",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.66/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Implemented source; execution is page-specific/historical unless cited70. Data availability changes source numbers by approved overrides.",
+      "nextAction": "Preserve actual facts and test full scope/unknowns during final RC.",
+      "authority": "screens/providers.md / 12 API contracts",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-providers-actions",
+      "group": "screen actions",
+      "requirement": "Manage reaches settings subscription row; diagnostics header/source route is real; confirm contract action acceptance",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/redesign/providers.tsx"
+      ],
+      "evidenceScope": "Existing actions are functional; exhaustive current all-actions gate is not established.",
+      "nextAction": "Complete actual action table with current browser/API observations; fix explicit contradiction before approval.",
+      "authority": "screens/providers.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-providers-visual",
+      "group": "visual/layout",
+      "requirement": "providers: original composition outside overrides matches measured approved geometry, hierarchy, styling and typography",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.82/review.html",
+        "docs/redesign-v1.85.82/after",
+        "docs/redesign-v1.85.82/SOURCE-REVIEW.md"
+      ],
+      "evidenceScope": "82 all8native captured; scoped RuntimeMap project/paths,Cost44pxplates,selectedProjects30pxcube corrections. Original likeness still explicitly unaccepted. Unchanged factual differences follow23 overrides; repeatability is not whole Source acceptance.",
+      "nextAction": "Compare current native and selected-state regional crops to immutable original, excluding approved factual substitutions; lock explicit accepted measurements and obtain review.",
+      "authority": "00 measurable acceptance / screens/providers.md",
+      "evidenceRecency": "82 current compiled artifact inspected via provenance and documented review; no fresh browser or independent pixel audit by83."
+    },
+    {
+      "id": "S-models-data",
+      "group": "screen data",
+      "requirement": "Exact model/provider identity; capacity/observed/coverage/effort and four token components",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/models.tsx",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.66/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Implemented source; execution is page-specific/historical unless cited70. Data availability changes source numbers by approved overrides.",
+      "nextAction": "Preserve actual facts and test full scope/unknowns during final RC.",
+      "authority": "screens/models.md / 12 API contracts",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-models-actions",
+      "group": "screen actions",
+      "requirement": "Selection/provider filters/detail rail and six effort categories proven66; retest final build",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/redesign/models.tsx"
+      ],
+      "evidenceScope": "Existing actions are functional; exhaustive current all-actions gate is not established.",
+      "nextAction": "Complete actual action table with current browser/API observations; fix explicit contradiction before approval.",
+      "authority": "screens/models.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-models-visual",
+      "group": "visual/layout",
+      "requirement": "models: original composition outside overrides matches measured approved geometry, hierarchy, styling and typography",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.82/review.html",
+        "docs/redesign-v1.85.82/after",
+        "docs/redesign-v1.85.82/SOURCE-REVIEW.md"
+      ],
+      "evidenceScope": "82 all8native captured; scoped RuntimeMap project/paths,Cost44pxplates,selectedProjects30pxcube corrections. Original likeness still explicitly unaccepted. Unchanged factual differences follow23 overrides; repeatability is not whole Source acceptance.",
+      "nextAction": "Compare current native and selected-state regional crops to immutable original, excluding approved factual substitutions; lock explicit accepted measurements and obtain review.",
+      "authority": "00 measurable acceptance / screens/models.md",
+      "evidenceRecency": "82 current compiled artifact inspected via provenance and documented review; no fresh browser or independent pixel audit by83."
+    },
+    {
+      "id": "S-cost-data",
+      "group": "screen data",
+      "requirement": "Selected monetary basis, call-weighted coverage, known cache savings and full-result expensive sessions",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/cost.tsx",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.66/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Implemented source; execution is page-specific/historical unless cited70. Data availability changes source numbers by approved overrides.",
+      "nextAction": "Preserve actual facts and test full scope/unknowns during final RC.",
+      "authority": "screens/cost.md / 12 API contracts",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-cost-actions",
+      "group": "screen actions",
+      "requirement": "Retest all basis switches, local insight links, unknown forecast and sparse/zero inputs",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/redesign/cost.tsx"
+      ],
+      "evidenceScope": "Existing actions are functional; exhaustive current all-actions gate is not established.",
+      "nextAction": "Complete actual action table with current browser/API observations; fix explicit contradiction before approval.",
+      "authority": "screens/cost.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-cost-visual",
+      "group": "visual/layout",
+      "requirement": "cost: original composition outside overrides matches measured approved geometry, hierarchy, styling and typography",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.82/review.html",
+        "docs/redesign-v1.85.82/after",
+        "docs/redesign-v1.85.82/SOURCE-REVIEW.md"
+      ],
+      "evidenceScope": "82 all8native captured; scoped RuntimeMap project/paths,Cost44pxplates,selectedProjects30pxcube corrections. Original likeness still explicitly unaccepted. Unchanged factual differences follow23 overrides; repeatability is not whole Source acceptance.",
+      "nextAction": "Compare current native and selected-state regional crops to immutable original, excluding approved factual substitutions; lock explicit accepted measurements and obtain review.",
+      "authority": "00 measurable acceptance / screens/cost.md",
+      "evidenceRecency": "82 current compiled artifact inspected via provenance and documented review; no fresh browser or independent pixel audit by83."
+    },
+    {
+      "id": "S-history-data",
+      "group": "screen data",
+      "requirement": "Stable paginated rows, shared scope/grain, allowlisted copy/export and metadata rail",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/sections/history.tsx",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.66/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Implemented source; execution is page-specific/historical unless cited70. Data availability changes source numbers by approved overrides.",
+      "nextAction": "Preserve actual facts and test full scope/unknowns during final RC.",
+      "authority": "screens/history.md / 12 API contracts",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-history-actions",
+      "group": "screen actions",
+      "requirement": "Retest all filters, pause/resume, selected rail, export and key recovery at final build",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/sections/history.tsx"
+      ],
+      "evidenceScope": "Existing actions are functional; exhaustive current all-actions gate is not established.",
+      "nextAction": "Complete actual action table with current browser/API observations; fix explicit contradiction before approval.",
+      "authority": "screens/history.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-history-visual",
+      "group": "visual/layout",
+      "requirement": "history: original composition outside overrides matches measured approved geometry, hierarchy, styling and typography",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.82/review.html",
+        "docs/redesign-v1.85.82/after",
+        "docs/redesign-v1.85.82/SOURCE-REVIEW.md"
+      ],
+      "evidenceScope": "82 all8native captured; scoped RuntimeMap project/paths,Cost44pxplates,selectedProjects30pxcube corrections. Original likeness still explicitly unaccepted. Unchanged factual differences follow23 overrides; repeatability is not whole Source acceptance.",
+      "nextAction": "Compare current native and selected-state regional crops to immutable original, excluding approved factual substitutions; lock explicit accepted measurements and obtain review.",
+      "authority": "00 measurable acceptance / screens/history.md",
+      "evidenceRecency": "82 current compiled artifact inspected via provenance and documented review; no fresh browser or independent pixel audit by83."
+    },
+    {
+      "id": "S-alerts-data",
+      "group": "screen data",
+      "requirement": "Current advisory risks distinct from retained threshold history and selected-reader reset-segment history",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/alerts.tsx",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.66/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Implemented source; execution is page-specific/historical unless cited70. Data availability changes source numbers by approved overrides.",
+      "nextAction": "Preserve actual facts and test full scope/unknowns during final RC.",
+      "authority": "screens/alerts.md / 12 API contracts",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-alerts-actions",
+      "group": "screen actions",
+      "requirement": "Retest notification toggle/retry, selected history, local details/diagnostics, snooze/quiet-hour behavior",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/redesign/alerts.tsx"
+      ],
+      "evidenceScope": "Existing actions are functional; exhaustive current all-actions gate is not established.",
+      "nextAction": "Complete actual action table with current browser/API observations; fix explicit contradiction before approval.",
+      "authority": "screens/alerts.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "S-alerts-visual",
+      "group": "visual/layout",
+      "requirement": "alerts: original composition outside overrides matches measured approved geometry, hierarchy, styling and typography",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.82/review.html",
+        "docs/redesign-v1.85.82/after",
+        "docs/redesign-v1.85.82/SOURCE-REVIEW.md"
+      ],
+      "evidenceScope": "82 all8native captured; scoped RuntimeMap project/paths,Cost44pxplates,selectedProjects30pxcube corrections. Original likeness still explicitly unaccepted. Unchanged factual differences follow23 overrides; repeatability is not whole Source acceptance.",
+      "nextAction": "Compare current native and selected-state regional crops to immutable original, excluding approved factual substitutions; lock explicit accepted measurements and obtain review.",
+      "authority": "00 measurable acceptance / screens/alerts.md",
+      "evidenceRecency": "82 current compiled artifact inspected via provenance and documented review; no fresh browser or independent pixel audit by83."
+    },
+    {
+      "id": "N01",
+      "group": "API/data",
+      "requirement": "Shared parameterized scope and literal search; [from,to), null project, route provider distinct from vendor",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/usage-scope.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Retain malformed/unknown400 and literal %,_,quote tests.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N02",
+      "group": "API/data",
+      "requirement": "Authenticated usage-events default50/max500, stable ts/id ordering, count/rows same snapshot",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/test/usage-events.test.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Run unchanged daemon/API suite against final commit.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N03",
+      "group": "API/data",
+      "requirement": ">2000 events complete paging/export, equal timestamps and mutable aggregates",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/test/usage-events.test.ts:340",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Keep2005fixture/offset2000/2006CSVlines; do not recreate fake missing gate.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N04",
+      "group": "API/data",
+      "requirement": "Declared immutable call, Hermes aggregate, future-adapter unknown grain",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/usage-scope.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Use grain in new-call motion dedup and aggregate replacement.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N05",
+      "group": "API/data",
+      "requirement": "Minute epoch-aligned call-only, default30min/max24h, excluded amounts/counts",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/test/usage-events.test.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Retest scope and exact zero/missing distinctions.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N06",
+      "group": "API/data",
+      "requirement": "Shared optional filters for larger trend buckets retain old defaults",
+      "status": "weak",
+      "evidence": [
+        "packages/daemon/src/api/server.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Resolve contract interpretation: non-minute legacy trend only accepts range/source/grouping; implement additive filtered equivalent if required, with old-client cardinality tests.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N07",
+      "group": "API/data",
+      "requirement": "Quota history authoritative owner/window/reader/origin, max90d, reset discontinuity",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/quota-history.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Retain reader isolation/reset ±2000ms/stale tests.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N08",
+      "group": "API/data",
+      "requirement": "Opt-in detailed project/model provider-aware grouping and SQL distinct sessions",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/detailed-aggregates.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Retain old default row cardinality and null/full-path identity tests.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N09",
+      "group": "API/data",
+      "requirement": "Native/API monetary summary and call-weighted partial/estimated/cache coverage",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/detailed-aggregates.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Reconcile every selected basis denominator in final state fixture.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N10",
+      "group": "API/data",
+      "requirement": "Exact provider/model catalog capacity+origin/date, separately observed context; old-client fallback",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/test/model-catalog-context.test.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Maintain exact pair/no aliases/cross-provider fallback/null/empty/invalid boundaries.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N11",
+      "group": "API/data",
+      "requirement": "Catalog capacity availability uses honest unknown fallback despite limited ingestion",
+      "status": "weak",
+      "evidence": [
+        "packages/daemon/src/pricing/loader.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Current loader requires price components and conflict update does not refresh origin. These are real boundaries; contract allows unavailable when no valid source, so no invented requirement to ingest every catalog entry.",
+      "nextAction": "Document capacity-only unpriced and origin-upsert limitations. Confirm whether additional source coverage is required before changing ingestion; exact-pair unavailable fallback is contract-valid, not an automatic blocker.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N12",
+      "group": "API/data",
+      "requirement": "Legacy settings/notifications and one SSE invalidation stream unchanged",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/server.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Retest prior client and paused UI without spawning per-row streams.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N13",
+      "group": "API/data",
+      "requirement": "QuickStats scope race/pause identity and links do not broaden unsupported filters",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/quick-stats-scope.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and meaningful historical daemon106 tests in full47468; final70 daemon run not claimed.",
+      "nextAction": "Retain delayed A/B/A and disabled links for unrepresentable scope.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "N14",
+      "group": "API/data",
+      "requirement": "History categorical effort collection/rendering bounded at pathological cardinality",
+      "status": "incomplete",
+      "evidence": [
+        "packages/daemon/src/api/history-summary.ts",
+        "packages/daemon/test/usage-events.test.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Measured5000categories summary588→250542bytes in tmp/history-effort-causal50.json; this is performance hardening, not missing full event paging.",
+      "nextAction": "Measure and implement paged/bounded categories preserving totals/null/empty; current summary GROUP BY .all and UI .map are unbounded.",
+      "authority": "12_API_AND_FIELD_CONTRACTS.md",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "SEC01",
+      "group": "auth/privacy",
+      "requirement": "All API token checks, loopback127.0.0.1 boundary, metadata allowlist",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/server.ts:127",
+        "packages/daemon/src/api/server.ts:739",
+        "packages/daemon/test/usage-events.test.ts"
+      ],
+      "evidenceScope": "Verified source authentication/loopback and negative API tests, not a new external deployment scan.",
+      "nextAction": "Run final unauthorized/allowlist/local-boundary tests; retain no external collector writes.",
+      "authority": "12 shared scope /08",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "SEC02",
+      "group": "auth/privacy",
+      "requirement": "SQL parameterization, metadata text escaping, CSV formula safety, static path containment",
+      "status": "proven",
+      "evidence": [
+        "packages/daemon/src/api/usage-scope.ts",
+        "packages/daemon/src/api/server.ts:50",
+        "packages/daemon/src/api/server.ts:684"
+      ],
+      "evidenceScope": "Source mechanism plus historical API tests; no raw credentials/prompt endpoints introduced.",
+      "nextAction": "Preserve negative search/CSV/path traversal cases.",
+      "authority": "12 shared scope / OVR018",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "ST01",
+      "group": "states",
+      "requirement": "Common shell and data-block geometry reserved during both deferred route import and API loading",
+      "status": "incomplete",
+      "evidence": [
+        "packages/web/src/redesign/route-loading.tsx:29",
+        "docs/redesign-v1.85.72/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.79/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Overview API/shell reservations72 and seven routes API reservations79 fixed old contradiction;79 gate36 cases primary loading/error delta0px. Non-Overview lazy MODULE fallback still generic single panel, not page composition. Unknown data can alter loaded heights.",
+      "nextAction": "Reuse page-specific neutral compositions for deferred non-Overview modules, then hold actual module requests and measure anchors; do not claim arbitrary pending-to-loaded zero shift.",
+      "authority": "00 build order/state slots",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "ST02",
+      "group": "states",
+      "requirement": "All applicable fresh/recent/stale/expired/unavailable/empty/partial/estimated/error states retain honest reserved slots",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.79/VALIDATION-STATE.md",
+        "scripts/check-dashboard-loading.mts"
+      ],
+      "evidenceScope": "79 proves28primary paired cases+6detail EN+2coldpause; not cartesian state combinations or all A/B/A detail races. Last-good state retained.",
+      "nextAction": "Finish applicable per-block state inventory; exercise empty/partial/expired/stale/error and cross-scope accepted state identity.",
+      "authority": "00 states /08 screen",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "M01",
+      "group": "motion",
+      "requirement": "Genuine new CALL animates once700ms; aggregate revisions node-only; no initial/replay/idle particles",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/redesign/overview.tsx:328",
+        "packages/web/src/redesign/runtime-motion.ts",
+        "scripts/check-runtime-motion.mts",
+        "docs/redesign-v1.85.81/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Current .7s repeatCount1;81 compiled actual IO/request heldgraph/aggregate/reduced/unmount gate and33pure cases. Newest observed row per harness can omit ingestion events; Scheduler notification manual; document.hidden/native not exercised. Old indefinite-loop contradiction resolved.",
+      "nextAction": "Verify complete multi-event ingestion/SSE observation semantics and production hidden/native lifecycle before claiming every genuine CALL.",
+      "authority": "03 motion / Overview action contract",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "M02",
+      "group": "motion",
+      "requirement": "Pulse orbital loop6s only fresh/recent/visible; stale/idle/hidden/offscreen stop",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/overview.css:534",
+        "docs/redesign-v1.85.81/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Current6s CSS plus stale/idle selectors;81 compiled fresh/recent/idle/stale/unavailable/offscreen and reduced cases. Browser IO semantics only, not Electron/document.hidden certification.",
+      "nextAction": "Preserve contract during final native lifecycle and normal/reduced checks.",
+      "authority": "03 Pulse Core",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "M03",
+      "group": "motion",
+      "requirement": "Arc420ms, changed minute points180ms, new forecast420ms, row/detail emphasis180/700ms, risk entrance180ms",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/redesign/overview.css",
+        "packages/web/src/redesign/observed-trend.tsx",
+        "packages/web/src/lib/motion.ts"
+      ],
+      "evidenceScope": "Arc420 and duration utilities implemented. Direct SVG trend points/static marker paths lack a demonstrated transition; no blanket failure inferred from search absence.",
+      "nextAction": "Audit each actual transition using normal-motion trace; implement only missing contract timings and no replay behavior.",
+      "authority": "03 motion",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "M04",
+      "group": "motion/power",
+      "requirement": "Activity canvas skips every hidden/offscreen draw/bitmap operation; cleanup and latest reentry",
+      "status": "proven",
+      "evidence": [
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.68/activity-intersection-observer.json",
+        "packages/web/src/redesign/activity-sparkline.tsx"
+      ],
+      "evidenceScope": "20IO/noIO assertions68 after real causal fix; raw69 native hide no-paint and show latest800 pass. Headless hidden emulation does not prove minimize.",
+      "nextAction": "Preserve20 causal assertions; run current native final visibility lifecycle.",
+      "authority": "03 hidden work /08",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "M05",
+      "group": "motion/power",
+      "requirement": "Actual native minimized/restore/latest/unmount lifecycle",
+      "status": "weak",
+      "evidence": [
+        "docs/redesign-v1.85.69/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.69/electron-activity-verification.json"
+      ],
+      "evidenceScope": "Native hide/show pass only. Minimized native=false but document.hidden=false in altered raw fixture; controls inconclusive, not production-defect evidence.",
+      "nextAction": "Use production-equivalent Electron lifecycle with default throttling, diagnose visibility controls, then assert restore latest1700 and unmount cleanup.",
+      "authority": "08 hidden/desktop /13",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "M06",
+      "group": "motion/power",
+      "requirement": "Nonessential timers/render/query/chart commits and hidden SSE work have measured bounds",
+      "status": "incomplete",
+      "evidence": [
+        "packages/web/src/redesign/shell.tsx:55",
+        "packages/web/src/lib/use-live.ts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Refresh/SSE coalescing/cleanup and sparkline proven locally; Shell30s timer exists. No final workload CPU budget proof or automatic defect claim.",
+      "nextAction": "Measure visible/hidden/offscreen timers/render counts/query count/paint CPU; guard nonessential clock updates if causal cost demonstrated.",
+      "authority": "05 test parity/performance",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "P01",
+      "group": "performance",
+      "requirement": "Large histories query plans plus many-model/effort payload, canvas allocation and chart commit budgets",
+      "status": "incomplete",
+      "evidence": [
+        "tmp/history-effort-causal50.json",
+        "docs/redesign-v1.85.64/runtime/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "64runtime5000records/500000tokens timings20.37..33.98ms median28.7 are narrow evidence, not full perf certification.",
+      "nextAction": "Profile final build realistic large data; record EXPLAIN plans/counts/render/paint/CPU and choose explicit accepted budgets.",
+      "authority": "05 /13 chunk profile",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "P02",
+      "group": "performance",
+      "requirement": "Large bundle profiled and splitting determined from measurements",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.70/build.log",
+        "packages/web/src/main.tsx"
+      ],
+      "evidenceScope": "Page lazy loading exists; >500kB build warning remains and is not a build failure.",
+      "nextAction": "Measure cold-load/route chunks and chart work; use existing lazy pages before introducing speculative rewrite.",
+      "authority": "13 release evidence",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "X01",
+      "group": "accessibility",
+      "requirement": "Keyboard/focus/rail/skip/command palette across routes and responsive widths",
+      "status": "weak",
+      "evidence": [
+        "docs/redesign-v1.85.66/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md",
+        "packages/web/src/sections/history.tsx"
+      ],
+      "evidenceScope": "66capacity CtrlEnd bottom/reach and UI route/dialog checks pass; initial mid-smooth-scroll failure was instrumentation, not clip. No exhaustive final manual a11y acceptance.",
+      "nextAction": "Complete current all-eight keyboard/focus/action audit including selected rails/long categories; actual native manual review.",
+      "authority": "08 screen",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "X02",
+      "group": "accessibility",
+      "requirement": "English/Thai and dark/light, dates/numbers/fonts,390/900/1280/1440/native layouts",
+      "status": "weak",
+      "evidence": [
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.69/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.70/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "68full40 and UI16 historical;69Models45 palette and70Overview4 retain scoped coverage; all-eight current native ENdark capture only.",
+      "nextAction": "Run final full matrix and obtain manual language/contrast/narrow review without changing real facts.",
+      "authority": "OVR023 /13",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "X03",
+      "group": "accessibility",
+      "requirement": "Reduced-motion normal state, no looping warnings, contrast and focus semantics",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/redesign/overview.css",
+        "packages/web/src/index.css",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "CSS overrides exist and reduced deterministic captures are useful; normal RuntimeMap still violates one-shot contract.",
+      "nextAction": "Trace reduced+normal motion and contrast/focus on current all-eight controls; then user review.",
+      "authority": "03 /08",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "C01",
+      "group": "compatibility",
+      "requirement": "Hash aliases/canonical defaults/explicit scope/entity preserve and replaceState",
+      "status": "proven",
+      "evidence": [
+        "packages/web/src/redesign/routes.ts",
+        "packages/web/test/redesign-routes.test.ts"
+      ],
+      "evidenceScope": "Meaningful source tests cover aliases/idempotence/legacy range preservation; browser default Overview, #live retained.",
+      "nextAction": "Run final route tests/current command caller actions including Overview→Models fix.",
+      "authority": "13 hash migration",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "C02",
+      "group": "compatibility",
+      "requirement": "Old API defaults/cardinality/types preserved with optional NEW_READ fields",
+      "status": "weak",
+      "evidence": [
+        "packages/daemon/test/model-catalog-context.test.ts",
+        "packages/daemon/src/api/detailed-aggregates.ts",
+        "packages/daemon/src/api/server.ts"
+      ],
+      "evidenceScope": "Specific old-field omission/cardinality tested; exhaustive prior-client compatibility run not identified.",
+      "nextAction": "Execute prior web/tray client against final daemon; preserve optional fields, defaults and source parameters.",
+      "authority": "12 additive reads /13",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "C03",
+      "group": "compatibility",
+      "requirement": "Popup selected before routing; preload/IPC/sandbox/readiness/preferences preserved",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/main.tsx",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "68ten desktop checks realcompiled preload/sandbox but fixturemain, not installed lifecycle. Existing pet popup must remain, no new dashboard pet redesign.",
+      "nextAction": "Run final actual compiled preload and production-equivalent popup/main lifecycle; preserve pet settings/assets.",
+      "authority": "13 Electron",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "C04",
+      "group": "compatibility",
+      "requirement": "Preferences/theme/language/currency/window/notifications/hidden-subscription/snooze/quiet-hour persist",
+      "status": "weak",
+      "evidence": [
+        "packages/web/src/sections/settings.tsx",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Source and scoped tests present, installed restart/current artifact matrix not certified.",
+      "nextAction": "Verify final restart/persist matrix in isolated install; fixtures cannot overwrite real preferences.",
+      "authority": "13 preferences",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "T01",
+      "group": "validation",
+      "requirement": "Checkpoint82 web build and216 unit tests",
+      "status": "proven",
+      "evidence": [
+        "docs/redesign-v1.85.82/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.82/build-provenance.json"
+      ],
+      "evidenceScope": "82 build index2745fb4d452476c930089630042f7afa93784ecee8948dc6b177e0f1d6a684dd; web216. Repo520 is81 historical, daemon/tray unchanged. Parent83 draft is unbuilt by this audit.",
+      "nextAction": "Run relevant final build/tests after draft accepted.",
+      "authority": "08 relevant checks",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "T02",
+      "group": "validation",
+      "requirement": "Checkpoint82 RuntimeMap four EN/TH dark/light repeat pairs",
+      "status": "proven",
+      "evidence": [
+        "docs/redesign-v1.85.82/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Four runtime-layout pairs byte-identical under unchanged original tolerance; narrower than broader Overview scope and full40; all8nativecaptures present.",
+      "nextAction": "Retain source/build provenance; run full final combinedmatrix.",
+      "authority": "05 /08",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "T03",
+      "group": "validation",
+      "requirement": "Final frozen full40/all-unit/API/UI/desktop integration bound to one frozen hash",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.80/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.81/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.82/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "80 full40pairs34exact6tolerance on79 source;81 repository520 and scoped motion+Overview;82 web216+runtime4+8native. No single final82/current83 integrated RC evidence.",
+      "nextAction": "Freeze actual final source then run full40, allunit/API/UI/desktop/native/performance/package gates with matching hashes.",
+      "authority": "08 RC",
+      "evidenceRecency": "Reinspected 2026-10-16; source/current checkpoint artifacts only unless direct execution stated."
+    },
+    {
+      "id": "V01",
+      "group": "visual acceptance",
+      "requirement": "Reviewed first real implementation baseline with reviewer/commit/overrides/environment",
+      "status": "missing",
+      "evidence": [
+        "docs/quotapulse_build_blueprint_v1.1.zip",
+        "docs/redesign-v1.85.70/review.html"
+      ],
+      "evidenceScope": "Initial reference_manifest placeholders not_created; repeat captures are not named approved visual baseline proof.",
+      "nextAction": "Present all-eight current original-vs-actual real-data composition for explicit review; record reviewer, accepted deviations and measurements.",
+      "authority": "00 authority /08 /11 baseline",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "V02",
+      "group": "visual acceptance",
+      "requirement": "SSIM≥.985/regional/text regression against approved deterministic IMPLEMENTATION baseline",
+      "status": "missing",
+      "evidence": [
+        "screens/stable-captures/verification.json",
+        "docs/redesign-v1.85.70/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Current repeat tolerance/exact matches useful but different from approved baseline SSIM. Approved factual changes preclude raw concept whole-image threshold.",
+      "nextAction": "After baseline approval calculate SSIM and geometry/text regression against that exact baseline; do not require original-source whole-image SSIM.",
+      "authority": "00 measurable acceptance /05",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "V03",
+      "group": "visual acceptance",
+      "requirement": "All-eight unchanged major regions≤2CSSpx and primitives1–2px against accepted sheet",
+      "status": "incomplete",
+      "evidence": [
+        "tmp/source-art70-after-en-dark/geometry.json",
+        "docs/redesign-v1.85.69/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.70/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Current geometry preservation across trials is not proof of absolute source-matching every region; title numeric trials rejected, do not guess weights.",
+      "nextAction": "Complete region map with source/approved revised bounds, selected History rail and responsive review; fix demonstrated visible gaps.",
+      "authority": "00 /05",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "R01",
+      "group": "release",
+      "requirement": "Current self-contained portable/review package and licenses/asset hashes",
+      "status": "missing",
+      "evidence": [
+        "scripts/build-review-bundle.mts",
+        "screens/tray-recovery/bundle-build.json",
+        "screens/review-installation/verification.json"
+      ],
+      "evidenceScope": "Builder exists. v1.80 package and17 installation checks historical; default builder checkpointv1.67 stale, pass explicit version.",
+      "nextAction": "Build explicit final checkpoint package from frozen commit; verify extracted daemon/web/tray/preload/runtime deps/fonts/compat assets/licenses.",
+      "authority": "13 deployment",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "R02",
+      "group": "release",
+      "requirement": "Exact previous checkout+matching assets rollback preserves user DB; no reset/reprice",
+      "status": "missing",
+      "evidence": [
+        "scripts/check-review-bundle.mts",
+        "scripts/check-review-installation.ps1",
+        "screens/review-installation/verification.json"
+      ],
+      "evidenceScope": "Historical portable stop/restart preservesDB; upgrade/rollback manifest-only, different-version actual DB rollback not certified.",
+      "nextAction": "Create isolated current install→previous version rollback→current recovery with matching asset hashes and DB facts preservation.",
+      "authority": "13 recovery /08RC",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "R03",
+      "group": "release",
+      "requirement": "Production-equivalent recovery renderer crash/hang/popup plus installed restart lifecycle",
+      "status": "weak",
+      "evidence": [
+        "docs/redesign-v1.85.64/runtime/VALIDATION-STATE.md",
+        "scripts/check-unresponsive-recovery.mts",
+        "scripts/check-pet-popup-recovery.mts",
+        "docs/redesign-v1.85.68/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "64four dashboard renderer recovery checks and68fixturedesktop meaningful; no current complete installed/unresponsive/popup gate.",
+      "nextAction": "Run final unchanged-process/bounded recovery checks including actual main/popup paths in isolated review install.",
+      "authority": "08RC /13",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "R04",
+      "group": "release",
+      "requirement": "Single RC evidence index commit/tag/build/source/fixture/reference/test/artifact/environment hash + open gaps",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.70/build-provenance.json",
+        "docs/redesign-v1.85.70/artifact-hashes.json",
+        "docs/redesign-v1.85.70/VALIDATION-STATE.md"
+      ],
+      "evidenceScope": "Current checkpoint has strong scoped provenance and honest open gaps, not complete final RC.",
+      "nextAction": "Unify final evidence into one RC index including baseline review, perf, package/rollback and manual acceptance.",
+      "authority": "08 /13 evidence",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "R05",
+      "group": "release",
+      "requirement": "User manual visual/functionality/accessibility acceptance for full99–100% ambition",
+      "status": "missing",
+      "evidence": [
+        "docs/redesign-v1.85.70/VALIDATION-STATE.md",
+        "docs/redesign-v1.85.70/review.html"
+      ],
+      "evidenceScope": "User previously rejected ~80% likeness; no later final acceptance supplied. No percentage estimated here.",
+      "nextAction": "Provide actual all-eight reviewable app/package and source comparison, record user acceptance and concrete residuals.",
+      "authority": "00 outcome /08",
+      "evidenceRecency": "Retained audit70 source/historical evidence unless explicitly refreshed below; no fresh execution inferred."
+    },
+    {
+      "id": "G83-HISTORY",
+      "group": "remaining concrete gaps",
+      "requirement": "History selected record and related-session action stay consistent with displayed scope",
+      "status": "incomplete",
+      "evidence": [
+        "packages/web/src/sections/history.tsx:111",
+        "packages/web/src/sections/history.tsx:184"
+      ],
+      "evidenceScope": "Source-level risk: initialSelection writes selected only once; later snapshot replacement can retain old selected metadata. relatedSession combines selected.session_key with newer snapshot.scope. No runtime reproduction in this audit; do not call every click broken.",
+      "nextAction": "Reproduce selected A -> scope/page B; either reconcile/dismiss selection or retain explicit record scope and build related action from it; verify focus and no false metadata.",
+      "authority": "00 /03 /05 /08 /13",
+      "evidenceRecency": "Direct source/checkpoint inspection83; runtime reproduction pending"
+    },
+    {
+      "id": "G83-EFFORT",
+      "group": "remaining concrete gaps",
+      "requirement": "High-cardinality effort categories have measured bounded payload/rendering and truthful complete access",
+      "status": "incomplete",
+      "evidence": [
+        "packages/daemon/src/api/history-summary.ts:22",
+        "packages/daemon/src/api/model-detail.ts:17",
+        "packages/web/src/redesign/history-timeline.tsx:47"
+      ],
+      "evidenceScope": "Both queries GROUP BY arbitrary effort without category bound; HistoryTimeline directly maps all categories. Existing record paging/export is implemented and is not this issue. Historical20k/250kB probe is narrow; current final workload unprofiled.",
+      "nextAction": "Measure realistic20k-category fixture queryplan/payload/DOM/CPU. Preserve exact categories/null/empty and provide bounded viewport/paging or justified contract with complete access.",
+      "authority": "00 /03 /05 /08 /13",
+      "evidenceRecency": "Direct source/checkpoint inspection83; runtime reproduction pending"
+    },
+    {
+      "id": "G83-LAZY",
+      "group": "remaining concrete gaps",
+      "requirement": "Deferred module placeholders preserve each actual screen composition",
+      "status": "incomplete",
+      "evidence": [
+        "packages/web/src/redesign/route-loading.tsx:29"
+      ],
+      "evidenceScope": "Overview has specific composition, other routes generic title/panel/three slots; API placeholders79 do not cover module import. This is an incomplete requirement, not missing all loading UI.",
+      "nextAction": "Extract eager neutral region descriptors/components reused by module fallback and page API pendingstate; verify module delay/error/retry geometry.",
+      "authority": "00 /03 /05 /08 /13",
+      "evidenceRecency": "Direct source/checkpoint inspection83; runtime reproduction pending"
+    },
+    {
+      "id": "G83-OBSERVE",
+      "group": "remaining concrete gaps",
+      "requirement": "RuntimeMap every required new CALL is observed rather than newest-per-harness sample",
+      "status": "incomplete",
+      "evidence": [
+        "docs/redesign-v1.85.81/VALIDATION-STATE.md",
+        "packages/web/src/redesign/production.tsx"
+      ],
+      "evidenceScope": "Current gate proves newest observed CALL behavior, manually notified Scheduler; checkpoint explicitly disclaims every ingested CALL. Requirement scope must be reconciled against motion03 before claiming completion.",
+      "nextAction": "Inspect exact event source contract; test multiple same-harness CALLs between refreshes and real ingest/SSE. Add bounded incremental identities if required without replay/aggregates or parallelrefreshsystem.",
+      "authority": "00 /03 /05 /08 /13",
+      "evidenceRecency": "Direct source/checkpoint inspection83; runtime reproduction pending"
+    }
+  ],
+  "scopeWarning": "97 original rows retained with recency explicit;4concrete followup rows added. Unrefreshed proven rows are scoped inherited implementation/history evidence, NOT final current certification.",
+  "authorityValidation": "tmp/full-goal83-authority.json"
+}

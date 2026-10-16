@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.82
+## Current checkpoint: v1.85.83
+
+[Implementation and final validation](redesign-v1.85.83/VALIDATION-STATE.md) | [All-eight original/current review](redesign-v1.85.83/review.html). Overview metric/Project atmosphere follows Source more closely; History selected facts and related-session scope stay current; native Cost amounts retain full precision on one line in tested EN/TH widths. Build,527 repository tests, History5, native unit20, current all-eight captures and full40 integration pass. Original all-eight visual and release acceptance remain open.
+
+## Previous checkpoint: v1.85.82
 
 [Source artwork implementation and validation](redesign-v1.85.82/VALIDATION-STATE.md) | [All-eight original/current review](redesign-v1.85.82/review.html). Runtime Map plate/filaments, Cost plates and selected Projects cube now follow Source more closely. Current build/web216/four exact runtime-layout pairs/all-eight captures pass. Full original-reference and release acceptance remain open.
 

@@ -1,0 +1,45 @@
+TAP version 13
+# Subtest: History range/source edits preserve the related-session constraint
+ok 1 - History range/source edits preserve the related-session constraint
+  ---
+  duration_ms: 1.5902
+  ...
+# Subtest: invalid or cleared History session constraints never become route parameters
+ok 2 - invalid or cleared History session constraints never become route parameters
+  ---
+  duration_ms: 0.3552
+  ...
+# Subtest: other usage routes retain their existing hash and do not acquire History session scope
+ok 3 - other usage routes retain their existing hash and do not acquire History session scope
+  ---
+  duration_ms: 0.1262
+  ...
+# Subtest: selected aggregate details follow the accepted row by stable event_id despite reordered page rows
+ok 4 - selected aggregate details follow the accepted row by stable event_id despite reordered page rows
+  ---
+  duration_ms: 0.1893
+  ...
+# Subtest: retained selection keeps its original related-record scope when absent from a new page/query
+ok 5 - retained selection keeps its original related-record scope when absent from a new page/query
+  ---
+  duration_ms: 0.1688
+  ...
+# Subtest: live snapshots never reopen a closed detail rail or replace its selection with another event
+ok 6 - live snapshots never reopen a closed detail rail or replace its selection with another event
+  ---
+  duration_ms: 0.07
+  ...
+# Subtest: related-session navigation uses retained origin range/source/filters and the actual selected session
+ok 7 - related-session navigation uses retained origin range/source/filters and the actual selected session
+  ---
+  duration_ms: 0.4198
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 789.1735

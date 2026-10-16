@@ -1,0 +1,52 @@
+{
+  "purpose": "Read-only calibration: immutableSourceitself as candidate under unchangedfrozenROI/threshold/9offsets. Doesnotaltergate oracceptcandidate.",
+  "source70supportUnshifted": 1,
+  "rows": [
+    {
+      "dx": -1,
+      "dy": -1,
+      "perfectSourceCandidateSupport70": 9
+    },
+    {
+      "dx": 0,
+      "dy": -1,
+      "perfectSourceCandidateSupport70": 9
+    },
+    {
+      "dx": 1,
+      "dy": -1,
+      "perfectSourceCandidateSupport70": 9
+    },
+    {
+      "dx": -1,
+      "dy": 0,
+      "perfectSourceCandidateSupport70": 1
+    },
+    {
+      "dx": 0,
+      "dy": 0,
+      "perfectSourceCandidateSupport70": 1
+    },
+    {
+      "dx": 1,
+      "dy": 0,
+      "perfectSourceCandidateSupport70": 1
+    },
+    {
+      "dx": -1,
+      "dy": 1,
+      "perfectSourceCandidateSupport70": 0
+    },
+    {
+      "dx": 0,
+      "dy": 1,
+      "perfectSourceCandidateSupport70": 0
+    },
+    {
+      "dx": 1,
+      "dy": 1,
+      "perfectSourceCandidateSupport70": 0
+    }
+  ],
+  "finding": "Sourceperfectcandidate has0support atdy+1, all3dx; hence frozenrulecandidateemptyfailure rejectsSourceitself for70upperedge. Do notinventabove70supporttoforcepassing."
+}

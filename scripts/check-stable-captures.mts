@@ -2815,6 +2815,24 @@ try {
             const unitAmount = page.locator('.qp-cost-summary article:last-child strong');
             const amountLayout = await unitAmount.evaluate(node => ({ height: node.getBoundingClientRect().height, lineHeight: parseFloat(getComputedStyle(node).lineHeight) }));
             assert.ok(amountLayout.height <= amountLayout.lineHeight + 1, `${lang}/${theme}: Cost unit amount splits across lines: ${JSON.stringify(amountLayout)}`);
+            {
+              const originalText = await unitAmount.innerText();
+              // Localized currency amounts must fit at native breakpoints,
+              // without dropping precision, clipping or widening the summary card.
+              for (const width of [1500, 1536, 1586, 1920]) {
+                await page.setViewportSize({ width, height: 941 });
+                const fit = await unitAmount.evaluate(node => {
+                  const rect = node.getBoundingClientRect();
+                  return { height: rect.height, lineHeight: parseFloat(getComputedStyle(node).lineHeight),
+                    width: rect.width, scrollWidth: node.scrollWidth, clientWidth: node.clientWidth };
+                });
+                assert.equal(await unitAmount.innerText(), originalText, 'Responsive unit amount must retain full precision');
+                assert.ok(fit.height <= fit.lineHeight + 1, `${lang}/${theme}/${width}: Cost unit amount wraps: ${JSON.stringify(fit)}`);
+                assert.ok(fit.scrollWidth <= fit.clientWidth + 1, `${lang}/${theme}/${width}: Cost unit amount is clipped`);
+                assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+              }
+              await page.setViewportSize({ width: 1672, height: 941 });
+            }
             const regions = await page.evaluate(() => Object.fromEntries(['.qp-cost-overview', '.qp-cost-summary article:first-child', '.qp-cost-providers', '.qp-cost-donut', '.qp-cost-providers ol', '.qp-cost-providers li:first-child', '.qp-cost-trend', '.qp-cost-models', '.qp-cost-lower'].map(selector => {
               const box = document.querySelector(selector)!.getBoundingClientRect();
               return [selector, { x: box.x, y: box.y, width: box.width, height: box.height, bottom: box.bottom }];

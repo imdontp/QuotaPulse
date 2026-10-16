@@ -1,0 +1,17 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : undefined:1
+At line:2 char:42
++ ... SE='final'; node --import tsx tmp/history83-browser.mts *> tmp/histor ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (undefined:1:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+undefined
+^
+
+SyntaxError: "undefined" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\history83-browser.mts:175:86)
+
+Node.js v22.13.1

@@ -1,0 +1,50 @@
+/* Overview concept marks are decorative; no usage, price or trend values live here.
+   Keep the existing icon system in compact, preview and light presentations. */
+.qp-overview-metric-reference { display:none; }
+.qp-overview-metric-fallback { display:contents; }
+
+@media (min-width:1536px) {
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-metric-rail {
+    grid-template-columns:46px minmax(0,1fr);
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-metric-rail-icon {
+    width:46px;
+    height:42px;
+    position:relative;
+    isolation:isolate;
+    transform:translateY(1px);
+    border:0;
+    border-radius:16px;
+    --qp-metric-reference-plate:radial-gradient(ellipse at 51% 41%,#0a1c37,#081322 72%);
+    background:transparent;
+    color:#409dff;
+  }
+  /* A 44px decorative plate without increasing the existing 42px rail item. */
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-metric-rail-icon::before {
+    content:"";
+    position:absolute;
+    inset:0 0 -2px;
+    z-index:-1;
+    border-radius:inherit;
+    background:var(--qp-metric-reference-plate);
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-metric-rail[data-metric=pace] .qp-metric-rail-icon {
+    --qp-metric-reference-plate:radial-gradient(ellipse at 50% 45%,#211923,#12131e 76%);
+    color:#ef644c;
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-metric-rail[data-metric=cost] .qp-metric-rail-icon {
+    --qp-metric-reference-plate:radial-gradient(ellipse at 50% 43%,#26262f,#131720 76%);
+    color:#e7b96d;
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-metric-rail[data-metric=cache] .qp-metric-rail-icon {
+    --qp-metric-reference-plate:radial-gradient(ellipse at 51% 45%,#083137,#071d25 78%);
+    color:#12b7ae;
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-overview-metric-fallback { display:none; }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-metric-rail-icon>.qp-overview-metric-reference {
+    display:block;
+    width:23px;
+    height:23px;
+    filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 38%,transparent));
+  }
+}

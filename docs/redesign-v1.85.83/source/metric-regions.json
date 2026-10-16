@@ -1,0 +1,132 @@
+{
+  "source": "docs/redesign-v1.85.69/refs/overview.png",
+  "before": "docs/redesign-v1.85.82/after/overview.png",
+  "scope": "Production Overview dark, viewport width >= 1536. Native Source decoration only; metric data/copy/trends unchanged.",
+  "regions": [
+    {
+      "metric": "tokens",
+      "sourceRegion": [
+        242,
+        142,
+        290,
+        186
+      ],
+      "beforeRegion": [
+        243,
+        141,
+        285,
+        183
+      ],
+      "fixedSourceAndBeforeCompareRegion": [
+        241,
+        139,
+        291,
+        188
+      ],
+      "sourcePlateSample": [
+        9,
+        21,
+        41
+      ],
+      "beforePlateSample": [
+        15,
+        47,
+        65
+      ]
+    },
+    {
+      "metric": "pace",
+      "sourceRegion": [
+        242,
+        219,
+        290,
+        263
+      ],
+      "beforeRegion": [
+        243,
+        219,
+        285,
+        261
+      ],
+      "fixedSourceAndBeforeCompareRegion": [
+        241,
+        217,
+        291,
+        265
+      ],
+      "sourcePlateSample": [
+        20,
+        19,
+        30
+      ],
+      "beforePlateSample": [
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "metric": "cost",
+      "sourceRegion": [
+        242,
+        301,
+        290,
+        345
+      ],
+      "beforeRegion": [
+        243,
+        298,
+        285,
+        340
+      ],
+      "fixedSourceAndBeforeCompareRegion": [
+        241,
+        296,
+        291,
+        347
+      ],
+      "sourcePlateSample": [
+        25,
+        27,
+        35
+      ],
+      "beforePlateSample": [
+        39,
+        36,
+        33
+      ]
+    },
+    {
+      "metric": "cache",
+      "sourceRegion": [
+        242,
+        377,
+        290,
+        421
+      ],
+      "beforeRegion": [
+        243,
+        377,
+        285,
+        419
+      ],
+      "fixedSourceAndBeforeCompareRegion": [
+        241,
+        375,
+        291,
+        423
+      ],
+      "sourcePlateSample": [
+        8,
+        31,
+        37
+      ],
+      "beforePlateSample": [
+        14,
+        44,
+        48
+      ]
+    }
+  ],
+  "validation": "Source comparison and git diff check only. No build/browser run by this agent; root combines and validates."
+}

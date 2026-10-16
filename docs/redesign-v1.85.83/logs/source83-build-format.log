@@ -1,0 +1,83 @@
+
+> @quotapulse/web@0.1.0 build
+> tsc -b && vite build
+
+vite v6.4.3 building for production...
+transforming...
+✓ 3001 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                   1.87 kB │ gzip:   0.96 kB
+dist/assets/geist-mono-symbols2-wght-normal-CO5SzqOn.woff2        5.81 kB
+dist/assets/geist-mono-cyrillic-ext-wght-normal-X_5orZeX.woff2    6.18 kB
+dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2         7.42 kB
+dist/assets/geist-mono-vietnamese-wght-normal-DadHysG0.woff2      7.70 kB
+dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2           8.00 kB
+dist/assets/geist-mono-cyrillic-wght-normal-DiZS0aHC.woff2       12.94 kB
+dist/assets/geist-mono-latin-ext-wght-normal-Bwz-egvJ.woff2      14.70 kB
+dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2            15.08 kB
+dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2           16.51 kB
+dist/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2          23.13 kB
+dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2               29.40 kB
+dist/assets/runtime-project-atmosphere-BzefuT-p.svg              48.90 kB │ gzip:   5.33 kB
+dist/assets/scope-notice-SMVc0RpX.css                             0.17 kB │ gzip:   0.14 kB
+dist/assets/chart-data-AgyWygLH.css                               0.64 kB │ gzip:   0.34 kB
+dist/assets/initial-region-NV94_To4.css                           0.90 kB │ gzip:   0.39 kB
+dist/assets/quota-chart-D8HC5jl7.css                              1.01 kB │ gzip:   0.43 kB
+dist/assets/App-AFO74nTo.css                                      1.31 kB │ gzip:   0.65 kB
+dist/assets/section-mark-D9p1fSvH.css                             1.81 kB │ gzip:   0.53 kB
+dist/assets/utility-pages-rQmk3yrA.css                            2.52 kB │ gzip:   0.74 kB
+dist/assets/production-I1A5b9Te.css                               2.58 kB │ gzip:   0.72 kB
+dist/assets/page-heading-B6srWc0E.css                             7.38 kB │ gzip:   1.37 kB
+dist/assets/providers-DQ3TF4wd.css                               14.32 kB │ gzip:   3.12 kB
+dist/assets/projects-C_4wTv0a.css                                15.70 kB │ gzip:   3.25 kB
+dist/assets/models-ZAByMoz0.css                                  17.48 kB │ gzip:   3.58 kB
+dist/assets/cost-yhTdpGiS.css                                    18.73 kB │ gzip:   3.79 kB
+dist/assets/settings-C9_SgaQs.css                                20.21 kB │ gzip:   3.69 kB
+dist/assets/alerts-BQk6Eyvp.css                                  22.38 kB │ gzip:   4.35 kB
+dist/assets/live-CZ5Q8jlt.css                                    32.92 kB │ gzip:   5.62 kB
+dist/assets/index-D26jzoH3.css                                  152.63 kB │ gzip:  27.22 kB
+dist/assets/section-mark-BN6x83lh.js                              0.27 kB │ gzip:   0.22 kB
+dist/assets/info-BruDm-vP.js                                      0.37 kB │ gzip:   0.28 kB
+dist/assets/database-CpzVkYPS.js                                  0.42 kB │ gzip:   0.31 kB
+dist/assets/coins-CeDnXQDW.js                                     0.45 kB │ gzip:   0.33 kB
+dist/assets/lightbulb-eO0wWO1j.js                                 0.45 kB │ gzip:   0.32 kB
+dist/assets/page-heading-BJhqBkFJ.js                              0.47 kB │ gzip:   0.28 kB
+dist/assets/shield-check-BbFhiQjC.js                              0.49 kB │ gzip:   0.35 kB
+dist/assets/gauge-DZmhJW8i.js                                     0.60 kB │ gzip:   0.31 kB
+dist/assets/trending-up-TtxGcDL4.js                               0.67 kB │ gzip:   0.36 kB
+dist/assets/initial-region-CeS-6WR-.js                            0.71 kB │ gzip:   0.41 kB
+dist/assets/triangle-alert-ChYuWz5A.js                            0.72 kB │ gzip:   0.37 kB
+dist/assets/chart-data-3K2vlGZZ.js                                0.76 kB │ gzip:   0.45 kB
+dist/assets/wallet-BUm6KDJq.js                                    0.83 kB │ gzip:   0.42 kB
+dist/assets/heading-reference-icon-Bsf-UqfA.js                    1.87 kB │ gzip:   0.93 kB
+dist/assets/chart-data-gtWE2FLv.js                                1.98 kB │ gzip:   0.91 kB
+dist/assets/utility-pages-C0LDRzDI.js                             2.05 kB │ gzip:   1.01 kB
+dist/assets/format-D6x-ic-J.js                                    2.39 kB │ gzip:   1.04 kB
+dist/assets/scope-notice-DM2rs_dV.js                              2.42 kB │ gzip:   1.26 kB
+dist/assets/quota-chart-Ie1I4JJw.js                               3.57 kB │ gzip:   1.42 kB
+dist/assets/providers-CrrKFEhF.js                                13.96 kB │ gzip:   4.17 kB
+dist/assets/harness-icon-B6p1mjFB.js                             20.40 kB │ gzip:   9.02 kB
+dist/assets/projects-BU02hqII.js                                 21.21 kB │ gzip:   5.80 kB
+dist/assets/cost-BjGnF1IJ.js                                     22.53 kB │ gzip:   6.08 kB
+dist/assets/models-UgY_GJ-c.js                                   24.17 kB │ gzip:   6.37 kB
+dist/assets/alerts-DzvTuSGb.js                                   28.30 kB │ gzip:   8.17 kB
+dist/assets/live-BGRi9IlG.js                                     33.73 kB │ gzip:   9.40 kB
+dist/assets/production-8mrOpmQm.js                               97.21 kB │ gzip:  29.60 kB
+dist/assets/vendor-icon-oHPtRQlI.js                             106.86 kB │ gzip:  32.29 kB
+dist/assets/settings-XHFZZyGl.js                                236.43 kB │ gzip:  74.60 kB
+dist/assets/index-s9rh68G3.js                                   385.03 kB │ gzip: 110.47 kB
+dist/assets/App-DVjaVAMt.js                                     532.30 kB │ gzip: 154.63 kB
+npm.cmd :
+At line:5 char:81
++ ... (65279)))"; npm.cmd run build -w @quotapulse/web *> tmp/source83-buil ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking:
+https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 7.47s

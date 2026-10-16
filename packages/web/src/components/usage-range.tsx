@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { usageRouteHash } from '@/lib/usage-route';
 import { Select } from '@/components/ui/select';
 import { useT } from '@/i18n';
 import type { UsageBucket, UsageRangeKey } from '@/api';
@@ -28,18 +29,6 @@ const BUCKET_KEYS: Array<UsageBucket | 'auto'> = ['auto', 'hour', 'day', 'week',
 const VIEW_KEYS: UsageView[] = ['summary', 'cost', 'projects', 'models'];
 const DAY = 86_400_000;
 
-function routeHash(scope: 'usage' | 'sessions' | 'history', route: UsageRoute): string {
-  const params = new URLSearchParams();
-  params.set('range', route.selection.range);
-  if (route.selection.range === 'custom') {
-    if (route.selection.from != null) params.set('from', String(route.selection.from));
-    if (route.selection.to != null) params.set('to', String(route.selection.to));
-  }
-  if (route.selection.bucket && route.selection.bucket !== 'auto') params.set('bucket', route.selection.bucket);
-  if (route.selection.sourceId != null) params.set('source', String(route.selection.sourceId));
-  if (scope === 'usage') params.set('view', route.view);
-  return `#${scope}?${params.toString()}`;
-}
 
 function readRoute(scope: 'usage' | 'sessions' | 'history'): UsageRoute {
   if (typeof window === 'undefined') return { selection: { range: scope === 'history' ? 'last30' : 'today', bucket: 'auto' }, view: 'summary' };
@@ -66,7 +55,7 @@ function readRoute(scope: 'usage' | 'sessions' | 'history'): UsageRoute {
   };
 }
 
-export function useUsageRoute(scope: 'usage' | 'sessions' | 'history'): [UsageRoute, (next: UsageRouteUpdate) => void] {
+export function useUsageRoute(scope: 'usage' | 'sessions' | 'history', options: { sessionId?: number } = {}): [UsageRoute, (next: UsageRouteUpdate) => void] {
   const [route, setRoute] = React.useState<UsageRoute>(() => readRoute(scope));
   React.useEffect(() => {
     const sync = () => setRoute(readRoute(scope));
@@ -83,7 +72,7 @@ export function useUsageRoute(scope: 'usage' | 'sessions' | 'history'): [UsageRo
       selection,
       view: next.view ?? route.view,
     };
-    const hash = routeHash(scope, updated);
+    const hash = usageRouteHash(scope, updated, options.sessionId);
     history.replaceState(null, '', `${window.location.pathname}${window.location.search}${hash}`);
     setRoute(updated);
   };
