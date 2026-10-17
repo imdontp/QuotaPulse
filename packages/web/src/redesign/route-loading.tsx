@@ -3,14 +3,10 @@ import { useI18n, useT } from '@/i18n';
 import { useTheme } from '@/lib/use-theme';
 import { RedesignShell } from './shell';
 import { OverviewPendingRegions } from './overview-pending';
+import { RoutePendingRegions } from './route-pending';
 import './route-loading.css';
 
 type Page = ComponentProps<typeof RedesignShell>['active'];
-const pageLabels = {
-  overview: 'redesign.overview', live: 'redesign.live', projects: 'redesign.project',
-  providers: 'redesign.provider', models: 'redesign.models', cost: 'redesign.cost',
-  alerts: 'redesign.alerts', history: 'redesign.history', settings: 'redesign.settings',
-} as const;
 
 /** Eager chrome for a deferred route module, without a fabricated data snapshot. */
 export function RouteLoadingShell({ page, failed = false }: { page: Page; failed?: boolean }) {
@@ -27,13 +23,7 @@ export function RouteLoadingShell({ page, failed = false }: { page: Page; failed
     onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t}
     quickStatsScope={null} testId={`production-${page}`}>
     <div className="qp-route-load" data-route-load-state={state.kind} aria-busy={!failed}>
-      {page === 'overview' ? <OverviewPendingRegions state={state} t={t} historyHref="#history"/> : <>
-        <h1 className="qp-route-load-title">{t(pageLabels[page])}</h1>
-        <section className="qp-panel qp-route-load-region" aria-label={t(pageLabels[page])}>
-          <div className="qp-route-load-status"><p role="status">{state.label}</p>{failed && <button onClick={retry}>{state.retryLabel}</button>}</div>
-          <div className="qp-route-load-slots" aria-hidden="true"><span/><span/><span/></div>
-        </section>
-      </>}
+      {page === 'overview' ? <OverviewPendingRegions state={state} t={t} historyHref="#history"/> : <RoutePendingRegions page={page} state={state} t={t}/>}
     </div>
   </RedesignShell>;
 }

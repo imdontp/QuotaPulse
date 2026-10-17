@@ -169,3 +169,20 @@
  .qp-provider-header .qp-page-heading { width:100%; flex-basis:auto; }
  .qp-provider-actions { align-self:flex-end; }
 }
+
+/* Native published-window bars follow the reference fill and restrained halo. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-windows .qp-bar {
+    overflow:visible;
+  }
+  .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-windows .qp-bar>span {
+    background:linear-gradient(180deg,#ffffff0d,transparent 45%),linear-gradient(90deg,#4c98fa 0%,#4f6dfb 17%,#6d48fa 43%,#8545f8 81%,#9953fc 100%);
+    box-shadow:inset 0 1px 0 #bfd8ff21,inset 0 -1px 0 #a887ff24;
+    filter:drop-shadow(0 1px 3px #334dff66);
+  }
+  .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-card[data-vendor=opencode] .qp-provider-windows .qp-bar>span {
+    background:linear-gradient(180deg,#ffffff12,transparent 45%),linear-gradient(90deg,#05d5f5,#0bddec);
+    box-shadow:inset 0 1px 0 #b5ffff30,inset 0 -1px 0 #1ac4e52e;
+    filter:drop-shadow(0 1px 3px #00b9ed66);
+  }
+}

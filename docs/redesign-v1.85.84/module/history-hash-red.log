@@ -1,0 +1,76 @@
+﻿13:42:00.000 INFO  [db] opened :memory:
+Module recovery live/en/dark/390 passed.
+Module recovery live/en/dark/900 passed.
+Module recovery live/en/dark/1280 passed.
+Module recovery live/en/dark/1672 passed.
+Module recovery live/en/light/390 passed.
+Module recovery live/en/light/900 passed.
+Module recovery live/en/light/1280 passed.
+Module recovery live/en/light/1672 passed.
+Module recovery live/th/dark/390 passed.
+Module recovery live/th/dark/900 passed.
+Module recovery live/th/dark/1280 passed.
+Module recovery live/th/dark/1672 passed.
+Module recovery live/th/light/390 passed.
+Module recovery live/th/light/900 passed.
+Module recovery live/th/light/1280 passed.
+Module recovery live/th/light/1672 passed.
+Module recovery projects/en/dark/390 passed.
+Module recovery projects/en/dark/900 passed.
+Module recovery projects/en/dark/1280 passed.
+Module recovery projects/en/dark/1672 passed.
+Module recovery projects/en/light/390 passed.
+Module recovery projects/en/light/900 passed.
+Module recovery projects/en/light/1280 passed.
+Module recovery projects/en/light/1672 passed.
+Module recovery projects/th/dark/390 passed.
+Module recovery projects/th/dark/900 passed.
+Module recovery projects/th/dark/1280 passed.
+Module recovery projects/th/dark/1672 passed.
+Module recovery projects/th/light/390 passed.
+Module recovery projects/th/light/900 passed.
+Module recovery projects/th/light/1280 passed.
+Module recovery projects/th/light/1672 passed.
+Module recovery models/en/dark/390 passed.
+Module recovery models/en/dark/900 passed.
+Module recovery models/en/dark/1280 passed.
+Module recovery models/en/dark/1672 passed.
+Module recovery models/en/light/390 passed.
+Module recovery models/en/light/900 passed.
+Module recovery models/en/light/1280 passed.
+Module recovery models/en/light/1672 passed.
+Module recovery models/th/dark/390 passed.
+Module recovery models/th/dark/900 passed.
+Module recovery models/th/dark/1280 passed.
+Module recovery models/th/dark/1672 passed.
+Module recovery models/th/light/390 passed.
+Module recovery models/th/light/900 passed.
+Module recovery models/th/light/1280 passed.
+Module recovery models/th/light/1672 passed.
+node : node:internal/modules/run_main:122
+At line:8 char:1
++ node --import tsx scripts/check-route-loading.mts *> tmp/module84-fin ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ '#history?'
+- '#history'
+           ^
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-route-loading.mts:238:12) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '#history?',
+  expected: '#history',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

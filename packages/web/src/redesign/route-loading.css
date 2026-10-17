@@ -1,12 +1,86 @@
 .qp-redesign .qp-route-load { min-width:0; }
 .qp-redesign[data-testid=production-overview] .qp-route-load { display:grid; gap:20px; }
-.qp-redesign .qp-route-load-title { margin:10px 0 20px; font-size:24px; font-weight:300; }
-.qp-redesign .qp-route-load-region { min-height:360px; padding:24px; }
-.qp-redesign .qp-route-load-status { min-height:72px; color:var(--qp-muted); }
-.qp-redesign .qp-route-load-status button { margin-top:8px; }
-.qp-redesign .qp-route-load-slots { display:grid; gap:24px; max-width:760px; padding-top:20px; }
-.qp-redesign .qp-route-load-slots>span { display:block; width:80%; height:14px; border-radius:4px; background:color-mix(in srgb,var(--qp-muted) 12%,var(--qp-panel)); }
-.qp-redesign .qp-route-load-slots>span:nth-child(2) { width:60%; }
-@media(max-width:600px) {
-  .qp-redesign .qp-route-load-region { min-height:360px; padding:16px; }
+/* Eager fallback geometry is scoped to deferred modules; accepted page paint is untouched. */
+.qp-redesign .qp-route-pending { display:grid; gap:16px; min-width:0; }
+.qp-redesign .qp-route-pending-heading h1 { margin:0; font-size:22px; font-weight:600; }
+.qp-redesign .qp-route-pending-heading { min-height:46px; display:flex; align-items:center; }
+.qp-redesign .qp-route-pending-top { display:grid; align-content:start; gap:16px; min-width:0; }
+.qp-redesign .qp-route-pending-summary { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; min-width:0; }
+.qp-redesign .qp-route-pending-metric { min-height:84px; padding:12px; }
+.qp-redesign .qp-route-pending-metric h2 { font-size:12px; }
+.qp-redesign .qp-route-pending-layout { display:grid; grid-template-columns:minmax(0,2fr) minmax(280px,1fr); gap:16px; align-items:start; }
+.qp-redesign :is(.qp-route-pending-main,.qp-route-pending-rail) { display:grid; gap:16px; min-width:0; }
+.qp-redesign .qp-route-pending-region { min-width:0; overflow-wrap:anywhere; }
+.qp-redesign .qp-route-pending-sessions { min-height:300px; }
+.qp-redesign .qp-route-pending-flow { min-height:197px; }
+.qp-redesign .qp-route-pending-feed { min-height:186px; }
+.qp-redesign .qp-route-pending-advisories { min-height:180px; }
+.qp-redesign .qp-route-pending-matrix { min-height:450px; }
+.qp-redesign .qp-route-pending-projects .qp-route-pending-layout { grid-template-columns:minmax(0,1.65fr) minmax(320px,1fr); }
+.qp-redesign .qp-route-pending-cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.qp-redesign .qp-route-pending-project { min-height:258px; }
+.qp-redesign .qp-route-pending-project-detail { min-height:550px; }
+.qp-redesign .qp-route-pending-project-top { min-height:210px; }
+.qp-redesign .qp-route-pending-provider-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.qp-redesign .qp-route-pending-provider { min-height:230px; }
+.qp-redesign .qp-route-pending-inspector { min-height:34px; padding:8px 12px; gap:0; }
+.qp-redesign .qp-route-pending-inspector h2 { font-size:11px; }
+.qp-redesign .qp-route-pending-inspector:not(.qp-route-pending-inspector-open) .qp-initial-region-slots { display:none; }
+.qp-redesign .qp-route-pending-inspector-open { min-height:200px; }
+.qp-redesign .qp-route-pending-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.qp-redesign :is(.qp-route-pending-comparison,.qp-route-pending-health) { min-height:280px; }
+.qp-redesign .qp-route-pending-models .qp-route-pending-layout { grid-template-columns:minmax(0,2.6fr) minmax(320px,1fr); }
+.qp-redesign .qp-route-pending-models .qp-route-pending-metric { min-height:106px; }
+.qp-redesign .qp-route-pending-model-table { min-height:360px; }
+.qp-redesign .qp-route-pending-model-providers { min-height:100px; }
+.qp-redesign .qp-route-pending-model-detail-0 { min-height:284px; }
+.qp-redesign .qp-route-pending-model-detail-1 { min-height:147px; }
+.qp-redesign .qp-route-pending-model-detail-2 { min-height:160px; }
+.qp-redesign .qp-route-pending-model-detail-3 { min-height:190px; }
+.qp-redesign .qp-route-pending-cost-top { display:grid; grid-template-columns:minmax(0,2.6fr) minmax(280px,1fr); gap:12px; }
+.qp-redesign .qp-route-pending-cost .qp-route-pending-metric { min-height:187px; }
+.qp-redesign .qp-route-pending-cost-providers { min-height:258px; }
+.qp-redesign .qp-route-pending-cost-upper { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(280px,1fr); gap:12px; }
+.qp-redesign .qp-route-pending-cost-lower { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.qp-redesign .qp-route-pending-cost-chart { min-height:302px; }
+.qp-redesign .qp-route-pending-cost-table { min-height:274px; }
+.qp-redesign .qp-route-pending-history .qp-route-pending-layout { grid-template-columns:minmax(0,1fr) 288px; }
+.qp-redesign .qp-route-pending-history-timeline { display:grid; gap:12px; min-height:309px; }
+.qp-redesign .qp-route-pending-history .qp-route-pending-metric { min-height:67px; padding:8px 10px; }
+.qp-redesign .qp-route-pending-history-plot { min-height:168px; padding:0; border:0; background:none; box-shadow:none; }
+.qp-redesign .qp-route-pending-history-records { min-height:414px; }
+.qp-redesign .qp-route-pending-history-detail { min-height:calc(100vh - 140px); }
+.qp-redesign .qp-route-pending-alerts .qp-route-pending-layout { grid-template-columns:minmax(0,2.112fr) minmax(320px,1fr); }
+.qp-redesign .qp-route-pending-alert-chart { min-height:225px; }
+.qp-redesign .qp-route-pending-alert-risks { min-height:245px; }
+.qp-redesign .qp-route-pending-alert-rules { min-height:145px; }
+.qp-redesign .qp-route-pending-alert-forecast { min-height:338px; }
+.qp-redesign .qp-route-pending-alert-guidance { min-height:328px; }
+.qp-redesign .qp-route-pending-alert-events { min-height:180px; }
+.qp-redesign .qp-route-pending-settings-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.qp-redesign .qp-route-pending-settings-section { min-height:240px; }
+@media(min-width:1280px) {
+  .qp-redesign .qp-route-pending-provider { min-height:360px; }
+  .qp-redesign .qp-route-pending-provider-cards { grid-template-columns:repeat(4,minmax(0,1fr)); min-height:485px; align-content:start; }
 }
+@media(max-width:1200px) {
+  .qp-redesign :is(.qp-route-pending-projects,.qp-route-pending-models,.qp-route-pending-alerts,.qp-route-pending-history) .qp-route-pending-layout { grid-template-columns:1fr; }
+  .qp-redesign .qp-route-pending-provider-cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .qp-redesign :is(.qp-route-pending-pair,.qp-route-pending-cost-top,.qp-route-pending-cost-upper,.qp-route-pending-cost-lower) { grid-template-columns:1fr; }
+  .qp-redesign .qp-route-pending-cost .qp-route-pending-summary { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .qp-redesign .qp-route-pending-history-detail { min-height:300px; }
+}
+@media(max-width:1100px) {
+  .qp-redesign .qp-route-pending-layout { grid-template-columns:1fr; }
+  .qp-redesign .qp-route-pending-settings-grid { grid-template-columns:1fr; }
+  .qp-redesign .qp-route-pending-live .qp-route-pending-rail { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:700px) {
+  .qp-redesign .qp-route-pending-summary { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .qp-redesign :is(.qp-route-pending-cards,.qp-route-pending-provider-cards,.qp-route-pending-settings-grid),
+  .qp-redesign .qp-route-pending-live .qp-route-pending-rail { grid-template-columns:1fr; }
+  .qp-redesign .qp-route-pending-live .qp-route-pending-metric { min-height:110px; }
+}
+.qp-redesign .qp-route-pending-settings-nav { display:flex; flex-wrap:wrap; gap:8px; }
+.qp-redesign .qp-route-pending-settings-nav a { padding:7px 14px; border:1px solid var(--qp-border); border-radius:7px; font-size:12px; color:var(--qp-muted); }
+.qp-redesign .qp-route-pending-settings-nav a[aria-current=page] { color:var(--qp-accent); border-color:var(--qp-accent); background:color-mix(in srgb,var(--qp-accent) 8%,var(--qp-panel)); }

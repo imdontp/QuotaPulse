@@ -1,0 +1,257 @@
+{
+  "scope": "Frozen before84barpaintimplementation; alignedlocalbar-onlyROIs containtrack,fillandglow; no factualtext. Pixelsdifferintrackheight/widthalreadyandthoseboxesarepreserved,notoptimizedtoSource.",
+  "source_sha256": "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6",
+  "before_sha256": "9e32f804f48c886e63da93d3ef6b0a7e5a1c9813de70afafe6fb3c3fa413bed6",
+  "regions": [
+    {
+      "id": "openai-83",
+      "source_roi": [
+        354,
+        264,
+        512,
+        286
+      ],
+      "candidate_roi": [
+        355,
+        270,
+        513,
+        292
+      ],
+      "source_bar": [
+        360,
+        269,
+        503,
+        278
+      ],
+      "candidate_bar": [
+        361,
+        275,
+        507,
+        282
+      ],
+      "fraction": 83,
+      "source_window": "Monthly",
+      "actual_window": "5-hour",
+      "registration_note": "Different mandatory windowlabel, sameactualpercentage. LocalROIs equal158x22; candidateorigin offset(+1,+6). Trackmetricsmustexclude factualtext.",
+      "before_rgb_mae": 20.464135021097047,
+      "source_samples": [
+        {
+          "point": [
+            365,
+            273
+          ],
+          "rgb": [
+            77,
+            144,
+            249
+          ]
+        },
+        {
+          "point": [
+            385,
+            273
+          ],
+          "rgb": [
+            83,
+            100,
+            251
+          ]
+        },
+        {
+          "point": [
+            405,
+            273
+          ],
+          "rgb": [
+            104,
+            75,
+            250
+          ]
+        },
+        {
+          "point": [
+            425,
+            273
+          ],
+          "rgb": [
+            120,
+            65,
+            249
+          ]
+        }
+      ],
+      "before_samples": [
+        {
+          "point": [
+            366,
+            279
+          ],
+          "rgb": [
+            45,
+            123,
+            255
+          ]
+        },
+        {
+          "point": [
+            386,
+            279
+          ],
+          "rgb": [
+            63,
+            120,
+            255
+          ]
+        },
+        {
+          "point": [
+            406,
+            279
+          ],
+          "rgb": [
+            80,
+            116,
+            255
+          ]
+        },
+        {
+          "point": [
+            426,
+            279
+          ],
+          "rgb": [
+            98,
+            113,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opencode-58",
+      "source_roi": [
+        710,
+        266,
+        868,
+        288
+      ],
+      "candidate_roi": [
+        711,
+        270,
+        869,
+        292
+      ],
+      "source_bar": [
+        716,
+        271,
+        858,
+        280
+      ],
+      "candidate_bar": [
+        717,
+        275,
+        863,
+        282
+      ],
+      "fraction": 58,
+      "source_window": "Monthly",
+      "actual_window": "Monthly",
+      "registration_note": "Same actualpercentage/windowlabel. Source-onlyscan confirms y271\u2013278paint; equal158x22localROIs, candidateorigin offset(+1,+4). Trackwidth/heightpreserved.",
+      "before_rgb_mae": 17.186900652090525,
+      "source_samples": [
+        {
+          "point": [
+            721,
+            275
+          ],
+          "rgb": [
+            2,
+            236,
+            248
+          ]
+        },
+        {
+          "point": [
+            741,
+            275
+          ],
+          "rgb": [
+            0,
+            234,
+            244
+          ]
+        },
+        {
+          "point": [
+            761,
+            275
+          ],
+          "rgb": [
+            0,
+            235,
+            238
+          ]
+        },
+        {
+          "point": [
+            781,
+            275
+          ],
+          "rgb": [
+            0,
+            218,
+            224
+          ]
+        }
+      ],
+      "before_samples": [
+        {
+          "point": [
+            722,
+            279
+          ],
+          "rgb": [
+            37,
+            182,
+            204
+          ]
+        },
+        {
+          "point": [
+            742,
+            279
+          ],
+          "rgb": [
+            40,
+            190,
+            199
+          ]
+        },
+        {
+          "point": [
+            762,
+            279
+          ],
+          "rgb": [
+            43,
+            198,
+            195
+          ]
+        },
+        {
+          "point": [
+            782,
+            279
+          ],
+          "rgb": [
+            46,
+            205,
+            190
+          ]
+        }
+      ]
+    }
+  ],
+  "proposal": "NativeproductionProvidersdark>=1536only; allowexistingfillglowoutsideclip, nonlinearviolet/cyanpaint, restrainedinnerhighlight. NoAPI/JS/labels/layoutchanged.",
+  "registration_correction": "Before any84render: Source-only vertical pixel inspection atx741 locates OpenCode58% bar rows271\u2013278, not269\u2013276 assumedsharedwithOpenAI. Prior initialproposal retained separately; correctedROI aligns thisbar atdy+4, OpenAI dy+6 unchanged."
+}

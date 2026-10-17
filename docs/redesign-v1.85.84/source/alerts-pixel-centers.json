@@ -1,0 +1,21 @@
+{
+  "status": "Unaccepted source-coordinate correction",
+  "reason": "NumPy coordinates represent pixel indices, SVG coordinates must target pixel centers; compensate actual native background origin and424.0625/424 scale",
+  "beforeOrigin": [
+    1223,
+    116
+  ],
+  "actualNativeOrigin": [
+    1222.9375,
+    115.796875
+  ],
+  "transform": {
+    "x": "(sourceIndex+.5625)/(424.0625/424)",
+    "y": "sourceIndex+.703125"
+  },
+  "centroidsAndColorsFromSource": 102,
+  "variants": [
+    "pixel-centers",
+    "pixel-centers-compact"
+  ]
+}

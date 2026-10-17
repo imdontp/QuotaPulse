@@ -1,0 +1,355 @@
+{
+  "scope": "Read-only visual and contract inventory, Source8 vs archived83 actual captures. Not a99%score, runtime certification or humanacceptance.",
+  "authoritative_base": "parent supplied HEADd5d6e47/tagredesign-visual-fidelity-v1.85.83; Git not invoked perassignment",
+  "references": [
+    {
+      "file": "docs/redesign-v1.85.69/refs/alerts.png",
+      "sha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+      "downloads_byte_identical": true,
+      "after_sha256": "2bc6f8a49aabf9edfefb76afd3ed17c14c835ea624f50848908ce5d518efc193"
+    },
+    {
+      "file": "docs/redesign-v1.85.69/refs/cost.png",
+      "sha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+      "downloads_byte_identical": true,
+      "after_sha256": "8a81bc02d4ce339d36e86406d82c6be74ee72174c61aa3ad30c1c7fb65ce7067"
+    },
+    {
+      "file": "docs/redesign-v1.85.69/refs/history.png",
+      "sha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+      "downloads_byte_identical": true,
+      "after_sha256": "9889a5360d5246710b4a77e3068ce198d37aecb960f9d0a96441478b557e46a7"
+    },
+    {
+      "file": "docs/redesign-v1.85.69/refs/live.png",
+      "sha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+      "downloads_byte_identical": true,
+      "after_sha256": "c2fc7f6e3071264765d693c4bae924b7d3a5be1fc5c372f8c174855950029df9"
+    },
+    {
+      "file": "docs/redesign-v1.85.69/refs/models.png",
+      "sha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "downloads_byte_identical": true,
+      "after_sha256": "e8454aa0abab6f34bc143b54a426c7496c1e05122d92b25292ea1a20d54b8287"
+    },
+    {
+      "file": "docs/redesign-v1.85.69/refs/overview.png",
+      "sha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+      "downloads_byte_identical": true,
+      "after_sha256": "f8a2ae90de8be5cd655f0e75e60c812ecb07dd7787d61b325138a3f3ca9a7982"
+    },
+    {
+      "file": "docs/redesign-v1.85.69/refs/projects.png",
+      "sha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "downloads_byte_identical": true,
+      "after_sha256": "5dbbae0959e5d34789bbd256450f9dc811179caa2fcfb76215060f7ca39c2c98"
+    },
+    {
+      "file": "docs/redesign-v1.85.69/refs/providers.png",
+      "sha256": "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6",
+      "downloads_byte_identical": true,
+      "after_sha256": "9e32f804f48c886e63da93d3ef6b0a7e5a1c9813de70afafe6fb3c3fa413bed6"
+    }
+  ],
+  "screens": [
+    {
+      "screen": "overview",
+      "composition": "Central core/telemetry/top models, subscriptions, Runtime Map, Runway/Insights and activity strip all retained. Current local native art is83; all-map background still visibly more regular than Source.",
+      "static_remaining": [
+        {
+          "region": [
+            244,
+            526,
+            1535,
+            696
+          ],
+          "observation": "Outside left83 particle patch, Runtime Map retains regular dotted background, whereas Source field is sparse irregular near luminous routes. Wider Source field is an open art candidate, not solved by left-patch scores.",
+          "source": "packages/web/src/redesign/overview.css:1668; assets/runtime-project-atmosphere.svg"
+        }
+      ],
+      "mandatory_differences": "Actual83% selected quota instead of72%; actual unknown runway; actual4 mapped harnesses/providers and observed edge cardinality. Real token/cost/cache pricing labels and actual cards replace unsupported ROI.",
+      "overrides": [
+        "001",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "007",
+        "022",
+        "023"
+      ]
+    },
+    {
+      "screen": "providers",
+      "composition": "Subscription grid, actual-window bars, comparison and reader-health rail retained. Huge blank second-row region follows only4 supported owners rather than Source8 brands; not permission to invent integrations.",
+      "static_remaining": [
+        {
+          "region": [
+            360,
+            269,
+            503,
+            279
+          ],
+          "current_region": [
+            361,
+            275,
+            507,
+            283
+          ],
+          "observation": "Source top83% bar has brighter interior highlight/violet core and halo; current matching83% bar is a flatter linear blue-violet. Source(x410,y273) RGB109/72/250; aligned current(x411,y279)84/115/255. Candidate native dark paint-only trial.",
+          "source": "packages/web/src/redesign/providers.css:133-139"
+        }
+      ],
+      "mandatory_differences": "Refresh/Diagnostics instead ofConnect; OpenAI5h/weekly/monthly andOpenCode2 published windows; inactive owners without readings; supported owners only; real origin/freshness/readers.",
+      "overrides": [
+        "001",
+        "002",
+        "003",
+        "013",
+        "014",
+        "022",
+        "023"
+      ]
+    },
+    {
+      "screen": "models",
+      "composition": "Four summary cards/table + selected identity/donut/trend/effort rail + provider footer retained. Source comparison y259–834 vs current259–834 is already composed consistently despite only6 real rows.",
+      "static_remaining": [
+        {
+          "region": [
+            240,
+            131,
+            1257,
+            237
+          ],
+          "current_region": [
+            238,
+            130,
+            1265,
+            236
+          ],
+          "observation": "Summary plates/icons/number paint differ: current46px plates, Source approx50px; Source values look lighter and labels larger. Font-weight is visual inference requiring same-build trial; do not blindly copy cube/play icons if they weaken actual model-route-pair/session meaning.",
+          "source": "packages/web/src/redesign/models.css:27-34,166; packages/web/src/redesign/models.tsx:158-161"
+        }
+      ],
+      "mandatory_differences": "6 actualmodel/recorded-provider groups instead of12 inventedmodels; maker distinct; Calls/PricingCoverage instead ofspeed/quality; four actualtoken components; categoricaleffort instead ofbenchmarks. Month sparse trend rather than Sourceinventeddailycurve.",
+      "overrides": [
+        "001",
+        "002",
+        "003",
+        "015",
+        "016",
+        "022",
+        "023"
+      ]
+    },
+    {
+      "screen": "projects",
+      "composition": "Two-column card grid plus selected detail/trend/identities/top-consuming rail retained. Card boundaries closely match Source; actual5cards vs Sourcecontradictory5count/6cards is approved.",
+      "static_remaining": [
+        {
+          "region": [
+            263,
+            348,
+            497,
+            407
+          ],
+          "current_region": [
+            263,
+            376,
+            496,
+            406
+          ],
+          "observation": "Source selected-card chart has luminous blue vertical atmosphere and distributed tiny grid; current chart background is short rectangular regular dotted strip. Keep actual flat/single-bucket trend; candidate background-only bounded Source-fit field.",
+          "source": "packages/web/src/redesign/projects.css:419; inspect .qp-project-spark background"
+        }
+      ],
+      "mandatory_differences": "Refresh, actualmetadata/lastobserved, shareofscopedusage rather thanbudget; actualnull/unknowncostscounts; Details rather thanSettings; noedit/archive/team/pinactions.",
+      "overrides": [
+        "001",
+        "002",
+        "003",
+        "011",
+        "012",
+        "022",
+        "023"
+      ]
+    },
+    {
+      "screen": "live",
+      "composition": "Four metrics, table, minutechart, recordfeed, advisory rail and activitymatrix retained. Actual per-call zig-zag points differ from invented smooth streamingSource and must remain real.",
+      "static_remaining": [
+        {
+          "region": [
+            249,
+            128,
+            1268,
+            206
+          ],
+          "observation": "Metric plates are larger circular outlines while Source has smaller restrained dark semantic disks with luminous filled marks; assess plate/glow only with actualrecent/reporting/stale/error meanings. No current claim that Source icons are semanticallyinterchangeable.",
+          "source": "packages/web/src/redesign/live.css:9-27"
+        }
+      ],
+      "mandatory_differences": "Recent/Reporting/Stale/ReaderErrors replacesactive/idle/queued/failed; no fabricatedlifecyclefeed or providerlatency/health; matrix sparse trueper-minute occupancy; aggregateexclusions visible.",
+      "overrides": [
+        "001",
+        "002",
+        "003",
+        "008",
+        "009",
+        "010",
+        "022",
+        "023"
+      ]
+    },
+    {
+      "screen": "history",
+      "composition": "Fresh selected rail now captured beforeEscape; timeline/metrics/table/detail retained. Plot coreSource y294–413/current303–420, selectedtableSource y557/current569. Semanticfilters/explanations occupy extraheight; not safe to remove.",
+      "static_remaining": [
+        {
+          "region": [
+            1390,
+            116,
+            1654,
+            927
+          ],
+          "observation": "Current rail selected metadata/cost source density differs heavily because unsupportedPrompt/Response/rawJSON must be removed; remaining potential paint/icon spacing needs isolated measurement, not restoring sourcecontent. Fresh entry Close focus ring is legitimate keyboardfocus capturestate.",
+          "source": "packages/web/src/redesign/history.css; packages/web/src/sections/history.tsx"
+        }
+      ],
+      "mandatory_differences": "ActualCall/Sessionaggregate, categoricaleffort, safe metadataexport/copy; extra6tokencomponents and pricingprovenance; no prompt/response/statusclaims.",
+      "overrides": [
+        "001",
+        "002",
+        "003",
+        "018",
+        "019",
+        "022",
+        "023"
+      ]
+    },
+    {
+      "screen": "cost",
+      "composition": "Summary/providerdonut/trend/model/project/session/insight regions retained. Current83fluidunitamount fix preservesprecision and one-linefit.",
+      "static_remaining": [
+        {
+          "region": [
+            1231,
+            126,
+            1419,
+            314
+          ],
+          "observation": "Providerdonut halo/color boundaries still not exactSource; angle/share/text must remainactualdata. Current donut artwork is glossy broadlyclose; lowerpriority thanProvidersbars orModelsplates.",
+          "source": "packages/web/src/redesign/cost.css:43-56,214-217"
+        }
+      ],
+      "mandatory_differences": "KnownAPIvalue rather thaninvoice; projectionUnknown validcomplete-seriesunavailable; nativecostseparate; actualpricingcoverage; truecachehistory rather thanhypotheticalsavings.",
+      "overrides": [
+        "001",
+        "002",
+        "003",
+        "017",
+        "022",
+        "023"
+      ]
+    },
+    {
+      "screen": "alerts",
+      "composition": "Summary/riskchart/currentrisks/read-onlythresholds + forecast/recommendations/history retained. RootownsnextAlertsfieldtrial; no parallelcode.",
+      "static_remaining": [
+        {
+          "region": [
+            243,
+            240,
+            1277,
+            426
+          ],
+          "observation": "Riskchart neutral grid/background/ticks remain visiblydifferentSource. Rootisworkingboundedfieldtrial; realowner/windowtime-seriesandno-fakedailycurvesmustremain.",
+          "source": "packages/web/src/redesign/alerts.css"
+        }
+      ],
+      "mandatory_differences": "Notificationsexistingcontrol; fixed50/80/95read-only; realriskvsretainedhistory; desktoptrayonly; recommendationslocaldetail/diagnostics; actualforecast.",
+      "overrides": [
+        "001",
+        "002",
+        "003",
+        "007",
+        "020",
+        "021",
+        "022",
+        "023"
+      ]
+    }
+  ],
+  "prior_checkpoint_evidence": {
+    "matrix_scope": "all",
+    "matrix": {
+      "languages": [
+        "en",
+        "th"
+      ],
+      "themes": [
+        "dark",
+        "light"
+      ],
+      "complete": true
+    },
+    "cases": 40,
+    "exact_pairs": 35,
+    "max_channel_delta": 9,
+    "tolerance": {
+      "maxChannelDelta": 10,
+      "maxChangedPixelFraction": 5e-05,
+      "masks": false
+    },
+    "production_index_sha256": "06eb52b8e2b4b20ccd40a74f59caf4d618a5a23e4f0a8dab1ac75c58855d5a1e",
+    "test_totals": [
+      "106",
+      "223",
+      "198"
+    ],
+    "test_pass": [
+      "106",
+      "223",
+      "198"
+    ],
+    "test_fail": [
+      "0",
+      "0",
+      "0"
+    ],
+    "limits": "40repeatpairs prove scoped integration/repeatability of83, not current84 or originalSourceacceptance. 527tests are daemon106/web223/tray198, not allblueprintstates or nativepackagingcertification."
+  },
+  "all23_overrides_read": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ],
+  "highest_priority_non_alerts": "Providers quota-window bar paint, measured Source/currentmatching83% interior. Native dark only; preserve geometry,facts,owner/windowlabels.",
+  "secondary_candidates": [
+    "Models summaryplates/type measuredtrial",
+    "Projects smallchart staticatmosphere",
+    "WiderOverviewRuntimeMap regularfield"
+  ]
+}

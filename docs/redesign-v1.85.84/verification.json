@@ -1,0 +1,34 @@
+{
+  "status": "Validated bounded checkpoint; whole-goal incomplete",
+  "productionIndexSha256": "c01c34a1a021846ef13d5f9ccf00fb34386469b30d6aa4b119deab66712a8b9a",
+  "repositoryTests": {
+    "daemon": 106,
+    "web": 223,
+    "tray": 198,
+    "total": 527
+  },
+  "moduleLifecycleCases": 181,
+  "moduleRejectionRecoveryCases": 160,
+  "scopedFactsEqual": 17,
+  "currentNativeRoutes": 8,
+  "sourceFrozenComparisons": {
+    "alerts": 36,
+    "providers": 2
+  },
+  "repeatability": {
+    "providers": {
+      "pairs": 4,
+      "exact": 0,
+      "maxChannelDelta": 9,
+      "maxChangedPixels": 78
+    },
+    "alerts": {
+      "pairs": 4,
+      "exact": 2,
+      "maxChannelDelta": 6,
+      "maxChangedPixels": 18
+    }
+  },
+  "full40": "Historical83 only; not a current84 result",
+  "wholeGoalComplete": false
+}

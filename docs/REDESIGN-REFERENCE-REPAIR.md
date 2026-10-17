@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.83
+## Current checkpoint: v1.85.84
+
+[Implementation and validation](redesign-v1.85.84/VALIDATION-STATE.md) | [All-eight original/current review](redesign-v1.85.84/review.html) | [Module loading/error images](redesign-v1.85.84/loading-review.html). Providers fills and ready Alerts atmosphere follow Source more closely; nonOverview module fallbacks reserve screen-specific composition. Build,527 repository tests,181 module lifecycle cases,17 equal-fact comparisons, all-eight captures and scoped Providers4/Alerts4 repeat pairs pass. Original all-eight visual and release acceptance remain open.
+
+## Previous checkpoint: v1.85.83
 
 [Implementation and final validation](redesign-v1.85.83/VALIDATION-STATE.md) | [All-eight original/current review](redesign-v1.85.83/review.html). Overview metric/Project atmosphere follows Source more closely; History selected facts and related-session scope stay current; native Cost amounts retain full precision on one line in tested EN/TH widths. Build,527 repository tests, History5, native unit20, current all-eight captures and full40 integration pass. Original all-eight visual and release acceptance remain open.
 

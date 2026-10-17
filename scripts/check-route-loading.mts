@@ -36,19 +36,19 @@ const pages = ['overview', 'live', 'projects', 'models', 'history', 'alerts', 'p
 const routePrefix = (page: string) => page === 'overview' ? 'production' : page === 'history' || page === 'settings' ? 'utility-pages' : page;
 const targetModule = (url: string, prefix: string) => new RegExp(`/${prefix}-[^/]+\\.js$`).test(new URL(url).pathname);
 
-async function newPage(lang = 'en', width = 1672) {
+async function newPage(lang = 'en', width = 1672, theme = 'dark') {
   const page = await browser!.newPage({ viewport: { width, height: 992 }, timezoneId: 'Asia/Bangkok', reducedMotion: 'reduce' });
   page.setDefaultTimeout(10_000);
   page.on('pageerror', error => faults.push(error.message));
-  await page.addInitScript(({ lang }) => {
+  await page.addInitScript(({ lang, theme }) => {
     const target = window as unknown as { __QUOTAPULSE_TOKEN__: string; __readyCalls: number; qpDashboard: { ready(): void } };
     target.__QUOTAPULSE_TOKEN__ = 'route-loading-test';
     target.__readyCalls = 0;
     target.qpDashboard = { ready() { target.__readyCalls++; } };
     if (!localStorage.getItem('quotapulse-prefs')) localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang, currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
     localStorage.setItem('quotapulse-settings-migrated', '1');
-    if (!localStorage.getItem('quotapulse-theme')) localStorage.setItem('quotapulse-theme', 'dark');
-  }, { lang });
+    if (!localStorage.getItem('quotapulse-theme')) localStorage.setItem('quotapulse-theme', theme);
+  }, { lang, theme });
   await page.clock.setFixedTime(now);
   return page;
 }
@@ -70,6 +70,39 @@ async function chromeGeometry(page: Page) {
     const rect = element.getBoundingClientRect();
     return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
   }));
+}
+
+
+const numbered = (prefix: string, count = 4) => Array.from({ length: count }, (_, index) => `${prefix}-${index}`);
+const regionInventory: Record<string, string[]> = {
+  live: [...numbered('live-metric'), 'live-sessions', 'live-flow', 'live-feed', 'live-advisories', 'live-matrix'],
+  projects: [...numbered('project-card'), 'project-details', 'project-top'],
+  providers: [...numbered('providers-card'), 'providers-inspector', 'providers-comparison', 'providers-health'],
+  models: [...numbered('models-summary'), 'models-comparison', 'models-providers', ...numbered('models-detail')],
+  cost: [...numbered('cost-summary'), 'cost-providers', 'cost-trend', 'cost-models', 'cost-projects', 'cost-sessions', 'cost-insights'],
+  history: [...numbered('history-summary'), 'history-timeline', 'history-records', 'history-detail'],
+  alerts: [...numbered('alert-summary'), 'alert-chart', 'alert-risks', 'alert-rules', 'alert-forecast', 'alert-guidance', 'alert-events'],
+  settings: numbered('settings-section', 6),
+};
+async function pendingGeometry(page: Page, destination: string, hash = `#${destination}`) {
+  const pending = page.locator(`[data-route-pending="${destination}"]`);
+  await pending.waitFor();
+  const diagnostics = hash.includes('section=diagnostics');
+  const expected = diagnostics ? ['settings-adapters', 'settings-coverage'] : regionInventory[destination];
+  const regions = await pending.locator('[data-initial-region]').evaluateAll(elements => elements.map(element => {
+    const rect = element.getBoundingClientRect();
+    return { id: element.getAttribute('data-initial-region'), x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+  }));
+  assert.deepEqual(regions.map(region => region.id).sort(), [...expected].sort(), `${hash}: reserved region inventory`);
+  for (const region of regions) {
+    assert.ok(region.width > 0 && region.height > 0, `${hash}/${region.id}: region must occupy space`);
+    assert.ok(region.x >= -0.5 && region.x + region.width <= page.viewportSize()!.width + 0.5, `${hash}/${region.id}: horizontal region overflow`);
+  }
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${hash}: document overflow`);
+  assert.equal(await pending.locator('table,canvas,svg,strong,input,select').count(), 0, `${hash}: unavailable module must not invent values, chart points or form controls`);
+  const inspector = regions.find(region => region.id === 'providers-inspector');
+  if (inspector) assert.equal(inspector.height >= 200, hash.includes('owner=') || hash.includes('source='), `${hash}: inspector query geometry`);
+  return regions;
 }
 
 try {
@@ -96,6 +129,7 @@ try {
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     await page.waitForFunction(() => (window as unknown as { __readyCalls: number }).__readyCalls > 0);
     await page.evaluate(async () => { await document.fonts.ready; });
+    const heldRegions = destination === 'overview' ? undefined : await pendingGeometry(page, destination);
     const heldGeometry = await chromeGeometry(page);
     await page.screenshot({ path: resolve(output, `${destination}-${lang}-pending.png`), animations: 'disabled' });
     hold.release();
@@ -104,11 +138,11 @@ try {
     const loadedGeometry = await chromeGeometry(page);
     assert.deepEqual(loadedGeometry, heldGeometry, `${destination}/${lang}: header/navigation frame changes at module handoff`);
     if (destination === 'history') {
-      await page.locator('.qp-history-timeline h2').waitFor();
-      assert.equal(await page.locator('.qp-history-timeline h2').evaluate(element => getComputedStyle(element).fontSize), '15px');
+      await page.locator('.qp-history-timeline > h2').waitFor();
+      assert.equal(await page.locator('.qp-history-timeline > h2').evaluate(element => getComputedStyle(element).fontSize), '15px');
       assert.equal(await page.locator('.qp-history-view-actions button').first().evaluate(element => getComputedStyle(element).fontSize), '13px');
     }
-    records.push({ kind: 'cold-module', destination, lang, width, heldGeometry, loadedGeometry });
+    records.push({ kind: 'cold-module', destination, lang, width, heldGeometry, loadedGeometry, heldRegions });
     await page.close();
   }
 
@@ -144,28 +178,72 @@ try {
     await page.close();
   }
 
-  for (const lang of ['en', 'th'] as const) {
-    const page = await newPage(lang, 390);
+  // Each rejection is the same intercepted import just observed in its loading state.
+  // Compare real reserved boxes without masks/tolerance changes, then recover via reload.
+  const moduleCases = [
+    ...pages.filter(destination => destination !== 'overview').map(destination => ({ destination, hash: `#${destination}`, name: destination })),
+    { destination: 'providers', hash: '#providers?owner=source%3A1&source=1', name: 'providers-inspector' },
+    { destination: 'settings', hash: '#settings?section=diagnostics&source=1', name: 'settings-diagnostics' },
+  ];
+  for (const { destination, hash, name } of moduleCases) for (const lang of ['en', 'th'] as const)
+    for (const theme of ['dark', 'light'] as const) for (const width of [390, 900, 1280, 1672]) {
+    const page = await newPage(lang, width, theme);
+    const local = lang === 'en' ? en : th;
+    let rejectImport!: () => void;
+    let intercepted!: () => void;
+    const requested = new Promise<void>(resolve => { intercepted = resolve; });
+    const rejected = new Promise<void>(resolve => { rejectImport = resolve; });
     let fail = true;
-    await page.route('**/assets/*.js', route => targetModule(route.request().url(), 'models') && fail
-      ? route.fulfill({ status: 503, contentType: 'text/javascript', body: '' }) : route.continue());
-    await page.goto('http://127.0.0.1:7816/#models', { waitUntil: 'domcontentloaded' });
+    const prefix = routePrefix(destination);
+    await page.route('**/assets/*.js', async route => {
+      if (targetModule(route.request().url(), prefix) && fail) {
+        intercepted(); await rejected;
+        await route.fulfill({ status: 503, contentType: 'text/javascript', body: '' });
+      } else await route.continue();
+    });
+    await page.goto(`http://127.0.0.1:7816/${hash}`, { waitUntil: 'domcontentloaded' });
+    await Promise.race([requested, new Promise<never>((_, reject) => { const timer = setTimeout(() => reject(new Error(`Module not intercepted: ${name}`)), 10_000); timer.unref(); })]);
+    const loading = page.locator('[data-route-load-state=loading]');
+    await loading.waitFor();
+    await page.evaluate(async () => { await document.fonts.ready; });
+    await page.waitForFunction(() => (window as unknown as { __readyCalls: number }).__readyCalls > 0);
+    const shell = page.getByTestId(`production-${destination}`);
+    assert.equal(await shell.getAttribute('lang'), lang);
+    assert.equal(await shell.getAttribute('data-theme'), theme);
+    assert.equal(await loading.locator('[role=status]').textContent(), local['app.loading']);
+    assert.equal(await loading.getAttribute('aria-busy'), 'true');
+    assert.deepEqual(await loading.locator('[data-initial-state]').evaluateAll(elements => [...new Set(elements.map(element => element.getAttribute('data-initial-state')))]), ['loading']);
+    const loadingRegions = await pendingGeometry(page, destination, hash);
+    const loadingChrome = await chromeGeometry(page);
+    const artifact = `${name}-${lang}-${theme}-${width}`;
+    await page.screenshot({ path: resolve(output, `${artifact}-loading.png`), animations: 'disabled' });
+    rejectImport();
     const error = page.locator('[data-route-load-state=error]');
     await error.waitFor();
-    assert.equal(await error.locator('[role=status]').textContent(), (lang === 'en' ? en : th)['app.couldNotLoad']);
+    assert.equal(await error.locator('[role=status]').textContent(), local['app.couldNotLoad']);
     assert.equal(await error.getAttribute('aria-busy'), 'false');
-    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
-    await page.screenshot({ path: resolve(output, `models-${lang}-chunk-error.png`), animations: 'disabled' });
-    await page.getByRole('button', { name: (lang === 'en' ? en : th)['redesign.theme'], exact: true }).click();
+    assert.deepEqual(await error.locator('[data-initial-state]').evaluateAll(elements => [...new Set(elements.map(element => element.getAttribute('data-initial-state')))]), ['error']);
+    const errorRegions = await pendingGeometry(page, destination, hash);
+    assert.deepEqual(errorRegions, loadingRegions, `${artifact}: loading/error reserved boxes changed`);
+    assert.deepEqual(await chromeGeometry(page), loadingChrome, `${artifact}: rejection changed chrome`);
+    await page.screenshot({ path: resolve(output, `${artifact}-error.png`), animations: 'disabled' });
+    await page.getByRole('button', { name: local['redesign.theme'], exact: true }).click();
+    const recoveredTheme = theme === 'dark' ? 'light' : 'dark';
     fail = false;
-    const retry = error.getByRole('button', { name: (lang === 'en' ? en : th)['app.retry'], exact: true });
+    const retry = error.getByRole('button', { name: local['app.retry'], exact: true });
     await retry.focus(); assert.equal(await retry.evaluate(element => element === document.activeElement), true);
     await Promise.all([page.waitForNavigation({ waitUntil: 'domcontentloaded' }), page.keyboard.press('Enter')]);
-    await page.getByTestId('production-models').waitFor();
+    await page.getByTestId(`production-${destination}`).waitFor();
     await page.locator('[data-route-load-state]').waitFor({ state: 'detached' });
-    assert.equal(new URL(page.url()).hash, '#models');
-    assert.equal(await page.getByTestId('production-models').getAttribute('data-theme'), 'light');
-    records.push({ kind: 'chunk-rejection-reload', lang, width: 390, recoveredHash: '#models', keyboard: true, retainedTheme: 'light' });
+    const recoveredHash = new URL(page.url()).hash;
+    assert.equal(recoveredHash.split('?')[0], hash.split('?')[0], `${artifact}: recovered page`);
+    assert.deepEqual([...new URLSearchParams(recoveredHash.split('?')[1] ?? '')].sort(),
+      [...new URLSearchParams(hash.split('?')[1] ?? '')].sort(), `${artifact}: recovered query values`);
+    assert.equal(await page.getByTestId(`production-${destination}`).getAttribute('data-theme'), recoveredTheme);
+    assert.equal(await page.getByTestId(`production-${destination}`).getAttribute('lang'), lang);
+    records.push({ kind: 'chunk-rejection-reload', destination, name, lang, theme, width, recoveredHash,
+      keyboard: true, retainedTheme: recoveredTheme, loadingRegions, errorRegions, chrome: loadingChrome });
+    console.log(`Module recovery ${name}/${lang}/${theme}/${width} passed.`);
     await page.close();
   }
   for (const mode of ['legacy', 'popup']) {
