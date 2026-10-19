@@ -1,0 +1,51 @@
+{
+  "beforeIndexSha256": "f072ce2aa183548974e24de8d8387efa171f6dd1c4108129ce7f5a29b65b79f2",
+  "afterIndexSha256": "8479d47a868523dd72ef9c32626150c84539bd1939b72b5ee55e8f5c740b33da",
+  "scope": "Four compiled Overview states, exact foreground facts/node geometry/edge identities and paths; whole-image pixel differences recorded without masks; localization separately reports half-open DOM rect and2px paint-margin rect, not an acceptance mask; not full Source acceptance",
+  "rows": [
+    {
+      "config": "native-dark",
+      "actualFactsEqual": true,
+      "foregroundGeometryAndPathsEqual": true,
+      "oldBackgroundLayers": 4,
+      "newBackgroundLayers": 3,
+      "changedPixels": 2630,
+      "outsideHalfOpenMapRectPixels": 11,
+      "outsideMapWith2pxPaintMarginPixels": 0,
+      "maxChannelDelta": 19
+    },
+    {
+      "config": "compact-dark",
+      "actualFactsEqual": true,
+      "foregroundGeometryAndPathsEqual": true,
+      "oldBackgroundLayers": 3,
+      "newBackgroundLayers": 3,
+      "changedPixels": 0,
+      "outsideHalfOpenMapRectPixels": 0,
+      "outsideMapWith2pxPaintMarginPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "config": "mobile-dark",
+      "actualFactsEqual": true,
+      "foregroundGeometryAndPathsEqual": true,
+      "oldBackgroundLayers": 3,
+      "newBackgroundLayers": 3,
+      "changedPixels": 0,
+      "outsideHalfOpenMapRectPixels": 0,
+      "outsideMapWith2pxPaintMarginPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "config": "native-light",
+      "actualFactsEqual": true,
+      "foregroundGeometryAndPathsEqual": true,
+      "oldBackgroundLayers": 3,
+      "newBackgroundLayers": 3,
+      "changedPixels": 0,
+      "outsideHalfOpenMapRectPixels": 0,
+      "outsideMapWith2pxPaintMarginPixels": 0,
+      "maxChannelDelta": 0
+    }
+  ]
+}

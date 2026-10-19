@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.85 — partially validated
+## Current checkpoint: v1.85.86
+
+[Runtime Map visual correction and validation](redesign-v1.85.86/VALIDATION-STATE.md) | [Original/previous/current images](redesign-v1.85.86/review.html) | [Previous all-eight review](redesign-v1.85.85/review.html). Native dark Runtime Map regular lattice is removed, retaining actual data, graph geometry and motion. Current build,web227,compiled4 comparisons and4 byte-identical runtime-layout pairs pass. Compact/mobile/light before/after are pixel-exact. Models/Projects85 repeat failures remain unresolved; no current full40 or whole-eight Source/release acceptance is claimed.
+
+## Previous checkpoint: v1.85.85 — partially validated
 
 [Implementation and validation](redesign-v1.85.85/VALIDATION-STATE.md) | [All-eight original/current review](redesign-v1.85.85/review.html) | [Remaining visual priorities](redesign-v1.85.85/source/remaining.md). Models summary and Projects actual-line paint follow Source direction; effort lists have bounded DOM paging, and Models detail follows shared refresh. Build,531 repository tests,count12,effort8,detail-refresh race,scope21 facts,all-eight captures,History8 repeat pairs and11 bounded actual-native Activity stages pass. **Models canonical repeats fail twice and Projects repeat fails; causes unresolved.** Native latest is eventual, with explicit resize/first-frame/idle limits. No current full40 or final RC pass; original all-eight visual and release acceptance remain open.
 
