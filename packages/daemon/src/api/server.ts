@@ -19,6 +19,7 @@ import { detailedAggregates } from './detailed-aggregates.js';
 import { projectDetail, projectTrends } from './project-detail.js';
 import { modelDetail } from './model-detail.js';
 import { modelTrends } from './model-trends.js';
+import { modelPairTrends, parseModelPairs } from './model-pair-trends.js';
 import { costAnalysis, type CostBasis, type CostBucket } from './cost-analysis.js';
 import { liveSessions, type LiveSessionMode } from './live-sessions.js';
 import { historySummary } from './history-summary.js';
@@ -552,6 +553,31 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
       if (scope.project === undefined && !scope.projectMissing) throw new Error('Expected exact project or project_missing=1');
       const pagination = parseUsagePagination(query);
       return { now, scope, ...projectDetail(db, scope, pagination) };
+    } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
+  });
+
+  app.get('/api/model-trends', async (req, reply) => {
+    const now = Date.now();
+    const query = req.query as Record<string, unknown>;
+    try {
+      const scope = parseUsageScope(query, now, { requireRange: true, extraKeys: ['pairs'] });
+      const pairs = parseModelPairs(query.pairs);
+      return { now, scope, ...modelPairTrends(db, scope, pairs) };
+    } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
+  });
+
+  // Read-only body transport for exact identities too long for an HTTP request line.
+  app.post('/api/model-trends', async (req, reply) => {
+    const now = Date.now();
+    try {
+      const scope = parseUsageScope(req.query as Record<string, unknown>, now, { requireRange: true });
+      const body = req.body;
+      if (body === null || typeof body !== 'object' || Array.isArray(body) ||
+          Object.keys(body).length !== 1 || !Object.hasOwn(body, 'pairs')) {
+        throw new Error('Expected exact pairs JSON body');
+      }
+      const pairs = parseModelPairs(JSON.stringify((body as Record<string, unknown>).pairs));
+      return { now, scope, ...modelPairTrends(db, scope, pairs) };
     } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
   });
 

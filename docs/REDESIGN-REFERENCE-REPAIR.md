@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.86
+## Current checkpoint: v1.85.87
+
+[Models exact row trends and evidence](redesign-v1.85.87/VALIDATION-STATE.md) | [Functional browser captures](redesign-v1.85.87/review.html). Restores the original comparison Trend column from exact recorded pairs, pages20 rows, protects accepted refresh data and supports long identities with a read-only POST fallback. Builds,546 repository tests and8 scoped browser cases pass. Functional fixtures are not equal-content visual acceptance. Original all-eight likeness, previous Models/Projects repeat failures and release/rollback gates remain open.
+
+## Previous checkpoint: v1.85.86
 
 [Runtime Map visual correction and validation](redesign-v1.85.86/VALIDATION-STATE.md) | [Original/previous/current images](redesign-v1.85.86/review.html) | [Previous all-eight review](redesign-v1.85.85/review.html). Native dark Runtime Map regular lattice is removed, retaining actual data, graph geometry and motion. Current build,web227,compiled4 comparisons and4 byte-identical runtime-layout pairs pass. Compact/mobile/light before/after are pixel-exact. Models/Projects85 repeat failures remain unresolved; no current full40 or whole-eight Source/release acceptance is claimed.
 

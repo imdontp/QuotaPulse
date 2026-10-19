@@ -1,3 +1,4 @@
+import { modelRowTrendRequest } from '@/lib/model-row-trend-request';
 import { usageEventParams, type UsageEventScope, type UsageEventsResponse } from '@/lib/usage-events';
 import type { RuntimeGraph } from '@/redesign/model';
 
@@ -223,6 +224,12 @@ export interface DetailedModelResponse {
   };
   groups: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string }>;
   rows: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string; sourceId: number; harness: string; sourceName: string; effort: string | null }>;
+}
+export interface ModelRowTrendsResponse {
+  now: number;
+  scope: UsageEventScope;
+  bucketMs: number;
+  pairs: Array<{ model: string | null; provider: string | null; points: Array<{ start: number; tokens: number; records: number; calls: number }> }>;
 }
 export interface ModelDetailResponse {
   now: number;
@@ -660,6 +667,16 @@ export const api = {
   projectDetail: (scope: UsageEventScope, offset = 0) => get<ProjectDetailResponse>(`/api/project-detail?${usageEventParams(scope)}&limit=20&offset=${offset}`),
   liveSessions: (scope: UsageEventScope, mode: 'recent' | 'all', offset = 0) => get<LiveSessionsResponse>(`/api/live-sessions?${usageEventParams(scope)}&mode=${mode}&limit=10&offset=${offset}`),
   detailedModels: (scope: UsageEventScope, trends = false) => get<DetailedModelResponse>(`/api/models?detailed=1&${trends ? 'trends=1&' : ''}${usageEventParams(scope)}`),
+  modelRowTrends: async (scope: UsageEventScope, pairs: Array<{ model: string | null; provider: string | null }>) => {
+    const selected = modelRowTrendRequest(usageEventParams(scope), pairs);
+    if (selected.body === undefined) return get<ModelRowTrendsResponse>(selected.path);
+    const res = await request(selected.path, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...(TOKEN ? { 'x-quotapulse-token': TOKEN } : {}) },
+      body: selected.body,
+    });
+    return (await res.json()) as ModelRowTrendsResponse;
+  },
   modelDetail: (scope: UsageEventScope, identity: { model: string | null; provider: string | null }) => {
     const params = usageEventParams(scope);
     if (identity.model === null) params.set('model_missing', '1'); else if (identity.model === '') params.set('model_empty', '1'); else params.set('model', identity.model);

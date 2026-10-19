@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { BarChart3, Box, Coins, Database, Layers, RefreshCw, Search, Users } from 'lucide-react';
-import { api, type DetailedModelResponse, type ModelDetailResponse } from '@/api';
+import { api, type DetailedModelResponse, type ModelDetailResponse, type ModelRowTrendsResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
@@ -20,6 +20,9 @@ import { SectionMark } from './section-mark';
 import { selectModelGroup } from './model-selection';
 import { InitialRegion, type InitialRegionState } from './initial-region';
 import { EffortPagination, useEffortPage } from './effort-pagination';
+import { effortPage } from './effort-page';
+import { comparisonPageSelection } from './model-comparison-page';
+import { modelPairKey, modelRowTrend } from './model-row-trends';
 
 type Range = ScopeRange;
 type Metric = 'tokens' | 'calls' | 'api_value_usd';
@@ -60,6 +63,11 @@ export function ProductionModels() {
   const [queryBusy, setQueryBusy] = useState(false);
   const [detailRetry, setDetailRetry] = useState(0);
   const [detailBusy, setDetailBusy] = useState(false);
+  const [comparisonSelection, setComparisonSelection] = useState({ scopeKey: '', selectionKey: '', page: 0 });
+  const [rowTrendSnapshot, setRowTrendSnapshot] = useState<{ key: string; data: ModelRowTrendsResponse } | null>(null);
+  const [rowTrendFailure, setRowTrendFailure] = useState<string | null>(null);
+  const [rowTrendRetry, setRowTrendRetry] = useState(0);
+  const [rowTrendBusy, setRowTrendBusy] = useState(false);
   const refresh = useRefreshStatus();
   const requestKey = JSON.stringify([route.range, route.from, route.to, route.sourceId, route.provider, route.vendor]);
   const currentKey = useRef(requestKey);
@@ -100,6 +108,25 @@ export function ProductionModels() {
   const visible = groups.filter(group => !needle || [group.model, group.provider, group.vendor].some(value => (value ?? '').toLocaleLowerCase(lang).includes(needle)))
     .sort((a, b) => b[route.metric] - a[route.metric] || identityKey(a).localeCompare(identityKey(b)));
   const selected = selectModelGroup(visible, route.model, route.selectedProvider);
+  const comparisonScopeKey = JSON.stringify([requestKey, search, route.metric]);
+  const routeSelectionKey = JSON.stringify([route.model === undefined, route.model, route.selectedProvider === undefined, route.selectedProvider]);
+  const comparisonCurrent = comparisonPageSelection(comparisonSelection, comparisonScopeKey, routeSelectionKey, data ? visible.length : undefined, selected ? visible.indexOf(selected) : -1);
+  if (comparisonCurrent !== comparisonSelection) setComparisonSelection(comparisonCurrent);
+  const comparison = effortPage(visible, comparisonCurrent.page);
+  const rowPairs = comparison.rows.map(({ model, provider }) => ({ model, provider }));
+  const rowTrendKey = JSON.stringify([data?.scope, rowPairs]);
+  useEffect(() => {
+    if (!data || rowPairs.length === 0) return;
+    let cancelled = false;
+    setRowTrendFailure(null);
+    setRowTrendBusy(true);
+    void api.modelRowTrends(data.scope, rowPairs).then(result => {
+      if (!cancelled) setRowTrendSnapshot({ key: rowTrendKey, data: result });
+    }).catch(() => { if (!cancelled) setRowTrendFailure(rowTrendKey); }).finally(() => { if (!cancelled) setRowTrendBusy(false); });
+    return () => { cancelled = true; };
+  }, [data, rowTrendKey, rowTrendRetry]);
+  const rowTrends = rowTrendSnapshot?.key === rowTrendKey ? rowTrendSnapshot.data : null;
+  const rowTrendError = rowTrendFailure === rowTrendKey;
   const detailKey = JSON.stringify([data?.scope, selected && identityKey(selected)]);
   useEffect(() => {
     if (!data || !selected) return;
@@ -173,7 +200,14 @@ export function ProductionModels() {
             <label><span className="qp-model-filter-caption">{t('redesign.modelsMetric')}</span><select value={route.metric} onChange={event => update({ metric: event.target.value as Metric })}><option value="tokens">{t('redesign.modelsTokens')}</option><option value="calls">{t('redesign.modelsCalls')}</option><option value="api_value_usd">{t('redesign.modelsValue')}</option></select></label>
           </div>
           <ScopeNotice scope={route}/>
-          {!current ? <InitialRegion id="models-comparison" label={t('redesign.modelsCompare')} heading={<></>} state={initialState} className="qp-model-table-pending" status slots={8}/> : groups.length === 0 ? <p>{t('redesign.modelsNoData')}</p> : visible.length === 0 ? <p>{t('redesign.modelsNoMatch')}</p> : <div className="qp-model-table-wrap" tabIndex={0} role="region" aria-label={t('redesign.modelsCompare')}><table><thead><tr><th>{t('redesign.modelsModel')}</th><th>{t('redesign.modelsProvider')}</th><th>{t('redesign.modelsVendor')}</th><th>{t('redesign.modelsTokens')}</th><th>{t('redesign.modelsCalls')}</th><th>{t('redesign.modelsSessions')}</th><th>{t('redesign.modelsCache')}</th><th>{t('redesign.modelsCoverage')}</th><th>{t('redesign.modelsValueShort')}</th></tr></thead><tbody>{visible.map(group => <tr key={identityKey(group)} data-selected={selected === group}><td><button aria-pressed={selected === group} onClick={() => update({ model: group.model, selectedProvider: group.provider })}><span className="qp-model-maker-mark" data-vendor={group.vendor} aria-hidden="true">{group.vendor === 'unknown' ? <Layers size={17} aria-hidden="true"/> : <VendorIcon vendor={group.vendor}/>}</span><span className="qp-model-name">{name(group.model)}</span></button></td><td><span className="qp-model-brand"><VendorIcon vendor={group.provider ?? 'unknown'}/>{name(group.provider)}</span></td><td>{name(group.vendor)}</td><td>{f.tokens(group.tokens)}</td><td>{number(group.calls)}</td><td>{number(group.sessions)}</td><td>{ratio(cacheShare(group))}</td><td>{ratio(coverage(group))}</td><td>{apiValue(group)}</td></tr>)}</tbody></table></div>}{summaryBuckets.length > 0 && <details className="qp-model-history"><summary>{t('redesign.chartData')} ({number(summaryBuckets.length)})</summary><div tabIndex={0} role="region" aria-label={t('redesign.chartData')}><table><caption>{t('redesign.modelsCompare')}</caption><thead><tr><th>{t('redesign.chartBucketStart')}</th><th>{t('redesign.modelsTokens')}</th><th>{t('redesign.modelsPairsPerBucket')}</th><th>{t('redesign.modelsSessionsPerBucket')}</th><th>{t('redesign.modelsKnownValueTrend')} ({currency})</th><th>{t('redesign.modelsPricedCalls')}</th>{providerRows.map(value => <th key={JSON.stringify(value.provider)}>{name(value.provider)} ({t('redesign.modelsTokens')})</th>)}</tr></thead><tbody>{summaryBuckets.map((point, index) => <tr key={point.start}><td><time dateTime={new Date(point.start).toISOString()}>{new Date(point.start).toLocaleString(lang === 'th' ? 'th-TH' : 'en-US')}</time></td><td>{number(point.tokens)}</td><td>{number(point.pairs)}</td><td>{number(point.sessions)}</td><td>{point.apiValue === null ? t('redesign.unknownValue') : <CostValue amount={point.api_value_usd} priced={point.api_priced_calls} total={point.calls} money={money} t={t}/>}</td><td>{number(point.api_priced_calls)} / {number(point.calls)}</td>{providerRows.map(value => <td key={JSON.stringify(value.provider)}>{number(value.points[index].value)}</td>)}</tr>)}</tbody></table></div></details>}</section>
+          {!current ? <InitialRegion id="models-comparison" label={t('redesign.modelsCompare')} heading={<></>} state={initialState} className="qp-model-table-pending" status slots={8}/> : groups.length === 0 ? <p>{t('redesign.modelsNoData')}</p> : visible.length === 0 ? <p>{t('redesign.modelsNoMatch')}</p> : <div className="qp-model-table-wrap" tabIndex={0} role="region" aria-label={t('redesign.modelsCompare')}><table><thead><tr><th>{t('redesign.modelsModel')}</th><th>{t('redesign.modelsProvider')}</th><th>{t('redesign.modelsVendor')}</th><th>{t('redesign.modelsTokens')}</th><th>{t('redesign.modelsCalls')}</th><th>{t('redesign.modelsSessions')}</th><th>{t('redesign.modelsCache')}</th><th>{t('redesign.modelsCoverage')}</th><th>{t('redesign.modelsValueShort')}</th><th>{t('redesign.modelsRowTrend')}</th></tr></thead><tbody>{comparison.rows.map(group => <tr key={identityKey(group)} data-model-pair-key={modelPairKey(group)} data-selected={selected === group}><td><button aria-pressed={selected === group} onClick={() => update({ model: group.model, selectedProvider: group.provider })}><span className="qp-model-maker-mark" data-vendor={group.vendor} aria-hidden="true">{group.vendor === 'unknown' ? <Layers size={17} aria-hidden="true"/> : <VendorIcon vendor={group.vendor}/>}</span><span className="qp-model-name">{name(group.model)}</span></button></td><td><span className="qp-model-brand"><VendorIcon vendor={group.provider ?? 'unknown'}/>{name(group.provider)}</span></td><td>{name(group.vendor)}</td><td>{f.tokens(group.tokens)}</td><td>{number(group.calls)}</td><td>{number(group.sessions)}</td><td>{ratio(cacheShare(group))}</td><td>{ratio(coverage(group))}</td><td>{apiValue(group)}</td><td className="qp-model-row-trend-cell">{(() => {
+            const points = modelRowTrend(rowTrends, group);
+            const label = t('redesign.modelsRowTrendScope', { model: name(group.model), provider: name(group.provider), from: data ? new Date(data.scope.from).toLocaleString(lang) : '', to: data ? new Date(data.scope.to).toLocaleString(lang) : '' });
+            return points === null ? <small className="qp-model-row-trend-status">{t(rowTrendBusy && !rowTrendError ? 'app.loading' : 'redesign.modelsRowTrendUnavailable')}</small> : points.length === 0 ? <small className="qp-model-row-trend-status">{t('redesign.modelsRowTrendNoHistory')}</small> : <ObservedTrend className="qp-model-row-trend" points={points} label={label} language={lang} grid={false} area={false}/>;
+          })()}</td></tr>)}</tbody></table></div>}
+          {current && (comparison.hasPrevious || comparison.hasNext) && <nav className="qp-model-comparison-pagination" data-testid="model-comparison-pagination" aria-label={t('redesign.modelsComparePages')}><small role="status" aria-live="polite">{t('redesign.modelsCompareRange', { from: number(comparison.from), to: number(comparison.to), total: number(comparison.total) })}</small><button type="button" disabled={!comparison.hasPrevious} onClick={() => setComparisonSelection({ ...comparisonCurrent, page: comparison.page - 1 })}>{t('history.previous')}</button><button type="button" disabled={!comparison.hasNext} onClick={() => setComparisonSelection({ ...comparisonCurrent, page: comparison.page + 1 })}>{t('history.next')}</button></nav>}
+          {current && rowTrendError && <p className="qp-model-row-trend-error" role="status">{t(rowTrends ? 'redesign.staleSnapshot' : 'redesign.modelsRowTrendUnavailable')} <button type="button" disabled={rowTrendBusy} onClick={() => setRowTrendRetry(value => value + 1)}>{t('app.retry')}</button></p>}
+          {summaryBuckets.length > 0 && <details className="qp-model-history"><summary>{t('redesign.chartData')} ({number(summaryBuckets.length)})</summary><div tabIndex={0} role="region" aria-label={t('redesign.chartData')}><table><caption>{t('redesign.modelsCompare')}</caption><thead><tr><th>{t('redesign.chartBucketStart')}</th><th>{t('redesign.modelsTokens')}</th><th>{t('redesign.modelsPairsPerBucket')}</th><th>{t('redesign.modelsSessionsPerBucket')}</th><th>{t('redesign.modelsKnownValueTrend')} ({currency})</th><th>{t('redesign.modelsPricedCalls')}</th>{providerRows.map(value => <th key={JSON.stringify(value.provider)}>{name(value.provider)} ({t('redesign.modelsTokens')})</th>)}</tr></thead><tbody>{summaryBuckets.map((point, index) => <tr key={point.start}><td><time dateTime={new Date(point.start).toISOString()}>{new Date(point.start).toLocaleString(lang === 'th' ? 'th-TH' : 'en-US')}</time></td><td>{number(point.tokens)}</td><td>{number(point.pairs)}</td><td>{number(point.sessions)}</td><td>{point.apiValue === null ? t('redesign.unknownValue') : <CostValue amount={point.api_value_usd} priced={point.api_priced_calls} total={point.calls} money={money} t={t}/>}</td><td>{number(point.api_priced_calls)} / {number(point.calls)}</td>{providerRows.map(value => <td key={JSON.stringify(value.provider)}>{number(value.points[index].value)}</td>)}</tr>)}</tbody></table></div></details>}</section>
           <section className="qp-panel qp-model-providers"><h2><SectionMark icon={<Box/>} size={20}/>{t('redesign.modelsProviderDistribution')}</h2><div className="qp-model-provider-list" tabIndex={0} role="region" aria-label={t('redesign.modelsProviderDistribution')}>{!current ? <InitialRegion id="models-providers" label={t('redesign.modelsProviderDistribution')} heading={<></>} state={initialState} className="qp-model-providers-pending" slots={2}/> : providerRows.map(value => <button key={JSON.stringify(value.provider)} data-provider={value.provider ?? undefined} data-provider-missing={value.provider === null ? true : undefined} disabled={!value.provider} aria-pressed={value.provider !== null && route.provider === value.provider} onClick={() => update({ provider: route.provider === value.provider ? null : value.provider, model: undefined, selectedProvider: undefined })}><span className="qp-model-provider-mark" aria-hidden="true"><VendorIcon vendor={value.provider || 'unknown'}/></span><strong>{name(value.provider)}</strong><span className="qp-model-provider-facts">{f.tokens(value.tokens)} · {number(value.pairs)} {t('redesign.modelsCount')}</span><span className="qp-model-provider-share">{data!.totals.tokens > 0 ? f.pct(value.tokens / data!.totals.tokens * 100) : t('redesign.unknownValue')}</span>{value.points.length > 0 ? <ObservedTrend className="qp-model-provider-spark" points={value.points} language={lang} label={`${name(value.provider)} · ${t('redesign.modelsTokens')}`} grid={false}/> : <span className="qp-bar"><span style={{ width: `${data!.totals.tokens ? value.tokens / data!.totals.tokens * 100 : 0}%` }}/></span>}</button>)}</div></section>
         </>
       </div>

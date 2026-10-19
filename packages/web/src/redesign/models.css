@@ -272,3 +272,15 @@
   .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true]>small { grid-column:1/-1; }
   .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true] .qp-model-summary-spark { grid-column:1/-1; grid-row:auto; width:100%; height:20px; }
 }
+
+/* Exact model/recorded-provider history; horizontal scrolling retains every factual column. */
+.qp-model-table-wrap td .qp-model-row-trend { display:block; width:96px; height:26px; --qp-accent:#158dff; }
+.qp-model-table-wrap .qp-model-row-trend-cell { width:96px; min-width:96px; }
+.qp-model-row-trend-status { display:block; max-width:110px; white-space:normal; color:var(--qp-muted); font-size:10px; }
+.qp-model-comparison-pagination { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+.qp-model-comparison-pagination small { margin-right:auto; color:var(--qp-muted); }
+.qp-model-row-trend-error { margin:0; font-size:11px; color:var(--qp-warning); }
+@media(min-width:1536px) {
+  .qp-model-table-wrap th,.qp-model-table-wrap td { padding-inline:4px; }
+  .qp-model-table-wrap .qp-model-ratio { width:48px; }
+}
