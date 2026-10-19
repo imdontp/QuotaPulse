@@ -1,0 +1,728 @@
+
+> quotapulse@0.1.0 test
+> npm run test -w @quotapulse/daemon && npm run test -w @quotapulse/web && npm run test -w @quotapulse/tray
+
+
+> @quotapulse/daemon@0.1.0 test
+> tsx --test test/*.test.ts
+
+TAP version 13
+# 08:50:37.560 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-Zxpuhd\\claude.db
+# 08:50:37.613 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-a9AEJ2\\claude2.db
+# Subtest: claude: one API response written as three rows counts once
+ok 1 - claude: one API response written as three rows counts once
+  ---
+  duration_ms: 59.8125
+  ...
+# 08:50:37.656 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-77SOrb\\claude3.db
+# Subtest: claude: token fields map straight across (already disjoint)
+ok 2 - claude: token fields map straight across (already disjoint)
+  ---
+  duration_ms: 46.9922
+  ...
+# 08:50:37.706 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-6y2dXb\\claude-account.db
+# 08:50:37.752 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-rHtZId\\claude-headless-snapshot.db
+# 08:50:37.796 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-0wnE68\\quota-events.db
+# Subtest: claude: cost-state lands on the session as the native figure
+ok 3 - claude: cost-state lands on the session as the native figure
+  ---
+  duration_ms: 44.6903
+  ...
+# Subtest: claude account state stays visible while inactive and reactivates from quota
+ok 4 - claude account state stays visible while inactive and reactivates from quota
+  ---
+  duration_ms: 47.4179
+  ...
+# Subtest: claude reads a profile-level statusline snapshot used by headless sessions
+ok 5 - claude reads a profile-level statusline snapshot used by headless sessions
+  ---
+  duration_ms: 43.5044
+  ...
+# 08:50:37.839 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-jbMAgu\\codex.db
+# Subtest: quota event bridge ingests sanitized headless rate limits without reading prompt data
+ok 6 - quota event bridge ingests sanitized headless rate limits without reading prompt data
+  ---
+  duration_ms: 45.6725
+  ...
+# 08:50:37.887 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-Egz4oU\\codex3.db
+# Subtest: codex: cache reads are removed from input, both schema generations
+ok 7 - codex: cache reads are removed from input, both schema generations
+  ---
+  duration_ms: 49.6291
+  ...
+# 08:50:37.949 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-aUd5Es\\codex2.db
+# Subtest: codex: a pass that appends only usage still knows the model from an earlier one
+ok 8 - codex: a pass that appends only usage still knows the model from an earlier one
+  ---
+  duration_ms: 54.7823
+  ...
+# 08:50:37.999 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-ivwIJF\\aggregate-count.db
+# 08:50:38.037 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-1CxRCc\\idem.db
+# Subtest: codex: quota is recorded even from an event with no usage, and a missing secondary is tolerated
+ok 9 - codex: quota is recorded even from an event with no usage, and a missing secondary is tolerated
+  ---
+  duration_ms: 55.6017
+  ...
+# Subtest: aggregate usage rows contribute their native API call count
+ok 10 - aggregate usage rows contribute their native API call count
+  ---
+  duration_ms: 32.8604
+  ...
+# Subtest: re-ingesting changes nothing (idempotent), and appended lines are picked up
+ok 11 - re-ingesting changes nothing (idempotent), and appended lines are picked up
+  ---
+  duration_ms: 71.4314
+  ...
+# Subtest: jsonl reader leaves a partial trailing line unconsumed
+ok 12 - jsonl reader leaves a partial trailing line unconsumed
+  ---
+  duration_ms: 11.8226
+  ...
+# Subtest: jsonl reader restarts when a file is truncated
+ok 13 - jsonl reader restarts when a file is truncated
+  ---
+  duration_ms: 13.5617
+  ...
+# Subtest: jsonl reader survives a corrupt line without losing the rest
+ok 14 - jsonl reader survives a corrupt line without losing the rest
+  ---
+  duration_ms: 6.8629
+  ...
+# 08:50:37.894 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-aWJt2C\\alerts.db
+# 08:50:37.946 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-ZlfUMw\\alerts-rollover.db
+# Subtest: daemon records threshold crossings once and survives delivery reads
+ok 15 - daemon records threshold crossings once and survives delivery reads
+  ---
+  duration_ms: 62.4635
+  ...
+# Subtest: threshold history uses a new reset period and does not backfill the baseline
+ok 16 - threshold history uses a new reset period and does not backfill the baseline
+  ---
+  duration_ms: 40.9632
+  ...
+# 08:50:38.782 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-4GQsfH\\analysis-api.db
+# Subtest: analysis and notification APIs require auth and reject malformed ranges
+ok 17 - analysis and notification APIs require auth and reject malformed ranges
+  ---
+  duration_ms: 497.2502
+  ...
+# Subtest: Claude helper selects only the OAuth access token
+ok 18 - Claude helper selects only the OAuth access token
+  ---
+  duration_ms: 1.4253
+  ...
+# Subtest: Claude helper normalizes provider windows and ignores unrelated fields
+ok 19 - Claude helper normalizes provider windows and ignores unrelated fields
+  ---
+  duration_ms: 4.8782
+  ...
+# Subtest: Claude quota parser maps the sanitized helper output to 5h and weekly
+ok 20 - Claude quota parser maps the sanitized helper output to 5h and weekly
+  ---
+  duration_ms: 1.0433
+  ...
+# Subtest: Claude quota parser fails closed for incomplete or secret-bearing failures
+ok 21 - Claude quota parser fails closed for incomplete or secret-bearing failures
+  ---
+  duration_ms: 0.5452
+  ...
+# 08:50:38.914 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-v9h6WD\\compare.db
+# Subtest: compareUsage keeps equal windows and weighted pricing coverage together
+ok 22 - compareUsage keeps equal windows and weighted pricing coverage together
+  ---
+  duration_ms: 54.6902
+  ...
+# 08:50:39.278 INFO  [db] migrating schema 1 -> 3
+# 08:50:39.281 INFO  [db] migrating schema 3 -> 4
+# 08:50:39.282 INFO  [db] migrating schema 4 -> 5
+# 08:50:39.282 INFO  [db] migrating schema 5 -> 6
+# 08:50:39.282 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-3sBLMc\\legacy.db
+# Subtest: openDb upgrades a legacy source table before creating account indexes
+ok 23 - openDb upgrades a legacy source table before creating account indexes
+  ---
+  duration_ms: 89.2649
+  ...
+# 08:50:39.590 INFO  [db] opened :memory:
+# Subtest: optimized detail aggregates exactly preserve original complete responses and ordering across model/project scopes
+ok 24 - optimized detail aggregates exactly preserve original complete responses and ordering across model/project scopes
+  ---
+  duration_ms: 970.6462
+  ...
+# 08:50:40.417 INFO  [db] opened :memory:
+# Subtest: opt-in project/model aggregates preserve identity, sessions and money coverage
+ok 25 - opt-in project/model aggregates preserve identity, sessions and money coverage
+  ---
+  duration_ms: 756.7894
+  ...
+# 08:50:40.860 INFO  [db] opened :memory:
+# Subtest: History summary reconciles full filtered records, timeline, effort and separate price bases
+ok 26 - History summary reconciles full filtered records, timeline, effort and separate price bases
+  ---
+  duration_ms: 1337.8877
+  ...
+# Subtest: explicit data directory preserves legacy installation
+ok 27 - explicit data directory preserves legacy installation
+  ---
+  duration_ms: 1305.2232
+  ...
+# Subtest: default data directory still adopts legacy installation
+ok 28 - default data directory still adopts legacy installation
+  ---
+  duration_ms: 1406.228
+  ...
+# 08:50:42.116 INFO  [db] opened :memory:
+# Subtest: live sessions count valid source timestamps and page exact scoped metadata
+ok 29 - live sessions count valid source timestamps and page exact scoped metadata
+  ---
+  duration_ms: 881.4697
+  ...
+# 08:50:42.866 INFO  [db] opened :memory:
+# Subtest: model detail exposes only exact catalog capacity, independently of observed usage and monetary basis
+ok 30 - model detail exposes only exact catalog capacity, independently of observed usage and monetary basis
+  ---
+  duration_ms: 1017.0876
+  ...
+# 08:50:43.301 INFO  [db] opened :memory:
+# 08:50:44.059 INFO  [db] opened :memory:
+# Subtest: exact model/provider batch preserves requested order, NULL, empty, case and malicious text
+ok 31 - exact model/provider batch preserves requested order, NULL, empty, case and malicious text
+  ---
+  duration_ms: 792.6613
+  ...
+# 08:50:44.205 INFO  [db] opened :memory:
+# Subtest: batch sparse bins match existing detail for every exact identity, grain and bucket span
+ok 32 - batch sparse bins match existing detail for every exact identity, grain and bucket span
+  ---
+  duration_ms: 144.9026
+  ...
+# 08:50:44.250 INFO  [db] opened :memory:
+# Subtest: batch shares source, session, project, search, provider, vendor, model and grain scope predicates
+ok 33 - batch shares source, session, project, search, provider, vendor, model and grain scope predicates
+  ---
+  duration_ms: 46.55
+  ...
+# 08:50:44.345 INFO  [db] opened :memory:
+# 08:50:44.351 INFO  [db] opened :memory:
+# 08:50:44.363 INFO  [db] opened :memory:
+# Subtest: batch authenticates and rejects malformed, missing, excessive and ambiguous query input
+ok 34 - batch authenticates and rejects malformed, missing, excessive and ambiguous query input
+  ---
+  duration_ms: 93.5356
+  ...
+# Subtest: twenty exact pairs use one parameterized grouped read and existing model/time index
+ok 35 - twenty exact pairs use one parameterized grouped read and existing model/time index
+  ---
+  duration_ms: 6.5636
+  ...
+# Subtest: maximum visible window returns every observed bin for twenty pairs without leaking an unrequested pair
+ok 36 - maximum visible window returns every observed bin for twenty pairs without leaking an unrequested pair
+  ---
+  duration_ms: 12.1366
+  ...
+# Subtest: read-only POST transports twenty maximum-length exact pairs over actual HTTP without changing header limits or stored facts
+not ok 37 - read-only POST transports twenty maximum-length exact pairs over actual HTTP without changing header limits or stored facts
+  ---
+  duration_ms: 64.3339
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\daemon\\test\\model-pair-trends.test.ts:185:1'
+  failureType: 'testCodeFailure'
+  error: 'read ECONNRESET'
+  code: 'ECONNRESET'
+  stack: |-
+    TCP.onStreamRead (node:internal/stream_base_commons:216:20)
+  ...
+1..7
+# Subtest: test\\model-pair-trends.test.ts
+not ok 13 - test\\model-pair-trends.test.ts
+  ---
+  duration_ms: 5539.0593
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\daemon\\test\\model-pair-trends.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# 08:50:43.493 INFO  [db] opened :memory:
+# Subtest: model histories reconcile full-grain filtered facts without merging provider identities
+ok 39 - model histories reconcile full-grain filtered facts without merging provider identities
+  ---
+  duration_ms: 785.0174
+  ...
+# Subtest: OpenAI provider usage output maps primary and secondary windows
+ok 40 - OpenAI provider usage output maps primary and secondary windows
+  ---
+  duration_ms: 5.0528
+  ...
+# Subtest: OpenAI account parser rejects unavailable data and unknown windows
+ok 41 - OpenAI account parser rejects unavailable data and unknown windows
+  ---
+  duration_ms: 1.5629
+  ...
+# Subtest: OpenAI account parser ignores helper noise and malformed readings
+ok 42 - OpenAI account parser ignores helper noise and malformed readings
+  ---
+  duration_ms: 1.7989
+  ...
+# Subtest: OpenCode Go helper selects the opencode-go credential
+ok 43 - OpenCode Go helper selects the opencode-go credential
+  ---
+  duration_ms: 1.8916
+  ...
+# Subtest: OpenCode Go helper output maps rolling, weekly, and monthly windows
+ok 44 - OpenCode Go helper output maps rolling, weekly, and monthly windows
+  ---
+  duration_ms: 1.9132
+  ...
+# Subtest: OpenCode Go parser preserves provider percentages, including over-limit values
+ok 45 - OpenCode Go parser preserves provider percentages, including over-limit values
+  ---
+  duration_ms: 0.7992
+  ...
+# Subtest: OpenCode Go parser keeps credential and entitlement failures sanitized
+ok 46 - OpenCode Go parser keeps credential and entitlement failures sanitized
+  ---
+  duration_ms: 0.5533
+  ...
+# Subtest: OpenCode Go parser rejects incomplete or malformed quota snapshots
+ok 47 - OpenCode Go parser rejects incomplete or malformed quota snapshots
+  ---
+  duration_ms: 0.3444
+  ...
+# Subtest: projectOf takes the last segment of a Windows path
+ok 48 - projectOf takes the last segment of a Windows path
+  ---
+  duration_ms: 3.1867
+  ...
+# Subtest: projectOf takes the last segment of a POSIX path
+ok 49 - projectOf takes the last segment of a POSIX path
+  ---
+  duration_ms: 0.5085
+  ...
+# Subtest: projectOf handles mixed separators and spaces
+ok 50 - projectOf handles mixed separators and spaces
+  ---
+  duration_ms: 0.3076
+  ...
+# Subtest: projectOf returns null when there is nothing usable
+ok 51 - projectOf returns null when there is nothing usable
+  ---
+  duration_ms: 0.2558
+  ...
+# Subtest: coverage uses call_count, inclusive start/exclusive end and source filtering without writes
+ok 52 - coverage uses call_count, inclusive start/exclusive end and source filtering without writes
+  ---
+  duration_ms: 28.857
+  ...
+# Subtest: missing catalog metadata is explicit; trend and sessions carry estimated and unknown counts
+ok 53 - missing catalog metadata is explicit; trend and sessions carry estimated and unknown counts
+  ---
+  duration_ms: 9.3818
+  ...
+# Subtest: coverage endpoint requires authentication and validates every scope parameter
+ok 54 - coverage endpoint requires authentication and validates every scope parameter
+  ---
+  duration_ms: 578.9149
+  ...
+# Subtest: pricing refresh accepts providers with at least one finite non-negative rate
+ok 55 - pricing refresh accepts providers with at least one finite non-negative rate
+  ---
+  duration_ms: 2.4359
+  ...
+# Subtest: pricing refresh rejects malformed or empty catalogs before replacing the live file
+ok 56 - pricing refresh rejects malformed or empty catalogs before replacing the live file
+  ---
+  duration_ms: 0.3571
+  ...
+# 08:50:46.001 INFO  [db] opened :memory:
+# Subtest: project mini trends preserve scope, half-open range, identities and aggregate totals
+ok 57 - project mini trends preserve scope, half-open range, identities and aggregate totals
+  ---
+  duration_ms: 522.5837
+  ...
+# 08:50:46.340 INFO  [db] opened :memory:
+# Subtest: quota history follows one selected reader and keeps reset periods separate
+ok 58 - quota history follows one selected reader and keeps reset periods separate
+  ---
+  duration_ms: 525.7816
+  ...
+# 08:50:46.800 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-FEPkkd\\usage.db
+# 08:50:46.806 INFO  [ingest] fake/default -> /fake/default
+# 08:50:46.809 INFO  [scheduler] pass(initial): +0 events, +0 limits in 2ms
+# 08:50:46.809 INFO  [scheduler] watching 0 paths; polling every 1000000ms; re-detecting harnesses every 1000s
+# 08:50:47.399 INFO  [ingest] fake/default -> /fake/default
+# Subtest: POST /api/refresh requires the daemon token and returns a pass summary
+ok 59 - POST /api/refresh requires the daemon token and returns a pass summary
+  ---
+  duration_ms: 650.2897
+  ...
+# Subtest: daemon and tray agree at both sides of the reset-jitter boundary
+ok 60 - daemon and tray agree at both sides of the reset-jitter boundary
+  ---
+  duration_ms: 19.2249
+  ...
+# Subtest: null resets keep prior semantics and real new periods do not reuse old burn
+ok 61 - null resets keep prior semantics and real new periods do not reuse old burn
+  ---
+  duration_ms: 1.7632
+  ...
+# 08:50:47.692 INFO  [db] opened :memory:
+# 08:50:47.704 INFO  [db] opened :memory:
+# Subtest: runtime summary deduplicates recorded identities and excludes unknown/empty and future/stale sessions
+ok 62 - runtime summary deduplicates recorded identities and excludes unknown/empty and future/stale sessions
+  ---
+  duration_ms: 28.4388
+  ...
+# 08:50:48.391 INFO  [db] opened :memory:
+# 08:50:48.397 INFO  [db] opened :memory:
+# 08:50:48.411 INFO  [db] opened :memory:
+# 08:50:48.416 INFO  [db] opened :memory:
+# Subtest: runtime summary is authenticated, preserves the legacy response, and validates opt-in scope
+ok 63 - runtime summary is authenticated, preserves the legacy response, and validates opt-in scope
+  ---
+  duration_ms: 687.4799
+  ...
+# Subtest: scoped summary counts distinct usage-backed identities across all grains and retains sessionless events
+ok 64 - scoped summary counts distinct usage-backed identities across all grains and retains sessionless events
+  ---
+  duration_ms: 5.7374
+  ...
+# Subtest: scoped summary shares exact project, source, session, vendor, grain and literal search predicates
+ok 65 - scoped summary shares exact project, source, session, vendor, grain and literal search predicates
+  ---
+  duration_ms: 13.858
+  ...
+# Subtest: scoped summary preserves whitespace identities instead of normalizing them into empty metadata
+ok 66 - scoped summary preserves whitespace identities instead of normalizing them into empty metadata
+  ---
+  duration_ms: 5.5398
+  ...
+# Subtest: authenticated scoped route returns usage-backed counts with the parsed scope and daemon clock
+ok 67 - authenticated scoped route returns usage-backed counts with the parsed scope and daemon clock
+  ---
+  duration_ms: 49.6692
+  ...
+# 08:50:47.601 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-vvjlcQ\\usage.db
+# 08:50:47.606 INFO  [ingest] fake/default -> /fake/default
+# 08:50:47.608 INFO  [scheduler] pass(initial): +0 events, +0 limits in 2ms
+# 08:50:47.609 INFO  [scheduler] watching 0 paths; polling every 1000000ms; re-detecting harnesses every 1000s
+# 08:50:47.610 INFO  [ingest] fake/default -> /fake/default
+# 08:50:47.641 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-gXx1qi\\usage.db
+# 08:50:47.642 INFO  [ingest] fake/default -> /fake/default
+# 08:50:47.643 INFO  [scheduler] pass(initial): +0 events, +0 limits in 1ms
+# 08:50:47.643 INFO  [scheduler] watching 0 paths; polling every 1000000ms; re-detecting harnesses every 1000s
+# 08:50:47.644 INFO  [ingest] fake/default -> /fake/default
+# 08:50:47.646 INFO  [ingest] fake/default -> /fake/default
+# 08:50:47.647 INFO  [ingest] fake/default -> /fake/default
+# Subtest: runNow performs an immediate incremental pass when idle
+ok 68 - runNow performs an immediate incremental pass when idle
+  ---
+  duration_ms: 58.0328
+  ...
+# 08:50:47.744 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-bEQbBL\\usage.db
+# 08:50:47.745 INFO  [ingest] fake/default -> /fake/default
+# 08:50:47.747 INFO  [scheduler] pass(initial): +0 events, +0 limits in 1ms
+# 08:50:47.747 INFO  [scheduler] watching 0 paths; polling every 1000000ms; re-detecting harnesses every 1000s
+# 08:50:47.748 INFO  [ingest] fake/default -> /fake/default
+# 08:50:47.750 INFO  [ingest] fake/default -> /fake/default
+# Subtest: concurrent runNow callers share one queued follow-up pass
+ok 69 - concurrent runNow callers share one queued follow-up pass
+  ---
+  duration_ms: 97.7856
+  ...
+# 08:50:47.867 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-9Dut38\\usage.db
+# 08:50:47.868 INFO  [ingest] fake/default -> /fake/default
+# 08:50:47.870 INFO  [scheduler] pass(initial): +0 events, +0 limits in 2ms
+# 08:50:47.870 INFO  [scheduler] watching 0 paths; polling every 1000000ms; re-detecting harnesses every 1000s
+# 08:50:47.871 INFO  [ingest] fake/default -> /fake/default
+# 08:50:47.873 INFO  [ingest] fake/default -> /fake/default
+# Subtest: a watcher event cannot overwrite a queued manual refresh
+ok 70 - a watcher event cannot overwrite a queued manual refresh
+  ---
+  duration_ms: 127.126
+  ...
+# Subtest: a queued manual waiter resolves only after a racing pass completes
+ok 71 - a queued manual waiter resolves only after a racing pass completes
+  ---
+  duration_ms: 170.7439
+  ...
+# 08:50:47.987 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-lvlCyO\\sessions-range.db
+# Subtest: session range filters usage totals, rows, counts and vendor options together
+ok 72 - session range filters usage totals, rows, counts and vendor options together
+  ---
+  duration_ms: 84.8711
+  ...
+# 08:50:49.138 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-5kWoxA\\usage.db
+# 08:50:49.798 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-5kWoxA\\usage.db
+# 08:50:49.838 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-QRKpjk\\usage.db
+# Subtest: application settings persist, validate, and emit a settings event
+ok 73 - application settings persist, validate, and emit a settings event
+  ---
+  duration_ms: 709.4871
+  ...
+# Subtest: Today endpoint returns only the current local calendar day and groups by harness/model
+ok 74 - Today endpoint returns only the current local calendar day and groups by harness/model
+  ---
+  duration_ms: 63.8908
+  ...
+# 08:50:49.024 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-8xqiW2\\usage.db
+# 08:50:49.029 INFO  [ingest] fake/a -> /fake/a
+# 08:50:49.030 INFO  [ingest] fake/b -> /fake/b
+# 08:50:49.032 INFO  [ingest] fake/a -> /fake/a
+# 08:50:49.032 INFO  [ingest] fake/b is gone; its history is kept
+# 08:50:49.059 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-KhDnp4\\usage.db
+# 08:50:49.060 INFO  [ingest] fake/a -> /fake/a
+# 08:50:49.060 INFO  [ingest] fake/a is gone; its history is kept
+# 08:50:49.061 INFO  [ingest] fake/a -> /fake/a
+# 08:50:49.096 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-9i9JsY\\usage.db
+# 08:50:49.096 INFO  [ingest] fake/used -> /fake/used
+# 08:50:49.097 INFO  [ingest] fake/never -> /fake/never
+# 08:50:49.099 INFO  [ingest] fake/used is gone; its history is kept
+# 08:50:49.099 INFO  [ingest] fake/never is gone; its history is kept
+# 08:50:49.129 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-j5lFxe\\usage.db
+# 08:50:49.129 INFO  [ingest] codex/default -> /fake/codex
+# 08:50:49.131 INFO  [ingest] openai-account/default -> /fake/hermes
+# 08:50:49.164 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-mAEX4V\\usage.db
+# 08:50:49.217 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-dar3Al\\usage.db
+# 08:50:49.268 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-jcrFmi\\usage.db
+# 08:50:49.328 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-A3lh92\\usage.db
+# 08:50:49.329 INFO  [ingest] fake/default -> /fake/fake
+# 08:50:49.342 INFO  [ingest] fake/default recovered
+# 08:50:49.352 INFO  [ingest] fake/default is gone; its history is kept
+# 08:50:49.385 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-qQkC6B\\usage.db
+# 08:50:49.386 INFO  [ingest] parallel-account-probe/one -> /account/one
+# 08:50:49.387 INFO  [ingest] parallel-account-probe/two -> /account/two
+# Subtest: a source that disappears stops being ingested
+ok 75 - a source that disappears stops being ingested
+  ---
+  duration_ms: 60.0222
+  ...
+# Subtest: a source that comes back is picked up again without a restart
+ok 76 - a source that comes back is picked up again without a restart
+  ---
+  duration_ms: 27.6023
+  ...
+# Subtest: a departed source keeps its card only if it recorded something
+ok 77 - a departed source keeps its card only if it recorded something
+  ---
+  duration_ms: 39.2952
+  ...
+# Subtest: Codex and an account reader share one quota card while harness cards stay separate
+ok 78 - Codex and an account reader share one quota card while harness cards stay separate
+  ---
+  duration_ms: 33.6554
+  ...
+# Subtest: telemetry reports usage newer than quota instead of presenting a fresh value
+ok 79 - telemetry reports usage newer than quota instead of presenting a fresh value
+  ---
+  duration_ms: 50.8981
+  ...
+# Subtest: stale quota does not keep a subscription active, and fresh quota reactivates it
+ok 80 - stale quota does not keep a subscription active, and fresh quota reactivates it
+  ---
+  duration_ms: 53.0192
+  ...
+# Subtest: dashboard separates subscriptions from harnesses and nests Hermes delegates
+ok 81 - dashboard separates subscriptions from harnesses and nests Hermes delegates
+  ---
+  duration_ms: 61.1787
+  ...
+# Subtest: an adapter failure is recorded where the Health page can see it
+ok 82 - an adapter failure is recorded where the Health page can see it
+  ---
+  duration_ms: 54.9707
+  ...
+# Subtest: independent account probes do not stack their wait time
+ok 83 - independent account probes do not stack their wait time
+  ---
+  duration_ms: 72.425
+  ...
+# 08:50:49.331 ERROR [ingest] fake/default failed disk on fire
+# 08:50:49.349 ERROR [ingest] fake/default failed disk on fire
+# 08:50:49.958 INFO  [db] opened :memory:
+# Subtest: SSE releases listeners on disconnect and closes an active stream during shutdown
+ok 84 - SSE releases listeners on disconnect and closes an active stream during shutdown
+  ---
+  duration_ms: 647.9698
+  ...
+# Subtest: direct task entry rejects invalid configuration before creating an instance database
+ok 85 - direct task entry rejects invalid configuration before creating an instance database
+  ---
+  duration_ms: 3828.798
+  ...
+# Subtest: compiled daemon with readers off starts isolated and preserves zero ingest/prices
+ok 86 - compiled daemon with readers off starts isolated and preserves zero ingest/prices
+  ---
+  duration_ms: 1628.399
+  ...
+# Subtest: occupied loopback port fails without claiming a daemon lock or stopping its owner
+ok 87 - occupied loopback port fails without claiming a daemon lock or stopping its owner
+  ---
+  duration_ms: 1059.5
+  ...
+# 08:50:50.901 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-IMnPz6\\usage-api.db
+# Subtest: usage period uses local calendar boundaries and Monday weeks
+ok 88 - usage period uses local calendar boundaries and Monday weeks
+  ---
+  duration_ms: 35.2787
+  ...
+# Subtest: usage endpoint returns normalized range, calendar timeline, and source totals
+ok 89 - usage endpoint returns normalized range, calendar timeline, and source totals
+  ---
+  duration_ms: 720.3419
+  ...
+# 08:50:51.359 INFO  [db] opened :memory:
+# Subtest: usage-events and CSV share exact scope, grain and complete pagination
+    # Subtest: stable tie order, boundaries, record total, safe allowlist and authentication
+    ok 1 - stable tie order, boundaries, record total, safe allowlist and authentication
+      ---
+      duration_ms: 61.0127
+      ...
+    # Subtest: literal substring, missing project, route/provider vs model vendor and shared CSV filters
+    ok 2 - literal substring, missing project, route/provider vs model vendor and shared CSV filters
+      ---
+      duration_ms: 89.6156
+      ...
+    # Subtest: invalid supplied values fail rather than silently changing query meaning
+    ok 3 - invalid supplied values fail rather than silently changing query meaning
+      ---
+      duration_ms: 6.6749
+      ...
+    # Subtest: aggregate replacement retains event identity and count
+    ok 4 - aggregate replacement retains event identity and count
+      ---
+      duration_ms: 2.3972
+      ...
+    # Subtest: minute trend includes only declared call adapters and reports exclusions under the same filters
+    ok 5 - minute trend includes only declared call adapters and reports exclusions under the same filters
+      ---
+      duration_ms: 10.7368
+      ...
+    # Subtest: provider/model minutes preserve exact identities, sparse call values and all-grain window coverage
+    ok 6 - provider/model minutes preserve exact identities, sparse call values and all-grain window coverage
+      ---
+      duration_ms: 69.2551
+      ...
+    # Subtest: CSV keeps literal metadata inert when opened in spreadsheet software
+    ok 7 - CSV keeps literal metadata inert when opened in spreadsheet software
+      ---
+      duration_ms: 4.743
+      ...
+    # Subtest: runtime nodes and edges conserve scoped tokens and count sessions distinctly
+    ok 8 - runtime nodes and edges conserve scoped tokens and count sessions distinctly
+      ---
+      duration_ms: 13.5083
+      ...
+    # Subtest: runtime activity and active-session counts follow the selected project and recorded timestamps
+    ok 9 - runtime activity and active-session counts follow the selected project and recorded timestamps
+      ---
+      duration_ms: 5.8367
+      ...
+    # Subtest: runtime model makers follow names across routes; unknown groups stay unbranded
+    ok 10 - runtime model makers follow names across routes; unknown groups stay unbranded
+      ---
+      duration_ms: 6.8634
+      ...
+    # Subtest: pagination and whole-range export exceed the old 2000-row detail cap
+    ok 11 - pagination and whole-range export exceed the old 2000-row detail cap
+      ---
+      duration_ms: 243.3306
+      ...
+    1..11
+ok 90 - usage-events and CSV share exact scope, grain and complete pagination
+  ---
+  duration_ms: 1025.2635
+  ...
+# 08:50:51.248 INFO  [db] opened :memory:
+# 08:50:51.454 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-guZ7pY\\vendor.db
+# Subtest: the routing provider never overrides what the model name says
+ok 91 - the routing provider never overrides what the model name says
+  ---
+  duration_ms: 3.1901
+  ...
+# Subtest: a vendor/model path prefix wins outright
+ok 92 - a vendor/model path prefix wins outright
+  ---
+  duration_ms: 0.3972
+  ...
+# Subtest: the routing provider is used only when the model name says nothing
+ok 93 - the routing provider is used only when the model name says nothing
+  ---
+  duration_ms: 1.5078
+  ...
+# Subtest: a route this install has never seen is still flagged, not excused
+ok 94 - a route this install has never seen is still flagged, not excused
+  ---
+  duration_ms: 0.9742
+  ...
+# Subtest: a gateway never becomes the vendor of a model
+ok 95 - a gateway never becomes the vendor of a model
+  ---
+  duration_ms: 0.4449
+  ...
+# Subtest: the gateway set covers every route seen on this machine
+ok 96 - the gateway set covers every route seen on this machine
+  ---
+  duration_ms: 0.6589
+  ...
+# Subtest: the main model families resolve
+ok 97 - the main model families resolve
+  ---
+  duration_ms: 0.3874
+  ...
+# Subtest: space-separated Claude display names resolve identically in TypeScript and SQL
+ok 98 - space-separated Claude display names resolve identically in TypeScript and SQL
+  ---
+  duration_ms: 29.5804
+  ...
+# Subtest: makers with no local usage yet still route, and to a declared vendor
+ok 99 - makers with no local usage yet still route, and to a declared vendor
+  ---
+  duration_ms: 0.9435
+  ...
+# Subtest: the new rules do not shadow any family already in use
+ok 100 - the new rules do not shadow any family already in use
+  ---
+  duration_ms: 0.7322
+  ...
+# Subtest: every harness maps to a known vendor
+ok 101 - every harness maps to a known vendor
+  ---
+  duration_ms: 0.288
+  ...
+# Subtest: the SQL CASE agrees with vendorOf on every pair in the live database
+ok 102 - the SQL CASE agrees with vendorOf on every pair in the live database
+  ---
+  duration_ms: 85.1103
+  ...
+# Subtest: nothing in the live database falls to unknown except the known exceptions
+ok 103 - nothing in the live database falls to unknown except the known exceptions
+  ---
+  duration_ms: 81.3573
+  ...
+# Subtest: openDb still works on a throwaway path (vendor changes touch no schema)
+ok 104 - openDb still works on a throwaway path (vendor changes touch no schema)
+  ---
+  duration_ms: 43.4831
+  ...
+1..104
+# tests 115
+# suites 0
+# pass 113
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19468.2292
+npm.cmd : npm error Lifecycle script `test` failed with error:
+At line:2 char:409
++ ... webResult}; npm.cmd test *> tmp/source88-final-repository-tests.log;  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm error Lifec...led with error::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+npm error code 1
+npm error path C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\daemon
+npm error workspace @quotapulse/daemon@0.1.0
+npm error location C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\daemon
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c tsx --test test/*.test.ts

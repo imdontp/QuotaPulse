@@ -1,0 +1,4667 @@
+{
+  "createdAt": "2026-10-19T09:07:11.759Z",
+  "now": 1792400830990,
+  "node": "v22.13.1",
+  "method": "real buildServer API handlers via Fastify.inject + actual shared pure RuntimeMotionGate/helper functions; accepted refresh boundary simulated, no React/browser/SSE transport",
+  "sourceHashes": {
+    "packages/web/src/redesign/production.tsx": "611a33c0a5c620811521e9b1a1a504d0495f319b97cef6713ec80928d7c535d7",
+    "packages/web/src/redesign/use-runtime-motion.ts": "cc7b454053635c128b3a472aad42f165847a7efa0c680d7220301b3056c696c0",
+    "packages/web/src/redesign/runtime-motion.ts": "b0c6d0739ca73eaa92f8e2a21323c14287dea341da87ac3f494ed00a4846f1d6",
+    "packages/web/src/redesign/activity-trend.ts": "63eee6ad51c9a5db05c23def240e3cb9ee24704fb9222830cb654fe8c568349c",
+    "packages/web/src/redesign/scope.ts": "b742e777f879e1f24f31b06fc12dc81e23f9b7dd487eb3bc16432bd771fa3e16",
+    "packages/daemon/src/api/runtime-map.ts": "fa5fa31ec34b83df60673f3a672f0cf7003e451c1fd05cceca7b62e30c1d2e59"
+  },
+  "cases": [
+    {
+      "scenario": "A-only",
+      "inserted": [
+        {
+          "id": 3,
+          "project": "A",
+          "timestamp": 1792400829990
+        }
+      ],
+      "eligibility": {
+        "epoch": 1,
+        "eligible": true,
+        "sinceWallMs": 1792400820990
+      },
+      "scope": {
+        "from": 1792400770990,
+        "to": 1792400830991
+      },
+      "activityScope": {
+        "from": 1792400770990,
+        "to": 1792400830991
+      },
+      "motionScope": {
+        "key": "{\"range\":\"custom\",\"from\":1792400770990,\"to\":1792400830991}",
+        "project": "A"
+      },
+      "initialRows": [
+        {
+          "event_id": 1,
+          "timestamp_ms": 1792400825990,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "A",
+          "session_key": 1,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "acceptedRows": [
+        {
+          "event_id": 3,
+          "timestamp_ms": 1792400829990,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "A",
+          "session_key": 1,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "selectedGraph": {
+        "totals": {
+          "tokens": 20,
+          "records": 2,
+          "sessions": 1,
+          "lastActivityAt": 1792400829990,
+          "activeSessions": 1,
+          "callRecords": 2,
+          "aggregateRecords": 0,
+          "reportedCost": 0,
+          "apiValue": 0,
+          "unknownCostRecords": 2,
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteTokens": 0,
+          "cacheSavingKnownUsd": 0,
+          "cacheSavingKnownCalls": 0,
+          "nativeCalls": 0,
+          "computedCalls": 0,
+          "estimatedCalls": 0,
+          "unknownCalls": 2
+        },
+        "nodes": {
+          "project": [
+            {
+              "key": "A",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829990,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            }
+          ],
+          "harness": [
+            {
+              "key": "codex",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829990,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            }
+          ],
+          "provider": [
+            {
+              "key": "openai",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829990,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            }
+          ],
+          "model": [
+            {
+              "key": "gpt-a",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829990,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2,
+              "vendor": "openai"
+            }
+          ]
+        },
+        "edges": [
+          {
+            "column": 0,
+            "from": "A",
+            "to": "codex",
+            "tokens": 20,
+            "lastActivityAt": 1792400829990,
+            "activeSessions": 1
+          },
+          {
+            "column": 1,
+            "from": "codex",
+            "to": "openai",
+            "tokens": 20,
+            "lastActivityAt": 1792400829990,
+            "activeSessions": 1
+          },
+          {
+            "column": 2,
+            "from": "openai",
+            "to": "gpt-a",
+            "tokens": 20,
+            "lastActivityAt": 1792400829990,
+            "activeSessions": 1
+          }
+        ],
+        "activityWindowMs": 300000,
+        "scope": {
+          "from": 1792400770990,
+          "to": 1792400830991,
+          "project": "A"
+        },
+        "now": 1792400831620
+      },
+      "beforeGraph": [],
+      "signals": [
+        {
+          "kind": "edge",
+          "eventId": 3,
+          "sourceId": 1,
+          "column": 1,
+          "from": "codex",
+          "to": "openai",
+          "presentation": "moving",
+          "durationMs": 700
+        }
+      ],
+      "repeatedSerialSignals": [],
+      "exactProjectApiRows": [
+        {
+          "event_id": 3,
+          "timestamp_ms": 1792400829990,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "A",
+          "session_key": 1,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "exactProjectGateSignals": [
+        {
+          "kind": "edge",
+          "eventId": 3,
+          "sourceId": 1,
+          "column": 1,
+          "from": "codex",
+          "to": "openai",
+          "presentation": "moving",
+          "durationMs": 700
+        }
+      ],
+      "requests": [
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 20,
+              "records": 2,
+              "sessions": 2,
+              "lastActivityAt": 1792400825990,
+              "activeSessions": 2,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                },
+                {
+                  "key": "B",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400824990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 0,
+                "from": "B",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400824990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 20,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 2
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 20,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 2
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991
+            },
+            "now": 1792400831598
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 1,
+                "timestamp_ms": 1792400825990,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "A",
+                "session_key": 1,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 2,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "harness": "codex"
+            },
+            "now": 1792400831606
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991&project=A",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 10,
+              "records": 1,
+              "sessions": 1,
+              "lastActivityAt": 1792400825990,
+              "activeSessions": 1,
+              "callRecords": 1,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 1,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 1
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A"
+            },
+            "now": 1792400831610
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 30,
+              "records": 3,
+              "sessions": 2,
+              "lastActivityAt": 1792400829990,
+              "activeSessions": 2,
+              "callRecords": 3,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 3,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 3
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                },
+                {
+                  "key": "B",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400824990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 30,
+                  "records": 3,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 2,
+                  "callRecords": 3,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 3,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 3
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 30,
+                  "records": 3,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 2,
+                  "callRecords": 3,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 3,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 3
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 30,
+                  "records": 3,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 2,
+                  "callRecords": 3,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 3,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 3,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 20,
+                "lastActivityAt": 1792400829990,
+                "activeSessions": 1
+              },
+              {
+                "column": 0,
+                "from": "B",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400824990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 30,
+                "lastActivityAt": 1792400829990,
+                "activeSessions": 2
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 30,
+                "lastActivityAt": 1792400829990,
+                "activeSessions": 2
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991
+            },
+            "now": 1792400831614
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 3,
+                "timestamp_ms": 1792400829990,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "A",
+                "session_key": 1,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 3,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "harness": "codex"
+            },
+            "now": 1792400831617
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991&project=A",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829990,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 20,
+                "lastActivityAt": 1792400829990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 20,
+                "lastActivityAt": 1792400829990,
+                "activeSessions": 1
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 20,
+                "lastActivityAt": 1792400829990,
+                "activeSessions": 1
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A"
+            },
+            "now": 1792400831620
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&project=A&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 3,
+                "timestamp_ms": 1792400829990,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "A",
+                "session_key": 1,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 2,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A",
+              "harness": "codex"
+            },
+            "now": 1792400831623
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "A-then-newer-B",
+      "inserted": [
+        {
+          "id": 3,
+          "project": "A",
+          "timestamp": 1792400829990
+        },
+        {
+          "id": 4,
+          "project": "B",
+          "timestamp": 1792400829991
+        }
+      ],
+      "eligibility": {
+        "epoch": 1,
+        "eligible": true,
+        "sinceWallMs": 1792400820990
+      },
+      "scope": {
+        "from": 1792400770990,
+        "to": 1792400830991
+      },
+      "activityScope": {
+        "from": 1792400770990,
+        "to": 1792400830991
+      },
+      "motionScope": {
+        "key": "{\"range\":\"custom\",\"from\":1792400770990,\"to\":1792400830991}",
+        "project": "A"
+      },
+      "initialRows": [
+        {
+          "event_id": 1,
+          "timestamp_ms": 1792400825990,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "A",
+          "session_key": 1,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "acceptedRows": [
+        {
+          "event_id": 4,
+          "timestamp_ms": 1792400829991,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "B",
+          "session_key": 2,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "selectedGraph": {
+        "totals": {
+          "tokens": 20,
+          "records": 2,
+          "sessions": 1,
+          "lastActivityAt": 1792400829990,
+          "activeSessions": 1,
+          "callRecords": 2,
+          "aggregateRecords": 0,
+          "reportedCost": 0,
+          "apiValue": 0,
+          "unknownCostRecords": 2,
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteTokens": 0,
+          "cacheSavingKnownUsd": 0,
+          "cacheSavingKnownCalls": 0,
+          "nativeCalls": 0,
+          "computedCalls": 0,
+          "estimatedCalls": 0,
+          "unknownCalls": 2
+        },
+        "nodes": {
+          "project": [
+            {
+              "key": "A",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829990,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            }
+          ],
+          "harness": [
+            {
+              "key": "codex",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829990,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            }
+          ],
+          "provider": [
+            {
+              "key": "openai",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829990,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            }
+          ],
+          "model": [
+            {
+              "key": "gpt-a",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829990,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2,
+              "vendor": "openai"
+            }
+          ]
+        },
+        "edges": [
+          {
+            "column": 0,
+            "from": "A",
+            "to": "codex",
+            "tokens": 20,
+            "lastActivityAt": 1792400829990,
+            "activeSessions": 1
+          },
+          {
+            "column": 1,
+            "from": "codex",
+            "to": "openai",
+            "tokens": 20,
+            "lastActivityAt": 1792400829990,
+            "activeSessions": 1
+          },
+          {
+            "column": 2,
+            "from": "openai",
+            "to": "gpt-a",
+            "tokens": 20,
+            "lastActivityAt": 1792400829990,
+            "activeSessions": 1
+          }
+        ],
+        "activityWindowMs": 300000,
+        "scope": {
+          "from": 1792400770990,
+          "to": 1792400830991,
+          "project": "A"
+        },
+        "now": 1792400831662
+      },
+      "beforeGraph": [],
+      "signals": [],
+      "repeatedSerialSignals": [],
+      "exactProjectApiRows": [
+        {
+          "event_id": 3,
+          "timestamp_ms": 1792400829990,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "A",
+          "session_key": 1,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "exactProjectGateSignals": [
+        {
+          "kind": "edge",
+          "eventId": 3,
+          "sourceId": 1,
+          "column": 1,
+          "from": "codex",
+          "to": "openai",
+          "presentation": "moving",
+          "durationMs": 700
+        }
+      ],
+      "requests": [
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 20,
+              "records": 2,
+              "sessions": 2,
+              "lastActivityAt": 1792400825990,
+              "activeSessions": 2,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                },
+                {
+                  "key": "B",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400824990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 0,
+                "from": "B",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400824990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 20,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 2
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 20,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 2
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991
+            },
+            "now": 1792400831642
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 1,
+                "timestamp_ms": 1792400825990,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "A",
+                "session_key": 1,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 2,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "harness": "codex"
+            },
+            "now": 1792400831647
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991&project=A",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 10,
+              "records": 1,
+              "sessions": 1,
+              "lastActivityAt": 1792400825990,
+              "activeSessions": 1,
+              "callRecords": 1,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 1,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 1
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A"
+            },
+            "now": 1792400831651
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 40,
+              "records": 4,
+              "sessions": 2,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 2,
+              "callRecords": 4,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 4,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 4
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                },
+                {
+                  "key": "B",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 40,
+                  "records": 4,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 2,
+                  "callRecords": 4,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 4,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 4
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 40,
+                  "records": 4,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 2,
+                  "callRecords": 4,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 4,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 4
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 40,
+                  "records": 4,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 2,
+                  "callRecords": 4,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 4,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 4,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 20,
+                "lastActivityAt": 1792400829990,
+                "activeSessions": 1
+              },
+              {
+                "column": 0,
+                "from": "B",
+                "to": "codex",
+                "tokens": 20,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 40,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 2
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 40,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 2
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991
+            },
+            "now": 1792400831656
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 4,
+                "timestamp_ms": 1792400829991,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "B",
+                "session_key": 2,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 4,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "harness": "codex"
+            },
+            "now": 1792400831659
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991&project=A",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829990,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 20,
+                "lastActivityAt": 1792400829990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 20,
+                "lastActivityAt": 1792400829990,
+                "activeSessions": 1
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 20,
+                "lastActivityAt": 1792400829990,
+                "activeSessions": 1
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A"
+            },
+            "now": 1792400831662
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&project=A&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 3,
+                "timestamp_ms": 1792400829990,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "A",
+                "session_key": 1,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 2,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A",
+              "harness": "codex"
+            },
+            "now": 1792400831665
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "B-then-newer-A",
+      "inserted": [
+        {
+          "id": 3,
+          "project": "B",
+          "timestamp": 1792400829990
+        },
+        {
+          "id": 4,
+          "project": "A",
+          "timestamp": 1792400829991
+        }
+      ],
+      "eligibility": {
+        "epoch": 1,
+        "eligible": true,
+        "sinceWallMs": 1792400820990
+      },
+      "scope": {
+        "from": 1792400770990,
+        "to": 1792400830991
+      },
+      "activityScope": {
+        "from": 1792400770990,
+        "to": 1792400830991
+      },
+      "motionScope": {
+        "key": "{\"range\":\"custom\",\"from\":1792400770990,\"to\":1792400830991}",
+        "project": "A"
+      },
+      "initialRows": [
+        {
+          "event_id": 1,
+          "timestamp_ms": 1792400825990,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "A",
+          "session_key": 1,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "acceptedRows": [
+        {
+          "event_id": 4,
+          "timestamp_ms": 1792400829991,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "A",
+          "session_key": 1,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "selectedGraph": {
+        "totals": {
+          "tokens": 20,
+          "records": 2,
+          "sessions": 1,
+          "lastActivityAt": 1792400829991,
+          "activeSessions": 1,
+          "callRecords": 2,
+          "aggregateRecords": 0,
+          "reportedCost": 0,
+          "apiValue": 0,
+          "unknownCostRecords": 2,
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteTokens": 0,
+          "cacheSavingKnownUsd": 0,
+          "cacheSavingKnownCalls": 0,
+          "nativeCalls": 0,
+          "computedCalls": 0,
+          "estimatedCalls": 0,
+          "unknownCalls": 2
+        },
+        "nodes": {
+          "project": [
+            {
+              "key": "A",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            }
+          ],
+          "harness": [
+            {
+              "key": "codex",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            }
+          ],
+          "provider": [
+            {
+              "key": "openai",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            }
+          ],
+          "model": [
+            {
+              "key": "gpt-a",
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2,
+              "vendor": "openai"
+            }
+          ]
+        },
+        "edges": [
+          {
+            "column": 0,
+            "from": "A",
+            "to": "codex",
+            "tokens": 20,
+            "lastActivityAt": 1792400829991,
+            "activeSessions": 1
+          },
+          {
+            "column": 1,
+            "from": "codex",
+            "to": "openai",
+            "tokens": 20,
+            "lastActivityAt": 1792400829991,
+            "activeSessions": 1
+          },
+          {
+            "column": 2,
+            "from": "openai",
+            "to": "gpt-a",
+            "tokens": 20,
+            "lastActivityAt": 1792400829991,
+            "activeSessions": 1
+          }
+        ],
+        "activityWindowMs": 300000,
+        "scope": {
+          "from": 1792400770990,
+          "to": 1792400830991,
+          "project": "A"
+        },
+        "now": 1792400831711
+      },
+      "beforeGraph": [],
+      "signals": [
+        {
+          "kind": "edge",
+          "eventId": 4,
+          "sourceId": 1,
+          "column": 1,
+          "from": "codex",
+          "to": "openai",
+          "presentation": "moving",
+          "durationMs": 700
+        }
+      ],
+      "repeatedSerialSignals": [],
+      "exactProjectApiRows": [
+        {
+          "event_id": 4,
+          "timestamp_ms": 1792400829991,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "A",
+          "session_key": 1,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "exactProjectGateSignals": [
+        {
+          "kind": "edge",
+          "eventId": 4,
+          "sourceId": 1,
+          "column": 1,
+          "from": "codex",
+          "to": "openai",
+          "presentation": "moving",
+          "durationMs": 700
+        }
+      ],
+      "requests": [
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 20,
+              "records": 2,
+              "sessions": 2,
+              "lastActivityAt": 1792400825990,
+              "activeSessions": 2,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                },
+                {
+                  "key": "B",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400824990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 0,
+                "from": "B",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400824990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 20,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 2
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 20,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 2
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991
+            },
+            "now": 1792400831690
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 1,
+                "timestamp_ms": 1792400825990,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "A",
+                "session_key": 1,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 2,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "harness": "codex"
+            },
+            "now": 1792400831695
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991&project=A",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 10,
+              "records": 1,
+              "sessions": 1,
+              "lastActivityAt": 1792400825990,
+              "activeSessions": 1,
+              "callRecords": 1,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 1,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 1
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A"
+            },
+            "now": 1792400831699
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 40,
+              "records": 4,
+              "sessions": 2,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 2,
+              "callRecords": 4,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 4,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 4
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                },
+                {
+                  "key": "B",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829990,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 40,
+                  "records": 4,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 2,
+                  "callRecords": 4,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 4,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 4
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 40,
+                  "records": 4,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 2,
+                  "callRecords": 4,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 4,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 4
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 40,
+                  "records": 4,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 2,
+                  "callRecords": 4,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 4,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 4,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 20,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 1
+              },
+              {
+                "column": 0,
+                "from": "B",
+                "to": "codex",
+                "tokens": 20,
+                "lastActivityAt": 1792400829990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 40,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 2
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 40,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 2
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991
+            },
+            "now": 1792400831703
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 4,
+                "timestamp_ms": 1792400829991,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "A",
+                "session_key": 1,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 4,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "harness": "codex"
+            },
+            "now": 1792400831709
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991&project=A",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 20,
+              "records": 2,
+              "sessions": 1,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 1,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 1,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 20,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 20,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 1
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 20,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 1
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A"
+            },
+            "now": 1792400831711
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&project=A&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 4,
+                "timestamp_ms": 1792400829991,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "A",
+                "session_key": 1,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 2,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A",
+              "harness": "codex"
+            },
+            "now": 1792400831714
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "two-new-A-coalesced",
+      "inserted": [
+        {
+          "id": 3,
+          "project": "A",
+          "timestamp": 1792400829990
+        },
+        {
+          "id": 4,
+          "project": "A",
+          "timestamp": 1792400829991
+        }
+      ],
+      "eligibility": {
+        "epoch": 1,
+        "eligible": true,
+        "sinceWallMs": 1792400820990
+      },
+      "scope": {
+        "from": 1792400770990,
+        "to": 1792400830991
+      },
+      "activityScope": {
+        "from": 1792400770990,
+        "to": 1792400830991
+      },
+      "motionScope": {
+        "key": "{\"range\":\"custom\",\"from\":1792400770990,\"to\":1792400830991}",
+        "project": "A"
+      },
+      "initialRows": [
+        {
+          "event_id": 1,
+          "timestamp_ms": 1792400825990,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "A",
+          "session_key": 1,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "acceptedRows": [
+        {
+          "event_id": 4,
+          "timestamp_ms": 1792400829991,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "A",
+          "session_key": 1,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "selectedGraph": {
+        "totals": {
+          "tokens": 30,
+          "records": 3,
+          "sessions": 1,
+          "lastActivityAt": 1792400829991,
+          "activeSessions": 1,
+          "callRecords": 3,
+          "aggregateRecords": 0,
+          "reportedCost": 0,
+          "apiValue": 0,
+          "unknownCostRecords": 3,
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteTokens": 0,
+          "cacheSavingKnownUsd": 0,
+          "cacheSavingKnownCalls": 0,
+          "nativeCalls": 0,
+          "computedCalls": 0,
+          "estimatedCalls": 0,
+          "unknownCalls": 3
+        },
+        "nodes": {
+          "project": [
+            {
+              "key": "A",
+              "tokens": 30,
+              "records": 3,
+              "sessions": 1,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 1,
+              "callRecords": 3,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 3,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 3
+            }
+          ],
+          "harness": [
+            {
+              "key": "codex",
+              "tokens": 30,
+              "records": 3,
+              "sessions": 1,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 1,
+              "callRecords": 3,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 3,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 3
+            }
+          ],
+          "provider": [
+            {
+              "key": "openai",
+              "tokens": 30,
+              "records": 3,
+              "sessions": 1,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 1,
+              "callRecords": 3,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 3,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 3
+            }
+          ],
+          "model": [
+            {
+              "key": "gpt-a",
+              "tokens": 30,
+              "records": 3,
+              "sessions": 1,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 1,
+              "callRecords": 3,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 3,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 3,
+              "vendor": "openai"
+            }
+          ]
+        },
+        "edges": [
+          {
+            "column": 0,
+            "from": "A",
+            "to": "codex",
+            "tokens": 30,
+            "lastActivityAt": 1792400829991,
+            "activeSessions": 1
+          },
+          {
+            "column": 1,
+            "from": "codex",
+            "to": "openai",
+            "tokens": 30,
+            "lastActivityAt": 1792400829991,
+            "activeSessions": 1
+          },
+          {
+            "column": 2,
+            "from": "openai",
+            "to": "gpt-a",
+            "tokens": 30,
+            "lastActivityAt": 1792400829991,
+            "activeSessions": 1
+          }
+        ],
+        "activityWindowMs": 300000,
+        "scope": {
+          "from": 1792400770990,
+          "to": 1792400830991,
+          "project": "A"
+        },
+        "now": 1792400831755
+      },
+      "beforeGraph": [],
+      "signals": [
+        {
+          "kind": "edge",
+          "eventId": 4,
+          "sourceId": 1,
+          "column": 1,
+          "from": "codex",
+          "to": "openai",
+          "presentation": "moving",
+          "durationMs": 700
+        }
+      ],
+      "repeatedSerialSignals": [],
+      "exactProjectApiRows": [
+        {
+          "event_id": 4,
+          "timestamp_ms": 1792400829991,
+          "call_count": 1,
+          "source_id": 1,
+          "harness": "codex",
+          "profile": "synthetic",
+          "source_name": "Reader",
+          "provider": "openai",
+          "vendor": "openai",
+          "model": "gpt-a",
+          "effort": null,
+          "service_tier": null,
+          "project": "A",
+          "session_key": 1,
+          "is_subagent": 0,
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 10,
+          "duration_ms": null,
+          "cost_usd": null,
+          "cost_input_usd": null,
+          "cost_cached_input_usd": null,
+          "cost_cache_write_usd": null,
+          "cost_output_usd": null,
+          "cost_cache_saving_usd": null,
+          "cost_source": "unknown",
+          "price_provider": null,
+          "grain": "call"
+        }
+      ],
+      "exactProjectGateSignals": [
+        {
+          "kind": "edge",
+          "eventId": 4,
+          "sourceId": 1,
+          "column": 1,
+          "from": "codex",
+          "to": "openai",
+          "presentation": "moving",
+          "durationMs": 700
+        }
+      ],
+      "requests": [
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 20,
+              "records": 2,
+              "sessions": 2,
+              "lastActivityAt": 1792400825990,
+              "activeSessions": 2,
+              "callRecords": 2,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 2,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 2
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                },
+                {
+                  "key": "B",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400824990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 20,
+                  "records": 2,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 2,
+                  "callRecords": 2,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 2,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 2,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 0,
+                "from": "B",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400824990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 20,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 2
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 20,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 2
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991
+            },
+            "now": 1792400831734
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 1,
+                "timestamp_ms": 1792400825990,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "A",
+                "session_key": 1,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 2,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "harness": "codex"
+            },
+            "now": 1792400831737
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991&project=A",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 10,
+              "records": 1,
+              "sessions": 1,
+              "lastActivityAt": 1792400825990,
+              "activeSessions": 1,
+              "callRecords": 1,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 1,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 1
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400825990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 10,
+                "lastActivityAt": 1792400825990,
+                "activeSessions": 1
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A"
+            },
+            "now": 1792400831741
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 40,
+              "records": 4,
+              "sessions": 2,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 2,
+              "callRecords": 4,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 4,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 4
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 30,
+                  "records": 3,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 1,
+                  "callRecords": 3,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 3,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 3
+                },
+                {
+                  "key": "B",
+                  "tokens": 10,
+                  "records": 1,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400824990,
+                  "activeSessions": 1,
+                  "callRecords": 1,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 1,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 1
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 40,
+                  "records": 4,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 2,
+                  "callRecords": 4,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 4,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 4
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 40,
+                  "records": 4,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 2,
+                  "callRecords": 4,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 4,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 4
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 40,
+                  "records": 4,
+                  "sessions": 2,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 2,
+                  "callRecords": 4,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 4,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 4,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 30,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 1
+              },
+              {
+                "column": 0,
+                "from": "B",
+                "to": "codex",
+                "tokens": 10,
+                "lastActivityAt": 1792400824990,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 40,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 2
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 40,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 2
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991
+            },
+            "now": 1792400831745
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 4,
+                "timestamp_ms": 1792400829991,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "A",
+                "session_key": 1,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 4,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "harness": "codex"
+            },
+            "now": 1792400831753
+          }
+        },
+        {
+          "url": "/api/runtime-map?from=1792400770990&to=1792400830991&project=A",
+          "status": 200,
+          "response": {
+            "totals": {
+              "tokens": 30,
+              "records": 3,
+              "sessions": 1,
+              "lastActivityAt": 1792400829991,
+              "activeSessions": 1,
+              "callRecords": 3,
+              "aggregateRecords": 0,
+              "reportedCost": 0,
+              "apiValue": 0,
+              "unknownCostRecords": 3,
+              "inputTokens": 0,
+              "cachedInputTokens": 0,
+              "cacheWriteTokens": 0,
+              "cacheSavingKnownUsd": 0,
+              "cacheSavingKnownCalls": 0,
+              "nativeCalls": 0,
+              "computedCalls": 0,
+              "estimatedCalls": 0,
+              "unknownCalls": 3
+            },
+            "nodes": {
+              "project": [
+                {
+                  "key": "A",
+                  "tokens": 30,
+                  "records": 3,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 1,
+                  "callRecords": 3,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 3,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 3
+                }
+              ],
+              "harness": [
+                {
+                  "key": "codex",
+                  "tokens": 30,
+                  "records": 3,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 1,
+                  "callRecords": 3,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 3,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 3
+                }
+              ],
+              "provider": [
+                {
+                  "key": "openai",
+                  "tokens": 30,
+                  "records": 3,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 1,
+                  "callRecords": 3,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 3,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 3
+                }
+              ],
+              "model": [
+                {
+                  "key": "gpt-a",
+                  "tokens": 30,
+                  "records": 3,
+                  "sessions": 1,
+                  "lastActivityAt": 1792400829991,
+                  "activeSessions": 1,
+                  "callRecords": 3,
+                  "aggregateRecords": 0,
+                  "reportedCost": 0,
+                  "apiValue": 0,
+                  "unknownCostRecords": 3,
+                  "inputTokens": 0,
+                  "cachedInputTokens": 0,
+                  "cacheWriteTokens": 0,
+                  "cacheSavingKnownUsd": 0,
+                  "cacheSavingKnownCalls": 0,
+                  "nativeCalls": 0,
+                  "computedCalls": 0,
+                  "estimatedCalls": 0,
+                  "unknownCalls": 3,
+                  "vendor": "openai"
+                }
+              ]
+            },
+            "edges": [
+              {
+                "column": 0,
+                "from": "A",
+                "to": "codex",
+                "tokens": 30,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 1
+              },
+              {
+                "column": 1,
+                "from": "codex",
+                "to": "openai",
+                "tokens": 30,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 1
+              },
+              {
+                "column": 2,
+                "from": "openai",
+                "to": "gpt-a",
+                "tokens": 30,
+                "lastActivityAt": 1792400829991,
+                "activeSessions": 1
+              }
+            ],
+            "activityWindowMs": 300000,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A"
+            },
+            "now": 1792400831755
+          }
+        },
+        {
+          "url": "/api/usage-events?from=1792400770990&to=1792400830991&project=A&harness=codex&limit=1&offset=0",
+          "status": 200,
+          "response": {
+            "rows": [
+              {
+                "event_id": 4,
+                "timestamp_ms": 1792400829991,
+                "call_count": 1,
+                "source_id": 1,
+                "harness": "codex",
+                "profile": "synthetic",
+                "source_name": "Reader",
+                "provider": "openai",
+                "vendor": "openai",
+                "model": "gpt-a",
+                "effort": null,
+                "service_tier": null,
+                "project": "A",
+                "session_key": 1,
+                "is_subagent": 0,
+                "input_tokens": 0,
+                "cached_input_tokens": 0,
+                "cache_write_tokens": 0,
+                "output_tokens": 0,
+                "reasoning_tokens": 0,
+                "total_tokens": 10,
+                "duration_ms": null,
+                "cost_usd": null,
+                "cost_input_usd": null,
+                "cost_cached_input_usd": null,
+                "cost_cache_write_usd": null,
+                "cost_output_usd": null,
+                "cost_cache_saving_usd": null,
+                "cost_source": "unknown",
+                "price_provider": null,
+                "grain": "call"
+              }
+            ],
+            "total": 3,
+            "limit": 1,
+            "offset": 0,
+            "scope": {
+              "from": 1792400770990,
+              "to": 1792400830991,
+              "project": "A",
+              "harness": "codex"
+            },
+            "now": 1792400831757
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": "Current globally newest-per-harness observation collection can omit the newest selected-project call when another project has a newer same-harness call before an accepted refresh. Gate correctly rejects the foreign row and emits no selected-project signal; exact-project read returns the eligible A call and the same gate emits one signal.",
+  "limits": [
+    "Authority says new observed call on a known edge, not every ingested record. This demonstrates a scoped observation omission, not proof that every record must animate.",
+    "No production React lifecycle, visual paint, SSE transport, timer expiry or native behavior was executed. Actual handlers, request encoders, scope helpers, eligibility class and gate were used.",
+    "Production collection logic in this script is copied from inspected production.tsx because it is embedded in a React component, not exported. Source hashes bind the inspected implementation; no app module was changed.",
+    "One newest row per harness intentionally coalesces multiple same-project calls; two-new-A case confirms one observed signal for the latest row, not a per-ingested-record queue."
+  ]
+}

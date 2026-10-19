@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.87
+## Current checkpoint: v1.85.88
+
+[Implementation and validation](redesign-v1.85.88/VALIDATION-STATE.md) | [Original/current all-eight review](redesign-v1.85.88/review.html) | [Required remaining work](redesign-v1.85.88/NEXT-REQUIRED-WORK.md). Models row palette and Projects non-data grid removal follow Source; redundant aggregate classification is removed with70 full-response equivalences. Final builds,549 tests, original40 repeat pairs (32exact), Models8browser and freshall8 captures pass. Compiled/trial Projects cross-run raster fails3/5 despite equal facts/geometry; cause remains unresolved. Explicit motion contracts and original all-eight/release acceptance remain open.
+
+## Previous checkpoint: v1.85.87
 
 [Models exact row trends and evidence](redesign-v1.85.87/VALIDATION-STATE.md) | [Functional browser captures](redesign-v1.85.87/review.html). Restores the original comparison Trend column from exact recorded pairs, pages20 rows, protects accepted refresh data and supports long identities with a read-only POST fallback. Builds,546 repository tests and8 scoped browser cases pass. Functional fixtures are not equal-content visual acceptance. Original all-eight likeness, previous Models/Projects repeat failures and release/rollback gates remain open.
 

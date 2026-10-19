@@ -276,6 +276,11 @@
 /* Exact model/recorded-provider history; horizontal scrolling retains every factual column. */
 .qp-model-table-wrap td .qp-model-row-trend { display:block; width:96px; height:26px; --qp-accent:#158dff; }
 .qp-model-table-wrap .qp-model-row-trend-cell { width:96px; min-width:96px; }
+/* Reference series palette, assigned by exact pair identity and unrelated to factual status. */
+.qp-model-row-trend-cell[data-trend-tone=violet] .qp-model-row-trend { --qp-accent:#a04dff; }
+.qp-model-row-trend-cell[data-trend-tone=orange] .qp-model-row-trend { --qp-accent:#f58e43; }
+.qp-model-row-trend-cell[data-trend-tone=cyan] .qp-model-row-trend { --qp-accent:#00c9ff; }
+.qp-model-row-trend-cell[data-trend-tone=rose] .qp-model-row-trend { --qp-accent:#f16e79; }
 .qp-model-row-trend-status { display:block; max-width:110px; white-space:normal; color:var(--qp-muted); font-size:10px; }
 .qp-model-comparison-pagination { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
 .qp-model-comparison-pagination small { margin-right:auto; color:var(--qp-muted); }
@@ -284,3 +289,10 @@
   .qp-model-table-wrap th,.qp-model-table-wrap td { padding-inline:4px; }
   .qp-model-table-wrap .qp-model-ratio { width:48px; }
 }
+
+/* Light surfaces need darker series hues; dark reference colors remain unchanged. */
+.qp-redesign[data-theme=light] .qp-model-row-trend-cell[data-trend-tone=blue] .qp-model-row-trend { --qp-accent:#2158ff; }
+.qp-redesign[data-theme=light] .qp-model-row-trend-cell[data-trend-tone=violet] .qp-model-row-trend { --qp-accent:#7040bb; }
+.qp-redesign[data-theme=light] .qp-model-row-trend-cell[data-trend-tone=orange] .qp-model-row-trend { --qp-accent:#875000; }
+.qp-redesign[data-theme=light] .qp-model-row-trend-cell[data-trend-tone=cyan] .qp-model-row-trend { --qp-accent:#06658b; }
+.qp-redesign[data-theme=light] .qp-model-row-trend-cell[data-trend-tone=rose] .qp-model-row-trend { --qp-accent:#b42335; }

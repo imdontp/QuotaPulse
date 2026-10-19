@@ -1,0 +1,7 @@
+/* Candidate only: native dark production Overview model-share fill material. */
+@media (min-width:1536px) {
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-map-node[data-dimension=model] .qp-node-track>span {
+    background:linear-gradient(90deg,#4669fa,#6575f9);
+    box-shadow:inset 0 1px 0 #b4c0ff24,inset 0 -1px 0 #bac6ff33;
+  }
+}

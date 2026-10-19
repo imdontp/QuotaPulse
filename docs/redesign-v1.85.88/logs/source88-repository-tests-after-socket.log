@@ -1,0 +1,2901 @@
+
+> quotapulse@0.1.0 test
+> npm run test -w @quotapulse/daemon && npm run test -w @quotapulse/web && npm run test -w @quotapulse/tray
+
+
+> @quotapulse/daemon@0.1.0 test
+> tsx --test test/*.test.ts
+
+TAP version 13
+# 08:54:46.675 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-K1gRhw\\claude.db
+# 08:54:46.747 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-QzDk86\\claude2.db
+# Subtest: claude: one API response written as three rows counts once
+ok 1 - claude: one API response written as three rows counts once
+  ---
+  duration_ms: 82.8981
+  ...
+# 08:54:46.806 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-ryBNoV\\claude3.db
+# Subtest: claude: token fields map straight across (already disjoint)
+ok 2 - claude: token fields map straight across (already disjoint)
+  ---
+  duration_ms: 63.224
+  ...
+# 08:54:46.866 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-JtC96s\\claude-account.db
+# 08:54:46.937 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-YsdEuL\\claude-headless-snapshot.db
+# 08:54:46.999 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-wDm4jY\\quota-events.db
+# Subtest: claude: cost-state lands on the session as the native figure
+ok 3 - claude: cost-state lands on the session as the native figure
+  ---
+  duration_ms: 54.9269
+  ...
+# Subtest: claude account state stays visible while inactive and reactivates from quota
+ok 4 - claude account state stays visible while inactive and reactivates from quota
+  ---
+  duration_ms: 70.0359
+  ...
+# Subtest: claude reads a profile-level statusline snapshot used by headless sessions
+ok 5 - claude reads a profile-level statusline snapshot used by headless sessions
+  ---
+  duration_ms: 59.7738
+  ...
+# 08:54:47.057 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-KOoh1t\\codex.db
+# Subtest: quota event bridge ingests sanitized headless rate limits without reading prompt data
+ok 6 - quota event bridge ingests sanitized headless rate limits without reading prompt data
+  ---
+  duration_ms: 63.6055
+  ...
+# 08:54:47.128 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-gQvxZc\\codex3.db
+# Subtest: codex: cache reads are removed from input, both schema generations
+ok 7 - codex: cache reads are removed from input, both schema generations
+  ---
+  duration_ms: 69.746
+  ...
+# 08:54:47.212 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-w6dQHF\\codex2.db
+# Subtest: codex: a pass that appends only usage still knows the model from an earlier one
+ok 8 - codex: a pass that appends only usage still knows the model from an earlier one
+  ---
+  duration_ms: 80.6778
+  ...
+# 08:54:47.273 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-eBAtaA\\aggregate-count.db
+# 08:54:47.323 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-xCtD2M\\idem.db
+# Subtest: codex: quota is recorded even from an event with no usage, and a missing secondary is tolerated
+ok 9 - codex: quota is recorded even from an event with no usage, and a missing secondary is tolerated
+  ---
+  duration_ms: 72.298
+  ...
+# Subtest: aggregate usage rows contribute their native API call count
+ok 10 - aggregate usage rows contribute their native API call count
+  ---
+  duration_ms: 38.6025
+  ...
+# Subtest: re-ingesting changes nothing (idempotent), and appended lines are picked up
+ok 11 - re-ingesting changes nothing (idempotent), and appended lines are picked up
+  ---
+  duration_ms: 96.4109
+  ...
+# Subtest: jsonl reader leaves a partial trailing line unconsumed
+ok 12 - jsonl reader leaves a partial trailing line unconsumed
+  ---
+  duration_ms: 14.122
+  ...
+# Subtest: jsonl reader restarts when a file is truncated
+ok 13 - jsonl reader restarts when a file is truncated
+  ---
+  duration_ms: 20.2073
+  ...
+# Subtest: jsonl reader survives a corrupt line without losing the rest
+ok 14 - jsonl reader survives a corrupt line without losing the rest
+  ---
+  duration_ms: 9.9832
+  ...
+# 08:54:47.103 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-IBcdC4\\alerts.db
+# 08:54:47.163 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-yGeewO\\alerts-rollover.db
+# Subtest: daemon records threshold crossings once and survives delivery reads
+ok 15 - daemon records threshold crossings once and survives delivery reads
+  ---
+  duration_ms: 77.4644
+  ...
+# Subtest: threshold history uses a new reset period and does not backfill the baseline
+ok 16 - threshold history uses a new reset period and does not backfill the baseline
+  ---
+  duration_ms: 49.4193
+  ...
+# 08:54:48.269 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-xbbnoU\\analysis-api.db
+# Subtest: analysis and notification APIs require auth and reject malformed ranges
+ok 17 - analysis and notification APIs require auth and reject malformed ranges
+  ---
+  duration_ms: 616.8249
+  ...
+# Subtest: Claude helper selects only the OAuth access token
+ok 18 - Claude helper selects only the OAuth access token
+  ---
+  duration_ms: 1.3662
+  ...
+# Subtest: Claude helper normalizes provider windows and ignores unrelated fields
+ok 19 - Claude helper normalizes provider windows and ignores unrelated fields
+  ---
+  duration_ms: 5.4618
+  ...
+# Subtest: Claude quota parser maps the sanitized helper output to 5h and weekly
+ok 20 - Claude quota parser maps the sanitized helper output to 5h and weekly
+  ---
+  duration_ms: 1.7375
+  ...
+# Subtest: Claude quota parser fails closed for incomplete or secret-bearing failures
+ok 21 - Claude quota parser fails closed for incomplete or secret-bearing failures
+  ---
+  duration_ms: 0.6498
+  ...
+# 08:54:48.542 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-VVeEr6\\compare.db
+# Subtest: compareUsage keeps equal windows and weighted pricing coverage together
+ok 22 - compareUsage keeps equal windows and weighted pricing coverage together
+  ---
+  duration_ms: 73.2572
+  ...
+# 08:54:48.882 INFO  [db] migrating schema 1 -> 3
+# 08:54:48.885 INFO  [db] migrating schema 3 -> 4
+# 08:54:48.886 INFO  [db] migrating schema 4 -> 5
+# 08:54:48.886 INFO  [db] migrating schema 5 -> 6
+# 08:54:48.887 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-xzl0h0\\legacy.db
+# Subtest: openDb upgrades a legacy source table before creating account indexes
+ok 23 - openDb upgrades a legacy source table before creating account indexes
+  ---
+  duration_ms: 102.8373
+  ...
+# 08:54:49.392 INFO  [db] opened :memory:
+# Subtest: optimized detail aggregates exactly preserve original complete responses and ordering across model/project scopes
+ok 24 - optimized detail aggregates exactly preserve original complete responses and ordering across model/project scopes
+  ---
+  duration_ms: 1113.9647
+  ...
+# 08:54:50.445 INFO  [db] opened :memory:
+# Subtest: opt-in project/model aggregates preserve identity, sessions and money coverage
+ok 25 - opt-in project/model aggregates preserve identity, sessions and money coverage
+  ---
+  duration_ms: 585.0424
+  ...
+# 08:54:51.036 INFO  [db] opened :memory:
+# Subtest: History summary reconciles full filtered records, timeline, effort and separate price bases
+ok 26 - History summary reconciles full filtered records, timeline, effort and separate price bases
+  ---
+  duration_ms: 612.6502
+  ...
+# Subtest: explicit data directory preserves legacy installation
+ok 27 - explicit data directory preserves legacy installation
+  ---
+  duration_ms: 931.2675
+  ...
+# Subtest: default data directory still adopts legacy installation
+ok 28 - default data directory still adopts legacy installation
+  ---
+  duration_ms: 1082.5844
+  ...
+# 08:54:52.101 INFO  [db] opened :memory:
+# Subtest: live sessions count valid source timestamps and page exact scoped metadata
+ok 29 - live sessions count valid source timestamps and page exact scoped metadata
+  ---
+  duration_ms: 646.197
+  ...
+# 08:54:52.665 INFO  [db] opened :memory:
+# Subtest: model detail exposes only exact catalog capacity, independently of observed usage and monetary basis
+ok 30 - model detail exposes only exact catalog capacity, independently of observed usage and monetary basis
+  ---
+  duration_ms: 617.6796
+  ...
+# 08:54:53.311 INFO  [db] opened :memory:
+# 08:54:53.777 INFO  [db] opened :memory:
+# Subtest: exact model/provider batch preserves requested order, NULL, empty, case and malicious text
+ok 31 - exact model/provider batch preserves requested order, NULL, empty, case and malicious text
+  ---
+  duration_ms: 483.9309
+  ...
+# 08:54:53.912 INFO  [db] opened :memory:
+# Subtest: batch sparse bins match existing detail for every exact identity, grain and bucket span
+ok 32 - batch sparse bins match existing detail for every exact identity, grain and bucket span
+  ---
+  duration_ms: 134.3259
+  ...
+# 08:54:53.948 INFO  [db] opened :memory:
+# Subtest: batch shares source, session, project, search, provider, vendor, model and grain scope predicates
+ok 33 - batch shares source, session, project, search, provider, vendor, model and grain scope predicates
+  ---
+  duration_ms: 36.6424
+  ...
+# 08:54:54.042 INFO  [db] opened :memory:
+# 08:54:54.048 INFO  [db] opened :memory:
+# 08:54:54.059 INFO  [db] opened :memory:
+# Subtest: batch authenticates and rejects malformed, missing, excessive and ambiguous query input
+ok 34 - batch authenticates and rejects malformed, missing, excessive and ambiguous query input
+  ---
+  duration_ms: 93.6574
+  ...
+# Subtest: twenty exact pairs use one parameterized grouped read and existing model/time index
+ok 35 - twenty exact pairs use one parameterized grouped read and existing model/time index
+  ---
+  duration_ms: 5.4059
+  ...
+# Subtest: maximum visible window returns every observed bin for twenty pairs without leaking an unrequested pair
+ok 36 - maximum visible window returns every observed bin for twenty pairs without leaking an unrequested pair
+  ---
+  duration_ms: 11.1178
+  ...
+# Subtest: read-only POST transports twenty maximum-length exact pairs over actual HTTP without changing header limits or stored facts
+ok 37 - read-only POST transports twenty maximum-length exact pairs over actual HTTP without changing header limits or stored facts
+  ---
+  duration_ms: 130.3614
+  ...
+# 08:54:53.765 INFO  [db] opened :memory:
+# Subtest: model histories reconcile full-grain filtered facts without merging provider identities
+ok 38 - model histories reconcile full-grain filtered facts without merging provider identities
+  ---
+  duration_ms: 641.9822
+  ...
+# Subtest: OpenAI provider usage output maps primary and secondary windows
+ok 39 - OpenAI provider usage output maps primary and secondary windows
+  ---
+  duration_ms: 2.8762
+  ...
+# Subtest: OpenAI account parser rejects unavailable data and unknown windows
+ok 40 - OpenAI account parser rejects unavailable data and unknown windows
+  ---
+  duration_ms: 0.8935
+  ...
+# Subtest: OpenAI account parser ignores helper noise and malformed readings
+ok 41 - OpenAI account parser ignores helper noise and malformed readings
+  ---
+  duration_ms: 1.4683
+  ...
+# Subtest: OpenCode Go helper selects the opencode-go credential
+ok 42 - OpenCode Go helper selects the opencode-go credential
+  ---
+  duration_ms: 1.0427
+  ...
+# Subtest: OpenCode Go helper output maps rolling, weekly, and monthly windows
+ok 43 - OpenCode Go helper output maps rolling, weekly, and monthly windows
+  ---
+  duration_ms: 1.407
+  ...
+# Subtest: OpenCode Go parser preserves provider percentages, including over-limit values
+ok 44 - OpenCode Go parser preserves provider percentages, including over-limit values
+  ---
+  duration_ms: 0.2933
+  ...
+# Subtest: OpenCode Go parser keeps credential and entitlement failures sanitized
+ok 45 - OpenCode Go parser keeps credential and entitlement failures sanitized
+  ---
+  duration_ms: 0.2859
+  ...
+# Subtest: OpenCode Go parser rejects incomplete or malformed quota snapshots
+ok 46 - OpenCode Go parser rejects incomplete or malformed quota snapshots
+  ---
+  duration_ms: 0.1698
+  ...
+# Subtest: projectOf takes the last segment of a Windows path
+ok 47 - projectOf takes the last segment of a Windows path
+  ---
+  duration_ms: 0.7602
+  ...
+# Subtest: projectOf takes the last segment of a POSIX path
+ok 48 - projectOf takes the last segment of a POSIX path
+  ---
+  duration_ms: 0.1231
+  ...
+# Subtest: projectOf handles mixed separators and spaces
+ok 49 - projectOf handles mixed separators and spaces
+  ---
+  duration_ms: 0.1226
+  ...
+# Subtest: projectOf returns null when there is nothing usable
+ok 50 - projectOf returns null when there is nothing usable
+  ---
+  duration_ms: 0.1018
+  ...
+# Subtest: coverage uses call_count, inclusive start/exclusive end and source filtering without writes
+ok 51 - coverage uses call_count, inclusive start/exclusive end and source filtering without writes
+  ---
+  duration_ms: 17.866
+  ...
+# Subtest: missing catalog metadata is explicit; trend and sessions carry estimated and unknown counts
+ok 52 - missing catalog metadata is explicit; trend and sessions carry estimated and unknown counts
+  ---
+  duration_ms: 4.3978
+  ...
+# Subtest: coverage endpoint requires authentication and validates every scope parameter
+ok 53 - coverage endpoint requires authentication and validates every scope parameter
+  ---
+  duration_ms: 312.9714
+  ...
+# Subtest: pricing refresh accepts providers with at least one finite non-negative rate
+ok 54 - pricing refresh accepts providers with at least one finite non-negative rate
+  ---
+  duration_ms: 1.4535
+  ...
+# Subtest: pricing refresh rejects malformed or empty catalogs before replacing the live file
+ok 55 - pricing refresh rejects malformed or empty catalogs before replacing the live file
+  ---
+  duration_ms: 0.1641
+  ...
+# 08:54:56.832 INFO  [db] opened :memory:
+# Subtest: project mini trends preserve scope, half-open range, identities and aggregate totals
+ok 56 - project mini trends preserve scope, half-open range, identities and aggregate totals
+  ---
+  duration_ms: 463.8917
+  ...
+# 08:54:57.417 INFO  [db] opened :memory:
+# Subtest: quota history follows one selected reader and keeps reset periods separate
+ok 57 - quota history follows one selected reader and keeps reset periods separate
+  ---
+  duration_ms: 475.2444
+  ...
+# 08:54:57.986 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-obC6x4\\usage.db
+# 08:54:57.989 INFO  [ingest] fake/default -> /fake/default
+# 08:54:57.991 INFO  [scheduler] pass(initial): +0 events, +0 limits in 1ms
+# 08:54:57.992 INFO  [scheduler] watching 0 paths; polling every 1000000ms; re-detecting harnesses every 1000s
+# 08:54:58.441 INFO  [ingest] fake/default -> /fake/default
+# Subtest: POST /api/refresh requires the daemon token and returns a pass summary
+ok 58 - POST /api/refresh requires the daemon token and returns a pass summary
+  ---
+  duration_ms: 502.3541
+  ...
+# Subtest: daemon and tray agree at both sides of the reset-jitter boundary
+ok 59 - daemon and tray agree at both sides of the reset-jitter boundary
+  ---
+  duration_ms: 24.1221
+  ...
+# Subtest: null resets keep prior semantics and real new periods do not reuse old burn
+ok 60 - null resets keep prior semantics and real new periods do not reuse old burn
+  ---
+  duration_ms: 2.2862
+  ...
+# 08:54:59.035 INFO  [db] opened :memory:
+# 08:54:59.047 INFO  [db] opened :memory:
+# Subtest: runtime summary deduplicates recorded identities and excludes unknown/empty and future/stale sessions
+ok 61 - runtime summary deduplicates recorded identities and excludes unknown/empty and future/stale sessions
+  ---
+  duration_ms: 29.7717
+  ...
+# 08:54:59.556 INFO  [db] opened :memory:
+# 08:54:59.561 INFO  [db] opened :memory:
+# 08:54:59.571 INFO  [db] opened :memory:
+# 08:54:59.576 INFO  [db] opened :memory:
+# Subtest: runtime summary is authenticated, preserves the legacy response, and validates opt-in scope
+ok 62 - runtime summary is authenticated, preserves the legacy response, and validates opt-in scope
+  ---
+  duration_ms: 508.7178
+  ...
+# Subtest: scoped summary counts distinct usage-backed identities across all grains and retains sessionless events
+ok 63 - scoped summary counts distinct usage-backed identities across all grains and retains sessionless events
+  ---
+  duration_ms: 5.8846
+  ...
+# Subtest: scoped summary shares exact project, source, session, vendor, grain and literal search predicates
+ok 64 - scoped summary shares exact project, source, session, vendor, grain and literal search predicates
+  ---
+  duration_ms: 8.2323
+  ...
+# Subtest: scoped summary preserves whitespace identities instead of normalizing them into empty metadata
+ok 65 - scoped summary preserves whitespace identities instead of normalizing them into empty metadata
+  ---
+  duration_ms: 5.5366
+  ...
+# Subtest: authenticated scoped route returns usage-backed counts with the parsed scope and daemon clock
+ok 66 - authenticated scoped route returns usage-backed counts with the parsed scope and daemon clock
+  ---
+  duration_ms: 32.8541
+  ...
+# 08:54:59.175 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-LOK0vd\\usage.db
+# 08:54:59.181 INFO  [ingest] fake/default -> /fake/default
+# 08:54:59.183 INFO  [scheduler] pass(initial): +0 events, +0 limits in 2ms
+# 08:54:59.184 INFO  [scheduler] watching 0 paths; polling every 1000000ms; re-detecting harnesses every 1000s
+# 08:54:59.185 INFO  [ingest] fake/default -> /fake/default
+# 08:54:59.218 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-7hqOnH\\usage.db
+# 08:54:59.219 INFO  [ingest] fake/default -> /fake/default
+# 08:54:59.220 INFO  [scheduler] pass(initial): +0 events, +0 limits in 1ms
+# 08:54:59.220 INFO  [scheduler] watching 0 paths; polling every 1000000ms; re-detecting harnesses every 1000s
+# 08:54:59.221 INFO  [ingest] fake/default -> /fake/default
+# 08:54:59.224 INFO  [ingest] fake/default -> /fake/default
+# 08:54:59.224 INFO  [ingest] fake/default -> /fake/default
+# Subtest: runNow performs an immediate incremental pass when idle
+ok 67 - runNow performs an immediate incremental pass when idle
+  ---
+  duration_ms: 58.6219
+  ...
+# 08:54:59.318 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-XVstDd\\usage.db
+# 08:54:59.319 INFO  [ingest] fake/default -> /fake/default
+# 08:54:59.320 INFO  [scheduler] pass(initial): +0 events, +0 limits in 1ms
+# 08:54:59.320 INFO  [scheduler] watching 0 paths; polling every 1000000ms; re-detecting harnesses every 1000s
+# 08:54:59.320 INFO  [ingest] fake/default -> /fake/default
+# 08:54:59.322 INFO  [ingest] fake/default -> /fake/default
+# Subtest: concurrent runNow callers share one queued follow-up pass
+ok 68 - concurrent runNow callers share one queued follow-up pass
+  ---
+  duration_ms: 102.4269
+  ...
+# 08:54:59.421 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-FYQCLI\\usage.db
+# 08:54:59.422 INFO  [ingest] fake/default -> /fake/default
+# 08:54:59.423 INFO  [scheduler] pass(initial): +0 events, +0 limits in 1ms
+# 08:54:59.423 INFO  [scheduler] watching 0 paths; polling every 1000000ms; re-detecting harnesses every 1000s
+# 08:54:59.423 INFO  [ingest] fake/default -> /fake/default
+# 08:54:59.424 INFO  [ingest] fake/default -> /fake/default
+# Subtest: a watcher event cannot overwrite a queued manual refresh
+ok 69 - a watcher event cannot overwrite a queued manual refresh
+  ---
+  duration_ms: 107.3691
+  ...
+# Subtest: a queued manual waiter resolves only after a racing pass completes
+ok 70 - a queued manual waiter resolves only after a racing pass completes
+  ---
+  duration_ms: 155.9792
+  ...
+# 08:54:59.696 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-xXhgcp\\sessions-range.db
+# Subtest: session range filters usage totals, rows, counts and vendor options together
+ok 71 - session range filters usage totals, rows, counts and vendor options together
+  ---
+  duration_ms: 59.5454
+  ...
+# 08:55:00.562 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-Iy3UtQ\\usage.db
+# 08:55:01.002 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-Iy3UtQ\\usage.db
+# 08:55:01.039 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-eZjC85\\usage.db
+# Subtest: application settings persist, validate, and emit a settings event
+ok 72 - application settings persist, validate, and emit a settings event
+  ---
+  duration_ms: 491.2405
+  ...
+# Subtest: Today endpoint returns only the current local calendar day and groups by harness/model
+ok 73 - Today endpoint returns only the current local calendar day and groups by harness/model
+  ---
+  duration_ms: 66.18
+  ...
+# 08:55:00.789 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-lxBAfY\\usage.db
+# 08:55:00.793 INFO  [ingest] fake/a -> /fake/a
+# 08:55:00.793 INFO  [ingest] fake/b -> /fake/b
+# 08:55:00.794 INFO  [ingest] fake/a -> /fake/a
+# 08:55:00.794 INFO  [ingest] fake/b is gone; its history is kept
+# 08:55:00.816 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-t3eGxK\\usage.db
+# 08:55:00.817 INFO  [ingest] fake/a -> /fake/a
+# 08:55:00.818 INFO  [ingest] fake/a is gone; its history is kept
+# 08:55:00.818 INFO  [ingest] fake/a -> /fake/a
+# 08:55:00.841 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-SWjxqv\\usage.db
+# 08:55:00.842 INFO  [ingest] fake/used -> /fake/used
+# 08:55:00.843 INFO  [ingest] fake/never -> /fake/never
+# 08:55:00.844 INFO  [ingest] fake/used is gone; its history is kept
+# 08:55:00.844 INFO  [ingest] fake/never is gone; its history is kept
+# 08:55:00.872 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-zGMl0Q\\usage.db
+# 08:55:00.872 INFO  [ingest] codex/default -> /fake/codex
+# 08:55:00.873 INFO  [ingest] openai-account/default -> /fake/hermes
+# 08:55:00.903 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-Nwn6vy\\usage.db
+# 08:55:00.945 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-jInHf0\\usage.db
+# 08:55:00.986 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-QlgPrJ\\usage.db
+# 08:55:01.038 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-TvTU3Q\\usage.db
+# 08:55:01.039 INFO  [ingest] fake/default -> /fake/fake
+# 08:55:01.051 INFO  [ingest] fake/default recovered
+# 08:55:01.059 INFO  [ingest] fake/default is gone; its history is kept
+# 08:55:01.084 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-7rAMSz\\usage.db
+# 08:55:01.085 INFO  [ingest] parallel-account-probe/one -> /account/one
+# 08:55:01.085 INFO  [ingest] parallel-account-probe/two -> /account/two
+# Subtest: a source that disappears stops being ingested
+ok 74 - a source that disappears stops being ingested
+  ---
+  duration_ms: 42.2007
+  ...
+# Subtest: a source that comes back is picked up again without a restart
+ok 75 - a source that comes back is picked up again without a restart
+  ---
+  duration_ms: 23.8559
+  ...
+# Subtest: a departed source keeps its card only if it recorded something
+ok 76 - a departed source keeps its card only if it recorded something
+  ---
+  duration_ms: 26.278
+  ...
+# Subtest: Codex and an account reader share one quota card while harness cards stay separate
+ok 77 - Codex and an account reader share one quota card while harness cards stay separate
+  ---
+  duration_ms: 31.8891
+  ...
+# Subtest: telemetry reports usage newer than quota instead of presenting a fresh value
+ok 78 - telemetry reports usage newer than quota instead of presenting a fresh value
+  ---
+  duration_ms: 42.975
+  ...
+# Subtest: stale quota does not keep a subscription active, and fresh quota reactivates it
+ok 79 - stale quota does not keep a subscription active, and fresh quota reactivates it
+  ---
+  duration_ms: 41.4848
+  ...
+# Subtest: dashboard separates subscriptions from harnesses and nests Hermes delegates
+ok 80 - dashboard separates subscriptions from harnesses and nests Hermes delegates
+  ---
+  duration_ms: 46.3099
+  ...
+# Subtest: an adapter failure is recorded where the Health page can see it
+ok 81 - an adapter failure is recorded where the Health page can see it
+  ---
+  duration_ms: 53.2122
+  ...
+# Subtest: independent account probes do not stack their wait time
+ok 82 - independent account probes do not stack their wait time
+  ---
+  duration_ms: 64.2916
+  ...
+# 08:55:01.040 ERROR [ingest] fake/default failed disk on fire
+# 08:55:01.056 ERROR [ingest] fake/default failed disk on fire
+# 08:55:01.667 INFO  [db] opened :memory:
+# Subtest: SSE releases listeners on disconnect and closes an active stream during shutdown
+ok 83 - SSE releases listeners on disconnect and closes an active stream during shutdown
+  ---
+  duration_ms: 995.3743
+  ...
+# Subtest: direct task entry rejects invalid configuration before creating an instance database
+ok 84 - direct task entry rejects invalid configuration before creating an instance database
+  ---
+  duration_ms: 5694.027
+  ...
+# Subtest: compiled daemon with readers off starts isolated and preserves zero ingest/prices
+ok 85 - compiled daemon with readers off starts isolated and preserves zero ingest/prices
+  ---
+  duration_ms: 2730.8713
+  ...
+# Subtest: occupied loopback port fails without claiming a daemon lock or stopping its owner
+ok 86 - occupied loopback port fails without claiming a daemon lock or stopping its owner
+  ---
+  duration_ms: 1551.2207
+  ...
+# 08:55:04.060 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-MzNvNK\\usage-api.db
+# Subtest: usage period uses local calendar boundaries and Monday weeks
+ok 87 - usage period uses local calendar boundaries and Monday weeks
+  ---
+  duration_ms: 50.7483
+  ...
+# Subtest: usage endpoint returns normalized range, calendar timeline, and source totals
+ok 88 - usage endpoint returns normalized range, calendar timeline, and source totals
+  ---
+  duration_ms: 1176.3219
+  ...
+# 08:55:04.320 INFO  [db] opened :memory:
+# Subtest: usage-events and CSV share exact scope, grain and complete pagination
+    # Subtest: stable tie order, boundaries, record total, safe allowlist and authentication
+    ok 1 - stable tie order, boundaries, record total, safe allowlist and authentication
+      ---
+      duration_ms: 79.9621
+      ...
+    # Subtest: literal substring, missing project, route/provider vs model vendor and shared CSV filters
+    ok 2 - literal substring, missing project, route/provider vs model vendor and shared CSV filters
+      ---
+      duration_ms: 116.8309
+      ...
+    # Subtest: invalid supplied values fail rather than silently changing query meaning
+    ok 3 - invalid supplied values fail rather than silently changing query meaning
+      ---
+      duration_ms: 9.7874
+      ...
+    # Subtest: aggregate replacement retains event identity and count
+    ok 4 - aggregate replacement retains event identity and count
+      ---
+      duration_ms: 3.8897
+      ...
+    # Subtest: minute trend includes only declared call adapters and reports exclusions under the same filters
+    ok 5 - minute trend includes only declared call adapters and reports exclusions under the same filters
+      ---
+      duration_ms: 14.5842
+      ...
+    # Subtest: provider/model minutes preserve exact identities, sparse call values and all-grain window coverage
+    ok 6 - provider/model minutes preserve exact identities, sparse call values and all-grain window coverage
+      ---
+      duration_ms: 86.8804
+      ...
+    # Subtest: CSV keeps literal metadata inert when opened in spreadsheet software
+    ok 7 - CSV keeps literal metadata inert when opened in spreadsheet software
+      ---
+      duration_ms: 7.181
+      ...
+    # Subtest: runtime nodes and edges conserve scoped tokens and count sessions distinctly
+    ok 8 - runtime nodes and edges conserve scoped tokens and count sessions distinctly
+      ---
+      duration_ms: 17.5666
+      ...
+    # Subtest: runtime activity and active-session counts follow the selected project and recorded timestamps
+    ok 9 - runtime activity and active-session counts follow the selected project and recorded timestamps
+      ---
+      duration_ms: 8.1817
+      ...
+    # Subtest: runtime model makers follow names across routes; unknown groups stay unbranded
+    ok 10 - runtime model makers follow names across routes; unknown groups stay unbranded
+      ---
+      duration_ms: 8.6946
+      ...
+    # Subtest: pagination and whole-range export exceed the old 2000-row detail cap
+    ok 11 - pagination and whole-range export exceed the old 2000-row detail cap
+      ---
+      duration_ms: 276.0315
+      ...
+    1..11
+ok 89 - usage-events and CSV share exact scope, grain and complete pagination
+  ---
+  duration_ms: 1622.9153
+  ...
+# 08:55:04.041 INFO  [db] opened :memory:
+# 08:55:04.300 INFO  [db] opened C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\quotapulse-test-COy10h\\vendor.db
+# Subtest: the routing provider never overrides what the model name says
+ok 90 - the routing provider never overrides what the model name says
+  ---
+  duration_ms: 2.5794
+  ...
+# Subtest: a vendor/model path prefix wins outright
+ok 91 - a vendor/model path prefix wins outright
+  ---
+  duration_ms: 0.3335
+  ...
+# Subtest: the routing provider is used only when the model name says nothing
+ok 92 - the routing provider is used only when the model name says nothing
+  ---
+  duration_ms: 1.1823
+  ...
+# Subtest: a route this install has never seen is still flagged, not excused
+ok 93 - a route this install has never seen is still flagged, not excused
+  ---
+  duration_ms: 0.7758
+  ...
+# Subtest: a gateway never becomes the vendor of a model
+ok 94 - a gateway never becomes the vendor of a model
+  ---
+  duration_ms: 0.3223
+  ...
+# Subtest: the gateway set covers every route seen on this machine
+ok 95 - the gateway set covers every route seen on this machine
+  ---
+  duration_ms: 0.5703
+  ...
+# Subtest: the main model families resolve
+ok 96 - the main model families resolve
+  ---
+  duration_ms: 0.3638
+  ...
+# Subtest: space-separated Claude display names resolve identically in TypeScript and SQL
+ok 97 - space-separated Claude display names resolve identically in TypeScript and SQL
+  ---
+  duration_ms: 44.3738
+  ...
+# Subtest: makers with no local usage yet still route, and to a declared vendor
+ok 98 - makers with no local usage yet still route, and to a declared vendor
+  ---
+  duration_ms: 1.0534
+  ...
+# Subtest: the new rules do not shadow any family already in use
+ok 99 - the new rules do not shadow any family already in use
+  ---
+  duration_ms: 0.9948
+  ...
+# Subtest: every harness maps to a known vendor
+ok 100 - every harness maps to a known vendor
+  ---
+  duration_ms: 0.3332
+  ...
+# Subtest: the SQL CASE agrees with vendorOf on every pair in the live database
+ok 101 - the SQL CASE agrees with vendorOf on every pair in the live database
+  ---
+  duration_ms: 98.594
+  ...
+# Subtest: nothing in the live database falls to unknown except the known exceptions
+ok 102 - nothing in the live database falls to unknown except the known exceptions
+  ---
+  duration_ms: 90.5861
+  ...
+# Subtest: openDb still works on a throwaway path (vendor changes touch no schema)
+ok 103 - openDb still works on a throwaway path (vendor changes touch no schema)
+  ---
+  duration_ms: 78.0451
+  ...
+1..103
+# tests 114
+# suites 0
+# pass 114
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 26123.823
+
+> @quotapulse/web@0.1.0 test
+> tsx --test test/*.test.ts
+
+TAP version 13
+# Subtest: activity queries preserve scope and isolate actual source/model/provider, with at most thirty minutes
+ok 1 - activity queries preserve scope and isolate actual source/model/provider, with at most thirty minutes
+  ---
+  duration_ms: 3.3666
+  ...
+# Subtest: minute points retain observed values, zero gaps and partial boundary minutes without interpolation
+ok 2 - minute points retain observed values, zero gaps and partial boundary minutes without interpolation
+  ---
+  duration_ms: 0.961
+  ...
+# Subtest: recent activity is limited to the trailing range and newest call per distinct harness
+ok 3 - recent activity is limited to the trailing range and newest call per distinct harness
+  ---
+  duration_ms: 1.4534
+  ...
+# Subtest: activity rate uses only recorded call tokens inside the exact minute interval
+ok 4 - activity rate uses only recorded call tokens inside the exact minute interval
+  ---
+  duration_ms: 0.6778
+  ...
+# Subtest: deduplicates owners and caps every history batch at six, including selected first
+ok 5 - deduplicates owners and caps every history batch at six, including selected first
+  ---
+  duration_ms: 2.6574
+  ...
+# Subtest: reuses unchanged histories until TTL; actual changed reading and manual refresh fetch again
+ok 6 - reuses unchanged histories until TTL; actual changed reading and manual refresh fetch again
+  ---
+  duration_ms: 0.7558
+  ...
+# Subtest: shares in-flight reads and rejects owner/window mismatch without assigning unrelated data
+ok 7 - shares in-flight reads and rejects owner/window mismatch without assigning unrelated data
+  ---
+  duration_ms: 0.6222
+  ...
+# Subtest: observed series breaks on null and reset; zero is a real point at its real timestamp
+ok 8 - observed series breaks on null and reset; zero is a real point at its real timestamp
+  ---
+  duration_ms: 1.1915
+  ...
+# Subtest: time alone invalidates cached history at reset and one-hour freshness boundaries
+ok 9 - time alone invalidates cached history at reset and one-hour freshness boundaries
+  ---
+  duration_ms: 0.3147
+  ...
+# Subtest: cached ready forecasts require a current fresh reading and matching reader metadata
+ok 10 - cached ready forecasts require a current fresh reading and matching reader metadata
+  ---
+  duration_ms: 0.2117
+  ...
+# Subtest: large observed histories render at most256 actual latest samples without bridging omitted/reset/null gaps
+ok 11 - large observed histories render at most256 actual latest samples without bridging omitted/reset/null gaps
+  ---
+  duration_ms: 37.3638
+  ...
+# Subtest: unknown-only recent suffix still discloses actual samples rather than an empty history
+ok 12 - unknown-only recent suffix still discloses actual samples rather than an empty history
+  ---
+  duration_ms: 0.6787
+  ...
+# Subtest: a machine with quota to spare is calm, and a barely-used one is quieter still
+ok 13 - a machine with quota to spare is calm, and a barely-used one is quieter still
+  ---
+  duration_ms: 3.9925
+  ...
+# Subtest: the backdrop crosses to warn and crit at the same thresholds the rings do
+ok 14 - the backdrop crosses to warn and crit at the same thresholds the rings do
+  ---
+  duration_ms: 1.1173
+  ...
+# Subtest: the worst window decides the mood, not the average
+ok 15 - the worst window decides the mood, not the average
+  ---
+  duration_ms: 0.5458
+  ...
+# Subtest: a window that will exhaust before it resets is a problem long before 60%
+ok 16 - a window that will exhaust before it resets is a problem long before 60%
+  ---
+  duration_ms: 0.4064
+  ...
+# Subtest: a reading that is days old may not colour the present
+ok 17 - a reading that is days old may not colour the present
+  ---
+  duration_ms: 0.6696
+  ...
+# Subtest: an expired reading may not colour the present either
+ok 18 - an expired reading may not colour the present either
+  ---
+  duration_ms: 0.8142
+  ...
+# Subtest: a dead feed is idle, never calm
+ok 19 - a dead feed is idle, never calm
+  ---
+  duration_ms: 0.5934
+  ...
+# Subtest: with nothing to report the backdrop is idle, and says nothing is responsible
+ok 20 - with nothing to report the backdrop is idle, and says nothing is responsible
+  ---
+  duration_ms: 1.6449
+  ...
+# Subtest: inactive subscriptions are excluded entirely
+ok 21 - inactive subscriptions are excluded entirely
+  ---
+  duration_ms: 0.8173
+  ...
+# Subtest: a hidden subscription does not colour the page, and a fully hidden set is simply idle
+ok 22 - a hidden subscription does not colour the page, and a fully hidden set is simply idle
+  ---
+  duration_ms: 0.9425
+  ...
+# Subtest: the backdrop never out-competes the content, even in real trouble
+ok 23 - the backdrop never out-competes the content, even in real trouble
+  ---
+  duration_ms: 0.4463
+  ...
+# Subtest: intensity only ever grows with a fuller window
+ok 24 - intensity only ever grows with a fuller window
+  ---
+  duration_ms: 0.5188
+  ...
+# Subtest: all 20,000 exact categories remain reachable in their original order, including NULL and empty
+ok 25 - all 20,000 exact categories remain reachable in their original order, including NULL and empty
+  ---
+  duration_ms: 19.9838
+  ...
+# Subtest: small and empty distributions retain the original array and need no paging controls
+ok 26 - small and empty distributions retain the original array and need no paging controls
+  ---
+  duration_ms: 0.5416
+  ...
+# Subtest: 21-category boundary and final partial page preserve complete access
+ok 27 - 21-category boundary and final partial page preserve complete access
+  ---
+  duration_ms: 0.5666
+  ...
+# Subtest: refresh preserves page; actual scope changes reset; shrinking counts clamp persistently
+ok 28 - refresh preserves page; actual scope changes reset; shrinking counts clamp persistently
+  ---
+  duration_ms: 0.6446
+  ...
+# Subtest: History range/source edits preserve the related-session constraint
+ok 29 - History range/source edits preserve the related-session constraint
+  ---
+  duration_ms: 1.8474
+  ...
+# Subtest: invalid or cleared History session constraints never become route parameters
+ok 30 - invalid or cleared History session constraints never become route parameters
+  ---
+  duration_ms: 0.441
+  ...
+# Subtest: other usage routes retain their existing hash and do not acquire History session scope
+ok 31 - other usage routes retain their existing hash and do not acquire History session scope
+  ---
+  duration_ms: 0.1541
+  ...
+# Subtest: selected aggregate details follow the accepted row by stable event_id despite reordered page rows
+ok 32 - selected aggregate details follow the accepted row by stable event_id despite reordered page rows
+  ---
+  duration_ms: 0.27
+  ...
+# Subtest: retained selection keeps its original related-record scope when absent from a new page/query
+ok 33 - retained selection keeps its original related-record scope when absent from a new page/query
+  ---
+  duration_ms: 0.3165
+  ...
+# Subtest: live snapshots never reopen a closed detail rail or replace its selection with another event
+ok 34 - live snapshots never reopen a closed detail rail or replace its selection with another event
+  ---
+  duration_ms: 0.1413
+  ...
+# Subtest: related-session navigation uses retained origin range/source/filters and the actual selected session
+ok 35 - related-session navigation uses retained origin range/source/filters and the actual selected session
+  ---
+  duration_ms: 0.4825
+  ...
+# Subtest: a window reported by two origins collapses to one, freshest first
+ok 36 - a window reported by two origins collapses to one, freshest first
+  ---
+  duration_ms: 1.9126
+  ...
+# Subtest: a reading that still describes the window beats a fresher one that rolled over
+ok 37 - a reading that still describes the window beats a fresher one that rolled over
+  ---
+  duration_ms: 0.1784
+  ...
+# Subtest: different sources and windows are never merged
+ok 38 - different sources and windows are never merged
+  ---
+  duration_ms: 20.5854
+  ...
+# Subtest: readers with the same account key collapse to one account window
+ok 39 - readers with the same account key collapse to one account window
+  ---
+  duration_ms: 0.5027
+  ...
+# Subtest: subscription key is the canonical owner when account compatibility fields are absent
+ok 40 - subscription key is the canonical owner when account compatibility fields are absent
+  ---
+  duration_ms: 0.302
+  ...
+# Subtest: OpenCode Go monthly readings stay separate from its 5-hour and weekly windows
+ok 41 - OpenCode Go monthly readings stay separate from its 5-hour and weekly windows
+  ---
+  duration_ms: 0.4243
+  ...
+# Subtest: a window whose every origin is burning still raises exactly one alert
+ok 42 - a window whose every origin is burning still raises exactly one alert
+  ---
+  duration_ms: 0.4053
+  ...
+# Subtest: willExhaust needs a projection that lands before the reset, on a live window
+ok 43 - willExhaust needs a projection that lands before the reset, on a live window
+  ---
+  duration_ms: 0.2273
+  ...
+# Subtest: threshold alerts collapse reader duplicates and ignore projected burn duplicates
+ok 44 - threshold alerts collapse reader duplicates and ignore projected burn duplicates
+  ---
+  duration_ms: 0.7041
+  ...
+# Subtest: minute buckets preserve the exact half-open interval and both clipped boundary minutes
+ok 45 - minute buckets preserve the exact half-open interval and both clipped boundary minutes
+  ---
+  duration_ms: 2.3859
+  ...
+# Subtest: exact nullable, empty, literal unknown and delimiter identities cannot exchange minute cells
+ok 46 - exact nullable, empty, literal unknown and delimiter identities cannot exchange minute cells
+  ---
+  duration_ms: 1.1224
+  ...
+# Subtest: observed zero differs from absent cells and aggregate-only totals never create minute activity
+ok 47 - observed zero differs from absent cells and aggregate-only totals never create minute activity
+  ---
+  duration_ms: 0.7976
+  ...
+# Subtest: the visible top twelve keep API rank while sharing the actual scale across all recorded pairs
+ok 48 - the visible top twelve keep API rank while sharing the actual scale across all recorded pairs
+  ---
+  duration_ms: 0.5866
+  ...
+# Subtest: the fullest window earns the outermost arc
+ok 49 - the fullest window earns the outermost arc
+  ---
+  duration_ms: 17.0805
+  ...
+# Subtest: a window about to run out leads regardless of how full it is
+ok 50 - a window about to run out leads regardless of how full it is
+  ---
+  duration_ms: 0.814
+  ...
+# Subtest: a burn figure with too few samples is not quoted
+ok 51 - a burn figure with too few samples is not quoted
+  ---
+  duration_ms: 0.78
+  ...
+# Subtest: subscriptions past the arc limit are counted, not silently dropped
+ok 52 - subscriptions past the arc limit are counted, not silently dropped
+  ---
+  duration_ms: 0.4207
+  ...
+# Subtest: a subscription with no reading is counted aside, not given an arc
+ok 53 - a subscription with no reading is counted aside, not given an arc
+  ---
+  duration_ms: 0.1984
+  ...
+# Subtest: with nothing measurable, the ring admits it rather than showing nothing
+ok 54 - with nothing measurable, the ring admits it rather than showing nothing
+  ---
+  duration_ms: 0.1503
+  ...
+# Subtest: an expired reading is never quoted as a current percentage
+ok 55 - an expired reading is never quoted as a current percentage
+  ---
+  duration_ms: 0.2795
+  ...
+# Subtest: hidden and inactive subscriptions leave the ring entirely
+ok 56 - hidden and inactive subscriptions leave the ring entirely
+  ---
+  duration_ms: 0.2333
+  ...
+# Subtest: the time track describes the leading window
+ok 57 - the time track describes the leading window
+  ---
+  duration_ms: 0.2613
+  ...
+# Subtest: resets in the same minute are one event on the timeline
+ok 58 - resets in the same minute are one event on the timeline
+  ---
+  duration_ms: 0.6292
+  ...
+# Subtest: timeline columns stay readable however lopsided the gaps are
+ok 59 - timeline columns stay readable however lopsided the gaps are
+  ---
+  duration_ms: 0.3168
+  ...
+# Subtest: the backdrop answers to measured throughput, not a timer
+ok 60 - the backdrop answers to measured throughput, not a timer
+  ---
+  duration_ms: 0.1657
+  ...
+# Subtest: primaryReading prefers the window that runs out, then the highest
+ok 61 - primaryReading prefers the window that runs out, then the highest
+  ---
+  duration_ms: 0.1377
+  ...
+# Subtest: input includes disjoint fresh/read-cache/write-cache fields; output already includes reasoning
+ok 62 - input includes disjoint fresh/read-cache/write-cache fields; output already includes reasoning
+  ---
+  duration_ms: 2.1994
+  ...
+# Subtest: stored totals stay exact despite component mismatches and all curves share their actual maximum
+ok 63 - stored totals stay exact despite component mismatches and all curves share their actual maximum
+  ---
+  duration_ms: 0.254
+  ...
+# Subtest: legacy missing components remain unknown and break only the affected curve
+ok 64 - legacy missing components remain unknown and break only the affected curve
+  ---
+  duration_ms: 0.5633
+  ...
+# Subtest: recorded zero and known zero breakdowns remain distinct from absent minute records
+ok 65 - recorded zero and known zero breakdowns remain distinct from absent minute records
+  ---
+  duration_ms: 0.2357
+  ...
+# Subtest: multiple rows in one minute conserve each component and unknowns propagate without dropping known output
+ok 66 - multiple rows in one minute conserve each component and unknowns propagate without dropping known output
+  ---
+  duration_ms: 0.2422
+  ...
+# Subtest: the exact half-open scope retains clipped endpoints and ignores rows outside its minute bins
+ok 67 - the exact half-open scope retains clipped endpoints and ignores rows outside its minute bins
+  ---
+  duration_ms: 0.5083
+  ...
+# Subtest: latest rail selects one latest recorded interval and preserves its unknown and stored values
+ok 68 - latest rail selects one latest recorded interval and preserves its unknown and stored values
+  ---
+  duration_ms: 0.4149
+  ...
+# Subtest: metric trends fill missing hourly buckets and keep partial boundary buckets
+ok 69 - metric trends fill missing hourly buckets and keep partial boundary buckets
+  ---
+  duration_ms: 4.7086
+  ...
+# Subtest: metric trends cap long histories to the latest 24 calendar buckets
+ok 70 - metric trends cap long histories to the latest 24 calendar buckets
+  ---
+  duration_ms: 0.4457
+  ...
+# Subtest: month series uses local calendar months and cache ratios preserve unknown buckets
+ok 71 - month series uses local calendar months and cache ratios preserve unknown buckets
+  ---
+  duration_ms: 0.3412
+  ...
+# Subtest: daily token pace is a selected-period average and rejects invalid ranges
+ok 72 - daily token pace is a selected-period average and rejects invalid ranges
+  ---
+  duration_ms: 0.1693
+  ...
+# Subtest: Overview model drilldown carries the custom period/source/bucket independently of runtime project
+ok 73 - Overview model drilldown carries the custom period/source/bucket independently of runtime project
+  ---
+  duration_ms: 2.8846
+  ...
+# Subtest: calendar period choices remain calendar choices and cannot carry stale custom bounds
+ok 74 - calendar period choices remain calendar choices and cannot carry stale custom bounds
+  ---
+  duration_ms: 0.6084
+  ...
+# Subtest: model identities preserve Unicode, whitespace and query/hash characters without adding filters
+ok 75 - model identities preserve Unicode, whitespace and query/hash characters without adding filters
+  ---
+  duration_ms: 0.4085
+  ...
+# Subtest: NULL, empty and literal null are distinct model identities
+ok 76 - NULL, empty and literal null are distinct model identities
+  ---
+  duration_ms: 0.4949
+  ...
+# Subtest: stale model/provider selection, metric and unsupported filters do not leak into a global model destination
+ok 77 - stale model/provider selection, metric and unsupported filters do not leak into a global model destination
+  ---
+  duration_ms: 0.2951
+  ...
+# Subtest: an explicit supported provider scope selects that exact route, without normalizing provider/vendor strings
+ok 78 - an explicit supported provider scope selects that exact route, without normalizing provider/vendor strings
+  ---
+  duration_ms: 0.2664
+  ...
+# Subtest: vendor-only scope does not invent a recorded provider and invalid scope falls back to today
+ok 79 - vendor-only scope does not invent a recorded provider and invalid scope falls back to today
+  ---
+  duration_ms: 0.3758
+  ...
+# Subtest: short exact identities use one GET with all scope and pair fields
+ok 80 - short exact identities use one GET with all scope and pair fields
+  ---
+  duration_ms: 2.9823
+  ...
+# Subtest: twenty maximal Unicode pairs use one read POST with exact identities and unchanged scope
+ok 81 - twenty maximal Unicode pairs use one read POST with exact identities and unchanged scope
+  ---
+  duration_ms: 40.6643
+  ...
+# Subtest: GET threshold is inclusive and crossing it changes only transport
+ok 82 - GET threshold is inclusive and crossing it changes only transport
+  ---
+  duration_ms: 2.4018
+  ...
+# Subtest: exact model/provider keys preserve null, empty and literal Unknown identities
+ok 83 - exact model/provider keys preserve null, empty and literal Unknown identities
+  ---
+  duration_ms: 1.019
+  ...
+# Subtest: real sparse row buckets fill only valid scope gaps and never borrow provider curves
+ok 84 - real sparse row buckets fill only valid scope gaps and never borrow provider curves
+  ---
+  duration_ms: 0.9954
+  ...
+# Subtest: deep-link selection waits for accepted list then reveals its page once
+ok 85 - deep-link selection waits for accepted list then reveals its page once
+  ---
+  duration_ms: 0.186
+  ...
+# Subtest: comparison refresh preserves manual page, shrink clamps persistently and scope changes reset
+ok 86 - comparison refresh preserves manual page, shrink clamps persistently and scope changes reset
+  ---
+  duration_ms: 0.1124
+  ...
+# Subtest: 20-row comparison pages expose every ranked pair without changing full list or totals
+ok 87 - 20-row comparison pages expose every ranked pair without changing full list or totals
+  ---
+  duration_ms: 0.8146
+  ...
+# Subtest: decorative row tones remain stable across ordering, page windows and recreated refresh objects
+ok 88 - decorative row tones remain stable across ordering, page windows and recreated refresh objects
+  ---
+  duration_ms: 0.8
+  ...
+# Subtest: light row trend strokes exceed 3:1 on white and across the selected row gradient
+ok 89 - light row trend strokes exceed 3:1 on white and across the selected row gradient
+  ---
+  duration_ms: 4.9334
+  ...
+# Subtest: model-only Overview drill-down selects the requested model rather than the largest unrelated row
+ok 90 - model-only Overview drill-down selects the requested model rather than the largest unrelated row
+  ---
+  duration_ms: 0.7472
+  ...
+# Subtest: an explicit provider keeps the exact recorded pair, including null and empty identities
+ok 91 - an explicit provider keeps the exact recorded pair, including null and empty identities
+  ---
+  duration_ms: 0.128
+  ...
+# Subtest: default, absent and empty-list selections retain existing fallback behavior without mutating order
+ok 92 - default, absent and empty-list selections retain existing fallback behavior without mutating order
+  ---
+  duration_ms: 0.6804
+  ...
+# Subtest: summary histories retain scope boundaries, zero count bins, and per-bin distinct sessions
+ok 93 - summary histories retain scope boundaries, zero count bins, and per-bin distinct sessions
+  ---
+  duration_ms: 2.8443
+  ...
+# Subtest: price samples distinguish known zero, unpriced calls, and partial known value
+ok 94 - price samples distinguish known zero, unpriced calls, and partial known value
+  ---
+  duration_ms: 0.6451
+  ...
+# Subtest: provider history keeps null and empty identities separate and uses only displayed scoped groups
+ok 95 - provider history keeps null and empty identities separate and uses only displayed scoped groups
+  ---
+  duration_ms: 1.3271
+  ...
+# Subtest: every duration in the TypeScript scale is declared in the stylesheet
+ok 96 - every duration in the TypeScript scale is declared in the stylesheet
+  ---
+  duration_ms: 2.1692
+  ...
+# Subtest: every easing in the TypeScript scale is declared in the theme block
+ok 97 - every easing in the TypeScript scale is declared in the theme block
+  ---
+  duration_ms: 0.684
+  ...
+# Subtest: the stylesheet has no shadowed second copy of an easing token
+ok 98 - the stylesheet has no shadowed second copy of an easing token
+  ---
+  duration_ms: 0.289
+  ...
+# Subtest: the reduced-motion clamp still exists, and still pins iteration count
+ok 99 - the reduced-motion clamp still exists, and still pins iteration count
+  ---
+  duration_ms: 0.2296
+  ...
+# Subtest: the reduced-motion clamp has exactly one exemption, and it is the figure tint
+ok 100 - the reduced-motion clamp has exactly one exemption, and it is the figure tint
+  ---
+  duration_ms: 1.6425
+  ...
+# Subtest: src/components/primitives.tsx honours the motion preference
+ok 101 - src/components/primitives.tsx honours the motion preference
+  ---
+  duration_ms: 1.6873
+  ...
+# Subtest: src/components/stacked-bars.tsx honours the motion preference
+ok 102 - src/components/stacked-bars.tsx honours the motion preference
+  ---
+  duration_ms: 1.1712
+  ...
+# Subtest: src/components/quota-ring.tsx honours the motion preference
+ok 103 - src/components/quota-ring.tsx honours the motion preference
+  ---
+  duration_ms: 1.7979
+  ...
+# Subtest: src/components/gauge.tsx honours the motion preference
+ok 104 - src/components/gauge.tsx honours the motion preference
+  ---
+  duration_ms: 4.113
+  ...
+# Subtest: src/components/progression-rail.tsx honours the motion preference
+ok 105 - src/components/progression-rail.tsx honours the motion preference
+  ---
+  duration_ms: 2.6142
+  ...
+# Subtest: src/components/alert-bell.tsx honours the motion preference
+ok 106 - src/components/alert-bell.tsx honours the motion preference
+  ---
+  duration_ms: 1.7064
+  ...
+# Subtest: src/components/pet-popup.tsx honours the motion preference
+ok 107 - src/components/pet-popup.tsx honours the motion preference
+  ---
+  duration_ms: 1.9377
+  ...
+# Subtest: src/components/ui/tabs.tsx honours the motion preference
+ok 108 - src/components/ui/tabs.tsx honours the motion preference
+  ---
+  duration_ms: 1.5038
+  ...
+# Subtest: unknown samples break lines while keeping the full time-domain indices
+ok 109 - unknown samples break lines while keeping the full time-domain indices
+  ---
+  duration_ms: 3.8168
+  ...
+# Subtest: known zero and equal values remain recorded samples
+ok 110 - known zero and equal values remain recorded samples
+  ---
+  duration_ms: 0.5311
+  ...
+# Subtest: all unknown and nonfinite samples produce no drawable run
+ok 111 - all unknown and nonfinite samples produce no drawable run
+  ---
+  duration_ms: 1.4237
+  ...
+# Subtest: subscription visibility preferences normalize safely and keep stable keys
+ok 112 - subscription visibility preferences normalize safely and keep stable keys
+  ---
+  duration_ms: 3.6001
+  ...
+# Subtest: value states distinguish no usage, unpriced, partial, priced zero and reference prices
+ok 113 - value states distinguish no usage, unpriced, partial, priced zero and reference prices
+  ---
+  duration_ms: 1.0021
+  ...
+# Subtest: Other grouping retains weighted call coverage and gaps stay separate by time
+ok 114 - Other grouping retains weighted call coverage and gaps stay separate by time
+  ---
+  duration_ms: 0.9743
+  ...
+# Subtest: a missing or unusable stored value degrades to a clean store
+ok 115 - a missing or unusable stored value degrades to a clean store
+  ---
+  duration_ms: 3.5308
+  ...
+# Subtest: days are de-duplicated, sorted chronologically and pruned to the window
+ok 116 - days are de-duplicated, sorted chronologically and pruned to the window
+  ---
+  duration_ms: 3.9586
+  ...
+# Subtest: unknown badge ids are dropped and the survivors keep catalogue order
+ok 117 - unknown badge ids are dropped and the survivors keep catalogue order
+  ---
+  duration_ms: 0.1993
+  ...
+# Subtest: the stored version is forced forward so an old shape cannot leak through
+ok 118 - the stored version is forced forward so an old shape cannot leak through
+  ---
+  duration_ms: 0.1031
+  ...
+# Subtest: levels ramp quadratically instead of hitting a wall
+ok 119 - levels ramp quadratically instead of hitting a wall
+  ---
+  duration_ms: 1.8738
+  ...
+# Subtest: a tampered XP value cannot spin or overflow the scale
+ok 120 - a tampered XP value cannot spin or overflow the scale
+  ---
+  duration_ms: 0.5274
+  ...
+# Subtest: spending more quota must not raise the score
+ok 121 - spending more quota must not raise the score
+  ---
+  duration_ms: 0.2868
+  ...
+# Subtest: cache share counts writes against the denominator, not for it
+ok 122 - cache share counts writes against the denominator, not for it
+  ---
+  duration_ms: 0.1321
+  ...
+# Subtest: cache badges stack at their thresholds
+ok 123 - cache badges stack at their thresholds
+  ---
+  duration_ms: 0.4686
+  ...
+# Subtest: a streak survives midnight: an inactive today anchors on yesterday
+ok 124 - a streak survives midnight: an inactive today anchors on yesterday
+  ---
+  duration_ms: 0.2529
+  ...
+# Subtest: streak counting walks real calendar days, not 24-hour spans
+ok 125 - streak counting walks real calendar days, not 24-hour spans
+  ---
+  duration_ms: 0.2179
+  ...
+# Subtest: streak XP is capped so a long run cannot run away with the scale
+ok 126 - streak XP is capped so a long run cannot run away with the scale
+  ---
+  duration_ms: 0.4192
+  ...
+# Subtest: badges are granted once and always render in catalogue order
+ok 127 - badges are granted once and always render in catalogue order
+  ---
+  duration_ms: 0.4207
+  ...
+# Subtest: restraint badges need both efficiency and headroom
+ok 128 - restraint badges need both efficiency and headroom
+  ---
+  duration_ms: 0.5576
+  ...
+# Subtest: time-of-day badges need a reported hour
+ok 129 - time-of-day badges need a reported hour
+  ---
+  duration_ms: 0.3929
+  ...
+# Subtest: missing, negative and non-finite counters contribute nothing
+ok 130 - missing, negative and non-finite counters contribute nothing
+  ---
+  duration_ms: 0.1946
+  ...
+# Subtest: an idle day scores nothing and breaks nothing that was already earned
+ok 131 - an idle day scores nothing and breaks nothing that was already earned
+  ---
+  duration_ms: 0.1107
+  ...
+# Subtest: the first active hour of the day drives the time-of-day badges
+ok 132 - the first active hour of the day drives the time-of-day badges
+  ---
+  duration_ms: 0.171
+  ...
+# Subtest: every badge id is reachable from the predicates
+ok 133 - every badge id is reachable from the predicates
+  ---
+  duration_ms: 0.2754
+  ...
+# Subtest: the shelf lists every badge, locked ones included, in catalogue order
+ok 134 - the shelf lists every badge, locked ones included, in catalogue order
+  ---
+  duration_ms: 0.1784
+  ...
+# Subtest: pending usage has no actions; machine-wide pages retain legacy destinations
+ok 135 - pending usage has no actions; machine-wide pages retain legacy destinations
+  ---
+  duration_ms: 1.3593
+  ...
+# Subtest: time and source remain exact in supported destinations without inventing Live custom scope
+ok 136 - time and source remain exact in supported destinations without inventing Live custom scope
+  ---
+  duration_ms: 0.5415
+  ...
+# Subtest: harness Projects and provider/vendor Models keep exact raw filter identities
+ok 137 - harness Projects and provider/vendor Models keep exact raw filter identities
+  ---
+  duration_ms: 0.2909
+  ...
+# Subtest: unsupported table filters never create apparently scoped actions
+ok 138 - unsupported table filters never create apparently scoped actions
+  ---
+  duration_ms: 0.5119
+  ...
+# Subtest: arcs fill one fixed band however many subscriptions there are
+ok 139 - arcs fill one fixed band however many subscriptions there are
+  ---
+  duration_ms: 2.9876
+  ...
+# Subtest: the ring folds anything past four instead of collapsing into the centre
+ok 140 - the ring folds anything past four instead of collapsing into the centre
+  ---
+  duration_ms: 0.3446
+  ...
+# Subtest: elapsed position is measured against the canonical window length
+ok 141 - elapsed position is measured against the canonical window length
+  ---
+  duration_ms: 0.4914
+  ...
+# Subtest: a window with no reset time cannot be placed on the ring
+ok 142 - a window with no reset time cannot be placed on the ring
+  ---
+  duration_ms: 0.2703
+  ...
+# Subtest: the overflow marker never takes a reading's place or cross the numerals
+ok 143 - the overflow marker never takes a reading's place or cross the numerals
+  ---
+  duration_ms: 0.3164
+  ...
+# Subtest: the overflow marker is a partial arc, so it cannot pass for a reading
+ok 144 - the overflow marker is a partial arc, so it cannot pass for a reading
+  ---
+  duration_ms: 0.7249
+  ...
+# Subtest: a projection that lands after the reset is not a projection at all
+ok 145 - a projection that lands after the reset is not a projection at all
+  ---
+  duration_ms: 0.4655
+  ...
+# Subtest: an unbelievable projection cannot raise an alarm
+ok 146 - an unbelievable projection cannot raise an alarm
+  ---
+  duration_ms: 0.3042
+  ...
+# Subtest: fractions map to clock angles, clamped at both ends
+ok 147 - fractions map to clock angles, clamped at both ends
+  ---
+  duration_ms: 0.4224
+  ...
+# Subtest: availability requires a fresh, complete reading; zero use is valid but unknown is not
+ok 148 - availability requires a fresh, complete reading; zero use is valid but unknown is not
+  ---
+  duration_ms: 2.5649
+  ...
+# Subtest: one unknown window prevents an available classification
+ok 149 - one unknown window prevents an available classification
+  ---
+  duration_ms: 0.4163
+  ...
+# Subtest: account state and telemetry uncertainty cannot advertise availability
+ok 150 - account state and telemetry uncertainty cannot advertise availability
+  ---
+  duration_ms: 0.5819
+  ...
+# Subtest: threshold and projected exhaustion retain the existing alert semantics
+ok 151 - threshold and projected exhaustion retain the existing alert semantics
+  ---
+  duration_ms: 0.3658
+  ...
+# Subtest: duplicate readers produce one reset; the freshest canonical reading wins
+ok 152 - duplicate readers produce one reset; the freshest canonical reading wins
+  ---
+  duration_ms: 0.3587
+  ...
+# Subtest: hidden and inactive subscriptions do not contribute upcoming resets
+ok 153 - hidden and inactive subscriptions do not contribute upcoming resets
+  ---
+  duration_ms: 0.8622
+  ...
+# Subtest: resets exclude unknown and elapsed timestamps and preserve simultaneous windows
+ok 154 - resets exclude unknown and elapsed timestamps and preserve simultaneous windows
+  ---
+  duration_ms: 14.6662
+  ...
+# Subtest: stat series uses tokens rather than calls and fills empty API buckets
+ok 155 - stat series uses tokens rather than calls and fills empty API buckets
+  ---
+  duration_ms: 0.4964
+  ...
+# Subtest: classifies threshold boundaries and uses the same active risks exposed to the sidebar
+ok 156 - classifies threshold boundaries and uses the same active risks exposed to the sidebar
+  ---
+  duration_ms: 19.1133
+  ...
+# Subtest: collapses duplicate origins to the freshest reading and excludes hidden subscriptions
+ok 157 - collapses duplicate origins to the freshest reading and excludes hidden subscriptions
+  ---
+  duration_ms: 0.6148
+  ...
+# Subtest: reports stale or expired windows as unknown without counting them as active risks
+ok 158 - reports stale or expired windows as unknown without counting them as active risks
+  ---
+  duration_ms: 0.7276
+  ...
+# Subtest: a valid forecast before reset is critical, while a forecast after reset does not override thresholds
+ok 159 - a valid forecast before reset is critical, while a forecast after reset does not override thresholds
+  ---
+  duration_ms: 0.5427
+  ...
+# Subtest: money distinguishes no usage, absent prices, known zero and partial weighted coverage
+ok 160 - money distinguishes no usage, absent prices, known zero and partial weighted coverage
+  ---
+  duration_ms: 1.5028
+  ...
+# Subtest: preview uses records, excludes null costs and combines computed and estimated API prices
+ok 161 - preview uses records, excludes null costs and combines computed and estimated API prices
+  ---
+  duration_ms: 1.1653
+  ...
+# Subtest: period change requires a positive observed baseline and keeps decreases signed
+ok 162 - period change requires a positive observed baseline and keeps decreases signed
+  ---
+  duration_ms: 1.5884
+  ...
+# Subtest: cache share uses observed input, cached input and cache writes only
+ok 163 - cache share uses observed input, cached input and cache writes only
+  ---
+  duration_ms: 0.4366
+  ...
+# Subtest: measured quota pace is compared with safe pace in the same unit
+ok 164 - measured quota pace is compared with safe pace in the same unit
+  ---
+  duration_ms: 0.326
+  ...
+# Subtest: recommendation prioritizes fresh quota data and observed runway risk
+ok 165 - recommendation prioritizes fresh quota data and observed runway risk
+  ---
+  duration_ms: 0.4436
+  ...
+# Subtest: usage preserves distinct sessions, record grain and separate money bases
+ok 166 - usage preserves distinct sessions, record grain and separate money bases
+  ---
+  duration_ms: 2.5042
+  ...
+# Subtest: runtime edges contain only observed relationships and conserve each column total
+ok 167 - runtime edges contain only observed relationships and conserve each column total
+  ---
+  duration_ms: 0.6057
+  ...
+# Subtest: runtime activity reflects recorded use within the API window and keeps future or missing time unknown
+ok 168 - runtime activity reflects recorded use within the API window and keeps future or missing time unknown
+  ---
+  duration_ms: 0.4752
+  ...
+# Subtest: quota risk belongs to one fresh owner/window, invalid values are not normalized into healthy readings
+ok 169 - quota risk belongs to one fresh owner/window, invalid values are not normalized into healthy readings
+  ---
+  duration_ms: 0.5373
+  ...
+# Subtest: default core picks the most used fresh window and stays unavailable when all are stale
+ok 170 - default core picks the most used fresh window and stays unavailable when all are stale
+  ---
+  duration_ms: 0.2446
+  ...
+# Subtest: runway uses percentage points of the selected window and suppresses stale projections
+ok 171 - runway uses percentage points of the selected window and suppresses stale projections
+  ---
+  duration_ms: 0.2876
+  ...
+# Subtest: legacy destinations migrate to canonical pages
+ok 172 - legacy destinations migrate to canonical pages
+  ---
+  duration_ms: 3.4594
+  ...
+# Subtest: migration preserves explicit scope and entity keys and consumes legacy view
+ok 173 - migration preserves explicit scope and entity keys and consumes legacy view
+  ---
+  duration_ms: 0.757
+  ...
+# Subtest: invalid legacy scopes use valid destination defaults
+ok 174 - invalid legacy scopes use valid destination defaults
+  ---
+  duration_ms: 0.4273
+  ...
+# Subtest: redesign week and month use local calendar boundaries
+ok 175 - redesign week and month use local calendar boundaries
+  ---
+  duration_ms: 5.7427
+  ...
+# Subtest: imported custom ranges and source filters survive UI changes and API binding
+ok 176 - imported custom ranges and source filters survive UI changes and API binding
+  ---
+  duration_ms: 1.9347
+  ...
+# Subtest: invalid custom ranges and filters fall back instead of issuing invalid reads
+ok 177 - invalid custom ranges and filters fall back instead of issuing invalid reads
+  ---
+  duration_ms: 0.7117
+  ...
+# Subtest: one stream fans out and coalesces SSE bursts, then falls back after 30 seconds
+ok 178 - one stream fans out and coalesces SSE bursts, then falls back after 30 seconds
+  ---
+  duration_ms: 5.6037
+  ...
+# Subtest: hidden pages pause fallback and visible/online events refresh immediately
+ok 179 - hidden pages pause fallback and visible/online events refresh immediately
+  ---
+  duration_ms: 1.2964
+  ...
+# Subtest: a refresh arriving during a request queues exactly one follow-up
+ok 180 - a refresh arriving during a request queues exactly one follow-up
+  ---
+  duration_ms: 0.8477
+  ...
+# Subtest: stream errors and handler failures are visible, then clear on recovery
+ok 181 - stream errors and handler failures are visible, then clear on recovery
+  ---
+  duration_ms: 4.0651
+  ...
+# Subtest: manual refresh runs the daemon endpoint before dashboard handlers
+ok 182 - manual refresh runs the daemon endpoint before dashboard handlers
+  ---
+  duration_ms: 40.2108
+  ...
+# Subtest: Pulse recency requires an actual known observation, never totals or unknown grain
+ok 183 - Pulse recency requires an actual known observation, never totals or unknown grain
+  ---
+  duration_ms: 0.9415
+  ...
+# Subtest: idle boundary, future timestamps and invalid inputs stop the orbit signal
+ok 184 - idle boundary, future timestamps and invalid inputs stop the orbit signal
+  ---
+  duration_ms: 0.187
+  ...
+# Subtest: only the latest eligible real observation sets the bounded expiry
+ok 185 - only the latest eligible real observation sets the bounded expiry
+  ---
+  duration_ms: 0.1157
+  ...
+# Subtest: existing mount has no particles; one new observed call emits one bounded known edge
+ok 186 - existing mount has no particles; one new observed call emits one bounded known edge
+  ---
+  duration_ms: 5.1902
+  ...
+# Subtest: initial/dependency/visible/online causes consume history without replay
+ok 187 - initial/dependency/visible/online causes consume history without replay
+  ---
+  duration_ms: 2.1431
+  ...
+# Subtest: hidden/offscreen backlog is consumed and the first resumed batch seeds
+ok 188 - hidden/offscreen backlog is consumed and the first resumed batch seeds
+  ---
+  duration_ms: 0.6184
+  ...
+# Subtest: aggregate revisions with stable ID cause only an actual harness node highlight
+ok 189 - aggregate revisions with stable ID cause only an actual harness node highlight
+  ---
+  duration_ms: 0.5783
+  ...
+# Subtest: unknown grain and old/future observations never fabricate flow
+ok 190 - unknown grain and old/future observations never fabricate flow
+  ---
+  duration_ms: 0.5126
+  ...
+# Subtest: project/source filters are exact; foreign records cannot pulse selected project
+ok 191 - project/source filters are exact; foreign records cannot pulse selected project
+  ---
+  duration_ms: 2.4602
+  ...
+# Subtest: all-project scope is different from exact NULL and empty project identity
+ok 192 - all-project scope is different from exact NULL and empty project identity
+  ---
+  duration_ms: 0.5676
+  ...
+# Subtest: unknown or invented route edges are not rendered; exact graph route is mandatory
+ok 193 - unknown or invented route edges are not rendered; exact graph route is mandatory
+  ---
+  duration_ms: 0.227
+  ...
+# Subtest: reduced motion emits static actual-call highlight and never moving presentation
+ok 194 - reduced motion emits static actual-call highlight and never moving presentation
+  ---
+  duration_ms: 0.7549
+  ...
+# Subtest: one visible pending batch waits for matching graph serial/context and emits once
+ok 195 - one visible pending batch waits for matching graph serial/context and emits once
+  ---
+  duration_ms: 0.8404
+  ...
+# Subtest: visibility loss cancels a pending readygraph wait with no later replay
+ok 196 - visibility loss cancels a pending readygraph wait with no later replay
+  ---
+  duration_ms: 0.3936
+  ...
+# Subtest: new batch replaces pending batch; stale graph arrival cannot replay older IDs
+ok 197 - new batch replaces pending batch; stale graph arrival cannot replay older IDs
+  ---
+  duration_ms: 0.22
+  ...
+# Subtest: scope/project change cancels pending and seeds the new view
+ok 198 - scope/project change cancels pending and seeds the new view
+  ---
+  duration_ms: 0.2193
+  ...
+# Subtest: bounded source/aggregate ledgers do not replay an evicted source or aggregate version
+ok 199 - bounded source/aggregate ledgers do not replay an evicted source or aggregate version
+  ---
+  duration_ms: 0.4707
+  ...
+# Subtest: reset releases pure ledger state and next mount seeds instead of replays
+ok 200 - reset releases pure ledger state and next mount seeds instead of replays
+  ---
+  duration_ms: 0.2261
+  ...
+# Subtest: late graph completion cannot play a pending observation after its recent window expires
+ok 201 - late graph completion cannot play a pending observation after its recent window expires
+  ---
+  duration_ms: 0.1864
+  ...
+# Subtest: empty initial snapshot and new profile sources accept their first returned eligible call
+ok 202 - empty initial snapshot and new profile sources accept their first returned eligible call
+  ---
+  duration_ms: 0.1812
+  ...
+# Subtest: a new lower numeric identity is observed, not treated as an insertion sequence
+ok 203 - a new lower numeric identity is observed, not treated as an insertion sequence
+  ---
+  duration_ms: 0.1322
+  ...
+# Subtest: more than 32 distinct profiles do not cyclically disable new observations
+ok 204 - more than 32 distinct profiles do not cyclically disable new observations
+  ---
+  duration_ms: 0.7639
+  ...
+# Subtest: aggregate reasoning component revisions are node-only even if total is unchanged
+ok 205 - aggregate reasoning component revisions are node-only even if total is unchanged
+  ---
+  duration_ms: 0.2604
+  ...
+# Subtest: pending overflow is consumed and cannot replay on subsequent frames
+ok 206 - pending overflow is consumed and cannot replay on subsequent frames
+  ---
+  duration_ms: 0.23
+  ...
+# Subtest: same-serial reentry cannot replay a query that started while offscreen
+ok 207 - same-serial reentry cannot replay a query that started while offscreen
+  ---
+  duration_ms: 0.2243
+  ...
+# Subtest: first post-return request presents only fresh calls, while held requests stay consumed
+ok 208 - first post-return request presents only fresh calls, while held requests stay consumed
+  ---
+  duration_ms: 0.6278
+  ...
+# Subtest: post-return epoch cancels pending graph even when no hidden frame was rendered
+ok 209 - post-return epoch cancels pending graph even when no hidden frame was rendered
+  ---
+  duration_ms: 0.4492
+  ...
+# Subtest: first accepted ordinary batch after eligibility return can present the genuinely new call
+ok 210 - first accepted ordinary batch after eligibility return can present the genuinely new call
+  ---
+  duration_ms: 0.3147
+  ...
+# Subtest: eligibility snapshots are immutable copies and epochs change only on eligibility transitions
+ok 211 - eligibility snapshots are immutable copies and epochs change only on eligibility transitions
+  ---
+  duration_ms: 0.3387
+  ...
+# Subtest: offscreen request and missing request provenance suppress without disabling a later fresh first call
+ok 212 - offscreen request and missing request provenance suppress without disabling a later fresh first call
+  ---
+  duration_ms: 0.2935
+  ...
+# Subtest: provenance preserves catch-up seeding and conservative old-timestamp aggregate revisions
+ok 213 - provenance preserves catch-up seeding and conservative old-timestamp aggregate revisions
+  ---
+  duration_ms: 0.3197
+  ...
+# Subtest: known aggregate revisions during continuous eligibility highlight even when session timestamp predates mount
+ok 214 - known aggregate revisions during continuous eligibility highlight even when session timestamp predates mount
+  ---
+  duration_ms: 0.192
+  ...
+# Subtest: old-timestamp aggregate needs a valid current-epoch baseline before post-return revisions can highlight
+ok 215 - old-timestamp aggregate needs a valid current-epoch baseline before post-return revisions can highlight
+  ---
+  duration_ms: 0.2301
+  ...
+# Subtest: cold initial request preceding first intersection seeds an aggregate baseline for its first ordinary revision
+ok 216 - cold initial request preceding first intersection seeds an aggregate baseline for its first ordinary revision
+  ---
+  duration_ms: 0.2898
+  ...
+# Subtest: reobserving an initial serial after hide and return cannot promote an old aggregate baseline
+ok 217 - reobserving an initial serial after hide and return cannot promote an old aggregate baseline
+  ---
+  duration_ms: 0.2815
+  ...
+# Subtest: held initial request spanning an eligibility loss cannot establish a returned aggregate baseline
+ok 218 - held initial request spanning an eligibility loss cannot establish a returned aggregate baseline
+  ---
+  duration_ms: 0.198
+  ...
+# Subtest: one account read by several profiles is one row, not several identical ones
+ok 219 - one account read by several profiles is one row, not several identical ones
+  ---
+  duration_ms: 3.3883
+  ...
+# Subtest: the group takes its worst reader state, so a dead one cannot hide behind a live one
+ok 220 - the group takes its worst reader state, so a dead one cannot hide behind a live one
+  ---
+  duration_ms: 0.679
+  ...
+# Subtest: harnesses with no account binding are kept apart, never merged into an account
+ok 221 - harnesses with no account binding are kept apart, never merged into an account
+  ---
+  duration_ms: 17.4169
+  ...
+# Subtest: accounts lead by use, and ties break on something stable rather than arbitrarily
+ok 222 - accounts lead by use, and ties break on something stable rather than arbitrarily
+  ---
+  duration_ms: 0.7119
+  ...
+# Subtest: an account takes the name of its busiest reader
+ok 223 - an account takes the name of its busiest reader
+  ---
+  duration_ms: 0.5121
+  ...
+# Subtest: nothing to group is not an error
+ok 224 - nothing to group is not an error
+  ---
+  duration_ms: 0.2179
+  ...
+# Subtest: Today cards sum the rows selected by the harness/model filters
+ok 225 - Today cards sum the rows selected by the harness/model filters
+  ---
+  duration_ms: 1.692
+  ...
+# Subtest: Today cards show zero when a filter matches no rows
+ok 226 - Today cards show zero when a filter matches no rows
+  ---
+  duration_ms: 0.3783
+  ...
+# Subtest: a first reading is never a change
+ok 227 - a first reading is never a change
+  ---
+  duration_ms: 1.8167
+  ...
+# Subtest: a change under the relative threshold is drift, not an event
+ok 228 - a change under the relative threshold is drift, not an event
+  ---
+  duration_ms: 0.6761
+  ...
+# Subtest: a change over the threshold is an event
+ok 229 - a change over the threshold is an event
+  ---
+  duration_ms: 0.1535
+  ...
+# Subtest: the threshold is relative, not absolute, so it means the same on any magnitude
+ok 230 - the threshold is relative, not absolute, so it means the same on any magnitude
+  ---
+  duration_ms: 0.1223
+  ...
+# Subtest: a move to zero from a real figure always counts
+ok 231 - a move to zero from a real figure always counts
+  ---
+  duration_ms: 0.086
+  ...
+# Subtest: a rise from zero is judged on the floor, not the previous value
+ok 232 - a rise from zero is judged on the floor, not the previous value
+  ---
+  duration_ms: 0.0964
+  ...
+# Subtest: crossing zero counts in either direction
+ok 233 - crossing zero counts in either direction
+  ---
+  duration_ms: 0.0786
+  ...
+# Subtest: a drop counts the same as a rise
+ok 234 - a drop counts the same as a rise
+  ---
+  duration_ms: 0.0633
+  ...
+# Subtest: non-finite values are never events
+ok 235 - non-finite values are never events
+  ---
+  duration_ms: 0.2678
+  ...
+# Subtest: a climb that would strobe is the case the threshold has to survive
+ok 236 - a climb that would strobe is the case the threshold has to survive
+  ---
+  duration_ms: 0.3686
+  ...
+# Subtest: a genuine jump on top of a busy climb still registers
+ok 237 - a genuine jump on top of a busy climb still registers
+  ---
+  duration_ms: 0.1022
+  ...
+1..237
+# tests 237
+# suites 0
+# pass 237
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 15807.4299
+
+> @quotapulse/tray@0.1.0 test
+> tsx --test test/*.test.ts
+
+TAP version 13
+# Subtest: 75% with 28ms reset jitter emits one alert; a real rollover can alert again
+ok 1 - 75% with 28ms reset jitter emits one alert; a real rollover can alert again
+  ---
+  duration_ms: 2.7396
+  ...
+# Subtest: threshold escalation keeps the reset anchor and ignores lower or expired readings
+ok 2 - threshold escalation keeps the reset anchor and ignores lower or expired readings
+  ---
+  duration_ms: 0.6852
+  ...
+# Subtest: deduplicates subscription readers without merging subscriptions or window kinds
+ok 3 - deduplicates subscription readers without merging subscriptions or window kinds
+  ---
+  duration_ms: 18.459
+  ...
+# Subtest: persistent base animation follows the mood
+ok 4 - persistent base animation follows the mood
+  ---
+  duration_ms: 2.218
+  ...
+# Subtest: talk_loop replaces idle/working while a bubble is open, but never warning/critical
+ok 5 - talk_loop replaces idle/working while a bubble is open, but never warning/critical
+  ---
+  duration_ms: 0.9783
+  ...
+# Subtest: warning intro plays once, then settles into the warning loop
+ok 6 - warning intro plays once, then settles into the warning loop
+  ---
+  duration_ms: 0.8032
+  ...
+# Subtest: critical intro plays once, then settles into the critical loop
+ok 7 - critical intro plays once, then settles into the critical loop
+  ---
+  duration_ms: 0.3051
+  ...
+# Subtest: a critical event outranks a warning event arriving together
+ok 8 - a critical event outranks a warning event arriving together
+  ---
+  duration_ms: 0.267
+  ...
+# Subtest: threshold intros cannot be interrupted by hover or click
+ok 9 - threshold intros cannot be interrupted by hover or click
+  ---
+  duration_ms: 0.337
+  ...
+# Subtest: hover and click play their reaction once, then return to base
+ok 10 - hover and click play their reaction once, then return to base
+  ---
+  duration_ms: 0.4464
+  ...
+# Subtest: reset celebrate plays once and recomputes the base afterwards
+ok 11 - reset celebrate plays once and recomputes the base afterwards
+  ---
+  duration_ms: 0.265
+  ...
+# Subtest: the same clip does not restart on every quota refresh
+ok 12 - the same clip does not restart on every quota refresh
+  ---
+  duration_ms: 0.6071
+  ...
+# Subtest: switching character restarts the clip but does not touch engine state
+ok 13 - switching character restarts the clip but does not touch engine state
+  ---
+  duration_ms: 0.6613
+  ...
+# Subtest: bumping assetVersion restarts the clip
+ok 14 - bumping assetVersion restarts the clip
+  ---
+  duration_ms: 0.2424
+  ...
+# Subtest: the registry ships originals and approved bonus mascots with Orbit Bot as default
+ok 15 - the registry ships originals and approved bonus mascots with Orbit Bot as default
+  ---
+  duration_ms: 2.6153
+  ...
+# Subtest: character ids are validated; the old hyphen form is accepted and migrated
+ok 16 - character ids are validated; the old hyphen form is accepted and migrated
+  ---
+  duration_ms: 0.4052
+  ...
+# Subtest: Orbit Bot prefers its raster clips; the other three render as vector placeholders
+ok 17 - Orbit Bot prefers its raster clips; the other three render as vector placeholders
+  ---
+  duration_ms: 0.181
+  ...
+# Subtest: every mascot renders an SVG placeholder for every mood, including unknown
+ok 18 - every mascot renders an SVG placeholder for every mood, including unknown
+  ---
+  duration_ms: 2.1781
+  ...
+# Subtest: the SVG exposes stable part classes for the expression layer
+ok 19 - the SVG exposes stable part classes for the expression layer
+  ---
+  duration_ms: 1.6475
+  ...
+# Subtest: the artwork changes with the mood and the mascot
+ok 20 - the artwork changes with the mood and the mascot
+  ---
+  duration_ms: 0.5558
+  ...
+# Subtest: the quota ring follows the focused percentage
+ok 21 - the quota ring follows the focused percentage
+  ---
+  duration_ms: 0.4115
+  ...
+# Subtest: 80% warns once, not on every subsequent reading
+ok 22 - 80% warns once, not on every subsequent reading
+  ---
+  duration_ms: 1.9546
+  ...
+# Subtest: a fresh start above a threshold announces nothing (tray restart)
+ok 23 - a fresh start above a threshold announces nothing (tray restart)
+  ---
+  duration_ms: 0.2007
+  ...
+# Subtest: a rolled-over window emits reset and restarts the ladder
+ok 24 - a rolled-over window emits reset and restarts the ladder
+  ---
+  duration_ms: 0.1928
+  ...
+# Subtest: a 28ms reset jitter is not a reset
+ok 25 - a 28ms reset jitter is not a reset
+  ---
+  duration_ms: 0.1346
+  ...
+# Subtest: activity transitions emit once per change
+ok 26 - activity transitions emit once per change
+  ---
+  duration_ms: 0.271
+  ...
+# Subtest: a provider that disappears forgets its ladder
+ok 27 - a provider that disappears forgets its ladder
+  ---
+  duration_ms: 0.1537
+  ...
+# Subtest: frame rate follows quota severity (RunCat mapping)
+ok 28 - frame rate follows quota severity (RunCat mapping)
+  ---
+  duration_ms: 1.2304
+  ...
+# Subtest: frame 0 is byte-identical to the legacy still
+ok 29 - frame 0 is byte-identical to the legacy still
+  ---
+  duration_ms: 122.9485
+  ...
+# Subtest: animated readings produce distinct frames; unknown stays static
+ok 30 - animated readings produce distinct frames; unknown stays static
+  ---
+  duration_ms: 24.389
+  ...
+# Subtest: frame index wraps
+ok 31 - frame index wraps
+  ---
+  duration_ms: 3.3585
+  ...
+# Subtest: default Electron profile remains untouched
+ok 32 - default Electron profile remains untouched
+  ---
+  duration_ms: 1.4943
+  ...
+# Subtest: explicit instances isolate both settings and Chromium session storage
+ok 33 - explicit instances isolate both settings and Chromium session storage
+  ---
+  duration_ms: 14.6218
+  ...
+# Subtest: the shipped character manifests validate against the frozen schema
+ok 34 - the shipped character manifests validate against the frozen schema
+  ---
+  duration_ms: 13.7429
+  ...
+# Subtest: validation rejects a manifest with a missing required animation
+ok 35 - validation rejects a manifest with a missing required animation
+  ---
+  duration_ms: 1.8067
+  ...
+# Subtest: a missing animation follows its declared fallback, warning once
+ok 36 - a missing animation follows its declared fallback, warning once
+  ---
+  duration_ms: 0.8173
+  ...
+# Subtest: reduced motion prefers the supplied variant, then a safe loop
+ok 37 - reduced motion prefers the supplied variant, then a safe loop
+  ---
+  duration_ms: 0.5846
+  ...
+# Subtest: with no assets at all the resolver returns the vector placeholder, never crashing
+ok 38 - with no assets at all the resolver returns the vector placeholder, never crashing
+  ---
+  duration_ms: 0.4546
+  ...
+# Subtest: every Wave 1 id resolves against a complete manifest
+ok 39 - every Wave 1 id resolves against a complete manifest
+  ---
+  duration_ms: 0.6363
+  ...
+# Subtest: Orbit Bot motion pilot contains the approved 15-clip contract
+ok 40 - Orbit Bot motion pilot contains the approved 15-clip contract
+  ---
+  duration_ms: 6.8887
+  ...
+# Subtest: approved idle loop ships eight grounded transparent frames at every production size
+ok 41 - approved idle loop ships eight grounded transparent frames at every production size
+  ---
+  duration_ms: 46.5319
+  ...
+# Subtest: approved walk runtime paths are deterministic and complete in both directions
+ok 42 - approved walk runtime paths are deterministic and complete in both directions
+  ---
+  duration_ms: 0.5185
+  ...
+# Subtest: approved walk clips ship eight transparent frames at every production size
+ok 43 - approved walk clips ship eight transparent frames at every production size
+  ---
+  duration_ms: 92.9426
+  ...
+# Subtest: approved turn clips ship six transparent non-looping frames in both directions
+ok 44 - approved turn clips ship six transparent non-looping frames in both directions
+  ---
+  duration_ms: 67.9581
+  ...
+# Subtest: approved turn clips are exact reverses and finish on the neutral stop anchor
+ok 45 - approved turn clips are exact reverses and finish on the neutral stop anchor
+  ---
+  duration_ms: 169.5602
+  ...
+# Subtest: approved stop clip ships four transparent non-looping frames at every production size
+ok 46 - approved stop clip ships four transparent non-looping frames at every production size
+  ---
+  duration_ms: 25.0017
+  ...
+# Subtest: approved sit-down clip ships six transparent non-looping frames at every production size
+ok 47 - approved sit-down clip ships six transparent non-looping frames at every production size
+  ---
+  duration_ms: 37.7227
+  ...
+# Subtest: approved sit-idle loop ships six frames and starts from the sit-down anchor
+ok 48 - approved sit-idle loop ships six frames and starts from the sit-down anchor
+  ---
+  duration_ms: 49.6287
+  ...
+# Subtest: approved lie-down clip ships six transparent non-looping frames from the seated anchor
+ok 49 - approved lie-down clip ships six transparent non-looping frames from the seated anchor
+  ---
+  duration_ms: 59.1014
+  ...
+# Subtest: approved sleep loop ships eight transparent symmetric frames at every production size
+ok 50 - approved sleep loop ships eight transparent symmetric frames at every production size
+  ---
+  duration_ms: 49.43
+  ...
+# Subtest: approved stretch clip ships six transparent non-looping frames with neutral anchors
+ok 51 - approved stretch clip ships six transparent non-looping frames with neutral anchors
+  ---
+  duration_ms: 44.6063
+  ...
+# Subtest: approved hover reaction ships four transparent non-looping frames with neutral anchors
+ok 52 - approved hover reaction ships four transparent non-looping frames with neutral anchors
+  ---
+  duration_ms: 36.233
+  ...
+# Subtest: approved wake-up clip is the exact non-looping reverse of sit-down
+ok 53 - approved wake-up clip is the exact non-looping reverse of sit-down
+  ---
+  duration_ms: 75.9225
+  ...
+# Subtest: direction-specific pilot frames are not mirrored a second time by the desktop wrapper
+ok 54 - direction-specific pilot frames are not mirrored a second time by the desktop wrapper
+  ---
+  duration_ms: 3.515
+  ...
+# Subtest: directional turns finish their six-frame non-looping clip before walking starts
+ok 55 - directional turns finish their six-frame non-looping clip before walking starts
+  ---
+  duration_ms: 2.476
+  ...
+# Subtest: stop finishes at the destination before movement completion is reported
+ok 56 - stop finishes at the destination before movement completion is reported
+  ---
+  duration_ms: 3.1977
+  ...
+# Subtest: sit-down finishes its transition and holds the approved seated frame
+ok 57 - sit-down finishes its transition and holds the approved seated frame
+  ---
+  duration_ms: 3.0827
+  ...
+# Subtest: standing idle loop is timer-paced and yields to every higher-priority layer
+ok 58 - standing idle loop is timer-paced and yields to every higher-priority layer
+  ---
+  duration_ms: 4.4981
+  ...
+# Subtest: sit-idle loops after sit-down until interaction wakes the Pet
+ok 59 - sit-idle loops after sit-down until interaction wakes the Pet
+  ---
+  duration_ms: 3.8713
+  ...
+# Subtest: lie-down finishes once and holds its approved awake endpoint until wake
+ok 60 - lie-down finishes once and holds its approved awake endpoint until wake
+  ---
+  duration_ms: 3.5518
+  ...
+# Subtest: sleep loop follows lie-down, runs timer-paced, and persists until interaction
+ok 61 - sleep loop follows lie-down, runs timer-paced, and persists until interaction
+  ---
+  duration_ms: 3.4208
+  ...
+# Subtest: stretch plays its six-frame pilot once and returns to the idle scheduler
+ok 62 - stretch plays its six-frame pilot once and returns to the idle scheduler
+  ---
+  duration_ms: 4.7018
+  ...
+# Subtest: hover reaction plays once, holds its neutral end frame, and exits with the interaction layer
+ok 63 - hover reaction plays once, holds its neutral end frame, and exits with the interaction layer
+  ---
+  duration_ms: 25.3141
+  ...
+# Subtest: wake-up finishes before queued locomotion may begin
+ok 64 - wake-up finishes before queued locomotion may begin
+  ---
+  duration_ms: 26.3438
+  ...
+# Subtest: motion development mode guarantees stretch and rest previews per idle cycle
+ok 65 - motion development mode guarantees stretch and rest previews per idle cycle
+  ---
+  duration_ms: 3.0078
+  ...
+# Subtest: main process activates approved locomotion clips atomically
+ok 66 - main process activates approved locomotion clips atomically
+  ---
+  duration_ms: 4.931
+  ...
+# Subtest: pet startup uses the canonical Orbit frame and keeps decoded motion clips bounded
+ok 67 - pet startup uses the canonical Orbit frame and keeps decoded motion clips bounded
+  ---
+  duration_ms: 7.8116
+  ...
+# Subtest: Orbit Bot motion pilot rejects identity, pivot, and clip-shape drift
+ok 68 - Orbit Bot motion pilot rejects identity, pivot, and clip-shape drift
+  ---
+  duration_ms: 1.9067
+  ...
+# Subtest: Orbit Bot motion pilot rejects contract drift and extra clips
+ok 69 - Orbit Bot motion pilot rejects contract drift and extra clips
+  ---
+  duration_ms: 0.9117
+  ...
+# Subtest: every registry character has a manifest whose identity matches
+ok 70 - every registry character has a manifest whose identity matches
+  ---
+  duration_ms: 16.3012
+  ...
+# Subtest: Orbit Bot is the only default character
+ok 71 - Orbit Bot is the only default character
+  ---
+  duration_ms: 9.9134
+  ...
+# Subtest: the two Orbit Bot placeholder clips referenced today exist on disk
+ok 72 - the two Orbit Bot placeholder clips referenced today exist on disk
+  ---
+  duration_ms: 0.7995
+  ...
+# Subtest: the stable roster ships concept-safe motion extension sheets
+ok 73 - the stable roster ships concept-safe motion extension sheets
+  ---
+  duration_ms: 3.2808
+  ...
+# Subtest: a missing settings file uses the spec defaults, including Orbit Bot
+ok 74 - a missing settings file uses the spec defaults, including Orbit Bot
+  ---
+  duration_ms: 6.7728
+  ...
+# Subtest: the chosen character round-trips through disk
+ok 75 - the chosen character round-trips through disk
+  ---
+  duration_ms: 86.7214
+  ...
+# Subtest: a pre-Wave-1 hyphenated character id migrates instead of resetting
+ok 76 - a pre-Wave-1 hyphenated character id migrates instead of resetting
+  ---
+  duration_ms: 20.2375
+  ...
+# Subtest: a pre-v2 file without a character falls back to the default
+ok 77 - a pre-v2 file without a character falls back to the default
+  ---
+  duration_ms: 18.3359
+  ...
+# Subtest: an unknown character slug falls back to the default
+ok 78 - an unknown character slug falls back to the default
+  ---
+  duration_ms: 21.1416
+  ...
+# Subtest: a saved file stamps the current schema version and reloads cleanly
+ok 79 - a saved file stamps the current schema version and reloads cleanly
+  ---
+  duration_ms: 27.9581
+  ...
+# Subtest: an unknown future schema version prefers the last-known-good backup
+ok 80 - an unknown future schema version prefers the last-known-good backup
+  ---
+  duration_ms: 33.5294
+  ...
+# Subtest: a healthy load refreshes the last-known-good backup
+ok 81 - a healthy load refreshes the last-known-good backup
+  ---
+  duration_ms: 26.6921
+  ...
+# Subtest: corrupt primary without a backup falls back to defaults, not a crash
+ok 82 - corrupt primary without a backup falls back to defaults, not a crash
+  ---
+  duration_ms: 11.7835
+  ...
+# Subtest: placement loads recover from a corrupt primary via the last-known-good backup
+ok 83 - placement loads recover from a corrupt primary via the last-known-good backup
+  ---
+  duration_ms: 27.9551
+  ...
+# Subtest: placement save leaves no .tmp litter and stamps its schema version
+ok 84 - placement save leaves no .tmp litter and stamps its schema version
+  ---
+  duration_ms: 10.6891
+  ...
+# Subtest: shortCountdown scales from seconds to hours
+ok 85 - shortCountdown scales from seconds to hours
+  ---
+  duration_ms: 2.8651
+  ...
+# Subtest: pet strip pins to the work area bottom and is tall enough for bubbles
+ok 86 - pet strip pins to the work area bottom and is tall enough for bubbles
+  ---
+  duration_ms: 4.2488
+  ...
+# Subtest: the popup follows the actual pet rect and never overlaps it
+ok 87 - the popup follows the actual pet rect and never overlaps it
+  ---
+  duration_ms: 0.6046
+  ...
+# Subtest: the popup moves below a pet near the top and shrinks on a constrained side
+ok 88 - the popup moves below a pet near the top and shrinks on a constrained side
+  ---
+  duration_ms: 0.5514
+  ...
+# Subtest: roaming spans the union of every display at the primary baseline
+ok 89 - roaming spans the union of every display at the primary baseline
+  ---
+  duration_ms: 0.7145
+  ...
+# Subtest: roam zones exclude displays that are not on the baseline and the gaps between them
+ok 90 - roam zones exclude displays that are not on the baseline and the gaps between them
+  ---
+  duration_ms: 0.6783
+  ...
+# Subtest: two monitors on the same baseline give two zones with a gap between them
+ok 91 - two monitors on the same baseline give two zones with a gap between them
+  ---
+  duration_ms: 0.6006
+  ...
+# Subtest: a display too small to hold the pet is not a zone
+ok 92 - a display too small to hold the pet is not a zone
+  ---
+  duration_ms: 0.3379
+  ...
+# Subtest: global severity: 20/30/40 -> ok, 20/65/40 -> warn, 20/65/90 -> crit
+ok 93 - global severity: 20/30/40 -> ok, 20/65/40 -> warn, 20/65/90 -> crit
+  ---
+  duration_ms: 24.6862
+  ...
+# Subtest: readers sharing one subscription collapse to a single presence record
+ok 94 - readers sharing one subscription collapse to a single presence record
+  ---
+  duration_ms: 0.6848
+  ...
+# Subtest: a provider presence uses its WORST live window
+ok 95 - a provider presence uses its WORST live window
+  ---
+  duration_ms: 0.4739
+  ...
+# Subtest: a provider with no readable window is unknown, never 0%
+ok 96 - a provider with no readable window is unknown, never 0%
+  ---
+  duration_ms: 0.2555
+  ...
+# Subtest: focus priority: event beats pin, pin beats active, active beats rotation
+ok 97 - focus priority: event beats pin, pin beats active, active beats rotation
+  ---
+  duration_ms: 0.7217
+  ...
+# Subtest: idle rotation steps through providers every 8 seconds
+ok 98 - idle rotation steps through providers every 8 seconds
+  ---
+  duration_ms: 0.4043
+  ...
+# Subtest: rotation skips a provider with no readable window
+ok 99 - rotation skips a provider with no readable window
+  ---
+  duration_ms: 0.4914
+  ...
+# Subtest: mood follows the focused provider, not the global worst
+ok 100 - mood follows the focused provider, not the global worst
+  ---
+  duration_ms: 0.4322
+  ...
+# Subtest: the Pet stays contextual while a global risk badge shows the real worst
+ok 101 - the Pet stays contextual while a global risk badge shows the real worst
+  ---
+  duration_ms: 2.0279
+  ...
+# Subtest: a pin holds focus until the user changes it
+ok 102 - a pin holds focus until the user changes it
+  ---
+  duration_ms: 3.5681
+  ...
+# Subtest: an event bubble is built for thresholds, resets and activity starts
+ok 103 - an event bubble is built for thresholds, resets and activity starts
+  ---
+  duration_ms: 1.1714
+  ...
+# Subtest: speech bubbles can be turned off; the badge honours the reset window
+ok 104 - speech bubbles can be turned off; the badge honours the reset window
+  ---
+  duration_ms: 0.432
+  ...
+# Subtest: every mood is reachable and carries a sprite frame
+ok 105 - every mood is reachable and carries a sprite frame
+  ---
+  duration_ms: 16.6181
+  ...
+# Subtest: an unknown provider is neither critical nor active
+ok 106 - an unknown provider is neither critical nor active
+  ---
+  duration_ms: 0.3327
+  ...
+# Subtest: a provider presence carries every live window, worst first
+ok 107 - a provider presence carries every live window, worst first
+  ---
+  duration_ms: 3.1002
+  ...
+# Subtest: the selected character is presentation only: it never changes focus or mood
+ok 108 - the selected character is presentation only: it never changes focus or mood
+  ---
+  duration_ms: 1.634
+  ...
+# Subtest: the hover bubble lists every window of the focused provider
+ok 109 - the hover bubble lists every window of the focused provider
+  ---
+  duration_ms: 18.4207
+  ...
+# Subtest: the peeking bubble lists every window and has no action buttons
+ok 110 - the peeking bubble lists every window and has no action buttons
+  ---
+  duration_ms: 1.1033
+  ...
+# Subtest: RAM diagnostics are opt-in, JSONL, and bounded without retaining samples
+ok 111 - RAM diagnostics are opt-in, JSONL, and bounded without retaining samples
+  ---
+  duration_ms: 39.8216
+  ...
+# Subtest: Windows snapshot preserves process tree and service identity without command lines
+ok 112 - Windows snapshot preserves process tree and service identity without command lines
+  ---
+  duration_ms: 2.1785
+  ...
+# Subtest: external process snapshot never exposes command lines and fails closed
+ok 113 - external process snapshot never exposes command lines and fails closed
+  ---
+  duration_ms: 5656.6261
+  ...
+# Subtest: tray hover tooltip contains only app identity and connection state
+ok 114 - tray hover tooltip contains only app identity and connection state
+  ---
+  duration_ms: 1.6358
+  ...
+# Subtest: hidden subscriptions are removed before tray surfaces normalize quota rows
+ok 115 - hidden subscriptions are removed before tray surfaces normalize quota rows
+  ---
+  duration_ms: 2.0011
+  ...
+# Subtest: the freshest origin wins for a window, and both are not listed twice
+ok 116 - the freshest origin wins for a window, and both are not listed twice
+  ---
+  duration_ms: 0.4252
+  ...
+# Subtest: shared quota readers collapse into one subscription row per window
+ok 117 - shared quota readers collapse into one subscription row per window
+  ---
+  duration_ms: 22.5632
+  ...
+# Subtest: a live window beats a rolled-over one even when the dead reading is fresher
+ok 118 - a live window beats a rolled-over one even when the dead reading is fresher
+  ---
+  duration_ms: 0.323
+  ...
+# Subtest: the badge tracks the worst LIVE limit, ignoring expired ones
+ok 119 - the badge tracks the worst LIVE limit, ignoring expired ones
+  ---
+  duration_ms: 0.3954
+  ...
+# Subtest: a reading older than the window it describes is void, even with no reset time
+ok 120 - a reading older than the window it describes is void, even with no reset time
+  ---
+  duration_ms: 0.5042
+  ...
+# Subtest: a weekly reading hours old is still valid for its seven-day window
+ok 121 - a weekly reading hours old is still valid for its seven-day window
+  ---
+  duration_ms: 0.2386
+  ...
+# Subtest: a monthly reading has a distinct tray label and month-sized no-reset expiry
+ok 122 - a monthly reading has a distinct tray label and month-sized no-reset expiry
+  ---
+  duration_ms: 0.504
+  ...
+# Subtest: OpenCode Go keeps weekly and monthly values attached to the right tray labels
+ok 123 - OpenCode Go keeps weekly and monthly values attached to the right tray labels
+  ---
+  duration_ms: 0.9131
+  ...
+# Subtest: locomotion is gated by mode, reduced motion, hover and bubble (QA B/C/E)
+ok 124 - locomotion is gated by mode, reduced motion, hover and bubble (QA B/C/E)
+  ---
+  duration_ms: 3.5273
+  ...
+# Subtest: urgent intros and click acknowledgement suppress locomotion (QA B)
+ok 125 - urgent intros and click acknowledgement suppress locomotion (QA B)
+  ---
+  duration_ms: 0.5603
+  ...
+# Subtest: local range matches the motion bible (Minimal 0, Companion 20-150)
+ok 126 - local range matches the motion bible (Minimal 0, Companion 20-150)
+  ---
+  duration_ms: 3.0628
+  ...
+# Subtest: turn is only required when the Pet faces away from the destination
+ok 127 - turn is only required when the Pet faces away from the destination
+  ---
+  duration_ms: 0.4119
+  ...
+# Subtest: idle behaviors unlock in tiers, most recent only (Motion Bible §3)
+ok 128 - idle behaviors unlock in tiers, most recent only (Motion Bible §3)
+  ---
+  duration_ms: 0.7238
+  ...
+# Subtest: reposition is only offered when locomotion is allowed (QA B/D)
+ok 129 - reposition is only offered when locomotion is allowed (QA B/D)
+  ---
+  duration_ms: 0.9788
+  ...
+# Subtest: resolveLayeredState clamps locomotion under intros and reduced motion
+ok 130 - resolveLayeredState clamps locomotion under intros and reduced motion
+  ---
+  duration_ms: 0.502
+  ...
+# Subtest: Wave 1 animations map onto the Wave 2 interaction layer
+ok 131 - Wave 1 animations map onto the Wave 2 interaction layer
+  ---
+  duration_ms: 0.3426
+  ...
+# Subtest: Wave 2 asset paths use the hyphen folder convention
+ok 132 - Wave 2 asset paths use the hyphen folder convention
+  ---
+  duration_ms: 1.6422
+  ...
+# Subtest: Flux Blob glides instead of leg-walking (Wave 2 handoff constraint)
+ok 133 - Flux Blob glides instead of leg-walking (Wave 2 handoff constraint)
+  ---
+  duration_ms: 1.0341
+  ...
+# Subtest: the idle pool never returns an unknown behavior
+ok 134 - the idle pool never returns an unknown behavior
+  ---
+  duration_ms: 0.5938
+  ...
+# Subtest: safe region insets the work area by the margin (taskbar already excluded)
+ok 135 - safe region insets the work area by the margin (taskbar already excluded)
+  ---
+  duration_ms: 4.1173
+  ...
+# Subtest: edge clamp keeps the Pet fully on-screen and is idempotent (no correction loop)
+ok 136 - edge clamp keeps the Pet fully on-screen and is idempotent (no correction loop)
+  ---
+  duration_ms: 1.1292
+  ...
+# Subtest: a placement below the minimum visibility is invalid (roaming 85% rule)
+ok 137 - a placement below the minimum visibility is invalid (roaming 85% rule)
+  ---
+  duration_ms: 0.7448
+  ...
+# Subtest: an exclusion zone rejects a placement and the nearest valid point escapes it
+ok 138 - an exclusion zone rejects a placement and the nearest valid point escapes it
+  ---
+  duration_ms: 0.914
+  ...
+# Subtest: a desktop walk path cannot cross a monitor gap or an exclusion zone
+ok 139 - a desktop walk path cannot cross a monitor gap or an exclusion zone
+  ---
+  duration_ms: 5.7955
+  ...
+# Subtest: docked placements may show less than the roaming minimum (spec §4)
+ok 140 - docked placements may show less than the roaming minimum (spec §4)
+  ---
+  duration_ms: 0.4235
+  ...
+# Subtest: click vs drag: tiny pointer travel stays a click, larger travel is a drag
+ok 141 - click vs drag: tiny pointer travel stays a click, larger travel is a drag
+  ---
+  duration_ms: 0.5584
+  ...
+# Subtest: a manual placement starts a cooldown during which roaming stays put
+ok 142 - a manual placement starts a cooldown during which roaming stays put
+  ---
+  duration_ms: 2.3665
+  ...
+# Subtest: every named dock point is reachable, and only a close release snaps
+ok 143 - every named dock point is reachable, and only a close release snaps
+  ---
+  duration_ms: 3.5007
+  ...
+# Subtest: Return Home resolves to the saved home, else the saved dock, else bottom-right
+ok 144 - Return Home resolves to the saved home, else the saved dock, else bottom-right
+  ---
+  duration_ms: 1.3718
+  ...
+# Subtest: the overlay covers the union of every work area
+ok 145 - the overlay covers the union of every work area
+  ---
+  duration_ms: 0.9516
+  ...
+# Subtest: a saved placement on a secondary display recovers to the primary display
+ok 146 - a saved placement on a secondary display recovers to the primary display
+  ---
+  duration_ms: 0.7954
+  ...
+# Subtest: a disconnected monitor moves the Pet to the primary without crashing
+ok 147 - a disconnected monitor moves the Pet to the primary without crashing
+  ---
+  duration_ms: 0.357
+  ...
+# Subtest: a resolution change revalidates an off-screen placement instead of resetting it
+ok 148 - a resolution change revalidates an off-screen placement instead of resetting it
+  ---
+  duration_ms: 0.3701
+  ...
+# Subtest: displayForPoint finds the monitor under a point, falling back to the primary
+ok 149 - displayForPoint finds the monitor under a point, falling back to the primary
+  ---
+  duration_ms: 0.2442
+  ...
+# Subtest: autonomous movement is gated by mode, reduced motion, interaction, focus and quiet
+ok 150 - autonomous movement is gated by mode, reduced motion, interaction, focus and quiet
+  ---
+  duration_ms: 0.3869
+  ...
+# Subtest: roaming targets always stay inside the safe region and outside exclusion zones
+ok 151 - roaming targets always stay inside the safe region and outside exclusion zones
+  ---
+  duration_ms: 15.7357
+  ...
+# Subtest: Companion movement stays within the configured local radius
+ok 152 - Companion movement stays within the configured local radius
+  ---
+  duration_ms: 3.7444
+  ...
+# Subtest: the roaming controller only fires after idle, then waits for the move to complete
+ok 153 - the roaming controller only fires after idle, then waits for the move to complete
+  ---
+  duration_ms: 0.9702
+  ...
+# Subtest: motion tuning is explicit and never enabled in packaged builds
+ok 154 - motion tuning is explicit and never enabled in packaged builds
+  ---
+  duration_ms: 0.3078
+  ...
+# Subtest: Minimal mode never produces a movement command
+ok 155 - Minimal mode never produces a movement command
+  ---
+  duration_ms: 0.4276
+  ...
+# Subtest: an urgent interaction interrupts roaming until it clears
+ok 156 - an urgent interaction interrupts roaming until it clears
+  ---
+  duration_ms: 0.677
+  ...
+# Subtest: events map onto scene priorities, and activity-stop has no surface
+ok 157 - events map onto scene priorities, and activity-stop has no surface
+  ---
+  duration_ms: 1.0265
+  ...
+# Subtest: duplicate threshold data is deduped by provider/window/kind/step
+ok 158 - duplicate threshold data is deduped by provider/window/kind/step
+  ---
+  duration_ms: 1.6398
+  ...
+# Subtest: critical preempts an informational scene; info is dropped when the queue is busy
+ok 159 - critical preempts an informational scene; info is dropped when the queue is busy
+  ---
+  duration_ms: 0.5808
+  ...
+# Subtest: a warning queues behind a critical and surfaces when it clears
+ok 160 - a warning queues behind a critical and surfaces when it clears
+  ---
+  duration_ms: 0.4025
+  ...
+# Subtest: quiet hours parse, wrap past midnight, and treat an empty window as disabled
+ok 161 - quiet hours parse, wrap past midnight, and treat an empty window as disabled
+  ---
+  duration_ms: 4.2213
+  ...
+# Subtest: quiet hours suppress info bubbles/sounds and keep critical by policy
+ok 162 - quiet hours suppress info bubbles/sounds and keep critical by policy
+  ---
+  duration_ms: 0.5654
+  ...
+# Subtest: outside quiet hours warning and critical raise native notifications
+ok 163 - outside quiet hours warning and critical raise native notifications
+  ---
+  duration_ms: 0.2105
+  ...
+# Subtest: priority ranking orders passive < info < warning < critical < recovery
+ok 164 - priority ranking orders passive < info < warning < critical < recovery
+  ---
+  duration_ms: 0.1342
+  ...
+# Subtest: built-in skins exist per character and always include a default
+ok 165 - built-in skins exist per character and always include a default
+  ---
+  duration_ms: 0.5352
+  ...
+# Subtest: a skin may not repurpose semantic colors
+ok 166 - a skin may not repurpose semantic colors
+  ---
+  duration_ms: 0.5968
+  ...
+# Subtest: a missing skin asset falls back to the default skin / manifest, never crashing
+ok 167 - a missing skin asset falls back to the default skin / manifest, never crashing
+  ---
+  duration_ms: 0.4581
+  ...
+# Subtest: status colors are protected from skins: warning stays amber, critical stays red
+ok 168 - status colors are protected from skins: warning stays amber, critical stays red
+  ---
+  duration_ms: 0.2305
+  ...
+# Subtest: switching skin changes only presentation, never mood/focus/global severity
+ok 169 - switching skin changes only presentation, never mood/focus/global severity
+  ---
+  duration_ms: 1.7171
+  ...
+# Subtest: the roaming planner never targets off-screen or into an exclusion zone over many rolls
+ok 170 - the roaming planner never targets off-screen or into an exclusion zone over many rolls
+  ---
+  duration_ms: 17.0374
+  ...
+# Subtest: default placement lands bottom-right on the primary display
+ok 171 - default placement lands bottom-right on the primary display
+  ---
+  duration_ms: 0.9357
+  ...
+# Subtest: placement persistence round-trips dock/home and migrates the legacy v2 file
+ok 172 - placement persistence round-trips dock/home and migrates the legacy v2 file
+  ---
+  duration_ms: 39.7092
+  ...
+# Subtest: wave3 settings round-trip and malformed values fall back to defaults
+ok 173 - wave3 settings round-trip and malformed values fall back to defaults
+  ---
+  duration_ms: 38.4866
+  ...
+# Subtest: the excluded-area footprint covers the Pet plus padding and the Pet cannot stand there
+ok 174 - the excluded-area footprint covers the Pet plus padding and the Pet cannot stand there
+  ---
+  duration_ms: 1.2843
+  ...
+# Subtest: stay near corner anchors to the docked corner, else the nearest region corner
+ok 175 - stay near corner anchors to the docked corner, else the nearest region corner
+  ---
+  duration_ms: 0.695
+  ...
+# Subtest: stay-near-corner roaming targets cluster around the corner anchor
+ok 176 - stay-near-corner roaming targets cluster around the corner anchor
+  ---
+  duration_ms: 1.9297
+  ...
+# Subtest: non-default skins ship a real accessory file on disk; the default skin ships none
+ok 177 - non-default skins ship a real accessory file on disk; the default skin ships none
+  ---
+  duration_ms: 3.1794
+  ...
+# Subtest: soak: two simulated hours of roaming stay in-region, out of zones, and cadence-bounded
+ok 178 - soak: two simulated hours of roaming stay in-region, out of zones, and cadence-bounded
+  ---
+  duration_ms: 5.715
+  ...
+# Subtest: the stable roster lists the four approved selectable characters
+ok 179 - the stable roster lists the four approved selectable characters
+  ---
+  duration_ms: 3.8117
+  ...
+# Subtest: approved bonus characters are selectable Beta entries with preview art
+ok 180 - approved bonus characters are selectable Beta entries with preview art
+  ---
+  duration_ms: 0.9284
+  ...
+# Subtest: manifest contract versions outside the supported range are rejected
+ok 181 - manifest contract versions outside the supported range are rejected
+  ---
+  duration_ms: 1.7097
+  ...
+# Subtest: minimum runtime version stricter than the build is rejected
+ok 182 - minimum runtime version stricter than the build is rejected
+  ---
+  duration_ms: 0.6435
+  ...
+# Subtest: release status / selectable fields must be well-typed
+ok 183 - release status / selectable fields must be well-typed
+  ---
+  duration_ms: 0.449
+  ...
+# Subtest: a stable character missing its semantic fallback chain is a hard failure
+ok 184 - a stable character missing its semantic fallback chain is a hard failure
+  ---
+  duration_ms: 44.8364
+  ...
+# Subtest: experimental candidates only warn, never hard-fail the tree
+ok 185 - experimental candidates only warn, never hard-fail the tree
+  ---
+  duration_ms: 160.9189
+  ...
+# Subtest: provider/model names must not appear in asset filenames
+ok 186 - provider/model names must not appear in asset filenames
+  ---
+  duration_ms: 15.0004
+  ...
+# Subtest: the real on-disk asset tree validates cleanly for the current stable roster
+ok 187 - the real on-disk asset tree validates cleanly for the current stable roster
+  ---
+  duration_ms: 198.8371
+  ...
+# Subtest: three crashes inside ten minutes is a crash loop; spread-out crashes are not
+ok 188 - three crashes inside ten minutes is a crash loop; spread-out crashes are not
+  ---
+  duration_ms: 1.3446
+  ...
+# Subtest: animation identity switches count, unchanged-state restarts do not
+ok 189 - animation identity switches count, unchanged-state restarts do not
+  ---
+  duration_ms: 0.6798
+  ...
+# Subtest: the meta helper keeps the contract predicate honest
+ok 190 - the meta helper keeps the contract predicate honest
+  ---
+  duration_ms: 0.2475
+  ...
+# Subtest: soak: one simulated hour of unchanged-state polling performs zero restarts
+ok 191 - soak: one simulated hour of unchanged-state polling performs zero restarts
+  ---
+  duration_ms: 0.5345
+  ...
+# Subtest: soak: four real transitions inside an hour stay well under a restart storm
+ok 192 - soak: four real transitions inside an hour stay well under a restart storm
+  ---
+  duration_ms: 1.9579
+  ...
+# packaged 209 file(s) -> dist-package/pets; skipped 14
+# Subtest: packaging includes every stable character directory regardless of id form
+ok 193 - packaging includes every stable character directory regardless of id form
+  ---
+  duration_ms: 0.9808
+  ...
+# Subtest: packaging excludes experimental candidate directories outright (wave5 G16 leak fix)
+ok 194 - packaging excludes experimental candidate directories outright (wave5 G16 leak fix)
+  ---
+  duration_ms: 0.1842
+  ...
+# Subtest: packaging excludes unblessed junk directories from the production bundle
+ok 195 - packaging excludes unblessed junk directories from the production bundle
+  ---
+  duration_ms: 0.0833
+  ...
+# Subtest: packaging ships approved Orbit motion runtime frames but not review masters
+ok 196 - packaging ships approved Orbit motion runtime frames but not review masters
+  ---
+  duration_ms: 0.2498
+  ...
+# Subtest: a legacy settings file loads to the same result on repeated reads (migrate once, read stable)
+ok 197 - a legacy settings file loads to the same result on repeated reads (migrate once, read stable)
+  ---
+  duration_ms: 21.0486
+  ...
+# Subtest: saving current settings and reloading is a round trip with no drift
+ok 198 - saving current settings and reloading is a round trip with no drift
+  ---
+  duration_ms: 16.7813
+  ...
+1..198
+# tests 198
+# suites 0
+# pass 198
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13124.7043

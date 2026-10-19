@@ -1,0 +1,2756 @@
+{
+  "productionIndexSha256": "40f8bb2653b89667c86d91f5e316c9410e1b53801240464f936ea06b34bde6a4",
+  "browser": "155.0.8059.80",
+  "fixture": "Synthetic memory DB, real scoped API/SSE. Only held earlier response,404 and503 deliberately intercepted; no user data/readers.",
+  "cases": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "deepLinkSecondPage": true,
+      "exactNullEmptyIdentities": true,
+      "keyboardPages": true,
+      "selectedDetailRetained": true,
+      "race": true,
+      "retry": true,
+      "missingEndpointRetainsSnapshot": true,
+      "large1265": true,
+      "palette": [
+        {
+          "key": "[\"model-21\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(21, 141, 255)"
+        },
+        {
+          "key": "[\"model-20\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(21, 141, 255)"
+        },
+        {
+          "key": "[\"model-19\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-18\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-17\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-16\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-15\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-14\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-13\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-12\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        },
+        {
+          "key": "[\"model-11\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-10\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-09\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-08\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-07\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-06\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-05\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-04\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        },
+        {
+          "key": "[\"model-03\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-02\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        }
+      ],
+      "renderedRows": 20,
+      "domElements": 3353,
+      "requests": [
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-21",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-20",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-19",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-18",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-17",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-16",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-15",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-14",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-13",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-12",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-11",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-10",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-09",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-08",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-07",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-06",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-05",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-04",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-03",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-02",
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "large-1219",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1218",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1217",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1216",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1215",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1214",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1213",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1212",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1211",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1210",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1209",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1208",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1207",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1206",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1205",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1204",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1203",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1202",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1201",
+              "provider": "anthropic"
+            },
+            {
+              "model": "large-1200",
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        }
+      ],
+      "nativeFit": {
+        "client": 1011,
+        "scroll": 1011
+      },
+      "navFits": true
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "deepLinkSecondPage": true,
+      "exactNullEmptyIdentities": true,
+      "keyboardPages": true,
+      "selectedDetailRetained": true,
+      "race": false,
+      "retry": false,
+      "missingEndpointRetainsSnapshot": true,
+      "large1265": false,
+      "palette": [
+        {
+          "key": "[\"model-21\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(21, 141, 255)"
+        },
+        {
+          "key": "[\"model-20\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(21, 141, 255)"
+        },
+        {
+          "key": "[\"model-19\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-18\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-17\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-16\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-15\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-14\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-13\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-12\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        },
+        {
+          "key": "[\"model-11\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-10\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-09\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-08\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-07\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-06\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-05\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-04\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        },
+        {
+          "key": "[\"model-03\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-02\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        }
+      ],
+      "renderedRows": 5,
+      "domElements": 1900,
+      "requests": [
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-21",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-20",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-19",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-18",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-17",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-16",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-15",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-14",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-13",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-12",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-11",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-10",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-09",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-08",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-07",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-06",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-05",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-04",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-03",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-02",
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        }
+      ],
+      "nativeFit": {
+        "client": 288,
+        "scroll": 858
+      },
+      "navFits": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "deepLinkSecondPage": true,
+      "exactNullEmptyIdentities": true,
+      "keyboardPages": true,
+      "selectedDetailRetained": true,
+      "race": false,
+      "retry": false,
+      "missingEndpointRetainsSnapshot": true,
+      "large1265": false,
+      "palette": [
+        {
+          "key": "[\"model-21\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(21, 141, 255)"
+        },
+        {
+          "key": "[\"model-20\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(21, 141, 255)"
+        },
+        {
+          "key": "[\"model-19\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-18\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-17\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-16\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-15\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-14\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-13\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-12\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        },
+        {
+          "key": "[\"model-11\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-10\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-09\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-08\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-07\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-06\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-05\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-04\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        },
+        {
+          "key": "[\"model-03\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-02\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        }
+      ],
+      "renderedRows": 5,
+      "domElements": 1900,
+      "requests": [
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-21",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-20",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-19",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-18",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-17",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-16",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-15",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-14",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-13",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-12",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-11",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-10",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-09",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-08",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-07",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-06",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-05",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-04",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-03",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-02",
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        }
+      ],
+      "nativeFit": {
+        "client": 1011,
+        "scroll": 1011
+      },
+      "navFits": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "deepLinkSecondPage": true,
+      "exactNullEmptyIdentities": true,
+      "keyboardPages": true,
+      "selectedDetailRetained": true,
+      "race": false,
+      "retry": false,
+      "missingEndpointRetainsSnapshot": true,
+      "large1265": false,
+      "palette": [
+        {
+          "key": "[\"model-21\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(21, 141, 255)"
+        },
+        {
+          "key": "[\"model-20\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(21, 141, 255)"
+        },
+        {
+          "key": "[\"model-19\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-18\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-17\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-16\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-15\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-14\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-13\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-12\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        },
+        {
+          "key": "[\"model-11\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-10\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-09\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-08\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-07\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(160, 77, 255)"
+        },
+        {
+          "key": "[\"model-06\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(241, 110, 121)"
+        },
+        {
+          "key": "[\"model-05\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-04\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        },
+        {
+          "key": "[\"model-03\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(245, 142, 67)"
+        },
+        {
+          "key": "[\"model-02\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(0, 201, 255)"
+        }
+      ],
+      "renderedRows": 5,
+      "domElements": 1900,
+      "requests": [
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-21",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-20",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-19",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-18",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-17",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-16",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-15",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-14",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-13",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-12",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-11",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-10",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-09",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-08",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-07",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-06",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-05",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-04",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-03",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-02",
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        }
+      ],
+      "nativeFit": {
+        "client": 288,
+        "scroll": 715
+      },
+      "navFits": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "deepLinkSecondPage": true,
+      "exactNullEmptyIdentities": true,
+      "keyboardPages": true,
+      "selectedDetailRetained": true,
+      "race": false,
+      "retry": false,
+      "missingEndpointRetainsSnapshot": true,
+      "large1265": false,
+      "palette": [
+        {
+          "key": "[\"model-21\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(33, 88, 255)"
+        },
+        {
+          "key": "[\"model-20\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(33, 88, 255)"
+        },
+        {
+          "key": "[\"model-19\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-18\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-17\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-16\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-15\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-14\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-13\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-12\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        },
+        {
+          "key": "[\"model-11\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-10\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-09\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-08\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-07\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-06\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-05\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-04\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        },
+        {
+          "key": "[\"model-03\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-02\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        }
+      ],
+      "renderedRows": 5,
+      "domElements": 1892,
+      "requests": [
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-21",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-20",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-19",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-18",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-17",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-16",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-15",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-14",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-13",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-12",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-11",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-10",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-09",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-08",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-07",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-06",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-05",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-04",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-03",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-02",
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        }
+      ],
+      "nativeFit": {
+        "client": 1011,
+        "scroll": 1011
+      },
+      "navFits": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "deepLinkSecondPage": true,
+      "exactNullEmptyIdentities": true,
+      "keyboardPages": true,
+      "selectedDetailRetained": true,
+      "race": false,
+      "retry": false,
+      "missingEndpointRetainsSnapshot": true,
+      "large1265": false,
+      "palette": [
+        {
+          "key": "[\"model-21\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(33, 88, 255)"
+        },
+        {
+          "key": "[\"model-20\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(33, 88, 255)"
+        },
+        {
+          "key": "[\"model-19\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-18\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-17\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-16\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-15\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-14\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-13\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-12\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        },
+        {
+          "key": "[\"model-11\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-10\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-09\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-08\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-07\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-06\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-05\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-04\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        },
+        {
+          "key": "[\"model-03\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-02\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        }
+      ],
+      "renderedRows": 5,
+      "domElements": 1892,
+      "requests": [
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-21",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-20",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-19",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-18",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-17",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-16",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-15",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-14",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-13",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-12",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-11",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-10",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-09",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-08",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-07",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-06",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-05",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-04",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-03",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-02",
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        }
+      ],
+      "nativeFit": {
+        "client": 288,
+        "scroll": 858
+      },
+      "navFits": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "deepLinkSecondPage": true,
+      "exactNullEmptyIdentities": true,
+      "keyboardPages": true,
+      "selectedDetailRetained": true,
+      "race": false,
+      "retry": false,
+      "missingEndpointRetainsSnapshot": true,
+      "large1265": false,
+      "palette": [
+        {
+          "key": "[\"model-21\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(33, 88, 255)"
+        },
+        {
+          "key": "[\"model-20\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(33, 88, 255)"
+        },
+        {
+          "key": "[\"model-19\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-18\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-17\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-16\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-15\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-14\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-13\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-12\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        },
+        {
+          "key": "[\"model-11\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-10\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-09\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-08\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-07\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-06\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-05\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-04\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        },
+        {
+          "key": "[\"model-03\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-02\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        }
+      ],
+      "renderedRows": 5,
+      "domElements": 1892,
+      "requests": [
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-21",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-20",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-19",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-18",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-17",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-16",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-15",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-14",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-13",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-12",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-11",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-10",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-09",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-08",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-07",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-06",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-05",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-04",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-03",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-02",
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        }
+      ],
+      "nativeFit": {
+        "client": 1011,
+        "scroll": 1011
+      },
+      "navFits": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "deepLinkSecondPage": true,
+      "exactNullEmptyIdentities": true,
+      "keyboardPages": true,
+      "selectedDetailRetained": true,
+      "race": false,
+      "retry": false,
+      "missingEndpointRetainsSnapshot": true,
+      "large1265": false,
+      "palette": [
+        {
+          "key": "[\"model-21\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(33, 88, 255)"
+        },
+        {
+          "key": "[\"model-20\",\"anthropic\"]",
+          "tone": "blue",
+          "stroke": "rgb(33, 88, 255)"
+        },
+        {
+          "key": "[\"model-19\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-18\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-17\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-16\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-15\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-14\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-13\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-12\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        },
+        {
+          "key": "[\"model-11\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-10\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-09\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-08\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-07\",\"anthropic\"]",
+          "tone": "violet",
+          "stroke": "rgb(112, 64, 187)"
+        },
+        {
+          "key": "[\"model-06\",\"anthropic\"]",
+          "tone": "rose",
+          "stroke": "rgb(180, 35, 53)"
+        },
+        {
+          "key": "[\"model-05\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-04\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        },
+        {
+          "key": "[\"model-03\",\"anthropic\"]",
+          "tone": "orange",
+          "stroke": "rgb(135, 80, 0)"
+        },
+        {
+          "key": "[\"model-02\",\"anthropic\"]",
+          "tone": "cyan",
+          "stroke": "rgb(6, 101, 139)"
+        }
+      ],
+      "renderedRows": 5,
+      "domElements": 1892,
+      "requests": [
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-21",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-20",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-19",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-18",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-17",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-16",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-15",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-14",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-13",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-12",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-11",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-10",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-09",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-08",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-07",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-06",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-05",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-04",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-03",
+              "provider": "anthropic"
+            },
+            {
+              "model": "model-02",
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        },
+        {
+          "method": "GET",
+          "pairs": [
+            {
+              "model": "model-01",
+              "provider": "anthropic"
+            },
+            {
+              "model": "",
+              "provider": "anthropic"
+            },
+            {
+              "model": "identity",
+              "provider": ""
+            },
+            {
+              "model": "identity",
+              "provider": null
+            },
+            {
+              "model": null,
+              "provider": "anthropic"
+            }
+          ],
+          "from": "1792399433926",
+          "to": "1792401233926"
+        }
+      ],
+      "nativeFit": {
+        "client": 288,
+        "scroll": 715
+      },
+      "navFits": true
+    }
+  ],
+  "errors": [],
+  "forbidden": []
+}

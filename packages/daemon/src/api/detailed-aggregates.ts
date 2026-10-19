@@ -32,12 +32,14 @@ export function detailedAggregates(db: DB, scope: UsageScope, dimension: Aggrega
        u.provider, u.model, ${vendor} AS vendor`
     : `u.model, u.provider, ${vendor} AS vendor, u.source_id AS sourceId,
        s.harness, s.display_name AS sourceName, u.effort`;
+  // Vendor depends only on the exact model/provider already grouped here; evaluating
+  // it as another GROUP BY key repeats the classification CASE for every observation.
   const group = dimension === 'project'
-    ? 'sess.project, u.source_id, u.provider, u.model, vendor'
-    : 'u.model, u.provider, u.source_id, u.effort, vendor';
+    ? 'sess.project, u.source_id, u.provider, u.model'
+    : 'u.model, u.provider, u.source_id, u.effort';
   const tie = dimension === 'project' ? 'project ASC, sourceId ASC, provider ASC, model ASC' : 'model ASC, provider ASC, sourceId ASC, effort ASC';
   const groupIdentity = dimension === 'project' ? 'sess.project AS key' : `u.model, u.provider, ${vendor} AS vendor`;
-  const groupBy = dimension === 'project' ? 'sess.project' : 'u.model, u.provider, vendor';
+  const groupBy = dimension === 'project' ? 'sess.project' : 'u.model, u.provider';
   const groupTie = dimension === 'project' ? 'key ASC' : 'model ASC, provider ASC';
   return db.transaction(() => {
     const totals = db.prepare(`SELECT ${FACTS} ${from}`).get(where.params);

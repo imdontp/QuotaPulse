@@ -449,3 +449,8 @@
     filter:drop-shadow(0 0 .55px var(--qp-project-spark-stroke,var(--qp-accent))) drop-shadow(0 0 2px color-mix(in srgb,var(--qp-project-spark-stroke,var(--qp-accent)) 55%,transparent));
   }
 }
+
+/* Native card mini-trends omit compressed non-data grid dashes, matching Source composition. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-card .qp-project-spark>line { opacity:0; }
+}

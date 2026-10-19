@@ -198,17 +198,23 @@ test('read-only POST transports twenty maximum-length exact pairs over actual HT
     });
     const before = snapshot();
     const address = await f.app.listen({ port: 0, host: '127.0.0.1' });
-    const send = (method: 'GET' | 'POST', path: string, body?: string, authenticated = true) => new Promise<{ status: number; body: string }>((resolve, reject) => {
-      const call = request(`${address}${path}`, { method, headers: {
+    const send = (method: 'GET' | 'POST', path: string, body?: string, authenticated = true, isolatedConnection = false) => new Promise<{ status: number; body: string }>((resolve, reject) => {
+      const call = request(`${address}${path}`, { method, agent: isolatedConnection ? false : undefined, headers: {
         ...(authenticated ? f.headers : {}),
         ...(body === undefined ? {} : { 'content-type': 'application/json', 'content-length': Buffer.byteLength(body) }),
       } }, response => {
         const chunks: Buffer[] = [];
         response.on('data', chunk => chunks.push(Buffer.from(chunk)));
-        response.on('error', reject);
+        response.on('error', error => {
+          error.message = `${method} URI-bytes=${Buffer.byteLength(path)} body-bytes=${body === undefined ? 0 : Buffer.byteLength(body)} response reusedSocket=${call.reusedSocket}: ${error.message}`;
+          reject(error);
+        });
         response.on('end', () => resolve({ status: response.statusCode!, body: Buffer.concat(chunks).toString('utf8') }));
       });
-      call.on('error', reject);
+      call.on('error', error => {
+        error.message = `${method} URI-bytes=${Buffer.byteLength(path)} body-bytes=${body === undefined ? 0 : Buffer.byteLength(body)} request reusedSocket=${call.reusedSocket}: ${error.message}`;
+        reject(error);
+      });
       call.end(body);
     });
     const base = '/api/model-trends?from=100&to=180100';
@@ -217,7 +223,10 @@ test('read-only POST transports twenty maximum-length exact pairs over actual HT
     // Windows may close the socket while Node is still writing the oversized header;
     // either the parser's 431 or that transport rejection proves it cannot reach this route.
     let oversizedResult: { status: number; body: string } | undefined;
-    try { oversizedResult = await send('GET', oversizedGet); }
+    // Keep the deliberately parser-rejected connection out of the normal keep-alive pool:
+    // its closing socket can otherwise be reused by the first valid POST before close arrives.
+    // Successful POST/GET requests below still use the normal persistent agent and must succeed.
+    try { oversizedResult = await send('GET', oversizedGet, undefined, true, true); }
     catch (error) { assert.ok(['ECONNABORTED', 'ECONNRESET', 'EPIPE'].includes((error as NodeJS.ErrnoException).code ?? ''), String(error)); }
     if (oversizedResult) assert.equal(oversizedResult.status, 431);
     const posted = await send('POST', base, JSON.stringify({ pairs: selected }));
