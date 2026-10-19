@@ -1,0 +1,45 @@
+{
+  "phase": "before",
+  "indexSha256": "c01c34a1a021846ef13d5f9ccf00fb34386469b30d6aa4b119deab66712a8b9a",
+  "fixture": "Synthetic memoryDB, actual APIs; no user database/live readers; measured timings are observations, not budgets",
+  "records": [
+    {
+      "route": "history",
+      "lang": "en",
+      "width": 1672,
+      "readyMs": 2747.8716,
+      "initialEffortRows": 20000,
+      "domElements": 21832,
+      "cpuSeconds": {
+        "TaskDuration": 1.92362,
+        "ScriptDuration": 0.803941,
+        "LayoutDuration": 0.408226
+      },
+      "initialFirst": [
+        "Unknown: 1",
+        ": 1",
+        "custom-effort-00000: 1"
+      ]
+    },
+    {
+      "route": "models",
+      "lang": "en",
+      "width": 1672,
+      "readyMs": 7985.0554,
+      "initialEffortRows": 20000,
+      "domElements": 100609,
+      "cpuSeconds": {
+        "TaskDuration": 5.175006,
+        "ScriptDuration": 1.613003,
+        "LayoutDuration": 2.005053
+      },
+      "initialFirst": [
+        "Unspecified3 · 1 Calls",
+        "Empty category3 · 1 Calls",
+        "custom-effort-000003 · 1 Calls"
+      ]
+    }
+  ],
+  "errors": [],
+  "forbidden": []
+}

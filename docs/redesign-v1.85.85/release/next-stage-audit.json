@@ -1,0 +1,150 @@
+{
+  "auditDate": "2026-10-19",
+  "scope": "Read-only next-stage release/native/performance audit; no browser/build/Git/services/userDB touched. Current85 concurrent modifications not certified by older84 evidence.",
+  "authorityZipSha256": "28bc63571ddf7ecda1e12e8821c6184378ccfe6c3a599d6ccec29bf17fedb054",
+  "requirements": [
+    {
+      "id": "REL-01",
+      "requirement": "Exact application commit and matching built assets constitute rollback; additive reads, no user DB deletion/reprice/reset.",
+      "authority": "13_COMPATIBILITY_AND_RELEASE.md Deployment/recovery;08_DEFINITION_OF_DONE.md Application RC",
+      "evidence": [
+        "scripts/check-review-installation.ps1:34 Variant edits checkpoint only",
+        "scripts/check-review-installation.ps1:110 synthetic-upgrade-same-runtime",
+        "scripts/check-review-legacy-upgrade.ps1 same compiled app/schema limitation"
+      ],
+      "status": "incomplete",
+      "next": "Build two real checkouts (current frozen RC and previous known application commit), archive each matching daemon/web/tray/preload; seed isolated review DB with usage/pricing/null/aggregate and app settings; exercise prior->current->prior->current with adapters off. Verify actual runtime/asset hashes at every step and invariant fact/settings snapshots. Installer same-runtime rollback remains valid installer coverage only."
+    },
+    {
+      "id": "REL-02",
+      "requirement": "Reviewable artifact with exact source/artifact/reference/fixture/environment/test provenance.",
+      "authority": "13_COMPATIBILITY_AND_RELEASE.md Release evidence;08_DEFINITION_OF_DONE.md Application RC",
+      "evidence": [
+        "scripts/build-review-bundle.mts",
+        "scripts/archive-review-bundle.ps1",
+        "scripts/check-review-bundle.mts",
+        "docs/redesign-v1.67/bundle-build.json historical example"
+      ],
+      "status": "capability exists; current RC evidence open",
+      "next": "Compile daemon, tray and web after freeze; package existing compatibility pet assets; build explicitly named checkpoint bundle, verify outside repo dependencies, archive and decompress/hash every ZIP entry. Bind commit plus all compiled assets and tests in one RC index. Default builder label v1.67 must be overridden."
+    },
+    {
+      "id": "REL-03",
+      "requirement": "Bundled fonts/local assets and third-party notices preserved.",
+      "authority": "03_DESIGN_SYSTEM_AND_MOTION.md Visual foundation (bundled Geist/Geist Mono/local assets);review-artifact integrity derived from release evidence",
+      "evidence": [
+        "scripts/build-review-bundle.mts:64 recursively copies installed web notice files",
+        "scripts/build-review-bundle.mts:49 full Electron package incl licenses",
+        "scripts/archive-review-bundle.ps1 required Thai OFL/font, Geist notices, Electron license, SQLite native module",
+        "scripts/check-asset-package.mts explicitly pet-assets-only scope"
+      ],
+      "status": "implemented packaging capability; current artifact unverified",
+      "next": "After current bundle build, verify notice inventory/file presence and hashes, explicitly report dependencies with empty notice file lists for review, keep font license and runtime asset inventory. Do not treat pet-only package verification as whole-app packaging."
+    },
+    {
+      "id": "NATIVE-01",
+      "requirement": "Real hidden/minimized/restore/latest/unmount behavior stops nonessential work and resumes latest without replay.",
+      "authority": "03_DESIGN_SYSTEM_AND_MOTION.md Motion contract;05_TEST_AND_VISUAL_PARITY.md Live/UI + Performance",
+      "evidence": [
+        "docs/redesign-v1.85.69/electron-activity-verification.json partial: real hide/no paint/latest800, minimize predicate timeout, restore1700/unmount unreached",
+        "docs/redesign-v1.85.69/activity-electron-native69-entry.cjs skipTaskbar true/focusable false/force off-monitor",
+        "packages/tray/src/main.ts:2658 production dashboard skipTaskbar false/default focusable; throttling omitted",
+        "scripts/check-runtime-motion.mts:189 explicit no native-minimize claim"
+      ],
+      "status": "partial historical evidence; production-equivalent minimize remains unverified",
+      "next": "Raw Electron/parent IPC without Playwright/CDP flags. Prefer actual compiled main launched in isolated task-entry profile with lock pointing synthetic API, instrument window creation non-mutatingly before import. Preserve native window settings; observe actual document.hidden and native minimized separately. Hide/update/show then minimize/update/restore, require current actual bucket1700, no hidden paint/no replay and route unmount cleanup. Native69 is not proven production defect."
+    },
+    {
+      "id": "NATIVE-02",
+      "requirement": "Popup, preload/IPC/sandbox/readiness and renderer crash/hang recovery preserved.",
+      "authority": "13_COMPATIBILITY_AND_RELEASE.md Electron/preferences;08_DEFINITION_OF_DONE.md popup compatibility",
+      "evidence": [
+        "scripts/check-desktop-runtime.mts fixture host compiled preloads/web, not actual tray main",
+        "scripts/check-tray-recovery.mts actual compiled main, synthetic DB, crash + bounded load failure + reopen",
+        "scripts/check-pet-popup-recovery.mts existing surfaces compatibility (not new pet work)",
+        "scripts/check-unresponsive-recovery.mts raw Electron actual main hang; runtime-root bundle support"
+      ],
+      "status": "executable coverage exists; final frozen current build not certified here",
+      "next": "Run sequentially after frozen build and again from extracted artifact using QUOTAPULSE_REVIEW_ROOT for supported recovery scripts. Archive actual process identity/preferences and artifact hashes. Do not use Playwright-host visibility as native lifecycle proof."
+    },
+    {
+      "id": "COMPAT-01",
+      "requirement": "Previous web/tray API defaults/cardinality and persisted preferences remain valid.",
+      "authority": "13_COMPATIBILITY_AND_RELEASE.md Electron/preferences + Deployment/recovery",
+      "evidence": [
+        "scripts/check-review-installation.ps1 DB sentinel only; variants same runtime",
+        "scripts/check-desktop-runtime.mts popup hidden preferences tested in fixture",
+        "docs/redesign-v1.85.84/VALIDATION-STATE.md declares persistence/compat open"
+      ],
+      "status": "incomplete final integration",
+      "next": "Use actual previous built web/tray against final synthetic daemon; exact old endpoint shapes/defaults/cardinality checked. Persist language/theme/currency/rate/window/notification/snooze/quiet-hour/hidden-subscription settings in isolated installation, stop and restart, assert same values/visible behavior. Preserve user profile entirely."
+    },
+    {
+      "id": "PERF-01",
+      "requirement": "Measured initial render/query count/chart commits/real paints/hidden work; navigation does not accumulate timers/SSE; large fixture query plans.",
+      "authority": "05_TEST_AND_VISUAL_PARITY.md Performance and commands;13_COMPATIBILITY_AND_RELEASE.md profile large chunk warning",
+      "evidence": [
+        "scripts/check-production-runtime.mts:50 nine route-ready/navigation/paint/resources measurements and 5000 record summary timings",
+        "scripts/check-activity-visibility.mts actual-source mount, emulated getters fallback explicitly labelled",
+        "scripts/check-runtime-motion.mts compiled actual API/SSE motion but no native minimize or CPU claim",
+        "tmp/effort85-probe-results.json current concurrent work (not audited for pass in this release audit)"
+      ],
+      "status": "partial capability; final CPU/render/query/timer/SSE/native evidence open",
+      "next": "Use same frozen app+synthetic fixture across visible/hidden/offscreen and navigation cycles. Record query and SSE counts, DOM/chart commits/paints, bitmap allocations, process CPU and cold chunk transfer/readiness; EXPLAIN/count/payload for large history/many-model/effort fixture. Preserve current85 effort evidence separately; no arbitrary performance percentage or library rewrite."
+    },
+    {
+      "id": "VISUAL-01",
+      "requirement": "Review first real implementation against all eight concepts+overrides, then SSIM >=.985 vs accepted deterministic implementation baseline; keyboard/contrast/theme/locale/narrow and motion gates.",
+      "authority": "05_TEST_AND_VISUAL_PARITY.md Visual procedure;08_DEFINITION_OF_DONE.md Application screen",
+      "evidence": [
+        "docs/redesign-v1.85.84/VALIDATION-STATE.md explicitly all-eight human acceptance open",
+        "docs/redesign-v1.85.84/review.html current84 comparison; scoped repeatability is not accepted Source baseline"
+      ],
+      "status": "incomplete",
+      "next": "Finish and review genuine all8 Source composition/typography/art/layout with real facts, lock approved implementation baseline with reviewer/commit/overrides, then final frozen all40/current API/UI/native/perf/package matrix. No local ROI improvement can establish 99-100%."
+    },
+    {
+      "id": "MOTION-OBSERVATION",
+      "requirement": "New observed call on a known edge -> one700ms particle/highlight; no idle/replay, aggregate node-only.",
+      "authority": "03_DESIGN_SYSTEM_AND_MOTION.md literal row: New observed call on a known edge",
+      "evidence": [
+        "packages/web/src/redesign/production.tsx:74 newest event per harness limit1 without map selected project",
+        "packages/web/src/redesign/production.tsx:111 selected project applied to separate graph request",
+        "packages/web/src/redesign/use-runtime-motion.ts:34 project scope applied to same batch rows",
+        "packages/web/src/redesign/runtime-motion.ts:55 exact project inScope filter, known edge checks"
+      ],
+      "status": "source establishes conditional omission path; runtime contract defect unproven",
+      "next": "Two projects share harness, selected A: insert new eligible call A then newer B before one refresh; compare A-only control vs A+B with same visibility/request epoch/known graph/clock. Observe actual request rows and rendered signals. Require exact scoped observation if intended; do not silently redefine literal observed contract into every ingested event."
+    }
+  ],
+  "nextSequence": [
+    "Resolve current85 bounded work and record its actual terminal checks; freeze source before any final RC claims.",
+    "Targeted selected-project motion control (same compiled build, real synthetic API/SSE, no adapters). If needed fix causally and rerun scoped motion regression; avoid broad package work until visual app source accepted.",
+    "Prepare raw native lifecycle harness importing actual compiled main (or fixture options exactly compared with production). Fresh profile/daemon lock, adapters [], localhost unique port, record default throttling/argv/preferences. Parent IPC gives all native commands and bounded owned-process cleanup; no document.hidden override or CDP focus emulation. Investigate any failure as instrument first.",
+    "Native sequence: visible baseline -> hide -> ingest/theme/resize -> assert no paints -> show latest800 -> minimize -> verify native and document states independently -> ingest latest1700 -> restore -> verify latest + no replay -> navigate away/unmount -> dispatch changes and assert listeners/timers/detached paints absent.",
+    "Freeze final source, compile all components and preserve matching assets/fingerprints. Run required unit/API/UI/full40/native/performance on this exact build; scope old evidence explicitly.",
+    "npm.cmd run daemon:build; npm.cmd run build -w @quotapulse/tray; npm.cmd run build -w @quotapulse/web; npm.cmd run package -w @quotapulse/tray; node --import tsx scripts/check-asset-package.mts (commands shown individually; root schedules build/browser slot).",
+    "Set QUOTAPULSE_REVIEW_CHECKPOINT to exact version; node --import tsx scripts/build-review-bundle.mts; node --import tsx scripts/check-review-bundle.mts; powershell -NoProfile -File scripts/archive-review-bundle.ps1. Preserve initial bundle path; launch check extracts elsewhere so archive stays profile-free.",
+    "Against QUOTAPULSE_REVIEW_ROOT=exact extracted bundle: run tray recovery, pet-popup compatibility recovery and actual unresponsive recovery sequentially. Native visibility uses raw production-equivalent harness, not these Playwright sessions.",
+    "Build actual prior application checkout+matching assets in separate safe worktree and a second current bundle. Dedicated review install only: old start/seed/stop -> current upgrade/start/check/stop -> rollback old/start/check/stop -> current restore/check. Compare fact/settings snapshots and immutable asset hashes; run same-runtime installer negatives separately.",
+    "Publish one reviewable current ZIP/checksum/source+artifact+environment evidence index and all8 Source comparison. Request final human visual/keyboard/contrast acceptance only after concrete artifacts ready. Keep whole goal active until full requirements proven."
+  ],
+  "inspectedSourceLfSha256": {
+    "scripts/build-review-bundle.mts": "02eba4e7f558f8a6bd5275f1839ab9abd26838a825a7dd9eced59a3ff4d4e97d",
+    "scripts/check-review-bundle.mts": "c39a7eaad9be983d6cd450fb571fccc18fe6c35f02ee0555eb266c810e1df82b",
+    "scripts/archive-review-bundle.ps1": "ccdabe8cb99f5a13554ce0e24507a5f9c61535a4f73675c0bd2722d77fece660",
+    "scripts/check-review-installation.ps1": "219354abaf95fc8c01e3a49f84cf65e9f72f57df2af050be879e3e2d9f9ee192",
+    "scripts/check-review-legacy-upgrade.ps1": "02439fb622cca4984d2bc10274eba18fbc1f68021aafc33f4353a846bbae8cd4",
+    "scripts/check-tray-recovery.mts": "90e789609ede2171868b93ffeb5899551b2c25029129271405603e1d5dd4b11d",
+    "scripts/check-unresponsive-recovery.mts": "d74d1d42742a205680b3ce0554152eff9288d64995fc9b2d87addb659f15260a",
+    "scripts/check-pet-popup-recovery.mts": "c41f17ecdd85ba7d6cadab9f927ab548e07c77e04275d35747c974f3beffd8a9",
+    "scripts/check-runtime-motion.mts": "67e95bc749c7e1cbeacba2925b84a117138af708deec9bf81e25d013ee2cb7c5",
+    "packages/web/src/redesign/production.tsx": "611a33c0a5c620811521e9b1a1a504d0495f319b97cef6713ec80928d7c535d7",
+    "packages/web/src/redesign/use-runtime-motion.ts": "cc7b454053635c128b3a472aad42f165847a7efa0c680d7220301b3056c696c0",
+    "packages/web/src/redesign/runtime-motion.ts": "b0c6d0739ca73eaa92f8e2a21323c14287dea341da87ac3f494ed00a4846f1d6",
+    "packages/tray/src/main.ts": "ef49cf78b907f3ce29f2716f6478fc7145cce3f67f07d9f578a363bc1ed5a64d",
+    "docs/redesign-v1.85.84/VALIDATION-STATE.md": "db06659b929bae475cc24aa75b56a37d0823afe801c0a099181b14357554ac85"
+  },
+  "wholeGoalComplete": false,
+  "importantBoundary": "Blueprint asks matching checkout/assets rollback and reviewable app evidence; signed MSI or bundled Node are not explicit requirements. Existing builder is dependency-complete with documented external Node ABI prerequisite, so do not invent fully self-contained installer scope."
+}

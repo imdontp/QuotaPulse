@@ -89,6 +89,8 @@ export const th: Record<MessageKey, string> = {
   'history.computed': "มูลค่า API ที่คำนวณ",
   'history.estimated': "มูลค่า API โดยประมาณ",
   'history.unknownCost': "ไม่ทราบค่าใช้จ่าย",
+  'redesign.effortPages': 'หมวดหมู่ความพยายาม',
+  'redesign.effortRange': '{from}–{to} จาก {total} หมวดหมู่',
   'history.next': "หน้าถัดไป",
   'history.previous': "หน้าก่อน",
   'history.stale': "แสดงข้อมูลที่โหลดสำเร็จล่าสุด ลองใหม่โดยกลับไปข้อมูลล่าสุดหรือเปลี่ยนตัวกรอง",

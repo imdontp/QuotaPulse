@@ -1,0 +1,94 @@
+{
+  "status": "partially validated checkpoint; not final visual/release acceptance",
+  "productionIndexSha256": "f072ce2aa183548974e24de8d8387efa171f6dd1c4108129ce7f5a29b65b79f2",
+  "baseCommit": "0283c098aa6e18429523f67af3013b71fad8c8cb",
+  "branch": "design/redesign-foundation",
+  "passed": {
+    "webBuild": 0,
+    "repository": {
+      "daemon": 106,
+      "web": 227,
+      "tray": 198,
+      "total": 531
+    },
+    "countFitCases": 12,
+    "effortUiCases": 8,
+    "modelDetailRefresh": "real fixed-scope SSE plus completed superseded-response barrier, retained error and keyboard retry",
+    "scopeFacts": {
+      "cases": 21,
+      "allEqual": true,
+      "strictRasterIsolation": false
+    },
+    "allEightNative": "existing geometry/overflow/action checks; fresh-entry selected History image",
+    "historyCanonical": {
+      "pairs": 8,
+      "byteIdentical": 6,
+      "maxChannelDeltaLimit": 10,
+      "changedFractionLimit": 5e-05,
+      "masks": false
+    },
+    "nativeActivity": {
+      "stages": 11,
+      "visibility": "actual production main native hide/minimize/show/restore",
+      "eventualLatestBuckets": [
+        800,
+        1700
+      ],
+      "processTerminal": {
+        "pid": 36760,
+        "code": 0,
+        "signal": null
+      },
+      "independentReview": "native/independent-review.md"
+    }
+  },
+  "failed": [
+    {
+      "gate": "Models original canonical first attempt",
+      "pair": "th/dark",
+      "changedPixels": 135,
+      "maxChannelDelta": 34,
+      "evidence": "diagnostics/initial-repeat/"
+    },
+    {
+      "gate": "Models original canonical second attempt",
+      "pair": "en/dark",
+      "changedPixels": 136,
+      "maxChannelDelta": 34,
+      "evidence": "diagnostics/second-repeat/"
+    },
+    {
+      "gate": "Projects original canonical",
+      "pair": "th/dark",
+      "changedPixels": 89,
+      "maxChannelDelta": 6,
+      "pixelCount": 1573352,
+      "evidence": "diagnostics/projects-repeat/"
+    }
+  ],
+  "diagnostics": {
+    "modelsDefaultEnglish": "single-pair repeat zero changed pixels",
+    "modelsNoPartialRasterEnglish": "single-pair repeat zero changed pixels; unchanged control also passes, no causal fix proven",
+    "modelsNoThread": "screenshot did not complete; not a successful intervention",
+    "toleranceChanged": false,
+    "masksAdded": false
+  },
+  "limitations": [
+    "Effort rendering is paged20; transport/SQL/full-total reduction remain unbounded, not a complete performance fix.",
+    "Native minimized resize request1450 did not change actual1500 bounds; hidden non-minimized resize did change geometry.",
+    "Native resume can paint retained old accepted snapshot before real refresh completes; latest is eventual, no replay only observed settled idle.",
+    "Native paint observations are not CPU budget, exhaustive listener/timer leak, physical tray input, packaged artifact, normal close-to-tray or first-frame freshness proof.",
+    "Tray/preload were not rebuilt this round; exact existing runtime hashes bind the native evidence.",
+    "Models and Projects canonical stability failures remain unresolved; no current full40 or final RC claim.",
+    "Prior83 full40 and84 loading181 are historical, not rerun on current85.",
+    "All-eight human Source acceptance, actual previous-checkout rollback, package/notices validation, performance and final release acceptance remain open."
+  ],
+  "reviews": [
+    "source/final-review.md",
+    "source/remaining.md",
+    "effort/independent-review.md",
+    "native/independent-review.md",
+    "release/README.md"
+  ],
+  "wholeGoalComplete": false
+}

@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.84
+## Current checkpoint: v1.85.85 — partially validated
+
+[Implementation and validation](redesign-v1.85.85/VALIDATION-STATE.md) | [All-eight original/current review](redesign-v1.85.85/review.html) | [Remaining visual priorities](redesign-v1.85.85/source/remaining.md). Models summary and Projects actual-line paint follow Source direction; effort lists have bounded DOM paging, and Models detail follows shared refresh. Build,531 repository tests,count12,effort8,detail-refresh race,scope21 facts,all-eight captures,History8 repeat pairs and11 bounded actual-native Activity stages pass. **Models canonical repeats fail twice and Projects repeat fails; causes unresolved.** Native latest is eventual, with explicit resize/first-frame/idle limits. No current full40 or final RC pass; original all-eight visual and release acceptance remain open.
+
+## Previous checkpoint: v1.85.84
 
 [Implementation and validation](redesign-v1.85.84/VALIDATION-STATE.md) | [All-eight original/current review](redesign-v1.85.84/review.html) | [Module loading/error images](redesign-v1.85.84/loading-review.html). Providers fills and ready Alerts atmosphere follow Source more closely; nonOverview module fallbacks reserve screen-specific composition. Build,527 repository tests,181 module lifecycle cases,17 equal-fact comparisons, all-eight captures and scoped Providers4/Alerts4 repeat pairs pass. Original all-eight visual and release acceptance remain open.
 

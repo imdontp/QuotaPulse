@@ -1,0 +1,234 @@
+{
+  "verdict": "Reachable high-cardinality unbounded category transport/render work confirmed using synthetic supported ingestion; no current user incident or numerical performance SLO violation established. Measured hardening gap under the approved large-fixture requirement.",
+  "method": "Actual claudeCodeAdapter, DbSink, SCHEMA_SQL, historySummary, modelDetail; better-sqlite3 :memory: only. Local generated fixture. No browser, server, network, live data, implementation edits, build or Git writes.",
+  "requirements": [
+    {
+      "authority": "docs/quotapulse_build_blueprint_v1.1.zip!quotapulse_build_blueprint/11_REFERENCE_OVERRIDES.md:24",
+      "text": "OVR-016: Categorical effort distribution replaces benchmark bars; identity/provenance metadata replaces marketing capability claims."
+    },
+    {
+      "authority": "same archive 11_REFERENCE_OVERRIDES.md:27",
+      "text": "OVR-019: Categorical effort distribution replaces numeric average; call/aggregate record kind replaces completed/failed; metadata search; CSV exports all matching records; no unsupported bulk action."
+    },
+    {
+      "authority": "same archive 05_TEST_AND_VISUAL_PARITY.md:47-51",
+      "text": "Use query plans and large fixture histories to identify actual indexing/virtualization needs. Record measured CPU/render results; no unsupported numerical performance claim or arbitrary new library.",
+      "interpretation": "Measurement/verification requirement. No explicit category cap or mandated new endpoint. Audit IDs N14/G83-EFFORT are derived audit concerns, not original blueprint wording."
+    }
+  ],
+  "results": [
+    {
+      "categories": 6,
+      "ingested": 6,
+      "ingestMs": 8.084500000000048,
+      "historyMs": 1.5015999999999963,
+      "modelMs": 1.1456999999999766,
+      "historyEfforts": 6,
+      "modelEfforts": 6,
+      "historyBytes": 765,
+      "modelBytes": 565,
+      "historyEffortBytes": 295,
+      "modelEffortBytes": 367,
+      "historyCalls": 6,
+      "historyTokens": 18,
+      "historyTimeline": 1,
+      "modelPoints": 1,
+      "groupPlan": [
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+        },
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 48,
+          "detail": "SEARCH u USING INDEX idx_usage_source_ts (source_id=? AND ts>? AND ts<?)"
+        },
+        {
+          "id": 26,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+        },
+        {
+          "id": 31,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        },
+        {
+          "id": 74,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "renderSourceCounts": {
+        "historyListItems": 6,
+        "modelListItems": 6,
+        "modelDescendantElements": 30
+      },
+      "nullAndEmptyPreserved": true
+    },
+    {
+      "categories": 100,
+      "ingested": 100,
+      "ingestMs": 5.130899999999997,
+      "historyMs": 1.0273000000000252,
+      "modelMs": 0.7951999999999657,
+      "historyEfforts": 100,
+      "modelEfforts": 100,
+      "historyBytes": 5953,
+      "modelBytes": 6868,
+      "historyEffortBytes": 5465,
+      "modelEffortBytes": 6665,
+      "historyCalls": 100,
+      "historyTokens": 300,
+      "historyTimeline": 1,
+      "modelPoints": 1,
+      "groupPlan": [
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+        },
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 48,
+          "detail": "SEARCH u USING INDEX idx_usage_source_ts (source_id=? AND ts>? AND ts<?)"
+        },
+        {
+          "id": 26,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+        },
+        {
+          "id": 31,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        },
+        {
+          "id": 74,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "renderSourceCounts": {
+        "historyListItems": 100,
+        "modelListItems": 100,
+        "modelDescendantElements": 500
+      },
+      "nullAndEmptyPreserved": true
+    },
+    {
+      "categories": 20000,
+      "ingested": 20000,
+      "ingestMs": 298.72829999999993,
+      "historyMs": 48.71499999999992,
+      "modelMs": 49.21210000000008,
+      "historyEfforts": 20000,
+      "modelEfforts": 20000,
+      "historyBytes": 1100475,
+      "modelBytes": 1340174,
+      "historyEffortBytes": 1099965,
+      "modelEffortBytes": 1339965,
+      "historyCalls": 20000,
+      "historyTokens": 60000,
+      "historyTimeline": 1,
+      "modelPoints": 1,
+      "groupPlan": [
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+        },
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 48,
+          "detail": "SEARCH u USING INDEX idx_usage_source_ts (source_id=? AND ts>? AND ts<?)"
+        },
+        {
+          "id": 26,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+        },
+        {
+          "id": 31,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        },
+        {
+          "id": 74,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "renderSourceCounts": {
+        "historyListItems": 20000,
+        "modelListItems": 20000,
+        "modelDescendantElements": 100000
+      },
+      "nullAndEmptyPreserved": true
+    }
+  ],
+  "claims": [
+    {
+      "claim": "Arbitrary effort strings can enter supported storage/read path",
+      "verdict": "proven synthetic",
+      "evidence": "20,000 generated distinct values ingested through actual Claude reader; Codex forwarding independently traced in source, not executed."
+    },
+    {
+      "claim": "Current local user history contains pathological effort values",
+      "verdict": "unverified; intentionally no userDB access"
+    },
+    {
+      "claim": "History category viewport is unbounded",
+      "verdict": "falsified: CSS max-height:70px/overflow:auto; DOM mapping remains unbounded"
+    },
+    {
+      "claim": "20k category rendering crashes or violates an agreed CPU budget",
+      "verdict": "not established; no browser observation or numerical accepted budget"
+    },
+    {
+      "claim": "Current aggregate totals lose categories",
+      "verdict": "falsified in fixture; null,empty,custom values and complete totals all retained"
+    }
+  ],
+  "recommendation": {
+    "minimum": "First bound DOM work without changing factual/API totals: reusable keyboard-accessible pagination or virtualization of the exact effort rows. Retain existing small-category output and concept footprint; make all categories reachable, show category count/current page. Shares use full-scope effort total, never page subtotal. Null and empty stay distinct. No guessed enum, top-N truncation, Other merge or raw data rewrite.",
+    "transport": "If transport bounds are required, add opt-in categorical pagination/summary metadata rather than changing existing default semantics silently. Return full-scope totals and stable deterministic exact-key ordering, validate limits/offsets, retain complete API/CSV access. GROUP BY still reads matching records, so SQL LIMIT alone does not bound scan cost.",
+    "gates": "Actual rendered DOM/interaction under synthetic 20k categories, normal6 category screenshots unchanged, keyboard paging across null/empty and last page, full-scope totals/shares/export invariant; query count/payload and measured rendering/CPU. Inspect detailedModels effort-group cardinality separately."
+  },
+  "normalizedSourceSha256": {
+    "packages/daemon/src/adapters/claude-code.ts": "cb1fb96bd271fcc848760abf7d1f3d731d0bca14d179dbd79fc52c9ea8d6080a",
+    "packages/daemon/src/adapters/codex.ts": "090e43f1c5d7d9b0428f63c39e3ad040ad48f0b3bd070f43223a1ae55ec23f2e",
+    "packages/daemon/src/ingest/sink.ts": "c99f393cf6c2a5b356e6a39158e43c6342f1d3e15f73a768e48dc7f429727793",
+    "packages/daemon/src/db/schema.ts": "06e4d11e0dfc44f0f11444919938c36529428f122a3eca5881d3943af1bb6755",
+    "packages/daemon/src/api/history-summary.ts": "a9f492ee8d670a607b5b842dd4aa220e99436929b490599f71c281e29e5fc404",
+    "packages/daemon/src/api/model-detail.ts": "99f56403e17c9971c6f07463de3c3ee4bd96794aa0c8448cdab15c0ba7852daa",
+    "packages/web/src/redesign/history-timeline.tsx": "9615d3393f28bdafcd289b2e9d6b2cd3123cee9e11a9969f623dc67fae9fbbba",
+    "packages/web/src/redesign/models.tsx": "ae35b3498553b313e0a3f8d981014457adb287ef64e3edeaf3913fa443ce1aa4",
+    "packages/web/src/redesign/history.css": "a9478ccc9e3f18db8289d7acc04b63b94835c5f9061a7a0fd8db9b7447e7d01b",
+    "packages/web/src/redesign/models.css": "c4c8251f7608ead17e6884657c3ee8896bb2d80acba1199177cd20144520d900",
+    "tmp/effort85-probe.mts": "5f36d964ae5b16d0108833b2e16ce7f6af8dfde02ac9594da679bd11603fc8e4",
+    "tmp/effort85-audit.mts": "5f36d964ae5b16d0108833b2e16ce7f6af8dfde02ac9594da679bd11603fc8e4"
+  },
+  "probeExecution": {
+    "firstAttempt": "Sandbox tsx esbuild child spawn EPERM; instrument not run.",
+    "actualRun": "Escalated node --import tsx tmp/effort85-probe.mts, exit 0; tmp/effort85-audit.mts is a byte-identical runnable copy.",
+    "timings": "Single local observations, not steady-state benchmarks or budgets."
+  },
+  "runnableScript": "tmp/effort85-audit.mts"
+}

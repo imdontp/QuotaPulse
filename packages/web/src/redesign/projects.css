@@ -436,3 +436,16 @@
     filter:drop-shadow(0 0 3px #087cff) drop-shadow(0 0 1px #20d2ff66);
   }
 }
+
+/* Native spark paint follows the actual observed path; no static Source curve. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-card[data-tone=cyan] .qp-project-spark { --qp-project-spark-stroke:#00c9ff; }
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-card[data-tone=violet] .qp-project-spark { --qp-project-spark-stroke:#a04dff; }
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-spark>.qp-observed-line {
+    stroke:var(--qp-project-spark-stroke,var(--qp-accent));
+    stroke-width:1.15px;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    filter:drop-shadow(0 0 .55px var(--qp-project-spark-stroke,var(--qp-accent))) drop-shadow(0 0 2px color-mix(in srgb,var(--qp-project-spark-stroke,var(--qp-accent)) 55%,transparent));
+  }
+}

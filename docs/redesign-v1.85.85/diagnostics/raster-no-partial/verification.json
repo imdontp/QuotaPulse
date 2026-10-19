@@ -1,0 +1,220 @@
+{
+  "status": "repeatable within recorded raster tolerance; review candidates, not approved visual baselines",
+  "scope": "models",
+  "captureMatrix": {
+    "languages": [
+      "en"
+    ],
+    "themes": [
+      "dark"
+    ],
+    "complete": false
+  },
+  "clock": 1747489320000,
+  "isoClock": "2025-05-17T13:42:00.000Z",
+  "browser": "155.0.8059.80",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb",
+    "--disable-partial-raster"
+  ],
+  "timezone": "Asia/Bangkok",
+  "dpr": 1,
+  "reducedMotion": true,
+  "tolerance": {
+    "maxChannelDelta": 10,
+    "maxChangedPixelFraction": 0.00005,
+    "masks": false
+  },
+  "captureNormalization": [
+    "CSS transitions disabled and caret hidden before screenshot only",
+    "Playwright animations disabled during screenshot"
+  ],
+  "productionIndexSha256": "f072ce2aa183548974e24de8d8387efa171f6dd1c4108129ce7f5a29b65b79f2",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "sessions": 12,
+    "runtimeMapProject": "QuotaPulse",
+    "runtimeMapSessions": 12,
+    "runtimeMapRecords": 39,
+    "allRangeProjects": 5,
+    "allRangeRecords": 43,
+    "namedProjects": 5,
+    "projectNames": [
+      "QuotaPulse",
+      "Agent Platform",
+      "Edge Services",
+      "Developer Tools",
+      "Research Lab"
+    ],
+    "models": 6,
+    "modelNames": [
+      "DeepSeek V4.1",
+      "GPT-5.x",
+      "Claude 3.7",
+      "Claude 3.5",
+      "Others",
+      "GPT-4.1 mini"
+    ],
+    "modelShares": [
+      38,
+      24,
+      18,
+      11,
+      9,
+      0
+    ],
+    "providers": 4,
+    "records": 39,
+    "quotaOwners": [
+      "OpenAI Subscription",
+      "OpenCode Go Subscription"
+    ],
+    "cacheSharePercent": 42,
+    "monthlySelection": "OpenAI Subscription · monthly"
+  },
+  "checks": [
+    "frozen daemon and browser Date",
+    "source-matched date on the screenshot clock",
+    "reference-matched Overview section labels and model rail accessible name",
+    "reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection",
+    "2 screenshots / 1 pairs within raster tolerance",
+    "independent browser process per language/theme set",
+    "fresh document per route",
+    "production web without Vite",
+    "fonts ready and API settled",
+    "no page overflow",
+    "no external or write requests",
+    "no browser errors",
+    "API-matched complete chart tables, keyboard and 390/900/1280 overflow",
+    "proportional one-token and zero bars/line points"
+  ],
+  "referenceColumnChecks": [
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "headerTop": 72,
+      "railTop": 72,
+      "summaryRight": 1257.90625,
+      "railLeft": 1278.90625
+    }
+  ],
+  "liveDensityChecks": [],
+  "liveMinuteChecks": [],
+  "liveRefreshChecks": [],
+  "overviewLayouts": [],
+  "overviewReferenceLabelChecks": [],
+  "overviewConceptDataChecks": [],
+  "projectCardChecks": [],
+  "providerChecks": [],
+  "modelComparisonChecks": [],
+  "costAxisChecks": [],
+  "historyChecks": [],
+  "historyRailChecks": [],
+  "pageHeadingChecks": [
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "tileSize": 30,
+      "headings": 1,
+      "decorative": true
+    }
+  ],
+  "sectionMarkChecks": [],
+  "historyDensityChecks": [],
+  "alertChecks": [],
+  "chartChecks": [],
+  "modelCostChecks": [],
+  "quotaChecks": [],
+  "pulseCoreChecks": [],
+  "pulseAmbientChecks": [],
+  "modelMarkChecks": [],
+  "topModelScopeChecks": [],
+  "overviewPeriodChecks": [],
+  "overviewInsightChecks": [],
+  "quotaGroupChecks": [],
+  "recentActivityChecks": [],
+  "activityBitmapChecks": [],
+  "activityRendererChecks": [],
+  "runtimeChecks": [],
+  "runtimeProjectIdentityChecks": [],
+  "runtimeGeometryChecks": [],
+  "shellChecks": [],
+  "headerChecks": [],
+  "workspaceChecks": [],
+  "fontProvenance": {
+    "family": "Noto Sans Thai",
+    "upstream": "https://github.com/google/fonts",
+    "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+    "upstreamPath": "ofl/notosansthai/NotoSansThai[wdth,wght].ttf",
+    "sha256": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+    "license": "OFL-1.1",
+    "modifiedFont": false
+  },
+  "fontChecks": [
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    },
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "family": "Noto Sans Thai",
+      "custom": true,
+      "glyphs": 3
+    }
+  ],
+  "settingsChecks": [],
+  "cases": [
+    {
+      "page": "models",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "models-en-dark.png",
+      "sha256": "5ab1cc1aff90e4770a5cb70efd1d4655ed60f4ffeb38f59a19beb2c653baa3b5",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.908033471113596
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 10.285557832200997
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.885453812610461
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 10.197384625219907
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.61472249279132
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]",
+        ".qp-chart-scale>span"
+      ],
+      "repeatSha256": "5ab1cc1aff90e4770a5cb70efd1d4655ed60f4ffeb38f59a19beb2c653baa3b5",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    }
+  ]
+}

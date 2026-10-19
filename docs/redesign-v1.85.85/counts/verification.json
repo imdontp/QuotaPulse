@@ -1,0 +1,3282 @@
+{
+  "status": "Actual in-memory API model/session counts fit without clipping or spark overlap",
+  "productionIndexSha256": "f072ce2aa183548974e24de8d8387efa171f6dd1c4108129ce7f5a29b65b79f2",
+  "browser": "155.0.8059.80",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--force-color-profile=srgb"
+  ],
+  "seededAdditional": {
+    "models": 1234,
+    "sessions": 1234
+  },
+  "fixture": "Canonical source85 fixture plus1234 actual distinct model/provider groups and sessions with explicit IDs10000..11233, one token and zero computed cost each; no application text/response mocking",
+  "rows": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1536,
+      "filename": "models-count-en-dark-1536.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 229,
+            "y": 131,
+            "width": 215.859375,
+            "height": 120.78125,
+            "top": 131,
+            "right": 444.859375,
+            "bottom": 251.78125,
+            "left": 229
+          },
+          "value": {
+            "x": 320,
+            "y": 183,
+            "width": 99.859375,
+            "height": 28.796875,
+            "top": 183,
+            "right": 419.859375,
+            "bottom": 211.796875,
+            "left": 320
+          },
+          "glyphs": [
+            {
+              "x": 320,
+              "y": 181,
+              "width": 58.375,
+              "height": 31,
+              "right": 378.375,
+              "bottom": 212
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 254,
+            "y": 214.796875,
+            "width": 46,
+            "height": 20,
+            "top": 214.796875,
+            "right": 300,
+            "bottom": 234.796875,
+            "left": 254
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 100,
+          "clientWidth": 100
+        },
+        {
+          "card": {
+            "x": 457.859375,
+            "y": 131,
+            "width": 243.078125,
+            "height": 120.78125,
+            "top": 131,
+            "right": 700.9375,
+            "bottom": 251.78125,
+            "left": 457.859375
+          },
+          "value": {
+            "x": 538.859375,
+            "y": 165,
+            "width": 67.078125,
+            "height": 57.59375,
+            "top": 165,
+            "right": 605.9375,
+            "bottom": 222.59375,
+            "left": 538.859375
+          },
+          "glyphs": [
+            {
+              "x": 538.859375,
+              "y": 163,
+              "width": 56.90625,
+              "height": 31,
+              "right": 595.765625,
+              "bottom": 194
+            },
+            {
+              "x": 538.859375,
+              "y": 191.796875,
+              "width": 21.0625,
+              "height": 31,
+              "right": 559.921875,
+              "bottom": 222.796875
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 621.9375,
+            "y": 179.796875,
+            "width": 64,
+            "height": 28,
+            "top": 179.796875,
+            "right": 685.9375,
+            "bottom": 207.796875,
+            "left": 621.9375
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 67,
+          "clientWidth": 67
+        },
+        {
+          "card": {
+            "x": 713.9375,
+            "y": 131,
+            "width": 215.875,
+            "height": 120.78125,
+            "top": 131,
+            "right": 929.8125,
+            "bottom": 251.78125,
+            "left": 713.9375
+          },
+          "value": {
+            "x": 794.9375,
+            "y": 165.09375,
+            "width": 119.875,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 914.8125,
+            "bottom": 194,
+            "left": 794.9375
+          },
+          "glyphs": [
+            {
+              "x": 794.9375,
+              "y": 163.09375,
+              "width": 53.140625,
+              "height": 31,
+              "right": 848.078125,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 728.9375,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 774.9375,
+            "bottom": 217,
+            "left": 728.9375
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 120,
+          "clientWidth": 120
+        },
+        {
+          "card": {
+            "x": 942.8125,
+            "y": 131,
+            "width": 213.15625,
+            "height": 120.78125,
+            "top": 131,
+            "right": 1155.96875,
+            "bottom": 251.78125,
+            "left": 942.8125
+          },
+          "value": {
+            "x": 1023.8125,
+            "y": 165.09375,
+            "width": 117.15625,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 1140.96875,
+            "bottom": 194,
+            "left": 1023.8125
+          },
+          "glyphs": [
+            {
+              "x": 1023.8125,
+              "y": 163.09375,
+              "width": 86.546875,
+              "height": 31,
+              "right": 1110.359375,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1023.8125,
+              "y": 163.09375,
+              "width": 86.546875,
+              "height": 31,
+              "right": 1110.359375,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1109.359375,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 1115.9375,
+              "bottom": 193.09375
+            },
+            {
+              "x": 1115.9375,
+              "y": 162.09375,
+              "width": 1038.84375,
+              "height": 31,
+              "right": 2154.78125,
+              "bottom": 193.09375
+            },
+            {
+              "x": 2154.78125,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 2161.359375,
+              "bottom": 193.09375
+            }
+          ],
+          "text": "$14.53+ (Priced coverage: 1306 / 1313 Calls. + marks a subtotal. Native and API price bases are separate.)",
+          "spark": {
+            "x": 957.8125,
+            "y": 200.1875,
+            "width": 46,
+            "height": 20,
+            "top": 200.1875,
+            "right": 1003.8125,
+            "bottom": 220.1875,
+            "left": 957.8125
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 117,
+          "clientWidth": 117
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1586,
+      "filename": "models-count-en-dark-1586.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 229,
+            "y": 131,
+            "width": 224.734375,
+            "height": 120.78125,
+            "top": 131,
+            "right": 453.734375,
+            "bottom": 251.78125,
+            "left": 229
+          },
+          "value": {
+            "x": 320,
+            "y": 183,
+            "width": 108.734375,
+            "height": 28.796875,
+            "top": 183,
+            "right": 428.734375,
+            "bottom": 211.796875,
+            "left": 320
+          },
+          "glyphs": [
+            {
+              "x": 320,
+              "y": 181,
+              "width": 58.375,
+              "height": 31,
+              "right": 378.375,
+              "bottom": 212
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 254,
+            "y": 214.796875,
+            "width": 46,
+            "height": 20,
+            "top": 214.796875,
+            "right": 300,
+            "bottom": 234.796875,
+            "left": 254
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 109,
+          "clientWidth": 109
+        },
+        {
+          "card": {
+            "x": 466.734375,
+            "y": 131,
+            "width": 253.0625,
+            "height": 120.78125,
+            "top": 131,
+            "right": 719.796875,
+            "bottom": 251.78125,
+            "left": 466.734375
+          },
+          "value": {
+            "x": 547.734375,
+            "y": 165,
+            "width": 77.0625,
+            "height": 57.59375,
+            "top": 165,
+            "right": 624.796875,
+            "bottom": 222.59375,
+            "left": 547.734375
+          },
+          "glyphs": [
+            {
+              "x": 547.734375,
+              "y": 163,
+              "width": 56.90625,
+              "height": 31,
+              "right": 604.640625,
+              "bottom": 194
+            },
+            {
+              "x": 547.734375,
+              "y": 191.796875,
+              "width": 21.0625,
+              "height": 31,
+              "right": 568.796875,
+              "bottom": 222.796875
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 640.796875,
+            "y": 179.796875,
+            "width": 64,
+            "height": 28,
+            "top": 179.796875,
+            "right": 704.796875,
+            "bottom": 207.796875,
+            "left": 640.796875
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 77,
+          "clientWidth": 77
+        },
+        {
+          "card": {
+            "x": 732.796875,
+            "y": 131,
+            "width": 224.734375,
+            "height": 120.78125,
+            "top": 131,
+            "right": 957.53125,
+            "bottom": 251.78125,
+            "left": 732.796875
+          },
+          "value": {
+            "x": 813.796875,
+            "y": 165.09375,
+            "width": 128.734375,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 942.53125,
+            "bottom": 194,
+            "left": 813.796875
+          },
+          "glyphs": [
+            {
+              "x": 813.796875,
+              "y": 163.09375,
+              "width": 53.140625,
+              "height": 31,
+              "right": 866.9375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 747.796875,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 793.796875,
+            "bottom": 217,
+            "left": 747.796875
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 129,
+          "clientWidth": 129
+        },
+        {
+          "card": {
+            "x": 970.53125,
+            "y": 131,
+            "width": 221.90625,
+            "height": 120.78125,
+            "top": 131,
+            "right": 1192.4375,
+            "bottom": 251.78125,
+            "left": 970.53125
+          },
+          "value": {
+            "x": 1051.53125,
+            "y": 165.09375,
+            "width": 125.90625,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 1177.4375,
+            "bottom": 194,
+            "left": 1051.53125
+          },
+          "glyphs": [
+            {
+              "x": 1051.53125,
+              "y": 163.09375,
+              "width": 86.546875,
+              "height": 31,
+              "right": 1138.078125,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1051.53125,
+              "y": 163.09375,
+              "width": 86.546875,
+              "height": 31,
+              "right": 1138.078125,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1137.078125,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 1143.65625,
+              "bottom": 193.09375
+            },
+            {
+              "x": 1143.65625,
+              "y": 162.09375,
+              "width": 1038.84375,
+              "height": 31,
+              "right": 2182.5,
+              "bottom": 193.09375
+            },
+            {
+              "x": 2182.5,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 2189.078125,
+              "bottom": 193.09375
+            }
+          ],
+          "text": "$14.53+ (Priced coverage: 1306 / 1313 Calls. + marks a subtotal. Native and API price bases are separate.)",
+          "spark": {
+            "x": 985.53125,
+            "y": 200.1875,
+            "width": 46,
+            "height": 20,
+            "top": 200.1875,
+            "right": 1031.53125,
+            "bottom": 220.1875,
+            "left": 985.53125
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 126,
+          "clientWidth": 126
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "filename": "models-count-en-dark-1672.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 239,
+            "y": 131,
+            "width": 238.21875,
+            "height": 106,
+            "top": 131,
+            "right": 477.21875,
+            "bottom": 237,
+            "left": 239
+          },
+          "value": {
+            "x": 330,
+            "y": 165.09375,
+            "width": 122.21875,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 452.21875,
+            "bottom": 194,
+            "left": 330
+          },
+          "glyphs": [
+            {
+              "x": 330,
+              "y": 163.09375,
+              "width": 58.375,
+              "height": 31,
+              "right": 388.375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 264,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 310,
+            "bottom": 217,
+            "left": 264
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 122,
+          "clientWidth": 122
+        },
+        {
+          "card": {
+            "x": 490.21875,
+            "y": 131,
+            "width": 268.234375,
+            "height": 106,
+            "top": 131,
+            "right": 758.453125,
+            "bottom": 237,
+            "left": 490.21875
+          },
+          "value": {
+            "x": 571.21875,
+            "y": 165.09375,
+            "width": 92.234375,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 663.453125,
+            "bottom": 194,
+            "left": 571.21875
+          },
+          "glyphs": [
+            {
+              "x": 571.21875,
+              "y": 163.09375,
+              "width": 77.953125,
+              "height": 31,
+              "right": 649.171875,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 679.453125,
+            "y": 165.546875,
+            "width": 64,
+            "height": 28,
+            "top": 165.546875,
+            "right": 743.453125,
+            "bottom": 193.546875,
+            "left": 679.453125
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 92,
+          "clientWidth": 92
+        },
+        {
+          "card": {
+            "x": 771.453125,
+            "y": 131,
+            "width": 238.234375,
+            "height": 106,
+            "top": 131,
+            "right": 1009.6875,
+            "bottom": 237,
+            "left": 771.453125
+          },
+          "value": {
+            "x": 852.453125,
+            "y": 165.09375,
+            "width": 142.234375,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 994.6875,
+            "bottom": 194,
+            "left": 852.453125
+          },
+          "glyphs": [
+            {
+              "x": 852.453125,
+              "y": 163.09375,
+              "width": 53.140625,
+              "height": 31,
+              "right": 905.59375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 786.453125,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 832.453125,
+            "bottom": 217,
+            "left": 786.453125
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 142,
+          "clientWidth": 142
+        },
+        {
+          "card": {
+            "x": 1022.6875,
+            "y": 131,
+            "width": 235.203125,
+            "height": 106,
+            "top": 131,
+            "right": 1257.890625,
+            "bottom": 237,
+            "left": 1022.6875
+          },
+          "value": {
+            "x": 1103.6875,
+            "y": 165.09375,
+            "width": 139.203125,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 1242.890625,
+            "bottom": 194,
+            "left": 1103.6875
+          },
+          "glyphs": [
+            {
+              "x": 1103.6875,
+              "y": 163.09375,
+              "width": 86.546875,
+              "height": 31,
+              "right": 1190.234375,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1103.6875,
+              "y": 163.09375,
+              "width": 86.546875,
+              "height": 31,
+              "right": 1190.234375,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1189.234375,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 1195.8125,
+              "bottom": 193.09375
+            },
+            {
+              "x": 1195.8125,
+              "y": 162.09375,
+              "width": 1038.84375,
+              "height": 31,
+              "right": 2234.65625,
+              "bottom": 193.09375
+            },
+            {
+              "x": 2234.65625,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 2241.234375,
+              "bottom": 193.09375
+            }
+          ],
+          "text": "$14.53+ (Priced coverage: 1306 / 1313 Calls. + marks a subtotal. Native and API price bases are separate.)",
+          "spark": {
+            "x": 1037.6875,
+            "y": 200.1875,
+            "width": 46,
+            "height": 20,
+            "top": 200.1875,
+            "right": 1083.6875,
+            "bottom": 220.1875,
+            "left": 1037.6875
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 139,
+          "clientWidth": 139
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1920,
+      "filename": "models-count-en-dark-1920.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 286,
+            "y": 131,
+            "width": 265.53125,
+            "height": 106,
+            "top": 131,
+            "right": 551.53125,
+            "bottom": 237,
+            "left": 286
+          },
+          "value": {
+            "x": 377,
+            "y": 165.09375,
+            "width": 149.53125,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 526.53125,
+            "bottom": 194,
+            "left": 377
+          },
+          "glyphs": [
+            {
+              "x": 377,
+              "y": 163.09375,
+              "width": 58.375,
+              "height": 31,
+              "right": 435.375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 311,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 357,
+            "bottom": 217,
+            "left": 311
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 150,
+          "clientWidth": 150
+        },
+        {
+          "card": {
+            "x": 564.53125,
+            "y": 131,
+            "width": 299.015625,
+            "height": 106,
+            "top": 131,
+            "right": 863.546875,
+            "bottom": 237,
+            "left": 564.53125
+          },
+          "value": {
+            "x": 645.53125,
+            "y": 165.09375,
+            "width": 123.015625,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 768.546875,
+            "bottom": 194,
+            "left": 645.53125
+          },
+          "glyphs": [
+            {
+              "x": 645.53125,
+              "y": 163.09375,
+              "width": 77.953125,
+              "height": 31,
+              "right": 723.484375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 784.546875,
+            "y": 165.546875,
+            "width": 64,
+            "height": 28,
+            "top": 165.546875,
+            "right": 848.546875,
+            "bottom": 193.546875,
+            "left": 784.546875
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 123,
+          "clientWidth": 123
+        },
+        {
+          "card": {
+            "x": 876.546875,
+            "y": 131,
+            "width": 265.546875,
+            "height": 106,
+            "top": 131,
+            "right": 1142.09375,
+            "bottom": 237,
+            "left": 876.546875
+          },
+          "value": {
+            "x": 957.546875,
+            "y": 165.09375,
+            "width": 169.546875,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 1127.09375,
+            "bottom": 194,
+            "left": 957.546875
+          },
+          "glyphs": [
+            {
+              "x": 957.546875,
+              "y": 163.09375,
+              "width": 53.140625,
+              "height": 31,
+              "right": 1010.6875,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 891.546875,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 937.546875,
+            "bottom": 217,
+            "left": 891.546875
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 170,
+          "clientWidth": 170
+        },
+        {
+          "card": {
+            "x": 1155.09375,
+            "y": 131,
+            "width": 262.203125,
+            "height": 106,
+            "top": 131,
+            "right": 1417.296875,
+            "bottom": 237,
+            "left": 1155.09375
+          },
+          "value": {
+            "x": 1236.09375,
+            "y": 165.09375,
+            "width": 166.203125,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 1402.296875,
+            "bottom": 194,
+            "left": 1236.09375
+          },
+          "glyphs": [
+            {
+              "x": 1236.09375,
+              "y": 163.09375,
+              "width": 86.546875,
+              "height": 31,
+              "right": 1322.640625,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1236.09375,
+              "y": 163.09375,
+              "width": 86.546875,
+              "height": 31,
+              "right": 1322.640625,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1321.640625,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 1328.21875,
+              "bottom": 193.09375
+            },
+            {
+              "x": 1328.21875,
+              "y": 162.09375,
+              "width": 1038.84375,
+              "height": 31,
+              "right": 2367.0625,
+              "bottom": 193.09375
+            },
+            {
+              "x": 2367.0625,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 2373.640625,
+              "bottom": 193.09375
+            }
+          ],
+          "text": "$14.53+ (Priced coverage: 1306 / 1313 Calls. + marks a subtotal. Native and API price bases are separate.)",
+          "spark": {
+            "x": 1170.09375,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 1216.09375,
+            "bottom": 217,
+            "left": 1170.09375
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 166,
+          "clientWidth": 166
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "filename": "models-count-en-dark-390.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 58,
+            "y": 195.09375,
+            "width": 155,
+            "height": 187.5,
+            "top": 195.09375,
+            "right": 213,
+            "bottom": 382.59375,
+            "left": 58
+          },
+          "value": {
+            "x": 128,
+            "y": 270.421875,
+            "width": 68,
+            "height": 49.828125,
+            "top": 270.421875,
+            "right": 196,
+            "bottom": 320.25,
+            "left": 128
+          },
+          "glyphs": [
+            {
+              "x": 128,
+              "y": 272.421875,
+              "width": 55.640625,
+              "height": 27,
+              "right": 183.640625,
+              "bottom": 299.421875
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 75,
+            "y": 336.421875,
+            "width": 121,
+            "height": 20,
+            "top": 336.421875,
+            "right": 196,
+            "bottom": 356.421875,
+            "left": 75
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 225,
+            "y": 195.09375,
+            "width": 155,
+            "height": 187.5,
+            "top": 195.09375,
+            "right": 380,
+            "bottom": 382.59375,
+            "left": 225
+          },
+          "value": {
+            "x": 295,
+            "y": 252.09375,
+            "width": 68,
+            "height": 63,
+            "top": 252.09375,
+            "right": 363,
+            "bottom": 315.09375,
+            "left": 295
+          },
+          "glyphs": [
+            {
+              "x": 295,
+              "y": 254.09375,
+              "width": 53.6875,
+              "height": 27,
+              "right": 348.6875,
+              "bottom": 281.09375
+            },
+            {
+              "x": 295,
+              "y": 285.59375,
+              "width": 19.21875,
+              "height": 27,
+              "right": 314.21875,
+              "bottom": 312.59375
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 242,
+            "y": 345.59375,
+            "width": 121,
+            "height": 20,
+            "top": 345.59375,
+            "right": 363,
+            "bottom": 365.59375,
+            "left": 242
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 58,
+            "y": 394.59375,
+            "width": 155,
+            "height": 204,
+            "top": 394.59375,
+            "right": 213,
+            "bottom": 598.59375,
+            "left": 58
+          },
+          "value": {
+            "x": 128,
+            "y": 475.421875,
+            "width": 68,
+            "height": 55.328125,
+            "top": 475.421875,
+            "right": 196,
+            "bottom": 530.75,
+            "left": 128
+          },
+          "glyphs": [
+            {
+              "x": 128,
+              "y": 477.421875,
+              "width": 51.625,
+              "height": 27,
+              "right": 179.625,
+              "bottom": 504.421875
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 75,
+            "y": 549.671875,
+            "width": 121,
+            "height": 20,
+            "top": 549.671875,
+            "right": 196,
+            "bottom": 569.671875,
+            "left": 75
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 225,
+            "y": 394.59375,
+            "width": 155,
+            "height": 204,
+            "top": 394.59375,
+            "right": 380,
+            "bottom": 598.59375,
+            "left": 225
+          },
+          "value": {
+            "x": 295,
+            "y": 451.59375,
+            "width": 68,
+            "height": 63,
+            "top": 451.59375,
+            "right": 363,
+            "bottom": 514.59375,
+            "left": 295
+          },
+          "glyphs": [
+            {
+              "x": 295,
+              "y": 453.59375,
+              "width": 55.90625,
+              "height": 27,
+              "right": 350.90625,
+              "bottom": 480.59375
+            },
+            {
+              "x": 295,
+              "y": 485.09375,
+              "width": 25.625,
+              "height": 27,
+              "right": 320.625,
+              "bottom": 512.09375
+            },
+            {
+              "x": 295,
+              "y": 453.59375,
+              "width": 55.90625,
+              "height": 27,
+              "right": 350.90625,
+              "bottom": 480.59375
+            },
+            {
+              "x": 295,
+              "y": 485.09375,
+              "width": 25.625,
+              "height": 27,
+              "right": 320.625,
+              "bottom": 512.09375
+            },
+            {
+              "x": 319.625,
+              "y": 484.09375,
+              "width": 6.796875,
+              "height": 27,
+              "right": 326.421875,
+              "bottom": 511.09375
+            },
+            {
+              "x": 326.421875,
+              "y": 484.09375,
+              "width": 973.921875,
+              "height": 27,
+              "right": 1300.34375,
+              "bottom": 511.09375
+            },
+            {
+              "x": 1300.34375,
+              "y": 484.09375,
+              "width": 6.796875,
+              "height": 27,
+              "right": 1307.140625,
+              "bottom": 511.09375
+            }
+          ],
+          "text": "$14.53+ (Priced coverage: 1306 / 1313 Calls. + marks a subtotal. Native and API price bases are separate.)",
+          "spark": {
+            "x": 242,
+            "y": 561.59375,
+            "width": 121,
+            "height": 20,
+            "top": 561.59375,
+            "right": 363,
+            "bottom": 581.59375,
+            "left": 242
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "filename": "models-count-en-light-390.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 58,
+            "y": 195.09375,
+            "width": 155,
+            "height": 187.5,
+            "top": 195.09375,
+            "right": 213,
+            "bottom": 382.59375,
+            "left": 58
+          },
+          "value": {
+            "x": 128,
+            "y": 270.421875,
+            "width": 68,
+            "height": 49.828125,
+            "top": 270.421875,
+            "right": 196,
+            "bottom": 320.25,
+            "left": 128
+          },
+          "glyphs": [
+            {
+              "x": 128,
+              "y": 272.421875,
+              "width": 55.640625,
+              "height": 27,
+              "right": 183.640625,
+              "bottom": 299.421875
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 75,
+            "y": 336.421875,
+            "width": 121,
+            "height": 20,
+            "top": 336.421875,
+            "right": 196,
+            "bottom": 356.421875,
+            "left": 75
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 225,
+            "y": 195.09375,
+            "width": 155,
+            "height": 187.5,
+            "top": 195.09375,
+            "right": 380,
+            "bottom": 382.59375,
+            "left": 225
+          },
+          "value": {
+            "x": 295,
+            "y": 252.09375,
+            "width": 68,
+            "height": 63,
+            "top": 252.09375,
+            "right": 363,
+            "bottom": 315.09375,
+            "left": 295
+          },
+          "glyphs": [
+            {
+              "x": 295,
+              "y": 254.09375,
+              "width": 53.6875,
+              "height": 27,
+              "right": 348.6875,
+              "bottom": 281.09375
+            },
+            {
+              "x": 295,
+              "y": 285.59375,
+              "width": 19.21875,
+              "height": 27,
+              "right": 314.21875,
+              "bottom": 312.59375
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 242,
+            "y": 345.59375,
+            "width": 121,
+            "height": 20,
+            "top": 345.59375,
+            "right": 363,
+            "bottom": 365.59375,
+            "left": 242
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 58,
+            "y": 394.59375,
+            "width": 155,
+            "height": 204,
+            "top": 394.59375,
+            "right": 213,
+            "bottom": 598.59375,
+            "left": 58
+          },
+          "value": {
+            "x": 128,
+            "y": 475.421875,
+            "width": 68,
+            "height": 55.328125,
+            "top": 475.421875,
+            "right": 196,
+            "bottom": 530.75,
+            "left": 128
+          },
+          "glyphs": [
+            {
+              "x": 128,
+              "y": 477.421875,
+              "width": 51.625,
+              "height": 27,
+              "right": 179.625,
+              "bottom": 504.421875
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 75,
+            "y": 549.671875,
+            "width": 121,
+            "height": 20,
+            "top": 549.671875,
+            "right": 196,
+            "bottom": 569.671875,
+            "left": 75
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 225,
+            "y": 394.59375,
+            "width": 155,
+            "height": 204,
+            "top": 394.59375,
+            "right": 380,
+            "bottom": 598.59375,
+            "left": 225
+          },
+          "value": {
+            "x": 295,
+            "y": 451.59375,
+            "width": 68,
+            "height": 63,
+            "top": 451.59375,
+            "right": 363,
+            "bottom": 514.59375,
+            "left": 295
+          },
+          "glyphs": [
+            {
+              "x": 295,
+              "y": 453.59375,
+              "width": 55.90625,
+              "height": 27,
+              "right": 350.90625,
+              "bottom": 480.59375
+            },
+            {
+              "x": 295,
+              "y": 485.09375,
+              "width": 25.625,
+              "height": 27,
+              "right": 320.625,
+              "bottom": 512.09375
+            },
+            {
+              "x": 295,
+              "y": 453.59375,
+              "width": 55.90625,
+              "height": 27,
+              "right": 350.90625,
+              "bottom": 480.59375
+            },
+            {
+              "x": 295,
+              "y": 485.09375,
+              "width": 25.625,
+              "height": 27,
+              "right": 320.625,
+              "bottom": 512.09375
+            },
+            {
+              "x": 319.625,
+              "y": 484.09375,
+              "width": 6.796875,
+              "height": 27,
+              "right": 326.421875,
+              "bottom": 511.09375
+            },
+            {
+              "x": 326.421875,
+              "y": 484.09375,
+              "width": 973.921875,
+              "height": 27,
+              "right": 1300.34375,
+              "bottom": 511.09375
+            },
+            {
+              "x": 1300.34375,
+              "y": 484.09375,
+              "width": 6.796875,
+              "height": 27,
+              "right": 1307.140625,
+              "bottom": 511.09375
+            }
+          ],
+          "text": "$14.53+ (Priced coverage: 1306 / 1313 Calls. + marks a subtotal. Native and API price bases are separate.)",
+          "spark": {
+            "x": 242,
+            "y": 561.59375,
+            "width": 121,
+            "height": 20,
+            "top": 561.59375,
+            "right": 363,
+            "bottom": 581.59375,
+            "left": 242
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        }
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 1536,
+      "filename": "models-count-th-dark-1536.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 229,
+            "y": 131,
+            "width": 215.859375,
+            "height": 133.96875,
+            "top": 131,
+            "right": 444.859375,
+            "bottom": 264.96875,
+            "left": 229
+          },
+          "value": {
+            "x": 320,
+            "y": 165.09375,
+            "width": 99.859375,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 419.859375,
+            "bottom": 194,
+            "left": 320
+          },
+          "glyphs": [
+            {
+              "x": 320,
+              "y": 163.09375,
+              "width": 58.375,
+              "height": 31,
+              "right": 378.375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 254,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 300,
+            "bottom": 217,
+            "left": 254
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 100,
+          "clientWidth": 100
+        },
+        {
+          "card": {
+            "x": 457.859375,
+            "y": 131,
+            "width": 243.078125,
+            "height": 133.96875,
+            "top": 131,
+            "right": 700.9375,
+            "bottom": 264.96875,
+            "left": 457.859375
+          },
+          "value": {
+            "x": 538.859375,
+            "y": 165,
+            "width": 67.078125,
+            "height": 57.59375,
+            "top": 165,
+            "right": 605.9375,
+            "bottom": 222.59375,
+            "left": 538.859375
+          },
+          "glyphs": [
+            {
+              "x": 538.859375,
+              "y": 163,
+              "width": 56.90625,
+              "height": 31,
+              "right": 595.765625,
+              "bottom": 194
+            },
+            {
+              "x": 538.859375,
+              "y": 191.796875,
+              "width": 21.0625,
+              "height": 31,
+              "right": 559.921875,
+              "bottom": 222.796875
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 621.9375,
+            "y": 179.796875,
+            "width": 64,
+            "height": 28,
+            "top": 179.796875,
+            "right": 685.9375,
+            "bottom": 207.796875,
+            "left": 621.9375
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 67,
+          "clientWidth": 67
+        },
+        {
+          "card": {
+            "x": 713.9375,
+            "y": 131,
+            "width": 215.875,
+            "height": 133.96875,
+            "top": 131,
+            "right": 929.8125,
+            "bottom": 264.96875,
+            "left": 713.9375
+          },
+          "value": {
+            "x": 794.9375,
+            "y": 165.09375,
+            "width": 119.875,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 914.8125,
+            "bottom": 194,
+            "left": 794.9375
+          },
+          "glyphs": [
+            {
+              "x": 794.9375,
+              "y": 163.09375,
+              "width": 53.140625,
+              "height": 31,
+              "right": 848.078125,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 728.9375,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 774.9375,
+            "bottom": 217,
+            "left": 728.9375
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 120,
+          "clientWidth": 120
+        },
+        {
+          "card": {
+            "x": 942.8125,
+            "y": 131,
+            "width": 213.15625,
+            "height": 133.96875,
+            "top": 131,
+            "right": 1155.96875,
+            "bottom": 264.96875,
+            "left": 942.8125
+          },
+          "value": {
+            "x": 1023.8125,
+            "y": 165,
+            "width": 117.15625,
+            "height": 57.59375,
+            "top": 165,
+            "right": 1140.96875,
+            "bottom": 222.59375,
+            "left": 1023.8125
+          },
+          "glyphs": [
+            {
+              "x": 1023.8125,
+              "y": 163,
+              "width": 105.0625,
+              "height": 31,
+              "right": 1128.875,
+              "bottom": 194
+            },
+            {
+              "x": 1023.8125,
+              "y": 191.796875,
+              "width": 13.40625,
+              "height": 31,
+              "right": 1037.21875,
+              "bottom": 222.796875
+            },
+            {
+              "x": 1023.8125,
+              "y": 163,
+              "width": 105.0625,
+              "height": 31,
+              "right": 1128.875,
+              "bottom": 194
+            },
+            {
+              "x": 1023.8125,
+              "y": 191.796875,
+              "width": 13.40625,
+              "height": 31,
+              "right": 1037.21875,
+              "bottom": 222.796875
+            },
+            {
+              "x": 1036.21875,
+              "y": 190.796875,
+              "width": 6.578125,
+              "height": 31,
+              "right": 1042.796875,
+              "bottom": 221.796875
+            },
+            {
+              "x": 1042.796875,
+              "y": 190.796875,
+              "width": 897.734375,
+              "height": 31,
+              "right": 1940.53125,
+              "bottom": 221.796875
+            },
+            {
+              "x": 1940.53125,
+              "y": 190.796875,
+              "width": 6.578125,
+              "height": 31,
+              "right": 1947.109375,
+              "bottom": 221.796875
+            }
+          ],
+          "text": "US$14.53+ (ข้อมูลที่มีราคา: 1306 / 1313 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+          "spark": {
+            "x": 957.8125,
+            "y": 228.78125,
+            "width": 46,
+            "height": 20,
+            "top": 228.78125,
+            "right": 1003.8125,
+            "bottom": 248.78125,
+            "left": 957.8125
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 117,
+          "clientWidth": 117
+        }
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 1586,
+      "filename": "models-count-th-dark-1586.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 229,
+            "y": 131,
+            "width": 224.734375,
+            "height": 120.78125,
+            "top": 131,
+            "right": 453.734375,
+            "bottom": 251.78125,
+            "left": 229
+          },
+          "value": {
+            "x": 320,
+            "y": 165.09375,
+            "width": 108.734375,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 428.734375,
+            "bottom": 194,
+            "left": 320
+          },
+          "glyphs": [
+            {
+              "x": 320,
+              "y": 163.09375,
+              "width": 58.375,
+              "height": 31,
+              "right": 378.375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 254,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 300,
+            "bottom": 217,
+            "left": 254
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 109,
+          "clientWidth": 109
+        },
+        {
+          "card": {
+            "x": 466.734375,
+            "y": 131,
+            "width": 253.0625,
+            "height": 120.78125,
+            "top": 131,
+            "right": 719.796875,
+            "bottom": 251.78125,
+            "left": 466.734375
+          },
+          "value": {
+            "x": 547.734375,
+            "y": 165,
+            "width": 77.0625,
+            "height": 57.59375,
+            "top": 165,
+            "right": 624.796875,
+            "bottom": 222.59375,
+            "left": 547.734375
+          },
+          "glyphs": [
+            {
+              "x": 547.734375,
+              "y": 163,
+              "width": 56.90625,
+              "height": 31,
+              "right": 604.640625,
+              "bottom": 194
+            },
+            {
+              "x": 547.734375,
+              "y": 191.796875,
+              "width": 21.0625,
+              "height": 31,
+              "right": 568.796875,
+              "bottom": 222.796875
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 640.796875,
+            "y": 179.796875,
+            "width": 64,
+            "height": 28,
+            "top": 179.796875,
+            "right": 704.796875,
+            "bottom": 207.796875,
+            "left": 640.796875
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 77,
+          "clientWidth": 77
+        },
+        {
+          "card": {
+            "x": 732.796875,
+            "y": 131,
+            "width": 224.734375,
+            "height": 120.78125,
+            "top": 131,
+            "right": 957.53125,
+            "bottom": 251.78125,
+            "left": 732.796875
+          },
+          "value": {
+            "x": 813.796875,
+            "y": 165.09375,
+            "width": 128.734375,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 942.53125,
+            "bottom": 194,
+            "left": 813.796875
+          },
+          "glyphs": [
+            {
+              "x": 813.796875,
+              "y": 163.09375,
+              "width": 53.140625,
+              "height": 31,
+              "right": 866.9375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 747.796875,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 793.796875,
+            "bottom": 217,
+            "left": 747.796875
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 129,
+          "clientWidth": 129
+        },
+        {
+          "card": {
+            "x": 970.53125,
+            "y": 131,
+            "width": 221.90625,
+            "height": 120.78125,
+            "top": 131,
+            "right": 1192.4375,
+            "bottom": 251.78125,
+            "left": 970.53125
+          },
+          "value": {
+            "x": 1051.53125,
+            "y": 165.09375,
+            "width": 125.90625,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 1177.4375,
+            "bottom": 194,
+            "left": 1051.53125
+          },
+          "glyphs": [
+            {
+              "x": 1051.53125,
+              "y": 163.09375,
+              "width": 118.453125,
+              "height": 31,
+              "right": 1169.984375,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1051.53125,
+              "y": 163.09375,
+              "width": 118.453125,
+              "height": 31,
+              "right": 1169.984375,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1168.984375,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 1175.5625,
+              "bottom": 193.09375
+            },
+            {
+              "x": 1175.5625,
+              "y": 162.09375,
+              "width": 897.734375,
+              "height": 31,
+              "right": 2073.296875,
+              "bottom": 193.09375
+            },
+            {
+              "x": 2073.296875,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 2079.875,
+              "bottom": 193.09375
+            }
+          ],
+          "text": "US$14.53+ (ข้อมูลที่มีราคา: 1306 / 1313 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+          "spark": {
+            "x": 985.53125,
+            "y": 200.1875,
+            "width": 46,
+            "height": 20,
+            "top": 200.1875,
+            "right": 1031.53125,
+            "bottom": 220.1875,
+            "left": 985.53125
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 126,
+          "clientWidth": 126
+        }
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "filename": "models-count-th-dark-1672.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 239,
+            "y": 131,
+            "width": 238.21875,
+            "height": 106,
+            "top": 131,
+            "right": 477.21875,
+            "bottom": 237,
+            "left": 239
+          },
+          "value": {
+            "x": 330,
+            "y": 165.09375,
+            "width": 122.21875,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 452.21875,
+            "bottom": 194,
+            "left": 330
+          },
+          "glyphs": [
+            {
+              "x": 330,
+              "y": 163.09375,
+              "width": 58.375,
+              "height": 31,
+              "right": 388.375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 264,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 310,
+            "bottom": 217,
+            "left": 264
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 122,
+          "clientWidth": 122
+        },
+        {
+          "card": {
+            "x": 490.21875,
+            "y": 131,
+            "width": 268.234375,
+            "height": 106,
+            "top": 131,
+            "right": 758.453125,
+            "bottom": 237,
+            "left": 490.21875
+          },
+          "value": {
+            "x": 571.21875,
+            "y": 165.09375,
+            "width": 92.234375,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 663.453125,
+            "bottom": 194,
+            "left": 571.21875
+          },
+          "glyphs": [
+            {
+              "x": 571.21875,
+              "y": 163.09375,
+              "width": 77.953125,
+              "height": 31,
+              "right": 649.171875,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 679.453125,
+            "y": 165.546875,
+            "width": 64,
+            "height": 28,
+            "top": 165.546875,
+            "right": 743.453125,
+            "bottom": 193.546875,
+            "left": 679.453125
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 92,
+          "clientWidth": 92
+        },
+        {
+          "card": {
+            "x": 771.453125,
+            "y": 131,
+            "width": 238.234375,
+            "height": 106,
+            "top": 131,
+            "right": 1009.6875,
+            "bottom": 237,
+            "left": 771.453125
+          },
+          "value": {
+            "x": 852.453125,
+            "y": 165.09375,
+            "width": 142.234375,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 994.6875,
+            "bottom": 194,
+            "left": 852.453125
+          },
+          "glyphs": [
+            {
+              "x": 852.453125,
+              "y": 163.09375,
+              "width": 53.140625,
+              "height": 31,
+              "right": 905.59375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 786.453125,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 832.453125,
+            "bottom": 217,
+            "left": 786.453125
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 142,
+          "clientWidth": 142
+        },
+        {
+          "card": {
+            "x": 1022.6875,
+            "y": 131,
+            "width": 235.203125,
+            "height": 106,
+            "top": 131,
+            "right": 1257.890625,
+            "bottom": 237,
+            "left": 1022.6875
+          },
+          "value": {
+            "x": 1103.6875,
+            "y": 165.09375,
+            "width": 139.203125,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 1242.890625,
+            "bottom": 194,
+            "left": 1103.6875
+          },
+          "glyphs": [
+            {
+              "x": 1103.6875,
+              "y": 163.09375,
+              "width": 118.453125,
+              "height": 31,
+              "right": 1222.140625,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1103.6875,
+              "y": 163.09375,
+              "width": 118.453125,
+              "height": 31,
+              "right": 1222.140625,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1221.140625,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 1227.71875,
+              "bottom": 193.09375
+            },
+            {
+              "x": 1227.71875,
+              "y": 162.09375,
+              "width": 897.734375,
+              "height": 31,
+              "right": 2125.453125,
+              "bottom": 193.09375
+            },
+            {
+              "x": 2125.453125,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 2132.03125,
+              "bottom": 193.09375
+            }
+          ],
+          "text": "US$14.53+ (ข้อมูลที่มีราคา: 1306 / 1313 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+          "spark": {
+            "x": 1037.6875,
+            "y": 200.1875,
+            "width": 46,
+            "height": 20,
+            "top": 200.1875,
+            "right": 1083.6875,
+            "bottom": 220.1875,
+            "left": 1037.6875
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 139,
+          "clientWidth": 139
+        }
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 1920,
+      "filename": "models-count-th-dark-1920.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 286,
+            "y": 131,
+            "width": 265.53125,
+            "height": 106,
+            "top": 131,
+            "right": 551.53125,
+            "bottom": 237,
+            "left": 286
+          },
+          "value": {
+            "x": 377,
+            "y": 165.09375,
+            "width": 149.53125,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 526.53125,
+            "bottom": 194,
+            "left": 377
+          },
+          "glyphs": [
+            {
+              "x": 377,
+              "y": 163.09375,
+              "width": 58.375,
+              "height": 31,
+              "right": 435.375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 311,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 357,
+            "bottom": 217,
+            "left": 311
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 150,
+          "clientWidth": 150
+        },
+        {
+          "card": {
+            "x": 564.53125,
+            "y": 131,
+            "width": 299.015625,
+            "height": 106,
+            "top": 131,
+            "right": 863.546875,
+            "bottom": 237,
+            "left": 564.53125
+          },
+          "value": {
+            "x": 645.53125,
+            "y": 165.09375,
+            "width": 123.015625,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 768.546875,
+            "bottom": 194,
+            "left": 645.53125
+          },
+          "glyphs": [
+            {
+              "x": 645.53125,
+              "y": 163.09375,
+              "width": 77.953125,
+              "height": 31,
+              "right": 723.484375,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 784.546875,
+            "y": 165.546875,
+            "width": 64,
+            "height": 28,
+            "top": 165.546875,
+            "right": 848.546875,
+            "bottom": 193.546875,
+            "left": 784.546875
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 123,
+          "clientWidth": 123
+        },
+        {
+          "card": {
+            "x": 876.546875,
+            "y": 131,
+            "width": 265.546875,
+            "height": 106,
+            "top": 131,
+            "right": 1142.09375,
+            "bottom": 237,
+            "left": 876.546875
+          },
+          "value": {
+            "x": 957.546875,
+            "y": 165.09375,
+            "width": 169.546875,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 1127.09375,
+            "bottom": 194,
+            "left": 957.546875
+          },
+          "glyphs": [
+            {
+              "x": 957.546875,
+              "y": 163.09375,
+              "width": 53.140625,
+              "height": 31,
+              "right": 1010.6875,
+              "bottom": 194.09375
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 891.546875,
+            "y": 197,
+            "width": 46,
+            "height": 20,
+            "top": 197,
+            "right": 937.546875,
+            "bottom": 217,
+            "left": 891.546875
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 170,
+          "clientWidth": 170
+        },
+        {
+          "card": {
+            "x": 1155.09375,
+            "y": 131,
+            "width": 262.203125,
+            "height": 106,
+            "top": 131,
+            "right": 1417.296875,
+            "bottom": 237,
+            "left": 1155.09375
+          },
+          "value": {
+            "x": 1236.09375,
+            "y": 165.09375,
+            "width": 166.203125,
+            "height": 28.90625,
+            "top": 165.09375,
+            "right": 1402.296875,
+            "bottom": 194,
+            "left": 1236.09375
+          },
+          "glyphs": [
+            {
+              "x": 1236.09375,
+              "y": 163.09375,
+              "width": 118.453125,
+              "height": 31,
+              "right": 1354.546875,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1236.09375,
+              "y": 163.09375,
+              "width": 118.453125,
+              "height": 31,
+              "right": 1354.546875,
+              "bottom": 194.09375
+            },
+            {
+              "x": 1353.546875,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 1360.125,
+              "bottom": 193.09375
+            },
+            {
+              "x": 1360.125,
+              "y": 162.09375,
+              "width": 897.734375,
+              "height": 31,
+              "right": 2257.859375,
+              "bottom": 193.09375
+            },
+            {
+              "x": 2257.859375,
+              "y": 162.09375,
+              "width": 6.578125,
+              "height": 31,
+              "right": 2264.4375,
+              "bottom": 193.09375
+            }
+          ],
+          "text": "US$14.53+ (ข้อมูลที่มีราคา: 1306 / 1313 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+          "spark": {
+            "x": 1170.09375,
+            "y": 200.1875,
+            "width": 46,
+            "height": 20,
+            "top": 200.1875,
+            "right": 1216.09375,
+            "bottom": 220.1875,
+            "left": 1170.09375
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "24px",
+          "fontWeight": "400",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 166,
+          "clientWidth": 166
+        }
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "filename": "models-count-th-dark-390.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 58,
+            "y": 179.5,
+            "width": 155,
+            "height": 171,
+            "top": 179.5,
+            "right": 213,
+            "bottom": 350.5,
+            "left": 58
+          },
+          "value": {
+            "x": 128,
+            "y": 249.328125,
+            "width": 68,
+            "height": 44.328125,
+            "top": 249.328125,
+            "right": 196,
+            "bottom": 293.65625,
+            "left": 128
+          },
+          "glyphs": [
+            {
+              "x": 128,
+              "y": 251.328125,
+              "width": 55.640625,
+              "height": 27,
+              "right": 183.640625,
+              "bottom": 278.328125
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 75,
+            "y": 307.078125,
+            "width": 121,
+            "height": 20,
+            "top": 307.078125,
+            "right": 196,
+            "bottom": 327.078125,
+            "left": 75
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 225,
+            "y": 179.5,
+            "width": 155,
+            "height": 171,
+            "top": 179.5,
+            "right": 380,
+            "bottom": 350.5,
+            "left": 225
+          },
+          "value": {
+            "x": 295,
+            "y": 220,
+            "width": 68,
+            "height": 63,
+            "top": 220,
+            "right": 363,
+            "bottom": 283,
+            "left": 295
+          },
+          "glyphs": [
+            {
+              "x": 295,
+              "y": 222,
+              "width": 53.6875,
+              "height": 27,
+              "right": 348.6875,
+              "bottom": 249
+            },
+            {
+              "x": 295,
+              "y": 253.5,
+              "width": 19.21875,
+              "height": 27,
+              "right": 314.21875,
+              "bottom": 280.5
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 242,
+            "y": 313.5,
+            "width": 121,
+            "height": 20,
+            "top": 313.5,
+            "right": 363,
+            "bottom": 333.5,
+            "left": 242
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 58,
+            "y": 362.5,
+            "width": 155,
+            "height": 204,
+            "top": 362.5,
+            "right": 213,
+            "bottom": 566.5,
+            "left": 58
+          },
+          "value": {
+            "x": 128,
+            "y": 432.328125,
+            "width": 68,
+            "height": 60.828125,
+            "top": 432.328125,
+            "right": 196,
+            "bottom": 493.15625,
+            "left": 128
+          },
+          "glyphs": [
+            {
+              "x": 128,
+              "y": 434.328125,
+              "width": 51.625,
+              "height": 27,
+              "right": 179.625,
+              "bottom": 461.328125
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 75,
+            "y": 514.828125,
+            "width": 121,
+            "height": 20,
+            "top": 514.828125,
+            "right": 196,
+            "bottom": 534.828125,
+            "left": 75
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 225,
+            "y": 362.5,
+            "width": 155,
+            "height": 204,
+            "top": 362.5,
+            "right": 380,
+            "bottom": 566.5,
+            "left": 225
+          },
+          "value": {
+            "x": 295,
+            "y": 419.5,
+            "width": 68,
+            "height": 63,
+            "top": 419.5,
+            "right": 363,
+            "bottom": 482.5,
+            "left": 295
+          },
+          "glyphs": [
+            {
+              "x": 295,
+              "y": 421.5,
+              "width": 65.921875,
+              "height": 27,
+              "right": 360.921875,
+              "bottom": 448.5
+            },
+            {
+              "x": 295,
+              "y": 453,
+              "width": 44.671875,
+              "height": 27,
+              "right": 339.671875,
+              "bottom": 480
+            },
+            {
+              "x": 295,
+              "y": 421.5,
+              "width": 65.921875,
+              "height": 27,
+              "right": 360.921875,
+              "bottom": 448.5
+            },
+            {
+              "x": 295,
+              "y": 453,
+              "width": 44.671875,
+              "height": 27,
+              "right": 339.671875,
+              "bottom": 480
+            },
+            {
+              "x": 338.671875,
+              "y": 452,
+              "width": 6.796875,
+              "height": 27,
+              "right": 345.46875,
+              "bottom": 479
+            },
+            {
+              "x": 345.46875,
+              "y": 452,
+              "width": 828.25,
+              "height": 27,
+              "right": 1173.71875,
+              "bottom": 479
+            },
+            {
+              "x": 1173.71875,
+              "y": 452,
+              "width": 6.796875,
+              "height": 27,
+              "right": 1180.515625,
+              "bottom": 479
+            }
+          ],
+          "text": "US$14.53+ (ข้อมูลที่มีราคา: 1306 / 1313 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+          "spark": {
+            "x": 242,
+            "y": 529.5,
+            "width": 121,
+            "height": 20,
+            "top": 529.5,
+            "right": 363,
+            "bottom": 549.5,
+            "left": 242
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        }
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "filename": "models-count-th-light-390.png",
+      "api": {
+        "url": "http://127.0.0.1:7816/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+        "groups": 1240,
+        "sessions": 1251,
+        "tokens": 721001247,
+        "calls": 1313,
+        "apiValue": 14.530169186818464
+      },
+      "expected": [
+        "1,240",
+        "1,251"
+      ],
+      "geometry": [
+        {
+          "card": {
+            "x": 58,
+            "y": 179.5,
+            "width": 155,
+            "height": 171,
+            "top": 179.5,
+            "right": 213,
+            "bottom": 350.5,
+            "left": 58
+          },
+          "value": {
+            "x": 128,
+            "y": 249.328125,
+            "width": 68,
+            "height": 44.328125,
+            "top": 249.328125,
+            "right": 196,
+            "bottom": 293.65625,
+            "left": 128
+          },
+          "glyphs": [
+            {
+              "x": 128,
+              "y": 251.328125,
+              "width": 55.640625,
+              "height": 27,
+              "right": 183.640625,
+              "bottom": 278.328125
+            }
+          ],
+          "text": "1,240",
+          "spark": {
+            "x": 75,
+            "y": 307.078125,
+            "width": 121,
+            "height": 20,
+            "top": 307.078125,
+            "right": 196,
+            "bottom": 327.078125,
+            "left": 75
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 225,
+            "y": 179.5,
+            "width": 155,
+            "height": 171,
+            "top": 179.5,
+            "right": 380,
+            "bottom": 350.5,
+            "left": 225
+          },
+          "value": {
+            "x": 295,
+            "y": 220,
+            "width": 68,
+            "height": 63,
+            "top": 220,
+            "right": 363,
+            "bottom": 283,
+            "left": 295
+          },
+          "glyphs": [
+            {
+              "x": 295,
+              "y": 222,
+              "width": 53.6875,
+              "height": 27,
+              "right": 348.6875,
+              "bottom": 249
+            },
+            {
+              "x": 295,
+              "y": 253.5,
+              "width": 19.21875,
+              "height": 27,
+              "right": 314.21875,
+              "bottom": 280.5
+            }
+          ],
+          "text": "721.0M",
+          "spark": {
+            "x": 242,
+            "y": 313.5,
+            "width": 121,
+            "height": 20,
+            "top": 313.5,
+            "right": 363,
+            "bottom": 333.5,
+            "left": 242
+          },
+          "longCount": null,
+          "wide": null,
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 58,
+            "y": 362.5,
+            "width": 155,
+            "height": 204,
+            "top": 362.5,
+            "right": 213,
+            "bottom": 566.5,
+            "left": 58
+          },
+          "value": {
+            "x": 128,
+            "y": 432.328125,
+            "width": 68,
+            "height": 60.828125,
+            "top": 432.328125,
+            "right": 196,
+            "bottom": 493.15625,
+            "left": 128
+          },
+          "glyphs": [
+            {
+              "x": 128,
+              "y": 434.328125,
+              "width": 51.625,
+              "height": 27,
+              "right": 179.625,
+              "bottom": 461.328125
+            }
+          ],
+          "text": "1,251",
+          "spark": {
+            "x": 75,
+            "y": 514.828125,
+            "width": 121,
+            "height": 20,
+            "top": 514.828125,
+            "right": 196,
+            "bottom": 534.828125,
+            "left": 75
+          },
+          "longCount": "true",
+          "wide": "false",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        },
+        {
+          "card": {
+            "x": 225,
+            "y": 362.5,
+            "width": 155,
+            "height": 204,
+            "top": 362.5,
+            "right": 380,
+            "bottom": 566.5,
+            "left": 225
+          },
+          "value": {
+            "x": 295,
+            "y": 419.5,
+            "width": 68,
+            "height": 63,
+            "top": 419.5,
+            "right": 363,
+            "bottom": 482.5,
+            "left": 295
+          },
+          "glyphs": [
+            {
+              "x": 295,
+              "y": 421.5,
+              "width": 65.921875,
+              "height": 27,
+              "right": 360.921875,
+              "bottom": 448.5
+            },
+            {
+              "x": 295,
+              "y": 453,
+              "width": 44.671875,
+              "height": 27,
+              "right": 339.671875,
+              "bottom": 480
+            },
+            {
+              "x": 295,
+              "y": 421.5,
+              "width": 65.921875,
+              "height": 27,
+              "right": 360.921875,
+              "bottom": 448.5
+            },
+            {
+              "x": 295,
+              "y": 453,
+              "width": 44.671875,
+              "height": 27,
+              "right": 339.671875,
+              "bottom": 480
+            },
+            {
+              "x": 338.671875,
+              "y": 452,
+              "width": 6.796875,
+              "height": 27,
+              "right": 345.46875,
+              "bottom": 479
+            },
+            {
+              "x": 345.46875,
+              "y": 452,
+              "width": 828.25,
+              "height": 27,
+              "right": 1173.71875,
+              "bottom": 479
+            },
+            {
+              "x": 1173.71875,
+              "y": 452,
+              "width": 6.796875,
+              "height": 27,
+              "right": 1180.515625,
+              "bottom": 479
+            }
+          ],
+          "text": "US$14.53+ (ข้อมูลที่มีราคา: 1306 / 1313 คำขอ. + หมายถึงยอดเฉพาะส่วน แยกฐานค่าใช้จ่ายจริงกับราคา API)",
+          "spark": {
+            "x": 242,
+            "y": 529.5,
+            "width": 121,
+            "height": 20,
+            "top": 529.5,
+            "right": 363,
+            "bottom": 549.5,
+            "left": 242
+          },
+          "longCount": null,
+          "wide": "true",
+          "font": "21px",
+          "fontWeight": "700",
+          "textOverflow": "clip",
+          "overflowX": "visible",
+          "overflowY": "visible",
+          "scrollWidth": 68,
+          "clientWidth": 68
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "forbidden": []
+}

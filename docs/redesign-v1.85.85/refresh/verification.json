@@ -1,0 +1,26 @@
+{
+  "productionIndexSha256": "f072ce2aa183548974e24de8d8387efa171f6dd1c4108129ce7f5a29b65b79f2",
+  "browser": "155.0.8059.80",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--force-color-profile=srgb"
+  ],
+  "fixture": "Synthetic in-memory DB and real API/SSE. Held response is a real earlier22-category API response. Only503 intentionally injected.",
+  "sameFixedScopeRefresh": true,
+  "retainedWhileHeld": true,
+  "late22CannotOverwrite23": true,
+  "retainedAfter503": true,
+  "keyboardRetryAccepts24": true,
+  "selectionABAReturnsFirstPage": true,
+  "detailRequests": [
+    "http://127.0.0.1:7816/api/model-detail?from=1792377722485&to=1792377842486&source_id=1&model=synthetic-model&provider=anthropic",
+    "http://127.0.0.1:7816/api/model-detail?from=1792377722485&to=1792377842486&source_id=1&model=synthetic-model&provider=anthropic",
+    "http://127.0.0.1:7816/api/model-detail?from=1792377722485&to=1792377842486&source_id=1&model=synthetic-model&provider=anthropic",
+    "http://127.0.0.1:7816/api/model-detail?from=1792377722485&to=1792377842486&source_id=1&model=synthetic-model&provider=anthropic",
+    "http://127.0.0.1:7816/api/model-detail?from=1792377722485&to=1792377842486&source_id=1&model=synthetic-model&provider=anthropic",
+    "http://127.0.0.1:7816/api/model-detail?from=1792377722485&to=1792377842486&source_id=1&model=other-model&provider=anthropic",
+    "http://127.0.0.1:7816/api/model-detail?from=1792377722485&to=1792377842486&source_id=1&model=synthetic-model&provider=anthropic"
+  ],
+  "faults": [],
+  "forbidden": []
+}

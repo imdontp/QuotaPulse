@@ -1,0 +1,170 @@
+{
+  "scope": "Synthetic only, supported Claude reader -> real DbSink -> in-memory schema -> actual API functions. Counts are source-derived render counts, not browser CPU/DOM observations.",
+  "results": [
+    {
+      "categories": 6,
+      "ingested": 6,
+      "ingestMs": 8.084500000000048,
+      "historyMs": 1.5015999999999963,
+      "modelMs": 1.1456999999999766,
+      "historyEfforts": 6,
+      "modelEfforts": 6,
+      "historyBytes": 765,
+      "modelBytes": 565,
+      "historyEffortBytes": 295,
+      "modelEffortBytes": 367,
+      "historyCalls": 6,
+      "historyTokens": 18,
+      "historyTimeline": 1,
+      "modelPoints": 1,
+      "groupPlan": [
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+        },
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 48,
+          "detail": "SEARCH u USING INDEX idx_usage_source_ts (source_id=? AND ts>? AND ts<?)"
+        },
+        {
+          "id": 26,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+        },
+        {
+          "id": 31,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        },
+        {
+          "id": 74,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "renderSourceCounts": {
+        "historyListItems": 6,
+        "modelListItems": 6,
+        "modelDescendantElements": 30
+      },
+      "nullAndEmptyPreserved": true
+    },
+    {
+      "categories": 100,
+      "ingested": 100,
+      "ingestMs": 5.130899999999997,
+      "historyMs": 1.0273000000000252,
+      "modelMs": 0.7951999999999657,
+      "historyEfforts": 100,
+      "modelEfforts": 100,
+      "historyBytes": 5953,
+      "modelBytes": 6868,
+      "historyEffortBytes": 5465,
+      "modelEffortBytes": 6665,
+      "historyCalls": 100,
+      "historyTokens": 300,
+      "historyTimeline": 1,
+      "modelPoints": 1,
+      "groupPlan": [
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+        },
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 48,
+          "detail": "SEARCH u USING INDEX idx_usage_source_ts (source_id=? AND ts>? AND ts<?)"
+        },
+        {
+          "id": 26,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+        },
+        {
+          "id": 31,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        },
+        {
+          "id": 74,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "renderSourceCounts": {
+        "historyListItems": 100,
+        "modelListItems": 100,
+        "modelDescendantElements": 500
+      },
+      "nullAndEmptyPreserved": true
+    },
+    {
+      "categories": 20000,
+      "ingested": 20000,
+      "ingestMs": 298.72829999999993,
+      "historyMs": 48.71499999999992,
+      "modelMs": 49.21210000000008,
+      "historyEfforts": 20000,
+      "modelEfforts": 20000,
+      "historyBytes": 1100475,
+      "modelBytes": 1340174,
+      "historyEffortBytes": 1099965,
+      "modelEffortBytes": 1339965,
+      "historyCalls": 20000,
+      "historyTokens": 60000,
+      "historyTimeline": 1,
+      "modelPoints": 1,
+      "groupPlan": [
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+        },
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 48,
+          "detail": "SEARCH u USING INDEX idx_usage_source_ts (source_id=? AND ts>? AND ts<?)"
+        },
+        {
+          "id": 26,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+        },
+        {
+          "id": 31,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        },
+        {
+          "id": 74,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ],
+      "renderSourceCounts": {
+        "historyListItems": 20000,
+        "modelListItems": 20000,
+        "modelDescendantElements": 100000
+      },
+      "nullAndEmptyPreserved": true
+    }
+  ]
+}

@@ -83,6 +83,8 @@ export const en = {
   'history.computed': "Calculated API value",
   'history.estimated': "Estimated API value",
   'history.unknownCost': "Cost unavailable",
+  'redesign.effortPages': 'Effort categories',
+  'redesign.effortRange': '{from}–{to} of {total} categories',
   'history.next': "Next page",
   'history.previous': "Previous page",
   'history.stale': "Showing the last successful snapshot. Retry by resuming or changing filters.",

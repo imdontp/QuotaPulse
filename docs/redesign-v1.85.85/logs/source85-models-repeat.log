@@ -1,0 +1,29 @@
+13:42:00.000 INFO  [db] opened :memory:
+Stable capture pass 1: en/dark, 1 pages
+Stable capture pass 1: en/light, 1 pages
+Stable capture pass 1: th/dark, 1 pages
+Stable capture pass 1: th/light, 1 pages
+Stable capture pass 2: en/dark, 1 pages
+Stable capture pass 2: en/light, 1 pages
+node : node:internal/modules/run_main:122
+At line:24 char:2
++  node --import tsx scripts/check-stable-captures.mts *> "tmp/source85 ...
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: models-th-dark.png: capture differs beyond raster tolerance
+({"changedPixels":135,"maxChannelDelta":34,"pixelCount":1573352})
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-stable-captures.mts:3194:20) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.13.1

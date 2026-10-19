@@ -1,0 +1,19 @@
+08:16:57.173 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:10 char:1
++ node --import tsx tmp/effort85-browser.mts *> tmp/effort85-browser-fi ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+page.waitForFunction: Timeout 20000ms exceeded.
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\effort85-browser.mts:105:18) {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v22.13.1

@@ -4,6 +4,7 @@ import type { HistorySummaryResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
 import './history.css';
+import { EffortPagination, useEffortPage } from './effort-pagination';
 
 export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
   const t = useT();
@@ -19,6 +20,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
     observer.observe(node);
     return () => observer.disconnect();
   }, []);
+  const effort = useEffortPage(data.effort, location.hash);
   const totals = data.totals;
   const count = (value: number) => value.toLocaleString(lang);
   const entries = new Map(data.timeline.map(row => [row.at, row]));
@@ -43,7 +45,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
       <article><i aria-hidden="true"><BarChart3 size={24}/></i><span>{t('col.total')}</span><strong data-testid="history-total-tokens" title={totals.tokens.toLocaleString(lang, { maximumFractionDigits: 20 })} aria-label={String(totals.tokens)}>{f.tokens(totals.tokens)}</strong></article>
       <article><i aria-hidden="true"><FileText size={24}/></i><span>{t('col.calls')}</span><strong>{count(totals.calls)}</strong><small>{count(totals.records)} {t('history.records')} · {count(totals.sessions)} {t('redesign.sessions')}</small></article>
       <article><i aria-hidden="true"><Coins size={24}/></i><span>{t('history.apiTotal')}</span><strong>{value(totals.api_value_usd, priced)}</strong><small>{t('history.nativeTotal')}: {value(totals.reported_native_usd, totals.native_calls)}</small><small>{count(priced)} / {count(totals.calls)} {t('col.calls')}</small></article>
-      <article><i aria-hidden="true"><Zap size={24}/></i><span>{t('history.effortDistribution')}</span><ul>{data.effort.map(row => <li key={JSON.stringify(row.effort)}>{row.effort ?? t('redesign.unknownValue')}: {count(row.calls)}</li>)}</ul>{!data.effort.length && <strong>—</strong>}</article>
+      <article><i aria-hidden="true"><Zap size={24}/></i><span>{t('history.effortDistribution')}</span><ul>{effort.rows.map(row => <li key={JSON.stringify(row.effort)}>{row.effort ?? t('redesign.unknownValue')}: {count(row.calls)}</li>)}</ul><EffortPagination {...effort}/>{!data.effort.length && <strong>—</strong>}</article>
     </div>
     <div className="qp-history-legend"><span>{t('history.inputCombined')}</span><span>{t('col.output')}</span></div>
     <svg ref={chart} viewBox={`0 0 ${width} 144`} preserveAspectRatio="none" role="img" aria-label={`${t('history.timeline')}: ${count(totals.tokens)}`}>

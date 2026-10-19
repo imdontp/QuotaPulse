@@ -1,0 +1,154 @@
+{
+  "checkpoint": "85",
+  "scope": "Native >=1536px production-models dark summary only",
+  "source": {
+    "path": "docs\\redesign-v1.85.69\\refs\\models.png",
+    "sha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+    "size": [
+      1672,
+      941
+    ]
+  },
+  "before": {
+    "path": "docs\\redesign-v1.85.84\\after\\models.png",
+    "sha256": "e8454aa0abab6f34bc143b54a426c7496c1e05122d92b25292ea1a20d54b8287",
+    "size": [
+      1672,
+      941
+    ]
+  },
+  "summaryEnvelope": [
+    239,
+    130,
+    1267,
+    238
+  ],
+  "sourceCards": [
+    [
+      240,
+      131,
+      478,
+      237
+    ],
+    [
+      490,
+      131,
+      758,
+      237
+    ],
+    [
+      771,
+      131,
+      1009,
+      237
+    ],
+    [
+      1022,
+      131,
+      1257,
+      237
+    ]
+  ],
+  "beforeCards": [
+    [
+      239,
+      130,
+      486,
+      236
+    ],
+    [
+      498,
+      130,
+      746,
+      236
+    ],
+    [
+      758,
+      130,
+      1007,
+      236
+    ],
+    [
+      1019,
+      130,
+      1267,
+      236
+    ]
+  ],
+  "plates": [
+    {
+      "semantic": "model-pairs",
+      "sourceROI": [
+        264,
+        143,
+        314,
+        194
+      ],
+      "beforeROI": [
+        251,
+        143,
+        301,
+        194
+      ]
+    },
+    {
+      "semantic": "tokens",
+      "sourceROI": [
+        505,
+        143,
+        555,
+        194
+      ],
+      "beforeROI": [
+        511,
+        143,
+        561,
+        194
+      ]
+    },
+    {
+      "semantic": "sessions",
+      "sourceROI": [
+        785,
+        143,
+        835,
+        194
+      ],
+      "beforeROI": [
+        771,
+        143,
+        821,
+        194
+      ]
+    },
+    {
+      "semantic": "api-value",
+      "sourceROI": [
+        1035,
+        143,
+        1085,
+        194
+      ],
+      "beforeROI": [
+        1032,
+        143,
+        1082,
+        194
+      ]
+    }
+  ],
+  "artMeasurement": "Compare same raw 50x51 local raster rectangles after independent Source vs actual candidate plate origins; no scaling, fake glyph substitution or whole-card MAE with unlike data. These plate rectangles intentionally include border/background and semantic glyph differences. Root must record actual candidate origins, not assume CSS changes landed.",
+  "sourceObservations": [
+    "Card border horizontal crossings independently measured at y140: x241/476-477,490/757,771/1008,1022/1256; no 4 equal columns.",
+    "Source first plate starts x264, copy x330; current first plate starts251/copy303. First left inset~24px versus12 current; remaining Source plate insets~13-15px.",
+    "Source plates roughly50x51 instead of current46x46; Source is softer dark blue/brown/violet without high-contrast outlined border.",
+    "Source value rendering is visibly lighter than current700 body inherited strong, while Source number sizes roughly24px match current24px. Real text and different figures preclude valid cross-image glyph MAE.",
+    "Source Source labels are ~12px versus current11px; labels differ per approved factual overrides, so do not fit literal wording."
+  ],
+  "invariants": [
+    "Layers/Database/Users/Coins actual semantic Lucide marks retained",
+    "Actual data texts, values, costs and chart point arrays retained",
+    "Existing wide-number wrapping retained; no clipping/ellipsis",
+    "No changes to other route/theme/compact layouts or lazy placeholders"
+  ]
+}

@@ -1,0 +1,30 @@
+13:42:00.000 INFO  [db] opened :memory:
+Actual Models count fit en/1536: 1,240 / 1,251 passed.
+Actual Models count fit en/1586: 1,240 / 1,251 passed.
+Actual Models count fit en/1672: 1,240 / 1,251 passed.
+Actual Models count fit en/1920: 1,240 / 1,251 passed.
+node : node:internal/modules/run_main:122
+At line:7 char:1
++ node --import tsx tmp/models85-count-fit.mts *> tmp/models85-count-fi ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.qp-model-summary>article').first().locator('strong') to be visible[22m
+[2m    53 × locator resolved to hidden <strong>1,240</strong>[22m
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\models85-count-fit.mts:197:41) {
+  log: [
+    "  - waiting for locator('.qp-model-summary>article').first().locator('strong') to be visible",
+    '    53 × locator resolved to hidden <strong>1,240</strong>'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.13.1
