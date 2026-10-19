@@ -1,0 +1,25 @@
+﻿13:42:00.000 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:8 char:1
++ node --import tsx scripts/check-runtime-project-motion.mts *> tmp/mot ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+401 !== 200
+
+    at <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-runtime-pro
+ject-motion.mts:159:165) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 401,
+  expected: 200,
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

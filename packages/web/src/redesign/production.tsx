@@ -8,10 +8,11 @@ import { Overview } from './overview';
 import type { ActivityItem } from './overview';
 import { defaultQuota, type QuotaWindow, type RuntimeGraph } from './model';
 import { readScope, selectedScope, writeScope, type ScopeRange } from './scope';
-import { activityTrendScope, latestActivityByHarness, recentActivityCallScope, recentActivityScope } from './activity-trend';
+import { activityTrendScope, latestActivityByHarness, recentActivityCallScope } from './activity-trend';
 import { usageEventParams } from '@/lib/usage-events';
 import { RuntimeMotionEligibility, type RuntimeMotionBatch } from './runtime-motion';
 import { supportedForecastPace } from './insight-model';
+import { readRuntimeObservations, runtimeObservationContext } from './runtime-observations';
 
 const AUTO_RUNTIME_PROJECT = Symbol('initial runtime project');
 
@@ -26,7 +27,8 @@ export function ProductionOverview() {
   const [theme, toggleTheme] = useTheme();
   const [route, setRoute] = useState(readRoute);
   const [mapProject, setMapProject] = useState<string | null | typeof AUTO_RUNTIME_PROJECT>(AUTO_RUNTIME_PROJECT);
-  const [mapGraphSnapshot, setMapGraphSnapshot] = useState<{ key: string; graph: RuntimeGraph } | null>(null);
+  const [mapGraphSnapshot, setMapGraphSnapshot] = useState<{ key: string; context: string; graph: RuntimeGraph; motion: RuntimeMotionBatch } | null>(null);
+  const [mapGraphError, setMapGraphError] = useState<{ key: string; detail: string } | null>(null);
   const periodSelect = useRef<HTMLSelectElement | null>(null);
   const restorePeriodFocus = useRef(false);
   const periodRef = useCallback((node: HTMLSelectElement | null) => {
@@ -57,7 +59,6 @@ export function ProductionOverview() {
     try {
       const overview = await api.overview();
       const scope = selectedScope(route, overview.now);
-      const activityScope = recentActivityScope(scope, overview.now);
       const activityCallScope = recentActivityCallScope(scope, overview.now);
       const usageRange: UsageRangeKey = route.range === 'last30' ? 'custom' : route.range;
       const comparisonSpan = scope.to - scope.from;
@@ -71,14 +72,8 @@ export function ProductionOverview() {
         api.usage({ range: usageRange, from: scope.from, to: scope.to, bucket: 'auto', sourceId: route.sourceId }).catch(() => null),
         comparison,
       ]);
-      // Fetch one newest event per observed harness. A global first page can be filled
-      // by a single busy harness and hide quieter harnesses before client-side dedupe.
-      const harnesses = [...new Set(graph.nodes.harness.map(node => node.key)
-        .filter((harness): harness is string => harness !== null && harness.trim().length > 0))];
-      const activityRows = activityScope ? (await Promise.all(harnesses.map(async harness => {
-        try { return (await api.usageEvents({ ...activityScope, harness }, { limit: 1, offset: 0 })).rows[0] ?? null; }
-        catch { return null; }
-      }))).filter((row): row is NonNullable<typeof row> => row !== null) : [];
+      // The activity rail samples all projects independently from the selected map.
+      const activityRows = await readRuntimeObservations(graph, scope, overview.now, api.usageEvents);
       const latestByHarness = latestActivityByHarness(activityRows);
       const recent: ActivityItem[] = latestByHarness.map(row => ({ id: row.event_id, timestamp: row.timestamp_ms, harness: row.harness, provider: row.provider, model: row.model, tokens: row.total_tokens, grain: row.grain, sessionKey: row.session_key, sourceName: row.source_name }));
       const trends = new Map<string, ReturnType<typeof api.minuteTrend>>();
@@ -102,17 +97,22 @@ export function ProductionOverview() {
   const projectNames = current?.graph.nodes.project.map(node => node.key).filter((project): project is string => project !== null) ?? [];
   const mostActiveProject = current?.graph.nodes.project.slice().sort((a, b) => b.sessions - a.sessions || b.tokens - a.tokens)[0]?.key ?? null;
   const selectedRuntimeProject = mapProject === AUTO_RUNTIME_PROJECT || (mapProject !== null && !projectNames.includes(mapProject)) ? mostActiveProject : mapProject;
+  const mapContext = runtimeObservationContext(routeKey, selectedRuntimeProject);
   const mapGraphKey = current ? JSON.stringify([current.key, current.motion.serial, selectedRuntimeProject]) : '';
   useEffect(() => {
     if (!current) return;
     if (mapProject !== selectedRuntimeProject) { setMapProject(selectedRuntimeProject); return; }
-    if (selectedRuntimeProject === null) { setMapGraphSnapshot({ key: mapGraphKey, graph: current.graph }); return; }
+    if (selectedRuntimeProject === null) { setMapGraphSnapshot({ key: mapGraphKey, context: mapContext, graph: current.graph, motion: current.motion }); return; }
     let active = true;
     const scope = { ...selectedScope(route, current.overview.now), project: selectedRuntimeProject };
-    void api.runtimeMap(scope).then(graph => {
-      if (active) setMapGraphSnapshot({ key: mapGraphKey, graph });
+    void api.runtimeMap(scope).then(async graph => {
+      if (!active) return;
+      // Sample the same exact project as this graph. The recent activity rail keeps
+      // its independent global newest rows; a newer foreign call cannot hide this one.
+      const rows = await readRuntimeObservations(graph, scope, current.overview.now, api.usageEvents);
+      if (active) setMapGraphSnapshot({ key: mapGraphKey, context: mapContext, graph, motion: { ...current.motion, rows } });
     }).catch(cause => {
-      if (active) { setMapGraphSnapshot(null); setError(String(cause)); }
+      if (active) { setMapGraphError({ key: mapGraphKey, detail: String(cause) }); }
     });
     return () => { active = false; };
   }, [current?.key, current?.motion.serial, mapProject, selectedRuntimeProject, routeKey]);
@@ -210,9 +210,23 @@ export function ProductionOverview() {
     </select>
     {route.sourceId && <span className="qp-chip">{t('analysis.source')} #{route.sourceId}</span>}
   </div>;
-  const mapGraph = mapGraphSnapshot?.key === mapGraphKey ? mapGraphSnapshot.graph : graph;
+  const matchingMapContext = Boolean(current && mapGraphSnapshot?.context === mapContext);
+  const mapGraphReady = Boolean(matchingMapContext && mapGraphSnapshot?.key === mapGraphKey);
+  const mapGraph = matchingMapContext ? mapGraphSnapshot!.graph : undefined;
+  const scopedMapError = !mapGraphReady && mapGraphError?.key === mapGraphKey ? mapGraphError.detail : undefined;
+  const runtimeGraphPending = current && !matchingMapContext ? {
+    kind: scopedMapError ? 'error' as const : 'loading' as const,
+    label: t(scopedMapError ? 'app.couldNotLoad' : 'app.loading'),
+    detail: scopedMapError,
+    retryLabel: t('app.refreshNow'), retrying: refresh.refreshing,
+    onRetry: () => { setMapGraphError(null); setError(null); void refresh.refreshNow(); },
+  } : undefined;
+  // Never consume a new accepted serial with global/empty rows while the selected
+  // graph is still loading. Retain the previous same-context serial until its scoped
+  // graph + observations arrive together. Context switches expose no batch and seed.
+  const mapMotion = current && mapGraphSnapshot?.context === mapContext ? mapGraphSnapshot.motion : undefined;
   return <>
-    {current && error && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
-    <Overview initialState={initialState} quickStatsScope={current ? selectedScope(route, current.overview.now) : null} graph={graph} runtimeMotion={current?.motion} runtimeMotionEligibility={motionEligibility.current} runtimeMotionGraphReady={Boolean(current && mapGraphSnapshot?.key === mapGraphKey)} runtimeGraph={mapGraph} runtimeHarnesses={[...new Set((overview?.sources ?? []).map(source => source.harness))]} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} metricComparison={metricComparison} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
+    {current && (error || scopedMapError) && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
+    <Overview initialState={initialState} quickStatsScope={current ? selectedScope(route, current.overview.now) : null} graph={graph} runtimeMotion={mapMotion} runtimeMotionEligibility={motionEligibility.current} runtimeMotionGraphReady={mapGraphReady} runtimeGraph={mapGraph} runtimeGraphPending={runtimeGraphPending} runtimeGraphStatus={matchingMapContext && !mapGraphReady ? scopedMapError ? 'stale' : 'refreshing' : undefined} runtimeHarnesses={[...new Set((overview?.sources ?? []).map(source => source.harness))]} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} metricComparison={metricComparison} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
   </>;
 }

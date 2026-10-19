@@ -1,4 +1,6 @@
-import { useId, useMemo, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react';
+import { useId, useLayoutEffect, useMemo, useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react';
+import { useMotionPref } from '@/lib/motion';
+import { minuteFlowTransitions, playMinuteFlowTransitions, type MinuteFlowSnapshot } from './live-token-flow-motion';
 import type { MessageKey } from '@/i18n/en';
 import { tokens } from '@/format';
 import { liveTokenFlow, liveTokenFlowLatest, liveTokenFlowSegments, liveTokenFlowTicks, liveTokenFlowX, liveTokenFlowY, liveTokenFlowYTicks, type LiveTokenFlowPoint, type LiveTokenFlowResponse, type LiveTokenFlowSeries } from './live-token-flow-data';
@@ -24,16 +26,71 @@ export function LiveTokenFlowLegend({ t }: { t: Translate }) {
   return <div className="qp-live-flow-legend">{series.map(key => <span key={key} data-series={key}><i aria-hidden="true"/>{t(labels[key])}</span>)}</div>;
 }
 
-export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDetails, panelSummary = false }: {
+export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDetails, panelSummary = false, frozen = false, scopeKey = '' }: {
   data: LiveTokenFlowResponse;
   language: 'en' | 'th';
   t: Translate;
   showLegend?: boolean;
   excludedDetails?: ReactNode;
   panelSummary?: boolean;
+  /** Pause/error scope retention cancels the current batch without queuing a replay. */
+  frozen?: boolean;
+  scopeKey?: string;
 }) {
   const wideSummary = useSyncExternalStore(panelSummary ? subscribeSummaryMedia : noSummarySubscription, panelSummary ? summaryMediaSnapshot : summaryServerSnapshot, summaryServerSnapshot);
   const flow = useMemo(() => liveTokenFlow(data), [data]);
+  const motion = useMotionPref();
+  const region = useRef<HTMLDivElement>(null);
+  const previous = useRef<MinuteFlowSnapshot>();
+  const accepted = useRef<LiveTokenFlowResponse>();
+  const cancel = useRef<() => void>(() => {});
+  const visible = useRef(false);
+  const intersection = useRef<boolean | null>(null);
+  const skipNextSnapshot = useRef(false);
+  // Consume accepted snapshots even when disabled. Restoring a region never replays one.
+  useLayoutEffect(() => {
+    // The native wide layout uses display:contents on the root. Observe the
+    // actual plotted surface, whose box exists at every supported breakpoint.
+    const node = region.current?.querySelector<HTMLElement>('.qp-live-flow-canvas');
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    intersection.current = null;
+    const update = () => {
+      visible.current = !document.hidden && intersection.current === true && !media.matches;
+      if (!visible.current) {
+        cancel.current();
+        if (document.hidden || media.matches || intersection.current === false) skipNextSnapshot.current = true;
+      }
+    };
+    const observer = node && typeof IntersectionObserver !== 'undefined'
+      ? new IntersectionObserver(([entry]) => { intersection.current = entry.isIntersecting; update(); }) : null;
+    if (observer && node) observer.observe(node);
+    else if (node) intersection.current = true;
+    document.addEventListener('visibilitychange', update);
+    media.addEventListener('change', update);
+    update();
+    return () => {
+      visible.current = false;
+      cancel.current();
+      observer?.disconnect();
+      document.removeEventListener('visibilitychange', update);
+      media.removeEventListener('change', update);
+    };
+  }, []);
+  useLayoutEffect(() => {
+    cancel.current();
+    const next: MinuteFlowSnapshot = { scopeKey, from: data.from, to: data.to, maximum: flow.maximum, points: flow.points };
+    // Preference, locale and pause changes can cancel but cannot start a prior snapshot.
+    const fresh = accepted.current !== data;
+    const enabled = !frozen && visible.current && !motion.reduced;
+    if (frozen || motion.reduced || document.hidden || intersection.current === false) skipNextSnapshot.current = true;
+    const changes = fresh && enabled && !skipNextSnapshot.current ? minuteFlowTransitions(previous.current, next) : [];
+    if (fresh && enabled) skipNextSnapshot.current = false;
+    accepted.current = data;
+    previous.current = next;
+    if (enabled && region.current && changes.length)
+      cancel.current = playMinuteFlowTransitions(region.current, changes, motion.dur('fast'));
+    return () => cancel.current();
+  }, [data, flow, scopeKey, frozen, motion.reduced]);
   const id = useId().replace(/:/g, '');
   const locale = language === 'th' ? 'th-TH' : 'en-US';
   const number = (value: number) => value.toLocaleString(locale);
@@ -58,7 +115,7 @@ export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDe
         {latest ? <div className="qp-live-flow-latest-values">{latestSeries.map(key => <span key={key} data-series={key}><small>{t(labels[key])}</small><strong data-long-value={key === 'total' && latestCompact(latest[key]).length > 10 || undefined} title={latestExact(latest[key])} aria-label={latestExact(latest[key])}>{latestCompact(latest[key])}</strong></span>)}</div> : <small>{t('redesign.liveFlowNoLatest')}</small>}
       </section>;
 
-  return <div className="qp-live-token-flow" data-maximum={flow.maximum} data-panel-summary={summaryInPanel || undefined}>
+  return <div ref={region} className="qp-live-token-flow" data-maximum={flow.maximum} data-panel-summary={summaryInPanel || undefined}>
     {showLegend && <LiveTokenFlowLegend t={t}/>}
     <div className="qp-live-flow-plot">
       <div className="qp-live-flow-y-axis" aria-hidden="true">{yTicks.map((value, index) => <span key={`${value}-${index}`} data-value={value} title={number(value)} style={{ top: `${y(value)}%`, '--qp-live-flow-y': y(value) } as CSSProperties}>{axisNumber.format(value).length > 4 ? value.toExponential(0).replace('e+', 'e') : axisNumber.format(value)}</span>)}</div>
@@ -72,7 +129,7 @@ export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDe
         {flow.points.map((point, index) => <circle key={point.at} data-series="total" data-at={point.at} data-value={point.total} data-state={point.state} data-partial={point.partial || undefined} cx={x(point.start)} cy={y(point.total)} r="2" fill="var(--qp-flow-total)"><title>{describe(point, 'total', index)}</title></circle>)}
       </svg>
       {(['input', 'output'] as const).map(key => <svg key={key} className={`qp-live-flow-component qp-live-flow-${key}`} viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
-        {liveTokenFlowSegments(flow.points, key).map((segment, index) => <polyline key={index} className="qp-live-flow-line" data-series={key} points={segment.map(point => `${x(point.start)},${y(point.value)}`).join(' ')} fill="none" stroke={`var(--qp-flow-${key})`} strokeWidth="1.8" vectorEffect="non-scaling-stroke"/>)}
+        {liveTokenFlowSegments(flow.points, key).map((segment, index) => <polyline key={index} data-segment={index} className="qp-live-flow-line" data-series={key} points={segment.map(point => `${x(point.start)},${y(point.value)}`).join(' ')} fill="none" stroke={`var(--qp-flow-${key})`} strokeWidth="1.8" vectorEffect="non-scaling-stroke"/>)}
         {flow.points.map((point, index) => point[key] === null ? null : <circle key={point.at} data-series={key} data-at={point.at} data-value={point[key]} data-state={point.state} data-partial={point.partial || undefined} cx={x(point.start)} cy={y(point[key]!)} r="1.6" fill={`var(--qp-flow-${key})`}><title>{describe(point, key, index)}</title></circle>)}
       </svg>)}
       </div>

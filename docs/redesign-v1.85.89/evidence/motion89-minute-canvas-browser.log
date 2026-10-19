@@ -1,0 +1,23 @@
+﻿17:03:19.248 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx scripts/check-live-minute-motion.mts *> tmp/motion8 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+page.waitForFunction: Timeout 15000ms exceeded.
+    at waitValue
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-live-minute-motion.mts:28:39)
+    at update
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-live-minute-motion.mts:54:151)
+    at async <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-live-
+minute-motion.mts:72:347) {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v22.13.1

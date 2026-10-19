@@ -1,0 +1,52 @@
+{
+  "index": "82414e769d0e10ef458703ef68adea2207310f2d7abae8c4460c05a5cbd7dabd",
+  "cases": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "overview-en-dark.png",
+      "sha256": "705964f9ce0e13b30c74637cc6fbae6d84e3242db31d86661cfe6e652a8abfbd",
+      "repeatSha256": "705964f9ce0e13b30c74637cc6fbae6d84e3242db31d86661cfe6e652a8abfbd",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "filename": "overview-en-light.png",
+      "sha256": "102f38cf521115280fd883d3d514815701081a178b565ce9670387c4262de2ef",
+      "repeatSha256": "102f38cf521115280fd883d3d514815701081a178b565ce9670387c4262de2ef",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "overview-th-dark.png",
+      "sha256": "ffe8f117c86d4280f306220e16e97c1454da7fab4e1a3fb0c8139a3d74d8fd16",
+      "repeatSha256": "4132b893d9ba9c3ff81c51c6633f274da8b5fd512a45aeb82338bc84fa20a3e9",
+      "changedPixels": 30,
+      "maxChannelDelta": 4
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "filename": "overview-th-light.png",
+      "sha256": "5ab684392c6beaec420fef64af6aab33c107634dd4b20b6a04f5f71589707fde",
+      "repeatSha256": "5ab684392c6beaec420fef64af6aab33c107634dd4b20b6a04f5f71589707fde",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    }
+  ],
+  "tolerance": {
+    "maxChannelDelta": 10,
+    "maxChangedPixelFraction": 5e-05,
+    "masks": false
+  },
+  "scope": "runtime-layout",
+  "terminalExit": 0
+}

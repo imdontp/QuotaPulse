@@ -10,6 +10,7 @@ import { averageDailyTokenPace, cacheShareTrendSeries, metricTrendSeries } from 
 import { cacheSharePercent, paceAboveSafePercent, percentagePointChange, recommendationKind, relativeChangePercent, supportedForecastPace } from './insight-model';
 import { RedesignShell, type RedesignTranslate } from './shell';
 import { OverviewPendingRegions, type OverviewInitialState } from './overview-pending';
+import { InitialRegion } from './initial-region';
 import { QuotaChart } from './quota-chart';
 import { RuntimeData } from './runtime-data';
 import { ActivitySparkline } from './activity-sparkline';
@@ -96,6 +97,8 @@ interface OverviewProps {
   records?: readonly UsageRecord[];
   graph?: RuntimeGraph;
   runtimeGraph?: RuntimeGraph;
+  runtimeGraphPending?: OverviewInitialState;
+  runtimeGraphStatus?: 'refreshing' | 'stale';
   runtimeMotion?: RuntimeMotionBatch;
   runtimeMotionEligibility?: RuntimeMotionEligibility;
   runtimeMotionGraphReady?: boolean;
@@ -239,7 +242,7 @@ function emptyHarnessNode(key: string): RuntimeGraph['nodes']['harness'][number]
     nativeCalls: 0, computedCalls: 0, estimatedCalls: 0, unknownCalls: 0, lastActivityAt: null, activeSessions: 0 };
 }
 
-function RuntimeMap({ motionBatch, motionEligibility, motionGraphReady = false, nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, enabledHarnesses, onInspect, projects, selectedProject, onProjectChange }: { motionBatch?: RuntimeMotionBatch; motionEligibility?: RuntimeMotionEligibility; motionGraphReady?: boolean; nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; enabledHarnesses?: readonly string[]; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
+function RuntimeMap({ pending, status, motionBatch, motionEligibility, motionGraphReady = false, nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, enabledHarnesses, onInspect, projects, selectedProject, onProjectChange }: { pending?: OverviewInitialState; status?: 'refreshing' | 'stale'; motionBatch?: RuntimeMotionBatch; motionEligibility?: RuntimeMotionEligibility; motionGraphReady?: boolean; nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; enabledHarnesses?: readonly string[]; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
   const arrowId = useId();
   const map = useRef<HTMLDivElement>(null);
   const motionRegion = useRef<HTMLElement>(null);
@@ -296,17 +299,17 @@ function RuntimeMap({ motionBatch, motionEligibility, motionGraphReady = false, 
     observer.observe(element); observer.observe(svg);
     element.querySelectorAll('.qp-map-node').forEach(node => observer.observe(node));
     return () => observer.disconnect();
-  }, [nodes, edges, recordCount, height, singleProject]);
-  return <section ref={motionRegion} data-observation-batch={motionBatch?.serial} className="qp-panel qp-runtime" id="runtime">
+  }, [nodes, edges, recordCount, height, singleProject, pending?.kind]);
+  return <section ref={motionRegion} data-observation-batch={motionBatch?.serial} className="qp-panel qp-runtime" id="runtime" aria-busy={pending?.kind === 'loading' || status === 'refreshing'} data-runtime-state={pending?.kind ?? status ?? 'ready'}>
     <div className="qp-section-heading">
       <div className="qp-runtime-heading-main">
         <h2><GitBranch size={18} className="qp-overview-reference-fallback" aria-hidden="true"/><OverviewHeadingReferenceMark kind="runtime"/><span className="qp-overview-heading-title">{t('redesign.liveRuntimeMap')}</span></h2>
         <p>{t('redesign.connections')}</p>
-        {(projectFilter || recordCount > 0) && <details className="qp-runtime-options">
+        {(projectFilter || (!pending && recordCount > 0)) && <details className="qp-runtime-options">
           <summary aria-label={t('redesign.mapOptions')} title={t('redesign.mapOptions')}><SlidersHorizontal size={14} aria-hidden="true"/></summary>
           <div className="qp-runtime-options-panel">
             {projectFilter}
-            {recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} recordCount={recordCount} language={language} t={t} onInspect={onInspect}/>}
+            {!pending && recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} recordCount={recordCount} language={language} t={t} onInspect={onInspect}/>}
           </div>
         </details>}
       </div>
@@ -319,7 +322,8 @@ function RuntimeMap({ motionBatch, motionEligibility, motionGraphReady = false, 
       </div>
     </div>
 
-    {recordCount === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
+    {status && <p className="qp-footnote" role="status">{t('redesign.staleSnapshot')}</p>}
+    {pending ? <InitialRegion id="runtime-project" label={t('redesign.liveRuntimeMap')} state={pending} heading={<span className="qp-visually-hidden">{t('redesign.liveRuntimeMap')}</span>} className="qp-runtime-pending" status slots={5}/> : recordCount === 0 ? <p>{t('redesign.empty')}</p> : <div className="qp-map-scroll" tabIndex={0} aria-label={t('redesign.runtime')}>
       <div ref={map} className="qp-map" data-single-project={singleProject} style={{ height: height + 24 }}>
         <svg className="qp-map-edges" style={{ '--qp-native-flow-marker': `url(#${arrowId}-native)` } as CSSProperties} viewBox={`0 0 ${geometry.width} ${geometry.height}`} preserveAspectRatio="none" aria-hidden="true">
           <defs>
@@ -369,7 +373,7 @@ function RuntimeMap({ motionBatch, motionEligibility, motionGraphReady = false, 
         </div>)}
       </div>
     </div>}
-    {dimensions.some(dimension => nodes[dimension].length > 8) && <p className="qp-footnote">{t('redesign.topNodes')}</p>}
+    {!pending && dimensions.some(dimension => nodes[dimension].length > 8) && <p className="qp-footnote">{t('redesign.topNodes')}</p>}
   </section>;
 }
 
@@ -418,7 +422,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ initialState, quickStatsScope, records = [], graph, runtimeGraph, runtimeMotion, runtimeMotionEligibility, runtimeMotionGraphReady, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
+export function Overview({ initialState, quickStatsScope, records = [], graph, runtimeGraph, runtimeGraphPending, runtimeGraphStatus, runtimeMotion, runtimeMotionEligibility, runtimeMotionGraphReady, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -568,7 +572,7 @@ export function Overview({ initialState, quickStatsScope, records = [], graph, r
             </div>}
           </section>
         </div>
-        <RuntimeMap motionBatch={runtimeMotion} motionEligibility={runtimeMotionEligibility} motionGraphReady={runtimeMotionGraphReady} nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} enabledHarnesses={runtimeHarnesses} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
+        <RuntimeMap pending={runtimeGraphPending} status={runtimeGraphStatus} motionBatch={runtimeMotion} motionEligibility={runtimeMotionEligibility} motionGraphReady={runtimeMotionGraphReady} nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} enabledHarnesses={runtimeHarnesses} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
         <div className="qp-bottom-grid">
           <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
           <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Sparkles size={18}/><span className="qp-overview-heading-title">{t('redesign.insights')}</span></h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>

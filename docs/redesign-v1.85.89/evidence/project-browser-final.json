@@ -1,0 +1,30 @@
+{
+  "productionIndexSha256": "82414e769d0e10ef458703ef68adea2207310f2d7abae8c4460c05a5cbd7dabd",
+  "browser": "155.0.8059.80",
+  "scope": "Synthetic memory DB and actual compiled local API/SSE; no native release claim",
+  "records": [
+    {
+      "id": "44",
+      "kind": "edge",
+      "state": "running",
+      "from": "\"codex\"",
+      "to": "\"deepseek\"",
+      "repeat": "1",
+      "duration": ".7s"
+    }
+  ],
+  "a": 44,
+  "b": 45,
+  "globalNewest": 45,
+  "heldForeignGraphSuppressed": true,
+  "lateForeignResponseIgnored": true,
+  "sameSerialABARace": {
+    "serial": "3",
+    "newerATokens": "721000040",
+    "obsoleteResponseIgnored": true
+  },
+  "sameContext503Retained": true,
+  "newContext503Empty": true,
+  "actualRetryPost200": true,
+  "recovery": true
+}

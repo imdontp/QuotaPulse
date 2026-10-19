@@ -1,0 +1,85 @@
+﻿TAP version 13
+# Subtest: input includes disjoint fresh/read-cache/write-cache fields; output already includes reasoning
+ok 1 - input includes disjoint fresh/read-cache/write-cache fields; output already includes reasoning
+  ---
+  duration_ms: 2.5976
+  ...
+# Subtest: stored totals stay exact despite component mismatches and all curves share their actual maximum
+ok 2 - stored totals stay exact despite component mismatches and all curves share their actual maximum
+  ---
+  duration_ms: 0.3533
+  ...
+# Subtest: legacy missing components remain unknown and break only the affected curve
+ok 3 - legacy missing components remain unknown and break only the affected curve
+  ---
+  duration_ms: 0.7741
+  ...
+# Subtest: recorded zero and known zero breakdowns remain distinct from absent minute records
+ok 4 - recorded zero and known zero breakdowns remain distinct from absent minute records
+  ---
+  duration_ms: 0.3293
+  ...
+# Subtest: multiple rows in one minute conserve each component and unknowns propagate without dropping known output
+ok 5 - multiple rows in one minute conserve each component and unknowns propagate without dropping known output
+  ---
+  duration_ms: 0.3364
+  ...
+# Subtest: the exact half-open scope retains clipped endpoints and ignores rows outside its minute bins
+ok 6 - the exact half-open scope retains clipped endpoints and ignores rows outside its minute bins
+  ---
+  duration_ms: 0.6732
+  ...
+# Subtest: latest rail selects one latest recorded interval and preserves its unknown and stored values
+ok 7 - latest rail selects one latest recorded interval and preserves its unknown and stored values
+  ---
+  duration_ms: 0.3936
+  ...
+# Subtest: initial, identical, changed scope and numeric maximum snap without a history replay
+ok 8 - initial, identical, changed scope and numeric maximum snap without a history replay
+  ---
+  duration_ms: 2.6822
+  ...
+# Subtest: only changed common real values provide a start; unchanged vertices stay at final geometry
+ok 9 - only changed common real values provide a start; unchanged vertices stay at final geometry
+  ---
+  duration_ms: 1.4342
+  ...
+# Subtest: new, removed, missing-to-recorded and unknown-to-known points do not interpolate fabricated readings
+ok 10 - new, removed, missing-to-recorded and unknown-to-known points do not interpolate fabricated readings
+  ---
+  duration_ms: 0.6626
+  ...
+# Subtest: rolling-window x reframe is immediate and only matching timestamp y values move
+ok 11 - rolling-window x reframe is immediate and only matching timestamp y values move
+  ---
+  duration_ms: 0.4143
+  ...
+# Subtest: unknown component gaps retain their current segments and never connect across a gap
+ok 12 - unknown component gaps retain their current segments and never connect across a gap
+  ---
+  duration_ms: 0.285
+  ...
+# Subtest: SMIL uses shared exact180ms/easing, indefinite trigger and one iteration with final-base fallback
+ok 13 - SMIL uses shared exact180ms/easing, indefinite trigger and one iteration with final-base fallback
+  ---
+  duration_ms: 0.5642
+  ...
+# Subtest: cancellation releases every active handle/listener once, including replacement and unmount callers
+ok 14 - cancellation releases every active handle/listener once, including replacement and unmount callers
+  ---
+  duration_ms: 0.4923
+  ...
+# Subtest: reduced immediate duration, empty changes or missing targets do not create active animations
+ok 15 - reduced immediate duration, empty changes or missing targets do not create active animations
+  ---
+  duration_ms: 0.1662
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1947.7848

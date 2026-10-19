@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.88
+## Current checkpoint: v1.85.89
+
+[Implementation and validation](redesign-v1.85.89/VALIDATION-STATE.md) | [Required remaining work](redesign-v1.85.89/NEXT-REQUIRED-WORK.md) | [Previous all-eight review (88 captures)](redesign-v1.85.88/review.html). Live changed real points now interpolate180ms with bounded lifecycle; actual native visibility bug from display:contents is corrected. Runtime uses exact project observations and prevents foreign topology during pending/error states. Final web build,15 post-correction targeted tests, real API/SSE minute/project/ABA/Retry and existing Runtime motion gates pass. Full564 tests passed before the last canvas correction. Overview4 repeat pairs pass (3exact). Runway/History/Alerts motion, original all-eight visual acceptance and release/rollback remain open.
+
+## Previous checkpoint: v1.85.88
 
 [Implementation and validation](redesign-v1.85.88/VALIDATION-STATE.md) | [Original/current all-eight review](redesign-v1.85.88/review.html) | [Required remaining work](redesign-v1.85.88/NEXT-REQUIRED-WORK.md). Models row palette and Projects non-data grid removal follow Source; redundant aggregate classification is removed with70 full-response equivalences. Final builds,549 tests, original40 repeat pairs (32exact), Models8browser and freshall8 captures pass. Compiled/trial Projects cross-run raster fails3/5 despite equal facts/geometry; cause remains unresolved. Explicit motion contracts and original all-eight/release acceptance remain open.
 

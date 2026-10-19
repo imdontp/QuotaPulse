@@ -1696,3 +1696,6 @@
   background-repeat:no-repeat,repeat,repeat;
  }
 }
+
+/* A new project context has no accepted topology yet; reserve its map space. */
+.qp-runtime>.qp-runtime-pending { grid-column:1/-1; min-height:180px; border:0; padding:0; background:transparent; }
