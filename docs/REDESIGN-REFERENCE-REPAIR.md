@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.89
+## Current checkpoint: v1.85.90
+
+[Runway implementation and validation](redesign-v1.85.90/VALIDATION-STATE.md) | [Required remaining work](redesign-v1.85.90/NEXT-REQUIRED-WORK.md). Valid same-period forecasts settle420ms; stale preserves labelled exact prior snapshot, automatic default expiry stays honest, locale preserves retention, reset/missing quota replaces or clears. Final build,254web tests and actual31-frame native-timeline gate pass. Two source/reproduction defects were corrected before acceptance. Original all-eight visual acceptance, History/Alerts motion and native/release/rollback remain open.
+
+## Previous checkpoint: v1.85.89
 
 [Implementation and validation](redesign-v1.85.89/VALIDATION-STATE.md) | [Required remaining work](redesign-v1.85.89/NEXT-REQUIRED-WORK.md) | [Previous all-eight review (88 captures)](redesign-v1.85.88/review.html). Live changed real points now interpolate180ms with bounded lifecycle; actual native visibility bug from display:contents is corrected. Runtime uses exact project observations and prevents foreign topology during pending/error states. Final web build,15 post-correction targeted tests, real API/SSE minute/project/ABA/Retry and existing Runtime motion gates pass. Full564 tests passed before the last canvas correction. Overview4 repeat pairs pass (3exact). Runway/History/Alerts motion, original all-eight visual acceptance and release/rollback remain open.
 

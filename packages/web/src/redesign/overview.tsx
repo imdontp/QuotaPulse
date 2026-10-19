@@ -19,6 +19,7 @@ import { useRuntimeActivity } from './use-runtime-activity';
 import { useRuntimeMotion } from './use-runtime-motion';
 import type { RuntimeMotionBatch, RuntimeMotionEligibility } from './runtime-motion';
 import { PulseAmbient } from './pulse-ambient';
+import { useRunwayMotion } from './use-runway-motion';
 import type { UsageEventScope } from '@/lib/usage-events';
 import { activityMinutePoints, activityTokensPerMinute } from './activity-trend';
 import './runtime-flow-reference.css';
@@ -98,6 +99,7 @@ interface OverviewProps {
   graph?: RuntimeGraph;
   runtimeGraph?: RuntimeGraph;
   runtimeGraphPending?: OverviewInitialState;
+  runwayScopeKey?: string;
   runtimeGraphStatus?: 'refreshing' | 'stale';
   runtimeMotion?: RuntimeMotionBatch;
   runtimeMotionEligibility?: RuntimeMotionEligibility;
@@ -377,9 +379,25 @@ function RuntimeMap({ pending, status, motionBatch, motionEligibility, motionGra
   </section>;
 }
 
-function QuotaRunway({ quota, now, t, language, preview, history, historyError }: { quota: QuotaWindow | undefined; now: number; t: Translate; language: 'en' | 'th'; preview: boolean; history?: QuotaHistoryResponse | null; historyError?: boolean }) {
+function QuotaRunway({ quota: currentQuota, availableQuotas, now: clock, t, language, preview, history, historyError }: { quota: QuotaWindow | undefined; availableQuotas: readonly QuotaWindow[]; now: number; t: Translate; language: 'en' | 'th'; preview: boolean; history?: QuotaHistoryResponse | null; historyError?: boolean }) {
   const [historyOpen, setHistoryOpen] = useState(false);
-  const runway = runwayState(quota, now, preview ? 300000 : 3600000);
+  const region = useRef<HTMLElement>(null);
+  const priorQuotaId = useRef<string>();
+  const staleAfterMs = preview ? 300000 : 3600000;
+  // Automatic default selection excludes stale windows. Retain only the exact
+  // still-present prior reader for this Runway; the core keeps its fresh default.
+  const priorQuota = !currentQuota ? availableQuotas.find(item => item.id === priorQuotaId.current) : undefined;
+  const priorState = runwayState(priorQuota, clock, staleAfterMs);
+  const selected = currentQuota ?? (priorState.status === 'unavailable' && priorState.reason === 'stale' ? priorQuota : undefined);
+  const presentation = useRunwayMotion(region, selected, clock, staleAfterMs);
+  useLayoutEffect(() => {
+    if (presentation.kind === 'fresh') priorQuotaId.current = presentation.display.quota.id;
+    else if (presentation.kind === 'unavailable') priorQuotaId.current = undefined;
+  }, [presentation]);
+  const stale = presentation.kind === 'stale';
+  const quota = presentation.kind === 'unavailable' ? selected : presentation.display.quota;
+  const now = presentation.kind === 'unavailable' ? clock : presentation.display.at;
+  const runway = presentation.kind === 'unavailable' ? { status: 'unavailable' as const, reason: presentation.reason } : presentation.display.runway;
   const date = (value: number) => new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(value);
   const duration = (value: number) => value - now < 60_000 ? '<1m' : countdown(value, now);
   const reason = runway.status === 'unavailable' ? ({ noQuota: 'redesign.runwayNoQuota', stale: 'redesign.runwayStale', noReset: 'redesign.runwayNoReset', reset: 'redesign.runwayReset', unknown: 'redesign.runwayUnknown' } as const)[runway.reason] : null;
@@ -393,9 +411,8 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
     ? `${t('redesign.runwayHitLimitLead')} ${timeBeforeReset} ${t('redesign.beforeReset')}${language === 'th' ? '' : '.'}`
     : runway.status === 'ready' && runway.projectedFullAt !== null
       ? t('redesign.runwayAfterReset') : forecast;
-  const marker = runway.status === 'ready' && runway.projectedBeforeReset && runway.projectedFullAt !== null
-    ? (runway.projectedFullAt - now) / (quota!.resetAt - now) * 100 : null;
-  return <section className="qp-panel qp-runway" data-testid="quota-runway">
+  const marker = presentation.kind === 'unavailable' ? null : presentation.display.marker;
+  return <section ref={region} className="qp-panel qp-runway" data-testid="quota-runway" data-state={presentation.kind} data-stale={stale || undefined}>
     <div className="qp-runway-heading"><h2><CircleGauge size={18}/><span className="qp-overview-heading-title">{t('redesign.runway')}</span></h2><span className="qp-runway-subtitle">{t('redesign.runwaySubtitle')}</span>{!preview && <details className="qp-quota-history" data-testid="quota-history" onToggle={event => setHistoryOpen(event.currentTarget.open)}>
       <summary aria-label={t('redesign.observedHistory')} title={t('redesign.observedHistory')}><History size={14}/></summary>
       <div className="qp-quota-history-panel">
@@ -406,13 +423,14 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
         </> : <p className="qp-footnote">{historyError ? t('redesign.historyUnavailable') : history || !quota ? t('redesign.noHistory') : t('redesign.historyLoading')}</p>}
       </div>
     </details>}<span className="qp-runway-owner">{quota ? `${quota.owner} · ${quotaWindowLabel(quota.window, t)}` : t('redesign.unavailable')}</span></div>
+    {stale && <p className="qp-runway-message" role="status">{t('redesign.runwayFrozen')} <time dateTime={new Date(now).toISOString()}>{date(now)}</time></p>}
     {runway.status === 'unavailable' ? <p className="qp-runway-message" role="status">{t(reason!)}</p> : <>
       <div className="qp-runway-labels">
-        <span>{t('redesign.now')}<time dateTime={new Date(now).toISOString()}>{date(now)}</time></span>
+        <span>{t(stale ? 'redesign.runwaySnapshot' : 'redesign.now')}<time dateTime={new Date(now).toISOString()}>{date(now)}</time></span>
         <span data-risk={marker !== null ? 'warning' : undefined}>{t('redesign.projected')}{runway.projectedFullAt !== null ? <time dateTime={new Date(runway.projectedFullAt).toISOString()}>{date(runway.projectedFullAt)}</time> : <small>{t('redesign.unknownValue')}</small>}</span>
         <span>{t('redesign.resetShort')} ({quota!.window})<time dateTime={new Date(quota!.resetAt).toISOString()}>{date(quota!.resetAt)}</time></span>
       </div>
-      <div className="qp-runway-track" role="img" aria-label={`${t('redesign.now')} ${date(now)} · ${forecast} · ${t('redesign.resetShort')} ${date(quota!.resetAt)}`} data-now={now} data-reset-at={quota!.resetAt} data-projected-at={runway.projectedFullAt ?? undefined}>
+      <div className="qp-runway-track" role="img" aria-label={`${t(stale ? 'redesign.runwaySnapshot' : 'redesign.now')} ${date(now)} · ${forecast} · ${t('redesign.resetShort')} ${date(quota!.resetAt)}`} data-now={now} data-reset-at={quota!.resetAt} data-projected-at={runway.projectedFullAt ?? undefined}>
         <span className="qp-runway-fill" style={{ width: `${marker ?? 100}%` }}/>
         {marker !== null && <span className="qp-runway-risk" style={{ left: `${marker}%` }}/>}<span className="qp-runway-now"/>
         {marker !== null && <span className="qp-runway-marker" style={{ left: `${marker}%` }}/>}<span className="qp-runway-reset"/>
@@ -422,7 +440,7 @@ function QuotaRunway({ quota, now, t, language, preview, history, historyError }
   </section>;
 }
 
-export function Overview({ initialState, quickStatsScope, records = [], graph, runtimeGraph, runtimeGraphPending, runtimeGraphStatus, runtimeMotion, runtimeMotionEligibility, runtimeMotionGraphReady, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
+export function Overview({ initialState, quickStatsScope, runwayScopeKey, records = [], graph, runtimeGraph, runtimeGraphPending, runtimeGraphStatus, runtimeMotion, runtimeMotionEligibility, runtimeMotionGraphReady, quotas, quotaAccountStates, now, t, language, onLanguage, theme: themeProp, onTheme, preview = false, currency = 'USD', rate = 1, onQuotaSelect, quotaHistory, quotaHistoryError, metricUsage, metricComparison, recent, activityTrend, period, periodControl, selectedQuotaId, harnessVendors = {}, runtimeHarnesses, historyHref = '#history?range=today', runtimeProjects, selectedRuntimeProject, onRuntimeProjectChange }: OverviewProps) {
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
@@ -574,7 +592,7 @@ export function Overview({ initialState, quickStatsScope, records = [], graph, r
         </div>
         <RuntimeMap pending={runtimeGraphPending} status={runtimeGraphStatus} motionBatch={runtimeMotion} motionEligibility={runtimeMotionEligibility} motionGraphReady={runtimeMotionGraphReady} nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} enabledHarnesses={runtimeHarnesses} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
         <div className="qp-bottom-grid">
-          <QuotaRunway quota={quota} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
+          <QuotaRunway key={runwayScopeKey ?? JSON.stringify([quickStatsScope?.sourceId ?? null])} quota={quota} availableQuotas={quotas} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
           <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Sparkles size={18}/><span className="qp-overview-heading-title">{t('redesign.insights')}</span></h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>
             <div className="qp-insight-grid">
               <article className="qp-insight-card" data-insight="burn" data-state={tokenPeriodChange === null ? 'unknown' : tokenPeriodChange > 0 ? 'increase' : tokenPeriodChange < 0 ? 'decrease' : 'steady'} data-value={tokenPeriodChange ?? undefined}><i aria-hidden="true"><Flame size={18}/></i><div><header><h3>{t('redesign.tokenUsageChange')}</h3><strong>{signedPercent(tokenPeriodChange)}</strong></header><p>{tokenPeriodChange === null ? t('redesign.noComparisonBaseline') : `${t('redesign.comparedWithPrevious')} · ${period ?? t('redesign.allTime')}`}</p></div></article>

@@ -179,6 +179,8 @@ export const en = {
   'redesign.forecastReset': 'Forecast reset after a window change',
   'redesign.runwayNoQuota': 'Select a fresh quota window to see runway',
   'redesign.runwayStale': 'Runway unavailable while the selected reading is stale',
+  'redesign.runwayFrozen': 'Stale reading — last valid forecast frozen as of',
+  'redesign.runwaySnapshot': 'Forecast snapshot',
   'redesign.runwayReset': 'Runway unavailable after the reset time',
   'redesign.runwayNoReset': 'Runway unavailable without a reported reset time',
   'redesign.runwayUnknown': 'Runway unavailable without a reported percentage',

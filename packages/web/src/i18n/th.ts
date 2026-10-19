@@ -185,6 +185,8 @@ export const th: Record<MessageKey, string> = {
   'redesign.forecastReset': 'เริ่มคาดการณ์ใหม่หลังรอบโควตาเปลี่ยน',
   'redesign.runwayNoQuota': 'เลือกโควตาที่ยังมีข้อมูลสดเพื่อดูระยะเผื่อ',
   'redesign.runwayStale': 'แสดงระยะเผื่อไม่ได้เพราะข้อมูลโควตาเก่า',
+  'redesign.runwayFrozen': 'ข้อมูลเก่า — คงภาพการคาดการณ์ล่าสุด ณ',
+  'redesign.runwaySnapshot': 'ภาพการคาดการณ์ ณ',
   'redesign.runwayReset': 'แสดงระยะเผื่อไม่ได้หลังเวลารีเซ็ต',
   'redesign.runwayNoReset': 'แสดงระยะเผื่อไม่ได้เพราะไม่มีเวลารีเซ็ตที่รายงาน',
   'redesign.runwayUnknown': 'แสดงระยะเผื่อไม่ได้เพราะไม่มีเปอร์เซ็นต์โควตา',
