@@ -1,0 +1,40 @@
+# Checkpoint v1.85.91 — bounded implementation validated
+
+Date: 2026-10-20. Branch `design/redesign-foundation`, isolated worktree under `tmp/worktrees/redesign-foundation`, same authorized QuotaPulse origin. Expected parent `717d23b9d32cf87c6ca5c7ec67f3cd50470c4da4` (90). This document describes the source in this checkpoint; its commit is resolved through tag `redesign-visual-fidelity-v1.85.91` after publication.
+
+**The original all-eight redesign goal remains open. No overall likeness percentage or release completion is claimed.** [Original/current visual review](review.html) | [Required remaining work](NEXT-REQUIRED-WORK.md).
+
+## Implemented
+
+- History uses exact recorded identity (event/source/session/timestamp), a bounded preceding accepted page, 180ms appearance and one 700ms emphasis. Explicit selections animate the row and existing native detail. Initial selection, duplicate/reordered/retained pages, query/page changes and restoration seed statically. Newly observed presence is not proof of ingestion time or a new live call; late imported records retain their real timestamps.
+- Alerts compares full-data risk identity and event IDs, with separate risk/history ledgers and request-start eligibility epochs. New visible accepted identities enter once for 180ms. Filters, duplicates, show-more, offscreen/hidden restoration and reduced motion do not replay a queue. Actual severity and recorded values remain unchanged.
+- Native dark Runtime share tracks now start near the Source position and use blue/violet paint; real inline percentages, nodes and edges are unchanged. Native dark Live/Models table headings use the Source inset surface. Models row histories use 1.25px strokes while preserving all observed points and gaps. Scope is native dark >=1536; nine same-page light/compact/mobile PNG controls remain byte exact.
+- Two actual History navigation defects were reproduced and fixed: an earlier route listener could overwrite incoming filter intent before History read mutable location; immutable `HashChangeEvent.newURL` now preserves it. Existing `canonicalHash` is applied in redesign mode so the supported `#sessions` alias also preserves incoming filters and clears prior model filters. Legacy mode keeps its existing path semantics.
+
+## Final build-bound validation
+
+Final web index SHA256: `5ab9599c864d343e75543f395236c9feae20bff246c2f21784f0d362d5bfcca3`. [Built inventory](built-web-inventory.json) and [source fingerprints](source-fingerprints.json) bind the artifacts. Browser is Chrome 155.0.8059.80 with isolated synthetic memory DB/API/SSE, not customer data.
+
+- Web typecheck/build: exit 0. Web tests: **273/273**, exit 0 after the final alias correction. Daemon/tray source is unchanged; this is not a new full-repository test total.
+- Actual native animation sampling: four trajectory groups for History presence, selection surviving an actual duplicate response, fresh post-preference presence, and Alerts risk/history entrance. Finite 180/700ms native timelines and computed presentation are sampled. Initial/reduced/duplicate/filter/show-more states stay static; Escape restores the native opener.
+- History lifecycle: pause holds exact page for 1600ms beyond the 1200ms coalescer with no History request, resume/filter restoration seeds, real viewport clipping suppresses replay, a held API response crossing offscreen eligibility stays static, and active 180/700ms effects cancel on same-document unmount. No later detached History work occurs. Alerts lifecycle likewise covers actual offscreen updates, held response across IO epoch, active event entrance cancellation and static remount. OS minimize/visibility and packaged native lifecycle are separate remaining gates.
+- Actual route regression: provider filtering, Back/Forward, explicit custom bounds/source/model/provider and the legacy sessions alias all pass on this final index. Before-red JSON/logs are retained. Alias resolves to provider openai with the prior model cleared and actual API request corrected.
+- Fourteen final compiled visual cases preserve actual factual fields, panel/row/node boxes, graph/trend paths and nine structured controls against recorded trial-before snapshots. Trial baseline index is `41c6426dc6a595243048d1e431ae90102ea7e996b3aaddf3f7bc9f0cc1cc6dba`, with exact candidate CSS recorded separately. These are paint/geometry checks, not fourteen pixel-equivalent independent renders.
+- All eight native EN/dark routes were freshly captured on the final index with heading/font/sidebar geometry checks and History fresh-entry state before closing its automatic dialog. Earlier 18-case all8/responsive run was at 5f8… before the final alias fix; do not relabel it as final-index responsive coverage.
+- Independent source/evidence review approves the bounded visual/motion implementation and both causal routing corrections. Final root checks above subsequently completed; the review preserves its intermediate version labels.
+
+## Visual evidence and remaining raster finding
+
+Source/before/after fixed header ROI median RGB: Live (10,22,42)/(7,16,28)/(10,22,42); Models (9,18,34)/(7,16,28)/(9,18,34). Runtime first track x1427.9375→1394.46875 against Source around1393; actual38% remains38%. This supports local improvement only. Long exact model identity remains available through keyboard, aria-label and title; all characters need not fit visually. Opaque sticky Live headings and dense observed Model history were checked.
+
+Independent trial-CSS versus compiled-CSS rendering still varies in sidebar rasterization. Unchanged repeat tolerance is maxChannelDelta10 and changed fraction0.00005, no masks. Pre-route run: 10 exact, 2 within tolerance, **2 fail** (Overview-long30pixels/max35; Live-light41/max28). Final run: 10 exact, 2 within tolerance, **2 fail** (Overview-long30/max35; Overview-compact48/max37). Live-light now passes without a causal correction; that does not resolve its earlier failure. Raw failed pairs from both runs and manifests are archived. Historical85/88 Models/Projects findings also remain open. Do not widen tolerance, mask sidebar, or claim a deterministic-render fix.
+
+## Reproduction and provenance
+
+Run from the isolated worktree using existing dependencies: `npm run build -w @quotapulse/web`, `npm run test -w @quotapulse/web`, then sequentially `node --import tsx scripts/check-history-alerts-motion.mts` and `node --import tsx scripts/check-history-route.mts`. They use synthetic in-memory DBs and local port7816; do not run browser harnesses concurrently. Source visual reproduction requires extracting the archived trial-before manifest into `tmp/source91-trial/verification.json` and candidate CSS into `tmp/source91-trial.css`, then setting `QUOTAPULSE_VISUAL91_MODE=compiled` and running `scripts/check-source91-visual.mts`. Trial PNGs are needed for independent raster comparisons, not factual geometry assertions.
+
+The gzipped all8 scripts preserve exact captured script bytes. Extract into this repository's `tmp/` directory before running so relative imports resolve. `all8-final.mts.gz` is final native8; the other archive preserves the earlier18-case pre-alias harness and does not imply an independent current rerun. Original eight reference hashes were freshly checked against both Downloads refs and the existing69 archive. Static images display real application code through synthetic API fixtures; production continues using actual user data.
+
+An initial browser harness event used a timestamp equal to the half-open range end and correctly did not appear; the fixture now uses end-minus1ms. Another interim harness retained completed instrumentation across same-document navigation; resetting instrumentation fixed the false assertion. Those reds do not establish app defects. The two actual route reds do establish causal source defects. Temporary credit rejection was resolved by retry; the historical continuation draft is superseded.
+
+**Next:** complete generic table/detail motion beyond History and continue the original all8 comparison, compatibility/native/release/rollback gates. [Full remaining work](NEXT-REQUIRED-WORK.md).

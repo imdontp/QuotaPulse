@@ -282,3 +282,6 @@
     box-shadow:inset 0 0 0 3px #1647b808;
   }
 }
+
+/* Finite newly-derived entrances are owned by native animations; no warning loop. */
+[data-testid=production-alerts] [data-alert-motion=entering] { will-change:opacity,transform; }

@@ -1,0 +1,12 @@
+{
+  "productionIndexSha256": "5ab9599c864d343e75543f395236c9feae20bff246c2f21784f0d362d5bfcca3",
+  "providerRoute": true,
+  "backClears": true,
+  "forwardRestores": true,
+  "finalUrl": "http://127.0.0.1:7816/#history?range=today&provider=deepseek",
+  "requests": [
+    "/api/usage-events?from=1747414800000&to=1747489320000&provider=deepseek&grain=all&limit=50&offset=0",
+    "/api/usage-events?from=1747414800000&to=1747489320000&grain=all&limit=50&offset=0",
+    "/api/usage-events?from=1747414800000&to=1747489320000&provider=deepseek&grain=all&limit=50&offset=0"
+  ]
+}

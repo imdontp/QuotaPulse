@@ -1699,3 +1699,9 @@
 
 /* A new project context has no accepted topology yet; reserve its map space. */
 .qp-runtime>.qp-runtime-pending { grid-column:1/-1; min-height:180px; border:0; padding:0; background:transparent; }
+
+/* Native concept tracks retain real percentages while reserving their source width. */
+@media(min-width:1536px) {
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-map-node .qp-node-share { width:50%; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-node-track>span { background:linear-gradient(90deg,#4567fa,#866bff); }
+}

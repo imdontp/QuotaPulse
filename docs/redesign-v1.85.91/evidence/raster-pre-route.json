@@ -1,0 +1,137 @@
+{
+  "scope": "Trial CSS versus compiled CSS independent render, no masks; does not replace original Source acceptance",
+  "cases": [
+    {
+      "case": "overview-native-after.png",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "fraction": 0.0,
+      "originalRepeatTolerancePass": true,
+      "region": null
+    },
+    {
+      "case": "overview-light-after.png",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "fraction": 0.0,
+      "originalRepeatTolerancePass": true,
+      "region": null
+    },
+    {
+      "case": "overview-compact-after.png",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "fraction": 0.0,
+      "originalRepeatTolerancePass": true,
+      "region": null
+    },
+    {
+      "case": "overview-mobile-after.png",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "fraction": 0.0,
+      "originalRepeatTolerancePass": true,
+      "region": null
+    },
+    {
+      "case": "overview-long-after.png",
+      "changedPixels": 30,
+      "maxChannelDelta": 35,
+      "fraction": 1.9068055160069967e-05,
+      "originalRepeatTolerancePass": false,
+      "region": [
+        29,
+        320,
+        50,
+        335
+      ]
+    },
+    {
+      "case": "live-native-after.png",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "fraction": 0.0,
+      "originalRepeatTolerancePass": true,
+      "region": null
+    },
+    {
+      "case": "live-light-after.png",
+      "changedPixels": 41,
+      "maxChannelDelta": 28,
+      "fraction": 2.6059012859169468e-05,
+      "originalRepeatTolerancePass": false,
+      "region": [
+        29,
+        338,
+        57,
+        683
+      ]
+    },
+    {
+      "case": "live-compact-after.png",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "fraction": 0.0,
+      "originalRepeatTolerancePass": true,
+      "region": null
+    },
+    {
+      "case": "live-mobile-after.png",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "fraction": 0.0,
+      "originalRepeatTolerancePass": true,
+      "region": null
+    },
+    {
+      "case": "models-native-after.png",
+      "changedPixels": 2,
+      "maxChannelDelta": 3,
+      "fraction": 1.2711713589838765e-06,
+      "originalRepeatTolerancePass": true,
+      "region": [
+        30,
+        696,
+        58,
+        697
+      ]
+    },
+    {
+      "case": "models-light-after.png",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "fraction": 0.0,
+      "originalRepeatTolerancePass": true,
+      "region": null
+    },
+    {
+      "case": "models-compact-after.png",
+      "changedPixels": 22,
+      "maxChannelDelta": 2,
+      "fraction": 1.8265143464399576e-05,
+      "originalRepeatTolerancePass": true,
+      "region": [
+        232,
+        72,
+        932,
+        75
+      ]
+    },
+    {
+      "case": "models-mobile-after.png",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "fraction": 0.0,
+      "originalRepeatTolerancePass": true,
+      "region": null
+    },
+    {
+      "case": "models-dense-after.png",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "fraction": 0.0,
+      "originalRepeatTolerancePass": true,
+      "region": null
+    }
+  ]
+}

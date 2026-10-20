@@ -15,6 +15,8 @@ import { HeadingReferenceIcon } from './heading-reference-icon';
 import { getQuotaRiskModel, isQuotaReadingFresh, quotaOwnerKey as ownerKey, quotaWindowKey as windowKey, type QuotaRisk as Risk } from './alert-risks';
 import { AlertHistoryCache, currentQuotaForecast, observedQuotaSeries, type AlertHistoryResult } from './alert-history';
 import { InitialRegion, type InitialRegionState } from './initial-region';
+import { AlertsEntranceLedger, alertRiskMotionKey, alertHistoryMotionKey, type AlertsEntranceBatch } from './alerts-entrance';
+import { useAlertsEntrance } from './use-alerts-entrance';
 import './alerts.css';
 
 function routeWindow() {
@@ -28,6 +30,13 @@ export function ProductionAlerts() {
   const { lang, setLang } = useI18n();
   const [theme, toggleTheme] = useTheme();
   const [route, setRoute] = useState(routeWindow);
+  const riskRegion = useRef<HTMLElement>(null);
+  const eventRegion = useRef<HTMLElement>(null);
+  const [riskEntrance] = useState(() => new AlertsEntranceLedger());
+  const [eventEntrance] = useState(() => new AlertsEntranceLedger());
+  const motionSerial = useRef(0);
+  const [riskMotionBatch, setRiskMotionBatch] = useState<AlertsEntranceBatch>();
+  const [eventMotionBatch, setEventMotionBatch] = useState<AlertsEntranceBatch>();
   const [overview, setOverview] = useState<Overview | null>(null);
   const [events, setEvents] = useState<AlertEvent[]>([]);
   const [notification, setNotification] = useState<NotificationSettings | null>(null);
@@ -57,13 +66,20 @@ export function ProductionAlerts() {
     addEventListener('hashchange', sync);
     return () => removeEventListener('hashchange', sync);
   }, []);
-  useLiveRefresh(async () => {
+  useLiveRefresh(async context => {
+    const riskEligibility = riskEntrance.snapshot();
+    const eventEligibility = eventEntrance.snapshot();
     const requestedKey = primaryKey;
     const requestedEpoch = primaryEpoch.current;
     const isCurrent = () => mounted.current && primaryScope.current === requestedKey && primaryEpoch.current === requestedEpoch;
     try {
       const [nextOverview, nextEvents, nextNotification] = await Promise.all([api.overview(), api.alerts({ limit: showAll ? 500 : 100 }), api.notificationSettings()]);
-      if (isCurrent()) { setOverview(nextOverview); setEvents(nextEvents.events); setNotification(nextNotification); setError(null); }
+      if (isCurrent()) {
+        const serial = ++motionSerial.current;
+        setOverview(nextOverview); setEvents(nextEvents.events); setNotification(nextNotification); setError(null);
+        setRiskMotionBatch({ serial, reason: context.reason, requestEligibility: riskEligibility });
+        setEventMotionBatch({ serial, reason: context.reason, requestEligibility: eventEligibility });
+      }
     } catch (cause) { if (!isCurrent()) return; setError(String(cause)); throw cause; }
   }, [showAll, retry]);
 
@@ -79,6 +95,8 @@ export function ProductionAlerts() {
       t(risk.reason === 'forecast' ? 'redesign.alertForecast' : risk.reason === 'stale' ? 'redesign.alertStale' : 'redesign.alertThreshold')]
       .some(value => value?.toLocaleLowerCase().includes(query)))
     .sort((a, b) => sort === 'recent' ? b.reading.last_seen_at - a.reading.last_seen_at || a.title.localeCompare(b.title) : 0);
+  useAlertsEntrance(riskRegion, riskEntrance, riskMotionBatch, risks.map(alertRiskMotionKey), filteredRisks.map(alertRiskMotionKey), overview !== null);
+  useAlertsEntrance(eventRegion, eventEntrance, eventMotionBatch, events.map(event => alertHistoryMotionKey(event.id)), events.map(event => alertHistoryMotionKey(event.id)), overview !== null);
   const requestedReadings = [...(selected ? [selected.primary] : []), ...filteredRisks.map(risk => risk.reading)];
   const requestedKeys = [...new Map(requestedReadings.map(reading => [windowKey(reading), reading])).values()].slice(0, 6);
   const historySignature = JSON.stringify(requestedKeys.map(reading => [windowKey(reading), reading.source_id, reading.origin, reading.last_seen_at, reading.resets_at, reading.used_percent, isQuotaReadingFresh(reading, now)]));
@@ -160,7 +178,7 @@ export function ProductionAlerts() {
     {!overview ? <section className="qp-alert-summary qp-alert-initial-summary" aria-label={t('redesign.alertHeading')}>{(['redesign.alertCurrent', 'redesign.alertMonitored', 'redesign.alertRules', 'redesign.alertCoverage'] as const).map((label, index) => <InitialRegion key={label} id={`alert-summary-${index}`} label={t(label)} state={initialState} slots={1}/>)}</section> :
 
       <section className="qp-alert-summary" aria-label={t('redesign.alertHeading')}><article className="qp-panel" data-summary="redesign.alertCurrent" data-level={activeRisks[0]?.level ?? 'none'}><BellRing className="qp-alert-summary-icon" size={20} aria-hidden="true"/><span>{t('redesign.alertCurrent')}</span><strong>{count(activeRisks.length)}</strong></article><article className="qp-panel" data-summary="redesign.alertMonitored"><Activity className="qp-alert-summary-icon" size={20} aria-hidden="true"/><span>{t('redesign.alertMonitored')}</span><strong>{count(windows.length)}</strong></article><article className="qp-panel" data-summary="redesign.alertRules"><ShieldCheck className="qp-alert-summary-icon" size={20} aria-hidden="true"/><span>{t('redesign.alertRules')}</span><strong>3</strong><small>50% · 80% · 95%</small></article><article className="qp-panel" data-summary="redesign.alertCoverage"><Gauge className="qp-alert-summary-icon" size={20} aria-hidden="true"/><span>{t('redesign.alertCoverage')}</span><strong>{windows.length ? f.pct(freshCount / windows.length * 100) : t('redesign.unknownValue')}</strong><small>{count(freshCount)} / {count(windows.length)}</small></article></section>}</section>{!overview && <><InitialRegion id="alert-chart" label={t('redesign.alertRiskChart')} state={initialState} status className="qp-alert-initial-chart" slots={5}/><InitialRegion id="alert-risks" label={t('redesign.alertRisks')} state={initialState} className="qp-alert-initial-risks" slots={5}/><InitialRegion id="alert-rules" label={t('redesign.alertThresholdTable')} state={initialState} className="qp-alert-initial-rules"/></>}{overview && <><section className="qp-panel qp-alert-chart" data-history-key={history ? JSON.stringify([history.subscriptionKey, history.windowKind]) : undefined}><div className="qp-alert-section-head"><div className="qp-alert-chart-heading"><h2><ChartNoAxesCombined size={18} aria-hidden="true"/>{t('redesign.alertRiskChart')}</h2><p className="qp-footnote">{t('redesign.alertResetBreak')}</p></div>{windows.length > 0 && <label><span className="qp-visually-hidden">{t('redesign.alertRiskChart')}</span><select value={selectionKey} onChange={event => { const item = windows.find(({ primary }) => windowKey(primary) === event.target.value); if (item) pick(item.primary); }}>{windows.map(({ primary }) => <option key={windowKey(primary)} value={windowKey(primary)}>{primary.subscription_display_name ?? primary.display_name} · {f.window(primary.window_kind)}</option>)}</select></label>}</div>{quotaError && history && <p className="qp-alert-error" role="status">{t('redesign.staleSnapshot')} · {quotaError}</p>}{windows.length === 0 ? <p>{t('redesign.alertNoWindows')}</p> : !history ? <InitialRegion id="alert-history-chart" label={t('redesign.alertRiskChart')} state={historyState} className="qp-alert-initial-history" status slots={4}/> : history.segments.length === 0 ? <p>{t('redesign.alertNoHistory')}</p> : <QuotaChart history={history} t={t} language={lang}/>}</section>
-        <section className="qp-panel qp-alert-risk" aria-label={t('redesign.alertRisks')}>
+        <section ref={riskRegion} className="qp-panel qp-alert-risk" aria-label={t('redesign.alertRisks')}>
           <div className="qp-alert-risk-toolbar"><h2><BellRing size={18} aria-hidden="true"/>{t('redesign.alertRisks')}</h2>
             <div className="qp-alert-risk-filters" role="group" aria-label={t('redesign.alertFilter')}>
               {(['all', 'critical', 'warning', 'info', 'stale'] as const).map(item => <button key={item} type="button" data-level={item} aria-pressed={level === item} onClick={() => setLevel(item)}>{item === 'all' ? t('redesign.alertAll') : levelLabel(item)} <span>{count(item === 'all' ? risks.length : risks.filter(risk => risk.level === item).length)}</span></button>)}
@@ -170,7 +188,7 @@ export function ProductionAlerts() {
           </div>
           {filteredRisks.length === 0 && <p role="status">{t(risks.length === 0 ? 'redesign.alertNoRisks' : 'redesign.alertNoMatch')}</p>}
           {(filteredRisks.length > 0 || readerAdvisories.length > 0) && <ul tabIndex={0} aria-label={t('redesign.alertRisks')}>
-          {filteredRisks.map(risk => <li key={risk.key} data-level={risk.level} data-owner={risk.owner} data-window={risk.window}>
+          {filteredRisks.map(risk => <li key={risk.key} data-alert-motion-key={alertRiskMotionKey(risk)} data-level={risk.level} data-owner={risk.owner} data-window={risk.window}>
             <span className="qp-alert-risk-icon" data-level={risk.level} aria-hidden="true">{risk.reason === 'forecast' ? <TriangleAlert size={23}/> : risk.reason === 'stale' ? <Clock3 size={23}/> : <BellRing size={23}/>}</span>
             <div className="qp-alert-risk-description"><div className="qp-alert-risk-heading"><strong>{t(risk.reason === 'forecast' ? 'redesign.alertForecast' : risk.reason === 'stale' ? 'redesign.alertStale' : 'redesign.alertThreshold')}</strong><span className="qp-alert-level" data-level={risk.level}>{levelLabel(risk.level)}</span></div><p>{f.clock(risk.reading.last_seen_at)}</p></div>
             <div className="qp-alert-risk-owner"><strong className="qp-alert-owner"><VendorIcon vendor={risk.reading.subscription_provider ?? risk.reading.account_provider ?? 'unknown'}/>{risk.title}</strong><small>{f.window(risk.window)}</small></div>
@@ -213,7 +231,7 @@ export function ProductionAlerts() {
       <a href="#settings" aria-label={`${t('redesign.alertGuidanceSettings')}: ${t('redesign.alertGuidanceNotifications')}`}>{t('redesign.alertGuidanceSettings')}<ChevronRight size={12} aria-hidden="true"/></a>
     </li>
   </ul>
-</section><section className="qp-panel qp-alert-history"><div className="qp-alert-history-heading"><h2><span className="qp-alert-history-heading-icon" aria-hidden="true"><History size={18}/></span>{t('redesign.alertHistory')}</h2><button onClick={() => setShowAll(!showAll)}>{t(showAll ? 'redesign.alertLess' : 'redesign.alertMore')}</button></div><p className="qp-footnote">{t('redesign.alertHistoryNote')}</p>{events.length === 0 ? <p>{t('redesign.alertNoEvents')}</p> : <ol tabIndex={0} aria-label={t('redesign.alertHistory')}>{events.map(event => <li key={event.id}><span className="qp-alert-event-threshold" data-threshold={event.threshold}>{event.threshold}%</span><strong>{event.subscription_display_name ?? event.display_name} · {f.window(event.window_kind)}</strong><span className="qp-alert-event-date">{f.clock(event.detected_at)} · {t(event.delivered_at ? 'redesign.alertDelivered' : 'redesign.alertDetected')}</span></li>)}</ol>}</section></aside>}</div>
+</section><section ref={eventRegion} className="qp-panel qp-alert-history"><div className="qp-alert-history-heading"><h2><span className="qp-alert-history-heading-icon" aria-hidden="true"><History size={18}/></span>{t('redesign.alertHistory')}</h2><button onClick={() => setShowAll(!showAll)}>{t(showAll ? 'redesign.alertLess' : 'redesign.alertMore')}</button></div><p className="qp-footnote">{t('redesign.alertHistoryNote')}</p>{events.length === 0 ? <p>{t('redesign.alertNoEvents')}</p> : <ol tabIndex={0} aria-label={t('redesign.alertHistory')}>{events.map(event => <li key={event.id} data-alert-motion-key={alertHistoryMotionKey(event.id)}><span className="qp-alert-event-threshold" data-threshold={event.threshold}>{event.threshold}%</span><strong>{event.subscription_display_name ?? event.display_name} · {f.window(event.window_kind)}</strong><span className="qp-alert-event-date">{f.clock(event.detected_at)} · {t(event.delivered_at ? 'redesign.alertDelivered' : 'redesign.alertDetected')}</span></li>)}</ol>}</section></aside>}</div>
   </RedesignShell>;
 }
 

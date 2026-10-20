@@ -1,0 +1,176 @@
+{
+  "method": "Real compiled Alerts, actual IO/viewport changes, actual API responses/SSE and synthetic quota records",
+  "stages": [
+    {
+      "label": "actual-offscreen-return-no-backlog",
+      "outside": [
+        {
+          "selector": ".qp-alert-risk",
+          "top": 455.6875,
+          "bottom": 754.6875,
+          "viewportHeight": 250,
+          "offscreen": true
+        },
+        {
+          "selector": ".qp-alert-history",
+          "top": 756,
+          "bottom": 931.390625,
+          "viewportHeight": 250,
+          "offscreen": true
+        }
+      ],
+      "returned": [
+        {
+          "selector": ".qp-alert-risk",
+          "visible": true
+        },
+        {
+          "selector": ".qp-alert-history",
+          "visible": true
+        }
+      ],
+      "change": {
+        "sourceId": 1,
+        "owner": "openai:subscription",
+        "window": "weekly",
+        "percent": 82,
+        "priorPercent": 62,
+        "events": [
+          {
+            "id": 4,
+            "kind": "threshold",
+            "source_id": 1,
+            "owner_key": "openai:subscription",
+            "window_kind": "weekly",
+            "threshold": 80,
+            "used_percent": 82,
+            "resets_at": 1747766520000,
+            "detected_at": 1747489320000,
+            "delivered_at": null,
+            "origin": "fixed-fixture",
+            "display_name": "Codex fixture",
+            "subscription_display_name": "OpenAI Subscription"
+          }
+        ]
+      },
+      "facts": {
+        "key": "[\"risk\",\"[\\\"openai:subscription\\\",\\\"weekly\\\"]\",\"warning\",\"threshold\"]",
+        "level": "warning",
+        "severity": "Warning",
+        "value": "82%",
+        "opacity": "1"
+      },
+      "effects": []
+    },
+    {
+      "label": "actual-held-api-response-crosses-io-epoch",
+      "outside": [
+        {
+          "selector": ".qp-alert-risk",
+          "top": 455.6875,
+          "bottom": 754.6875,
+          "viewportHeight": 250,
+          "offscreen": true
+        },
+        {
+          "selector": ".qp-alert-history",
+          "top": 756,
+          "bottom": 931.390625,
+          "viewportHeight": 250,
+          "offscreen": true
+        }
+      ],
+      "returned": [
+        {
+          "selector": ".qp-alert-risk",
+          "visible": true
+        },
+        {
+          "selector": ".qp-alert-history",
+          "visible": true
+        }
+      ],
+      "change": {
+        "sourceId": 1,
+        "owner": "openai:subscription",
+        "window": "monthly",
+        "percent": 82,
+        "priorPercent": 72,
+        "events": [
+          {
+            "id": 5,
+            "kind": "threshold",
+            "source_id": 1,
+            "owner_key": "openai:subscription",
+            "window_kind": "monthly",
+            "threshold": 80,
+            "used_percent": 82,
+            "resets_at": 1748014920000,
+            "detected_at": 1747489320000,
+            "delivered_at": null,
+            "origin": "fixed-fixture",
+            "display_name": "Codex fixture",
+            "subscription_display_name": "OpenAI Subscription"
+          }
+        ]
+      },
+      "facts": {
+        "key": "[\"risk\",\"[\\\"openai:subscription\\\",\\\"monthly\\\"]\",\"critical\",\"forecast\"]",
+        "level": "critical",
+        "severity": "Critical",
+        "value": "82%",
+        "opacity": "1"
+      },
+      "effects": []
+    },
+    {
+      "label": "fresh-post-return-active180-unmount-cancellation",
+      "change": {
+        "sourceId": 2,
+        "owner": "opencode:go",
+        "window": "daily",
+        "percent": 55,
+        "priorPercent": 34,
+        "events": [
+          {
+            "id": 6,
+            "kind": "threshold",
+            "source_id": 2,
+            "owner_key": "opencode:go",
+            "window_kind": "daily",
+            "threshold": 50,
+            "used_percent": 55,
+            "resets_at": 1747515600000,
+            "detected_at": 1747489320000,
+            "delivered_at": null,
+            "origin": "fixed-fixture",
+            "display_name": "Hermes fixture",
+            "subscription_display_name": "OpenCode Go Subscription"
+          }
+        ]
+      },
+      "before": [
+        {
+          "key": "[\"history\",6]",
+          "duration": 180,
+          "state": "running",
+          "time": 0
+        }
+      ],
+      "after": [
+        {
+          "key": "[\"history\",6]",
+          "duration": 180,
+          "state": "idle",
+          "connected": false,
+          "marker": null
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "No operating-system visibility change is simulated; offscreen eligibility uses real layout/IntersectionObserver.",
+    "No packaged Electron/native tray lifecycle or whole-release claim."
+  ],
+  "remountStatic": true
+}

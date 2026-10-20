@@ -1,0 +1,26 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx scripts/check-history-alerts-motion.mts *> tmp/moti ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Timeout 12000ms exceeded.
+Call log:
+[2m  - waiting for locator('tr[data-history-record^="[44,"]') to be visible[22m
+
+    at waitHistory (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-history-ale
+rts-motion.mts:132:97)
+    at <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-history-ale
+rts-motion.mts:138:50) {
+  log: [
+    `  - waiting for locator('tr[data-history-record^="[44,"]') to be visible`
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.13.1

@@ -1,0 +1,27 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:6 char:1
++ node --import tsx scripts/check-history-route.mts *> tmp/history91-ro ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Legacy sessions alias preserves its exact incoming provider
++ actual - expected
+
++ 'deepseek'
+- 'openai'
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-history-route.mts:128:4728) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'deepseek',
+  expected: 'openai',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

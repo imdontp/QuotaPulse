@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.90
+## Current checkpoint: v1.85.91
+
+[Implementation and validation](redesign-v1.85.91/VALIDATION-STATE.md) | [Original/current eight-page review](redesign-v1.85.91/review.html) | [Required remaining work](redesign-v1.85.91/NEXT-REQUIRED-WORK.md). History observed-presence/selection and Alerts entrances have finite native motion with lifecycle cancellation; real History filter and legacy-alias defects are corrected. Runtime tracks and Live/Models heading paint follow Source while preserving actual facts. Final build,273 web tests, actual motion/lifecycle/route gates,14 visual factual controls and fresh native8 capture pass. Independent sidebar raster failures remain open; generic motion beyond History, all-eight acceptance and native/release/rollback are unfinished.
+
+## Previous checkpoint: v1.85.90
 
 [Runway implementation and validation](redesign-v1.85.90/VALIDATION-STATE.md) | [Required remaining work](redesign-v1.85.90/NEXT-REQUIRED-WORK.md). Valid same-period forecasts settle420ms; stale preserves labelled exact prior snapshot, automatic default expiry stays honest, locale preserves retention, reset/missing quota replaces or clears. Final build,254web tests and actual31-frame native-timeline gate pass. Two source/reproduction defects were corrected before acceptance. Original all-eight visual acceptance, History/Alerts motion and native/release/rollback remain open.
 

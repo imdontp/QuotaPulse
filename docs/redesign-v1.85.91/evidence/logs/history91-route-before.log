@@ -1,0 +1,25 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:11 char:1
++ node --import tsx scripts/check-history-route.mts *> tmp/history91-ro ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Same-document route must apply exact incoming provider
+
+'' !== 'deepseek'
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-history-route.mts:128:933) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: 'deepseek',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

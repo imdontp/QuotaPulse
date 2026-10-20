@@ -1,0 +1,55 @@
+{
+  "productionIndexSha256": "5ab9599c864d343e75543f395236c9feae20bff246c2f21784f0d362d5bfcca3",
+  "scope": {
+    "from": 1747485720000,
+    "to": 1747489320000,
+    "sourceId": 1,
+    "provider": "deepseek",
+    "model": "DeepSeek V4.1",
+    "grain": "all"
+  },
+  "records": [
+    {
+      "id": 1,
+      "source": 1,
+      "provider": "deepseek",
+      "model": "DeepSeek V4.1"
+    },
+    {
+      "id": 2,
+      "source": 1,
+      "provider": "deepseek",
+      "model": "DeepSeek V4.1"
+    },
+    {
+      "id": 3,
+      "source": 1,
+      "provider": "deepseek",
+      "model": "DeepSeek V4.1"
+    },
+    {
+      "id": 38,
+      "source": 1,
+      "provider": "deepseek",
+      "model": "DeepSeek V4.1"
+    },
+    {
+      "id": 42,
+      "source": 1,
+      "provider": "deepseek",
+      "model": "DeepSeek V4.1"
+    }
+  ],
+  "customSourceModel": true,
+  "backRestoresPriorScope": true,
+  "forwardRestoresCustomScope": true,
+  "finalUrl": "http://127.0.0.1:7816/#history?range=custom&from=1747485720000&to=1747489320000&source=1&provider=deepseek&model=DeepSeek+V4.1",
+  "requests": [
+    "/api/usage-events?from=1747414800000&to=1747489320000&provider=deepseek&grain=all&limit=50&offset=0",
+    "/api/usage-events?from=1747414800000&to=1747489320000&grain=all&limit=50&offset=0",
+    "/api/usage-events?from=1747414800000&to=1747489320000&provider=deepseek&grain=all&limit=50&offset=0",
+    "/api/usage-events?from=1747485720000&to=1747489320000&source_id=1&provider=deepseek&model=DeepSeek+V4.1&grain=all&limit=50&offset=0",
+    "/api/usage-events?from=1747414800000&to=1747489320000&provider=deepseek&grain=all&limit=50&offset=0",
+    "/api/usage-events?from=1747485720000&to=1747489320000&source_id=1&provider=deepseek&model=DeepSeek+V4.1&grain=all&limit=50&offset=0"
+  ]
+}

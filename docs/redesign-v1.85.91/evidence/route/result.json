@@ -1,0 +1,23 @@
+{
+  "productionIndexSha256": "5ab9599c864d343e75543f395236c9feae20bff246c2f21784f0d362d5bfcca3",
+  "before": "http://127.0.0.1:7816/#history?range=today",
+  "intended": "#history?range=today&provider=deepseek",
+  "requests": [
+    "/api/usage-events?from=1747414800000&to=1747489320000&provider=deepseek&grain=all&limit=50&offset=0"
+  ],
+  "final": {
+    "hash": "#history?range=today&provider=deepseek",
+    "provider": "deepseek",
+    "rows": [
+      "5/17/25, 8:41:45 PMCallCodex fixtureQuotaPulsedeepseekDeepSeek V4.145.7MReported cost$0.0100#1",
+      "5/17/25, 8:39:45 PMSession aggregateHermes fixtureQuotaPulsedeepseekDeepSeek V4.145.7MCalculated API value$1.06#19",
+      "5/17/25, 8:37:00 PMCallCodex fixtureQuotaPulsedeepseekDeepSeek V4.145.7MReported cost$0.0100#2",
+      "5/17/25, 8:35:30 PMCallCodex fixtureQuotaPulsedeepseekDeepSeek V4.145.7MReported cost$0.0100#3",
+      "5/17/25, 8:32:00 PMCallCodex fixtureAgent PlatformdeepseekDeepSeek V4.11Calculated API value$0.0000#38",
+      "5/17/25, 8:32:00 PMCallOpenCode fixtureQuotaPulsedeepseekDeepSeek V4.11Cost unavailable—#37",
+      "5/17/25, 8:27:00 PMCallCodex fixtureQuotaPulsedeepseekDeepSeek V4.11Calculated API value$0.0000#42",
+      "5/17/25, 8:25:00 PMSession aggregateHermes fixtureQuotaPulsedeepseekDeepSeek V4.145.7MCalculated API value$1.14#20",
+      "5/17/25, 8:24:30 PMSession aggregateHermes fixtureQuotaPulsedeepseekDeepSeek V4.145.7MCalculated API value$1.21#21"
+    ]
+  }
+}
