@@ -1,0 +1,27 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:2 char:41
++ ... E='verify'; node --import tsx scripts/check-projects-runtime-provider ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: runtime-keyboard-node-and-actual-detail actual native timeline 180
+    at <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-projects-ru
+ntime-providers-motion.mts:131:913)
+    at Array.forEach (<anonymous>)
+    at collect (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-projects-runtim
+e-providers-motion.mts:131:706)
+    at async <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-proje
+cts-runtime-providers-motion.mts:173:240) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.13.1

@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { projectMotionKey, projectDetailMotionKey, type ProjectSelectionIntent } from './project-selection-motion';
+import { useProjectSelectionMotion } from './use-project-selection-motion';
 import { Activity, ArrowDownUp, BarChart3, Box, Folder, Layers, RefreshCw, Search, Settings, Users } from 'lucide-react';
 import { api, type DetailedProjectResponse, type Overview as OverviewData, type ProjectDetailResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
@@ -74,6 +76,9 @@ export function ProductionProjects() {
   const refresh = useRefreshStatus();
   const [retry, setRetry] = useState(0);
   const [detailRetry, setDetailRetry] = useState(0);
+  const selectionOpener = useRef<HTMLButtonElement | null>(null);
+  const selectionDetail = useRef<HTMLElement>(null);
+  const [selectionIntent, setSelectionIntent] = useState<ProjectSelectionIntent | null>(null);
   const requestKey = JSON.stringify([route.range, route.from, route.to, route.sourceId, route.harness]);
   const currentKey = useRef(requestKey);
   const scopeEpoch = useRef(0);
@@ -146,6 +151,28 @@ export function ProductionProjects() {
   }, [detailKey, detailRetry]);
   const detail = detailSnapshot?.key === detailKey ? detailSnapshot.data : null;
   const currentDetailError = detailErrorKey === detailKey ? detailError : null;
+  const motionContext = JSON.stringify([requestKey, route.tab, route.sort, search]);
+  const selectedMotionKey = selected ? projectDetailMotionKey(selected.key, route.detail) : null;
+  const aggregateDetail = route.detail === 'overview' || route.detail === 'details';
+  const desiredMotionDetail = selected && data
+    ? aggregateDetail ? JSON.stringify(['aggregate', data.scope, selectedMotionKey]) : detailKey : null;
+  useProjectSelectionMotion(selectionOpener, selectionDetail, { contextKey: motionContext, selectedKey: selectedMotionKey,
+    detailKey: desiredMotionDetail, acceptedDetailKey: aggregateDetail ? desiredMotionDetail : detail ? detailKey : null,
+    intent: selectionIntent, offset: route.offset, enabled: !!currentSnapshot && !!selected && !error,
+    failed: !!currentDetailError, detailMounted: !!currentSnapshot });
+  const selectProject = (key: string | null, opener: HTMLButtonElement) => {
+    if (selected?.key !== key) {
+      selectionOpener.current = opener;
+      setSelectionIntent(previous => ({ serial: (previous?.serial ?? 0) + 1,
+        key: projectDetailMotionKey(key, route.detail), contextKey: motionContext, kind: 'project', openerKey: projectMotionKey(key) }));
+    }
+    update({ project: key, offset: 0 });
+  };
+  const selectDetail = (tab: DetailTab) => {
+    if (selected && route.detail !== tab) setSelectionIntent(previous => ({ serial: (previous?.serial ?? 0) + 1,
+      key: projectDetailMotionKey(selected.key, tab), contextKey: motionContext, kind: 'detail', openerKey: null }));
+    update({ detail: tab, offset: 0 });
+  };
   const trendBins = detail ? Array.from({ length: Math.ceil((detail.scope.to - detail.scope.from) / detail.bucketMs) }, (_, index) => {
     const start = detail.scope.from + index * detail.bucketMs;
     return { start, tokens: detail.points.find(point => point.start === start)?.tokens ?? 0 };
@@ -188,7 +215,7 @@ export function ProductionProjects() {
         {visible.map(group => {
           const share = data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0;
           const rows = data?.rows.filter(row => row.project === group.key) ?? [];
-          return <button key={JSON.stringify(group.key)} className="qp-project-card qp-panel" data-tone={projectTone(group.key)} aria-pressed={selected?.key === group.key} onClick={() => update({ project: group.key, offset: 0 })}>
+          return <button key={JSON.stringify(group.key)} className="qp-project-card qp-panel" data-project-selection-opener={projectMotionKey(group.key)} data-project-selection-role="card" data-tone={projectTone(group.key)} aria-pressed={selected?.key === group.key} onClick={event => selectProject(group.key, event.currentTarget)}>
             <span className="qp-project-card-heading"><span className="qp-project-icon" aria-hidden="true">{group.key === 'QuotaPulse' ? <Box size={21}/> : <Folder size={21}/>}</span><span className="qp-project-card-identity"><strong>{projectName(group.key)}</strong><span className="qp-project-card-meta">{t('redesign.sortRecent')} · {date(group.lastObservedAt)}</span></span></span>
             <span className="qp-project-card-summary"><span className="qp-project-card-usage"><span className="qp-project-card-tokens"><strong title={number(group.tokens)} aria-label={`${t('redesign.tokens')}: ${number(group.tokens)}`} data-value={group.tokens}>{compactTokens(group.tokens)}</strong><small title={t('redesign.projectShare')} aria-label={`${number(share)}% ${t('redesign.projectShare')}`}>{number(share)}%</small></span><span className="qp-bar"><span style={{ width: `${share}%` }}/></span><small>{t('redesign.tokens')}</small><span className="qp-project-card-share-label">{t('redesign.projectShare')}</span></span>
             <span className="qp-project-card-money"><span><strong><CostValue amount={group.reported_native_usd} priced={group.native_calls} total={group.calls} money={money} t={t}/></strong><small>{t('redesign.reported')}</small></span><span><strong><CostValue amount={group.api_value_usd} priced={group.computed_calls + group.estimated_calls} total={group.calls} money={money} t={t}/></strong><small>{t('redesign.value')}</small></span></span></span>
@@ -201,11 +228,11 @@ export function ProductionProjects() {
           </button>;
         })}
       </section>
-      <div className="qp-project-rail"><aside className="qp-panel qp-project-detail" data-tone={selected ? projectTone(selected.key) : undefined} aria-label={t('redesign.projectDetails')}>
+      <div className="qp-project-rail"><aside ref={selectionDetail} className="qp-panel qp-project-detail" data-project-selection-detail={selectedMotionKey ?? undefined} data-tone={selected ? projectTone(selected.key) : undefined} aria-label={t('redesign.projectDetails')}>
         {selected ? <>
           <h2><span className="qp-project-icon" aria-hidden="true">{selected.key === 'QuotaPulse' ? <Box size={26}/> : <Folder size={26}/>}</span>{projectName(selected.key)}</h2>
           <nav className="qp-project-detail-tabs" aria-label={t('redesign.projectDetails')}>{(['overview', 'sessions', 'usage', 'details'] as const).map(tab =>
-            <button key={tab} aria-current={route.detail === tab ? 'page' : undefined} onClick={() => update({ detail: tab, offset: 0 })}>{tab === 'overview' ? <Layers size={15} aria-hidden="true"/> : tab === 'sessions' ? <Users size={15} aria-hidden="true"/> : tab === 'usage' ? <BarChart3 size={15} aria-hidden="true"/> : <Settings size={15} aria-hidden="true"/>}{t(tab === 'overview' ? 'redesign.projectOverviewTab' : tab === 'sessions' ? 'redesign.projectSessionsTab' : tab === 'usage' ? 'redesign.projectUsageTab' : 'redesign.projectMetadataTab')}</button>)}</nav>
+            <button key={tab} data-project-detail-tab={tab} aria-current={route.detail === tab ? 'page' : undefined} onClick={() => selectDetail(tab)}>{tab === 'overview' ? <Layers size={15} aria-hidden="true"/> : tab === 'sessions' ? <Users size={15} aria-hidden="true"/> : tab === 'usage' ? <BarChart3 size={15} aria-hidden="true"/> : <Settings size={15} aria-hidden="true"/>}{t(tab === 'overview' ? 'redesign.projectOverviewTab' : tab === 'sessions' ? 'redesign.projectSessionsTab' : tab === 'usage' ? 'redesign.projectUsageTab' : 'redesign.projectMetadataTab')}</button>)}</nav>
           {currentDetailError && detail && <p role="status" className="qp-project-error">{t('redesign.staleSnapshot')} · {currentDetailError} <button onClick={detailState.onRetry} disabled={detailState.retrying}>{t('app.retry')}</button></p>}
           {route.detail === 'overview' && <>
           <div className="qp-project-detail-metrics"><div><small>{t('redesign.tokens')}</small><strong title={number(selected.tokens)} aria-label={`${t('redesign.tokens')}: ${number(selected.tokens)}`} data-value={selected.tokens}>{compactTokens(selected.tokens)}</strong></div><div><small>{t('redesign.sessions')}</small><strong>{number(selected.sessions)}</strong></div><div><small>{t('redesign.modelsCalls')}</small><strong>{number(selected.calls)}</strong></div><div><small>{t('redesign.providersUsed')}</small><strong>{new Set(detailRows.map(row => row.provider).filter(Boolean)).size}</strong></div></div>
@@ -220,7 +247,7 @@ export function ProductionProjects() {
             <section className="qp-project-identity-panel"><h3>{t('redesign.harnessesUsed')}<span>{number(observedHarnesses.length)}</span></h3><ul>{observedHarnesses.map(harness => <li key={harness}><span className="qp-project-identity-mark" title={harness}><HarnessIcon harness={harness} vendor={currentSnapshot.overview.harnesses.find(item => item.harness === harness)?.vendor} label={harness}/><span className="qp-visually-hidden">{harness}</span></span></li>)}</ul></section>
             <section className="qp-project-identity-panel"><h3>{t('redesign.providersUsed')}<span>{number(observedProviders.length)}</span></h3><ul>{observedProviders.map(provider => <li key={provider}><span className="qp-project-identity-mark" title={provider}><VendorIcon vendor={provider}/><span className="qp-visually-hidden">{provider}</span></span></li>)}</ul></section>
           </div>
-          <button className="qp-project-detail-link" onClick={() => update({ detail: 'details', offset: 0 })}>{t('redesign.projectBreakdown')} →</button>
+          <button className="qp-project-detail-link" onClick={() => selectDetail('details')}>{t('redesign.projectBreakdown')} →</button>
           </>}
           {route.detail === 'sessions' && (detail ? <>
             {detail.sessions.total === 0 && <p>{t('redesign.projectNoSessions')}</p>}
@@ -243,7 +270,7 @@ export function ProductionProjects() {
         </> : <p>{t('redesign.noProjects')}</p>}
       </aside>
         {visible.length > 0 && <div className="qp-panel qp-project-top"><h3>{t('redesign.projectTop')}</h3><ol>{[...visible].sort((a, b) => b.tokens - a.tokens).slice(0, 5).map((group, index) =>
-          <li key={JSON.stringify(group.key)}><button aria-pressed={selected?.key === group.key} onClick={() => update({ project: group.key, offset: 0 })}><span className="qp-project-rank" aria-hidden="true">{index + 1}</span><Folder size={16} aria-hidden="true"/>{projectName(group.key)}</button><span className="qp-bar"><span style={{ width: `${data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0}%` }}/></span><strong title={number(group.tokens)} aria-label={`${t('redesign.tokens')}: ${number(group.tokens)}`} data-value={group.tokens}>{compactTokens(group.tokens)}</strong></li>)}</ol></div>}
+          <li key={JSON.stringify(group.key)}><button data-project-selection-opener={projectMotionKey(group.key)} data-project-selection-role="rank" aria-pressed={selected?.key === group.key} onClick={event => selectProject(group.key, event.currentTarget)}><span className="qp-project-rank" aria-hidden="true">{index + 1}</span><Folder size={16} aria-hidden="true"/>{projectName(group.key)}</button><span className="qp-bar"><span style={{ width: `${data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0}%` }}/></span><strong title={number(group.tokens)} aria-label={`${t('redesign.tokens')}: ${number(group.tokens)}`} data-value={group.tokens}>{compactTokens(group.tokens)}</strong></li>)}</ol></div>}
       </div>
     </div>}
   </RedesignShell>;

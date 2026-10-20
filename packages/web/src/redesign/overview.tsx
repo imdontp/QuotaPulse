@@ -18,6 +18,8 @@ import { modelDrilldownHref } from './model-drilldown';
 import { useRuntimeActivity } from './use-runtime-activity';
 import { useRuntimeMotion } from './use-runtime-motion';
 import type { RuntimeMotionBatch, RuntimeMotionEligibility } from './runtime-motion';
+import { runtimeInspectorKey, runtimeInspectorContext, currentRuntimeInspection, restoreRuntimeInspectorFocus, type RuntimeInspectorSelection } from './runtime-inspector-motion';
+import { useRuntimeInspectorMotion } from './use-runtime-inspector-motion';
 import { PulseAmbient } from './pulse-ambient';
 import { useRunwayMotion } from './use-runway-motion';
 import type { UsageEventScope } from '@/lib/usage-events';
@@ -244,7 +246,8 @@ function emptyHarnessNode(key: string): RuntimeGraph['nodes']['harness'][number]
     nativeCalls: 0, computedCalls: 0, estimatedCalls: 0, unknownCalls: 0, lastActivityAt: null, activeSessions: 0 };
 }
 
-function RuntimeMap({ pending, status, motionBatch, motionEligibility, motionGraphReady = false, nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, enabledHarnesses, onInspect, projects, selectedProject, onProjectChange }: { pending?: OverviewInitialState; status?: 'refreshing' | 'stale'; motionBatch?: RuntimeMotionBatch; motionEligibility?: RuntimeMotionEligibility; motionGraphReady?: boolean; nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; enabledHarnesses?: readonly string[]; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
+function RuntimeMap({ pending, status, motionBatch, motionEligibility, motionGraphReady = false, nodes, edges, recordCount, now, activityWindowMs, t, language, harnessVendors, enabledHarnesses, onInspect, projects, selectedProject, onProjectChange }: { pending?: OverviewInitialState; status?: 'refreshing' | 'stale'; motionBatch?: RuntimeMotionBatch; motionEligibility?: RuntimeMotionEligibility; motionGraphReady?: boolean; nodes: RuntimeGraph['nodes']; edges: RuntimeGraph['edges']; recordCount: number; now: number; activityWindowMs: number; harnessVendors: Readonly<Record<string, string>>; enabledHarnesses?: readonly string[]; t: Translate; language: 'en' | 'th'; onInspect: (dimension: Dimension, key: string | null, opener?: HTMLElement | null) => void; projects?: readonly string[]; selectedProject?: string | null; onProjectChange?: (project: string | null) => void }) {
+  const inspectionOpener = useRef<HTMLElement | null>(null);
   const arrowId = useId();
   const map = useRef<HTMLDivElement>(null);
   const motionRegion = useRef<HTMLElement>(null);
@@ -302,7 +305,10 @@ function RuntimeMap({ pending, status, motionBatch, motionEligibility, motionGra
     element.querySelectorAll('.qp-map-node').forEach(node => observer.observe(node));
     return () => observer.disconnect();
   }, [nodes, edges, recordCount, height, singleProject, pending?.kind]);
-  return <section ref={motionRegion} data-observation-batch={motionBatch?.serial} className="qp-panel qp-runtime" id="runtime" aria-busy={pending?.kind === 'loading' || status === 'refreshing'} data-runtime-state={pending?.kind ?? status ?? 'ready'}>
+  return <section ref={motionRegion} data-observation-batch={motionBatch?.serial} className="qp-panel qp-runtime" id="runtime" onClickCapture={event => {
+    const button = event.target instanceof Element ? event.target.closest<HTMLElement>('button') : null;
+    if (button?.matches('.qp-map-node,.qp-runtime-nodes button')) inspectionOpener.current = button;
+  }} aria-busy={pending?.kind === 'loading' || status === 'refreshing'} data-runtime-state={pending?.kind ?? status ?? 'ready'}>
     <div className="qp-section-heading">
       <div className="qp-runtime-heading-main">
         <h2><GitBranch size={18} className="qp-overview-reference-fallback" aria-hidden="true"/><OverviewHeadingReferenceMark kind="runtime"/><span className="qp-overview-heading-title">{t('redesign.liveRuntimeMap')}</span></h2>
@@ -311,7 +317,7 @@ function RuntimeMap({ pending, status, motionBatch, motionEligibility, motionGra
           <summary aria-label={t('redesign.mapOptions')} title={t('redesign.mapOptions')}><SlidersHorizontal size={14} aria-hidden="true"/></summary>
           <div className="qp-runtime-options-panel">
             {projectFilter}
-            {!pending && recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} recordCount={recordCount} language={language} t={t} onInspect={onInspect}/>}
+            {!pending && recordCount > 0 && <RuntimeData nodes={nodes} edges={edges} recordCount={recordCount} language={language} t={t} onInspect={(dimension, key) => onInspect(dimension, key, inspectionOpener.current)}/>}
           </div>
         </details>}
       </div>
@@ -370,7 +376,7 @@ function RuntimeMap({ pending, status, motionBatch, motionEligibility, motionGra
             const sessionLabel = usesActiveSessions ? 'redesign.runtimeNodeActiveSessions' : 'redesign.runtimeNodeSessions';
             const exact = `${label} · ${number.format(node.tokens)} ${t('redesign.tokens')} · ${number.format(sessionValue)} ${t(sessionLabel)}${dimension === 'provider' ? ` · ${activityLabel}. ${t('redesign.runtimeActivityNote')}` : ''}`;
             const nodeStyle = dimension === 'project' && singleProject ? { height: 80, marginTop: Math.max(0, (Math.min(4, maxRows) * 43 - 80) / 2 - 8) } : undefined;
-            return <button className="qp-map-node" data-motion-event-id={motionSignals.find(signal => signal.kind === 'node' && signal.dimension === dimension && signal.key === node.key)?.eventId} data-motion-highlight={motionSignals.some(signal => signal.kind === 'node' && signal.dimension === dimension && signal.key === node.key) ? 'aggregate' : undefined} style={nodeStyle} data-dimension={dimension} data-runtime-name={node.key?.trim().toLowerCase() ?? undefined} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-sessions={node.sessions} data-active-sessions={activeSessions ?? undefined} data-last-activity-at={node.lastActivityAt ?? undefined} data-activity-state={activityState} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={() => onInspect(dimension, node.key)}><span className="qp-node-icon" data-model-vendor={dimension === 'model' && node.key ? node.vendor : undefined} aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <ModelMark node={node} size={15}/>}</span><span className="qp-node-label">{dimension === 'project' && singleProject && <small className="qp-node-kicker">{language === 'th' ? 'โปรเจกต์' : 'Project'}</small>}<span className="qp-node-label-main">{label}</span>{dimension === 'provider' ? <small className="qp-node-activity" data-testid="runtime-node-activity" data-state={activityState} title={t('redesign.runtimeActivityNote')}><i aria-hidden="true"/>{activityLabel}</small> : dimension !== 'model' && <small className="qp-node-meta" data-testid="runtime-node-sessions">{number.format(sessionValue)} {t(sessionLabel)}</small>}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : null}</button>;
+            return <button className="qp-map-node" data-runtime-inspector-key={runtimeInspectorKey(dimension, node.key)} data-motion-event-id={motionSignals.find(signal => signal.kind === 'node' && signal.dimension === dimension && signal.key === node.key)?.eventId} data-motion-highlight={motionSignals.some(signal => signal.kind === 'node' && signal.dimension === dimension && signal.key === node.key) ? 'aggregate' : undefined} style={nodeStyle} data-dimension={dimension} data-runtime-name={node.key?.trim().toLowerCase() ?? undefined} data-key={JSON.stringify(node.key)} data-tokens={node.tokens} data-sessions={node.sessions} data-active-sessions={activeSessions ?? undefined} data-last-activity-at={node.lastActivityAt ?? undefined} data-activity-state={activityState} data-total={dimension === 'model' ? modelTokens : undefined} key={JSON.stringify(node.key)} title={exact} aria-label={share === null ? exact : `${exact} · ${percent.format(share)}%`} onClick={event => onInspect(dimension, node.key, event.currentTarget)}><span className="qp-node-icon" data-model-vendor={dimension === 'model' && node.key ? node.vendor : undefined} aria-hidden="true">{dimension === 'harness' ? <HarnessIcon harness={node.key ?? ''} vendor={harnessVendors[node.key ?? '']} label={node.key ?? undefined}/> : dimension === 'provider' ? <VendorIcon vendor={node.key ?? 'unknown'}/> : dimension === 'project' ? <Folder size={15}/> : <ModelMark node={node} size={15}/>}</span><span className="qp-node-label">{dimension === 'project' && singleProject && <small className="qp-node-kicker">{language === 'th' ? 'โปรเจกต์' : 'Project'}</small>}<span className="qp-node-label-main">{label}</span>{dimension === 'provider' ? <small className="qp-node-activity" data-testid="runtime-node-activity" data-state={activityState} title={t('redesign.runtimeActivityNote')}><i aria-hidden="true"/>{activityLabel}</small> : dimension !== 'model' && <small className="qp-node-meta" data-testid="runtime-node-sessions">{number.format(sessionValue)} {t(sessionLabel)}</small>}</span>{dimension === 'model' ? <span className="qp-node-share"><span className="qp-node-track" aria-hidden="true"><span style={{ width: `${share ?? 0}%` }}/></span><small>{share === null ? '—' : `${percent.format(share)}%`}</small></span> : null}</button>;
           })}
         </div>)}
       </div>
@@ -444,7 +450,9 @@ export function Overview({ initialState, quickStatsScope, runwayScopeKey, record
   const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
   const theme = themeProp ?? localTheme;
   const [quotaId, setQuotaId] = useState<string | null>(null);
-  const [selection, setSelection] = useState<{ dimension: Dimension; key: string | null } | null>(null);
+  const [selection, setSelection] = useState<RuntimeInspectorSelection | null>(null);
+  const inspectionSerial = useRef(0);
+  const inspectionOpener = useRef<HTMLElement | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const shell = useRef<HTMLDivElement>(null);
   const [pulseVisible, setPulseVisible] = useState(false);
@@ -463,7 +471,21 @@ export function Overview({ initialState, quickStatsScope, runwayScopeKey, record
     const key = item.ownerKey ?? JSON.stringify([item.provider, item.owner]);
     const group = quotaGroups.get(key) ?? []; group.push(item); quotaGroups.set(key, group);
   }
-  const detail: UsageNode | null = selection ? runtimeNodes[selection.dimension].find(node => node.key === selection.key) ?? null : null;
+  const inspectionContext = runtimeInspectorContext(runwayScopeKey ?? runtimeMotion?.scopeKey ?? 'preview', selectedRuntimeProject);
+  const inspectionAvailable = !initialState && !runtimeGraphPending;
+  const currentSelection = currentRuntimeInspection(selection, inspectionContext, inspectionAvailable);
+  const detail: UsageNode | null = currentSelection ? runtimeNodes[currentSelection.dimension].find(node => node.key === currentSelection.key)
+    ?? (currentSelection.dimension === 'harness' && currentSelection.key !== null && runtimeHarnesses?.includes(currentSelection.key) ? emptyHarnessNode(currentSelection.key) : null) : null;
+  const inspect = (dimension: Dimension, key: string | null, opener?: HTMLElement | null) => {
+    if (!inspectionAvailable) return;
+    inspectionOpener.current = opener ?? null;
+    opener?.setAttribute('data-runtime-inspector-key', runtimeInspectorKey(dimension, key));
+    setSelection({ dimension, key, contextKey: inspectionContext, serial: ++inspectionSerial.current });
+  };
+  const restoreInspectionFocus = () => {
+    const fallback = shell.current?.querySelector<HTMLElement>('#runtime .qp-runtime-options>summary') ?? shell.current?.querySelector<HTMLElement>('main') ?? null;
+    restoreRuntimeInspectorFocus(selection?.contextKey === inspectionContext ? inspectionOpener.current : null, fallback);
+  };
   const number = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 }).format(value);
   const compactNumber = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
   const totalActivityRate = activityTokensPerMinute(activityTrend);
@@ -537,11 +559,15 @@ export function Overview({ initialState, quickStatsScope, runwayScopeKey, record
     : t('redesign.noCachePrice')}`;
   const activities: readonly ActivityItem[] = recent ?? records.slice(0, 4).map((record, index) => ({ id: record.id, timestamp: now - index * 60_000, harness: record.harness, provider: record.provider, model: record.model, tokens: record.tokens, grain: record.grain === 'call' ? 'call' : 'session_aggregate', sessionKey: null }));
   useEffect(() => {
-    if (selection && !initialState && !dialog.current?.open) dialog.current?.showModal();
-  }, [selection, initialState?.kind]);
-  useEffect(() => {
-    if (initialState) { dialog.current?.close(); setSelection(null); }
-  }, [initialState?.kind]);
+    if (currentSelection && detail && !dialog.current?.open) dialog.current?.showModal();
+  }, [selection?.serial, inspectionContext, inspectionAvailable, !!detail]);
+  useLayoutEffect(() => {
+    if (selection && (!currentSelection || !detail)) { dialog.current?.close(); setSelection(null); }
+  }, [selection, currentSelection, detail]);
+  useRuntimeInspectorMotion(inspectionOpener, dialog, inspectionContext,
+    currentSelection && detail ? runtimeInspectorKey(currentSelection.dimension, currentSelection.key) : null,
+    inspectionSerial.current, inspectionAvailable && runtimeGraphStatus !== 'stale',
+    inspectionAvailable && !runtimeGraphStatus && runtimeMotionGraphReady !== false);
   useEffect(() => {
     const node = shell.current;
     if (!node) return;
@@ -590,7 +616,7 @@ export function Overview({ initialState, quickStatsScope, runwayScopeKey, record
             </div>}
           </section>
         </div>
-        <RuntimeMap pending={runtimeGraphPending} status={runtimeGraphStatus} motionBatch={runtimeMotion} motionEligibility={runtimeMotionEligibility} motionGraphReady={runtimeMotionGraphReady} nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} enabledHarnesses={runtimeHarnesses} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={(dimension, key) => setSelection({ dimension, key })}/>
+        <RuntimeMap pending={runtimeGraphPending} status={runtimeGraphStatus} motionBatch={runtimeMotion} motionEligibility={runtimeMotionEligibility} motionGraphReady={runtimeMotionGraphReady} nodes={runtimeNodes} edges={runtimeEdgesForMap} recordCount={runtimeTotals.records} now={runtimeGraph?.now ?? now} activityWindowMs={runtimeGraph?.activityWindowMs ?? RUNTIME_ACTIVITY_WINDOW_MS} t={t} language={language} harnessVendors={harnessVendors} enabledHarnesses={runtimeHarnesses} projects={runtimeProjects} selectedProject={selectedRuntimeProject} onProjectChange={onRuntimeProjectChange} onInspect={inspect}/>
         <div className="qp-bottom-grid">
           <QuotaRunway key={runwayScopeKey ?? JSON.stringify([quickStatsScope?.sourceId ?? null])} quota={quota} availableQuotas={quotas} now={now} t={t} language={language} preview={preview} history={quotaHistory} historyError={quotaHistoryError}/>
           <section className="qp-panel qp-insights" data-testid="usage-insights"><div className="qp-insights-heading"><h2><Sparkles size={18}/><span className="qp-overview-heading-title">{t('redesign.insights')}</span></h2><span className="qp-insights-subtitle">{t('redesign.insightsSubtitle')}</span></div>
@@ -622,10 +648,13 @@ export function Overview({ initialState, quickStatsScope, runwayScopeKey, record
               : <a className="qp-activity-item" key={item.id} data-harness={item.harness.trim().toLowerCase()} data-record-id={item.id} data-grain={item.grain} title={identity} href={item.sessionKey !== null ? `#history?range=all&session_id=${item.sessionKey}` : '#history?range=today'} aria-label={`${identity} · ${t('redesign.openHistory')}`}>{content}</a>;
           })}</div>}
         </section>
-    <dialog ref={dialog} className="qp-dialog" aria-labelledby="qp-detail-title" onClose={event => { if (!event.currentTarget.open) setSelection(null); }}>
-      <div className="qp-section-heading"><h2 id="qp-detail-title">{selection?.key === '' ? t('redesign.emptyIdentity') : selection?.key ?? t(selection?.dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X/></button></div>
-      <p>{selection && t(`redesign.${selection.dimension}`)}</p><div className="qp-detail-grid"><Metric label={t('redesign.tokens')} value={number(detail?.tokens ?? 0)}/><Metric label={t('redesign.sessions')} value={number(detail?.sessions ?? 0)}/><Metric label={t('redesign.calls')} value={number(detail?.callRecords ?? 0)}/><Metric label={t('redesign.aggregates')} value={number(detail?.aggregateRecords ?? 0)}/></div>
+    <dialog ref={dialog} className="qp-dialog" aria-labelledby="qp-detail-title" onClose={event => { if (!event.currentTarget.open) { restoreInspectionFocus(); setSelection(null); } }}>
+      {currentSelection && detail && <>
+      <div className="qp-section-heading"><h2 id="qp-detail-title">{currentSelection.key === '' ? t('redesign.emptyIdentity') : currentSelection.key ?? t(currentSelection.dimension === 'project' ? 'redesign.unassigned' : 'redesign.unknownValue')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X/></button></div>
+      <p>{t(`redesign.${currentSelection.dimension}`)}</p><div className="qp-detail-grid" data-runtime-inspector-detail={runtimeInspectorKey(currentSelection.dimension, currentSelection.key)}><Metric label={t('redesign.tokens')} value={number(detail.tokens)}/><Metric label={t('redesign.sessions')} value={number(detail.sessions)}/><Metric label={t('redesign.calls')} value={number(detail.callRecords ?? 0)}/><Metric label={t('redesign.aggregates')} value={number(detail.aggregateRecords ?? 0)}/></div>
+      {runtimeGraphStatus && <p className="qp-footnote" role="status">{t('redesign.staleSnapshot')}</p>}
       <p className="qp-footnote">{t('redesign.coverage')}</p>
+      </>}
     </dialog>
         </>}
   </RedesignShell>;

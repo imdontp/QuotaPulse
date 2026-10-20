@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.92
+## Current checkpoint: v1.85.93
+
+[Implementation and validation](redesign-v1.85.93/VALIDATION-STATE.md) | [Fresh original/current eight-page review](redesign-v1.85.93/review.html) | [Required remaining work](redesign-v1.85.93/NEXT-REQUIRED-WORK.md). Projects real selection/detail tabs, Runtime native map/data inspector and Providers owner selection now use finite180/700ms visible emphasis. Final316web tests,27 ordinary-renderer native stages with exact finish events, fresh native8 capture and three byte-exact resting controls pass. Paint-renderer sampling and nested-menu harness reds remain documented; no overall performance fix is inferred. Full all-eight Source acceptance, remaining state/native/compatibility matrix and actual release/rollback remain open.
+
+## Previous checkpoint: v1.85.92
 
 [Implementation/validation](redesign-v1.85.92/VALIDATION-STATE.md) | [Resting controls](redesign-v1.85.92/review.html) | [Required remaining work](redesign-v1.85.92/NEXT-REQUIRED-WORK.md). Models exact selection/detail and Live observed session/feed/native dialog now have finite180/700ms motion. Actual browser found and corrected two startup eligibility defects; unchanged first-update count/timing gates pass. Final296web tests,16combined native stages and8Live keyboard/held-duplicate stages pass. Live resting PNG is exact; Models has2sidebar pixels/max3 within original tolerance. Projects/Runtime/Providers motion, full all-eight Source acceptance, remaining lifecycle/state matrix and native/release/rollback remain open.
 

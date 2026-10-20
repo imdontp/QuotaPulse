@@ -1,0 +1,90 @@
+TAP version 13
+# Subtest: first accepted page and any query/filter/page dependency change establish a static baseline
+ok 1 - first accepted page and any query/filter/page dependency change establish a static baseline
+  ---
+  duration_ms: 1.7326
+  ...
+# Subtest: retained/reordered/duplicate refresh rows do not replay; unchanged-page new actual presence enters once
+ok 2 - retained/reordered/duplicate refresh rows do not replay; unchanged-page new actual presence enters once
+  ---
+  duration_ms: 0.3755
+  ...
+# Subtest: late imported historic data may be newly observed without inventing recent timestamps or a live call
+ok 3 - late imported historic data may be newly observed without inventing recent timestamps or a live call
+  ---
+  duration_ms: 0.2367
+  ...
+# Subtest: identity preserves exact source/session/time and does not depend on mutable totals or locale
+ok 4 - identity preserves exact source/session/time and does not depend on mutable totals or locale
+  ---
+  duration_ms: 0.148
+  ...
+# Subtest: bounded preceding-page semantics allow an absent presence to enter again without a lifetime ledger
+ok 5 - bounded preceding-page semantics allow an absent presence to enter again without a lifetime ledger
+  ---
+  duration_ms: 0.1888
+  ...
+# Subtest: actual settle/emphasis calls use shared180/700ms and once-only final-base cleanup
+ok 6 - actual settle/emphasis calls use shared180/700ms and once-only final-base cleanup
+  ---
+  duration_ms: 0.9805
+  ...
+# Subtest: hidden/unmount/replacement cancellation releases all handles and observer targets once; reduced is static
+ok 7 - hidden/unmount/replacement cancellation releases all handles and observer targets once; reduced is static
+  ---
+  duration_ms: 0.3415
+  ...
+# Subtest: visibility checks respect viewport and actual scrolling table clipping
+ok 8 - visibility checks respect viewport and actual scrolling table clipping
+  ---
+  duration_ms: 0.3501
+  ...
+# Subtest: actual offscreen observer callback cancels only that target and keeps the other finite batch alive
+ok 9 - actual offscreen observer callback cancels only that target and keeps the other finite batch alive
+  ---
+  duration_ms: 0.6284
+  ...
+# Subtest: Runtime inspector identity preserves dimension and exact null/empty/case metadata
+ok 10 - Runtime inspector identity preserves dimension and exact null/empty/case metadata
+  ---
+  duration_ms: 0.9959
+  ...
+# Subtest: canonical inspector scope excludes rolling clocks and distinguishes exact project from All
+ok 11 - canonical inspector scope excludes rolling clocks and distinguishes exact project from All
+  ---
+  duration_ms: 0.2467
+  ...
+# Subtest: foreign/pending selection is unavailable before rendering detail; same-context retained selection stays exact
+ok 12 - foreign/pending selection is unavailable before rendering detail; same-context retained selection stays exact
+  ---
+  duration_ms: 0.1632
+  ...
+# Subtest: only an explicit changed selected identity enters once; duplicate graphs do not truncate native effects
+ok 13 - only an explicit changed selected identity enters once; duplicate graphs do not truncate native effects
+  ---
+  duration_ms: 0.2882
+  ...
+# Subtest: same-context refreshing keeps running effects but consumes a new static intent without delayed replay
+ok 14 - same-context refreshing keeps running effects but consumes a new static intent without delayed replay
+  ---
+  duration_ms: 0.192
+  ...
+# Subtest: context/hidden/reduced/error losses consume selection and cannot replay after restoration
+ok 15 - context/hidden/reduced/error losses consume selection and cannot replay after restoration
+  ---
+  duration_ms: 0.1665
+  ...
+# Subtest: native focus restoration chooses exact visible opener or connected fallback, with no effect dependency
+ok 16 - native focus restoration chooses exact visible opener or connected fallback, with no effect dependency
+  ---
+  duration_ms: 1.3441
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1569.7311

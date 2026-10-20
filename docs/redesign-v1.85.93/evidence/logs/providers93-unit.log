@@ -1,0 +1,30 @@
+TAP version 13
+# Subtest: provider identity preserves exact owner and native inspector state
+ok 1 - provider identity preserves exact owner and native inspector state
+  ---
+  duration_ms: 0.9241
+  ...
+# Subtest: default owner opens on explicit card action, while initial/deep-linked open is static
+ok 2 - default owner opens on explicit card action, while initial/deep-linked open is static
+  ---
+  duration_ms: 0.6056
+  ...
+# Subtest: comparison selection changes actual owner, native close/reopen alone never replays selection
+ok 3 - comparison selection changes actual owner, native close/reopen alone never replays selection
+  ---
+  duration_ms: 0.3673
+  ...
+# Subtest: filtered window, reduced/error loss and offscreen detail do not queue owner emphasis
+ok 4 - filtered window, reduced/error loss and offscreen detail do not queue owner emphasis
+  ---
+  duration_ms: 0.4793
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1018.6647

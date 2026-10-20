@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 import { Activity, MoreHorizontal, RefreshCw, ShieldCheck } from 'lucide-react';
 import { HarnessIcon } from '@/components/harness-icon';
 import { VendorIcon } from '@/components/vendor-icon';
@@ -10,6 +10,9 @@ import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import { RedesignShell } from './shell';
 import './providers.css';
+import { providerSelectionMotionKey } from './provider-selection-motion';
+import { useProviderSelectionMotion } from './use-provider-selection-motion';
+import type { ModelSelectionIntent } from './model-selection-motion';
 import { SectionMark } from './section-mark';
 import { PageHeading } from './page-heading';
 import { HeadingReferenceIcon } from './heading-reference-icon';
@@ -44,6 +47,9 @@ export function ProductionProviders() {
   const [queryRetry, setQueryRetry] = useState(0);
   const [queryBusy, setQueryBusy] = useState(false);
   const refresh = useRefreshStatus();
+  const motionOpener = useRef<HTMLElement | null>(null);
+  const motionDetail = useRef<HTMLElement>(null);
+  const [motionIntent, setMotionIntent] = useState<ModelSelectionIntent | null>(null);
   useEffect(() => {
     const sync = () => { if (location.hash.slice(1).split('?')[0] === 'providers') { const next = routeState(); setRoute(next); if (next.owner || next.source) setInspectorOpen(true); } };
     addEventListener('hashchange', sync);
@@ -89,6 +95,15 @@ export function ProductionProviders() {
     primary.used_percent !== null && !isExpired(primary, now) && primary.last_seen_at <= now) ? 0 : card.readings.length > 0 ? 1 : 2;
   cards.sort((a, b) => readingPriority(a) - readingPriority(b));
   const selected = cards.find(card => card.key === route.owner) ?? cards.find(card => card.sources.some(source => source.source_id === route.source)) ?? cards[0];
+  const motionContext = JSON.stringify([route.window, route.section, route.source]);
+  useProviderSelectionMotion(motionOpener, motionDetail, selected?.key, inspectorOpen, motionContext, motionIntent, !!overview && !error);
+  const chooseOwner = (card: OwnerCard, event: MouseEvent<HTMLButtonElement>) => {
+    if (selected?.key !== card.key || !inspectorOpen) {
+      motionOpener.current = event.currentTarget.closest<HTMLElement>('[data-provider-motion-owner]');
+      setMotionIntent(prior => ({ serial: (prior?.serial ?? 0) + 1, key: providerSelectionMotionKey(card.key, true)!, contextKey: motionContext }));
+    }
+    update({ owner: card.key });
+  };
   const loaded = overview !== null;
   useEffect(() => {
     if (loaded && route.section === 'quotas') document.getElementById('provider-quotas')?.scrollIntoView({ block: 'start' });
@@ -121,8 +136,8 @@ export function ProductionProviders() {
         <InitialRegion id="providers-health" label={t('redesign.providerReaderHealth')} state={initialState} className="qp-provider-health" slots={5}/>
       </div>
     </> : cards.length === 0 ? <p className="qp-panel">{t('redesign.providerNoAccounts')}</p> : <>
-      <section className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{cards.map(card => <article key={card.key} className="qp-panel qp-provider-card" data-vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'} data-has-quota={card.readings.length > 0} data-selected={selected?.key === card.key}>
-        <div className="qp-provider-card-head"><span className="qp-provider-icon" aria-hidden="true"><VendorIcon vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'}/></span><div className="qp-provider-card-copy"><button aria-pressed={selected?.key === card.key} onClick={() => update({ owner: card.key })}>{card.title}</button><p className="qp-provider-linked">{t('redesign.providerLinked')}: {card.linked.join(', ') || t('redesign.unknownValue')}</p></div><span className="qp-provider-state" data-state={card.sources.length > 0 && card.sources.every(source => !source.enabled) ? 'inactive' : card.state}>{card.sources.length > 0 && card.sources.every(source => !source.enabled) ? t('redesign.providerInactive') : stateLabel(card.state)}</span></div>
+      <section className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{cards.map(card => <article key={card.key} className="qp-panel qp-provider-card" data-provider-motion-owner={card.key} data-vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'} data-has-quota={card.readings.length > 0} data-selected={selected?.key === card.key}>
+        <div className="qp-provider-card-head"><span className="qp-provider-icon" aria-hidden="true"><VendorIcon vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'}/></span><div className="qp-provider-card-copy"><button aria-pressed={selected?.key === card.key} onClick={event => chooseOwner(card, event)}>{card.title}</button><p className="qp-provider-linked">{t('redesign.providerLinked')}: {card.linked.join(', ') || t('redesign.unknownValue')}</p></div><span className="qp-provider-state" data-state={card.sources.length > 0 && card.sources.every(source => !source.enabled) ? 'inactive' : card.state}>{card.sources.length > 0 && card.sources.every(source => !source.enabled) ? t('redesign.providerInactive') : stateLabel(card.state)}</span></div>
         {card.hidden && <p className="qp-provider-hidden">{t('redesign.providerHidden')}</p>}
         <div className="qp-provider-windows">{card.readings.length === 0 ? <p>{t('redesign.providerNoQuota')}</p> : card.readings.map(({ primary }) => {
           const value = used(primary);
@@ -130,13 +145,13 @@ export function ProductionProviders() {
         })}</div>
         <footer>{card.readings.length > 0 && <div className="qp-provider-provenance"><small>{t('redesign.providerOrigin')}: {[...new Set(card.readings.map(({ primary }) => primary.origin))].join(', ')}</small><small className="qp-provider-confirmed"><RefreshCw size={12} aria-hidden="true"/>{t('redesign.providerLatestConfirmed')}: {age(Math.max(...card.readings.map(({ primary }) => primary.last_seen_at)))}</small></div>}<span>{card.sources.length} {t('redesign.providerReader')}</span><a href={manageHref(card)}>{card.subscription ? t('redesign.providerManage') : t('redesign.providerDiagnostics')}</a></footer>
       </article>)}</section>
-      {selected && <details className="qp-provider-inspector" open={inspectorOpen} onToggle={event => setInspectorOpen(event.currentTarget.open)}><summary>{t('redesign.providerDetails')}: {selected.title}</summary><section className="qp-panel qp-provider-detail" aria-label={t('redesign.providerDetails')}><div className="qp-provider-section-head"><h2>{t('redesign.providerDetails')}: {selected.title}</h2><a href={manageHref(selected)}>{selected.subscription ? t('redesign.providerManage') : t('redesign.providerDiagnostics')}</a></div>
+      {selected && <details className="qp-provider-inspector" open={inspectorOpen} onToggle={event => setInspectorOpen(event.currentTarget.open)}><summary>{t('redesign.providerDetails')}: {selected.title}</summary><section ref={motionDetail} data-provider-selection-detail={selected.key} className="qp-panel qp-provider-detail" aria-label={t('redesign.providerDetails')}><div className="qp-provider-section-head"><h2>{t('redesign.providerDetails')}: {selected.title}</h2><a href={manageHref(selected)}>{selected.subscription ? t('redesign.providerManage') : t('redesign.providerDiagnostics')}</a></div>
         <p>{t('redesign.providerLinked')}: {selected.linked.join(', ') || t('redesign.unknownValue')}</p>
         {selected.readings.length === 0 ? <p>{t('redesign.providerNoQuota')}</p> : <div className="qp-provider-detail-windows">{selected.readings.map(({ primary, superseded }) => <div key={primary.window_kind}><h3>{f.window(primary.window_kind)} · {used(primary) === null ? t('redesign.providerUnavailable') : f.pct(used(primary))}</h3><dl><dt>{t('redesign.providerOrigin')}</dt><dd>{primary.origin}</dd><dt>{t('redesign.providerObserved')}</dt><dd>{date(primary.observed_at)} · {age(primary.observed_at)}</dd><dt>{t('redesign.providerConfirmed')}</dt><dd>{date(primary.last_seen_at)} · {age(primary.last_seen_at)}</dd><dt>{t('redesign.providerReset')}</dt><dd>{date(primary.resets_at, true)}</dd></dl>{superseded.length > 0 && <details><summary>{t('redesign.providerOtherReaders')} ({superseded.length})</summary><ul>{superseded.map(reader => <li key={`${reader.source_id}-${reader.origin}`}>{reader.display_name} · {reader.origin} · {date(reader.observed_at)}</li>)}</ul></details>}</div>)}</div>}
       </section></details>}
       <div className="qp-provider-bottom">
         <section id="provider-quotas" className="qp-panel qp-provider-comparison"><div className="qp-provider-section-head"><h2><SectionMark icon={<Activity/>}/>{t('redesign.providerComparison')}</h2>{kinds.length > 0 && <label>{t('redesign.projectRange')}<select value={kind} onChange={event => update({ window: event.target.value })}>{kinds.map(value => <option key={value} value={value}>{f.window(value)}</option>)}</select></label>}</div><p className="qp-footnote">{t('redesign.providerComparisonNote')} · {excluded} {t('redesign.providerExcluded')}</p>
-          {comparable.length === 0 ? <p>{t('redesign.providerNoComparison')}</p> : <div className="qp-provider-comparison-chart"><div className="qp-provider-axis" aria-hidden="true">{[100, 75, 50, 25, 0].map(value => <span key={value} style={{ top: `${100 - value}%` }}>{f.pct(value)}</span>)}</div><ol>{comparable.map(({ card, reading }) => <li key={card.key} data-vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'}><button aria-pressed={selected?.key === card.key} onClick={() => update({ owner: card.key })}><span aria-hidden="true"><VendorIcon vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'}/></span><span className="qp-provider-comparison-name">{card.title}</span></button><span className="qp-bar" aria-hidden="true" style={{ '--qp-quota-used': `${Math.max(0, Math.min(100, reading.used_percent ?? 0))}%` } as CSSProperties}><span/></span><strong style={{ '--qp-value-top': `calc(var(--qp-provider-plot-height, 144px) * ${1 - Math.max(0, Math.min(100, reading.used_percent ?? 0)) / 100})` } as CSSProperties}>{f.pct(reading.used_percent)}</strong></li>)}</ol></div>}
+          {comparable.length === 0 ? <p>{t('redesign.providerNoComparison')}</p> : <div className="qp-provider-comparison-chart"><div className="qp-provider-axis" aria-hidden="true">{[100, 75, 50, 25, 0].map(value => <span key={value} style={{ top: `${100 - value}%` }}>{f.pct(value)}</span>)}</div><ol>{comparable.map(({ card, reading }) => <li key={card.key} data-provider-motion-owner={card.key} data-vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'}><button aria-pressed={selected?.key === card.key} onClick={event => chooseOwner(card, event)}><span aria-hidden="true"><VendorIcon vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'}/></span><span className="qp-provider-comparison-name">{card.title}</span></button><span className="qp-bar" aria-hidden="true" style={{ '--qp-quota-used': `${Math.max(0, Math.min(100, reading.used_percent ?? 0))}%` } as CSSProperties}><span/></span><strong style={{ '--qp-value-top': `calc(var(--qp-provider-plot-height, 144px) * ${1 - Math.max(0, Math.min(100, reading.used_percent ?? 0)) / 100})` } as CSSProperties}>{f.pct(reading.used_percent)}</strong></li>)}</ol></div>}
         </section>
         <section className="qp-panel qp-provider-health"><h2><SectionMark icon={<ShieldCheck/>}/>{t('redesign.providerReaderHealth')}</h2><p className="qp-footnote">{t('redesign.providerReaderNote')}</p><div className="qp-provider-table" tabIndex={0} role="region" aria-label={t('redesign.providerReaderHealth')}><table><thead><tr><th>{t('redesign.providerReader')}</th><th>{t('redesign.providerOwner')}</th><th>{t('redesign.providerState')}</th><th>{t('redesign.providerFreshness')}</th><th>{t('redesign.providerAge')}</th><th>{t('redesign.providerSamples')}</th></tr></thead><tbody>{overview.sourceStatus.map(source => <tr key={source.source_id}><td><span className="qp-provider-reader-identity"><HarnessIcon harness={source.harness} vendor={overview.harnesses.find(harness => harness.harness === source.harness)?.vendor}/>{source.display_name}</span><small>{source.harness}/{source.profile}</small></td><td>{cards.find(card => card.sources.some(item => item.source_id === source.source_id))?.title ?? t('redesign.unknownValue')}</td><td>{source.enabled ? stateLabel(source.account_state) : t('redesign.providerInactive')}</td><td><span className="qp-provider-freshness" data-freshness={source.telemetry.freshness}>{freshnessLabel(source.telemetry.freshness)}</span></td><td>{age(source.last_limit_at)}</td><td>{source.limit_samples}</td></tr>)}</tbody></table></div></section>
       </div>

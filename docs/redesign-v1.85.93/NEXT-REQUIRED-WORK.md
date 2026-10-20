@@ -1,0 +1,16 @@
+# Continue the full original all-eight real-data redesign
+
+93 implements the mapped existing Projects card/rank/tab/detail, Runtime map/data inspector and Providers owner selection actions. Together with89-92 this advances the shared motion contract across the existing supported surfaces. Do not call that a completed global state/native acceptance matrix. Cost has scoped History links and native disclosures; do not invent a selected modal to create a motion target.
+
+Next priorities:
+
+1. Reconcile actual original blueprint03/08/09/13 and GAP001-020 against current source/evidence. Establish remaining concrete requirements without treating historical passing verifier summaries as completion. Include additional actual new-record/selection behaviors only if required by the original contract; preserve real grain and identities.
+2. Current all8 Source art/material/typography/layout/color/action audit using fresh93 captures and actual user data semantics. Preserve factual overrides, unavailable telemetry and observed chart points; no copied fake values/curves/capabilities. Final human acceptance and any99-100% likeness claim remain unproven.
+3. Complete relevant final EN/TH/light/dark/native/narrow keyboard/focus/loading/error/retained/filter/search/export/selection and hidden/reduced/IO matrix. Reuse credible unchanged historical evidence with its original version. Basic per-page positive gates do not prove every cancellation, held eligibility, stale/retry and persistence path. Preserve historical85/88/91 raster findings until a causal correction is proven at original tolerance.
+4. Verify original feature/NEW_READ GAP001-020 actual endpoint/type/query execution, distinct counts, minute/feed and model/provider provenance, money coverage, risk/history and default compatibility.
+5. Remaining original hash migration/canonicalization aliases, exact range/source/entity filters and back loops; popup selected before hash route handling; existing Electron Live/preload IPC and Settings hidden owners/language/theme/currency/rate/window size/notifications/quiet hours. No new pet work.
+6. Native resource/performance evidence: startup query/chart paint, hidden/navigation cleanup and chunk behavior; prior aggregate optimization does not close whole roughly4MB O(N) payload. Ordinary Chrome motion evidence is not packaged Electron/minimize/restore proof. No invented strict first-frame SLO.
+7. Final matching daemon/web/tray/preload/assets package and extracted package/notices/licenses/fonts/inventories/checksums. Actual previous-checkout+matching-assets rollback previous->current->previous->current preserving the same isolated fixture DB/data, with no delete/reprice/reset of user DB. Existing unrelated rollback helpers and historical metadata tests do not prove package recovery. Establish actual native host isolation from evidence.
+8. Final requirement-by-requirement audit binds actual current source commits, built artifacts and all open findings. Only complete the goal when the requested full end state is true and verified; keep it active now.
+
+Preserve main/origin, isolated branch/worktree, .zed and prior rollback helpers. Root coordinates build/browser/Git; browser harnesses share a local port and run sequentially.
