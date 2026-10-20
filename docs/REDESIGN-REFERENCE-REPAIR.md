@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.91
+## Current checkpoint: v1.85.92
+
+[Implementation/validation](redesign-v1.85.92/VALIDATION-STATE.md) | [Resting controls](redesign-v1.85.92/review.html) | [Required remaining work](redesign-v1.85.92/NEXT-REQUIRED-WORK.md). Models exact selection/detail and Live observed session/feed/native dialog now have finite180/700ms motion. Actual browser found and corrected two startup eligibility defects; unchanged first-update count/timing gates pass. Final296web tests,16combined native stages and8Live keyboard/held-duplicate stages pass. Live resting PNG is exact; Models has2sidebar pixels/max3 within original tolerance. Projects/Runtime/Providers motion, full all-eight Source acceptance, remaining lifecycle/state matrix and native/release/rollback remain open.
+
+## Previous checkpoint: v1.85.91
 
 [Implementation and validation](redesign-v1.85.91/VALIDATION-STATE.md) | [Original/current eight-page review](redesign-v1.85.91/review.html) | [Required remaining work](redesign-v1.85.91/NEXT-REQUIRED-WORK.md). History observed-presence/selection and Alerts entrances have finite native motion with lifecycle cancellation; real History filter and legacy-alias defects are corrected. Runtime tracks and Live/Models heading paint follow Source while preserving actual facts. Final build,273 web tests, actual motion/lifecycle/route gates,14 visual factual controls and fresh native8 capture pass. Independent sidebar raster failures remain open; generic motion beyond History, all-eight acceptance and native/release/rollback are unfinished.
 

@@ -1,0 +1,146 @@
+{
+  "message": "AssertionError [ERR_ASSERTION]: live-observed-session-and-feed finite effects\n+ actual - expected\n\n  [\n    180,\n-   180,\n    700,\n-   700\n  ]\n",
+  "stack": "AssertionError [ERR_ASSERTION]: live-observed-session-and-feed finite effects\n+ actual - expected\n\n  [\n    180,\n-   180,\n    700,\n-   700\n  ]\n\n    at collect (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-models-live-motion.mts:133:529)\n    at async <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-models-live-motion.mts:169:196)",
+  "url": "http://127.0.0.1:7816/#live",
+  "productionIndexSha256": "b40e885220c25c2723fdc3edc2502c9a5a643d6e7f0059d7edf8c81742b1dcc3",
+  "stages": [
+    {
+      "label": "live-initial-static",
+      "static": true
+    }
+  ],
+  "io": [
+    {
+      "ms": 44995107416,
+      "target": "qp-panel qp-live-section qp-live-sessions",
+      "intersecting": true,
+      "ratio": 1,
+      "bounds": {
+        "x": 238,
+        "y": 257.5,
+        "width": 1040.40625,
+        "height": 329,
+        "top": 257.5,
+        "right": 1278.40625,
+        "bottom": 586.5,
+        "left": 238
+      },
+      "intersection": {
+        "x": 238,
+        "y": 257.5,
+        "width": 1040.40625,
+        "height": 329,
+        "top": 257.5,
+        "right": 1278.40625,
+        "bottom": 586.5,
+        "left": 238
+      }
+    },
+    {
+      "ms": 44995107572,
+      "target": "qp-live-flow-canvas",
+      "intersecting": true,
+      "ratio": 1,
+      "bounds": {
+        "x": 271,
+        "y": 621.75,
+        "width": 792.40625,
+        "height": 104,
+        "top": 621.75,
+        "right": 1063.40625,
+        "bottom": 725.75,
+        "left": 271
+      },
+      "intersection": {
+        "x": 271,
+        "y": 621.75,
+        "width": 792.40625,
+        "height": 104,
+        "top": 621.75,
+        "right": 1063.40625,
+        "bottom": 725.75,
+        "left": 271
+      }
+    },
+    {
+      "ms": 44995107572,
+      "target": "qp-panel qp-live-section qp-live-records",
+      "intersecting": true,
+      "ratio": 1,
+      "bounds": {
+        "x": 238,
+        "y": 771.75,
+        "width": 1040.40625,
+        "height": 159.5,
+        "top": 771.75,
+        "right": 1278.40625,
+        "bottom": 931.25,
+        "left": 238
+      },
+      "intersection": {
+        "x": 238,
+        "y": 771.75,
+        "width": 1040.40625,
+        "height": 159.5,
+        "top": 771.75,
+        "right": 1278.40625,
+        "bottom": 931.25,
+        "left": 238
+      }
+    },
+    {
+      "ms": 44995107572,
+      "target": "qp-panel qp-live-section qp-live-sessions",
+      "intersecting": true,
+      "ratio": 1,
+      "bounds": {
+        "x": 238,
+        "y": 225.75,
+        "width": 1040.40625,
+        "height": 329,
+        "top": 225.75,
+        "right": 1278.40625,
+        "bottom": 554.75,
+        "left": 238
+      },
+      "intersection": {
+        "x": 238,
+        "y": 225.75,
+        "width": 1040.40625,
+        "height": 329,
+        "top": 225.75,
+        "right": 1278.40625,
+        "bottom": 554.75,
+        "left": 238
+      }
+    },
+    {
+      "ms": 44995109285,
+      "target": "",
+      "intersecting": true,
+      "ratio": 1,
+      "bounds": {
+        "x": 249,
+        "y": 300.75,
+        "width": 1018.40625,
+        "height": 30,
+        "top": 300.75,
+        "right": 1267.40625,
+        "bottom": 330.75,
+        "left": 249
+      },
+      "intersection": {
+        "x": 249,
+        "y": 300.75,
+        "width": 1018.40625,
+        "height": 30,
+        "top": 300.75,
+        "right": 1267.40625,
+        "bottom": 330.75,
+        "left": 249
+      }
+    }
+  ],
+  "errors": [],
+  "forbidden": []
+}

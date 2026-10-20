@@ -1,0 +1,4071 @@
+{
+  "message": "TimeoutError: page.waitForFunction: Timeout 12000ms exceeded.",
+  "stack": "page.waitForFunction: Timeout 12000ms exceeded.\n    at collect (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-models-live-motion.mts:133:69)\n    at <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-models-live-motion.mts:162:202)",
+  "url": "http://127.0.0.1:7816/#live",
+  "productionIndexSha256": "b222ec99a6606b7d4a846d7bf4647bc82a27490012bc3a684755da95afb3e7e2",
+  "stages": [
+    {
+      "label": "models-initial-static",
+      "static": true
+    },
+    {
+      "label": "models-explicit-row-then-accepted-detail",
+      "samples": [
+        {
+          "ms": 39,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 46,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 61,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 16.68099999355599,
+              "state": "running",
+              "opacity": "0.862687",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.760165)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 16.68099999355599,
+              "state": "running",
+              "opacity": "0.862687",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.760165)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 78,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 33.28099999355638,
+              "state": "running",
+              "opacity": "0.921026",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.675666)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 33.28099999355638,
+              "state": "running",
+              "opacity": "0.921026",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.675666)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 95,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 49.9809999935561,
+              "state": "running",
+              "opacity": "0.957028",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.596227)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 49.9809999935561,
+              "state": "running",
+              "opacity": "0.957028",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.596227)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 110,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 66.68099999355626,
+              "state": "running",
+              "opacity": "0.977437",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.522885)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 66.68099999355626,
+              "state": "running",
+              "opacity": "0.977437",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.522885)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 126,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 83.28099999355621,
+              "state": "running",
+              "opacity": "0.988604",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.456355)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 83.28099999355621,
+              "state": "running",
+              "opacity": "0.988604",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.456355)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 142,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 99.98099999355637,
+              "state": "running",
+              "opacity": "0.994646",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.395965)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 99.98099999355637,
+              "state": "running",
+              "opacity": "0.994646",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.395965)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 158,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 116.68099999355607,
+              "state": "running",
+              "opacity": "0.997756",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.342058)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 116.68099999355607,
+              "state": "running",
+              "opacity": "0.997756",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.342058)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 175,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 133.28099999355604,
+              "state": "running",
+              "opacity": "0.999224",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.294645)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 133.28099999355604,
+              "state": "running",
+              "opacity": "0.999224",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.294645)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 190,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 149.9809999935562,
+              "state": "running",
+              "opacity": "0.999821",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.252763)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 149.9809999935562,
+              "state": "running",
+              "opacity": "0.999821",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.252763)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 206,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 166.58099999355613,
+              "state": "running",
+              "opacity": "0.999986",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.216434)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 166.58099999355613,
+              "state": "running",
+              "opacity": "0.999986",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.216434)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 222,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.184521)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 183.38099999355606,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.184521)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 239,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.157154)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 200.04699999355634,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.157154)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 254,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.133593)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 216.68099999355616,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.133593)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 270,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.113348)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 233.28099999355612,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.113348)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 289,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0958475)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 249.98099999355628,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0958475)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 303,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0808378)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 266.680999993556,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0808378)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 319,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0679813)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 283.38099999355615,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0679813)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 336,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0569833)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 300.0809999935563,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0569833)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 351,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0569833)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 300.0809999935563,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0569833)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 366,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0476405)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 316.68099999355627,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0476405)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 381,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.039665)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 333.2809999935562,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.039665)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 397,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.032832)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 349.98099999355634,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.032832)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 413,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0270292)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 366.6809999935561,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0270292)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 451,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0179899)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 399.98099999355617,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0179899)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 462,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0145182)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 416.58099999355613,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0145182)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 477,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0115941)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 433.2809999935563,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0115941)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 494,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00916097)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 449.980999993556,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00916097)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 16.664999998453833,
+              "state": "running",
+              "opacity": "0.862618",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.760249)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 16.664999998453833,
+              "state": "running",
+              "opacity": "0.862618",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.760249)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 509,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00714978)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 466.68099999355616,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00714978)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 33.364999998453996,
+              "state": "running",
+              "opacity": "0.921259",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.675252)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 33.364999998453996,
+              "state": "running",
+              "opacity": "0.921259",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.675252)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 526,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00550056)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 483.3809999935563,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00550056)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 50.064999998454155,
+              "state": "running",
+              "opacity": "0.957163",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.595843)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 50.064999998454155,
+              "state": "running",
+              "opacity": "0.957163",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.595843)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 542,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00416808)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 499.9809999935563,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00416808)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 66.6649999984541,
+              "state": "running",
+              "opacity": "0.977423",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.522952)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 66.6649999984541,
+              "state": "running",
+              "opacity": "0.977423",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.522952)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 558,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00309073)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 516.680999993556,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00309073)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 83.36499999845381,
+              "state": "running",
+              "opacity": "0.988645",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.456035)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 83.36499999845381,
+              "state": "running",
+              "opacity": "0.988645",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.456035)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 574,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0022373)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 533.3809999935562,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0022373)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 100.06499999845397,
+              "state": "running",
+              "opacity": "0.994667",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.395677)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 100.06499999845397,
+              "state": "running",
+              "opacity": "0.994667",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.395677)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 590,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00157605)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 549.9809999935561,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00157605)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 116.66499999845392,
+              "state": "running",
+              "opacity": "0.997754",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.342106)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 116.66499999845392,
+              "state": "running",
+              "opacity": "0.997754",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.342106)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 606,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0010682)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 566.6809999935563,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0010682)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 133.3649999984541,
+              "state": "running",
+              "opacity": "0.999229",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.29442)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 133.3649999984541,
+              "state": "running",
+              "opacity": "0.999229",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.29442)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 621,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000690997)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 583.380999993556,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000690997)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 150.0649999984538,
+              "state": "running",
+              "opacity": "0.999822",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.252566)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 150.0649999984538,
+              "state": "running",
+              "opacity": "0.999822",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.252566)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 638,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000421718)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 599.9809999935563,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000421718)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": 166.6649999984542,
+              "state": "running",
+              "opacity": "0.999986",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.216263)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 166.6649999984542,
+              "state": "running",
+              "opacity": "0.999986",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.216263)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 654,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000236858)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 616.5809999935564,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000236858)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.184726)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 183.26499999845413,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.184726)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 670,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000117376)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 633.2809999935561,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000117376)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.157279)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 199.96499999845386,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.157279)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 687,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000479358)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 649.9809999935562,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000479358)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.133614)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 216.66499999845402,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.133614)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 703,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000138682)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 666.5809999935561,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000138682)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.113366)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 233.26499999845396,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.113366)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 718,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000138682)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 666.5809999935561,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000138682)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.113366)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 233.26499999845396,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.113366)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 736,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 2.64233e-15)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 699.980999993556,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 2.64233e-15)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0808511)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 266.6649999984538,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0808511)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 749,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 2.64233e-15)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 699.980999993556,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 2.64233e-15)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0808511)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 266.6649999984538,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0808511)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 766,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0679927)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 283.364999998454,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0679927)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 782,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0570539)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 299.96499999845395,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0570539)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 800,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0476488)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 316.6649999984541,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0476488)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 813,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0396278)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 333.3649999984538,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0396278)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 829,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.032838)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 349.96499999845423,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.032838)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 846,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0270343)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 366.66499999845394,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0270343)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 863,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0221464)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 383.26499999845385,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0221464)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 878,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0179936)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 399.964999998454,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0179936)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 894,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0145213)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 416.56499999845397,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0145213)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 909,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0115967)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 433.26499999845413,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0115967)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 926,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00916309)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 449.96499999845383,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00916309)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 942,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00715153)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 466.664999998454,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00715153)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 958,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00550198)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 483.36499999845415,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00550198)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 974,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00416923)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 499.9649999984541,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00416923)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 990,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00309165)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 516.6649999984538,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00309165)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1006,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00223802)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 533.364999998454,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00223802)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1022,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0015766)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 549.9649999984539,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0015766)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1039,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00106862)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 566.664999998454,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00106862)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1054,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000693223)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 583.2649999984541,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000693223)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1070,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000421934)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 599.9649999984542,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000421934)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1087,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000236105)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 616.6649999984539,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000236105)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1103,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000117464)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 633.2649999984538,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.000117464)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1119,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000479833)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 649.964999998454,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000479833)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1137,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000137617)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 666.6649999984542,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000137617)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1151,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000137617)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 666.6649999984542,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000137617)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1165,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00000169004)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": 683.2649999984542,
+              "state": "running",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "oklab(0.783856 -0.0933539 -0.104695 / 0.00000169004)",
+              "outlineWidth": "2px",
+              "outlineStyle": "solid",
+              "outlineOffset": "-2px"
+            }
+          ]
+        },
+        {
+          "ms": 1181,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1197,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1214,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1230,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1246,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1262,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1279,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1294,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1309,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1325,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1342,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1357,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1374,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1389,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        },
+        {
+          "ms": 1405,
+          "effects": [
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            },
+            {
+              "key": "[\"GPT-5.x\",\"openai\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "background": "rgba(0, 0, 0, 0)",
+              "outlineColor": "rgb(238, 243, 255)",
+              "outlineWidth": "3px",
+              "outlineStyle": "none",
+              "outlineOffset": "0px"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "key": "[\"GPT-5.x\",\"openai\"]",
+          "duration": 180,
+          "frames": [
+            {
+              "opacity": 0.78
+            },
+            {
+              "opacity": 1
+            }
+          ],
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "key": "[\"GPT-5.x\",\"openai\"]",
+          "duration": 700,
+          "frames": [
+            {
+              "outlineColor": "color-mix(in srgb,var(--qp-accent) 85%,transparent)",
+              "outlineStyle": "solid",
+              "outlineWidth": "2px",
+              "outlineOffset": "-2px"
+            },
+            {
+              "outlineColor": "transparent",
+              "outlineStyle": "solid",
+              "outlineWidth": "2px",
+              "outlineOffset": "-2px"
+            }
+          ],
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "key": "[\"GPT-5.x\",\"openai\"]",
+          "duration": 180,
+          "frames": [
+            {
+              "opacity": 0.78
+            },
+            {
+              "opacity": 1
+            }
+          ],
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "key": "[\"GPT-5.x\",\"openai\"]",
+          "duration": 700,
+          "frames": [
+            {
+              "outlineColor": "color-mix(in srgb,var(--qp-accent) 85%,transparent)",
+              "outlineStyle": "solid",
+              "outlineWidth": "2px",
+              "outlineOffset": "-2px"
+            },
+            {
+              "outlineColor": "transparent",
+              "outlineStyle": "solid",
+              "outlineWidth": "2px",
+              "outlineOffset": "-2px"
+            }
+          ],
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        }
+      ]
+    },
+    {
+      "label": "models-repeat-current-selection-static",
+      "static": true
+    },
+    {
+      "label": "models-duplicate-refresh-static",
+      "static": true
+    },
+    {
+      "label": "models-reduced-selection-static",
+      "static": true
+    },
+    {
+      "label": "models-search-fallback-static",
+      "static": true
+    },
+    {
+      "label": "live-initial-static",
+      "static": true
+    }
+  ],
+  "errors": [],
+  "forbidden": []
+}

@@ -1,0 +1,1494 @@
+
+> @quotapulse/web@0.1.0 test
+> tsx --test test/*.test.ts
+
+TAP version 13
+# Subtest: activity queries preserve scope and isolate actual source/model/provider, with at most thirty minutes
+ok 1 - activity queries preserve scope and isolate actual source/model/provider, with at most thirty minutes
+  ---
+  duration_ms: 2.1865
+  ...
+# Subtest: minute points retain observed values, zero gaps and partial boundary minutes without interpolation
+ok 2 - minute points retain observed values, zero gaps and partial boundary minutes without interpolation
+  ---
+  duration_ms: 0.6702
+  ...
+# Subtest: recent activity is limited to the trailing range and newest call per distinct harness
+ok 3 - recent activity is limited to the trailing range and newest call per distinct harness
+  ---
+  duration_ms: 0.8555
+  ...
+# Subtest: activity rate uses only recorded call tokens inside the exact minute interval
+ok 4 - activity rate uses only recorded call tokens inside the exact minute interval
+  ---
+  duration_ms: 0.5501
+  ...
+# Subtest: deduplicates owners and caps every history batch at six, including selected first
+ok 5 - deduplicates owners and caps every history batch at six, including selected first
+  ---
+  duration_ms: 3.276
+  ...
+# Subtest: reuses unchanged histories until TTL; actual changed reading and manual refresh fetch again
+ok 6 - reuses unchanged histories until TTL; actual changed reading and manual refresh fetch again
+  ---
+  duration_ms: 0.7382
+  ...
+# Subtest: shares in-flight reads and rejects owner/window mismatch without assigning unrelated data
+ok 7 - shares in-flight reads and rejects owner/window mismatch without assigning unrelated data
+  ---
+  duration_ms: 0.4637
+  ...
+# Subtest: observed series breaks on null and reset; zero is a real point at its real timestamp
+ok 8 - observed series breaks on null and reset; zero is a real point at its real timestamp
+  ---
+  duration_ms: 1.0816
+  ...
+# Subtest: time alone invalidates cached history at reset and one-hour freshness boundaries
+ok 9 - time alone invalidates cached history at reset and one-hour freshness boundaries
+  ---
+  duration_ms: 0.2912
+  ...
+# Subtest: cached ready forecasts require a current fresh reading and matching reader metadata
+ok 10 - cached ready forecasts require a current fresh reading and matching reader metadata
+  ---
+  duration_ms: 0.1741
+  ...
+# Subtest: large observed histories render at most256 actual latest samples without bridging omitted/reset/null gaps
+ok 11 - large observed histories render at most256 actual latest samples without bridging omitted/reset/null gaps
+  ---
+  duration_ms: 23.7327
+  ...
+# Subtest: unknown-only recent suffix still discloses actual samples rather than an empty history
+ok 12 - unknown-only recent suffix still discloses actual samples rather than an empty history
+  ---
+  duration_ms: 0.3202
+  ...
+# Subtest: initial real risks/history are static; one new accepted derivation enters exactly once
+ok 13 - initial real risks/history are static; one new accepted derivation enters exactly once
+  ---
+  duration_ms: 5.1541
+  ...
+# Subtest: exact risk context, level and reason are identities; retained reading/clock metadata is not
+ok 14 - exact risk context, level and reason are identities; retained reading/clock metadata is not
+  ---
+  duration_ms: 1.1561
+  ...
+# Subtest: full-data baseline prevents filter reveals and reordering from replaying rows
+ok 15 - full-data baseline prevents filter reveals and reordering from replaying rows
+  ---
+  duration_ms: 0.7436
+  ...
+# Subtest: dependency/show-more and visibility/online catch-up seed history without replay
+ok 16 - dependency/show-more and visibility/online catch-up seed history without replay
+  ---
+  duration_ms: 0.6784
+  ...
+# Subtest: hidden/offscreen/reduced batches are consumed; return has no deferred backlog
+ok 17 - hidden/offscreen/reduced batches are consumed; return has no deferred backlog
+  ---
+  duration_ms: 0.4033
+  ...
+# Subtest: held request across eligibility loss cannot animate after return; later fresh request can
+ok 18 - held request across eligibility loss cannot animate after return; later fresh request can
+  ---
+  duration_ms: 0.3754
+  ...
+# Subtest: stale accepted serial cannot replace baseline; duplicate event delivery updates do not enter
+ok 19 - stale accepted serial cannot replace baseline; duplicate event delivery updates do not enter
+  ---
+  duration_ms: 0.5241
+  ...
+# Subtest: native entrance uses shared180ms and entrance easing once, restoring readable base style
+ok 20 - native entrance uses shared180ms and entrance easing once, restoring readable base style
+  ---
+  duration_ms: 2.2761
+  ...
+# Subtest: native effects cancel on offscreen/removal/unmount and never leave queued work or markers
+ok 21 - native effects cancel on offscreen/removal/unmount and never leave queued work or markers
+  ---
+  duration_ms: 1.2637
+  ...
+# Subtest: old completion cannot cancel a replacement entrance on the same actual row
+ok 22 - old completion cannot cancel a replacement entrance on the same actual row
+  ---
+  duration_ms: 1.0664
+  ...
+# Subtest: a machine with quota to spare is calm, and a barely-used one is quieter still
+ok 23 - a machine with quota to spare is calm, and a barely-used one is quieter still
+  ---
+  duration_ms: 3.884
+  ...
+# Subtest: the backdrop crosses to warn and crit at the same thresholds the rings do
+ok 24 - the backdrop crosses to warn and crit at the same thresholds the rings do
+  ---
+  duration_ms: 0.9231
+  ...
+# Subtest: the worst window decides the mood, not the average
+ok 25 - the worst window decides the mood, not the average
+  ---
+  duration_ms: 0.5724
+  ...
+# Subtest: a window that will exhaust before it resets is a problem long before 60%
+ok 26 - a window that will exhaust before it resets is a problem long before 60%
+  ---
+  duration_ms: 0.3184
+  ...
+# Subtest: a reading that is days old may not colour the present
+ok 27 - a reading that is days old may not colour the present
+  ---
+  duration_ms: 0.4118
+  ...
+# Subtest: an expired reading may not colour the present either
+ok 28 - an expired reading may not colour the present either
+  ---
+  duration_ms: 0.7539
+  ...
+# Subtest: a dead feed is idle, never calm
+ok 29 - a dead feed is idle, never calm
+  ---
+  duration_ms: 0.4764
+  ...
+# Subtest: with nothing to report the backdrop is idle, and says nothing is responsible
+ok 30 - with nothing to report the backdrop is idle, and says nothing is responsible
+  ---
+  duration_ms: 1.4504
+  ...
+# Subtest: inactive subscriptions are excluded entirely
+ok 31 - inactive subscriptions are excluded entirely
+  ---
+  duration_ms: 0.5792
+  ...
+# Subtest: a hidden subscription does not colour the page, and a fully hidden set is simply idle
+ok 32 - a hidden subscription does not colour the page, and a fully hidden set is simply idle
+  ---
+  duration_ms: 0.6833
+  ...
+# Subtest: the backdrop never out-competes the content, even in real trouble
+ok 33 - the backdrop never out-competes the content, even in real trouble
+  ---
+  duration_ms: 0.2881
+  ...
+# Subtest: intensity only ever grows with a fuller window
+ok 34 - intensity only ever grows with a fuller window
+  ---
+  duration_ms: 0.3095
+  ...
+# Subtest: all 20,000 exact categories remain reachable in their original order, including NULL and empty
+ok 35 - all 20,000 exact categories remain reachable in their original order, including NULL and empty
+  ---
+  duration_ms: 26.2809
+  ...
+# Subtest: small and empty distributions retain the original array and need no paging controls
+ok 36 - small and empty distributions retain the original array and need no paging controls
+  ---
+  duration_ms: 0.6729
+  ...
+# Subtest: 21-category boundary and final partial page preserve complete access
+ok 37 - 21-category boundary and final partial page preserve complete access
+  ---
+  duration_ms: 0.6847
+  ...
+# Subtest: refresh preserves page; actual scope changes reset; shrinking counts clamp persistently
+ok 38 - refresh preserves page; actual scope changes reset; shrinking counts clamp persistently
+  ---
+  duration_ms: 0.856
+  ...
+# Subtest: first accepted page and any query/filter/page dependency change establish a static baseline
+ok 39 - first accepted page and any query/filter/page dependency change establish a static baseline
+  ---
+  duration_ms: 2.8104
+  ...
+# Subtest: retained/reordered/duplicate refresh rows do not replay; unchanged-page new actual presence enters once
+ok 40 - retained/reordered/duplicate refresh rows do not replay; unchanged-page new actual presence enters once
+  ---
+  duration_ms: 0.6128
+  ...
+# Subtest: late imported historic data may be newly observed without inventing recent timestamps or a live call
+ok 41 - late imported historic data may be newly observed without inventing recent timestamps or a live call
+  ---
+  duration_ms: 0.4827
+  ...
+# Subtest: identity preserves exact source/session/time and does not depend on mutable totals or locale
+ok 42 - identity preserves exact source/session/time and does not depend on mutable totals or locale
+  ---
+  duration_ms: 0.3183
+  ...
+# Subtest: bounded preceding-page semantics allow an absent presence to enter again without a lifetime ledger
+ok 43 - bounded preceding-page semantics allow an absent presence to enter again without a lifetime ledger
+  ---
+  duration_ms: 0.4099
+  ...
+# Subtest: actual settle/emphasis calls use shared180/700ms and once-only final-base cleanup
+ok 44 - actual settle/emphasis calls use shared180/700ms and once-only final-base cleanup
+  ---
+  duration_ms: 1.895
+  ...
+# Subtest: hidden/unmount/replacement cancellation releases all handles and observer targets once; reduced is static
+ok 45 - hidden/unmount/replacement cancellation releases all handles and observer targets once; reduced is static
+  ---
+  duration_ms: 0.6615
+  ...
+# Subtest: visibility checks respect viewport and actual scrolling table clipping
+ok 46 - visibility checks respect viewport and actual scrolling table clipping
+  ---
+  duration_ms: 0.8382
+  ...
+# Subtest: actual offscreen observer callback cancels only that target and keeps the other finite batch alive
+ok 47 - actual offscreen observer callback cancels only that target and keeps the other finite batch alive
+  ---
+  duration_ms: 1.1488
+  ...
+# Subtest: History range/source edits preserve the related-session constraint
+ok 48 - History range/source edits preserve the related-session constraint
+  ---
+  duration_ms: 5.6749
+  ...
+# Subtest: invalid or cleared History session constraints never become route parameters
+ok 49 - invalid or cleared History session constraints never become route parameters
+  ---
+  duration_ms: 2.1356
+  ...
+# Subtest: other usage routes retain their existing hash and do not acquire History session scope
+ok 50 - other usage routes retain their existing hash and do not acquire History session scope
+  ---
+  duration_ms: 0.559
+  ...
+# Subtest: selected aggregate details follow the accepted row by stable event_id despite reordered page rows
+ok 51 - selected aggregate details follow the accepted row by stable event_id despite reordered page rows
+  ---
+  duration_ms: 0.4641
+  ...
+# Subtest: retained selection keeps its original related-record scope when absent from a new page/query
+ok 52 - retained selection keeps its original related-record scope when absent from a new page/query
+  ---
+  duration_ms: 0.4832
+  ...
+# Subtest: live snapshots never reopen a closed detail rail or replace its selection with another event
+ok 53 - live snapshots never reopen a closed detail rail or replace its selection with another event
+  ---
+  duration_ms: 0.1847
+  ...
+# Subtest: related-session navigation uses retained origin range/source/filters and the actual selected session
+ok 54 - related-session navigation uses retained origin range/source/filters and the actual selected session
+  ---
+  duration_ms: 0.8056
+  ...
+# Subtest: a window reported by two origins collapses to one, freshest first
+ok 55 - a window reported by two origins collapses to one, freshest first
+  ---
+  duration_ms: 4.5071
+  ...
+# Subtest: a reading that still describes the window beats a fresher one that rolled over
+ok 56 - a reading that still describes the window beats a fresher one that rolled over
+  ---
+  duration_ms: 0.4267
+  ...
+# Subtest: different sources and windows are never merged
+ok 57 - different sources and windows are never merged
+  ---
+  duration_ms: 33.4148
+  ...
+# Subtest: readers with the same account key collapse to one account window
+ok 58 - readers with the same account key collapse to one account window
+  ---
+  duration_ms: 0.3932
+  ...
+# Subtest: subscription key is the canonical owner when account compatibility fields are absent
+ok 59 - subscription key is the canonical owner when account compatibility fields are absent
+  ---
+  duration_ms: 0.3199
+  ...
+# Subtest: OpenCode Go monthly readings stay separate from its 5-hour and weekly windows
+ok 60 - OpenCode Go monthly readings stay separate from its 5-hour and weekly windows
+  ---
+  duration_ms: 0.5534
+  ...
+# Subtest: a window whose every origin is burning still raises exactly one alert
+ok 61 - a window whose every origin is burning still raises exactly one alert
+  ---
+  duration_ms: 0.5926
+  ...
+# Subtest: willExhaust needs a projection that lands before the reset, on a live window
+ok 62 - willExhaust needs a projection that lands before the reset, on a live window
+  ---
+  duration_ms: 0.3257
+  ...
+# Subtest: threshold alerts collapse reader duplicates and ignore projected burn duplicates
+ok 63 - threshold alerts collapse reader duplicates and ignore projected burn duplicates
+  ---
+  duration_ms: 1.5393
+  ...
+# Subtest: minute buckets preserve the exact half-open interval and both clipped boundary minutes
+ok 64 - minute buckets preserve the exact half-open interval and both clipped boundary minutes
+  ---
+  duration_ms: 3.8289
+  ...
+# Subtest: exact nullable, empty, literal unknown and delimiter identities cannot exchange minute cells
+ok 65 - exact nullable, empty, literal unknown and delimiter identities cannot exchange minute cells
+  ---
+  duration_ms: 1.978
+  ...
+# Subtest: observed zero differs from absent cells and aggregate-only totals never create minute activity
+ok 66 - observed zero differs from absent cells and aggregate-only totals never create minute activity
+  ---
+  duration_ms: 0.8943
+  ...
+# Subtest: the visible top twelve keep API rank while sharing the actual scale across all recorded pairs
+ok 67 - the visible top twelve keep API rank while sharing the actual scale across all recorded pairs
+  ---
+  duration_ms: 0.7618
+  ...
+# Subtest: the fullest window earns the outermost arc
+ok 68 - the fullest window earns the outermost arc
+  ---
+  duration_ms: 28.0804
+  ...
+# Subtest: a window about to run out leads regardless of how full it is
+ok 69 - a window about to run out leads regardless of how full it is
+  ---
+  duration_ms: 1.5019
+  ...
+# Subtest: a burn figure with too few samples is not quoted
+ok 70 - a burn figure with too few samples is not quoted
+  ---
+  duration_ms: 1.4326
+  ...
+# Subtest: subscriptions past the arc limit are counted, not silently dropped
+ok 71 - subscriptions past the arc limit are counted, not silently dropped
+  ---
+  duration_ms: 0.8621
+  ...
+# Subtest: a subscription with no reading is counted aside, not given an arc
+ok 72 - a subscription with no reading is counted aside, not given an arc
+  ---
+  duration_ms: 0.5396
+  ...
+# Subtest: with nothing measurable, the ring admits it rather than showing nothing
+ok 73 - with nothing measurable, the ring admits it rather than showing nothing
+  ---
+  duration_ms: 0.3247
+  ...
+# Subtest: an expired reading is never quoted as a current percentage
+ok 74 - an expired reading is never quoted as a current percentage
+  ---
+  duration_ms: 0.5256
+  ...
+# Subtest: hidden and inactive subscriptions leave the ring entirely
+ok 75 - hidden and inactive subscriptions leave the ring entirely
+  ---
+  duration_ms: 0.4485
+  ...
+# Subtest: the time track describes the leading window
+ok 76 - the time track describes the leading window
+  ---
+  duration_ms: 0.9577
+  ...
+# Subtest: resets in the same minute are one event on the timeline
+ok 77 - resets in the same minute are one event on the timeline
+  ---
+  duration_ms: 1.3345
+  ...
+# Subtest: timeline columns stay readable however lopsided the gaps are
+ok 78 - timeline columns stay readable however lopsided the gaps are
+  ---
+  duration_ms: 0.6462
+  ...
+# Subtest: the backdrop answers to measured throughput, not a timer
+ok 79 - the backdrop answers to measured throughput, not a timer
+  ---
+  duration_ms: 0.3197
+  ...
+# Subtest: primaryReading prefers the window that runs out, then the highest
+ok 80 - primaryReading prefers the window that runs out, then the highest
+  ---
+  duration_ms: 1.4794
+  ...
+# Subtest: Live presence uses exact internal session identity and observed recorded tuple
+ok 81 - Live presence uses exact internal session identity and observed recorded tuple
+  ---
+  duration_ms: 3.0904
+  ...
+# Subtest: initial accepted page seeds; new observed presence enters once; duplicate/reorder has no replay
+ok 82 - initial accepted page seeds; new observed presence enters once; duplicate/reorder has no replay
+  ---
+  duration_ms: 4.3336
+  ...
+# Subtest: cold initial request before IO establishes visible baseline without suppressing the first genuine SSE presence
+ok 83 - cold initial request before IO establishes visible baseline without suppressing the first genuine SSE presence
+  ---
+  duration_ms: 0.4575
+  ...
+# Subtest: visible cold initial accepted before IO has a baseline and needs no duplicate refresh
+ok 84 - visible cold initial accepted before IO has a baseline and needs no duplicate refresh
+  ---
+  duration_ms: 0.3416
+  ...
+# Subtest: initial hidden/reduced/offscreen barrier before first eligible IO cannot masquerade as cold visible startup
+ok 85 - initial hidden/reduced/offscreen barrier before first eligible IO cannot masquerade as cold visible startup
+  ---
+  duration_ms: 1.1344
+  ...
+# Subtest: visible evidence alone cannot promote a held initial request across an eligible loss
+ok 86 - visible evidence alone cannot promote a held initial request across an eligible loss
+  ---
+  duration_ms: 0.6317
+  ...
+# Subtest: new presence is not treated as ingestion recency or monotonically increasing event id
+ok 87 - new presence is not treated as ingestion recency or monotonically increasing event id
+  ---
+  duration_ms: 0.4737
+  ...
+# Subtest: query/provider/model/page contexts seed exact null/empty/case identities
+ok 88 - query/provider/model/page contexts seed exact null/empty/case identities
+  ---
+  duration_ms: 0.4691
+  ...
+# Subtest: dependency/pause-resume, visible and online snapshots seed rather than replay a catch-up page
+ok 89 - dependency/pause-resume, visible and online snapshots seed rather than replay a catch-up page
+  ---
+  duration_ms: 0.8479
+  ...
+# Subtest: hidden/offscreen/reduced/error loss cancels eligibility and first valid returned page seeds
+ok 90 - hidden/offscreen/reduced/error loss cancels eligibility and first valid returned page seeds
+  ---
+  duration_ms: 1.6158
+  ...
+# Subtest: late held response crossing loss/return cannot animate or arm a replay
+ok 91 - late held response crossing loss/return cannot animate or arm a replay
+  ---
+  duration_ms: 0.4429
+  ...
+# Subtest: stale serial cannot replace bounded accepted baseline or foreign context
+ok 92 - stale serial cannot replace bounded accepted baseline or foreign context
+  ---
+  duration_ms: 0.3285
+  ...
+# Subtest: explicit changed selection has its own serial; duplicate response cannot truncate or replay it
+ok 93 - explicit changed selection has its own serial; duplicate response cannot truncate or replay it
+  ---
+  duration_ms: 0.4084
+  ...
+# Subtest: input includes disjoint fresh/read-cache/write-cache fields; output already includes reasoning
+ok 94 - input includes disjoint fresh/read-cache/write-cache fields; output already includes reasoning
+  ---
+  duration_ms: 4.8389
+  ...
+# Subtest: stored totals stay exact despite component mismatches and all curves share their actual maximum
+ok 95 - stored totals stay exact despite component mismatches and all curves share their actual maximum
+  ---
+  duration_ms: 0.6554
+  ...
+# Subtest: legacy missing components remain unknown and break only the affected curve
+ok 96 - legacy missing components remain unknown and break only the affected curve
+  ---
+  duration_ms: 1.4575
+  ...
+# Subtest: recorded zero and known zero breakdowns remain distinct from absent minute records
+ok 97 - recorded zero and known zero breakdowns remain distinct from absent minute records
+  ---
+  duration_ms: 1.0572
+  ...
+# Subtest: multiple rows in one minute conserve each component and unknowns propagate without dropping known output
+ok 98 - multiple rows in one minute conserve each component and unknowns propagate without dropping known output
+  ---
+  duration_ms: 0.5264
+  ...
+# Subtest: the exact half-open scope retains clipped endpoints and ignores rows outside its minute bins
+ok 99 - the exact half-open scope retains clipped endpoints and ignores rows outside its minute bins
+  ---
+  duration_ms: 1.0833
+  ...
+# Subtest: latest rail selects one latest recorded interval and preserves its unknown and stored values
+ok 100 - latest rail selects one latest recorded interval and preserves its unknown and stored values
+  ---
+  duration_ms: 0.908
+  ...
+# Subtest: initial, identical, changed scope and numeric maximum snap without a history replay
+ok 101 - initial, identical, changed scope and numeric maximum snap without a history replay
+  ---
+  duration_ms: 4.1117
+  ...
+# Subtest: only changed common real values provide a start; unchanged vertices stay at final geometry
+ok 102 - only changed common real values provide a start; unchanged vertices stay at final geometry
+  ---
+  duration_ms: 2.1488
+  ...
+# Subtest: new, removed, missing-to-recorded and unknown-to-known points do not interpolate fabricated readings
+ok 103 - new, removed, missing-to-recorded and unknown-to-known points do not interpolate fabricated readings
+  ---
+  duration_ms: 1.0542
+  ...
+# Subtest: rolling-window x reframe is immediate and only matching timestamp y values move
+ok 104 - rolling-window x reframe is immediate and only matching timestamp y values move
+  ---
+  duration_ms: 0.5656
+  ...
+# Subtest: unknown component gaps retain their current segments and never connect across a gap
+ok 105 - unknown component gaps retain their current segments and never connect across a gap
+  ---
+  duration_ms: 0.4402
+  ...
+# Subtest: SMIL uses shared exact180ms/easing, indefinite trigger and one iteration with final-base fallback
+ok 106 - SMIL uses shared exact180ms/easing, indefinite trigger and one iteration with final-base fallback
+  ---
+  duration_ms: 0.8321
+  ...
+# Subtest: cancellation releases every active handle/listener once, including replacement and unmount callers
+ok 107 - cancellation releases every active handle/listener once, including replacement and unmount callers
+  ---
+  duration_ms: 0.3218
+  ...
+# Subtest: reduced immediate duration, empty changes or missing targets do not create active animations
+ok 108 - reduced immediate duration, empty changes or missing targets do not create active animations
+  ---
+  duration_ms: 0.1905
+  ...
+# Subtest: metric trends fill missing hourly buckets and keep partial boundary buckets
+ok 109 - metric trends fill missing hourly buckets and keep partial boundary buckets
+  ---
+  duration_ms: 10.2269
+  ...
+# Subtest: metric trends cap long histories to the latest 24 calendar buckets
+ok 110 - metric trends cap long histories to the latest 24 calendar buckets
+  ---
+  duration_ms: 1.2884
+  ...
+# Subtest: month series uses local calendar months and cache ratios preserve unknown buckets
+ok 111 - month series uses local calendar months and cache ratios preserve unknown buckets
+  ---
+  duration_ms: 1.1248
+  ...
+# Subtest: daily token pace is a selected-period average and rejects invalid ranges
+ok 112 - daily token pace is a selected-period average and rejects invalid ranges
+  ---
+  duration_ms: 0.6161
+  ...
+# Subtest: Overview model drilldown carries the custom period/source/bucket independently of runtime project
+ok 113 - Overview model drilldown carries the custom period/source/bucket independently of runtime project
+  ---
+  duration_ms: 3.9144
+  ...
+# Subtest: calendar period choices remain calendar choices and cannot carry stale custom bounds
+ok 114 - calendar period choices remain calendar choices and cannot carry stale custom bounds
+  ---
+  duration_ms: 0.8069
+  ...
+# Subtest: model identities preserve Unicode, whitespace and query/hash characters without adding filters
+ok 115 - model identities preserve Unicode, whitespace and query/hash characters without adding filters
+  ---
+  duration_ms: 0.3647
+  ...
+# Subtest: NULL, empty and literal null are distinct model identities
+ok 116 - NULL, empty and literal null are distinct model identities
+  ---
+  duration_ms: 0.7303
+  ...
+# Subtest: stale model/provider selection, metric and unsupported filters do not leak into a global model destination
+ok 117 - stale model/provider selection, metric and unsupported filters do not leak into a global model destination
+  ---
+  duration_ms: 0.3989
+  ...
+# Subtest: an explicit supported provider scope selects that exact route, without normalizing provider/vendor strings
+ok 118 - an explicit supported provider scope selects that exact route, without normalizing provider/vendor strings
+  ---
+  duration_ms: 0.3909
+  ...
+# Subtest: vendor-only scope does not invent a recorded provider and invalid scope falls back to today
+ok 119 - vendor-only scope does not invent a recorded provider and invalid scope falls back to today
+  ---
+  duration_ms: 0.4452
+  ...
+# Subtest: short exact identities use one GET with all scope and pair fields
+ok 120 - short exact identities use one GET with all scope and pair fields
+  ---
+  duration_ms: 3.1447
+  ...
+# Subtest: twenty maximal Unicode pairs use one read POST with exact identities and unchanged scope
+ok 121 - twenty maximal Unicode pairs use one read POST with exact identities and unchanged scope
+  ---
+  duration_ms: 59.5375
+  ...
+# Subtest: GET threshold is inclusive and crossing it changes only transport
+ok 122 - GET threshold is inclusive and crossing it changes only transport
+  ---
+  duration_ms: 3.1433
+  ...
+# Subtest: exact model/provider keys preserve null, empty and literal Unknown identities
+ok 123 - exact model/provider keys preserve null, empty and literal Unknown identities
+  ---
+  duration_ms: 2.4496
+  ...
+# Subtest: real sparse row buckets fill only valid scope gaps and never borrow provider curves
+ok 124 - real sparse row buckets fill only valid scope gaps and never borrow provider curves
+  ---
+  duration_ms: 2.7065
+  ...
+# Subtest: deep-link selection waits for accepted list then reveals its page once
+ok 125 - deep-link selection waits for accepted list then reveals its page once
+  ---
+  duration_ms: 0.531
+  ...
+# Subtest: comparison refresh preserves manual page, shrink clamps persistently and scope changes reset
+ok 126 - comparison refresh preserves manual page, shrink clamps persistently and scope changes reset
+  ---
+  duration_ms: 0.3339
+  ...
+# Subtest: 20-row comparison pages expose every ranked pair without changing full list or totals
+ok 127 - 20-row comparison pages expose every ranked pair without changing full list or totals
+  ---
+  duration_ms: 2.3936
+  ...
+# Subtest: decorative row tones remain stable across ordering, page windows and recreated refresh objects
+ok 128 - decorative row tones remain stable across ordering, page windows and recreated refresh objects
+  ---
+  duration_ms: 2.0004
+  ...
+# Subtest: light row trend strokes exceed 3:1 on white and across the selected row gradient
+ok 129 - light row trend strokes exceed 3:1 on white and across the selected row gradient
+  ---
+  duration_ms: 8.0937
+  ...
+# Subtest: initial/deep-linked selected detail is a static baseline, including exact null/empty provider pairs
+ok 130 - initial/deep-linked selected detail is a static baseline, including exact null/empty provider pairs
+  ---
+  duration_ms: 2.4934
+  ...
+# Subtest: changed explicit row responds once, but actual selected detail waits for its exact accepted key
+ok 131 - changed explicit row responds once, but actual selected detail waits for its exact accepted key
+  ---
+  duration_ms: 0.723
+  ...
+# Subtest: foreign/late A detail cannot animate pending B; rapid next choice retires the prior pending selection
+ok 132 - foreign/late A detail cannot animate pending B; rapid next choice retires the prior pending selection
+  ---
+  duration_ms: 0.4457
+  ...
+# Subtest: same selected row/no-op intent and automatic fallback never masquerade as a user selection
+ok 133 - same selected row/no-op intent and automatic fallback never masquerade as a user selection
+  ---
+  duration_ms: 0.3244
+  ...
+# Subtest: search/sort/filter/page context replacement seeds and consumes any old intent
+ok 134 - search/sort/filter/page context replacement seeds and consumes any old intent
+  ---
+  duration_ms: 0.4829
+  ...
+# Subtest: a new accepted request scope retires the old pending detail without replaying user intent
+ok 135 - a new accepted request scope retires the old pending detail without replaying user intent
+  ---
+  duration_ms: 0.2086
+  ...
+# Subtest: error/reduced/hidden cancellation consumes delayed detail and retry/restoration cannot resurrect it
+ok 136 - error/reduced/hidden cancellation consumes delayed detail and retry/restoration cannot resurrect it
+  ---
+  duration_ms: 0.4357
+  ...
+# Subtest: native eligibility loss also consumes a newly committed but not yet observed intent serial
+ok 137 - native eligibility loss also consumes a newly committed but not yet observed intent serial
+  ---
+  duration_ms: 0.9305
+  ...
+# Subtest: offscreen detail is never queued; visible row can respond while final detail remains factual/static
+ok 138 - offscreen detail is never queued; visible row can respond while final detail remains factual/static
+  ---
+  duration_ms: 0.9147
+  ...
+# Subtest: opaque Models targets request the existing finite runner outline mode with no geometry-changing frames
+ok 139 - opaque Models targets request the existing finite runner outline mode with no geometry-changing frames
+  ---
+  duration_ms: 1243.4096
+  ...
+# Subtest: model-only Overview drill-down selects the requested model rather than the largest unrelated row
+ok 140 - model-only Overview drill-down selects the requested model rather than the largest unrelated row
+  ---
+  duration_ms: 1.4559
+  ...
+# Subtest: an explicit provider keeps the exact recorded pair, including null and empty identities
+ok 141 - an explicit provider keeps the exact recorded pair, including null and empty identities
+  ---
+  duration_ms: 0.2925
+  ...
+# Subtest: default, absent and empty-list selections retain existing fallback behavior without mutating order
+ok 142 - default, absent and empty-list selections retain existing fallback behavior without mutating order
+  ---
+  duration_ms: 1.3955
+  ...
+# Subtest: summary histories retain scope boundaries, zero count bins, and per-bin distinct sessions
+ok 143 - summary histories retain scope boundaries, zero count bins, and per-bin distinct sessions
+  ---
+  duration_ms: 3.8103
+  ...
+# Subtest: price samples distinguish known zero, unpriced calls, and partial known value
+ok 144 - price samples distinguish known zero, unpriced calls, and partial known value
+  ---
+  duration_ms: 0.4923
+  ...
+# Subtest: provider history keeps null and empty identities separate and uses only displayed scoped groups
+ok 145 - provider history keeps null and empty identities separate and uses only displayed scoped groups
+  ---
+  duration_ms: 0.8736
+  ...
+# Subtest: every duration in the TypeScript scale is declared in the stylesheet
+ok 146 - every duration in the TypeScript scale is declared in the stylesheet
+  ---
+  duration_ms: 3.9127
+  ...
+# Subtest: every easing in the TypeScript scale is declared in the theme block
+ok 147 - every easing in the TypeScript scale is declared in the theme block
+  ---
+  duration_ms: 0.9182
+  ...
+# Subtest: the stylesheet has no shadowed second copy of an easing token
+ok 148 - the stylesheet has no shadowed second copy of an easing token
+  ---
+  duration_ms: 1.4765
+  ...
+# Subtest: the reduced-motion clamp still exists, and still pins iteration count
+ok 149 - the reduced-motion clamp still exists, and still pins iteration count
+  ---
+  duration_ms: 0.8934
+  ...
+# Subtest: the reduced-motion clamp has exactly one exemption, and it is the figure tint
+ok 150 - the reduced-motion clamp has exactly one exemption, and it is the figure tint
+  ---
+  duration_ms: 2.2684
+  ...
+# Subtest: src/components/primitives.tsx honours the motion preference
+ok 151 - src/components/primitives.tsx honours the motion preference
+  ---
+  duration_ms: 1.7709
+  ...
+# Subtest: src/components/stacked-bars.tsx honours the motion preference
+ok 152 - src/components/stacked-bars.tsx honours the motion preference
+  ---
+  duration_ms: 1.5461
+  ...
+# Subtest: src/components/quota-ring.tsx honours the motion preference
+ok 153 - src/components/quota-ring.tsx honours the motion preference
+  ---
+  duration_ms: 1.1867
+  ...
+# Subtest: src/components/gauge.tsx honours the motion preference
+ok 154 - src/components/gauge.tsx honours the motion preference
+  ---
+  duration_ms: 1.6242
+  ...
+# Subtest: src/components/progression-rail.tsx honours the motion preference
+ok 155 - src/components/progression-rail.tsx honours the motion preference
+  ---
+  duration_ms: 2.1507
+  ...
+# Subtest: src/components/alert-bell.tsx honours the motion preference
+ok 156 - src/components/alert-bell.tsx honours the motion preference
+  ---
+  duration_ms: 3.5454
+  ...
+# Subtest: src/components/pet-popup.tsx honours the motion preference
+ok 157 - src/components/pet-popup.tsx honours the motion preference
+  ---
+  duration_ms: 1.3935
+  ...
+# Subtest: src/components/ui/tabs.tsx honours the motion preference
+ok 158 - src/components/ui/tabs.tsx honours the motion preference
+  ---
+  duration_ms: 1.3532
+  ...
+# Subtest: unknown samples break lines while keeping the full time-domain indices
+ok 159 - unknown samples break lines while keeping the full time-domain indices
+  ---
+  duration_ms: 3.1625
+  ...
+# Subtest: known zero and equal values remain recorded samples
+ok 160 - known zero and equal values remain recorded samples
+  ---
+  duration_ms: 0.3813
+  ...
+# Subtest: all unknown and nonfinite samples produce no drawable run
+ok 161 - all unknown and nonfinite samples produce no drawable run
+  ---
+  duration_ms: 0.3884
+  ...
+# Subtest: subscription visibility preferences normalize safely and keep stable keys
+ok 162 - subscription visibility preferences normalize safely and keep stable keys
+  ---
+  duration_ms: 4.1396
+  ...
+# Subtest: value states distinguish no usage, unpriced, partial, priced zero and reference prices
+ok 163 - value states distinguish no usage, unpriced, partial, priced zero and reference prices
+  ---
+  duration_ms: 2.1456
+  ...
+# Subtest: Other grouping retains weighted call coverage and gaps stay separate by time
+ok 164 - Other grouping retains weighted call coverage and gaps stay separate by time
+  ---
+  duration_ms: 1.7381
+  ...
+# Subtest: a missing or unusable stored value degrades to a clean store
+ok 165 - a missing or unusable stored value degrades to a clean store
+  ---
+  duration_ms: 4.0759
+  ...
+# Subtest: days are de-duplicated, sorted chronologically and pruned to the window
+ok 166 - days are de-duplicated, sorted chronologically and pruned to the window
+  ---
+  duration_ms: 6.6378
+  ...
+# Subtest: unknown badge ids are dropped and the survivors keep catalogue order
+ok 167 - unknown badge ids are dropped and the survivors keep catalogue order
+  ---
+  duration_ms: 0.5558
+  ...
+# Subtest: the stored version is forced forward so an old shape cannot leak through
+ok 168 - the stored version is forced forward so an old shape cannot leak through
+  ---
+  duration_ms: 0.3112
+  ...
+# Subtest: levels ramp quadratically instead of hitting a wall
+ok 169 - levels ramp quadratically instead of hitting a wall
+  ---
+  duration_ms: 3.7941
+  ...
+# Subtest: a tampered XP value cannot spin or overflow the scale
+ok 170 - a tampered XP value cannot spin or overflow the scale
+  ---
+  duration_ms: 1.2373
+  ...
+# Subtest: spending more quota must not raise the score
+ok 171 - spending more quota must not raise the score
+  ---
+  duration_ms: 0.7851
+  ...
+# Subtest: cache share counts writes against the denominator, not for it
+ok 172 - cache share counts writes against the denominator, not for it
+  ---
+  duration_ms: 0.3199
+  ...
+# Subtest: cache badges stack at their thresholds
+ok 173 - cache badges stack at their thresholds
+  ---
+  duration_ms: 1.0118
+  ...
+# Subtest: a streak survives midnight: an inactive today anchors on yesterday
+ok 174 - a streak survives midnight: an inactive today anchors on yesterday
+  ---
+  duration_ms: 0.5918
+  ...
+# Subtest: streak counting walks real calendar days, not 24-hour spans
+ok 175 - streak counting walks real calendar days, not 24-hour spans
+  ---
+  duration_ms: 0.5949
+  ...
+# Subtest: streak XP is capped so a long run cannot run away with the scale
+ok 176 - streak XP is capped so a long run cannot run away with the scale
+  ---
+  duration_ms: 0.9712
+  ...
+# Subtest: badges are granted once and always render in catalogue order
+ok 177 - badges are granted once and always render in catalogue order
+  ---
+  duration_ms: 0.8476
+  ...
+# Subtest: restraint badges need both efficiency and headroom
+ok 178 - restraint badges need both efficiency and headroom
+  ---
+  duration_ms: 1.0108
+  ...
+# Subtest: time-of-day badges need a reported hour
+ok 179 - time-of-day badges need a reported hour
+  ---
+  duration_ms: 0.4189
+  ...
+# Subtest: missing, negative and non-finite counters contribute nothing
+ok 180 - missing, negative and non-finite counters contribute nothing
+  ---
+  duration_ms: 0.3404
+  ...
+# Subtest: an idle day scores nothing and breaks nothing that was already earned
+ok 181 - an idle day scores nothing and breaks nothing that was already earned
+  ---
+  duration_ms: 0.251
+  ...
+# Subtest: the first active hour of the day drives the time-of-day badges
+ok 182 - the first active hour of the day drives the time-of-day badges
+  ---
+  duration_ms: 0.4219
+  ...
+# Subtest: every badge id is reachable from the predicates
+ok 183 - every badge id is reachable from the predicates
+  ---
+  duration_ms: 0.6398
+  ...
+# Subtest: the shelf lists every badge, locked ones included, in catalogue order
+ok 184 - the shelf lists every badge, locked ones included, in catalogue order
+  ---
+  duration_ms: 0.4322
+  ...
+# Subtest: pending usage has no actions; machine-wide pages retain legacy destinations
+ok 185 - pending usage has no actions; machine-wide pages retain legacy destinations
+  ---
+  duration_ms: 1.8968
+  ...
+# Subtest: time and source remain exact in supported destinations without inventing Live custom scope
+ok 186 - time and source remain exact in supported destinations without inventing Live custom scope
+  ---
+  duration_ms: 0.7018
+  ...
+# Subtest: harness Projects and provider/vendor Models keep exact raw filter identities
+ok 187 - harness Projects and provider/vendor Models keep exact raw filter identities
+  ---
+  duration_ms: 0.4316
+  ...
+# Subtest: unsupported table filters never create apparently scoped actions
+ok 188 - unsupported table filters never create apparently scoped actions
+  ---
+  duration_ms: 0.5216
+  ...
+# Subtest: arcs fill one fixed band however many subscriptions there are
+ok 189 - arcs fill one fixed band however many subscriptions there are
+  ---
+  duration_ms: 2.2267
+  ...
+# Subtest: the ring folds anything past four instead of collapsing into the centre
+ok 190 - the ring folds anything past four instead of collapsing into the centre
+  ---
+  duration_ms: 0.3061
+  ...
+# Subtest: elapsed position is measured against the canonical window length
+ok 191 - elapsed position is measured against the canonical window length
+  ---
+  duration_ms: 0.4648
+  ...
+# Subtest: a window with no reset time cannot be placed on the ring
+ok 192 - a window with no reset time cannot be placed on the ring
+  ---
+  duration_ms: 0.2586
+  ...
+# Subtest: the overflow marker never takes a reading's place or cross the numerals
+ok 193 - the overflow marker never takes a reading's place or cross the numerals
+  ---
+  duration_ms: 0.2763
+  ...
+# Subtest: the overflow marker is a partial arc, so it cannot pass for a reading
+ok 194 - the overflow marker is a partial arc, so it cannot pass for a reading
+  ---
+  duration_ms: 0.7149
+  ...
+# Subtest: a projection that lands after the reset is not a projection at all
+ok 195 - a projection that lands after the reset is not a projection at all
+  ---
+  duration_ms: 0.5201
+  ...
+# Subtest: an unbelievable projection cannot raise an alarm
+ok 196 - an unbelievable projection cannot raise an alarm
+  ---
+  duration_ms: 0.3955
+  ...
+# Subtest: fractions map to clock angles, clamped at both ends
+ok 197 - fractions map to clock angles, clamped at both ends
+  ---
+  duration_ms: 0.6143
+  ...
+# Subtest: availability requires a fresh, complete reading; zero use is valid but unknown is not
+ok 198 - availability requires a fresh, complete reading; zero use is valid but unknown is not
+  ---
+  duration_ms: 2.4737
+  ...
+# Subtest: one unknown window prevents an available classification
+ok 199 - one unknown window prevents an available classification
+  ---
+  duration_ms: 0.3645
+  ...
+# Subtest: account state and telemetry uncertainty cannot advertise availability
+ok 200 - account state and telemetry uncertainty cannot advertise availability
+  ---
+  duration_ms: 0.5158
+  ...
+# Subtest: threshold and projected exhaustion retain the existing alert semantics
+ok 201 - threshold and projected exhaustion retain the existing alert semantics
+  ---
+  duration_ms: 0.2426
+  ...
+# Subtest: duplicate readers produce one reset; the freshest canonical reading wins
+ok 202 - duplicate readers produce one reset; the freshest canonical reading wins
+  ---
+  duration_ms: 0.2979
+  ...
+# Subtest: hidden and inactive subscriptions do not contribute upcoming resets
+ok 203 - hidden and inactive subscriptions do not contribute upcoming resets
+  ---
+  duration_ms: 0.9208
+  ...
+# Subtest: resets exclude unknown and elapsed timestamps and preserve simultaneous windows
+ok 204 - resets exclude unknown and elapsed timestamps and preserve simultaneous windows
+  ---
+  duration_ms: 18.0939
+  ...
+# Subtest: stat series uses tokens rather than calls and fills empty API buckets
+ok 205 - stat series uses tokens rather than calls and fills empty API buckets
+  ---
+  duration_ms: 0.3225
+  ...
+# Subtest: classifies threshold boundaries and uses the same active risks exposed to the sidebar
+ok 206 - classifies threshold boundaries and uses the same active risks exposed to the sidebar
+  ---
+  duration_ms: 17.95
+  ...
+# Subtest: collapses duplicate origins to the freshest reading and excludes hidden subscriptions
+ok 207 - collapses duplicate origins to the freshest reading and excludes hidden subscriptions
+  ---
+  duration_ms: 0.5034
+  ...
+# Subtest: reports stale or expired windows as unknown without counting them as active risks
+ok 208 - reports stale or expired windows as unknown without counting them as active risks
+  ---
+  duration_ms: 0.4786
+  ...
+# Subtest: a valid forecast before reset is critical, while a forecast after reset does not override thresholds
+ok 209 - a valid forecast before reset is critical, while a forecast after reset does not override thresholds
+  ---
+  duration_ms: 0.3936
+  ...
+# Subtest: money distinguishes no usage, absent prices, known zero and partial weighted coverage
+ok 210 - money distinguishes no usage, absent prices, known zero and partial weighted coverage
+  ---
+  duration_ms: 1.2193
+  ...
+# Subtest: preview uses records, excludes null costs and combines computed and estimated API prices
+ok 211 - preview uses records, excludes null costs and combines computed and estimated API prices
+  ---
+  duration_ms: 0.9753
+  ...
+# Subtest: period change requires a positive observed baseline and keeps decreases signed
+ok 212 - period change requires a positive observed baseline and keeps decreases signed
+  ---
+  duration_ms: 1.4454
+  ...
+# Subtest: cache share uses observed input, cached input and cache writes only
+ok 213 - cache share uses observed input, cached input and cache writes only
+  ---
+  duration_ms: 0.361
+  ...
+# Subtest: measured quota pace is compared with safe pace in the same unit
+ok 214 - measured quota pace is compared with safe pace in the same unit
+  ---
+  duration_ms: 0.3163
+  ...
+# Subtest: recommendation prioritizes fresh quota data and observed runway risk
+ok 215 - recommendation prioritizes fresh quota data and observed runway risk
+  ---
+  duration_ms: 0.4797
+  ...
+# Subtest: usage preserves distinct sessions, record grain and separate money bases
+ok 216 - usage preserves distinct sessions, record grain and separate money bases
+  ---
+  duration_ms: 1.8739
+  ...
+# Subtest: runtime edges contain only observed relationships and conserve each column total
+ok 217 - runtime edges contain only observed relationships and conserve each column total
+  ---
+  duration_ms: 0.4015
+  ...
+# Subtest: runtime activity reflects recorded use within the API window and keeps future or missing time unknown
+ok 218 - runtime activity reflects recorded use within the API window and keeps future or missing time unknown
+  ---
+  duration_ms: 0.1377
+  ...
+# Subtest: quota risk belongs to one fresh owner/window, invalid values are not normalized into healthy readings
+ok 219 - quota risk belongs to one fresh owner/window, invalid values are not normalized into healthy readings
+  ---
+  duration_ms: 0.3904
+  ...
+# Subtest: default core picks the most used fresh window and stays unavailable when all are stale
+ok 220 - default core picks the most used fresh window and stays unavailable when all are stale
+  ---
+  duration_ms: 0.2182
+  ...
+# Subtest: runway uses percentage points of the selected window and suppresses stale projections
+ok 221 - runway uses percentage points of the selected window and suppresses stale projections
+  ---
+  duration_ms: 0.2437
+  ...
+# Subtest: legacy destinations migrate to canonical pages
+ok 222 - legacy destinations migrate to canonical pages
+  ---
+  duration_ms: 2.6596
+  ...
+# Subtest: migration preserves explicit scope and entity keys and consumes legacy view
+ok 223 - migration preserves explicit scope and entity keys and consumes legacy view
+  ---
+  duration_ms: 0.533
+  ...
+# Subtest: invalid legacy scopes use valid destination defaults
+ok 224 - invalid legacy scopes use valid destination defaults
+  ---
+  duration_ms: 0.3309
+  ...
+# Subtest: redesign week and month use local calendar boundaries
+ok 225 - redesign week and month use local calendar boundaries
+  ---
+  duration_ms: 4.0908
+  ...
+# Subtest: imported custom ranges and source filters survive UI changes and API binding
+ok 226 - imported custom ranges and source filters survive UI changes and API binding
+  ---
+  duration_ms: 1.6091
+  ...
+# Subtest: invalid custom ranges and filters fall back instead of issuing invalid reads
+ok 227 - invalid custom ranges and filters fall back instead of issuing invalid reads
+  ---
+  duration_ms: 0.4572
+  ...
+# Subtest: one stream fans out and coalesces SSE bursts, then falls back after 30 seconds
+ok 228 - one stream fans out and coalesces SSE bursts, then falls back after 30 seconds
+  ---
+  duration_ms: 5.0556
+  ...
+# Subtest: hidden pages pause fallback and visible/online events refresh immediately
+ok 229 - hidden pages pause fallback and visible/online events refresh immediately
+  ---
+  duration_ms: 1.1654
+  ...
+# Subtest: a refresh arriving during a request queues exactly one follow-up
+ok 230 - a refresh arriving during a request queues exactly one follow-up
+  ---
+  duration_ms: 0.8508
+  ...
+# Subtest: stream errors and handler failures are visible, then clear on recovery
+ok 231 - stream errors and handler failures are visible, then clear on recovery
+  ---
+  duration_ms: 3.7851
+  ...
+# Subtest: manual refresh runs the daemon endpoint before dashboard handlers
+ok 232 - manual refresh runs the daemon endpoint before dashboard handlers
+  ---
+  duration_ms: 58.7257
+  ...
+# Subtest: Pulse recency requires an actual known observation, never totals or unknown grain
+ok 233 - Pulse recency requires an actual known observation, never totals or unknown grain
+  ---
+  duration_ms: 2.1116
+  ...
+# Subtest: idle boundary, future timestamps and invalid inputs stop the orbit signal
+ok 234 - idle boundary, future timestamps and invalid inputs stop the orbit signal
+  ---
+  duration_ms: 0.6201
+  ...
+# Subtest: only the latest eligible real observation sets the bounded expiry
+ok 235 - only the latest eligible real observation sets the bounded expiry
+  ---
+  duration_ms: 2.4429
+  ...
+# Subtest: existing mount has no particles; one new observed call emits one bounded known edge
+ok 236 - existing mount has no particles; one new observed call emits one bounded known edge
+  ---
+  duration_ms: 7.2173
+  ...
+# Subtest: initial/dependency/visible/online causes consume history without replay
+ok 237 - initial/dependency/visible/online causes consume history without replay
+  ---
+  duration_ms: 2.3983
+  ...
+# Subtest: hidden/offscreen backlog is consumed and the first resumed batch seeds
+ok 238 - hidden/offscreen backlog is consumed and the first resumed batch seeds
+  ---
+  duration_ms: 0.7723
+  ...
+# Subtest: aggregate revisions with stable ID cause only an actual harness node highlight
+ok 239 - aggregate revisions with stable ID cause only an actual harness node highlight
+  ---
+  duration_ms: 0.7183
+  ...
+# Subtest: unknown grain and old/future observations never fabricate flow
+ok 240 - unknown grain and old/future observations never fabricate flow
+  ---
+  duration_ms: 2.5173
+  ...
+# Subtest: project/source filters are exact; foreign records cannot pulse selected project
+ok 241 - project/source filters are exact; foreign records cannot pulse selected project
+  ---
+  duration_ms: 1.3713
+  ...
+# Subtest: all-project scope is different from exact NULL and empty project identity
+ok 242 - all-project scope is different from exact NULL and empty project identity
+  ---
+  duration_ms: 0.8154
+  ...
+# Subtest: unknown or invented route edges are not rendered; exact graph route is mandatory
+ok 243 - unknown or invented route edges are not rendered; exact graph route is mandatory
+  ---
+  duration_ms: 0.4007
+  ...
+# Subtest: reduced motion emits static actual-call highlight and never moving presentation
+ok 244 - reduced motion emits static actual-call highlight and never moving presentation
+  ---
+  duration_ms: 0.8382
+  ...
+# Subtest: one visible pending batch waits for matching graph serial/context and emits once
+ok 245 - one visible pending batch waits for matching graph serial/context and emits once
+  ---
+  duration_ms: 2.064
+  ...
+# Subtest: visibility loss cancels a pending readygraph wait with no later replay
+ok 246 - visibility loss cancels a pending readygraph wait with no later replay
+  ---
+  duration_ms: 0.5925
+  ...
+# Subtest: new batch replaces pending batch; stale graph arrival cannot replay older IDs
+ok 247 - new batch replaces pending batch; stale graph arrival cannot replay older IDs
+  ---
+  duration_ms: 1.4887
+  ...
+# Subtest: scope/project change cancels pending and seeds the new view
+ok 248 - scope/project change cancels pending and seeds the new view
+  ---
+  duration_ms: 0.5018
+  ...
+# Subtest: bounded source/aggregate ledgers do not replay an evicted source or aggregate version
+ok 249 - bounded source/aggregate ledgers do not replay an evicted source or aggregate version
+  ---
+  duration_ms: 0.9193
+  ...
+# Subtest: reset releases pure ledger state and next mount seeds instead of replays
+ok 250 - reset releases pure ledger state and next mount seeds instead of replays
+  ---
+  duration_ms: 0.4006
+  ...
+# Subtest: late graph completion cannot play a pending observation after its recent window expires
+ok 251 - late graph completion cannot play a pending observation after its recent window expires
+  ---
+  duration_ms: 0.323
+  ...
+# Subtest: empty initial snapshot and new profile sources accept their first returned eligible call
+ok 252 - empty initial snapshot and new profile sources accept their first returned eligible call
+  ---
+  duration_ms: 0.282
+  ...
+# Subtest: a new lower numeric identity is observed, not treated as an insertion sequence
+ok 253 - a new lower numeric identity is observed, not treated as an insertion sequence
+  ---
+  duration_ms: 0.2494
+  ...
+# Subtest: more than 32 distinct profiles do not cyclically disable new observations
+ok 254 - more than 32 distinct profiles do not cyclically disable new observations
+  ---
+  duration_ms: 19.1625
+  ...
+# Subtest: aggregate reasoning component revisions are node-only even if total is unchanged
+ok 255 - aggregate reasoning component revisions are node-only even if total is unchanged
+  ---
+  duration_ms: 0.4784
+  ...
+# Subtest: pending overflow is consumed and cannot replay on subsequent frames
+ok 256 - pending overflow is consumed and cannot replay on subsequent frames
+  ---
+  duration_ms: 0.4094
+  ...
+# Subtest: same-serial reentry cannot replay a query that started while offscreen
+ok 257 - same-serial reentry cannot replay a query that started while offscreen
+  ---
+  duration_ms: 0.5349
+  ...
+# Subtest: first post-return request presents only fresh calls, while held requests stay consumed
+ok 258 - first post-return request presents only fresh calls, while held requests stay consumed
+  ---
+  duration_ms: 1.895
+  ...
+# Subtest: post-return epoch cancels pending graph even when no hidden frame was rendered
+ok 259 - post-return epoch cancels pending graph even when no hidden frame was rendered
+  ---
+  duration_ms: 0.8194
+  ...
+# Subtest: first accepted ordinary batch after eligibility return can present the genuinely new call
+ok 260 - first accepted ordinary batch after eligibility return can present the genuinely new call
+  ---
+  duration_ms: 0.9033
+  ...
+# Subtest: eligibility snapshots are immutable copies and epochs change only on eligibility transitions
+ok 261 - eligibility snapshots are immutable copies and epochs change only on eligibility transitions
+  ---
+  duration_ms: 0.5535
+  ...
+# Subtest: offscreen request and missing request provenance suppress without disabling a later fresh first call
+ok 262 - offscreen request and missing request provenance suppress without disabling a later fresh first call
+  ---
+  duration_ms: 0.5608
+  ...
+# Subtest: provenance preserves catch-up seeding and conservative old-timestamp aggregate revisions
+ok 263 - provenance preserves catch-up seeding and conservative old-timestamp aggregate revisions
+  ---
+  duration_ms: 0.5877
+  ...
+# Subtest: known aggregate revisions during continuous eligibility highlight even when session timestamp predates mount
+ok 264 - known aggregate revisions during continuous eligibility highlight even when session timestamp predates mount
+  ---
+  duration_ms: 0.3444
+  ...
+# Subtest: old-timestamp aggregate needs a valid current-epoch baseline before post-return revisions can highlight
+ok 265 - old-timestamp aggregate needs a valid current-epoch baseline before post-return revisions can highlight
+  ---
+  duration_ms: 1.0516
+  ...
+# Subtest: cold initial request preceding first intersection seeds an aggregate baseline for its first ordinary revision
+ok 266 - cold initial request preceding first intersection seeds an aggregate baseline for its first ordinary revision
+  ---
+  duration_ms: 0.4321
+  ...
+# Subtest: reobserving an initial serial after hide and return cannot promote an old aggregate baseline
+ok 267 - reobserving an initial serial after hide and return cannot promote an old aggregate baseline
+  ---
+  duration_ms: 0.4239
+  ...
+# Subtest: held initial request spanning an eligibility loss cannot establish a returned aggregate baseline
+ok 268 - held initial request spanning an eligibility loss cannot establish a returned aggregate baseline
+  ---
+  duration_ms: 0.3419
+  ...
+# Subtest: initial real forecast is static; a new valid same-period derivation settles20 to35percent
+ok 269 - initial real forecast is static; a new valid same-period derivation settles20 to35percent
+  ---
+  duration_ms: 6.4103
+  ...
+# Subtest: clock-only rerenders and freshness keepalive cannot replay a forecast
+ok 270 - clock-only rerenders and freshness keepalive cannot replay a forecast
+  ---
+  duration_ms: 1.1738
+  ...
+# Subtest: owner/source/origin/provider/window/id and reset contexts replace without interpolation or retention
+ok 271 - owner/source/origin/provider/window/id and reset contexts replace without interpolation or retention
+  ---
+  duration_ms: 2.7197
+  ...
+# Subtest: same-context stale reading freezes exact last valid marker, source timestamps and prior forecast
+ok 272 - same-context stale reading freezes exact last valid marker, source timestamps and prior forecast
+  ---
+  duration_ms: 0.7684
+  ...
+# Subtest: missing/default-loss, reset, unknown and no-reset clear retained forecasts; no cross-gap resurrection
+ok 273 - missing/default-loss, reset, unknown and no-reset clear retained forecasts; no cross-gap resurrection
+  ---
+  duration_ms: 0.9277
+  ...
+# Subtest: unknown/flat/after-reset forecast has no invented marker and cannot become a frozen prior forecast
+ok 274 - unknown/flat/after-reset forecast has no invented marker and cannot become a frozen prior forecast
+  ---
+  duration_ms: 0.6854
+  ...
+# Subtest: projection never mutates input and keeps a prior committed reading independent of input mutation
+ok 275 - projection never mutates input and keeps a prior committed reading independent of input mutation
+  ---
+  duration_ms: 0.5459
+  ...
+# Subtest: actual three property-animation calls synchronize shared420ms/easing without persisting animation fills
+ok 276 - actual three property-animation calls synchronize shared420ms/easing without persisting animation fills
+  ---
+  duration_ms: 2.0275
+  ...
+# Subtest: replacement/hidden/unmount cancellation clears each handle/listener exactly once; reduced immediate creates none
+ok 277 - replacement/hidden/unmount cancellation clears each handle/listener exactly once; reduced immediate creates none
+  ---
+  duration_ms: 1.3521
+  ...
+# Subtest: one account read by several profiles is one row, not several identical ones
+ok 278 - one account read by several profiles is one row, not several identical ones
+  ---
+  duration_ms: 96.6306
+  ...
+# Subtest: the group takes its worst reader state, so a dead one cannot hide behind a live one
+ok 279 - the group takes its worst reader state, so a dead one cannot hide behind a live one
+  ---
+  duration_ms: 1.1089
+  ...
+# Subtest: harnesses with no account binding are kept apart, never merged into an account
+ok 280 - harnesses with no account binding are kept apart, never merged into an account
+  ---
+  duration_ms: 122.791
+  ...
+# Subtest: accounts lead by use, and ties break on something stable rather than arbitrarily
+ok 281 - accounts lead by use, and ties break on something stable rather than arbitrarily
+  ---
+  duration_ms: 1.4465
+  ...
+# Subtest: an account takes the name of its busiest reader
+ok 282 - an account takes the name of its busiest reader
+  ---
+  duration_ms: 0.6262
+  ...
+# Subtest: nothing to group is not an error
+ok 283 - nothing to group is not an error
+  ---
+  duration_ms: 0.4544
+  ...
+# Subtest: Today cards sum the rows selected by the harness/model filters
+ok 284 - Today cards sum the rows selected by the harness/model filters
+  ---
+  duration_ms: 3.8908
+  ...
+# Subtest: Today cards show zero when a filter matches no rows
+ok 285 - Today cards show zero when a filter matches no rows
+  ---
+  duration_ms: 0.4536
+  ...
+# Subtest: a first reading is never a change
+ok 286 - a first reading is never a change
+  ---
+  duration_ms: 2.7045
+  ...
+# Subtest: a change under the relative threshold is drift, not an event
+ok 287 - a change under the relative threshold is drift, not an event
+  ---
+  duration_ms: 0.6117
+  ...
+# Subtest: a change over the threshold is an event
+ok 288 - a change over the threshold is an event
+  ---
+  duration_ms: 0.3656
+  ...
+# Subtest: the threshold is relative, not absolute, so it means the same on any magnitude
+ok 289 - the threshold is relative, not absolute, so it means the same on any magnitude
+  ---
+  duration_ms: 0.2825
+  ...
+# Subtest: a move to zero from a real figure always counts
+ok 290 - a move to zero from a real figure always counts
+  ---
+  duration_ms: 0.3136
+  ...
+# Subtest: a rise from zero is judged on the floor, not the previous value
+ok 291 - a rise from zero is judged on the floor, not the previous value
+  ---
+  duration_ms: 0.3272
+  ...
+# Subtest: crossing zero counts in either direction
+ok 292 - crossing zero counts in either direction
+  ---
+  duration_ms: 40.4359
+  ...
+# Subtest: a drop counts the same as a rise
+ok 293 - a drop counts the same as a rise
+  ---
+  duration_ms: 0.4717
+  ...
+# Subtest: non-finite values are never events
+ok 294 - non-finite values are never events
+  ---
+  duration_ms: 0.958
+  ...
+# Subtest: a climb that would strobe is the case the threshold has to survive
+ok 295 - a climb that would strobe is the case the threshold has to survive
+  ---
+  duration_ms: 3.0051
+  ...
+# Subtest: a genuine jump on top of a busy climb still registers
+ok 296 - a genuine jump on top of a busy climb still registers
+  ---
+  duration_ms: 0.5039
+  ...
+1..296
+# tests 296
+# suites 0
+# pass 296
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 27222.1502

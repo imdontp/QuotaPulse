@@ -1,0 +1,364 @@
+{
+  "io": [
+    {
+      "ms": 44995107416,
+      "target": "qp-panel qp-live-section qp-live-sessions",
+      "intersecting": true,
+      "ratio": 1,
+      "bounds": {
+        "x": 238,
+        "y": 257.5,
+        "width": 1040.40625,
+        "height": 329,
+        "top": 257.5,
+        "right": 1278.40625,
+        "bottom": 586.5,
+        "left": 238
+      },
+      "intersection": {
+        "x": 238,
+        "y": 257.5,
+        "width": 1040.40625,
+        "height": 329,
+        "top": 257.5,
+        "right": 1278.40625,
+        "bottom": 586.5,
+        "left": 238
+      }
+    },
+    {
+      "ms": 44995107572,
+      "target": "qp-live-flow-canvas",
+      "intersecting": true,
+      "ratio": 1,
+      "bounds": {
+        "x": 271,
+        "y": 621.75,
+        "width": 792.40625,
+        "height": 104,
+        "top": 621.75,
+        "right": 1063.40625,
+        "bottom": 725.75,
+        "left": 271
+      },
+      "intersection": {
+        "x": 271,
+        "y": 621.75,
+        "width": 792.40625,
+        "height": 104,
+        "top": 621.75,
+        "right": 1063.40625,
+        "bottom": 725.75,
+        "left": 271
+      }
+    },
+    {
+      "ms": 44995107572,
+      "target": "qp-panel qp-live-section qp-live-records",
+      "intersecting": true,
+      "ratio": 1,
+      "bounds": {
+        "x": 238,
+        "y": 771.75,
+        "width": 1040.40625,
+        "height": 159.5,
+        "top": 771.75,
+        "right": 1278.40625,
+        "bottom": 931.25,
+        "left": 238
+      },
+      "intersection": {
+        "x": 238,
+        "y": 771.75,
+        "width": 1040.40625,
+        "height": 159.5,
+        "top": 771.75,
+        "right": 1278.40625,
+        "bottom": 931.25,
+        "left": 238
+      }
+    },
+    {
+      "ms": 44995107572,
+      "target": "qp-panel qp-live-section qp-live-sessions",
+      "intersecting": true,
+      "ratio": 1,
+      "bounds": {
+        "x": 238,
+        "y": 225.75,
+        "width": 1040.40625,
+        "height": 329,
+        "top": 225.75,
+        "right": 1278.40625,
+        "bottom": 554.75,
+        "left": 238
+      },
+      "intersection": {
+        "x": 238,
+        "y": 225.75,
+        "width": 1040.40625,
+        "height": 329,
+        "top": 225.75,
+        "right": 1278.40625,
+        "bottom": 554.75,
+        "left": 238
+      }
+    }
+  ],
+  "regions": [
+    {
+      "class": "qp-panel qp-live-section qp-live-sessions",
+      "rect": {
+        "x": 238,
+        "y": 225.75,
+        "width": 1040.40625,
+        "height": 329,
+        "top": 225.75,
+        "right": 1278.40625,
+        "bottom": 554.75,
+        "left": 238
+      },
+      "parents": [
+        {
+          "class": "qp-live-main",
+          "rect": {
+            "x": 238,
+            "y": 225.75,
+            "width": 1040.40625,
+            "height": 705.5,
+            "top": 225.75,
+            "right": 1278.40625,
+            "bottom": 931.25,
+            "left": 238
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "qp-live-layout",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "",
+          "rect": {
+            "x": 226,
+            "y": 60,
+            "width": 1446,
+            "height": 884,
+            "top": 60,
+            "right": 1672,
+            "bottom": 944,
+            "left": 226
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "qp-workspace",
+          "rect": {
+            "x": 226,
+            "y": 60,
+            "width": 1446,
+            "height": 1040,
+            "top": 60,
+            "right": 1672,
+            "bottom": 1100,
+            "left": 226
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "qp-redesign",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1672,
+            "height": 1100,
+            "top": 0,
+            "right": 1672,
+            "bottom": 1100,
+            "left": 0
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1672,
+            "height": 1100,
+            "top": 0,
+            "right": 1672,
+            "bottom": 1100,
+            "left": 0
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1672,
+            "height": 1100,
+            "top": 0,
+            "right": 1672,
+            "bottom": 1100,
+            "left": 0
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "dark",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1672,
+            "height": 1100,
+            "top": 0,
+            "right": 1672,
+            "bottom": 1100,
+            "left": 0
+          },
+          "overflow": "visible"
+        }
+      ]
+    },
+    {
+      "class": "qp-panel qp-live-section qp-live-records",
+      "rect": {
+        "x": 238,
+        "y": 771.75,
+        "width": 1040.40625,
+        "height": 159.5,
+        "top": 771.75,
+        "right": 1278.40625,
+        "bottom": 931.25,
+        "left": 238
+      },
+      "parents": [
+        {
+          "class": "qp-live-main",
+          "rect": {
+            "x": 238,
+            "y": 225.75,
+            "width": 1040.40625,
+            "height": 705.5,
+            "top": 225.75,
+            "right": 1278.40625,
+            "bottom": 931.25,
+            "left": 238
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "qp-live-layout",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "",
+          "rect": {
+            "x": 226,
+            "y": 60,
+            "width": 1446,
+            "height": 884,
+            "top": 60,
+            "right": 1672,
+            "bottom": 944,
+            "left": 226
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "qp-workspace",
+          "rect": {
+            "x": 226,
+            "y": 60,
+            "width": 1446,
+            "height": 1040,
+            "top": 60,
+            "right": 1672,
+            "bottom": 1100,
+            "left": 226
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "qp-redesign",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1672,
+            "height": 1100,
+            "top": 0,
+            "right": 1672,
+            "bottom": 1100,
+            "left": 0
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1672,
+            "height": 1100,
+            "top": 0,
+            "right": 1672,
+            "bottom": 1100,
+            "left": 0
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1672,
+            "height": 1100,
+            "top": 0,
+            "right": 1672,
+            "bottom": 1100,
+            "left": 0
+          },
+          "overflow": "visible"
+        },
+        {
+          "class": "dark",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1672,
+            "height": 1100,
+            "top": 0,
+            "right": 1672,
+            "bottom": 1100,
+            "left": 0
+          },
+          "overflow": "visible"
+        }
+      ]
+    }
+  ]
+}

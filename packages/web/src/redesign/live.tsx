@@ -13,6 +13,8 @@ import { HeadingReferenceIcon } from './heading-reference-icon';
 import { SectionMark } from './section-mark';
 import { LiveMinuteMatrix } from './live-minute-strip';
 import { InitialRegion, type InitialRegionState } from './initial-region';
+import { LivePresenceLedger, liveSessionMotionKey, liveRecordMotionKey, type LiveRecordBatch } from './live-record-motion';
+import { useLivePresenceMotion, useLiveSelectionMotion } from './use-live-record-motion';
 import './live.css';
 
 interface LiveRoute {
@@ -36,7 +38,7 @@ function routeHash(route: LiveRoute) {
   return `#live${p.size ? `?${p}` : ''}`;
 }
 interface Snapshot { key: string; route: LiveRoute; overview: Overview; scope: UsageEventScope; trend: MinuteTrendResponse;
-  feed: UsageEventsResponse; matrix: ProviderModelMinuteResponse; sessions: LiveSessionsResponse }
+  feed: UsageEventsResponse; matrix: ProviderModelMinuteResponse; sessions: LiveSessionsResponse; sessionsMotion: LiveRecordBatch; feedMotion: LiveRecordBatch }
 
 export function ProductionLive() {
   const t = useT();
@@ -49,6 +51,12 @@ export function ProductionLive() {
   const [paused, setPaused] = useState(false);
   const [retry, setRetry] = useState(0);
   const pausedRef = useRef(false);
+  const sessionsRegion = useRef<HTMLElement>(null);
+  const feedRegion = useRef<HTMLElement>(null);
+  const [sessionsLedger] = useState(() => new LivePresenceLedger());
+  const [feedLedger] = useState(() => new LivePresenceLedger());
+  const acceptedSerial = useRef(0);
+  const [selectionSerial, setSelectionSerial] = useState(0);
   const [selectedSession, setSelectedSession] = useState<LiveSessionsResponse['rows'][number] | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const returnFocus = useRef<HTMLButtonElement | null>(null);
@@ -83,8 +91,10 @@ export function ProductionLive() {
     setRoute(next);
     setError(null);
   };
-  useLiveRefresh(async () => {
+  useLiveRefresh(async context => {
     if (pausedRef.current) return;
+    const sessionsEligibility = sessionsLedger.snapshot();
+    const feedEligibility = feedLedger.snapshot();
     const requestedKey = dataKey;
     const requestedEpoch = requestEpoch.current;
     const isCurrent = () => mounted.current && !pausedRef.current && currentKey.current === requestedKey && requestEpoch.current === requestedEpoch;
@@ -100,7 +110,10 @@ export function ProductionLive() {
         api.providerModelMinutes(base), api.liveSessions(scope, route.sessions, route.sessionOffset),
       ]);
       if (isCurrent()) {
-        setSnapshot({ key: requestedKey, route, overview, scope, trend, feed, matrix, sessions });
+        const serial = ++acceptedSerial.current;
+        setSnapshot({ key: requestedKey, route, overview, scope, trend, feed, matrix, sessions,
+          sessionsMotion: { serial, reason: context.reason, requestEligibility: sessionsEligibility },
+          feedMotion: { serial, reason: context.reason, requestEligibility: feedEligibility } });
         setError(null);
       }
     } catch (cause) {
@@ -119,6 +132,12 @@ export function ProductionLive() {
   const display = paused ? snapshot : current ?? (error ? snapshot : null);
   const displayRoute = display?.route ?? route;
   const frozen = paused || (display !== null && display.key !== dataKey);
+  const motionEnabled = !paused && !frozen && !error && display?.key === dataKey;
+  useLivePresenceMotion(sessionsRegion, sessionsLedger, display?.sessionsMotion, dataKey,
+    display?.sessions.rows.map(row => liveSessionMotionKey(row.sessionKey)) ?? [], 'data-live-session', '.qp-live-table', motionEnabled, !!display);
+  useLivePresenceMotion(feedRegion, feedLedger, display?.feedMotion, dataKey,
+    display?.feed.rows.map(liveRecordMotionKey) ?? [], 'data-live-record', '.qp-live-feed', motionEnabled, !!display);
+  useLiveSelectionMotion(sessionsRegion, dialog, selectedSession ? liveSessionMotionKey(selectedSession.sessionKey) : null, selectionSerial, dataKey, motionEnabled);
   const now = display?.overview.now ?? Date.now();
   const sources = display?.overview.sourceStatus ?? [];
   const validRecent = (at: number | null) => at !== null && at <= now && now - at <= 300_000;
@@ -158,7 +177,7 @@ export function ProductionLive() {
     </section>
     <div className="qp-live-layout">
         <div className="qp-live-main">
-          <section className="qp-panel qp-live-section qp-live-sessions"><div className="qp-live-session-tools"><div className="qp-live-section-head"><h2><SectionMark icon={<GitBranch/>} size={28}/>{t('redesign.liveSessionTable')}</h2>
+          <section ref={sessionsRegion} className="qp-panel qp-live-section qp-live-sessions"><div className="qp-live-session-tools"><div className="qp-live-section-head"><h2><SectionMark icon={<GitBranch/>} size={28}/>{t('redesign.liveSessionTable')}</h2>
               <details className="qp-live-session-note">
                 <summary><Info size={15} aria-hidden="true"/><span>{t('redesign.liveSessionTable')}</span></summary>
                 <p className="qp-footnote">{t('redesign.liveMetricsNote')}</p>
@@ -170,15 +189,15 @@ export function ProductionLive() {
 
             </div>
           </div>
-            {!display ? <InitialRegion id="live-sessions" label={t('redesign.liveSessionTable')} heading={<></>} state={initialState} className="qp-live-initial-session-body" status slots={5}/> : display.sessions.rows.length === 0 ? <p>{t('redesign.liveNoSessions')}</p> : <div className="qp-live-table" tabIndex={0} role="region" aria-label={t('redesign.liveSessionTable')}><table><thead><tr><th>{t('redesign.sessions')}</th><th>{t('redesign.project')}</th><th>{t('redesign.harness')}</th><th>{t('redesign.liveSourceTime')}</th><th>{t('redesign.tokens')}</th></tr></thead><tbody>{display.sessions.rows.map(session => <tr key={session.sessionKey}><td><button onClick={event => { returnFocus.current = event.currentTarget; setSelectedSession(session); }}>{session.nativeSessionId}</button><small>{session.sourceName}</small></td><td>{session.project ?? t('redesign.unassigned')}</td><td><span className="qp-live-session-harness"><HarnessIcon harness={session.harness} vendor={display.overview.harnesses.find(harness => harness.harness === session.harness)?.vendor} label={session.harness}/>{session.harness}</span></td><td>{sourceDate(session.lastSeenAt)}</td><td>{number(session.tokens)}</td></tr>)}</tbody></table></div>}
+            {!display ? <InitialRegion id="live-sessions" label={t('redesign.liveSessionTable')} heading={<></>} state={initialState} className="qp-live-initial-session-body" status slots={5}/> : display.sessions.rows.length === 0 ? <p>{t('redesign.liveNoSessions')}</p> : <div className="qp-live-table" tabIndex={0} role="region" aria-label={t('redesign.liveSessionTable')}><table><thead><tr><th>{t('redesign.sessions')}</th><th>{t('redesign.project')}</th><th>{t('redesign.harness')}</th><th>{t('redesign.liveSourceTime')}</th><th>{t('redesign.tokens')}</th></tr></thead><tbody>{display.sessions.rows.map(session => <tr key={session.sessionKey} data-live-session={liveSessionMotionKey(session.sessionKey)}><td><button onClick={event => { returnFocus.current = event.currentTarget; setSelectionSerial(value => value + 1); setSelectedSession(session); }}>{session.nativeSessionId}</button><small>{session.sourceName}</small></td><td>{session.project ?? t('redesign.unassigned')}</td><td><span className="qp-live-session-harness"><HarnessIcon harness={session.harness} vendor={display.overview.harnesses.find(harness => harness.harness === session.harness)?.vendor} label={session.harness}/>{session.harness}</span></td><td>{sourceDate(session.lastSeenAt)}</td><td>{number(session.tokens)}</td></tr>)}</tbody></table></div>}
           </section>
           {display ? <>
           <section className="qp-panel qp-live-section qp-live-trend"><div className="qp-live-section-head"><h2><SectionMark icon={<Activity/>} size={28}/>{t('redesign.liveChart')}</h2>{trend?.coverage.includedRecords ? <LiveTokenFlowLegend t={t}/> : null}{trend?.coverage.includedRecords ? <p className="qp-footnote">{number(trend.coverage.includedCalls)} {t('redesign.modelsCalls')}</p> : null}</div>{trend?.coverage.includedRecords ? <LiveTokenFlow data={trend} frozen={frozen || !!error} scopeKey={JSON.stringify([displayRoute.q, displayRoute.provider, displayRoute.model])} language={lang} t={t} showLegend={false} panelSummary excludedDetails={<>{trend?.coverage.excludedSources.map(source => <small key={source.source_id}>{source.source_name}: {number(source.records)} {t('redesign.records')}</small>)}</>}/> : <p>{t('redesign.liveChartEmpty')}</p>}<div className="qp-live-excluded"><strong>{t('redesign.liveExcluded')}</strong><span>{number(aggregateExcluded)} {t('redesign.liveAggregate')}</span><span>{number(unknownExcluded)} {t('redesign.liveUnknownGrain')}</span>{!trend?.coverage.includedRecords && <>{trend?.coverage.excludedSources.map(source => <small key={source.source_id}>{source.source_name}: {number(source.records)} {t('redesign.records')}</small>)}</>}</div>
           </section>
-          <section className="qp-panel qp-live-section qp-live-records"><div className="qp-live-feed-tools"><div className="qp-live-section-head"><h2><SectionMark icon={<Activity/>} size={28}/>{t('redesign.liveFeed')}</h2><a href={historyHref({ ...(displayRoute.provider ? { provider: displayRoute.provider } : {}), ...(displayRoute.model ? { model: displayRoute.model } : {}), ...(displayRoute.q ? { q: displayRoute.q } : {}) })}>{t('redesign.openHistory')}</a></div>
+          <section ref={feedRegion} className="qp-panel qp-live-section qp-live-records"><div className="qp-live-feed-tools"><div className="qp-live-section-head"><h2><SectionMark icon={<Activity/>} size={28}/>{t('redesign.liveFeed')}</h2><a href={historyHref({ ...(displayRoute.provider ? { provider: displayRoute.provider } : {}), ...(displayRoute.model ? { model: displayRoute.model } : {}), ...(displayRoute.q ? { q: displayRoute.q } : {}) })}>{t('redesign.openHistory')}</a></div>
             <div className="qp-live-pagination qp-live-feed-pagination"><button disabled={frozen || displayRoute.feedOffset === 0} onClick={() => update({ feedOffset: Math.max(0, displayRoute.feedOffset - 8) })}>{t('redesign.livePrevious')}</button><span>{number(display.feed.total)} {t('redesign.records')}</span><button disabled={frozen || displayRoute.feedOffset + display.feed.rows.length >= display.feed.total} onClick={() => update({ feedOffset: displayRoute.feedOffset + 8 })}>{t('redesign.liveNext')}</button></div>
           </div>
-            {display.feed.rows.length === 0 ? <p>{t('redesign.liveNoRecords')}</p> : <ol className="qp-live-feed" tabIndex={0} aria-label={t('redesign.liveFeed')}>{display.feed.rows.map(row => <li key={row.event_id}><span>{date(row.timestamp_ms)} · {row.harness} · {row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}<small>{row.grain === 'call' ? t('redesign.callRecord') : t('redesign.aggregateUpdate')}</small></span><strong>{number(row.total_tokens)}</strong></li>)}</ol>}
+            {display.feed.rows.length === 0 ? <p>{t('redesign.liveNoRecords')}</p> : <ol className="qp-live-feed" tabIndex={0} aria-label={t('redesign.liveFeed')}>{display.feed.rows.map(row => <li key={row.event_id} data-live-record={liveRecordMotionKey(row)}><span>{date(row.timestamp_ms)} · {row.harness} · {row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}<small>{row.grain === 'call' ? t('redesign.callRecord') : t('redesign.aggregateUpdate')}</small></span><strong>{number(row.total_tokens)}</strong></li>)}</ol>}
 
           </section>
           </> : <>
@@ -210,6 +229,6 @@ export function ProductionLive() {
           </>}
         </aside>
       </div>
-    <dialog ref={dialog} className="qp-live-dialog" aria-labelledby="qp-live-detail-title" onClose={event => { if (!event.currentTarget.open) { setSelectedSession(null); returnFocus.current?.focus(); } }}>{selectedSession && <><div className="qp-live-section-head"><h2 id="qp-live-detail-title">{t('redesign.liveSessionDetail')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X size={18}/></button></div><dl><dt>{t('redesign.sessions')}</dt><dd>{selectedSession.nativeSessionId}</dd><dt>{t('redesign.project')}</dt><dd>{selectedSession.project ?? t('redesign.unassigned')}</dd><dt>{t('redesign.liveSourceTime')}</dt><dd>{sourceDate(selectedSession.lastSeenAt)}</dd><dt>{t('redesign.liveObservedTime')}</dt><dd>{date(selectedSession.lastObservedAt)}</dd><dt>{t('redesign.tokens')}</dt><dd>{number(selectedSession.tokens)}</dd><dt>{t('redesign.projectObservedPaths')}</dt><dd>{selectedSession.cwd ?? t('redesign.projectUnknownPath')}</dd></dl><a href={historyHref({ session_id: String(selectedSession.sessionKey), ...(displayRoute.provider ? { provider: displayRoute.provider } : {}), ...(displayRoute.model ? { model: displayRoute.model } : {}), ...(displayRoute.q ? { q: displayRoute.q } : {}) })}>{t('redesign.openHistory')}</a></>}</dialog>
+    <dialog ref={dialog} className="qp-live-dialog" aria-labelledby="qp-live-detail-title" onClose={event => { if (!event.currentTarget.open) { setSelectedSession(null); if (returnFocus.current?.isConnected) returnFocus.current.focus(); else (sessionsRegion.current?.querySelector<HTMLElement>('.qp-live-table') ?? document.querySelector<HTMLElement>('[data-testid=production-live] main'))?.focus(); } }}>{selectedSession && <><div className="qp-live-section-head"><h2 id="qp-live-detail-title">{t('redesign.liveSessionDetail')}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label={t('redesign.close')}><X size={18}/></button></div><dl className="qp-live-detail-content"><dt>{t('redesign.sessions')}</dt><dd>{selectedSession.nativeSessionId}</dd><dt>{t('redesign.project')}</dt><dd>{selectedSession.project ?? t('redesign.unassigned')}</dd><dt>{t('redesign.liveSourceTime')}</dt><dd>{sourceDate(selectedSession.lastSeenAt)}</dd><dt>{t('redesign.liveObservedTime')}</dt><dd>{date(selectedSession.lastObservedAt)}</dd><dt>{t('redesign.tokens')}</dt><dd>{number(selectedSession.tokens)}</dd><dt>{t('redesign.projectObservedPaths')}</dt><dd>{selectedSession.cwd ?? t('redesign.projectUnknownPath')}</dd></dl><a href={historyHref({ session_id: String(selectedSession.sessionKey), ...(displayRoute.provider ? { provider: displayRoute.provider } : {}), ...(displayRoute.model ? { model: displayRoute.model } : {}), ...(displayRoute.q ? { q: displayRoute.q } : {}) })}>{t('redesign.openHistory')}</a></>}</dialog>
   </RedesignShell>;
 }

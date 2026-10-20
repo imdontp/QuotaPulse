@@ -27,7 +27,7 @@ export function historyElementVisible(element: HTMLElement, clip?: HTMLElement |
 /** Each actual presence/selection has a180ms readable settle and700ms finite emphasis.
  * Base DOM/focus/identity never changes; reduced callers skip animation and keep static selection.
  */
-export function playHistoryTransitions(targets: readonly HTMLElement[], reduced = false) {
+export function playHistoryTransitions(targets: readonly HTMLElement[], reduced = false, emphasis: 'background' | 'outline' = 'background') {
   const active = new Map<Animation, HTMLElement>();
   let observer: IntersectionObserver | undefined;
   const dispose = (animation: Animation) => {
@@ -48,9 +48,15 @@ export function playHistoryTransitions(targets: readonly HTMLElement[], reduced 
     if (typeof target.animate !== 'function') continue;
     const finalBackground = getComputedStyle(target).backgroundColor;
     const ease = `cubic-bezier(${EASE.motion.join(',')})`;
+    // Opaque row/panel background images can cover a background-color pulse.
+    // Inset outline paints above those backgrounds without changing box geometry.
+    const emphasisFrames: Keyframe[] = emphasis === 'outline'
+      ? [{ outlineColor: 'color-mix(in srgb,var(--qp-accent) 85%,transparent)', outlineStyle: 'solid', outlineWidth: '2px', outlineOffset: '-2px' },
+        { outlineColor: 'transparent', outlineStyle: 'solid', outlineWidth: '2px', outlineOffset: '-2px' }]
+      : [{ backgroundColor: 'color-mix(in srgb,var(--qp-accent) 25%,transparent)' }, { backgroundColor: finalBackground }];
     for (const [frames, duration] of [
       [[{ opacity: .78 }, { opacity: 1 }], DURATION.fast],
-      [[{ backgroundColor: 'color-mix(in srgb,var(--qp-accent) 25%,transparent)' }, { backgroundColor: finalBackground }], DURATION.deliberate],
+      [emphasisFrames, DURATION.deliberate],
     ] as const) {
       const animation = target.animate([...frames], { duration, easing: ease, iterations: 1, fill: 'none' });
       active.set(animation, target);

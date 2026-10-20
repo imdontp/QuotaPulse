@@ -1,0 +1,120 @@
+TAP version 13
+# Subtest: first accepted page and any query/filter/page dependency change establish a static baseline
+ok 1 - first accepted page and any query/filter/page dependency change establish a static baseline
+  ---
+  duration_ms: 5.4555
+  ...
+# Subtest: retained/reordered/duplicate refresh rows do not replay; unchanged-page new actual presence enters once
+ok 2 - retained/reordered/duplicate refresh rows do not replay; unchanged-page new actual presence enters once
+  ---
+  duration_ms: 1.0199
+  ...
+# Subtest: late imported historic data may be newly observed without inventing recent timestamps or a live call
+ok 3 - late imported historic data may be newly observed without inventing recent timestamps or a live call
+  ---
+  duration_ms: 0.7327
+  ...
+# Subtest: identity preserves exact source/session/time and does not depend on mutable totals or locale
+ok 4 - identity preserves exact source/session/time and does not depend on mutable totals or locale
+  ---
+  duration_ms: 0.4788
+  ...
+# Subtest: bounded preceding-page semantics allow an absent presence to enter again without a lifetime ledger
+ok 5 - bounded preceding-page semantics allow an absent presence to enter again without a lifetime ledger
+  ---
+  duration_ms: 0.5237
+  ...
+# Subtest: actual settle/emphasis calls use shared180/700ms and once-only final-base cleanup
+ok 6 - actual settle/emphasis calls use shared180/700ms and once-only final-base cleanup
+  ---
+  duration_ms: 3.0319
+  ...
+# Subtest: hidden/unmount/replacement cancellation releases all handles and observer targets once; reduced is static
+ok 7 - hidden/unmount/replacement cancellation releases all handles and observer targets once; reduced is static
+  ---
+  duration_ms: 1.0479
+  ...
+# Subtest: visibility checks respect viewport and actual scrolling table clipping
+ok 8 - visibility checks respect viewport and actual scrolling table clipping
+  ---
+  duration_ms: 1.4092
+  ...
+# Subtest: actual offscreen observer callback cancels only that target and keeps the other finite batch alive
+ok 9 - actual offscreen observer callback cancels only that target and keeps the other finite batch alive
+  ---
+  duration_ms: 2.5064
+  ...
+# Subtest: Live presence uses exact internal session identity and observed recorded tuple
+ok 10 - Live presence uses exact internal session identity and observed recorded tuple
+  ---
+  duration_ms: 3.7949
+  ...
+# Subtest: initial accepted page seeds; new observed presence enters once; duplicate/reorder has no replay
+ok 11 - initial accepted page seeds; new observed presence enters once; duplicate/reorder has no replay
+  ---
+  duration_ms: 2.9712
+  ...
+# Subtest: cold initial request before IO establishes visible baseline without suppressing the first genuine SSE presence
+ok 12 - cold initial request before IO establishes visible baseline without suppressing the first genuine SSE presence
+  ---
+  duration_ms: 0.5359
+  ...
+# Subtest: visible cold initial accepted before IO has a baseline and needs no duplicate refresh
+ok 13 - visible cold initial accepted before IO has a baseline and needs no duplicate refresh
+  ---
+  duration_ms: 0.3336
+  ...
+# Subtest: initial hidden/reduced/offscreen barrier before first eligible IO cannot masquerade as cold visible startup
+ok 14 - initial hidden/reduced/offscreen barrier before first eligible IO cannot masquerade as cold visible startup
+  ---
+  duration_ms: 0.9155
+  ...
+# Subtest: visible evidence alone cannot promote a held initial request across an eligible loss
+ok 15 - visible evidence alone cannot promote a held initial request across an eligible loss
+  ---
+  duration_ms: 0.4377
+  ...
+# Subtest: new presence is not treated as ingestion recency or monotonically increasing event id
+ok 16 - new presence is not treated as ingestion recency or monotonically increasing event id
+  ---
+  duration_ms: 0.4633
+  ...
+# Subtest: query/provider/model/page contexts seed exact null/empty/case identities
+ok 17 - query/provider/model/page contexts seed exact null/empty/case identities
+  ---
+  duration_ms: 0.2561
+  ...
+# Subtest: dependency/pause-resume, visible and online snapshots seed rather than replay a catch-up page
+ok 18 - dependency/pause-resume, visible and online snapshots seed rather than replay a catch-up page
+  ---
+  duration_ms: 0.4297
+  ...
+# Subtest: hidden/offscreen/reduced/error loss cancels eligibility and first valid returned page seeds
+ok 19 - hidden/offscreen/reduced/error loss cancels eligibility and first valid returned page seeds
+  ---
+  duration_ms: 0.9807
+  ...
+# Subtest: late held response crossing loss/return cannot animate or arm a replay
+ok 20 - late held response crossing loss/return cannot animate or arm a replay
+  ---
+  duration_ms: 0.4551
+  ...
+# Subtest: stale serial cannot replace bounded accepted baseline or foreign context
+ok 21 - stale serial cannot replace bounded accepted baseline or foreign context
+  ---
+  duration_ms: 0.3431
+  ...
+# Subtest: explicit changed selection has its own serial; duplicate response cannot truncate or replay it
+ok 22 - explicit changed selection has its own serial; duplicate response cannot truncate or replay it
+  ---
+  duration_ms: 0.4053
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2521.3483

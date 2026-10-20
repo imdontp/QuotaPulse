@@ -1,0 +1,24 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:10 char:172
++ ... 'baseline'; node --import tsx scripts/check-models-live-motion.mts *> ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Timeout 12000ms exceeded.
+Call log:
+[2m  - waiting for locator('.qp-model-detail #model-catalog-context').first() to be visible[22m
+
+    at <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-models-live
+-motion.mts:145:234) {
+  log: [
+    "  - waiting for locator('.qp-model-detail #model-catalog-context').first() to be visible"
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.13.1

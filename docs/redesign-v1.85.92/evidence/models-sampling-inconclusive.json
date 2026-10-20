@@ -1,0 +1,14 @@
+{
+  "message": "AssertionError [ERR_ASSERTION]: models-explicit-row-then-accepted-detail actual native timeline 180",
+  "stack": "AssertionError [ERR_ASSERTION]: models-explicit-row-then-accepted-detail actual native timeline 180\n    at <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-models-live-motion.mts:133:716)\n    at Array.forEach (<anonymous>)\n    at collect (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-models-live-motion.mts:133:596)\n    at async <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-models-live-motion.mts:154:421)",
+  "url": "http://127.0.0.1:7816/#models?range=month&model=GPT-5.x&selected_provider=openai",
+  "productionIndexSha256": "b40e885220c25c2723fdc3edc2502c9a5a643d6e7f0059d7edf8c81742b1dcc3",
+  "stages": [
+    {
+      "label": "models-initial-static",
+      "static": true
+    }
+  ],
+  "errors": [],
+  "forbidden": []
+}

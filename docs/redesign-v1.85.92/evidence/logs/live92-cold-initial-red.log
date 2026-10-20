@@ -1,0 +1,85 @@
+TAP version 13
+# Subtest: Live presence uses exact internal session identity and observed recorded tuple
+ok 1 - Live presence uses exact internal session identity and observed recorded tuple
+  ---
+  duration_ms: 1.4959
+  ...
+# Subtest: initial accepted page seeds; new observed presence enters once; duplicate/reorder has no replay
+ok 2 - initial accepted page seeds; new observed presence enters once; duplicate/reorder has no replay
+  ---
+  duration_ms: 1.2936
+  ...
+# Subtest: cold initial request before IO establishes visible baseline without suppressing the first genuine SSE presence
+not ok 3 - cold initial request before IO establishes visible baseline without suppressing the first genuine SSE presence
+  ---
+  duration_ms: 5.1163
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\live-record-motion.test.ts:1:1484'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+
+    + []
+    - [
+    -   'new'
+    - ]
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'new'
+  actual:
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web\test\live-record-motion.test.ts:32:10)
+    Test.runInAsyncScope (node:async_hooks:211:14)
+    Test.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    Test.postRun (node:internal/test_runner/test:1042:19)
+    Test.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: new presence is not treated as ingestion recency or monotonically increasing event id
+ok 4 - new presence is not treated as ingestion recency or monotonically increasing event id
+  ---
+  duration_ms: 0.4243
+  ...
+# Subtest: query/provider/model/page contexts seed exact null/empty/case identities
+ok 5 - query/provider/model/page contexts seed exact null/empty/case identities
+  ---
+  duration_ms: 0.5692
+  ...
+# Subtest: dependency/pause-resume, visible and online snapshots seed rather than replay a catch-up page
+ok 6 - dependency/pause-resume, visible and online snapshots seed rather than replay a catch-up page
+  ---
+  duration_ms: 0.4289
+  ...
+# Subtest: hidden/offscreen/reduced/error loss cancels eligibility and first valid returned page seeds
+ok 7 - hidden/offscreen/reduced/error loss cancels eligibility and first valid returned page seeds
+  ---
+  duration_ms: 0.2958
+  ...
+# Subtest: late held response crossing loss/return cannot animate or arm a replay
+ok 8 - late held response crossing loss/return cannot animate or arm a replay
+  ---
+  duration_ms: 0.3514
+  ...
+# Subtest: stale serial cannot replace bounded accepted baseline or foreign context
+ok 9 - stale serial cannot replace bounded accepted baseline or foreign context
+  ---
+  duration_ms: 0.4245
+  ...
+# Subtest: explicit changed selection has its own serial; duplicate response cannot truncate or replay it
+ok 10 - explicit changed selection has its own serial; duplicate response cannot truncate or replay it
+  ---
+  duration_ms: 1.1495
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 9
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2847.9685
