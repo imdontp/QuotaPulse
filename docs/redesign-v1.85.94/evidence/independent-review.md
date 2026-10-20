@@ -1,0 +1,41 @@
+# History94 independent source review
+
+2026-10-20. Scope: History rail repair and its focused helper/motion/browser harness adaptations. Read-only except this report; no browser/build/Git or source edits. Original `Downloads/quotapulse_build_blueprint/refs/history.png` visually inspected; original ZIP screen contract and OVR018/019 checked in the preceding requirement audit. Checkpoint93 dist is stale for this candidate and supplies no new visual evidence.
+
+## Verdict
+
+**No concrete blocking or important source defect found in the candidate inspected below.** This is a bounded source review, conditional on root's actual rebuilt browser/composition checks. It is not original pixel parity, full state/locale/viewport acceptance or release approval.
+
+## Requirement fit and traced behavior
+
+- Original `screens/history.md:9-15` requires selected detail rail, truthful allowlisted fields and stable event selection. Original PNG has a right-hand rail beside the table, without a modal overlay. `history.tsx:91-94` now guards `showModal()` with `redesign`; redesign renders the named `aside` at250 and legacy renders the native dialog at257. First accepted row remains a static initial selection. This restores the non-blocking structural requirement without claiming the original mandates automatic selection.
+- Initial selection does not run an autofocus or scroll operation: `revealedSelection` starts0 and the reveal effect206-215 requires a new explicit selection serial. At desktop the opener retains native focus. Below1280 explicit selection reveals/focuses the flow rail only when its heading/first content is outside the viewport. Automatic refreshed selection does not increase serial.
+- Explicit close/Escape clears the selected rail and calls `restoreHistoryRailFocus` (history.tsx201-204,250-253). The helper checks connected/visible opener against the actual table clip, then visible table, then actual focusable `#history` main (`shell.tsx:106`). `preventScroll` avoids an offscreen/detached row jumping the page. Escape is scoped to the rail, so a non-modal page does not acquire a global keyboard trap. Legacy still uses native dialog/Escape semantics.
+- API/query guards and exact selected row/scope retention are unchanged. Refresh follows existing event_id; if it leaves the current page, `refreshedHistorySelection` retains its originating scope. Related-session URL continues to use that scope and actual session key. The repair does not substitute a foreign row, rerequest detail, invent prompt/raw JSON, modify aggregate grain or enable partial-page export. Retained selection across filters remains inherited behavior; current source review does not establish all retained/error presentation states as accepted.
+- `use-history-motion.ts` now targets the real rail ref, while keeping exact observed record tuple, stable accepted-page baselines and changed explicit selection trigger. Initial/default/duplicate selection stays static; an existing selected record's refreshed totals do not become a new presence. Outline emphasis paints over opaque resting backgrounds without persisting a selected paint override.
+- `playHistoryTransitions` already observes each actual target and cancels on loss of intersection; thus an independently offscreen rail is not missing cancellation merely because the hook's additional table observer only cancels rows. Hidden/reduced/context/removal cleanup still cancels active work. No fetching engine, replay queue or dependency was introduced.
+
+## Tests/harness review and remaining actual checks
+
+- `packages/web/test/history-rail-focus.test.ts` tests tall-rail heading visibility and connected, clipped, hidden, detached opener/table fallbacks. These are meaningful geometry/focus decisions, not proof of native browser focus.
+- `scripts/check-history-rail.mts` now uses native pointer and Enter/Escape interaction against compiled synthetic API data: EN/TH x dark/light x1672/1440/1280/1279/900/390 (24 combinations plus legacy), initial no focus steal/top layer/overflow, exact first accepted record identity, operable background search, changed selection, narrow flow reveal, explicit close/focus and legacy dialog compatibility. It does not force a hidden click to claim operability. The strengthened helper explicitly covers both sides of the1279/1280 breakpoint.
+- Adapted `check-history-alerts-motion.mts` asserts absent redesign dialog, initial static rail, actual new observed record motion, changed selection surviving held duplicate refresh, exact opener restoration and static reduced preference. Its lifecycle helper now asserts no redesign modal and retains real pause/filter/offscreen/held-response/unmount tests. Browser results must be tied to the rebuilt candidate, not an old dist index.
+- Root should inspect the fresh canonical History screenshot against original+OVR, not merely enforce the newly chosen CSS coordinates. The harness's288px fixed rail /296px reserved margin checks prove implementation geometry, not original source likeness. Original outer rail versus inner content framing still needs the fresh image comparison; no specific new visual defect is asserted from source alone.
+- Final helper review found no blocker in the width expansion or scoped selector correction: checking `dialog[aria-labelledby=history-detail-title]` correctly excludes an unrelated closed command-palette dialog while retaining `:modal` and real background interaction checks. The initial broad-selector red is a harness finding, not evidence that the repaired History mounted a dialog; root retains its raw evidence.
+- Root reported first final-compiled run passing four timeline stages,12 History lifecycle checks, Alerts lifecycle and nine initial rail cases, plus318/318 web tests. The strengthened25-case rail run was still in progress at this review update; do not call that expanded execution passed until its final artifact exists.
+- Independently read `tmp/history94-data.mts` and its `tmp/history94-data/verification.json`: passed=true,53 real synthetic records,24 requests, errors empty. This bounded Vite/source+real API excerpt exercises pagination while the rail stays open, safe metadata allowlist/aggregate fields, whole-range CSV, literal metadata search, pause/real held late response, failed-snapshot export disabled and recovery, and EN/TH/light/dark/currency at390/900/1440. It is not a compiled-production or whole-application E2E run. Its existing held-route fixture is not a new app polling engine.
+- Remaining limits: fresh original-vs-current visual review, independent rail/table scrolling with long actual metadata, and detailed retained selected-record presentation when absent from replacement filter/error results are not fully established by the named positive cases. Historical broader native/packaging/release obligations remain open. These are validation limits, not invented source blockers.
+
+## Inspected SHA256 fingerprints
+
+| File | SHA256 |
+|---|---|
+| `packages/web/src/sections/history.tsx` | `03665e3c564e9be445f48f781b19e8d3e53a2d0add62935e40fab7d6e124cea1` |
+| `packages/web/src/redesign/history.css` | `673b2719d92dfc16263ed8417010265f3b4dfddf34cd7e62d0b3827404036a3b` |
+| `packages/web/src/redesign/use-history-motion.ts` | `f7dc4a73db4b6b6b228c6ae4afe367f412d45566cecef89ec1edfeed72f41402` |
+| `packages/web/src/redesign/history-rail-focus.ts` | `4a7587805cf962763dc3c152dc6899654f66f78875b106000bf346dbb7d3b5a3` |
+| `packages/web/test/history-rail-focus.test.ts` | `a2d5c20fe07bb8be5df69b02c341dac198c3b3c13cf20468c2e4d66e297badda` |
+| `scripts/check-history-rail.mts` | `d093d51b100549a1e3e509f00fdb04d1e7a6a0986583ea6b0816edb6f3954618` |
+| `scripts/check-history-alerts-motion.mts` | `466167999b8573b92d90c1c6fdc181d220201cdc8c1e838083bcc200869ef991` |
+
+Source owner confirmed final freeze with matching raw source hash prefixes. Owner-reported terminal results: focused history-rail-focus/history-state/history-motion18/18 exit0; final TypeScript session46830 exit0. No tests were rerun by this independent reviewer; root native evidence must accompany these raw on-disk hashes (not LF-normalized hashes). Any subsequent source/harness change needs its affected review/evidence rebound.

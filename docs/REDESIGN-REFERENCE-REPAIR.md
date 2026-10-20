@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.93
+## Current checkpoint: v1.85.94
+
+[Implementation and validation](redesign-v1.85.94/VALIDATION-STATE.md) | [Fresh original/current eight-page review](redesign-v1.85.94/review.html) | [Required remaining work](redesign-v1.85.94/NEXT-REQUIRED-WORK.md). History now uses the original non-blocking selected-record rail, preserving actual fields/scope and legacy dialog semantics. Final318web tests, native finite/lifecycle checks,24 locale/theme/width entries plus legacy compatibility, and real History metadata/export/pause/error recovery pass. All-eight capture is current; five resting controls are exact, Models32/Projects40 changed pixels/max35 remain documented. Full Source likeness, generic new-group presence, remaining native/state/compatibility and actual package/rollback remain open.
+
+## Previous checkpoint: v1.85.93
 
 [Implementation and validation](redesign-v1.85.93/VALIDATION-STATE.md) | [Fresh original/current eight-page review](redesign-v1.85.93/review.html) | [Required remaining work](redesign-v1.85.93/NEXT-REQUIRED-WORK.md). Projects real selection/detail tabs, Runtime native map/data inspector and Providers owner selection now use finite180/700ms visible emphasis. Final316web tests,27 ordinary-renderer native stages with exact finish events, fresh native8 capture and three byte-exact resting controls pass. Paint-renderer sampling and nested-menu harness reds remain documented; no overall performance fix is inferred. Full all-eight Source acceptance, remaining state/native/compatibility matrix and actual release/rollback remain open.
 

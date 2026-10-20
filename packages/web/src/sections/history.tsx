@@ -4,6 +4,7 @@ import { HistoryTimeline } from '@/redesign/history-timeline';
 import { InitialRegion, type InitialRegionState } from '@/redesign/initial-region';
 import { useHistoryMotion } from '@/redesign/use-history-motion';
 import { historyRecordMotionKey } from '@/redesign/history-motion';
+import { historyRailNeedsReveal, restoreHistoryRailFocus } from '@/redesign/history-rail-focus';
 import { canonicalHash } from '@/redesign/routes';
 import { HistoryRecordDetails } from '@/redesign/history-record-details';
 import { refreshedHistorySelection, historyRelatedSessionHref, type HistorySelection } from '@/redesign/history-selection';
@@ -61,6 +62,8 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
   const motionTable = useRef<HTMLDivElement>(null);
   const [selectionSerial, setSelectionSerial] = useState(0);
   const dialog = useRef<HTMLDialogElement>(null);
+  const detailRail = useRef<HTMLElement>(null);
+  const revealedSelection = useRef(0);
   const returnFocus = useRef<HTMLButtonElement | null>(null);
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
   const queryKey = JSON.stringify([route.selection, filters, sessionId, offset]);
@@ -85,10 +88,10 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
     return () => removeEventListener('hashchange', sync);
   }, [redesign]);
   useEffect(() => {
-    if (!selected || dialog.current?.open) return;
+    if (redesign || !selected || dialog.current?.open) return;
     returnFocus.current ??= document.querySelector<HTMLButtonElement>('[data-testid="usage-history"] tr[data-selected="true"] button');
     dialog.current?.showModal();
-  }, [selected]);
+  }, [selected, redesign]);
   useEffect(() => {
     if (location.hash.slice(1).split('?')[0] !== 'history') return;
     const params = new URLSearchParams(location.hash.split('?')[1] ?? '');
@@ -195,7 +198,22 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
     catch { setCopyState('failed'); }
   };
   const relatedSession = historyRelatedSessionHref(selection);
-  useHistoryMotion(motionTable, dialog, snapshot, queryKey, snapshotKey, selected ? historyRecordMotionKey(selected) : null, selectionSerial, redesign && !paused && snapshotKey === queryKey && !currentError);
+  const closeRail = () => {
+    setSelection(null);
+    restoreHistoryRailFocus(returnFocus.current, motionTable.current, document.getElementById('history'));
+  };
+  useLayoutEffect(() => {
+    if (!redesign || !selected || selectionSerial === revealedSelection.current) return;
+    revealedSelection.current = selectionSerial;
+    const rail = detailRail.current;
+    if (rail && window.matchMedia('(max-width:1279px)').matches && historyRailNeedsReveal(rail.getBoundingClientRect(), window.innerHeight)) {
+      // Only an explicit selection may reveal the flow rail. Initial accepted
+      // selection, refreshes and automatic retention never move focus/scroll.
+      rail.focus({ preventScroll: true });
+      rail.scrollIntoView({ block: 'start', behavior: 'instant' });
+    }
+  }, [redesign, selected, selectionSerial]);
+  useHistoryMotion(motionTable, detailRail, snapshot, queryKey, snapshotKey, selected ? historyRecordMotionKey(selected) : null, selectionSerial, redesign && !paused && snapshotKey === queryKey && !currentError);
   return <div className="flex min-w-0 flex-col gap-3.5" data-testid="usage-history">
     {sessionId !== undefined && <div className="flex items-center gap-3 text-xs" role="status"><span>{t('history.session')} #{sessionId}</span><a className="underline" href="#history?range=all">{t('history.clearSession')}</a></div>}
     <div className={redesign ? 'qp-history-heading' : undefined}>{redesign && <><div className="qp-history-heading-identity"><i aria-hidden="true"><History size={27}/></i><div><h1>{t('history.redesignTitle')}</h1><p>{t('history.redesignSubtitle')}</p></div></div>{viewActions}</>}<fieldset disabled={paused} className="min-w-0 border-0 p-0"><UsageRangeBar route={route} sources={sources} showBucket={false} showHeading={!redesign} onChange={next => { setOffset(0); updateRoute(next); }}/></fieldset></div>
@@ -229,10 +247,16 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
     </Card>}
     <p className="text-xs leading-relaxed text-muted-foreground">{t('history.coverage')}</p>
     {redesign && !snapshot && <InitialRegion id="history-detail" label={t('history.detail')} state={initialState} className="qp-history-initial-detail" slots={6}/>}
-    <dialog ref={dialog} onClose={() => { setSelection(null); returnFocus.current?.focus(); }} aria-labelledby="history-detail-title" className="m-auto max-h-[85vh] w-[min(640px,92vw)] overflow-auto rounded-xl border bg-background p-5 text-foreground backdrop:bg-black/60">
+    {redesign && selected && <aside ref={detailRail} className="qp-history-detail-rail" data-history-detail-rail={historyRecordMotionKey(selected)} aria-labelledby="history-detail-title" tabIndex={-1} onKeyDown={event => {
+      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeRail(); }
+    }}>
+      <div className="qp-history-detail-heading"><h2 id="history-detail-title">{t('history.detail')} <span>#{selected.event_id}</span></h2><Button onClick={closeRail}>{t('history.close')}</Button></div>
+      <HistoryRecordDetails row={selected} harnessVendor={harnessVendor(selected)} basis={basis(selected)} date={date(selected.timestamp_ms)}/>
+      <section className="qp-history-detail-actions" aria-label={t('history.relatedRecords')}><h3>{t('history.relatedRecords')}</h3><Button onClick={() => void copyMetadata()}>{t('history.copyMetadata')}</Button>{copyState !== 'idle' && <span role="status">{t(copyState === 'copied' ? 'history.copied' : 'history.copyFailed')}</span>}{relatedSession && <a className="underline" href={relatedSession} onClick={() => setSelection(null)}>{t('history.relatedSession')}</a>}</section>
+    </aside>}
+    {!redesign && <dialog ref={dialog} onClose={() => { setSelection(null); returnFocus.current?.focus(); }} aria-labelledby="history-detail-title" className="m-auto max-h-[85vh] w-[min(640px,92vw)] overflow-auto rounded-xl border bg-background p-5 text-foreground backdrop:bg-black/60">
       <div className={redesign ? 'qp-history-detail-heading' : 'flex items-center justify-between gap-3'}><h2 id="history-detail-title">{t('history.detail')} <span>#{selected?.event_id}</span></h2><Button autoFocus onClick={() => dialog.current?.close()}>{t('history.close')}</Button></div>
       {!redesign && <p className="my-3 text-xs text-muted-foreground">{t('history.coverage')}</p>}
-      {selected && redesign && <HistoryRecordDetails row={selected} harnessVendor={harnessVendor(selected)} basis={basis(selected)} date={date(selected.timestamp_ms)}/>}
       {selected && !redesign && <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">{[
         [t('history.recordedAt'), date(selected.timestamp_ms)], [t('history.kind'), t(`history.${selected.grain}`)],
         [t('col.source'), selected.source_name], [t('history.session'), selected.session_key ?? '—'],
@@ -246,7 +270,6 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
         [t('col.output'), selected.output_tokens.toLocaleString(lang)], [t('col.reasoning'), selected.reasoning_tokens.toLocaleString(lang)],
         [t('history.basis'), basis(selected)], [t('col.value'), selected.cost_usd !== null && ['native', 'computed', 'estimated'].includes(selected.cost_source) ? f.money(selected.cost_usd) : '—'],
       ].map(([label, value]) => <div key={String(label)}><dt className="text-xs text-muted-foreground">{label}</dt><dd className="break-all text-sm">{value}</dd></div>)}</dl>}
-      {redesign && <section className="qp-history-detail-actions" aria-label={t('history.relatedRecords')}><h3>{t('history.relatedRecords')}</h3><Button onClick={() => void copyMetadata()}>{t('history.copyMetadata')}</Button>{copyState !== 'idle' && <span role="status">{t(copyState === 'copied' ? 'history.copied' : 'history.copyFailed')}</span>}{relatedSession && <a className="underline" href={relatedSession} onClick={() => dialog.current?.close()}>{t('history.relatedSession')}</a>}</section>}
-    </dialog>
+    </dialog>}
   </div>;
 }

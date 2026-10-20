@@ -4,7 +4,7 @@ import type { UsageEventsResponse } from '../lib/usage-events';
 import { historyElementVisible, historyRecordMotionKey, newHistoryPresences, playHistoryTransitions, type HistoryPageObservation } from './history-motion';
 
 /** Motion consumes already accepted snapshots; it never fetches or changes selection. */
-export function useHistoryMotion(table: RefObject<HTMLDivElement>, dialog: RefObject<HTMLDialogElement>,
+export function useHistoryMotion(table: RefObject<HTMLDivElement>, detailRegion: RefObject<HTMLElement>,
   snapshot: UsageEventsResponse | null, context: string, acceptedContext: string, selectedKey: string | null,
   selectionSerial: number, enabled: boolean) {
   const preference = useMotionPref();
@@ -34,9 +34,9 @@ export function useHistoryMotion(table: RefObject<HTMLDivElement>, dialog: RefOb
       document.removeEventListener('visibilitychange', update);
       media.removeEventListener('change', update);
     };
-  }, [table, dialog, hasSnapshot, hasSelection]);
+  }, [table, detailRegion, hasSnapshot, hasSelection]);
 
-  // The parent's existing dialog-opening effect runs first, preserving native focus.
+  // The non-blocking rail already contains accepted facts; only user intent animates.
   useEffect(() => {
     const contextChanged = previous.current !== undefined && previous.current.context !== context;
     const fresh = accepted.current !== snapshot;
@@ -62,10 +62,10 @@ export function useHistoryMotion(table: RefObject<HTMLDivElement>, dialog: RefOb
     const rows = Array.from(table.current?.querySelectorAll<HTMLElement>('[data-history-record]') ?? []);
     const targets = rows.filter(row => (newKeys.includes(row.dataset.historyRecord!) || selectionChanged && row.dataset.historyRecord === selectedKey)
       && historyElementVisible(row, table.current));
-    if (targets.length) { cancelRows.current(); cancelRows.current = playHistoryTransitions(targets); }
-    const detail = dialog.current?.querySelector<HTMLElement>('.qp-history-detail-groups');
+    if (targets.length) { cancelRows.current(); cancelRows.current = playHistoryTransitions(targets, false, 'outline'); }
+    const detail = detailRegion.current?.querySelector<HTMLElement>('.qp-history-detail-groups');
     if (selectionChanged && detail && historyElementVisible(detail)) {
-      cancelDetail.current(); cancelDetail.current = playHistoryTransitions([detail]);
+      cancelDetail.current(); cancelDetail.current = playHistoryTransitions([detail], false, 'outline');
     }
-  }, [snapshot, context, acceptedContext, selectedKey, selectionSerial, enabled, preference.reduced, table, dialog]);
+  }, [snapshot, context, acceptedContext, selectedKey, selectionSerial, enabled, preference.reduced, table, detailRegion]);
 }

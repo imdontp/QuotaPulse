@@ -67,8 +67,7 @@ export async function checkHistoryMotionLifecycle({ page, db, notify, fixedNow, 
     // Force a distinct same-document route if already on the requested History query.
     if (new URL(page.url()).hash === '#history?range=today') await navigate('#history?range=today&provider=deepseek');
     await navigate('#history?range=today');
-    const dialog = page.locator('dialog[aria-labelledby=history-detail-title][open]');
-    if (await dialog.count()) { await page.keyboard.press('Escape'); await dialog.waitFor({ state: 'hidden' }); }
+    assert.equal(await page.locator('dialog[aria-labelledby=history-detail-title]').count(), 0, 'Redesign lifecycle runs with non-blocking detail rail');
     await visibleTable(); await clear();
 
     const pause = page.locator('[data-testid=usage-history] .qp-history-view-actions button').first();

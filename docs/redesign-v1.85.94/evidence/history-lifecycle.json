@@ -1,0 +1,146 @@
+{
+  "scope": "Actual compiled synthetic API/SSE History lifecycle; observed presence, not ingestion-time proof",
+  "stages": [
+    {
+      "label": "pause-keeps-exact-accepted-page",
+      "effects": []
+    },
+    {
+      "label": "resume-seeds-current-page-without-backlog",
+      "effects": []
+    },
+    {
+      "label": "pause-resume",
+      "pausedId": 48,
+      "pausedRequests": 0,
+      "observedPauseMs": 1600,
+      "priorPage": [
+        "[47,1,1,1747489319999]",
+        "[46,1,1,1747489319999]",
+        "[44,1,1,1747489319999]",
+        "[1,1,1,1747489305000]",
+        "[45,1,1,1747489290000]",
+        "[4,1,2,1747489285000]",
+        "[7,1,3,1747489265000]",
+        "[10,1,4,1747489245000]",
+        "[13,3,5,1747489225000]",
+        "[16,3,6,1747489205000]",
+        "[19,2,7,1747489185000]",
+        "[22,2,8,1747489165000]",
+        "[25,2,9,1747489145000]",
+        "[28,2,10,1747489125000]",
+        "[31,2,11,1747489105000]",
+        "[34,2,12,1747489085000]",
+        "[2,1,1,1747489020000]",
+        "[3,1,1,1747488930000]",
+        "[5,1,2,1747488780000]",
+        "[41,2,104,1747488720000]",
+        "[40,4,103,1747488720000]",
+        "[39,3,102,1747488720000]",
+        "[38,1,101,1747488720000]",
+        "[37,4,13,1747488720000]",
+        "[6,1,2,1747488690000]",
+        "[8,1,3,1747488540000]",
+        "[9,1,3,1747488450000]",
+        "[42,1,1,1747488420000]",
+        "[20,2,7,1747488300000]",
+        "[11,1,4,1747488300000]",
+        "[21,2,7,1747488270000]",
+        "[12,1,4,1747488210000]",
+        "[23,2,8,1747488180000]",
+        "[24,2,8,1747488150000]",
+        "[26,2,9,1747488060000]",
+        "[14,3,5,1747488060000]",
+        "[27,2,9,1747488030000]",
+        "[15,3,5,1747487970000]",
+        "[29,2,10,1747487940000]",
+        "[30,2,10,1747487910000]",
+        "[32,2,11,1747487820000]",
+        "[17,3,6,1747487820000]",
+        "[33,2,11,1747487790000]",
+        "[18,3,6,1747487730000]",
+        "[35,2,12,1747487700000]",
+        "[36,2,12,1747487670000]"
+      ]
+    },
+    {
+      "label": "changed-filter-seeds-unseen-row",
+      "effects": []
+    },
+    {
+      "label": "filter-restoration-seeds-page",
+      "effects": []
+    },
+    {
+      "label": "offscreen-accepted-row-is-static",
+      "effects": []
+    },
+    {
+      "label": "offscreen-restore-without-request-does-not-replay",
+      "effects": []
+    },
+    {
+      "label": "first-visible-accepted-page-seeds-after-offscreen",
+      "effects": []
+    },
+    {
+      "label": "offscreen-restoration",
+      "offscreenId": 50,
+      "restoredId": 51
+    },
+    {
+      "label": "held-candidate-crossing-offscreen-loss-seeds-after-restoration",
+      "effects": []
+    },
+    {
+      "label": "held-real-response-eligibility-loss",
+      "heldId": 52,
+      "releasedAfterRestoration": true
+    },
+    {
+      "label": "active-emphasis-unmount",
+      "unmountId": 53,
+      "unseenAfterUnmount": 54,
+      "beforeUnmount": [
+        {
+          "key": "[53,1,1,1747489319999]",
+          "duration": 180,
+          "state": "running",
+          "time": 49.963999998105635
+        },
+        {
+          "key": "[53,1,1,1747489319999]",
+          "duration": 700,
+          "state": "running",
+          "time": 49.963999998105635
+        }
+      ],
+      "final": [
+        {
+          "key": "[53,1,1,1747489319999]",
+          "duration": 180,
+          "state": "idle",
+          "time": null,
+          "connected": false
+        },
+        {
+          "key": "[53,1,1,1747489319999]",
+          "duration": 700,
+          "state": "idle",
+          "time": null,
+          "connected": false
+        }
+      ]
+    }
+  ],
+  "inserted": [
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54
+  ],
+  "passed": true
+}
