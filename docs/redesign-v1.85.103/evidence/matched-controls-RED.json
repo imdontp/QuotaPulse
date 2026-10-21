@@ -1,0 +1,54 @@
+{
+  "beforeIndexSha256": "cefa1f53aa528eea2a8116f41784903952bd1b4193aad7be13db1e47502f24d7",
+  "afterIndexSha256": "c9249db624b4040df6b8e499fd8adb703575ec92084cef0d58b26c0d4b1c9d4e",
+  "scope": "Same browser channel, renderer flags, fixture and route ordering. Separate browser launch for each build. No masks or tolerance.",
+  "controls": [
+    {
+      "route": "overview",
+      "beforeSha256": "25aac86c3905fb0d494bb22c0990a1880180fd919f39d7815782394259083d4a",
+      "afterSha256": "25aac86c3905fb0d494bb22c0990a1880180fd919f39d7815782394259083d4a",
+      "identical": true
+    },
+    {
+      "route": "live",
+      "beforeSha256": "1df5d872dc0561055aa9e2dd12a934d94f108a80396a4211d4139ad21cc59d6e",
+      "afterSha256": "1df5d872dc0561055aa9e2dd12a934d94f108a80396a4211d4139ad21cc59d6e",
+      "identical": true
+    },
+    {
+      "route": "projects",
+      "beforeSha256": "93eeeb61e518f488bf23230e1af977d909d023ab6867a9d44ce5206be069c193",
+      "afterSha256": "33fd7fcfccc9e254a73bc7d7c2319c5378f348e664ef412a027331120365ed3f",
+      "identical": false
+    },
+    {
+      "route": "models",
+      "beforeSha256": "854c27a4ab3dbab3752a8c795b7f5648593865c18aafd8f1ac35926bfc5ebb1f",
+      "afterSha256": "f094d788e189c3c2807060e52b71457ee4e5617327596924a572f2c7a0e8a6a0",
+      "identical": false
+    },
+    {
+      "route": "history",
+      "beforeSha256": "6c3accfd351cd072c5d4fb79ba8a57d21d356796a5bf39873fc687add255f4eb",
+      "afterSha256": "1cfbedaa56569c8a42d3fec52b0ffd2e47fe57835f8791dc2fc85f9436b6742d",
+      "identical": false
+    },
+    {
+      "route": "alerts",
+      "beforeSha256": "96ffd6959448062096c12e45737a7cd57b24c84be86b023581355223ef1e876a",
+      "afterSha256": "96ffd6959448062096c12e45737a7cd57b24c84be86b023581355223ef1e876a",
+      "identical": true
+    },
+    {
+      "route": "providers",
+      "beforeSha256": "1226a5426c173fc4356767856c5d3b81bbe761197bfd9d0f8093ed95ab50e6d6",
+      "afterSha256": "930c1f05f4cd3144249b480ba37127774d7a04761c5a89c2061844a0c1e23a15",
+      "identical": false
+    }
+  ],
+  "coldProjects": {
+    "beforeSha256": "93eeeb61e518f488bf23230e1af977d909d023ab6867a9d44ce5206be069c193",
+    "afterSha256": "93eeeb61e518f488bf23230e1af977d909d023ab6867a9d44ce5206be069c193",
+    "identical": true
+  }
+}

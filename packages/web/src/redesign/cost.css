@@ -44,7 +44,11 @@
 .qp-cost-axis[data-axis=tokens] { color:var(--qp-series); }
 .qp-cost-axis>span { position:absolute; right:0; max-width:100%; overflow-wrap:anywhere; transform:translateY(-50%); }
 .qp-cost-axis[data-axis=tokens]>span { left:0; right:auto; }
-.qp-cost-plot-dates { grid-column:1/-1; display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 12px; font-size:10px; color:var(--qp-muted); }
+.qp-cost-plot-dates { grid-column:2; position:relative; height:16px; font-size:10px; line-height:16px; color:var(--qp-muted); }
+.qp-cost-plot-dates>time { position:absolute; top:0; white-space:nowrap; transform:translateX(-50%); }
+.qp-cost-plot-dates>time:first-child { transform:none; }
+.qp-cost-plot-dates>time:last-child { transform:translateX(-100%); }
+@media(max-width:730px) { .qp-cost-plot-dates>time:not(:first-child):not(:last-child) { display:none; } }
 .qp-cost-donut { width:138px; height:138px; margin:auto; border-radius:50%; display:grid; place-items:center; }
 .qp-cost-donut[data-zero=true] { background:var(--qp-border)!important; }
 .qp-cost-donut>span { width:94px; height:94px; border-radius:50%; background:var(--qp-panel); display:grid; place-items:center; font-size:15px; font-weight:700; }
@@ -225,6 +229,11 @@
 
 /* Native reference table text and row rhythm. */
 @media(min-width:1536px) {
+ .qp-redesign[data-testid=production-cost] .qp-cost-plot { grid-template-columns:minmax(40px,max-content) minmax(0,1fr) minmax(48px,max-content); margin-top:15px; }
+ .qp-redesign[data-testid=production-cost] .qp-cost-axis { font-size:12px; }
+ /* Intrinsic axis width follows the complete localized labels, including US$. */
+ .qp-redesign[data-testid=production-cost] .qp-cost-axis::before { content:attr(data-size-label); display:block; white-space:pre; visibility:hidden; }
+ .qp-redesign[data-testid=production-cost] .qp-cost-plot-dates { font-size:11px; }
  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table table { font-size:12px; }
  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table a { font-size:inherit; }
  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table tbody td { padding:4px 4px; line-height:16px; }

@@ -1211,8 +1211,12 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
         }
         const times = page.locator('.qp-cost-plot-dates time');
         assert.equal(await times.nth(0).getAttribute('datetime'), new Date(cost.scope.from).toISOString());
-        assert.equal(await times.nth(1).getAttribute('datetime'), new Date(cost.scope.to).toISOString());
-        assert.equal(await times.nth(0).textContent(), new Date(cost.scope.from).toLocaleString(locale, { dateStyle: 'short', timeStyle: 'short' }));
+        assert.equal(await times.last().getAttribute('datetime'), new Date(cost.scope.to).toISOString());
+        assert.ok(await times.count() >= 2 && await times.count() <= 9, 'Cost axis must sample a bounded set of actual dates');
+        const timeValues = await times.evaluateAll(elements => elements.map(element => Date.parse(element.getAttribute('datetime')!)));
+        assert.ok(timeValues.every((at, index) => index === 0 || at > timeValues[index - 1]), 'Cost dates must be strictly chronological');
+        assert.ok(timeValues.slice(1, -1).every(at => at > cost.scope.from && at < cost.scope.to && Number.isInteger((at - cost.scope.from) / cost.bucketMs)), 'Interior Cost ticks must identify boundaries on the API bucket grid, including empty buckets');
+        assert.equal(await times.nth(0).getAttribute('title'), new Date(cost.scope.from).toLocaleString(locale, { dateStyle: 'short', timeStyle: 'short' }));
         const heights = await page.locator('.qp-cost-column').evaluateAll(elements => elements.map(element => parseFloat((element as HTMLElement).style.height)));
         const points = Array.from({ length: Math.ceil((cost.scope.to - cost.scope.from) / cost.bucketMs) }, (_, index) => cost.points.find(point => point.start === cost.scope.from + index * cost.bucketMs)?.amount ?? 0);
         assert.equal(heights.length, points.length);

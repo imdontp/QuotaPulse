@@ -1,0 +1,80 @@
+{
+  "productionIndexSha256": "c9249db624b4040df6b8e499fd8adb703575ec92084cef0d58b26c0d4b1c9d4e",
+  "language": "en",
+  "theme": "dark",
+  "fixture": "isolated synthetic, fixed 2025-05-17T13:42Z",
+  "routes": [
+    {
+      "route": "overview",
+      "reference": "../redesign-v1.85.69/refs/overview.png",
+      "before": "../redesign-v1.85.101/after/overview.png",
+      "after": "../redesign-v1.85.101/after/overview.png",
+      "width": 1586,
+      "height": 992,
+      "sha256": "25aac86c3905fb0d494bb22c0990a1880180fd919f39d7815782394259083d4a"
+    },
+    {
+      "route": "live",
+      "reference": "../redesign-v1.85.69/refs/live.png",
+      "before": "../redesign-v1.85.101/after/live.png",
+      "after": "../redesign-v1.85.101/after/live.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "1df5d872dc0561055aa9e2dd12a934d94f108a80396a4211d4139ad21cc59d6e"
+    },
+    {
+      "route": "projects",
+      "reference": "../redesign-v1.85.69/refs/projects.png",
+      "before": "images/control102-projects.png",
+      "after": "images/current-projects.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "33fd7fcfccc9e254a73bc7d7c2319c5378f348e664ef412a027331120365ed3f"
+    },
+    {
+      "route": "models",
+      "reference": "../redesign-v1.85.69/refs/models.png",
+      "before": "images/control102-models.png",
+      "after": "../redesign-v1.85.101/after/models.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "f094d788e189c3c2807060e52b71457ee4e5617327596924a572f2c7a0e8a6a0"
+    },
+    {
+      "route": "history",
+      "reference": "../redesign-v1.85.69/refs/history.png",
+      "before": "images/control102-history.png",
+      "after": "../redesign-v1.85.101/after/history.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "1cfbedaa56569c8a42d3fec52b0ffd2e47fe57835f8791dc2fc85f9436b6742d"
+    },
+    {
+      "route": "alerts",
+      "reference": "../redesign-v1.85.69/refs/alerts.png",
+      "before": "../redesign-v1.85.101/after/alerts.png",
+      "after": "../redesign-v1.85.101/after/alerts.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "96ffd6959448062096c12e45737a7cd57b24c84be86b023581355223ef1e876a"
+    },
+    {
+      "route": "providers",
+      "reference": "../redesign-v1.85.69/refs/providers.png",
+      "before": "images/control102-providers.png",
+      "after": "images/current-providers.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "930c1f05f4cd3144249b480ba37127774d7a04761c5a89c2061844a0c1e23a15"
+    },
+    {
+      "route": "cost",
+      "reference": "../redesign-v1.85.69/refs/cost.png",
+      "before": "images/control102-cost.png",
+      "after": "images/current-cost.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "d4b21e5258f9bc26287cd2cd95e8dd3dd9233e5b53c287cee3d7671ce44e9b1b"
+    }
+  ]
+}
