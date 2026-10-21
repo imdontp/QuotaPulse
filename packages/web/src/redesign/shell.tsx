@@ -100,7 +100,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
           {selectedSecondary && SelectedSecondaryIcon ? <div className="qp-nav-secondary">
             <a href={selectedSecondary.href} aria-label={t(selectedSecondary.label)} aria-current="page" className="qp-nav-active"><SelectedSecondaryIcon/><span>{t(selectedSecondary.label)}</span></a>
             <details className="qp-nav-more" open={moreOpen} onToggle={event => setMoreOpen(event.currentTarget.open)}>
-              <summary aria-label={t('redesign.more')} title={t('redesign.more')}><MoreHorizontal aria-hidden="true"/></summary>
+              <summary aria-label={t('redesign.more')} title={t('redesign.more')}><MoreHorizontal aria-hidden="true"/><span>{t('redesign.more')}</span></summary>
               {remainingSecondary.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined} onClick={() => setMoreOpen(false)}><Icon/><span>{t(label)}</span></a>)}
             </details>
           </div> : <details className="qp-nav-more" open={moreOpen} onToggle={event => setMoreOpen(event.currentTarget.open)}>

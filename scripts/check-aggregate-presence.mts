@@ -225,10 +225,13 @@ async function checkSecondaryNavigation(activeLabel: string, siblingLabel: strin
   }
   await page!.locator('.qp-nav-more summary').click();
   await page!.getByRole('navigation').getByRole('link', { name: siblingLabel, exact: true }).waitFor();
+  const expanded = await page!.evaluate(() => ({ moreBottom: document.querySelector('.qp-nav-secondary .qp-nav-more')!.getBoundingClientRect().bottom, quickStatsTop: document.querySelector('.qp-quick-stats')!.getBoundingClientRect().top }));
+  assert.ok(expanded.quickStatsTop >= expanded.moreBottom - 1, `${activeLabel} expanded More does not cover Quick Stats: ${JSON.stringify(expanded)}`);
+  if (activeLabel === 'Providers') await page!.screenshot({ path: 'tmp/presence95-browser/providers-more-open.png' });
   await page!.locator('.qp-nav-more summary').click();
   assert.equal(await page!.locator('.qp-nav-more').getAttribute('open'), null, 'More closes after its toggle');
   await page!.setViewportSize(previousViewport);
-  stages.push({ label: `secondary-navigation-${activeLabel.toLowerCase().replace(/\s+/g, '-')}`, initial, siblingAccessibleWhileExpanded: siblingLabel });
+  stages.push({ label: `secondary-navigation-${activeLabel.toLowerCase().replace(/\s+/g, '-')}`, initial, expanded, siblingAccessibleWhileExpanded: siblingLabel });
 }
 try {
   if (mode === 'verify') for (let index = 0; index < 21; index++) addModel(`rank-${index}`, 'fixture', index + 1);
