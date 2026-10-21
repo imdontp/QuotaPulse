@@ -618,3 +618,8 @@ Eight-page typography, detailed composition and final release/manual gates remai
 The latest Overview typography and model-row refinement is recorded in
 [v1.46 evidence](REDESIGN-OVERVIEW-TYPOGRAPHY-V1.46.md). This remains an incremental
 checkpoint toward the eight-page reference goal, not visual acceptance.
+
+
+# Aggregate presence v1.85.96
+
+The current checkpoint extends accepted-group motion to the Providers owner cards and Cost model/project tables. It uses complete response group identities, keeps Cost’s server-ranked session list outside the new-group claim, and preserves the native180/700ms player and existing cancellation rules. The compiled synthetic API/SSE gate now exercises all four dashboard routes. See [v1.85.96 validation and remaining requirements](redesign-v1.85.96/VALIDATION-STATE.md). Earlier RAF gaps are still unresolved; this checkpoint does not claim final visual acceptance, native performance, packaging, or rollback completion.

@@ -17,7 +17,7 @@ export function useAggregatePresenceMotion(region: RefObject<HTMLElement>, ledge
   batch: LiveRecordBatch | undefined; context: string; universe: readonly string[]; page: readonly string[];
   enabled: boolean; hasSnapshot: boolean; mounted: boolean;
   selectionSerial: number; selectionKey: string | null;
-  attribute: 'data-model-pair-key' | 'data-project-selection-opener'; selector: string;
+  attribute: 'data-model-pair-key' | 'data-project-selection-opener' | 'data-cost-presence-key' | 'data-provider-motion-owner'; selector: string;
 }) {
   const active = useRef(new Map<string, { target: HTMLElement; cancel: () => void }>());
   const intersection = useRef<boolean | null>(null);

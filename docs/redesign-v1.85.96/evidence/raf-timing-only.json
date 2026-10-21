@@ -1,0 +1,1113 @@
+{
+  "mode": "timing-only RAF",
+  "productionIndexSha256": "8f0d4738e813812d60689a4d73482365b8711d6c05c5f4001ec6968d46ad0e57",
+  "browser": "155.0.8059.80",
+  "stages": [
+    {
+      "label": "models-initial-static",
+      "effects": []
+    },
+    {
+      "label": "models-new-group-survives-actual-duplicate",
+      "samples": [
+        {
+          "ms": 38,
+          "callbackMs": 1,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 78,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 68.35999999633246,
+              "state": "running"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 68.35999999633246,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 90,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 68.35999999633246,
+              "state": "running"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 68.35999999633246,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 99,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 85.02599999633232,
+              "state": "running"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 85.02599999633232,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 116,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 101.69199999633261,
+              "state": "running"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 101.69199999633261,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 131,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 118.35799999633245,
+              "state": "running"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 118.35799999633245,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 148,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 135.0239999963323,
+              "state": "running"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 135.0239999963323,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 168,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 151.6899999963326,
+              "state": "running"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 151.6899999963326,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 180,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 168.35599999633243,
+              "state": "running"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 168.35599999633243,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 196,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 185.02199999633228,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 185.02199999633228,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 212,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 201.68799999633256,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 201.68799999633256,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 229,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 218.35399999633242,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 218.35399999633242,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 245,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 235.01999999633227,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 235.01999999633227,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 261,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 235.01999999633227,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 235.01999999633227,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 276,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 251.68599999633255,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 251.68599999633255,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 292,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 268.35199999633244,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 268.35199999633244,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 308,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 285.01799999633226,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 285.01799999633226,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 323,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 301.68399999633255,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 301.68399999633255,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 340,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 318.3499999963324,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 318.3499999963324,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 356,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 335.01599999633225,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 335.01599999633225,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 372,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 351.68199999633254,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 351.68199999633254,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 388,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 368.34799999633236,
+              "state": "finished"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 368.34799999633236,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 403,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 391.26199999633246,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 421,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 408.6619999963323,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 452,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 426.6619999963326,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 512,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 493.3259999963324,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 520,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 497.8619999963323,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 551,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 531.1939999963324,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 582,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 568.1279999963325,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 596,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 569.7619999963326,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 612,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 587.6619999963326,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 628,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 605.6619999963324,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 645,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 623.2619999963323,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 660,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 641.2619999963325,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 675,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 658.9619999963326,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 693,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 676.5619999963324,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 707,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 694.0619999963325,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 724,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 740,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 755,
+          "callbackMs": 1,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 773,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 789,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 803,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 819,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 836,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 851,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 867,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 883,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 899,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 916,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 931,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 948,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 964,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 980,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 995,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 1011,
+          "callbackMs": 0,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "key": "[\"presence-new\",\"fixture\"]",
+          "duration": 180,
+          "finishedTime": 180,
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "key": "[\"presence-new\",\"fixture\"]",
+          "duration": 700,
+          "finishedTime": 700,
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        }
+      ]
+    }
+  ],
+  "samplingGaps": [],
+  "longTasks": [
+    {
+      "start": 331.90000000596046,
+      "duration": 111,
+      "name": "self"
+    },
+    {
+      "start": 508.60000002384186,
+      "duration": 59,
+      "name": "self"
+    }
+  ],
+  "callbackDurations": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

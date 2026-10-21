@@ -139,6 +139,15 @@ const addProject = (project: string | null, tokens = 800_000_000) => {
   addModel('DeepSeek V4.1', 'deepseek', tokens, id);
   return id;
 };
+const markCostPriced = (id: number, provider: string, tokens: number) => db.prepare(
+  "UPDATE usage_event SET cost_source='computed',cost_usd=?,cost_input_usd=?,price_provider=? WHERE dedup_key=?",
+).run(tokens / 1_000_000_000, tokens / 1_000_000_000, provider, `presence95-${id}`);
+const addCostModel = (model: string, provider: string, tokens: number) => {
+  const id = addModel(model, provider, tokens); markCostPriced(id, provider, tokens); return id;
+};
+const addCostProject = (project: string | null, tokens: number) => {
+  const id = addProject(project, tokens); markCostPriced(serial - 1, 'deepseek', tokens); return id;
+};
 const notify = () => scheduler.emit('data', { newEvents: 1, newLimits: 0, trigger: 'synthetic-presence95' });
 const modelRow = (model: string, provider = 'fixture') => page!.locator('[data-model-pair-key]').filter({ has: page!.locator('button').filter({ hasText: model }) }).filter({ hasText: provider });
 const card = (project: string | null) => page!.locator('[data-project-selection-role=card]').filter({ hasText: project ?? 'Unassigned' });
@@ -215,6 +224,7 @@ try {
     Element.prototype.animate = function(...args: Parameters<Element['animate']>) {
       const animation = native.apply(this, args);
       const key = this.getAttribute('data-model-pair-key') ?? this.getAttribute('data-project-selection-opener')
+        ?? this.getAttribute('data-cost-presence-key') ?? this.getAttribute('data-provider-motion-owner')
         ?? this.getAttribute('data-project-selection-detail') ?? (this.matches('.qp-model-detail-content') ? 'model-detail' : null);
       if (key !== null) {
         const entry: any = { key, target: this, duration: animation.effect!.getTiming().duration, animation, finishedTime: null };
@@ -291,6 +301,38 @@ try {
     await arm(); await card('Intent project').focus(); await page.keyboard.press('Enter'); await collect('projects-explicit-selection-owns-target', [180, 700, 180, 700]);
     assert.ok(await page.evaluate(() => (window as any).__interruptedPresence.every((entry: any) => entry.animation.playState === 'idle')), 'Explicit user selection cancels same-target presence');
     await page.screenshot({ path: resolve(output, 'projects-verified.png') });
+    // Cost returns the full model/project group universe, while the tables render only
+    // priced top-eight rows. Confirm real new groups animate once and old group rank
+    // promotion stays static against that full response universe.
+    await clear(); await page.goto('http://127.0.0.1:7816/#cost?range=today&basis=api');
+    await page.getByTestId('production-cost').waitFor(); await page.locator('.qp-cost-layout').waitFor();
+    await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(250); await staticNow('cost-initial-static');
+    await visible('.qp-cost-layout'); await clear(); await arm();
+    addCostModel('presence-cost-model', 'costfixture', 100_000_000_000);
+    addCostProject('presence-cost-project', 200_000_000_000);
+    await accepted('/api/cost-analysis', notify);
+    await page.waitForFunction(() => [...document.querySelectorAll('[data-cost-presence-key]')].length >= 2);
+    await page.waitForTimeout(240);
+    await accepted('/api/cost-analysis', () => page!.evaluate(() => window.dispatchEvent(new Event('online'))));
+    await collect('cost-new-model-and-project-survive-actual-duplicate', [180, 700, 180, 700]);
+    assert.equal(await page.evaluate(() => (window as any).__effects.length), 4, 'Cost duplicate does not restart new group animations');
+    await clear(); db.prepare("UPDATE usage_event SET cost_source='computed',cost_usd=900,cost_input_usd=900,price_provider='fixture' WHERE model='rank-0'").run();
+    await accepted('/api/cost-analysis', notify); await staticNow('cost-existing-offpage-rank-promotion-static');
+
+    // Overview supplies the full account-owner set, so a newly accepted owner card
+    // can use the same bounded identity ledger without treating quota metric changes
+    // as new accounts.
+    await clear(); await page.goto('http://127.0.0.1:7816/#providers');
+    await page.getByTestId('production-providers').waitFor(); await page.locator('.qp-provider-grid').waitFor();
+    await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(250); await staticNow('providers-initial-static');
+    await visible('.qp-provider-grid'); await clear(); await arm();
+    db.prepare("INSERT INTO source(id,harness,profile,root_path,display_name,detected_at,account_key,account_provider,account_display_name,account_state,account_last_success_at) VALUES (5,'codex','new-fixture','/synthetic/new-provider','New Account Display',0,'fixture:new-account','fixture','New Account Display','active',?)").run(fixedNow);
+    await accepted('/api/overview', notify);
+    await page.getByText('New Account Display', { exact: true }).first().waitFor();
+    await page.waitForTimeout(240);
+    await accepted('/api/overview', () => page!.evaluate(() => window.dispatchEvent(new Event('online'))));
+    await collect('providers-new-owner-survives-actual-duplicate');
+    assert.equal(await page.evaluate(() => (window as any).__effects.length), 2, 'Providers duplicate does not restart new owner animations');
     assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
     writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), browser: browser.version(), scope: 'Compiled synthetic aggregate API/SSE; new accepted group presence, not individual call or ingestion recency', finiteDurationAndSemanticsPassed:true, visualSamplingComplete:samplingGaps.length===0, samplingGaps, longTasks:await page.evaluate(()=>(window as any).__longTasks), stages, errors, forbidden }, null, 2));
     console.log('Aggregate presence exact native durations/identity/lifecycle passed; unresolved visual sampling diagnostics: '+samplingGaps.length);

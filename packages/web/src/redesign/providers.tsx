@@ -17,6 +17,9 @@ import { SectionMark } from './section-mark';
 import { PageHeading } from './page-heading';
 import { HeadingReferenceIcon } from './heading-reference-icon';
 import { InitialRegion, type InitialRegionState } from './initial-region';
+import { AggregatePresenceLedger } from './aggregate-presence-motion';
+import { useAggregatePresenceMotion } from './use-aggregate-presence-motion';
+import type { LiveRecordBatch } from './live-record-motion';
 
 interface OwnerCard {
   key: string;
@@ -43,17 +46,23 @@ export function ProductionProviders() {
   const [route, setRoute] = useState(routeState);
   const [inspectorOpen, setInspectorOpen] = useState(Boolean(route.owner || route.source));
   const [overview, setOverview] = useState<Overview | null>(null);
+  const [presenceBatch, setPresenceBatch] = useState<LiveRecordBatch | undefined>();
+  const [presenceLedger] = useState(() => new AggregatePresenceLedger());
+  const acceptedSerial = useRef(0);
+  const mounted = useRef(true);
   const [error, setError] = useState<string | null>(null);
   const [queryRetry, setQueryRetry] = useState(0);
   const [queryBusy, setQueryBusy] = useState(false);
   const refresh = useRefreshStatus();
   const motionOpener = useRef<HTMLElement | null>(null);
+  const presenceRegion = useRef<HTMLElement>(null);
   const motionDetail = useRef<HTMLElement>(null);
   const [motionIntent, setMotionIntent] = useState<ModelSelectionIntent | null>(null);
   useEffect(() => {
+    mounted.current = true;
     const sync = () => { if (location.hash.slice(1).split('?')[0] === 'providers') { const next = routeState(); setRoute(next); if (next.owner || next.source) setInspectorOpen(true); } };
     addEventListener('hashchange', sync);
-    return () => removeEventListener('hashchange', sync);
+    return () => { mounted.current = false; removeEventListener('hashchange', sync); };
   }, []);
   const update = (patch: Partial<typeof route>) => {
     const next = { ...route, ...patch };
@@ -66,11 +75,19 @@ export function ProductionProviders() {
     history.replaceState(null, '', `${location.pathname}${location.search}#providers${params.size ? `?${params}` : ''}`);
     setRoute(next);
   };
-  useLiveRefresh(async () => {
+  useLiveRefresh(async context => {
+    const requestEligibility = presenceLedger.snapshot();
     setQueryBusy(true);
-    try { setOverview(await api.overview()); setError(null); }
-    catch (cause) { setError(String(cause)); throw cause; }
-    finally { setQueryBusy(false); }
+    try {
+      const result = await api.overview();
+      if (mounted.current) {
+        setOverview(result);
+        setPresenceBatch({ serial: ++acceptedSerial.current, reason: context.reason, requestEligibility });
+        setError(null);
+      }
+    }
+    catch (cause) { if (!mounted.current) return; setError(String(cause)); throw cause; }
+    finally { if (mounted.current) setQueryBusy(false); }
   }, [queryRetry]);
   const now = overview?.now ?? Date.now();
   const allReadings = overview ? primaryLimits(overview.limits, now) : [];
@@ -96,9 +113,17 @@ export function ProductionProviders() {
   cards.sort((a, b) => readingPriority(a) - readingPriority(b));
   const selected = cards.find(card => card.key === route.owner) ?? cards.find(card => card.sources.some(source => source.source_id === route.source)) ?? cards[0];
   const motionContext = JSON.stringify([route.window, route.section, route.source]);
+  const cancelPresence = useAggregatePresenceMotion(presenceRegion, presenceLedger, {
+    batch: presenceBatch, context: JSON.stringify([lang, theme]), universe: cards.map(card => card.key), page: cards.map(card => card.key),
+    enabled: !!overview && !error, hasSnapshot: !!overview, mounted: !!overview,
+    selectionSerial: motionIntent?.serial ?? 0, selectionKey: selected?.key ?? null,
+    attribute: 'data-provider-motion-owner', selector: '[data-provider-motion-owner]',
+  });
   useProviderSelectionMotion(motionOpener, motionDetail, selected?.key, inspectorOpen, motionContext, motionIntent, !!overview && !error);
   const chooseOwner = (card: OwnerCard, event: MouseEvent<HTMLButtonElement>) => {
-    if (selected?.key !== card.key || !inspectorOpen) {
+    const intent = selected?.key !== card.key || !inspectorOpen;
+    if (intent) {
+      cancelPresence(card.key);
       motionOpener.current = event.currentTarget.closest<HTMLElement>('[data-provider-motion-owner]');
       setMotionIntent(prior => ({ serial: (prior?.serial ?? 0) + 1, key: providerSelectionMotionKey(card.key, true)!, contextKey: motionContext }));
     }
@@ -129,14 +154,14 @@ export function ProductionProviders() {
     <header className="qp-provider-header"><PageHeading icon={<HeadingReferenceIcon kind="providers"/>} title={t('redesign.providerHeading')} subtitle={t('redesign.providerSubtitle')}/><div className="qp-provider-actions"><button onClick={() => overview ? void refresh.refreshNow() : initialState.onRetry()} disabled={refresh.refreshing || (!overview && queryBusy)}><RefreshCw size={16}/>{t('app.refreshNow')}</button><a href="#settings?section=diagnostics" aria-label={t('redesign.providerDiagnostics')} title={t('redesign.providerDiagnostics')}><MoreHorizontal size={18} aria-hidden="true"/></a></div></header>
     {overview && error && <p className="qp-provider-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     {!overview ? <>
-      <section className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{Array.from({ length: 4 }, (_, index) => <InitialRegion key={index} id={`providers-card-${index}`} label={t('redesign.providerHeading')} state={initialState} status={index === 0} className="qp-provider-card qp-provider-card-pending"/>)}</section>
+      <section ref={presenceRegion} className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{Array.from({ length: 4 }, (_, index) => <InitialRegion key={index} id={`providers-card-${index}`} label={t('redesign.providerHeading')} state={initialState} status={index === 0} className="qp-provider-card qp-provider-card-pending"/>)}</section>
       <InitialRegion id="providers-inspector" label={t('redesign.providerDetails')} state={initialState} className={`qp-provider-inspector-pending${inspectorOpen ? ' qp-provider-inspector-pending-open' : ''}`}/>
       <div className="qp-provider-bottom">
         <div id="provider-quotas"><InitialRegion id="providers-comparison" label={t('redesign.providerComparison')} state={initialState} className="qp-provider-comparison"/></div>
         <InitialRegion id="providers-health" label={t('redesign.providerReaderHealth')} state={initialState} className="qp-provider-health" slots={5}/>
       </div>
     </> : cards.length === 0 ? <p className="qp-panel">{t('redesign.providerNoAccounts')}</p> : <>
-      <section className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{cards.map(card => <article key={card.key} className="qp-panel qp-provider-card" data-provider-motion-owner={card.key} data-vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'} data-has-quota={card.readings.length > 0} data-selected={selected?.key === card.key}>
+      <section ref={presenceRegion} className="qp-provider-grid" aria-label={t('redesign.providerHeading')}>{cards.map(card => <article key={card.key} className="qp-panel qp-provider-card" data-provider-motion-owner={card.key} data-vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'} data-has-quota={card.readings.length > 0} data-selected={selected?.key === card.key}>
         <div className="qp-provider-card-head"><span className="qp-provider-icon" aria-hidden="true"><VendorIcon vendor={card.subscription?.provider ?? card.sources[0]?.vendor ?? 'unknown'}/></span><div className="qp-provider-card-copy"><button aria-pressed={selected?.key === card.key} onClick={event => chooseOwner(card, event)}>{card.title}</button><p className="qp-provider-linked">{t('redesign.providerLinked')}: {card.linked.join(', ') || t('redesign.unknownValue')}</p></div><span className="qp-provider-state" data-state={card.sources.length > 0 && card.sources.every(source => !source.enabled) ? 'inactive' : card.state}>{card.sources.length > 0 && card.sources.every(source => !source.enabled) ? t('redesign.providerInactive') : stateLabel(card.state)}</span></div>
         {card.hidden && <p className="qp-provider-hidden">{t('redesign.providerHidden')}</p>}
         <div className="qp-provider-windows">{card.readings.length === 0 ? <p>{t('redesign.providerNoQuota')}</p> : card.readings.map(({ primary }) => {
