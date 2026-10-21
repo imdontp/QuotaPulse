@@ -1,0 +1,28 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx scripts/check-aggregate-presence.mts *> tmp/presenc ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: models-new-group-survives-actual-duplicate full native timeline
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-aggregate-presence.mts:173:12)
+    at Array.forEach (<anonymous>)
+    at collect
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-aggregate-presence.mts:170:18)
+    at async <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-aggregate-presence.mts:247:5)
+{
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.13.1

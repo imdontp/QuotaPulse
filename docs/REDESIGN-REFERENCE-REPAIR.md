@@ -1,4 +1,8 @@
-## Current checkpoint: v1.85.94
+## Current checkpoint: v1.85.95
+
+[Implementation and validation](redesign-v1.85.95/VALIDATION-STATE.md) | [Fresh original/current eight-page review](redesign-v1.85.95/review.html) | [Rendering diagnostics](redesign-v1.85.95/RENDERING-DIAGNOSTICS.md) | [Required remaining work](redesign-v1.85.95/NEXT-REQUIRED-WORK.md). Models rows now37px/12px; History cards67px/tabletop522 with accessible X; Models/Projects decorative art matches measured original silhouettes. Exact new aggregate groups receive finite emphasis; metric/rank changes remain static. Final328web tests,21aggregate stages, existing16/27selection gates, History lifecycle/25rail and24Models/Projects layout checks pass. Earlier RAF stress/startup-cutoff reds remain documented, with no performance-cure claim. Overall Source acceptance, remaining motion/state/native/compatibility and actual package/rollback remain open.
+
+## Previous checkpoint: v1.85.94
 
 [Implementation and validation](redesign-v1.85.94/VALIDATION-STATE.md) | [Fresh original/current eight-page review](redesign-v1.85.94/review.html) | [Required remaining work](redesign-v1.85.94/NEXT-REQUIRED-WORK.md). History now uses the original non-blocking selected-record rail, preserving actual fields/scope and legacy dialog semantics. Final318web tests, native finite/lifecycle checks,24 locale/theme/width entries plus legacy compatibility, and real History metadata/export/pause/error recovery pass. All-eight capture is current; five resting controls are exact, Models32/Projects40 changed pixels/max35 remain documented. Full Source likeness, generic new-group presence, remaining native/state/compatibility and actual package/rollback remain open.
 

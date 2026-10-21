@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Empty, ErrorBox } from '@/components/primitives';
-import { Folder, History } from 'lucide-react';
+import { Folder, History, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
 import { HarnessIcon } from '@/components/harness-icon';
 
@@ -250,7 +250,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
     {redesign && selected && <aside ref={detailRail} className="qp-history-detail-rail" data-history-detail-rail={historyRecordMotionKey(selected)} aria-labelledby="history-detail-title" tabIndex={-1} onKeyDown={event => {
       if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeRail(); }
     }}>
-      <div className="qp-history-detail-heading"><h2 id="history-detail-title">{t('history.detail')} <span>#{selected.event_id}</span></h2><Button onClick={closeRail}>{t('history.close')}</Button></div>
+      <div className="qp-history-detail-heading"><h2 id="history-detail-title">{t('history.detail')} <span>#{selected.event_id}</span></h2><Button className="qp-history-detail-close" variant="ghost" size="icon" aria-label={t('history.close')} title={t('history.close')} onClick={closeRail}><X size={16} aria-hidden="true"/></Button></div>
       <HistoryRecordDetails row={selected} harnessVendor={harnessVendor(selected)} basis={basis(selected)} date={date(selected.timestamp_ms)}/>
       <section className="qp-history-detail-actions" aria-label={t('history.relatedRecords')}><h3>{t('history.relatedRecords')}</h3><Button onClick={() => void copyMetadata()}>{t('history.copyMetadata')}</Button>{copyState !== 'idle' && <span role="status">{t(copyState === 'copied' ? 'history.copied' : 'history.copyFailed')}</span>}{relatedSession && <a className="underline" href={relatedSession} onClick={() => setSelection(null)}>{t('history.relatedSession')}</a>}</section>
     </aside>}

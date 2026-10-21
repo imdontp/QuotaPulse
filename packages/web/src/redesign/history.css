@@ -86,6 +86,8 @@
 .qp-history-detail-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; position:sticky; top:-14px; z-index:1; background:var(--qp-bg); padding:12px 0; border-bottom:1px solid var(--qp-border); }
 .qp-history-detail-heading h2 { font-size:15px; font-weight:600; }
 .qp-history-detail-heading h2 span { display:block; color:var(--qp-muted); font-size:12px; font-weight:400; }
+.qp-redesign .qp-history-detail-close { flex:none; width:32px; min-width:32px; padding:0; margin-right:-10px; border-color:transparent; background:transparent; color:var(--qp-muted); }
+.qp-redesign .qp-history-detail-close:hover { color:var(--qp-text); background:var(--qp-panel); }
 .qp-history-record-kind { display:inline-block; border:1px solid var(--qp-border); border-radius:6px; padding:3px 8px; font-size:11px; color:var(--qp-accent); background:color-mix(in srgb,var(--qp-accent) 6%,var(--qp-panel)); }
 .qp-history-detail-groups section,.qp-history-detail-actions { border-top:1px solid var(--qp-border); padding-top:12px; margin-top:12px; }
 .qp-history-detail-groups h3,.qp-history-detail-actions h3 { font-size:13px; font-weight:600; margin-bottom:0; }
@@ -205,6 +207,8 @@
 
 /* Native dark History rows use the reference's restrained blue surface. */
 @media(min-width:1536px) {
+  /* The truthful record/session sublabel fits its column without adding a row. */
+  .qp-redesign[data-testid=production-history][data-theme=dark] .qp-history-summary article:nth-child(2)>small { font-size:10px; letter-spacing:-.1px; }
   .qp-redesign[data-testid=production-history][data-theme=dark] .qp-history-records { background:#050e1a; }
   .qp-redesign[data-testid=production-history][data-theme=dark] .qp-history-records tbody tr:not([data-selected=true]):not(:hover):not(:focus-within) { background:#06101c; }
   .qp-redesign[data-testid=production-history][data-theme=dark] .qp-history-records tbody tr:nth-child(even):not([data-selected=true]):not(:hover):not(:focus-within) { background:#06101d; }

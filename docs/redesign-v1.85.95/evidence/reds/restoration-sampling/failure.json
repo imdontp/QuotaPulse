@@ -1,0 +1,3606 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: models-fresh-after-restoration full native timeline\n    at <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-aggregate-presence.mts:173:12)\n    at Array.forEach (<anonymous>)\n    at collect (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-aggregate-presence.mts:170:18)\n    at async <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-aggregate-presence.mts:268:132)",
+  "stages": [
+    {
+      "label": "models-initial-static",
+      "effects": []
+    },
+    {
+      "label": "models-new-group-survives-actual-duplicate",
+      "samples": [
+        {
+          "ms": 36,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 44,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 142,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 162,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 116.72199999121702,
+              "state": "running",
+              "opacity": "0.997761",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.341933)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 116.72199999121702,
+              "state": "running",
+              "opacity": "0.997761",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.341933)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 186,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 133.29399999121705,
+              "state": "running",
+              "opacity": "0.999225",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.29461)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 133.29399999121705,
+              "state": "running",
+              "opacity": "0.999225",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.29461)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 205,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": 166.65999999121706,
+              "state": "running",
+              "opacity": "0.999986",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.216273)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 166.65999999121706,
+              "state": "running",
+              "opacity": "0.999986",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.216273)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 228,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.184498)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 183.39399999121665,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.184498)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 244,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.157235)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 199.99399999121704,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.157235)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 258,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.133707)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 216.59399999121655,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.133707)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 276,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.113334)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 233.2939999912167,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.113334)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 287,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.113334)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 233.2939999912167,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.113334)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 302,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.095738)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 250.0939999912166,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.095738)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 317,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0809102)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 266.5939999912164,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0809102)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 332,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.067972)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 283.3939999912163,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.067972)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 348,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0570362)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 299.9939999912167,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0570362)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 364,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0476337)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 316.69399999121686,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0476337)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 380,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0396149)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 333.393999991217,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0396149)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 393,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0328271)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 349.99399999121647,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0328271)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 409,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0270251)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 366.69399999121663,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0270251)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 428,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0221385)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 383.29399999121705,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0221385)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 444,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.017987)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 399.9939999912163,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.017987)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 457,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0145031)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 416.65999999121703,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0145031)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 505,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00714859)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 466.6919999912169,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00714859)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 529,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0054994)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 483.39399999121645,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0054994)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 544,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00416714)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 499.99399999121687,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00416714)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 646,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000421597)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 599.9899999912168,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000421597)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 655,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00023615)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 616.6599999912163,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00023615)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 677,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000116755)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 633.3939999912168,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000116755)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 739,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 3.77476e-16)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 699.9919999912167,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 3.77476e-16)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 753,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0 0 0 / 0)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": 699.993999991217,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0 0 0 / 0)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 815,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 826,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 842,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 858,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 889,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 919,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 936,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 951,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 955,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 971,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 988,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 1005,
+          "effects": [
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-new\",\"fixture\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "key": "[\"presence-new\",\"fixture\"]",
+          "duration": 180,
+          "finishedTime": 180,
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "key": "[\"presence-new\",\"fixture\"]",
+          "duration": 700,
+          "finishedTime": 700,
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        }
+      ]
+    },
+    {
+      "label": "models-existing-offpage-rank-promotion-static",
+      "effects": []
+    },
+    {
+      "label": "models-local-filter-restoration-static",
+      "effects": []
+    },
+    {
+      "label": "models-exact-new-pair",
+      "samples": [
+        {
+          "ms": 56,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 142,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": 133.31000000236594,
+              "state": "running",
+              "opacity": "0.999226",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.294568)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 133.31000000236594,
+              "state": "running",
+              "opacity": "0.999226",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.294568)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 152,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": 133.31000000236594,
+              "state": "running",
+              "opacity": "0.999226",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.294568)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 133.31000000236594,
+              "state": "running",
+              "opacity": "0.999226",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.294568)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 166,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": 149.97600000236667,
+              "state": "running",
+              "opacity": "0.99982",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.252774)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 149.97600000236667,
+              "state": "running",
+              "opacity": "0.99982",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.252774)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 182,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": 166.56600000236566,
+              "state": "running",
+              "opacity": "0.999986",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.216465)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 166.56600000236566,
+              "state": "running",
+              "opacity": "0.999986",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.216465)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 197,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.184724)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 183.26600000236581,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.184724)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 227,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.133613)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 216.66600000236613,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.133613)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 245,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.113365)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 233.26600000236652,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.113365)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 262,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0957651)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 250.06600000236645,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0957651)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 278,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0809335)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 266.5660000023671,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0809335)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 295,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0679919)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 283.366000002367,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0679919)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 312,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0570533)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 299.9660000023656,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0570533)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 329,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0476483)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 316.66600000236576,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0476483)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 345,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0396716)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 333.2660000023662,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0396716)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 361,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0328376)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 349.96600000236634,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0328376)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 378,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.027034)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 366.6660000023665,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.027034)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 395,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0221461)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 383.26600000236687,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0221461)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 411,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0179706)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 400.0660000023668,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0179706)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 429,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.014502)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 416.6660000023672,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.014502)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 444,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0115965)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 433.2660000023658,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0115965)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 461,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00916295)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 449.96600000236594,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00916295)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 478,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00715142)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 466.6660000023661,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00715142)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 496,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0055108)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 483.2660000023665,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0055108)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 512,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00416196)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 500.0660000023664,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00416196)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 529,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00309159)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 516.6660000023669,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00309159)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 545,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00223797)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 533.366000002367,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00223797)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 556,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00223797)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 533.366000002367,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00223797)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 571,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00157657)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 549.9660000023656,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00157657)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 587,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00106859)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 566.6660000023658,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00106859)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 603,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000691284)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 583.3660000023659,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000691284)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 619,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000420573)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 600.0660000023661,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000420573)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 629,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000236993)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 616.5660000023668,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000236993)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 649,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000117458)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 633.2660000023669,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000117458)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 661,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000479803)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 649.9660000023671,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000479803)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 679,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000137605)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 666.6660000023672,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000137605)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 694,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00000165933)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 683.3660000023674,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00000165933)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 711,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 1.39666e-14)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": 699.966000002366,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 1.39666e-14)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 731,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 742,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 757,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 773,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 789,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 807,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 823,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 840,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 857,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 873,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 890,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 907,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 923,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 940,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 957,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 973,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 990,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 1007,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"one\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "key": "[\"presence-provider\",\"one\"]",
+          "duration": 180,
+          "finishedTime": 180,
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "key": "[\"presence-provider\",\"one\"]",
+          "duration": 700,
+          "finishedTime": 700,
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        }
+      ]
+    },
+    {
+      "label": "models-same-model-distinct-recorded-provider",
+      "samples": [
+        {
+          "ms": 44,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 56,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 0,
+              "state": "running",
+              "opacity": "0.78",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.85)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 158,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": 150.1120000022613,
+              "state": "running",
+              "opacity": "0.999823",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.252456)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 150.1120000022613,
+              "state": "running",
+              "opacity": "0.999823",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.252456)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 163,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": 150.1120000022613,
+              "state": "running",
+              "opacity": "0.999823",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.252456)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 150.1120000022613,
+              "state": "running",
+              "opacity": "0.999823",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.252456)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 180,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": 166.77800000226205,
+              "state": "running",
+              "opacity": "0.999986",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.216033)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 166.77800000226205,
+              "state": "running",
+              "opacity": "0.999986",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.216033)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 195,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.184657)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 183.30400000226277,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.184657)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 210,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.15722)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 200.00400000226293,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.15722)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 226,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.133563)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 216.7040000022613,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.133563)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 255,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0957283)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 250.1040000022616,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0957283)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 271,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0808187)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 266.70400000226203,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0808187)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 290,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0679649)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 283.4040000022622,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0679649)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 306,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0569693)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 300.10400000226235,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0569693)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 321,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0476285)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 316.7040000022627,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0476285)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 338,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0396105)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 333.4040000022629,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0396105)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 354,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0327857)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 350.10400000226304,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0327857)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 370,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0269899)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 366.80400000226143,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0269899)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 388,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0221088)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 383.4040000022618,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0221088)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 404,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0179619)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 400.10400000226196,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0179619)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 421,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0145138)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 416.60400000226264,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0145138)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 440,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0115745)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 433.40400000226253,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0115745)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 454,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00915792)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 450.00400000226296,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00915792)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 471,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00714728)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 466.7040000022613,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00714728)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 489,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00550741)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 483.3040000022617,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00550741)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 505,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00415923)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 500.1040000022616,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00415923)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 521,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00308941)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 516.704000002262,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00308941)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 539,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00224077)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 533.3040000022625,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00224077)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 553,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00157176)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 550.1040000022623,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00157176)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 565,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00157176)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 550.1040000022623,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00157176)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 581,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0010676)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 566.7040000022628,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0010676)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 597,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000690556)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 583.4040000022629,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000690556)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 612,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000421408)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 600.0040000022615,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000421408)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 627,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000235756)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 616.7040000022616,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000235756)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 643,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000117249)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 633.304000002262,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.000117249)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 659,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000478677)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 650.0040000022623,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000478677)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 675,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000137125)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 666.7040000022623,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.0000137125)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 689,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00000164787)",
+              "outlineWidth": "2px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": 683.4040000022626,
+              "state": "running",
+              "opacity": "1",
+              "outline": "oklab(0.783856 -0.0933539 -0.104695 / 0.00000164787)",
+              "outlineWidth": "2px"
+            }
+          ]
+        },
+        {
+          "ms": 706,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 734,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 750,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 767,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 782,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 798,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 814,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 829,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 833,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 850,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 867,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 883,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 900,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 917,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 933,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 950,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 967,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 984,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        },
+        {
+          "ms": 1000,
+          "effects": [
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 180,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            },
+            {
+              "key": "[\"presence-provider\",\"two\"]",
+              "duration": 700,
+              "time": null,
+              "state": "idle",
+              "opacity": "1",
+              "outline": "rgb(238, 243, 255)",
+              "outlineWidth": "3px"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "key": "[\"presence-provider\",\"two\"]",
+          "duration": 180,
+          "finishedTime": 180,
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "key": "[\"presence-provider\",\"two\"]",
+          "duration": 700,
+          "finishedTime": 700,
+          "state": "idle",
+          "iterations": 1,
+          "fill": "none"
+        }
+      ]
+    },
+    {
+      "label": "models-held-response-crossing-offscreen-epoch-static",
+      "effects": []
+    },
+    {
+      "label": "models-first-restored-response-seeds",
+      "effects": []
+    }
+  ],
+  "effects": [
+    {
+      "key": "[\"presence-restored\",\"fixture\"]",
+      "duration": 180,
+      "time": null,
+      "state": "idle",
+      "finishedTime": 180
+    },
+    {
+      "key": "[\"presence-restored\",\"fixture\"]",
+      "duration": 700,
+      "time": null,
+      "state": "idle",
+      "finishedTime": 700
+    }
+  ]
+}

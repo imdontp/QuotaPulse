@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
+import { AggregatePresenceLedger } from './aggregate-presence-motion';
+import { useAggregatePresenceMotion } from './use-aggregate-presence-motion';
+import type { LiveRecordBatch } from './live-record-motion';
 import { projectMotionKey, projectDetailMotionKey, type ProjectSelectionIntent } from './project-selection-motion';
 import { useProjectSelectionMotion } from './use-project-selection-motion';
-import { Activity, ArrowDownUp, BarChart3, Box, Folder, Layers, RefreshCw, Search, Settings, Users } from 'lucide-react';
+import { Activity, ArrowDownUp, BarChart3, Box, Flame, Folder, Layers, RefreshCw, Search, Settings, Users } from 'lucide-react';
 import { api, type DetailedProjectResponse, type Overview as OverviewData, type ProjectDetailResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
@@ -68,7 +71,7 @@ export function ProductionProjects() {
   const [theme, toggleTheme] = useTheme();
   const [route, setRoute] = useState(readRoute);
   const [search, setSearch] = useState('');
-  const [snapshot, setSnapshot] = useState<{ key: string; data: DetailedProjectResponse; overview: OverviewData } | null>(null);
+  const [snapshot, setSnapshot] = useState<{ key: string; data: DetailedProjectResponse; overview: OverviewData; motion: LiveRecordBatch } | null>(null);
   const [detailSnapshot, setDetailSnapshot] = useState<{ key: string; data: ProjectDetailResponse } | null>(null);
   const [detailError, setDetailError] = useState<string | null>(null);
   const [detailErrorKey, setDetailErrorKey] = useState<string | null>(null);
@@ -77,6 +80,10 @@ export function ProductionProjects() {
   const [retry, setRetry] = useState(0);
   const [detailRetry, setDetailRetry] = useState(0);
   const selectionOpener = useRef<HTMLButtonElement | null>(null);
+  const presenceRegion = useRef<HTMLElement>(null);
+  const [presenceLedger] = useState(() => new AggregatePresenceLedger());
+  const acceptedSerial = useRef(0);
+  const mounted = useRef(true);
   const selectionDetail = useRef<HTMLElement>(null);
   const [selectionIntent, setSelectionIntent] = useState<ProjectSelectionIntent | null>(null);
   const requestKey = JSON.stringify([route.range, route.from, route.to, route.sourceId, route.harness]);
@@ -85,24 +92,27 @@ export function ProductionProjects() {
   if (currentKey.current !== requestKey) scopeEpoch.current++;
   currentKey.current = requestKey;
   useEffect(() => {
+    mounted.current = true;
     const sync = () => { setRoute(readRoute()); };
     addEventListener('hashchange', sync);
-    return () => removeEventListener('hashchange', sync);
+    return () => { mounted.current = false; scopeEpoch.current++; removeEventListener('hashchange', sync); };
   }, []);
   const update = (patch: Partial<Route>) => {
     const next = { ...route, ...patch };
     history.replaceState(null, '', `${location.pathname}${location.search}${routeHash(next)}`);
     setRoute(next);
   };
-  useLiveRefresh(async () => {
+  useLiveRefresh(async context => {
+    const requestEligibility = presenceLedger.snapshot();
     const requestedKey = requestKey;
     const requestedEpoch = scopeEpoch.current;
+    const isCurrent = () => mounted.current && currentKey.current === requestedKey && scopeEpoch.current === requestedEpoch;
     try {
       const scope = { ...selectedScope(route, Date.now()), ...(route.harness ? { harness: route.harness } : {}) };
       const [data, overview] = await Promise.all([api.detailedProjects(scope, true), api.overview()]);
-      if (currentKey.current === requestedKey && scopeEpoch.current === requestedEpoch) { setSnapshot({ key: requestedKey, data, overview }); setFailure(null); }
+      if (isCurrent()) { setSnapshot({ key: requestedKey, data, overview, motion: { serial: ++acceptedSerial.current, reason: context.reason, requestEligibility } }); setFailure(null); }
     } catch (cause) {
-      if (!(currentKey.current === requestedKey && scopeEpoch.current === requestedEpoch)) return;
+      if (!isCurrent()) return;
       setFailure({ key: requestedKey, epoch: requestedEpoch, message: String(cause) });
       throw cause;
     }
@@ -156,12 +166,19 @@ export function ProductionProjects() {
   const aggregateDetail = route.detail === 'overview' || route.detail === 'details';
   const desiredMotionDetail = selected && data
     ? aggregateDetail ? JSON.stringify(['aggregate', data.scope, selectedMotionKey]) : detailKey : null;
+  const cancelPresence = useAggregatePresenceMotion(presenceRegion, presenceLedger, { batch: currentSnapshot?.motion,
+    context: JSON.stringify([motionContext, lang, currency, rate, theme]),
+    universe: groups.map(group => projectMotionKey(group.key)), page: visible.map(group => projectMotionKey(group.key)),
+    enabled: !!currentSnapshot && !error, hasSnapshot: !!snapshot, mounted: !!currentSnapshot,
+    selectionSerial: selectionIntent?.serial ?? 0, selectionKey: selectionIntent?.kind === 'project' ? selectionIntent.openerKey : null,
+    attribute: 'data-project-selection-opener', selector: '[data-project-selection-role=card]' });
   useProjectSelectionMotion(selectionOpener, selectionDetail, { contextKey: motionContext, selectedKey: selectedMotionKey,
     detailKey: desiredMotionDetail, acceptedDetailKey: aggregateDetail ? desiredMotionDetail : detail ? detailKey : null,
     intent: selectionIntent, offset: route.offset, enabled: !!currentSnapshot && !!selected && !error,
     failed: !!currentDetailError, detailMounted: !!currentSnapshot });
   const selectProject = (key: string | null, opener: HTMLButtonElement) => {
     if (selected?.key !== key) {
+      cancelPresence(projectMotionKey(key));
       selectionOpener.current = opener;
       setSelectionIntent(previous => ({ serial: (previous?.serial ?? 0) + 1,
         key: projectDetailMotionKey(key, route.detail), contextKey: motionContext, kind: 'project', openerKey: projectMotionKey(key) }));
@@ -210,7 +227,7 @@ export function ProductionProjects() {
     </div>
     <ScopeNotice scope={route}/>
     {!currentSnapshot ? <div className="qp-project-layout qp-project-initial-layout"><section className="qp-project-cards" aria-label={t('redesign.allProjects')}>{Array.from({ length: 4 }, (_, index) => <InitialRegion key={index} id={`project-card-${index}`} label={t('redesign.projectHeading')} state={initialState} className="qp-project-initial-card" status={index === 0} slots={5}/>)}</section><div className="qp-project-rail"><InitialRegion id="project-details" label={t('redesign.projectDetails')} state={initialState} className="qp-project-initial-detail" slots={8}/><InitialRegion id="project-top" label={t('redesign.projectTop')} state={initialState} className="qp-project-initial-top" slots={4}/></div></div> : <div className="qp-project-layout">
-      <section className="qp-project-cards" tabIndex={0} aria-label={t('redesign.allProjects')}>
+      <section ref={presenceRegion} className="qp-project-cards" tabIndex={0} aria-label={t('redesign.allProjects')}>
         {visible.length === 0 && <p className="qp-panel">{t('redesign.noProjects')}</p>}
         {visible.map(group => {
           const share = data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0;
@@ -269,7 +286,7 @@ export function ProductionProjects() {
           </>}
         </> : <p>{t('redesign.noProjects')}</p>}
       </aside>
-        {visible.length > 0 && <div className="qp-panel qp-project-top"><h3>{t('redesign.projectTop')}</h3><ol>{[...visible].sort((a, b) => b.tokens - a.tokens).slice(0, 5).map((group, index) =>
+        {visible.length > 0 && <div className="qp-panel qp-project-top"><h3><Flame className="qp-project-top-mark" size={18} aria-hidden="true"/>{t('redesign.projectTop')}</h3><ol>{[...visible].sort((a, b) => b.tokens - a.tokens).slice(0, 5).map((group, index) =>
           <li key={JSON.stringify(group.key)}><button data-project-selection-opener={projectMotionKey(group.key)} data-project-selection-role="rank" aria-pressed={selected?.key === group.key} onClick={event => selectProject(group.key, event.currentTarget)}><span className="qp-project-rank" aria-hidden="true">{index + 1}</span><Folder size={16} aria-hidden="true"/>{projectName(group.key)}</button><span className="qp-bar"><span style={{ width: `${data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0}%` }}/></span><strong title={number(group.tokens)} aria-label={`${t('redesign.tokens')}: ${number(group.tokens)}`} data-value={group.tokens}>{compactTokens(group.tokens)}</strong></li>)}</ol></div>}
       </div>
     </div>}

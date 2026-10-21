@@ -1,0 +1,14 @@
+{
+  "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'running' !== 'idle'\n",
+  "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'running' !== 'idle'\n\n    at <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\presence95-projects-selection.mts:131:797)\n    at Array.forEach (<anonymous>)\n    at collect (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\presence95-projects-selection.mts:131:706)\n    at async <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\presence95-projects-selection.mts:149:76)",
+  "url": "http://127.0.0.1:7816/#projects?range=month&project=Agent+Platform",
+  "productionIndexSha256": "8f0d4738e813812d60689a4d73482365b8711d6c05c5f4001ec6968d46ad0e57",
+  "stages": [
+    {
+      "label": "projects-initial-static",
+      "static": true
+    }
+  ],
+  "errors": [],
+  "forbidden": []
+}

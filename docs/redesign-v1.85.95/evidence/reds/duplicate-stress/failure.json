@@ -1,0 +1,25 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: models-new-group-survives-actual-duplicate full native timeline\n    at <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-aggregate-presence.mts:173:12)\n    at Array.forEach (<anonymous>)\n    at collect (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-aggregate-presence.mts:170:18)\n    at async <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-aggregate-presence.mts:247:5)",
+  "stages": [
+    {
+      "label": "models-initial-static",
+      "effects": []
+    }
+  ],
+  "effects": [
+    {
+      "key": "[\"presence-new\",\"fixture\"]",
+      "duration": 180,
+      "time": null,
+      "state": "idle",
+      "finishedTime": 180
+    },
+    {
+      "key": "[\"presence-new\",\"fixture\"]",
+      "duration": 700,
+      "time": null,
+      "state": "idle",
+      "finishedTime": 700
+    }
+  ]
+}

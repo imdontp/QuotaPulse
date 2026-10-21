@@ -1,7 +1,10 @@
 import { useEffect, useId, useRef, useState } from 'react';
+import { AggregatePresenceLedger } from './aggregate-presence-motion';
+import { useAggregatePresenceMotion } from './use-aggregate-presence-motion';
+import type { LiveRecordBatch } from './live-record-motion';
 import { useModelSelectionMotion } from './use-model-selection-motion';
 import type { ModelSelectionIntent } from './model-selection-motion';
-import { BarChart3, Box, Coins, Database, Layers, RefreshCw, Search, Users } from 'lucide-react';
+import { BarChart3, Box, Database, Layers, Play, RefreshCw, Search } from 'lucide-react';
 import { api, type DetailedModelResponse, type ModelDetailResponse, type ModelRowTrendsResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
@@ -57,7 +60,7 @@ export function ProductionModels() {
   const [theme, toggleTheme] = useTheme();
   const [route, setRoute] = useState(readRoute);
   const [search, setSearch] = useState('');
-  const [snapshot, setSnapshot] = useState<{ key: string; data: DetailedModelResponse; base: DetailedModelResponse } | null>(null);
+  const [snapshot, setSnapshot] = useState<{ key: string; data: DetailedModelResponse; base: DetailedModelResponse; motion: LiveRecordBatch } | null>(null);
   const [detailSnapshot, setDetailSnapshot] = useState<{ key: string; data: ModelDetailResponse } | null>(null);
   const [failure, setFailure] = useState<{ key: string; epoch: number; message: string } | null>(null);
   const [detailFailure, setDetailFailure] = useState<{ key: string; message: string } | null>(null);
@@ -67,6 +70,9 @@ export function ProductionModels() {
   const [detailBusy, setDetailBusy] = useState(false);
   const [comparisonSelection, setComparisonSelection] = useState({ scopeKey: '', selectionKey: '', page: 0 });
   const motionRows = useRef<HTMLDivElement>(null);
+  const [presenceLedger] = useState(() => new AggregatePresenceLedger());
+  const acceptedSerial = useRef(0);
+  const mounted = useRef(true);
   const motionDetail = useRef<HTMLElement>(null);
   const [selectionIntent, setSelectionIntent] = useState<ModelSelectionIntent | null>(null);
   const [rowTrendSnapshot, setRowTrendSnapshot] = useState<{ key: string; data: ModelRowTrendsResponse } | null>(null);
@@ -80,27 +86,30 @@ export function ProductionModels() {
   if (currentKey.current !== requestKey) scopeEpoch.current++;
   currentKey.current = requestKey;
   useEffect(() => {
+    mounted.current = true;
     const sync = () => { if (location.hash.slice(1).split('?')[0] === 'models') setRoute(readRoute()); };
     addEventListener('hashchange', sync);
-    return () => removeEventListener('hashchange', sync);
+    return () => { mounted.current = false; scopeEpoch.current++; removeEventListener('hashchange', sync); };
   }, []);
   const update = (patch: Partial<Route>) => {
     const next = { ...route, ...patch };
     history.replaceState(null, '', `${location.pathname}${location.search}${routeHash(next)}`);
     setRoute(next);
   };
-  useLiveRefresh(async () => {
+  useLiveRefresh(async context => {
+    const requestEligibility = presenceLedger.snapshot();
     const key = requestKey;
     const requestedEpoch = scopeEpoch.current;
+    const isCurrent = () => mounted.current && currentKey.current === key && scopeEpoch.current === requestedEpoch;
     const range = selectedScope(route, Date.now());
     setQueryBusy(true);
     try {
       const basePromise = api.detailedModels(range, true);
       const dataPromise = route.provider || route.vendor ? api.detailedModels({ ...range, ...(route.provider ? { provider: route.provider } : {}), ...(route.vendor ? { vendor: route.vendor } : {}) }, true) : basePromise;
       const [base, data] = await Promise.all([basePromise, dataPromise]);
-      if (currentKey.current === key && scopeEpoch.current === requestedEpoch) { setSnapshot({ key, base, data }); setFailure(null); }
-    } catch (cause) { if (!(currentKey.current === key && scopeEpoch.current === requestedEpoch)) return; setFailure({ key, epoch: requestedEpoch, message: String(cause) }); throw cause; }
-    finally { if (currentKey.current === key && scopeEpoch.current === requestedEpoch) setQueryBusy(false); }
+      if (isCurrent()) { setSnapshot({ key, base, data, motion: { serial: ++acceptedSerial.current, reason: context.reason, requestEligibility } }); setFailure(null); }
+    } catch (cause) { if (!isCurrent()) return; setFailure({ key, epoch: requestedEpoch, message: String(cause) }); throw cause; }
+    finally { if (isCurrent()) setQueryBusy(false); }
   }, [requestKey, queryRetry]);
 
   const current = snapshot?.key === requestKey ? snapshot : null;
@@ -147,12 +156,19 @@ export function ProductionModels() {
   const detail = detailSnapshot?.key === detailKey ? detailSnapshot.data : null;
   const selectionMotionContext = JSON.stringify([comparisonScopeKey, comparison.page]);
   const selectedMotionKey = selected ? modelPairKey(selected) : null;
+  const cancelPresence = useAggregatePresenceMotion(motionRows, presenceLedger, { batch: current?.motion,
+    context: JSON.stringify([selectionMotionContext, lang, currency, rate, theme]),
+    universe: groups.map(modelPairKey), page: comparison.rows.map(modelPairKey),
+    enabled: !!current && !error, hasSnapshot: !!snapshot, mounted: !!current && visible.length > 0,
+    selectionSerial: selectionIntent?.serial ?? 0, selectionKey: selectedMotionKey,
+    attribute: 'data-model-pair-key', selector: '[data-model-pair-key]' });
   useModelSelectionMotion(motionRows, motionDetail, { contextKey: selectionMotionContext, selectedKey: selectedMotionKey,
     detailKey: data && selected ? detailKey : null, acceptedDetailKey: detail ? detailKey : null,
     intent: selectionIntent, enabled: !!current && !!selected && !error, failed: !!detailError,
     rowsMounted: !!current && visible.length > 0 });
   const selectPair = (group: Group) => {
     const key = modelPairKey(group);
+    if (key !== selectedMotionKey) cancelPresence(key);
     if (key !== selectedMotionKey) setSelectionIntent(previous => ({ serial: (previous?.serial ?? 0) + 1, key, contextKey: selectionMotionContext }));
     update({ model: group.model, selectedProvider: group.provider });
   };
@@ -200,10 +216,10 @@ export function ProductionModels() {
         {current && error && <p className="qp-model-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
         {!current ? <section className="qp-model-summary" aria-label={t('redesign.modelsHeading')}>{(['redesign.modelsCount', 'redesign.modelsTokens', 'redesign.modelsSessions', 'redesign.modelsValue'] as const).map((label, index) => <InitialRegion key={label} id={`models-summary-${index}`} label={t(label)} state={initialState} className="qp-model-summary-pending" slots={2}/>)}</section> :
           <section className="qp-model-summary" aria-label={t('redesign.modelsHeading')}>
-            <article className="qp-panel" data-tone="blue" data-history={summaryBuckets.length > 0} data-wide={number(groups.length).length > 6} data-long-count={number(groups.length).length > 3}><span className="qp-model-summary-icon" aria-hidden="true"><Layers size={24}/></span><span>{t('redesign.modelsCount')}</span><strong>{number(groups.length)}</strong>{summaryBuckets.length > 0 && <ObservedTrend className="qp-model-summary-spark" points={summaryBuckets.map(point => ({ at: point.start, value: point.pairs }))} label={t('redesign.modelsPairsPerBucket')} language={lang} grid={false}/>}</article>
+            <article className="qp-panel" data-tone="blue" data-history={summaryBuckets.length > 0} data-wide={number(groups.length).length > 6} data-long-count={number(groups.length).length > 3}><span className="qp-model-summary-icon" aria-hidden="true"><Box size={24}/></span><span>{t('redesign.modelsCount')}</span><strong>{number(groups.length)}</strong>{summaryBuckets.length > 0 && <ObservedTrend className="qp-model-summary-spark" points={summaryBuckets.map(point => ({ at: point.start, value: point.pairs }))} label={t('redesign.modelsPairsPerBucket')} language={lang} grid={false}/>}</article>
             <article className="qp-panel" data-tone="orange" data-history={summaryBuckets.length > 0}><span className="qp-model-summary-icon" aria-hidden="true"><Database size={24}/></span><span>{t('redesign.modelsTokens')}</span><strong>{f.tokens(data!.totals.tokens)}</strong><small>{t('redesign.modelsCalls')}: {number(data!.totals.calls)}</small>{summaryBuckets.length > 0 && <ObservedTrend className="qp-model-summary-spark" points={summaryBuckets.map(point => ({ at: point.start, value: point.tokens }))} label={t('redesign.modelsTokens')} language={lang} grid={false}/>}</article>
-            <article className="qp-panel" data-tone="violet" data-history={summaryBuckets.length > 0} data-wide={number(data!.totals.sessions).length > 6} data-long-count={number(data!.totals.sessions).length > 3}><span className="qp-model-summary-icon" aria-hidden="true"><Users size={24}/></span><span>{t('redesign.modelsSessions')}</span><strong>{number(data!.totals.sessions)}</strong>{summaryBuckets.length > 0 && <ObservedTrend className="qp-model-summary-spark" points={summaryBuckets.map(point => ({ at: point.start, value: point.sessions }))} label={t('redesign.modelsSessionsPerBucket')} language={lang} grid={false}/>}</article>
-            <article className="qp-panel" data-tone="orange" data-history={summaryBuckets.some(point => point.apiValue !== null)} data-wide={money(data!.totals.api_value_usd).length + (data!.totals.computed_calls + data!.totals.estimated_calls < data!.totals.calls ? 1 : 0) > 6}><span className="qp-model-summary-icon" aria-hidden="true"><Coins size={24}/></span><span>{t('redesign.modelsValue')}</span><strong>{apiValue(data!.totals)}</strong><small>{t('redesign.modelsNative')}: {<CostValue amount={data!.totals.reported_native_usd} priced={data!.totals.native_calls} total={data!.totals.calls} money={money} t={t}/>}</small>{summaryBuckets.some(point => point.apiValue !== null) && <ObservedTrend className="qp-model-summary-spark qp-model-value-spark" points={summaryBuckets.map(point => ({ at: point.start, value: point.apiValue === null ? null : currency === 'THB' ? point.apiValue * rate : point.apiValue }))} label={`${t('redesign.modelsKnownValueTrend')} (${currency})`} language={lang} grid={false}/>}</article>
+            <article className="qp-panel" data-tone="violet" data-history={summaryBuckets.length > 0} data-wide={number(data!.totals.sessions).length > 6} data-long-count={number(data!.totals.sessions).length > 3}><span className="qp-model-summary-icon" aria-hidden="true"><Play size={24}/></span><span>{t('redesign.modelsSessions')}</span><strong>{number(data!.totals.sessions)}</strong>{summaryBuckets.length > 0 && <ObservedTrend className="qp-model-summary-spark" points={summaryBuckets.map(point => ({ at: point.start, value: point.sessions }))} label={t('redesign.modelsSessionsPerBucket')} language={lang} grid={false}/>}</article>
+            <article className="qp-panel" data-tone="orange" data-history={summaryBuckets.some(point => point.apiValue !== null)} data-wide={money(data!.totals.api_value_usd).length + (data!.totals.computed_calls + data!.totals.estimated_calls < data!.totals.calls ? 1 : 0) > 6}><span className="qp-model-summary-icon" aria-hidden="true"><Database size={24}/></span><span>{t('redesign.modelsValue')}</span><strong>{apiValue(data!.totals)}</strong><small>{t('redesign.modelsNative')}: {<CostValue amount={data!.totals.reported_native_usd} priced={data!.totals.native_calls} total={data!.totals.calls} money={money} t={t}/>}</small>{summaryBuckets.some(point => point.apiValue !== null) && <ObservedTrend className="qp-model-summary-spark qp-model-value-spark" points={summaryBuckets.map(point => ({ at: point.start, value: point.apiValue === null ? null : currency === 'THB' ? point.apiValue * rate : point.apiValue }))} label={`${t('redesign.modelsKnownValueTrend')} (${currency})`} language={lang} grid={false}/>}</article>
           </section>
         }
         </div>

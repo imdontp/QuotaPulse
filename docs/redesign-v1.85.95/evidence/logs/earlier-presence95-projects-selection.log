@@ -1,0 +1,30 @@
+13:42:00.000 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx tmp/presence95-projects-selection.mts *> tmp/presen ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+'running' !== 'idle'
+
+    at <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\presence95-projects-s
+election.mts:131:797)
+    at Array.forEach (<anonymous>)
+    at collect (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\presence95-projects-selec
+tion.mts:131:706)
+    at async <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\presence95-proj
+ects-selection.mts:149:76) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'running',
+  expected: 'idle',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1
