@@ -206,9 +206,23 @@ async function checkSecondaryNavigation(activeLabel: string, siblingLabel: strin
   await selected.waitFor(); assert.equal(await selected.getAttribute('aria-current'), 'page', `${activeLabel} is a primary current page link`);
   const previousViewport = page!.viewportSize()!;
   await page!.setViewportSize({ width: 1672, height: 941 }); await page!.waitForTimeout(100);
-  const initial = await page!.evaluate(() => ({ moreOpen: document.querySelector('.qp-nav-more')!.matches('[open]'), quickStatsTop: document.querySelector('.qp-quick-stats')!.getBoundingClientRect().top }));
+  const initial = await page!.evaluate(() => {
+    const grid = document.querySelector('.qp-provider-grid');
+    const inspector = document.querySelector('.qp-provider-inspector');
+    const cards = [...(grid?.querySelectorAll<HTMLElement>('.qp-provider-card') ?? [])];
+    const lastCardBottom = cards.length > 0 ? Math.max(...cards.map(card => card.getBoundingClientRect().bottom)) : null;
+    return {
+      moreOpen: document.querySelector('.qp-nav-more')!.matches('[open]'),
+      quickStatsTop: document.querySelector('.qp-quick-stats')!.getBoundingClientRect().top,
+      providerContentGap: inspector && lastCardBottom !== null ? inspector.getBoundingClientRect().top - lastCardBottom : null,
+    };
+  });
   assert.equal(initial.moreOpen, false, `${activeLabel} opens with More collapsed`);
   assert.ok(initial.quickStatsTop <= 470, `${activeLabel} quick stats geometry: ${initial.quickStatsTop}`);
+  if (activeLabel === 'Providers') {
+    assert.ok(initial.providerContentGap !== null && initial.providerContentGap <= 24, `Providers grid does not reserve empty extra rows: ${initial.providerContentGap}px`);
+    await page!.screenshot({ path: 'tmp/presence95-browser/providers-after-layout.png' });
+  }
   await page!.locator('.qp-nav-more summary').click();
   await page!.getByRole('navigation').getByRole('link', { name: siblingLabel, exact: true }).waitFor();
   await page!.locator('.qp-nav-more summary').click();
