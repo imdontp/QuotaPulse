@@ -484,13 +484,15 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
 
   app.get('/api/models', async (req, reply) => {
     const s = req.query as Record<string, string | undefined>;
+    if (s.breakdown !== undefined && s.detailed === undefined) return reply.code(400).send({ error: 'Breakdown mode requires detailed=1' });
     if (s.detailed !== undefined) {
       if (s.detailed !== '1') return reply.code(400).send({ error: 'Invalid detailed mode' });
       const now = Date.now();
       try {
         if (s.trends !== undefined && s.trends !== '1') throw new Error('Invalid model trends mode');
-        const scope = parseUsageScope(req.query as Record<string, unknown>, now, { extraKeys: ['detailed', 'trends'] });
-        return db.transaction(() => ({ now, scope, ...detailedAggregates(db, scope, 'model'),
+        if (s.breakdown !== undefined && s.breakdown !== '0' && s.breakdown !== '1') throw new Error('Invalid model breakdown mode');
+        const scope = parseUsageScope(req.query as Record<string, unknown>, now, { extraKeys: ['detailed', 'trends', 'breakdown'] });
+        return db.transaction(() => ({ now, scope, ...detailedAggregates(db, scope, 'model', s.breakdown === '0' ? 'omitted' : 'full'),
           ...(s.trends === '1' ? { trends: modelTrends(db, scope) } : {}) }))();
       } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
     }

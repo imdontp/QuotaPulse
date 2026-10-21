@@ -1,0 +1,185 @@
+{
+  "algorithm": "SHA256",
+  "artifacts": [
+    {
+      "file": "MODEL-SUMMARY-CONTRACT.md",
+      "sha256": "6dc298345b3007ab1e3787ca3a3cc05f17c3397db2b96616afbd1f8355c7c77d"
+    },
+    {
+      "file": "review-manifest.json",
+      "sha256": "8dbc13f0319d8dc781d4669f7ec57a78d707a61cf3eca2290abb3d616083a9ce"
+    },
+    {
+      "file": "review.html",
+      "sha256": "386fcbdd18bac11d624d8b5db9957fe521d1706091aedac41a64510648bfda2e"
+    },
+    {
+      "file": "VALIDATION-STATE.md",
+      "sha256": "59cfa2faced2e8cfd4f3bbaedf5c846151048698821da3aa914bd20720cf28a6"
+    },
+    {
+      "file": "evidence/actual-model-reads.json",
+      "sha256": "66664b5410f71beecdad40f066e2de8adbc95fef031fea77397156a431e1c631"
+    },
+    {
+      "file": "evidence/benchmark-model110.mts.gz",
+      "sha256": "594b5bbbda32c4b551048e794e8bc3c996089825fb1ca171be37bb3bfd097842"
+    },
+    {
+      "file": "evidence/benchmark.json",
+      "sha256": "616bd12a26a5f76cf1f1e31ef5f66da7a8f1c93d067f7b42b212d16281f37efb"
+    },
+    {
+      "file": "evidence/capture-all8.json",
+      "sha256": "de1ad2ec8c084728e129919c9d3426221d48c36c2497f5e830dab62477a86d3c"
+    },
+    {
+      "file": "evidence/capture-model110-all8.mts.gz",
+      "sha256": "851d7db8688a03e2e702ddbd479f956e3315bbd43dccb0efb0b7309a2f5326ba"
+    },
+    {
+      "file": "evidence/check-model110-compat.mts.gz",
+      "sha256": "da930be4a806feeef883996d211f5f67dd21109bc54ab0fe1faae5daaea31e2f"
+    },
+    {
+      "file": "evidence/check-model110-controls.mts.gz",
+      "sha256": "b6bbfc9f73fd00f432bb282cea4d871c6053488c4c7e3055cbff749f2c701f7f"
+    },
+    {
+      "file": "evidence/inspect-model110-stable.cjs.gz",
+      "sha256": "11d8bb4ec1eb9a789c4ec841fd3bb5ae6efff7bf7f4dd3ab939f05fe25ef81e6"
+    },
+    {
+      "file": "evidence/legacy-compatibility.json",
+      "sha256": "3ae2a62e85a8d448a66cb70b79d8f096095035616e4b0f96f96a864e8da445b4"
+    },
+    {
+      "file": "evidence/model110-all8.log.gz",
+      "sha256": "4246f5e9dd623efeac08754dd1c4c06240de0e959b7a8371ae7171fafed334a4"
+    },
+    {
+      "file": "evidence/model110-benchmark.log.gz",
+      "sha256": "9530636ba45749cddc969878b12945144f8ec25a69aba1863602a877a9881de8"
+    },
+    {
+      "file": "evidence/model110-compat-refresh-whitelist-failure.log.gz",
+      "sha256": "6fef5c5aac4eae66fa458f4ad722de4b1d0b543e5ef0c94e11f793d0b0995a5b"
+    },
+    {
+      "file": "evidence/model110-compat.log.gz",
+      "sha256": "969c2b1586ee7542aa1bd29f988b5c2d58d7e1c1286e4566f2130e8d11d4856a"
+    },
+    {
+      "file": "evidence/model110-controls.log.gz",
+      "sha256": "2a007b544f4eb0d241b0350913f6644bfd50523b57c7a2f15577668d8f2ac5d9"
+    },
+    {
+      "file": "evidence/model110-daemon-build.log.gz",
+      "sha256": "6bab5406aac2c2f610a3dce7f564444c11ef95b871038aeca4c72ea11f9d2ee0"
+    },
+    {
+      "file": "evidence/model110-repository.log.gz",
+      "sha256": "adadfdd27f8e6b89c5e7daf5199222ead44ab60409b3a110e9ac6ef6e8bbc539"
+    },
+    {
+      "file": "evidence/model110-review-verification.log.gz",
+      "sha256": "00ceaa3bd36fb50281eb491160bf040c0701d514dc7693dc03cada72e175f44c"
+    },
+    {
+      "file": "evidence/model110-stable.log.gz",
+      "sha256": "ea88d9a23c62e595f51ec28b826af648e3a8739923843991fa1b1781ce253f5b"
+    },
+    {
+      "file": "evidence/model110-th-light.log.gz",
+      "sha256": "7c63a135c55eaba2f1f4d570dac00f30fadebee89f2163119353e9020c840f7d"
+    },
+    {
+      "file": "evidence/model110-unit.log.gz",
+      "sha256": "db54298a421bdcf10b8ed6c4d82e623ae7f018842e51fd7fa523c3396946b414"
+    },
+    {
+      "file": "evidence/model110-web-build.log.gz",
+      "sha256": "9e316644635d19e2cedac5a74b8f8d5308f61b82193d2e9c8b7c6b073b5a94e8"
+    },
+    {
+      "file": "evidence/models-th-dark.png.ring.json",
+      "sha256": "4aeaa872a8c0129d8459b41fd1285902777c435104e34532bc1031c45a6fad08"
+    },
+    {
+      "file": "evidence/repeat-models-th-dark.png.ring.json",
+      "sha256": "4aeaa872a8c0129d8459b41fd1285902777c435104e34532bc1031c45a6fad08"
+    },
+    {
+      "file": "evidence/source-fingerprints.json",
+      "sha256": "8144e5c7958735342ae48e57ab8cff465f2da751ebe55b2fe96c64a9e452f0fb"
+    },
+    {
+      "file": "evidence/summary.json",
+      "sha256": "6569364ac9545b859cb93e3835d8ca9ae623f03df02a27d6821e3aaaf6fea95a"
+    },
+    {
+      "file": "evidence/thai-dark-repeat-RED.json",
+      "sha256": "a6693a066fa0b8a8532d513b7cfcdce198da54662212b334cf9dd8a1edd2c85d"
+    },
+    {
+      "file": "evidence/thai-light-stable.json.gz",
+      "sha256": "3ac396afe843bc226e61fd3a0f4de5df6a3b544af976ebbda1b2d180af52dc0b"
+    },
+    {
+      "file": "evidence/verify110.cjs.gz",
+      "sha256": "47888521263c0f04cd92240b3fce20fe139bb53c6fe2c05bc967fb4b6120e4b3"
+    },
+    {
+      "file": "evidence/visual-controls-RED.json",
+      "sha256": "730217a328c7536247ff3bbaa2bbb1cf8e2284feea3ff3659ecac3fe171c7a20"
+    },
+    {
+      "file": "images/cost.png",
+      "sha256": "d4a18de79b26ac0baa8cc3060478448beef9bf13f135b5db21d018f906492eaf"
+    },
+    {
+      "file": "images/en-dark-legacy.png",
+      "sha256": "8674096a678877e3f68fa43bbf4af5ab4fdcfb7673515dd8e926cc6ce7e21e0f"
+    },
+    {
+      "file": "images/en-dark-modern.png",
+      "sha256": "aceb4df8f7582d3fec483c2a702e95136844724bce214c30454be3fcf96846fe"
+    },
+    {
+      "file": "images/failed-models-th-dark.png",
+      "sha256": "c7eebafc78a195273cd434194558d6c509ad1fbd84fe94ac765dd7133880aaa7"
+    },
+    {
+      "file": "images/failed-repeat-models-th-dark.png",
+      "sha256": "aa23b9d4846829ecdba81402aeb6b3290aecd8bcead4ea1b407e5afa8ea2d597"
+    },
+    {
+      "file": "images/history.png",
+      "sha256": "7ad3b57c09a90a5988efa1f101be3ce3c3a54f3ea2749b80bcd4f0e1e37d356b"
+    },
+    {
+      "file": "images/models-th-light.png",
+      "sha256": "2328cff32b232d008c882d52e7f465d7e013627541371c5cdc2ba83135aea1fc"
+    },
+    {
+      "file": "images/overview.png",
+      "sha256": "69f9e2c08c10ee5b0da9e224098c38e25a4f442985277ec9ba96ddac98aa861e"
+    },
+    {
+      "file": "images/providers.png",
+      "sha256": "c670a873611a0fc1dd772eb2f98be78006e682601a18ae6c45512bc66e1786e9"
+    },
+    {
+      "file": "images/repeat-models-th-light.png",
+      "sha256": "2328cff32b232d008c882d52e7f465d7e013627541371c5cdc2ba83135aea1fc"
+    },
+    {
+      "file": "images/th-light-legacy.png",
+      "sha256": "9452c30c7a1743f683420f51b7636a03f23453ef7ea99f7966b6e5fbbd7de656"
+    },
+    {
+      "file": "images/th-light-modern.png",
+      "sha256": "9452c30c7a1743f683420f51b7636a03f23453ef7ea99f7966b6e5fbbd7de656"
+    }
+  ]
+}

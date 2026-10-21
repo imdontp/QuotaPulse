@@ -5,7 +5,7 @@ import type { LiveRecordBatch } from './live-record-motion';
 import { useModelSelectionMotion } from './use-model-selection-motion';
 import type { ModelSelectionIntent } from './model-selection-motion';
 import { BarChart3, Box, Database, Layers, Play, RefreshCw, Search } from 'lucide-react';
-import { api, type DetailedModelResponse, type ModelDetailResponse, type ModelRowTrendsResponse } from '@/api';
+import { api, type ModelSummaryResponse, type ModelDetailResponse, type ModelRowTrendsResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
@@ -31,7 +31,7 @@ import { modelPairKey, modelRowTrend, modelRowTrendTone } from './model-row-tren
 
 type Range = ScopeRange;
 type Metric = 'tokens' | 'calls' | 'api_value_usd';
-type Group = DetailedModelResponse['groups'][number];
+type Group = ModelSummaryResponse['groups'][number];
 interface Route extends ScopeSelection { provider: string | null; vendor: string | null; metric: Metric; model: string | null | undefined; selectedProvider: string | null | undefined }
 const identityKey = (group: { model: string | null; provider: string | null }) => JSON.stringify([group.model, group.provider]);
 function readRoute(): Route {
@@ -60,7 +60,7 @@ export function ProductionModels() {
   const [theme, toggleTheme] = useTheme();
   const [route, setRoute] = useState(readRoute);
   const [search, setSearch] = useState('');
-  const [snapshot, setSnapshot] = useState<{ key: string; data: DetailedModelResponse; base: DetailedModelResponse; motion: LiveRecordBatch } | null>(null);
+  const [snapshot, setSnapshot] = useState<{ key: string; data: ModelSummaryResponse; base: ModelSummaryResponse; motion: LiveRecordBatch } | null>(null);
   const [detailSnapshot, setDetailSnapshot] = useState<{ key: string; data: ModelDetailResponse } | null>(null);
   const [failure, setFailure] = useState<{ key: string; epoch: number; message: string } | null>(null);
   const [detailFailure, setDetailFailure] = useState<{ key: string; message: string } | null>(null);
@@ -104,8 +104,8 @@ export function ProductionModels() {
     const range = selectedScope(route, Date.now());
     setQueryBusy(true);
     try {
-      const basePromise = api.detailedModels(range, true);
-      const dataPromise = route.provider || route.vendor ? api.detailedModels({ ...range, ...(route.provider ? { provider: route.provider } : {}), ...(route.vendor ? { vendor: route.vendor } : {}) }, true) : basePromise;
+      const basePromise = api.modelSummary(range, true);
+      const dataPromise = route.provider || route.vendor ? api.modelSummary({ ...range, ...(route.provider ? { provider: route.provider } : {}), ...(route.vendor ? { vendor: route.vendor } : {}) }, true) : basePromise;
       const [base, data] = await Promise.all([basePromise, dataPromise]);
       if (isCurrent()) { setSnapshot({ key, base, data, motion: { serial: ++acceptedSerial.current, reason: context.reason, requestEligibility } }); setFailure(null); }
     } catch (cause) { if (!isCurrent()) return; setFailure({ key, epoch: requestedEpoch, message: String(cause) }); throw cause; }

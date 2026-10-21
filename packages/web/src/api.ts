@@ -1,4 +1,5 @@
 import { modelRowTrendRequest } from '@/lib/model-row-trend-request';
+import { createModelSummaryLoader } from '@/lib/model-summary-request';
 import { usageEventParams, type UsageEventScope, type UsageEventsResponse } from '@/lib/usage-events';
 import type { RuntimeGraph } from '@/redesign/model';
 
@@ -225,6 +226,9 @@ export interface DetailedModelResponse {
   groups: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string }>;
   rows: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string; sourceId: number; harness: string; sourceName: string; effort: string | null }>;
 }
+/** All model groups/totals, without the unused per-source/effort breakdown. */
+export type ModelSummaryResponse = Omit<DetailedModelResponse, 'rows'> & { breakdown?: 'omitted' };
+
 export interface ModelRowTrendsResponse {
   now: number;
   scope: UsageEventScope;
@@ -662,11 +666,14 @@ export interface PricingRefresh {
   reclassified: number;
 }
 
+const loadModelSummary = createModelSummaryLoader<DetailedModelResponse | ModelSummaryResponse>(path => get(path));
+
 export const api = {
   detailedProjects: (scope: UsageEventScope, trends = false) => get<DetailedProjectResponse>(`/api/projects?detailed=1&${trends ? 'trends=1&' : ''}${usageEventParams(scope)}`),
   projectDetail: (scope: UsageEventScope, offset = 0) => get<ProjectDetailResponse>(`/api/project-detail?${usageEventParams(scope)}&limit=20&offset=${offset}`),
   liveSessions: (scope: UsageEventScope, mode: 'recent' | 'all', offset = 0) => get<LiveSessionsResponse>(`/api/live-sessions?${usageEventParams(scope)}&mode=${mode}&limit=10&offset=${offset}`),
   detailedModels: (scope: UsageEventScope, trends = false) => get<DetailedModelResponse>(`/api/models?detailed=1&${trends ? 'trends=1&' : ''}${usageEventParams(scope)}`),
+  modelSummary: (scope: UsageEventScope, trends = false) => loadModelSummary(`/api/models?detailed=1&${trends ? 'trends=1&' : ''}${usageEventParams(scope)}`),
   modelRowTrends: async (scope: UsageEventScope, pairs: Array<{ model: string | null; provider: string | null }>) => {
     const selected = modelRowTrendRequest(usageEventParams(scope), pairs);
     if (selected.body === undefined) return get<ModelRowTrendsResponse>(selected.path);

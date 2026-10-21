@@ -1,0 +1,38 @@
+{
+  "baseCommit": "9acaeaa",
+  "productionIndexSha256": "6746327285fadd9bdaf3e79adffada4e44cd4bc2d412a98dc1beb6fb52e8feb4",
+  "sources": [
+    {
+      "file": "packages/daemon/src/api/detailed-aggregates.ts",
+      "lfSha256": "bc4ef9605f3cdebc57768bb21781cfb36e7a0d7a167de13f7d44d9c6eb02f512"
+    },
+    {
+      "file": "packages/daemon/src/api/server.ts",
+      "lfSha256": "f52bcd3cfe010a8dcb835de9dbfd16a4eacaf02a11c8a589f0c8eff3cf2c64d4"
+    },
+    {
+      "file": "packages/daemon/test/detailed-aggregates-equivalence.test.ts",
+      "lfSha256": "8fa4e449108fe96455e6e2186969891aa77f4c721f31980776b5cd6f59c8afe4"
+    },
+    {
+      "file": "packages/daemon/test/model-summary.test.ts",
+      "lfSha256": "254cd0a4e9d8e45f7b904366a6000fc1d1f29eaa5c9b54f2f11fa258738d9778"
+    },
+    {
+      "file": "packages/web/src/api.ts",
+      "lfSha256": "05257751e933382808cdbe342af104bb62565ce5b3a6c9c47281708496b666b1"
+    },
+    {
+      "file": "packages/web/src/redesign/models.tsx",
+      "lfSha256": "90ab1d7e61d4a99bd3a8744046e8c22906e4c8a1912e1c7b6acc12b0586093e8"
+    },
+    {
+      "file": "packages/web/src/lib/model-summary-request.ts",
+      "lfSha256": "020c0e31acdbd9ff585c241ba027a230f60156786d64c50c40ad7667cb6a0d98"
+    },
+    {
+      "file": "packages/web/test/model-summary-request.test.ts",
+      "lfSha256": "913a8b05164dbc7c9fcf6c9d83f745e79c59a507ba48a5bf79aff42adbd05c08"
+    }
+  ]
+}

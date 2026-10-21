@@ -22,7 +22,7 @@ export const FACTS = `COUNT(*) AS records,
   MAX(u.ts) AS lastObservedAt`;
 
 /** Opt-in aggregate; legacy project/model response cardinality is unchanged. */
-export function detailedAggregates(db: DB, scope: UsageScope, dimension: AggregateDimension) {
+export function detailedAggregates(db: DB, scope: UsageScope, dimension: AggregateDimension, breakdown: 'full' | 'omitted' = 'full') {
   const where = usageWhere(scope);
   const from = `FROM usage_event u JOIN source s ON s.id=u.source_id
     LEFT JOIN session sess ON sess.id=u.session_id WHERE ${where.sql}`;
@@ -45,6 +45,9 @@ export function detailedAggregates(db: DB, scope: UsageScope, dimension: Aggrega
     const totals = db.prepare(`SELECT ${FACTS} ${from}`).get(where.params);
     const groups = db.prepare(`SELECT ${groupIdentity}, ${FACTS} ${from}
       GROUP BY ${groupBy} ORDER BY tokens DESC, ${groupTie}`).all(where.params);
+    // Summary consumers still receive every group and exact totals. Avoid executing
+    // and serializing the unused source/effort breakdown, rather than truncating it.
+    if (breakdown === 'omitted') return { totals, groups, breakdown: 'omitted' as const };
     const rows = db.prepare(`SELECT ${identity}, ${FACTS} ${from}
       GROUP BY ${group} ORDER BY tokens DESC, ${tie}`).all(where.params);
     return { totals, groups, rows };

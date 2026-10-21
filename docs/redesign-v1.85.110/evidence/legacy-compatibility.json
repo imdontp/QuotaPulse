@@ -1,0 +1,70 @@
+{
+  "productionIndexSha256": "6746327285fadd9bdaf3e79adffada4e44cd4bc2d412a98dc1beb6fb52e8feb4",
+  "browser": "155.0.8059.80",
+  "rendererArgs": [],
+  "fixture": "isolated synthetic DB/fixed date",
+  "cases": 2,
+  "scope": "Real compiled Models: modern compact read versus simulated older daemon rejecting opt-in, complete displayed main text and refresh fallback. Expected400 is deliberate; no auth/HTTP correctness claim follows beyond unit/API tests.",
+  "results": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "requests": [
+        {
+          "legacy": false,
+          "url": "/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001&breakdown=0",
+          "compact": true
+        },
+        {
+          "legacy": true,
+          "url": "/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001&breakdown=0",
+          "compact": true
+        },
+        {
+          "legacy": true,
+          "url": "/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+          "compact": false
+        },
+        {
+          "legacy": true,
+          "url": "/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+          "compact": false
+        }
+      ],
+      "exactMainText": true,
+      "refreshUsesCachedLegacy": true,
+      "errors": [],
+      "forbidden": []
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "requests": [
+        {
+          "legacy": false,
+          "url": "/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001&breakdown=0",
+          "compact": true
+        },
+        {
+          "legacy": true,
+          "url": "/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001&breakdown=0",
+          "compact": true
+        },
+        {
+          "legacy": true,
+          "url": "/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+          "compact": false
+        },
+        {
+          "legacy": true,
+          "url": "/api/models?detailed=1&trends=1&from=1746032400000&to=1747489320001",
+          "compact": false
+        }
+      ],
+      "exactMainText": true,
+      "refreshUsesCachedLegacy": true,
+      "errors": [],
+      "forbidden": []
+    }
+  ]
+}

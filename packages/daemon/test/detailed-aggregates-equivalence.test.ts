@@ -105,6 +105,12 @@ test('optimized detail aggregates exactly preserve original complete responses a
         const original = legacyDetailedAggregates(db,scope,dimension);
         const actual = detailedAggregates(db,scope,dimension);
         assert.deepEqual(actual,original,`${dimension}: ${JSON.stringify(scope)}`);
+        if (dimension === 'model') {
+          const summary = detailedAggregates(db, scope, dimension, 'omitted');
+          assert.deepEqual(summary, { totals: original.totals, groups: original.groups, breakdown: 'omitted' },
+            `summary preserves every fact/group: ${JSON.stringify(scope)}`);
+          assert.equal(Object.hasOwn(summary, 'rows'), false);
+        }
       }
     }
     const actual = detailedAggregates(db,base,'model');

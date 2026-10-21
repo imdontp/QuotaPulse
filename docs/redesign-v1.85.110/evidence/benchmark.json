@@ -1,0 +1,181 @@
+{
+  "fixture": {
+    "records": 161200,
+    "pairs": 1265,
+    "sessions": 120,
+    "grains": 3,
+    "fixtureMs": 1038.4012
+  },
+  "environment": {
+    "node": "v22.13.1",
+    "platform": "win32",
+    "release": "10.0.26200",
+    "cpu": "Intel(R) Core(TM) Ultra 7 265U"
+  },
+  "functionResult": {
+    "fullBytes": 4009433,
+    "summaryBytes": 502138,
+    "reductionFraction": 0.8747608452367205,
+    "fullQueries": 3,
+    "summaryQueries": 2,
+    "fullSha256": "060d4469f2050da1136d44ea76089012a2c6c6fadcb007d6df07d0b83cae8060",
+    "unchangedTotalsAndAllGroups": true
+  },
+  "http": {
+    "fullBytes": 4025423,
+    "summaryBytes": 518128,
+    "fullRows": 7590,
+    "groups": 1265,
+    "trendBuckets": 30,
+    "exactFactsAndTrends": true
+  },
+  "trials": [
+    {
+      "order": "full/summary",
+      "fullMs": 974.8464999999997,
+      "summaryMs": 449.0655999999999
+    },
+    {
+      "order": "summary/full",
+      "fullMs": 933.3068999999996,
+      "summaryMs": 457.0541999999996
+    },
+    {
+      "order": "full/summary",
+      "fullMs": 961.4650000000001,
+      "summaryMs": 454.08860000000004
+    },
+    {
+      "order": "summary/full",
+      "fullMs": 1048.7393999999995,
+      "summaryMs": 481.5645000000004
+    },
+    {
+      "order": "full/summary",
+      "fullMs": 1356.7354000000014,
+      "summaryMs": 716.2229000000007
+    }
+  ],
+  "medians": {
+    "fullMs": 974.8464999999997,
+    "summaryMs": 457.0541999999996
+  },
+  "readOnly": true,
+  "limitations": "Warm local in-memory synthetic fixture, interleaved same-process five trials after warmup. Not disk/network/native startup or general SLO evidence. Full group cardinality and vendor-filter work remain O(N).",
+  "queryPlans": [
+    {
+      "index": 0,
+      "sql": "SELECT COUNT(*) AS records,\n  COALESCE(SUM(u.call_count),0) AS calls,\n  COUNT(DISTINCT sess.id) AS sessions,\n  COALESCE(SUM(u.input_tokens),0) AS inputTokens,\n  COALESCE(SUM(u.cached_input_tokens),0) AS cachedInputTokens,\n  COALESCE(SUM(u.cache_write_tokens),0) AS cacheWriteTokens,\n  COALESCE(SUM(u.output_tokens),0) AS outputTokens,\n  COALESCE(SUM(u.total_tokens),0) AS tokens,\n  COALESCE(SUM(CASE WHEN u.cost_source='native' THEN u.cost_usd ELSE 0 END),0) AS reported_native_usd,\n  COALESCE(SUM(CASE WHEN u.cost_source IN ('computed','estimated') THEN u.cost_usd ELSE 0 END),0) AS api_value_usd,\n  COALESCE(SUM(CASE WHEN u.cost_source='native' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS native_calls,\n  COALESCE(SUM(CASE WHEN u.cost_source='computed' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS computed_calls,\n  COALESCE(SUM(CASE WHEN u.cost_source='estimated' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS estimated_calls,\n  COALESCE(SUM(CASE WHEN u.cost_usd IS NULL OR u.cost_source NOT IN ('native','computed','estimated') THEN u.call_count ELSE 0 END),0) AS unknown_calls,\n  COALESCE(SUM(CASE WHEN u.cost_cache_saving_usd IS NOT NULL THEN u.cost_cache_saving_usd ELSE 0 END),0) AS cache_saving_known_usd,\n  COALESCE(SUM(CASE WHEN u.cost_cache_saving_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS cache_saving_known_calls,\n  MAX(u.ts) AS lastObservedAt FROM usage_event u JOIN source s ON s.id=u.source_id\n    LEFT JOIN session sess ON sess.id=u.session_id WHERE u.ts >= @from AND u.ts < @to",
+      "plan": [
+        {
+          "id": 3,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR count(DISTINCT)"
+        },
+        {
+          "id": 8,
+          "parent": 0,
+          "notused": 162,
+          "detail": "SEARCH u USING INDEX idx_usage_ts (ts>? AND ts<?)"
+        },
+        {
+          "id": 18,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+        },
+        {
+          "id": 21,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "sql": "SELECT u.model, u.provider, CASE WHEN LOWER(u.model) LIKE 'anthropic/%' THEN 'anthropic' WHEN LOWER(u.model) LIKE 'openai/%' THEN 'openai' WHEN LOWER(u.model) LIKE 'google/%' THEN 'google' WHEN LOWER(u.model) LIKE 'deepseek/%' THEN 'deepseek' WHEN LOWER(u.model) LIKE 'qwen/%' THEN 'qwen' WHEN LOWER(u.model) LIKE 'meta/%' THEN 'meta' WHEN LOWER(u.model) LIKE 'mistral/%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'nvidia/%' THEN 'nvidia' WHEN LOWER(u.model) LIKE 'xiaomi/%' THEN 'xiaomi' WHEN LOWER(u.model) LIKE 'inclusionai/%' THEN 'inclusionai' WHEN LOWER(u.model) LIKE 'poolside/%' THEN 'poolside' WHEN LOWER(u.model) LIKE 'moonshot/%' THEN 'moonshot' WHEN LOWER(u.model) LIKE 'stepfun/%' THEN 'stepfun' WHEN LOWER(u.model) LIKE 'minimax/%' THEN 'minimax' WHEN LOWER(u.model) LIKE 'xai/%' THEN 'xai' WHEN LOWER(u.model) LIKE 'zai/%' THEN 'zai' WHEN LOWER(u.model) LIKE 'nous/%' THEN 'nous' WHEN LOWER(u.model) LIKE 'cohere/%' THEN 'cohere' WHEN LOWER(u.model) LIKE 'amazon/%' THEN 'amazon' WHEN LOWER(u.model) LIKE 'microsoft/%' THEN 'microsoft' WHEN LOWER(u.model) LIKE 'ibm/%' THEN 'ibm' WHEN LOWER(u.model) LIKE 'baidu/%' THEN 'baidu' WHEN LOWER(u.model) LIKE 'tencent/%' THEN 'tencent' WHEN LOWER(u.model) LIKE 'bytedance/%' THEN 'bytedance' WHEN LOWER(u.model) LIKE 'upstage/%' THEN 'upstage' WHEN LOWER(u.model) LIKE 'liquid/%' THEN 'liquid' WHEN LOWER(u.model) LIKE 'perplexity/%' THEN 'perplexity' WHEN LOWER(u.model) LIKE 'ai2/%' THEN 'ai2' WHEN LOWER(u.model) LIKE 'tii/%' THEN 'tii' WHEN LOWER(u.model) LIKE 'lg/%' THEN 'lg' WHEN LOWER(u.model) LIKE 'internlm/%' THEN 'internlm' WHEN LOWER(u.model) LIKE 'baichuan/%' THEN 'baichuan' WHEN LOWER(u.model) LIKE 'zeroone/%' THEN 'zeroone' WHEN LOWER(u.model) LIKE 'anthropic/%' THEN 'anthropic' WHEN LOWER(u.model) LIKE 'openai/%' THEN 'openai' WHEN LOWER(u.model) LIKE 'openai-codex/%' THEN 'openai' WHEN LOWER(u.model) LIKE 'google/%' THEN 'google' WHEN LOWER(u.model) LIKE 'google-vertex/%' THEN 'google' WHEN LOWER(u.model) LIKE 'deepseek/%' THEN 'deepseek' WHEN LOWER(u.model) LIKE 'mistral/%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'xai/%' THEN 'xai' WHEN LOWER(u.model) LIKE 'zai/%' THEN 'zai' WHEN LOWER(u.model) LIKE 'claude-%' THEN 'anthropic' WHEN LOWER(u.model) LIKE 'claude.%' THEN 'anthropic' WHEN LOWER(u.model) LIKE 'claude %' THEN 'anthropic' WHEN LOWER(u.model) LIKE 'gpt%' THEN 'openai' WHEN LOWER(u.model) LIKE 'codex%' THEN 'openai' WHEN LOWER(u.model) LIKE 'o1-%' THEN 'openai' WHEN LOWER(u.model) LIKE 'o3-%' THEN 'openai' WHEN LOWER(u.model) LIKE 'o4-%' THEN 'openai' WHEN LOWER(u.model) LIKE 'chatgpt%' THEN 'openai' WHEN LOWER(u.model) LIKE 'davinci%' THEN 'openai' WHEN LOWER(u.model) LIKE 'dall-e%' THEN 'openai' WHEN LOWER(u.model) LIKE 'whisper%' THEN 'openai' WHEN LOWER(u.model) LIKE 'text-embedding%' THEN 'openai' WHEN LOWER(u.model) LIKE 'gemini%' THEN 'google' WHEN LOWER(u.model) LIKE 'gemma%' THEN 'google' WHEN LOWER(u.model) LIKE 'palm%' THEN 'google' WHEN LOWER(u.model) LIKE 'imagen%' THEN 'google' WHEN LOWER(u.model) LIKE 'deepseek%' THEN 'deepseek' WHEN LOWER(u.model) LIKE 'qwen%' THEN 'qwen' WHEN LOWER(u.model) LIKE 'qwq%' THEN 'qwen' WHEN LOWER(u.model) LIKE 'qvq%' THEN 'qwen' WHEN LOWER(u.model) LIKE 'llama%' THEN 'meta' WHEN LOWER(u.model) LIKE 'codellama%' THEN 'meta' WHEN LOWER(u.model) LIKE 'mistral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'mixtral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'codestral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'magistral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'devstral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'ministral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'nemotron%' THEN 'nvidia' WHEN LOWER(u.model) LIKE 'nvidia%' THEN 'nvidia' WHEN LOWER(u.model) LIKE 'mimo%' THEN 'xiaomi' WHEN LOWER(u.model) LIKE 'ling-%' THEN 'inclusionai' WHEN LOWER(u.model) LIKE 'ling.%' THEN 'inclusionai' WHEN LOWER(u.model) LIKE 'laguna%' THEN 'poolside' WHEN LOWER(u.model) LIKE 'poolside%' THEN 'poolside' WHEN LOWER(u.model) LIKE 'kimi%' THEN 'moonshot' WHEN LOWER(u.model) LIKE 'moonshot%' THEN 'moonshot' WHEN LOWER(u.model) LIKE 'step-%' THEN 'stepfun' WHEN LOWER(u.model) LIKE 'step_%' THEN 'stepfun' WHEN LOWER(u.model) LIKE 'stepfun%' THEN 'stepfun' WHEN LOWER(u.model) LIKE 'minimax%' THEN 'minimax' WHEN LOWER(u.model) LIKE 'grok%' THEN 'xai' WHEN LOWER(u.model) LIKE 'glm%' THEN 'zai' WHEN LOWER(u.model) LIKE 'chatglm%' THEN 'zai' WHEN LOWER(u.model) LIKE 'hermes%' THEN 'nous' WHEN LOWER(u.model) LIKE '%/claude-%' THEN 'anthropic' WHEN LOWER(u.model) LIKE '%/claude.%' THEN 'anthropic' WHEN LOWER(u.model) LIKE '%/claude %' THEN 'anthropic' WHEN LOWER(u.model) LIKE '%/gpt%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/codex%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/o1-%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/o3-%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/o4-%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/chatgpt%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/davinci%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/dall-e%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/whisper%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/text-embedding%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/gemini%' THEN 'google' WHEN LOWER(u.model) LIKE '%/gemma%' THEN 'google' WHEN LOWER(u.model) LIKE '%/palm%' THEN 'google' WHEN LOWER(u.model) LIKE '%/imagen%' THEN 'google' WHEN LOWER(u.model) LIKE '%/deepseek%' THEN 'deepseek' WHEN LOWER(u.model) LIKE '%/qwen%' THEN 'qwen' WHEN LOWER(u.model) LIKE '%/qwq%' THEN 'qwen' WHEN LOWER(u.model) LIKE '%/qvq%' THEN 'qwen' WHEN LOWER(u.model) LIKE '%/llama%' THEN 'meta' WHEN LOWER(u.model) LIKE '%/codellama%' THEN 'meta' WHEN LOWER(u.model) LIKE '%/mistral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/mixtral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/codestral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/magistral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/devstral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/ministral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/nemotron%' THEN 'nvidia' WHEN LOWER(u.model) LIKE '%/nvidia%' THEN 'nvidia' WHEN LOWER(u.model) LIKE '%/mimo%' THEN 'xiaomi' WHEN LOWER(u.model) LIKE '%/ling-%' THEN 'inclusionai' WHEN LOWER(u.model) LIKE '%/ling.%' THEN 'inclusionai' WHEN LOWER(u.model) LIKE '%/laguna%' THEN 'poolside' WHEN LOWER(u.model) LIKE '%/poolside%' THEN 'poolside' WHEN LOWER(u.model) LIKE '%/kimi%' THEN 'moonshot' WHEN LOWER(u.model) LIKE '%/moonshot%' THEN 'moonshot' WHEN LOWER(u.model) LIKE '%/step-%' THEN 'stepfun' WHEN LOWER(u.model) LIKE '%/step_%' THEN 'stepfun' WHEN LOWER(u.model) LIKE '%/stepfun%' THEN 'stepfun' WHEN LOWER(u.model) LIKE '%/minimax%' THEN 'minimax' WHEN LOWER(u.model) LIKE '%/grok%' THEN 'xai' WHEN LOWER(u.model) LIKE '%/glm%' THEN 'zai' WHEN LOWER(u.model) LIKE '%/chatglm%' THEN 'zai' WHEN LOWER(u.model) LIKE '%/hermes%' THEN 'nous' WHEN LOWER(u.provider) = 'anthropic' THEN 'anthropic' WHEN LOWER(u.provider) = 'openai' THEN 'openai' WHEN LOWER(u.provider) = 'openai-codex' THEN 'openai' WHEN LOWER(u.provider) = 'google' THEN 'google' WHEN LOWER(u.provider) = 'google-vertex' THEN 'google' WHEN LOWER(u.provider) = 'deepseek' THEN 'deepseek' WHEN LOWER(u.provider) = 'mistral' THEN 'mistral' WHEN LOWER(u.provider) = 'xai' THEN 'xai' WHEN LOWER(u.provider) = 'zai' THEN 'zai' ELSE 'unknown' END AS vendor, COUNT(*) AS records,\n  COALESCE(SUM(u.call_count),0) AS calls,\n  COUNT(DISTINCT sess.id) AS sessions,\n  COALESCE(SUM(u.input_tokens),0) AS inputTokens,\n  COALESCE(SUM(u.cached_input_tokens),0) AS cachedInputTokens,\n  COALESCE(SUM(u.cache_write_tokens),0) AS cacheWriteTokens,\n  COALESCE(SUM(u.output_tokens),0) AS outputTokens,\n  COALESCE(SUM(u.total_tokens),0) AS tokens,\n  COALESCE(SUM(CASE WHEN u.cost_source='native' THEN u.cost_usd ELSE 0 END),0) AS reported_native_usd,\n  COALESCE(SUM(CASE WHEN u.cost_source IN ('computed','estimated') THEN u.cost_usd ELSE 0 END),0) AS api_value_usd,\n  COALESCE(SUM(CASE WHEN u.cost_source='native' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS native_calls,\n  COALESCE(SUM(CASE WHEN u.cost_source='computed' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS computed_calls,\n  COALESCE(SUM(CASE WHEN u.cost_source='estimated' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS estimated_calls,\n  COALESCE(SUM(CASE WHEN u.cost_usd IS NULL OR u.cost_source NOT IN ('native','computed','estimated') THEN u.call_count ELSE 0 END),0) AS unknown_calls,\n  COALESCE(SUM(CASE WHEN u.cost_cache_saving_usd IS NOT NULL THEN u.cost_cache_saving_usd ELSE 0 END),0) AS cache_saving_known_usd,\n  COALESCE(SUM(CASE WHEN u.cost_cache_saving_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS cache_saving_known_calls,\n  MAX(u.ts) AS lastObservedAt FROM usage_event u JOIN source s ON s.id=u.source_id\n    LEFT JOIN session sess ON sess.id=u.session_id WHERE u.ts >= @from AND u.ts < @to\n      GROUP BY u.model, u.provider ORDER BY tokens DESC, model ASC, provider ASC",
+      "plan": [
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 162,
+          "detail": "SEARCH u USING INDEX idx_usage_ts (ts>? AND ts<?)"
+        },
+        {
+          "id": 20,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+        },
+        {
+          "id": 23,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+        },
+        {
+          "id": 28,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        },
+        {
+          "id": 1102,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR count(DISTINCT)"
+        },
+        {
+          "id": 1105,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "sql": "SELECT u.model, u.provider, CASE WHEN LOWER(u.model) LIKE 'anthropic/%' THEN 'anthropic' WHEN LOWER(u.model) LIKE 'openai/%' THEN 'openai' WHEN LOWER(u.model) LIKE 'google/%' THEN 'google' WHEN LOWER(u.model) LIKE 'deepseek/%' THEN 'deepseek' WHEN LOWER(u.model) LIKE 'qwen/%' THEN 'qwen' WHEN LOWER(u.model) LIKE 'meta/%' THEN 'meta' WHEN LOWER(u.model) LIKE 'mistral/%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'nvidia/%' THEN 'nvidia' WHEN LOWER(u.model) LIKE 'xiaomi/%' THEN 'xiaomi' WHEN LOWER(u.model) LIKE 'inclusionai/%' THEN 'inclusionai' WHEN LOWER(u.model) LIKE 'poolside/%' THEN 'poolside' WHEN LOWER(u.model) LIKE 'moonshot/%' THEN 'moonshot' WHEN LOWER(u.model) LIKE 'stepfun/%' THEN 'stepfun' WHEN LOWER(u.model) LIKE 'minimax/%' THEN 'minimax' WHEN LOWER(u.model) LIKE 'xai/%' THEN 'xai' WHEN LOWER(u.model) LIKE 'zai/%' THEN 'zai' WHEN LOWER(u.model) LIKE 'nous/%' THEN 'nous' WHEN LOWER(u.model) LIKE 'cohere/%' THEN 'cohere' WHEN LOWER(u.model) LIKE 'amazon/%' THEN 'amazon' WHEN LOWER(u.model) LIKE 'microsoft/%' THEN 'microsoft' WHEN LOWER(u.model) LIKE 'ibm/%' THEN 'ibm' WHEN LOWER(u.model) LIKE 'baidu/%' THEN 'baidu' WHEN LOWER(u.model) LIKE 'tencent/%' THEN 'tencent' WHEN LOWER(u.model) LIKE 'bytedance/%' THEN 'bytedance' WHEN LOWER(u.model) LIKE 'upstage/%' THEN 'upstage' WHEN LOWER(u.model) LIKE 'liquid/%' THEN 'liquid' WHEN LOWER(u.model) LIKE 'perplexity/%' THEN 'perplexity' WHEN LOWER(u.model) LIKE 'ai2/%' THEN 'ai2' WHEN LOWER(u.model) LIKE 'tii/%' THEN 'tii' WHEN LOWER(u.model) LIKE 'lg/%' THEN 'lg' WHEN LOWER(u.model) LIKE 'internlm/%' THEN 'internlm' WHEN LOWER(u.model) LIKE 'baichuan/%' THEN 'baichuan' WHEN LOWER(u.model) LIKE 'zeroone/%' THEN 'zeroone' WHEN LOWER(u.model) LIKE 'anthropic/%' THEN 'anthropic' WHEN LOWER(u.model) LIKE 'openai/%' THEN 'openai' WHEN LOWER(u.model) LIKE 'openai-codex/%' THEN 'openai' WHEN LOWER(u.model) LIKE 'google/%' THEN 'google' WHEN LOWER(u.model) LIKE 'google-vertex/%' THEN 'google' WHEN LOWER(u.model) LIKE 'deepseek/%' THEN 'deepseek' WHEN LOWER(u.model) LIKE 'mistral/%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'xai/%' THEN 'xai' WHEN LOWER(u.model) LIKE 'zai/%' THEN 'zai' WHEN LOWER(u.model) LIKE 'claude-%' THEN 'anthropic' WHEN LOWER(u.model) LIKE 'claude.%' THEN 'anthropic' WHEN LOWER(u.model) LIKE 'claude %' THEN 'anthropic' WHEN LOWER(u.model) LIKE 'gpt%' THEN 'openai' WHEN LOWER(u.model) LIKE 'codex%' THEN 'openai' WHEN LOWER(u.model) LIKE 'o1-%' THEN 'openai' WHEN LOWER(u.model) LIKE 'o3-%' THEN 'openai' WHEN LOWER(u.model) LIKE 'o4-%' THEN 'openai' WHEN LOWER(u.model) LIKE 'chatgpt%' THEN 'openai' WHEN LOWER(u.model) LIKE 'davinci%' THEN 'openai' WHEN LOWER(u.model) LIKE 'dall-e%' THEN 'openai' WHEN LOWER(u.model) LIKE 'whisper%' THEN 'openai' WHEN LOWER(u.model) LIKE 'text-embedding%' THEN 'openai' WHEN LOWER(u.model) LIKE 'gemini%' THEN 'google' WHEN LOWER(u.model) LIKE 'gemma%' THEN 'google' WHEN LOWER(u.model) LIKE 'palm%' THEN 'google' WHEN LOWER(u.model) LIKE 'imagen%' THEN 'google' WHEN LOWER(u.model) LIKE 'deepseek%' THEN 'deepseek' WHEN LOWER(u.model) LIKE 'qwen%' THEN 'qwen' WHEN LOWER(u.model) LIKE 'qwq%' THEN 'qwen' WHEN LOWER(u.model) LIKE 'qvq%' THEN 'qwen' WHEN LOWER(u.model) LIKE 'llama%' THEN 'meta' WHEN LOWER(u.model) LIKE 'codellama%' THEN 'meta' WHEN LOWER(u.model) LIKE 'mistral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'mixtral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'codestral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'magistral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'devstral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'ministral%' THEN 'mistral' WHEN LOWER(u.model) LIKE 'nemotron%' THEN 'nvidia' WHEN LOWER(u.model) LIKE 'nvidia%' THEN 'nvidia' WHEN LOWER(u.model) LIKE 'mimo%' THEN 'xiaomi' WHEN LOWER(u.model) LIKE 'ling-%' THEN 'inclusionai' WHEN LOWER(u.model) LIKE 'ling.%' THEN 'inclusionai' WHEN LOWER(u.model) LIKE 'laguna%' THEN 'poolside' WHEN LOWER(u.model) LIKE 'poolside%' THEN 'poolside' WHEN LOWER(u.model) LIKE 'kimi%' THEN 'moonshot' WHEN LOWER(u.model) LIKE 'moonshot%' THEN 'moonshot' WHEN LOWER(u.model) LIKE 'step-%' THEN 'stepfun' WHEN LOWER(u.model) LIKE 'step_%' THEN 'stepfun' WHEN LOWER(u.model) LIKE 'stepfun%' THEN 'stepfun' WHEN LOWER(u.model) LIKE 'minimax%' THEN 'minimax' WHEN LOWER(u.model) LIKE 'grok%' THEN 'xai' WHEN LOWER(u.model) LIKE 'glm%' THEN 'zai' WHEN LOWER(u.model) LIKE 'chatglm%' THEN 'zai' WHEN LOWER(u.model) LIKE 'hermes%' THEN 'nous' WHEN LOWER(u.model) LIKE '%/claude-%' THEN 'anthropic' WHEN LOWER(u.model) LIKE '%/claude.%' THEN 'anthropic' WHEN LOWER(u.model) LIKE '%/claude %' THEN 'anthropic' WHEN LOWER(u.model) LIKE '%/gpt%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/codex%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/o1-%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/o3-%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/o4-%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/chatgpt%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/davinci%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/dall-e%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/whisper%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/text-embedding%' THEN 'openai' WHEN LOWER(u.model) LIKE '%/gemini%' THEN 'google' WHEN LOWER(u.model) LIKE '%/gemma%' THEN 'google' WHEN LOWER(u.model) LIKE '%/palm%' THEN 'google' WHEN LOWER(u.model) LIKE '%/imagen%' THEN 'google' WHEN LOWER(u.model) LIKE '%/deepseek%' THEN 'deepseek' WHEN LOWER(u.model) LIKE '%/qwen%' THEN 'qwen' WHEN LOWER(u.model) LIKE '%/qwq%' THEN 'qwen' WHEN LOWER(u.model) LIKE '%/qvq%' THEN 'qwen' WHEN LOWER(u.model) LIKE '%/llama%' THEN 'meta' WHEN LOWER(u.model) LIKE '%/codellama%' THEN 'meta' WHEN LOWER(u.model) LIKE '%/mistral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/mixtral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/codestral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/magistral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/devstral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/ministral%' THEN 'mistral' WHEN LOWER(u.model) LIKE '%/nemotron%' THEN 'nvidia' WHEN LOWER(u.model) LIKE '%/nvidia%' THEN 'nvidia' WHEN LOWER(u.model) LIKE '%/mimo%' THEN 'xiaomi' WHEN LOWER(u.model) LIKE '%/ling-%' THEN 'inclusionai' WHEN LOWER(u.model) LIKE '%/ling.%' THEN 'inclusionai' WHEN LOWER(u.model) LIKE '%/laguna%' THEN 'poolside' WHEN LOWER(u.model) LIKE '%/poolside%' THEN 'poolside' WHEN LOWER(u.model) LIKE '%/kimi%' THEN 'moonshot' WHEN LOWER(u.model) LIKE '%/moonshot%' THEN 'moonshot' WHEN LOWER(u.model) LIKE '%/step-%' THEN 'stepfun' WHEN LOWER(u.model) LIKE '%/step_%' THEN 'stepfun' WHEN LOWER(u.model) LIKE '%/stepfun%' THEN 'stepfun' WHEN LOWER(u.model) LIKE '%/minimax%' THEN 'minimax' WHEN LOWER(u.model) LIKE '%/grok%' THEN 'xai' WHEN LOWER(u.model) LIKE '%/glm%' THEN 'zai' WHEN LOWER(u.model) LIKE '%/chatglm%' THEN 'zai' WHEN LOWER(u.model) LIKE '%/hermes%' THEN 'nous' WHEN LOWER(u.provider) = 'anthropic' THEN 'anthropic' WHEN LOWER(u.provider) = 'openai' THEN 'openai' WHEN LOWER(u.provider) = 'openai-codex' THEN 'openai' WHEN LOWER(u.provider) = 'google' THEN 'google' WHEN LOWER(u.provider) = 'google-vertex' THEN 'google' WHEN LOWER(u.provider) = 'deepseek' THEN 'deepseek' WHEN LOWER(u.provider) = 'mistral' THEN 'mistral' WHEN LOWER(u.provider) = 'xai' THEN 'xai' WHEN LOWER(u.provider) = 'zai' THEN 'zai' ELSE 'unknown' END AS vendor, u.source_id AS sourceId,\n       s.harness, s.display_name AS sourceName, u.effort, COUNT(*) AS records,\n  COALESCE(SUM(u.call_count),0) AS calls,\n  COUNT(DISTINCT sess.id) AS sessions,\n  COALESCE(SUM(u.input_tokens),0) AS inputTokens,\n  COALESCE(SUM(u.cached_input_tokens),0) AS cachedInputTokens,\n  COALESCE(SUM(u.cache_write_tokens),0) AS cacheWriteTokens,\n  COALESCE(SUM(u.output_tokens),0) AS outputTokens,\n  COALESCE(SUM(u.total_tokens),0) AS tokens,\n  COALESCE(SUM(CASE WHEN u.cost_source='native' THEN u.cost_usd ELSE 0 END),0) AS reported_native_usd,\n  COALESCE(SUM(CASE WHEN u.cost_source IN ('computed','estimated') THEN u.cost_usd ELSE 0 END),0) AS api_value_usd,\n  COALESCE(SUM(CASE WHEN u.cost_source='native' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS native_calls,\n  COALESCE(SUM(CASE WHEN u.cost_source='computed' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS computed_calls,\n  COALESCE(SUM(CASE WHEN u.cost_source='estimated' AND u.cost_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS estimated_calls,\n  COALESCE(SUM(CASE WHEN u.cost_usd IS NULL OR u.cost_source NOT IN ('native','computed','estimated') THEN u.call_count ELSE 0 END),0) AS unknown_calls,\n  COALESCE(SUM(CASE WHEN u.cost_cache_saving_usd IS NOT NULL THEN u.cost_cache_saving_usd ELSE 0 END),0) AS cache_saving_known_usd,\n  COALESCE(SUM(CASE WHEN u.cost_cache_saving_usd IS NOT NULL THEN u.call_count ELSE 0 END),0) AS cache_saving_known_calls,\n  MAX(u.ts) AS lastObservedAt FROM usage_event u JOIN source s ON s.id=u.source_id\n    LEFT JOIN session sess ON sess.id=u.session_id WHERE u.ts >= @from AND u.ts < @to\n      GROUP BY u.model, u.provider, u.source_id, u.effort ORDER BY tokens DESC, model ASC, provider ASC, sourceId ASC, effort ASC",
+      "plan": [
+        {
+          "id": 10,
+          "parent": 0,
+          "notused": 162,
+          "detail": "SEARCH u USING INDEX idx_usage_ts (ts>? AND ts<?)"
+        },
+        {
+          "id": 20,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+        },
+        {
+          "id": 23,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+        },
+        {
+          "id": 28,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR GROUP BY"
+        },
+        {
+          "id": 1114,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR count(DISTINCT)"
+        },
+        {
+          "id": 1117,
+          "parent": 0,
+          "notused": 0,
+          "detail": "USE TEMP B-TREE FOR ORDER BY"
+        }
+      ]
+    }
+  ]
+}

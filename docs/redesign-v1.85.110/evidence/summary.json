@@ -1,0 +1,36 @@
+{
+  "productionIndexSha256": "6746327285fadd9bdaf3e79adffada4e44cd4bc2d412a98dc1beb6fb52e8feb4",
+  "repositoryTests": {
+    "daemon": 122,
+    "web": 335,
+    "tray": 198,
+    "total": 655
+  },
+  "benchmark": {
+    "http": {
+      "fullBytes": 4025423,
+      "summaryBytes": 518128,
+      "fullRows": 7590,
+      "groups": 1265,
+      "trendBuckets": 30,
+      "exactFactsAndTrends": true
+    },
+    "functionResult": {
+      "fullBytes": 4009433,
+      "summaryBytes": 502138,
+      "reductionFraction": 0.8747608452367205,
+      "fullQueries": 3,
+      "summaryQueries": 2,
+      "fullSha256": "060d4469f2050da1136d44ea76089012a2c6c6fadcb007d6df07d0b83cae8060",
+      "unchangedTotalsAndAllGroups": true
+    },
+    "medians": {
+      "fullMs": 974.8464999999997,
+      "summaryMs": 457.0541999999996
+    }
+  },
+  "compatibilityCases": 2,
+  "fullStableGate": "RED: original full matrix exited1 at Thai-dark125px/max34; all first-pass semantics completed, two EN repeat pairs exact; separate Thai-light pair exact. Not a full four-pair pass.",
+  "canonicalImmediatePairs": 8,
+  "strictControls": "RED"
+}
