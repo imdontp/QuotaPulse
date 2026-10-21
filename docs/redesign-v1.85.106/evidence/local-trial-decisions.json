@@ -1,0 +1,863 @@
+{
+  "decision": "Only six weight changes improve actual-coordinate alpha MAE by at least10%, raw RGB MAE and bounded-translation error, with unchanged main-child geometry. Other candidates retained as rejected diagnostics. The criterion is local text repair evidence, not whole-page likeness.",
+  "rows": [
+    {
+      "route": "overview",
+      "field": {
+        "id": "core",
+        "selector": ".qp-hero .qp-overview-heading-title",
+        "crop": [
+          270,
+          82,
+          352,
+          107
+        ],
+        "style": null,
+        "weight": 325,
+        "font": "325 16px / 24px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "text": "Pulse Core",
+        "rect": {
+          "x": 272,
+          "y": 82,
+          "width": 75.203125,
+          "height": 24,
+          "top": 82,
+          "right": 347.203125,
+          "bottom": 106,
+          "left": 272
+        }
+      },
+      "baseline": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "core",
+        "crop": [
+          270,
+          82,
+          352,
+          107
+        ],
+        "alphaMae": 0.11187239833064931,
+        "rgbMae": 27.222113821138212,
+        "bestTranslation": {
+          "error": 0.07532909902910458,
+          "dx": -1,
+          "dy": 0
+        },
+        "inkRatio": 1.0838956485557742,
+        "sourceBackground": 14.0212,
+        "currentBackground": 14.953
+      },
+      "best": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "core",
+        "crop": [
+          270,
+          82,
+          352,
+          107
+        ],
+        "alphaMae": 0.11187239833064931,
+        "rgbMae": 27.222113821138212,
+        "bestTranslation": {
+          "error": 0.07532909902910458,
+          "dx": -1,
+          "dy": 0
+        },
+        "inkRatio": 1.0838956485557742,
+        "sourceBackground": 14.0212,
+        "currentBackground": 14.953
+      },
+      "relativeDiagnosticGain": 0,
+      "accepted": false,
+      "mainChildGeometryIdentical": true
+    },
+    {
+      "route": "overview",
+      "field": {
+        "id": "runtime",
+        "selector": ".qp-runtime .qp-overview-heading-title",
+        "crop": [
+          270,
+          483,
+          401,
+          510
+        ],
+        "style": null,
+        "weight": 275,
+        "font": "275 16.5px / 24.75px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "text": "Live Runtime Map",
+        "rect": {
+          "x": 272,
+          "y": 483,
+          "width": 123.25,
+          "height": 24.75,
+          "top": 483,
+          "right": 395.25,
+          "bottom": 507.75,
+          "left": 272
+        }
+      },
+      "baseline": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "runtime",
+        "crop": [
+          270,
+          483,
+          401,
+          510
+        ],
+        "alphaMae": 0.12018520904371009,
+        "rgbMae": 28.033455847705213,
+        "bestTranslation": {
+          "error": 0.10394578148325273,
+          "dx": 1,
+          "dy": 0
+        },
+        "inkRatio": 1.0760600409446408,
+        "sourceBackground": 14.590800000000002,
+        "currentBackground": 14.8808
+      },
+      "best": {
+        "trial": {
+          "name": "weight-plus50",
+          "delta": 50,
+          "shadow": "none"
+        },
+        "id": "runtime",
+        "crop": [
+          270,
+          483,
+          401,
+          510
+        ],
+        "alphaMae": 0.08605748336115135,
+        "rgbMae": 21.099896333993026,
+        "bestTranslation": {
+          "error": 0.08605748336115135,
+          "dx": 0,
+          "dy": 0
+        },
+        "inkRatio": 1.1136423234670756,
+        "sourceBackground": 14.590800000000002,
+        "currentBackground": 14.8808
+      },
+      "relativeDiagnosticGain": 0.28395944853868704,
+      "accepted": true,
+      "mainChildGeometryIdentical": true
+    },
+    {
+      "route": "overview",
+      "field": {
+        "id": "runway",
+        "selector": ".qp-runway .qp-overview-heading-title",
+        "crop": [
+          274,
+          723,
+          378,
+          751
+        ],
+        "style": null,
+        "weight": 300,
+        "font": "300 16px / 24px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "text": "Quota Runway",
+        "rect": {
+          "x": 276,
+          "y": 725.75,
+          "width": 97.46875,
+          "height": 24,
+          "top": 725.75,
+          "right": 373.46875,
+          "bottom": 749.75,
+          "left": 276
+        }
+      },
+      "baseline": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "runway",
+        "crop": [
+          274,
+          723,
+          378,
+          751
+        ],
+        "alphaMae": 0.18895214357075565,
+        "rgbMae": 42.950892857142854,
+        "bestTranslation": {
+          "error": 0.1223407118846812,
+          "dx": -2,
+          "dy": -2
+        },
+        "inkRatio": 1.1172174928578913,
+        "sourceBackground": 15.021199999999999,
+        "currentBackground": 14.8808
+      },
+      "best": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "runway",
+        "crop": [
+          274,
+          723,
+          378,
+          751
+        ],
+        "alphaMae": 0.18895214357075565,
+        "rgbMae": 42.950892857142854,
+        "bestTranslation": {
+          "error": 0.1223407118846812,
+          "dx": -2,
+          "dy": -2
+        },
+        "inkRatio": 1.1172174928578913,
+        "sourceBackground": 15.021199999999999,
+        "currentBackground": 14.8808
+      },
+      "relativeDiagnosticGain": 0,
+      "accepted": false,
+      "mainChildGeometryIdentical": true
+    },
+    {
+      "route": "overview",
+      "field": {
+        "id": "insights",
+        "selector": ".qp-insights .qp-overview-heading-title",
+        "crop": [
+          991,
+          723,
+          1095,
+          751
+        ],
+        "style": null,
+        "weight": 400,
+        "font": "15.75px / 23.625px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "text": "Pulse Insights",
+        "rect": {
+          "x": 993.28125,
+          "y": 724.75,
+          "width": 96.328125,
+          "height": 23.625,
+          "top": 724.75,
+          "right": 1089.609375,
+          "bottom": 748.375,
+          "left": 993.28125
+        }
+      },
+      "baseline": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "insights",
+        "crop": [
+          991,
+          723,
+          1095,
+          751
+        ],
+        "alphaMae": 0.1250537298198216,
+        "rgbMae": 29.8091804029304,
+        "bestTranslation": {
+          "error": 0.07367260329306945,
+          "dx": 1,
+          "dy": -1
+        },
+        "inkRatio": 1.150712045977177,
+        "sourceBackground": 15.093399999999999,
+        "currentBackground": 14.165600000000001
+      },
+      "best": {
+        "trial": {
+          "name": "weight-plus50",
+          "delta": 50,
+          "shadow": "none"
+        },
+        "id": "insights",
+        "crop": [
+          991,
+          723,
+          1095,
+          751
+        ],
+        "alphaMae": 0.09417602694293893,
+        "rgbMae": 23.083218864468865,
+        "bestTranslation": {
+          "error": 0.056584896198526496,
+          "dx": 0,
+          "dy": -1
+        },
+        "inkRatio": 1.2368409942536502,
+        "sourceBackground": 15.093399999999999,
+        "currentBackground": 14.165600000000001
+      },
+      "relativeDiagnosticGain": 0.246915489217087,
+      "accepted": true,
+      "mainChildGeometryIdentical": true
+    },
+    {
+      "route": "live",
+      "field": {
+        "id": "title",
+        "selector": "main h1",
+        "crop": [
+          288,
+          80,
+          458,
+          118
+        ],
+        "style": null,
+        "weight": 300,
+        "font": "300 24px / 28.8px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "text": "Live Monitoring",
+        "rect": {
+          "x": 292,
+          "y": 84.59375,
+          "width": 155.359375,
+          "height": 28.796875,
+          "top": 84.59375,
+          "right": 447.359375,
+          "bottom": 113.390625,
+          "left": 292
+        }
+      },
+      "baseline": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          288,
+          80,
+          458,
+          118
+        ],
+        "alphaMae": 0.10751904542810051,
+        "rgbMae": 28.190763673890608,
+        "bestTranslation": {
+          "error": 0.07780649491111477,
+          "dx": 1,
+          "dy": 0
+        },
+        "inkRatio": 0.9665633490080657,
+        "sourceBackground": 10.949,
+        "currentBackground": 14.165600000000001
+      },
+      "best": {
+        "trial": {
+          "name": "weight-plus50",
+          "delta": 50,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          288,
+          80,
+          458,
+          118
+        ],
+        "alphaMae": 0.07333387960543879,
+        "rgbMae": 20.71527347781218,
+        "bestTranslation": {
+          "error": 0.07333387960543879,
+          "dx": 0,
+          "dy": 0
+        },
+        "inkRatio": 1.0214263783487993,
+        "sourceBackground": 10.949,
+        "currentBackground": 14.165600000000001
+      },
+      "relativeDiagnosticGain": 0.3179452132089642,
+      "accepted": true,
+      "mainChildGeometryIdentical": true
+    },
+    {
+      "route": "projects",
+      "field": {
+        "id": "title",
+        "selector": "main h1",
+        "crop": [
+          300,
+          76,
+          401,
+          111
+        ],
+        "style": null,
+        "weight": 300,
+        "font": "300 25px / 27.5px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "text": "Projects",
+        "rect": {
+          "x": 304,
+          "y": 79.34375,
+          "width": 287.625,
+          "height": 27.5,
+          "top": 79.34375,
+          "right": 591.625,
+          "bottom": 106.84375,
+          "left": 304
+        }
+      },
+      "baseline": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          300,
+          76,
+          401,
+          111
+        ],
+        "alphaMae": 0.10707130628721322,
+        "rgbMae": 28.277322017916077,
+        "bestTranslation": {
+          "error": 0.10707130628721322,
+          "dx": 0,
+          "dy": 0
+        },
+        "inkRatio": 0.9372888505258176,
+        "sourceBackground": 12.5346,
+        "currentBackground": 12.306000000000001
+      },
+      "best": {
+        "trial": {
+          "name": "weight-plus100",
+          "delta": 100,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          300,
+          76,
+          401,
+          111
+        ],
+        "alphaMae": 0.09445142075011093,
+        "rgbMae": 25.156624233851957,
+        "bestTranslation": {
+          "error": 0.08297671367868324,
+          "dx": -1,
+          "dy": 0
+        },
+        "inkRatio": 1.06547884985753,
+        "sourceBackground": 12.5346,
+        "currentBackground": 12.306000000000001
+      },
+      "relativeDiagnosticGain": 0.11786430907315265,
+      "accepted": true,
+      "mainChildGeometryIdentical": true
+    },
+    {
+      "route": "models",
+      "field": {
+        "id": "title",
+        "selector": "main h1",
+        "crop": [
+          286,
+          85,
+          371,
+          116
+        ],
+        "style": null,
+        "weight": 325,
+        "font": "325 22px / 27.5px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "text": "Models",
+        "rect": {
+          "x": 289,
+          "y": 87.25,
+          "width": 73.984375,
+          "height": 27.5,
+          "top": 87.25,
+          "right": 362.984375,
+          "bottom": 114.75,
+          "left": 289
+        }
+      },
+      "baseline": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          286,
+          85,
+          371,
+          116
+        ],
+        "alphaMae": 0.06838731159266717,
+        "rgbMae": 20.987602783048704,
+        "bestTranslation": {
+          "error": 0.06838731159266717,
+          "dx": 0,
+          "dy": 0
+        },
+        "inkRatio": 0.9782555139928328,
+        "sourceBackground": 12.307199999999998,
+        "currentBackground": 17.6
+      },
+      "best": {
+        "trial": {
+          "name": "fringe-blue-two",
+          "delta": 0,
+          "shadow": "0 0 2px rgba(113,166,255,.25)"
+        },
+        "id": "title",
+        "crop": [
+          286,
+          85,
+          371,
+          116
+        ],
+        "alphaMae": 0.06760791921217449,
+        "rgbMae": 20.786590765338392,
+        "bestTranslation": {
+          "error": 0.06760791921217449,
+          "dx": 0,
+          "dy": 0
+        },
+        "inkRatio": 1.0029166948082637,
+        "sourceBackground": 12.307199999999998,
+        "currentBackground": 18.3152
+      },
+      "relativeDiagnosticGain": 0.011396739575536306,
+      "accepted": false,
+      "mainChildGeometryIdentical": true
+    },
+    {
+      "route": "history",
+      "field": {
+        "id": "title",
+        "selector": "main h1",
+        "crop": [
+          301,
+          76,
+          462,
+          111
+        ],
+        "style": null,
+        "weight": 350,
+        "font": "350 22.5px / 31.5px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "text": "History & Logs",
+        "rect": {
+          "x": 305,
+          "y": 78.046875,
+          "width": 328.421875,
+          "height": 31.5,
+          "top": 78.046875,
+          "right": 633.421875,
+          "bottom": 109.546875,
+          "left": 305
+        }
+      },
+      "baseline": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          301,
+          76,
+          462,
+          111
+        ],
+        "alphaMae": 0.13290132044713282,
+        "rgbMae": 32.97509612540669,
+        "bestTranslation": {
+          "error": 0.07602455821499668,
+          "dx": 2,
+          "dy": 0
+        },
+        "inkRatio": 0.9802852389783244,
+        "sourceBackground": 11.8808,
+        "currentBackground": 12.3782
+      },
+      "best": {
+        "trial": {
+          "name": "weight-plus100",
+          "delta": 100,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          301,
+          76,
+          462,
+          111
+        ],
+        "alphaMae": 0.056184078184821164,
+        "rgbMae": 15.252055604850636,
+        "bestTranslation": {
+          "error": 0.056184078184821164,
+          "dx": 0,
+          "dy": 0
+        },
+        "inkRatio": 1.0976935813787432,
+        "sourceBackground": 11.8808,
+        "currentBackground": 12.3782
+      },
+      "relativeDiagnosticGain": 0.5772496616602785,
+      "accepted": true,
+      "mainChildGeometryIdentical": true
+    },
+    {
+      "route": "alerts",
+      "field": {
+        "id": "title",
+        "selector": "main h1",
+        "crop": [
+          306,
+          81,
+          556,
+          118
+        ],
+        "style": null,
+        "weight": 400,
+        "font": "24.5px / 27.5px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "text": "Alerts & Quota Guard",
+        "rect": {
+          "x": 310,
+          "y": 87,
+          "width": 399.84375,
+          "height": 27.5,
+          "top": 87,
+          "right": 709.84375,
+          "bottom": 114.5,
+          "left": 310
+        }
+      },
+      "baseline": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          306,
+          81,
+          556,
+          118
+        ],
+        "alphaMae": 0.06892790821227018,
+        "rgbMae": 17.802702702702703,
+        "bestTranslation": {
+          "error": 0.06892790821227018,
+          "dx": 0,
+          "dy": 0
+        },
+        "inkRatio": 0.984459567513158,
+        "sourceBackground": 14.2378,
+        "currentBackground": 14.165600000000001
+      },
+      "best": {
+        "trial": {
+          "name": "weight-minus25",
+          "delta": -25,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          306,
+          81,
+          556,
+          118
+        ],
+        "alphaMae": 0.0574252858797146,
+        "rgbMae": 15.423531531531532,
+        "bestTranslation": {
+          "error": 0.0574252858797146,
+          "dx": 0,
+          "dy": 0
+        },
+        "inkRatio": 0.9549620546162156,
+        "sourceBackground": 14.2378,
+        "currentBackground": 14.165600000000001
+      },
+      "relativeDiagnosticGain": 0.16687902811633487,
+      "accepted": true,
+      "mainChildGeometryIdentical": true
+    },
+    {
+      "route": "providers",
+      "field": {
+        "id": "title",
+        "selector": "main h1",
+        "crop": [
+          304,
+          80,
+          585,
+          117
+        ],
+        "style": null,
+        "weight": 350,
+        "font": "350 23px / 27.5px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "text": "Providers & Subscriptions",
+        "rect": {
+          "x": 307,
+          "y": 86.34375,
+          "width": 297.09375,
+          "height": 27.5,
+          "top": 86.34375,
+          "right": 604.09375,
+          "bottom": 113.84375,
+          "left": 307
+        }
+      },
+      "baseline": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          304,
+          80,
+          585,
+          117
+        ],
+        "alphaMae": 0.10939904343553661,
+        "rgbMae": 27.174601647911256,
+        "bestTranslation": {
+          "error": 0.09260209666738041,
+          "dx": 0,
+          "dy": -1
+        },
+        "inkRatio": 0.7268638679835443,
+        "sourceBackground": 12.455599999999999,
+        "currentBackground": 14.953
+      },
+      "best": {
+        "trial": {
+          "name": "fringe-one",
+          "delta": 0,
+          "shadow": "0 0 1px rgba(191,207,255,.4)"
+        },
+        "id": "title",
+        "crop": [
+          304,
+          80,
+          585,
+          117
+        ],
+        "alphaMae": 0.1049491378314192,
+        "rgbMae": 26.81901830656279,
+        "bestTranslation": {
+          "error": 0.08735612670922913,
+          "dx": 0,
+          "dy": -1
+        },
+        "inkRatio": 0.8078741613628586,
+        "sourceBackground": 12.455599999999999,
+        "currentBackground": 14.953
+      },
+      "relativeDiagnosticGain": 0.04067590962748701,
+      "accepted": false,
+      "mainChildGeometryIdentical": true
+    },
+    {
+      "route": "cost",
+      "field": {
+        "id": "title",
+        "selector": "main h1",
+        "crop": [
+          288,
+          81,
+          421,
+          113
+        ],
+        "style": null,
+        "weight": 600,
+        "font": "600 18px / 22.5px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "text": "Cost Overview",
+        "rect": {
+          "x": 292,
+          "y": 86.75,
+          "width": 122.75,
+          "height": 22.5,
+          "top": 86.75,
+          "right": 414.75,
+          "bottom": 109.25,
+          "left": 292
+        }
+      },
+      "baseline": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          288,
+          81,
+          421,
+          113
+        ],
+        "alphaMae": 0.07250359626784889,
+        "rgbMae": 19.143562030075188,
+        "bestTranslation": {
+          "error": 0.07250359626784889,
+          "dx": 0,
+          "dy": 0
+        },
+        "inkRatio": 1.3809064612193862,
+        "sourceBackground": 12.808599999999998,
+        "currentBackground": 14.165600000000001
+      },
+      "best": {
+        "trial": {
+          "name": "baseline",
+          "delta": 0,
+          "shadow": "none"
+        },
+        "id": "title",
+        "crop": [
+          288,
+          81,
+          421,
+          113
+        ],
+        "alphaMae": 0.07250359626784889,
+        "rgbMae": 19.143562030075188,
+        "bestTranslation": {
+          "error": 0.07250359626784889,
+          "dx": 0,
+          "dy": 0
+        },
+        "inkRatio": 1.3809064612193862,
+        "sourceBackground": 12.808599999999998,
+        "currentBackground": 14.165600000000001
+      },
+      "relativeDiagnosticGain": 0,
+      "accepted": false,
+      "mainChildGeometryIdentical": true
+    }
+  ]
+}

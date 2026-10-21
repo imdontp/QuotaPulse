@@ -1,0 +1,37 @@
+{
+  "productionIndexSha256": "4a70a2fec63b4129fc5794dee25142caf9af8a4efe8abfd5648be2833fb7cba1",
+  "browser": "155.0.8059.80",
+  "cases": 140,
+  "routes": [
+    "overview",
+    "live",
+    "projects",
+    "history",
+    "alerts"
+  ],
+  "languages": [
+    "en",
+    "th"
+  ],
+  "themes": [
+    "dark",
+    "light"
+  ],
+  "widths": [
+    390,
+    900,
+    1280,
+    1536,
+    1586,
+    1672,
+    1920
+  ],
+  "scope": "Changed headings: localized text containment and native same-data previous-weight panel geometry. Not full app interaction/accessibility/performance acceptance.",
+  "checks": [
+    "Localized headings present and text ranges inside viewport",
+    "No document horizontal overflow",
+    "Native dark chosen weights applied",
+    "All native dark main panel rectangles identical to same-data previous-weight inline baseline",
+    "No browser/HTTP errors or external/write requests"
+  ]
+}

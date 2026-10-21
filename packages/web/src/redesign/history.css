@@ -194,7 +194,7 @@
 /* History uses its own heading identity, rather than the shared PageHeading component. */
 @media(min-width:1536px) {
   .qp-redesign[data-testid=production-history][data-theme=dark] .qp-history-heading-identity h1 {
-    font-size:22.5px; line-height:31.5px; font-weight:350; letter-spacing:-.55px;
+    font-size:22.5px; line-height:31.5px; font-weight:450; letter-spacing:-.55px;
     color:#f9fdff; transform:translateX(3px);
   }
 }

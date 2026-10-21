@@ -65,7 +65,7 @@
 /* Measured native dark page-title paint; preserve existing line boxes. */
 @media(min-width:1536px) {
   .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-header .qp-page-heading-framed .qp-page-heading-copy>h1 {
-    font-size:25px; line-height:27.5px; font-weight:300; letter-spacing:-.8px;
+    font-size:25px; line-height:27.5px; font-weight:400; letter-spacing:-.8px;
     color:#fbfcff; transform:translate(3px,-3px);
   }
   .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-header .qp-page-heading-framed .qp-page-heading-copy>h1 {
@@ -84,7 +84,7 @@
   .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-header .qp-page-heading-copy { column-gap:16px; }
   .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-header .qp-page-heading-copy>p { transform:translateY(1px); }
   .qp-redesign[data-testid=production-live][data-theme=dark] .qp-live-header .qp-page-heading-copy>h1 {
-    font-size:24px; line-height:28.8px; font-weight:300; letter-spacing:-.6px;
+    font-size:24px; line-height:28.8px; font-weight:350; letter-spacing:-.6px;
     transform:translate(1px,-1px);
   }
   .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-header .qp-page-heading-copy>h1 {
@@ -92,7 +92,7 @@
     color:#eff8ff; transform:translate(1px,6px);
   }
   .qp-redesign[data-testid=production-alerts][data-theme=dark] .qp-alert-header .qp-page-heading-copy>h1 {
-    font-size:24.5px; line-height:27.5px; font-weight:400; letter-spacing:.15px;
+    font-size:24.5px; line-height:27.5px; font-weight:375; letter-spacing:.15px;
     transform:translateY(3px);
   }
 }
