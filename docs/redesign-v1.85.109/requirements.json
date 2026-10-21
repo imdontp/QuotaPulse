@@ -1,0 +1,303 @@
+{
+  "sourceCommit": "cf75234",
+  "authority": "approved docs/quotapulse_build_blueprint_v1.1.zip entry07_GAP_LEDGER.md; original download contains only001-009",
+  "requirements": [
+    {
+      "id": "GAP-001",
+      "title": "Metadata-only History",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/history-record-details.tsx",
+        "packages/daemon/src/api/server.ts"
+      ],
+      "tests": [
+        "packages/daemon/test/usage-events.test.ts",
+        "packages/daemon/test/usage-api.test.ts"
+      ],
+      "evidence": "Metadata allowlist/auth and matching CSV tests pass; no prompt panel restored.",
+      "remaining": "Final full browser privacy/export matrix and visual approval."
+    },
+    {
+      "id": "GAP-002",
+      "title": "No web credentials",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/providers.tsx",
+        "packages/daemon/src/api/server.ts"
+      ],
+      "tests": [
+        "packages/web/test/sources.test.ts"
+      ],
+      "evidence": "Current Providers path uses reader refresh/diagnostic semantics; repository suite passes.",
+      "remaining": "All owner/inactive/hidden/error action states in the current host."
+    },
+    {
+      "id": "GAP-003",
+      "title": "Coverage/effort replaces quality",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/models.tsx",
+        "packages/web/src/redesign/effort-pagination.tsx"
+      ],
+      "tests": [
+        "packages/web/test/effort-page.test.ts",
+        "packages/daemon/test/model-catalog-context.test.ts"
+      ],
+      "evidence": "Effort identity/pagination and model detail module tests pass.",
+      "remaining": "Current all-state browser, large-category DOM and reference composition."
+    },
+    {
+      "id": "GAP-004",
+      "title": "Exact context provenance/calls",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/daemon/src/api/model-detail.ts",
+        "packages/web/src/redesign/models.tsx"
+      ],
+      "tests": [
+        "packages/daemon/test/model-catalog-context.test.ts"
+      ],
+      "evidence": "Exact route catalog and separately observed context mechanism and tests exist.",
+      "remaining": "Complete current API/browser compatibility and all nullable states."
+    },
+    {
+      "id": "GAP-005",
+      "title": "Known cache savings replaces ROI",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/overview.tsx",
+        "packages/daemon/src/api/cost-analysis.ts"
+      ],
+      "tests": [
+        "packages/web/test/redesign-cost-value.test.ts"
+      ],
+      "evidence": "Known components/coverage mechanism; monetary component tests pass.",
+      "remaining": "Overview native/mixed/unpriced current full-scope gate."
+    },
+    {
+      "id": "GAP-006",
+      "title": "Native/API money bases",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/cost.tsx",
+        "packages/daemon/src/api/cost-analysis.ts"
+      ],
+      "tests": [
+        "packages/web/test/redesign-cost-value.test.ts",
+        "packages/web/test/cost-time-axis.test.ts"
+      ],
+      "evidence": "Current108 Cost four exact pairs/12 scope checks and28 native context/data cases retained at unchanged web hash.",
+      "remaining": "Full packaged-host scope/projection/error and visual acceptance."
+    },
+    {
+      "id": "GAP-007",
+      "title": "Quota percent and pp/hour",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/use-runway-motion.ts",
+        "packages/daemon/src/api/quota-history.ts"
+      ],
+      "tests": [
+        "packages/web/test/runway-motion.test.ts",
+        "packages/daemon/test/quota-history.test.ts"
+      ],
+      "evidence": "Unit coverage for forecast/lifecycle and quota-history boundaries passes.",
+      "remaining": "Final rollover/stale/insufficient native/current owner matrix."
+    },
+    {
+      "id": "GAP-008",
+      "title": "Discover Projects/no authoring",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/projects.tsx",
+        "packages/daemon/src/api/server.ts"
+      ],
+      "tests": [
+        "packages/web/test/redesign-scope.test.ts"
+      ],
+      "evidence": "107 card/rank proportions/API/keyboard evidence and unchanged source; no authoring control added.",
+      "remaining": "Complete all scope/error/native behavior and visual approval."
+    },
+    {
+      "id": "GAP-009",
+      "title": "Advisory Alerts",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/alerts.tsx"
+      ],
+      "tests": [
+        "packages/web/test/redesign-alert-risks.test.ts"
+      ],
+      "evidence": "Actual local risk navigation mechanism and risk unit tests pass.",
+      "remaining": "Current full risk-action browser matrix; no external mitigation."
+    },
+    {
+      "id": "GAP-010",
+      "title": "Common nine-route shell",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/shell.tsx",
+        "packages/web/src/redesign/routes.ts"
+      ],
+      "tests": [
+        "packages/web/test/redesign-routes.test.ts"
+      ],
+      "evidence": "Routes tests and current hidden Electron sessions alias/modal checks pass;108 all-eight geometry retained.",
+      "remaining": "Full nine-route interaction/native matrix and approved source parity."
+    },
+    {
+      "id": "GAP-011",
+      "title": "Call-only minute data/180ms",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/daemon/src/api/minute-trend.ts",
+        "packages/web/src/redesign/live-token-flow.tsx",
+        "packages/web/src/redesign/live-token-flow-motion.ts"
+      ],
+      "tests": [
+        "packages/web/test/live-minute-data.test.ts",
+        "packages/web/test/live-token-flow-motion.test.ts"
+      ],
+      "evidence": "Source imports and calls the changed-point player, with fresh/paused/hidden/reduced eligibility; tests pass.",
+      "remaining": "Final current exact-duration browser/native timing and retained stress-gap diagnosis."
+    },
+    {
+      "id": "GAP-012",
+      "title": "Recorded recency/source states",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/live.tsx",
+        "packages/daemon/src/api/queries.ts"
+      ],
+      "tests": [
+        "packages/web/test/runtime-activity.test.ts"
+      ],
+      "evidence": "Recorded-data mechanism and activity rules pass module tests.",
+      "remaining": "Current pause/resume/future/null/source lifecycle boundaries in actual host."
+    },
+    {
+      "id": "GAP-013",
+      "title": "Scoped queries/counts/export",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/daemon/src/api/usage-scope.ts",
+        "packages/daemon/src/api/server.ts",
+        "packages/daemon/src/api/queries.ts"
+      ],
+      "tests": [
+        "packages/daemon/test/usage-api.test.ts",
+        "packages/daemon/test/usage-events.test.ts"
+      ],
+      "evidence": "Actual filtered API and CSV/auth/safe-field tests pass.",
+      "remaining": "Large-history query-plan/payload/browser matching export audit."
+    },
+    {
+      "id": "GAP-014",
+      "title": "Reader health",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/providers.tsx"
+      ],
+      "tests": [
+        "packages/web/test/sources.test.ts"
+      ],
+      "evidence": "Reader-based status mechanism; no new provider-latency metric.",
+      "remaining": "Current owner dedup/hidden/nonquota/error browser coverage."
+    },
+    {
+      "id": "GAP-015",
+      "title": "50/80/95 risk/history",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/alerts.tsx",
+        "packages/daemon/src/api/queries.ts"
+      ],
+      "tests": [
+        "packages/daemon/test/alerts-history.test.ts",
+        "packages/web/test/alerts-entrance.test.ts"
+      ],
+      "evidence": "Risk/history and one-shot keyed entrance unit tests pass.",
+      "remaining": "Final current reset/recovery/quiet/snooze/hidden and native behavior."
+    },
+    {
+      "id": "GAP-016",
+      "title": "Owner/window history API",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/daemon/src/api/quota-history.ts",
+        "packages/daemon/src/api/server.ts"
+      ],
+      "tests": [
+        "packages/daemon/test/quota-history.test.ts"
+      ],
+      "evidence": "Actual GET owner/window scope and tests present/pass.",
+      "remaining": "Final rendered discontinuity/freshness/all-owner interaction matrix."
+    },
+    {
+      "id": "GAP-017",
+      "title": "Popup/aliases/settings compatibility",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/main.tsx",
+        "packages/web/src/redesign/routes.ts",
+        "packages/tray/tsconfig.preload.json"
+      ],
+      "tests": [
+        "packages/web/test/redesign-routes.test.ts"
+      ],
+      "evidence": "Current hidden Electron dashboard/popup override, compiled preloads/IPC, sessions alias, focus and Thai font pass.",
+      "remaining": "Actual production-main lifecycle, extracted runtime, all Settings persistence and two-version rollback."
+    },
+    {
+      "id": "GAP-018",
+      "title": "Consistent factual fixtures",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "scripts/check-stable-captures.mts",
+        "packages/web/src/main.tsx"
+      ],
+      "tests": [
+        "packages/web/test/redesign-routes.test.ts"
+      ],
+      "evidence": "108 all-eight fixed-fixture captures and current109 hidden fixture pass; preview import is DEV-gated in source.",
+      "remaining": "Final approved replacement baselines/current complete visual matrix, no copied concept numbers."
+    },
+    {
+      "id": "GAP-019",
+      "title": "Categorical effort",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/redesign/models.tsx",
+        "packages/web/src/redesign/effort-pagination.tsx",
+        "packages/daemon/src/api/model-detail.ts"
+      ],
+      "tests": [
+        "packages/web/test/effort-page.test.ts",
+        "packages/daemon/test/model-catalog-context.test.ts"
+      ],
+      "evidence": "Null/empty/exact effort categories and pagination module tests pass; no average benchmark score.",
+      "remaining": "Final current large-category payload/DOM, refresh and missing/null browser proof."
+    },
+    {
+      "id": "GAP-020",
+      "title": "Thai/light/narrow/reduced",
+      "status": "IMPLEMENTED; verification partial",
+      "sources": [
+        "packages/web/src/main.tsx",
+        "packages/web/src/thai-font.css",
+        "packages/web/src/index.css"
+      ],
+      "tests": [
+        "packages/web/test/alerts-entrance.test.ts",
+        "packages/web/test/live-token-flow-motion.test.ts"
+      ],
+      "evidence": "Current Electron proves actual bundled Thai font;108 Cost28-case native matrix and reduced eligibility module tests retained.",
+      "remaining": "Complete all-eight responsive/theme/keyboard/error/motion matrix and source approval."
+    }
+  ],
+  "excluded": [
+    "FUT-001 budgets/authoring/archive/team/workspaces",
+    "FUT-002 editable rules/external delivery/automatic mitigation",
+    "FUT-003 lifecycle/benchmark integrations"
+  ]
+}

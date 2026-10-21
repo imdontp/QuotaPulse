@@ -1,0 +1,47 @@
+{
+  "sourceCommit": "cf75234",
+  "webIndexSha256": "4f80a1c82fc10d521f7f48b131c22456ebb151c266bef13ad621778e8eb95f66",
+  "repository": {
+    "tests": 650,
+    "daemon": 121,
+    "web": 331,
+    "tray": 198,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "desktop": {
+    "status": "passed",
+    "host": "isolated hidden Electron windows",
+    "checks": [
+      "built dashboard",
+      "built popup with hash override",
+      "real compiled sandboxed preloads",
+      "renderer ready IPC",
+      "popup dashboard/close IPC",
+      "legacy sessions alias",
+      "compiled instance profile helper isolates userData and sessionData",
+      "native command modal and keyboard isolation",
+      "bundled custom Thai font and language switching",
+      "no external requests"
+    ],
+    "limits": [
+      "fixture main process; installed tray/main lifecycle not exercised",
+      "not an installer or packaged application release",
+      "no scheduled tasks, tray registration or live readers"
+    ],
+    "electron": "44.1.1"
+  },
+  "compiledInventory": {
+    "files": 265,
+    "bytes": 10347814,
+    "sha256": "acf4f778ae1caa216b47038334cdd6f5a633bbe718da694104a45e918a29829a",
+    "roots": [
+      "daemon/dist",
+      "web/dist",
+      "tray/dist",
+      "tray/dist-preload"
+    ]
+  },
+  "meaning": "Fresh daemon/tray/preload builds, unchanged108 web; fixture Electron host only. No installer, production-main or rollback claim."
+}

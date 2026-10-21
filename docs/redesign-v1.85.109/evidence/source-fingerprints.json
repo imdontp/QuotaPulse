@@ -1,0 +1,201 @@
+{
+  "sourceCommit": "cf75234",
+  "sources": [
+    {
+      "file": "packages/web/src/redesign/history-record-details.tsx",
+      "lfSha256": "bee117f022766dccea7f63e80e09d974a3d6d456b4452d6000d54f760690f78d"
+    },
+    {
+      "file": "packages/daemon/src/api/server.ts",
+      "lfSha256": "3f71f0c0454c943b849c783e9c8a63a98ca1318d66d6fa6d731a22e261befb74"
+    },
+    {
+      "file": "packages/daemon/test/usage-events.test.ts",
+      "lfSha256": "9a061dbb08e562dd92627ef63a913662ab869336a9ea4f01d7e6bf1fe16adab3"
+    },
+    {
+      "file": "packages/daemon/test/usage-api.test.ts",
+      "lfSha256": "6c2356e08779812956566232c6f571592c645882dba5a7cc73ea1c01e3087fca"
+    },
+    {
+      "file": "packages/web/src/redesign/providers.tsx",
+      "lfSha256": "5722948dc7ecbfade3ce34509014d1ae95f83ae4d5b5f6d86f6ac8ff1efafaf1"
+    },
+    {
+      "file": "packages/web/test/sources.test.ts",
+      "lfSha256": "1f76cb5b36f1f26b23965a5e37a468a10559ece97a3dbdc409316883abac06ed"
+    },
+    {
+      "file": "packages/web/src/redesign/models.tsx",
+      "lfSha256": "09d472de4751144fd49dbf0a6388df652e07fc9c422f7ca78e0af60e3a6fff31"
+    },
+    {
+      "file": "packages/web/src/redesign/effort-pagination.tsx",
+      "lfSha256": "b3e42fd2465d238576c543989b9c7ab393fb1cec4da386195e3ec59567fd909b"
+    },
+    {
+      "file": "packages/web/test/effort-page.test.ts",
+      "lfSha256": "98b8c810958cbf514f60dff5cb784ba05a14dbf5f94a7074fb8209f40681264f"
+    },
+    {
+      "file": "packages/daemon/test/model-catalog-context.test.ts",
+      "lfSha256": "38f082714572548e3f1328b3f0973e010a8240ba8da1bf93a6fd44fea770c057"
+    },
+    {
+      "file": "packages/daemon/src/api/model-detail.ts",
+      "lfSha256": "99f56403e17c9971c6f07463de3c3ee4bd96794aa0c8448cdab15c0ba7852daa"
+    },
+    {
+      "file": "packages/web/src/redesign/overview.tsx",
+      "lfSha256": "ea05159c632d011e4f3ac80c40d27d099037a45baa1b107b48a38e397e4ac396"
+    },
+    {
+      "file": "packages/daemon/src/api/cost-analysis.ts",
+      "lfSha256": "c8811d3aad1bc62366d19f72736dc853e74af9641f984d760ffc5b60b2c561bd"
+    },
+    {
+      "file": "packages/web/test/redesign-cost-value.test.ts",
+      "lfSha256": "67953a54a09118e870b5f38349cd5e01f81b94487673ddb4740fa6b9171ea7a2"
+    },
+    {
+      "file": "packages/web/src/redesign/cost.tsx",
+      "lfSha256": "2142679eff7a9714ae13af9185fedfe9c076316133bb6587a935f6252308611e"
+    },
+    {
+      "file": "packages/web/test/cost-time-axis.test.ts",
+      "lfSha256": "f34ac79408a427abae7d3c09e1d1c3f7e831af0622ae2397ffd8d2d007e5c166"
+    },
+    {
+      "file": "packages/web/src/redesign/use-runway-motion.ts",
+      "lfSha256": "2863296e772370ee88220b4155502ebea52909998092d588f6bfbe728c292e7a"
+    },
+    {
+      "file": "packages/daemon/src/api/quota-history.ts",
+      "lfSha256": "1769ca02848acd415be3f8a8d3d96636da544f1bbdcb5dc7d0db814c0c68f413"
+    },
+    {
+      "file": "packages/web/test/runway-motion.test.ts",
+      "lfSha256": "8224ec08f6c5690a4623ed3af6c2e6b3837cc406b3bab56b379cf36a425f75bc"
+    },
+    {
+      "file": "packages/daemon/test/quota-history.test.ts",
+      "lfSha256": "4013616eb3ae8b286543e4389e02da5709683b58a2bb4dc75243ee4610875acb"
+    },
+    {
+      "file": "packages/web/src/redesign/projects.tsx",
+      "lfSha256": "3554c9b4934b6afb8a6ad6630e6faeb25d7c0ab7544628cf0a10a04be155c4f6"
+    },
+    {
+      "file": "packages/web/test/redesign-scope.test.ts",
+      "lfSha256": "646b59d634ccf892ae17e3d68a51a6c173c8671525d1cc0f25c0d685949474e6"
+    },
+    {
+      "file": "packages/web/src/redesign/alerts.tsx",
+      "lfSha256": "85e5ab55bbca986ffea9319475e807932908be00fa1b70b213de72abb05db8e5"
+    },
+    {
+      "file": "packages/web/test/redesign-alert-risks.test.ts",
+      "lfSha256": "dc06649824850136e3d62af6df6d71f7e200367560b4d16e603696ae2147acaa"
+    },
+    {
+      "file": "packages/web/src/redesign/shell.tsx",
+      "lfSha256": "518fdd9a10c08305f303a3ff22fde55df67ff1b3c6ecce9e3d0745d49336866c"
+    },
+    {
+      "file": "packages/web/src/redesign/routes.ts",
+      "lfSha256": "696d9fc121662da511f7b90143dd25e703bc52c70ba073a7c9bcb69ca670fee2"
+    },
+    {
+      "file": "packages/web/test/redesign-routes.test.ts",
+      "lfSha256": "a5e63da47e81818edd5f602ed3d12b2fe6095bae465d6d3a4682827b6dbf4c27"
+    },
+    {
+      "file": "packages/daemon/src/api/minute-trend.ts",
+      "lfSha256": "438e176521b804f34537ace390919ceec184d18e33ebe42fdbfe09c08b6ce162"
+    },
+    {
+      "file": "packages/web/src/redesign/live-token-flow.tsx",
+      "lfSha256": "3e5e92bea6fc8478e87ad3ec6dcd899a1a191a1d79a3a0abf1a6262cc8a1a518"
+    },
+    {
+      "file": "packages/web/src/redesign/live-token-flow-motion.ts",
+      "lfSha256": "837dedde0fa9c1771ffcfd696b5844d1bd813ce659b8afca9931b14227259d47"
+    },
+    {
+      "file": "packages/web/test/live-minute-data.test.ts",
+      "lfSha256": "2a070079cd34cbaba904280671cead40be5a02cd7e9a148e740c13faee200359"
+    },
+    {
+      "file": "packages/web/test/live-token-flow-motion.test.ts",
+      "lfSha256": "fd7fc74d0bb5b7199ee2e7726c18a35311d522629c176fdc863c41ad0d229860"
+    },
+    {
+      "file": "packages/web/src/redesign/live.tsx",
+      "lfSha256": "3ae332091f899a1a65aa9b6deaa95270fc10dcdd6e72f3d46c19ef467d5d7359"
+    },
+    {
+      "file": "packages/daemon/src/api/queries.ts",
+      "lfSha256": "c608be50860f043e82f4c768f6fc53b3a2fe434e9bf143d7137499d25c2e69b7"
+    },
+    {
+      "file": "packages/web/test/runtime-activity.test.ts",
+      "lfSha256": "50df25a02b4e6312d55a5420c80ab6d410c20fabd1e305df407fc7c59e83726f"
+    },
+    {
+      "file": "packages/daemon/src/api/usage-scope.ts",
+      "lfSha256": "94c3f7b0252f92301556e125af4253422eda48e76fcccdc66b7b65b60dce5292"
+    },
+    {
+      "file": "packages/daemon/test/alerts-history.test.ts",
+      "lfSha256": "dbfae84fa287e87b99f97ec34eee8f0cef0f8894ee867415732128ec55e4b62f"
+    },
+    {
+      "file": "packages/web/test/alerts-entrance.test.ts",
+      "lfSha256": "04d29a965722a6c8d8693908fe1df62103ed017b6e043c4e413c960fb0fcbc8f"
+    },
+    {
+      "file": "packages/web/src/main.tsx",
+      "lfSha256": "d0628750f81678ff783fb80a97371c1b8b353eea03cebb9468dae33359195a49"
+    },
+    {
+      "file": "packages/tray/tsconfig.preload.json",
+      "lfSha256": "68b8aec6338e7a5e5f96dd1fb713191c9ce9ae4020053b8fa8b51734c399b60a"
+    },
+    {
+      "file": "scripts/check-stable-captures.mts",
+      "lfSha256": "add2d88aeb491ef5df8e745cdc787742450e6d4b74c22aeb5de4db3942281cde"
+    },
+    {
+      "file": "packages/web/src/thai-font.css",
+      "lfSha256": "9e17de51b475ca645323f946aa3764ed40515d8395ba599c9c0c4a10d0eeec8a"
+    },
+    {
+      "file": "packages/web/src/index.css",
+      "lfSha256": "ffa0b8f27da20982553dc37a4bf2b2d89301888e91816b2bba82db146ee20d95"
+    },
+    {
+      "file": "packages/web/src/redesign/use-aggregate-presence-motion.ts",
+      "lfSha256": "a9e5c16eff3667d9d010d9185caa0a3993bb519dffbe89d2216849863f7cd318"
+    },
+    {
+      "file": "packages/web/src/redesign/use-history-motion.ts",
+      "lfSha256": "e75222ace2b9eb8743d167876eb7c8af74f51f1fc01e726fb71cc40555c759c8"
+    },
+    {
+      "file": "packages/web/src/redesign/use-alerts-entrance.ts",
+      "lfSha256": "fc99bd7978a7d10fa7d084b4175eeb258def5a665f1cb9fafb175c88575d1eca"
+    },
+    {
+      "file": "scripts/check-desktop-runtime.mts",
+      "lfSha256": "ed3dea09f5151d49a20bc3a7dbd9ce1731627ed989373ecce6ac561da3f53939"
+    },
+    {
+      "file": "scripts/desktop-runtime-entry.cjs",
+      "lfSha256": "bcde2db2d4f56e9767f6c8b4b7e3c9d88418fe0ac83eb949edca6e7940200398"
+    }
+  ],
+  "approvedBlueprintArchive": {
+    "file": "docs/quotapulse_build_blueprint_v1.1.zip",
+    "sha256": "28bc63571ddf7ecda1e12e8821c6184378ccfe6c3a599d6ccec29bf17fedb054"
+  }
+}
