@@ -1,0 +1,250 @@
+[
+  {
+    "route": "cost",
+    "version": "reference",
+    "iconGroups": [
+      {
+        "top": 100,
+        "bottom": 119,
+        "pixels": 139,
+        "center": 109.5
+      },
+      {
+        "top": 147,
+        "bottom": 166,
+        "pixels": 117,
+        "center": 156.5
+      },
+      {
+        "top": 194,
+        "bottom": 212,
+        "pixels": 144,
+        "center": 203
+      },
+      {
+        "top": 240,
+        "bottom": 260,
+        "pixels": 169,
+        "center": 250
+      },
+      {
+        "top": 288,
+        "bottom": 308,
+        "pixels": 180,
+        "center": 298
+      },
+      {
+        "top": 335,
+        "bottom": 354,
+        "pixels": 136,
+        "center": 344.5
+      },
+      {
+        "top": 381,
+        "bottom": 402,
+        "pixels": 123,
+        "center": 391.5
+      }
+    ],
+    "rimGroups": [
+      {
+        "top": 275,
+        "bottom": 317,
+        "pixels": 48
+      }
+    ],
+    "thresholds": "icons x25..53 g>=65 b>=110; rims x10..22 g>80 b>110 r<100 g>r*1.25; group gaps<=4/3; raster estimate, not DOM/source geometry"
+  },
+  {
+    "route": "cost",
+    "version": "current",
+    "iconGroups": [
+      {
+        "top": 100,
+        "bottom": 119,
+        "pixels": 159,
+        "center": 109.5
+      },
+      {
+        "top": 147,
+        "bottom": 167,
+        "pixels": 97,
+        "center": 157
+      },
+      {
+        "top": 195,
+        "bottom": 212,
+        "pixels": 133,
+        "center": 203.5
+      },
+      {
+        "top": 241,
+        "bottom": 261,
+        "pixels": 166,
+        "center": 251
+      },
+      {
+        "top": 276,
+        "bottom": 276,
+        "pixels": 29,
+        "center": 276
+      },
+      {
+        "top": 288,
+        "bottom": 308,
+        "pixels": 273,
+        "center": 298
+      },
+      {
+        "top": 319,
+        "bottom": 319,
+        "pixels": 29,
+        "center": 319
+      },
+      {
+        "top": 336,
+        "bottom": 354,
+        "pixels": 140,
+        "center": 345
+      },
+      {
+        "top": 382,
+        "bottom": 402,
+        "pixels": 115,
+        "center": 392
+      }
+    ],
+    "rimGroups": [
+      {
+        "top": 276,
+        "bottom": 319,
+        "pixels": 104
+      }
+    ],
+    "thresholds": "icons x25..53 g>=65 b>=110; rims x10..22 g>80 b>110 r<100 g>r*1.25; group gaps<=4/3; raster estimate, not DOM/source geometry"
+  },
+  {
+    "route": "providers",
+    "version": "reference",
+    "iconGroups": [
+      {
+        "top": 101,
+        "bottom": 120,
+        "pixels": 139,
+        "center": 110.5
+      },
+      {
+        "top": 148,
+        "bottom": 167,
+        "pixels": 119,
+        "center": 157.5
+      },
+      {
+        "top": 196,
+        "bottom": 213,
+        "pixels": 118,
+        "center": 204.5
+      },
+      {
+        "top": 241,
+        "bottom": 262,
+        "pixels": 149,
+        "center": 251.5
+      },
+      {
+        "top": 290,
+        "bottom": 309,
+        "pixels": 137,
+        "center": 299.5
+      },
+      {
+        "top": 338,
+        "bottom": 359,
+        "pixels": 121,
+        "center": 348.5
+      },
+      {
+        "top": 391,
+        "bottom": 406,
+        "pixels": 127,
+        "center": 398.5
+      }
+    ],
+    "rimGroups": [
+      {
+        "top": 382,
+        "bottom": 416,
+        "pixels": 67
+      }
+    ],
+    "thresholds": "icons x25..53 g>=65 b>=110; rims x10..22 g>80 b>110 r<100 g>r*1.25; group gaps<=4/3; raster estimate, not DOM/source geometry"
+  },
+  {
+    "route": "providers",
+    "version": "current",
+    "iconGroups": [
+      {
+        "top": 101,
+        "bottom": 120,
+        "pixels": 161,
+        "center": 110.5
+      },
+      {
+        "top": 148,
+        "bottom": 168,
+        "pixels": 97,
+        "center": 158
+      },
+      {
+        "top": 197,
+        "bottom": 214,
+        "pixels": 133,
+        "center": 205.5
+      },
+      {
+        "top": 243,
+        "bottom": 263,
+        "pixels": 166,
+        "center": 253
+      },
+      {
+        "top": 292,
+        "bottom": 310,
+        "pixels": 140,
+        "center": 301
+      },
+      {
+        "top": 338,
+        "bottom": 358,
+        "pixels": 116,
+        "center": 348
+      },
+      {
+        "top": 377,
+        "bottom": 377,
+        "pixels": 29,
+        "center": 377
+      },
+      {
+        "top": 391,
+        "bottom": 407,
+        "pixels": 129,
+        "center": 399
+      },
+      {
+        "top": 420,
+        "bottom": 420,
+        "pixels": 29,
+        "center": 420
+      }
+    ],
+    "rimGroups": [
+      {
+        "top": 377,
+        "bottom": 420,
+        "pixels": 104
+      }
+    ],
+    "thresholds": "icons x25..53 g>=65 b>=110; rims x10..22 g>80 b>110 r<100 g>r*1.25; group gaps<=4/3; raster estimate, not DOM/source geometry"
+  }
+]

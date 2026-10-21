@@ -204,6 +204,16 @@ async function visible(selector: string) {
 async function checkSecondaryNavigation(activeLabel: string, siblingLabel: string) {
   const selected = page!.getByRole('navigation').getByRole('link', { name: activeLabel, exact: true });
   await selected.waitFor(); assert.equal(await selected.getAttribute('aria-current'), 'page', `${activeLabel} is a primary current page link`);
+  const topLevelOrder = await page!.evaluate(() => [...document.querySelector('nav[aria-label="Main navigation"]')!.children].flatMap(element => {
+    if (element.matches('.qp-nav-secondary')) return [element.querySelector(':scope > a span')!.textContent!.trim()];
+    if (element.tagName === 'A') return [element.querySelector('span')!.textContent!.trim()];
+    return [];
+  }));
+  if (activeLabel === 'Cost Analysis') {
+    assert.deepEqual(topLevelOrder, ['Overview', 'Live', 'Projects', 'Models', 'Cost Analysis', 'History', 'Alerts'], 'Cost Analysis occupies the concept slot between Models and History');
+  } else {
+    assert.deepEqual(topLevelOrder, ['Overview', 'Live', 'Projects', 'Models', 'History', 'Alerts', 'Providers'], 'Providers follows Alerts in the concept sidebar order');
+  }
   const previousViewport = page!.viewportSize()!;
   await page!.setViewportSize({ width: 1672, height: 941 }); await page!.waitForTimeout(100);
   const initial = await page!.evaluate(() => {
@@ -211,14 +221,23 @@ async function checkSecondaryNavigation(activeLabel: string, siblingLabel: strin
     const inspector = document.querySelector('.qp-provider-inspector');
     const cards = [...(grid?.querySelectorAll<HTMLElement>('.qp-provider-card') ?? [])];
     const lastCardBottom = cards.length > 0 ? Math.max(...cards.map(card => card.getBoundingClientRect().bottom)) : null;
+    const selected = document.querySelector('.qp-nav-secondary > a')!.getBoundingClientRect();
+    const primary = document.querySelector('.qp-sidebar nav > a')!.getBoundingClientRect();
+    const label = document.querySelector('.qp-nav-secondary > a > span')!.getBoundingClientRect();
+    const more = document.querySelector('.qp-nav-more summary')!.getBoundingClientRect();
     return {
       moreOpen: document.querySelector('.qp-nav-more')!.matches('[open]'),
       quickStatsTop: document.querySelector('.qp-quick-stats')!.getBoundingClientRect().top,
       providerContentGap: inspector && lastCardBottom !== null ? inspector.getBoundingClientRect().top - lastCardBottom : null,
+      selectedWidth: selected.width, primaryWidth: primary.width, moreLabelClearance: more.left - label.right,
     };
   });
   assert.equal(initial.moreOpen, false, `${activeLabel} opens with More collapsed`);
-  assert.ok(initial.quickStatsTop <= 470, `${activeLabel} quick stats geometry: ${initial.quickStatsTop}`);
+  const referenceQuickStatsTop = activeLabel === 'Cost Analysis' ? 447 : 445;
+  assert.ok(Math.abs(initial.quickStatsTop - referenceQuickStatsTop) <= 2, `${activeLabel} quick stats geometry: ${initial.quickStatsTop}`);
+  assert.ok(Math.abs(initial.selectedWidth - initial.primaryWidth) <= 1, `${activeLabel} selected plate spans the source navigation width`);
+  assert.ok(initial.moreLabelClearance >= 4, `${activeLabel} More trigger does not cover the selected label`);
+  if (activeLabel === 'Cost Analysis') await page!.screenshot({ path: 'tmp/presence95-browser/cost-after-navigation.png' });
   if (activeLabel === 'Providers') {
     assert.ok(initial.providerContentGap !== null && initial.providerContentGap <= 24, `Providers grid does not reserve empty extra rows: ${initial.providerContentGap}px`);
     await page!.screenshot({ path: 'tmp/presence95-browser/providers-after-layout.png' });
@@ -230,8 +249,26 @@ async function checkSecondaryNavigation(activeLabel: string, siblingLabel: strin
   if (activeLabel === 'Providers') await page!.screenshot({ path: 'tmp/presence95-browser/providers-more-open.png' });
   await page!.locator('.qp-nav-more summary').click();
   assert.equal(await page!.locator('.qp-nav-more').getAttribute('open'), null, 'More closes after its toggle');
+  const narrow = [];
+  for (const width of [390, 900]) {
+    await page!.setViewportSize({ width, height: 941 }); await page!.waitForTimeout(80);
+    const geometry = await page!.evaluate(() => ({
+      selected: document.querySelector('.qp-nav-secondary > a')!.getBoundingClientRect().toJSON(),
+      more: document.querySelector('.qp-nav-more summary')!.getBoundingClientRect().toJSON(),
+      overflow: document.documentElement.scrollWidth > innerWidth,
+    }));
+    assert.equal(geometry.overflow, false, `${activeLabel}/${width}: no page overflow`);
+    assert.ok(geometry.more.top >= geometry.selected.bottom - 1, `${activeLabel}/${width}: selected route and More have separate hit areas`);
+    await page!.locator('.qp-nav-secondary > a').focus(); await page!.keyboard.press('Tab');
+    assert.equal(await page!.locator('.qp-nav-more summary').evaluate(element => element === document.activeElement), true);
+    await page!.keyboard.press('Enter');
+    await page!.getByRole('navigation').getByRole('link', { name: siblingLabel, exact: true }).waitFor();
+    await page!.locator('.qp-nav-more summary').focus(); await page!.keyboard.press('Enter');
+    await page!.waitForFunction(() => !document.querySelector('.qp-nav-more')!.hasAttribute('open'));
+    narrow.push({ width, ...geometry, keyboardMore: true });
+  }
   await page!.setViewportSize(previousViewport);
-  stages.push({ label: `secondary-navigation-${activeLabel.toLowerCase().replace(/\s+/g, '-')}`, initial, expanded, siblingAccessibleWhileExpanded: siblingLabel });
+  stages.push({ label: `secondary-navigation-${activeLabel.toLowerCase().replace(/\s+/g, '-')}`, initial, expanded, topLevelOrder, narrow, siblingAccessibleWhileExpanded: siblingLabel });
 }
 try {
   if (mode === 'verify') for (let index = 0; index < 21; index++) addModel(`rank-${index}`, 'fixture', index + 1);

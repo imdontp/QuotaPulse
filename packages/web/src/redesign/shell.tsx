@@ -1,5 +1,5 @@
 import { useEffect, useId, useState, type CSSProperties, type ReactNode, type RefObject } from 'react';
-import { Activity, ArrowUpRight, BarChart3, BellRing, Box, CircleGauge, GitBranch, Layers, Monitor, Moon, Radio, Settings, Sun, House, Folder, History, MoreHorizontal } from 'lucide-react';
+import { Activity, ArrowUpRight, Bell, Box, CircleDollarSign, CircleGauge, Cloud, GitBranch, Layers, Monitor, Moon, Settings, Sun, House, Folder, History, MoreHorizontal } from 'lucide-react';
 import type { MessageKey } from '@/i18n/en';
 import { CommandPalette } from '@/components/command-palette';
 import { useT } from '@/i18n';
@@ -16,11 +16,11 @@ const NAV = [
   { id: 'overview', href: '#overview', label: 'redesign.overview', icon: House },
   { id: 'live', href: '#live', label: 'redesign.live', icon: Activity },
   { id: 'projects', href: '#projects', label: 'redesign.project', icon: Folder },
-  { id: 'providers', href: '#providers', label: 'redesign.provider', icon: Radio },
   { id: 'models', href: '#models', label: 'redesign.models', icon: Box },
-  { id: 'cost', href: '#cost?range=month', label: 'redesign.cost', icon: BarChart3 },
+  { id: 'cost', href: '#cost?range=month', label: 'redesign.cost', icon: CircleDollarSign },
   { id: 'history', href: '#history', label: 'redesign.history', icon: History },
-  { id: 'alerts', href: '#alerts', label: 'redesign.alerts', icon: BellRing },
+  { id: 'alerts', href: '#alerts', label: 'redesign.alerts', icon: Bell },
+  { id: 'providers', href: '#providers', label: 'redesign.provider', icon: Cloud },
   { id: 'settings', href: '#settings', label: 'redesign.settings', icon: Settings },
 ] as const;
 const PRIMARY_NAV = NAV.filter(item => !['providers', 'cost', 'settings'].includes(item.id));
@@ -56,8 +56,8 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
   const localizedAlertCount = alertCount === null ? null : new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US').format(alertCount);
   const alertCountBadge = alertCount !== null && alertCount > 0 ? (alertCount > 99 ? '99+' : String(alertCount)) : null;
   const selectedSecondary = MORE_NAV.find(item => item.id === active);
-  const SelectedSecondaryIcon = selectedSecondary?.icon;
   const remainingSecondary = MORE_NAV.filter(item => item.id !== active);
+  const visibleNavigation = NAV.filter(item => PRIMARY_NAV.includes(item) || item.id === active);
   useEffect(() => { setMoreOpen(false); }, [active]);
   useEffect(() => { const timer = window.setInterval(() => setClock(Date.now()), 30_000); return () => window.clearInterval(timer); }, []);
   useEffect(() => { if (!preview) window.qpDashboard?.ready(); }, [preview]);
@@ -92,20 +92,21 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
           <a href="#runtime" aria-label={t('redesign.runtime')}><GitBranch/><span>{t('redesign.runtime')}</span></a>
           <a href="#model-usage" aria-label={t('redesign.models')}><Layers/><span>{t('redesign.models')}</span></a>
         </> : <>
-          {PRIMARY_NAV.map(({ id, href, label, icon: Icon }) => {
+          {visibleNavigation.map(({ id, href, label, icon: Icon }) => {
+            if (selectedSecondary && id === active) return <div key={id} className="qp-nav-secondary">
+              <a href={href} aria-label={t(label)} aria-current="page" className="qp-nav-active"><Icon/><span>{t(label)}</span></a>
+              <details className="qp-nav-more" open={moreOpen} onToggle={event => setMoreOpen(event.currentTarget.open)}>
+                <summary aria-label={t('redesign.more')} title={t('redesign.more')}><MoreHorizontal aria-hidden="true"/><span>{t('redesign.more')}</span></summary>
+                {remainingSecondary.map(({ id: moreId, href: moreHref, label: moreLabel, icon: MoreIcon }) => <a key={moreId} href={moreHref} aria-label={t(moreLabel)} onClick={() => setMoreOpen(false)}><MoreIcon/><span>{t(moreLabel)}</span></a>)}
+              </details>
+            </div>;
             const hasAlertCount = id === 'alerts' && alertCountBadge !== null && localizedAlertCount !== null;
             const accessibleLabel = hasAlertCount ? `${t(label)} · ${t('redesign.currentQuotaRisks')}: ${localizedAlertCount}` : t(label);
             return <a key={id} href={href} aria-label={accessibleLabel} title={hasAlertCount ? accessibleLabel : undefined} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined} data-alert-count={hasAlertCount ? alertCountBadge : undefined}><Icon/><span>{t(label)}</span>{hasAlertCount && <span className="qp-nav-count" aria-hidden="true"><svg aria-hidden="true" focusable="false" style={{ '--qp-nav-count-paint': `url(#${badgePaintId})` } as CSSProperties}><defs><radialGradient id={badgePaintId} cx="35%" cy="25%" r="85%"><stop stopColor="#ffb65a"/><stop offset=".55" stopColor="#f8a33e"/><stop offset="1" stopColor="#f39a38"/></radialGradient></defs><rect width="100%" height="100%" rx="9" ry="9" fill="#ed8a36"/></svg>{alertCountBadge}</span>}</a>;
           })}
-          {selectedSecondary && SelectedSecondaryIcon ? <div className="qp-nav-secondary">
-            <a href={selectedSecondary.href} aria-label={t(selectedSecondary.label)} aria-current="page" className="qp-nav-active"><SelectedSecondaryIcon/><span>{t(selectedSecondary.label)}</span></a>
-            <details className="qp-nav-more" open={moreOpen} onToggle={event => setMoreOpen(event.currentTarget.open)}>
-              <summary aria-label={t('redesign.more')} title={t('redesign.more')}><MoreHorizontal aria-hidden="true"/><span>{t('redesign.more')}</span></summary>
-              {remainingSecondary.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined} onClick={() => setMoreOpen(false)}><Icon/><span>{t(label)}</span></a>)}
-            </details>
-          </div> : <details className="qp-nav-more" open={moreOpen} onToggle={event => setMoreOpen(event.currentTarget.open)}>
+          {!selectedSecondary && <details className="qp-nav-more" open={moreOpen} onToggle={event => setMoreOpen(event.currentTarget.open)}>
             <summary aria-label={t('redesign.more')}><MoreHorizontal aria-hidden="true"/><span>{t('redesign.more')}</span></summary>
-            {remainingSecondary.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined} onClick={() => setMoreOpen(false)}><Icon/><span>{t(label)}</span></a>)}
+            {MORE_NAV.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} onClick={() => setMoreOpen(false)}><Icon/><span>{t(label)}</span></a>)}
           </details>}
         </>}
       </nav>
