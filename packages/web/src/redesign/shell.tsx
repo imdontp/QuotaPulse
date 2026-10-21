@@ -49,11 +49,16 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
   quickStatsScope?: UsageEventScope | null;
   quickStatsPaused?: boolean;
 }) {
+  const [moreOpen, setMoreOpen] = useState(false);
   const [clock, setClock] = useState(() => Date.now());
   const [alertCount, setAlertCount] = useState<number | null>(null);
   const badgePaintId = `qp-alert-count-${useId().replace(/:/g, '')}`;
   const localizedAlertCount = alertCount === null ? null : new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US').format(alertCount);
   const alertCountBadge = alertCount !== null && alertCount > 0 ? (alertCount > 99 ? '99+' : String(alertCount)) : null;
+  const selectedSecondary = MORE_NAV.find(item => item.id === active);
+  const SelectedSecondaryIcon = selectedSecondary?.icon;
+  const remainingSecondary = MORE_NAV.filter(item => item.id !== active);
+  useEffect(() => { setMoreOpen(false); }, [active]);
   useEffect(() => { const timer = window.setInterval(() => setClock(Date.now()), 30_000); return () => window.clearInterval(timer); }, []);
   useEffect(() => { if (!preview) window.qpDashboard?.ready(); }, [preview]);
   useEffect(() => { if (!preview) document.documentElement.lang = language; }, [language, preview]);
@@ -92,10 +97,16 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
             const accessibleLabel = hasAlertCount ? `${t(label)} · ${t('redesign.currentQuotaRisks')}: ${localizedAlertCount}` : t(label);
             return <a key={id} href={href} aria-label={accessibleLabel} title={hasAlertCount ? accessibleLabel : undefined} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined} data-alert-count={hasAlertCount ? alertCountBadge : undefined}><Icon/><span>{t(label)}</span>{hasAlertCount && <span className="qp-nav-count" aria-hidden="true"><svg aria-hidden="true" focusable="false" style={{ '--qp-nav-count-paint': `url(#${badgePaintId})` } as CSSProperties}><defs><radialGradient id={badgePaintId} cx="35%" cy="25%" r="85%"><stop stopColor="#ffb65a"/><stop offset=".55" stopColor="#f8a33e"/><stop offset="1" stopColor="#f39a38"/></radialGradient></defs><rect width="100%" height="100%" rx="9" ry="9" fill="#ed8a36"/></svg>{alertCountBadge}</span>}</a>;
           })}
-          <details className="qp-nav-more" open={MORE_NAV.some(item => item.id === active)}>
+          {selectedSecondary && SelectedSecondaryIcon ? <div className="qp-nav-secondary">
+            <a href={selectedSecondary.href} aria-label={t(selectedSecondary.label)} aria-current="page" className="qp-nav-active"><SelectedSecondaryIcon/><span>{t(selectedSecondary.label)}</span></a>
+            <details className="qp-nav-more" open={moreOpen} onToggle={event => setMoreOpen(event.currentTarget.open)}>
+              <summary aria-label={t('redesign.more')} title={t('redesign.more')}><MoreHorizontal aria-hidden="true"/></summary>
+              {remainingSecondary.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined} onClick={() => setMoreOpen(false)}><Icon/><span>{t(label)}</span></a>)}
+            </details>
+          </div> : <details className="qp-nav-more" open={moreOpen} onToggle={event => setMoreOpen(event.currentTarget.open)}>
             <summary aria-label={t('redesign.more')}><MoreHorizontal aria-hidden="true"/><span>{t('redesign.more')}</span></summary>
-            {MORE_NAV.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined}><Icon/><span>{t(label)}</span></a>)}
-          </details>
+            {remainingSecondary.map(({ id, href, label, icon: Icon }) => <a key={id} href={href} aria-label={t(label)} aria-current={id === active ? 'page' : undefined} className={id === active ? 'qp-nav-active' : undefined} onClick={() => setMoreOpen(false)}><Icon/><span>{t(label)}</span></a>)}
+          </details>}
         </>}
       </nav>
       {!preview && <QuickStats t={t} language={language} scope={quickStatsScope} paused={quickStatsPaused} onAlertCountChange={setAlertCount}/>}

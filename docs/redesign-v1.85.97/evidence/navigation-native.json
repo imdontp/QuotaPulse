@@ -1,0 +1,16 @@
+﻿{
+  "viewport": { "width": 1672, "height": 941 },
+  "checks": [
+    { "route": "Cost Analysis", "quickStatsTop": 445, "initialMoreOpen": false, "sibling": "Providers", "siblingVisibleWhenExpanded": true, "closedAfterToggle": true },
+    { "route": "Providers", "quickStatsTop": 442, "initialMoreOpen": false, "sibling": "Cost Analysis", "siblingVisibleWhenExpanded": true, "closedAfterToggle": true }
+  ],
+  "nativeDurationIdentityLifecyclePassed": true,
+  "visualSamplingComplete": false,
+  "samplingGaps": [
+    { "label": "models-same-model-distinct-recorded-provider", "duration": 180, "kind": "no-near-full-running-RAF-sample", "exactNativeFinish": 180 },
+    { "label": "models-same-model-distinct-recorded-provider", "duration": 180, "kind": "no-intermediate-opacity-sample", "exactNativeFinish": 180 }
+  ],
+  "browserErrors": 0,
+  "forbiddenRequests": 0,
+  "productionIndexSha256": "06eed83dfa5d933bca396fde0a91ecd36dddb21867784c40e45b62b8bf2dd6ad"
+}

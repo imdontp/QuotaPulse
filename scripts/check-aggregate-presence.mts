@@ -201,6 +201,21 @@ async function accepted(path: string, action: () => unknown) {
 async function visible(selector: string) {
   await page!.locator(selector).scrollIntoViewIfNeeded(); await page!.waitForTimeout(120);
 }
+async function checkSecondaryNavigation(activeLabel: string, siblingLabel: string) {
+  const selected = page!.getByRole('navigation').getByRole('link', { name: activeLabel, exact: true });
+  await selected.waitFor(); assert.equal(await selected.getAttribute('aria-current'), 'page', `${activeLabel} is a primary current page link`);
+  const previousViewport = page!.viewportSize()!;
+  await page!.setViewportSize({ width: 1672, height: 941 }); await page!.waitForTimeout(100);
+  const initial = await page!.evaluate(() => ({ moreOpen: document.querySelector('.qp-nav-more')!.matches('[open]'), quickStatsTop: document.querySelector('.qp-quick-stats')!.getBoundingClientRect().top }));
+  assert.equal(initial.moreOpen, false, `${activeLabel} opens with More collapsed`);
+  assert.ok(initial.quickStatsTop <= 470, `${activeLabel} quick stats geometry: ${initial.quickStatsTop}`);
+  await page!.locator('.qp-nav-more summary').click();
+  await page!.getByRole('navigation').getByRole('link', { name: siblingLabel, exact: true }).waitFor();
+  await page!.locator('.qp-nav-more summary').click();
+  assert.equal(await page!.locator('.qp-nav-more').getAttribute('open'), null, 'More closes after its toggle');
+  await page!.setViewportSize(previousViewport);
+  stages.push({ label: `secondary-navigation-${activeLabel.toLowerCase().replace(/\s+/g, '-')}`, initial, siblingAccessibleWhileExpanded: siblingLabel });
+}
 try {
   if (mode === 'verify') for (let index = 0; index < 21; index++) addModel(`rank-${index}`, 'fixture', index + 1);
   await daemon.listen({ host: '127.0.0.1', port: 7816 });
@@ -306,7 +321,7 @@ try {
     // promotion stays static against that full response universe.
     await clear(); await page.goto('http://127.0.0.1:7816/#cost?range=today&basis=api');
     await page.getByTestId('production-cost').waitFor(); await page.locator('.qp-cost-layout').waitFor();
-    await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(250); await staticNow('cost-initial-static');
+    await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(250); await staticNow('cost-initial-static'); await checkSecondaryNavigation('Cost Analysis', 'Providers');
     await visible('.qp-cost-layout'); await clear(); await arm();
     addCostModel('presence-cost-model', 'costfixture', 100_000_000_000);
     addCostProject('presence-cost-project', 200_000_000_000);
@@ -324,7 +339,7 @@ try {
     // as new accounts.
     await clear(); await page.goto('http://127.0.0.1:7816/#providers');
     await page.getByTestId('production-providers').waitFor(); await page.locator('.qp-provider-grid').waitFor();
-    await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(250); await staticNow('providers-initial-static');
+    await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(250); await staticNow('providers-initial-static'); await checkSecondaryNavigation('Providers', 'Cost Analysis');
     await visible('.qp-provider-grid'); await clear(); await arm();
     db.prepare("INSERT INTO source(id,harness,profile,root_path,display_name,detected_at,account_key,account_provider,account_display_name,account_state,account_last_success_at) VALUES (5,'codex','new-fixture','/synthetic/new-provider','New Account Display',0,'fixture:new-account','fixture','New Account Display','active',?)").run(fixedNow);
     await accepted('/api/overview', notify);
