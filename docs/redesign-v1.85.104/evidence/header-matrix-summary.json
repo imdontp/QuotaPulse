@@ -1,0 +1,47 @@
+{
+  "productionIndexSha256": "a30d649c186dffa03b43d8d1ba27a980b79c494cdd1d1a0f9d2b877d4ac4341b",
+  "browser": "155.0.8059.80",
+  "rendererArgs": [],
+  "reducedMotion": true,
+  "cases": 324,
+  "keyboardCases": 36,
+  "routes": [
+    "overview",
+    "live",
+    "projects",
+    "models",
+    "history",
+    "alerts",
+    "providers",
+    "cost",
+    "settings"
+  ],
+  "languages": [
+    "en",
+    "th"
+  ],
+  "themes": [
+    "dark",
+    "light"
+  ],
+  "widths": [
+    390,
+    900,
+    1100,
+    1280,
+    1500,
+    1536,
+    1586,
+    1672,
+    1920
+  ],
+  "checks": [
+    "No document overflow or overlapping header controls/status/workspace",
+    "Complete localized scope text fits the native plate",
+    "No unsupported Workspace button/select/action",
+    "Reference anchor bounds at canonical English sizes",
+    "Ctrl+K opens native command dialog with input focus; Escape restores trigger focus",
+    "No external or write requests; no page errors"
+  ],
+  "scope": "Shared header only; no full-page visual approval or native performance claim"
+}

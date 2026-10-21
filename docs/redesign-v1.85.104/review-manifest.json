@@ -1,0 +1,80 @@
+{
+  "productionIndexSha256": "a30d649c186dffa03b43d8d1ba27a980b79c494cdd1d1a0f9d2b877d4ac4341b",
+  "language": "en",
+  "theme": "dark",
+  "fixture": "isolated synthetic DB, fixed 2025-05-17T13:42Z",
+  "routes": [
+    {
+      "route": "overview",
+      "reference": "../redesign-v1.85.69/refs/overview.png",
+      "before": "../redesign-v1.85.101/after/overview.png",
+      "after": "images/overview.png",
+      "width": 1586,
+      "height": 992,
+      "sha256": "c0099b8d3b665dbf9dd61f12a4ad3b4bd292bae408e06a04758cb0a06750f49a"
+    },
+    {
+      "route": "live",
+      "reference": "../redesign-v1.85.69/refs/live.png",
+      "before": "../redesign-v1.85.101/after/live.png",
+      "after": "images/live.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "2f29f2d55996d3b2deedc44825db041ab9ec9f698e343cf0aa6978dfe38d9d80"
+    },
+    {
+      "route": "projects",
+      "reference": "../redesign-v1.85.69/refs/projects.png",
+      "before": "../redesign-v1.85.103/images/current-projects.png",
+      "after": "images/projects.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "583735f8c3b90bb13398e083e74668f5d2aef3359adc649f81d91aa8f09965dc"
+    },
+    {
+      "route": "models",
+      "reference": "../redesign-v1.85.69/refs/models.png",
+      "before": "../redesign-v1.85.101/after/models.png",
+      "after": "images/models.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "5d2fb1d1e73d48e339312c4de590e649af3292c4dde09211ebd679c1eaf77a45"
+    },
+    {
+      "route": "history",
+      "reference": "../redesign-v1.85.69/refs/history.png",
+      "before": "../redesign-v1.85.101/after/history.png",
+      "after": "images/history.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "b5f398f0f7998f9316bff430c036fb63ad0e8d1946c1785b6d6e3ce859bd179e"
+    },
+    {
+      "route": "alerts",
+      "reference": "../redesign-v1.85.69/refs/alerts.png",
+      "before": "../redesign-v1.85.101/after/alerts.png",
+      "after": "images/alerts.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "72dcb098acb4357703c29f90e74404c489cedcc6f499522091664152542d6d5c"
+    },
+    {
+      "route": "providers",
+      "reference": "../redesign-v1.85.69/refs/providers.png",
+      "before": "../redesign-v1.85.103/images/current-providers.png",
+      "after": "images/providers.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "be0968de6ca70e3a1897847d71fa01d285f5a5668b539a68fe0afc2728f27fad"
+    },
+    {
+      "route": "cost",
+      "reference": "../redesign-v1.85.69/refs/cost.png",
+      "before": "../redesign-v1.85.103/images/current-cost.png",
+      "after": "images/cost.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "dbaec091ed2dc80ccef8f29dbb01964432609ae3122ca487bc4484c7f69c2faf"
+    }
+  ]
+}

@@ -1425,19 +1425,23 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
       assert.equal(await page.locator('.qp-daemon-caption').textContent(), lang === 'th' ? th['redesign.daemonConnected'] : en['redesign.daemonConnected']);
       assert.equal(await page.locator('.qp-workspace-label').textContent(), lang === 'th' ? 'พื้นที่ทำงาน' : 'Workspace');
       assert.equal((await page.locator('.qp-machine-scope').innerText()).trim(), lang === 'th' ? 'เครื่องนี้' : 'This machine');
-      if (destination === 'overview' && width >= 1500) {
-        const workspace = await Promise.all(['.qp-workspace-label', '.qp-machine-scope'].map(async selector => page.locator(selector).evaluate(element => {
+      if (width >= 1536) {
+        const workspace = await Promise.all(['.qp-workspace-context', '.qp-workspace-label>span', '.qp-machine-scope'].map(async selector => page.locator(selector).evaluate(element => {
           const rect = element.getBoundingClientRect();
           return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
         })));
-        const [label, scope] = workspace;
-        const expectedLabelX = lang === 'en' ? 518 : label.x;
-        const expectedScopeX = lang === 'en' ? 619 : label.x + label.width + 43;
-        assert.ok(Math.abs(label.x - expectedLabelX) <= 4 && Math.abs(scope.x - expectedScopeX) <= 4 && Math.abs(scope.width - 170) <= 2,
-          `Workspace header differs from measured reference bounds: ${JSON.stringify({ label, scope })}`);
+        const [plate, label, scope] = workspace;
+        const overview = destination === 'overview';
+        if (lang === 'en' && (overview ? width === 1586 : width === 1672)) {
+          const expected = overview ? { x: 518, y: 12, width: 271, label: 556, scope: 618 } : { x: 546, y: 13, width: 286, label: 585, scope: 650 };
+          assert.ok(Math.abs(plate.x - expected.x) <= 1 && Math.abs(plate.y - expected.y) <= 1 && Math.abs(plate.width - expected.width) <= 1 && Math.abs(plate.height - 32) <= .1 && Math.abs(label.x - expected.label) <= 1 && Math.abs(scope.x - expected.scope) <= 1,
+            `Workspace frame, label and field differ from original reference bounds: ${JSON.stringify({ plate, label, scope })}`);
+        }
+        assert.ok(scope.x >= label.x + label.width && Math.abs(scope.x + scope.width - plate.x - plate.width) <= 1, 'Localized label and real scope stay inside the shared plate');
         assert.ok(Math.abs((label.y + label.height / 2) - (scope.y + scope.height / 2)) <= 1,
           `Workspace label and scope should share a horizontal baseline: ${JSON.stringify({ label, scope })}`);
-        workspaceChecks.push({ page: destination, lang, theme, label, scope });
+        assert.equal(await page.locator('.qp-workspace-context button,.qp-workspace-context select,.qp-workspace-context [role=button]').count(), 0, 'Machine scope is read-only');
+        workspaceChecks.push({ page: destination, lang, theme, plate, label, scope });
       }
       assert.equal(await page.locator('.qp-topbar button[aria-haspopup=dialog]').getAttribute('aria-label'), lang === 'th' ? 'ค้นหาทุกอย่าง...' : 'Search anything...');
       assert.deepEqual(await page.locator('.qp-tools button').evaluateAll(elements => elements.map(element => element.getAttribute('aria-label'))), lang === 'th' ? ['เปลี่ยนธีมสี', 'เปลี่ยนภาษา'] : ['Switch color theme', 'Switch language']);

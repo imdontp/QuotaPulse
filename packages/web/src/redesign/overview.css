@@ -235,6 +235,7 @@
 }
 .qp-workspace-context { display:grid; gap:2px; min-width:0; }
 .qp-workspace-label { color:var(--qp-muted); font-size:9px; line-height:11px; letter-spacing:.04em; }
+.qp-workspace-mark { display:none; }
 .qp-machine-scope { gap:7px; }
 .qp-machine-scope>span { min-width:0; }
 .qp-machine-scope svg { color:var(--qp-accent); flex:none; }
@@ -1285,6 +1286,58 @@
   [data-testid=production-overview] .qp-runtime .qp-map-node[data-dimension=project] { width:53.8%; transform:translate(-.71875px,-2.5px); }
   [data-testid=production-overview] .qp-runtime .qp-map-node[data-dimension=harness] { width:48.4%; }
   [data-testid=production-overview] .qp-runtime .qp-map-node[data-dimension=model] { width:calc(100% + 2px); }
+}
+/* Original desktop workspace plates: one shared frame, a label and the real scope. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid^=production-] .qp-workspace-context {
+    display:flex;
+    align-items:stretch;
+    gap:0;
+    width:286px;
+    min-width:230px;
+    height:32px;
+    margin-left:70px;
+    flex-shrink:1;
+    border:1px solid var(--qp-border);
+    border-radius:8px;
+    background:var(--qp-panel);
+    transform:translateY(-.5px);
+  }
+  .qp-redesign[data-testid^=production-] .qp-workspace-label {
+    display:flex;
+    align-items:center;
+    flex:none;
+    gap:15px;
+    min-width:103px;
+    padding-inline:9px;
+    font-size:11px;
+    line-height:14px;
+    letter-spacing:0;
+    white-space:nowrap;
+  }
+  .qp-redesign[data-testid^=production-] .qp-workspace-mark {
+    display:block;
+    width:14px;
+    height:14px;
+    flex:none;
+    color:var(--qp-accent);
+  }
+  .qp-redesign[data-testid^=production-] .qp-machine-scope {
+    width:auto;
+    min-width:0;
+    min-height:0;
+    height:32px;
+    margin:-1px -1px -1px 0;
+    flex:1;
+    color:var(--qp-text);
+    font-weight:500;
+    letter-spacing:0;
+  }
+  .qp-redesign[data-testid=production-overview] .qp-workspace-context { width:271px; margin-left:58px; transform:translateY(-1.5px); }
+  .qp-redesign[data-testid=production-overview] .qp-workspace-label { min-width:99px; gap:14px; padding-right:6px; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-workspace-context { background:#060c19; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-machine-scope { background:#070f1b; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-workspace-mark { color:#008cff; }
 }
 @media(max-width:500px) {
   .qp-machine-scope {

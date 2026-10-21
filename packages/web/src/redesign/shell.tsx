@@ -1,5 +1,5 @@
 import { useEffect, useId, useState, type CSSProperties, type ReactNode, type RefObject } from 'react';
-import { Activity, ArrowUpRight, Bell, Box, CircleDollarSign, CircleGauge, Cloud, GitBranch, Layers, Monitor, Moon, Settings, Sun, House, Folder, History, MoreHorizontal } from 'lucide-react';
+import { Activity, ArrowUpRight, Bell, Box, CircleDollarSign, CircleGauge, Cloud, GitBranch, Layers, Moon, Search, Settings, Sun, House, Folder, History, MoreHorizontal } from 'lucide-react';
 import type { MessageKey } from '@/i18n/en';
 import { CommandPalette } from '@/components/command-palette';
 import { useT } from '@/i18n';
@@ -70,7 +70,7 @@ export function RedesignShell({ active, preview = false, theme, language, onThem
         <div className="qp-topbar-context">
           {!preview && <DaemonConnection/>}
           <span className="qp-preview-badge" data-page={active}>{t(preview ? 'redesign.preview' : NAV.find(item => item.id === active)!.label)}</span>
-          {!preview && <span className="qp-workspace-context"><span className="qp-workspace-label">{t('redesign.workspace')}</span><span className="qp-machine-scope"><Monitor size={14} aria-hidden="true"/><span>{t('redesign.machineScope')}</span></span></span>}
+          {!preview && <span className="qp-workspace-context"><span className="qp-workspace-label"><Search className="qp-workspace-mark" size={14} aria-hidden="true"><circle cx="11" cy="11" r="1.25" fill="currentColor" stroke="none"/></Search><span>{t('redesign.workspace')}</span></span><span className="qp-machine-scope"><span>{t('redesign.machineScope')}</span></span></span>}
         </div>
         <div className="qp-topbar-actions">
           {!preview && <RedesignNavigator/>}

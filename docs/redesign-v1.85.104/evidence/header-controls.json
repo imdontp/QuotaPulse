@@ -1,0 +1,81 @@
+{
+  "status": "PASS",
+  "masks": false,
+  "beforeIndexSha256": "c9249db624b4040df6b8e499fd8adb703575ec92084cef0d58b26c0d4b1c9d4e",
+  "afterIndexSha256": "a30d649c186dffa03b43d8d1ba27a980b79c494cdd1d1a0f9d2b877d4ac4341b",
+  "scope": "Every pixel counted. y>=60 is separately checked as outside the intentionally edited header. Main/sidebar/headings/QuickStats DOM geometry must remain identical.",
+  "results": [
+    {
+      "route": "overview",
+      "geometryIdentical": true,
+      "changed": 9108,
+      "outsideHeader": 0,
+      "maxChannelDelta": 231,
+      "maxOutsideHeaderDelta": 0,
+      "outsideSamples": []
+    },
+    {
+      "route": "live",
+      "geometryIdentical": true,
+      "changed": 12092,
+      "outsideHeader": 0,
+      "maxChannelDelta": 232,
+      "maxOutsideHeaderDelta": 0,
+      "outsideSamples": []
+    },
+    {
+      "route": "projects",
+      "geometryIdentical": true,
+      "changed": 12092,
+      "outsideHeader": 0,
+      "maxChannelDelta": 232,
+      "maxOutsideHeaderDelta": 0,
+      "outsideSamples": []
+    },
+    {
+      "route": "models",
+      "geometryIdentical": true,
+      "changed": 12092,
+      "outsideHeader": 0,
+      "maxChannelDelta": 232,
+      "maxOutsideHeaderDelta": 0,
+      "outsideSamples": []
+    },
+    {
+      "route": "history",
+      "geometryIdentical": true,
+      "changed": 12092,
+      "outsideHeader": 0,
+      "maxChannelDelta": 232,
+      "maxOutsideHeaderDelta": 0,
+      "outsideSamples": []
+    },
+    {
+      "route": "alerts",
+      "geometryIdentical": true,
+      "changed": 12092,
+      "outsideHeader": 0,
+      "maxChannelDelta": 232,
+      "maxOutsideHeaderDelta": 0,
+      "outsideSamples": []
+    },
+    {
+      "route": "providers",
+      "geometryIdentical": true,
+      "changed": 12092,
+      "outsideHeader": 0,
+      "maxChannelDelta": 232,
+      "maxOutsideHeaderDelta": 0,
+      "outsideSamples": []
+    },
+    {
+      "route": "cost",
+      "geometryIdentical": true,
+      "changed": 12092,
+      "outsideHeader": 0,
+      "maxChannelDelta": 232,
+      "maxOutsideHeaderDelta": 0,
+      "outsideSamples": []
+    }
+  ]
+}
