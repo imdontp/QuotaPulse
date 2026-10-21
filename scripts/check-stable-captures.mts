@@ -1450,8 +1450,10 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
     const navigation = page.locator('.qp-sidebar nav');
     assert.equal(await navigation.locator('a').count(), 9);
     assert.equal(await navigation.locator(':scope > a').count(), 6, 'Six concept routes must remain in the primary sidebar');
-    assert.equal(await navigation.locator('.qp-nav-more > a').count(), 3, 'Additional routes must remain available in More');
-    assert.equal(await navigation.locator('.qp-nav-more').getAttribute('open'), ['providers', 'cost', 'settings'].includes(destination) ? '' : null);
+    const selectedSecondary = ['providers', 'cost', 'settings'].includes(destination);
+    assert.equal(await navigation.locator('.qp-nav-more > a').count(), selectedSecondary ? 2 : 3, 'Unselected additional routes must remain available in More');
+    assert.equal(await navigation.locator('.qp-nav-secondary > a[aria-current=page]').count(), selectedSecondary ? 1 : 0, 'Selected additional route must stay visible outside More');
+    assert.equal(await navigation.locator('.qp-nav-more').getAttribute('open'), null, 'More must start collapsed on each route');
     if (width === 1280) {
       const moreSummary = await navigation.locator('.qp-nav-more > summary').boundingBox();
       assert.ok(moreSummary && moreSummary.height <= 32.1, 'More remains compact ahead of Quick Stats');

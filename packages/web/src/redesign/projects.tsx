@@ -27,13 +27,18 @@ type Sort = 'tokens' | 'recent' | 'value';
 type DetailTab = 'overview' | 'sessions' | 'usage' | 'details';
 interface Route extends ScopeSelection { tab: Tab; sort: Sort; harness: string | null; project: string | null | undefined; detail: DetailTab; offset: number }
 
-function projectTone(key: string | null): 'cyan' | 'violet' {
-  const identity = key ?? '\0unassigned';
+type ProjectTone = 'cyan' | 'violet' | 'blue' | 'orange' | 'neutral';
+
+function projectTone(key: string | null): ProjectTone {
+  if (key === 'QuotaPulse') return 'cyan';
+  if (key === null) return 'neutral';
+  const identity = key;
   let hash = 0x811c9dc5;
   for (let index = 0; index < identity.length; index++) {
     hash = Math.imul(hash ^ identity.charCodeAt(index), 0x01000193) >>> 0;
   }
-  return hash % 2 === 0 ? 'cyan' : 'violet';
+  const tones: Exclude<ProjectTone, 'cyan'>[] = ['violet', 'blue', 'orange', 'neutral'];
+  return tones[hash % tones.length];
 }
 
 function readRoute(): Route {

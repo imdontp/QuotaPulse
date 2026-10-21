@@ -5,7 +5,9 @@
 Worktree: `tmp/worktrees/redesign-foundation`; branch: `design/redesign-foundation`.
 The active objective is the original all-eight dashboard redesign using real application data and the supplied concept refs. The older Live/Pet track notes below are historical and do not establish completion of this objective.
 
-Current checkpoint: [v1.85.101 validation and remaining work](docs/redesign-v1.85.101/VALIDATION-STATE.md), with an [original/intermediate/current visual viewer](docs/redesign-v1.85.101/review.html).
+Current checkpoint: [v1.85.102 Projects palette validation](docs/redesign-v1.85.102/VALIDATION-STATE.md), with an [original/previous/current Projects viewer](docs/redesign-v1.85.102/review.html). Five stable decorative project tones now follow cards and selected details; the measured cyan treatment is preserved. Build, EN/TH dark/light Projects behavior/repeat captures, all-five keyboard selection/color checks, and responsive overflow checks pass. Ranking-rail identity colors remain a follow-up. Full dashboard completion is still open.
+
+Previous checkpoint: [v1.85.101 validation and remaining work](docs/redesign-v1.85.101/VALIDATION-STATE.md), with an [original/intermediate/current visual viewer](docs/redesign-v1.85.101/review.html).
 Cost navigation now matches the concept slot; selected secondary plates, icons and measured spacing are repaired. Current all-eight canonical captures are retained; Overview is 1586×992 and the other seven refs are 1672×941. Build, 647 repository tests, native 28-stage semantics and 24 navigation matrix cases pass. Original-reference SSIM targets, human visual acceptance, a seven-pixel Providers control difference, historical rendering diagnostics, and full native/package/rollback requirements remain open.
 
 Preserve the isolated branch/worktree and existing origin. Preserve unrelated `.zed/` and `scripts/check-review-version-rollback.{cjs,ps1}` work. Continue the full dashboard objective; no new Pet work is part of this continuation.
