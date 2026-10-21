@@ -1339,6 +1339,49 @@
   .qp-redesign[data-testid^=production-][data-theme=dark] .qp-machine-scope { background:#070f1b; }
   .qp-redesign[data-testid^=production-][data-theme=dark] .qp-workspace-mark { color:#008cff; }
 }
+/* The original Search plate and its real command action share one button. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid^=production-] .qp-topbar-body { padding-right:22px; }
+  .qp-redesign[data-testid^=production-] .qp-topbar-actions { gap:10px; }
+  .qp-redesign[data-testid^=production-] .qp-header-clock { width:180px; flex:none; justify-content:flex-end; gap:16px; transform:translateY(-.5px); }
+  .qp-redesign[data-testid^=production-] .qp-tools { gap:15px; transform:translateY(-.5px); }
+  .qp-redesign[data-testid^=production-] .qp-topbar-actions>button[aria-haspopup=dialog] {
+    height:36px;
+    border-radius:12px;
+    padding:0 8px 0 14px;
+    gap:15px;
+    font-size:11.5px;
+    line-height:16px;
+    font-weight:400;
+    color:var(--qp-muted);
+    transform:translateY(-.5px);
+  }
+  .qp-redesign[data-testid^=production-] .qp-palette-trigger-copy { display:inline-flex; align-items:center; gap:6px; min-width:0; }
+  .qp-redesign[data-testid^=production-] .qp-palette-trigger-copy>kbd { margin:0; padding:0; border:0; background:transparent; font:inherit; letter-spacing:.5px; }
+  .qp-redesign[data-testid^=production-] .qp-palette-trigger-copy>kbd::before { content:"("; }
+  .qp-redesign[data-testid^=production-] .qp-palette-trigger-copy>kbd::after { content:")"; }
+  .qp-redesign[data-testid^=production-] .qp-palette-action-mark { display:grid; place-items:center; flex:none; margin-left:auto; width:26px; height:26px; border-radius:8px; color:var(--qp-series); background:color-mix(in srgb,var(--qp-series) 10%,var(--qp-panel)); }
+  .qp-redesign[data-testid^=production-] .qp-palette-action-mark>svg { width:18px; height:18px; fill:currentColor; stroke:currentColor; stroke-width:1.1; }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-topbar-actions>button[aria-haspopup=dialog] {
+    color:#718fcd;
+    border-color:transparent;
+    background:linear-gradient(#081021,#081021) padding-box,linear-gradient(#25335a,#1e2c4c) border-box;
+    box-shadow:inset 0 1px #162144,inset 0 -1px #131c35,inset 0 -2px #050b1b,inset 1px 0 #162144,inset -1px 0 #162144;
+  }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-palette-action-mark { color:#e5eaff; background:linear-gradient(135deg,#1b214a,#151933); }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-palette-action-mark>svg { filter:drop-shadow(0 0 2px #6476ff55); }
+  .qp-redesign[data-testid^=production-] .qp-topbar-actions>button[aria-haspopup=dialog]:hover { border-color:color-mix(in srgb,var(--qp-series) 65%,var(--qp-border)); }
+  .qp-redesign[data-testid^=production-] .qp-topbar-actions>button[aria-haspopup=dialog]:focus-visible { outline:2px solid var(--qp-accent); outline-offset:3px; }
+  .qp-redesign[data-testid=production-overview] .qp-topbar-body { padding-right:20px; }
+  .qp-redesign[data-testid=production-overview] .qp-header-clock { width:auto; gap:8px; transform:translateY(-1.5px); }
+  .qp-redesign[data-testid=production-overview] .qp-tools { gap:12px; transform:translateY(-1.5px); }
+  .qp-redesign[data-testid=production-overview] .qp-topbar-actions>button[aria-haspopup=dialog] { height:34px; padding-left:13px; gap:14px; margin-right:20px; font-size:10.5px; transform:translateY(-1.5px); }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-topbar-actions>button[aria-haspopup=dialog] { color:#7181a4; background:linear-gradient(#090f20,#090f20) padding-box,linear-gradient(#253156,#16203b) border-box; box-shadow:inset 0 -1px #161f36; }
+  .qp-redesign[data-testid=production-overview] .qp-palette-action-mark { width:24px; height:24px; }
+}
+@media(min-width:1600px) {
+  .qp-redesign[data-testid^=production-]:not([data-testid=production-overview]) .qp-topbar-actions>button[aria-haspopup=dialog] { width:408px; }
+}
 @media(max-width:500px) {
   .qp-machine-scope {
     display:none;

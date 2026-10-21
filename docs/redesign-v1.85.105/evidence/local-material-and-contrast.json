@@ -1,0 +1,321 @@
+{
+  "productionIndexSha256": "12d5022d18838231600689ff1c3ed0fef141c9b69d76f42b7dfa2161968a974d",
+  "material": [
+    {
+      "route": "cost",
+      "diagnostic": "Unmasked RGB vertical line x1200 across original empty Search surface; y11–46 Cost, y11–44 Overview. Local material diagnostic only.",
+      "beforeMeanAbsoluteChannelError": 6.212962962962963,
+      "afterMeanAbsoluteChannelError": 2.6203703703703702,
+      "exactRows": [
+        26,
+        40
+      ]
+    },
+    {
+      "route": "overview",
+      "diagnostic": "Unmasked RGB vertical line x1200 across original empty Search surface; y11–46 Cost, y11–44 Overview. Local material diagnostic only.",
+      "beforeMeanAbsoluteChannelError": 4.352941176470588,
+      "afterMeanAbsoluteChannelError": 2.607843137254902,
+      "exactRows": [
+        13,
+        15,
+        19,
+        20,
+        21,
+        26
+      ]
+    }
+  ],
+  "contrastScope": "Computed text color against declared solid Search fill; not antialiased pixels, all gradients or full accessibility certification.",
+  "minimumContrast": 4.88581318497473,
+  "contrasts": [
+    {
+      "route": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "color": "rgb(113, 129, 164)",
+      "declaredSolidBody": "#090f20",
+      "ratio": 4.88581318497473
+    },
+    {
+      "route": "overview",
+      "lang": "en",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "color": "rgb(113, 129, 164)",
+      "declaredSolidBody": "#090f20",
+      "ratio": 4.88581318497473
+    },
+    {
+      "route": "overview",
+      "lang": "th",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "live",
+      "lang": "en",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "live",
+      "lang": "en",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "live",
+      "lang": "th",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "live",
+      "lang": "th",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "projects",
+      "lang": "en",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "projects",
+      "lang": "th",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "projects",
+      "lang": "th",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "models",
+      "lang": "en",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "models",
+      "lang": "en",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "models",
+      "lang": "th",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "models",
+      "lang": "th",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "history",
+      "lang": "en",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "history",
+      "lang": "en",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "history",
+      "lang": "th",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "history",
+      "lang": "th",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "alerts",
+      "lang": "en",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "alerts",
+      "lang": "th",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "providers",
+      "lang": "en",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "providers",
+      "lang": "th",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "providers",
+      "lang": "th",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "cost",
+      "lang": "en",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "cost",
+      "lang": "th",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "cost",
+      "lang": "th",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "settings",
+      "lang": "en",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "settings",
+      "lang": "en",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    },
+    {
+      "route": "settings",
+      "lang": "th",
+      "theme": "dark",
+      "color": "rgb(113, 143, 205)",
+      "declaredSolidBody": "#081021",
+      "ratio": 5.886359838063209
+    },
+    {
+      "route": "settings",
+      "lang": "th",
+      "theme": "light",
+      "color": "rgb(82, 101, 124)",
+      "declaredSolidBody": "#ffffff",
+      "ratio": 5.9807129789152285
+    }
+  ]
+}

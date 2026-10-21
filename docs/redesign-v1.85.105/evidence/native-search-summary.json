@@ -1,0 +1,48 @@
+{
+  "productionIndexSha256": "12d5022d18838231600689ff1c3ed0fef141c9b69d76f42b7dfa2161968a974d",
+  "browser": "155.0.8059.80",
+  "rendererArgs": [],
+  "reducedMotion": true,
+  "cases": 324,
+  "keyboardCases": 36,
+  "pointerAndNavigationCases": 36,
+  "routes": [
+    "overview",
+    "live",
+    "projects",
+    "models",
+    "history",
+    "alerts",
+    "providers",
+    "cost",
+    "settings"
+  ],
+  "languages": [
+    "en",
+    "th"
+  ],
+  "themes": [
+    "dark",
+    "light"
+  ],
+  "widths": [
+    390,
+    900,
+    1100,
+    1280,
+    1500,
+    1536,
+    1586,
+    1672,
+    1920
+  ],
+  "checks": [
+    "No page overflow or overlapping header controls/status/scope",
+    "Canonical Search and Workspace reference anchors",
+    "Native inline copy/hint/command-mark containment; compact marker hidden",
+    "Ctrl+K input focus and Escape trigger restoration",
+    "Click actual command mark; type destination; Enter navigates to real History/Settings with empty query and closed dialog",
+    "No browser page errors or forbidden external/write requests"
+  ],
+  "scope": "Header/Search behavior only; not native performance or complete app acceptance"
+}
