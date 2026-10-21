@@ -103,6 +103,8 @@
 .qp-cost-chart-labels>span:nth-child(2) { color:var(--qp-series); }
 .qp-cost-section-title { display:flex; align-items:center; flex-wrap:wrap; gap:4px 10px; min-width:0; }
 .qp-cost-chart-footer { display:flex; align-items:start; flex-wrap:wrap; gap:8px; min-width:0; }
+.qp-cost-trend>.qp-cost-plot { grid-row:2; }
+.qp-cost-trend>.qp-cost-chart-footer { grid-row:3; }
 .qp-cost-chart-footer>.qp-cost-coverage { flex:1; min-width:0; }
 .qp-cost-chart-footer>.qp-chart-data[open] { width:100%; }
 @media(min-width:1280px) {
@@ -229,8 +231,10 @@
 
 /* Native reference table text and row rhythm. */
 @media(min-width:1536px) {
- .qp-redesign[data-testid=production-cost] .qp-cost-plot { grid-template-columns:minmax(40px,max-content) minmax(0,1fr) minmax(48px,max-content); margin-top:15px; }
+ .qp-redesign[data-testid=production-cost] .qp-cost-plot { grid-template-columns:minmax(40px,max-content) minmax(0,1fr) minmax(48px,max-content); grid-row:3; margin-top:4px; }
  .qp-redesign[data-testid=production-cost] .qp-cost-axis { font-size:12px; }
+ /* Pricing context fills the reference header-to-plot gap without enlarging the panel. */
+ .qp-redesign[data-testid=production-cost] .qp-cost-chart-footer { grid-row:2; }
  /* Intrinsic axis width follows the complete localized labels, including US$. */
  .qp-redesign[data-testid=production-cost] .qp-cost-axis::before { content:attr(data-size-label); display:block; white-space:pre; visibility:hidden; }
  .qp-redesign[data-testid=production-cost] .qp-cost-plot-dates { font-size:11px; }

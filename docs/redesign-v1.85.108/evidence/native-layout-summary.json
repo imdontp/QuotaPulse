@@ -1,0 +1,467 @@
+{
+  "productionIndexSha256": "4f80a1c82fc10d521f7f48b131c22456ebb151c266bef13ad621778e8eb95f66",
+  "browser": "155.0.8059.80",
+  "rendererArgs": [],
+  "cases": 28,
+  "keyboardDisclosurePairs": 28,
+  "languages": [
+    "en",
+    "th"
+  ],
+  "themes": [
+    "dark",
+    "light"
+  ],
+  "widths": [
+    390,
+    900,
+    1280,
+    1536,
+    1586,
+    1672,
+    1920
+  ],
+  "canonical": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "closed": {
+        "overflow": false,
+        "parts": [
+          {
+            "selector": "qp-panel qp-cost-trend",
+            "text": null,
+            "rect": {
+              "x": 238,
+              "y": 343,
+              "width": 785.828125,
+              "height": 302,
+              "top": 343,
+              "right": 1023.828125,
+              "bottom": 645,
+              "left": 238
+            }
+          },
+          {
+            "selector": "qp-cost-section-head",
+            "text": null,
+            "rect": {
+              "x": 250,
+              "y": 355,
+              "width": 761.828125,
+              "height": 20.796875,
+              "top": 355,
+              "right": 1011.828125,
+              "bottom": 375.796875,
+              "left": 250
+            }
+          },
+          {
+            "selector": "qp-cost-chart-footer",
+            "text": null,
+            "rect": {
+              "x": 250,
+              "y": 379.796875,
+              "width": 761.828125,
+              "height": 24,
+              "top": 379.796875,
+              "right": 1011.828125,
+              "bottom": 403.796875,
+              "left": 250
+            }
+          },
+          {
+            "selector": "qp-footnote qp-cost-coverage",
+            "text": "Priced calls / all calls: 72 / 79 · Other basis or unknown calls excluded: 7 · Reference-priced calls: 0",
+            "rect": {
+              "x": 250,
+              "y": 385.953125,
+              "width": 633.59375,
+              "height": 11.6875,
+              "top": 385.953125,
+              "right": 883.59375,
+              "bottom": 397.640625,
+              "left": 250
+            }
+          },
+          {
+            "selector": "summary",
+            "text": null,
+            "rect": {
+              "x": 891.59375,
+              "y": 379.796875,
+              "width": 120.234375,
+              "height": 24,
+              "top": 379.796875,
+              "right": 1011.828125,
+              "bottom": 403.796875,
+              "left": 891.59375
+            }
+          },
+          {
+            "selector": "qp-cost-plot",
+            "text": null,
+            "rect": {
+              "x": 250,
+              "y": 411.796875,
+              "width": 761.828125,
+              "height": 210,
+              "top": 411.796875,
+              "right": 1011.828125,
+              "bottom": 621.796875,
+              "left": 250
+            }
+          },
+          {
+            "selector": "axis-amount",
+            "text": null,
+            "rect": {
+              "x": 253.421875,
+              "y": 404,
+              "width": 36.578125,
+              "height": 15.59375,
+              "top": 404,
+              "right": 290,
+              "bottom": 419.59375,
+              "left": 253.421875
+            }
+          },
+          {
+            "selector": "qp-cost-chart",
+            "text": null,
+            "rect": {
+              "x": 298,
+              "y": 411.796875,
+              "width": 657.828125,
+              "height": 190,
+              "top": 411.796875,
+              "right": 955.828125,
+              "bottom": 601.796875,
+              "left": 298
+            }
+          },
+          {
+            "selector": "axis-tokens",
+            "text": null,
+            "rect": {
+              "x": 963.828125,
+              "y": 404,
+              "width": 43.046875,
+              "height": 15.59375,
+              "top": 404,
+              "right": 1006.875,
+              "bottom": 419.59375,
+              "left": 963.828125
+            }
+          },
+          {
+            "selector": "qp-cost-plot-dates",
+            "text": null,
+            "rect": {
+              "x": 298,
+              "y": 605.796875,
+              "width": 657.828125,
+              "height": 16,
+              "top": 605.796875,
+              "right": 955.828125,
+              "bottom": 621.796875,
+              "left": 298
+            }
+          }
+        ],
+        "domOrder": [
+          "qp-cost-section-head",
+          "qp-cost-chart-footer",
+          "qp-cost-plot"
+        ],
+        "bars": [
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "100%"
+        ],
+        "dates": [
+          "2025-04-30T17:00:00.000Z",
+          "2025-05-02T17:00:00.000Z",
+          "2025-05-04T17:00:00.000Z",
+          "2025-05-06T17:00:00.000Z",
+          "2025-05-08T17:00:00.000Z",
+          "2025-05-10T17:00:00.000Z",
+          "2025-05-12T17:00:00.000Z",
+          "2025-05-14T17:00:00.000Z",
+          "2025-05-17T13:42:00.001Z"
+        ]
+      },
+      "expanded": {
+        "overflow": false,
+        "panel": {
+          "x": 238,
+          "y": 343,
+          "width": 785.828125,
+          "height": 797.484375,
+          "top": 343,
+          "right": 1023.828125,
+          "bottom": 1140.484375,
+          "left": 238
+        },
+        "footer": {
+          "x": 250,
+          "y": 379.796875,
+          "width": 761.828125,
+          "height": 530.6875,
+          "top": 379.796875,
+          "right": 1011.828125,
+          "bottom": 910.484375,
+          "left": 250
+        },
+        "plot": {
+          "x": 250,
+          "y": 918.484375,
+          "width": 761.828125,
+          "height": 210,
+          "top": 918.484375,
+          "right": 1011.828125,
+          "bottom": 1128.484375,
+          "left": 250
+        }
+      },
+      "keyboardOpenClose": true,
+      "allBucketRows": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "closed": {
+        "overflow": false,
+        "parts": [
+          {
+            "selector": "qp-panel qp-cost-trend",
+            "text": null,
+            "rect": {
+              "x": 238,
+              "y": 343,
+              "width": 785.828125,
+              "height": 302,
+              "top": 343,
+              "right": 1023.828125,
+              "bottom": 645,
+              "left": 238
+            }
+          },
+          {
+            "selector": "qp-cost-section-head",
+            "text": null,
+            "rect": {
+              "x": 250,
+              "y": 355,
+              "width": 761.828125,
+              "height": 20.796875,
+              "top": 355,
+              "right": 1011.828125,
+              "bottom": 375.796875,
+              "left": 250
+            }
+          },
+          {
+            "selector": "qp-cost-chart-footer",
+            "text": null,
+            "rect": {
+              "x": 250,
+              "y": 379.796875,
+              "width": 761.828125,
+              "height": 24,
+              "top": 379.796875,
+              "right": 1011.828125,
+              "bottom": 403.796875,
+              "left": 250
+            }
+          },
+          {
+            "selector": "qp-footnote qp-cost-coverage",
+            "text": "Priced calls / all calls: 72 / 79 · Other basis or unknown calls excluded: 7 · Reference-priced calls: 0",
+            "rect": {
+              "x": 250,
+              "y": 385.953125,
+              "width": 633.59375,
+              "height": 11.6875,
+              "top": 385.953125,
+              "right": 883.59375,
+              "bottom": 397.640625,
+              "left": 250
+            }
+          },
+          {
+            "selector": "summary",
+            "text": null,
+            "rect": {
+              "x": 891.59375,
+              "y": 379.796875,
+              "width": 120.234375,
+              "height": 24,
+              "top": 379.796875,
+              "right": 1011.828125,
+              "bottom": 403.796875,
+              "left": 891.59375
+            }
+          },
+          {
+            "selector": "qp-cost-plot",
+            "text": null,
+            "rect": {
+              "x": 250,
+              "y": 411.796875,
+              "width": 761.828125,
+              "height": 210,
+              "top": 411.796875,
+              "right": 1011.828125,
+              "bottom": 621.796875,
+              "left": 250
+            }
+          },
+          {
+            "selector": "axis-amount",
+            "text": null,
+            "rect": {
+              "x": 253.421875,
+              "y": 404,
+              "width": 36.578125,
+              "height": 15.59375,
+              "top": 404,
+              "right": 290,
+              "bottom": 419.59375,
+              "left": 253.421875
+            }
+          },
+          {
+            "selector": "qp-cost-chart",
+            "text": null,
+            "rect": {
+              "x": 298,
+              "y": 411.796875,
+              "width": 657.828125,
+              "height": 190,
+              "top": 411.796875,
+              "right": 955.828125,
+              "bottom": 601.796875,
+              "left": 298
+            }
+          },
+          {
+            "selector": "axis-tokens",
+            "text": null,
+            "rect": {
+              "x": 963.828125,
+              "y": 404,
+              "width": 43.046875,
+              "height": 15.59375,
+              "top": 404,
+              "right": 1006.875,
+              "bottom": 419.59375,
+              "left": 963.828125
+            }
+          },
+          {
+            "selector": "qp-cost-plot-dates",
+            "text": null,
+            "rect": {
+              "x": 298,
+              "y": 605.796875,
+              "width": 657.828125,
+              "height": 16,
+              "top": 605.796875,
+              "right": 955.828125,
+              "bottom": 621.796875,
+              "left": 298
+            }
+          }
+        ],
+        "domOrder": [
+          "qp-cost-section-head",
+          "qp-cost-chart-footer",
+          "qp-cost-plot"
+        ],
+        "bars": [
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "0%",
+          "100%"
+        ],
+        "dates": [
+          "2025-04-30T17:00:00.000Z",
+          "2025-05-02T17:00:00.000Z",
+          "2025-05-04T17:00:00.000Z",
+          "2025-05-06T17:00:00.000Z",
+          "2025-05-08T17:00:00.000Z",
+          "2025-05-10T17:00:00.000Z",
+          "2025-05-12T17:00:00.000Z",
+          "2025-05-14T17:00:00.000Z",
+          "2025-05-17T13:42:00.001Z"
+        ]
+      },
+      "expanded": {
+        "overflow": false,
+        "panel": {
+          "x": 238,
+          "y": 343,
+          "width": 785.828125,
+          "height": 797.484375,
+          "top": 343,
+          "right": 1023.828125,
+          "bottom": 1140.484375,
+          "left": 238
+        },
+        "footer": {
+          "x": 250,
+          "y": 379.796875,
+          "width": 761.828125,
+          "height": 530.6875,
+          "top": 379.796875,
+          "right": 1011.828125,
+          "bottom": 910.484375,
+          "left": 250
+        },
+        "plot": {
+          "x": 250,
+          "y": 918.484375,
+          "width": 761.828125,
+          "height": 210,
+          "top": 918.484375,
+          "right": 1011.828125,
+          "bottom": 1128.484375,
+          "left": 250
+        }
+      },
+      "keyboardOpenClose": true,
+      "allBucketRows": true
+    }
+  ],
+  "scope": "Native browser Cost layout/context reading order, all bucket-row keyboard disclosure and focused compact/native containment; not full app acceptance/performance"
+}
