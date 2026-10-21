@@ -1,0 +1,713 @@
+{
+  "status": "RED",
+  "masks": false,
+  "beforeIndexSha256": "4a70a2fec63b4129fc5794dee25142caf9af8a4efe8abfd5648be2833fb7cba1",
+  "afterIndexSha256": "6833dcb0c0d48c6d3420b35a6bed2ef22b9c0d6d7718fb797151af284ecb2ce6",
+  "scope": "Every pixel counted; Projects rank row rectangles plus6px measured CSS shadow extent classify intended edits. No masks/tolerance. All eight full canonical DOM geometry must remain equal to106.",
+  "results": [
+    {
+      "route": "overview",
+      "geometryIdentical": true,
+      "intendedRegions": [],
+      "changed": 0,
+      "insideRows": 0,
+      "outsideRows": 0,
+      "maxOutsideDelta": 0,
+      "groups": {},
+      "outsideSamples": []
+    },
+    {
+      "route": "live",
+      "geometryIdentical": true,
+      "intendedRegions": [],
+      "changed": 0,
+      "insideRows": 0,
+      "outsideRows": 0,
+      "maxOutsideDelta": 0,
+      "groups": {},
+      "outsideSamples": []
+    },
+    {
+      "route": "projects",
+      "geometryIdentical": true,
+      "intendedRegions": [
+        {
+          "left": 1135,
+          "top": 780,
+          "right": 1646,
+          "bottom": 817
+        },
+        {
+          "left": 1135,
+          "top": 808,
+          "right": 1646,
+          "bottom": 845
+        },
+        {
+          "left": 1135,
+          "top": 836,
+          "right": 1646,
+          "bottom": 873
+        },
+        {
+          "left": 1135,
+          "top": 864,
+          "right": 1646,
+          "bottom": 901
+        },
+        {
+          "left": 1135,
+          "top": 892,
+          "right": 1646,
+          "bottom": 929
+        }
+      ],
+      "changed": 7153,
+      "insideRows": 7153,
+      "outsideRows": 0,
+      "maxOutsideDelta": 0,
+      "groups": {},
+      "outsideSamples": []
+    },
+    {
+      "route": "models",
+      "geometryIdentical": true,
+      "intendedRegions": [],
+      "changed": 0,
+      "insideRows": 0,
+      "outsideRows": 0,
+      "maxOutsideDelta": 0,
+      "groups": {},
+      "outsideSamples": []
+    },
+    {
+      "route": "history",
+      "geometryIdentical": true,
+      "intendedRegions": [],
+      "changed": 24,
+      "insideRows": 0,
+      "outsideRows": 24,
+      "maxOutsideDelta": 35,
+      "groups": {
+        "sidebar": 24
+      },
+      "outsideSamples": [
+        {
+          "x": 36,
+          "y": 338,
+          "before": [
+            39,
+            49,
+            63,
+            255
+          ],
+          "after": [
+            67,
+            78,
+            97,
+            255
+          ]
+        },
+        {
+          "x": 37,
+          "y": 338,
+          "before": [
+            103,
+            117,
+            142,
+            255
+          ],
+          "after": [
+            120,
+            135,
+            163,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 338,
+          "before": [
+            134,
+            151,
+            181,
+            255
+          ],
+          "after": [
+            156,
+            174,
+            207,
+            255
+          ]
+        },
+        {
+          "x": 39,
+          "y": 338,
+          "before": [
+            158,
+            177,
+            210,
+            255
+          ],
+          "after": [
+            166,
+            185,
+            220,
+            255
+          ]
+        },
+        {
+          "x": 40,
+          "y": 338,
+          "before": [
+            134,
+            151,
+            181,
+            255
+          ],
+          "after": [
+            156,
+            174,
+            207,
+            255
+          ]
+        },
+        {
+          "x": 41,
+          "y": 338,
+          "before": [
+            103,
+            117,
+            142,
+            255
+          ],
+          "after": [
+            120,
+            135,
+            163,
+            255
+          ]
+        },
+        {
+          "x": 42,
+          "y": 338,
+          "before": [
+            38,
+            47,
+            62,
+            255
+          ],
+          "after": [
+            67,
+            78,
+            97,
+            255
+          ]
+        },
+        {
+          "x": 35,
+          "y": 339,
+          "before": [
+            87,
+            101,
+            123,
+            255
+          ],
+          "after": [
+            104,
+            117,
+            143,
+            255
+          ]
+        },
+        {
+          "x": 36,
+          "y": 339,
+          "before": [
+            164,
+            182,
+            217,
+            255
+          ],
+          "after": [
+            166,
+            185,
+            220,
+            255
+          ]
+        },
+        {
+          "x": 42,
+          "y": 339,
+          "before": [
+            163,
+            182,
+            216,
+            255
+          ],
+          "after": [
+            166,
+            185,
+            220,
+            255
+          ]
+        },
+        {
+          "x": 43,
+          "y": 339,
+          "before": [
+            85,
+            98,
+            120,
+            255
+          ],
+          "after": [
+            104,
+            117,
+            143,
+            255
+          ]
+        },
+        {
+          "x": 29,
+          "y": 351,
+          "before": [
+            5,
+            12,
+            21,
+            255
+          ],
+          "after": [
+            6,
+            12,
+            22,
+            255
+          ]
+        },
+        {
+          "x": 30,
+          "y": 351,
+          "before": [
+            138,
+            154,
+            185,
+            255
+          ],
+          "after": [
+            145,
+            163,
+            195,
+            255
+          ]
+        },
+        {
+          "x": 32,
+          "y": 351,
+          "before": [
+            51,
+            62,
+            79,
+            255
+          ],
+          "after": [
+            53,
+            64,
+            81,
+            255
+          ]
+        },
+        {
+          "x": 46,
+          "y": 351,
+          "before": [
+            77,
+            88,
+            109,
+            255
+          ],
+          "after": [
+            76,
+            88,
+            108,
+            255
+          ]
+        },
+        {
+          "x": 48,
+          "y": 351,
+          "before": [
+            137,
+            154,
+            184,
+            255
+          ],
+          "after": [
+            147,
+            165,
+            196,
+            255
+          ]
+        },
+        {
+          "x": 49,
+          "y": 351,
+          "before": [
+            5,
+            11,
+            20,
+            255
+          ],
+          "after": [
+            5,
+            12,
+            21,
+            255
+          ]
+        },
+        {
+          "x": 29,
+          "y": 352,
+          "before": [
+            7,
+            15,
+            24,
+            255
+          ],
+          "after": [
+            13,
+            21,
+            31,
+            255
+          ]
+        },
+        {
+          "x": 30,
+          "y": 352,
+          "before": [
+            164,
+            182,
+            217,
+            255
+          ],
+          "after": [
+            166,
+            185,
+            220,
+            255
+          ]
+        },
+        {
+          "x": 31,
+          "y": 352,
+          "before": [
+            162,
+            180,
+            214,
+            255
+          ],
+          "after": [
+            164,
+            183,
+            218,
+            255
+          ]
+        },
+        {
+          "x": 48,
+          "y": 352,
+          "before": [
+            162,
+            180,
+            214,
+            255
+          ],
+          "after": [
+            166,
+            185,
+            220,
+            255
+          ]
+        },
+        {
+          "x": 49,
+          "y": 352,
+          "before": [
+            6,
+            12,
+            22,
+            255
+          ],
+          "after": [
+            12,
+            20,
+            31,
+            255
+          ]
+        },
+        {
+          "x": 29,
+          "y": 694,
+          "before": [
+            0,
+            31,
+            30,
+            255
+          ],
+          "after": [
+            0,
+            33,
+            31,
+            255
+          ]
+        },
+        {
+          "x": 56,
+          "y": 694,
+          "before": [
+            0,
+            31,
+            30,
+            255
+          ],
+          "after": [
+            0,
+            33,
+            31,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "route": "alerts",
+      "geometryIdentical": true,
+      "intendedRegions": [],
+      "changed": 0,
+      "insideRows": 0,
+      "outsideRows": 0,
+      "maxOutsideDelta": 0,
+      "groups": {},
+      "outsideSamples": []
+    },
+    {
+      "route": "providers",
+      "geometryIdentical": true,
+      "intendedRegions": [],
+      "changed": 10,
+      "insideRows": 0,
+      "outsideRows": 10,
+      "maxOutsideDelta": 1,
+      "groups": {
+        "sidebar": 10
+      },
+      "outsideSamples": [
+        {
+          "x": 210,
+          "y": 380,
+          "before": [
+            25,
+            47,
+            67,
+            255
+          ],
+          "after": [
+            25,
+            46,
+            67,
+            255
+          ]
+        },
+        {
+          "x": 211,
+          "y": 416,
+          "before": [
+            31,
+            83,
+            110,
+            255
+          ],
+          "after": [
+            31,
+            82,
+            110,
+            255
+          ]
+        },
+        {
+          "x": 208,
+          "y": 446,
+          "before": [
+            13,
+            25,
+            40,
+            255
+          ],
+          "after": [
+            13,
+            24,
+            40,
+            255
+          ]
+        },
+        {
+          "x": 208,
+          "y": 447,
+          "before": [
+            11,
+            22,
+            38,
+            255
+          ],
+          "after": [
+            10,
+            22,
+            38,
+            255
+          ]
+        },
+        {
+          "x": 210,
+          "y": 449,
+          "before": [
+            11,
+            23,
+            38,
+            255
+          ],
+          "after": [
+            10,
+            22,
+            38,
+            255
+          ]
+        },
+        {
+          "x": 211,
+          "y": 743,
+          "before": [
+            11,
+            23,
+            38,
+            255
+          ],
+          "after": [
+            11,
+            22,
+            38,
+            255
+          ]
+        },
+        {
+          "x": 212,
+          "y": 743,
+          "before": [
+            12,
+            24,
+            40,
+            255
+          ],
+          "after": [
+            12,
+            24,
+            39,
+            255
+          ]
+        },
+        {
+          "x": 210,
+          "y": 745,
+          "before": [
+            11,
+            23,
+            38,
+            255
+          ],
+          "after": [
+            11,
+            22,
+            38,
+            255
+          ]
+        },
+        {
+          "x": 211,
+          "y": 745,
+          "before": [
+            12,
+            24,
+            40,
+            255
+          ],
+          "after": [
+            12,
+            24,
+            39,
+            255
+          ]
+        },
+        {
+          "x": 208,
+          "y": 747,
+          "before": [
+            11,
+            23,
+            38,
+            255
+          ],
+          "after": [
+            11,
+            22,
+            38,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "route": "cost",
+      "geometryIdentical": true,
+      "intendedRegions": [],
+      "changed": 2,
+      "insideRows": 0,
+      "outsideRows": 2,
+      "maxOutsideDelta": 2,
+      "groups": {
+        "sidebar": 2
+      },
+      "outsideSamples": [
+        {
+          "x": 30,
+          "y": 689,
+          "before": [
+            0,
+            33,
+            31,
+            255
+          ],
+          "after": [
+            0,
+            31,
+            30,
+            255
+          ]
+        },
+        {
+          "x": 57,
+          "y": 689,
+          "before": [
+            0,
+            33,
+            31,
+            255
+          ],
+          "after": [
+            0,
+            31,
+            30,
+            255
+          ]
+        }
+      ]
+    }
+  ]
+}

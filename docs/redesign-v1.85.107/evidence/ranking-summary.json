@@ -1,0 +1,913 @@
+{
+  "productionIndexSha256": "6833dcb0c0d48c6d3420b35a6bed2ef22b9c0d6d7718fb797151af284ecb2ce6",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "keyboardSelections": 20,
+  "layoutCases": 24,
+  "checks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "keyboardSelections": 5,
+      "widths": [
+        390,
+        900,
+        1280,
+        1536,
+        1672,
+        1920
+      ],
+      "checks": [
+        {
+          "tone": "cyan",
+          "iconColor": "rgb(54, 201, 255)",
+          "iconClass": "lucide lucide-box",
+          "plate": {
+            "x": 1177.6875,
+            "y": 786.359375,
+            "width": 24,
+            "height": 24,
+            "top": 786.359375,
+            "right": 1201.6875,
+            "bottom": 810.359375,
+            "left": 1177.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 788.359375,
+            "width": 20,
+            "height": 20,
+            "top": 788.359375,
+            "right": 1161.6875,
+            "bottom": 808.359375,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1210.6875,
+            "y": 791.109375,
+            "width": 58.234375,
+            "height": 14,
+            "top": 791.109375,
+            "right": 1268.921875,
+            "bottom": 805.109375,
+            "left": 1210.6875
+          },
+          "tokens": "721000009",
+          "fill": "100%",
+          "barColor": "linear-gradient(90deg, rgb(25, 193, 249), rgb(35, 124, 255))",
+          "identity": "QuotaPulse",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "blue",
+          "iconColor": "rgb(73, 161, 255)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1177.6875,
+            "y": 814.359375,
+            "width": 24,
+            "height": 24,
+            "top": 814.359375,
+            "right": 1201.6875,
+            "bottom": 838.359375,
+            "left": 1177.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 816.359375,
+            "width": 20,
+            "height": 20,
+            "top": 816.359375,
+            "right": 1161.6875,
+            "bottom": 836.359375,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1210.6875,
+            "y": 819.109375,
+            "width": 75.625,
+            "height": 14,
+            "top": 819.109375,
+            "right": 1286.3125,
+            "bottom": 833.109375,
+            "left": 1210.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Agent Platform",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "orange",
+          "iconColor": "rgb(255, 173, 79)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1177.6875,
+            "y": 827.96875,
+            "width": 24,
+            "height": 24,
+            "top": 827.96875,
+            "right": 1201.6875,
+            "bottom": 851.96875,
+            "left": 1177.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 829.96875,
+            "width": 20,
+            "height": 20,
+            "top": 829.96875,
+            "right": 1161.6875,
+            "bottom": 849.96875,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1210.6875,
+            "y": 832.71875,
+            "width": 80.125,
+            "height": 14,
+            "top": 832.71875,
+            "right": 1290.8125,
+            "bottom": 846.71875,
+            "left": 1210.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Developer Tools",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "violet",
+          "iconColor": "rgb(168, 115, 249)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1177.6875,
+            "y": 855.96875,
+            "width": 24,
+            "height": 24,
+            "top": 855.96875,
+            "right": 1201.6875,
+            "bottom": 879.96875,
+            "left": 1177.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 857.96875,
+            "width": 20,
+            "height": 20,
+            "top": 857.96875,
+            "right": 1161.6875,
+            "bottom": 877.96875,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1210.6875,
+            "y": 860.71875,
+            "width": 71.390625,
+            "height": 14,
+            "top": 860.71875,
+            "right": 1282.078125,
+            "bottom": 874.71875,
+            "left": 1210.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Edge Services",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "neutral",
+          "iconColor": "rgb(166, 185, 220)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1177.6875,
+            "y": 883.96875,
+            "width": 24,
+            "height": 24,
+            "top": 883.96875,
+            "right": 1201.6875,
+            "bottom": 907.96875,
+            "left": 1177.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 885.96875,
+            "width": 20,
+            "height": 20,
+            "top": 885.96875,
+            "right": 1161.6875,
+            "bottom": 905.96875,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1210.6875,
+            "y": 888.71875,
+            "width": 68.828125,
+            "height": 14,
+            "top": 888.71875,
+            "right": 1279.515625,
+            "bottom": 902.71875,
+            "left": 1210.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Research Lab",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "keyboardSelections": 5,
+      "widths": [
+        390,
+        900,
+        1280,
+        1536,
+        1672,
+        1920
+      ],
+      "checks": [
+        {
+          "tone": "cyan",
+          "iconColor": "rgb(6, 101, 139)",
+          "iconClass": "lucide lucide-box",
+          "plate": {
+            "x": 1168.6875,
+            "y": 786.171875,
+            "width": 24,
+            "height": 24,
+            "top": 786.171875,
+            "right": 1192.6875,
+            "bottom": 810.171875,
+            "left": 1168.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 788.171875,
+            "width": 20,
+            "height": 20,
+            "top": 788.171875,
+            "right": 1161.6875,
+            "bottom": 808.171875,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1199.6875,
+            "y": 790.921875,
+            "width": 58.234375,
+            "height": 14,
+            "top": 790.921875,
+            "right": 1257.921875,
+            "bottom": 804.921875,
+            "left": 1199.6875
+          },
+          "tokens": "721000009",
+          "fill": "100%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "QuotaPulse",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "blue",
+          "iconColor": "rgb(33, 88, 166)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1168.6875,
+            "y": 814.171875,
+            "width": 24,
+            "height": 24,
+            "top": 814.171875,
+            "right": 1192.6875,
+            "bottom": 838.171875,
+            "left": 1168.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 816.171875,
+            "width": 20,
+            "height": 20,
+            "top": 816.171875,
+            "right": 1161.6875,
+            "bottom": 836.171875,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1199.6875,
+            "y": 818.921875,
+            "width": 75.625,
+            "height": 14,
+            "top": 818.921875,
+            "right": 1275.3125,
+            "bottom": 832.921875,
+            "left": 1199.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Agent Platform",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "orange",
+          "iconColor": "rgb(146, 80, 0)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1168.6875,
+            "y": 827.78125,
+            "width": 24,
+            "height": 24,
+            "top": 827.78125,
+            "right": 1192.6875,
+            "bottom": 851.78125,
+            "left": 1168.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 829.78125,
+            "width": 20,
+            "height": 20,
+            "top": 829.78125,
+            "right": 1161.6875,
+            "bottom": 849.78125,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1199.6875,
+            "y": 832.53125,
+            "width": 80.125,
+            "height": 14,
+            "top": 832.53125,
+            "right": 1279.8125,
+            "bottom": 846.53125,
+            "left": 1199.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Developer Tools",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "violet",
+          "iconColor": "rgb(112, 64, 187)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1168.6875,
+            "y": 855.78125,
+            "width": 24,
+            "height": 24,
+            "top": 855.78125,
+            "right": 1192.6875,
+            "bottom": 879.78125,
+            "left": 1168.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 857.78125,
+            "width": 20,
+            "height": 20,
+            "top": 857.78125,
+            "right": 1161.6875,
+            "bottom": 877.78125,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1199.6875,
+            "y": 860.53125,
+            "width": 71.390625,
+            "height": 14,
+            "top": 860.53125,
+            "right": 1271.078125,
+            "bottom": 874.53125,
+            "left": 1199.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Edge Services",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "neutral",
+          "iconColor": "rgb(82, 101, 124)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1168.6875,
+            "y": 883.78125,
+            "width": 24,
+            "height": 24,
+            "top": 883.78125,
+            "right": 1192.6875,
+            "bottom": 907.78125,
+            "left": 1168.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 885.78125,
+            "width": 20,
+            "height": 20,
+            "top": 885.78125,
+            "right": 1161.6875,
+            "bottom": 905.78125,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1199.6875,
+            "y": 888.53125,
+            "width": 68.828125,
+            "height": 14,
+            "top": 888.53125,
+            "right": 1268.515625,
+            "bottom": 902.53125,
+            "left": 1199.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Research Lab",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        }
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "keyboardSelections": 5,
+      "widths": [
+        390,
+        900,
+        1280,
+        1536,
+        1672,
+        1920
+      ],
+      "checks": [
+        {
+          "tone": "cyan",
+          "iconColor": "rgb(54, 201, 255)",
+          "iconClass": "lucide lucide-box",
+          "plate": {
+            "x": 1177.6875,
+            "y": 786.359375,
+            "width": 24,
+            "height": 24,
+            "top": 786.359375,
+            "right": 1201.6875,
+            "bottom": 810.359375,
+            "left": 1177.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 788.359375,
+            "width": 20,
+            "height": 20,
+            "top": 788.359375,
+            "right": 1161.6875,
+            "bottom": 808.359375,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1210.6875,
+            "y": 791.109375,
+            "width": 58.234375,
+            "height": 14,
+            "top": 791.109375,
+            "right": 1268.921875,
+            "bottom": 805.109375,
+            "left": 1210.6875
+          },
+          "tokens": "721000009",
+          "fill": "100%",
+          "barColor": "linear-gradient(90deg, rgb(25, 193, 249), rgb(35, 124, 255))",
+          "identity": "QuotaPulse",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "blue",
+          "iconColor": "rgb(73, 161, 255)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1177.6875,
+            "y": 814.359375,
+            "width": 24,
+            "height": 24,
+            "top": 814.359375,
+            "right": 1201.6875,
+            "bottom": 838.359375,
+            "left": 1177.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 816.359375,
+            "width": 20,
+            "height": 20,
+            "top": 816.359375,
+            "right": 1161.6875,
+            "bottom": 836.359375,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1210.6875,
+            "y": 819.109375,
+            "width": 75.625,
+            "height": 14,
+            "top": 819.109375,
+            "right": 1286.3125,
+            "bottom": 833.109375,
+            "left": 1210.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Agent Platform",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "orange",
+          "iconColor": "rgb(255, 173, 79)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1177.6875,
+            "y": 848.765625,
+            "width": 24,
+            "height": 24,
+            "top": 848.765625,
+            "right": 1201.6875,
+            "bottom": 872.765625,
+            "left": 1177.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 850.765625,
+            "width": 20,
+            "height": 20,
+            "top": 850.765625,
+            "right": 1161.6875,
+            "bottom": 870.765625,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1210.6875,
+            "y": 853.515625,
+            "width": 80.125,
+            "height": 14,
+            "top": 853.515625,
+            "right": 1290.8125,
+            "bottom": 867.515625,
+            "left": 1210.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Developer Tools",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "violet",
+          "iconColor": "rgb(168, 115, 249)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1177.6875,
+            "y": 876.765625,
+            "width": 24,
+            "height": 24,
+            "top": 876.765625,
+            "right": 1201.6875,
+            "bottom": 900.765625,
+            "left": 1177.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 878.765625,
+            "width": 20,
+            "height": 20,
+            "top": 878.765625,
+            "right": 1161.6875,
+            "bottom": 898.765625,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1210.6875,
+            "y": 881.515625,
+            "width": 71.390625,
+            "height": 14,
+            "top": 881.515625,
+            "right": 1282.078125,
+            "bottom": 895.515625,
+            "left": 1210.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Edge Services",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "neutral",
+          "iconColor": "rgb(166, 185, 220)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1177.6875,
+            "y": 904.765625,
+            "width": 24,
+            "height": 24,
+            "top": 904.765625,
+            "right": 1201.6875,
+            "bottom": 928.765625,
+            "left": 1177.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 906.765625,
+            "width": 20,
+            "height": 20,
+            "top": 906.765625,
+            "right": 1161.6875,
+            "bottom": 926.765625,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1210.6875,
+            "y": 909.515625,
+            "width": 68.828125,
+            "height": 14,
+            "top": 909.515625,
+            "right": 1279.515625,
+            "bottom": 923.515625,
+            "left": 1210.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Research Lab",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        }
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "keyboardSelections": 5,
+      "widths": [
+        390,
+        900,
+        1280,
+        1536,
+        1672,
+        1920
+      ],
+      "checks": [
+        {
+          "tone": "cyan",
+          "iconColor": "rgb(6, 101, 139)",
+          "iconClass": "lucide lucide-box",
+          "plate": {
+            "x": 1168.6875,
+            "y": 786.171875,
+            "width": 24,
+            "height": 24,
+            "top": 786.171875,
+            "right": 1192.6875,
+            "bottom": 810.171875,
+            "left": 1168.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 788.171875,
+            "width": 20,
+            "height": 20,
+            "top": 788.171875,
+            "right": 1161.6875,
+            "bottom": 808.171875,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1199.6875,
+            "y": 790.921875,
+            "width": 58.234375,
+            "height": 14,
+            "top": 790.921875,
+            "right": 1257.921875,
+            "bottom": 804.921875,
+            "left": 1199.6875
+          },
+          "tokens": "721000009",
+          "fill": "100%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "QuotaPulse",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "blue",
+          "iconColor": "rgb(33, 88, 166)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1168.6875,
+            "y": 814.171875,
+            "width": 24,
+            "height": 24,
+            "top": 814.171875,
+            "right": 1192.6875,
+            "bottom": 838.171875,
+            "left": 1168.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 816.171875,
+            "width": 20,
+            "height": 20,
+            "top": 816.171875,
+            "right": 1161.6875,
+            "bottom": 836.171875,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1199.6875,
+            "y": 818.921875,
+            "width": 75.625,
+            "height": 14,
+            "top": 818.921875,
+            "right": 1275.3125,
+            "bottom": 832.921875,
+            "left": 1199.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Agent Platform",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "orange",
+          "iconColor": "rgb(146, 80, 0)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1168.6875,
+            "y": 848.578125,
+            "width": 24,
+            "height": 24,
+            "top": 848.578125,
+            "right": 1192.6875,
+            "bottom": 872.578125,
+            "left": 1168.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 850.578125,
+            "width": 20,
+            "height": 20,
+            "top": 850.578125,
+            "right": 1161.6875,
+            "bottom": 870.578125,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1199.6875,
+            "y": 853.328125,
+            "width": 80.125,
+            "height": 14,
+            "top": 853.328125,
+            "right": 1279.8125,
+            "bottom": 867.328125,
+            "left": 1199.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Developer Tools",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "violet",
+          "iconColor": "rgb(112, 64, 187)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1168.6875,
+            "y": 876.578125,
+            "width": 24,
+            "height": 24,
+            "top": 876.578125,
+            "right": 1192.6875,
+            "bottom": 900.578125,
+            "left": 1168.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 878.578125,
+            "width": 20,
+            "height": 20,
+            "top": 878.578125,
+            "right": 1161.6875,
+            "bottom": 898.578125,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1199.6875,
+            "y": 881.328125,
+            "width": 71.390625,
+            "height": 14,
+            "top": 881.328125,
+            "right": 1271.078125,
+            "bottom": 895.328125,
+            "left": 1199.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Edge Services",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        },
+        {
+          "tone": "neutral",
+          "iconColor": "rgb(82, 101, 124)",
+          "iconClass": "lucide lucide-folder",
+          "plate": {
+            "x": 1168.6875,
+            "y": 904.578125,
+            "width": 24,
+            "height": 24,
+            "top": 904.578125,
+            "right": 1192.6875,
+            "bottom": 928.578125,
+            "left": 1168.6875
+          },
+          "rank": {
+            "x": 1141.6875,
+            "y": 906.578125,
+            "width": 20,
+            "height": 20,
+            "top": 906.578125,
+            "right": 1161.6875,
+            "bottom": 926.578125,
+            "left": 1141.6875
+          },
+          "name": {
+            "x": 1199.6875,
+            "y": 909.328125,
+            "width": 68.828125,
+            "height": 14,
+            "top": 909.328125,
+            "right": 1268.515625,
+            "bottom": 923.328125,
+            "left": 1199.6875
+          },
+          "tokens": "1",
+          "fill": "1.38696e-07%",
+          "barColor": "linear-gradient(90deg, rgb(11, 187, 255), rgb(108, 82, 255))",
+          "identity": "Research Lab",
+          "keyboardSelection": true,
+          "matchingCardDetail": true,
+          "apiMatched": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,533 @@
+{
+  "productionIndexSha256": "6833dcb0c0d48c6d3420b35a6bed2ef22b9c0d6d7718fb797151af284ecb2ce6",
+  "browser": "155.0.8059.80",
+  "language": "en",
+  "themes": [
+    "dark",
+    "light"
+  ],
+  "deviceScaleFactor": 1,
+  "reducedMotion": "reduce",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "fixture": "same isolated in-memory synthetic fixture as v1.85.95",
+  "scope": "Current compiled application screenshots and geometry; unapproved concept parity",
+  "results": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "route": "projects",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "sha256": "63c0f0c347bf9b8509738eb8c2a3c579a57c2b8637dfd87c7a3722c0a180feab",
+      "repeatSha256": "63c0f0c347bf9b8509738eb8c2a3c579a57c2b8637dfd87c7a3722c0a180feab",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 889.359375,
+          "top": 60,
+          "right": 1672,
+          "bottom": 949.359375,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 408,
+          "width": 201,
+          "height": 299,
+          "top": 408,
+          "right": 213,
+          "bottom": 707,
+          "left": 12
+        },
+        "moreOpen": false,
+        "mainRegions": [
+          {
+            "tag": "HEADER",
+            "className": "qp-project-header",
+            "x": 243,
+            "y": 72,
+            "width": 1412,
+            "height": 68,
+            "top": 72,
+            "right": 1655,
+            "bottom": 140,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-toolbar",
+            "x": 243,
+            "y": 152,
+            "width": 1412,
+            "height": 42,
+            "top": 152,
+            "right": 1655,
+            "bottom": 194,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-layout",
+            "x": 243,
+            "y": 206,
+            "width": 1412,
+            "height": 731.359375,
+            "top": 206,
+            "right": 1655,
+            "bottom": 937.359375,
+            "left": 243
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "History",
+          "Alerts"
+        ],
+        "headings": [
+          {
+            "text": "Projects",
+            "x": 304,
+            "y": 79.34375,
+            "width": 287.625,
+            "height": 27.5,
+            "top": 79.34375,
+            "right": 591.625,
+            "bottom": 106.84375,
+            "left": 304,
+            "fontSize": "25px",
+            "fontWeight": "400"
+          },
+          {
+            "text": "QuotaPulse",
+            "x": 1143.6875,
+            "y": 219,
+            "width": 494.296875,
+            "height": 60,
+            "top": 219,
+            "right": 1637.984375,
+            "bottom": 279,
+            "left": 1143.6875,
+            "fontSize": "22px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "route": "projects",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "sha256": "7b4fd78cc8720f5c23e5a67ac70e07e894b18b259bbd639e63de7539724b4818",
+      "repeatSha256": "7b4fd78cc8720f5c23e5a67ac70e07e894b18b259bbd639e63de7539724b4818",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 889.171875,
+          "top": 60,
+          "right": 1672,
+          "bottom": 949.171875,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 408,
+          "width": 201,
+          "height": 299,
+          "top": 408,
+          "right": 213,
+          "bottom": 707,
+          "left": 12
+        },
+        "moreOpen": false,
+        "mainRegions": [
+          {
+            "tag": "HEADER",
+            "className": "qp-project-header",
+            "x": 243,
+            "y": 72,
+            "width": 1412,
+            "height": 68,
+            "top": 72,
+            "right": 1655,
+            "bottom": 140,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-toolbar",
+            "x": 243,
+            "y": 152,
+            "width": 1412,
+            "height": 42,
+            "top": 152,
+            "right": 1655,
+            "bottom": 194,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-layout",
+            "x": 243,
+            "y": 206,
+            "width": 1412,
+            "height": 731.171875,
+            "top": 206,
+            "right": 1655,
+            "bottom": 937.171875,
+            "left": 243
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "History",
+          "Alerts"
+        ],
+        "headings": [
+          {
+            "text": "Projects",
+            "x": 301,
+            "y": 82.34375,
+            "width": 287.625,
+            "height": 27.5,
+            "top": 82.34375,
+            "right": 588.625,
+            "bottom": 109.84375,
+            "left": 301,
+            "fontSize": "22px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "QuotaPulse",
+            "x": 1143.6875,
+            "y": 219,
+            "width": 494.296875,
+            "height": 60,
+            "top": 219,
+            "right": 1637.984375,
+            "bottom": 279,
+            "left": 1143.6875,
+            "fontSize": "22px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "route": "projects",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "sha256": "5ffec9e01cb5cc6e80a4eca83a8c589fe51b55254f41af165ad6d0ff9e7b3da1",
+      "repeatSha256": "5ffec9e01cb5cc6e80a4eca83a8c589fe51b55254f41af165ad6d0ff9e7b3da1",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 889.359375,
+          "top": 60,
+          "right": 1672,
+          "bottom": 949.359375,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 408,
+          "width": 201,
+          "height": 299,
+          "top": 408,
+          "right": 213,
+          "bottom": 707,
+          "left": 12
+        },
+        "moreOpen": false,
+        "mainRegions": [
+          {
+            "tag": "HEADER",
+            "className": "qp-project-header",
+            "x": 243,
+            "y": 72,
+            "width": 1412,
+            "height": 68,
+            "top": 72,
+            "right": 1655,
+            "bottom": 140,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-toolbar",
+            "x": 243,
+            "y": 152,
+            "width": 1412,
+            "height": 42,
+            "top": 152,
+            "right": 1655,
+            "bottom": 194,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-layout",
+            "x": 243,
+            "y": 206,
+            "width": 1412,
+            "height": 731.359375,
+            "top": 206,
+            "right": 1655,
+            "bottom": 937.359375,
+            "left": 243
+          }
+        ],
+        "navigationOrder": [
+          "ภาพรวม",
+          "สด",
+          "โปรเจกต์",
+          "โมเดล",
+          "ประวัติ",
+          "การแจ้งเตือน"
+        ],
+        "headings": [
+          {
+            "text": "โปรเจกต์",
+            "x": 304,
+            "y": 79.34375,
+            "width": 227.421875,
+            "height": 27.5,
+            "top": 79.34375,
+            "right": 531.421875,
+            "bottom": 106.84375,
+            "left": 304,
+            "fontSize": "25px",
+            "fontWeight": "400"
+          },
+          {
+            "text": "QuotaPulse",
+            "x": 1143.6875,
+            "y": 219,
+            "width": 494.296875,
+            "height": 60,
+            "top": 219,
+            "right": 1637.984375,
+            "bottom": 279,
+            "left": 1143.6875,
+            "fontSize": "22px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "route": "projects",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "sha256": "2910191d1290681ac51129bfc157950da7f81d337ef1e163f92a18d10e07b7e9",
+      "repeatSha256": "2910191d1290681ac51129bfc157950da7f81d337ef1e163f92a18d10e07b7e9",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 889.171875,
+          "top": 60,
+          "right": 1672,
+          "bottom": 949.171875,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 408,
+          "width": 201,
+          "height": 299,
+          "top": 408,
+          "right": 213,
+          "bottom": 707,
+          "left": 12
+        },
+        "moreOpen": false,
+        "mainRegions": [
+          {
+            "tag": "HEADER",
+            "className": "qp-project-header",
+            "x": 243,
+            "y": 72,
+            "width": 1412,
+            "height": 68,
+            "top": 72,
+            "right": 1655,
+            "bottom": 140,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-toolbar",
+            "x": 243,
+            "y": 152,
+            "width": 1412,
+            "height": 42,
+            "top": 152,
+            "right": 1655,
+            "bottom": 194,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-layout",
+            "x": 243,
+            "y": 206,
+            "width": 1412,
+            "height": 731.171875,
+            "top": 206,
+            "right": 1655,
+            "bottom": 937.171875,
+            "left": 243
+          }
+        ],
+        "navigationOrder": [
+          "ภาพรวม",
+          "สด",
+          "โปรเจกต์",
+          "โมเดล",
+          "ประวัติ",
+          "การแจ้งเตือน"
+        ],
+        "headings": [
+          {
+            "text": "โปรเจกต์",
+            "x": 301,
+            "y": 82.34375,
+            "width": 227.421875,
+            "height": 27.5,
+            "top": 82.34375,
+            "right": 528.421875,
+            "bottom": 109.84375,
+            "left": 301,
+            "fontSize": "22px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "QuotaPulse",
+            "x": 1143.6875,
+            "y": 219,
+            "width": 494.296875,
+            "height": 60,
+            "top": 219,
+            "right": 1637.984375,
+            "bottom": 279,
+            "left": 1143.6875,
+            "fontSize": "22px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    }
+  ]
+}
