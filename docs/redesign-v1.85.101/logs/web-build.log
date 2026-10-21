@@ -1,4 +1,4 @@
-﻿
+
 > @quotapulse/web@0.1.0 build
 > tsc -b && vite build
 
@@ -78,16 +78,16 @@ dist/assets/vendor-icon-YVI95udb.js                             107.71 kB │ gz
 dist/assets/settings-D4fBIqk8.js                                239.02 kB │ gzip:  75.41 kB
 dist/assets/index-De-GHgP8.js                                   394.79 kB │ gzip: 112.79 kB
 dist/assets/App-Te-upaBV.js                                     532.08 kB │ gzip: 154.59 kB
-node.exe : 
+node.exe :
 At C:\Program Files\nodejs\npm.ps1:29 char:3
 +   & $NODE_EXE $NPM_CLI_JS $args
 +   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     + CategoryInfo          : NotSpecified: (:String) [], RemoteException
     + FullyQualifiedErrorId : NativeCommandError
- 
+
 (!) Some chunks are larger than 500 kB after minification. Consider:
 - Using dynamic import() to code-split the application
-- Use build.rollupOptions.output.manualChunks to improve chunking: 
+- Use build.rollupOptions.output.manualChunks to improve chunking:
 https://rollupjs.org/configuration-options/#output-manualchunks
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
 ✓ built in 7.55s

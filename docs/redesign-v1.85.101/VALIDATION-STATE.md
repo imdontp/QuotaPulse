@@ -15,6 +15,7 @@ Compiled web index SHA256: `3ba6759cfec970fa9090e7d3aeff4ee379384e80784d81b805cb
 
 - Web TypeScript/Vite build: exit 0. The existing chunk-over-500KB warning remains.
 - Full repository tests: **647/647** (daemon 121, web 328, tray 198), exit 0. See [logs](logs/full-repo-tests.log).
+- Text logs use LF with trailing whitespace removed for repository checks. Original byte-for-byte stdout logs are archived as `evidence/*.raw.log.gz`.
 - [Native Chrome API/SSE gate](evidence/aggregate-native.json): 28 stages; exact finite durations/identity/lifecycle passed, no browser errors or forbidden requests, no sampling gaps in this final run. Earlier intermittent Models sampling gaps remain an open diagnosis; this successful run does not establish a general performance pass.
 - [Native keyboard/layout matrix](evidence/navigation-matrix.json): 24 cases covering Cost/Providers, EN/TH, dark/light, and 390/900/1280px. Tab reaches More and the sibling route, Enter opens/closes or navigates, the new route collapses More, and no horizontal page overflow occurs.
 - At 1672×941, Quick Stats starts at y=447 on Cost and y=445 on Providers, within 2px of the reference targets. Desktop selected-label clearance exceeds 24px; 390/900px selected and More hit areas do not overlap.
