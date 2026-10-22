@@ -1152,6 +1152,18 @@ async function checkChartAccess(page: Page, destination: 'live' | 'projects', la
   const points = await page.locator('.qp-project-trend>circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), tokens: Number(element.getAttribute('data-value')), cy: Number(element.getAttribute('cy')) })));
   assert.deepEqual(points.map(({ at, tokens }) => ({ at, tokens })), expected);
   points.forEach((point, index) => assert.ok(Math.abs(point.cy - (94 - 88 * expected[index].tokens / (maximum || 1))) < 0.0001, 'Project line point is not proportional to the API value'));
+  const axisValues = await page.locator('.qp-project-trend-y>span').evaluateAll(elements => elements.map(element => ({ value: Number(element.getAttribute('data-axis-value')), label: element.textContent })));
+  assert.deepEqual(axisValues.map(tick => tick.value), [maximum, maximum * .75, maximum * .5, maximum * .25, 0]);
+  const axisNumber = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 });
+  for (const tick of axisValues) assert.equal(tick.label, axisNumber.format(tick.value));
+  const axisDates = await page.locator('.qp-project-trend-x>time').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-axis-at')), index: Number(element.getAttribute('data-axis-index')), iso: element.getAttribute('datetime'), title: element.getAttribute('title') })));
+  assert.equal(axisDates.length, 5);
+  assert.equal(axisDates[0].at, expected[0].at); assert.equal(axisDates.at(-1)!.at, expected.at(-1)!.at);
+  for (const tick of axisDates) {
+    assert.equal(tick.at, expected[tick.index].at, 'Project date tick must identify its actual plotted bucket');
+    assert.equal(tick.iso, new Date(tick.at).toISOString());
+    assert.equal(tick.title, new Date(tick.at).toLocaleString(lang === 'th' ? 'th-TH' : 'en-US'));
+  }
   for (const width of [390, 900, 1280]) {
     await page.setViewportSize({ width, height: 941 });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${destination}: expanded data table overflows at ${width}`);

@@ -1,0 +1,144 @@
+{
+  "productionIndexSha256": "b7e9f8f1c3421227e87dda5e736b6fb59c3690700a445324446b080d538f34cc",
+  "browser": "155.0.8059.80",
+  "language": "en",
+  "theme": "dark",
+  "deviceScaleFactor": 1,
+  "reducedMotion": "reduce",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "fixture": "same isolated in-memory synthetic fixture as v1.85.95",
+  "scope": "Current compiled application screenshots and geometry; unapproved concept parity",
+  "results": [
+    {
+      "route": "projects",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "sha256": "fb645139faa145740b77e10f053c64da43a6a152f068d662beba833fc1e4c43f",
+      "repeatSha256": "fb645139faa145740b77e10f053c64da43a6a152f068d662beba833fc1e4c43f",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 887.359375,
+          "top": 60,
+          "right": 1672,
+          "bottom": 947.359375,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 408,
+          "width": 201,
+          "height": 299,
+          "top": 408,
+          "right": 213,
+          "bottom": 707,
+          "left": 12
+        },
+        "moreOpen": false,
+        "mainRegions": [
+          {
+            "tag": "HEADER",
+            "className": "qp-project-header",
+            "x": 243,
+            "y": 72,
+            "width": 1412,
+            "height": 68,
+            "top": 72,
+            "right": 1655,
+            "bottom": 140,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-toolbar",
+            "x": 243,
+            "y": 152,
+            "width": 1412,
+            "height": 42,
+            "top": 152,
+            "right": 1655,
+            "bottom": 194,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-layout",
+            "x": 243,
+            "y": 206,
+            "width": 1412,
+            "height": 729.359375,
+            "top": 206,
+            "right": 1655,
+            "bottom": 935.359375,
+            "left": 243
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "History",
+          "Alerts"
+        ],
+        "headings": [
+          {
+            "text": "Projects",
+            "x": 304,
+            "y": 79.34375,
+            "width": 287.625,
+            "height": 27.5,
+            "top": 79.34375,
+            "right": 591.625,
+            "bottom": 106.84375,
+            "left": 304,
+            "fontSize": "25px",
+            "fontWeight": "400"
+          },
+          {
+            "text": "QuotaPulse",
+            "x": 1143.6875,
+            "y": 219,
+            "width": 494.296875,
+            "height": 60,
+            "top": 219,
+            "right": 1637.984375,
+            "bottom": 279,
+            "left": 1143.6875,
+            "fontSize": "22px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    }
+  ]
+}
