@@ -1,0 +1,113 @@
+{
+  "browser": "155.0.8059.80",
+  "productionIndexSha256": "50c64a38529293a09431d9ae047c391af4609185247131b3472de4bab653a508",
+  "fixture": "isolated real API, in-memory synthetic records; readers off",
+  "cases": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "grains": [
+        "unknown",
+        "session_aggregate",
+        "call"
+      ],
+      "exactNullEmptyAndLongIdentities": true,
+      "exactLargeAndZeroTokens": true,
+      "keyboardNarrowScroll": true
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "grains": [
+        "unknown",
+        "session_aggregate",
+        "call"
+      ],
+      "exactNullEmptyAndLongIdentities": true,
+      "exactLargeAndZeroTokens": true,
+      "keyboardNarrowScroll": false
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "grains": [
+        "unknown",
+        "session_aggregate",
+        "call"
+      ],
+      "exactNullEmptyAndLongIdentities": true,
+      "exactLargeAndZeroTokens": true,
+      "keyboardNarrowScroll": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "grains": [
+        "unknown",
+        "session_aggregate",
+        "call"
+      ],
+      "exactNullEmptyAndLongIdentities": true,
+      "exactLargeAndZeroTokens": true,
+      "keyboardNarrowScroll": false
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "grains": [
+        "unknown",
+        "session_aggregate",
+        "call"
+      ],
+      "exactNullEmptyAndLongIdentities": true,
+      "exactLargeAndZeroTokens": true,
+      "keyboardNarrowScroll": true
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "grains": [
+        "unknown",
+        "session_aggregate",
+        "call"
+      ],
+      "exactNullEmptyAndLongIdentities": true,
+      "exactLargeAndZeroTokens": true,
+      "keyboardNarrowScroll": false
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "grains": [
+        "unknown",
+        "session_aggregate",
+        "call"
+      ],
+      "exactNullEmptyAndLongIdentities": true,
+      "exactLargeAndZeroTokens": true,
+      "keyboardNarrowScroll": true
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "grains": [
+        "unknown",
+        "session_aggregate",
+        "call"
+      ],
+      "exactNullEmptyAndLongIdentities": true,
+      "exactLargeAndZeroTokens": true,
+      "keyboardNarrowScroll": false
+    }
+  ],
+  "errors": [],
+  "forbidden": []
+}

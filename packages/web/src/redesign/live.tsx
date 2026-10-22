@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Activity, AlertTriangle, Clock3, GitBranch, Info, Pause, Play, Radio, RefreshCw, Search, X } from 'lucide-react';
+import { Activity, AlertTriangle, ArrowUpRight, CircleHelp, Clock3, GitBranch, Info, Layers3, Pause, Play, Radio, RefreshCw, Search, X } from 'lucide-react';
 import { api, type LiveSessionsResponse, type MinuteTrendResponse, type Overview, type ProviderModelMinuteResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
@@ -7,6 +7,7 @@ import { useTheme } from '@/lib/use-theme';
 import type { UsageEventScope, UsageEventsResponse } from '@/lib/usage-events';
 import { RedesignShell } from './shell';
 import { HarnessIcon } from '@/components/harness-icon';
+import { VendorIcon } from '@/components/vendor-icon';
 import { LiveTokenFlow, LiveTokenFlowLegend } from './live-token-flow';
 import { PageHeading } from './page-heading';
 import { HeadingReferenceIcon } from './heading-reference-icon';
@@ -148,6 +149,8 @@ export function ProductionLive() {
   const advisories = sources.filter(source => source.enabled && (source.telemetry.gap || source.telemetry.reason === 'reader_error'));
   const number = (value: number) => new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(value);
   const date = (value: number | null) => value === null ? '—' : new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(value);
+  const recordTime = new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  const recordDate = new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'medium' });
   const sourceDate = (value: number | null) => value === null || value > now ? t('redesign.unknownValue') : date(value);
   const trend = display?.trend;
   const unknownExcluded = trend?.coverage.excludedSources.filter(source => source.grain === 'unknown').reduce((sum, source) => sum + source.records, 0) ?? 0;
@@ -197,7 +200,21 @@ export function ProductionLive() {
           <section ref={feedRegion} className="qp-panel qp-live-section qp-live-records"><div className="qp-live-feed-tools"><div className="qp-live-section-head"><h2><SectionMark icon={<Activity/>} size={28}/>{t('redesign.liveFeed')}</h2><a href={historyHref({ ...(displayRoute.provider ? { provider: displayRoute.provider } : {}), ...(displayRoute.model ? { model: displayRoute.model } : {}), ...(displayRoute.q ? { q: displayRoute.q } : {}) })}>{t('redesign.openHistory')}</a></div>
             <div className="qp-live-pagination qp-live-feed-pagination"><button disabled={frozen || displayRoute.feedOffset === 0} onClick={() => update({ feedOffset: Math.max(0, displayRoute.feedOffset - 8) })}>{t('redesign.livePrevious')}</button><span>{number(display.feed.total)} {t('redesign.records')}</span><button disabled={frozen || displayRoute.feedOffset + display.feed.rows.length >= display.feed.total} onClick={() => update({ feedOffset: displayRoute.feedOffset + 8 })}>{t('redesign.liveNext')}</button></div>
           </div>
-            {display.feed.rows.length === 0 ? <p>{t('redesign.liveNoRecords')}</p> : <ol className="qp-live-feed" tabIndex={0} aria-label={t('redesign.liveFeed')}>{display.feed.rows.map(row => <li key={row.event_id} data-live-record={liveRecordMotionKey(row)}><span>{date(row.timestamp_ms)} · {row.harness} · {row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}<small>{row.grain === 'call' ? t('redesign.callRecord') : t('redesign.aggregateUpdate')}</small></span><strong>{number(row.total_tokens)}</strong></li>)}</ol>}
+            {display.feed.rows.length === 0 ? <p>{t('redesign.liveNoRecords')}</p> : <ol className="qp-live-feed" tabIndex={0} aria-label={t('redesign.liveFeed')}>{display.feed.rows.map(row => {
+              const kind = t(row.grain === 'call' ? 'redesign.callRecord' : row.grain === 'session_aggregate' ? 'redesign.aggregateUpdate' : 'history.unknown');
+              const KindIcon = row.grain === 'call' ? ArrowUpRight : row.grain === 'session_aggregate' ? Layers3 : CircleHelp;
+              const timestamp = recordDate.format(row.timestamp_ms);
+              const provider = row.provider ?? t('redesign.unknownValue');
+              const model = row.model ?? t('redesign.unknownValue');
+              return <li key={row.event_id} data-live-record={liveRecordMotionKey(row)} data-grain={row.grain}>
+                <time className="qp-live-feed-time" dateTime={new Date(row.timestamp_ms).toISOString()} title={timestamp} aria-label={timestamp}>{recordTime.format(row.timestamp_ms)}</time>
+                <span className="qp-live-feed-kind" title={kind}><KindIcon size={14} aria-hidden="true"/><span>{kind}</span></span>
+                <span className="qp-live-feed-identity" title={row.harness}><HarnessIcon harness={row.harness} vendor={display.overview.harnesses.find(harness => harness.harness === row.harness)?.vendor} label={row.harness}/><span>{row.harness}</span></span>
+                <span className="qp-live-feed-identity" title={provider}><VendorIcon vendor={row.provider ?? 'unknown'} aria-hidden="true"/><span>{provider}</span></span>
+                <span className="qp-live-feed-model" title={model}>{model}</span>
+                <strong>{number(row.total_tokens)}</strong>
+              </li>;
+            })}</ol>}
 
           </section>
           </> : <>

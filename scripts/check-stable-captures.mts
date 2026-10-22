@@ -366,6 +366,21 @@ async function checkLiveDensity(page: Page, lang: string, theme: string, pending
   const sessions = page.locator('.qp-live-table tbody tr');
   const records = page.locator('.qp-live-feed li');
   assert.equal(await sessions.count(), 10); assert.equal(await records.count(), 8);
+  const feedResponse = await daemon.inject({ method: 'GET', url: `/api/usage-events?from=${fixedNow - 30 * 60_000}&to=${fixedNow + 1}&limit=8&offset=0`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  assert.equal(feedResponse.statusCode, 200);
+  const feedRows = feedResponse.json<UsageEventsResponse>().rows;
+  const messages = lang === 'th' ? th : en;
+  const feedNumber = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US');
+  for (const [index, row] of feedRows.entries()) {
+    const record = records.nth(index);
+    assert.equal(await record.getAttribute('data-grain'), row.grain, 'Feed grain matches the actual API record');
+    assert.equal(await record.locator('time').getAttribute('datetime'), new Date(row.timestamp_ms).toISOString());
+    assert.equal(await record.locator('time').getAttribute('aria-label'), await record.locator('time').getAttribute('title'), 'Full timestamp remains accessible');
+    assert.equal(await record.locator('.qp-live-feed-kind>span').textContent(), messages[row.grain === 'call' ? 'redesign.callRecord' : row.grain === 'session_aggregate' ? 'redesign.aggregateUpdate' : 'history.unknown']);
+    assert.deepEqual(await record.locator('.qp-live-feed-identity>span:last-child').allTextContents(), [row.harness, row.provider ?? messages['redesign.unknownValue']]);
+    assert.equal(await record.locator('.qp-live-feed-model').textContent(), row.model ?? messages['redesign.unknownValue']);
+    assert.equal(await record.locator('strong').textContent(), feedNumber.format(row.total_tokens), 'No token rounding or lifecycle substitution');
+  }
   const feedFrame = await page.locator('.qp-live-feed').boundingBox();
   assert.ok(feedFrame);
   assert.ok(await records.nth(5).evaluate((element, bottom) => element.getBoundingClientRect().bottom <= bottom + 1, feedFrame.y + feedFrame.height), 'Six complete feed rows must fit the source viewport');

@@ -1,0 +1,143 @@
+{
+  "scope": "Full unmasked frames and recorded shell/main/heading geometry; not whole-page fidelity acceptance",
+  "productionIndexSha256": "50c64a38529293a09431d9ae047c391af4609185247131b3472de4bab653a508",
+  "results": [
+    {
+      "route": "overview",
+      "recordedShellMainHeadingGeometryEqual": true,
+      "beforeAfter": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "live",
+      "recordedShellMainHeadingGeometryEqual": true,
+      "beforeAfter": {
+        "changedPixels": 33531,
+        "maxChannelDelta": 248,
+        "bounds": [
+          249,
+          811,
+          1267,
+          923
+        ]
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "projects",
+      "recordedShellMainHeadingGeometryEqual": true,
+      "beforeAfter": {
+        "changedPixels": 20,
+        "maxChannelDelta": 35,
+        "bounds": [
+          30,
+          323,
+          50,
+          338
+        ]
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "models",
+      "recordedShellMainHeadingGeometryEqual": true,
+      "beforeAfter": {
+        "changedPixels": 2,
+        "maxChannelDelta": 3,
+        "bounds": [
+          30,
+          696,
+          58,
+          697
+        ]
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "history",
+      "recordedShellMainHeadingGeometryEqual": true,
+      "beforeAfter": {
+        "changedPixels": 2,
+        "maxChannelDelta": 2,
+        "bounds": [
+          29,
+          694,
+          57,
+          695
+        ]
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "alerts",
+      "recordedShellMainHeadingGeometryEqual": true,
+      "beforeAfter": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "providers",
+      "recordedShellMainHeadingGeometryEqual": true,
+      "beforeAfter": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "cost",
+      "recordedShellMainHeadingGeometryEqual": true,
+      "beforeAfter": {
+        "changedPixels": 22,
+        "maxChannelDelta": 35,
+        "bounds": [
+          30,
+          382,
+          58,
+          690
+        ]
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    }
+  ]
+}
