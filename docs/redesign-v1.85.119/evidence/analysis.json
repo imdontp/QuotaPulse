@@ -1,0 +1,255 @@
+{
+  "productionIndexSha256": "96e3bd8d0b466b9e062aa35d7b38efaf238bf652234e3642eee61d80cd466371",
+  "pairs": [
+    {
+      "mode": "original",
+      "lang": "en",
+      "theme": "dark",
+      "full": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "ringRegion": [
+        1503,
+        365,
+        1659,
+        522
+      ],
+      "ring": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "globalGatePass": true
+    },
+    {
+      "mode": "original",
+      "lang": "en",
+      "theme": "light",
+      "full": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "ringRegion": [
+        1503,
+        365,
+        1659,
+        522
+      ],
+      "ring": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "globalGatePass": true
+    },
+    {
+      "mode": "original",
+      "lang": "th",
+      "theme": "dark",
+      "full": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "ringRegion": [
+        1503,
+        365,
+        1659,
+        522
+      ],
+      "ring": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "globalGatePass": true
+    },
+    {
+      "mode": "original",
+      "lang": "th",
+      "theme": "light",
+      "full": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "ringRegion": [
+        1503,
+        365,
+        1659,
+        522
+      ],
+      "ring": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "globalGatePass": true
+    },
+    {
+      "mode": "native",
+      "lang": "en",
+      "theme": "dark",
+      "full": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "ringRegion": [
+        1503,
+        365,
+        1659,
+        522
+      ],
+      "ring": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "globalGatePass": true
+    },
+    {
+      "mode": "native",
+      "lang": "en",
+      "theme": "light",
+      "full": {
+        "changedPixels": 1,
+        "maxChannelDelta": 1,
+        "bounds": [
+          717,
+          429,
+          718,
+          430
+        ]
+      },
+      "ringRegion": [
+        1503,
+        365,
+        1659,
+        522
+      ],
+      "ring": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "globalGatePass": true
+    },
+    {
+      "mode": "native",
+      "lang": "th",
+      "theme": "dark",
+      "full": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "ringRegion": [
+        1503,
+        365,
+        1659,
+        522
+      ],
+      "ring": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "globalGatePass": true
+    },
+    {
+      "mode": "native",
+      "lang": "th",
+      "theme": "light",
+      "full": {
+        "changedPixels": 2,
+        "maxChannelDelta": 20,
+        "bounds": [
+          246,
+          424,
+          718,
+          430
+        ]
+      },
+      "ringRegion": [
+        1503,
+        365,
+        1659,
+        522
+      ],
+      "ring": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "globalGatePass": false
+    }
+  ],
+  "preservedPaintInputs": [
+    "rect",
+    "background",
+    "radius",
+    "shadow",
+    "outline",
+    "pseudo",
+    "text"
+  ],
+  "transformBefore": "none",
+  "transformAfter": "matrix(1, 0, 0, 1, 0, 0)",
+  "trendAndAxesEqual": true,
+  "canonicalBeforeAfter": {
+    "changedPixels": 5074,
+    "maxChannelDelta": 3,
+    "bounds": [
+      30,
+      382,
+      1660,
+      735
+    ]
+  },
+  "nativeThaiLightPixels": [
+    {
+      "x": 246,
+      "y": 424,
+      "before": [
+        254,
+        254,
+        255
+      ],
+      "after": [
+        234,
+        236,
+        255
+      ]
+    },
+    {
+      "x": 717,
+      "y": 429,
+      "before": [
+        254,
+        254,
+        255
+      ],
+      "after": [
+        253,
+        254,
+        255
+      ]
+    }
+  ],
+  "baselineSinglePair": {
+    "changedPixels": 88,
+    "maxChannelDelta": 3,
+    "bounds": [
+      546,
+      12,
+      1017,
+      46
+    ]
+  },
+  "evidenceScope": "Eight exact ring regions; original four full pairs pass; native full gate fails at two table pixels. Region analysis does not replace or mask full-page gates.",
+  "diagnosis": "Layer-dependent rasterization is supported by the intervention; underlying browser paint/cache mechanism remains unproven."
+}

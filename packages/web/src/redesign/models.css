@@ -64,7 +64,7 @@
 .qp-model-detail-stats span { color:var(--qp-muted); font-size:10px; }
 .qp-model-detail-stats strong { font-size:14px; overflow-wrap:anywhere; }
 .qp-model-donut { width:112px; height:112px; border-radius:50%; display:grid; place-items:center; margin:auto; }
-.qp-model-donut { outline:1px solid var(--qp-border); outline-offset:3px; }
+.qp-model-donut { outline:1px solid var(--qp-border); outline-offset:3px; transform:translateZ(0); }
 .qp-model-donut span { display:grid; place-items:center; width:75px; height:75px; border-radius:50%; background:var(--qp-panel); font-size:15px; font-weight:700; }
 .qp-model-distribution { grid-template-columns:auto minmax(0,1fr); align-items:center; }
 .qp-model-distribution h2,.qp-model-distribution>p { grid-column:1/-1; }
