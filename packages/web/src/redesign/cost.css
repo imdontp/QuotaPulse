@@ -170,7 +170,26 @@
 .qp-cost-share { display:flex; align-items:center; gap:8px; }
 .qp-cost-share>i { width:76px; height:7px; flex:none; border-radius:5px; background:color-mix(in srgb,var(--qp-border) 65%,var(--qp-panel)); overflow:hidden; }
 .qp-cost-share b { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#007fff,var(--qp-accent)); }
-.qp-cost-table tr:nth-child(3n+2) .qp-cost-share b { background:linear-gradient(90deg,#6639e8,var(--qp-series)); }
+.qp-cost-projects .qp-cost-table tr:nth-child(3n+2) .qp-cost-share b { background:linear-gradient(90deg,#6639e8,var(--qp-series)); }
+.qp-cost-models .qp-cost-share b { background:linear-gradient(90deg,var(--qp-cost-model-start,#7c889b),var(--qp-cost-model-end,#8b98ad)); }
+.qp-cost-models tr[data-vendor=openai] { --qp-cost-model-start:#2080f8; --qp-cost-model-end:#2f97ff; }
+.qp-cost-models tr[data-vendor=anthropic] { --qp-cost-model-start:#9d7bfa; --qp-cost-model-end:#8754f5; }
+.qp-cost-models tr[data-vendor=deepseek] { --qp-cost-model-start:#1d9ff2; --qp-cost-model-end:#1ccaf6; }
+.qp-cost-models tr[data-vendor=google] { --qp-cost-model-start:#17b1ec; --qp-cost-model-end:#24c3e5; }
+.qp-redesign[data-theme=light] .qp-cost-models tr { --qp-cost-model-start:#52657c; --qp-cost-model-end:#6a7d95; }
+.qp-redesign[data-theme=light] .qp-cost-models tr[data-vendor=openai] { --qp-cost-model-start:#2158a6; --qp-cost-model-end:#2877c9; }
+.qp-redesign[data-theme=light] .qp-cost-models tr[data-vendor=anthropic] { --qp-cost-model-start:#7040bb; --qp-cost-model-end:#8157cc; }
+.qp-redesign[data-theme=light] .qp-cost-models tr[data-vendor=deepseek],
+.qp-redesign[data-theme=light] .qp-cost-models tr[data-vendor=google] { --qp-cost-model-start:#06658b; --qp-cost-model-end:#087da5; }
+.qp-cost-provider-value { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:flex-end; gap:3px 6px; }
+.qp-cost-provider-amount,.qp-cost-provider-share { font-variant-numeric:tabular-nums; text-align:right; }
+@media(max-width:450px), (min-width:1280px) and (max-width:1499px) {
+  .qp-cost-providers li .qp-cost-provider-value { grid-column:2; justify-content:flex-start; }
+}
+@media(min-width:1536px) {
+  .qp-cost-providers li { grid-template-columns:8px minmax(0,1fr) auto minmax(34px,auto); }
+  .qp-cost-providers li .qp-cost-provider-value { display:contents; }
+}
 .qp-cost-table th { background:color-mix(in srgb,var(--qp-accent) 5%,var(--qp-panel)); }
 .qp-cost-table tbody tr:nth-child(even) { background:color-mix(in srgb,var(--qp-accent) 3%,var(--qp-panel)); }
 .qp-cost-table tbody tr:hover { background:color-mix(in srgb,var(--qp-accent) 8%,var(--qp-panel)); }

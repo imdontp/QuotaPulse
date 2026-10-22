@@ -1199,6 +1199,11 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
       const pricedProviders = cost.providers.filter(row => row.pricedCalls > 0);
       const legendColors = await page.locator('.qp-cost-providers ol>li>i').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).backgroundColor));
       assert.deepEqual(legendColors.map(rgb), pricedProviders.map(row => rgb(sourcePalette.get(row.provider?.toLowerCase() ?? '') ?? '#7d8ba0')), 'Cost legend colors must follow source provider identities regardless of actual rank');
+      const legend = page.locator('.qp-cost-providers ol>li');
+      const shareFormat = new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 1 });
+      assert.deepEqual(await legend.locator('.qp-cost-provider-name').allTextContents(), pricedProviders.map(row => row.provider === null ? (lang === 'th' ? th : en)['redesign.modelsUnspecified'] : row.provider === '' ? (lang === 'th' ? th : en)['redesign.emptyProject'] : row.provider));
+      assert.deepEqual(await legend.locator('.qp-cost-provider-amount .qp-cost-value>span:first-child').allTextContents(), pricedProviders.map(row => money.format(row.amount) + (row.pricedCalls < row.allCalls ? '+' : '')));
+      assert.deepEqual(await legend.locator('.qp-cost-provider-share').allTextContents(), pricedProviders.map(row => cost.totals.amount > 0 ? shareFormat.format(row.amount / cost.totals.amount) : '—'));
       if (pricedProviders.length > 0) {
         const amount = page.locator('.qp-cost-donut-amount .qp-cost-value>span:first-child');
         assert.equal(await amount.evaluate(element => { const range = document.createRange(); range.selectNodeContents(element); return range.getClientRects().length; }), 1, 'Localized known Cost amount and its partial-price marker must fit on one line');
@@ -1262,6 +1267,13 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
         const bars = await page.locator(`${selector} .qp-cost-share b`).evaluateAll(elements => elements.map(element => parseFloat((element as HTMLElement).style.width)));
         assert.equal(bars.length, expected.length);
         bars.forEach((width, index) => assert.ok(Math.abs(width - (cost.totals.amount > 0 ? expected[index].amount / cost.totals.amount * 100 : 0)) < 0.0001, 'Share bar differs from recorded amount fraction'));
+        if (selector === '.qp-cost-models') {
+          const vendors = expected.map(row => (row as CostAnalysisResponse['models'][number]).vendor.toLowerCase());
+          assert.deepEqual(await page.locator(`${selector} tbody tr`).evaluateAll(rows => rows.map(row => row.getAttribute('data-vendor'))), vendors);
+          const palette = theme === 'dark' ? new Map([['openai', '#2080f8'], ['anthropic', '#9d7bfa'], ['deepseek', '#1d9ff2'], ['google', '#17b1ec']]) : new Map([['openai', '#2158a6'], ['anthropic', '#7040bb'], ['deepseek', '#06658b'], ['google', '#06658b']]);
+          const starts = await page.locator(`${selector} .qp-cost-share b`).evaluateAll(elements => elements.map(element => getComputedStyle(element).backgroundImage.match(/rgb\([^)]+\)/)![0]));
+          assert.deepEqual(starts.map(rgb), vendors.map(vendor => rgb(palette.get(vendor) ?? (theme === 'dark' ? '#7c889b' : '#52657c'))), 'Cost model colors must follow the real model maker, including when native/API ranking changes');
+        }
       }
       // Row token totals include all recorded calls, independently of price coverage.
       for (const [selector, groups] of [['.qp-cost-models', cost.models.filter(group => group.pricedCalls > 0).slice(0, 8)], ['.qp-cost-projects', cost.projects.filter(group => group.pricedCalls > 0).slice(0, 8)], ['.qp-cost-sessions', cost.sessions]] as const) {
