@@ -1,0 +1,632 @@
+{
+  "scope": "Five interior bar color samples per supplied reference window; no full-page similarity percentage",
+  "quotaFactsAndGeometryIdentical": true,
+  "overviewBeforeAfter": {
+    "changedPixels": 4139,
+    "maxChannelDelta": 164,
+    "bounds": [
+      1332,
+      159,
+      1444,
+      448
+    ]
+  },
+  "samples": [
+    {
+      "owner": "OpenAI Subscription",
+      "window": "5h",
+      "referenceFill": {
+        "x": 1337,
+        "y": 188,
+        "width": 119
+      },
+      "fractions": [
+        0.15,
+        0.3,
+        0.5,
+        0.7,
+        0.85
+      ],
+      "referenceSamples": [
+        [
+          107,
+          88,
+          252
+        ],
+        [
+          124,
+          79,
+          252
+        ],
+        [
+          140,
+          78,
+          251
+        ],
+        [
+          160,
+          89,
+          252
+        ],
+        [
+          164,
+          99,
+          248
+        ]
+      ],
+      "beforeSamples": [
+        [
+          26,
+          171,
+          255
+        ],
+        [
+          41,
+          155,
+          255
+        ],
+        [
+          60,
+          134,
+          255
+        ],
+        [
+          79,
+          113,
+          255
+        ],
+        [
+          94,
+          98,
+          255
+        ]
+      ],
+      "afterSamples": [
+        [
+          123,
+          93,
+          255
+        ],
+        [
+          133,
+          94,
+          255
+        ],
+        [
+          146,
+          97,
+          255
+        ],
+        [
+          159,
+          99,
+          255
+        ],
+        [
+          168,
+          100,
+          255
+        ]
+      ],
+      "beforeRgbMAE": 43.666666666666664,
+      "afterRgbMAE": 7.066666666666666
+    },
+    {
+      "owner": "OpenAI Subscription",
+      "window": "weekly",
+      "referenceFill": {
+        "x": 1337,
+        "y": 239,
+        "width": 89
+      },
+      "fractions": [
+        0.15,
+        0.3,
+        0.5,
+        0.7,
+        0.85
+      ],
+      "referenceSamples": [
+        [
+          96,
+          188,
+          249
+        ],
+        [
+          81,
+          170,
+          247
+        ],
+        [
+          80,
+          152,
+          249
+        ],
+        [
+          72,
+          113,
+          247
+        ],
+        [
+          72,
+          100,
+          242
+        ]
+      ],
+      "beforeSamples": [
+        [
+          26,
+          171,
+          255
+        ],
+        [
+          40,
+          156,
+          255
+        ],
+        [
+          60,
+          134,
+          255
+        ],
+        [
+          79,
+          113,
+          255
+        ],
+        [
+          95,
+          97,
+          255
+        ]
+      ],
+      "afterSamples": [
+        [
+          82,
+          186,
+          254
+        ],
+        [
+          82,
+          171,
+          252
+        ],
+        [
+          81,
+          149,
+          249
+        ],
+        [
+          81,
+          128,
+          247
+        ],
+        [
+          82,
+          112,
+          246
+        ]
+      ],
+      "beforeRgbMAE": 16.933333333333334,
+      "afterRgbMAE": 5.466666666666667
+    },
+    {
+      "owner": "OpenAI Subscription",
+      "window": "monthly",
+      "referenceFill": {
+        "x": 1337,
+        "y": 291,
+        "width": 103
+      },
+      "fractions": [
+        0.15,
+        0.3,
+        0.5,
+        0.7,
+        0.85
+      ],
+      "referenceSamples": [
+        [
+          138,
+          83,
+          253
+        ],
+        [
+          143,
+          76,
+          252
+        ],
+        [
+          153,
+          82,
+          252
+        ],
+        [
+          165,
+          97,
+          251
+        ],
+        [
+          172,
+          116,
+          250
+        ]
+      ],
+      "beforeSamples": [
+        [
+          26,
+          171,
+          255
+        ],
+        [
+          40,
+          155,
+          255
+        ],
+        [
+          60,
+          133,
+          255
+        ],
+        [
+          80,
+          113,
+          255
+        ],
+        [
+          94,
+          97,
+          255
+        ]
+      ],
+      "afterSamples": [
+        [
+          136,
+          77,
+          250
+        ],
+        [
+          144,
+          80,
+          250
+        ],
+        [
+          155,
+          86,
+          249
+        ],
+        [
+          165,
+          91,
+          248
+        ],
+        [
+          173,
+          94,
+          248
+        ]
+      ],
+      "beforeRgbMAE": 49.4,
+      "afterRgbMAE": 4.066666666666666
+    },
+    {
+      "owner": "OpenCode Go Subscription",
+      "window": "monthly",
+      "referenceFill": {
+        "x": 1337,
+        "y": 401,
+        "width": 82
+      },
+      "fractions": [
+        0.15,
+        0.3,
+        0.5,
+        0.7,
+        0.85
+      ],
+      "referenceSamples": [
+        [
+          2,
+          223,
+          181
+        ],
+        [
+          3,
+          228,
+          187
+        ],
+        [
+          2,
+          228,
+          184
+        ],
+        [
+          1,
+          227,
+          186
+        ],
+        [
+          2,
+          219,
+          178
+        ]
+      ],
+      "beforeSamples": [
+        [
+          25,
+          171,
+          255
+        ],
+        [
+          40,
+          155,
+          255
+        ],
+        [
+          60,
+          135,
+          255
+        ],
+        [
+          80,
+          113,
+          255
+        ],
+        [
+          93,
+          97,
+          255
+        ]
+      ],
+      "afterSamples": [
+        [
+          3,
+          215,
+          191
+        ],
+        [
+          2,
+          214,
+          184
+        ],
+        [
+          2,
+          213,
+          177
+        ],
+        [
+          2,
+          211,
+          169
+        ],
+        [
+          0,
+          209,
+          163
+        ]
+      ],
+      "beforeRgbMAE": 73.4,
+      "afterRgbMAE": 8.0
+    },
+    {
+      "owner": "OpenCode Go Subscription",
+      "window": "daily",
+      "referenceFill": {
+        "x": 1337,
+        "y": 448,
+        "width": 48
+      },
+      "fractions": [
+        0.15,
+        0.3,
+        0.5,
+        0.7,
+        0.85
+      ],
+      "referenceSamples": [
+        [
+          25,
+          139,
+          244
+        ],
+        [
+          31,
+          139,
+          245
+        ],
+        [
+          27,
+          135,
+          244
+        ],
+        [
+          34,
+          141,
+          247
+        ],
+        [
+          32,
+          143,
+          246
+        ]
+      ],
+      "beforeSamples": [
+        [
+          27,
+          169,
+          255
+        ],
+        [
+          40,
+          155,
+          255
+        ],
+        [
+          60,
+          135,
+          255
+        ],
+        [
+          78,
+          113,
+          255
+        ],
+        [
+          94,
+          98,
+          255
+        ]
+      ],
+      "afterSamples": [
+        [
+          36,
+          165,
+          253
+        ],
+        [
+          34,
+          159,
+          252
+        ],
+        [
+          30,
+          150,
+          250
+        ],
+        [
+          26,
+          140,
+          248
+        ],
+        [
+          23,
+          134,
+          247
+        ]
+      ],
+      "beforeRgbMAE": 21.2,
+      "afterRgbMAE": 8.6
+    }
+  ],
+  "allEightControls": [
+    {
+      "route": "overview",
+      "against110": {
+        "changedPixels": 4161,
+        "maxChannelDelta": 164,
+        "bounds": [
+          29,
+          159,
+          1444,
+          448
+        ]
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "live",
+      "against110": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "projects",
+      "against110": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "models",
+      "against110": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "history",
+      "against110": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "alerts",
+      "against110": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "providers",
+      "against110": {
+        "changedPixels": 130,
+        "maxChannelDelta": 3,
+        "bounds": [
+          955,
+          12,
+          1658,
+          76
+        ]
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "cost",
+      "against110": {
+        "changedPixels": 22,
+        "maxChannelDelta": 35,
+        "bounds": [
+          30,
+          382,
+          58,
+          690
+        ]
+      },
+      "immediateRepeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    }
+  ]
+}

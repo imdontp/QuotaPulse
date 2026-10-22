@@ -599,7 +599,7 @@ export function Overview({ initialState, quickStatsScope, runwayScopeKey, record
           <section className="qp-panel qp-quotas"><div className="qp-quotas-heading"><h2><CircleGauge size={18}/>{t('redesign.windows')}</h2><a className="qp-quota-manage" href="#providers">{t('redesign.manage')} <ArrowRight size={14}/></a></div>
             {quotas.length === 0 && <p className="qp-footnote">{t('redesign.unavailable')}</p>}
             {quotas.length > 0 && <div className="qp-quota-groups" tabIndex={0} aria-label={t('redesign.windows')}>
-              {[...quotaGroups].map(([key, windows]) => <section className="qp-quota-group" key={key} data-owner-key={key} data-state={quotaAccountStates?.[key] ?? 'unknown'} aria-label={windows[0].owner}>
+              {[...quotaGroups].map(([key, windows]) => <section className="qp-quota-group" key={key} data-owner-key={key} data-provider={windows[0].provider ?? 'unknown'} data-state={quotaAccountStates?.[key] ?? 'unknown'} aria-label={windows[0].owner}>
                 <div className="qp-quota-group-heading"><h3 aria-label={windows[0].owner}><span className="qp-quota-brand" data-provider={windows[0].provider ?? 'unknown'}><VendorIcon vendor={windows[0].provider ?? 'unknown'}/></span><QuotaOwnerLabel owner={windows[0].owner}/></h3><span className="qp-quota-group-status" data-state={quotaAccountStates?.[key] ?? 'unknown'}>{t(accountStateMessage(quotaAccountStates?.[key]))}</span></div>
                 {windows.map(item => { const reading = quotaState(item, now, preview ? 300000 : 3600000);
                   const used = reading.remaining === null ? null : item.usedPercent;

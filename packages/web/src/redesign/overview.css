@@ -620,6 +620,15 @@
 .qp-quota-usage { display:grid; gap:5px; min-width:0; }
 .qp-quota-group .qp-quota-number { display:flex; align-items:baseline; gap:4px; flex-wrap:wrap; font-size:15px; }
 .qp-quota-group .qp-quota-number strong { color:var(--qp-series); font-weight:600; }
+/* Reference window palette; the separate risk label retains its warning color. */
+[data-testid=production-overview][data-theme=dark] .qp-quota-group[data-provider=openai] .qp-quota-number strong { color:#edf1ff; }
+[data-testid=production-overview][data-theme=dark] .qp-quota-group[data-provider=openai] .qp-quota[data-window="5h"] { --qp-window-start:#715bff; --qp-window-end:#b266ff; }
+[data-testid=production-overview][data-theme=dark] .qp-quota-group[data-provider=openai] .qp-quota[data-window=weekly] { --qp-window-start:#51caff; --qp-window-end:#5261f4; }
+[data-testid=production-overview][data-theme=dark] .qp-quota-group[data-provider=openai] .qp-quota[data-window=monthly] { --qp-window-start:#8049fb; --qp-window-end:#b462f7; }
+[data-testid=production-overview][data-theme=dark] .qp-quota-group[data-provider=opencode] .qp-quota[data-window=monthly] { --qp-window-start:#04d9c5; --qp-window-end:#00d09d; }
+[data-testid=production-overview][data-theme=dark] .qp-quota-group[data-provider=opencode] .qp-quota[data-window=daily] { --qp-window-start:#28adff; --qp-window-end:#147ff5; }
+[data-testid=production-overview][data-theme=dark] .qp-quota-group[data-provider=opencode] .qp-quota:is([data-window=monthly],[data-window=daily]) .qp-quota-number strong { color:var(--qp-window-start); }
+[data-testid=production-overview][data-theme=dark] .qp-quota-group .qp-quota .qp-bar>span { background:linear-gradient(90deg,var(--qp-window-start,#0bbbff),var(--qp-window-end,#6c52ff)); }
 .qp-quota-group .qp-quota-number small { font-size:9px; }
 .qp-quota-reset { display:grid; gap:4px; text-align:right; font-size:11px; overflow-wrap:anywhere; }
 .qp-quota-reset small { font-size:9px; }
