@@ -50,7 +50,7 @@ export function LiveMinuteMatrix({ data, language, t, frozen, provider, model, o
   return <>
     {(provider || model) && <button disabled={frozen} className="qp-live-clear" onClick={onClear}>{t('redesign.liveClearMatrix')}</button>}
     {pairs.length === 0 ? <p>{t('redesign.liveMinuteEmpty')}</p> : <>
-      <div className="qp-live-minute-range"><span>{clock.format(buckets[0]!.start)}</span><span>{clock.format(buckets[buckets.length - 1]!.start)} · {t('redesign.liveMinuteCurrent')}</span></div>
+      <div className="qp-live-minute-range"><span className="qp-live-minute-range-times"><span>{clock.format(buckets[0]!.start)}</span><span>{clock.format(buckets[buckets.length - 1]!.start)}<small> · {t('redesign.liveMinuteCurrent')}</small></span></span><span className="qp-live-minute-total-heading" title={t('redesign.liveMinuteWindowAll')}>{t('redesign.liveMinuteWindow')}</span></div>
       <ol className="qp-live-matrix" tabIndex={0} aria-label={t('redesign.liveMatrix')}>{providerRuns.map(run =>
         <li className="qp-live-provider-group" key={run.key} data-provider={JSON.stringify(run.provider)} data-run-size={run.pairs.length}>
           <div className="qp-live-matrix-provider-plate" aria-hidden="true">

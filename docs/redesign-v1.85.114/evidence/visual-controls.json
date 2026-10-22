@@ -1,0 +1,182 @@
+{
+  "productionIndexSha256": "846cf0b7fce6ace26bf83afe671c6a298c44443c18000cf74a207e486ffd8020",
+  "pairs": 6,
+  "cellsPerPair": 31,
+  "preservedFacts": [
+    "key",
+    "callRecords",
+    "aggregateRecords",
+    "unknownRecords",
+    "label",
+    "exactTotal"
+  ],
+  "preservedCellFacts": [
+    "at",
+    "state",
+    "tokens",
+    "records",
+    "calls",
+    "partial",
+    "intensity"
+  ],
+  "stripWidths": {
+    "before": 150,
+    "after": 161.578125
+  },
+  "cellWidths": {
+    "before": 2.890625,
+    "after": 4.234375
+  },
+  "stripX": {
+    "before": 1439.984375,
+    "after": 1429.40625
+  },
+  "decorativeRegion": {
+    "box": [
+      1300,
+      902,
+      1650,
+      927
+    ],
+    "beforeRgbMAE": 1.7586666666666666,
+    "afterRgbMAE": 1.6553142857142857,
+    "scope": "Static source background only; not whole-page fidelity"
+  },
+  "recordedShellMainHeadingGeometryEqual": true,
+  "controls": [
+    {
+      "route": "overview",
+      "beforeAfter": {
+        "changedPixels": 22,
+        "maxChannelDelta": 35,
+        "bounds": [
+          29,
+          320,
+          50,
+          335
+        ]
+      },
+      "repeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "live",
+      "beforeAfter": {
+        "changedPixels": 96169,
+        "maxChannelDelta": 241,
+        "bounds": [
+          1289,
+          482,
+          1660,
+          926
+        ]
+      },
+      "repeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "projects",
+      "beforeAfter": {
+        "changedPixels": 20,
+        "maxChannelDelta": 35,
+        "bounds": [
+          30,
+          323,
+          50,
+          338
+        ]
+      },
+      "repeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "models",
+      "beforeAfter": {
+        "changedPixels": 2,
+        "maxChannelDelta": 3,
+        "bounds": [
+          30,
+          696,
+          58,
+          697
+        ]
+      },
+      "repeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "history",
+      "beforeAfter": {
+        "changedPixels": 24,
+        "maxChannelDelta": 35,
+        "bounds": [
+          29,
+          338,
+          57,
+          695
+        ]
+      },
+      "repeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "alerts",
+      "beforeAfter": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "repeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "providers",
+      "beforeAfter": {
+        "changedPixels": 130,
+        "maxChannelDelta": 3,
+        "bounds": [
+          955,
+          12,
+          1658,
+          76
+        ]
+      },
+      "repeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    },
+    {
+      "route": "cost",
+      "beforeAfter": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      },
+      "repeat": {
+        "changedPixels": 0,
+        "maxChannelDelta": 0,
+        "bounds": null
+      }
+    }
+  ]
+}

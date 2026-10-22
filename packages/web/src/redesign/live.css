@@ -181,6 +181,9 @@
 
 .qp-live-matrix-section { container:qp-live-matrix / inline-size; }
 .qp-live-minute-range { display:flex; justify-content:space-between; gap:8px; color:var(--qp-muted); font-size:9px; }
+.qp-live-minute-range-times { display:flex; flex:1; justify-content:space-between; gap:8px; min-width:0; }
+.qp-live-minute-range-times small { font-size:inherit; }
+.qp-live-minute-total-heading { display:none; }
 .qp-live-matrix .qp-live-matrix-row-body {
   display:grid; grid-template-columns:minmax(104px,1fr) minmax(70px,150px) 60px;
   width:100%; min-width:0; align-items:center; gap:5px; padding:5px;
@@ -298,6 +301,35 @@
 @container qp-live-matrix (max-width:280px) {
   .qp-live-matrix .qp-live-provider-group { grid-template-columns:44px minmax(0,1fr); }
   .qp-live-matrix-provider-models .qp-live-matrix-row-body { grid-template-columns:minmax(0,1fr) minmax(35px,48px); }
+}
+
+/* Align the real minute bins with the source chart column and one scope heading. */
+@container qp-live-matrix (min-width:281px) {
+  .qp-live-matrix .qp-live-provider-group { grid-template-columns:44px minmax(0,1fr); }
+  .qp-live-matrix-provider-plate { padding-block:3px; }
+  .qp-live-matrix-provider-plate>span:last-child { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .qp-live-matrix-provider-models .qp-live-matrix-row-body { grid-template-columns:76px minmax(0,1fr) 48px; gap:4px; min-height:36px; }
+  .qp-live-minute-strip { gap:1px; }
+  .qp-live-matrix-total small { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+  .qp-live-minute-range { gap:4px; padding-inline:1px 6px; }
+  .qp-live-minute-range-times { padding-left:129px; }
+  .qp-live-minute-total-heading { display:block; flex:none; width:48px; font-size:8px; line-height:10px; text-align:right; }
+}
+@container qp-live-matrix (min-width:281px) and (max-width:340px) {
+  .qp-live-minute-range-times small { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+}
+[data-testid=production-live][data-theme=dark] .qp-live-minute-strip>i[data-state=recorded] {
+  background:hsl(calc(196 + var(--qp-minute-intensity) * 181) 92% calc(38% + var(--qp-minute-intensity) * 26%));
+  box-shadow:inset 0 1px #ffffff26,0 0 4px hsl(calc(196 + var(--qp-minute-intensity) * 181) 92% 60% / calc(.12 + var(--qp-minute-intensity) * .22));
+}
+@media(min-width:1536px) {
+  [data-testid=production-live][data-theme=dark] .qp-live-matrix-section {
+    background-image:url('./assets/live-matrix-atmosphere.svg');
+    background-repeat:no-repeat;
+    background-size:374px 65px;
+    background-position:left bottom 6px;
+    background-origin:border-box;
+  }
 }
 
 /* Native Live chart keeps its 197px composition while restoring the source plot height. */
