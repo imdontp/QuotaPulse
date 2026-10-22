@@ -1,0 +1,139 @@
+{
+  "id": 1,
+  "result": {
+    "result": {
+      "type": "object",
+      "value": {
+        "pid": 35716,
+        "resources": [
+          "PipeWrap",
+          "PipeWrap",
+          "TCPServerWrap",
+          "PipeWrap",
+          "PipeWrap",
+          "PipeWrap",
+          "PipeWrap",
+          "ProcessWrap",
+          "TCPSocketWrap",
+          "Timeout",
+          "Timeout",
+          "Timeout"
+        ],
+        "types": {
+          "Root": 1,
+          "BrowserType": 3,
+          "Android": 1,
+          "Electron": 1,
+          "LocalUtils": 1,
+          "Playwright": 1,
+          "Browser": 1,
+          "Debugger": 1,
+          "Tracing": 1,
+          "APIRequestContext": 1,
+          "BrowserContext": 1,
+          "Frame": 1,
+          "Page": 1,
+          "Disposable": 1,
+          "Request": 38,
+          "Route": 38,
+          "Response": 38,
+          "JSHandle": 1,
+          "ElementHandle": 1
+        },
+        "pages": [
+          {
+            "url": "http://127.0.0.1:7804/?capture=models#models",
+            "closed": false,
+            "state": {
+              "url": "http://127.0.0.1:7804/?capture=models#models",
+              "ready": "complete",
+              "hidden": false,
+              "visibility": "visible",
+              "fonts": "loaded",
+              "model": true,
+              "text": "274.0M",
+              "clock": {
+                "now": {
+                  "time": 1747489320000,
+                  "isFixedTime": true,
+                  "ticks": 45144336561,
+                  "origin": 1747489320000
+                },
+                "realTime": {
+                  "startTicks": 69,
+                  "lastSyncTicks": 2147
+                },
+                "duringTick": false,
+                "currentTimer": {
+                  "callAt": 100,
+                  "pending": false
+                },
+                "timers": [
+                  {
+                    "type": "Timeout",
+                    "callAt": 45144364838,
+                    "delay": 30000,
+                    "stack": "Error\n    at ClockController.addTimer (<anonymous>:230:14)\n    at Object.setTimeout (<anonymous>:482:20)\n    at globalObject.<computed> (<anonymous>:637:28)\n    at Object.setTimeout (http://127.0.0.1:7804/assets/index-Raj1t4Tv.js:191:34658)\n    at tm.scheduleFallback (http://127.0.0.1:7804/assets/index-Raj1t4Tv.js:191:39400)\n    at tm.start (http://127.0.0.1:7804/assets/index-Raj1t4Tv.js:191:36911"
+                  },
+                  {
+                    "type": "Interval",
+                    "callAt": 45144364838,
+                    "delay": 30000,
+                    "stack": "Error\n    at ClockController.addTimer (<anonymous>:230:14)\n    at Object.setInterval (<anonymous>:495:20)\n    at globalObject.<computed> (<anonymous>:637:28)\n    at http://127.0.0.1:7804/assets/index-Raj1t4Tv.js:191:55714\n    at Os (http://127.0.0.1:7804/assets/index-Raj1t4Tv.js:41:24404)\n    at tn (http://127.0.0.1:7804/assets/index-Raj1t4Tv.js:41:42651)\n    at http://127.0.0.1:7804/assets/index-"
+                  },
+                  {
+                    "type": "AnimationFrame",
+                    "callAt": 45144336576,
+                    "delay": 15,
+                    "stack": "Error\n    at ClockController.addTimer (<anonymous>:230:14)\n    at Object.requestAnimationFrame (<anonymous>:507:20)\n    at globalObject.<computed> (<anonymous>:637:28)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:27)\n    at new Promise (<anonymous>)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:5)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous"
+                  },
+                  {
+                    "type": "AnimationFrame",
+                    "callAt": 45144336576,
+                    "delay": 15,
+                    "stack": "Error\n    at ClockController.addTimer (<anonymous>:230:14)\n    at Object.requestAnimationFrame (<anonymous>:507:20)\n    at globalObject.<computed> (<anonymous>:637:28)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:27)\n    at new Promise (<anonymous>)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:5)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous"
+                  },
+                  {
+                    "type": "Timeout",
+                    "callAt": 45144337261,
+                    "delay": 700,
+                    "stack": "Error\n    at ClockController.addTimer (<anonymous>:230:14)\n    at Object.setTimeout (<anonymous>:482:20)\n    at globalObject.<computed> (<anonymous>:637:28)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:83)\n    at new Promise (<anonymous>)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:5)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymo"
+                  }
+                ]
+              }
+            },
+            "nativeTimer": {
+              "nativeTimer": true
+            }
+          }
+        ],
+        "pendingCallbacks": [
+          {
+            "keys": [
+              "resolve",
+              "reject",
+              "signal",
+              "title",
+              "type",
+              "method"
+            ],
+            "type": "Frame",
+            "method": "evaluateExpression"
+          },
+          {
+            "keys": [
+              "resolve",
+              "reject",
+              "signal",
+              "title",
+              "type",
+              "method"
+            ],
+            "type": "Frame",
+            "method": "evaluateExpression"
+          }
+        ]
+      }
+    }
+  }
+}

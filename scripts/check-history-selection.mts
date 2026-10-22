@@ -1,3 +1,4 @@
+import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 /** Repeatability gate; synthetic production captures, not approved visual baselines. */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -162,7 +163,7 @@ try {
  const page=await browser.newPage({viewport:{width:1672,height:941},deviceScaleFactor:1,reducedMotion:'reduce',timezoneId:'Asia/Bangkok'});page.setDefaultTimeout(15000);
  const pending=new Set<Request>();page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(r.url().includes('/api/')&&!r.url().includes('/events/stream'))pending.add(r)});page.on('requestfinished',r=>pending.delete(r));page.on('requestfailed',r=>pending.delete(r));
  await page.route('**/*',route=>{const req=route.request(),u=new URL(req.url());if(u.origin!=='http://127.0.0.1:7816'||u.pathname.startsWith('/api/')&&req.method()!=='GET'){forbidden.push(req.method()+' '+u.pathname);return route.abort()}return route.continue()});
- await page.addInitScript({content:"window.__QUOTAPULSE_TOKEN__='stable-capture-test';localStorage.setItem('quotapulse-prefs',JSON.stringify({lang:'en',currency:'USD',rate:1,hiddenSubscriptions:[]}));localStorage.setItem('quotapulse-theme','dark');Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async function(text){window.__history83Copied=text;}}});"});await page.clock.setFixedTime(fixedNow);
+ await page.addInitScript({content:"window.__QUOTAPULSE_TOKEN__='stable-capture-test';localStorage.setItem('quotapulse-prefs',JSON.stringify({lang:'en',currency:'USD',rate:1,hiddenSubscriptions:[]}));localStorage.setItem('quotapulse-theme','dark');Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async function(text){window.__history83Copied=text;}}});"});await installBrowserFixedDate(page, fixedNow);
  const settle=async()=>{let n=0;const end=performance.now()+20000;while(n<8){assert.ok(performance.now()<end,'API settle deadline');n=pending.size?0:n+1;await page.waitForTimeout(30)}await page.evaluate(()=>document.fonts.ready);await page.waitForTimeout(200)};
  const usageResponse=(predicate:(u:URL)=>boolean=()=>true)=>page.waitForResponse(r=>new URL(r.url()).pathname==='/api/usage-events'&&r.status()===200&&predicate(new URL(r.url())));
  const initialRequest=usageResponse();await page.goto('http://127.0.0.1:7816/?history83=fresh#history?range=month',{waitUntil:'domcontentloaded'});const initial=await (await initialRequest).json();const dialog=page.locator('dialog[aria-labelledby=history-detail-title]');await dialog.locator('h2 span').waitFor();await settle();

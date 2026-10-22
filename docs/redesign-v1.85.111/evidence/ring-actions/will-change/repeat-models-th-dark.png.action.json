@@ -1,0 +1,60 @@
+{
+  "action": "will-change",
+  "productionIndexSha256": "6746327285fadd9bdaf3e79adffada4e44cd4bc2d412a98dc1beb6fb52e8feb4",
+  "baselineSha": "c7eebafc78a195273cd434194558d6c509ad1fbd84fe94ac765dd7133880aaa7",
+  "afterSha": "7b8c6f7ad21797c88f50625cfda45e24ac3a568776950cf5d2ee2e21a570a0bb",
+  "byteIdentical": false,
+  "actionResult": {
+    "before": {
+      "x": 1523,
+      "y": 385.796875,
+      "width": 116,
+      "height": 116,
+      "top": 385.796875,
+      "right": 1639,
+      "bottom": 501.796875,
+      "left": 1523
+    },
+    "after": {
+      "x": 1523,
+      "y": 385.796875,
+      "width": 116,
+      "height": 116,
+      "top": 385.796875,
+      "right": 1639,
+      "bottom": 501.796875,
+      "left": 1523
+    },
+    "style": "background: conic-gradient(var(--qp-model-fresh-input,#2bb8ef) 0% 37.70000090955543%,var(--qp-model-cached-input,#775cf6) 37.70000090955543% 65.0000005109862%,var(--qp-model-cache-write,#ad6be8) 65.0000005109862% 65.0000005109862%,var(--qp-model-output,#18cfa9) 65.0000005109862% 100%); will-change: transform;"
+  },
+  "deep": {
+    "outer": {
+      "x": 1523,
+      "y": 385.796875,
+      "width": 116,
+      "height": 116,
+      "top": 385.796875,
+      "right": 1639,
+      "bottom": 501.796875,
+      "left": 1523
+    },
+    "inner": {
+      "x": 1538,
+      "y": 400.796875,
+      "width": 86,
+      "height": 86,
+      "top": 400.796875,
+      "right": 1624,
+      "bottom": 486.796875,
+      "left": 1538
+    },
+    "background": "rgba(0, 0, 0, 0) conic-gradient(rgb(3, 177, 252) 0%, rgb(3, 177, 252) 37.7%, rgb(58, 125, 253) 37.7%, rgb(58, 125, 253) 65%, rgb(1, 149, 251) 65%, rgb(1, 149, 251) 65%, rgb(120, 50, 251) 65%, rgb(120, 50, 251) 100%) repeat scroll 0% 0% / auto padding-box border-box",
+    "shadow": "rgba(13, 138, 255, 0.333) 0px 0px 13px 0px, rgba(208, 232, 255, 0.4) 0px 0px 0px 2px inset",
+    "outline": "rgb(101, 126, 255) solid 1px",
+    "transform": "none",
+    "translate": "none",
+    "willChange": "transform",
+    "isolation": "auto",
+    "text": "274.0M"
+  }
+}

@@ -1,3 +1,4 @@
+import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 /** Compiled aggregate presence regression using isolated API/SSE and a synthetic DB. */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -302,7 +303,7 @@ try {
       } return animation;
     };
   });
-  await page.clock.setFixedTime(fixedNow);
+  await installBrowserFixedDate(page, fixedNow);
   if (mode === 'paint') {
     const geometry: any[] = [];
     for (const route of ['models', 'projects', 'history']) {

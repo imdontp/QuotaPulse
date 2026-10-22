@@ -1,3 +1,4 @@
+import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 /** Compiled Overview motion regression using real isolated API/SSE and synthetic DB. */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -132,7 +133,7 @@ try {
  page.on('request',r=>{if(new URL(r.url()).pathname.startsWith('/api/')&&!r.url().includes('/events/stream'))pending.add(r)});
  page.on('requestfinished',r=>pending.delete(r));page.on('requestfailed',r=>pending.delete(r));
  await page.addInitScript(({lang,theme})=>{(window as unknown as {__QUOTAPULSE_TOKEN__:string}).__QUOTAPULSE_TOKEN__='stable-capture-test';localStorage.setItem('quotapulse-prefs',JSON.stringify({lang,currency:'USD',rate:1,hiddenSubscriptions:[]}));localStorage.setItem('quotapulse-theme',theme)},{lang:taskLang,theme:taskTheme});
- await page.clock.setFixedTime(fixedNow);
+ await installBrowserFixedDate(page, fixedNow);
  const results=[];
  await page.setViewportSize({width:1586,height:992});
  await page.goto('http://127.0.0.1:7816/#overview',{waitUntil:'domcontentloaded'});

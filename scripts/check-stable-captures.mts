@@ -24,6 +24,7 @@ import { ACTIVITY_SPARKLINE_HEIGHT } from '../packages/web/src/redesign/activity
 import { checkLiveMinuteRefresh } from './check-live-minute-refresh.mjs';
 import { checkLiveTokenFlow } from './check-live-token-flow.mjs';
 import { checkSectionMarks } from './check-section-marks.mjs';
+import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
@@ -2787,7 +2788,7 @@ try {
           localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang, currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
           localStorage.setItem('quotapulse-theme', theme);
         }, { lang, theme });
-        await page.clock.setFixedTime(fixedNow);
+        await installBrowserFixedDate(page, fixedNow);
         for (const [destination, ready] of pages) {
           await page.setViewportSize(destination === 'overview' ? { width: 1586, height: 992 } : { width: 1672, height: 941 });
           // A distinct document URL avoids carrying hash-navigation paint caches

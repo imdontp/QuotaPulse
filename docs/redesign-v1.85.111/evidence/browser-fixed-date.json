@@ -1,0 +1,59 @@
+{
+  "browser": "155.0.8059.80",
+  "fixedNow": 1790487747749,
+  "hostFrozen": true,
+  "outcomes": [
+    {
+      "method": "previous Playwright clock approach",
+      "result": {
+        "timedOut": true
+      },
+      "state": {
+        "date": 1790487747749,
+        "ticks": 2147545991,
+        "nextRealTimeCallAt": 100
+      },
+      "elapsedMs": 1014.9978999999998
+    },
+    {
+      "method": "date-only fixture",
+      "lang": "en",
+      "measured": {
+        "now": 1790487747749,
+        "constructed": 1790487747749,
+        "explicit": 0,
+        "parsed": 1747489320000,
+        "utc": 1747489320000,
+        "instance": true,
+        "subclass": true,
+        "frames": [
+          27.9,
+          44.5
+        ],
+        "intervals": 2,
+        "elapsedMs": 73.30000001192093,
+        "virtualClockInstalled": false
+      }
+    },
+    {
+      "method": "date-only fixture",
+      "lang": "th",
+      "measured": {
+        "now": 1790487747749,
+        "constructed": 1790487747749,
+        "explicit": 0,
+        "parsed": 1747489320000,
+        "utc": 1747489320000,
+        "instance": true,
+        "subclass": true,
+        "frames": [
+          32.7,
+          49.3
+        ],
+        "intervals": 2,
+        "elapsedMs": 77.5,
+        "virtualClockInstalled": false
+      }
+    }
+  ]
+}

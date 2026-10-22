@@ -1,0 +1,75 @@
+{
+  "files": [
+    "tmp/model110-stable-failure/models-th-dark.png",
+    "tmp/model110-stable-failure/repeat-models-th-dark.png",
+    "tmp/ring111-observed-1/models-th-dark.png",
+    "tmp/ring111-observed-1/observed-models-th-dark.png",
+    "tmp/ring111-observed-1/repeat-models-th-dark.png",
+    "tmp/ring111-observed-1/repeat-observed-models-th-dark.png"
+  ],
+  "pairs": [
+    {
+      "a": 0,
+      "b": 1,
+      "total": 125,
+      "ring": 125,
+      "max": 34,
+      "bounds": {
+        "x0": 1512,
+        "y0": 418,
+        "x1": 1638,
+        "y1": 473
+      }
+    },
+    {
+      "a": 0,
+      "b": 2,
+      "total": 0,
+      "ring": 0,
+      "max": 0,
+      "bounds": null
+    },
+    {
+      "a": 1,
+      "b": 2,
+      "total": 125,
+      "ring": 125,
+      "max": 34,
+      "bounds": {
+        "x0": 1512,
+        "y0": 418,
+        "x1": 1638,
+        "y1": 473
+      }
+    },
+    {
+      "a": 2,
+      "b": 3,
+      "total": 172,
+      "ring": 125,
+      "max": 34,
+      "bounds": {
+        "x0": 17,
+        "y0": 72,
+        "x1": 1638,
+        "y1": 473
+      }
+    },
+    {
+      "a": 2,
+      "b": 4,
+      "total": 0,
+      "ring": 0,
+      "max": 0,
+      "bounds": null
+    },
+    {
+      "a": 3,
+      "b": 5,
+      "total": 0,
+      "ring": 0,
+      "max": 0,
+      "bounds": null
+    }
+  ]
+}

@@ -1,0 +1,309 @@
+{
+  "checkpoint": "v1.85.111",
+  "productSourceCheckpoint": "v1.85.110",
+  "productionIndexSha256": "6746327285fadd9bdaf3e79adffada4e44cd4bc2d412a98dc1beb6fb52e8feb4",
+  "routeLifecycleCases": 181,
+  "sourceFiles": 15,
+  "copied": [
+    {
+      "source": "tmp/browser-fixed-date-regression/verification.json",
+      "path": "evidence/browser-fixed-date.json"
+    },
+    {
+      "source": "tmp/presence95-browser/verification.json",
+      "path": "evidence/aggregate-presence.json"
+    },
+    {
+      "source": "tmp/runway90-browser/verification.json",
+      "path": "evidence/runway-motion.json"
+    },
+    {
+      "source": "screens/route-loading/verification.json",
+      "path": "evidence/route-loading.json"
+    },
+    {
+      "source": "tmp/ring111-clock-regression.log",
+      "path": "evidence/clock-regression.log"
+    },
+    {
+      "source": "tmp/ring111-aggregate-native.log",
+      "path": "evidence/aggregate-native.log"
+    },
+    {
+      "source": "tmp/ring111-runway-native.log",
+      "path": "evidence/runway-native.log"
+    },
+    {
+      "source": "tmp/clock111-route-loading.log",
+      "path": "evidence/route-loading.log"
+    },
+    {
+      "source": "tmp/ring111-stable-date-only.log",
+      "path": "evidence/models-stable-RED.log"
+    },
+    {
+      "source": "tmp/ring111-controlled-comparison.json",
+      "path": "evidence/ring-controlled-comparison.json"
+    },
+    {
+      "source": "tmp/ring111-date-only-exits.json",
+      "path": "evidence/ring-diagnostic-exits.json"
+    },
+    {
+      "source": "tmp/ring111-observer-comparison.json",
+      "path": "evidence/ring-observer-comparison.json"
+    },
+    {
+      "source": "tmp/ring111-clock-wait.json",
+      "path": "evidence/stalled-clock-observation.json"
+    },
+    {
+      "source": "tmp/ring111-clock-migrations.json",
+      "path": "evidence/clock-migrations.json"
+    },
+    {
+      "source": "tmp/compare-ring111.py",
+      "path": "evidence/compare-ring.py"
+    },
+    {
+      "source": "tmp/generate-ring111-actions-date-only.cjs",
+      "path": "evidence/generate-ring-diagnostics.cjs"
+    },
+    {
+      "source": "screens/tray-recovery/bundle-build.json",
+      "path": "evidence/bundle-build.json"
+    },
+    {
+      "source": "screens/tray-recovery/bundle-verification.json",
+      "path": "evidence/bundle-launch.json"
+    },
+    {
+      "source": "screens/tray-recovery/archive-verification.json",
+      "path": "evidence/bundle-archive.json"
+    },
+    {
+      "source": "tmp/review111-bundle-build.log",
+      "path": "evidence/bundle-build.log"
+    },
+    {
+      "source": "tmp/review111-bundle-check.log",
+      "path": "evidence/bundle-launch.log"
+    },
+    {
+      "source": "tmp/review111-archive.log",
+      "path": "evidence/bundle-archive.log"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/wait/models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/wait/models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/wait/models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/wait/models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/wait/repeat-models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/wait/repeat-models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/wait/repeat-models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/wait/repeat-models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/wait/sidebar-raster-state.json",
+      "path": "evidence/ring-actions/wait/sidebar-raster-state.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/wait/verification.json",
+      "path": "evidence/ring-actions/wait/verification.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/styles/models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/styles/models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/styles/models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/styles/models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/styles/repeat-models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/styles/repeat-models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/styles/repeat-models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/styles/repeat-models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/styles/sidebar-raster-state.json",
+      "path": "evidence/ring-actions/styles/sidebar-raster-state.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/styles/verification.json",
+      "path": "evidence/ring-actions/styles/verification.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/attach/models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/attach/models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/attach/models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/attach/models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/attach/repeat-models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/attach/repeat-models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/attach/repeat-models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/attach/repeat-models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/attach/sidebar-raster-state.json",
+      "path": "evidence/ring-actions/attach/sidebar-raster-state.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/attach/verification.json",
+      "path": "evidence/ring-actions/attach/verification.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/layers/models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/layers/models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/layers/models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/layers/models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/layers/repeat-models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/layers/repeat-models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/layers/repeat-models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/layers/repeat-models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/layers/sidebar-raster-state.json",
+      "path": "evidence/ring-actions/layers/sidebar-raster-state.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/layers/verification.json",
+      "path": "evidence/ring-actions/layers/verification.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/will-change/models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/will-change/models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/will-change/models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/will-change/models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/will-change/repeat-models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/will-change/repeat-models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/will-change/repeat-models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/will-change/repeat-models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/will-change/sidebar-raster-state.json",
+      "path": "evidence/ring-actions/will-change/sidebar-raster-state.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/will-change/verification.json",
+      "path": "evidence/ring-actions/will-change/verification.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/isolate/models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/isolate/models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/isolate/models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/isolate/models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/isolate/repeat-models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/isolate/repeat-models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/isolate/repeat-models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/isolate/repeat-models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/isolate/sidebar-raster-state.json",
+      "path": "evidence/ring-actions/isolate/sidebar-raster-state.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/isolate/verification.json",
+      "path": "evidence/ring-actions/isolate/verification.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/translate-z/models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/translate-z/models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/translate-z/models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/translate-z/models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/translate-z/repeat-models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/translate-z/repeat-models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/translate-z/repeat-models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/translate-z/repeat-models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/translate-z/sidebar-raster-state.json",
+      "path": "evidence/ring-actions/translate-z/sidebar-raster-state.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/translate-z/verification.json",
+      "path": "evidence/ring-actions/translate-z/verification.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/integer-y/models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/integer-y/models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/integer-y/models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/integer-y/models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/integer-y/repeat-models-th-dark.png.action.json",
+      "path": "evidence/ring-actions/integer-y/repeat-models-th-dark.png.action.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/integer-y/repeat-models-th-dark.png.ring.json",
+      "path": "evidence/ring-actions/integer-y/repeat-models-th-dark.png.ring.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/integer-y/sidebar-raster-state.json",
+      "path": "evidence/ring-actions/integer-y/sidebar-raster-state.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/integer-y/verification.json",
+      "path": "evidence/ring-actions/integer-y/verification.json"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/wait/models-th-dark.png",
+      "path": "images/wait-models-th-dark.png"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/wait/repeat-models-th-dark.png",
+      "path": "images/wait-repeat-models-th-dark.png"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/isolate/after-models-th-dark.png",
+      "path": "images/isolate-after-models-th-dark.png"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/will-change/after-models-th-dark.png",
+      "path": "images/will-change-after-models-th-dark.png"
+    },
+    {
+      "source": "tmp/ring111-actions-date-only/integer-y/after-models-th-dark.png",
+      "path": "images/integer-y-after-models-th-dark.png"
+    }
+  ]
+}

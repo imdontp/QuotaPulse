@@ -1,3 +1,4 @@
+import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 /** Isolated production module lifecycle checks; no user database or live readers. */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -49,7 +50,7 @@ async function newPage(lang = 'en', width = 1672, theme = 'dark') {
     localStorage.setItem('quotapulse-settings-migrated', '1');
     if (!localStorage.getItem('quotapulse-theme')) localStorage.setItem('quotapulse-theme', theme);
   }, { lang, theme });
-  await page.clock.setFixedTime(now);
+  await installBrowserFixedDate(page, now);
   return page;
 }
 

@@ -1,3 +1,4 @@
+import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 /** Initial API region layout/recovery gate using an isolated synthetic daemon. */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -156,7 +157,7 @@ async function makePage(config: typeof matrix[number]) {
     localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang, currency: 'USD', rate: 1, hiddenSubscriptions: [] }));
     localStorage.setItem('quotapulse-theme', theme);
   }, config);
-  await page.clock.setFixedTime(fixedNow);
+  await installBrowserFixedDate(page, fixedNow);
   return { context, page };
 }
 

@@ -1,3 +1,4 @@
+import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 /** Source-directed visual controls using isolated API/SSE and a synthetic DB. */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -137,7 +138,7 @@ try {
   if(mode==='dense')for(let day=1;day<=16;day++){const total=(day%5+1)*70000000;db.prepare("INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,input_tokens,output_tokens,total_tokens,call_count,cost_source) VALUES(1,1,?,?,'DeepSeek V4.1','deepseek',?,?,?,1,'unknown')").run('dense-trend-'+day,Date.parse('2025-05-'+String(day).padStart(2,'0')+'T12:00:00Z'),total*.6,total*.4,total);}
   const width=mode==='compact'?1280:mode==='mobile'?390:routeName==='overview'?1586:1672;const height=routeName==='overview'?992:941;
   const theme=mode==='light'?'light':'dark';const page=await browser.newPage({viewport:{width,height},reducedMotion:'reduce',timezoneId:'Asia/Bangkok'});const errors:string[]=[],forbidden:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',r=>{const req=r.request(),u=new URL(req.url());if(u.origin!=='http://127.0.0.1:7816'||u.pathname.startsWith('/api/')&&req.method()!=='GET'){forbidden.push(req.method()+' '+u.pathname);return r.abort()}return r.continue()});
-  await page.addInitScript('globalThis.__name = value => value');await page.addInitScript(({theme})=>{(window as any).__QUOTAPULSE_TOKEN__='stable-capture-test';localStorage.setItem('quotapulse-theme',theme);localStorage.setItem('quotapulse-prefs',JSON.stringify({lang:'en',currency:'USD',rate:1,hiddenSubscriptions:[]}))},{theme});await page.clock.setFixedTime(fixedNow);
+  await page.addInitScript('globalThis.__name = value => value');await page.addInitScript(({theme})=>{(window as any).__QUOTAPULSE_TOKEN__='stable-capture-test';localStorage.setItem('quotapulse-theme',theme);localStorage.setItem('quotapulse-prefs',JSON.stringify({lang:'en',currency:'USD',rate:1,hiddenSubscriptions:[]}))},{theme});await installBrowserFixedDate(page, fixedNow);
   await page.goto('http://127.0.0.1:7816/#'+routeName);await page.getByTestId('production-'+routeName).waitFor();await page.evaluate(()=>document.fonts.ready);
   const ready=routeName==='overview'?'#runtime[data-runtime-state=ready] .qp-map-node':routeName==='live'?'.qp-live-table tbody tr':'.qp-model-table-wrap tbody tr';await page.locator(ready).first().waitFor();await page.waitForTimeout(500);
   const read=()=>page.evaluate(routeName=>{
