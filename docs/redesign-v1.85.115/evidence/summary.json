@@ -1,0 +1,87 @@
+{
+  "status": "passed actual four-stage cycle",
+  "productUi": "unchanged114",
+  "sourceCommits": {
+    "previous": "6f5759344e16756c41cf2e6e335e65b89ab5b777",
+    "current": "00bf157f0f6c7ed95746b56b35dba9f134e1676d"
+  },
+  "fixture": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717",
+  "installationRoot": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qprb-5729fe59",
+  "baselineSha256": "fe468b85fef851d75a249691033adc8684c921b8075a6a437bc058fe18776e06",
+  "schema": "7",
+  "fixtureRows": {
+    "sources": 1,
+    "sessions": 2,
+    "usage": 3,
+    "quotas": 4,
+    "alerts": 1,
+    "cursors": 1,
+    "rollups": 2
+  },
+  "initialization": {
+    "phase": "previous-mode initialization before upgrade baseline",
+    "allowedDerivedTransitions": [
+      {
+        "sourceId": 9101,
+        "beforeEnabled": 1,
+        "afterEnabled": 0
+      }
+    ],
+    "allOtherSeededFieldsEqual": true,
+    "baselineSha256": "fe468b85fef851d75a249691033adc8684c921b8075a6a437bc058fe18776e06"
+  },
+  "stages": [
+    {
+      "name": "previous-seeded",
+      "sourceCommit": "6f5759344e16756c41cf2e6e335e65b89ab5b777",
+      "fullFiles": 3135,
+      "servedWebFiles": 66,
+      "exactStoppedSnapshotSha256": "fe468b85fef851d75a249691033adc8684c921b8075a6a437bc058fe18776e06",
+      "rootsTerminal": true
+    },
+    {
+      "name": "current-upgrade",
+      "sourceCommit": "00bf157f0f6c7ed95746b56b35dba9f134e1676d",
+      "fullFiles": 3155,
+      "servedWebFiles": 82,
+      "exactStoppedSnapshotSha256": "fe468b85fef851d75a249691033adc8684c921b8075a6a437bc058fe18776e06",
+      "rootsTerminal": true
+    },
+    {
+      "name": "previous-rollback",
+      "sourceCommit": "6f5759344e16756c41cf2e6e335e65b89ab5b777",
+      "fullFiles": 3135,
+      "servedWebFiles": 66,
+      "exactStoppedSnapshotSha256": "fe468b85fef851d75a249691033adc8684c921b8075a6a437bc058fe18776e06",
+      "rootsTerminal": true
+    },
+    {
+      "name": "current-recovery",
+      "sourceCommit": "00bf157f0f6c7ed95746b56b35dba9f134e1676d",
+      "fullFiles": 3155,
+      "servedWebFiles": 82,
+      "exactStoppedSnapshotSha256": "fe468b85fef851d75a249691033adc8684c921b8075a6a437bc058fe18776e06",
+      "rootsTerminal": true
+    }
+  ],
+  "archives": {
+    "previous": {
+      "sha256": "3571246407dbd8692a2ce44645a4dd4776fc08ec7d19deffc27735c70d248367",
+      "path": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.114\\tmp\\release-rollback\\run-5729fe59cc63438bad23edcba1147717\\previous.zip"
+    },
+    "current": {
+      "sha256": "5c378261868f39f19fab364a27e04b6cbb7a3101c55cb3a5cc9eecdc72c23ab0",
+      "path": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.114\\tmp\\release-rollback\\run-5729fe59cc63438bad23edcba1147717\\current.zip"
+    }
+  },
+  "originalScaffoldsPreserved": true,
+  "limitations": [
+    "unsigned review bundle with host Node prerequisite; no production install or tasks",
+    "actual daemon and tray processes boot; no browser UI or dashboard/preload readiness assertion",
+    "DB app/notification/window settings covered; Electron localStorage language/theme/currency requires separate native UI persistence check",
+    "pet/tray animation disabled by existing review start helper; no pet appearance preference preservation claim",
+    "schema7 usage/quota/alert/cursor/rollup/pricing invariants; no cross-schema migration is claimed",
+    "the prior reader-disabled mode settles source.enabled before freezing the exact upgrade baseline; no other seeded field may change",
+    "no signed artifact, user visual acceptance, CPU budget or whole RC claim"
+  ]
+}

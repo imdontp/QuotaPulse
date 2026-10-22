@@ -1,0 +1,523 @@
+{
+  "checkpoint": "v1.85.115",
+  "productSource": "v1.85.114",
+  "status": "passed actual four-stage cycle",
+  "archives": {
+    "previous": {
+      "sha256": "3571246407dbd8692a2ce44645a4dd4776fc08ec7d19deffc27735c70d248367",
+      "path": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.114\\tmp\\release-rollback\\run-5729fe59cc63438bad23edcba1147717\\previous.zip",
+      "bytes": 201581102
+    },
+    "current": {
+      "sha256": "5c378261868f39f19fab364a27e04b6cbb7a3101c55cb3a5cc9eecdc72c23ab0",
+      "path": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.114\\tmp\\release-rollback\\run-5729fe59cc63438bad23edcba1147717\\current.zip",
+      "bytes": 206479773
+    }
+  },
+  "copied": [
+    {
+      "source": "tmp/rollback115/summary.json",
+      "path": "evidence/summary.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/baseline.json",
+      "path": "evidence/success/baseline.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/current-recovery-after-stop-installed.json",
+      "path": "evidence/success/current-recovery-after-stop-installed.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/current-recovery-identity.json",
+      "path": "evidence/success/current-recovery-identity.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/current-recovery-installed.json",
+      "path": "evidence/success/current-recovery-installed.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/current-recovery-live.json",
+      "path": "evidence/success/current-recovery-live.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/current-recovery-snapshot.json",
+      "path": "evidence/success/current-recovery-snapshot.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/current-upgrade-after-stop-installed.json",
+      "path": "evidence/success/current-upgrade-after-stop-installed.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/current-upgrade-identity.json",
+      "path": "evidence/success/current-upgrade-identity.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/current-upgrade-installed.json",
+      "path": "evidence/success/current-upgrade-installed.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/current-upgrade-live.json",
+      "path": "evidence/success/current-upgrade-live.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/current-upgrade-snapshot.json",
+      "path": "evidence/success/current-upgrade-snapshot.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/fixture.json",
+      "path": "evidence/success/fixture.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/identities.json",
+      "path": "evidence/success/identities.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/initialization-live.json",
+      "path": "evidence/success/initialization-live.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/initialization.json",
+      "path": "evidence/success/initialization.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/inputs.json",
+      "path": "evidence/success/inputs.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/previous-rollback-after-stop-installed.json",
+      "path": "evidence/success/previous-rollback-after-stop-installed.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/previous-rollback-identity.json",
+      "path": "evidence/success/previous-rollback-identity.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/previous-rollback-installed.json",
+      "path": "evidence/success/previous-rollback-installed.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/previous-rollback-live.json",
+      "path": "evidence/success/previous-rollback-live.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/previous-rollback-snapshot.json",
+      "path": "evidence/success/previous-rollback-snapshot.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/previous-seeded-after-stop-installed.json",
+      "path": "evidence/success/previous-seeded-after-stop-installed.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/previous-seeded-identity.json",
+      "path": "evidence/success/previous-seeded-identity.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/previous-seeded-installed.json",
+      "path": "evidence/success/previous-seeded-installed.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/previous-seeded-live.json",
+      "path": "evidence/success/previous-seeded-live.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/previous-seeded-snapshot.json",
+      "path": "evidence/success/previous-seeded-snapshot.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/seed.json",
+      "path": "evidence/success/seed.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-5729fe59cc63438bad23edcba1147717/verification.json",
+      "path": "evidence/success/verification.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/previous/build.json",
+      "path": "evidence/build-previous/build.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/previous/checkout-files-sha256.json.gz",
+      "path": "evidence/build-previous/checkout-files-sha256.json.gz",
+      "compressed": false,
+      "raw": true
+    },
+    {
+      "source": "tmp/rollback115/previous/daemon-build.log",
+      "path": "evidence/build-previous/daemon-build.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/previous/full-bundle-sha256.json.gz",
+      "path": "evidence/build-previous/full-bundle-sha256.json.gz",
+      "compressed": false,
+      "raw": true
+    },
+    {
+      "source": "tmp/rollback115/previous/provenance.json",
+      "path": "evidence/build-previous/provenance.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/previous/review-bundle.log",
+      "path": "evidence/build-previous/review-bundle.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/previous/tray-build.log",
+      "path": "evidence/build-previous/tray-build.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/previous/tray-package-with-tests.log",
+      "path": "evidence/build-previous/tray-package-with-tests.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/previous/web-build.log",
+      "path": "evidence/build-previous/web-build.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/previous/build.json",
+      "path": "evidence/build-previous/build-raw.json.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "tmp/rollback115/current/approved-runtime-assets.log",
+      "path": "evidence/build-current/approved-runtime-assets.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/current/build.json",
+      "path": "evidence/build-current/build.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/current/checkout-files-sha256.json.gz",
+      "path": "evidence/build-current/checkout-files-sha256.json.gz",
+      "compressed": false,
+      "raw": true
+    },
+    {
+      "source": "tmp/rollback115/current/daemon-build.log",
+      "path": "evidence/build-current/daemon-build.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/current/full-bundle-sha256.json.gz",
+      "path": "evidence/build-current/full-bundle-sha256.json.gz",
+      "compressed": false,
+      "raw": true
+    },
+    {
+      "source": "tmp/rollback115/current/provenance.json",
+      "path": "evidence/build-current/provenance.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/current/repository-tests.log",
+      "path": "evidence/build-current/repository-tests.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/current/review-bundle.log",
+      "path": "evidence/build-current/review-bundle.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/current/tray-build.log",
+      "path": "evidence/build-current/tray-build.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/current/web-build.log",
+      "path": "evidence/build-current/web-build.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/current/build.json",
+      "path": "evidence/build-current/build-raw.json.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "tmp/rollback115/inputs.json",
+      "path": "evidence/diagnoses/inputs.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/original-scaffold-hashes.json",
+      "path": "evidence/diagnoses/original-scaffold-hashes.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/launcher-line-ending-diagnosis.json",
+      "path": "evidence/diagnoses/launcher-line-ending-diagnosis.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/zip-separator-diagnosis.json",
+      "path": "evidence/diagnoses/zip-separator-diagnosis.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/path-length-diagnosis.json",
+      "path": "evidence/diagnoses/path-length-diagnosis.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/process-identity-diagnosis.json",
+      "path": "evidence/diagnoses/process-identity-diagnosis.json",
+      "compressed": false,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-previous-build.log",
+      "path": "evidence/logs/rollback115-previous-build.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-current-build.log",
+      "path": "evidence/logs/rollback115-current-build.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-bind-count-failure.log",
+      "path": "evidence/logs/rollback115-bind-count-failure.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-bind.log",
+      "path": "evidence/logs/rollback115-bind.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-bind-full.log",
+      "path": "evidence/logs/rollback115-bind-full.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-prepare.log",
+      "path": "evidence/logs/rollback115-prepare.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-prepare-frozen.log",
+      "path": "evidence/logs/rollback115-prepare-frozen.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-run.log",
+      "path": "evidence/logs/rollback115-run.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-run-canonical.log",
+      "path": "evidence/logs/rollback115-run-canonical.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-run-short.log",
+      "path": "evidence/logs/rollback115-run-short.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-run-final.log",
+      "path": "evidence/logs/rollback115-run-final.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115-process-probe.log",
+      "path": "evidence/logs/rollback115-process-probe.log.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/rollback115/failed-archive-harness/check-release-rollback.cjs",
+      "path": "evidence/diagnoses/failed-archive-harness/check-release-rollback.cjs.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "tmp/rollback115/failed-archive-harness/check-release-rollback.ps1",
+      "path": "evidence/diagnoses/failed-archive-harness/check-release-rollback.ps1.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "tmp/rollback115/failed-longpath-harness/check-release-rollback.cjs",
+      "path": "evidence/diagnoses/failed-longpath-harness/check-release-rollback.cjs.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "tmp/rollback115/failed-longpath-harness/check-release-rollback.ps1",
+      "path": "evidence/diagnoses/failed-longpath-harness/check-release-rollback.ps1.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "tmp/rollback115/failed-process-harness/check-release-rollback.cjs",
+      "path": "evidence/diagnoses/failed-process-harness/check-release-rollback.cjs.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "tmp/rollback115/failed-process-harness/check-release-rollback.ps1",
+      "path": "evidence/diagnoses/failed-process-harness/check-release-rollback.ps1.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-foundation/tmp/release-rollback/run-9205c2b4f68c4523bce1db9fe7b71ed7/verification.json",
+      "path": "evidence/diagnoses/launcher-preflight-failure.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-8a97658448674c489928dfe7a22d4721/verification.json",
+      "path": "evidence/diagnoses/zip-separator-failure.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-11a2b4cf6485489e88a04c2450bd5665/verification.json",
+      "path": "evidence/diagnoses/path-length-failure.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-validation-v1.85.114/tmp/release-rollback/run-6656250d363a4d06b8c0aab459468f7d/verification.json",
+      "path": "evidence/diagnoses/process-alias-failure.json.gz",
+      "compressed": true,
+      "raw": false
+    },
+    {
+      "source": "tmp/build-rollback115.ps1",
+      "path": "evidence/reproducer/build-checkouts.ps1.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "tmp/bind-rollback115.cjs",
+      "path": "evidence/reproducer/bind-builds.cjs.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "tmp/audit-rollback115.cjs",
+      "path": "evidence/reproducer/audit-results.cjs.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "tmp/probe-process115.ps1",
+      "path": "evidence/reproducer/probe-process.ps1.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "scripts/check-release-rollback.cjs",
+      "path": "evidence/reproducer/check-release-rollback.cjs.gz",
+      "compressed": true,
+      "raw": true
+    },
+    {
+      "source": "scripts/check-release-rollback.ps1",
+      "path": "evidence/reproducer/check-release-rollback.ps1.gz",
+      "compressed": true,
+      "raw": true
+    }
+  ]
+}

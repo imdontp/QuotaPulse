@@ -1,0 +1,40 @@
+[
+    {
+        "roleContains":  true,
+        "createdType":  "System.String",
+        "normalizedExpectedData":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qprb-6656250d\\review-data",
+        "actualCreated":  "2026-10-22T07:26:10.6719330Z",
+        "normalizedCreated":  "2026-10-22T07:26:10.6719330Z",
+        "pid":  7796,
+        "entryContains":  false,
+        "executablePath":  "C:\\Program Files\\nodejs\\node.exe",
+        "role":  "daemon",
+        "normalizedCreationMatches":  true,
+        "commandLine":  "\"C:\\Program Files\\nodejs\\node.exe\" \"C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qprb-6656250d\\releases\\release-3571246407dbd8692a2ce44645a4dd4776fc08ec7d19deffc27735c70d248367\\scripts\\task-entry.cjs\" --role daemon --port 7818 --data-dir \"C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qprb-6656250d\\review-data\" --node-exe \"C:\\Program Files\\nodejs\\node.exe\" --no-readers ",
+        "expectedEntry":  "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qprb-6656250d\\releases\\release-3571246407dbd8692a2ce44645a4dd4776fc08ec7d19deffc27735c70d248367\\scripts\\task-entry.cjs",
+        "dataContains":  false,
+        "normalizedExpectedEntry":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qprb-6656250d\\releases\\release-3571246407dbd8692a2ce44645a4dd4776fc08ec7d19deffc27735c70d248367\\scripts\\task-entry.cjs",
+        "expectedData":  "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qprb-6656250d\\review-data",
+        "createdString":  "2026-10-22T07:26:10.6719330Z",
+        "noReadersContains":  true
+    },
+    {
+        "roleContains":  true,
+        "createdType":  "System.String",
+        "normalizedExpectedData":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qprb-6656250d\\review-data",
+        "actualCreated":  "2026-10-22T07:26:12.0352040Z",
+        "normalizedCreated":  "2026-10-22T07:26:12.0352040Z",
+        "pid":  42976,
+        "entryContains":  false,
+        "executablePath":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qprb-6656250d\\releases\\release-3571246407dbd8692a2ce44645a4dd4776fc08ec7d19deffc27735c70d248367\\node_modules\\electron\\dist\\electron.exe",
+        "role":  "tray",
+        "normalizedCreationMatches":  true,
+        "commandLine":  "\"C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qprb-6656250d\\releases\\release-3571246407dbd8692a2ce44645a4dd4776fc08ec7d19deffc27735c70d248367\\node_modules\\electron\\dist\\electron.exe\" \"C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qprb-6656250d\\releases\\release-3571246407dbd8692a2ce44645a4dd4776fc08ec7d19deffc27735c70d248367\\scripts\\task-entry.cjs\" --role tray --port 7818 --data-dir \"C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qprb-6656250d\\review-data\" --node-exe \"C:\\Program Files\\nodejs\\node.exe\" --no-readers ",
+        "expectedEntry":  "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qprb-6656250d\\releases\\release-3571246407dbd8692a2ce44645a4dd4776fc08ec7d19deffc27735c70d248367\\scripts\\task-entry.cjs",
+        "dataContains":  false,
+        "normalizedExpectedEntry":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qprb-6656250d\\releases\\release-3571246407dbd8692a2ce44645a4dd4776fc08ec7d19deffc27735c70d248367\\scripts\\task-entry.cjs",
+        "expectedData":  "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qprb-6656250d\\review-data",
+        "createdString":  "2026-10-22T07:26:12.0352040Z",
+        "noReadersContains":  true
+    }
+]

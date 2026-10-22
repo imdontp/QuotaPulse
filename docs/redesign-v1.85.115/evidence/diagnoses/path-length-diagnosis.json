@@ -1,0 +1,21 @@
+{
+  "shortFile": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qp115-probe-23286d96\\node_modules\\@fastify\\ajv-compiler\\.github\\dependabot.yml",
+  "deepFile": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.114\\tmp\\release-rollback\\run-11a2b4cf6485489e88a04c2450bd5665\\length-probe-a42d9efac9be463ebd97be5c01443c47\\nested-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\\node_modules\\@fastify\\ajv-compiler\\.github\\dependabot.yml",
+  "dotNet": [
+    {
+      "path": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qp115-probe-23286d96\\node_modules\\@fastify\\ajv-compiler\\.github\\dependabot.yml",
+      "error": null,
+      "success": true,
+      "length": 117
+    },
+    {
+      "path": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.114\\tmp\\release-rollback\\run-11a2b4cf6485489e88a04c2450bd5665\\length-probe-a42d9efac9be463ebd97be5c01443c47\\nested-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\\node_modules\\@fastify\\ajv-compiler\\.github\\dependabot.yml",
+      "error": "System.Management.Automation.MethodInvocationException: Exception calling \"CreateDirectory\" with \"1\" argument(s): \"The specified path, file name, or both are too long. The fully qualified file name must be less than 260 characters, and the directory name must be less than 248 characters.\" ---> System.IO.PathTooLongException: The specified path, file name, or both are too long. The fully qualified file name must be less than 260 characters, and the directory name must be less than 248 characters.\r\n   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)\r\n   at System.IO.Directory.InternalCreateDirectory(String fullPath, String path, Object dirSecurityObj, Boolean checkHost)\r\n   at System.IO.Directory.InternalCreateDirectoryHelper(String path, Boolean checkHost)\r\n   at CallSite.Target(Closure , CallSite , Type , Object )\r\n   --- End of inner exception stack trace ---\r\n   at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)\r\n   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)\r\n   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)\r\n   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)",
+      "success": false,
+      "length": 303
+    }
+  ],
+  "failedFixture": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.114\\tmp\\release-rollback\\run-11a2b4cf6485489e88a04c2450bd5665",
+  "nodeLongWriteEqual": true,
+  "payloadSha256": "fed0703d37709ec385b507e8e826709f94c3d72c8804487f918d16b862a265bb"
+}

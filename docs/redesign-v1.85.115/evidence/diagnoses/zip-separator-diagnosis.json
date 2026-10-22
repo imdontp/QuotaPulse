@@ -1,0 +1,24 @@
+{
+    "installationExists":  false,
+    "backslashStartEntry":  true,
+    "forwardStartEntry":  false,
+    "firstEntries":  [
+                         "LICENSE",
+                         "package.json",
+                         "README-REVIEW.txt",
+                         "review-manifest.json",
+                         "node_modules\\@fastify\\ajv-compiler\\.gitattributes",
+                         "node_modules\\@fastify\\ajv-compiler\\eslint.config.js",
+                         "node_modules\\@fastify\\ajv-compiler\\index.js",
+                         "node_modules\\@fastify\\ajv-compiler\\LICENSE"
+                     ],
+    "verification":  {
+                         "wholeGoalComplete":  false,
+                         "status":  "failed or incomplete actual two-checkout rollback",
+                         "error":  "System.Management.Automation.RuntimeException: Incomplete review archive: scripts/start-review.ps1",
+                         "fixture":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.114\\tmp\\release-rollback\\run-8a97658448674c489928dfe7a22d4721",
+                         "stages":  [
+
+                                    ]
+                     }
+}

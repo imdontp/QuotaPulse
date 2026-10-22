@@ -1,0 +1,315 @@
+{
+  "schemaVersion": {
+    "value": "7"
+  },
+  "meta": [
+    {
+      "key": "schema_version",
+      "value": "7"
+    },
+    {
+      "key": "synthetic_rollback_fixture",
+      "value": "115"
+    }
+  ],
+  "sources": [
+    {
+      "id": 9101,
+      "harness": "codex",
+      "profile": "rollback-synthetic",
+      "root_path": "/synthetic/nonexistent",
+      "display_name": "Rollback fixture",
+      "source_kind": "harness",
+      "account_key": null,
+      "account_provider": null,
+      "account_display_name": null,
+      "account_state": "waiting",
+      "account_state_reason": null,
+      "account_last_success_at": null,
+      "enabled": 0,
+      "detected_at": 0
+    }
+  ],
+  "quotas": [
+    {
+      "id": 9101,
+      "source_id": 9101,
+      "window_kind": "5h",
+      "used_percent": 0,
+      "used_dollars": null,
+      "limit_dollars": null,
+      "resets_at": 4102444800000,
+      "severity": null,
+      "observed_at": 1747489000000,
+      "last_seen_at": 1747489005000,
+      "source_fetched_at": 1747489005000,
+      "origin": "rollback-synthetic"
+    },
+    {
+      "id": 9102,
+      "source_id": 9101,
+      "window_kind": "5h",
+      "used_percent": 83,
+      "used_dollars": null,
+      "limit_dollars": null,
+      "resets_at": 4102444800000,
+      "severity": null,
+      "observed_at": 1747489320000,
+      "last_seen_at": 1747489320050,
+      "source_fetched_at": 1747489320050,
+      "origin": "rollback-synthetic"
+    },
+    {
+      "id": 9103,
+      "source_id": 9101,
+      "window_kind": "monthly",
+      "used_percent": 100,
+      "used_dollars": 0,
+      "limit_dollars": 100,
+      "resets_at": 4102444800000,
+      "severity": null,
+      "observed_at": 1747489320001,
+      "last_seen_at": 1747489320010,
+      "source_fetched_at": 1747489320010,
+      "origin": "rollback-synthetic"
+    },
+    {
+      "id": 9104,
+      "source_id": 9101,
+      "window_kind": "weekly",
+      "used_percent": null,
+      "used_dollars": null,
+      "limit_dollars": null,
+      "resets_at": null,
+      "severity": null,
+      "observed_at": 1747489320002,
+      "last_seen_at": 1747489320002,
+      "source_fetched_at": null,
+      "origin": "rollback-synthetic"
+    }
+  ],
+  "alerts": [
+    {
+      "id": 9101,
+      "kind": "threshold",
+      "source_id": 9101,
+      "owner_key": "source:9101",
+      "window_kind": "5h",
+      "threshold": 80,
+      "used_percent": 83,
+      "resets_at": 4102444800000,
+      "detected_at": 1747489320000,
+      "delivered_at": 1747489320001,
+      "origin": "rollback-synthetic"
+    }
+  ],
+  "cursors": [
+    {
+      "source_id": 9101,
+      "target_key": "synthetic-target",
+      "kind": "fixture",
+      "byte_offset": 123,
+      "file_size": 456,
+      "file_mtime": 1747489320000,
+      "watermark": 1747489320002,
+      "meta": "{\"fixture\":\"rollback-only\"}",
+      "last_ok_at": 1747489320002,
+      "last_error": null,
+      "error_count": 0
+    }
+  ],
+  "rollups": [
+    {
+      "bucket_ts": 1747486800000,
+      "source_id": 9101,
+      "model": "",
+      "project": "",
+      "calls": 1,
+      "input_tokens": 1,
+      "cached_tokens": 0,
+      "cache_write": 0,
+      "output_tokens": 0,
+      "reasoning_tokens": 0,
+      "total_tokens": 1,
+      "cost_usd": 0,
+      "cost_known_calls": 0
+    },
+    {
+      "bucket_ts": 1747486800000,
+      "source_id": 9101,
+      "model": "rollback-priced-model",
+      "project": "",
+      "calls": 2,
+      "input_tokens": 110,
+      "cached_tokens": 40,
+      "cache_write": 10,
+      "output_tokens": 60,
+      "reasoning_tokens": 20,
+      "total_tokens": 220,
+      "cost_usd": 0.124094,
+      "cost_known_calls": 2
+    }
+  ],
+  "sessions": [
+    {
+      "id": 9101,
+      "source_id": 9101,
+      "native_session_id": "rollback-null",
+      "cwd": null,
+      "project": null,
+      "git_branch": null,
+      "agent": null,
+      "model_default": null,
+      "started_at": null,
+      "ended_at": null,
+      "last_seen_at": 1747489320000,
+      "is_subagent": 0,
+      "parent_session_id": null,
+      "native_cost_usd": null,
+      "native_cost_at": null,
+      "native_lines_added": null,
+      "native_lines_removed": null,
+      "native_duration_ms": null
+    },
+    {
+      "id": 9102,
+      "source_id": 9101,
+      "native_session_id": "rollback-empty",
+      "cwd": null,
+      "project": "",
+      "git_branch": null,
+      "agent": null,
+      "model_default": null,
+      "started_at": null,
+      "ended_at": null,
+      "last_seen_at": 1747489320000,
+      "is_subagent": 0,
+      "parent_session_id": null,
+      "native_cost_usd": null,
+      "native_cost_at": null,
+      "native_lines_added": null,
+      "native_lines_removed": null,
+      "native_duration_ms": null
+    }
+  ],
+  "usage": [
+    {
+      "id": 9101,
+      "source_id": 9101,
+      "session_id": 9101,
+      "dedup_key": "rollback-computed",
+      "ts": 1747489320000,
+      "call_count": 1,
+      "model": "rollback-priced-model",
+      "provider": "rollback-provider",
+      "effort": null,
+      "service_tier": null,
+      "context_window": null,
+      "input_tokens": 100,
+      "cached_input_tokens": 40,
+      "cache_write_tokens": 10,
+      "output_tokens": 50,
+      "reasoning_tokens": 20,
+      "total_tokens": 200,
+      "cost_usd": 0.000638,
+      "cost_input_usd": 0.0002,
+      "cost_cached_input_usd": 0.000008,
+      "cost_cache_write_usd": 0.00003,
+      "cost_output_usd": 0.0004,
+      "cost_cache_saving_usd": 0.000072,
+      "price_provider": "rollback-provider",
+      "cost_source": "computed",
+      "duration_ms": null,
+      "request_id": null,
+      "native_msg_id": null
+    },
+    {
+      "id": 9102,
+      "source_id": 9101,
+      "session_id": 9102,
+      "dedup_key": "rollback-native",
+      "ts": 1747489320001,
+      "call_count": 1,
+      "model": "rollback-priced-model",
+      "provider": "rollback-provider",
+      "effort": "",
+      "service_tier": null,
+      "context_window": null,
+      "input_tokens": 10,
+      "cached_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "output_tokens": 10,
+      "reasoning_tokens": 0,
+      "total_tokens": 20,
+      "cost_usd": 0.123456,
+      "cost_input_usd": null,
+      "cost_cached_input_usd": null,
+      "cost_cache_write_usd": null,
+      "cost_output_usd": null,
+      "cost_cache_saving_usd": null,
+      "price_provider": null,
+      "cost_source": "native",
+      "duration_ms": null,
+      "request_id": null,
+      "native_msg_id": null
+    },
+    {
+      "id": 9103,
+      "source_id": 9101,
+      "session_id": null,
+      "dedup_key": "rollback-unknown",
+      "ts": 1747489320002,
+      "call_count": 1,
+      "model": null,
+      "provider": null,
+      "effort": "high",
+      "service_tier": null,
+      "context_window": null,
+      "input_tokens": 1,
+      "cached_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "output_tokens": 0,
+      "reasoning_tokens": 0,
+      "total_tokens": 1,
+      "cost_usd": null,
+      "cost_input_usd": null,
+      "cost_cached_input_usd": null,
+      "cost_cache_write_usd": null,
+      "cost_output_usd": null,
+      "cost_cache_saving_usd": null,
+      "price_provider": null,
+      "cost_source": "unknown",
+      "duration_ms": null,
+      "request_id": null,
+      "native_msg_id": null
+    }
+  ],
+  "price": [
+    {
+      "model": "rollback-priced-model",
+      "provider": "rollback-provider",
+      "input_per_1m": 17,
+      "cached_input_per_1m": 2,
+      "cache_write_per_1m": 25,
+      "output_per_1m": 31,
+      "context_window": null,
+      "origin": "synthetic-rollback-only",
+      "updated_at": 1
+    }
+  ],
+  "settings": {
+    "pet_enabled": 0,
+    "tray_animation_enabled": 0,
+    "hidden_subscriptions": "[\"rollback-hidden-owner\"]"
+  },
+  "notifications": {
+    "enabled": 0,
+    "snooze_until": 4102444800000,
+    "quiet_start": 1320,
+    "quiet_end": 420
+  },
+  "windowSize": {
+    "width": 1371,
+    "height": 887
+  }
+}
