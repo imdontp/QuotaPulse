@@ -1152,11 +1152,11 @@ async function checkChartAccess(page: Page, destination: 'live' | 'projects', la
   const points = await page.locator('.qp-project-trend>circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), tokens: Number(element.getAttribute('data-value')), cy: Number(element.getAttribute('cy')) })));
   assert.deepEqual(points.map(({ at, tokens }) => ({ at, tokens })), expected);
   points.forEach((point, index) => assert.ok(Math.abs(point.cy - (94 - 88 * expected[index].tokens / (maximum || 1))) < 0.0001, 'Project line point is not proportional to the API value'));
-  const axisValues = await page.locator('.qp-project-trend-y>span').evaluateAll(elements => elements.map(element => ({ value: Number(element.getAttribute('data-axis-value')), label: element.textContent })));
+  const axisValues = await page.locator('.qp-project-trend-axes .qp-trend-y>span').evaluateAll(elements => elements.map(element => ({ value: Number(element.getAttribute('data-axis-value')), label: element.textContent })));
   assert.deepEqual(axisValues.map(tick => tick.value), [maximum, maximum * .75, maximum * .5, maximum * .25, 0]);
   const axisNumber = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 });
   for (const tick of axisValues) assert.equal(tick.label, axisNumber.format(tick.value));
-  const axisDates = await page.locator('.qp-project-trend-x>time').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-axis-at')), index: Number(element.getAttribute('data-axis-index')), iso: element.getAttribute('datetime'), title: element.getAttribute('title') })));
+  const axisDates = await page.locator('.qp-project-trend-axes .qp-trend-x>time').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-axis-at')), index: Number(element.getAttribute('data-axis-index')), iso: element.getAttribute('datetime'), title: element.getAttribute('title') })));
   assert.equal(axisDates.length, 5);
   assert.equal(axisDates[0].at, expected[0].at); assert.equal(axisDates.at(-1)!.at, expected.at(-1)!.at);
   for (const tick of axisDates) {
@@ -1315,6 +1315,14 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
       assert.deepEqual(points.map(point => point.at), starts);
       assert.deepEqual(points.map(point => point.value), values);
       points.forEach((point, index) => assert.ok(Math.abs(point.cy - (94 - 88 * values[index] / (maximum || 1))) < 0.0001));
+      const axisValues = await page.locator('.qp-model-trend-axes .qp-trend-y>span').evaluateAll(elements => elements.map(element => ({ value: Number(element.getAttribute('data-axis-value')), text: element.textContent })));
+      assert.deepEqual(axisValues.map(tick => tick.value), maximum > 0 ? [maximum, maximum * .75, maximum * .5, maximum * .25, 0] : [0]);
+      const compact = new Intl.NumberFormat(locale, { notation: 'compact', maximumFractionDigits: 1 });
+      for (const tick of axisValues) assert.equal(tick.text, compact.format(tick.value));
+      const axisDates = await page.locator('.qp-model-trend-axes .qp-trend-x>time').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-axis-at')), index: Number(element.getAttribute('data-axis-index')), iso: element.getAttribute('datetime') })));
+      assert.equal(axisDates.length, Math.min(3, starts.length));
+      assert.equal(axisDates[0].at, starts[0]); assert.equal(axisDates.at(-1)!.at, starts.at(-1));
+      for (const tick of axisDates) { assert.equal(tick.at, starts[tick.index]); assert.equal(tick.iso, new Date(tick.at).toISOString()); }
       const header = await disclosure.locator('th').nth(1).textContent();
       assert.equal(header, lang === 'th' ? (calls ? 'คำขอ' : 'โทเค็นที่บันทึก') : (calls ? 'Calls' : 'Recorded tokens'));
     } else {

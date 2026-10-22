@@ -13,7 +13,7 @@ import { RedesignShell } from './shell';
 import { HarnessIcon } from '@/components/harness-icon';
 import { VendorIcon } from '@/components/vendor-icon';
 import { ObservedTrend } from './observed-trend';
-import { ProjectTrend } from './project-trend';
+import { ObservedTrendAxes } from './observed-trend-axes';
 import { ChartData } from './chart-data';
 import { readScope, selectedScope, writeScope, type ScopeSelection, type ScopeRange } from './scope';
 import { ScopeNotice } from './scope-notice';
@@ -262,7 +262,7 @@ export function ProductionProjects() {
           <div className="qp-project-money"><div><small>{t('redesign.reported')}</small><strong>{selected.native_calls > 0 ? <CostValue amount={selected.reported_native_usd} priced={selected.native_calls} total={selected.calls} money={money} t={t}/> : t('redesign.projectCostNotReported')}</strong></div><div><small>{t('redesign.value')}</small><strong>{selected.computed_calls + selected.estimated_calls > 0 ? <CostValue amount={selected.api_value_usd} priced={selected.computed_calls + selected.estimated_calls} total={selected.calls} money={money} t={t}/> : t('redesign.projectValueUnavailable')}</strong></div></div>
           <section className="qp-project-trend-panel" aria-label={t('redesign.projectTrend')}>
           <h3>{t('redesign.projectTrend')}</h3>
-          {detail ? detail.points.length ? <><ProjectTrend points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} bucketMs={detail.bucketMs} language={lang} label={`${t('redesign.projectTrend')}: ${t('redesign.tokens')} 0 – ${number(trendMaximum)}`}/><ChartData title={t('redesign.projectTrend')} points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} language={lang} t={t}/></>
+          {detail ? detail.points.length ? <><ObservedTrendAxes className="qp-project-trend" points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} bucketMs={detail.bucketMs} language={lang} label={`${t('redesign.projectTrend')}: ${t('redesign.tokens')} 0 – ${number(trendMaximum)}`}/><ChartData title={t('redesign.projectTrend')} points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} language={lang} t={t}/></>
             : <p>{t('redesign.projectNoTrend')}</p> : <InitialRegion id="project-trend" label={t('redesign.projectTrend')} state={detailState} className="qp-project-initial-trend" status slots={3}/>}
           {(selected.unknown_calls > 0 || selected.estimated_calls > 0) && <p className="qp-footnote">{number(selected.unknown_calls)} {t('redesign.projectUnpriced')} · {number(selected.estimated_calls)} {t('redesign.projectEstimated')}</p>}
           </section>

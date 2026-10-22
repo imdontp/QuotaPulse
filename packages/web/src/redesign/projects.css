@@ -453,18 +453,6 @@
 .qp-project-initial-trend { min-height:115px; }
 .qp-project-initial-tab { min-height:200px; }
 
-/* Axis values and dates share the recorded plot's real bucket positions. */
-.qp-project-trend-axes { display:grid; grid-template-columns:44px minmax(0,1fr); grid-template-rows:auto 22px; min-width:0; }
-.qp-project-trend-y { position:relative; grid-column:1; grid-row:1; min-width:0; color:var(--qp-muted); font-size:9px; }
-.qp-project-trend-y>span { position:absolute; right:7px; transform:translateY(-50%); white-space:nowrap; }
-.qp-project-trend-axes>.qp-project-trend { grid-column:2; grid-row:1; }
-.qp-project-trend-x { position:relative; grid-column:2; grid-row:2; min-width:0; color:var(--qp-muted); font-size:9px; }
-.qp-project-trend-x>time { position:absolute; top:3px; transform:translateX(-50%); white-space:nowrap; }
-.qp-project-trend-x>time[data-edge=first] { transform:none; }
-.qp-project-trend-x>time[data-edge=last] { transform:translateX(-100%); }
-@media(max-width:620px) {
-  .qp-project-trend-x>time:not([data-edge]) { display:none; }
-}
 @media(min-width:1280px) {
   .qp-project-trend-panel { position:relative; }
   .qp-project-trend-panel h3 { padding-right:145px; }

@@ -1,0 +1,22 @@
+{
+  "checkpoint": "v1.85.118",
+  "productionIndexSha256": "7fd17908ed839a482165537ddb90a70ed08e979e52092d905a765af7783c23cc",
+  "routes": [
+    {
+      "route": "models",
+      "reference": "../redesign-v1.85.69/refs/models.png",
+      "before": "images/models-before.png",
+      "after": "images/models.png",
+      "beforeAfterIdentical": false
+    },
+    {
+      "route": "projects",
+      "reference": "../redesign-v1.85.69/refs/projects.png",
+      "before": "images/projects-before.png",
+      "after": "images/projects-before.png",
+      "beforeAfterIdentical": true
+    }
+  ],
+  "modelsGate": "RED: repeatability; four first-pass functional sets completed",
+  "scope": "Factual Models axes; Projects shared-component preservation; not whole-design acceptance"
+}

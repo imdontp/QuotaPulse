@@ -75,6 +75,18 @@
 .qp-model-detail li strong { font-size:11px; }
 .qp-model-trend { height:110px; display:flex; align-items:end; gap:3px; padding:8px 0; border-bottom:1px solid var(--qp-border); }
 .qp-model-trend span { flex:1; min-width:2px; border-radius:3px 3px 0 0; background:linear-gradient(var(--qp-accent),#615ad9); }
+.qp-model-trend-axes { --qp-trend-axis-width:30px; }
+.qp-model-trend-axes .qp-trend-y>span { right:5px; font-size:8px; }
+.qp-model-trend-axes>.qp-model-trend { padding:0; border-bottom:0; }
+@media(min-width:1280px) {
+  .qp-model-detail>.qp-model-trend-panel { position:relative; min-height:192px; align-content:start; }
+  .qp-model-trend-panel h2 { padding-right:135px; }
+  .qp-model-trend-panel .qp-model-trend-axes { margin-top:12px; }
+  .qp-model-trend-panel .qp-model-trend { height:100px; }
+  .qp-model-trend-panel .qp-chart-scale { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  .qp-model-trend-panel .qp-chart-data:not([open]) { position:absolute; top:10px; right:12px; }
+  .qp-model-trend-panel .qp-chart-access:has(.qp-chart-data:not([open])) { height:0; }
+}
 .qp-model-detail dl { display:grid; grid-template-columns:minmax(110px,1fr) minmax(0,1fr); gap:7px; margin:0; font-size:11px; }
 .qp-model-detail dt { color:var(--qp-muted); }
 .qp-model-detail dd { margin:0; overflow-wrap:anywhere; }
@@ -198,7 +210,7 @@
   [data-testid=production-models] .qp-model-detail { min-height:858px; align-content:start; }
   [data-testid=production-models] .qp-model-detail::before { bottom:-1px; }
   [data-testid=production-models] .qp-model-detail>.qp-model-distribution { margin-block-start:-5px; margin-block-end:1px; }
-  [data-testid=production-models] .qp-model-detail>.qp-panel:has(>.qp-model-trend) { row-gap:4px; padding-bottom:9px; }
+  [data-testid=production-models] .qp-model-detail>.qp-model-trend-panel { row-gap:4px; padding-bottom:9px; }
 }
 
 /* Reference comparison headers retain body sizing and factual columns. */
