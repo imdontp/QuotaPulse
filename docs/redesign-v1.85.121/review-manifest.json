@@ -1,0 +1,435 @@
+{
+  "checkpoint": "v1.85.121",
+  "productSource": "v1.85.120",
+  "sourceCommit": "67df80bc7687039e46af714f4206c2b1898aa507",
+  "productionIndexSha256": "2bbbad3034eabc907b040a7cb78054832ab81b577cf5fe44fa234f2a682826bd",
+  "zipStatus": "verified all3156 entries; five standalone-copy smoke checks pass",
+  "archive": {
+    "bytes": 206481595,
+    "allEntryBytesMatch": true,
+    "archive": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.120\\tmp\\review-bundles\\QuotaPulse-v1.85.120-review121.zip",
+    "sha256": "8fef215787427a180f2439b5fdcb1257fb3df1385dae9948daeebca580330501",
+    "entries": 3156,
+    "sourceCommit": "67df80bc7687039e46af714f4206c2b1898aa507",
+    "productionIndexSha256": "2bbbad3034eabc907b040a7cb78054832ab81b577cf5fe44fa234f2a682826bd"
+  },
+  "captures": [
+    {
+      "phase": "initial",
+      "route": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "9ddc1073f018ad424782861fe6a1de379fe1815b55ae7425ce8159e87e584232",
+      "path": "images/initial-overview.png",
+      "reference": "../redesign-v1.85.69/refs/overview.png"
+    },
+    {
+      "phase": "initial",
+      "route": "live",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "5a167f8afb5815d0979b91025b24b02a1b0e194b5d77721d0102b4c00af7928e",
+      "path": "images/initial-live.png",
+      "reference": "../redesign-v1.85.69/refs/live.png"
+    },
+    {
+      "phase": "initial",
+      "route": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "35ae5e229ecb44d43782c959450d7d9131715b47081d7816619d1107e99dcf4d",
+      "path": "images/initial-projects.png",
+      "reference": "../redesign-v1.85.69/refs/projects.png"
+    },
+    {
+      "phase": "initial",
+      "route": "models",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "ba908928e1a89e9a70c2fd2e6c59bc9bbdb6abf874a7897d19005d6e9f4dacf6",
+      "path": "images/initial-models.png",
+      "reference": "../redesign-v1.85.69/refs/models.png"
+    },
+    {
+      "phase": "initial",
+      "route": "history",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "9be767c85e7d524ae12f08610777315e45532927df12b8894dd524523444fb66",
+      "path": "images/initial-history.png",
+      "reference": "../redesign-v1.85.69/refs/history.png"
+    },
+    {
+      "phase": "initial",
+      "route": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "d9b710b5b8da74848fbb1a44c9d861d502531575fd54f001289c3af35780ca26",
+      "path": "images/initial-alerts.png",
+      "reference": "../redesign-v1.85.69/refs/alerts.png"
+    },
+    {
+      "phase": "initial",
+      "route": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "09f68e2128ad679cb00ebb0d6cf510edee9fb990a83ab40826c8d9ee29a34457",
+      "path": "images/initial-providers.png",
+      "reference": "../redesign-v1.85.69/refs/providers.png"
+    },
+    {
+      "phase": "initial",
+      "route": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "e641f8da11184acbde8fc9faa11028aec735dfa4766cc7ad9100728fc507a9af",
+      "path": "images/initial-cost.png",
+      "reference": "../redesign-v1.85.69/refs/cost.png"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "overview",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "89602d816464275ee944796e14e46eba8edd131ef85d2e8eb0cfb7984a24ab50",
+      "path": "images/restored-th-light-overview.png",
+      "reference": "../redesign-v1.85.69/refs/overview.png"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "live",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "315f94d17202215d3de078ad0897c74063b77952c7d4dd4774b150976b10dc70",
+      "path": "images/restored-th-light-live.png",
+      "reference": "../redesign-v1.85.69/refs/live.png"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "projects",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "4fff9beb4e5f4e79400cd5c013d7780c48fd0b39e5889a4cfc13b28cf6e95a27",
+      "path": "images/restored-th-light-projects.png",
+      "reference": "../redesign-v1.85.69/refs/projects.png"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "models",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "0a0893d7a16c56e65c6a9802f3ab0416c47432594e951a9bee7891bcd1b79325",
+      "path": "images/restored-th-light-models.png",
+      "reference": "../redesign-v1.85.69/refs/models.png"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "history",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "439e7366a09ad0369deabe732cf04b7aaeffd6d92471e735742184244d88243b",
+      "path": "images/restored-th-light-history.png",
+      "reference": "../redesign-v1.85.69/refs/history.png"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "b1571265530a214247a52ee3c48aed9aa7951f5702126e24c9d9af13d827ed61",
+      "path": "images/restored-th-light-alerts.png",
+      "reference": "../redesign-v1.85.69/refs/alerts.png"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "providers",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "d8e2a2a35e1a196c8889fec06704e88a30cb3aa396596f0e36f4b69cdcf97d54",
+      "path": "images/restored-th-light-providers.png",
+      "reference": "../redesign-v1.85.69/refs/providers.png"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "cost",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "30029483a867d8fb841ecd7fb0dea5af5932fceab134a91b102c1ff3d9aaf44b",
+      "path": "images/restored-th-light-cost.png",
+      "reference": "../redesign-v1.85.69/refs/cost.png"
+    }
+  ],
+  "scope": "Actual production-main/native/preload/settings evidence; synthetic test DB; differing viewports/data; not visual acceptance"
+}

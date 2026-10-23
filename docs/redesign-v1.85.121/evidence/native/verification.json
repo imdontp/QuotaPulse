@@ -1,0 +1,573 @@
+{
+  "status": "passed",
+  "sourceCommit": "67df80bc7687039e46af714f4206c2b1898aa507",
+  "checkout": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.120",
+  "bundle": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.120\\tmp\\review-bundles\\QuotaPulse-v1.85.120-review121-ByOGuW",
+  "profile": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qpdash-5RB7QM",
+  "output": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review121\\native-e4175b01-f01b-42f1-9663-47360c7e6da9",
+  "productionIndexSha256": "2bbbad3034eabc907b040a7cb78054832ab81b577cf5fe44fa234f2a682826bd",
+  "buildReceiptSha256": "42ce45938fe8651164b1df050b0e8e68927067586aaed83ecb18f269a6ec8ffc",
+  "bundleFiles": 3156,
+  "served": {
+    "assets/index-ID5IfzL6.css": "5866d90e2cdff9c5ba22ca3fc1026f8fd31c12f216fb146efae876cc833730cf",
+    "assets/index-BbWDPDZp.js": "1afad7444a8aa6900222f42ad7a2be0266d184b3507ef4ba56f93dcc0bf48c71",
+    "assets/page-heading-VG1tKrzh.css": "f539d5b4d766840b808ce5ce27c1b6e5965ae8f77f5dce3079294b32066a0cfd",
+    "assets/section-mark-D9p1fSvH.css": "c08b2da031c71509e1e6821b0ac257b65e497676ada243a3be0eb5029ea63def",
+    "assets/live-G-jTMzOM.css": "111fc7d42ba888f9d7700aa2f02962ff2ad6ebe083c80ec580025833fe06defe",
+    "assets/live-ChkrYReI.js": "349ca2e69c3774c8da336be45d3659f6abfb3a549977b9203f5e3b7e1988bfb5",
+    "assets/harness-icon-uu9FBUZ4.js": "d74a80fa392236209c53dae88d4a55aa1fa64d60c8657f1043dd3f2f726bf8d6",
+    "assets/vendor-icon-DuN5E2q2.js": "5d13b9ccbf270d000f81439b50e99bb315b7f70b93c1bc1f812ed6fa8481202d",
+    "assets/page-heading-BRfgMDWa.js": "f28231b3b659c5dd9d4e4d6f587cbcc1ac7802f4d8e6c7bb2507ff0553730f4d",
+    "assets/heading-reference-icon-f10SYcXU.js": "f0eccbdff8dba2659b69a74594893d160300b488e4622a37965435d7797f49bd",
+    "assets/chart-column-Bk3BwG6C.js": "cf796d909b2120ebc75f8a756fb8b5a820c44828b1ae22252186348e03679ec9",
+    "assets/section-mark-Bq5wKAmR.js": "8fd701bc7971ce0369aaa75902036a558b9c5869caef5651b0f39d94058787d0",
+    "assets/bell-ring-CVdbyuyf.js": "e78776c989a4586a91bd03c04091e439c26d6ea3e30433e37ec52129a402c2f5",
+    "assets/live-record-motion-BCtgcRyj.js": "55c9a84b5d1cd5fd643f3e48cdacd1dc4ed4389be1e0779a3cd9261f9d1f276e",
+    "assets/history-motion-CqnqZgZG.js": "dd52a40831a84b82a6575d98d1f5a9d24e8987282c81a294855eba683df062a1",
+    "assets/play-DkfCOW1C.js": "f869b729121ab43158cb553442baefdc79024e0f2b9b45c043a98bd26017a352",
+    "assets/radio-rFDjSw2e.js": "210c4ccff5cc94096ffd2f81cbec5c61f5136f426c9bdffc212f8d3c646c1cd0",
+    "assets/triangle-alert-DQJ0T112.js": "ab7933b34c8a586b1ea9fea5ca07e7ef235653806fd645e35fb7cfb9dd12d735",
+    "assets/info-CEa_pQG7.js": "b8282fdc703844ab753f810e0f6e5ffb1c2636e3721f10adfc0e94700ad2f813",
+    "assets/circle-question-mark-DpyC-Y1t.js": "a834ae7f6139fb965ef484aa832420a13bc6598df59326275ae1f58a5d72ce88",
+    "assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "assets/geist-mono-latin-wght-normal-XN7g48iV.woff2": "684ad5b531f81d43c1e8c7038262d5db7cdc1f68006e04d6c7769efa8d33c8cc",
+    "fonts/noto-sans-thai/NotoSansThai-variable.ttf": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+    "assets/chart-data-AgyWygLH.css": "e4bacbb935d7cb79ba192d904186580e342bac9586e2b92f70f5de17f6133231",
+    "assets/quota-chart-D8HC5jl7.css": "8cd814f625d04da0c30f19ad2c4b4882916d37af0106f42353050e44c1b78236",
+    "assets/production-I1A5b9Te.css": "b6aa22b50ae99221c5da7dd0528008019a979b8b4fab94ebdddcb410b36066bd",
+    "assets/production-DMwEJ2ro.js": "a3c350bf76b9962aa62432ffe62dd000091ea182dacd2f587037ae0348e388af",
+    "assets/chart-data-D_QswCja.js": "48f9f24d49c30995854982df1b4b9b7c86554071874e06af888293a6bf2590bb",
+    "assets/quota-chart-DaYEtyoQ.js": "7a1db55be620f9c049521a450441a0daa5362dcb3277fc5427cd6319631b3691",
+    "assets/format-DKL_KBd9.js": "0dbe1eedfbaa63fbafb790f17434aaae2227f41afbf47f3113ce946af640997d",
+    "assets/flame-BQFXkB1o.js": "28ac7f39927fd246eda76c859858c342838d5e26497a68314aab8ba439238e0d",
+    "assets/coins-DS3vPK09.js": "d7cb716e1f50e26f5c14de52471a94cee3a542f192fd05887b6be7597f999cfc",
+    "assets/database-31iNwYHw.js": "b0b37d8fc894ebaa2cef124ea87830123a1746227e08fc54a8ba2943533cdd06",
+    "assets/trending-up-DIDP0eQQ.js": "9d02b87bca3b8995276260ddc071b1cf66995e1de8e23e1c70b59831da08d0c2",
+    "assets/lightbulb-HpLaXmBa.js": "4e128f40e5fc3d41746ee8d578234a2d4ce7ee862382a6c1c3aa8fa1f1bd5e98",
+    "redesign/pulse-earth-v4.png": "43680a68501609dd2e6b5d21c01495d7c5b239f9d92655c33f47625238597bf2",
+    "assets/projects-uDS4te71.js": "1bde162f53508479fa638da4e57f9b4b6c4e77b683a7c9220bf27d6358fb5d17",
+    "assets/model-selection-motion-BjrRkmbl.js": "831bfaba615893067bf6c4d9b11aca0f8c781d25275acd3f6a076c3473b6b6f9",
+    "assets/project-selection-motion-TyKKno8w.js": "2ff96ef26e87cb5437d614fa07e9d82b7ce05f0c2b505a5a79e304545647823a",
+    "assets/scope-notice-BVbsS0eW.js": "7a816a7496c71fb9f005ff42417b65cc394e5a899d9b767a0b6999fd36a1ff85",
+    "assets/scope-notice-SMVc0RpX.css": "07b85b64ca507753859209dec03dfb47ed3c8d40f0ac14d94e75de2cfdb33c94",
+    "assets/chart-data-C5fr8EuL.css": "f555f8ce00d6767ca3fa8359627caadb648d3a7fd99bfc3e1b801098ebe84927",
+    "assets/projects-Cw7OQDQr.css": "c3da7b3fc4806d63bcb90280ae4b9f54ed0bcd203859f362115b955547f4db0d",
+    "assets/chart-data-DYC3B_dH.js": "2ba597acd9db01d86b59e14aa8b4a4cc21fc2b9bb5792361ef0cdbe6fc304467",
+    "assets/models-Dn75aYor.css": "9d2f372780a68d1ec38395adce098be4ed704a1b7591fb38aa4f7601112e8c39",
+    "assets/effort-pagination-D2_RMcQ8.js": "ac8fd2587851064cd3f31186aca92cdefec51a51b20c407d7cb6791841467971",
+    "assets/models-BrDly0cq.js": "7d7fbae9c2701568f6b25ce1e3ec9b9e2d07644b74b88280bf9fb9edd24bdfe9",
+    "assets/model-row-trends-C7SO78lQ.js": "71ed8844f447dee6aa5390ca9471f4b64f29d33ccd1da8c1066edc54c431cca5",
+    "assets/utility-pages-iin58nN3.js": "8228ada8c64867c101f1117f71f51455dde0c4d15b8da71754efb980ac4d12c6",
+    "assets/settings-Dt0_hMXR.css": "689405cfd95a8741c9c6a2680e13d0543531e83e9b793d4832095a03bfbd2a2f",
+    "assets/utility-pages-rQmk3yrA.css": "08e4afaf80b63623c64fa9a26d02e18ec4c4789673bed5e3139bf03ff5d40028",
+    "assets/settings-BHSTgoYm.js": "66e586198e3976c5630d0ceaf930059eaa60530c350d358b1855440a47bcecf3",
+    "assets/shield-check-C3ulqbtc.js": "4c9f1de74a356d0d49bc8b6520a1e5284a15ad6b9f807cee2c327b4168dcc4b2",
+    "assets/alerts-DSC4Zke2.js": "221ce95b365dd0f545847511f122940d35787132c243ab5c93a009c8f4c5a742",
+    "assets/gauge-DV6RRtlD.js": "4f8fef8c8212df0a9ec1f6e570ad61df39b915c8ba73341a61e2b282bef02e10",
+    "assets/alerts-CiIA_Vqb.css": "17aa4daa7389bf1d3c7b290880c69ff1cf3ca9b335ee0dd4a69542ec434946cc",
+    "assets/providers-B8fG0saE.js": "ab7119ecc72d10af705baffebe407b4faffb5f0944c69d9c6adfe2b5c997c7f1",
+    "assets/providers-CPoaJP8z.css": "ac5ff3927a7c917fdf835df4ef2314cd83b31a5c0be4c49747fc989de9b77ae3",
+    "assets/cost-CWEq4KEC.js": "4986f981fad630192303f94c48b121ce2621af9f5b6d700402cc3e3749c595fc",
+    "assets/wallet-KwIQkL3X.js": "7de4709742dabd8e9c6aea60e0f9e8d5172c7065671010772d6beb171472f708",
+    "assets/cost-BbsZjBh4.css": "577e77241de10616cbb5be9f5be060332db6cb74f4aeccc1c478dfa5fea33528"
+  },
+  "captures": [
+    {
+      "phase": "initial",
+      "route": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "9ddc1073f018ad424782861fe6a1de379fe1815b55ae7425ce8159e87e584232"
+    },
+    {
+      "phase": "initial",
+      "route": "live",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "5a167f8afb5815d0979b91025b24b02a1b0e194b5d77721d0102b4c00af7928e"
+    },
+    {
+      "phase": "initial",
+      "route": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "35ae5e229ecb44d43782c959450d7d9131715b47081d7816619d1107e99dcf4d"
+    },
+    {
+      "phase": "initial",
+      "route": "models",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "ba908928e1a89e9a70c2fd2e6c59bc9bbdb6abf874a7897d19005d6e9f4dacf6"
+    },
+    {
+      "phase": "initial",
+      "route": "history",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "9be767c85e7d524ae12f08610777315e45532927df12b8894dd524523444fb66"
+    },
+    {
+      "phase": "initial",
+      "route": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "d9b710b5b8da74848fbb1a44c9d861d502531575fd54f001289c3af35780ca26"
+    },
+    {
+      "phase": "initial",
+      "route": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "09f68e2128ad679cb00ebb0d6cf510edee9fb990a83ab40826c8d9ee29a34457"
+    },
+    {
+      "phase": "initial",
+      "route": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "e641f8da11184acbde8fc9faa11028aec735dfa4766cc7ad9100728fc507a9af"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "overview",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "89602d816464275ee944796e14e46eba8edd131ef85d2e8eb0cfb7984a24ab50"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "live",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "315f94d17202215d3de078ad0897c74063b77952c7d4dd4774b150976b10dc70"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "projects",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "4fff9beb4e5f4e79400cd5c013d7780c48fd0b39e5889a4cfc13b28cf6e95a27"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "models",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "0a0893d7a16c56e65c6a9802f3ab0416c47432594e951a9bee7891bcd1b79325"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "history",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "439e7366a09ad0369deabe732cf04b7aaeffd6d92471e735742184244d88243b"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "b1571265530a214247a52ee3c48aed9aa7951f5702126e24c9d9af13d827ed61"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "providers",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "d8e2a2a35e1a196c8889fec06704e88a30cb3aa396596f0e36f4b69cdcf97d54"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "cost",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "30029483a867d8fb841ecd7fb0dea5af5932fceab134a91b102c1ff3d9aaf44b"
+    }
+  ],
+  "cycles": [
+    {
+      "pid": 38508,
+      "id": 1,
+      "userData": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qpdash-5RB7QM\\data\\electron",
+      "sessionData": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qpdash-5RB7QM\\data\\electron",
+      "preferences": {
+        "allowRunningInsecureContent": false,
+        "contextIsolation": true,
+        "disableDialogs": false,
+        "disablePopups": false,
+        "enableBlinkFeatures": "",
+        "experimentalFeatures": false,
+        "javascript": true,
+        "nodeIntegration": false,
+        "nodeIntegrationInSubFrames": false,
+        "nodeIntegrationInWorker": false,
+        "safeDialogs": false,
+        "safeDialogsMessage": "",
+        "sandbox": true,
+        "webSecurity": true,
+        "webviewTag": false
+      },
+      "evidence": {
+        "ready": [
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          },
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          }
+        ],
+        "shown": [
+          1,
+          1
+        ],
+        "preloadErrors": [],
+        "placementErrors": []
+      },
+      "loadedPreload": {
+        "url": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.120\\tmp\\review-bundles\\QuotaPulse-v1.85.120-review121-ByOGuW\\packages\\tray\\dist-preload\\dashboard-preload.js",
+        "scriptSourceSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "compiledPreloadSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "exactCompiledSourceContained": true
+      }
+    },
+    {
+      "pid": 8572,
+      "id": 1,
+      "userData": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qpdash-5RB7QM\\data\\electron",
+      "sessionData": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qpdash-5RB7QM\\data\\electron",
+      "preferences": {
+        "allowRunningInsecureContent": false,
+        "contextIsolation": true,
+        "disableDialogs": false,
+        "disablePopups": false,
+        "enableBlinkFeatures": "",
+        "experimentalFeatures": false,
+        "javascript": true,
+        "nodeIntegration": false,
+        "nodeIntegrationInSubFrames": false,
+        "nodeIntegrationInWorker": false,
+        "safeDialogs": false,
+        "safeDialogsMessage": "",
+        "sandbox": true,
+        "webSecurity": true,
+        "webviewTag": false
+      },
+      "evidence": {
+        "ready": [
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          },
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          }
+        ],
+        "shown": [
+          1,
+          1
+        ],
+        "preloadErrors": [],
+        "placementErrors": []
+      },
+      "loadedPreload": {
+        "url": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.120\\tmp\\review-bundles\\QuotaPulse-v1.85.120-review121-ByOGuW\\packages\\tray\\dist-preload\\dashboard-preload.js",
+        "scriptSourceSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "compiledPreloadSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "exactCompiledSourceContained": true
+      }
+    }
+  ],
+  "errors": [],
+  "forbidden": [],
+  "writes": [],
+  "cleanup": [],
+  "daemonStopped": true,
+  "daemonExit": {
+    "pid": 15516,
+    "exitCode": null,
+    "signalCode": "SIGTERM"
+  },
+  "limitations": [
+    "actual production windows placed beyond all displays, nonfocusable and absent from taskbar; anti-occlusion flags/background-throttling override and reduced motion are test-only",
+    "initial content resized by test to1672x941; restored native size1371x887 tested through real Settings/preload/main",
+    "same-version Electron restart with explicit storage flush; no installer or two-version upgrade exercised here",
+    "two native language/theme combinations; not complete four-combination matrix",
+    "synthetic owned DB only; readers/account probes disabled; no physical tray-click/minimize/monitor or resource proof"
+  ]
+}
