@@ -53,12 +53,15 @@ export async function checkHistoryTimeline(page, getSummary) {
     await page.keyboard.press('ArrowRight'); await inspect(Math.min(1, expected.length - 1));
     await page.keyboard.press('ArrowLeft'); await inspect(0);
     await page.keyboard.press('Escape'); assert.equal(await tooltip.count(), 0);
+    await svg.evaluate(node => node.blur());
     const index = Math.floor(expected.length / 2);
     const point = await svg.locator(':scope > g[data-bucket-at]').nth(index).locator('circle').first().evaluate(node => ({
       x: Number(node.getAttribute('cx')), width: node.ownerSVGElement.viewBox.baseVal.width,
     }));
     await page.mouse.move(bounds.x + point.x / point.width * bounds.width, bounds.y + bounds.height / 2);
     await inspect(index);
+    await page.mouse.click(bounds.x + point.x / point.width * bounds.width, bounds.y + bounds.height / 2);
+    assert.equal(Number(await tooltip.getAttribute('data-bucket-at')), expected[index].at, 'Click focus retains the hovered bucket');
     await page.mouse.move(0, 0); assert.equal(await tooltip.count(), 0, 'Pointer exit dismisses tooltip');
     await page.keyboard.press('Home'); await inspect(0);
     results.push({ range: rangeValue, buckets: expected.length, ticks: ticks.length, keyboard: true, pointer: true, apiFacts: true, contained: true });

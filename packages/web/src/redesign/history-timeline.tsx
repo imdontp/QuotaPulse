@@ -78,7 +78,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
     </div>
     <div className="qp-history-legend"><span>{t('history.inputCombined')}</span><span>{t('col.output')}</span></div>
     <svg ref={chart} viewBox={`0 0 ${width} 144`} preserveAspectRatio="none" role="group" tabIndex={buckets.length ? 0 : -1} aria-label={`${t('history.timeline')}: ${count(totals.tokens)}`} aria-describedby={`${id}-help`}
-      onFocus={() => activate(0, 'keyboard')} onBlur={() => setActive(null)}
+      onFocus={() => activate(current?.index ?? 0, current?.kind ?? 'keyboard')} onBlur={() => setActive(null)}
       onKeyDown={event => {
         if (!['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Escape'].includes(event.key)) return;
         event.preventDefault(); event.stopPropagation();

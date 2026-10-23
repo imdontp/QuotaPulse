@@ -1,0 +1,135 @@
+{
+  "pairs": [
+    {
+      "pair": [
+        "control-0",
+        "control-1"
+      ],
+      "changedPixels": 22,
+      "headerPixels": 0,
+      "maxChannelDelta": 35,
+      "bounds": [
+        29,
+        338,
+        50,
+        353
+      ]
+    },
+    {
+      "pair": [
+        "control-0",
+        "control-2"
+      ],
+      "changedPixels": 24,
+      "headerPixels": 0,
+      "maxChannelDelta": 35,
+      "bounds": [
+        29,
+        338,
+        57,
+        695
+      ]
+    },
+    {
+      "pair": [
+        "control-1",
+        "control-2"
+      ],
+      "changedPixels": 2,
+      "headerPixels": 0,
+      "maxChannelDelta": 2,
+      "bounds": [
+        29,
+        694,
+        57,
+        695
+      ]
+    },
+    {
+      "pair": [
+        "layer-0",
+        "layer-1"
+      ],
+      "changedPixels": 543,
+      "headerPixels": 123,
+      "maxChannelDelta": 222,
+      "bounds": [
+        29,
+        12,
+        1085,
+        695
+      ]
+    },
+    {
+      "pair": [
+        "layer-0",
+        "layer-2"
+      ],
+      "changedPixels": 543,
+      "headerPixels": 123,
+      "maxChannelDelta": 222,
+      "bounds": [
+        29,
+        12,
+        1085,
+        695
+      ]
+    },
+    {
+      "pair": [
+        "layer-1",
+        "layer-2"
+      ],
+      "changedPixels": 0,
+      "headerPixels": 0,
+      "maxChannelDelta": 0,
+      "bounds": null
+    },
+    {
+      "pair": [
+        "control-0",
+        "layer-0"
+      ],
+      "changedPixels": 657,
+      "headerPixels": 217,
+      "maxChannelDelta": 222,
+      "bounds": [
+        29,
+        14,
+        1085,
+        495
+      ]
+    }
+  ],
+  "allHeaderGeometryIdentical": true,
+  "allNonTransformPaintFactsIdentical": true,
+  "transformChanges": [
+    {
+      "name": "layer-0",
+      "classes": "qp-daemon-badge",
+      "before": "none",
+      "after": "matrix(1, 0, 0, 1, 0, 0)"
+    },
+    {
+      "name": "layer-1",
+      "classes": "qp-daemon-badge",
+      "before": "none",
+      "after": "matrix(1, 0, 0, 1, 0, 0)"
+    },
+    {
+      "name": "layer-2",
+      "classes": "qp-daemon-badge",
+      "before": "none",
+      "after": "matrix(1, 0, 0, 1, 0, 0)"
+    }
+  ],
+  "immediateExact": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "index": "2ea9a898618f9351162122cc9f74358efaf84937a7d0d1d6e0430bcd568aa346"
+}
