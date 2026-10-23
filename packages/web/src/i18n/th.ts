@@ -1037,6 +1037,7 @@ export const th: Record<MessageKey, string> = {
   'history.copyFailed': 'คัดลอก metadata ไม่สำเร็จ',
   'history.relatedSession': 'เปิดบันทึกของ session ที่เกี่ยวข้อง',
   'history.timelineNote': 'ทั้งช่วงตามตัวกรอง จัดกลุ่มตามเวลาที่บันทึก การอัปเดตยอดรวมไม่ใช่เวลาของแต่ละ call',
+  'history.timelineHelp': 'ใช้ลูกศรซ้าย/ขวาเพื่อดูยอดในช่วงที่บันทึก Home/End ไปต้น/ท้าย และ Escape เพื่อปิด',
   'history.effortDistribution': 'หมวด effort ที่บันทึก',
   'history.nativeTotal': 'ค่าใช้จ่ายที่ต้นทางรายงาน',
   'history.apiTotal': 'มูลค่า API ที่คำนวณ / ประมาณ',

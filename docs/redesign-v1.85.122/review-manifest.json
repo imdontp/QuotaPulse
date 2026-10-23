@@ -1,0 +1,33 @@
+{
+  "checkpoint": "v1.85.122",
+  "status": "partially validated; original repeatability gate RED",
+  "productionIndexSha256": "2ea9a898618f9351162122cc9f74358efaf84937a7d0d1d6e0430bcd568aa346",
+  "browser": "155.0.8059.80",
+  "nativeChromeCases": 8,
+  "scopesPerCase": 2,
+  "canonicalChangedPixels": 2745,
+  "canonicalOutsideAxisPixels": 0,
+  "functionalFirstPasses": [
+    "en/dark",
+    "en/light",
+    "th/dark",
+    "th/light"
+  ],
+  "repeatFailure": {
+    "changedPixels": 132,
+    "maxChannelDelta": 7,
+    "bounds": [
+      283,
+      12,
+      1017,
+      47
+    ],
+    "chartPixels": 0,
+    "masks": false
+  },
+  "reference": "../redesign-v1.85.69/refs/history.png",
+  "before": "images/before.png",
+  "after": "images/history.png",
+  "desktopBundleUpdated": false,
+  "scope": "History dates and API-backed inspection; no whole-design approval"
+}

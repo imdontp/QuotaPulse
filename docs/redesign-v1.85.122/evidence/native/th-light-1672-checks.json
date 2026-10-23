@@ -1,0 +1,25 @@
+{
+  "variant": "th-light-1672",
+  "checks": [
+    {
+      "range": "last30",
+      "buckets": 30,
+      "ticks": 9,
+      "keyboard": true,
+      "pointer": true,
+      "apiFacts": true,
+      "contained": true
+    },
+    {
+      "range": "today",
+      "buckets": 21,
+      "ticks": 5,
+      "keyboard": true,
+      "pointer": true,
+      "apiFacts": true,
+      "contained": true
+    }
+  ],
+  "errors": [],
+  "forbidden": []
+}

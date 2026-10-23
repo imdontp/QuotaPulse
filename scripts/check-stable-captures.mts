@@ -25,6 +25,7 @@ import { checkLiveMinuteRefresh } from './check-live-minute-refresh.mjs';
 import { checkLiveTokenFlow } from './check-live-token-flow.mjs';
 import { checkSectionMarks } from './check-section-marks.mjs';
 import { installBrowserFixedDate } from './browser-fixed-date.mjs';
+import { checkHistoryTimeline } from './check-history-timeline.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
@@ -692,22 +693,21 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
 async function checkHistoryDetails(page: Page, lang: string, theme: string, pass: number, pending: Set<Request>) {
   const history = page.getByTestId('usage-history');
   const trigger = history.locator('tbody tr').first().getByRole('button');
-  const detailDialog = page.locator('dialog[aria-labelledby=history-detail-title]');
-  let eventId: number;
-  if (await detailDialog.evaluate(element => (element as HTMLDialogElement).open)) {
-    const selected = history.locator('tr[data-selected=true] button');
+  if (await page.locator('[data-history-detail-rail]').count()) {
     assert.equal(await history.locator('tr[data-selected=true]').count(), 1, 'History opens with one recorded event selected');
-    eventId = Number((await selected.innerText()).slice(1));
-  } else {
-    eventId = Number((await trigger.innerText()).slice(1));
-    await trigger.focus(); await page.keyboard.press('Enter');
   }
+  // Explicit user selection establishes the return target; initial auto-selection
+  // legitimately returns to the table rather than an unopened record button.
+  const eventId = Number((await trigger.innerText()).slice(1));
+  await trigger.focus(); await page.keyboard.press('Enter');
   const response = await daemon.inject({ method: 'GET', url: `/api/usage-events?from=0&to=${fixedNow}&limit=50`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(response.statusCode, 200);
   const row = response.json().rows.find((row: { event_id: number }) => row.event_id === eventId);
   assert.ok(row);
-  const dialog = page.getByRole('dialog'); await dialog.waitFor();
-  assert.equal(await dialog.evaluate(element => element.matches(':modal')), true);
+  const dialog = page.locator('[data-history-detail-rail]'); await dialog.waitFor();
+  assert.equal(await history.locator('dialog').count(), 0, 'Redesign details use a nonmodal aside');
+  assert.equal(await dialog.getAttribute('role'), null);
+  assert.equal(await dialog.evaluate(element => element.tagName), 'ASIDE');
   assert.equal(await history.locator('tr[data-selected=true]').count(), 1);
   assert.equal(await history.locator('tr[data-selected=true] button').innerText(), `#${eventId}`);
   const groups = dialog.locator('.qp-history-detail-groups section'); assert.equal(await groups.count(), 4);
@@ -731,12 +731,12 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
   if (pass === 0) {
     const rail = (await dialog.boundingBox())!;
     const content = (await history.boundingBox())!;
-    const backdrop = await dialog.evaluate(element => getComputedStyle(element, '::backdrop').backgroundColor);
+    const backdrop = await page.locator(':modal').count();
     assert.ok(Math.abs(rail.x - 1374) <= 8, 'History detail rail differs from source desktop position estimate');
     assert.equal(rail.width, 288); assert.equal(rail.y, 60); assert.ok(rail.height <= 867);
     const contentGap = rail.x - content.x - content.width;
     assert.ok(contentGap >= 8 && contentGap <= 16, `History content/detail gap: ${contentGap}`);
-    assert.equal(backdrop, 'rgba(0, 0, 0, 0)', 'Desktop History backdrop dims the reference view');
+    assert.equal(backdrop, 0, 'History must not add a modal backdrop');
     historyRailChecks.push({ lang, theme, ...rail, contentGap, transparentBackdrop: true });
     referenceDetailRegions.push({ page: 'history', lang, theme, regions: await dialog.evaluate(element => Object.fromEntries(['.qp-history-detail-record-meta', '.qp-history-detail-identities', '.qp-history-detail-identity[data-field="2"]', '[data-group="history.tokenBreakdown"]', '[data-group="history.pricingSource"]'].map(selector => {
       const { x, y, width, height, bottom } = element.querySelector(selector)!.getBoundingClientRect();
@@ -750,7 +750,7 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
   await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important;caret-color:transparent!important}' });
   await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
   const screenshot = await page.screenshot({ path: resolve(output, pass === 0 ? filename : `repeat-${filename}`), animations: 'disabled' });
-  if (pass === 0) cases.push({ page: 'history-selected', lang, theme, filename, sha256: sha(screenshot), semanticContrasts: [], checkedElements: ['API-matched recorded metadata', 'native modal', 'selected record'] });
+  if (pass === 0) cases.push({ page: 'history-selected', lang, theme, filename, sha256: sha(screenshot), semanticContrasts: [], checkedElements: ['API-matched recorded metadata', 'nonmodal detail rail', 'selected record'] });
   else {
     const item = cases.find(item => item.filename === filename)!; item.repeatSha256 = sha(screenshot);
     const difference = await comparePixels(page, readFileSync(resolve(output, filename)), screenshot);
@@ -762,9 +762,12 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
       await page.setViewportSize({ width, height: 941 });
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
       assert.equal(await dialog.evaluate(element => element.scrollWidth <= element.clientWidth), true);
-      const box = await dialog.boundingBox(); assert.ok(box && box.x >= 0 && box.x + box.width <= width && box.height <= 941);
-      await dialog.evaluate(element => { element.scrollTop = element.scrollHeight; });
-      const heading = await dialog.locator('.qp-history-detail-heading').boundingBox(); assert.ok(heading && heading.y >= box.y && heading.y + heading.height <= box.y + box.height);
+      const box = await dialog.boundingBox(); assert.ok(box && box.x >= 0 && box.x + box.width <= width);
+      assert.equal(await dialog.evaluate(element => getComputedStyle(element).position), width >= 1280 ? 'fixed' : 'static', 'Detail rail follows its existing 1280px docking breakpoint');
+      await dialog.getByRole('button').first().focus();
+      await page.keyboard.press('Tab');
+      assert.equal(await dialog.getByRole('button').last().evaluate(element => element === document.activeElement), true, 'Keyboard reaches rail metadata action');
+      const action = await dialog.getByRole('button').last().boundingBox(); assert.ok(action && action.y >= 0 && action.y + action.height <= 941, 'Narrow rail actions remain reachable');
     }
     // Stress only the compact text layout after canonical screenshots; this is
     // not an API fixture or a substituted value in production/reference captures.
@@ -777,23 +780,14 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
     } finally {
       await compactToken.evaluate((element, value) => { element.textContent = value; }, originalCompactToken);
     }
-    await dialog.getByRole('button').first().focus();
-    let browserFocusStep = false;
-    for (let index = 0; index < 10; index++) {
-      await page.keyboard.press('Tab');
-      const focus = await dialog.evaluate(element => element.contains(document.activeElement) ? 'dialog' : document.activeElement === document.body ? 'browser' : 'background');
-      assert.notEqual(focus, 'background', 'Modal allowed focus on a background control');
-      assert.ok(!(browserFocusStep && focus === 'browser'), 'Tab did not return from browser chrome to the modal');
-      browserFocusStep = focus === 'browser';
-    }
-    await dialog.getByRole('button').first().focus();
-    await trigger.evaluate(element => element.focus());
-    assert.equal(await dialog.evaluate(element => element.contains(document.activeElement)), true, 'Background control accepted programmatic focus');
+    await trigger.focus();
+    assert.equal(await trigger.evaluate(element => element === document.activeElement), true, 'Nonmodal rail allows focus on background records');
   }
+  await dialog.getByRole('button').first().focus();
   await page.keyboard.press('Escape'); await dialog.waitFor({ state: 'hidden' });
   assert.equal(await trigger.evaluate(element => element === document.activeElement), true);
   assert.equal(await history.locator('tr[data-selected=true]').count(), 0);
-  if (pass === 0) historyChecks.push({ lang, theme, eventId, widths: [390, 900, 1280], modal: true, focusRestored: true });
+  if (pass === 0) historyChecks.push({ lang, theme, eventId, widths: [390, 900, 1280], modal: false, focusRestored: true });
   await page.setViewportSize({ width: 1672, height: 941 }); await page.evaluate(() => window.scrollTo(0, 0));
 }
 async function checkHistoryDensity(page: Page, lang: string, theme: string) {
@@ -848,9 +842,10 @@ async function checkHistoryDensity(page: Page, lang: string, theme: string) {
   await region.focus(); await page.keyboard.press('End'); await page.waitForTimeout(300);
   assert.ok(await region.evaluate(element => element.scrollTop > 0), 'History region did not scroll with keyboard');
   const last = region.locator('tbody tr').last().getByRole('button');
-  await last.focus(); await page.keyboard.press('Enter'); await page.getByRole('dialog').waitFor();
+  await last.focus(); await page.keyboard.press('Enter'); await page.locator('[data-history-detail-rail]').waitFor();
   assert.ok((await page.locator('#history-detail-title').innerText()).includes(await last.innerText()));
-  await page.keyboard.press('Escape'); await page.getByRole('dialog').waitFor({ state: 'hidden' });
+  await page.locator('[data-history-detail-rail]').getByRole('button').first().focus();
+  await page.keyboard.press('Escape'); await page.locator('[data-history-detail-rail]').waitFor({ state: 'hidden' });
   assert.equal(await last.evaluate(element => element === document.activeElement), true);
   await region.evaluate(element => { element.scrollTop = 0; element.scrollLeft = 0; });
   await last.evaluate(element => element.blur()); await page.evaluate(() => scrollTo(0, 0));
@@ -3271,6 +3266,13 @@ try {
           if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkOverviewInsights(page, lang, theme, pending);
           if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkQuotaGroups(page, lang, theme, pending);
           if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') await checkRecentActivity(page, lang, theme, pending);
+          if (pass === 0 && destination === 'history') {
+            await checkHistoryTimeline(page, async scope => {
+              const response = await daemon.inject({ method: 'GET', url: `/api/history-summary?${usageEventParams(scope)}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+              assert.equal(response.statusCode, 200); return response.json();
+            });
+            await settled(page, pending);
+          }
         }
         if (pass === 0 && !pages.some(([destination]) => destination === 'settings')) {
           await page.goto('http://127.0.0.1:7804/?shell-access=settings#settings', { waitUntil: 'domcontentloaded' });
@@ -3285,7 +3287,7 @@ try {
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
   if (referenceDetailRegions.length) writeFileSync(resolve(output, 'reference-detail-regions.json'), JSON.stringify({ evidence: 'measured application regions for source review; not whole-image similarity or acceptance', captures: referenceDetailRegions }, null, 2));
   if (costReferenceRegions.length) writeFileSync(resolve(output, 'cost-reference-layout.json'), JSON.stringify({ source: 'quotapulse_build_blueprint/refs/cost.png', evidence: 'region estimates within 3px, not whole-image similarity or visual acceptance', captures: costReferenceRegions }, null, 2));
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', captureMatrix: { languages: captureLanguages, themes: captureThemes, complete: captureLanguages.length === 2 && captureThemes.length === 2 }, clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 10, maxChangedPixelFraction: 0.00005, masks: false }, captureNormalization: ['CSS transitions disabled and caret hidden before screenshot only', 'Playwright animations disabled during screenshot'], productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, runtimeMapProject: 'QuotaPulse', runtimeMapSessions: 12, runtimeMapRecords: 39, allRangeProjects: 5, allRangeRecords: 43, namedProjects: referenceProjects.length, projectNames: referenceProjects, models: referenceModels.length, modelNames: referenceModels.map(model => model.name), modelShares: referenceModels.map(model => model.share), providers: 4, records: 39, quotaOwners: ['OpenAI Subscription', 'OpenCode Go Subscription'], cacheSharePercent: 42, monthlySelection: 'OpenAI Subscription · monthly' }, checks: ['frozen daemon and browser Date', 'source-matched date on the screenshot clock', 'reference-matched Overview section labels and model rail accessible name', 'reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 2px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, native modal focus trap, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry and keyboard navigation to Models with the same period/source', 'complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, overviewReferenceLabelChecks, overviewConceptDataChecks, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, topModelScopeChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeProjectIdentityChecks, runtimeGeometryChecks, shellChecks, headerChecks, workspaceChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', captureMatrix: { languages: captureLanguages, themes: captureThemes, complete: captureLanguages.length === 2 && captureThemes.length === 2 }, clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 10, maxChangedPixelFraction: 0.00005, masks: false }, captureNormalization: ['CSS transitions disabled and caret hidden before screenshot only', 'Playwright animations disabled during screenshot'], productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, runtimeMapProject: 'QuotaPulse', runtimeMapSessions: 12, runtimeMapRecords: 39, allRangeProjects: 5, allRangeRecords: 43, namedProjects: referenceProjects.length, projectNames: referenceProjects, models: referenceModels.length, modelNames: referenceModels.map(model => model.name), modelShares: referenceModels.map(model => model.share), providers: 4, records: 39, quotaOwners: ['OpenAI Subscription', 'OpenCode Go Subscription'], cacheSharePercent: 42, monthlySelection: 'OpenAI Subscription · monthly' }, checks: ['frozen daemon and browser Date', 'source-matched date on the screenshot clock', 'reference-matched Overview section labels and model rail accessible name', 'reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 2px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, nonmodal detail rail, background focus, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry and keyboard navigation to Models with the same period/source', 'complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, overviewReferenceLabelChecks, overviewConceptDataChecks, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, topModelScopeChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeProjectIdentityChecks, runtimeGeometryChecks, shellChecks, headerChecks, workspaceChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;

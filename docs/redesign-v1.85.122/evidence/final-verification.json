@@ -1,0 +1,146 @@
+{
+  "productionIndexSha256": "2ea9a898618f9351162122cc9f74358efaf84937a7d0d1d6e0430bcd568aa346",
+  "browser": "155.0.8059.80",
+  "language": "en",
+  "theme": "dark",
+  "deviceScaleFactor": 1,
+  "reducedMotion": "reduce",
+  "rendererArgs": [
+    "--disable-gpu",
+    "--deterministic-mode",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "fixture": "same isolated in-memory synthetic fixture as v1.85.95",
+  "scope": "Current compiled application screenshots and geometry; unapproved concept parity",
+  "results": [
+    {
+      "route": "history",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+      "sha256": "122ba65b891145e734010386cf3220dac6b25e02711bb9fd46adc5f30d0abb30",
+      "repeatSha256": "122ba65b891145e734010386cf3220dac6b25e02711bb9fd46adc5f30d0abb30",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 917.5,
+          "top": 60,
+          "right": 1672,
+          "bottom": 977.5,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 444,
+          "width": 201,
+          "height": 305,
+          "top": 444,
+          "right": 213,
+          "bottom": 749,
+          "left": 12
+        },
+        "moreOpen": false,
+        "mainRegions": [
+          {
+            "tag": "DIV",
+            "className": "flex min-w-0 flex-col gap-3.5",
+            "x": 238,
+            "y": 72,
+            "width": 1126,
+            "height": 893.5,
+            "top": 72,
+            "right": 1364,
+            "bottom": 965.5,
+            "left": 238
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "History",
+          "Alerts"
+        ],
+        "headings": [
+          {
+            "text": "History & Logs",
+            "x": 305,
+            "y": 78.046875,
+            "width": 328.421875,
+            "height": 31.5,
+            "top": 78.046875,
+            "right": 633.421875,
+            "bottom": 109.546875,
+            "left": 305,
+            "fontSize": "22.5px",
+            "fontWeight": "450"
+          },
+          {
+            "text": "Usage timeline",
+            "x": 251,
+            "y": 156,
+            "width": 144.265625,
+            "height": 28,
+            "top": 156,
+            "right": 395.265625,
+            "bottom": 184,
+            "left": 251,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Usage records",
+            "x": 238,
+            "y": 522,
+            "width": 103.5,
+            "height": 20.625,
+            "top": 522,
+            "right": 341.5,
+            "bottom": 542.625,
+            "left": 238,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Record details #1",
+            "x": 1391,
+            "y": 77.75,
+            "width": 123.046875,
+            "height": 22.5,
+            "top": 77.75,
+            "right": 1514.046875,
+            "bottom": 100.25,
+            "left": 1391,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    }
+  ]
+}

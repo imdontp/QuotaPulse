@@ -1053,6 +1053,7 @@ export const en = {
   'history.copyFailed': 'Could not copy metadata',
   'history.relatedSession': 'Open related session records',
   'history.timelineNote': 'Full filtered range, grouped by recorded time. Aggregate updates are not individual call timestamps.',
+  'history.timelineHelp': 'Use Left/Right to inspect recorded buckets, Home/End for endpoints, and Escape to dismiss.',
   'history.effortDistribution': 'Recorded effort categories',
   'history.nativeTotal': 'Reported native cost',
   'history.apiTotal': 'Calculated / estimated API value',
