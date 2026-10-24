@@ -5,7 +5,7 @@ import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
-import { VendorIcon } from '@/components/vendor-icon';
+import { ProviderMark as VendorIcon } from './provider-mark';
 import { ObservedTrend } from './observed-trend';
 import { RedesignShell } from './shell';
 import { readScope, selectedScope, writeScope, type ScopeRange } from './scope';

@@ -4,6 +4,7 @@ import { useFormat } from '@/i18n/format';
 import { BarChart3, Database, Folder, ArrowDown, ArrowUp, Zap } from 'lucide-react';
 import { DashboardHarnessIcon as HarnessIcon } from './dashboard-marks';
 import { VendorIcon } from '@/components/vendor-icon';
+import { ProviderMark } from './provider-mark';
 
 /** Render recorded, allowlisted metadata; never request prompt or source payloads. */
 export function HistoryRecordDetails({ row, harnessVendor, basis, date }: { row: UsageEventRow; harnessVendor?: string; basis: string; date: string }) {
@@ -42,7 +43,7 @@ export function HistoryRecordDetails({ row, harnessVendor, basis, date }: { row:
       <dl className="qp-history-detail-identities">
         <div data-field="2" className="qp-history-detail-identity"><i aria-hidden="true"><Folder size={21}/></i><dt>{t('col.project')}</dt><dd>{row.project ?? t('redesign.unassigned')}</dd></div>
         <div data-field="3" data-harness={row.harness} className="qp-history-detail-identity"><i aria-hidden="true"><HarnessIcon harness={row.harness} vendor={harnessVendor} label={row.harness}/></i><dt>{t('col.harness')}</dt><dd>{row.harness}</dd></div>
-        <div data-field="4" className="qp-history-detail-identity"><i aria-hidden="true"><VendorIcon vendor={row.provider ?? 'unknown'}/></i><dt>{t('history.provider')}</dt><dd>{row.provider ?? unknown}</dd></div>
+        <div data-field="4" className="qp-history-detail-identity"><i aria-hidden="true"><ProviderMark vendor={row.provider ?? 'unknown'}/></i><dt>{t('history.provider')}</dt><dd>{row.provider ?? unknown}</dd></div>
         <div data-field="6" className="qp-history-detail-identity qp-history-detail-model"><i aria-hidden="true"><VendorIcon vendor={row.vendor}/></i><dt>{t('col.model')}</dt><dd>{row.model ?? unknown}</dd><dt className="qp-history-detail-maker-label">{t('history.vendor')}</dt><dd className="qp-history-detail-maker-value"><span aria-hidden="true">{t('history.vendor')}: </span>{row.vendor}</dd></div>
       </dl>
     </> : <dl>{group.fields.map(([label, value], index) => {

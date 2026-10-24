@@ -483,6 +483,17 @@ async function checkModelComparison(page: Page, lang: string, theme: string, pen
     return [selector, { x, y, width, height, bottom }];
   }))) });
   assert.equal(await page.locator('.qp-model-summary-icon').count(), 4);
+  const providerCount = page.getByTestId('models-provider-count');
+  assert.equal(Number(await providerCount.getAttribute('data-known-providers')), new Set(data.groups.map(group => group.provider).filter(provider => provider !== null && provider.trim() !== '')).size);
+  const missingProviderPairs = data.groups.filter(group => group.provider === null || group.provider.trim() === '').length;
+  assert.equal(Number(await providerCount.getAttribute('data-unknown-provider-pairs')), missingProviderPairs);
+  assert.equal(await providerCount.locator('abbr').count(), missingProviderPairs > 0 ? 1 : 0);
+  const componentFormat = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 });
+  for (const [component, expected] of [['input', data.totals.inputTokens + data.totals.cachedInputTokens + data.totals.cacheWriteTokens], ['output', data.totals.outputTokens]] as const) {
+    const value = page.locator(`.qp-model-token-components [data-component=${component}]`);
+    assert.equal(Number(await value.getAttribute('data-value')), expected, 'Models summary must use recorded scoped token components');
+    assert.equal(await value.getAttribute('title'), componentFormat.format(expected), 'Exact token count must remain readable beyond compact display');
+  }
   assert.ok(data.trends, 'Models fixture must include recorded histories');
   const recordedBuckets = new Map(data.trends.points.map(point => [point.start, point]));
   const bucketCount = Math.ceil((data.scope.to - data.scope.from) / data.trends.bucketMs);
@@ -516,6 +527,10 @@ async function checkModelComparison(page: Page, lang: string, theme: string, pen
     const row = rows.filter({ has: page.getByRole('button', { name: group.model!, exact: true }) });
     assert.equal(await row.locator('.qp-model-maker-mark').getAttribute('data-vendor'), group.vendor, 'Maker artwork must retain the API maker independently of the routed provider');
     assert.equal(await row.locator('.qp-model-maker-mark').getAttribute('aria-hidden'), 'true', 'Decorative maker framing must not alter the model control name');
+    if (group.provider === 'anthropic') {
+      assert.equal(await row.locator('.qp-model-brand [data-provider-mark=anthropic]').count(), 1, 'Recorded provider uses the company identity');
+      assert.equal(await row.locator('.qp-model-maker-mark [data-provider-mark]').count(), 0, 'Model artwork must retain its product identity');
+    }
     const input = group.inputTokens + group.cachedInputTokens + group.cacheWriteTokens;
     const values = [group.cachedInputTokens / input * 100, (group.native_calls + group.computed_calls + group.estimated_calls) / group.calls * 100];
     const bars = row.locator('.qp-model-ratio .qp-bar>span'); assert.equal(await bars.count(), 2);
@@ -2869,7 +2884,16 @@ try {
           // A distinct document URL avoids carrying hash-navigation paint caches
           // and asynchronous state from the preceding route into this capture.
           await page.goto(`http://127.0.0.1:7804/?capture=${destination}#${destination}${destination === 'cost' ? '?range=month' : ''}`, { waitUntil: 'domcontentloaded' });
-          await page.getByTestId(`production-${destination}`).locator(ready).first().waitFor();
+          try {
+            await page.getByTestId(`production-${destination}`).locator(ready).first().waitFor();
+          } catch (error) {
+            const diagnostic = { destination, ready, pass, lang, theme, url: page.url(), errors, forbidden,
+              pending: [...pending].map(request => new URL(request.url()).pathname + new URL(request.url()).search),
+              body: (await page.locator('body').innerText()).slice(0, 12000) };
+            writeFileSync(resolve(output, `ready-failure-${destination}-${lang}-${theme}-${pass}.json`), JSON.stringify(diagnostic, null, 2));
+            await page.screenshot({ path: resolve(output, `ready-failure-${destination}-${lang}-${theme}-${pass}.png`), animations: 'disabled' });
+            throw error;
+          }
           await page.locator('.qp-daemon-badge[data-state=live]').waitFor();
           await page.waitForFunction(() => /^\d[\d,]*$/.test(document.querySelector('[data-stat=models]')?.textContent ?? ''));
           await settled(page, pending);

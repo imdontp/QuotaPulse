@@ -7,7 +7,7 @@ import { useTheme } from '@/lib/use-theme';
 import type { UsageEventScope, UsageEventsResponse } from '@/lib/usage-events';
 import { RedesignShell } from './shell';
 import { DashboardHarnessIcon as HarnessIcon } from './dashboard-marks';
-import { VendorIcon } from '@/components/vendor-icon';
+import { ProviderMark as VendorIcon } from './provider-mark';
 import { LiveTokenFlow, LiveTokenFlowLegend } from './live-token-flow';
 import { PageHeading } from './page-heading';
 import { HeadingReferenceIcon } from './heading-reference-icon';

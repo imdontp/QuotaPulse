@@ -11,7 +11,7 @@ import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import { RedesignShell } from './shell';
 import { DashboardHarnessIcon as HarnessIcon } from './dashboard-marks';
-import { VendorIcon } from '@/components/vendor-icon';
+import { ProviderMark } from './provider-mark';
 import { ObservedTrend } from './observed-trend';
 import { ObservedTrendAxes } from './observed-trend-axes';
 import { ChartData } from './chart-data';
@@ -268,7 +268,7 @@ export function ProductionProjects() {
           </section>
           <div className="qp-project-observed-identities">
             <section className="qp-project-identity-panel"><h3>{t('redesign.harnessesUsed')}<span>{number(observedHarnesses.length)}</span></h3><ul>{observedHarnesses.map(harness => <li key={harness}><span className="qp-project-identity-mark" title={harness}><HarnessIcon harness={harness} vendor={currentSnapshot.overview.harnesses.find(item => item.harness === harness)?.vendor} label={harness}/><span className="qp-visually-hidden">{harness}</span></span></li>)}</ul></section>
-            <section className="qp-project-identity-panel"><h3>{t('redesign.providersUsed')}<span>{number(observedProviders.length)}</span></h3><ul>{observedProviders.map(provider => <li key={provider}><span className="qp-project-identity-mark" title={provider}><VendorIcon vendor={provider}/><span className="qp-visually-hidden">{provider}</span></span></li>)}</ul></section>
+            <section className="qp-project-identity-panel"><h3>{t('redesign.providersUsed')}<span>{number(observedProviders.length)}</span></h3><ul>{observedProviders.map(provider => <li key={provider}><span className="qp-project-identity-mark" title={provider}><ProviderMark vendor={provider}/><span className="qp-visually-hidden">{provider}</span></span></li>)}</ul></section>
           </div>
           <button className="qp-project-detail-link" onClick={() => selectDetail('details')}>{t('redesign.projectBreakdown')} →</button>
           </>}
@@ -285,7 +285,7 @@ export function ProductionProjects() {
           </> : <InitialRegion id="project-usage" label={t('redesign.tokens')} state={detailState} className="qp-project-initial-tab" status slots={4}/>)}
           {route.detail === 'details' && <>
             <div><h3>{t('redesign.projectFullIdentity')}</h3><p className="qp-project-identity">{selected.key ?? t('redesign.unassigned')}</p></div>
-            <div><h3>{t('redesign.projectBreakdown')}</h3><ol className="qp-project-breakdown qp-project-full-breakdown">{detailRows.map(row => <li key={JSON.stringify([row.sourceId, row.provider, row.model])}><span className="qp-project-route"><HarnessIcon harness={row.harness} vendor={currentSnapshot.overview.harnesses.find(harness => harness.harness === row.harness)?.vendor}/>{row.sourceName} · <VendorIcon vendor={row.provider ?? 'unknown'}/>{row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}</span><strong>{number(row.tokens)}</strong></li>)}</ol></div>
+            <div><h3>{t('redesign.projectBreakdown')}</h3><ol className="qp-project-breakdown qp-project-full-breakdown">{detailRows.map(row => <li key={JSON.stringify([row.sourceId, row.provider, row.model])}><span className="qp-project-route"><HarnessIcon harness={row.harness} vendor={currentSnapshot.overview.harnesses.find(harness => harness.harness === row.harness)?.vendor}/>{row.sourceName} · <ProviderMark vendor={row.provider ?? 'unknown'}/>{row.provider ?? t('redesign.unknownValue')} · {row.model ?? t('redesign.unknownValue')}</span><strong>{number(row.tokens)}</strong></li>)}</ol></div>
             <div><h3>{t('redesign.projectSources')}</h3><ol className="qp-project-breakdown">{[...new Map(detailRows.map(row => [row.sourceId, row])).values()].map(row => <li key={row.sourceId}><span>{row.sourceName}</span><strong>{row.harness}</strong></li>)}</ol></div>
             <div><h3>{t('redesign.projectObservedPaths')}</h3>{detail ? <ol className="qp-project-paths">{[...new Set(detail.sessions.rows.map(session => session.cwd).filter((cwd): cwd is string => Boolean(cwd)))].slice(0, 5).map(cwd => <li key={cwd}>{cwd}</li>)}</ol> : <InitialRegion id="project-paths" label={t('redesign.projectObservedPaths')} state={detailState} className="qp-project-initial-tab" status slots={4}/>}{detail?.sessions.rows.every(session => !session.cwd) && <p>{t('redesign.projectUnknownPath')}</p>}</div>
             <p className="qp-footnote">{t('redesign.projectCoverage')}</p>

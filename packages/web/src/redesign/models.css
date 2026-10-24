@@ -318,3 +318,9 @@
  .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-table-wrap th:last-child { border-radius:0 6px 6px 0; }
  .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-row-trend .qp-observed-line { stroke-width:1.25px; }
 }
+
+/* Reference summary facts use recorded counts/components, without growth claims. */
+.qp-model-summary .qp-model-token-components { display:flex; flex-wrap:wrap; align-content:start; gap:2px 10px; }
+.qp-model-token-components>span { white-space:nowrap; font-size:10px; }
+.qp-model-token-components b { color:var(--qp-accent); font-weight:500; }
+.qp-model-summary [data-testid=models-provider-count] { overflow-wrap:anywhere; }
