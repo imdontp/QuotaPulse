@@ -424,6 +424,7 @@ export const en = {
   'redesign.modelsCoverage': 'Priced-call coverage',
   'redesign.modelsDetails': 'Selected model',
   'redesign.modelsDistribution': 'Recorded token components',
+  'redesign.modelsAcrossProviders': 'Across {count} providers',
   'redesign.modelsInput': 'Input',
   'redesign.modelsFreshInput': 'Fresh input',
   'redesign.modelsCachedInput': 'Cached input',

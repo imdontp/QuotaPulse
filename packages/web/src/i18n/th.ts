@@ -428,6 +428,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.modelsCoverage': 'คำขอที่มีราคา',
   'redesign.modelsDetails': 'โมเดลที่เลือก',
   'redesign.modelsDistribution': 'ส่วนประกอบโทเค็นที่บันทึก',
+  'redesign.modelsAcrossProviders': 'จากผู้ให้บริการ {count} ราย',
   'redesign.modelsInput': 'อินพุต',
   'redesign.modelsFreshInput': 'อินพุตใหม่',
   'redesign.modelsCachedInput': 'อินพุตจากแคช',

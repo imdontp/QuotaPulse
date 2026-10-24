@@ -1,0 +1,17 @@
+{
+  "checkpoint": "v1.85.130",
+  "parent": "1913d86e5a015d0b5870d6a0223cc05883ad828f",
+  "index": "35c6f598ea7ea32f55faef8be725ec73c6ccda602aaf52d7f447b14eb47a91f7",
+  "beforeIndex": "874c835e16f96e1ff9982480775fc2bd28edaa1ae296c99b941d2125a78fa1e4",
+  "browserCases": 16,
+  "knownDefectsBefore": {
+    "unknownQualifierLines": 2,
+    "partialValueLines": 2
+  },
+  "afterAllCases": {
+    "unknownQualifierLines": 1,
+    "partialValueLines": 1
+  },
+  "source129Candidate": "Functional native checks passed, but ZIP withheld after visual review identified wrapping defects; not the final review delivery",
+  "fullRedesignComplete": false
+}

@@ -324,3 +324,9 @@
 .qp-model-token-components>span { white-space:nowrap; font-size:10px; }
 .qp-model-token-components b { color:var(--qp-accent); font-weight:500; }
 .qp-model-summary [data-testid=models-provider-count] { overflow-wrap:anywhere; }
+
+/* Keep the unknown-provider qualifier together when the summary wraps. */
+.qp-model-summary [data-testid=models-provider-count] abbr { display:inline-block; white-space:nowrap; }
+@media(max-width:730px) {
+  .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true][data-wide=true]>strong { grid-column:1/-1; grid-row:3; }
+}
