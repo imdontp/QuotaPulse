@@ -7,7 +7,8 @@ interface Target {
   names: { en: string; th: string };
 }
 
-// Names are the pre-pass production headings. Sizes follow the original PNG tile measurements,
+// Names retain production headings, with the Models reference copy updated in v1.85.134.
+// Sizes follow the original PNG tile measurements,
 // independently of SectionMark props/data attributes and current production translations.
 const targets: Record<string, Target[]> = {
   live: [
@@ -30,8 +31,8 @@ const targets: Record<string, Target[]> = {
     { selector: '.qp-provider-health h2', size: 34, names: { en: 'Reader health and freshness', th: 'สถานะตัวอ่านและความสดของข้อมูล' } },
   ],
   models: [
-    { selector: '.qp-model-comparison h2', size: 34, names: { en: 'Model comparison', th: 'เปรียบเทียบโมเดล' } },
-    { selector: '.qp-model-providers h2', size: 20, names: { en: 'Recorded provider distribution', th: 'สัดส่วนผู้ให้บริการที่บันทึก' } },
+    { selector: '.qp-model-comparison h2', size: 34, names: { en: 'Model Comparison', th: 'เปรียบเทียบโมเดล' } },
+    { selector: '.qp-model-providers h2', size: 20, names: { en: 'Provider Usage Overview', th: 'ภาพรวมการใช้ตามผู้ให้บริการ' } },
   ],
 };
 

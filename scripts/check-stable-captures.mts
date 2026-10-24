@@ -1393,7 +1393,7 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
       assert.equal(axisDates[0].at, starts[0]); assert.equal(axisDates.at(-1)!.at, starts.at(-1));
       for (const tick of axisDates) { assert.equal(tick.at, starts[tick.index]); assert.equal(tick.iso, new Date(tick.at).toISOString()); }
       const header = await disclosure.locator('th').nth(1).textContent();
-      assert.equal(header, lang === 'th' ? (calls ? 'คำขอ' : 'โทเค็นที่บันทึก') : (calls ? 'Calls' : 'Recorded tokens'));
+      assert.equal(header, lang === 'th' ? (calls ? 'คำขอ' : 'โทเคนรวม') : (calls ? 'Calls' : 'Total Tokens'));
     } else {
       const cost = data as CostAnalysisResponse;
       assert.equal(await disclosure.getAttribute('data-basis'), cost.basis);
