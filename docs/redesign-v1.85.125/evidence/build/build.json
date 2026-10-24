@@ -1,0 +1,90 @@
+{
+    "checkout":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.124",
+    "checkedGeneratedTargets":  [
+                                    "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.124\\packages\\daemon\\dist",
+                                    "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.124\\packages\\web\\dist",
+                                    "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.124\\packages\\tray\\dist",
+                                    "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.124\\packages\\tray\\dist-preload",
+                                    "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.124\\packages\\tray\\dist-package"
+                                ],
+    "sourceCommit":  "97bb1da57e6328b3d5c74e86955f3dafe8b9b3d8",
+    "steps":  [
+                  {
+                      "exitCode":  0,
+                      "name":  "daemon-build",
+                      "startedUtc":  "2026-10-24T01:56:42.1556062Z",
+                      "finishedUtc":  "2026-10-24T01:56:46.8535260Z",
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\release125\\build\\daemon-build.log",
+                      "arguments":  [
+                                        "run",
+                                        "daemon:build"
+                                    ],
+                      "executable":  "npm"
+                  },
+                  {
+                      "exitCode":  0,
+                      "name":  "web-build",
+                      "startedUtc":  "2026-10-24T01:56:46.9258906Z",
+                      "finishedUtc":  "2026-10-24T01:57:03.7181856Z",
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\release125\\build\\web-build.log",
+                      "arguments":  [
+                                        "run",
+                                        "build",
+                                        "-w",
+                                        "@quotapulse/web"
+                                    ],
+                      "executable":  "npm"
+                  },
+                  {
+                      "exitCode":  0,
+                      "name":  "tray-build",
+                      "startedUtc":  "2026-10-24T01:57:03.7211843Z",
+                      "finishedUtc":  "2026-10-24T01:57:08.2302678Z",
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\release125\\build\\tray-build.log",
+                      "arguments":  [
+                                        "run",
+                                        "build",
+                                        "-w",
+                                        "@quotapulse/tray"
+                                    ],
+                      "executable":  "npm"
+                  },
+                  {
+                      "exitCode":  0,
+                      "name":  "repository-tests",
+                      "startedUtc":  "2026-10-24T01:57:08.2337344Z",
+                      "finishedUtc":  "2026-10-24T01:57:55.7897334Z",
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\release125\\build\\repository-tests.log",
+                      "arguments":  [
+                                        "test"
+                                    ],
+                      "executable":  "npm"
+                  },
+                  {
+                      "exitCode":  0,
+                      "name":  "approved-runtime-assets",
+                      "startedUtc":  "2026-10-24T01:57:55.7927369Z",
+                      "finishedUtc":  "2026-10-24T01:57:58.1045023Z",
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\release125\\build\\approved-runtime-assets.log",
+                      "arguments":  [
+                                        "--import",
+                                        "tsx",
+                                        "packages/tray/scripts/package-assets.ts"
+                                    ],
+                      "executable":  "node"
+                  },
+                  {
+                      "exitCode":  0,
+                      "name":  "review-bundle",
+                      "startedUtc":  "2026-10-24T01:57:58.1085083Z",
+                      "finishedUtc":  "2026-10-24T01:58:11.4670889Z",
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\release125\\build\\review-bundle.log",
+                      "arguments":  [
+                                        "--import",
+                                        "tsx",
+                                        "scripts/build-review-bundle.mts"
+                                    ],
+                      "executable":  "node"
+                  }
+              ]
+}

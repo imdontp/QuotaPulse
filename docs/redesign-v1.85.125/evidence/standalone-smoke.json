@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "extracted": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-review-XLgAX1",
+  "archive": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.124\\tmp\\review-bundles\\QuotaPulse-v1.85.124-review125.zip",
+  "archiveSha256": "9685a9236123521657f6f6b22bc98c8535d16ef905c85977b7f1d291c9794603",
+  "archiveEntries": 3156,
+  "zipInventoryMatchesSource": true,
+  "checks": [
+    "actual ZIP extracted and all file bytes match unused source bundle",
+    "start WhatIf creates no review profile or processes",
+    "extracted bundle outside repository dependencies starts its real daemon/tray with readers off and isolated profile",
+    "stop WhatIf retains both recorded processes",
+    "scoped stop ends recorded processes and preserves database",
+    "restart tolerates retained review process records and stale daemon lock"
+  ],
+  "requiredNodeAbi": "127",
+  "externalNode": true,
+  "limitations": [
+    "portable ZIP launch checks; current versioned installation/upgrade not exercised",
+    "readers disabled; empty usage database",
+    "host Node prerequisite; no logon tasks installed"
+  ]
+}
