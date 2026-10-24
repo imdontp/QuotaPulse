@@ -603,7 +603,7 @@
 .qp-quota-group-heading h3>svg,.qp-quota-group-heading h3>span { flex:none; width:22px; height:22px; font-size:22px; }
 .qp-quota-brand { display:inline-grid; place-items:center; border-radius:6px; color:var(--qp-text); }
 .qp-quota-brand[data-provider=opencode] { color:#fff; background:linear-gradient(135deg,#5144df,#7d43ed); }
-.qp-quota-brand[data-provider=opencode]>svg { width:14px; height:14px; }
+.qp-quota-brand[data-provider=opencode]>svg { width:18px; height:18px; }
 .qp-quota-group-heading h3>.qp-quota-owner-copy { flex:1 1 auto; width:auto; height:auto; font-size:inherit; line-height:1.2; }
 .qp-quota-owner-type { color:var(--qp-muted); font-size:10px; font-weight:400; white-space:nowrap; }
 .qp-quota-group-status { display:inline-flex; align-items:center; gap:5px; padding:3px 7px; border:1px solid color-mix(in srgb,currentColor 25%,transparent); border-radius:20px; color:var(--qp-muted); background:color-mix(in srgb,currentColor 6%,transparent); font-size:10px; white-space:nowrap; }
@@ -751,6 +751,7 @@
 .qp-map-node[data-dimension=model] .qp-node-icon { color:var(--qp-series); background:color-mix(in srgb,var(--qp-series) 12%,var(--qp-panel)); }
 .qp-map-node .qp-node-icon { transform:translateZ(0); }
 .qp-map-node .qp-node-icon svg { overflow:visible; }
+.qp-map-node[data-dimension=harness] .qp-node-icon>svg[data-dashboard-harness] { width:24px; height:24px; }
 .qp-node-label { flex:1; min-width:0; }
 .qp-map-node .qp-node-share { display:flex; align-items:center; gap:7px; flex:none; width:38%; overflow:visible; }
 .qp-node-share small { min-width:32px; text-align:right; font-variant-numeric:tabular-nums; }
@@ -1055,6 +1056,7 @@
 .qp-model-identity svg { shape-rendering:geometricPrecision; transform:translateZ(0); }
 .qp-activity-identity,.qp-activity-route { display:flex; align-items:center; gap:5px; min-width:0; }
 .qp-activity-identity>svg,.qp-activity-identity>span,.qp-activity-route>svg,.qp-activity-route>span { width:12px; height:12px; flex-shrink:0; font-size:12px; }
+.qp-activity-identity>svg[data-dashboard-harness] { width:14px; height:14px; }
 .qp-runway-track { background:repeating-linear-gradient(120deg,transparent 0,transparent 5px,#08101b33 5px,#08101b33 6px),linear-gradient(90deg,#078bff,#3d70ff 55%,#8662dc); border:1px solid color-mix(in srgb,var(--qp-accent) 35%,transparent); }
 .qp-runway-track::before,.qp-runway-track::after { content:''; position:absolute; top:-4px; bottom:-4px; width:1px; background:var(--qp-accent); }
 .qp-runway-track::before { left:0; }

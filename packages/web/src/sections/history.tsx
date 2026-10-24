@@ -20,7 +20,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Empty, ErrorBox } from '@/components/primitives';
 import { Folder, History, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
-import { HarnessIcon } from '@/components/harness-icon';
+import { DashboardHarnessIcon as HarnessIcon } from '@/redesign/dashboard-marks';
 
 type Filters = Pick<UsageEventScope, 'q' | 'project' | 'projectMissing' | 'provider' | 'vendor' | 'model' | 'harness' | 'grain'>;
 const FILTER_FIELDS = ['q', 'project', 'provider', 'vendor', 'model', 'harness'] as const;

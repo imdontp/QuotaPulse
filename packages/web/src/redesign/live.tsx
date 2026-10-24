@@ -6,7 +6,7 @@ import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import type { UsageEventScope, UsageEventsResponse } from '@/lib/usage-events';
 import { RedesignShell } from './shell';
-import { HarnessIcon } from '@/components/harness-icon';
+import { DashboardHarnessIcon as HarnessIcon } from './dashboard-marks';
 import { VendorIcon } from '@/components/vendor-icon';
 import { LiveTokenFlow, LiveTokenFlowLegend } from './live-token-flow';
 import { PageHeading } from './page-heading';

@@ -1,0 +1,51 @@
+{
+  "checkpoint": "v1.85.128",
+  "parent": "7eebaeec81446c103f688345cb09ef47a8e3a4d7",
+  "index": "b5a61fa4c7a2c6e8b8214e38b2ddc02ac0c3f13caf95306705ec0440e504b3c5",
+  "validation": "Partially validated: functional checks pass; distinct-document repeat gates remain red",
+  "webTests": 335,
+  "nativeBrowserCases": 48,
+  "componentGlyphs": 72,
+  "fallbackCases": 6,
+  "withinContextExactRepeats": 8,
+  "scopedRepeatFailures": [
+    {
+      "scope": "providers",
+      "status": "failed",
+      "changedPixels": 125,
+      "maxChannelDelta": 7,
+      "bbox": [
+        283,
+        12,
+        1016,
+        46
+      ],
+      "headerPixels": 125,
+      "belowHeaderPixels": 0,
+      "outsideSidebarHeaderPixels": 0,
+      "firstSha256": "a282165bf789b810f4186231861e4632d5f35cec635debaf2168d1c42c13c7cb",
+      "repeatSha256": "f003317cbc702b03fa9aeb8caaf6e93a3a2887576623cc88daa5cde8444609b1",
+      "index": "b5a61fa4c7a2c6e8b8214e38b2ddc02ac0c3f13caf95306705ec0440e504b3c5"
+    },
+    {
+      "scope": "history",
+      "status": "failed",
+      "changedPixels": 125,
+      "maxChannelDelta": 7,
+      "bbox": [
+        283,
+        12,
+        1016,
+        46
+      ],
+      "headerPixels": 125,
+      "belowHeaderPixels": 0,
+      "outsideSidebarHeaderPixels": 0,
+      "firstSha256": "4a104d9f98bbae0e3606fa265d7e596d6ef57f902c2929fe321fdbff05f9fb4f",
+      "repeatSha256": "42dfde085497ce421ba18388cc1d2da0848bc621d0238b36836a11b81cea20d3",
+      "index": "b5a61fa4c7a2c6e8b8214e38b2ddc02ac0c3f13caf95306705ec0440e504b3c5"
+    }
+  ],
+  "fullRedesignComplete": false,
+  "currentRunnableZipSource": "v1.85.124 (review125), excludes126-128"
+}

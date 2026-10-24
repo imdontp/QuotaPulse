@@ -234,6 +234,7 @@
 .qp-project-identity-panel ul { display:flex; flex-wrap:wrap; gap:7px; list-style:none; margin:0; padding:0; }
 .qp-project-identity-mark { display:grid; place-items:center; width:31px; height:31px; border:1px solid color-mix(in srgb,var(--qp-accent) 20%,var(--qp-border)); border-radius:8px; background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 12%,var(--qp-panel)),var(--qp-panel)); font-size:23px; }
 .qp-project-identity-mark svg { width:23px; height:23px; }
+.qp-project-identity-mark svg[data-dashboard-harness] { width:28px; height:28px; }
 .qp-project-detail-link { justify-self:end; text-align:right; color:var(--qp-accent); font-size:10px; min-height:24px; }
 .qp-project-full-breakdown { margin-top:9px; }
 .qp-project-trend {

@@ -434,6 +434,8 @@
 .qp-live-session-number { font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
 .qp-live-session-number abbr { text-decoration:none; white-space:nowrap; }
 .qp-live-session-harness>span:last-child { width:auto; height:auto; font-size:inherit; flex:1; }
+.qp-live-session-harness>svg[data-dashboard-harness] { width:18px; height:18px; }
+.qp-live-feed-identity>svg[data-dashboard-harness] { width:16px; height:16px; }
 @media(min-width:1536px) {
   .qp-live-table :is(th,td) { padding:5px 6px; }
   .qp-live-table th { font-size:11px; }

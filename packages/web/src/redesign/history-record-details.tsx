@@ -2,7 +2,7 @@ import type { UsageEventRow } from '@/lib/usage-events';
 import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
 import { BarChart3, Database, Folder, ArrowDown, ArrowUp, Zap } from 'lucide-react';
-import { HarnessIcon } from '@/components/harness-icon';
+import { DashboardHarnessIcon as HarnessIcon } from './dashboard-marks';
 import { VendorIcon } from '@/components/vendor-icon';
 
 /** Render recorded, allowlisted metadata; never request prompt or source payloads. */

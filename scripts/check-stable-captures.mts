@@ -746,7 +746,8 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
   const harnessOwner = ownerData.harnesses.find(harness => harness.harness === row.harness && harness.source_ids.includes(row.source_id));
   assert.ok(harnessOwner, 'Selected recorded source has no harness ownership metadata');
   const harnessMark = dialog.locator('.qp-history-detail-identity[data-field="3"] svg').first();
-  assert.equal(await harnessMark.count(), 1, 'Known harness owner must display its published mark');
+  assert.equal(await harnessMark.count(), 1, 'Known recorded harness must display its dedicated glyph');
+  if (['hermes', 'codex', 'claude-code', 'opencode'].includes(row.harness)) assert.equal(await harnessMark.getAttribute('data-dashboard-harness'), row.harness, 'Dashboard glyph follows the recorded harness identity');
   if (harnessOwner.vendor !== row.vendor) {
     const modelMark = dialog.locator('.qp-history-detail-identity[data-field="6"] svg').first();
     assert.notEqual(await harnessMark.innerHTML(), await modelMark.innerHTML(), 'Harness owner mark was replaced with the routed model maker');

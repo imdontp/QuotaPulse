@@ -1,0 +1,40 @@
+{
+  "scope": "Diagnostic localization, never used to relax or mask capture gates",
+  "regions": [
+    {
+      "name": "ownerPlate",
+      "bounds": [
+        580,
+        130,
+        690,
+        245
+      ],
+      "changedPixels": 5725
+    },
+    {
+      "name": "readerHealth",
+      "bounds": [
+        968,
+        638,
+        1650,
+        790
+      ],
+      "changedPixels": 14346
+    },
+    {
+      "name": "comparisonMark",
+      "bounds": [
+        680,
+        750,
+        720,
+        785
+      ],
+      "changedPixels": 285
+    }
+  ],
+  "outsideRegionsPixels": 0,
+  "legacyReaderControlMatchesPriorHealthRegionExactly": true,
+  "firstRowHeightCurrent": 31.796875,
+  "firstRowHeightLegacy": 30.640625,
+  "laterRowsShiftPx": 1.15625
+}

@@ -10,7 +10,7 @@ import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
 import { useTheme } from '@/lib/use-theme';
 import { RedesignShell } from './shell';
-import { HarnessIcon } from '@/components/harness-icon';
+import { DashboardHarnessIcon as HarnessIcon } from './dashboard-marks';
 import { VendorIcon } from '@/components/vendor-icon';
 import { ObservedTrend } from './observed-trend';
 import { ObservedTrendAxes } from './observed-trend-axes';
