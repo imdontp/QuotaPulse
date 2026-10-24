@@ -369,6 +369,17 @@ async function checkLiveDensity(page: Page, lang: string, theme: string, pending
   const sessions = page.locator('.qp-live-table tbody tr');
   const records = page.locator('.qp-live-feed li');
   assert.equal(await sessions.count(), 10); assert.equal(await records.count(), 8);
+  const sessionResponse = await daemon.inject({ method: 'GET', url: `/api/live-sessions?from=${fixedNow - 30 * 60_000}&to=${fixedNow + 1}&mode=recent&limit=10&offset=0`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
+  assert.equal(sessionResponse.statusCode, 200);
+  assert.equal(await page.locator('.qp-live-table th').count(), 9, 'Live sessions retain the reference nine-column composition');
+  const sessionNumber = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US');
+  for (const [index, row] of sessionResponse.json().rows.entries()) {
+    const cells = sessions.nth(index).locator('td');
+    assert.equal(await cells.nth(0).locator('button').getAttribute('title'), row.nativeSessionId + ' · ' + row.sourceName);
+    assert.deepEqual(await cells.nth(5).locator('abbr').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label'))), [sessionNumber.format(row.inputTokens), sessionNumber.format(row.outputTokens)]);
+    assert.equal(await cells.nth(6).locator('abbr').getAttribute('aria-label'), sessionNumber.format(row.tokens));
+    assert.equal(await cells.nth(8).textContent(), sessionNumber.format(row.calls));
+  }
   const feedResponse = await daemon.inject({ method: 'GET', url: `/api/usage-events?from=${fixedNow - 30 * 60_000}&to=${fixedNow + 1}&limit=8&offset=0`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(feedResponse.statusCode, 200);
   const feedRows = feedResponse.json<UsageEventsResponse>().rows;

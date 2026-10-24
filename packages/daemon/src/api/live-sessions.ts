@@ -11,7 +11,16 @@ export function liveSessions(db: DB, scope: UsageScope, now: number, mode: LiveS
     sess.project, sess.cwd, sess.git_branch AS gitBranch, sess.last_seen_at AS lastSeenAt,
     s.harness, s.display_name AS sourceName,
     COUNT(*) AS records, COALESCE(SUM(u.call_count),0) AS calls,
-    COALESCE(SUM(u.total_tokens),0) AS tokens, MAX(u.ts) AS lastObservedAt
+    COALESCE(SUM(u.total_tokens),0) AS tokens,
+    COALESCE(SUM(u.input_tokens + u.cached_input_tokens + u.cache_write_tokens),0) AS inputTokens,
+    COALESCE(SUM(u.output_tokens),0) AS outputTokens,
+    COUNT(DISTINCT u.provider) AS providerCount,
+    COUNT(*)-COUNT(u.provider) AS unknownProviderRecords,
+    CASE WHEN COUNT(DISTINCT u.provider)=1 THEN MAX(u.provider) END AS provider,
+    COUNT(DISTINCT u.model) AS modelCount,
+    COUNT(*)-COUNT(u.model) AS unknownModelRecords,
+    CASE WHEN COUNT(DISTINCT u.model)=1 THEN MAX(u.model) END AS model,
+    MAX(u.ts) AS lastObservedAt
     FROM usage_event u JOIN source s ON s.id=u.source_id
     JOIN session sess ON sess.id=u.session_id
     WHERE ${where.sql} GROUP BY sess.id`;

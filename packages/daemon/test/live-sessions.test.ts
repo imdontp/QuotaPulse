@@ -3,6 +3,39 @@ import assert from 'node:assert/strict';
 import { openDb } from '../src/db/index.js';
 import { buildServer } from '../src/api/server.js';
 import { Scheduler } from '../src/ingest/scheduler.js';
+import { liveSessions } from '../src/api/live-sessions.js';
+
+test('live session identities and token splits reflect only scoped recorded facts, including mixed and unknown identities', () => {
+  const db = openDb(':memory:');
+  try {
+    db.exec(`INSERT INTO source(id,harness,profile,root_path,display_name,detected_at) VALUES
+      (1,'codex','test','/fixture','Fixture',0);
+      INSERT INTO session(id,source_id,native_session_id,last_seen_at) VALUES (1,1,'mixed',900),(2,1,'unknown',900);`);
+    const add = db.prepare(`INSERT INTO usage_event(source_id,session_id,dedup_key,ts,provider,model,input_tokens,output_tokens,total_tokens,call_count)
+      VALUES (1,?,?,?,?,?,?,?,?,?)`);
+    add.run(1,'one',800,'openai','first',10,2,12,1);
+    add.run(1,'two',810,'anthropic','second',20,3,23,2);
+    add.run(1,'partial',820,null,'second',30,4,34,0);
+    add.run(1,'outside',2000,'excluded','outside',1000,1000,2000,20);
+    add.run(2,'unknown',830,null,null,0,0,0,0);
+    db.exec("UPDATE usage_event SET cached_input_tokens=5,cache_write_tokens=7,total_tokens=total_tokens+12 WHERE dedup_key='one'");
+    const scope = { from:700,to:1000 };
+    const rows = liveSessions(db,scope,1000,'all',{limit:10,offset:0}).rows as any[];
+    const mixed = rows.find(row=>row.sessionKey===1)!;
+    assert.equal(mixed.provider,null); assert.equal(mixed.providerCount,2); assert.equal(mixed.unknownProviderRecords,1);
+    assert.equal(mixed.model,null); assert.equal(mixed.modelCount,2); assert.equal(mixed.unknownModelRecords,0);
+    assert.equal(mixed.inputTokens,72); assert.equal(mixed.outputTokens,9); assert.equal(mixed.tokens,81); assert.equal(mixed.calls,3);
+    const unknown = rows.find(row=>row.sessionKey===2)!;
+    assert.equal(unknown.providerCount,0); assert.equal(unknown.provider,null); assert.equal(unknown.unknownProviderRecords,1);
+    assert.equal(unknown.modelCount,0); assert.equal(unknown.model,null); assert.equal(unknown.unknownModelRecords,1);
+    const filtered = liveSessions(db,{...scope,model:'second'},1000,'all',{limit:1,offset:0}).rows[0] as any;
+    assert.equal(filtered.model,'second'); assert.equal(filtered.modelCount,1);
+    assert.equal(filtered.provider,'anthropic'); assert.equal(filtered.providerCount,1); assert.equal(filtered.unknownProviderRecords,1);
+    assert.equal(filtered.inputTokens,50); assert.equal(filtered.outputTokens,7); assert.equal(filtered.tokens,57);
+    assert.equal(liveSessions(db,scope,1000,'all',{limit:1,offset:1}).rows.length,1);
+    assert.equal(liveSessions(db,{from:1001,to:1999},2000,'all',{limit:10,offset:0}).rows.length,0);
+  } finally { db.close(); }
+});
 
 test('live sessions count valid source timestamps and page exact scoped metadata', async () => {
   const db = openDb(':memory:');

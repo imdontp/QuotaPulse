@@ -291,6 +291,9 @@ export interface LiveSessionsResponse {
     sessionKey: number; nativeSessionId: string; project: string | null; cwd: string | null;
     gitBranch: string | null; lastSeenAt: number | null; harness: string; sourceName: string;
     records: number; calls: number; tokens: number; lastObservedAt: number;
+    inputTokens: number; outputTokens: number;
+    provider: string | null; providerCount: number; unknownProviderRecords: number;
+    model: string | null; modelCount: number; unknownModelRecords: number;
   }>;
 }
 
