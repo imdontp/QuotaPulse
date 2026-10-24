@@ -324,6 +324,37 @@ test('codex: a pass that appends only usage still knows the model from an earlie
   db.close();
 });
 
+test('codex: session identity and project survive an incremental pass and database reopen', async () => {
+  const dir = tmpRoot(), dbPath = join(dir, 'codex-identity.db'), root = join(dir, '.codex');
+  let db = openDb(dbPath);
+  const file = writeCodexProfile(root);
+  const profile: Profile = { profile: 't', rootPath: root, displayName: 't' };
+  const sourceId = upsertSource(db, { harness: 'codex', profile: 't', rootPath: root, displayName: 't' });
+  await ingestOnce(db, codexAdapter, profile, sourceId);
+  const before = db.prepare('SELECT id, native_session_id, cwd, project FROM session WHERE source_id=?').all(sourceId);
+  assert.equal(before.length, 1);
+  db.close(); db = openDb(dbPath);
+  appendFileSync(file, jsonl([{ timestamp: '2026-09-01T09:06:00.000Z', ordinal: 110, type: 'event_msg', payload: { type: 'token_count', info: { last_token_usage: { input_tokens: 25, output_tokens: 15 } } } }]));
+  await ingestOnce(db, codexAdapter, profile, sourceId);
+  assert.deepEqual(db.prepare('SELECT id, native_session_id, cwd, project FROM session WHERE source_id=?').all(sourceId), before);
+  assert.equal((db.prepare('SELECT COUNT(DISTINCT session_id) n FROM usage_event WHERE source_id=?').get(sourceId) as {n:number}).n, 1);
+  await ingestOnce(db, codexAdapter, profile, sourceId);
+  assert.equal((db.prepare('SELECT COUNT(DISTINCT session_id) n FROM usage_event WHERE source_id=?').get(sourceId) as {n:number}).n, 1);
+  db.close();
+});
+
+test('codex: observed truncation discards cached session and turn metadata', async () => {
+  const dir = tmpRoot(), db = openDb(join(dir, 'codex-truncate.db')), root = join(dir, '.codex');
+  const file = writeCodexProfile(root), profile: Profile = { profile: 't', rootPath: root, displayName: 't' };
+  const sourceId = upsertSource(db, { harness: 'codex', profile: 't', rootPath: root, displayName: 't' });
+  await ingestOnce(db, codexAdapter, profile, sourceId);
+  writeFileSync(file, jsonl([{ timestamp: '2026-09-01T10:00:00.000Z', ordinal: 999, type: 'event_msg', payload: { type: 'token_count', info: { last_token_usage: { input_tokens: 1, output_tokens: 1 } } } }]));
+  await ingestOnce(db, codexAdapter, profile, sourceId);
+  const row=db.prepare('SELECT u.model,u.effort,s.native_session_id,s.cwd,s.project FROM usage_event u JOIN session s ON s.id=u.session_id WHERE u.source_id=? ORDER BY u.id DESC LIMIT 1').get(sourceId) as {model:string|null;effort:string|null;native_session_id:string;cwd:string|null;project:string|null};
+  assert.equal(row.model,null);assert.equal(row.effort,null);assert.notEqual(row.native_session_id,'codex-sess-1');assert.equal(row.cwd,null);assert.equal(row.project,null);
+  db.close();
+});
+
 test('codex: quota is recorded even from an event with no usage, and a missing secondary is tolerated', async () => {
   const dir = tmpRoot();
   const db = openDb(join(dir, 'codex2.db'));

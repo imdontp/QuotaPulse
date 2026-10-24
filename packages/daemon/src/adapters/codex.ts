@@ -132,9 +132,12 @@ export const codexAdapter: Adapter = {
       if (st.size === cursor.fileSize && st.size === cursor.byteOffset) continue;
 
       const fallbackSid = sessionIdFromName(file);
-      let sid: string | null = null;
-      let cwd: string | null = null;
-      let gitBranch: string | null = null;
+      // Delta passes may not contain session_meta again. Keep its authoritative
+      // identity/project with the cursor, but discard it on an observed restart.
+      const meta = st.size < cursor.byteOffset ? undefined : cursor.meta;
+      let sid = asText(meta?.sid);
+      let cwd = asText(meta?.cwd);
+      let gitBranch = asText(meta?.gitBranch);
       /*
        * Seeded from the cursor, not from null: a pass reads only the bytes appended
        * since the last one, and Codex names the model and effort once per turn in a
@@ -142,8 +145,8 @@ export const codexAdapter: Adapter = {
        * these at null recorded every call in such a pass with no model, which in turn
        * left it unpriced.
        */
-      let model = asText(cursor.meta?.model);
-      let effort = asText(cursor.meta?.effort);
+      let model = asText(meta?.model);
+      let effort = asText(meta?.effort);
       let contextWindow: number | null = null;
       let firstTs: Millis | null = null;
       let lastTs: Millis | null = null;
@@ -254,7 +257,7 @@ export const codexAdapter: Adapter = {
           fileSize: res.fileSize,
           fileMtime: res.fileMtime,
           // What is in force at nextOffset, so the next pass resumes knowing it.
-          meta: { model, effort },
+          meta: { model, effort, sid, cwd, gitBranch },
         });
         if (res.restarted) log.warn(`file shrank, re-read from start: ${basename(file)}`);
       } catch (err) {
