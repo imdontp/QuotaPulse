@@ -3,7 +3,7 @@ import { observedTrendRuns, type ObservedPoint } from './observed-trend-runs';
 import './observed-trend.css';
 
 /** Straight segments retain bucket values; the complete data table is rendered by the caller. */
-export function ObservedTrend({ points, label, className, language, area = true, grid = true, edgeToEdge = false, bucketCenters = false, inspection }: {
+export function ObservedTrend({ points, label, className, language, area = true, grid = true, edgeToEdge = false, bucketCenters = false, nativeTitles = true, inspection }: {
   points: readonly ObservedPoint[];
   label: string;
   className: string;
@@ -12,6 +12,7 @@ export function ObservedTrend({ points, label, className, language, area = true,
   grid?: boolean;
   edgeToEdge?: boolean;
   bucketCenters?: boolean;
+  nativeTitles?: boolean;
   inspection?: { index: number | null; help: string } & Pick<SVGProps<SVGSVGElement>, 'onFocus' | 'onBlur' | 'onKeyDown' | 'onPointerMove' | 'onPointerLeave'>;
 }) {
   const id = useId().replace(/:/g, '');
@@ -29,7 +30,7 @@ export function ObservedTrend({ points, label, className, language, area = true,
     {grid && [6, 28, 50, 72, 94].map(value => <line key={value} x1="8" x2="992" y1={value} y2={value} stroke="var(--qp-border)" strokeDasharray="2 4" vectorEffect="non-scaling-stroke"/>)}
     {area && runs.filter(run => run.length > 1).map(run => <polygon key={run[0].index} points={`${x(run[0].index)},${y(0)} ${line(run)} ${x(run.at(-1)!.index)},${y(0)}`} fill={`url(#${id}-area)`}/>)}
     {(points.length === 0 ? [[]] : runs).map((run, index) => <polyline key={index} className="qp-observed-line" points={line(run)} fill="none" stroke="var(--qp-accent)" strokeWidth="2" vectorEffect="non-scaling-stroke" filter={`url(#${id}-glow)`}/>)}
-    {runs.flatMap(run => run.map(point => <circle key={point.at} data-at={point.at} data-value={point.value} cx={x(point.index)} cy={y(point.value)} r="2" fill="var(--qp-accent)" aria-hidden={inspection ? true : undefined}>{!inspection && <title>{new Date(point.at).toLocaleString(locale)} · {point.value.toLocaleString(locale)}</title>}</circle>))}
+    {runs.flatMap(run => run.map(point => <circle key={point.at} data-at={point.at} data-value={point.value} cx={x(point.index)} cy={y(point.value)} r="2" fill="var(--qp-accent)" aria-hidden={inspection ? true : undefined}>{!inspection && nativeTitles && <title>{new Date(point.at).toLocaleString(locale)} · {point.value.toLocaleString(locale)}</title>}</circle>))}
     {selected && selected.value !== null && Number.isFinite(selected.value) && <g className="qp-observed-inspection" aria-hidden="true"><line x1={x(inspection!.index!)} x2={x(inspection!.index!)} y1="6" y2="94" vectorEffect="non-scaling-stroke"/><circle cx={x(inspection!.index!)} cy={y(selected.value)} r="3" vectorEffect="non-scaling-stroke"/></g>}
   </svg>;
 }

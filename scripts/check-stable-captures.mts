@@ -27,6 +27,7 @@ import { checkSectionMarks } from './check-section-marks.mjs';
 import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 import { checkHistoryTimeline } from './check-history-timeline.mjs';
 import { checkTrendInspection } from './check-trend-inspection.mjs';
+import { checkCostInspection } from './check-cost-inspection.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
@@ -1285,6 +1286,7 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
           assert.ok(Math.abs(point.y - (100 - 100 * point.value / (maxTokens || 1))) < 0.0001, 'Token line does not match its own axis');
           assert.ok(Math.abs(point.x - 1000 * (index + 0.5) / tokenPoints.length) < 0.0001, 'Token point is not centered on its bucket');
         });
+        await checkCostInspection(page, cost, { locale, currency: 'USD', rate: 1, basisLabel: (lang === 'th' ? th : en)[cost.basis === 'api' ? 'redesign.costApiBasis' : 'redesign.costNativeBasis'], unknown: (lang === 'th' ? th : en)['redesign.unknownValue'] });
       } else assert.equal(await page.locator('.qp-cost-plot').count(), 0, 'Unpriced scope must not show a monetary plot/axis');
       for (const [selector, groups] of [['.qp-cost-models', cost.models], ['.qp-cost-projects', cost.projects]] as const) {
         const expected = groups.filter(group => group.pricedCalls > 0).slice(0, 8);

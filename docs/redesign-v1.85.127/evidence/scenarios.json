@@ -1,0 +1,109 @@
+{
+  "status": "passed",
+  "index": "a692169697fc3a5ac7a68a30174b68c7b1beeddd46cbfd75a69eeaeba5d5580c",
+  "browser": "155.0.8059.80",
+  "results": [
+    {
+      "name": "en-dark-390-api-THB",
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "basis": "api",
+      "currency": "THB",
+      "index": "a692169697fc3a5ac7a68a30174b68c7b1beeddd46cbfd75a69eeaeba5d5580c",
+      "apiScope": {
+        "from": 1746032400000,
+        "to": 1747489320001
+      },
+      "result": {
+        "points": 17,
+        "apiFacts": true,
+        "twoScalesUnchanged": true,
+        "pointer": true,
+        "clickPreservesBucket": true,
+        "keyboard": true,
+        "table": true,
+        "viewport": true,
+        "resizeDismissal": true,
+        "narrowTables": [
+          {
+            "section": "models",
+            "clientWidth": 288,
+            "scrollWidth": 640,
+            "tableWidth": 640,
+            "keyboardScroll": true
+          },
+          {
+            "section": "projects",
+            "clientWidth": 288,
+            "scrollWidth": 460,
+            "tableWidth": 460,
+            "keyboardScroll": true
+          },
+          {
+            "section": "sessions",
+            "clientWidth": 288,
+            "scrollWidth": 640,
+            "tableWidth": 640,
+            "keyboardScroll": true
+          }
+        ],
+        "inspectionFrame": {
+          "file": "en-dark-390-api-THB-inspection.png",
+          "sha256": "1a8754930895b7776aa17476aaf654a4f0e101aaa894fda8efe2d92195bff6aa",
+          "hash": "#cost?range=month&basis=api",
+          "at": "1747414800000"
+        },
+        "unrelatedScrollPreserved": true,
+        "scrollInvalidation": true
+      },
+      "errors": [],
+      "forbidden": []
+    },
+    {
+      "name": "en-dark-1672-api-USD",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "basis": "api",
+      "currency": "USD",
+      "index": "a692169697fc3a5ac7a68a30174b68c7b1beeddd46cbfd75a69eeaeba5d5580c",
+      "apiScope": {
+        "from": 1746032400000,
+        "to": 1747489320001
+      },
+      "result": {
+        "points": 17,
+        "apiFacts": true,
+        "twoScalesUnchanged": true,
+        "pointer": true,
+        "clickPreservesBucket": true,
+        "keyboard": true,
+        "table": true,
+        "viewport": true,
+        "resizeDismissal": true,
+        "scopeInvalidation": true,
+        "inspectionFrame": {
+          "file": "en-dark-1672-api-USD-inspection.png",
+          "sha256": "e5c45df6dfe383c0f3e3c47dbf451675421b9ca2dfdd6a4eea5f70b69baf7b3b",
+          "hash": "#cost?range=month&basis=native&bucket=week",
+          "at": "1747242000000"
+        },
+        "singleBucket": {
+          "points": 1,
+          "apiFacts": true,
+          "twoScalesUnchanged": true,
+          "pointer": true,
+          "clickPreservesBucket": true,
+          "keyboard": true,
+          "table": true,
+          "viewport": true,
+          "resizeDismissal": true
+        },
+        "unpricedScope": true
+      },
+      "errors": [],
+      "forbidden": []
+    }
+  ]
+}

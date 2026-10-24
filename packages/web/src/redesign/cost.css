@@ -57,6 +57,11 @@
 .qp-cost-providers li i { width:8px; height:8px; border-radius:50%; }
 .qp-cost-providers li strong { font-size:11px; }
 .qp-cost-table { overflow-x:auto; }
+@media(max-width:730px) {
+  .qp-cost-table { overscroll-behavior-x:contain; scrollbar-width:thin; }
+  .qp-cost-models .qp-cost-table table,.qp-cost-sessions .qp-cost-table table { min-width:640px; }
+  .qp-cost-projects .qp-cost-table table { min-width:460px; }
+}
 .qp-cost-table table { width:100%; border-collapse:collapse; font-size:11px; }
 .qp-cost-table th,.qp-cost-table td { padding:8px 5px; text-align:left; border-bottom:1px solid var(--qp-border); vertical-align:top; overflow-wrap:anywhere; }
 .qp-cost-table th { color:var(--qp-muted); }
@@ -78,6 +83,18 @@
 .qp-cost-route { display:inline-flex; align-items:center; gap:6px; }
 .qp-cost-route svg { width:17px; height:17px; flex:none; }
 .qp-cost-chart { position:relative; }
+.qp-cost-chart:focus-visible { outline:2px solid var(--qp-accent); outline-offset:3px; border-radius:3px; }
+.qp-cost-inspection-help { position:absolute; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+.qp-cost-inspection-marks { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; }
+.qp-cost-inspection-marks line { stroke:var(--qp-muted); stroke-width:1; stroke-dasharray:3 3; vector-effect:non-scaling-stroke; }
+.qp-cost-inspection-marks circle { fill:var(--qp-panel); stroke:var(--qp-accent); stroke-width:2; vector-effect:non-scaling-stroke; }
+.qp-cost-inspection-marks circle[data-series=tokens] { stroke:var(--qp-series); }
+.qp-cost-inspection-tooltip { position:fixed; z-index:8; width:min(228px,calc(100vw - 16px)); padding:10px; box-sizing:border-box; pointer-events:none; border:1px solid var(--qp-border); border-radius:8px; background:var(--qp-panel); color:var(--qp-text); font-size:11px; line-height:1.4; box-shadow:0 6px 20px #0005; }
+.qp-cost-inspection-tooltip>small { color:var(--qp-muted); font-size:9px; }
+.qp-cost-inspection-tooltip>time { display:block; margin:2px 0 8px; }
+.qp-cost-inspection-tooltip dl { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:5px 10px; margin:0; }
+.qp-cost-inspection-tooltip dt { color:var(--qp-muted); overflow-wrap:anywhere; }
+.qp-cost-inspection-tooltip dd { margin:0; text-align:right; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
 .qp-observed-trend.qp-cost-token-line { position:absolute; inset:0; height:100%; width:100%; display:block; overflow:visible; --qp-accent:var(--qp-series); }
 .qp-redesign[data-theme=dark] .qp-cost-donut { box-shadow:0 0 18px #007dff55,inset 0 0 5px #c1e5ff88; outline:1px solid var(--qp-border); outline-offset:4px; }
 @media(max-width:1200px) { .qp-cost-upper { grid-template-columns:1fr; } .qp-cost-summary { grid-template-columns:repeat(2,minmax(0,1fr)); } }
