@@ -558,6 +558,16 @@ async function checkAlerts(page: Page, lang: string, theme: string, pending: Set
   const overview = overviewResult.json<Overview>();
   const risks = getQuotaRiskModel(overview.limits, overview.settings.hidden_subscriptions, overview.now).risks;
   const riskRows = page.locator('.qp-alert-risk>ul>li[data-level]');
+  const riskLayout = await riskRows.evaluateAll(rows => rows.map(row => {
+    const box = row.getBoundingClientRect(), region = row.parentElement!.getBoundingClientRect();
+    return { height: box.height, visible: box.top >= region.top && box.bottom <= region.bottom };
+  }));
+  if (risks.length <= 4) assert.ok(riskLayout.every(row => row.visible), 'Current native risks must fit without clipping the last row');
+  if (lang === 'en') assert.ok(riskLayout.every(row => row.height <= 50), 'Native English risk rows follow the source48px density');
+  for (const row of await riskRows.all()) {
+    assert.equal(await row.locator(':scope>a').getAttribute('aria-label'), copy['redesign.alertOpenProvider']);
+    assert.equal(await row.locator(':scope>a>span').textContent(), copy['redesign.alertGuidanceView']);
+  }
   const summaryCount = await page.locator('[data-summary="redesign.alertCurrent"] strong').innerText();
   for (const level of ['critical', 'warning', 'info', 'stale', 'all']) {
     const button = page.locator(`.qp-alert-risk-filters button[data-level="${level}"]`);
@@ -937,6 +947,11 @@ async function checkProviders(page: Page, lang: string, theme: string, pending: 
 }
 
 async function checkProjectCards(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  await page.evaluate(() => scrollTo(0, 0));
+  const primaryAction = await page.locator('.qp-project-header>button').evaluate(button => ({ rect: button.getBoundingClientRect().toJSON(), background: getComputedStyle(button).backgroundImage }));
+  assert.equal(primaryAction.rect.x, 1506); assert.equal(primaryAction.rect.y, 78);
+  assert.equal(primaryAction.rect.width, 147); assert.equal(primaryAction.rect.height, 42);
+  assert.ok(primaryAction.background.includes('linear-gradient'), 'Real Refresh retains the reference primary-action plate');
   const month = new Date(fixedNow); month.setDate(1); month.setHours(0, 0, 0, 0);
   const query = new URLSearchParams({ detailed: '1', trends: '1', from: String(month.getTime()), to: String(fixedNow + 1) });
   const result = await daemon.inject({ method: 'GET', url: `/api/projects?${query}`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });

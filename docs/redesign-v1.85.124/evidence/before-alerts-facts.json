@@ -1,0 +1,192 @@
+{
+  "rect": {
+    "x": 254,
+    "y": 507.6875,
+    "width": 928.9375,
+    "height": 232,
+    "top": 507.6875,
+    "right": 1182.9375,
+    "bottom": 739.6875,
+    "left": 254
+  },
+  "scrollHeight": 273,
+  "clientHeight": 232,
+  "rows": [
+    {
+      "owner": "openai:subscription",
+      "window": "monthly",
+      "level": "critical",
+      "description": "Forecast reaches full use before resetCriticalMay 17, 08:41 PM",
+      "ownerText": "OpenAI SubscriptionMonthly",
+      "value": "72%Quota used (%)",
+      "age": "OpenAI Subscription · Monthly · Quota used (%) · 2025-05-15T13:42:00.000Z – 2025-05-17T13:41:30.000Z · Source 1 · fixed-fixture · live · 30s · Observed samples: 3 / 3May 15, 08:42 PM · 59%May 16, 08:42 PM · 66%May 17, 08:41 PM · 72%30s",
+      "href": "#providers?owner=openai%3Asubscription&window=monthly",
+      "rect": {
+        "x": 254,
+        "y": 507.6875,
+        "width": 928.9375,
+        "height": 64.5,
+        "top": 507.6875,
+        "right": 1182.9375,
+        "bottom": 572.1875,
+        "left": 254
+      },
+      "visible": true,
+      "icon": {
+        "x": 264,
+        "y": 519.9375,
+        "width": 40,
+        "height": 40,
+        "top": 519.9375,
+        "right": 304,
+        "bottom": 559.9375,
+        "left": 264
+      },
+      "spark": {
+        "x": 849.59375,
+        "y": 515.6875,
+        "width": 100,
+        "height": 48.5,
+        "top": 515.6875,
+        "right": 949.59375,
+        "bottom": 564.1875,
+        "left": 849.59375
+      },
+      "vectors": [
+        "<svg viewBox=\"0 0 100 32\" role=\"img\" aria-label=\"OpenAI Subscription · Monthly · Quota used (%) · 2025-05-15T13:42:00.000Z – 2025-05-17T13:41:30.000Z · Source 1 · fixed-fixture · live · 30s · Observed samples: 3 / 3\"><title>OpenAI Subscription · Monthly · Quota used (%) · 2025-05-15T13:42:00.000Z – 2025-05-17T13:41:30.000Z · Source 1 · fixed-fixture · live · 30s · Observed samples: 3 / 3</title><line x1=\"3\" y1=\"13.66\" x2=\"50.008161139086646\" y2=\"11.97\"></line><line x1=\"50.008161139086646\" y1=\"11.97\" x2=\"97\" y2=\"10.280000000000001\"></line><circle cx=\"3\" cy=\"13.66\" r=\"1.5\"><title>May 15, 08:42 PM · 59%</title></circle><circle cx=\"50.008161139086646\" cy=\"11.97\" r=\"1.5\"><title>May 16, 08:42 PM · 66%</title></circle><circle cx=\"97\" cy=\"10.280000000000001\" r=\"1.5\"><title>May 17, 08:41 PM · 72%</title></circle></svg>"
+      ]
+    },
+    {
+      "owner": "openai:subscription",
+      "window": "5h",
+      "level": "warning",
+      "description": "Current reading crossed a fixed thresholdWarningMay 17, 08:41 PM",
+      "ownerText": "OpenAI Subscription5-hour",
+      "value": "83%Quota used (%)",
+      "age": "OpenAI Subscription · 5-hour · Quota used (%) · 2025-05-17T08:42:00.000Z – 2025-05-17T13:41:30.000Z · Source 1 · fixed-fixture · live · 30s · Observed samples: 50 / 50May 17, 03:42 PM · 0%May 17, 03:43 PM · 1%May 17, 03:44 PM · 16%May 17, 03:45 PM · 24%May 17, 03:47 PM · 40%May 17, 03:48 PM · 48%May 17, 03:49 PM · 56%May 17, 03:50 PM · 64%May 17, 03:51 PM · 72%May 17, 03:52 PM · 80%May 17, 03:53 PM · 88%May 17, 04:42 PM · 0%May 17, 04:43 PM · 1%May 17, 04:44 PM · 16%May 17, 04:45 PM · 24%May 17, 04:47 PM · 40%May 17, 04:48 PM · 48%May 17, 04:49 PM · 56%May 17, 04:50 PM · 64%May 17, 04:51 PM · 72%May 17, 04:52 PM · 80%May 17, 04:53 PM · 88%May 17, 05:42 PM · 0%May 17, 05:43 PM · 1%May 17, 05:44 PM · 16%May 17, 05:45 PM · 24%May 17, 05:47 PM · 40%May 17, 05:48 PM · 48%May 17, 05:49 PM · 56%May 17, 05:50 PM · 64%May 17, 05:51 PM · 72%May 17, 05:52 PM · 80%May 17, 05:53 PM · 88%May 17, 06:42 PM · 0%May 17, 06:43 PM · 1%May 17, 06:44 PM · 16%May 17, 06:45 PM · 24%May 17, 06:47 PM · 40%May 17, 06:48 PM · 48%May 17, 06:49 PM · 56%May 17, 06:50 PM · 64%May 17, 06:51 PM · 72%May 17, 06:52 PM · 80%May 17, 06:53 PM · 88%May 17, 08:37 PM · 38%May 17, 08:41 PM · 83%30s",
+      "href": "#providers?owner=openai%3Asubscription&window=5h",
+      "rect": {
+        "x": 254,
+        "y": 577.1875,
+        "width": 928.9375,
+        "height": 64.5,
+        "top": 577.1875,
+        "right": 1182.9375,
+        "bottom": 641.6875,
+        "left": 254
+      },
+      "visible": true,
+      "icon": {
+        "x": 264,
+        "y": 589.4375,
+        "width": 40,
+        "height": 40,
+        "top": 589.4375,
+        "right": 304,
+        "bottom": 629.4375,
+        "left": 264
+      },
+      "spark": {
+        "x": 849.59375,
+        "y": 585.1875,
+        "width": 100,
+        "height": 48.5,
+        "top": 585.1875,
+        "right": 949.59375,
+        "bottom": 633.6875,
+        "left": 849.59375
+      },
+      "vectors": [
+        "<svg viewBox=\"0 0 100 32\" role=\"img\" aria-label=\"OpenAI Subscription · 5-hour · Quota used (%) · 2025-05-17T08:42:00.000Z – 2025-05-17T13:41:30.000Z · Source 1 · fixed-fixture · live · 30s · Observed samples: 50 / 50\"><title>OpenAI Subscription · 5-hour · Quota used (%) · 2025-05-17T08:42:00.000Z – 2025-05-17T13:41:30.000Z · Source 1 · fixed-fixture · live · 30s · Observed samples: 50 / 50</title><line x1=\"3\" y1=\"29\" x2=\"3.313856427378965\" y2=\"28.87\"></line><line x1=\"3.313856427378965\" y1=\"28.87\" x2=\"3.62771285475793\" y2=\"24.84\"></line><line x1=\"3.62771285475793\" y1=\"24.84\" x2=\"3.9415692821368946\" y2=\"22.76\"></line><line x1=\"4.569282136894825\" y1=\"18.6\" x2=\"4.883138564273789\" y2=\"16.52\"></line><line x1=\"4.883138564273789\" y1=\"16.52\" x2=\"5.196994991652755\" y2=\"14.440000000000001\"></line><line x1=\"5.196994991652755\" y1=\"14.440000000000001\" x2=\"5.51085141903172\" y2=\"12.36\"></line><line x1=\"5.51085141903172\" y1=\"12.36\" x2=\"5.824707846410685\" y2=\"10.280000000000001\"></line><line x1=\"5.824707846410685\" y1=\"10.280000000000001\" x2=\"6.138564273789649\" y2=\"8.2\"></line><line x1=\"6.138564273789649\" y1=\"8.2\" x2=\"6.452420701168615\" y2=\"6.12\"></line><line x1=\"21.831385642737896\" y1=\"29\" x2=\"22.14524207011686\" y2=\"28.87\"></line><line x1=\"22.14524207011686\" y1=\"28.87\" x2=\"22.459098497495827\" y2=\"24.84\"></line><line x1=\"22.459098497495827\" y1=\"24.84\" x2=\"22.772954924874792\" y2=\"22.76\"></line><line x1=\"23.40066777963272\" y1=\"18.6\" x2=\"23.714524207011685\" y2=\"16.52\"></line><line x1=\"23.714524207011685\" y1=\"16.52\" x2=\"24.02838063439065\" y2=\"14.440000000000001\"></line><line x1=\"24.02838063439065\" y1=\"14.440000000000001\" x2=\"24.342237061769616\" y2=\"12.36\"></line><line x1=\"24.342237061769616\" y1=\"12.36\" x2=\"24.65609348914858\" y2=\"10.280000000000001\"></line><line x1=\"24.65609348914858\" y1=\"10.280000000000001\" x2=\"24.969949916527547\" y2=\"8.2\"></line><line x1=\"24.969949916527547\" y1=\"8.2\" x2=\"25.28380634390651\" y2=\"6.12\"></line><line x1=\"40.66277128547579\" y1=\"29\" x2=\"40.97662771285476\" y2=\"28.87\"></line><line x1=\"40.97662771285476\" y1=\"28.87\" x2=\"41.29048414023372\" y2=\"24.84\"></line><line x1=\"41.29048414023372\" y1=\"24.84\" x2=\"41.60434056761269\" y2=\"22.76\"></line><line x1=\"42.23205342237062\" y1=\"18.6\" x2=\"42.545909849749584\" y2=\"16.52\"></line><line x1=\"42.545909849749584\" y1=\"16.52\" x2=\"42.85976627712855\" y2=\"14.440000000000001\"></line><line x1=\"42.85976627712855\" y1=\"14.440000000000001\" x2=\"43.173622704507515\" y2=\"12.36\"></line><line x1=\"43.173622704507515\" y1=\"12.36\" x2=\"43.48747913188648\" y2=\"10.280000000000001\"></line><line x1=\"43.48747913188648\" y1=\"10.280000000000001\" x2=\"43.80133555926544\" y2=\"8.2\"></line><line x1=\"43.80133555926544\" y1=\"8.2\" x2=\"44.115191986644405\" y2=\"6.12\"></line><line x1=\"59.49415692821369\" y1=\"29\" x2=\"59.80801335559266\" y2=\"28.87\"></line><line x1=\"59.80801335559266\" y1=\"28.87\" x2=\"60.12186978297162\" y2=\"24.84\"></line><line x1=\"60.12186978297162\" y1=\"24.84\" x2=\"60.43572621035059\" y2=\"22.76\"></line><line x1=\"61.06343906510851\" y1=\"18.6\" x2=\"61.37729549248748\" y2=\"16.52\"></line><line x1=\"61.37729549248748\" y1=\"16.52\" x2=\"61.69115191986644\" y2=\"14.440000000000001\"></line><line x1=\"61.69115191986644\" y1=\"14.440000000000001\" x2=\"62.005008347245415\" y2=\"12.36\"></line><line x1=\"62.005008347245415\" y1=\"12.36\" x2=\"62.31886477462438\" y2=\"10.280000000000001\"></line><line x1=\"62.31886477462438\" y1=\"10.280000000000001\" x2=\"62.63272120200334\" y2=\"8.2\"></line><line x1=\"62.63272120200334\" y1=\"8.2\" x2=\"62.946577629382304\" y2=\"6.12\"></line><line x1=\"95.58764607679466\" y1=\"19.12\" x2=\"97\" y2=\"7.42\"></line><circle cx=\"3\" cy=\"29\" r=\"1.5\"><title>May 17, 03:42 PM · 0%</title></circle><circle cx=\"3.313856427378965\" cy=\"28.87\" r=\"1.5\"><title>May 17, 03:43 PM · 1%</title></circle><circle cx=\"3.62771285475793\" cy=\"24.84\" r=\"1.5\"><title>May 17, 03:44 PM · 16%</title></circle><circle cx=\"3.9415692821368946\" cy=\"22.76\" r=\"1.5\"><title>May 17, 03:45 PM · 24%</title></circle><circle cx=\"4.569282136894825\" cy=\"18.6\" r=\"1.5\"><title>May 17, 03:47 PM · 40%</title></circle><circle cx=\"4.883138564273789\" cy=\"16.52\" r=\"1.5\"><title>May 17, 03:48 PM · 48%</title></circle><circle cx=\"5.196994991652755\" cy=\"14.440000000000001\" r=\"1.5\"><title>May 17, 03:49 PM · 56%</title></circle><circle cx=\"5.51085141903172\" cy=\"12.36\" r=\"1.5\"><title>May 17, 03:50 PM · 64%</title></circle><circle cx=\"5.824707846410685\" cy=\"10.280000000000001\" r=\"1.5\"><title>May 17, 03:51 PM · 72%</title></circle><circle cx=\"6.138564273789649\" cy=\"8.2\" r=\"1.5\"><title>May 17, 03:52 PM · 80%</title></circle><circle cx=\"6.452420701168615\" cy=\"6.12\" r=\"1.5\"><title>May 17, 03:53 PM · 88%</title></circle><circle cx=\"21.831385642737896\" cy=\"29\" r=\"1.5\"><title>May 17, 04:42 PM · 0%</title></circle><circle cx=\"22.14524207011686\" cy=\"28.87\" r=\"1.5\"><title>May 17, 04:43 PM · 1%</title></circle><circle cx=\"22.459098497495827\" cy=\"24.84\" r=\"1.5\"><title>May 17, 04:44 PM · 16%</title></circle><circle cx=\"22.772954924874792\" cy=\"22.76\" r=\"1.5\"><title>May 17, 04:45 PM · 24%</title></circle><circle cx=\"23.40066777963272\" cy=\"18.6\" r=\"1.5\"><title>May 17, 04:47 PM · 40%</title></circle><circle cx=\"23.714524207011685\" cy=\"16.52\" r=\"1.5\"><title>May 17, 04:48 PM · 48%</title></circle><circle cx=\"24.02838063439065\" cy=\"14.440000000000001\" r=\"1.5\"><title>May 17, 04:49 PM · 56%</title></circle><circle cx=\"24.342237061769616\" cy=\"12.36\" r=\"1.5\"><title>May 17, 04:50 PM · 64%</title></circle><circle cx=\"24.65609348914858\" cy=\"10.280000000000001\" r=\"1.5\"><title>May 17, 04:51 PM · 72%</title></circle><circle cx=\"24.969949916527547\" cy=\"8.2\" r=\"1.5\"><title>May 17, 04:52 PM · 80%</title></circle><circle cx=\"25.28380634390651\" cy=\"6.12\" r=\"1.5\"><title>May 17, 04:53 PM · 88%</title></circle><circle cx=\"40.66277128547579\" cy=\"29\" r=\"1.5\"><title>May 17, 05:42 PM · 0%</title></circle><circle cx=\"40.97662771285476\" cy=\"28.87\" r=\"1.5\"><title>May 17, 05:43 PM · 1%</title></circle><circle cx=\"41.29048414023372\" cy=\"24.84\" r=\"1.5\"><title>May 17, 05:44 PM · 16%</title></circle><circle cx=\"41.60434056761269\" cy=\"22.76\" r=\"1.5\"><title>May 17, 05:45 PM · 24%</title></circle><circle cx=\"42.23205342237062\" cy=\"18.6\" r=\"1.5\"><title>May 17, 05:47 PM · 40%</title></circle><circle cx=\"42.545909849749584\" cy=\"16.52\" r=\"1.5\"><title>May 17, 05:48 PM · 48%</title></circle><circle cx=\"42.85976627712855\" cy=\"14.440000000000001\" r=\"1.5\"><title>May 17, 05:49 PM · 56%</title></circle><circle cx=\"43.173622704507515\" cy=\"12.36\" r=\"1.5\"><title>May 17, 05:50 PM · 64%</title></circle><circle cx=\"43.48747913188648\" cy=\"10.280000000000001\" r=\"1.5\"><title>May 17, 05:51 PM · 72%</title></circle><circle cx=\"43.80133555926544\" cy=\"8.2\" r=\"1.5\"><title>May 17, 05:52 PM · 80%</title></circle><circle cx=\"44.115191986644405\" cy=\"6.12\" r=\"1.5\"><title>May 17, 05:53 PM · 88%</title></circle><circle cx=\"59.49415692821369\" cy=\"29\" r=\"1.5\"><title>May 17, 06:42 PM · 0%</title></circle><circle cx=\"59.80801335559266\" cy=\"28.87\" r=\"1.5\"><title>May 17, 06:43 PM · 1%</title></circle><circle cx=\"60.12186978297162\" cy=\"24.84\" r=\"1.5\"><title>May 17, 06:44 PM · 16%</title></circle><circle cx=\"60.43572621035059\" cy=\"22.76\" r=\"1.5\"><title>May 17, 06:45 PM · 24%</title></circle><circle cx=\"61.06343906510851\" cy=\"18.6\" r=\"1.5\"><title>May 17, 06:47 PM · 40%</title></circle><circle cx=\"61.37729549248748\" cy=\"16.52\" r=\"1.5\"><title>May 17, 06:48 PM · 48%</title></circle><circle cx=\"61.69115191986644\" cy=\"14.440000000000001\" r=\"1.5\"><title>May 17, 06:49 PM · 56%</title></circle><circle cx=\"62.005008347245415\" cy=\"12.36\" r=\"1.5\"><title>May 17, 06:50 PM · 64%</title></circle><circle cx=\"62.31886477462438\" cy=\"10.280000000000001\" r=\"1.5\"><title>May 17, 06:51 PM · 72%</title></circle><circle cx=\"62.63272120200334\" cy=\"8.2\" r=\"1.5\"><title>May 17, 06:52 PM · 80%</title></circle><circle cx=\"62.946577629382304\" cy=\"6.12\" r=\"1.5\"><title>May 17, 06:53 PM · 88%</title></circle><circle cx=\"95.58764607679466\" cy=\"19.12\" r=\"1.5\"><title>May 17, 08:37 PM · 38%</title></circle><circle cx=\"97\" cy=\"7.42\" r=\"1.5\"><title>May 17, 08:41 PM · 83%</title></circle></svg>"
+      ]
+    },
+    {
+      "owner": "openai:subscription",
+      "window": "weekly",
+      "level": "info",
+      "description": "Current reading crossed a fixed thresholdNoticeMay 17, 08:41 PM",
+      "ownerText": "OpenAI SubscriptionWeekly",
+      "value": "62%Quota used (%)",
+      "age": "OpenAI Subscription · Weekly · Quota used (%) · 2025-05-17T13:41:30.000Z – 2025-05-17T13:41:30.000Z · Source 1 · fixed-fixture · live · 30s · Observed samples: 1 / 1May 17, 08:41 PM · 62%30s",
+      "href": "#providers?owner=openai%3Asubscription&window=weekly",
+      "rect": {
+        "x": 254,
+        "y": 646.6875,
+        "width": 928.9375,
+        "height": 64.5,
+        "top": 646.6875,
+        "right": 1182.9375,
+        "bottom": 711.1875,
+        "left": 254
+      },
+      "visible": true,
+      "icon": {
+        "x": 264,
+        "y": 658.9375,
+        "width": 40,
+        "height": 40,
+        "top": 658.9375,
+        "right": 304,
+        "bottom": 698.9375,
+        "left": 264
+      },
+      "spark": {
+        "x": 849.59375,
+        "y": 654.6875,
+        "width": 100,
+        "height": 48.5,
+        "top": 654.6875,
+        "right": 949.59375,
+        "bottom": 703.1875,
+        "left": 849.59375
+      },
+      "vectors": [
+        "<svg viewBox=\"0 0 100 32\" role=\"img\" aria-label=\"OpenAI Subscription · Weekly · Quota used (%) · 2025-05-17T13:41:30.000Z – 2025-05-17T13:41:30.000Z · Source 1 · fixed-fixture · live · 30s · Observed samples: 1 / 1\"><title>OpenAI Subscription · Weekly · Quota used (%) · 2025-05-17T13:41:30.000Z – 2025-05-17T13:41:30.000Z · Source 1 · fixed-fixture · live · 30s · Observed samples: 1 / 1</title><circle cx=\"50\" cy=\"12.88\" r=\"1.5\"><title>May 17, 08:41 PM · 62%</title></circle></svg>"
+      ]
+    },
+    {
+      "owner": "opencode:go",
+      "window": "monthly",
+      "level": "info",
+      "description": "Current reading crossed a fixed thresholdNoticeMay 17, 08:41 PM",
+      "ownerText": "OpenCode Go SubscriptionMonthly",
+      "value": "58%Quota used (%)",
+      "age": "OpenCode Go Subscription · Monthly · Quota used (%) · 2025-05-17T13:41:30.000Z – 2025-05-17T13:41:30.000Z · Source 2 · fixed-fixture · live · 30s · Observed samples: 1 / 1May 17, 08:41 PM · 58%30s",
+      "href": "#providers?owner=opencode%3Ago&window=monthly",
+      "rect": {
+        "x": 254,
+        "y": 716.1875,
+        "width": 928.9375,
+        "height": 64.5,
+        "top": 716.1875,
+        "right": 1182.9375,
+        "bottom": 780.6875,
+        "left": 254
+      },
+      "visible": false,
+      "icon": {
+        "x": 264,
+        "y": 728.4375,
+        "width": 40,
+        "height": 40,
+        "top": 728.4375,
+        "right": 304,
+        "bottom": 768.4375,
+        "left": 264
+      },
+      "spark": {
+        "x": 849.59375,
+        "y": 724.1875,
+        "width": 100,
+        "height": 48.5,
+        "top": 724.1875,
+        "right": 949.59375,
+        "bottom": 772.6875,
+        "left": 849.59375
+      },
+      "vectors": [
+        "<svg viewBox=\"0 0 100 32\" role=\"img\" aria-label=\"OpenCode Go Subscription · Monthly · Quota used (%) · 2025-05-17T13:41:30.000Z – 2025-05-17T13:41:30.000Z · Source 2 · fixed-fixture · live · 30s · Observed samples: 1 / 1\"><title>OpenCode Go Subscription · Monthly · Quota used (%) · 2025-05-17T13:41:30.000Z – 2025-05-17T13:41:30.000Z · Source 2 · fixed-fixture · live · 30s · Observed samples: 1 / 1</title><circle cx=\"50\" cy=\"13.92\" r=\"1.5\"><title>May 17, 08:41 PM · 58%</title></circle></svg>"
+      ]
+    }
+  ]
+}

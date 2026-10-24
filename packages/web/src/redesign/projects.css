@@ -31,6 +31,18 @@
   opacity:.55;
   cursor:wait;
 }
+/* The real Refresh action occupies the source's native primary-action plate. */
+@media(min-width:1536px) {
+  .qp-project-header>button {
+    width:147px; height:42px; flex:none; justify-content:center; margin-right:2px; transform:translateY(-7px);
+    color:#fff; font-weight:500; border-color:#3574ff; border-radius:11px;
+    background:linear-gradient(90deg,#108bfc 0%,#157bfc 5.5%,#2262fd 19.3%,#2f47fb 36.5%,#3739fc 53.7%,#3f31fd 71%,#4830fd 91.7%,#4a30fd 100%);
+    box-shadow:inset 0 0 0 1px #72c6ff22,0 0 16px #4935ff70,0 0 6px #008bff70;
+  }
+  .qp-project-header>button:hover:not(:disabled) { filter:brightness(1.06); }
+  .qp-project-header>button:active:not(:disabled) { filter:brightness(.96); }
+  .qp-project-header>button:focus-visible { outline:2px solid var(--qp-accent); outline-offset:3px; }
+}
 .qp-project-error {
   border:1px solid #c77b33;
   border-radius:8px;

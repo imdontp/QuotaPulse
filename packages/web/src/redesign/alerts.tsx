@@ -194,7 +194,7 @@ export function ProductionAlerts() {
             <div className="qp-alert-risk-owner"><strong className="qp-alert-owner"><VendorIcon vendor={risk.reading.subscription_provider ?? risk.reading.account_provider ?? 'unknown'}/>{risk.title}</strong><small>{f.window(risk.window)}</small></div>
             <RiskSparkline risk={risk} result={histories.get(risk.key)} t={t} now={now}/>
             <div className="qp-alert-risk-value"><strong>{isQuotaReadingFresh(risk.reading, now) && risk.reading.used_percent !== null ? f.pct(risk.reading.used_percent) : t('redesign.unknownValue')}</strong><small>{t('redesign.alertQuotaPercent')}</small></div>
-            <a href={ownerHref(risk)}>{t('redesign.alertOpenProvider')}</a>
+            <a href={ownerHref(risk)} aria-label={t('redesign.alertOpenProvider')} title={t('redesign.alertOpenProvider')}><span>{t('redesign.alertGuidanceView')}</span><ChevronRight size={12} aria-hidden="true"/></a>
           </li>)}
           {readerAdvisories.map(source => <li key={`source:${source.source_id}`} data-advisory="reader">
             <span className="qp-alert-risk-icon" data-level="stale" aria-hidden="true"><Cable size={23}/></span>

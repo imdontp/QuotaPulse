@@ -1,0 +1,23 @@
+{
+  "checkpoint": "v1.85.124",
+  "status": "scoped checks pass; full redesign partially validated",
+  "productionIndexSha256": "f07fd15bfef89b60e59dcca679d930f0957c54be64e10333fc63650ab53fcb43",
+  "browser": "155.0.8059.80",
+  "nativeCases": 32,
+  "originalGatePairs": 8,
+  "exactOriginalGatePairs": 7,
+  "remainingPair": {
+    "page": "projects",
+    "lang": "en",
+    "theme": "light",
+    "changedPixels": 8,
+    "maxChannelDelta": 1
+  },
+  "visibleRisksBefore": 3,
+  "visibleRisksAfter": 4,
+  "realRefreshWithFixtureRollback": true,
+  "unplannedProjectPixels": 255,
+  "unplannedProjectMaxDelta": 1,
+  "desktopBundleUpdated": false,
+  "scope": "Measured native Projects action and actual Alerts density; not whole-design acceptance"
+}
