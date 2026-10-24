@@ -1,0 +1,130 @@
+{
+  "scope": "Whole before/after frames, no masks and no concept similarity percentage. Color/glyph threshold localization is diagnostic only, not a gate mask.",
+  "beforeIndex": "0f6ed0dbbfb677a873e562f3343bf02c21f839e8b099c81eb726eb11be7bd520",
+  "afterIndex": "fb552adb920de673a9ae10c008adbe428269d5b07dffd3894fbe0a3870012926",
+  "rows": [
+    {
+      "route": "overview",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "bounds": null,
+      "mainGeometryEqual": true,
+      "beforeRepeatExact": true,
+      "afterRepeatExact": true
+    },
+    {
+      "route": "live",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "bounds": null,
+      "mainGeometryEqual": true,
+      "beforeRepeatExact": true,
+      "afterRepeatExact": true
+    },
+    {
+      "route": "projects",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "bounds": null,
+      "mainGeometryEqual": true,
+      "beforeRepeatExact": true,
+      "afterRepeatExact": true
+    },
+    {
+      "route": "models",
+      "changedPixels": 21329,
+      "maxChannelDelta": 231,
+      "bounds": [
+        1299,
+        371,
+        1653,
+        524
+      ],
+      "mainGeometryEqual": true,
+      "beforeRepeatExact": true,
+      "afterRepeatExact": true
+    },
+    {
+      "route": "history",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "bounds": null,
+      "mainGeometryEqual": true,
+      "beforeRepeatExact": true,
+      "afterRepeatExact": true
+    },
+    {
+      "route": "alerts",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "bounds": null,
+      "mainGeometryEqual": true,
+      "beforeRepeatExact": true,
+      "afterRepeatExact": true
+    },
+    {
+      "route": "providers",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "bounds": null,
+      "mainGeometryEqual": true,
+      "beforeRepeatExact": true,
+      "afterRepeatExact": true
+    },
+    {
+      "route": "cost",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "bounds": null,
+      "mainGeometryEqual": true,
+      "beforeRepeatExact": true,
+      "afterRepeatExact": true
+    }
+  ],
+  "ringDiagnostics": [
+    {
+      "name": "reference",
+      "sha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "coloredRingBounds": [
+        1515,
+        393,
+        1630,
+        510
+      ],
+      "headingGlyphRows": [
+        386,
+        395
+      ]
+    },
+    {
+      "name": "current",
+      "sha256": "97676c04fef0075fb0932c1c985801e9f45197a2b1f5996df11f7e438ede62c8",
+      "coloredRingBounds": [
+        1514,
+        393,
+        1631,
+        509
+      ],
+      "headingGlyphRows": [
+        386,
+        395
+      ]
+    }
+  ],
+  "ringLocalizationMethod": {
+    "ringCrop": [
+      1500,
+      385,
+      1650,
+      515
+    ],
+    "ringColor": "B>120 and ((B>1.2R and B>1.15G) or (G>100 and R<80))",
+    "headingCrop": [
+      1298,
+      375,
+      1455,
+      418
+    ],
+    "headingColor": "minRGB>130, spread<100, more than3 pixels per row"
+  }
+}
