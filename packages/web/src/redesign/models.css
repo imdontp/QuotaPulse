@@ -327,6 +327,13 @@
 
 /* Keep the unknown-provider qualifier together when the summary wraps. */
 .qp-model-summary [data-testid=models-provider-count] abbr { display:inline-block; white-space:nowrap; }
+@media(min-width:731px) and (max-width:1535px) {
+  .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true] { grid-template-columns:46px max-content minmax(0,1fr); }
+  .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true][data-wide=true]>.qp-model-summary-icon { grid-row:1; }
+  .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true][data-wide=true]>strong { grid-column:1/-1; grid-row:2; }
+  .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true][data-wide=true]>small { grid-column:2/-1; grid-row:3; }
+  .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true][data-wide=true] .qp-model-summary-spark { grid-column:1; grid-row:3; }
+}
 @media(max-width:730px) {
   .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true][data-wide=true]>strong { grid-column:1/-1; grid-row:3; }
 }
