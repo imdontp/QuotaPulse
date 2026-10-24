@@ -28,7 +28,7 @@
   .qp-model-distribution[data-ring=input-output] { grid-template-columns:minmax(0,1fr) 120px; }
   .qp-model-distribution[data-ring=input-output]>h2 { align-self:start; transform:translateY(-2px); }
   .qp-model-distribution[data-ring=input-output]>.qp-model-donut { width:120px; height:120px; transform:translate3d(-6px,7.5px,0); }
-  .qp-model-distribution[data-ring=input-output]>.qp-model-distribution-legend { padding-inline:7px 24px; gap:14px; transform:translateY(4px); }
+  .qp-model-distribution[data-ring=input-output]>.qp-model-distribution-legend { padding-inline:8px 16px; gap:14px; transform:translateY(4px); }
   .qp-model-distribution[data-ring=input-output] .qp-model-distribution-legend>li { grid-template-columns:12px minmax(0,1fr) auto auto; gap:10px; font-size:12px; }
   .qp-model-distribution[data-ring=input-output] .qp-model-distribution-legend i { width:12px; height:12px; }
   .qp-model-distribution[data-ring=input-output]>.qp-model-input-breakdown[open] { margin-block-start:8px; }

@@ -1,0 +1,6 @@
+{
+  "installedModule": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\node_modules\\framer-motion\\dist\\es\\utils\\reduced-motion\\use-reduced-motion.mjs",
+  "sha256": "a56ff5b76d7821a59eec6324f7cff65a0267d4bdc4b903f394c4e576903d771c",
+  "mechanism": "Installed useReducedMotion stores the initial preference with useState and no updating setter. Both normal-to-reduced and initial-reduced-to-normal failures were reproduced before using live matchMedia in the ring adapter. Shared duration/easing tokens remain unchanged.",
+  "scope": "Ring adapter only; other motion callers are not newly validated for dynamic preferences."
+}

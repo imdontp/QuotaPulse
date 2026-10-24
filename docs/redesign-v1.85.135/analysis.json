@@ -1,0 +1,63 @@
+{
+  "scope": "Whole unmasked source134/source135 Models frames; no reference similarity score.",
+  "beforeIndex": "32a0482a0d1c9dbbbfa33780af6b0db3187e9b22f892f8b0b83a571b48f57481",
+  "index": "0fd855c959228374a5733d3b0aebbb001e8b3394222eebe6c6836bd503cbc2d4",
+  "changedPixels": 5368,
+  "maxChannelDelta": 231,
+  "bounds": [
+    246,
+    353,
+    1494,
+    499
+  ],
+  "mainGeometryEqual": true,
+  "outsideLegendDifferences": [
+    {
+      "x": 246,
+      "y": 353,
+      "before": [
+        7,
+        20,
+        27
+      ],
+      "after": [
+        7,
+        18,
+        27
+      ],
+      "maxDelta": 2
+    },
+    {
+      "x": 246,
+      "y": 378,
+      "before": [
+        7,
+        20,
+        27
+      ],
+      "after": [
+        7,
+        18,
+        27
+      ],
+      "maxDelta": 2
+    },
+    {
+      "x": 246,
+      "y": 422,
+      "before": [
+        13,
+        22,
+        50
+      ],
+      "after": [
+        7,
+        16,
+        27
+      ],
+      "maxDelta": 23
+    }
+  ],
+  "distinctDocumentRasterGate": "open: three comparison border pixels differ; cause unestablished; no mask or tolerance pass",
+  "packagingCorrection": "Initial packaging assumption that all changed pixels were inside the legend was disproved. Retain every pixel difference instead of declaring a whole-frame pass."
+}
