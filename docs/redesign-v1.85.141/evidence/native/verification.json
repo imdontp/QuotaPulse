@@ -1,0 +1,1045 @@
+{
+  "status": "passed",
+  "sourceCommit": "1319c196e85e92e231b13e6a69dff68c97273705",
+  "checkout": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.140",
+  "bundle": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.140\\tmp\\review-bundles\\QuotaPulse-v1.85.140-review141-Qy38BN",
+  "profile": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qpdash-S4Cqvb",
+  "output": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review141\\native-6410728e-b7e5-4565-a6e4-b9a43a92746c",
+  "productionIndexSha256": "2bab6990b174526765b76cc512552e3daf1c97a2a9b07aa1157ffd33cdd9b732",
+  "buildReceiptSha256": "b7c5d20b7dca515717880db84c46cc3e345203b82a1e5e0f05d0f69298c52096",
+  "bundleFiles": 3158,
+  "served": {
+    "assets/index-QQyhxQjn.css": "666bdc2a2392a38af0dd406b4f21f3b2fa7ddd767b56b88136484711fac3973c",
+    "assets/index-N-utsRm_.js": "c19580611c838ccaf3a548258b1fbdc009dec1fbf61fb575aadedad68a2367fc",
+    "assets/page-heading-VG1tKrzh.css": "f539d5b4d766840b808ce5ce27c1b6e5965ae8f77f5dce3079294b32066a0cfd",
+    "assets/section-mark-D9p1fSvH.css": "c08b2da031c71509e1e6821b0ac257b65e497676ada243a3be0eb5029ea63def",
+    "assets/live-BN_jn3yp.css": "4f38d34955cf141251a8427c9b2c5228d6be3e86de41c79407ab7fae6411e351",
+    "assets/live-5cu_so9g.js": "a9dba28381fc8fd68992f8f99cbfdda2d1be21cb8bdd54139314f00db5a7a324",
+    "assets/dashboard-marks-DYypORv8.js": "cb6ba4c0293977fd7db3fd2bd7277798a3864680dfcbe96936674b1d180bef6f",
+    "assets/vendor-icon-DrrfRTXg.js": "652c2b44e7058ff7756e36e54c5c1af4eb8f84cf8cbdc377ebd8313f30a7f90e",
+    "assets/provider-mark-DqSoP-mh.js": "787ba4bc0fcabc822db5c64e67ceb26bdcbe23a2635d3a362bb4872182b1c49d",
+    "assets/page-heading-yMTn4cDY.js": "cccfc94365111336d7ae030c382fffc56c4a5846f7343f815a2bf2a3b4910874",
+    "assets/heading-reference-icon-YDxyVh9s.js": "876f64f565a740389808f928b7aae07c2949b83419ada2e5a4837b2f6101a639",
+    "assets/chart-column-CSUoBcGU.js": "bd6c630afb23a15c03ff0d3418b8b381c4e2d9536eb9006c4dd49b5cb9bb7a0a",
+    "assets/bell-ring-Dz4D-2lr.js": "6ee23785a5b5c61be2a11c5f51805daa0ec1080bc08332b1bddca3deb9970132",
+    "assets/section-mark-DclYjL2p.js": "910042c53b38739bd1f2a7bba76c9306009e72852af2e6db30605de816bd5841",
+    "assets/live-record-motion-BCtgcRyj.js": "55c9a84b5d1cd5fd643f3e48cdacd1dc4ed4389be1e0779a3cd9261f9d1f276e",
+    "assets/history-motion-hn6Er2SY.js": "2036e3d0b7c5692aec6ef82cccf5cfb3eea0ed9073380937ea5b4cac19ec9422",
+    "assets/play-CeXUMO7Y.js": "e9dc6db07f7f0d283a32d3970b0293e9c83de580150f76a87051f2f63b9f2144",
+    "assets/radio-DdBc9fIa.js": "91a5af6de725afcf209647562a57c52f6e8175a24610f940a748b4a3dd417dac",
+    "assets/clock-3-BT_Iyv_R.js": "857c172f9603286bf67a7c2b73203046fca70b94a6d2ef64d57a238383f89a22",
+    "assets/triangle-alert-DX5oyIHI.js": "864aa3db16481b1684505ad1fe12b46a629a9b45f0f53110f24cc8ed5538d89b",
+    "assets/info-CrPKcXu4.js": "bf2c70f50b9a41f3b5b69ca3c50dfe65873338ebb466caa7e0a92cac69ba30fc",
+    "assets/circle-question-mark-CxN_H6ZA.js": "d1a9a99ecd1b6e6d078608f1cb57c312751ed2a251ad7ea318d4bd89ec6f2a98",
+    "assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "assets/geist-mono-latin-wght-normal-XN7g48iV.woff2": "684ad5b531f81d43c1e8c7038262d5db7cdc1f68006e04d6c7769efa8d33c8cc",
+    "fonts/noto-sans-thai/NotoSansThai-variable.ttf": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+    "assets/chart-data-AgyWygLH.css": "e4bacbb935d7cb79ba192d904186580e342bac9586e2b92f70f5de17f6133231",
+    "assets/quota-chart-D8HC5jl7.css": "8cd814f625d04da0c30f19ad2c4b4882916d37af0106f42353050e44c1b78236",
+    "assets/production-I1A5b9Te.css": "b6aa22b50ae99221c5da7dd0528008019a979b8b4fab94ebdddcb410b36066bd",
+    "assets/production-Baoyxufp.js": "13d9fcdef76ade4abc50d4e497486e3835ad0192ca5762bc78ce645fd551e403",
+    "assets/chart-data-Cn-ljjyZ.js": "953f1b1a42cf66d6f9616ef0266526bfa36f5e38cae29002172629a6ec7872ae",
+    "assets/quota-chart-ChXnoMdq.js": "be086173b5644018616e583e4be86b5a35ac0e622d3d0a937e8120c8bdf959b5",
+    "assets/format-DY0joRUR.js": "158b15439e6d3715d7ab4f8176790487213f217219399ad19f0bb7b27f90d1a0",
+    "assets/flame-yQUtELET.js": "fd91f1e7c7736d2ba170bd2b1249e9d44365586adc3cbf79409bea664f5e050e",
+    "assets/coins-YWnlqc_Z.js": "1fe33397f4d2d91c0fb3eac3641e8a1cc5d26586b069bd59f647de536e099732",
+    "assets/database-BoGqFVwt.js": "bdc1eb01fbb54d5e3c1e687bc50aec4f94e049690cc27c6836e19073abbb5129",
+    "assets/trending-up-CW0XGG6s.js": "ba68db9dbf5b14b46e6c9599c7556eddc163401b107b450eaf17a5bb6dfda7fb",
+    "assets/lightbulb-MURLLv0s.js": "a99bf2300a69de49d99afada2eee98a9be7d67c96cdaa3d232a06f399557d09a",
+    "redesign/pulse-earth-v4.png": "43680a68501609dd2e6b5d21c01495d7c5b239f9d92655c33f47625238597bf2",
+    "assets/projects-VuN3UZYU.js": "1183b0c0dbc4ebbcff73afdf8aa6f2e64c7ba1cb4e2eb79afb5cb42bfd10e647",
+    "assets/model-selection-motion-CYzWACGt.js": "f1ef12215317e7b6101c4ad88d9be808f4e3cd212fc6a7aa9c32544a3df0cee9",
+    "assets/project-selection-motion-DQzc3-8p.js": "5b5acdad25ed0883fe49b47a1ca4b5c7c9ee6e14ed5e23d209002c2e5dfde494",
+    "assets/scope-notice-CBY3msHu.js": "db4b4084ba8a478ce6b4355735885af4903b6554a01754da699ce328035de42c",
+    "assets/scope-notice-SMVc0RpX.css": "07b85b64ca507753859209dec03dfb47ed3c8d40f0ac14d94e75de2cfdb33c94",
+    "assets/chart-data-glHAUIXJ.css": "42c34601dfff9d208631ade3a55b4c9db3cb2c5042908dddf00a68ba0fd6501e",
+    "assets/projects-YJAUBI5L.css": "5af80389e3a1f752a06cd1cfaa6cf07e215bff0e8dfa1fd6bcc68a8d2bbd53a3",
+    "assets/chart-data-oD7uIeUS.js": "26de3423048ecc591c74d6035600369dbb05d3a5b1713e68dcc791250edfc6ca",
+    "assets/models-mXDsH5ib.js": "712dd61440c7f3feaaf23a4ba4452871b9aae6ea1f239630956ed21a5f27d236",
+    "assets/effort-pagination-BUEAj4uf.js": "2c97461b93a7df08c757fc23ff28a2f1d87c9dca41770b5104921d3c293fef43",
+    "assets/model-row-trends-C7SO78lQ.js": "71ed8844f447dee6aa5390ca9471f4b64f29d33ccd1da8c1066edc54c431cca5",
+    "assets/models-CF7Uaq0a.css": "460dc34f8c4f24ec16449ab42c0946ad90ea3b56f942d7419878ec4f6a9bddc2",
+    "assets/utility-pages-Cac2CC-i.js": "c65033aa9cbd1421c54c46bcc48972cc9e137c8376d53a39bda8782f710319d6",
+    "assets/settings-CjU6Zu0_.css": "c15467ec92cc27f0f8cc4edd01f6f0a212ba441cf47be47453ce6f2f3682dafd",
+    "assets/utility-pages-rQmk3yrA.css": "08e4afaf80b63623c64fa9a26d02e18ec4c4789673bed5e3139bf03ff5d40028",
+    "assets/settings-BTSb7DkO.js": "c3ef302109de38a639b90fdc217a6da39bba26749899c09cc9423963786e85fc",
+    "assets/shield-check-C2pG0osO.js": "bbd54b2563c6d3db3885302a5391ceead93b2fd334bdada9ebbf23b10ada43a2",
+    "assets/alerts-wUtpMDp4.js": "247ab3eb8fff6faeea3eda7ed158401fac7b8a8c02465cf5df0b1565f0172274",
+    "assets/gauge-BerkopXT.js": "063db54c1ad85ed50de48b73bbc17e30ba2e6a91eb9d3ee1ae73b39e53dd4f36",
+    "assets/alerts-DJSiH3ky.css": "bc5d2776d28384c349841db4086efc129c32071d98de2a82fdc4dac615f6ccb7",
+    "assets/providers-D_z0-1Wd.js": "7f168a56c638cd12583090d95cf527bc932050d0470cc3553a6317dfacd1bde2",
+    "assets/providers-kgdURhFC.css": "cd9a7588e951c2d490496fa03e33eec427f3727794ff0bd92114b433d0ff7afe",
+    "assets/cost-NSMKOap_.js": "e58d5c435a54ff61f2a9716e647912722359f52553f89cac822c7c1d2ff36c88",
+    "assets/wallet-D31zYwio.js": "28452a66c2b8dbe29f2bd4a5ca690979ff0777a2c9adc282069369302f4d4722",
+    "assets/cost-ZTlgMppG.css": "bbd08076ce861995ba17f0edfc1b2a44447942a48fee8940aa1b16fecc1f92ad"
+  },
+  "captures": [
+    {
+      "phase": "initial",
+      "route": "overview",
+      "summaryLayout": null,
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOracleSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "60459742d99e76452399bf2907a925c0c2b4034b7b91bd7e820313c370dc0349",
+      "nativeCaptureSha256": "60459742d99e76452399bf2907a925c0c2b4034b7b91bd7e820313c370dc0349",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "60459742d99e76452399bf2907a925c0c2b4034b7b91bd7e820313c370dc0349",
+          "nativeSha256": "60459742d99e76452399bf2907a925c0c2b4034b7b91bd7e820313c370dc0349"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "60459742d99e76452399bf2907a925c0c2b4034b7b91bd7e820313c370dc0349"
+    },
+    {
+      "phase": "initial",
+      "route": "live",
+      "summaryLayout": null,
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOracleSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "fdb5465be3854dc7043398b08fd3ca4770877c18c71c4bb535faaf2c1504fe23",
+      "nativeCaptureSha256": "fdb5465be3854dc7043398b08fd3ca4770877c18c71c4bb535faaf2c1504fe23",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "fdb5465be3854dc7043398b08fd3ca4770877c18c71c4bb535faaf2c1504fe23",
+          "nativeSha256": "fdb5465be3854dc7043398b08fd3ca4770877c18c71c4bb535faaf2c1504fe23"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "fdb5465be3854dc7043398b08fd3ca4770877c18c71c4bb535faaf2c1504fe23"
+    },
+    {
+      "phase": "initial",
+      "route": "projects",
+      "summaryLayout": null,
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOracleSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOraclePixelsExact": false,
+      "paintOracleSha256": "f1513d53c0895e0ec3d5a970bd1e4216cac702b7578dd272f1f3020a314b2b7a",
+      "nativeCaptureSha256": "fb253b11dac3647b9aaccf915a86e5276a65ab393350a77b7b5c0d418b360ec6",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": false,
+          "changedBytes": 1092,
+          "oracleSha256": "f1513d53c0895e0ec3d5a970bd1e4216cac702b7578dd272f1f3020a314b2b7a",
+          "nativeSha256": "fb253b11dac3647b9aaccf915a86e5276a65ab393350a77b7b5c0d418b360ec6"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "f1513d53c0895e0ec3d5a970bd1e4216cac702b7578dd272f1f3020a314b2b7a"
+    },
+    {
+      "phase": "initial",
+      "route": "models",
+      "summaryLayout": {
+        "values": [
+          {
+            "text": "3",
+            "lineTops": [
+              163.09375
+            ]
+          },
+          {
+            "text": "221",
+            "lineTops": [
+              163.09375
+            ]
+          },
+          {
+            "text": "2",
+            "lineTops": [
+              163.09375
+            ]
+          },
+          {
+            "text": "$0.01+",
+            "lineTops": [
+              163.09375
+            ]
+          }
+        ],
+        "unknown": " + ?",
+        "value": "$0.01+",
+        "unknownLineTops": [
+          196
+        ],
+        "valueLineTops": [
+          163.09375
+        ]
+      },
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOracleSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "7879b980745540afeeeb710bd54a4f9cd4d11bedf190a24b60e41678f63b7465",
+      "nativeCaptureSha256": "7879b980745540afeeeb710bd54a4f9cd4d11bedf190a24b60e41678f63b7465",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "7879b980745540afeeeb710bd54a4f9cd4d11bedf190a24b60e41678f63b7465",
+          "nativeSha256": "7879b980745540afeeeb710bd54a4f9cd4d11bedf190a24b60e41678f63b7465"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "7879b980745540afeeeb710bd54a4f9cd4d11bedf190a24b60e41678f63b7465"
+    },
+    {
+      "phase": "initial",
+      "route": "history",
+      "summaryLayout": null,
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOracleSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "1aa631dd9963ef12b7ee4299b5112f52f76ab6b38f02d8ddba2819eec2fa203a",
+      "nativeCaptureSha256": "1aa631dd9963ef12b7ee4299b5112f52f76ab6b38f02d8ddba2819eec2fa203a",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "1aa631dd9963ef12b7ee4299b5112f52f76ab6b38f02d8ddba2819eec2fa203a",
+          "nativeSha256": "1aa631dd9963ef12b7ee4299b5112f52f76ab6b38f02d8ddba2819eec2fa203a"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "1aa631dd9963ef12b7ee4299b5112f52f76ab6b38f02d8ddba2819eec2fa203a"
+    },
+    {
+      "phase": "initial",
+      "route": "alerts",
+      "summaryLayout": null,
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOracleSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "efa52c27d1fafb25a89ee6bf8bbaa3ee337adfc15132a61b6637b9cf75d15d98",
+      "nativeCaptureSha256": "efa52c27d1fafb25a89ee6bf8bbaa3ee337adfc15132a61b6637b9cf75d15d98",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "efa52c27d1fafb25a89ee6bf8bbaa3ee337adfc15132a61b6637b9cf75d15d98",
+          "nativeSha256": "efa52c27d1fafb25a89ee6bf8bbaa3ee337adfc15132a61b6637b9cf75d15d98"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "efa52c27d1fafb25a89ee6bf8bbaa3ee337adfc15132a61b6637b9cf75d15d98"
+    },
+    {
+      "phase": "initial",
+      "route": "providers",
+      "summaryLayout": null,
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOracleSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "1a9b11e6f0f0710feeec79d24a5990913957d69b40ff6170dbdbc53ac25003c5",
+      "nativeCaptureSha256": "1a9b11e6f0f0710feeec79d24a5990913957d69b40ff6170dbdbc53ac25003c5",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "1a9b11e6f0f0710feeec79d24a5990913957d69b40ff6170dbdbc53ac25003c5",
+          "nativeSha256": "1a9b11e6f0f0710feeec79d24a5990913957d69b40ff6170dbdbc53ac25003c5"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "1a9b11e6f0f0710feeec79d24a5990913957d69b40ff6170dbdbc53ac25003c5"
+    },
+    {
+      "phase": "initial",
+      "route": "cost",
+      "summaryLayout": null,
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOracleSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "75ad8499e95a7efe81437d2a418fef3e7c097806b7e8d2212e8cca7d191710d8",
+      "nativeCaptureSha256": "75ad8499e95a7efe81437d2a418fef3e7c097806b7e8d2212e8cca7d191710d8",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "75ad8499e95a7efe81437d2a418fef3e7c097806b7e8d2212e8cca7d191710d8",
+          "nativeSha256": "75ad8499e95a7efe81437d2a418fef3e7c097806b7e8d2212e8cca7d191710d8"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "75ad8499e95a7efe81437d2a418fef3e7c097806b7e8d2212e8cca7d191710d8"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "overview",
+      "summaryLayout": null,
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOracleSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "a0af37d8d3b7a36361aef72f77f335453b42f2d3836716477a1f2a127912e2bd",
+      "nativeCaptureSha256": "a0af37d8d3b7a36361aef72f77f335453b42f2d3836716477a1f2a127912e2bd",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "a0af37d8d3b7a36361aef72f77f335453b42f2d3836716477a1f2a127912e2bd",
+          "nativeSha256": "a0af37d8d3b7a36361aef72f77f335453b42f2d3836716477a1f2a127912e2bd"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "a0af37d8d3b7a36361aef72f77f335453b42f2d3836716477a1f2a127912e2bd"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "live",
+      "summaryLayout": null,
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOracleSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "8c33d06b3af2dfdc5a8e265bc908b55427f2339fabb133c297386b09591789c0",
+      "nativeCaptureSha256": "8c33d06b3af2dfdc5a8e265bc908b55427f2339fabb133c297386b09591789c0",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "8c33d06b3af2dfdc5a8e265bc908b55427f2339fabb133c297386b09591789c0",
+          "nativeSha256": "8c33d06b3af2dfdc5a8e265bc908b55427f2339fabb133c297386b09591789c0"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "8c33d06b3af2dfdc5a8e265bc908b55427f2339fabb133c297386b09591789c0"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "projects",
+      "summaryLayout": null,
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOracleSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "68a09ada55b5a32a7bbfe8203671fc283e0a4ded6c285f5d9006747dc2cf8fa8",
+      "nativeCaptureSha256": "68a09ada55b5a32a7bbfe8203671fc283e0a4ded6c285f5d9006747dc2cf8fa8",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "68a09ada55b5a32a7bbfe8203671fc283e0a4ded6c285f5d9006747dc2cf8fa8",
+          "nativeSha256": "68a09ada55b5a32a7bbfe8203671fc283e0a4ded6c285f5d9006747dc2cf8fa8"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "68a09ada55b5a32a7bbfe8203671fc283e0a4ded6c285f5d9006747dc2cf8fa8"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "models",
+      "summaryLayout": {
+        "values": [
+          {
+            "text": "3",
+            "lineTops": [
+              161.5
+            ]
+          },
+          {
+            "text": "221",
+            "lineTops": [
+              161.5
+            ]
+          },
+          {
+            "text": "2",
+            "lineTops": [
+              161.5
+            ]
+          },
+          {
+            "text": "฿0.46+",
+            "lineTops": [
+              191
+            ]
+          }
+        ],
+        "unknown": " + ?",
+        "value": "฿0.46+",
+        "unknownLineTops": [
+          208.484375
+        ],
+        "valueLineTops": [
+          191
+        ]
+      },
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOracleSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "bf633d3647abe1aa9cdad539b62d62a54a38c621c1594bff9a9bd7eccffca2d5",
+      "nativeCaptureSha256": "bf633d3647abe1aa9cdad539b62d62a54a38c621c1594bff9a9bd7eccffca2d5",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "bf633d3647abe1aa9cdad539b62d62a54a38c621c1594bff9a9bd7eccffca2d5",
+          "nativeSha256": "bf633d3647abe1aa9cdad539b62d62a54a38c621c1594bff9a9bd7eccffca2d5"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "bf633d3647abe1aa9cdad539b62d62a54a38c621c1594bff9a9bd7eccffca2d5"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "history",
+      "summaryLayout": null,
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOracleSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "2369face49beb4b0e67624a9108ad59df6de80e91a910fe4b5ff0aba26fd1251",
+      "nativeCaptureSha256": "2369face49beb4b0e67624a9108ad59df6de80e91a910fe4b5ff0aba26fd1251",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "2369face49beb4b0e67624a9108ad59df6de80e91a910fe4b5ff0aba26fd1251",
+          "nativeSha256": "2369face49beb4b0e67624a9108ad59df6de80e91a910fe4b5ff0aba26fd1251"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "2369face49beb4b0e67624a9108ad59df6de80e91a910fe4b5ff0aba26fd1251"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "alerts",
+      "summaryLayout": null,
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOracleSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "b1571265530a214247a52ee3c48aed9aa7951f5702126e24c9d9af13d827ed61",
+      "nativeCaptureSha256": "b1571265530a214247a52ee3c48aed9aa7951f5702126e24c9d9af13d827ed61",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "b1571265530a214247a52ee3c48aed9aa7951f5702126e24c9d9af13d827ed61",
+          "nativeSha256": "b1571265530a214247a52ee3c48aed9aa7951f5702126e24c9d9af13d827ed61"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "b1571265530a214247a52ee3c48aed9aa7951f5702126e24c9d9af13d827ed61"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "providers",
+      "summaryLayout": null,
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOracleSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "c05db31c2c571606b6d2bb4b2de7b0bb14918bb95da06191db49fa95a7371bf0",
+      "nativeCaptureSha256": "c05db31c2c571606b6d2bb4b2de7b0bb14918bb95da06191db49fa95a7371bf0",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "c05db31c2c571606b6d2bb4b2de7b0bb14918bb95da06191db49fa95a7371bf0",
+          "nativeSha256": "c05db31c2c571606b6d2bb4b2de7b0bb14918bb95da06191db49fa95a7371bf0"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "c05db31c2c571606b6d2bb4b2de7b0bb14918bb95da06191db49fa95a7371bf0"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "cost",
+      "summaryLayout": null,
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOracleSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "paintOraclePixelsExact": true,
+      "paintOracleSha256": "a2ee717b4ccc283e1ac4fbdc1467bfaccd230bf7a9e629437dc54591c1ba4c62",
+      "nativeCaptureSha256": "a2ee717b4ccc283e1ac4fbdc1467bfaccd230bf7a9e629437dc54591c1ba4c62",
+      "paintAttempts": [
+        {
+          "attempt": 1,
+          "exact": true,
+          "changedBytes": 0,
+          "oracleSha256": "a2ee717b4ccc283e1ac4fbdc1467bfaccd230bf7a9e629437dc54591c1ba4c62",
+          "nativeSha256": "a2ee717b4ccc283e1ac4fbdc1467bfaccd230bf7a9e629437dc54591c1ba4c62"
+        }
+      ],
+      "captureMethod": "Playwright screenshot of actual Electron page after DOM readiness; separate capturePage bitmap comparison is diagnostic only, not an exact-parity pass",
+      "sha256": "a2ee717b4ccc283e1ac4fbdc1467bfaccd230bf7a9e629437dc54591c1ba4c62"
+    }
+  ],
+  "cycles": [
+    {
+      "pid": 10116,
+      "id": 1,
+      "userData": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qpdash-S4Cqvb\\data\\electron",
+      "sessionData": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qpdash-S4Cqvb\\data\\electron",
+      "preferences": {
+        "allowRunningInsecureContent": false,
+        "contextIsolation": true,
+        "disableDialogs": false,
+        "disablePopups": false,
+        "enableBlinkFeatures": "",
+        "experimentalFeatures": false,
+        "javascript": true,
+        "nodeIntegration": false,
+        "nodeIntegrationInSubFrames": false,
+        "nodeIntegrationInWorker": false,
+        "safeDialogs": false,
+        "safeDialogsMessage": "",
+        "sandbox": true,
+        "webSecurity": true,
+        "webviewTag": false
+      },
+      "evidence": {
+        "ready": [
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          },
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          }
+        ],
+        "shown": [
+          1,
+          1
+        ],
+        "preloadErrors": [],
+        "placementErrors": []
+      },
+      "loadedPreload": {
+        "url": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.140\\tmp\\review-bundles\\QuotaPulse-v1.85.140-review141-Qy38BN\\packages\\tray\\dist-preload\\dashboard-preload.js",
+        "scriptSourceSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "compiledPreloadSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "exactCompiledSourceContained": true
+      }
+    },
+    {
+      "pid": 24960,
+      "id": 1,
+      "userData": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qpdash-S4Cqvb\\data\\electron",
+      "sessionData": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qpdash-S4Cqvb\\data\\electron",
+      "preferences": {
+        "allowRunningInsecureContent": false,
+        "contextIsolation": true,
+        "disableDialogs": false,
+        "disablePopups": false,
+        "enableBlinkFeatures": "",
+        "experimentalFeatures": false,
+        "javascript": true,
+        "nodeIntegration": false,
+        "nodeIntegrationInSubFrames": false,
+        "nodeIntegrationInWorker": false,
+        "safeDialogs": false,
+        "safeDialogsMessage": "",
+        "sandbox": true,
+        "webSecurity": true,
+        "webviewTag": false
+      },
+      "evidence": {
+        "ready": [
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          },
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          }
+        ],
+        "shown": [
+          1,
+          1
+        ],
+        "preloadErrors": [],
+        "placementErrors": []
+      },
+      "loadedPreload": {
+        "url": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.140\\tmp\\review-bundles\\QuotaPulse-v1.85.140-review141-Qy38BN\\packages\\tray\\dist-preload\\dashboard-preload.js",
+        "scriptSourceSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "compiledPreloadSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "exactCompiledSourceContained": true
+      }
+    }
+  ],
+  "modelControls": [
+    {
+      "phase": "initial",
+      "periodInHeader": true,
+      "threeToolbarFilters": true,
+      "keyboardSort": true,
+      "ringTiming": [
+        {
+          "duration": 180,
+          "easing": "cubic-bezier(0.22,1,0.36,1)",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "duration": 180,
+          "easing": "cubic-bezier(0.22,1,0.36,1)",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "duration": 180,
+          "easing": "cubic-bezier(0.22,1,0.36,1)",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "duration": 180,
+          "easing": "cubic-bezier(0.22,1,0.36,1)",
+          "iterations": 1,
+          "fill": "none"
+        }
+      ],
+      "reducedImmediate": true,
+      "sourceScopedNoReplay": true
+    },
+    {
+      "phase": "restored-th-light",
+      "periodInHeader": true,
+      "threeToolbarFilters": true,
+      "keyboardSort": true,
+      "ringTiming": [
+        {
+          "duration": 180,
+          "easing": "cubic-bezier(0.22,1,0.36,1)",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "duration": 180,
+          "easing": "cubic-bezier(0.22,1,0.36,1)",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "duration": 180,
+          "easing": "cubic-bezier(0.22,1,0.36,1)",
+          "iterations": 1,
+          "fill": "none"
+        },
+        {
+          "duration": 180,
+          "easing": "cubic-bezier(0.22,1,0.36,1)",
+          "iterations": 1,
+          "fill": "none"
+        }
+      ],
+      "reducedImmediate": true,
+      "sourceScopedNoReplay": true
+    }
+  ],
+  "projectChecks": [
+    {
+      "phase": "initial",
+      "lang": "en",
+      "checks": [
+        {
+          "key": "Native review project",
+          "sessions": 1,
+          "calls": 2,
+          "tokens": 151,
+          "providers": "1+ ?",
+          "keyboardSelection": true,
+          "recordedTimestamp": true,
+          "exactMoneyBases": true,
+          "metadataAction": true
+        },
+        {
+          "key": "Native review second project",
+          "sessions": 1,
+          "calls": 2,
+          "tokens": 70,
+          "providers": "1",
+          "keyboardSelection": true,
+          "recordedTimestamp": true,
+          "exactMoneyBases": true,
+          "metadataAction": true
+        }
+      ]
+    },
+    {
+      "phase": "restored-th-light",
+      "lang": "th",
+      "checks": [
+        {
+          "key": "Native review project",
+          "sessions": 1,
+          "calls": 2,
+          "tokens": 151,
+          "providers": "1+ ?",
+          "keyboardSelection": true,
+          "recordedTimestamp": true,
+          "exactMoneyBases": true,
+          "metadataAction": true
+        },
+        {
+          "key": "Native review second project",
+          "sessions": 1,
+          "calls": 2,
+          "tokens": 70,
+          "providers": "1",
+          "keyboardSelection": true,
+          "recordedTimestamp": true,
+          "exactMoneyBases": true,
+          "metadataAction": true
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "forbidden": [],
+  "writes": [],
+  "cleanup": [],
+  "daemonStopped": true,
+  "daemonExit": {
+    "pid": 40468,
+    "exitCode": null,
+    "signalCode": "SIGTERM"
+  },
+  "limitations": [
+    "actual production windows placed beyond all displays, nonfocusable and absent from taskbar; anti-occlusion flags/background-throttling override and capture reduced motion are test-only; bounded model selection checks explicitly exercise normal/reduced motion",
+    "initial content resized by test to1672x941; restored native size1371x887 tested through real Settings/preload/main",
+    "same-version Electron restart with explicit storage flush; no installer or two-version upgrade exercised here",
+    "two native language/theme combinations; not complete four-combination matrix",
+    "synthetic owned DB only; readers/account probes disabled; no physical tray-click/minimize/monitor or resource proof"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "symptom": "original capturePage image retained Projects loading state despite ready DOM; initial screenshot acceptance was insufficient",
+  "correction": "review images now use actual Electron page screenshot after DOM readiness; separate unmasked capturePage images retained as diagnostics",
+  "crossApiExactAcceptance": false,
+  "boundedRepeat": {
+    "attempts": 4,
+    "allSameWithinEachApi": true,
+    "changedPixels": 913,
+    "maxChannelDelta": 2,
+    "bounds": [
+      597,
+      206,
+      713,
+      252
+    ]
+  },
+  "mechanism": "stale capturePage frame observed; exact compositor and small-border difference mechanism not established",
+  "productionChanges": false,
+  "imageMasksOrTolerancePass": false,
+  "initialHarnessCorrection": "rendered provider innerText is 1+ ?, not 1 + ?; no product change"
+}
