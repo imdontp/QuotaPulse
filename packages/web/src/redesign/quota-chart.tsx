@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import type { QuotaHistoryResponse } from '@/api';
 import { useFormat } from '@/i18n/format';
 import type { RedesignTranslate } from './shell';
@@ -10,9 +10,14 @@ export function QuotaChart({ history, t, language, title = t('redesign.alertRisk
   const container = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(600);
   const [samplesOpen, setSamplesOpen] = useState(false);
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const node = container.current;
+    if (!node) return;
+    // Resolve the initial coordinates before paint, rather than showing the
+    // fallback 600-unit viewBox until ResizeObserver's first delivery.
+    setWidth(Math.max(200, node.clientWidth));
     const observer = new ResizeObserver(([entry]) => setWidth(Math.max(200, Math.round(entry.contentRect.width))));
-    if (container.current) observer.observe(container.current);
+    observer.observe(node);
     return () => observer.disconnect();
   }, [history.segments]);
   const samples = history.segments.flatMap(segment => segment.samples);

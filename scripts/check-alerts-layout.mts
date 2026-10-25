@@ -55,7 +55,7 @@ export async function checkAlertsLayout(browser: Browser, db: DB, output: string
           const box = node.getBoundingClientRect();
           return { width: box.width, viewWidth: node.getAttribute('viewBox')!.split(' ').map(Number)[2], points: Array.from(node.querySelectorAll('circle')).map(point => ({ x: +point.getAttribute('cx')!, y: +point.getAttribute('cy')! })) };
         });
-        assert.ok(Math.abs(chart.width - chart.viewWidth) <= 1, 'Quota chart uses stretched coordinates');
+        assert.ok(Math.abs(chart.width - chart.viewWidth) <= 1, `Quota chart uses stretched coordinates: ${JSON.stringify({ lang, theme, chart })}`);
         assert.equal(chart.points[0].y, 104, 'Zero quota was raised above baseline');
         const regions = await screen.evaluate(node => Object.fromEntries(['.qp-alert-top', '.qp-alert-header', '.qp-alert-summary', '.qp-alert-chart', '.qp-alert-risk', '.qp-alert-rules', '.qp-alert-forecast', '.qp-alert-guidance', '.qp-alert-history'].map(selector => {
           const { x, y, width, height, bottom } = node.querySelector(selector)!.getBoundingClientRect(); return [selector, { x, y, width, height, bottom }];
