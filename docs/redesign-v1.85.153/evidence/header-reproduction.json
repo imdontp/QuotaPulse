@@ -1,0 +1,94 @@
+{
+  "comparisons": [
+    {
+      "left": "tmp/fidelity151/final/providers.png",
+      "right": "tmp/fidelity152/final/providers.png",
+      "changedPixels": 105,
+      "maxChannelDelta": 4,
+      "bounds": [
+        955,
+        12,
+        1362,
+        46
+      ]
+    },
+    {
+      "left": "tmp/fidelity152/final/providers.png",
+      "right": "tmp/provider153/run1/providers.png",
+      "changedPixels": 0,
+      "maxChannelDelta": 0,
+      "bounds": null
+    },
+    {
+      "left": "tmp/provider153/run1/providers.png",
+      "right": "tmp/provider153/run151/providers.png",
+      "changedPixels": 105,
+      "maxChannelDelta": 4,
+      "bounds": [
+        955,
+        12,
+        1362,
+        46
+      ]
+    },
+    {
+      "left": "tmp/provider153/run151/providers.png",
+      "right": "tmp/provider153/run2/providers.png",
+      "changedPixels": 105,
+      "maxChannelDelta": 4,
+      "bounds": [
+        955,
+        12,
+        1362,
+        46
+      ]
+    }
+  ],
+  "headers": [
+    {
+      "run": "run1",
+      "headerSha256": "ba9d6986e7476e8dadd967d843d9bfb3842bca45e57801a90c6657276b1be3a7",
+      "rect": {
+        "x": 955,
+        "y": 11,
+        "width": 408,
+        "height": 36,
+        "top": 11,
+        "right": 1363,
+        "bottom": 47,
+        "left": 955
+      },
+      "animations": []
+    },
+    {
+      "run": "run151",
+      "headerSha256": "ba9d6986e7476e8dadd967d843d9bfb3842bca45e57801a90c6657276b1be3a7",
+      "rect": {
+        "x": 955,
+        "y": 11,
+        "width": 408,
+        "height": 36,
+        "top": 11,
+        "right": 1363,
+        "bottom": 47,
+        "left": 955
+      },
+      "animations": []
+    },
+    {
+      "run": "run2",
+      "headerSha256": "24becfff168809657db71265f9152dd976cf198ade61c93dae87010f80b4264c",
+      "rect": {
+        "x": 955,
+        "y": 11,
+        "width": 408,
+        "height": 36,
+        "top": 11,
+        "right": 1363,
+        "bottom": 47,
+        "left": 955
+      },
+      "animations": []
+    }
+  ]
+}
