@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { AggregatePresenceLedger } from './aggregate-presence-motion';
 import { useAggregatePresenceMotion } from './use-aggregate-presence-motion';
 import type { LiveRecordBatch } from './live-record-motion';
@@ -74,6 +74,7 @@ function routeHash(route: Route) {
 }
 
 export function ProductionProjects() {
+  const filterCountId = useId();
   const t = useT();
   const { lang, setLang, currency, rate } = useI18n();
   const [theme, toggleTheme] = useTheme();
@@ -142,12 +143,13 @@ export function ProductionProjects() {
     metadata.set(row.project, values);
   }
   const needle = search.toLocaleLowerCase(lang);
-  const visible = groups.filter(group => {
-    if (route.tab === 'unassigned' && group.key !== null) return false;
-    if (route.tab === 'recent' && (group.lastObservedAt == null || group.lastObservedAt > data!.now || data!.now - group.lastObservedAt > 300_000)) return false;
-    return !needle || [group.key ?? t('redesign.unassigned'), ...(metadata.get(group.key) ?? [])]
-      .some(value => value.toLocaleLowerCase(lang).includes(needle));
-  }).sort((a, b) => {
+  const matchingGroups = groups.filter(group => !needle || [group.key ?? t('redesign.unassigned'), ...(metadata.get(group.key) ?? [])]
+    .some(value => value.toLocaleLowerCase(lang).includes(needle)));
+  const matchesTab = (group: DetailedProjectResponse['groups'][number], tab: Tab) => tab === 'unassigned' ? group.key === null
+    : tab === 'recent' ? data !== undefined && group.lastObservedAt != null && group.lastObservedAt <= data.now && data.now - group.lastObservedAt <= 300_000
+      : true;
+  const tabCounts = currentSnapshot ? { all: matchingGroups.length, recent: matchingGroups.filter(group => matchesTab(group, 'recent')).length, unassigned: matchingGroups.filter(group => matchesTab(group, 'unassigned')).length } : null;
+  const visible = matchingGroups.filter(group => matchesTab(group, route.tab)).sort((a, b) => {
     const rank = route.sort === 'recent' ? (b.lastObservedAt ?? -1) - (a.lastObservedAt ?? -1)
       : route.sort === 'value' ? b.api_value_usd - a.api_value_usd : b.tokens - a.tokens;
     return rank || String(a.key).localeCompare(String(b.key));
@@ -230,7 +232,13 @@ export function ProductionProjects() {
     <header className="qp-project-header"><PageHeading icon={<Folder size={24}/>} title={t('redesign.projectHeading')} subtitle={t('redesign.projectSubtitle')}/><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing} aria-label={t('app.refreshNow')}><RefreshCw size={16}/>{t('app.refreshNow')}</button></header>
     {error && currentSnapshot && <p className="qp-project-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     <div className="qp-project-toolbar">
-      <div className="qp-project-tabs" role="group" aria-label={t('redesign.projectHeading')}>{(['all', 'recent', 'unassigned'] as const).map(tab => <button key={tab} aria-pressed={route.tab === tab} onClick={() => update({ tab, project: undefined, offset: 0 })}>{t(tab === 'all' ? 'redesign.allProjects' : tab === 'recent' ? 'redesign.recentProjects' : 'redesign.unassignedProjects')}</button>)}</div>
+      <div className="qp-project-tabs" role="group" aria-label={t('redesign.projectHeading')}>{(['all', 'recent', 'unassigned'] as const).map(tab => {
+        const label = t(tab === 'all' ? 'redesign.allProjects' : tab === 'recent' ? 'redesign.recentProjects' : 'redesign.unassignedProjects');
+        const description = tabCounts ? t(tab === 'recent' ? 'redesign.projectRecentCount' : 'redesign.projectFilterCount', { count: number(tabCounts[tab]) }) : t(error ? 'app.couldNotLoad' : 'app.loading');
+        return <button key={tab} data-tab={tab} data-count={tabCounts?.[tab]} aria-label={label} aria-describedby={`${filterCountId}-${tab}`} title={description} aria-busy={!currentSnapshot && !error || undefined} aria-pressed={route.tab === tab} onClick={() => update({ tab, project: undefined, offset: 0 })}>
+          {tab === 'recent' ? <Clock3 size={14} aria-hidden="true"/> : tab === 'unassigned' ? <Folder size={14} aria-hidden="true"/> : null}<span>{label}</span><span className="qp-project-tab-count" aria-hidden="true">{tabCounts ? number(tabCounts[tab]) : '—'}</span><span id={`${filterCountId}-${tab}`} className="qp-visually-hidden">{description}</span>
+        </button>;
+      })}</div>
       <label className="qp-project-search"><Search size={16}/><span className="qp-visually-hidden">{t('redesign.searchProjects')}</span><input value={search} onChange={event => setSearch(event.target.value)} placeholder={t('redesign.searchProjects')} maxLength={4096}/></label>
       <label>{t('redesign.projectRange')}<select value={route.range} onChange={event => update({ range: event.target.value as Range, project: undefined, offset: 0 })}><option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.thisWeek')}</option><option value="month">{t('redesign.thisMonth')}</option><option value="all">{t('redesign.allTime')}</option>{route.range === 'custom' && <option value="custom">{t('usage.custom')}</option>}</select></label>
       <label>{t('redesign.projectHarness')}<select value={route.harness ?? ''} onChange={event => update({ harness: event.target.value || null, project: undefined, offset: 0 })}><option value="">{t('redesign.allHarnesses')}</option>{harnesses.map(harness => <option key={harness} value={harness}>{harness}</option>)}</select></label>

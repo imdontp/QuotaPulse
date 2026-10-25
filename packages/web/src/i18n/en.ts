@@ -257,6 +257,8 @@ export const en = {
   'redesign.allProjects': 'All projects',
   'redesign.recentProjects': 'Recent activity',
   'redesign.unassignedProjects': 'Unassigned',
+  'redesign.projectFilterCount': '{count} project groups match the current period, source, harness and metadata search.',
+  'redesign.projectRecentCount': '{count} matching project groups were last observed within 5 minutes of this snapshot.',
   'redesign.searchProjects': 'Search project metadata',
   'redesign.projectRange': 'Period',
   'redesign.today': 'Today',

@@ -263,6 +263,8 @@ export const th: Record<MessageKey, string> = {
   'redesign.allProjects': 'ทุกโปรเจกต์',
   'redesign.recentProjects': 'ใช้งานล่าสุด',
   'redesign.unassignedProjects': 'ไม่ระบุโปรเจกต์',
+  'redesign.projectFilterCount': 'มีกลุ่มโปรเจกต์ {count} กลุ่มที่ตรงกับช่วงเวลา แหล่งข้อมูล เครื่องมือ และการค้นหาเมทาดาทาปัจจุบัน',
+  'redesign.projectRecentCount': 'มีกลุ่มโปรเจกต์ที่ตรงตัวกรอง {count} กลุ่ม ซึ่งมีข้อมูลล่าสุดภายใน 5 นาทีก่อนเวลาของชุดข้อมูลนี้',
   'redesign.searchProjects': 'ค้นหาข้อมูลโปรเจกต์',
   'redesign.projectRange': 'ช่วงเวลา',
   'redesign.today': 'วันนี้',
