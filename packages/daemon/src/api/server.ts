@@ -397,8 +397,11 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
   app.get('/api/history-summary', async (req, reply) => {
     const now = Date.now();
     try {
-      const scope = parseUsageScope(req.query as Record<string, unknown>, now, { requireRange: true });
-      return { now, scope, ...historySummary(db, scope) };
+      const query = req.query as Record<string, unknown>;
+      const scope = parseUsageScope(query, now, { requireRange: true, extraKeys: ['timeline'] });
+      const timeline = query.timeline ?? 'scope';
+      if (timeline !== 'scope' && timeline !== 'observed') throw new Error('Expected scope or observed timeline');
+      return { now, scope, ...historySummary(db, scope, timeline) };
     } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
   });
 

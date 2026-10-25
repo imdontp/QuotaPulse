@@ -210,6 +210,8 @@ export interface HistorySummaryResponse {
   scope: UsageEventScope;
   totals: DetailedFacts;
   bucketMs: number;
+  /** Plot extent only; scope remains the complete filtered query/export range. */
+  timelineRange?: { from: number; to: number };
   timeline: Array<{ at: number; records: number; calls: number; inputTokens: number; outputTokens: number; tokens: number }>;
   effort: Array<{ effort: string | null; records: number; calls: number }>;
 }
@@ -709,7 +711,7 @@ export const api = {
     params.set('offset', String(pagination.offset));
     return get<UsageEventsResponse>(`/api/usage-events?${params}`);
   },
-  historySummary: (scope: UsageEventScope) => get<HistorySummaryResponse>(`/api/history-summary?${usageEventParams(scope)}`),
+  historySummary: (scope: UsageEventScope) => get<HistorySummaryResponse>(`/api/history-summary?${usageEventParams(scope)}&timeline=observed`),
   exportUsageEvents: (scope: UsageEventScope) => {
     const params = usageEventParams(scope);
     params.set('order', 'desc');

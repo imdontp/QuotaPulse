@@ -1,0 +1,75 @@
+{
+  "baselineCommit": "8c10e147439c9037131af77449c3ada0a6d9970f",
+  "originalSourceVerified": true,
+  "scope": {
+    "from": 0,
+    "to": 1792929600000,
+    "sourceId": 1
+  },
+  "before": {
+    "plotFrom": 0,
+    "bucketMs": 14947200000,
+    "timeline": [
+      {
+        "at": 1778716800000,
+        "records": 2,
+        "calls": 2,
+        "inputTokens": 12,
+        "outputTokens": 8,
+        "tokens": 20
+      }
+    ]
+  },
+  "after": {
+    "totals": {
+      "records": 2,
+      "calls": 2,
+      "sessions": 0,
+      "inputTokens": 12,
+      "cachedInputTokens": 0,
+      "cacheWriteTokens": 0,
+      "outputTokens": 8,
+      "tokens": 20,
+      "reported_native_usd": 0,
+      "api_value_usd": 0,
+      "native_calls": 0,
+      "computed_calls": 0,
+      "estimated_calls": 0,
+      "unknown_calls": 2,
+      "cache_saving_known_usd": 0,
+      "cache_saving_known_calls": 0,
+      "lastObservedAt": 1792926000000
+    },
+    "timeline": [
+      {
+        "at": 1792918800000,
+        "records": 1,
+        "calls": 1,
+        "inputTokens": 6,
+        "outputTokens": 4,
+        "tokens": 10
+      },
+      {
+        "at": 1792926000000,
+        "records": 1,
+        "calls": 1,
+        "inputTokens": 6,
+        "outputTokens": 4,
+        "tokens": 10
+      }
+    ],
+    "effort": [
+      {
+        "effort": null,
+        "records": 2,
+        "calls": 2
+      }
+    ],
+    "bucketMs": 3600000,
+    "timelineRange": {
+      "from": 1792918800000,
+      "to": 1792929600000
+    }
+  },
+  "identicalTotals": true
+}

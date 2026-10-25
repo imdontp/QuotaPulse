@@ -36,9 +36,67 @@ test('History summary reconciles full filtered records, timeline, effort and sep
       assert.equal(summary.timeline.reduce((sum: number,row: { records: number })=>sum+row.records,0),records.total,extra);
     }
     const all = (await read('',Date.now())).json();
-    assert.ok(Math.ceil((all.scope.to-all.scope.from)/all.bucketMs)<=120);
+    assert.ok(Math.ceil((all.timelineRange.to-all.timelineRange.from)/all.bucketMs)<=120);
     for (const url of ['/api/history-summary','/api/history-summary?from=5&to=3','/api/history-summary?from=0&to=4000&limit=1','/api/history-summary?from=0&to=4000&source_id=0']) assert.equal((await app.inject({url,headers})).statusCode,400);
     assert.equal((await app.inject('/api/history-summary?from=0&to=4000')).statusCode,401);
     assert.equal(JSON.stringify(body).includes('/private'),false);
+  } finally { await app.close(); db.close(); }
+});
+
+test('all-time History plots the matching observed extent without changing complete query scope', async () => {
+  const db = openDb(':memory:');
+  const hour = 3_600_000;
+  const to = Date.UTC(2026, 9, 25, 12);
+  const first = to - 3 * hour;
+  db.exec(`INSERT INTO source(id,harness,profile,root_path,display_name,detected_at) VALUES
+    (1,'codex','test','/synthetic','Recent',0),(2,'hermes','test','/synthetic','Old',0);
+    INSERT INTO session(id,source_id,native_session_id,project) VALUES
+    (1,1,'recent-session','recent'),(2,2,'old-session','old');`);
+  const insert = db.prepare(`INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,total_tokens,input_tokens,output_tokens,call_count)
+    VALUES (?,?,?,?, 'gpt-test','openrouter',10,6,4,1)`);
+  insert.run(1,1,'first',first);
+  insert.run(1,1,'second',first + 2 * hour);
+  insert.run(1,1,'exclusive-end',to);
+  insert.run(2,2,'real-epoch-record',0);
+  const app = buildServer(db, new Scheduler(db, []), { token: 'history-extent-test', port: 0 });
+  const headers = { 'x-quotapulse-token': 'history-extent-test' };
+  const read = async (from: number, extra = '') => (await app.inject({ url: `/api/history-summary?from=${from}&to=${to}&timeline=observed${extra}`, headers })).json();
+  try {
+    for (const extra of ['&source_id=1', '&session_id=1', '&project=recent', '&harness=codex', '&q=recent-session']) {
+      const result = await read(0, extra);
+      assert.equal(result.scope.from, 0, extra);
+      assert.equal(result.scope.to, to, extra);
+      assert.deepEqual(result.timelineRange, { from: first, to }, extra);
+      assert.equal(result.bucketMs, hour, extra);
+      assert.deepEqual(result.timeline.map((point: { at: number }) => point.at), [first, first + 2 * hour], extra);
+      assert.equal(result.totals.records, 2, extra);
+      assert.equal(result.totals.tokens, 20, extra);
+      assert.equal(result.timeline.reduce((sum: number, point: { tokens: number }) => sum + point.tokens, 0), 20, extra);
+      const rows = (await app.inject({ url: `/api/usage-events?from=0&to=${to}&limit=1${extra}`, headers })).json();
+      assert.equal(rows.total, 2, extra);
+      assert.deepEqual(rows.scope, result.scope, extra);
+    }
+    const boundedFrom = first - 10 * hour;
+    const bounded = await read(boundedFrom, '&source_id=1');
+    assert.deepEqual(bounded.timelineRange, { from: boundedFrom, to }, 'explicit nonzero intervals keep their empty leading hours');
+    assert.equal(bounded.timeline[0].at, first);
+    const complete = await read(0);
+    assert.equal(complete.timelineRange.from, 0, 'a real epoch timestamp must not be hidden');
+    assert.equal(complete.totals.records, 3);
+    assert.ok(Math.ceil((to - complete.timelineRange.from) / complete.bucketMs) <= 120);
+    const empty = await read(0, '&project=missing');
+    assert.deepEqual(empty.timelineRange, { from: to, to }, 'no matching records means no observed plot extent');
+    assert.deepEqual(empty.timeline, []);
+    assert.equal(empty.totals.tokens, 0);
+    assert.equal(empty.scope.from, 0);
+    const legacy = (await app.inject({ url: `/api/history-summary?from=0&to=${to}&source_id=1`, headers })).json();
+    assert.deepEqual(legacy.timelineRange, { from: 0, to }, 'clients that do not opt in retain epoch-based bins');
+    assert.ok(Math.ceil(to / legacy.bucketMs) <= 120, 'older renderers must not allocate hourly bins for the entire epoch range');
+    const observed = await read(0, '&source_id=1');
+    assert.deepEqual(legacy.totals, observed.totals);
+    assert.deepEqual(legacy.effort, observed.effort);
+    for (const timeline of ['invalid', '', '1']) {
+      assert.equal((await app.inject({ url: `/api/history-summary?from=0&to=${to}&timeline=${timeline}`, headers })).statusCode, 400);
+    }
   } finally { await app.close(); db.close(); }
 });

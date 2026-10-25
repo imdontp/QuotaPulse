@@ -30,9 +30,10 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
   const effort = useEffortPage(data.effort, location.hash);
   const totals = data.totals;
   const count = (value: number) => value.toLocaleString(lang);
+  const timelineRange = data.timelineRange ?? data.scope;
   const entries = new Map(data.timeline.map(row => [row.at, row]));
-  const buckets = Array.from({ length: Math.ceil((data.scope.to - data.scope.from) / data.bucketMs) }, (_, index) => {
-    const at = data.scope.from + index * data.bucketMs;
+  const buckets = Array.from({ length: Math.ceil((timelineRange.to - timelineRange.from) / data.bucketMs) }, (_, index) => {
+    const at = timelineRange.from + index * data.bucketMs;
     return { at, inputTokens: entries.get(at)?.inputTokens ?? 0, outputTokens: entries.get(at)?.outputTokens ?? 0 };
   });
   const max = Math.max(1, ...buckets.flatMap(row => [row.inputTokens, row.outputTokens]));
@@ -43,7 +44,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
   const points = (key: 'inputTokens' | 'outputTokens') => buckets.map((row, index) => `${x(index)},${y(row[key])}`).join(' ');
   const gridStride = Math.max(1, Math.ceil((buckets.length - 1) / 12));
   const date = (at: number) => new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(at);
-  const scopeKey = JSON.stringify([location.hash, data.scope, data.bucketMs]);
+  const scopeKey = JSON.stringify([location.hash, data.scope, timelineRange, data.bucketMs]);
   useEffect(() => setActive(null), [scopeKey, width]);
   const current = active?.scope === scopeKey && active.width === width && buckets[active.index] ? active : null;
   const selected = current ? buckets[current.index] : null;
@@ -61,13 +62,13 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
   const dateIndices = buckets.length <= tickCount ? buckets.map((_, index) => index)
     : Array.from({ length: tickCount }, (_, index) => Math.round(index * (buckets.length - 1) / (tickCount - 1)));
   const dateLabel = new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', {
-    ...(data.scope.to - data.scope.from >= 86_400_000 ? { month: 'short', day: 'numeric' } as const : {}),
-    ...(new Date(data.scope.from).getFullYear() !== new Date(data.scope.to - 1).getFullYear() ? { year: 'numeric' } as const : {}),
+    ...(timelineRange.to - timelineRange.from >= 86_400_000 ? { month: 'short', day: 'numeric' } as const : {}),
+    ...(new Date(timelineRange.from).getFullYear() !== new Date(timelineRange.to - 1).getFullYear() ? { year: 'numeric' } as const : {}),
     ...(data.bucketMs < 86_400_000 ? { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' } as const : {}),
   });
   const priced = totals.computed_calls + totals.estimated_calls;
   const value = (amount: number, calls: number) => totals.records === 0 ? f.money(0) : calls ? `${f.money(amount)}${calls < totals.calls ? '+' : ''}` : t('redesign.unknownValue');
-  return <section className="qp-history-timeline qp-panel" data-testid="history-timeline" data-scope={JSON.stringify(data.scope)} data-bucket-ms={data.bucketMs}>
+  return <section className="qp-history-timeline qp-panel" data-testid="history-timeline" data-scope={JSON.stringify(data.scope)} data-timeline-range={JSON.stringify(timelineRange)} data-bucket-ms={data.bucketMs}>
     <h2><i aria-hidden="true"><History size={19}/></i>{t('history.timeline')}</h2>
     <p className="qp-footnote">{t('history.timelineNote')}</p>
     <div className="qp-history-summary">
@@ -91,7 +92,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
         if (localX < left || localX > right || localY < 18 || localY > 118) { setActive(previous => previous?.kind === 'pointer' ? null : previous); return; }
         activate(Math.max(0, Math.min(buckets.length - 1, Math.round((localX - left) / (right - left) * (buckets.length - 1)))), 'pointer');
       }} onPointerLeave={() => setActive(previous => previous?.kind === 'pointer' ? null : previous)}>
-      <desc id={`${id}-help`}>{t('history.timelineHelp')} {date(data.scope.from)} — {date(data.scope.to)}</desc>
+      <desc id={`${id}-help`}>{t('history.timelineHelp')} {date(timelineRange.from)} — {date(timelineRange.to)}</desc>
       <defs>{(['input', 'output'] as const).map(series => <linearGradient key={series} id={`${id}-${series}`} x1="0" y1="0" x2="0" y2="1"><stop stopColor={`var(--history-${series})`} stopOpacity=".22"/><stop offset="1" stopColor={`var(--history-${series})`} stopOpacity="0"/></linearGradient>)}<filter id={`${id}-glow`} x="-10%" y="-50%" width="120%" height="200%"><feGaussianBlur stdDeviation="1.5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
       {[0, .25, .5, .75, 1].map(fraction => <g key={fraction} className={fraction === .25 || fraction === .75 ? 'qp-history-grid-secondary' : undefined}><line className="qp-history-grid-line" x1={left} x2={right} y1={y(max * fraction)} y2={y(max * fraction)}/><text x="0" y={y(max * fraction)} fill="currentColor" fontSize="11">{f.tokens(max * fraction)}</text></g>)}
       <g className="qp-history-grid-vertical" aria-hidden="true">{buckets.map((row, index) => index % gridStride === 0 || index === buckets.length - 1 ? <line key={row.at} className="qp-history-grid-line" x1={x(index)} x2={x(index)} y1={y(max)} y2={y(0)}/> : null)}</g>
