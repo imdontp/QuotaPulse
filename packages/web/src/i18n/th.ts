@@ -81,6 +81,7 @@ export const th: Record<MessageKey, string> = {
   'history.resume': "กลับไปข้อมูลล่าสุด",
   'history.paused': "หยุดภาพไว้ การเก็บข้อมูลยังทำงาน",
   'history.export': "ส่งออกรายการที่ตรงตัวกรอง",
+  'history.exportShort': "ส่งออกบันทึก",
   'history.exporting': "กำลังส่งออก…",
   'history.empty': "ไม่มีรายการตรงกับตัวกรอง",
   'history.range': "{from}–{to} จาก {total} รายการ",

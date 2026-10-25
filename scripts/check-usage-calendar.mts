@@ -36,6 +36,7 @@ try{
    const ready=current.waitForResponse(response=>new URL(response.url()).pathname==='/api/history-summary'&&response.ok());
    await current.goto(`${base}/#history?range=custom&from=${from}&to=${to}&source=1&session_id=1`);
    const result=await(await ready).json();await current.getByTestId('history-timeline').waitFor();
+   const picker=current.locator('.qp-history-range-picker');if(await picker.getAttribute('open')===null)await picker.locator('summary').click();await current.locator('.qp-history-range-popover').waitFor();
    assert.equal(result.scope.from,from);assert.equal(result.scope.to,to);assert.equal(result.scope.sourceId,1);assert.equal(result.scope.sessionId,1);
    return result.scope;
   }

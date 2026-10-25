@@ -75,6 +75,7 @@ export const en = {
   'history.resume': "Resume latest",
   'history.paused': "View paused; collection continues.",
   'history.export': "Export matching records",
+  'history.exportShort': "Export Logs",
   'history.exporting': "Exporting…",
   'history.empty': "No matching usage records",
   'history.range': "{from}–{to} of {total} records",

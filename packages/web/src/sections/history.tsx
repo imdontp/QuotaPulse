@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { api, type HarnessStatus, type HistorySummaryResponse } from '@/api';
 import { HistoryTimeline } from '@/redesign/history-timeline';
 import { HistoryFilters } from '@/redesign/history-filters';
+import { HistoryRangePicker } from '@/redesign/history-range-picker';
 import { InitialRegion, type InitialRegionState } from '@/redesign/initial-region';
 import { useHistoryMotion } from '@/redesign/use-history-motion';
 import { historyRecordMotionKey } from '@/redesign/history-motion';
@@ -13,13 +14,13 @@ import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
 import { useLiveRefresh } from '@/lib/use-live';
 import type { UsageEventRow, UsageEventScope, UsageEventsResponse, UsageGrain } from '@/lib/usage-events';
-import { UsageRangeBar, useUsageRoute } from '@/components/usage-range';
+import { UsageRangeBar, useUsageRoute, type UsageSelection } from '@/components/usage-range';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Empty, ErrorBox } from '@/components/primitives';
-import { ArrowDown, Folder, History, X } from 'lucide-react';
+import { ArrowDown, Folder, History, Pause, Play, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
 import { ProviderMark } from '@/redesign/provider-mark';
 import { DashboardHarnessIcon as HarnessIcon } from '@/redesign/dashboard-marks';
@@ -50,6 +51,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
   const [paused, setPaused] = useState(false);
   const pausedRef = useRef(false);
   const [snapshot, setSnapshot] = useState<UsageEventsResponse | null>(null);
+  const [snapshotSelection, setSnapshotSelection] = useState<UsageSelection | null>(null);
   const [summary, setSummary] = useState<HistorySummaryResponse | null>(null);
   const [snapshotKey, setSnapshotKey] = useState('');
   const [loading, setLoading] = useState(true);
@@ -123,6 +125,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
       if (!current()) return;
       if (result.total > 0 && offset >= result.total) { setOffset(0); return; }
       setSnapshot(result);
+      setSnapshotSelection(route.selection);
       setSummary(fullRange);
       // Refresh only the existing identity; an absent event retains the exact
       // snapshot scope from which it was selected for its related-record link.
@@ -195,7 +198,13 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
   const pageTokenMax = snapshot?.rows.reduce((max, row) => Math.max(max, row.total_tokens), 0) ?? 0;
   const tokenRatio = (value: number) => pageTokenMax > 0 ? Math.max(0, Math.min(1, value / pageTokenMax)) : 0;
   const tokenPercent = new Intl.NumberFormat(lang, { style: 'percent', maximumSignificantDigits: 3 });
-  const viewActions = <div className={redesign ? 'qp-history-view-actions' : 'flex flex-wrap items-center gap-2'}><Button onClick={togglePause} aria-pressed={paused}>{t(paused ? 'history.resume' : 'history.pause')}</Button><Button disabled={!canExport} onClick={() => void exportRows()}>{t(exporting ? 'history.exporting' : 'history.export')}</Button>{paused && <span role="status" className="text-xs text-muted-foreground">{t('history.paused')}</span>}</div>;
+  const pauseLabel = t(paused ? 'history.resume' : 'history.pause');
+  const exportLabel = t(exporting ? 'history.exporting' : 'history.export');
+  const viewActions = <div className={redesign ? 'qp-history-view-actions' : 'flex flex-wrap items-center gap-2'}>
+    <Button onClick={togglePause} aria-pressed={paused} aria-label={pauseLabel} title={pauseLabel} className={redesign ? 'qp-history-pause-button' : undefined}>{redesign ? paused ? <Play size={16} aria-hidden="true"/> : <Pause size={16} aria-hidden="true"/> : pauseLabel}</Button>
+    <Button disabled={!canExport} onClick={() => void exportRows()} aria-label={exportLabel} title={exportLabel} className={redesign ? 'qp-history-export-button' : undefined}>{t(exporting ? 'history.exporting' : redesign ? 'history.exportShort' : 'history.export')}</Button>
+    {paused && <span role="status" className="text-xs text-muted-foreground">{t('history.paused')}</span>}
+  </div>;
   const copyMetadata = async () => {
     if (!selected) return;
     const fields = ['event_id','timestamp_ms','grain','source_id','source_name','harness','project','session_key','provider','vendor','model','effort','service_tier','is_subagent','duration_ms','call_count','total_tokens','input_tokens','cached_input_tokens','cache_write_tokens','output_tokens','reasoning_tokens','cost_usd','cost_source','price_provider'] as const;
@@ -221,7 +230,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
   useHistoryMotion(motionTable, detailRail, snapshot, queryKey, snapshotKey, selected ? historyRecordMotionKey(selected) : null, selectionSerial, redesign && !paused && snapshotKey === queryKey && !currentError);
   return <div className="flex min-w-0 flex-col gap-3.5" data-testid="usage-history">
     {sessionId !== undefined && <div className="flex items-center gap-3 text-xs" role="status"><span>{t('history.session')} #{sessionId}</span><a className="underline" href="#history?range=all">{t('history.clearSession')}</a></div>}
-    <div className={redesign ? 'qp-history-heading' : undefined}>{redesign && <><div className="qp-history-heading-identity"><i aria-hidden="true"><History size={27}/></i><div><h1>{t('history.redesignTitle')}</h1><p>{t('history.redesignSubtitle')}</p></div></div>{viewActions}</>}<fieldset disabled={paused} className="min-w-0 border-0 p-0"><UsageRangeBar route={route} sources={sources} showBucket={false} showHeading={!redesign} onChange={next => { setOffset(0); updateRoute(next); }}/></fieldset></div>
+    <div className={redesign ? 'qp-history-heading' : undefined}>{redesign && <><div className="qp-history-heading-identity"><i aria-hidden="true"><History size={27}/></i><div><h1>{t('history.redesignTitle')}</h1><p>{t('history.redesignSubtitle')}</p></div></div>{viewActions}</>}<fieldset disabled={paused} className="min-w-0 border-0 p-0">{redesign ? <HistoryRangePicker selection={paused ? snapshotSelection ?? route.selection : route.selection} scope={displayedScope} sources={sources} disabled={paused}><UsageRangeBar route={route} sources={sources} showBucket={false} showHeading={false} onChange={next => { setOffset(0); updateRoute(next); }}/></HistoryRangePicker> : <UsageRangeBar route={route} sources={sources} showBucket={false} showHeading onChange={next => { setOffset(0); updateRoute(next); }}/>}</fieldset></div>
     {summary ? <HistoryTimeline data={summary}/> : redesign && <section className="qp-panel qp-history-timeline qp-history-initial-timeline" aria-label={t('history.timeline')}>
       <h2><i aria-hidden="true"><History size={19}/></i>{t('history.timeline')}</h2>
       <p className="qp-footnote">{t('history.timelineNote')}</p>
