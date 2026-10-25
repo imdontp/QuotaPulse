@@ -96,8 +96,10 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
       <defs>{(['input', 'output'] as const).map(series => <linearGradient key={series} id={`${id}-${series}`} x1="0" y1="0" x2="0" y2="1"><stop stopColor={`var(--history-${series})`} stopOpacity=".22"/><stop offset="1" stopColor={`var(--history-${series})`} stopOpacity="0"/></linearGradient>)}<filter id={`${id}-glow`} x="-10%" y="-50%" width="120%" height="200%"><feGaussianBlur stdDeviation="1.5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
       {[0, .25, .5, .75, 1].map(fraction => <g key={fraction} className={fraction === .25 || fraction === .75 ? 'qp-history-grid-secondary' : undefined}><line className="qp-history-grid-line" x1={left} x2={right} y1={y(max * fraction)} y2={y(max * fraction)}/><text x="0" y={y(max * fraction)} fill="currentColor" fontSize="11">{f.tokens(max * fraction)}</text></g>)}
       <g className="qp-history-grid-vertical" aria-hidden="true">{buckets.map((row, index) => index % gridStride === 0 || index === buckets.length - 1 ? <line key={row.at} className="qp-history-grid-line" x1={x(index)} x2={x(index)} y1={y(max)} y2={y(0)}/> : null)}</g>
-      <polygon points={`${left},118 ${points('inputTokens')} ${right},118`} fill={`url(#${id}-input)`}/>
-      <polygon points={`${left},118 ${points('outputTokens')} ${right},118`} fill={`url(#${id}-output)`}/>
+      {buckets.length > 1 && <>
+        <polygon points={`${left},118 ${points('inputTokens')} ${right},118`} fill={`url(#${id}-input)`}/>
+        <polygon points={`${left},118 ${points('outputTokens')} ${right},118`} fill={`url(#${id}-output)`}/>
+      </>}
       <polyline points={points('inputTokens')} fill="none" stroke="var(--history-input)" strokeWidth="2" filter={`url(#${id}-glow)`}/>
       <polyline points={points('outputTokens')} fill="none" stroke="var(--history-output)" strokeWidth="2" filter={`url(#${id}-glow)`}/>
       {buckets.map((row, index) => <g key={row.at} data-bucket-at={row.at} data-input={row.inputTokens} data-output={row.outputTokens} aria-hidden="true"><circle cx={x(index)} cy={y(row.inputTokens)} r="2" fill="var(--history-input)"/><circle cx={x(index)} cy={y(row.outputTokens)} r="2" fill="var(--history-output)"/></g>)}

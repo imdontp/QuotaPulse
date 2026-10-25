@@ -59,6 +59,7 @@ try {
     assert.ok(buckets.length >= 3 && buckets.length <= 4);
     assert.equal(buckets[0].at, first);
     assert.equal(buckets.reduce((sum, point) => sum + point.input + point.output, 0), 20);
+    assert.equal(await chart.locator('svg[role=group]>polygon').count(), 2, 'multiple buckets retain both series areas');
     const plot = chart.locator('svg[role=group]');
     await plot.scrollIntoViewIfNeeded();
     // Complete the programmatic scroll/ResizeObserver work before testing focus;
@@ -72,6 +73,19 @@ try {
     await page.keyboard.press('Escape'); assert.equal(await chart.locator('[role=status]').count(), 0);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
     await page.locator('h1').click(); await page.screenshot({ path: resolve(output, name + '.png'), animations: 'disabled' });
+    const singleFrom = first + 2 * hour - 100, singleTo = first + 2 * hour + 1000;
+    await page.goto(`http://127.0.0.1:7826/#history?range=custom&from=${singleFrom}&to=${singleTo}&source=1&session_id=1`);
+    await chart.locator('[data-testid=history-total-tokens][aria-label="10"]').waitFor();
+    assert.equal(await chart.locator('g[data-bucket-at]').count(), 1);
+    assert.equal(await chart.locator('svg[role=group]>polygon').count(), 0, 'a single bucket must not paint a declining triangle across unobserved time');
+    assert.equal(await chart.locator('g[data-bucket-at]>circle').count(), 2, 'both observed series points remain visible');
+    await plot.scrollIntoViewIfNeeded();
+    await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+    await plot.focus(); await page.keyboard.press('Home');
+    assert.equal(await chart.locator('[role=status]').getAttribute('data-bucket-at'), String(singleFrom));
+    assert.deepEqual(await chart.locator('[role=status] dd').evaluateAll(nodes => nodes.map(node => Number(node.getAttribute('data-value')))), [6,4]);
+    await page.keyboard.press('Escape');
+    await page.screenshot({ path: resolve(output, name + '-single.png'), animations: 'disabled' });
     const empty = page.waitForResponse(response => new URL(response.url()).pathname === '/api/history-summary' && new URL(response.url()).searchParams.get('project') === 'missing' && response.ok());
     await page.goto(url + '&project=missing');
     const emptyData = await (await empty).json();
@@ -79,8 +93,9 @@ try {
     assert.deepEqual(emptyData.timelineRange, { from: emptyData.scope.to, to: emptyData.scope.to });
     assert.equal(await chart.locator('[data-axis-at]').count(), 0);
     assert.equal(await chart.locator('g[data-bucket-at]').count(), 0);
+    assert.equal(await chart.locator('svg[role=group]>polygon').count(), 0);
     assert.equal(await chart.locator('svg[role=group]').getAttribute('tabindex'), '-1');
-    results.push({ name, scope: summary.scope, timelineRange: summary.timelineRange, buckets, tokens: 20, keyboard: true, empty: true });
+    results.push({ name, scope: summary.scope, timelineRange: summary.timelineRange, buckets, tokens: 20, keyboard: true, singleBucket: true, singleBucketKeyboard: true, empty: true });
     await context.close();
   }
   assert.deepEqual(errors, []);
