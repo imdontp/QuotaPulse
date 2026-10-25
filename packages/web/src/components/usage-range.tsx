@@ -86,9 +86,11 @@ function dateValue(value: number | undefined): string {
 }
 
 function startOfDate(value: string): number | undefined {
-  const [year, month, day] = value.split('-').map(Number);
-  if (![year, month, day].every(Number.isFinite)) return undefined;
-  return new Date(year!, month! - 1, day!, 0, 0, 0, 0).getTime();
+  const parts = value.split('-').map(Number);
+  if (parts.length !== 3 || !parts.every(Number.isFinite)) return undefined;
+  const [year, month, day] = parts;
+  const start = new Date(year!, month! - 1, day!, 0, 0, 0, 0).getTime();
+  return Number.isFinite(start) ? start : undefined;
 }
 
 export function UsageRangeBar({
@@ -113,8 +115,14 @@ export function UsageRangeBar({
   const updateCustom = (kind: 'from' | 'to', value: string) => {
     const start = startOfDate(value);
     if (start == null) return;
-    const next = kind === 'from' ? start : start + DAY;
-    onChange({ selection: { range: 'custom', [kind]: next } });
+    const next = new Date(start);
+    if (kind === 'to') {
+      // The selected date is inclusive; the API end is the next local midnight.
+      // A calendar day can contain23 or25 hours across a DST transition.
+      next.setDate(next.getDate() + 1);
+      next.setHours(0, 0, 0, 0);
+    }
+    onChange({ selection: { range: 'custom', [kind]: next.getTime() } });
   };
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border/70 bg-muted/15 px-3 py-2.5" aria-label={t('usage.rangeLabel')}>
@@ -141,7 +149,7 @@ export function UsageRangeBar({
         </label>
         <label className="text-muted-foreground inline-flex items-center gap-1 text-xs">
           {t('usage.to')}
-          <input aria-label={t('usage.to')} type="date" value={dateValue((selection.to ?? customTo) - DAY)} onChange={(event) => updateCustom('to', event.target.value)} className="bg-card border-input h-8 rounded border px-2 text-xs text-foreground" />
+          <input aria-label={t('usage.to')} type="date" value={dateValue((selection.to ?? customTo) - 1)} onChange={(event) => updateCustom('to', event.target.value)} className="bg-card border-input h-8 rounded border px-2 text-xs text-foreground" />
         </label>
       </>}
       {showBucket && <Select label={t('usage.bucket')} value={selection.bucket ?? 'auto'} onChange={(event) => onChange({ selection: { bucket: event.target.value as UsageBucket | 'auto' } })}>
