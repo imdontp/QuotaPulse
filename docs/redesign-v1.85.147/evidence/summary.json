@@ -1,0 +1,106 @@
+{
+  "status": "passed actual production-main dashboard and settings scope; whole goal partial",
+  "fixture": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review147\\native-bb712e88-ef68-4284-82d0-5a29f16ef557",
+  "sourceCommit": "2fd5353173d5820fbf6407f8548ac76d689e0c6d",
+  "productionIndexSha256": "bbc7208eeeb1c4f9e4c36fb6f639c7a138447ddb67a5867ebd267c91adc4f240",
+  "repositoryTests": 675,
+  "nativeCaptures": 16,
+  "modelControlChecks": 2,
+  "mainCycles": 2,
+  "servedFiles": 64,
+  "bundleFiles": 3159,
+  "settingsRestored": {
+    "prefs": {
+      "lang": "th",
+      "currency": "THB",
+      "rate": 37.25,
+      "hiddenSubscriptions": []
+    },
+    "theme": "light",
+    "windowSize": {
+      "width": 1371,
+      "height": 887
+    }
+  },
+  "actualWindowSize": [
+    1371,
+    887
+  ],
+  "usageTokens": 221,
+  "daemonStopped": true,
+  "firstViewport": {
+    "width": 1688,
+    "height": 980,
+    "dpr": 1
+  },
+  "firstNativeImageSize": {
+    "width": 1688,
+    "height": 980
+  },
+  "zipStatus": "created; every entry byte verified against the tested unused folder",
+  "archive": {
+    "bytes": 206500027,
+    "allEntryBytesMatch": true,
+    "archive": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.146\\tmp\\review-bundles\\QuotaPulse-v1.85.146-review147.zip",
+    "sha256": "ec9acc148315e1a7f3cb4c362bf3c088bc91aceaf3a76475fbf6382b5b346d25",
+    "entries": 3159,
+    "sourceCommit": "2fd5353173d5820fbf6407f8548ac76d689e0c6d",
+    "productionIndexSha256": "bbc7208eeeb1c4f9e4c36fb6f639c7a138447ddb67a5867ebd267c91adc4f240"
+  },
+  "standaloneSmokeChecks": 6,
+  "actualArchiveReaderChecks": 6,
+  "usage": [
+    {
+      "id": 1,
+      "source_id": 1,
+      "session_id": 1,
+      "ts": 1792913208069,
+      "model": "Native Model A",
+      "provider": "openai",
+      "input_tokens": 100,
+      "cached_input_tokens": 0,
+      "output_tokens": 50,
+      "total_tokens": 150,
+      "call_count": 1,
+      "cost_usd": 0.25,
+      "cost_source": "native"
+    },
+    {
+      "id": 2,
+      "source_id": 2,
+      "session_id": 2,
+      "ts": 1792913178069,
+      "model": "Native Model B",
+      "provider": "anthropic",
+      "input_tokens": 40,
+      "cached_input_tokens": 10,
+      "output_tokens": 20,
+      "total_tokens": 70,
+      "call_count": 2,
+      "cost_usd": 0.0123,
+      "cost_source": "computed"
+    },
+    {
+      "id": 3,
+      "source_id": 1,
+      "session_id": 1,
+      "ts": 1792913148069,
+      "model": null,
+      "provider": null,
+      "input_tokens": 1,
+      "cached_input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 1,
+      "call_count": 1,
+      "cost_usd": null,
+      "cost_source": "unknown"
+    }
+  ],
+  "sourceCount": 2,
+  "settings": {
+    "pet_enabled": 0,
+    "tray_animation_enabled": 1,
+    "hidden_subscriptions": "[]"
+  },
+  "integrity": "ok"
+}
