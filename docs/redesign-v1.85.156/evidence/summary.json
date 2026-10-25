@@ -1,0 +1,178 @@
+{
+  "status": "passed actual production-main dashboard and settings scope; whole goal partial",
+  "fixture": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review156\\native-13ab84e1-9b7e-44fb-97b1-255a6610f8b8",
+  "sourceCommit": "c452881ac8db8f9f513752379971f5efbce4b15d",
+  "productionIndexSha256": "9a57fc2c0243d761bd576e1fed241ececd7ba154feec334b9f0349d26f5261ba",
+  "repositoryTests": 680,
+  "nativeCaptures": 16,
+  "nativeCalendarChecks": [
+    {
+      "phase": "initial",
+      "from": 1792939726231,
+      "to": 1792939846231,
+      "actualDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "expectedDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "exactScope": true,
+      "tokens": 151,
+      "clearedEndIgnored": true,
+      "pickerKeyboard": true,
+      "popoverContained": true,
+      "escapeRestoresFocus": true,
+      "bars": [
+        {
+          "count": 150,
+          "max": 150,
+          "ratio": 1,
+          "width": 50,
+          "height": 6
+        },
+        {
+          "count": 1,
+          "max": 150,
+          "ratio": 0.006666666666666667,
+          "width": 50,
+          "height": 6
+        }
+      ]
+    },
+    {
+      "phase": "restored-th-light",
+      "from": 1792939726231,
+      "to": 1792939846231,
+      "actualDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "expectedDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "exactScope": true,
+      "tokens": 151,
+      "clearedEndIgnored": true,
+      "pickerKeyboard": true,
+      "popoverContained": true,
+      "escapeRestoresFocus": true,
+      "bars": [
+        {
+          "count": 150,
+          "max": 150,
+          "ratio": 1,
+          "width": 50,
+          "height": 6
+        },
+        {
+          "count": 1,
+          "max": 150,
+          "ratio": 0.006666666666666667,
+          "width": 50,
+          "height": 6
+        }
+      ]
+    }
+  ],
+  "modelControlChecks": 2,
+  "mainCycles": 2,
+  "servedFiles": 64,
+  "bundleFiles": 3159,
+  "settingsRestored": {
+    "prefs": {
+      "lang": "th",
+      "currency": "THB",
+      "rate": 37.25,
+      "hiddenSubscriptions": []
+    },
+    "theme": "light",
+    "windowSize": {
+      "width": 1371,
+      "height": 887
+    }
+  },
+  "actualWindowSize": [
+    1371,
+    887
+  ],
+  "usageTokens": 221,
+  "daemonStopped": true,
+  "firstViewport": {
+    "width": 1586,
+    "height": 992,
+    "dpr": 1
+  },
+  "firstNativeImageSize": {
+    "width": 1586,
+    "height": 992
+  },
+  "zipStatus": "created; every entry byte verified against the tested unused folder",
+  "archive": {
+    "bytes": 206502182,
+    "allEntryBytesMatch": true,
+    "archive": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.155\\tmp\\review-bundles\\QuotaPulse-v1.85.155-review156.zip",
+    "sha256": "6ec9c91e7dd7586e5d776a270e1aa45dd3e86441ee23ea6392562bf55c9f61cb",
+    "entries": 3159,
+    "sourceCommit": "c452881ac8db8f9f513752379971f5efbce4b15d",
+    "productionIndexSha256": "9a57fc2c0243d761bd576e1fed241ececd7ba154feec334b9f0349d26f5261ba"
+  },
+  "standaloneSmokeChecks": 6,
+  "actualArchiveReaderChecks": 6,
+  "usage": [
+    {
+      "id": 1,
+      "source_id": 1,
+      "session_id": 1,
+      "ts": 1792939816231,
+      "model": "Native Model A",
+      "provider": "openai",
+      "input_tokens": 100,
+      "cached_input_tokens": 0,
+      "output_tokens": 50,
+      "total_tokens": 150,
+      "call_count": 1,
+      "cost_usd": 0.25,
+      "cost_source": "native"
+    },
+    {
+      "id": 2,
+      "source_id": 2,
+      "session_id": 2,
+      "ts": 1792939786231,
+      "model": "Native Model B",
+      "provider": "anthropic",
+      "input_tokens": 40,
+      "cached_input_tokens": 10,
+      "output_tokens": 20,
+      "total_tokens": 70,
+      "call_count": 2,
+      "cost_usd": 0.0123,
+      "cost_source": "computed"
+    },
+    {
+      "id": 3,
+      "source_id": 1,
+      "session_id": 1,
+      "ts": 1792939756231,
+      "model": null,
+      "provider": null,
+      "input_tokens": 1,
+      "cached_input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 1,
+      "call_count": 1,
+      "cost_usd": null,
+      "cost_source": "unknown"
+    }
+  ],
+  "sourceCount": 2,
+  "settings": {
+    "pet_enabled": 0,
+    "tray_animation_enabled": 1,
+    "hidden_subscriptions": "[]"
+  },
+  "integrity": "ok"
+}

@@ -1,0 +1,152 @@
+{
+  "sourceCommit": "c452881ac8db8f9f513752379971f5efbce4b15d",
+  "productionIndexSha256": "9a57fc2c0243d761bd576e1fed241ececd7ba154feec334b9f0349d26f5261ba",
+  "archive": {
+    "bytes": 206502182,
+    "allEntryBytesMatch": true,
+    "archive": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.155\\tmp\\review-bundles\\QuotaPulse-v1.85.155-review156.zip",
+    "sha256": "6ec9c91e7dd7586e5d776a270e1aa45dd3e86441ee23ea6392562bf55c9f61cb",
+    "entries": 3159,
+    "sourceCommit": "c452881ac8db8f9f513752379971f5efbce4b15d",
+    "productionIndexSha256": "9a57fc2c0243d761bd576e1fed241ececd7ba154feec334b9f0349d26f5261ba"
+  },
+  "repositoryTests": 680,
+  "nativeCaptures": 16,
+  "initialReferenceSizedPages": 8,
+  "nativeHistoryChecks": [
+    {
+      "phase": "initial",
+      "lang": "en",
+      "tokens": 151,
+      "records": 2,
+      "unappliedDraft": true,
+      "keyboardMoreFilters": true,
+      "escapeFocus": true,
+      "appliedEmptyQuery": true,
+      "clearRestoresDataAndScope": true,
+      "singleBucketPointsOnly": true,
+      "observedExtent": true,
+      "queryStartsAtEpoch": true,
+      "firstRecordedAt": 1792939756231,
+      "firstAxisAt": 1792939756231,
+      "plottedTokens": 151,
+      "exactKeyboardTotals": true,
+      "emptyHasNoAxis": true
+    },
+    {
+      "phase": "restored-th-light",
+      "lang": "th",
+      "tokens": 151,
+      "records": 2,
+      "unappliedDraft": true,
+      "keyboardMoreFilters": true,
+      "escapeFocus": true,
+      "appliedEmptyQuery": true,
+      "clearRestoresDataAndScope": true,
+      "singleBucketPointsOnly": true,
+      "observedExtent": true,
+      "queryStartsAtEpoch": true,
+      "firstRecordedAt": 1792939756231,
+      "firstAxisAt": 1792939756231,
+      "plottedTokens": 151,
+      "exactKeyboardTotals": true,
+      "emptyHasNoAxis": true
+    }
+  ],
+  "nativeCalendarChecks": [
+    {
+      "phase": "initial",
+      "from": 1792939726231,
+      "to": 1792939846231,
+      "actualDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "expectedDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "exactScope": true,
+      "tokens": 151,
+      "clearedEndIgnored": true,
+      "pickerKeyboard": true,
+      "popoverContained": true,
+      "escapeRestoresFocus": true,
+      "bars": [
+        {
+          "count": 150,
+          "max": 150,
+          "ratio": 1,
+          "width": 50,
+          "height": 6
+        },
+        {
+          "count": 1,
+          "max": 150,
+          "ratio": 0.006666666666666667,
+          "width": 50,
+          "height": 6
+        }
+      ]
+    },
+    {
+      "phase": "restored-th-light",
+      "from": 1792939726231,
+      "to": 1792939846231,
+      "actualDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "expectedDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "exactScope": true,
+      "tokens": 151,
+      "clearedEndIgnored": true,
+      "pickerKeyboard": true,
+      "popoverContained": true,
+      "escapeRestoresFocus": true,
+      "bars": [
+        {
+          "count": 150,
+          "max": 150,
+          "ratio": 1,
+          "width": 50,
+          "height": 6
+        },
+        {
+          "count": 1,
+          "max": 150,
+          "ratio": 0.006666666666666667,
+          "width": 50,
+          "height": 6
+        }
+      ]
+    }
+  ],
+  "nativePaletteChecks": [
+    {
+      "phase": "initial",
+      "lang": "en",
+      "queryRetained": true,
+      "focusRetained": true,
+      "coldCompiledModuleHeld": true,
+      "costMonthNavigation": true
+    },
+    {
+      "phase": "restored-th-light",
+      "lang": "th",
+      "queryRetained": true,
+      "focusRetained": true,
+      "coldCompiledModuleHeld": true,
+      "costMonthNavigation": true
+    }
+  ],
+  "standaloneSmokeChecks": 6,
+  "actualArchiveReaderChecks": 6,
+  "reviewPageVerified": true,
+  "physicalTrayMonitorValidated": false,
+  "historicalSseIntermittenceResolved": false,
+  "fullGoalComplete": false
+}
