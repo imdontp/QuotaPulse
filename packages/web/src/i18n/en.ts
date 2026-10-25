@@ -79,6 +79,7 @@ export const en = {
   'history.empty': "No matching usage records",
   'history.range': "{from}–{to} of {total} records",
   'history.detail': "Record details",
+  'history.tokenComparison': "Relative to the largest token record on this page: {value}",
   'history.close': "Close",
   'history.basis': "Cost basis",
   'history.coverage': "Aggregate records are cumulative snapshots, not individual calls. Reported cost and API value have different bases.",

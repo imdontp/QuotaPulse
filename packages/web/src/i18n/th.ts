@@ -85,6 +85,7 @@ export const th: Record<MessageKey, string> = {
   'history.empty': "ไม่มีรายการตรงกับตัวกรอง",
   'history.range': "{from}–{to} จาก {total} รายการ",
   'history.detail': "รายละเอียดรายการ",
+  'history.tokenComparison': "เทียบกับจำนวนโทเคนสูงสุดของรายการในหน้านี้: {value}",
   'history.close': "ปิด",
   'history.basis': "ฐานค่าใช้จ่าย",
   'history.coverage': "ข้อมูลสะสมเป็นภาพรวม ณ เวลาที่บันทึก ไม่ใช่การเรียกแต่ละครั้ง ค่าใช้จ่ายที่รายงานและมูลค่า API ใช้คนละฐาน",
