@@ -298,6 +298,17 @@
   .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true] .qp-model-summary-spark { grid-column:1/-1; grid-row:auto; width:100%; height:20px; }
 }
 
+/* Reference metric paint; the green slot represents recorded pricing coverage. */
+@media(min-width:1536px) {
+  .qp-redesign[data-theme=dark] .qp-model-table-wrap .qp-model-ratio[data-ratio-kind=cache] { width:80px; gap:1px; }
+  .qp-redesign[data-theme=dark] .qp-model-table-wrap .qp-model-ratio[data-ratio-kind=coverage] { width:max-content; min-width:90px; min-height:25px; grid-template-columns:max-content 50px; align-items:center; gap:6px; }
+  .qp-redesign[data-theme=dark] .qp-model-ratio .qp-bar { height:6px; overflow:visible; background:#14243c; }
+  .qp-redesign[data-theme=dark] .qp-model-ratio[data-ratio-kind=coverage] .qp-bar { width:50px; }
+  .qp-redesign[data-theme=dark] .qp-model-ratio[data-ratio-kind=cache] .qp-bar>span { background:linear-gradient(90deg,#655ffa,#3977fb); box-shadow:inset 0 1px #bec8ff44,0 0 5px #3b62ff60; }
+  .qp-redesign[data-theme=dark] .qp-model-ratio[data-ratio-kind=coverage] .qp-bar>span { background:linear-gradient(90deg,#00dfbd,#00d1bb 65%,#00e8df); box-shadow:inset 0 1px #72ffe266,0 0 5px #00d5bf55; }
+  .qp-redesign[data-theme=dark] .qp-model-ratio[data-zero=true] .qp-bar>span { box-shadow:none; }
+}
+
 /* Exact model/recorded-provider history; horizontal scrolling retains every factual column. */
 .qp-model-table-wrap td .qp-model-row-trend { display:block; width:96px; height:26px; --qp-accent:#158dff; }
 .qp-model-table-wrap .qp-model-row-trend-cell { width:96px; min-width:96px; }
