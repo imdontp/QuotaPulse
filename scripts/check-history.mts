@@ -4,6 +4,7 @@ import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
+import { closeAbortedSseProxy } from '../packages/web/vite-sse-proxy.js';
 import { chromium } from 'playwright';
 import { openDb } from '../packages/daemon/src/db/index.js';
 import { buildServer } from '../packages/daemon/src/api/server.js';
@@ -45,15 +46,7 @@ db.prepare(`UPDATE usage_event SET cache_write_tokens=7,duration_ms=1234,service
 db.prepare(`UPDATE session SET is_subagent=1 WHERE id=2`).run();
 const scheduler = new Scheduler(db, [], { pollMs: 1000000, detectMs: 1000000 });
 const daemon = buildServer(db, scheduler, { token: 'history-test', port: 7800, webRoot: resolve(root, 'packages/web/dist') });
-const vite = await createServer({ root: resolve(root, 'packages/web'), server: { host: '127.0.0.1', port: 7801, strictPort: true, proxy: { '/api': { target: 'http://127.0.0.1:7800', changeOrigin: true, configure: proxy => {
-  // Vite installs response-close cleanup only after upstream headers arrive.
-  // StrictMode/reload can cancel SSE before that point; bind cleanup earlier.
-  proxy.on('proxyReq', (upstream, request, response) => {
-    if (!request.url?.startsWith('/api/events/stream')) return;
-    response.once('close', () => upstream.destroy());
-    if (response.destroyed) upstream.destroy();
-  });
-} } } } });
+const vite = await createServer({ root: resolve(root, 'packages/web'), server: { host: '127.0.0.1', port: 7801, strictPort: true, proxy: { '/api': { target: 'http://127.0.0.1:7800', changeOrigin: true, configure: closeAbortedSseProxy } } } });
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 try {
   await daemon.listen({ host: '127.0.0.1', port: 7800 });
