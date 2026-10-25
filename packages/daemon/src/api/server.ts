@@ -669,6 +669,9 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     // The response owns the stream lifetime. A request close is not an SSE
     // disconnect, and an unresolved handler prevents graceful shutdown.
     reply.hijack();
+    // An authenticated request may abort while an earlier async hook is pending.
+    // Its response close has already fired; do not subscribe to a dead stream.
+    if (req.raw.aborted || reply.raw.destroyed || reply.raw.writableEnded) return;
     eventStreams.add(reply.raw);
     reply.raw.writeHead(200, {
       'Content-Type': 'text/event-stream',

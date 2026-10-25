@@ -1,0 +1,15 @@
+{
+  "controlledSchedule": "real HTTP client aborts after auth/preHandler entry but before production SSE handler executes",
+  "before": {
+    "data": 0,
+    "settings": 0,
+    "responseDestroyed": true
+  },
+  "after": {
+    "data": 1,
+    "settings": 1,
+    "responseDestroyed": true
+  },
+  "leakObserved": true,
+  "cleanupReplaysCloseOnlyAfterObservation": true
+}
