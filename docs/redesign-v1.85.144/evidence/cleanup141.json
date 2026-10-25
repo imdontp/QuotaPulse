@@ -1,0 +1,21 @@
+{
+    "freeBefore":  2770608128,
+    "freeAfter":  3692273664,
+    "checks":  [
+                   {
+                       "path":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-review-Ee37jj",
+                       "archiveSha256":  "11124639f5dfce24d500eb5844aceb16e90ef704718be50b79916f62b4ba7ea5",
+                       "bytes":  453971608,
+                       "recordedProcessesStopped":  true,
+                       "receipt":  "tmp/release141/standalone-smoke/bundle-verification.json"
+                   },
+                   {
+                       "path":  "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-review-vw0bkO",
+                       "archiveSha256":  "11124639f5dfce24d500eb5844aceb16e90ef704718be50b79916f62b4ba7ea5",
+                       "bytes":  454112178,
+                       "recordedProcessesStopped":  true,
+                       "receipt":  "tmp/release141/reader-smoke.json"
+                   }
+               ],
+    "kind":  "only two owned stopped QA extractions removed; source and review ZIP retained"
+}

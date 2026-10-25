@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "archive": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.143\\tmp\\review-bundles\\QuotaPulse-v1.85.143-review144.zip",
+  "archiveSha256": "b44c66722d4f4102543b454ddcbd87d7df2875ac150fc135909c4c3cf53a2e31",
+  "extracted": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-review-DxCRua",
+  "zipInventoryMatchesSource": true,
+  "sourceCommit": "8c10e147439c9037131af77449c3ada0a6d9970f",
+  "readerChecks": [
+    "both launch modes WhatIf create no profile/process state",
+    "default launch disables readers despite inherited on and leaves harness/original sentinels unchanged",
+    "explicit opt-in overrides inherited off and actual Codex adapter ingests150 tokens from owned home",
+    "incremental append and repeated manual refresh retain exactly190 tokens and one session; real Models page matches API and excludes prompt content",
+    "reader-enabled restart preserves cursor and does not duplicate events",
+    "default restart disables collection and retains already collected review data"
+  ],
+  "report": {
+    "status": "passed",
+    "fixture": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qp-readers-qV9BeH",
+    "bundle": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-review-DxCRua",
+    "sourceLogHash": "9cffe22dd7d75397724c3e24aaed189bc9a46e1f108c01598477b567a88e9477",
+    "originalSentinelHash": "e336aa23b64836300567ad7f2e85bccea6e5717b5db0fcc8e9325fbadc0e58e7",
+    "productionIndexSha256": "fe8a649c287962fb33a67b296a21f880f7cafe95cfcb8fbceb0ee8da3ea7bfe1",
+    "checks": [
+      "both launch modes WhatIf create no profile/process state",
+      "default launch disables readers despite inherited on and leaves harness/original sentinels unchanged",
+      "explicit opt-in overrides inherited off and actual Codex adapter ingests150 tokens from owned home",
+      "incremental append and repeated manual refresh retain exactly190 tokens and one session; real Models page matches API and excludes prompt content",
+      "reader-enabled restart preserves cursor and does not duplicate events",
+      "default restart disables collection and retains already collected review data"
+    ],
+    "limitations": [
+      "owned synthetic log and fake home; no customer data or credentials accessed",
+      "account quota probes disabled for this check",
+      "portable launcher only; installed wrapper opt-in is not exercised"
+    ]
+  }
+}
