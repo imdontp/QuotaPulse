@@ -1,0 +1,111 @@
+{
+  "sourceCommit": "5eb188edcfe8bddcf545ce952b13d36848daa066",
+  "productionIndexSha256": "f9df009691e9ccf99f7c674dfc560c4861cef60273cf327d0c5f46b41c253500",
+  "archive": {
+    "bytes": 206500201,
+    "allEntryBytesMatch": true,
+    "archive": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-validation-v1.85.149\\tmp\\review-bundles\\QuotaPulse-v1.85.149-review150.zip",
+    "sha256": "c6f708278dda69b62152b1bada3992aaf753f57c19858e081513e7657eecd38c",
+    "entries": 3159,
+    "sourceCommit": "5eb188edcfe8bddcf545ce952b13d36848daa066",
+    "productionIndexSha256": "f9df009691e9ccf99f7c674dfc560c4861cef60273cf327d0c5f46b41c253500"
+  },
+  "repositoryTests": 678,
+  "nativeCaptures": 16,
+  "nativeHistoryChecks": [
+    {
+      "phase": "initial",
+      "lang": "en",
+      "tokens": 151,
+      "records": 2,
+      "unappliedDraft": true,
+      "keyboardMoreFilters": true,
+      "escapeFocus": true,
+      "appliedEmptyQuery": true,
+      "clearRestoresDataAndScope": true,
+      "singleBucketPointsOnly": true,
+      "observedExtent": true,
+      "queryStartsAtEpoch": true,
+      "firstRecordedAt": 1792915427007,
+      "firstAxisAt": 1792915427007,
+      "plottedTokens": 151,
+      "exactKeyboardTotals": true,
+      "emptyHasNoAxis": true
+    },
+    {
+      "phase": "restored-th-light",
+      "lang": "th",
+      "tokens": 151,
+      "records": 2,
+      "unappliedDraft": true,
+      "keyboardMoreFilters": true,
+      "escapeFocus": true,
+      "appliedEmptyQuery": true,
+      "clearRestoresDataAndScope": true,
+      "singleBucketPointsOnly": true,
+      "observedExtent": true,
+      "queryStartsAtEpoch": true,
+      "firstRecordedAt": 1792915427007,
+      "firstAxisAt": 1792915427007,
+      "plottedTokens": 151,
+      "exactKeyboardTotals": true,
+      "emptyHasNoAxis": true
+    }
+  ],
+  "nativeCalendarChecks": [
+    {
+      "phase": "initial",
+      "from": 1792915397007,
+      "to": 1792915517007,
+      "actualDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "expectedDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "exactScope": true,
+      "tokens": 151,
+      "clearedEndIgnored": true
+    },
+    {
+      "phase": "restored-th-light",
+      "from": 1792915397007,
+      "to": 1792915517007,
+      "actualDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "expectedDates": [
+        "2026-10-25",
+        "2026-10-25"
+      ],
+      "exactScope": true,
+      "tokens": 151,
+      "clearedEndIgnored": true
+    }
+  ],
+  "nativePaletteChecks": [
+    {
+      "phase": "initial",
+      "lang": "en",
+      "queryRetained": true,
+      "focusRetained": true,
+      "coldCompiledModuleHeld": true,
+      "costMonthNavigation": true
+    },
+    {
+      "phase": "restored-th-light",
+      "lang": "th",
+      "queryRetained": true,
+      "focusRetained": true,
+      "coldCompiledModuleHeld": true,
+      "costMonthNavigation": true
+    }
+  ],
+  "standaloneSmokeChecks": 6,
+  "actualArchiveReaderChecks": 6,
+  "reviewPageVerified": true,
+  "fullGoalComplete": false
+}
