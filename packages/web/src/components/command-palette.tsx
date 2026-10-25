@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Search, X, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useT } from '@/i18n';
@@ -10,12 +10,26 @@ export interface CommandItem {
   group?: string;
 }
 
-/** Small keyboard-first navigator for the existing pages; it never executes shell commands. */
-export function CommandPalette({ items, onSelect }: { items: CommandItem[]; onSelect: (id: string) => void }) {
-  const t = useT();
+function usePaletteSession() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [index, setIndex] = useState(0);
+  return { open, setOpen, query, setQuery, index, setIndex };
+}
+const PaletteSession = createContext<ReturnType<typeof usePaletteSession> | null>(null);
+
+/** Loading and resolved route shells share the user's in-progress navigation. */
+export function CommandPaletteSessionProvider({ children }: { children: ReactNode }) {
+  const { open, setOpen, query, setQuery, index, setIndex } = usePaletteSession();
+  const session = useMemo(() => ({ open, setOpen, query, setQuery, index, setIndex }), [open, query, index]);
+  return <PaletteSession.Provider value={session}>{children}</PaletteSession.Provider>;
+}
+
+/** Small keyboard-first navigator for the existing pages; it never executes shell commands. */
+export function CommandPalette({ items, onSelect }: { items: CommandItem[]; onSelect: (id: string) => void }) {
+  const t = useT();
+  const localSession = usePaletteSession();
+  const { open, setOpen, query, setQuery, index, setIndex } = useContext(PaletteSession) ?? localSession;
   const input = useRef<HTMLInputElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -69,7 +83,7 @@ export function CommandPalette({ items, onSelect }: { items: CommandItem[]; onSe
       <Button ref={trigger} size="sm" onClick={() => { setQuery(''); setIndex(0); setOpen(true); }} aria-haspopup="dialog" aria-expanded={open} aria-controls={dialogId} aria-label={t('palette.open')} title={t('palette.shortcut')} className="text-muted-foreground gap-1.5">
         <span className="qp-palette-search-mark" aria-hidden="true"/><span className="qp-palette-trigger-copy"><span className="qp-palette-trigger-label hidden lg:inline">{t('palette.open')}</span><kbd className="border-border/70 hidden rounded border px-1 text-[10px] lg:inline">⌘K</kbd></span><span className="qp-palette-action-mark" aria-hidden="true"><Zap size={18} focusable="false"/></span>
       </Button>
-      <dialog ref={dialog} id={dialogId} className="qp-command-dialog" aria-modal="true" aria-label={t('palette.title')} onKeyDown={trapFocus} onCancel={event => { event.preventDefault(); close(); }} onClose={event => { if (!event.currentTarget.open) setOpen(false); }} onMouseDown={event => { if (event.target === event.currentTarget) { event.preventDefault(); close(); } }}>
+      <dialog ref={dialog} id={dialogId} className="qp-command-dialog" aria-modal="true" aria-label={t('palette.title')} onKeyDown={trapFocus} onCancel={event => { event.preventDefault(); close(); }} onClose={event => { if (event.currentTarget.isConnected && !event.currentTarget.open) setOpen(false); }} onMouseDown={event => { if (event.target === event.currentTarget) { event.preventDefault(); close(); } }}>
         {open && <div className="bg-popover text-popover-foreground w-full max-w-lg overflow-hidden rounded-2xl border shadow-2xl">
           <div className="flex items-center gap-2 border-b px-3 py-2.5"><Search className="text-muted-foreground size-4" /><input ref={input} type="search" aria-label={t('palette.placeholder')} aria-describedby={helpId} value={query} onChange={(event) => { setQuery(event.target.value); setIndex(0); }} onKeyDown={(event) => { if (event.key === 'ArrowDown') { event.preventDefault(); setIndex((value) => Math.min(value + 1, Math.max(0, visible.length - 1))); } if (event.key === 'ArrowUp') { event.preventDefault(); setIndex((value) => Math.max(value - 1, 0)); } if (event.key === 'Enter' && visible[index]) { event.preventDefault(); choose(visible[index]!.id); } }} placeholder={t('palette.placeholder')} className="min-w-0 flex-1 bg-transparent text-sm outline-none" /><Button size="icon" aria-label={t('palette.close')} onClick={close}><X className="size-4" /></Button></div>
           <div className="max-h-[50vh] overflow-y-auto p-2">

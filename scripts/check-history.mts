@@ -329,7 +329,7 @@ try {
   await page.goto('http://127.0.0.1:7801/#projects?range=all');
   const projects = page.getByTestId('production-projects');
   await projects.getByRole('heading', { name: 'Projects', exact: true, level: 1 }).waitFor();
-  await projects.locator('.qp-project-card').first().waitFor();
+  await projects.locator('button.qp-project-card').first().waitFor();
   assert.equal(await projects.locator('.qp-project-card').count(), 2);
   await projects.locator('.qp-project-detail-metrics strong[data-value="6526"]').waitFor();
   assert.equal(await projects.locator('.qp-project-detail-metrics strong[data-value]').getAttribute('title'), '6,526');
@@ -345,15 +345,15 @@ try {
   await page.waitForURL(/#history\?range=custom.*project=alpha_100%25/);
   await page.getByTestId('usage-history').getByText('1–50 of 52 records', { exact: true }).waitFor();
   await page.goto('http://127.0.0.1:7801/#projects?range=all');
-  await projects.locator('.qp-project-card').first().waitFor();
+  await projects.locator('button.qp-project-card').first().waitFor();
   await projects.locator('.qp-project-tabs').getByRole('button', { name: 'Unassigned', exact: true }).click();
   assert.equal(await projects.locator('.qp-project-card').count(), 1);
   await projects.getByRole('button', { name: 'All projects', exact: true }).click();
   await projects.getByRole('combobox', { name: /Harness/ }).selectOption('codex');
-  await projects.locator('.qp-project-card').first().waitFor();
+  await projects.locator('button.qp-project-card').first().waitFor();
   assert.equal(await projects.locator('.qp-project-card').count(), 1);
   await projects.getByRole('combobox', { name: /Harness/ }).selectOption('');
-  await projects.locator('.qp-project-card').first().waitFor();
+  await projects.locator('button.qp-project-card').first().waitFor();
   await projects.getByPlaceholder('Search project metadata').fill('Codex test');
   assert.equal(await projects.locator('.qp-project-card').count(), 1);
   await projects.getByPlaceholder('Search project metadata').fill('nothing-matches');
@@ -370,7 +370,7 @@ try {
   });
   await page.setViewportSize({ width: 390, height: 1000 });
   await page.reload();
-  await projects.locator('.qp-project-card').first().waitFor();
+  await projects.locator('button.qp-project-card').first().waitFor();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Thai projects mobile overflow');
   await page.screenshot({ path: resolve(output, 'projects-real-th-light-390.png'), fullPage: true });
   await page.goto('http://127.0.0.1:7801/#live');
@@ -413,7 +413,7 @@ try {
   await page.goto('http://127.0.0.1:7801/#providers');
   const providers = page.getByTestId('production-providers');
   await providers.getByRole('heading', { name: englishMessages['redesign.providerHeading'], exact: true, level: 1 }).waitFor();
-  await providers.locator('.qp-provider-card').first().waitFor();
+  await providers.locator('.qp-provider-card[data-provider-motion-owner]').first().waitFor();
   assert.equal(await providers.locator('.qp-provider-card').count(), 4);
   assert.match(await providers.locator('.qp-provider-comparison').innerText(), /3 Owners without a comparable reading/);
   await providers.locator('.qp-provider-inspector>summary').click();
@@ -437,7 +437,7 @@ try {
   });
   await page.setViewportSize({ width: 390, height: 1000 });
   await page.reload();
-  await providers.locator('.qp-provider-card').first().waitFor();
+  await providers.locator('.qp-provider-card[data-provider-motion-owner]').first().waitFor();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Providers mobile overflow');
   await page.screenshot({ path: resolve(output, 'providers-real-th-light-390.png'), fullPage: true });
   await page.evaluate(() => {
@@ -621,8 +621,8 @@ try {
   const reviewCaptures = [];
   for (const [destination, ready] of [
     ['overview', '.qp-metrics strong'], ['live', '.qp-live-chart'],
-    ['projects', '.qp-project-cards'], ['providers', '.qp-provider-grid'],
-    ['models', '.qp-model-summary'], ['cost', '.qp-cost-summary'],
+    ['projects', 'button.qp-project-card'], ['providers', '.qp-provider-card[data-provider-motion-owner]'],
+    ['models', '.qp-model-table-wrap tbody tr'], ['cost', '.qp-cost-summary .qp-cost-value'],
     ['history', '[data-testid="usage-history"] tbody tr'], ['alerts', '.qp-alert-history li'],
   ]) {
     const viewport = destination === 'overview' ? { width: 1586, height: 992 } : { width: 1672, height: 941 };
@@ -692,8 +692,8 @@ try {
     await page.reload();
     for (const [destination, ready] of [
       ['overview', '.qp-metrics strong'], ['live', '.qp-live-chart'],
-      ['projects', '.qp-project-cards'], ['providers', '.qp-provider-grid'],
-      ['models', '.qp-model-summary'], ['cost', '.qp-cost-summary'],
+      ['projects', 'button.qp-project-card'], ['providers', '.qp-provider-card[data-provider-motion-owner]'],
+      ['models', '.qp-model-table-wrap tbody tr'], ['cost', '.qp-cost-summary .qp-cost-value'],
       ['history', '[data-testid="history-total-tokens"]'], ['alerts', '.qp-alert-history li'],
       ['settings', 'main input'],
     ]) {
@@ -1145,9 +1145,23 @@ try {
         assert.ok(regions['.qp-cost-providers'].x >= regions['.qp-cost-summary'].x + regions['.qp-cost-summary'].width, 'Provider panel overlaps summary');
         assert.equal(regions['.qp-cost-trend'].y, regions['.qp-cost-models'].y, 'Cost models do not share the trend row');
         for (const selector of ['.qp-cost-projects', '.qp-cost-sessions', '.qp-cost-insights']) assert.ok(regions[selector].bottom < 941, `${lang}/${theme}: Cost outside viewport: ${JSON.stringify(regions)}`);
+        const modelTable = screen.locator('.qp-cost-models .qp-cost-table');
+        const modelScroll = await modelTable.evaluate(node => ({ clientHeight: node.clientHeight, scrollHeight: node.scrollHeight }));
+        if (modelScroll.scrollHeight > modelScroll.clientHeight) {
+          await modelTable.focus(); await candidate.keyboard.press('End');
+          await candidate.waitForFunction(() => {
+            const table = document.querySelector('.qp-cost-models .qp-cost-table')!;
+            const last = table.querySelector('tbody tr:last-child')!.getBoundingClientRect();
+            const viewport = table.getBoundingClientRect();
+            return last.top >= viewport.top && last.bottom <= viewport.bottom + .5;
+          });
+          await candidate.keyboard.press('Home');
+          await candidate.waitForFunction(() => document.querySelector('.qp-cost-models .qp-cost-table')!.scrollTop === 0);
+          await modelTable.evaluate(node => (node as HTMLElement).blur());
+        }
         const filename = `cost-occupied-${lang}-${theme}.png`;
         await candidate.screenshot({ path: resolve(output, filename), animations: 'disabled' });
-        costCaptures.push({ lang, theme, filename, viewport: { width: 1672, height: 941 }, regions });
+        costCaptures.push({ lang, theme, filename, viewport: { width: 1672, height: 941 }, regions, modelScroll, allRankedModelsKeyboardReachable: true });
         for (const width of [390, 900, 1280]) {
           await candidate.setViewportSize({ width, height: 941 });
           assert.equal(await candidate.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${lang}/${theme}/${width}: occupied Cost overflow`);

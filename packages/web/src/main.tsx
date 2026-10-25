@@ -1,6 +1,7 @@
 import { StrictMode, Suspense, lazy, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { I18nProvider } from '@/i18n';
+import { CommandPaletteSessionProvider } from '@/components/command-palette';
 import { canonicalHash } from '@/redesign/routes';
 import { RouteLoadBoundary, RouteLoadingShell } from '@/redesign/route-loading';
 const App = lazy(() => import('@/App'));
@@ -45,7 +46,7 @@ function RoutedApp() {
   const mode = new URLSearchParams(location.search).get('mode');
   if (mode === 'popup' || mode === 'legacy') return <Suspense fallback={<div role="status">Loading…</div>}><App /></Suspense>;
   const page = route === 'overview' || route === 'projects' || route === 'providers' || route === 'models' || route === 'cost' || route === 'alerts' || route === 'live' || route === 'history' ? route : 'settings';
-  return <I18nProvider><RouteLoadBoundary key={page} page={page}><Suspense fallback={<RouteLoadingShell page={page}/>}>{page === 'overview' ? <ProductionOverview /> : page === 'projects' ? <ProductionProjects /> : page === 'providers' ? <ProductionProviders /> : page === 'models' ? <ProductionModels /> : page === 'cost' ? <ProductionCost /> : page === 'alerts' ? <ProductionAlerts /> : page === 'live' ? <ProductionLive /> : <ProductionUtilityPage page={page}/>}</Suspense></RouteLoadBoundary></I18nProvider>;
+  return <I18nProvider><CommandPaletteSessionProvider><RouteLoadBoundary key={page} page={page}><Suspense fallback={<RouteLoadingShell page={page}/>}>{page === 'overview' ? <ProductionOverview /> : page === 'projects' ? <ProductionProjects /> : page === 'providers' ? <ProductionProviders /> : page === 'models' ? <ProductionModels /> : page === 'cost' ? <ProductionCost /> : page === 'alerts' ? <ProductionAlerts /> : page === 'live' ? <ProductionLive /> : <ProductionUtilityPage page={page}/>}</Suspense></RouteLoadBoundary></CommandPaletteSessionProvider></I18nProvider>;
 }
 // The fixture and preview UI are excluded from production builds by Vite.
 if (import.meta.env.DEV && new URLSearchParams(location.search).get('mode') === 'redesign-preview') {

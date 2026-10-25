@@ -1,0 +1,16 @@
+{
+  "palette": {
+    "baselineCommit": "d956d9865347ec9379c9e01e582d6850232d38f6",
+    "observed": "palette disappears and Cost never receives a request during Overview navigation",
+    "control": "16 populated-Overview cycles pass; minimal original readiness fails",
+    "causalProbe": "holding the real module allows navigation before release; releasing while query is open loses palette/query and leaves BODY focused",
+    "fix": "navigation session state above route Suspense/loading/error boundary; disconnected old dialog close does not clear the session",
+    "validated": "same held-module probe passes after fix;24 compiled lifecycle cases and16 original-flow cycles pass"
+  },
+  "cost": {
+    "observed": "occupied eight-model table makes middle row315.390625px and lower panels end946.765625px beyond941px viewport",
+    "control": "browser-only max-height230px returns middle row to302px and preserves strict money/layout assertions",
+    "fix": "normal desktop CSS bounds the existing focusable table to230px and keeps every row scrollable",
+    "validated": "source-only four language/theme combinations pass without injected styles; End/Home reaches last ranked model; lower bottoms933.375/931px"
+  }
+}

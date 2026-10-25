@@ -34,6 +34,7 @@ let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 const records: unknown[] = [];
 const faults: string[] = [];
 const pages = ['overview', 'live', 'projects', 'models', 'history', 'alerts', 'providers', 'cost', 'settings'];
+const paletteOnly = process.env.QUOTAPULSE_ROUTE_SCOPE === 'palette';
 const routePrefix = (page: string) => page === 'overview' ? 'production' : page === 'history' || page === 'settings' ? 'utility-pages' : page;
 const targetModule = (url: string, prefix: string) => new RegExp(`/${prefix}-[^/]+\\.js$`).test(new URL(url).pathname);
 
@@ -109,7 +110,60 @@ async function pendingGeometry(page: Page, destination: string, hash = `#${desti
 try {
   await server.listen({ host: '127.0.0.1', port: 7816 });
   browser = await chromium.launch({ channel: 'chrome', headless: true, args: rendererArgs });
-  for (const lang of ['en', 'th'] as const) for (const destination of pages) {
+  // A loading shell may be replaced while a user is already navigating.
+  // Retain the query and keyboard intent across that real module handoff.
+  for (const lang of ['en', 'th'] as const) {
+    const local = lang === 'en' ? en : th;
+    for (const destination of pages) {
+      const page = await newPage(lang, lang === 'th' ? 390 : 1672, lang === 'th' ? 'light' : 'dark');
+      const hold = await holdModule(page, routePrefix(destination));
+      try {
+        await page.goto(`http://127.0.0.1:7816/#${destination}`, { waitUntil: 'domcontentloaded' });
+        await hold.held(); await page.locator('[data-route-load-state=loading]').waitFor();
+        await page.keyboard.press('Control+k');
+        const palette = page.getByRole('dialog', { name: local['palette.title'], exact: true });
+        await palette.getByRole('searchbox').fill(local['redesign.cost']);
+        hold.release(); await page.locator('[data-route-load-state]').waitFor({ state: 'detached' });
+        await palette.waitFor();
+        assert.equal(await palette.getByRole('searchbox').inputValue(), local['redesign.cost']);
+        assert.equal(await palette.getByRole('searchbox').evaluate(element => element === document.activeElement), true);
+        await palette.getByRole('button', { name: local['redesign.cost'], exact: true }).click();
+        await page.waitForURL('**/#cost?range=month');
+        await page.getByTestId('production-cost').locator('.qp-cost-summary .qp-cost-value').first().waitFor();
+        assert.equal(await page.locator('dialog[open]').count(), 0);
+        records.push({ kind: 'palette-query-handoff', destination, lang, width: page.viewportSize()!.width, queryRetained: true, focusRetained: true, costMonthNavigation: true });
+      } finally { hold.release(); await page.close(); }
+    }
+    for (const mode of ['keyboard-index', 'close-before-resolution', 'choose-before-resolution']) {
+      const page = await newPage(lang, lang === 'th' ? 390 : 1672, lang === 'th' ? 'light' : 'dark');
+      const hold = await holdModule(page, 'production');
+      try {
+        await page.goto('http://127.0.0.1:7816/#overview', { waitUntil: 'domcontentloaded' });
+        await hold.held(); await page.locator('[data-route-load-state=loading]').waitFor();
+        await page.keyboard.press('Control+k');
+        const palette = page.getByRole('dialog', { name: local['palette.title'], exact: true }); await palette.waitFor();
+        if (mode === 'keyboard-index') {
+          for (let index = 0; index < 4; index++) await page.keyboard.press('ArrowDown');
+          assert.equal(await palette.getByRole('status').innerText(), local['redesign.cost']);
+          hold.release(); await page.locator('[data-route-load-state]').waitFor({ state: 'detached' });
+          await palette.waitFor(); assert.equal(await palette.getByRole('status').innerText(), local['redesign.cost']);
+          await page.keyboard.press('Enter'); await page.waitForURL('**/#cost?range=month');
+        } else if (mode === 'close-before-resolution') {
+          await page.keyboard.press('Escape'); await palette.waitFor({ state: 'hidden' });
+          hold.release(); await page.locator('[data-route-load-state]').waitFor({ state: 'detached' });
+          assert.equal(await page.locator('dialog[open]').count(), 0);
+          await page.keyboard.press('Control+k'); await palette.waitFor();
+          assert.equal(await palette.getByRole('searchbox').inputValue(), ''); await page.keyboard.press('Escape');
+        } else {
+          await palette.getByRole('button', { name: local['redesign.cost'], exact: true }).click();
+          await page.waitForURL('**/#cost?range=month'); hold.release();
+          await page.getByTestId('production-cost').locator('.qp-cost-summary .qp-cost-value').first().waitFor();
+        }
+        records.push({ kind: 'palette-loading-intent', mode, lang });
+      } finally { hold.release(); await page.close(); }
+    }
+  }
+  for (const lang of ['en', 'th'] as const) for (const destination of paletteOnly ? [] : pages) {
     const width = destination === 'settings' ? 390 : 1672;
     const page = await newPage(lang, width);
     const hold = await holdModule(page, routePrefix(destination));
@@ -148,7 +202,7 @@ try {
   }
 
   // Keep one provider across A -> held B -> A -> B, including preference changes in B.
-  {
+  if (!paletteOnly) {
     const page = await newPage();
     let settingsRequests = 0;
     page.on('request', request => { if (new URL(request.url()).pathname === '/api/settings') settingsRequests++; });
@@ -186,7 +240,7 @@ try {
     { destination: 'providers', hash: '#providers?owner=source%3A1&source=1', name: 'providers-inspector' },
     { destination: 'settings', hash: '#settings?section=diagnostics&source=1', name: 'settings-diagnostics' },
   ];
-  for (const { destination, hash, name } of moduleCases) for (const lang of ['en', 'th'] as const)
+  for (const { destination, hash, name } of paletteOnly ? [] : moduleCases) for (const lang of ['en', 'th'] as const)
     for (const theme of ['dark', 'light'] as const) for (const width of [390, 900, 1280, 1672]) {
     const page = await newPage(lang, width, theme);
     const local = lang === 'en' ? en : th;
@@ -247,7 +301,7 @@ try {
     console.log(`Module recovery ${name}/${lang}/${theme}/${width} passed.`);
     await page.close();
   }
-  for (const mode of ['legacy', 'popup']) {
+  for (const mode of paletteOnly ? [] : ['legacy', 'popup']) {
     const page = await newPage('th', mode === 'popup' ? 420 : 1280);
     await page.goto(`http://127.0.0.1:7816/?mode=${mode}#live`, { waitUntil: 'domcontentloaded' });
     await page.locator(mode === 'popup' ? '.pet-popup' : '.dashboard-content').waitFor();
@@ -259,6 +313,7 @@ try {
   assert.deepEqual(faults, [], 'Unexpected uncaught browser errors');
   writeFileSync(resolve(output, 'verification.json'), JSON.stringify({
     productionIndexSha256: createHash('sha256').update(readFileSync(resolve(root, 'packages/web/dist/index.html'))).digest('hex'),
+    scope: paletteOnly ? 'palette module handoff only; existing full lifecycle suite not executed' : 'full lifecycle including palette module handoff',
     browser: browser.version(), rendererArgs, fixture: 'isolated in-memory API; no live readers', records,
   }, null, 2));
   console.log(`Route loading passed: ${records.length} lifecycle cases.`);

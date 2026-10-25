@@ -1,0 +1,38 @@
+{
+  "database": "in-memory synthetic",
+  "cases": [
+    {
+      "name": "missing prices",
+      "native": "Unknown",
+      "api": "Unknown",
+      "coverage": "0 / 53"
+    },
+    {
+      "name": "known zero",
+      "native": "Unknown",
+      "api": "$0.00",
+      "coverage": "53 / 53"
+    },
+    {
+      "name": "mixed weighted bases",
+      "native": "$0.10+",
+      "api": "$0.50+",
+      "coverage": "50 / 110"
+    },
+    {
+      "name": "empty source scope",
+      "native": "$0.00",
+      "api": "$0.00",
+      "coverage": "0 / 0"
+    }
+  ],
+  "checks": [
+    "Overview, Models and Cost summary",
+    "Models comparison and selected model",
+    "weighted call counts",
+    "separate native and API bases",
+    "accessible coverage explanation",
+    "Cost zero bars and neutral zero donut",
+    "Cost model weighted coverage"
+  ]
+}
