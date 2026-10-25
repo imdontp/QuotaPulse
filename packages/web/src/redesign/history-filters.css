@@ -1,0 +1,32 @@
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form { position:relative; margin:10px 0 5px; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form>fieldset { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; min-width:0; padding:0; border:0; align-items:center; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form .qp-history-filter-field { position:relative; display:grid; min-width:0; gap:0; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form .qp-history-filter-search { grid-column:1/-1; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form label>span { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form :is(input:not([type=checkbox]),select,button,summary) { box-sizing:border-box; min-width:0; height:35px; min-height:35px; font-family:inherit; font-size:11px; border:1px solid var(--qp-border); border-radius:7px; background:var(--qp-panel); color:var(--qp-text); }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form input:not([type=checkbox]) { width:100%; padding:0 10px; outline:none; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form input::placeholder { color:var(--qp-muted); opacity:1; }
+.qp-history-filter-search>svg { position:absolute; left:12px; top:9px; pointer-events:none; color:var(--qp-muted); }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form .qp-history-filter-search input { padding-left:35px; border-color:color-mix(in srgb,var(--qp-accent) 35%,var(--qp-border)); background:linear-gradient(110deg,color-mix(in srgb,var(--qp-series) 5%,var(--qp-panel)),var(--qp-panel)); }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form select { width:100%; padding:0 8px; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form :is(input,select,button,summary):focus-visible { outline:2px solid var(--qp-accent); outline-offset:2px; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form :is(input,button,select):disabled { opacity:.5; cursor:not-allowed; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form :is(button,summary) { display:flex; align-items:center; justify-content:center; padding:0 10px; white-space:nowrap; }
+.qp-history-extra-filters>summary { position:relative; list-style:none; cursor:pointer; }
+.qp-history-extra-filters>summary::-webkit-details-marker { display:none; }
+.qp-history-extra-filters>summary b { position:absolute; top:-5px; right:-5px; width:15px; height:15px; display:grid; place-items:center; border-radius:50%; background:var(--qp-accent); color:var(--qp-bg); font-size:9px; line-height:1; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form .qp-history-extra-filters>summary[data-active=true] { border-color:var(--qp-accent); color:var(--qp-accent); }
+.qp-history-extra-fields { position:absolute; z-index:3; top:calc(100% + 8px); right:0; width:min(280px,100%); display:grid; gap:12px; box-sizing:border-box; padding:14px; border:1px solid var(--qp-border); border-radius:9px; background:var(--qp-panel); box-shadow:0 8px 24px #0004; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form .qp-history-extra-fields .qp-history-filter-field { gap:6px; }
+.qp-redesign [data-testid=usage-history] .qp-history-filter-form .qp-history-extra-fields label>span { position:static; width:auto; height:auto; margin:0; overflow:visible; clip-path:none; white-space:normal; color:var(--qp-muted); }
+.qp-history-filter-missing { display:flex; align-items:center; gap:8px; font-size:11px; line-height:1.4; }
+.qp-history-filter-missing input { accent-color:var(--qp-accent); }
+.qp-history-extra-filters>summary[aria-disabled=true] { opacity:.5; cursor:not-allowed; }
+@media(min-width:901px) {
+ .qp-redesign [data-testid=usage-history] .qp-history-filter-form>fieldset { grid-template-columns:repeat(4,minmax(0,1fr)); }
+ .qp-redesign [data-testid=usage-history] .qp-history-filter-form .qp-history-filter-search { grid-column:span 2; }
+}
+@media(min-width:1536px) {
+ .qp-redesign [data-testid=usage-history] .qp-history-filter-form>fieldset { grid-template-columns:minmax(180px,2.6fr) repeat(4,minmax(80px,1fr)) minmax(110px,1.1fr) 35px 35px auto; }
+ .qp-redesign [data-testid=usage-history] .qp-history-filter-form .qp-history-filter-search { grid-column:auto; }
+}

@@ -1,0 +1,24 @@
+{
+  "parent": "da6607c6435bf4cec5613aece81e91c0518c5f51",
+  "productionIndexSha256": "22df4ba567d5aca1f58bfdf0e31f80409812103e6df587c7909b9c4a34a1389c",
+  "webTests": 351,
+  "browserCases": 16,
+  "canonicalStableExactPairs": 8,
+  "maintainedHistoryPairs": 8,
+  "maintainedHistoryExactPairs": 4,
+  "maintainedFullExactGate": false,
+  "otherPagesByteIdentical": 7,
+  "changedBounds": [
+    238,
+    472,
+    1363,
+    506
+  ],
+  "combinedIntegration": {
+    "status": "failed; full combined suite not proven",
+    "detail": "Final combined run passed the16 sets of nine-route responsive checks and four monetary semantics cases, then failed waiting for the monthly Cost response after command-palette selection (check-history.mts paletteMonthResponse). A preceding run with the same application build passed that point and reached occupied Projects. Execution is nondeterministic at this point; cause remains unestablished. The latest failed run's reports and all selector-correction failures are retained. No History product failure was established by this waiter, and no full integration pass is claimed."
+  },
+  "reviewPageVerified": true,
+  "fullGoalComplete": false,
+  "latestRunnableZip": "review141/source140; excludes History142"
+}

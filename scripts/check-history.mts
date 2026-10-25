@@ -144,6 +144,7 @@ try {
   await history.getByRole('button', { name: 'Apply filters', exact: true }).click();
   await history.getByText('No matching usage records', { exact: true }).waitFor();
   await history.getByLabel('Search metadata', { exact: true }).fill('');
+  await history.locator('.qp-history-extra-filters>summary').click();
   await history.getByLabel('Unassigned projects only', { exact: true }).check();
   await history.getByRole('button', { name: 'Apply filters', exact: true }).click();
   await history.getByText('1–1 of 1 records', { exact: true }).waitFor();
@@ -160,6 +161,7 @@ try {
     if (holdOnce && q === 'alpha') { holdOnce = false; entered(); await held; }
     return route.continue();
   });
+  await history.locator('.qp-history-extra-filters>summary').click();
   await history.getByLabel('Unassigned projects only', { exact: true }).uncheck();
   await history.getByLabel('Search metadata', { exact: true }).fill('alpha');
   await history.getByRole('button', { name: 'Apply filters', exact: true }).click();
@@ -313,18 +315,20 @@ try {
   await page.waitForURL('**/#history?range=all&session_id=1');
   await page.getByRole('heading', { name: 'Usage records', exact: true }).waitFor();
   await page.getByTestId('usage-history').getByText('1–50 of 52 records', { exact: true }).waitFor();
-  const sessionHistoryDialog = page.getByRole('dialog');
-  await sessionHistoryDialog.waitFor();
-  assert.equal(await sessionHistoryDialog.locator('dt').filter({ hasText: /^Session reference$/ }).locator('xpath=following-sibling::dd[1]').textContent(), '1');
-  assert.equal(await sessionHistoryDialog.locator('dt').filter({ hasText: /^Project$/ }).locator('xpath=following-sibling::dd[1]').textContent(), 'alpha_100%');
+  const sessionHistoryRail = page.locator('[data-history-detail-rail]');
+  await sessionHistoryRail.waitFor();
+  assert.equal(await sessionHistoryRail.locator('dt').filter({ hasText: /^Session reference$/ }).locator('xpath=following-sibling::dd[1]').textContent(), '1');
+  assert.equal(await sessionHistoryRail.locator('dt').filter({ hasText: /^Project$/ }).locator('xpath=following-sibling::dd[1]').textContent(), 'alpha_100%');
+  await sessionHistoryRail.focus();
   await page.keyboard.press('Escape');
-  await sessionHistoryDialog.waitFor({ state: 'hidden' });
-  assert.equal(await page.getByTestId('usage-history').getByRole('button', { name: 'Record details 1', exact: true }).evaluate(element => element === document.activeElement), true);
+  await sessionHistoryRail.waitFor({ state: 'hidden' });
+  // This rail was selected automatically on route entry, so there is no row opener.
+  assert.equal(await page.getByTestId('usage-history').locator('.qp-history-table').evaluate(element => element === document.activeElement), true);
   await page.getByTestId('usage-history').getByRole('link', { name: 'Show all sessions', exact: true }).click();
   await page.getByTestId('usage-history').getByText('1–50 of 53 records', { exact: true }).waitFor();
   await page.goto('http://127.0.0.1:7801/#projects?range=all');
   const projects = page.getByTestId('production-projects');
-  await projects.getByRole('heading', { name: 'Projects', exact: true }).waitFor();
+  await projects.getByRole('heading', { name: 'Projects', exact: true, level: 1 }).waitFor();
   await projects.locator('.qp-project-card').first().waitFor();
   assert.equal(await projects.locator('.qp-project-card').count(), 2);
   await projects.locator('.qp-project-detail-metrics strong[data-value="6526"]').waitFor();
@@ -404,11 +408,11 @@ try {
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.reload();
-  await live.getByRole('heading', { name: 'Live monitoring', exact: true }).waitFor();
+  await live.getByRole('heading', { name: englishMessages['redesign.liveHeading'], exact: true, level: 1 }).waitFor();
   await page.screenshot({ path: resolve(output, 'live-real-en-dark-1440.png'), fullPage: true });
   await page.goto('http://127.0.0.1:7801/#providers');
   const providers = page.getByTestId('production-providers');
-  await providers.getByRole('heading', { name: 'Providers and subscriptions', exact: true }).waitFor();
+  await providers.getByRole('heading', { name: englishMessages['redesign.providerHeading'], exact: true, level: 1 }).waitFor();
   await providers.locator('.qp-provider-card').first().waitFor();
   assert.equal(await providers.locator('.qp-provider-card').count(), 4);
   assert.match(await providers.locator('.qp-provider-comparison').innerText(), /3 Owners without a comparable reading/);
@@ -453,14 +457,14 @@ try {
   await models.locator('.qp-model-detail').getByText('gpt-test', { exact: true }).waitFor();
   await models.locator('.qp-model-trend circle[data-value]').first().waitFor({ state: 'attached' });
   assert.equal(await models.locator('.qp-model-trend circle[data-value]').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(node.getAttribute('data-value')), 0)), 6526);
-  assert.match(await models.locator('.qp-model-summary').innerText(), /Model and route pairs\s+2/);
+  assert.equal(await models.locator('.qp-model-summary article').first().locator('strong').innerText(), '2');
   assert.match(await models.locator('.qp-model-comparison').innerText(), /openrouter/);
   await page.screenshot({ path: resolve(output, 'models-real-en-dark-1440.png'), fullPage: true });
   await models.locator('.qp-model-providers button').filter({ hasText: 'openrouter' }).click();
   await page.waitForURL(/provider=openrouter/);
   await models.locator('.qp-model-table-wrap tbody tr').first().waitFor();
   assert.equal(await models.locator('.qp-model-table-wrap tbody tr').count(), 1);
-  await models.getByRole('link', { name: 'Open scoped History' }).click();
+  await models.getByRole('link', { name: englishMessages['redesign.modelsHistory'], exact: true }).click();
   await page.waitForURL(/#history\?/);
   const modelHistory = new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
   assert.equal(modelHistory.get('model'), 'gpt-test');
@@ -483,7 +487,7 @@ try {
   await page.goto('http://127.0.0.1:7801/#cost?range=month');
   await page.reload();
   const cost = page.getByTestId('production-cost');
-  await cost.getByRole('heading', { name: 'Cost analysis', exact: true }).waitFor();
+  await cost.getByRole('heading', { name: englishMessages['redesign.costHeading'], exact: true, level: 1 }).waitFor();
   await cost.locator('.qp-cost-summary strong').first().waitFor();
   assert.equal(Number(new URL(costRequests.at(-1)!).searchParams.get('from')), monthStart.getTime(), 'Cost explicit month scope must begin at the calendar month');
   assert.equal(await cost.getByRole('combobox', { name: 'Period', exact: true }).inputValue(), 'month');
@@ -517,7 +521,7 @@ try {
   await page.goto('http://127.0.0.1:7801/#cost?range=month');
   await page.reload();
   if (await cost.getAttribute('lang') !== 'th') await cost.locator('.qp-tools button').last().click();
-  await cost.getByRole('heading', { name: 'วิเคราะห์ต้นทุน', exact: true }).waitFor();
+  await cost.getByRole('heading', { name: thaiMessages['redesign.costHeading'], exact: true, level: 1 }).waitFor();
   await cost.locator('.qp-cost-summary strong').first().waitFor();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Cost mobile overflow');
   await page.screenshot({ path: resolve(output, 'cost-real-th-light-390.png'), fullPage: true });
@@ -532,7 +536,7 @@ try {
     const scoped = page.getByTestId(`production-${destination}`);
     await scoped.getByTestId('scope-notice').getByText(/Source #1/).waitFor();
     if (destination === 'projects') await scoped.getByRole('button', { name: 'Usage', exact: true }).click();
-    const label = destination === 'projects' ? 'Open filtered History' : 'Open scoped History';
+    const label = destination === 'projects' ? 'Open filtered History' : destination === 'models' ? englishMessages['redesign.modelsHistory'] : englishMessages['redesign.costOpenHistory'];
     const link = scoped.getByRole('link', { name: label, exact: true }).first();
     await link.waitFor();
     const params = new URLSearchParams((await link.getAttribute('href'))!.split('?')[1]);
@@ -629,7 +633,7 @@ try {
     await page.evaluate(() => document.fonts.ready);
     if (destination === 'history') {
       const geometry = await page.getByTestId('history-timeline').evaluate(element => {
-        const svg = element.querySelector('svg[role="img"]')!;
+        const svg = element.querySelector('svg[role="group"]')!;
         const line = svg.querySelector('line')!;
         const table = document.querySelector('[data-testid="usage-history"] tbody tr')!;
         return { timelineHeight: element.getBoundingClientRect().height, chartWidth: svg.getBoundingClientRect().width, plotWidth: Number(line.getAttribute('x2')) - Number(line.getAttribute('x1')), firstRowBottom: table.getBoundingClientRect().bottom };
@@ -704,13 +708,16 @@ try {
       assert.equal(await screen.locator('main h1').count(), 1);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${destination}/${lang}/${theme}/${width} overflow`);
       if (destination === 'history') {
-        const defaultDetail = page.getByRole('dialog');
+        const defaultDetail = screen.locator('[data-history-detail-rail]');
         await defaultDetail.waitFor();
+        // Automatic initial selection has no row opener. Keep the table visible
+        // and focus the nonmodal rail without scrolling before testing Escape.
+        const historyTable = screen.locator('.qp-history-table');
+        await historyTable.scrollIntoViewIfNeeded();
+        await defaultDetail.evaluate(element => (element as HTMLElement).focus({ preventScroll: true }));
         await page.keyboard.press('Escape');
         await defaultDetail.waitFor({ state: 'hidden' });
-        // Native close precedes the React close handler that restores row focus.
-        await page.waitForFunction(() => Boolean(document.activeElement?.closest('[data-testid="usage-history"] tbody tr')), undefined, { timeout: 2000 });
-        assert.equal(await page.evaluate(() => Boolean(document.activeElement?.closest('[data-testid="usage-history"] tbody tr'))), true, `${lang}/${theme}/${width}: History Escape did not restore the selected-row focus`);
+        assert.equal(await historyTable.evaluate(element => element === document.activeElement), true, `${lang}/${theme}/${width}: automatic History rail close did not restore visible-table focus`);
       }
       const link = screen.locator('.qp-sidebar nav a').first();
       await link.focus();
@@ -763,7 +770,7 @@ try {
       if (!entry.suffix) {
         const selectedValue = page.locator('.qp-model-detail-stats > div').last().locator('strong span > span').first();
         assert.equal(await selectedValue.textContent(), entry.api, `${entry.name}: selected model API`);
-        assert.equal(await page.locator('.qp-model-table-wrap tbody tr').first().locator('td').last().locator('span > span').first().textContent(), entry.api, `${entry.name}: table API`);
+        assert.equal(await page.locator('.qp-model-table-wrap tbody tr').first().locator('td .qp-cost-value>span').first().textContent(), entry.api, `${entry.name}: table API`);
       }
       for (const basis of ['api', 'native']) {
         await page.goto(`http://127.0.0.1:7801/#cost?range=custom&from=${now - 30 * 86400000}&to=${now + 1}&basis=${basis}${entry.suffix ?? ''}`);
@@ -856,7 +863,7 @@ try {
         await occupied.clock.setFixedTime(now);
         await occupied.goto('http://127.0.0.1:7801/#live');
         const screen = occupied.getByTestId('production-live');
-        await screen.getByRole('heading', { name: lang === 'en' ? 'Live monitoring' : 'ติดตามการใช้งานสด', exact: true }).waitFor();
+        await screen.getByRole('heading', { name: (lang === 'en' ? englishMessages : thaiMessages)['redesign.liveHeading'], exact: true, level: 1 }).waitFor();
         await screen.locator('.qp-live-table tbody tr').nth(9).waitFor();
         await occupied.evaluate(() => document.fonts.ready);
         assert.equal(await screen.locator('.qp-live-metrics strong').first().textContent(), '13');
@@ -965,7 +972,7 @@ try {
         await occupied.clock.setFixedTime(now);
         await occupied.goto('http://127.0.0.1:7801/#projects?range=all');
         const screen = occupied.getByTestId('production-projects');
-        await screen.getByRole('heading', { name: messages['redesign.projectHeading'], exact: true }).waitFor();
+        await screen.getByRole('heading', { name: messages['redesign.projectHeading'], exact: true, level: 1 }).waitFor();
         await screen.locator('.qp-project-card').nth(7).waitFor();
         await screen.locator('.qp-project-trend').waitFor();
         await occupied.evaluate(() => document.fonts.ready);

@@ -1,0 +1,18 @@
+{
+  "approvedArchive": "docs\\quotapulse_build_blueprint_v1.1.zip",
+  "sha256": "28bc63571ddf7ecda1e12e8821c6184378ccfe6c3a599d6ccec29bf17fedb054",
+  "gapLedger": {
+    "path": "docs/redesign-v1.85.109/authority/07-GAP-LEDGER-v1.1.md",
+    "sha256": "9f52d661e90ee501438a28c491d5e4e434c6e243ad51e39e6bce1757c77553c8"
+  },
+  "constraints": [
+    "GAP-001 metadata only; no prompt search/detail",
+    "GAP-013 full exact filters and matching export retained",
+    "GAP-019 categorical effort and real grain; no invented status options",
+    "GAP-020 Thai/light/narrow/keyboard behavior retained"
+  ],
+  "reference": {
+    "path": "refs/history.png",
+    "sha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf"
+  }
+}

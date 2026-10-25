@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { api, type HarnessStatus, type HistorySummaryResponse } from '@/api';
 import { HistoryTimeline } from '@/redesign/history-timeline';
+import { HistoryFilters } from '@/redesign/history-filters';
 import { InitialRegion, type InitialRegionState } from '@/redesign/initial-region';
 import { useHistoryMotion } from '@/redesign/use-history-motion';
 import { historyRecordMotionKey } from '@/redesign/history-motion';
@@ -224,14 +225,14 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
       <div className="qp-history-summary">{(['col.total', 'col.calls', 'history.apiTotal', 'history.effortDistribution'] as const).map((label, index) => <InitialRegion key={label} id={`history-summary-${index}`} label={t(label)} state={initialState} slots={1}/>)}</div>
       <InitialRegion id="history-timeline" label={t('history.timeline')} state={initialState} className="qp-history-initial-plot" heading={<span className="sr-only">{t('history.timeline')}</span>} status/>
     </section>}
-    <form onSubmit={event => { event.preventDefault(); setOffset(0); setFilters({ ...draft, project: draft.projectMissing ? undefined : draft.project }); }}>
+    {redesign ? <HistoryFilters draft={draft} disabled={paused} onChange={setDraft} onApply={() => { setOffset(0); setFilters({ ...draft, project: draft.projectMissing ? undefined : draft.project }); }} onClear={() => { setOffset(0); setDraft({ grain: 'all' }); setFilters({ grain: 'all' }); }}/> : <form onSubmit={event => { event.preventDefault(); setOffset(0); setFilters({ ...draft, project: draft.projectMissing ? undefined : draft.project }); }}>
       <fieldset disabled={paused} className="grid min-w-0 grid-cols-1 gap-3 rounded-lg border p-3 sm:grid-cols-2 xl:grid-cols-3">
         {FILTER_FIELDS.map(field => <label key={field} className="grid min-w-0 gap-1 text-xs text-muted-foreground"><span>{t(field === 'q' ? 'history.search' : `history.${field}`)}</span><input className="min-w-0 rounded-md border bg-background px-2 py-2 text-foreground" placeholder={redesign ? t(field === 'q' ? 'history.search' : `history.${field}`) : undefined} value={draft[field] ?? ''} disabled={field === 'project' && draft.projectMissing} onChange={event => setDraft({ ...draft, [field]: event.target.value || undefined })} maxLength={field === 'q' ? 256 : 4096}/></label>)}
         <Select label={t('history.kind')} value={draft.grain ?? 'all'} onChange={event => setDraft({ ...draft, grain: event.target.value as UsageGrain })}>{(['all', 'call', 'session_aggregate', 'unknown'] as const).map(grain => <option key={grain} value={grain}>{t(`history.${grain}`)}</option>)}</Select>
         <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={draft.projectMissing ?? false} onChange={event => setDraft({ ...draft, projectMissing: event.target.checked })}/>{t('history.missing')}</label>
         <Button type="submit">{t('history.apply')}</Button>
       </fieldset>
-    </form>
+    </form>}
     {!redesign && viewActions}
     {currentError && (!redesign || snapshot) && <ErrorBox>{currentError}{snapshot && <p>{t('history.stale')}</p>}{redesign && <Button onClick={retry} disabled={paused || loading}>{t('app.retry')}</Button>}</ErrorBox>}
     {redesign && !snapshot ? <InitialRegion id="history-records" label={t('history.records')} state={initialState} className="qp-history-initial-records" slots={6}/> : <Card aria-busy={loading} className={redesign ? 'qp-history-records' : undefined}>
