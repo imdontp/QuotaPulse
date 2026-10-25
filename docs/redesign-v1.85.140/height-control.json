@@ -1,0 +1,9 @@
+{
+  "scope": "Diagnostic browser-only minimum height override; not production or an acceptance mask.",
+  "oldRootHeight": 947.359375,
+  "actualRootHeight": 941,
+  "sharedComputedStylesAndGeometryEqual": true,
+  "controlledOldHeightHeaderChangedPixels": 0,
+  "controlledOldHeightSidebarChangedPixels": 0,
+  "conclusion": "Restoring old height alone restores exact old shared-shell paint. Actual product retains viewport-fitting height941; the precise browser raster/compositing mechanism is not established."
+}

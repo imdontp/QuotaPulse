@@ -983,8 +983,8 @@ try {
         const expectedMoney = (amount: number) => new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { style: 'currency', currency: 'USD' }).format(amount);
         assert.equal(await native.locator('span').first().textContent(), `${expectedMoney(.9)}+`);
         assert.equal(await apiValue.locator('span').first().textContent(), `${expectedMoney(3.2)}+`);
-        assert.equal(await screen.locator('.qp-project-detail-metrics > div').nth(2).locator('small').textContent(), messages['redesign.modelsCalls']);
-        assert.equal(await screen.locator('.qp-project-detail-metrics > div').nth(2).locator('strong').textContent(), '76');
+        assert.equal(await screen.locator('.qp-project-detail-facts [data-project-fact=calls] small').textContent(), messages['redesign.modelsCalls']);
+        assert.equal(await screen.locator('.qp-project-detail-facts [data-project-fact=calls] strong').textContent(), '76');
         assert.match(await native.getAttribute('title') ?? '', /36 \/ 76/);
         assert.match(await apiValue.getAttribute('title') ?? '', /40 \/ 76/);
         const regions = await screen.evaluate(node => Object.fromEntries(['.qp-project-cards', '.qp-project-card:nth-child(4)', '.qp-project-card:nth-child(6)', '.qp-project-card:nth-child(8)', '.qp-project-detail', '.qp-project-top', '.qp-project-rail'].map(selector => {

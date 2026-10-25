@@ -125,6 +125,7 @@
   background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 15%,var(--qp-panel)),var(--qp-panel));
 }
 .qp-project-card-identity { display:grid; gap:3px; min-width:0; }
+.qp-project-card-calls { display:block; margin-top:2px; }
 .qp-project-card-summary { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(92px,1fr); gap:14px; align-items:start; }
 .qp-project-card-usage { display:grid; gap:5px; min-width:0; }
 .qp-project-card-usage>small,.qp-project-card-share-label { color:var(--qp-muted); font-size:10px; line-height:1.3; }
@@ -167,6 +168,9 @@
 .qp-project-card-facts strong { grid-column:2; font-size:12px; font-weight:550; line-height:14px; color:var(--qp-text); }
 .qp-project-card-facts small { grid-column:2; font-size:10px; line-height:12px; overflow-wrap:anywhere; }
 .qp-project-card-facts svg { color:var(--qp-accent); }
+.qp-redesign[data-theme=dark] .qp-project-card-facts .qp-project-fact-icon { width:26px; height:26px; color:#81bdff; border-color:#154178; background:radial-gradient(ellipse at 30% 20%,#123b85,#07245b 70%,#081c43); box-shadow:inset 0 0 7px #164add40,0 0 6px #124cbe20; }
+.qp-redesign[data-theme=dark] .qp-project-card-facts .qp-project-fact-icon svg { color:inherit; }
+.qp-project-card-facts abbr,.qp-project-detail-facts abbr,.qp-project-identity-panel abbr { display:inline-block; white-space:nowrap; }
 .qp-observed-trend.qp-project-trend { display:block; width:100%; overflow:visible; }
 .qp-project-card-heading strong,.qp-project-identity {
   overflow-wrap:anywhere;

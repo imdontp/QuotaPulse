@@ -1071,8 +1071,8 @@ async function checkProjectCards(page: Page, lang: string, theme: string, pendin
   const selectedRows = data.rows.filter(row => row.project === 'QuotaPulse');
   const panels = page.locator('.qp-project-identity-panel');
   assert.equal(await panels.count(), 2);
-  assert.equal(await panels.nth(0).locator('li').count(), new Set(selectedRows.map(row => row.harness).filter(Boolean)).size);
-  assert.equal(await panels.nth(1).locator('li').count(), new Set(selectedRows.map(row => row.provider).filter(Boolean)).size);
+  assert.equal(await panels.nth(0).locator('.qp-project-identity-mark').count(), new Set(selectedRows.map(row => row.harness).filter(Boolean)).size);
+  assert.equal(await panels.nth(1).locator('.qp-project-identity-mark').count(), new Set(selectedRows.map(row => row.provider).filter(Boolean)).size);
   const messages = lang === 'th' ? th : en;
   await page.getByRole('button', { name: messages['redesign.projectMetadataTab'], exact: true }).click();
   await settled(page, pending);
