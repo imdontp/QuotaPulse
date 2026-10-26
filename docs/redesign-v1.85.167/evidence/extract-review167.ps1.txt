@@ -1,0 +1,24 @@
+param([Parameter(Mandatory=$true)][string]$Receipt,[Parameter(Mandatory=$true)][string]$Destination)
+$ErrorActionPreference='Stop'
+$owner=Split-Path -Parent $PSScriptRoot
+. (Join-Path $owner 'scripts/review-profile.ps1')
+$record=Get-Content -LiteralPath $Receipt -Raw | ConvertFrom-Json
+if($record.sourceCommit -ne 'f94f44dfa785da01795943c1c3b75676dc5f20aa' -or -not $record.allEntryBytesMatch){throw 'Unexpected archive provenance'}
+$archive=(Resolve-Path -LiteralPath $record.archive).Path
+$reviewDest=(Resolve-Path -LiteralPath $Destination).Path
+Assert-ReviewPlainPath $archive
+Assert-ReviewPlainPath $reviewDest
+$tempRoot=(Resolve-Path -LiteralPath ([IO.Path]::GetTempPath())).Path.TrimEnd('\')
+if((Split-Path -Parent $reviewDest).TrimEnd('\') -ne $tempRoot -or (Split-Path -Leaf $reviewDest) -notmatch '^QuotaPulse-review-[a-zA-Z0-9]+$'){throw 'Extraction must use the fresh owned temp directory'}
+if(@(Get-ChildItem -LiteralPath $reviewDest -Force).Count -ne 0){throw 'Extraction destination must be empty'}
+if((Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne $record.sha256){throw 'Archive digest mismatch'}
+Add-Type -AssemblyName System.IO.Compression
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$reader=[IO.Compression.ZipFile]::OpenRead($archive)
+try{foreach($entry in $reader.Entries){
+ if($entry.FullName.Contains('\') -or [IO.Path]::IsPathRooted($entry.FullName)){throw 'Unexpected archive path'}
+ $target=[IO.Path]::GetFullPath((Join-Path $reviewDest $entry.FullName))
+ if(-not $target.StartsWith($reviewDest+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'Archive entry escaped owned extraction directory'}
+}}finally{$reader.Dispose()}
+[IO.Compression.ZipFile]::ExtractToDirectory($archive,$reviewDest)
+Write-Host 'Actual ZIP extracted into the fresh owned temp directory.'
