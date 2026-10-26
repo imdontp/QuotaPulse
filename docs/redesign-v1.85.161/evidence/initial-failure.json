@@ -1,0 +1,5 @@
+{
+  "url": "http://127.0.0.1:7836/#cost?range=custom&from=1747069200000&to=1747371600000&source=1&bucket=day&basis=api",
+  "error": "AssertionError [ERR_ASSERTION]: An interval with unpriced calls must be a gap, not a zero-valued sample\n+ actual - expected\n\n  [\n    2,\n+   0,\n    6,\n    0\n  ]\n",
+  "completed": []
+}

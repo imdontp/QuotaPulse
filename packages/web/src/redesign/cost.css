@@ -89,7 +89,10 @@
 .qp-cost-summary article { grid-template-columns:36px minmax(0,1fr); }
 .qp-cost-summary article>span,.qp-cost-summary article>strong { grid-column:2; }
 .qp-cost-summary article>small { grid-column:1/-1; }
-.qp-cost-summary-trend { grid-column:1/-1; display:block; width:100%; height:36px; --qp-accent:var(--qp-success); }
+.qp-cost-summary-trend { grid-column:1/-1; display:block; width:100%; height:36px; --qp-accent:var(--qp-cost-trend-color,var(--qp-success)); }
+.qp-cost-summary article:nth-child(2),.qp-cost-summary article:nth-child(4) { --qp-cost-trend-color:var(--qp-accent); }
+.qp-redesign[data-theme=dark] .qp-cost-summary article:nth-child(2) { --qp-cost-trend-color:#009dff; }
+.qp-redesign[data-theme=dark] .qp-cost-summary article:nth-child(4) { --qp-cost-trend-color:#00d7ef; }
 .qp-cost-summary article:nth-child(1) .qp-cost-metric-icon { color:var(--qp-success); }
 .qp-cost-summary article:nth-child(3) .qp-cost-metric-icon { color:var(--qp-series); }
 .qp-cost-summary article:nth-child(4) .qp-cost-metric-icon { color:var(--qp-warning); }

@@ -1,0 +1,14 @@
+{
+  "method": "arithmetic/source inspection only; no huge array allocated or UI deliberately frozen",
+  "fixedReferenceNow": "2025-05-17T13:42:00Z",
+  "hourlySlotsFromEpoch": 485414,
+  "maximumAcceptedTimeBound": 8640000000000000,
+  "hourlySlotsAtMaximumAcceptedBound": 2400000000,
+  "mechanism": [
+    "scope.ts preserves explicit custom from/to/bucket",
+    "usage-scope.ts validates integer/date bounds without a bucket-count limit",
+    "cost.tsx fills Math.ceil((scope.to-scope.from)/bucketMs) slots before drawing"
+  ],
+  "status": "open; actual large-range runtime behavior not measured",
+  "nextAction": "bound Cost display work for long explicit intervals without changing scope, monetary bases or dropping facts"
+}

@@ -1,0 +1,2255 @@
+{
+  "productionIndexSha256": "b681e86e03b62339831efac9f00e60c415e36106d5d9b18581047beb266d9243",
+  "cases": [
+    {
+      "name": "en-dark-390",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "Known value by recorded interval (USD)",
+        "description": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7; 5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per elapsed 24h (USD)",
+        "description": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per 1K priced tokens (USD)",
+        "description": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "Known value by recorded interval (USD)",
+          "description": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per elapsed 24h (USD)",
+          "description": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per 1K priced tokens (USD)",
+          "description": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "en-dark-900",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "Known value by recorded interval (USD)",
+        "description": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7; 5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per elapsed 24h (USD)",
+        "description": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per 1K priced tokens (USD)",
+        "description": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "Known value by recorded interval (USD)",
+          "description": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per elapsed 24h (USD)",
+          "description": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per 1K priced tokens (USD)",
+          "description": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "en-dark-1280",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "Known value by recorded interval (USD)",
+        "description": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7; 5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per elapsed 24h (USD)",
+        "description": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per 1K priced tokens (USD)",
+        "description": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "Known value by recorded interval (USD)",
+          "description": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per elapsed 24h (USD)",
+          "description": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per 1K priced tokens (USD)",
+          "description": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "en-dark-1672",
+      "currency": "THB",
+      "rate": 37.25,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 74.5,
+            "title": "5/13/25, 12:00 AM · THB 74.50 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 223.5,
+            "title": "5/15/25, 12:00 AM · THB 223.50+ · Priced calls / all calls: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "5/16/25, 12:00 AM · THB 0.00 · Priced calls / all calls: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "Known value by recorded interval (THB)",
+        "description": "5/13/25, 12:00 AM · THB 74.50 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · THB 223.50+ · Priced calls / all calls: 3 / 7; 5/16/25, 12:00 AM · THB 0.00 · Priced calls / all calls: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 74.5,
+            "title": "5/14/25, 12:00 AM · THB 74.50 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 37.25,
+            "title": "5/15/25, 12:00 AM · THB 37.25+ · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 99.33333333333333,
+            "title": "5/16/25, 12:00 AM · THB 99.33+ · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 85.14285714285714,
+            "title": "5/16/25, 12:00 PM · THB 85.14+ · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per elapsed 24h (THB)",
+        "description": "5/14/25, 12:00 AM · THB 74.50 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · THB 37.25+ · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · THB 99.33+ · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · THB 85.14+ · Priced calls / all calls: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 745,
+            "title": "5/14/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 745,
+            "title": "5/15/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 745,
+            "title": "5/16/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 596,
+            "title": "5/16/25, 12:00 PM · THB 596.00 · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per 1K priced tokens (THB)",
+        "description": "5/14/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · THB 596.00 · Priced calls / all calls: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 149,
+              "title": "5/15/25, 12:00 AM · THB 149.00+ · Priced calls / all calls: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "Known value by recorded interval (THB)",
+          "description": "5/15/25, 12:00 AM · THB 149.00+ · Priced calls / all calls: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 49.666666666666664,
+              "title": "5/16/25, 12:00 AM · THB 49.67+ · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 42.57142857142857,
+              "title": "5/16/25, 12:00 PM · THB 42.57+ · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per elapsed 24h (THB)",
+          "description": "5/16/25, 12:00 AM · THB 49.67+ · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · THB 42.57+ · Priced calls / all calls: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 372.5,
+              "title": "5/16/25, 12:00 AM · THB 372.50 · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 372.5,
+              "title": "5/16/25, 12:00 PM · THB 372.50 · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per 1K priced tokens (THB)",
+          "description": "5/16/25, 12:00 AM · THB 372.50 · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · THB 372.50 · Priced calls / all calls: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "en-light-390",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "Known value by recorded interval (USD)",
+        "description": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7; 5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per elapsed 24h (USD)",
+        "description": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per 1K priced tokens (USD)",
+        "description": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "Known value by recorded interval (USD)",
+          "description": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per elapsed 24h (USD)",
+          "description": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per 1K priced tokens (USD)",
+          "description": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "en-light-900",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "Known value by recorded interval (USD)",
+        "description": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7; 5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per elapsed 24h (USD)",
+        "description": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per 1K priced tokens (USD)",
+        "description": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "Known value by recorded interval (USD)",
+          "description": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per elapsed 24h (USD)",
+          "description": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per 1K priced tokens (USD)",
+          "description": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "en-light-1280",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "Known value by recorded interval (USD)",
+        "description": "5/13/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $6.00+ · Priced calls / all calls: 3 / 7; 5/16/25, 12:00 AM · $0.00 · Priced calls / all calls: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per elapsed 24h (USD)",
+        "description": "5/14/25, 12:00 AM · $2.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $1.00+ · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $2.67+ · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $2.29+ · Priced calls / all calls: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per 1K priced tokens (USD)",
+        "description": "5/14/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · $20.00 · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · $20.00 · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · $16.00 · Priced calls / all calls: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "Known value by recorded interval (USD)",
+          "description": "5/15/25, 12:00 AM · $4.00+ · Priced calls / all calls: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per elapsed 24h (USD)",
+          "description": "5/16/25, 12:00 AM · $1.33+ · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $1.14+ · Priced calls / all calls: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per 1K priced tokens (USD)",
+          "description": "5/16/25, 12:00 AM · $10.00 · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · $10.00 · Priced calls / all calls: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "en-light-1672",
+      "currency": "THB",
+      "rate": 37.25,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 74.5,
+            "title": "5/13/25, 12:00 AM · THB 74.50 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 223.5,
+            "title": "5/15/25, 12:00 AM · THB 223.50+ · Priced calls / all calls: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "5/16/25, 12:00 AM · THB 0.00 · Priced calls / all calls: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "Known value by recorded interval (THB)",
+        "description": "5/13/25, 12:00 AM · THB 74.50 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · THB 223.50+ · Priced calls / all calls: 3 / 7; 5/16/25, 12:00 AM · THB 0.00 · Priced calls / all calls: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 74.5,
+            "title": "5/14/25, 12:00 AM · THB 74.50 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 37.25,
+            "title": "5/15/25, 12:00 AM · THB 37.25+ · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 99.33333333333333,
+            "title": "5/16/25, 12:00 AM · THB 99.33+ · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 85.14285714285714,
+            "title": "5/16/25, 12:00 PM · THB 85.14+ · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per elapsed 24h (THB)",
+        "description": "5/14/25, 12:00 AM · THB 74.50 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · THB 37.25+ · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · THB 99.33+ · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · THB 85.14+ · Priced calls / all calls: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 745,
+            "title": "5/14/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 745,
+            "title": "5/15/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 745,
+            "title": "5/16/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 596,
+            "title": "5/16/25, 12:00 PM · THB 596.00 · Priced calls / all calls: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "Cumulative known value per 1K priced tokens (THB)",
+        "description": "5/14/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 2 / 2; 5/15/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 2 / 7; 5/16/25, 12:00 AM · THB 745.00 · Priced calls / all calls: 5 / 14; 5/16/25, 12:00 PM · THB 596.00 · Priced calls / all calls: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 149,
+              "title": "5/15/25, 12:00 AM · THB 149.00+ · Priced calls / all calls: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "Known value by recorded interval (THB)",
+          "description": "5/15/25, 12:00 AM · THB 149.00+ · Priced calls / all calls: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 49.666666666666664,
+              "title": "5/16/25, 12:00 AM · THB 49.67+ · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 42.57142857142857,
+              "title": "5/16/25, 12:00 PM · THB 42.57+ · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per elapsed 24h (THB)",
+          "description": "5/16/25, 12:00 AM · THB 49.67+ · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · THB 42.57+ · Priced calls / all calls: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 372.5,
+              "title": "5/16/25, 12:00 AM · THB 372.50 · Priced calls / all calls: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 372.5,
+              "title": "5/16/25, 12:00 PM · THB 372.50 · Priced calls / all calls: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "Cumulative known value per 1K priced tokens (THB)",
+          "description": "5/16/25, 12:00 AM · THB 372.50 · Priced calls / all calls: 4 / 14; 5/16/25, 12:00 PM · THB 372.50 · Priced calls / all calls: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "th-dark-390",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+        "description": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7; 16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+        "description": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+        "description": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+          "description": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+          "description": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+          "description": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "th-dark-900",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+        "description": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7; 16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+        "description": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+        "description": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+          "description": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+          "description": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+          "description": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "th-dark-1280",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+        "description": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7; 16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+        "description": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+        "description": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+          "description": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+          "description": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+          "description": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "th-dark-1672",
+      "currency": "THB",
+      "rate": 37.25,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 74.5,
+            "title": "13/5/68 00:00 · ฿74.50 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 223.5,
+            "title": "15/5/68 00:00 · ฿223.50+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "16/5/68 00:00 · ฿0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (THB)",
+        "description": "13/5/68 00:00 · ฿74.50 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · ฿223.50+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7; 16/5/68 00:00 · ฿0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 74.5,
+            "title": "14/5/68 00:00 · ฿74.50 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 37.25,
+            "title": "15/5/68 00:00 · ฿37.25+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 99.33333333333333,
+            "title": "16/5/68 00:00 · ฿99.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 85.14285714285714,
+            "title": "16/5/68 12:00 · ฿85.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (THB)",
+        "description": "14/5/68 00:00 · ฿74.50 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · ฿37.25+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · ฿99.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · ฿85.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 745,
+            "title": "14/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 745,
+            "title": "15/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 745,
+            "title": "16/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 596,
+            "title": "16/5/68 12:00 · ฿596.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (THB)",
+        "description": "14/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · ฿596.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 149,
+              "title": "15/5/68 00:00 · ฿149.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (THB)",
+          "description": "15/5/68 00:00 · ฿149.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 49.666666666666664,
+              "title": "16/5/68 00:00 · ฿49.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 42.57142857142857,
+              "title": "16/5/68 12:00 · ฿42.57+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (THB)",
+          "description": "16/5/68 00:00 · ฿49.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · ฿42.57+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 372.5,
+              "title": "16/5/68 00:00 · ฿372.50 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 372.5,
+              "title": "16/5/68 12:00 · ฿372.50 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (THB)",
+          "description": "16/5/68 00:00 · ฿372.50 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · ฿372.50 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "th-light-390",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+        "description": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7; 16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+        "description": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+        "description": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+          "description": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+          "description": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+          "description": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "th-light-900",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+        "description": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7; 16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+        "description": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+        "description": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+          "description": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+          "description": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+          "description": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "th-light-1280",
+      "currency": "USD",
+      "rate": 1,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 2,
+            "title": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 6,
+            "title": "15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+        "description": "13/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$6.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7; 16/5/68 00:00 · US$0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 2,
+            "title": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 1,
+            "title": "15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 2.6666666666666665,
+            "title": "16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 2.2857142857142856,
+            "title": "16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+        "description": "14/5/68 00:00 · US$2.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$1.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$2.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$2.29+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 20,
+            "title": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 20,
+            "title": "15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 20,
+            "title": "16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 16,
+            "title": "16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+        "description": "14/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · US$20.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · US$16.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 4,
+              "title": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (USD)",
+          "description": "15/5/68 00:00 · US$4.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 1.3333333333333333,
+              "title": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 1.1428571428571428,
+              "title": "16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (USD)",
+          "description": "16/5/68 00:00 · US$1.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$1.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 10,
+              "title": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 10,
+              "title": "16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (USD)",
+          "description": "16/5/68 00:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · US$10.00 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    },
+    {
+      "name": "th-light-1672",
+      "currency": "THB",
+      "rate": 37.25,
+      "api": {
+        "points": [
+          {
+            "at": 1747069200000,
+            "value": 74.5,
+            "title": "13/5/68 00:00 · ฿74.50 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 223.5,
+            "title": "15/5/68 00:00 · ฿223.50+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 0,
+            "title": "16/5/68 00:00 · ฿0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+          }
+        ],
+        "runs": 2,
+        "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (THB)",
+        "description": "13/5/68 00:00 · ฿74.50 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · ฿223.50+ · คำขอที่มีราคา / คำขอทั้งหมด: 3 / 7; 16/5/68 00:00 · ฿0.00 · คำขอที่มีราคา / คำขอทั้งหมด: 1 / 1"
+      },
+      "average": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 74.5,
+            "title": "14/5/68 00:00 · ฿74.50 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 37.25,
+            "title": "15/5/68 00:00 · ฿37.25+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 99.33333333333333,
+            "title": "16/5/68 00:00 · ฿99.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 85.14285714285714,
+            "title": "16/5/68 12:00 · ฿85.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (THB)",
+        "description": "14/5/68 00:00 · ฿74.50 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · ฿37.25+ · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · ฿99.33+ · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · ฿85.14+ · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "unit": {
+        "points": [
+          {
+            "at": 1747155600000,
+            "value": 745,
+            "title": "14/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2"
+          },
+          {
+            "at": 1747242000000,
+            "value": 745,
+            "title": "15/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7"
+          },
+          {
+            "at": 1747328400000,
+            "value": 745,
+            "title": "16/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14"
+          },
+          {
+            "at": 1747371600000,
+            "value": 596,
+            "title": "16/5/68 12:00 · ฿596.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+          }
+        ],
+        "runs": 1,
+        "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (THB)",
+        "description": "14/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 2; 15/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 2 / 7; 16/5/68 00:00 · ฿745.00 · คำขอที่มีราคา / คำขอทั้งหมด: 5 / 14; 16/5/68 12:00 · ฿596.00 · คำขอที่มีราคา / คำขอทั้งหมด: 6 / 15"
+      },
+      "native": {
+        "amount": {
+          "points": [
+            {
+              "at": 1747242000000,
+              "value": 149,
+              "title": "15/5/68 00:00 · ฿149.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบตามช่วงเวลาที่บันทึก (THB)",
+          "description": "15/5/68 00:00 · ฿149.00+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 7"
+        },
+        "average": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 49.666666666666664,
+              "title": "16/5/68 00:00 · ฿49.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 42.57142857142857,
+              "title": "16/5/68 12:00 · ฿42.57+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมเฉลี่ยต่อเวลาที่ผ่านไป 24 ชั่วโมง (THB)",
+          "description": "16/5/68 00:00 · ฿49.67+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · ฿42.57+ · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        },
+        "unit": {
+          "points": [
+            {
+              "at": 1747328400000,
+              "value": 372.5,
+              "title": "16/5/68 00:00 · ฿372.50 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14"
+            },
+            {
+              "at": 1747371600000,
+              "value": 372.5,
+              "title": "16/5/68 12:00 · ฿372.50 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+            }
+          ],
+          "runs": 1,
+          "label": "มูลค่าที่ทราบสะสมต่อโทเค็นที่มีราคา 1,000 โทเค็น (THB)",
+          "description": "16/5/68 00:00 · ฿372.50 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 14; 16/5/68 12:00 · ฿372.50 · คำขอที่มีราคา / คำขอทั้งหมด: 4 / 15"
+        }
+      },
+      "projectionUnavailable": true,
+      "scopePreserved": {
+        "from": 1747069200000,
+        "to": 1747371600000,
+        "sourceId": 1
+      },
+      "allTokens": 1100
+    }
+  ],
+  "futureCases": [
+    {
+      "name": "en-dark-1672",
+      "to": 1747458000000,
+      "asOf": 1747371600000,
+      "averageUnavailable": true,
+      "pricedUnitPreserved": true
+    },
+    {
+      "name": "en-light-1672",
+      "to": 1747458000000,
+      "asOf": 1747371600000,
+      "averageUnavailable": true,
+      "pricedUnitPreserved": true
+    },
+    {
+      "name": "th-dark-1672",
+      "to": 1747458000000,
+      "asOf": 1747371600000,
+      "averageUnavailable": true,
+      "pricedUnitPreserved": true
+    },
+    {
+      "name": "th-light-1672",
+      "to": 1747458000000,
+      "asOf": 1747371600000,
+      "averageUnavailable": true,
+      "pricedUnitPreserved": true
+    }
+  ],
+  "emptyCases": [
+    {
+      "name": "en-dark-1672",
+      "scope": {
+        "from": 1746205200000,
+        "to": 1746507600000,
+        "sourceId": 1
+      },
+      "averageZero": true,
+      "unitUnknown": true
+    },
+    {
+      "name": "en-light-1672",
+      "scope": {
+        "from": 1746205200000,
+        "to": 1746507600000,
+        "sourceId": 1
+      },
+      "averageZero": true,
+      "unitUnknown": true
+    },
+    {
+      "name": "th-dark-1672",
+      "scope": {
+        "from": 1746205200000,
+        "to": 1746507600000,
+        "sourceId": 1
+      },
+      "averageZero": true,
+      "unitUnknown": true
+    },
+    {
+      "name": "th-light-1672",
+      "scope": {
+        "from": 1746205200000,
+        "to": 1746507600000,
+        "sourceId": 1
+      },
+      "averageZero": true,
+      "unitUnknown": true
+    }
+  ],
+  "errors": [],
+  "external": []
+}
