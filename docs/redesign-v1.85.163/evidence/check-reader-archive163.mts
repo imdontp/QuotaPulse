@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { mkdtempSync,readFileSync,realpathSync,writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { resolve } from 'node:path';
+import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
+const root=resolve('.'),json=(file:string)=>JSON.parse(readFileSync(file,'utf8'));
+const archive=json('tmp/release163/archive.json'),input=json('tmp/release163/inputs.json');
+assert.equal(createHash('sha256').update(readFileSync(archive.archive)).digest('hex'),archive.sha256);
+const extracted=mkdtempSync(resolve(realpathSync.native(tmpdir()),'QuotaPulse-review-'));
+const ps=resolve(process.env.WINDIR!,'System32/WindowsPowerShell/v1.0/powershell.exe');
+const unpack=spawnSync(ps,['-NoProfile','-NonInteractive','-File',resolve('tmp/extract-review163.ps1'),'-Receipt',resolve('tmp/release163/archive.json'),'-Destination',extracted],{encoding:'utf8',timeout:120000,windowsHide:true});writeFileSync(resolve(root,'tmp/release163/reader-extraction-result.json'),JSON.stringify({status:unpack.status,signal:unpack.signal,error:unpack.error?{message:unpack.error.message,code:(unpack.error as any).code}:null,stdout:unpack.stdout,stderr:unpack.stderr,extracted},null,2));assert.equal(unpack.status,0,unpack.stderr+unpack.stdout);
+const {inventory}=createRequire(import.meta.url)(resolve('scripts/check-release-rollback.cjs'));assert.deepEqual(inventory(extracted,true),inventory(input.bundle,true));
+const checked=spawnSync(process.execPath,['--import','tsx',resolve('scripts/check-review-readers.mts')],{cwd:root,env:{...process.env,QP_REVIEW_READERS_BUNDLE:extracted},stdio:'inherit',timeout:300000,windowsHide:true});assert.equal(checked.status,0);
+const report=json('screens/review-readers/verification.json');assert.equal(report.status,'passed');assert.equal(report.bundle,extracted);assert.equal(report.checks.length,6);assert.ok(report.checks[3].includes('one session'));
+writeFileSync('tmp/release163/reader-smoke.json',JSON.stringify({status:'passed',archive:archive.archive,archiveSha256:archive.sha256,extracted,zipInventoryMatchesSource:true,sourceCommit:input.sourceCommit,readerChecks:report.checks,report},null,2)+'\n');
+console.log('Actual ZIP reader opt-in passed: six owned-log lifecycle checks.');

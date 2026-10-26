@@ -1,0 +1,46 @@
+{
+  "sourceCommit": "b0490cf96ea00d8284a95ab0fff6a46459957f4e",
+  "checkout": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation",
+  "steps": [
+    {
+      "name": "daemon-build",
+      "exitCode": 0,
+      "reused": true,
+      "evidence": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\cost162-build-daemon.log",
+      "note": "Unchanged source162 daemon build, verified result status0."
+    },
+    {
+      "name": "web-build",
+      "exitCode": 0,
+      "reused": true,
+      "evidence": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\cost162-build-web.log",
+      "note": "Unchanged source162 web build, exact production index SHA verified."
+    },
+    {
+      "name": "tray-build",
+      "exitCode": 0,
+      "reused": true,
+      "evidence": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review163-tray-build.log",
+      "note": "Current source162 tray build exit0 observed in this resumed session."
+    },
+    {
+      "name": "repository-tests",
+      "exitCode": 0,
+      "reused": true,
+      "evidence": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\cost162-test-result.json",
+      "note": "703 passing tests; source hashes match the frozen source162 checkpoint."
+    },
+    {
+      "name": "approved-runtime-assets",
+      "exitCode": 0,
+      "reused": false,
+      "log": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\release163\\approved-runtime-assets.log"
+    },
+    {
+      "name": "review-bundle",
+      "exitCode": 0,
+      "reused": false,
+      "log": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\release163\\review-bundle.log"
+    }
+  ]
+}
