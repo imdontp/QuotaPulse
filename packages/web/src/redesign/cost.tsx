@@ -8,7 +8,7 @@ import { useTheme } from '@/lib/use-theme';
 import { ProviderMark as VendorIcon } from './provider-mark';
 import { ObservedTrend } from './observed-trend';
 import { RedesignShell } from './shell';
-import { readScope, selectedScope, writeScope, type ScopeRange } from './scope';
+import { readScope, selectedScope, writeScope } from './scope';
 import { ScopeNotice } from './scope-notice';
 import { CostValue, costValue } from './cost-value';
 import './cost.css';
@@ -19,13 +19,14 @@ import { PageHeading } from './page-heading';
 import { HeadingReferenceIcon } from './heading-reference-icon';
 import { SectionMark } from './section-mark';
 import { InitialRegion, type InitialRegionState } from './initial-region';
+import { HistoryRangePicker } from './history-range-picker';
+import { UsageRangeBar } from '@/components/usage-range';
 import { AggregatePresenceLedger } from './aggregate-presence-motion';
 import { modelPairKey } from './model-row-trends';
 import { projectMotionKey } from './project-selection-motion';
 import { useAggregatePresenceMotion } from './use-aggregate-presence-motion';
 import type { LiveRecordBatch } from './live-record-motion';
 
-type Range = ScopeRange;
 type Basis = 'api' | 'native';
 type Bucket = 'auto' | 'hour' | 'day' | 'week';
 function readRoute() {
@@ -108,6 +109,7 @@ export function ProductionCost() {
   }, []);
   const update = (patch: Partial<typeof route>) => {
     const next = { ...route, ...patch };
+    if (patch.range && patch.range !== 'custom') { delete next.from; delete next.to; }
     const p = writeScope(new URLSearchParams({ basis: next.basis }), next);
     history.replaceState(null, '', `${location.pathname}${location.search}#cost?${p}`);
     setRoute(next);
@@ -193,7 +195,13 @@ export function ProductionCost() {
 
   return <RedesignShell quickStatsScope={data?.scope ?? null} active="cost" theme={theme} language={lang} onTheme={toggleTheme} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} t={t} testId="production-cost">
     <div className="qp-cost-layout" ref={presenceRegion}><div className="qp-cost-top-row"><section className="qp-panel qp-cost-overview"><div className="qp-cost-top"><header className="qp-cost-header"><div className="qp-cost-heading"><PageHeading compact icon={<HeadingReferenceIcon kind="cost"/>} title={t('redesign.costHeading')} subtitle={t('redesign.costSubtitle')}/><ScopeNotice scope={route}/></div><button onClick={() => void refresh.refreshNow()} disabled={refresh.refreshing}><RefreshCw size={16}/><span>{t('app.refreshNow')}</span></button></header>
-    <div className="qp-cost-toolbar"><label><span>{t('redesign.projectRange')}</span><select value={route.range} onChange={event => update({ range: event.target.value as Range })}><option value="month">{t('redesign.costMonthToDate')}</option><option value="today">{t('redesign.today')}</option><option value="week">{t('redesign.thisWeek')}</option><option value="last30">{t('redesign.last30')}</option><option value="all">{t('redesign.allTime')}</option>{route.range === 'custom' && <option value="custom">{t('usage.custom')}</option>}</select></label><label><span>{t('redesign.costBasis')}</span><select value={route.basis} onChange={event => update({ basis: event.target.value as Basis })}><option value="api">{t('redesign.costApiBasis')}</option><option value="native">{t('redesign.costNativeBasis')}</option></select></label><label><span>{t('redesign.costBucket')}</span><select value={bucket} onChange={event => update({ bucket: event.target.value as Bucket })}><option value="auto">{t('redesign.costBucketAuto')}</option><option value="hour">{t('redesign.costBucketHour')}</option><option value="day">{t('redesign.costBucketDay')}</option><option value="week">{t('redesign.costBucketWeek')}</option></select></label></div>
+    <div className="qp-cost-toolbar"><HistoryRangePicker selection={{ range: route.range, from: route.from ?? data?.scope.from, to: route.to ?? data?.scope.to, sourceId: route.sourceId }} scope={data?.scope ?? null} sources={[]} disabled={false}>
+      <div className="qp-cost-range-controls">
+        <UsageRangeBar route={{ selection: { range: route.range, from: route.from ?? data?.scope.from, to: route.to ?? data?.scope.to, sourceId: route.sourceId }, view: 'cost' }} showHeading={false} showBucket={false} rangeLabel={t('redesign.projectRange')} monthLabel={t('redesign.costMonthToDate')} onChange={({ selection }) => { if (selection) update({ ...selection, bucket: route.bucket }); }}/>
+        <label><span>{t('redesign.costBasis')}</span><select value={route.basis} onChange={event => update({ basis: event.target.value as Basis })}><option value="api">{t('redesign.costApiBasis')}</option><option value="native">{t('redesign.costNativeBasis')}</option></select></label>
+        <label><span>{t('redesign.costBucket')}</span><select value={bucket} onChange={event => update({ bucket: event.target.value as Bucket })}><option value="auto">{t('redesign.costBucketAuto')}</option><option value="hour">{t('redesign.costBucketHour')}</option><option value="day">{t('redesign.costBucketDay')}</option><option value="week">{t('redesign.costBucketWeek')}</option></select></label>
+      </div>
+    </HistoryRangePicker></div>
     </div>
     {currentError && data && <p className="qp-cost-error" role="status">{t('redesign.staleSnapshot')} · {currentError} <button onClick={initialState.onRetry}>{t('app.retry')}</button></p>}
     {!data ? <section className="qp-cost-summary qp-cost-initial-summary-grid" aria-label={t('redesign.costHeading')}>{(['redesign.costTotal', 'redesign.costDaily', 'redesign.costProjection', 'redesign.costPerThousand'] as const).map((label, index) => pending(index === 0 ? 'summary' : `summary-${index}`, t(label), 'qp-cost-initial-summary'))}</section> : <section className="qp-cost-summary" aria-label={t('redesign.costHeading')}><article className="qp-panel"><i className="qp-cost-metric-icon" aria-hidden="true"><Wallet size={21}/></i><span>{t('redesign.costTotal')}</span><strong><CostValue amount={total!.amount} priced={total!.pricedCalls} total={total!.allCalls} money={money} t={t}/></strong><small>{route.basis === 'api' ? t('redesign.costApiBasis') : t('redesign.costNativeBasis')}</small>{total!.pricedCalls > 0 && <ObservedTrend className="qp-cost-summary-trend" points={trend.map(point => ({ at: point.start, value: currency === 'THB' ? point.amount * rate : point.amount }))} language={lang} label={`${t('redesign.costTotal')} (${currency})`}/>}</article><article className="qp-panel"><i className="qp-cost-metric-icon" aria-hidden="true"><BarChart3 size={21}/></i><span>{t('redesign.costDaily')}</span><strong>{fullDays > 0 && total!.pricedCalls > 0 ? <CostValue amount={total!.amount / elapsedDays} priced={total!.pricedCalls} total={total!.allCalls} money={money} t={t}/> : t('redesign.unknownValue')}</strong><small>{fullDays} {t('redesign.costDays')}</small></article><article className="qp-panel"><i className="qp-cost-metric-icon" aria-hidden="true"><TrendingUp size={21}/></i><span>{t('redesign.costProjection')}</span><strong>{t('redesign.unknownValue')}</strong><small>{t(route.basis === 'api' ? 'redesign.costProjectionUnavailable' : 'redesign.costNativeProjection')}</small></article><article className="qp-panel"><i className="qp-cost-metric-icon" aria-hidden="true"><Database size={21}/></i><span>{t('redesign.costPerThousand')}</span><strong>{total!.pricedTokens > 0 ? unitMoney(total!.amount / total!.pricedTokens * 1000) : t('redesign.unknownValue')}</strong><small>{t('redesign.costAllTokens')}: {f.tokens(total!.allTokens)}</small></article></section>}</section>{!data ? pending('providers', t('redesign.costProviders'), 'qp-cost-providers', true) : <section className="qp-panel qp-cost-providers"><h2><SectionMark icon={<PieChart/>}/>{t('redesign.costProviders')}</h2>{providerRows.length === 0 ? <p>{t('redesign.costNoPriced')}</p> : <><div className="qp-cost-donut" data-zero={total!.amount === 0} style={{ background: `conic-gradient(${providerRows.map((row, index) => `${providerDonutColor(row.provider, 'body')} ${providerRows.slice(0, index).reduce((sum, prior) => sum + prior.amount, 0) / (total!.amount || 1) * 100}% ${providerRows.slice(0, index + 1).reduce((sum, prior) => sum + prior.amount, 0) / (total!.amount || 1) * 100}%`).join(',')})` }}><CostDonutEdges rows={providerRows} total={total!.amount}/><span className="qp-cost-donut-hole"><span className="qp-cost-donut-content"><strong className="qp-cost-donut-amount" data-size={centerAmountSize}><CostValue amount={total!.amount} priced={total!.pricedCalls} total={total!.allCalls} money={money} t={t}/></strong><small className="qp-cost-donut-basis">{centerBasis}</small><span className="qp-cost-donut-range" title={centerRangeTitle} aria-label={centerRangeTitle} data-from={data.scope.from} data-to={data.scope.to}>{centerRange}</span></span></span></div><ol>{providerRows.map(row => <li key={row.provider ?? 'null'}><i style={{ background: providerColor(row.provider) }}/><span className="qp-cost-provider-name">{name(row.provider)}</span><span className="qp-cost-provider-value"><strong className="qp-cost-provider-amount"><CostValue amount={row.amount} priced={row.pricedCalls} total={row.allCalls} money={money} t={t}/></strong><span className="qp-visually-hidden"> · </span><span className="qp-cost-provider-share">{share(row.amount)}</span></span></li>)}</ol></>}</section>}</div>

@@ -1,0 +1,763 @@
+{
+  "productionIndexSha256": "51c0c0bb98a8b9700914cf6c8bfa570bb8e14f215383820c5e9573467f8781f5",
+  "checks": [
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "subday",
+      "from": 1747489320000,
+      "to": 1747490520000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747489320000,
+        "to": 1747490520000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "exclusive-midnight",
+      "from": 1747500900000,
+      "to": 1747501200000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747500900000,
+        "to": 1747501200000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "spring-day",
+      "from": 1741453200000,
+      "to": 1741539600000,
+      "fromLabel": "2025-03-09",
+      "toLabel": "2025-03-09",
+      "scope": {
+        "from": 1741453200000,
+        "to": 1741539600000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "fall-day",
+      "from": 1762016400000,
+      "to": 1762102800000,
+      "fromLabel": "2025-11-02",
+      "toLabel": "2025-11-02",
+      "scope": {
+        "from": 1762016400000,
+        "to": 1762102800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "cross-midnight",
+      "from": 1747500900000,
+      "to": 1747501800000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-18",
+      "scope": {
+        "from": 1747500900000,
+        "to": 1747501800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "spring-edit",
+      "from": 1741366800000,
+      "initialTo": 1741626000000,
+      "date": "2025-03-09",
+      "expectedTo": 1741539600000,
+      "scope": {
+        "from": 1741366800000,
+        "to": 1741539600000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "fall-edit",
+      "from": 1761930000000,
+      "initialTo": 1762189200000,
+      "date": "2025-11-02",
+      "expectedTo": 1762102800000,
+      "scope": {
+        "from": 1761930000000,
+        "to": 1762102800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "subday",
+      "from": 1747489320000,
+      "to": 1747490520000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747489320000,
+        "to": 1747490520000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "exclusive-midnight",
+      "from": 1747500900000,
+      "to": 1747501200000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747500900000,
+        "to": 1747501200000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "spring-day",
+      "from": 1741453200000,
+      "to": 1741539600000,
+      "fromLabel": "2025-03-09",
+      "toLabel": "2025-03-09",
+      "scope": {
+        "from": 1741453200000,
+        "to": 1741539600000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "fall-day",
+      "from": 1762016400000,
+      "to": 1762102800000,
+      "fromLabel": "2025-11-02",
+      "toLabel": "2025-11-02",
+      "scope": {
+        "from": 1762016400000,
+        "to": 1762102800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "cross-midnight",
+      "from": 1747500900000,
+      "to": 1747501800000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-18",
+      "scope": {
+        "from": 1747500900000,
+        "to": 1747501800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "spring-edit",
+      "from": 1741366800000,
+      "initialTo": 1741626000000,
+      "date": "2025-03-09",
+      "expectedTo": 1741539600000,
+      "scope": {
+        "from": 1741366800000,
+        "to": 1741539600000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "Asia/Bangkok",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "fall-edit",
+      "from": 1761930000000,
+      "initialTo": 1762189200000,
+      "date": "2025-11-02",
+      "expectedTo": 1762102800000,
+      "scope": {
+        "from": 1761930000000,
+        "to": 1762102800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "subday",
+      "from": 1747489320000,
+      "to": 1747490520000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747489320000,
+        "to": 1747490520000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "exclusive-midnight",
+      "from": 1747526100000,
+      "to": 1747526400000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747526100000,
+        "to": 1747526400000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "spring-day",
+      "from": 1741478400000,
+      "to": 1741564800000,
+      "fromLabel": "2025-03-09",
+      "toLabel": "2025-03-09",
+      "scope": {
+        "from": 1741478400000,
+        "to": 1741564800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "fall-day",
+      "from": 1762041600000,
+      "to": 1762128000000,
+      "fromLabel": "2025-11-02",
+      "toLabel": "2025-11-02",
+      "scope": {
+        "from": 1762041600000,
+        "to": 1762128000000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "cross-midnight",
+      "from": 1747526100000,
+      "to": 1747527000000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-18",
+      "scope": {
+        "from": 1747526100000,
+        "to": 1747527000000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "spring-edit",
+      "from": 1741392000000,
+      "initialTo": 1741651200000,
+      "date": "2025-03-09",
+      "expectedTo": 1741564800000,
+      "scope": {
+        "from": 1741392000000,
+        "to": 1741564800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "fall-edit",
+      "from": 1761955200000,
+      "initialTo": 1762214400000,
+      "date": "2025-11-02",
+      "expectedTo": 1762128000000,
+      "scope": {
+        "from": 1761955200000,
+        "to": 1762128000000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "subday",
+      "from": 1747489320000,
+      "to": 1747490520000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747489320000,
+        "to": 1747490520000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "exclusive-midnight",
+      "from": 1747526100000,
+      "to": 1747526400000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747526100000,
+        "to": 1747526400000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "spring-day",
+      "from": 1741478400000,
+      "to": 1741564800000,
+      "fromLabel": "2025-03-09",
+      "toLabel": "2025-03-09",
+      "scope": {
+        "from": 1741478400000,
+        "to": 1741564800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "fall-day",
+      "from": 1762041600000,
+      "to": 1762128000000,
+      "fromLabel": "2025-11-02",
+      "toLabel": "2025-11-02",
+      "scope": {
+        "from": 1762041600000,
+        "to": 1762128000000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "cross-midnight",
+      "from": 1747526100000,
+      "to": 1747527000000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-18",
+      "scope": {
+        "from": 1747526100000,
+        "to": 1747527000000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "spring-edit",
+      "from": 1741392000000,
+      "initialTo": 1741651200000,
+      "date": "2025-03-09",
+      "expectedTo": 1741564800000,
+      "scope": {
+        "from": 1741392000000,
+        "to": 1741564800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "UTC",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "fall-edit",
+      "from": 1761955200000,
+      "initialTo": 1762214400000,
+      "date": "2025-11-02",
+      "expectedTo": 1762128000000,
+      "scope": {
+        "from": 1761955200000,
+        "to": 1762128000000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "subday",
+      "from": 1747489320000,
+      "to": 1747490520000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747489320000,
+        "to": 1747490520000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "exclusive-midnight",
+      "from": 1747540500000,
+      "to": 1747540800000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747540500000,
+        "to": 1747540800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "spring-day",
+      "from": 1741496400000,
+      "to": 1741579200000,
+      "fromLabel": "2025-03-09",
+      "toLabel": "2025-03-09",
+      "scope": {
+        "from": 1741496400000,
+        "to": 1741579200000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "fall-day",
+      "from": 1762056000000,
+      "to": 1762146000000,
+      "fromLabel": "2025-11-02",
+      "toLabel": "2025-11-02",
+      "scope": {
+        "from": 1762056000000,
+        "to": 1762146000000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "cross-midnight",
+      "from": 1747540500000,
+      "to": 1747541400000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-18",
+      "scope": {
+        "from": 1747540500000,
+        "to": 1747541400000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "spring-edit",
+      "from": 1741410000000,
+      "initialTo": 1741665600000,
+      "date": "2025-03-09",
+      "expectedTo": 1741579200000,
+      "scope": {
+        "from": 1741410000000,
+        "to": 1741579200000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "name": "fall-edit",
+      "from": 1761969600000,
+      "initialTo": 1762232400000,
+      "date": "2025-11-02",
+      "expectedTo": 1762146000000,
+      "scope": {
+        "from": 1761969600000,
+        "to": 1762146000000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "subday",
+      "from": 1747489320000,
+      "to": 1747490520000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747489320000,
+        "to": 1747490520000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "exclusive-midnight",
+      "from": 1747540500000,
+      "to": 1747540800000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-17",
+      "scope": {
+        "from": 1747540500000,
+        "to": 1747540800000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "spring-day",
+      "from": 1741496400000,
+      "to": 1741579200000,
+      "fromLabel": "2025-03-09",
+      "toLabel": "2025-03-09",
+      "scope": {
+        "from": 1741496400000,
+        "to": 1741579200000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "fall-day",
+      "from": 1762056000000,
+      "to": 1762146000000,
+      "fromLabel": "2025-11-02",
+      "toLabel": "2025-11-02",
+      "scope": {
+        "from": 1762056000000,
+        "to": 1762146000000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "cross-midnight",
+      "from": 1747540500000,
+      "to": 1747541400000,
+      "fromLabel": "2025-05-17",
+      "toLabel": "2025-05-18",
+      "scope": {
+        "from": 1747540500000,
+        "to": 1747541400000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "spring-edit",
+      "from": 1741410000000,
+      "initialTo": 1741665600000,
+      "date": "2025-03-09",
+      "expectedTo": 1741579200000,
+      "scope": {
+        "from": 1741410000000,
+        "to": 1741579200000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    },
+    {
+      "timezone": "America/New_York",
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "name": "fall-edit",
+      "from": 1761969600000,
+      "initialTo": 1762232400000,
+      "date": "2025-11-02",
+      "expectedTo": 1762146000000,
+      "scope": {
+        "from": 1761969600000,
+        "to": 1762146000000,
+        "sourceId": 1,
+        "sessionId": 1,
+        "grain": "all"
+      }
+    }
+  ],
+  "clearedInputsPreserveScope": true,
+  "errors": []
+}

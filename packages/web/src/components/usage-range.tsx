@@ -100,6 +100,8 @@ export function UsageRangeBar({
   actions,
   showBucket = true,
   showHeading = true,
+  rangeLabel,
+  monthLabel,
 }: {
   route: UsageRoute;
   onChange: (next: UsageRouteUpdate) => void;
@@ -107,6 +109,8 @@ export function UsageRangeBar({
   actions?: React.ReactNode;
   showBucket?: boolean;
   showHeading?: boolean;
+  rangeLabel?: string;
+  monthLabel?: string;
 }) {
   const t = useT();
   const selection = route.selection;
@@ -127,7 +131,7 @@ export function UsageRangeBar({
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border/70 bg-muted/15 px-3 py-2.5" aria-label={t('usage.rangeLabel')}>
       {showHeading && <span className="text-muted-foreground text-xs font-medium">{t('usage.rangeLabel')}</span>}
-      <Select label={t('usage.rangeLabel')} value={selection.range} onChange={(event) => {
+      <Select label={rangeLabel ?? t('usage.rangeLabel')} value={selection.range} onChange={(event) => {
         const value = event.target.value as UsageRangeKey;
         if (value === 'custom') {
           onChange({ selection: { range: value, from: customFrom, to: customTo } });
@@ -137,7 +141,7 @@ export function UsageRangeBar({
       }}>
         <option value="today">{t('usage.today')}</option>
         <option value="week">{t('usage.thisWeek')}</option>
-        <option value="month">{t('usage.thisMonth')}</option>
+        <option value="month">{monthLabel ?? t('usage.thisMonth')}</option>
         <option value="last30">{t('redesign.last30')}</option>
         <option value="all">{t('usage.allTime')}</option>
         <option value="custom">{t('usage.custom')}</option>

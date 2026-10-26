@@ -33,6 +33,7 @@ try{
   const picker=page.locator('.qp-history-range-picker'),summary=picker.locator('summary'),panel=picker.locator('[role=dialog]');await summary.waitFor();
   assert.equal(await picker.getAttribute('open'),null);assert.equal(await panel.isVisible(),false);assert.ok(!(await summary.innerText()).includes(messages['usage.custom']));assert.match((await summary.getAttribute('title'))!,/20\d\d|25\d\d/);
   await page.waitForFunction(()=>document.querySelector('.qp-history-range-source')?.textContent?.includes('Range source A'));
+  for (const button of await page.locator('.qp-history-view-actions button').all()) assert.equal((await button.boundingBox())?.height,35,'History action height must survive shared picker import order');
   const originalUrl=page.url();await summary.focus();await page.keyboard.press('Enter');await panel.waitFor();await page.waitForFunction(()=>document.querySelector('.qp-history-range-picker>summary')?.getAttribute('aria-expanded')==='true');assert.equal(page.url(),originalUrl);
   const controls=panel.locator('select');assert.equal(await controls.count(),2);await page.keyboard.press('Tab');assert.equal(await controls.first().evaluate(node=>node===document.activeElement),true);
   await page.keyboard.press('Escape');assert.equal(await picker.getAttribute('open'),null);assert.equal(await summary.evaluate(node=>node===document.activeElement),true);

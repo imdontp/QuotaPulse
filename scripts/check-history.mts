@@ -483,6 +483,7 @@ try {
   await cost.getByRole('heading', { name: englishMessages['redesign.costHeading'], exact: true, level: 1 }).waitFor();
   await cost.locator('.qp-cost-summary strong').first().waitFor();
   assert.equal(Number(new URL(costRequests.at(-1)!).searchParams.get('from')), monthStart.getTime(), 'Cost explicit month scope must begin at the calendar month');
+  await cost.locator('.qp-cost-toolbar .qp-history-range-picker>summary').click();
   assert.equal(await cost.getByRole('combobox', { name: 'Period', exact: true }).inputValue(), 'month');
   const explicitAllCost = page.waitForResponse(response => response.url().includes('/api/cost-analysis?') && new URL(response.url()).searchParams.get('from') === '0');
   await cost.getByRole('combobox', { name: 'Period' }).selectOption('all');
@@ -536,6 +537,7 @@ try {
     assert.equal(params.get('source'), '1', `${destination} lost source in History`);
     assert.equal(params.get('from'), String(overviewFrom));
     assert.equal(params.get('to'), String(overviewTo));
+    if (destination === 'cost') await scoped.locator('.qp-cost-toolbar .qp-history-range-picker>summary').click();
     assert.equal(await scoped.getByRole('combobox', { name: 'Period', exact: true }).inputValue(), 'custom');
   }
   const alertAt = Date.now() - 1000;
