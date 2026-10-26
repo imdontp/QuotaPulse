@@ -1,0 +1,26 @@
+12:27:17.865 INFO  [db] opened :memory:
+12:27:50.407 INFO  [ingest] codex/qa is gone; its history is kept
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx scripts/check-alert-notification-switch.mts *> tmp/ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+'none' !== 'solid'
+
+    at <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-alert-notif
+ication-switch.mts:37:32) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'none',
+  expected: 'solid',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

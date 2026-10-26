@@ -1,0 +1,1449 @@
+{
+  "productionIndexSha256": "63cfeb8e21c83a37df1cb07b58dd42ba78b10fa4b94218e6593e7cd8fcbc4f7f",
+  "browser": "155.0.8059.80",
+  "language": "en",
+  "theme": "dark",
+  "deviceScaleFactor": 1,
+  "reducedMotion": "reduce",
+  "rendererArgs": [],
+  "fixture": "same isolated in-memory synthetic fixture as v1.85.95",
+  "scope": "Current compiled application screenshots and geometry; unapproved concept parity",
+  "results": [
+    {
+      "route": "overview",
+      "viewport": {
+        "width": 1586,
+        "height": 992
+      },
+      "referenceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+      "sha256": "64478032ab66e6e2d220f271764d827226176a785f5d27c6a241db55a7bf818d",
+      "repeatSha256": "64478032ab66e6e2d220f271764d827226176a785f5d27c6a241db55a7bf818d",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1586,
+          "height": 992
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 211,
+          "y": 60,
+          "width": 1375,
+          "height": 935.0625,
+          "top": 60,
+          "right": 1586,
+          "bottom": 995.0625,
+          "left": 211
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 211,
+          "height": 932,
+          "top": 60,
+          "right": 211,
+          "bottom": 992,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 522,
+          "width": 190,
+          "height": 290,
+          "top": 522,
+          "right": 202,
+          "bottom": 812,
+          "left": 12
+        },
+        "moreOpen": false,
+        "visibleNavigation": [
+          "#overview",
+          "#live",
+          "#projects",
+          "#models",
+          "#cost?range=month",
+          "#history",
+          "#alerts",
+          "#providers",
+          "#settings"
+        ],
+        "mainRegions": [
+          {
+            "tag": "DIV",
+            "className": "qp-page-heading",
+            "x": 228,
+            "y": 68,
+            "width": 1,
+            "height": 1,
+            "top": 68,
+            "right": 229,
+            "bottom": 69,
+            "left": 228
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-hero-grid",
+            "x": 228,
+            "y": 68,
+            "width": 1337,
+            "height": 400,
+            "top": 68,
+            "right": 1565,
+            "bottom": 468,
+            "left": 228
+          },
+          {
+            "tag": "SECTION",
+            "className": "qp-panel qp-runtime",
+            "x": 228,
+            "y": 476,
+            "width": 1337,
+            "height": 231.75,
+            "top": 476,
+            "right": 1565,
+            "bottom": 707.75,
+            "left": 228
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-bottom-grid",
+            "x": 228,
+            "y": 716.75,
+            "width": 1337,
+            "height": 177.3125,
+            "top": 716.75,
+            "right": 1565,
+            "bottom": 894.0625,
+            "left": 228
+          },
+          {
+            "tag": "SECTION",
+            "className": "qp-panel qp-activity",
+            "x": 228,
+            "y": 900.0625,
+            "width": 1337,
+            "height": 83,
+            "top": 900.0625,
+            "right": 1565,
+            "bottom": 983.0625,
+            "left": 228
+          },
+          {
+            "tag": "DIALOG",
+            "className": "qp-dialog",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "Cost Analysis",
+          "History",
+          "Alerts",
+          "Providers",
+          "Settings"
+        ],
+        "headings": [
+          {
+            "text": "Your AI operations, in focus.",
+            "x": 228,
+            "y": 68,
+            "width": 1,
+            "height": 142.5,
+            "top": 68,
+            "right": 229,
+            "bottom": 210.5,
+            "left": 228,
+            "fontSize": "19px",
+            "fontWeight": "550"
+          },
+          {
+            "text": "Pulse Core",
+            "x": 237,
+            "y": 84,
+            "width": 110.203125,
+            "height": 24,
+            "top": 84,
+            "right": 347.203125,
+            "bottom": 108,
+            "left": 237,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Subscriptions & Quotas",
+            "x": 1229.09375,
+            "y": 81,
+            "width": 195.734375,
+            "height": 22.5,
+            "top": 81,
+            "right": 1424.828125,
+            "bottom": 103.5,
+            "left": 1229.09375,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Live Runtime Map",
+            "x": 237,
+            "y": 489,
+            "width": 159.40625,
+            "height": 24.75,
+            "top": 489,
+            "right": 396.40625,
+            "bottom": 513.75,
+            "left": 237,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Quota Runway",
+            "x": 242,
+            "y": 729.75,
+            "width": 132.46875,
+            "height": 24,
+            "top": 729.75,
+            "right": 374.46875,
+            "bottom": 753.75,
+            "left": 242,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Pulse Insights",
+            "x": 961.28125,
+            "y": 729.75,
+            "width": 132.640625,
+            "height": 23.625,
+            "top": 729.75,
+            "right": 1093.921875,
+            "bottom": 753.375,
+            "left": 961.28125,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Live ActivityRecorded activity · trailing 30 minutes",
+            "x": 244,
+            "y": 907.0625,
+            "width": 322.703125,
+            "height": 22.5,
+            "top": 907.0625,
+            "right": 566.703125,
+            "bottom": 929.5625,
+            "left": 244,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    },
+    {
+      "route": "live",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+      "sha256": "7d65c1e395fbfacac883048b28fcd9efcda9656eb87ba630c5f9c2a8a26dcfaa",
+      "repeatSha256": "7d65c1e395fbfacac883048b28fcd9efcda9656eb87ba630c5f9c2a8a26dcfaa",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 884,
+          "top": 60,
+          "right": 1672,
+          "bottom": 944,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 522,
+          "width": 201,
+          "height": 291,
+          "top": 522,
+          "right": 213,
+          "bottom": 813,
+          "left": 12
+        },
+        "moreOpen": false,
+        "visibleNavigation": [
+          "#overview",
+          "#live",
+          "#projects",
+          "#models",
+          "#cost?range=month",
+          "#history",
+          "#alerts",
+          "#providers",
+          "#settings"
+        ],
+        "mainRegions": [
+          {
+            "tag": "SECTION",
+            "className": "qp-panel qp-live-top",
+            "x": 238,
+            "y": 72,
+            "width": 1040.40625,
+            "height": 144,
+            "top": 72,
+            "right": 1278.40625,
+            "bottom": 216,
+            "left": 238
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-live-layout",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          {
+            "tag": "DIALOG",
+            "className": "qp-live-dialog",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "Cost Analysis",
+          "History",
+          "Alerts",
+          "Providers",
+          "Settings"
+        ],
+        "headings": [
+          {
+            "text": "Live Monitoring",
+            "x": 292,
+            "y": 84.59375,
+            "width": 157.140625,
+            "height": 28.796875,
+            "top": 84.59375,
+            "right": 449.140625,
+            "bottom": 113.390625,
+            "left": 292,
+            "fontSize": "24px",
+            "fontWeight": "350"
+          },
+          {
+            "text": "Observed sessions",
+            "x": 249,
+            "y": 239,
+            "width": 182.453125,
+            "height": 24,
+            "top": 239,
+            "right": 431.453125,
+            "bottom": 263,
+            "left": 249,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Recorded tokens per minute",
+            "x": 249,
+            "y": 575.75,
+            "width": 253.40625,
+            "height": 24,
+            "top": 575.75,
+            "right": 502.40625,
+            "bottom": 599.75,
+            "left": 249,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Usage record feed",
+            "x": 249,
+            "y": 781,
+            "width": 177.234375,
+            "height": 24,
+            "top": 781,
+            "right": 426.234375,
+            "bottom": 805,
+            "left": 249,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Source advisories",
+            "x": 1301.40625,
+            "y": 85,
+            "width": 345.578125,
+            "height": 20,
+            "top": 85,
+            "right": 1646.984375,
+            "bottom": 105,
+            "left": 1301.40625,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Observed provider and model activity",
+            "x": 1299.40625,
+            "y": 444,
+            "width": 318.578125,
+            "height": 20,
+            "top": 444,
+            "right": 1617.984375,
+            "bottom": 464,
+            "left": 1299.40625,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    },
+    {
+      "route": "projects",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "sha256": "c23589dd1351d6ac9aa9704cddd91988202b91a77fe81255961f1c8bd883e459",
+      "repeatSha256": "c23589dd1351d6ac9aa9704cddd91988202b91a77fe81255961f1c8bd883e459",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 881.046875,
+          "top": 60,
+          "right": 1672,
+          "bottom": 941.046875,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 522,
+          "width": 201,
+          "height": 291,
+          "top": 522,
+          "right": 213,
+          "bottom": 813,
+          "left": 12
+        },
+        "moreOpen": false,
+        "visibleNavigation": [
+          "#overview",
+          "#live",
+          "#projects",
+          "#models",
+          "#cost?range=month",
+          "#history",
+          "#alerts",
+          "#providers",
+          "#settings"
+        ],
+        "mainRegions": [
+          {
+            "tag": "HEADER",
+            "className": "qp-project-header",
+            "x": 243,
+            "y": 72,
+            "width": 1412,
+            "height": 68,
+            "top": 72,
+            "right": 1655,
+            "bottom": 140,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-toolbar",
+            "x": 243,
+            "y": 152,
+            "width": 1412,
+            "height": 42,
+            "top": 152,
+            "right": 1655,
+            "bottom": 194,
+            "left": 243
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-project-layout",
+            "x": 243,
+            "y": 206,
+            "width": 1412,
+            "height": 723.046875,
+            "top": 206,
+            "right": 1655,
+            "bottom": 929.046875,
+            "left": 243
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "Cost Analysis",
+          "History",
+          "Alerts",
+          "Providers",
+          "Settings"
+        ],
+        "headings": [
+          {
+            "text": "Projects",
+            "x": 304,
+            "y": 79.34375,
+            "width": 287.625,
+            "height": 27.5,
+            "top": 79.34375,
+            "right": 591.625,
+            "bottom": 106.84375,
+            "left": 304,
+            "fontSize": "25px",
+            "fontWeight": "400"
+          },
+          {
+            "text": "QuotaPulse",
+            "x": 1143.6875,
+            "y": 219,
+            "width": 494.296875,
+            "height": 60,
+            "top": 219,
+            "right": 1637.984375,
+            "bottom": 279,
+            "left": 1143.6875,
+            "fontSize": "22px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    },
+    {
+      "route": "models",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "sha256": "358c204b26e3532db58cc9cfec4bdc012f894017fb2554a02b0005fe901e8fad",
+      "repeatSha256": "358c204b26e3532db58cc9cfec4bdc012f894017fb2554a02b0005fe901e8fad",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 888,
+          "top": 60,
+          "right": 1672,
+          "bottom": 948,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 522,
+          "width": 201,
+          "height": 292,
+          "top": 522,
+          "right": 213,
+          "bottom": 814,
+          "left": 12
+        },
+        "moreOpen": false,
+        "visibleNavigation": [
+          "#overview",
+          "#live",
+          "#projects",
+          "#models",
+          "#cost?range=month",
+          "#history",
+          "#alerts",
+          "#providers",
+          "#settings"
+        ],
+        "mainRegions": [
+          {
+            "tag": "DIV",
+            "className": "qp-model-layout",
+            "x": 238,
+            "y": 72,
+            "width": 1422,
+            "height": 864,
+            "top": 72,
+            "right": 1660,
+            "bottom": 936,
+            "left": 238
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "Cost Analysis",
+          "History",
+          "Alerts",
+          "Providers",
+          "Settings"
+        ],
+        "headings": [
+          {
+            "text": "Models",
+            "x": 289,
+            "y": 87.25,
+            "width": 73.984375,
+            "height": 27.5,
+            "top": 87.25,
+            "right": 362.984375,
+            "bottom": 114.75,
+            "left": 289,
+            "fontSize": "22px",
+            "fontWeight": "325"
+          },
+          {
+            "text": "Model Comparison",
+            "x": 247,
+            "y": 270,
+            "width": 204.578125,
+            "height": 27,
+            "top": 270,
+            "right": 451.578125,
+            "bottom": 297,
+            "left": 247,
+            "fontSize": "18px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Provider Usage Overview",
+            "x": 247,
+            "y": 854,
+            "width": 1010.90625,
+            "height": 20,
+            "top": 854,
+            "right": 1257.90625,
+            "bottom": 874,
+            "left": 247,
+            "fontSize": "13px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Model Details",
+            "x": 1295.90625,
+            "y": 89,
+            "width": 347.09375,
+            "height": 20.796875,
+            "top": 89,
+            "right": 1643,
+            "bottom": 109.796875,
+            "left": 1295.90625,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Token Distribution",
+            "x": 1299.90625,
+            "y": 381.796875,
+            "width": 211.09375,
+            "height": 18.1875,
+            "top": 381.796875,
+            "right": 1511,
+            "bottom": 399.984375,
+            "left": 1299.90625,
+            "fontSize": "14px",
+            "fontWeight": "500"
+          },
+          {
+            "text": "Usage Trend",
+            "x": 1299.90625,
+            "y": 539.296875,
+            "width": 339.09375,
+            "height": 18.1875,
+            "top": 539.296875,
+            "right": 1639,
+            "bottom": 557.484375,
+            "left": 1299.90625,
+            "fontSize": "14px",
+            "fontWeight": "500"
+          },
+          {
+            "text": "Effort Breakdown",
+            "x": 1299.90625,
+            "y": 741.296875,
+            "width": 339.09375,
+            "height": 18.1875,
+            "top": 741.296875,
+            "right": 1639,
+            "bottom": 759.484375,
+            "left": 1299.90625,
+            "fontSize": "14px",
+            "fontWeight": "500"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    },
+    {
+      "route": "history",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+      "sha256": "fa3e4a5a958399434a28574ce381a10a7f0045bba4a30a605b018b8c885f3139",
+      "repeatSha256": "fa3e4a5a958399434a28574ce381a10a7f0045bba4a30a605b018b8c885f3139",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 917.5,
+          "top": 60,
+          "right": 1672,
+          "bottom": 977.5,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 522,
+          "width": 201,
+          "height": 292,
+          "top": 522,
+          "right": 213,
+          "bottom": 814,
+          "left": 12
+        },
+        "moreOpen": false,
+        "visibleNavigation": [
+          "#overview",
+          "#live",
+          "#projects",
+          "#models",
+          "#cost?range=month",
+          "#history",
+          "#alerts",
+          "#providers",
+          "#settings"
+        ],
+        "mainRegions": [
+          {
+            "tag": "DIV",
+            "className": "flex min-w-0 flex-col gap-3.5",
+            "x": 238,
+            "y": 72,
+            "width": 1126,
+            "height": 893.5,
+            "top": 72,
+            "right": 1364,
+            "bottom": 965.5,
+            "left": 238
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "Cost Analysis",
+          "History",
+          "Alerts",
+          "Providers",
+          "Settings"
+        ],
+        "headings": [
+          {
+            "text": "History & Logs",
+            "x": 305,
+            "y": 78.046875,
+            "width": 328.421875,
+            "height": 31.5,
+            "top": 78.046875,
+            "right": 633.421875,
+            "bottom": 109.546875,
+            "left": 305,
+            "fontSize": "22.5px",
+            "fontWeight": "450"
+          },
+          {
+            "text": "Usage timeline",
+            "x": 251,
+            "y": 156,
+            "width": 144.265625,
+            "height": 28,
+            "top": 156,
+            "right": 395.265625,
+            "bottom": 184,
+            "left": 251,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Usage records",
+            "x": 238,
+            "y": 522,
+            "width": 103.5,
+            "height": 20.625,
+            "top": 522,
+            "right": 341.5,
+            "bottom": 542.625,
+            "left": 238,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Record details #1",
+            "x": 1391,
+            "y": 77.75,
+            "width": 123.046875,
+            "height": 22.5,
+            "top": 77.75,
+            "right": 1514.046875,
+            "bottom": 100.25,
+            "left": 1391,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    },
+    {
+      "route": "alerts",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+      "sha256": "842dae51d40037706fcc8f53abf155ac4a7a087804f69622a433d05d6c6dc7b6",
+      "repeatSha256": "842dae51d40037706fcc8f53abf155ac4a7a087804f69622a433d05d6c6dc7b6",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 890.875,
+          "top": 60,
+          "right": 1672,
+          "bottom": 950.875,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 522,
+          "width": 201,
+          "height": 289,
+          "top": 522,
+          "right": 213,
+          "bottom": 811,
+          "left": 12
+        },
+        "moreOpen": false,
+        "visibleNavigation": [
+          "#overview",
+          "#live",
+          "#projects",
+          "#models",
+          "#cost?range=month",
+          "#history",
+          "#alerts",
+          "#providers",
+          "#settings"
+        ],
+        "mainRegions": [
+          {
+            "tag": "DIV",
+            "className": "qp-alert-layout",
+            "x": 239,
+            "y": 72,
+            "width": 1423,
+            "height": 866.875,
+            "top": 72,
+            "right": 1662,
+            "bottom": 938.875,
+            "left": 239
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "Cost Analysis",
+          "History",
+          "Alerts",
+          "Providers",
+          "Settings"
+        ],
+        "headings": [
+          {
+            "text": "Alerts & Quota Guard",
+            "x": 310,
+            "y": 87,
+            "width": 399.84375,
+            "height": 27.5,
+            "top": 87,
+            "right": 709.84375,
+            "bottom": 114.5,
+            "left": 310,
+            "fontSize": "24.5px",
+            "fontWeight": "375"
+          },
+          {
+            "text": "Observed quota history",
+            "x": 252,
+            "y": 263.28125,
+            "width": 206.953125,
+            "height": 20.796875,
+            "top": 263.28125,
+            "right": 458.953125,
+            "bottom": 284.078125,
+            "left": 252,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Current risk and reader advisories",
+            "x": 254,
+            "y": 474.78125,
+            "width": 286.65625,
+            "height": 20.796875,
+            "top": 474.78125,
+            "right": 540.65625,
+            "bottom": 495.578125,
+            "left": 254,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Read-only threshold rules",
+            "x": 248,
+            "y": 771.6875,
+            "width": 940.9375,
+            "height": 20.796875,
+            "top": 771.6875,
+            "right": 1188.9375,
+            "bottom": 792.484375,
+            "left": 248,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Usage forecast",
+            "x": 1222.9375,
+            "y": 87,
+            "width": 424.0625,
+            "height": 20.796875,
+            "top": 87,
+            "right": 1647,
+            "bottom": 107.796875,
+            "left": 1222.9375,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Recommended actions",
+            "x": 1264.9375,
+            "y": 430,
+            "width": 214.4375,
+            "height": 20.796875,
+            "top": 430,
+            "right": 1479.375,
+            "bottom": 450.796875,
+            "left": 1264.9375,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Threshold event history",
+            "x": 1222.9375,
+            "y": 771,
+            "width": 212.859375,
+            "height": 24,
+            "top": 771,
+            "right": 1435.796875,
+            "bottom": 795,
+            "left": 1222.9375,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    },
+    {
+      "route": "providers",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6",
+      "sha256": "4bd4245219d8c0978fb1f2df624601c03e553d9d1685e7e18a296c3662f02d85",
+      "repeatSha256": "4bd4245219d8c0978fb1f2df624601c03e553d9d1685e7e18a296c3662f02d85",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 758.5,
+          "top": 60,
+          "right": 1672,
+          "bottom": 818.5,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 522,
+          "width": 201,
+          "height": 292,
+          "top": 522,
+          "right": 213,
+          "bottom": 814,
+          "left": 12
+        },
+        "moreOpen": false,
+        "visibleNavigation": [
+          "#overview",
+          "#live",
+          "#projects",
+          "#models",
+          "#cost?range=month",
+          "#history",
+          "#alerts",
+          "#providers",
+          "#settings"
+        ],
+        "mainRegions": [
+          {
+            "tag": "HEADER",
+            "className": "qp-provider-header",
+            "x": 238,
+            "y": 72,
+            "width": 1422,
+            "height": 68,
+            "top": 72,
+            "right": 1660,
+            "bottom": 140,
+            "left": 238
+          },
+          {
+            "tag": "SECTION",
+            "className": "qp-provider-grid",
+            "x": 238,
+            "y": 152,
+            "width": 1422,
+            "height": 360,
+            "top": 152,
+            "right": 1660,
+            "bottom": 512,
+            "left": 238
+          },
+          {
+            "tag": "DETAILS",
+            "className": "qp-provider-inspector",
+            "x": 238,
+            "y": 524,
+            "width": 1422,
+            "height": 34.5,
+            "top": 524,
+            "right": 1660,
+            "bottom": 558.5,
+            "left": 238
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-provider-bottom",
+            "x": 238,
+            "y": 570.5,
+            "width": 1422,
+            "height": 236,
+            "top": 570.5,
+            "right": 1660,
+            "bottom": 806.5,
+            "left": 238
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "Cost Analysis",
+          "History",
+          "Alerts",
+          "Providers",
+          "Settings"
+        ],
+        "headings": [
+          {
+            "text": "Providers & Subscriptions",
+            "x": 307,
+            "y": 86.34375,
+            "width": 297.09375,
+            "height": 27.5,
+            "top": 86.34375,
+            "right": 604.09375,
+            "bottom": 113.84375,
+            "left": 307,
+            "fontSize": "23px",
+            "fontWeight": "350"
+          },
+          {
+            "text": "Selected owner details: OpenAI Subscription",
+            "x": 253,
+            "y": 573.5,
+            "width": 342.6875,
+            "height": 24,
+            "top": 573.5,
+            "right": 595.6875,
+            "bottom": 597.5,
+            "left": 253,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Compare one quota window",
+            "x": 251,
+            "y": 583.5,
+            "width": 257.15625,
+            "height": 34,
+            "top": 583.5,
+            "right": 508.15625,
+            "bottom": 617.5,
+            "left": 251,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Reader health and freshness",
+            "x": 969,
+            "y": 583.5,
+            "width": 678,
+            "height": 34,
+            "top": 583.5,
+            "right": 1647,
+            "bottom": 617.5,
+            "left": 969,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    },
+    {
+      "route": "cost",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+      "sha256": "7624ee506a480a55eb77d46b302759cf9e86676a903e4451f83e79c6549e2a7f",
+      "repeatSha256": "7624ee506a480a55eb77d46b302759cf9e86676a903e4451f83e79c6549e2a7f",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 885.375,
+          "top": 60,
+          "right": 1672,
+          "bottom": 945.375,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 522,
+          "width": 201,
+          "height": 290,
+          "top": 522,
+          "right": 213,
+          "bottom": 812,
+          "left": 12
+        },
+        "moreOpen": false,
+        "visibleNavigation": [
+          "#overview",
+          "#live",
+          "#projects",
+          "#models",
+          "#cost?range=month",
+          "#history",
+          "#alerts",
+          "#providers",
+          "#settings"
+        ],
+        "mainRegions": [
+          {
+            "tag": "DIV",
+            "className": "qp-cost-layout",
+            "x": 238,
+            "y": 72,
+            "width": 1422,
+            "height": 861.375,
+            "top": 72,
+            "right": 1660,
+            "bottom": 933.375,
+            "left": 238
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "Cost Analysis",
+          "History",
+          "Alerts",
+          "Providers",
+          "Settings"
+        ],
+        "headings": [
+          {
+            "text": "Cost Overview",
+            "x": 292,
+            "y": 86.75,
+            "width": 122.75,
+            "height": 22.5,
+            "top": 86.75,
+            "right": 414.75,
+            "bottom": 109.25,
+            "left": 292,
+            "fontSize": "18px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Value by recorded provider",
+            "x": 1231.0625,
+            "y": 94.09375,
+            "width": 415.9375,
+            "height": 20.796875,
+            "top": 94.09375,
+            "right": 1647,
+            "bottom": 114.890625,
+            "left": 1231.0625,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Value and priced-token trend",
+            "x": 250,
+            "y": 355,
+            "width": 266.546875,
+            "height": 20.796875,
+            "top": 355,
+            "right": 516.546875,
+            "bottom": 375.796875,
+            "left": 250,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Value by model and route",
+            "x": 1048.828125,
+            "y": 358,
+            "width": 596.15625,
+            "height": 20.796875,
+            "top": 358,
+            "right": 1644.984375,
+            "bottom": 378.796875,
+            "left": 1048.828125,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Value by project",
+            "x": 253,
+            "y": 672,
+            "width": 458.84375,
+            "height": 20.796875,
+            "top": 672,
+            "right": 711.84375,
+            "bottom": 692.796875,
+            "left": 253,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Most expensive recorded sessions",
+            "x": 749.84375,
+            "y": 672,
+            "width": 428.578125,
+            "height": 20.796875,
+            "top": 672,
+            "right": 1178.421875,
+            "bottom": 692.796875,
+            "left": 749.84375,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Coverage insights",
+            "x": 1214.421875,
+            "y": 670,
+            "width": 432.5625,
+            "height": 20.796875,
+            "top": 670,
+            "right": 1646.984375,
+            "bottom": 690.796875,
+            "left": 1214.421875,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    }
+  ]
+}

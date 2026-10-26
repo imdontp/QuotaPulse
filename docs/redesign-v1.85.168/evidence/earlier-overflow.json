@@ -1,0 +1,43 @@
+{
+  "productionIndexSha256": "d200e15de236e663f9ecbdb23853c13e41815e50fcac2ddc226f2ad27c459e9d",
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\ntrue !== false\n",
+  "url": "http://127.0.0.1:7841/#alerts",
+  "cases": [],
+  "writes": [
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "body": {
+        "enabled": true
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "body": {
+        "enabled": false
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "body": {
+        "enabled": false
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "body": {
+        "enabled": true
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "body": {
+        "enabled": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+12:28:36.950 INFO  [db] opened :memory:
+node : node:internal/modules/run_main:122
+At line:2 char:108
++ ... source166'; node --import tsx tmp/check-empty-alert168.mts *> tmp/ale ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Unknown coverage must stay within the viewport
+
+393 !== 390
+
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\check-empty-alert168.mts:3:1398) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 393,
+  expected: 390,
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1

@@ -1,0 +1,15 @@
+import json
+from pathlib import Path
+import numpy as np
+from PIL import Image
+before=Path('tmp/fidelity166/final'); after=Path('tmp/fidelity166/final168')
+results=[]
+for name in ['overview','live','projects','models','history','alerts','providers','cost']:
+    a=np.array(Image.open(before/f'{name}.png').convert('RGB'))
+    b=np.array(Image.open(after/f'{name}.png').convert('RGB'))
+    d=np.abs(a.astype(int)-b.astype(int)); changed=np.any(d,axis=2)
+    ys,xs=np.where(changed)
+    repeat=np.array(Image.open(after/f'{name}-repeat.png').convert('RGB'))
+    results.append(dict(page=name,dimensions=[int(a.shape[1]),int(a.shape[0])],changedPixels=int(changed.sum()),maximumChannelDelta=int(d.max()),bounds=[int(xs.min()),int(ys.min()),int(xs.max()),int(ys.max())] if len(xs) else None,repeatIdentical=bool(np.array_equal(b,repeat))))
+Path('tmp/alert168-comparison.json').write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8')
+print(json.dumps(results,indent=2))
