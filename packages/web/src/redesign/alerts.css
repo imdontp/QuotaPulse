@@ -318,3 +318,12 @@
 
 /* Finite newly-derived entrances are owned by native animations; no warning loop. */
 [data-testid=production-alerts] [data-alert-motion=entering] { will-change:opacity,transform; }
+
+/* English reference heading roles have distinct scales; keep existing line boxes. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-alerts][data-theme=dark][lang=en] .qp-alert-chart-heading h2 { font-size:15.5px; font-weight:550; line-height:20.8px; }
+  .qp-redesign[data-testid=production-alerts][data-theme=dark][lang=en] .qp-alert-risk-toolbar h2 { font-size:14.5px; font-weight:600; line-height:20.8px; }
+  .qp-redesign[data-testid=production-alerts][data-theme=dark][lang=en] .qp-alert-rules>h2 { font-size:14px; font-weight:550; line-height:20.8px; }
+  .qp-redesign[data-testid=production-alerts][data-theme=dark][lang=en] .qp-alert-guidance h2 { font-size:14px; font-weight:500; line-height:20.8px; }
+  .qp-redesign[data-testid=production-alerts][data-theme=dark][lang=en] .qp-alert-history-heading h2 { font-size:12px; font-weight:500; line-height:20.8px; }
+}

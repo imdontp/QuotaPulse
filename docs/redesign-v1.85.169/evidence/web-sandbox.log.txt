@@ -1,0 +1,1129 @@
+
+> @quotapulse/web@0.1.0 test
+> tsx --test test/*.test.ts
+
+TAP version 13
+# Subtest: test\\activity-trend.test.ts
+not ok 1 - test\\activity-trend.test.ts
+  ---
+  duration_ms: 13.1587
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\activity-trend.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\aggregate-presence-hook.test.ts
+not ok 2 - test\\aggregate-presence-hook.test.ts
+  ---
+  duration_ms: 12.1197
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\aggregate-presence-hook.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\aggregate-presence-motion.test.ts
+not ok 3 - test\\aggregate-presence-motion.test.ts
+  ---
+  duration_ms: 12.0461
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\aggregate-presence-motion.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\alert-history.test.ts
+not ok 4 - test\\alert-history.test.ts
+  ---
+  duration_ms: 11.9251
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\alert-history.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\alerts-entrance.test.ts
+not ok 5 - test\\alerts-entrance.test.ts
+  ---
+  duration_ms: 11.9416
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\alerts-entrance.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\ambient.test.ts
+not ok 6 - test\\ambient.test.ts
+  ---
+  duration_ms: 13.8922
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\ambient.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\cost-amount-axis.test.ts
+not ok 7 - test\\cost-amount-axis.test.ts
+  ---
+  duration_ms: 15.6243
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\cost-amount-axis.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\cost-display-timeline.test.ts
+not ok 8 - test\\cost-display-timeline.test.ts
+  ---
+  duration_ms: 16.7007
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\cost-display-timeline.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\cost-summary-trends.test.ts
+not ok 9 - test\\cost-summary-trends.test.ts
+  ---
+  duration_ms: 16.9424
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\cost-summary-trends.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\cost-time-axis.test.ts
+not ok 10 - test\\cost-time-axis.test.ts
+  ---
+  duration_ms: 16.9833
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\cost-time-axis.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\effort-page.test.ts
+not ok 11 - test\\effort-page.test.ts
+  ---
+  duration_ms: 17.0738
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\effort-page.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\history-motion.test.ts
+not ok 12 - test\\history-motion.test.ts
+  ---
+  duration_ms: 16.6412
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\history-motion.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\history-rail-focus.test.ts
+not ok 13 - test\\history-rail-focus.test.ts
+  ---
+  duration_ms: 16.7182
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\history-rail-focus.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    FileTest.start (node:internal/test_runner/test:829:17)
+    runTestFile (node:internal/test_runner/runner:455:32)
+    node:internal/test_runner/runner:726:25
+    node:internal/per_context/primordials:578:37
+    new Promise (<anonymous>)
+  ...
+# Subtest: test\\history-state.test.ts
+not ok 14 - test\\history-state.test.ts
+  ---
+  duration_ms: 15.8933
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\history-state.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\limits.test.ts
+not ok 15 - test\\limits.test.ts
+  ---
+  duration_ms: 15.9213
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\limits.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\live-minute-data.test.ts
+not ok 16 - test\\live-minute-data.test.ts
+  ---
+  duration_ms: 15.9951
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\live-minute-data.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\live-pulse.test.ts
+not ok 17 - test\\live-pulse.test.ts
+  ---
+  duration_ms: 16.0639
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\live-pulse.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\live-record-motion.test.ts
+not ok 18 - test\\live-record-motion.test.ts
+  ---
+  duration_ms: 16.4602
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\live-record-motion.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\live-token-flow-data.test.ts
+not ok 19 - test\\live-token-flow-data.test.ts
+  ---
+  duration_ms: 14.5884
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\live-token-flow-data.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\live-token-flow-motion.test.ts
+not ok 20 - test\\live-token-flow-motion.test.ts
+  ---
+  duration_ms: 12.786
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\live-token-flow-motion.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\metric-series.test.ts
+not ok 21 - test\\metric-series.test.ts
+  ---
+  duration_ms: 11.65
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\metric-series.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\model-drilldown.test.ts
+not ok 22 - test\\model-drilldown.test.ts
+  ---
+  duration_ms: 11.3487
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\model-drilldown.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\model-ranking.test.ts
+not ok 23 - test\\model-ranking.test.ts
+  ---
+  duration_ms: 11.1382
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\model-ranking.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\model-ring-motion.test.ts
+not ok 24 - test\\model-ring-motion.test.ts
+  ---
+  duration_ms: 15.7347
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\model-ring-motion.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\model-row-trend-request.test.ts
+not ok 25 - test\\model-row-trend-request.test.ts
+  ---
+  duration_ms: 15.7148
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\model-row-trend-request.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\model-row-trends.test.ts
+not ok 26 - test\\model-row-trends.test.ts
+  ---
+  duration_ms: 15.6402
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\model-row-trends.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+  ...
+# Subtest: test\\model-selection-motion.test.ts
+not ok 27 - test\\model-selection-motion.test.ts
+  ---
+  duration_ms: 15.6274
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\model-selection-motion.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\model-selection.test.ts
+not ok 28 - test\\model-selection.test.ts
+  ---
+  duration_ms: 15.5224
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\model-selection.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\model-summary-request.test.ts
+not ok 29 - test\\model-summary-request.test.ts
+  ---
+  duration_ms: 15.3725
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\model-summary-request.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\model-token-distribution.test.ts
+not ok 30 - test\\model-token-distribution.test.ts
+  ---
+  duration_ms: 15.5778
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\model-token-distribution.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\model-trends.test.ts
+not ok 31 - test\\model-trends.test.ts
+  ---
+  duration_ms: 15.1531
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\model-trends.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\motion-tokens.test.ts
+not ok 32 - test\\motion-tokens.test.ts
+  ---
+  duration_ms: 15.3674
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\motion-tokens.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\observed-trend-runs.test.ts
+not ok 33 - test\\observed-trend-runs.test.ts
+  ---
+  duration_ms: 15.3343
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\observed-trend-runs.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\preferences.test.ts
+not ok 34 - test\\preferences.test.ts
+  ---
+  duration_ms: 15.2488
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\preferences.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\pricing.test.ts
+not ok 35 - test\\pricing.test.ts
+  ---
+  duration_ms: 15.1335
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\pricing.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\progress-store.test.ts
+not ok 36 - test\\progress-store.test.ts
+  ---
+  duration_ms: 15.0247
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\progress-store.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\progress.test.ts
+not ok 37 - test\\progress.test.ts
+  ---
+  duration_ms: 10.2505
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\progress.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\project-observed-identities.test.ts
+not ok 38 - test\\project-observed-identities.test.ts
+  ---
+  duration_ms: 10.1648
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\project-observed-identities.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\project-selection-motion.test.ts
+not ok 39 - test\\project-selection-motion.test.ts
+  ---
+  duration_ms: 10.2078
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\project-selection-motion.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\provider-selection-motion.test.ts
+not ok 40 - test\\provider-selection-motion.test.ts
+  ---
+  duration_ms: 10.2249
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\provider-selection-motion.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\quick-stats-scope.test.ts
+not ok 41 - test\\quick-stats-scope.test.ts
+  ---
+  duration_ms: 10.3516
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\quick-stats-scope.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\quota-ring.test.ts
+not ok 42 - test\\quota-ring.test.ts
+  ---
+  duration_ms: 10.8152
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\quota-ring.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\quota-summary.test.ts
+not ok 43 - test\\quota-summary.test.ts
+  ---
+  duration_ms: 10.6283
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\quota-summary.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\redesign-alert-risks.test.ts
+not ok 44 - test\\redesign-alert-risks.test.ts
+  ---
+  duration_ms: 10.5751
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\redesign-alert-risks.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\redesign-cost-value.test.ts
+not ok 45 - test\\redesign-cost-value.test.ts
+  ---
+  duration_ms: 10.3899
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\redesign-cost-value.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\redesign-insight-model.test.ts
+not ok 46 - test\\redesign-insight-model.test.ts
+  ---
+  duration_ms: 10.4424
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\redesign-insight-model.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\redesign-model.test.ts
+not ok 47 - test\\redesign-model.test.ts
+  ---
+  duration_ms: 9.7558
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\redesign-model.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\redesign-routes.test.ts
+not ok 48 - test\\redesign-routes.test.ts
+  ---
+  duration_ms: 9.0971
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\redesign-routes.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\redesign-scope.test.ts
+not ok 49 - test\\redesign-scope.test.ts
+  ---
+  duration_ms: 8.4306
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\redesign-scope.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\refresh.test.ts
+not ok 50 - test\\refresh.test.ts
+  ---
+  duration_ms: 7.787
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\refresh.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\runtime-activity.test.ts
+not ok 51 - test\\runtime-activity.test.ts
+  ---
+  duration_ms: 7.1001
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\runtime-activity.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\runtime-inspector-motion.test.ts
+not ok 52 - test\\runtime-inspector-motion.test.ts
+  ---
+  duration_ms: 6.2957
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\runtime-inspector-motion.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\runtime-motion.test.ts
+not ok 53 - test\\runtime-motion.test.ts
+  ---
+  duration_ms: 5.396
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\runtime-motion.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\runway-motion.test.ts
+not ok 54 - test\\runway-motion.test.ts
+  ---
+  duration_ms: 4.2951
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\runway-motion.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\sources.test.ts
+not ok 55 - test\\sources.test.ts
+  ---
+  duration_ms: 3.5065
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\sources.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\today.test.ts
+not ok 56 - test\\today.test.ts
+  ---
+  duration_ms: 2.7151
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\today.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\use-change-pulse.test.ts
+not ok 57 - test\\use-change-pulse.test.ts
+  ---
+  duration_ms: 1.8616
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\use-change-pulse.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+# Subtest: test\\vite-sse-proxy.test.ts
+not ok 58 - test\\vite-sse-proxy.test.ts
+  ---
+  duration_ms: 1.0505
+  location: 'C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\packages\\web\\test\\vite-sse-proxy.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  error: 'spawn EPERM'
+  code: 'EPERM'
+  stack: |-
+    ChildProcess.spawn (node:internal/child_process:420:11)
+    spawn (node:child_process:753:9)
+    TestContext.<anonymous> (node:internal/test_runner/runner:376:19)
+    FileTest.runInAsyncScope (node:async_hooks:211:14)
+    FileTest.run (node:internal/test_runner/test:931:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+    FileTest.postRun (node:internal/test_runner/test:1042:19)
+    FileTest.run (node:internal/test_runner/test:970:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+  ...
+1..58
+# tests 58
+# suites 0
+# pass 0
+# fail 58
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 68.3588
+npm.cmd : npm error Lifecycle script `test` failed with error:
+At line:2 char:350
++ ...  -First 65; npm.cmd test -w @quotapulse/web *> tmp/source169-web-test ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm error Lifec...led with error::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+npm error code 1
+npm error path C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web
+npm error workspace @quotapulse/web@0.1.0
+npm error location C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\packages\web
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c tsx --test test/*.test.ts

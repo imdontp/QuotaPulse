@@ -1,0 +1,18 @@
+13:42:00.000 INFO  [db] opened :memory:
+Captured overview 1586x992; repeat identical=true
+node : C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\capture-inventory169.mts:238
+At line:2 char:173
++ ... SE='final'; node --import tsx tmp/capture-inventory169.mts *> tmp/sou ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\TH1236...tory169.mts:238:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    writeFileSync(resolve(output,`${name}-inventory.json`),JSON.stringify(inventory,null,2)+'\n');
+                                    ^
+
+
+ReferenceError: name is not defined
+    at <anonymous>
+(C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\tmp\capture-inventory169.mts:238:37)
+
+Node.js v22.13.1
