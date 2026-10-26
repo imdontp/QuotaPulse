@@ -1887,3 +1887,14 @@
   .qp-redesign[data-testid^=production-] .qp-topbar-actions { flex:none; gap:6px; }
   .qp-redesign[data-testid^=production-] .qp-tools { flex:none; }
 }
+
+/* Reference quota heading has a lighter scale; retain its existing line box. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-overview][data-theme=dark][lang=en] .qp-quotas-heading h2 { font-size:14.5px; font-weight:500; line-height:22.5px; transform:translateY(-1px); }
+}
+
+/* Move the activity copy together; its decorative tile and controls retain their slots. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-overview][data-theme=dark][lang=en] .qp-activity-heading-title,
+  .qp-redesign[data-testid=production-overview][data-theme=dark][lang=en] .qp-activity-chart-label { transform:translate(-7px,-2px); }
+}

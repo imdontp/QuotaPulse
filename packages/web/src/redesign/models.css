@@ -362,3 +362,13 @@
   .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true][data-wide=true]>strong { grid-column:1/-1; grid-row:3; }
   .qp-redesign[data-testid=production-models] .qp-model-summary article[data-long-token=true]>strong { grid-column:1/-1; grid-row:3; }
 }
+
+/* Independently measured English dark reference roles, with stable line boxes. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-models][data-theme=dark][lang=en] .qp-model-comparison-heading>h2 { font-size:17px; font-weight:550; line-height:27px; transform:translate(-1px,2px); }
+  .qp-redesign[data-testid=production-models][data-theme=dark][lang=en] .qp-model-detail>.qp-panel:first-child>h2 { font-size:16px; font-weight:500; line-height:20.8px; transform:translate(2px,-1px); }
+  .qp-redesign[data-testid=production-models][data-theme=dark][lang=en] .qp-model-detail-identity h3 { font-size:17.5px; font-weight:450; line-height:23.4px; transform:translate(2px,-1px); }
+  .qp-redesign[data-testid=production-models][data-theme=dark][lang=en] .qp-model-distribution>h2 { font-size:13.5px; font-weight:550; line-height:18.2px; transform:translateX(1px); }
+  .qp-redesign[data-testid=production-models][data-theme=dark][lang=en] .qp-model-trend-panel>h2 { font-size:14px; font-weight:550; line-height:18.2px; transform:translate(-2px,1px); }
+  .qp-redesign[data-testid=production-models][data-theme=dark][lang=en] .qp-model-providers>h2 { font-size:12px; font-weight:600; line-height:19.5px; gap:2px; transform:translateY(-2px); }
+}

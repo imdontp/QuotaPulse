@@ -597,7 +597,7 @@ export function Overview({ initialState, quickStatsScope, runwayScopeKey, record
               <p className="qp-footnote">{t('redesign.scope')}</p>
             </div>
           </section>
-          <section className="qp-panel qp-quotas"><div className="qp-quotas-heading"><h2><CircleGauge size={18}/>{t('redesign.windows')}</h2><a className="qp-quota-manage" href="#providers">{t('redesign.manage')} <ArrowRight size={14}/></a></div>
+          <section className="qp-panel qp-quotas"><div className="qp-quotas-heading"><h2>{t('redesign.windows')}</h2><a className="qp-quota-manage" href="#providers">{t('redesign.manage')} <ArrowRight size={14}/></a></div>
             {quotas.length === 0 && <p className="qp-footnote">{t('redesign.unavailable')}</p>}
             {quotas.length > 0 && <div className="qp-quota-groups" tabIndex={0} aria-label={t('redesign.windows')}>
               {[...quotaGroups].map(([key, windows]) => <section className="qp-quota-group" key={key} data-owner-key={key} data-provider={windows[0].provider ?? 'unknown'} data-state={quotaAccountStates?.[key] ?? 'unknown'} aria-label={windows[0].owner}>
@@ -630,7 +630,7 @@ export function Overview({ initialState, quickStatsScope, runwayScopeKey, record
           </section>
         </div>
         <section className="qp-panel qp-activity" data-testid="recent-activity">
-          <div className="qp-section-heading"><h2><Activity size={18}/>{t('redesign.liveActivity')}<small className='qp-activity-chart-label'>{t('redesign.activityWindow')}</small></h2>{!preview && <div className="qp-activity-actions"><span className="qp-activity-total" data-rate-state={totalActivityRate === null ? 'unavailable' : 'measured'}><small>{t('redesign.activityTotal')}</small><strong data-activity-total>{totalActivityRate === null ? '—' : compactNumber(totalActivityRate)} <small>{t('redesign.tokensPerMinute')}</small></strong></span><a href={historyHref}>{t('redesign.viewAllActivity')} <ArrowUpRight size={14}/></a></div>}</div>
+          <div className="qp-section-heading"><h2><Activity size={18}/><span className="qp-activity-heading-title">{t('redesign.liveActivity')}</span><small className='qp-activity-chart-label'>{t('redesign.activityWindow')}</small></h2>{!preview && <div className="qp-activity-actions"><span className="qp-activity-total" data-rate-state={totalActivityRate === null ? 'unavailable' : 'measured'}><small>{t('redesign.activityTotal')}</small><strong data-activity-total>{totalActivityRate === null ? '—' : compactNumber(totalActivityRate)} <small>{t('redesign.tokensPerMinute')}</small></strong></span><a href={historyHref}>{t('redesign.viewAllActivity')} <ArrowUpRight size={14}/></a></div>}</div>
           {activities.length === 0 ? <p className="qp-footnote">{t('redesign.noRecent')}</p> : <div className="qp-activity-list">{activities.map(item => {
             const route = `${item.provider ?? t('redesign.unknownValue')} · ${item.model ?? t('redesign.unknownValue')}`;
             const grain = t(item.grain === 'call' ? 'redesign.callRecord' : item.grain === 'session_aggregate' ? 'redesign.aggregateUpdate' : 'redesign.unknownValue');
