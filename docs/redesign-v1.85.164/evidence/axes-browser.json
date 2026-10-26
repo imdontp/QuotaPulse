@@ -1,0 +1,2395 @@
+{
+  "productionIndexSha256": "b17bbab81909a161fe4c4946a537fc7acce99de8004049b6539d6c1987e19851",
+  "cases": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "$0.003"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "extra": [
+        {
+          "sourceId": 2,
+          "basis": "api",
+          "amount": 0.0000123,
+          "ticks": [
+            {
+              "value": 0.0000123,
+              "label": "$0.000012"
+            },
+            {
+              "value": 0.000009225,
+              "label": "$0.000009"
+            },
+            {
+              "value": 0.00000615,
+              "label": "$0.000006"
+            },
+            {
+              "value": 0.000003075,
+              "label": "$0.000003"
+            },
+            {
+              "value": 0,
+              "label": "$0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 3,
+          "basis": "api",
+          "amount": 1.23e-8,
+          "ticks": [
+            {
+              "value": 1.23e-8,
+              "label": "$1.23E-8"
+            },
+            {
+              "value": 9.225e-9,
+              "label": "$9.23E-9"
+            },
+            {
+              "value": 6.15e-9,
+              "label": "$6.15E-9"
+            },
+            {
+              "value": 3.075e-9,
+              "label": "$3.08E-9"
+            },
+            {
+              "value": 0,
+              "label": "$0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 4,
+          "basis": "api",
+          "amount": 12.3,
+          "ticks": [
+            {
+              "value": 12.3,
+              "label": "$12.30"
+            },
+            {
+              "value": 9.225000000000001,
+              "label": "$9.23"
+            },
+            {
+              "value": 6.15,
+              "label": "$6.15"
+            },
+            {
+              "value": 3.075,
+              "label": "$3.08"
+            },
+            {
+              "value": 0,
+              "label": "$0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 5,
+          "basis": "api",
+          "amount": 0,
+          "ticks": [
+            {
+              "value": 0,
+              "label": "$0.00"
+            },
+            {
+              "value": 0,
+              "label": "$0.00"
+            },
+            {
+              "value": 0,
+              "label": "$0.00"
+            },
+            {
+              "value": 0,
+              "label": "$0.00"
+            },
+            {
+              "value": 0,
+              "label": "$0.00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 390,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "THB 0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "THB 0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "THB 0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "THB 0.11"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "THB 0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "THB 0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "THB 0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "THB 0.00004"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "extra": [
+        {
+          "sourceId": 2,
+          "basis": "api",
+          "amount": 0.0000123,
+          "ticks": [
+            {
+              "value": 0.0000123,
+              "label": "THB 0.0005"
+            },
+            {
+              "value": 0.000009225,
+              "label": "THB 0.0003"
+            },
+            {
+              "value": 0.00000615,
+              "label": "THB 0.0002"
+            },
+            {
+              "value": 0.000003075,
+              "label": "THB 0.0001"
+            },
+            {
+              "value": 0,
+              "label": "THB 0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 3,
+          "basis": "api",
+          "amount": 1.23e-8,
+          "ticks": [
+            {
+              "value": 1.23e-8,
+              "label": "THB 4.58E-7"
+            },
+            {
+              "value": 9.225e-9,
+              "label": "THB 3.44E-7"
+            },
+            {
+              "value": 6.15e-9,
+              "label": "THB 2.29E-7"
+            },
+            {
+              "value": 3.075e-9,
+              "label": "THB 1.15E-7"
+            },
+            {
+              "value": 0,
+              "label": "THB 0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 4,
+          "basis": "api",
+          "amount": 12.3,
+          "ticks": [
+            {
+              "value": 12.3,
+              "label": "THB 458.18"
+            },
+            {
+              "value": 9.225000000000001,
+              "label": "THB 343.63"
+            },
+            {
+              "value": 6.15,
+              "label": "THB 229.09"
+            },
+            {
+              "value": 3.075,
+              "label": "THB 114.54"
+            },
+            {
+              "value": 0,
+              "label": "THB 0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 5,
+          "basis": "api",
+          "amount": 0,
+          "ticks": [
+            {
+              "value": 0,
+              "label": "THB 0.00"
+            },
+            {
+              "value": 0,
+              "label": "THB 0.00"
+            },
+            {
+              "value": 0,
+              "label": "THB 0.00"
+            },
+            {
+              "value": 0,
+              "label": "THB 0.00"
+            },
+            {
+              "value": 0,
+              "label": "THB 0.00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "$0.003"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 900,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "THB 0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "THB 0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "THB 0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "THB 0.11"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "THB 0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "THB 0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "THB 0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "THB 0.00004"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "$0.003"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1280,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "THB 0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "THB 0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "THB 0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "THB 0.11"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "THB 0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "THB 0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "THB 0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "THB 0.00004"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "$0.003"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1672,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "THB 0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "THB 0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "THB 0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "THB 0.11"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "THB 0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "THB 0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "THB 0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "THB 0.00004"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "$0.003"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 390,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "THB 0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "THB 0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "THB 0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "THB 0.11"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "THB 0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "THB 0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "THB 0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "THB 0.00004"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "$0.003"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 900,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "THB 0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "THB 0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "THB 0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "THB 0.11"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "THB 0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "THB 0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "THB 0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "THB 0.00004"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "$0.003"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 1280,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "THB 0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "THB 0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "THB 0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "THB 0.11"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "THB 0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "THB 0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "THB 0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "THB 0.00004"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "$0.003"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 1672,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "THB 0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "THB 0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "THB 0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "THB 0.11"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "THB 0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "THB 0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "THB 0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "THB 0.00004"
+          },
+          {
+            "value": 0,
+            "label": "THB 0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "US$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "US$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "US$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "US$0.003"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "US$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "US$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "US$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "US$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "extra": [
+        {
+          "sourceId": 2,
+          "basis": "api",
+          "amount": 0.0000123,
+          "ticks": [
+            {
+              "value": 0.0000123,
+              "label": "US$0.000012"
+            },
+            {
+              "value": 0.000009225,
+              "label": "US$0.000009"
+            },
+            {
+              "value": 0.00000615,
+              "label": "US$0.000006"
+            },
+            {
+              "value": 0.000003075,
+              "label": "US$0.000003"
+            },
+            {
+              "value": 0,
+              "label": "US$0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 3,
+          "basis": "api",
+          "amount": 1.23e-8,
+          "ticks": [
+            {
+              "value": 1.23e-8,
+              "label": "US$1.23E-8"
+            },
+            {
+              "value": 9.225e-9,
+              "label": "US$9.23E-9"
+            },
+            {
+              "value": 6.15e-9,
+              "label": "US$6.15E-9"
+            },
+            {
+              "value": 3.075e-9,
+              "label": "US$3.08E-9"
+            },
+            {
+              "value": 0,
+              "label": "US$0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 4,
+          "basis": "api",
+          "amount": 12.3,
+          "ticks": [
+            {
+              "value": 12.3,
+              "label": "US$12.30"
+            },
+            {
+              "value": 9.225000000000001,
+              "label": "US$9.23"
+            },
+            {
+              "value": 6.15,
+              "label": "US$6.15"
+            },
+            {
+              "value": 3.075,
+              "label": "US$3.08"
+            },
+            {
+              "value": 0,
+              "label": "US$0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 5,
+          "basis": "api",
+          "amount": 0,
+          "ticks": [
+            {
+              "value": 0,
+              "label": "US$0.00"
+            },
+            {
+              "value": 0,
+              "label": "US$0.00"
+            },
+            {
+              "value": 0,
+              "label": "US$0.00"
+            },
+            {
+              "value": 0,
+              "label": "US$0.00"
+            },
+            {
+              "value": 0,
+              "label": "US$0.00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 390,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "฿0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "฿0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "฿0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "฿0.11"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "฿0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "฿0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "฿0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "฿0.00004"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "extra": [
+        {
+          "sourceId": 2,
+          "basis": "api",
+          "amount": 0.0000123,
+          "ticks": [
+            {
+              "value": 0.0000123,
+              "label": "฿0.0005"
+            },
+            {
+              "value": 0.000009225,
+              "label": "฿0.0003"
+            },
+            {
+              "value": 0.00000615,
+              "label": "฿0.0002"
+            },
+            {
+              "value": 0.000003075,
+              "label": "฿0.0001"
+            },
+            {
+              "value": 0,
+              "label": "฿0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 3,
+          "basis": "api",
+          "amount": 1.23e-8,
+          "ticks": [
+            {
+              "value": 1.23e-8,
+              "label": "฿4.58E-7"
+            },
+            {
+              "value": 9.225e-9,
+              "label": "฿3.44E-7"
+            },
+            {
+              "value": 6.15e-9,
+              "label": "฿2.29E-7"
+            },
+            {
+              "value": 3.075e-9,
+              "label": "฿1.15E-7"
+            },
+            {
+              "value": 0,
+              "label": "฿0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 4,
+          "basis": "api",
+          "amount": 12.3,
+          "ticks": [
+            {
+              "value": 12.3,
+              "label": "฿458.18"
+            },
+            {
+              "value": 9.225000000000001,
+              "label": "฿343.63"
+            },
+            {
+              "value": 6.15,
+              "label": "฿229.09"
+            },
+            {
+              "value": 3.075,
+              "label": "฿114.54"
+            },
+            {
+              "value": 0,
+              "label": "฿0.00"
+            }
+          ]
+        },
+        {
+          "sourceId": 5,
+          "basis": "api",
+          "amount": 0,
+          "ticks": [
+            {
+              "value": 0,
+              "label": "฿0.00"
+            },
+            {
+              "value": 0,
+              "label": "฿0.00"
+            },
+            {
+              "value": 0,
+              "label": "฿0.00"
+            },
+            {
+              "value": 0,
+              "label": "฿0.00"
+            },
+            {
+              "value": 0,
+              "label": "฿0.00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "US$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "US$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "US$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "US$0.003"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "US$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "US$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "US$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "US$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 900,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "฿0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "฿0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "฿0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "฿0.11"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "฿0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "฿0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "฿0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "฿0.00004"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "US$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "US$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "US$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "US$0.003"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "US$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "US$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "US$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "US$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 1280,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "฿0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "฿0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "฿0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "฿0.11"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "฿0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "฿0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "฿0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "฿0.00004"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "US$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "US$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "US$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "US$0.003"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "US$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "US$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "US$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "US$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "width": 1672,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "฿0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "฿0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "฿0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "฿0.11"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "฿0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "฿0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "฿0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "฿0.00004"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "US$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "US$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "US$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "US$0.003"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "US$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "US$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "US$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "US$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 390,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "฿0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "฿0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "฿0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "฿0.11"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "฿0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "฿0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "฿0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "฿0.00004"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "US$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "US$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "US$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "US$0.003"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "US$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "US$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "US$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "US$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 900,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "฿0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "฿0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "฿0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "฿0.11"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "฿0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "฿0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "฿0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "฿0.00004"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "US$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "US$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "US$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "US$0.003"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "US$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "US$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "US$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "US$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1280,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "฿0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "฿0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "฿0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "฿0.11"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "฿0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "฿0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "฿0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "฿0.00004"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "currency": "USD",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "US$0.012"
+          },
+          {
+            "value": 0.009225,
+            "label": "US$0.009"
+          },
+          {
+            "value": 0.00615,
+            "label": "US$0.006"
+          },
+          {
+            "value": 0.003075,
+            "label": "US$0.003"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "US$0.000005"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "US$0.000003"
+          },
+          {
+            "value": 0.00000228,
+            "label": "US$0.000002"
+          },
+          {
+            "value": 0.00000114,
+            "label": "US$0.000001"
+          },
+          {
+            "value": 0,
+            "label": "US$0.00"
+          }
+        ]
+      },
+      "extra": []
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "width": 1672,
+      "currency": "THB",
+      "api": {
+        "sourceId": 1,
+        "basis": "api",
+        "amount": 0.0123,
+        "ticks": [
+          {
+            "value": 0.0123,
+            "label": "฿0.46"
+          },
+          {
+            "value": 0.009225,
+            "label": "฿0.34"
+          },
+          {
+            "value": 0.00615,
+            "label": "฿0.23"
+          },
+          {
+            "value": 0.003075,
+            "label": "฿0.11"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "native": {
+        "sourceId": 1,
+        "basis": "native",
+        "amount": 0.00000456,
+        "ticks": [
+          {
+            "value": 0.00000456,
+            "label": "฿0.00017"
+          },
+          {
+            "value": 0.0000034200000000000003,
+            "label": "฿0.00013"
+          },
+          {
+            "value": 0.00000228,
+            "label": "฿0.00008"
+          },
+          {
+            "value": 0.00000114,
+            "label": "฿0.00004"
+          },
+          {
+            "value": 0,
+            "label": "฿0.00"
+          }
+        ]
+      },
+      "extra": []
+    }
+  ],
+  "errors": [],
+  "external": []
+}

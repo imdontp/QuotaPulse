@@ -59,10 +59,15 @@
 .qp-cost-axis[data-axis=tokens] { color:var(--qp-series); }
 .qp-cost-axis>span { position:absolute; right:0; max-width:100%; overflow-wrap:anywhere; transform:translateY(-50%); }
 .qp-cost-axis[data-axis=tokens]>span { left:0; right:auto; }
+.qp-cost-plot[data-precise=true] { grid-template-columns:minmax(40px,max-content) minmax(0,1fr) minmax(48px,max-content); }
+.qp-cost-plot[data-precise=true] .qp-cost-axis::before { content:attr(data-size-label); display:block; white-space:pre; visibility:hidden; }
 .qp-cost-plot-dates { grid-column:2; position:relative; height:16px; font-size:10px; line-height:16px; color:var(--qp-muted); }
 .qp-cost-plot-dates>time { position:absolute; top:0; white-space:nowrap; transform:translateX(-50%); }
 .qp-cost-plot-dates>time:first-child { transform:none; }
 .qp-cost-plot-dates>time:last-child { transform:translateX(-100%); }
+.qp-cost-plot-dates>time[data-hidden=true] { visibility:hidden; }
+.qp-cost-plot-dates[data-stacked=true] { height:32px; }
+.qp-cost-plot-dates[data-stacked=true]>time:last-child { top:16px; }
 @media(max-width:730px) { .qp-cost-plot-dates>time:not(:first-child):not(:last-child) { display:none; } }
 .qp-cost-donut { width:138px; height:138px; margin:auto; border-radius:50%; display:grid; place-items:center; }
 .qp-cost-donut[data-zero=true] { background:var(--qp-border)!important; }

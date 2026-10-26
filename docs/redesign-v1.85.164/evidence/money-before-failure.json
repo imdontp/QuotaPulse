@@ -1,0 +1,12 @@
+{
+  "productionIndexSha256": "3a03d4c5d0e6bbd043f94f365c7ea7b180e6ab3d34a46359a5aeedf90ebe2ab1",
+  "error": "AssertionError [ERR_ASSERTION]: Distinct monetary tick values need distinct displayed labels\n\n2 !== 5\n",
+  "ticks": [
+    "$0.01",
+    "$0.01",
+    "$0.01",
+    "$0.00",
+    "$0.00"
+  ],
+  "cases": []
+}
