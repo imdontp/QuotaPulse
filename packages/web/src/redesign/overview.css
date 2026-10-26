@@ -1703,6 +1703,20 @@
     pointer-events:none;
     background:url("./assets/native-active-rim.png") 0 0/100% 100% no-repeat;
   }
+  /* Each original row has its own navy falloff. Preserve the border space
+     and decorative rim while using measured, page-specific paint. */
+  .qp-redesign[data-testid=production-overview] { --qp-source-active-border:transparent; --qp-source-active-paint:linear-gradient(90deg,#0b1f56,#0c1a49 20%,#0b1940 45%,#0c152b); }
+  .qp-redesign[data-testid=production-live] { --qp-source-active-border:transparent; --qp-source-active-paint:linear-gradient(90deg,#09205d,#091c49 20%,#0a183c 45%,#08132c); }
+  .qp-redesign[data-testid=production-projects] { --qp-source-active-border:transparent; --qp-source-active-paint:linear-gradient(90deg,#001e6d,#03194f 20%,#031641 45%,#05122b); }
+  .qp-redesign[data-testid=production-models] { --qp-source-active-border:transparent; --qp-source-active-paint:linear-gradient(90deg,#011960,#02164a 20%,#031540 45%,#05132c); }
+  .qp-redesign[data-testid=production-history] { --qp-source-active-border:transparent; --qp-source-active-paint:linear-gradient(90deg,#011850,#031646 20%,#051438 45%,#061228); }
+  .qp-redesign[data-testid=production-alerts] { --qp-source-active-border:transparent; --qp-source-active-paint:linear-gradient(90deg,#091b5f,#0b1a47 20%,#09163c 45%,#0e152a); }
+  .qp-redesign[data-testid=production-providers] { --qp-source-active-border:transparent; --qp-source-active-paint:linear-gradient(90deg,#021c62,#021a56 20%,#041845 45%,#06142f); }
+  .qp-redesign[data-testid=production-cost] { --qp-source-active-border:transparent; --qp-source-active-paint:linear-gradient(90deg,#061a56,#081740 20%,#091637 45%,#0a1634); }
+  .qp-redesign[data-testid^=production-][data-theme=dark] .qp-sidebar .qp-nav-active {
+    border-color:var(--qp-source-active-border,color-mix(in srgb,var(--qp-accent) 45%,transparent));
+    background:var(--qp-source-active-paint,linear-gradient(100deg,#091c5f,#0c1636 40%,#161a29));
+  }
 }
 
 /* Reference runtime typography, scoped to the native dark dashboard. */
