@@ -451,3 +451,27 @@
 @media(min-width:1280px) {
   .qp-live-feed li { min-height:18px; padding:0; line-height:17px; }
 }
+
+/* Native English dark section roles use their independently measured type scale. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-sessions h2>.qp-section-heading-title { font-size:16px; font-weight:500; line-height:24px; }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-records h2>.qp-section-heading-title { font-size:16px; font-weight:500; line-height:24px; }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-rail>.qp-live-section:first-child h2>.qp-section-heading-title { font-size:16px; font-weight:450; line-height:19.5px; }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-matrix-section h2>.qp-section-heading-title { font-size:14px; font-weight:400; line-height:19.5px; }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-records .qp-heading-reference-svg>:not(.qp-heading-reference-mark) { display:none; }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-records .qp-heading-reference-mark { display:inline; }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-records .qp-heading-reference-svg { width:22px; height:22px; color:#279dff; }
+}
+
+/* Reference header anchors; relative offsets preserve disclosure stacking and flow. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-session-tools { position:relative; top:-6px; }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-sessions .qp-section-heading-title { transform:translateX(1px); }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-trend>.qp-live-section-head { position:relative; top:-2px; }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-trend .qp-section-heading-title { transform:translate(2px,-2px); }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-records>.qp-live-feed-tools { position:relative; top:-2px; }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-records .qp-section-heading-title { transform:translateX(4px); }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-rail>.qp-live-section:first-child .qp-section-heading-title { transform:translate(-7px,2px); }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-matrix-heading { position:relative; top:-6px; }
+  .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-matrix-section .qp-section-heading-title { transform:translateX(-3px); }
+}

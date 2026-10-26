@@ -346,3 +346,27 @@
     box-shadow:inset 0 0 14px #ffb2570c;
   }
 }
+
+.qp-cost-reference-axis { display:none; }
+/* Native reference roles retain the existing line boxes and truthful production labels. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-providers h2>.qp-section-heading-title { font-size:17px; font-weight:600; line-height:20.8px; }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-trend h2>.qp-section-heading-title { font-size:16px; font-weight:550; line-height:20.8px; }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-models h2>.qp-section-heading-title { font-size:15.5px; font-weight:500; line-height:20.8px; }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-projects h2>.qp-section-heading-title { font-size:15.5px; font-weight:550; line-height:20.8px; }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-sessions h2>.qp-section-heading-title { font-size:14px; font-weight:500; line-height:20.8px; }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-insights h2>.qp-section-heading-title { font-size:13.5px; font-weight:550; line-height:20.8px; }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-projects>h2>.qp-section-mark>svg { color:#39a6f9; fill:currentColor; stroke:#43b1fc; }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-insights>h2>.qp-section-mark>svg { color:#3eb0f8; fill:currentColor; stroke:#4bb7fb; }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-trend .qp-cost-reference-axis { display:inline; }
+}
+
+/* Position decorative headings independently from the charts and record tables. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-providers>h2 { transform:translate(-16px,-9px); }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-trend .qp-section-heading-title { transform:translate(-1px,1px); }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-models .qp-section-heading-title { transform:translate(-1px,-3px); }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-projects>h2 { transform:translate(-5px,-4px); }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-sessions .qp-section-heading-title { transform:translate(4px,-5px); }
+  .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-insights .qp-section-heading-title { transform:translate(11px,-3px); }
+}

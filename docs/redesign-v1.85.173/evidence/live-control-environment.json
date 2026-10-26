@@ -1,0 +1,205 @@
+{
+  "productionIndexSha256": "3a7a6250d489750089ba1f1b311237aea84ad784e87a028f1dc4ce263beba4f6",
+  "browser": "155.0.8059.80",
+  "language": "en",
+  "theme": "dark",
+  "deviceScaleFactor": 1,
+  "reducedMotion": "reduce",
+  "rendererArgs": [],
+  "fixture": "same isolated in-memory synthetic fixture as v1.85.95",
+  "scope": "Current compiled application screenshots and geometry; unapproved concept parity",
+  "results": [
+    {
+      "route": "live",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+      "sha256": "99706c6ab49fbf578b63e2a6f732cb5accedc93f1d789d7ca09ebcc8c7294f50",
+      "repeatSha256": "99706c6ab49fbf578b63e2a6f732cb5accedc93f1d789d7ca09ebcc8c7294f50",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 884,
+          "top": 60,
+          "right": 1672,
+          "bottom": 944,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 522,
+          "width": 201,
+          "height": 291,
+          "top": 522,
+          "right": 213,
+          "bottom": 813,
+          "left": 12
+        },
+        "moreOpen": false,
+        "visibleNavigation": [
+          "#overview",
+          "#live",
+          "#projects",
+          "#models",
+          "#cost?range=month",
+          "#history",
+          "#alerts",
+          "#providers",
+          "#settings"
+        ],
+        "mainRegions": [
+          {
+            "tag": "SECTION",
+            "className": "qp-panel qp-live-top",
+            "x": 238,
+            "y": 72,
+            "width": 1040.40625,
+            "height": 144,
+            "top": 72,
+            "right": 1278.40625,
+            "bottom": 216,
+            "left": 238
+          },
+          {
+            "tag": "DIV",
+            "className": "qp-live-layout",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          {
+            "tag": "DIALOG",
+            "className": "qp-live-dialog",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "Cost Analysis",
+          "History",
+          "Alerts",
+          "Providers",
+          "Settings"
+        ],
+        "headings": [
+          {
+            "text": "Live Monitoring",
+            "x": 292,
+            "y": 84.59375,
+            "width": 157.140625,
+            "height": 28.796875,
+            "top": 84.59375,
+            "right": 449.140625,
+            "bottom": 113.390625,
+            "left": 292,
+            "fontSize": "24px",
+            "fontWeight": "350"
+          },
+          {
+            "text": "Observed sessions",
+            "x": 249,
+            "y": 233,
+            "width": 178.75,
+            "height": 24,
+            "top": 233,
+            "right": 427.75,
+            "bottom": 257,
+            "left": 249,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Recorded tokens per minute",
+            "x": 249,
+            "y": 573.75,
+            "width": 253.40625,
+            "height": 24,
+            "top": 573.75,
+            "right": 502.40625,
+            "bottom": 597.75,
+            "left": 249,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Usage record feed",
+            "x": 249,
+            "y": 779,
+            "width": 174.0625,
+            "height": 24,
+            "top": 779,
+            "right": 423.0625,
+            "bottom": 803,
+            "left": 249,
+            "fontSize": "16px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Source advisories",
+            "x": 1301.40625,
+            "y": 85,
+            "width": 345.578125,
+            "height": 20,
+            "top": 85,
+            "right": 1646.984375,
+            "bottom": 105,
+            "left": 1301.40625,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Observed provider and model activity",
+            "x": 1299.40625,
+            "y": 438,
+            "width": 318.578125,
+            "height": 20,
+            "top": 438,
+            "right": 1617.984375,
+            "bottom": 458,
+            "left": 1299.40625,
+            "fontSize": "15px",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    }
+  ]
+}
