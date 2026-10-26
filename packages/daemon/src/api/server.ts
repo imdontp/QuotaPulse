@@ -609,11 +609,13 @@ export function buildServer(db: DB, scheduler: Scheduler, opts: ServerOptions): 
     const now = Date.now();
     const query = req.query as Record<string, unknown>;
     try {
-      const scope = parseUsageScope(query, now, { requireRange: true, extraKeys: ['basis', 'bucket'] });
+      const scope = parseUsageScope(query, now, { requireRange: true, extraKeys: ['basis', 'bucket', 'max_buckets'] });
       if (query.basis !== 'api' && query.basis !== 'native') throw new Error('Expected api or native basis');
       const bucket = query.bucket ?? 'auto';
       if (bucket !== 'auto' && bucket !== 'hour' && bucket !== 'day' && bucket !== 'week') throw new Error('Expected auto, hour, day or week bucket');
-      return { now, scope, basis: query.basis, ...costAnalysis(db, scope, query.basis as CostBasis, bucket as CostBucket) };
+      if (query.max_buckets !== undefined && !/^\d+$/.test(query.max_buckets as string)) throw new Error('Expected an integer max_buckets');
+      const maxBuckets = query.max_buckets === undefined ? undefined : Number(query.max_buckets);
+      return { now, scope, basis: query.basis, ...costAnalysis(db, scope, query.basis as CostBasis, bucket as CostBucket, maxBuckets) };
     } catch (error) { return reply.code(400).send({ error: (error as Error).message }); }
   });
 

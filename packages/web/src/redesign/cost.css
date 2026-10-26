@@ -35,6 +35,8 @@
 .qp-cost-section-head a,.qp-cost-table a,.qp-cost-insights a { color:var(--qp-accent); text-decoration:none; font-size:11px; }
 .qp-cost-chart { display:flex; align-items:end; gap:4px; height:175px; padding:10px 0; border-bottom:1px solid var(--qp-border); }
 .qp-cost-chart>div { position:relative; flex:1; height:100%; min-width:2px; display:flex; align-items:end; }
+.qp-cost-chart[data-dense=true] { gap:0; }
+.qp-cost-chart[data-dense=true]>div { min-width:0; }
 .qp-cost-column { display:block; width:100%; border-radius:3px 3px 0 0; background:linear-gradient(#2bb8ef,#4c6df2); }
 
 /* Native dark reference bar paint; keep recorded heights and zero-height boxes. */
@@ -140,6 +142,7 @@
 .qp-cost-trend>.qp-cost-chart-footer { grid-row:3; }
 .qp-cost-chart-footer>.qp-cost-coverage { flex:1; min-width:0; }
 .qp-cost-chart-footer>.qp-chart-data[open] { width:100%; }
+.qp-cost-chart-footer>.qp-cost-resolution { flex-basis:100%; margin:0; color:var(--qp-muted); font-size:11px; }
 @media(min-width:1280px) {
   .qp-cost-plot { --qp-cost-plot-height:190px; }
   [data-testid=production-cost] main { padding:12px; gap:12px; }

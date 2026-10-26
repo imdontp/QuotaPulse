@@ -500,6 +500,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.costNativeProjection': 'ค่าที่ต้นทางรายงานใช้คาดการณ์ยอดเรียกเก็บไม่ได้',
   'redesign.costPerThousand': 'ต่อโทเค็นที่มีราคา 1,000 หน่วย',
   'redesign.costBucket': 'ช่วงกราฟ',
+  'redesign.costResolutionAdjusted': 'แสดงช่วงละ {interval} เลือกช่วงวันที่สั้นลงเพื่อดูละเอียดขึ้น',
   'redesign.costBucketAuto': 'อัตโนมัติ',
   'redesign.costBucketHour': 'รายชั่วโมง',
   'redesign.costBucketDay': 'รายวัน',

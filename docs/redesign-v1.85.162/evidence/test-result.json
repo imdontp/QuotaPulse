@@ -1,0 +1,41 @@
+{
+  "status": 0,
+  "stages": [
+    {
+      "workspace": "daemon",
+      "status": 0,
+      "signal": null,
+      "concurrency": 2,
+      "arguments": [
+        "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\node_modules\\tsx\\dist\\cli.mjs",
+        "--test",
+        "--test-concurrency=2",
+        "test/*.test.ts"
+      ]
+    },
+    {
+      "workspace": "web",
+      "status": 0,
+      "signal": null,
+      "concurrency": 2,
+      "arguments": [
+        "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\node_modules\\tsx\\dist\\cli.mjs",
+        "--test",
+        "--test-concurrency=2",
+        "test/*.test.ts"
+      ]
+    },
+    {
+      "workspace": "tray",
+      "status": 0,
+      "signal": null,
+      "concurrency": 2,
+      "arguments": [
+        "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\node_modules\\tsx\\dist\\cli.mjs",
+        "--test",
+        "--test-concurrency=2",
+        "test/*.test.ts"
+      ]
+    }
+  ]
+}

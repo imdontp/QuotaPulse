@@ -67,7 +67,7 @@ export function CostTrendPlot({ points, scopeKey, label, help, basisLabel, langu
     anchor.current = bounds ?? null;
     setActive(previous => !moved && previous?.key === scopeKey && previous.index === index && previous.kind === kind ? previous : { key: scopeKey, index, kind });
   };
-  return <div ref={chart} className="qp-cost-chart" role="group" tabIndex={0} aria-label={label} aria-describedby={helpId}
+  return <div ref={chart} className="qp-cost-chart" data-dense={points.length > 60 ? true : undefined} role="group" tabIndex={0} aria-label={label} aria-describedby={helpId}
     onFocus={() => activate(current?.index ?? 0, current?.kind ?? 'keyboard')}
     onBlur={() => { anchor.current = null; setActive(null); }}
     onKeyDown={event => {

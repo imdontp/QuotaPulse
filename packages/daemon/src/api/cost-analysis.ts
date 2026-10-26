@@ -6,7 +6,8 @@ export type CostBasis = 'api' | 'native';
 export type CostBucket = 'auto' | 'hour' | 'day' | 'week';
 
 /** Read one monetary basis across the entire scope, including server-ranked sessions. */
-export function costAnalysis(db: DB, scope: UsageScope, basis: CostBasis, bucket: CostBucket = 'auto') {
+export function costAnalysis(db: DB, scope: UsageScope, basis: CostBasis, bucket: CostBucket = 'auto', maxBuckets?: number) {
+  if (maxBuckets !== undefined && (!Number.isSafeInteger(maxBuckets) || maxBuckets < 1 || maxBuckets > 1000)) throw new Error('Expected max_buckets between 1 and 1000');
   const where = usageWhere(scope);
   const from = `FROM usage_event u JOIN source s ON s.id=u.source_id
     LEFT JOIN session sess ON sess.id=u.session_id WHERE ${where.sql}`;
@@ -23,9 +24,13 @@ export function costAnalysis(db: DB, scope: UsageScope, basis: CostBasis, bucket
     COALESCE(SUM(u.total_tokens),0) AS allTokens,
     COUNT(DISTINCT sess.id) AS sessions`;
   const span = scope.to - scope.from;
-  const bucketMs = bucket === 'auto'
+  const requestedBucketMs = bucket === 'auto'
     ? Math.max(60_000, Math.ceil(span / 30 / 60_000) * 60_000)
     : { hour: 3_600_000, day: 86_400_000, week: 7 * 86_400_000 }[bucket];
+  // Opt-in only: prior clients retain their original interval/cardinality.
+  // Aggregate complete adjacent intervals; never sample or discard their facts.
+  const bucketMs = maxBuckets === undefined ? requestedBucketMs
+    : requestedBucketMs * Math.max(1, Math.ceil(span / requestedBucketMs / maxBuckets));
   const vendor = vendorSqlCase('u.model', 'u.provider');
   return db.transaction(() => {
     const totals = db.prepare(`SELECT ${facts},
@@ -51,6 +56,7 @@ export function costAnalysis(db: DB, scope: UsageScope, basis: CostBasis, bucket
       ORDER BY amount DESC, lastObservedAt DESC, sess.id DESC LIMIT 10`).all(where.params);
     return {
       totals, providers, models, projects, sessions, bucket, bucketMs,
+      ...(maxBuckets === undefined ? {} : { resolution: { requestedBucketMs, maxBuckets } }),
       points: points.map(point => ({ start: scope.from + point.bin * bucketMs,
         amount: point.amount, pricedCalls: point.pricedCalls, pricedTokens: point.pricedTokens,
         allCalls: point.allCalls, allTokens: point.allTokens })),

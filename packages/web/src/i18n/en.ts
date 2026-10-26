@@ -496,6 +496,7 @@ export const en = {
   'redesign.costNativeProjection': 'Native reports are not a billed-spend forecast',
   'redesign.costPerThousand': 'Per 1K priced tokens',
   'redesign.costBucket': 'Chart interval',
+  'redesign.costResolutionAdjusted': 'Showing {interval} intervals; narrow the date range for finer detail.',
   'redesign.costBucketAuto': 'Automatic',
   'redesign.costBucketHour': 'Hourly',
   'redesign.costBucketDay': 'Daily',
