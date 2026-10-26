@@ -1,0 +1,297 @@
+{
+  "standalone": [
+    {
+      "context": 0,
+      "hidden": false,
+      "frames": 19,
+      "firstFrameMs": 293.5,
+      "maximumFrameGapMs": 501.7000000476837,
+      "nearEnd180": false,
+      "nearEnd700": true,
+      "finishes": [
+        {
+          "index": 0,
+          "time": 180,
+          "at": 831.1999999284744
+        },
+        {
+          "index": 1,
+          "time": 700,
+          "at": 1004
+        }
+      ]
+    },
+    {
+      "context": 1,
+      "hidden": false,
+      "frames": 62,
+      "firstFrameMs": 3.600000023841858,
+      "maximumFrameGapMs": 60.299999952316284,
+      "nearEnd180": true,
+      "nearEnd700": true,
+      "finishes": [
+        {
+          "index": 0,
+          "time": 180,
+          "at": 198.89999997615814
+        },
+        {
+          "index": 1,
+          "time": 700,
+          "at": 719.7999999523163
+        }
+      ]
+    },
+    {
+      "context": 2,
+      "hidden": false,
+      "frames": 59,
+      "firstFrameMs": 24.5,
+      "maximumFrameGapMs": 72.10000002384186,
+      "nearEnd180": true,
+      "nearEnd700": true,
+      "finishes": [
+        {
+          "index": 0,
+          "time": 180,
+          "at": 220.89999997615814
+        },
+        {
+          "index": 1,
+          "time": 700,
+          "at": 735.1000000238419
+        }
+      ]
+    },
+    {
+      "context": 3,
+      "hidden": false,
+      "frames": 54,
+      "firstFrameMs": 132.30000007152557,
+      "maximumFrameGapMs": 63.300000071525574,
+      "nearEnd180": true,
+      "nearEnd700": true,
+      "finishes": [
+        {
+          "index": 0,
+          "time": 180,
+          "at": 327
+        },
+        {
+          "index": 1,
+          "time": 700,
+          "at": 844.7000000476837
+        }
+      ]
+    }
+  ],
+  "trace": {
+    "events": 15490,
+    "frequentEventNames": [
+      [
+        "RunTask",
+        1983
+      ],
+      [
+        "Graphics.Pipeline",
+        1401
+      ],
+      [
+        "BeginImplFrameToSendBeginMainFrame",
+        290
+      ],
+      [
+        "PipelineReporter",
+        288
+      ],
+      [
+        "auto cc::(anonymous namespace)::InsertNodeForTask(TaskGraph *, TileTask *, uint16_t, uint16_t, size_t, bool)::(lambda)::operator()()::(lambda)::operator()(uint32_t) const",
+        261
+      ],
+      [
+        "LayerTreeHostImpl::NotifyTileStateChanged",
+        244
+      ],
+      [
+        "Swap",
+        221
+      ],
+      [
+        "LocalFrameView::ScheduleAnimation",
+        194
+      ],
+      [
+        "AnimationFrame",
+        180
+      ],
+      [
+        "EndActivateToSubmitCompositorFrame",
+        178
+      ],
+      [
+        "SubmitCompositorFrameToPresentationCompositorFrame",
+        178
+      ],
+      [
+        "SubmitToReceiveCompositorFrame",
+        178
+      ],
+      [
+        "ReceiveCompositorFrameToStartDraw",
+        178
+      ],
+      [
+        "StartDrawToSwapStart",
+        178
+      ],
+      [
+        "SwapEndToPresentationCompositorFrame",
+        178
+      ],
+      [
+        "PaintImage",
+        154
+      ],
+      [
+        "Commit",
+        140
+      ],
+      [
+        "ScheduledTasksState",
+        138
+      ],
+      [
+        "AnimationHost::TickAnimations",
+        137
+      ],
+      [
+        "SendBeginMainFrame",
+        135
+      ],
+      [
+        "ProxyMain::BeginMainFrame",
+        135
+      ],
+      [
+        "TileTaskManagerImpl::CheckForCompletedTasks",
+        132
+      ],
+      [
+        "TileManager::CheckPendingGpuWorkAndIssueSignals",
+        132
+      ],
+      [
+        "LayerTreeHostImpl::CommitComplete",
+        129
+      ]
+    ],
+    "threadNames": [
+      {
+        "pid": 0,
+        "tid": 0,
+        "name": "swapper"
+      },
+      {
+        "pid": 26796,
+        "tid": 24192,
+        "name": "CrBrowserMain"
+      },
+      {
+        "pid": 19212,
+        "tid": 43644,
+        "name": "Compositor"
+      },
+      {
+        "pid": 26796,
+        "tid": 30592,
+        "name": "PerfettoTrace"
+      },
+      {
+        "pid": 19212,
+        "tid": 23592,
+        "name": "CrRendererMain"
+      },
+      {
+        "pid": 19212,
+        "tid": 47788,
+        "name": "PerfettoTrace"
+      },
+      {
+        "pid": 26796,
+        "tid": 34500,
+        "name": "CacheThread_BlockFile"
+      },
+      {
+        "pid": 23892,
+        "tid": 31520,
+        "name": "PerfettoTrace"
+      },
+      {
+        "pid": 26796,
+        "tid": 44728,
+        "name": "DevToolsPipeHandlerWriteThread"
+      },
+      {
+        "pid": 26796,
+        "tid": 31180,
+        "name": "Chrome_IOThread"
+      },
+      {
+        "pid": 19212,
+        "tid": 5336,
+        "name": "Chrome_ChildIOThread"
+      },
+      {
+        "pid": 23892,
+        "tid": 11208,
+        "name": "GpuVSyncThread"
+      },
+      {
+        "pid": 23892,
+        "tid": 37288,
+        "name": "VizCompositorThread"
+      },
+      {
+        "pid": 19212,
+        "tid": 42924,
+        "name": "ThreadPoolForegroundWorker"
+      },
+      {
+        "pid": 23892,
+        "tid": 43916,
+        "name": "CrGpuMain"
+      },
+      {
+        "pid": 23892,
+        "tid": 47348,
+        "name": "Chrome_ChildIOThread"
+      },
+      {
+        "pid": 26796,
+        "tid": 22860,
+        "name": "ThreadPoolServiceThread"
+      },
+      {
+        "pid": 26796,
+        "tid": 42060,
+        "name": "CompositorTileWorker1"
+      }
+    ],
+    "longTimelineEvents": [
+      {
+        "name": "RunTask",
+        "ms": 138.115,
+        "pid": 23892,
+        "tid": 43916,
+        "at": 645413272013
+      },
+      {
+        "name": "RunTask",
+        "ms": 64.398,
+        "pid": 23892,
+        "tid": 43916,
+        "at": 645413410188
+      }
+    ]
+  }
+}

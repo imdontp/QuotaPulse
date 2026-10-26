@@ -1,3 +1,4 @@
+import { motionRendererArgs } from './motion-renderer.mjs';
 import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 /** Compiled Projects/Runtime/Providers motion regression using isolated API/SSE and a synthetic DB. */
 import assert from 'node:assert/strict';
@@ -14,7 +15,7 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
 process.env.TZ = 'Asia/Bangkok';
 const taskLang='en', taskTheme='dark';
-const output=resolve(root,'tmp/motion93-browser');
+const output=resolve(root,'tmp/motion93-browser'+(process.env.QP_MOTION_RENDERER==='software'?'-software':''));
 mkdirSync(output,{recursive:true});if((process.env.QUOTAPULSE_MOTION93_MODE??'verify')==='verify')rmSync(resolve(output,'verification.json'),{force:true});
 const fixedNow = Date.parse('2025-05-17T13:42:00.000Z');
 // Freeze Date only, keeping real timers/performance for HTTP, browser and cleanup.
@@ -118,7 +119,7 @@ const scheduler = new Scheduler(db, [], { pollMs: 1_000_000, detectMs: 1_000_000
 const daemon = buildServer(db, scheduler, { token: 'stable-capture-test', port: 7816, webRoot: resolve(root, 'packages/web/dist') });
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 const sha = (value: Buffer) => createHash('sha256').update(value).digest('hex');
-const rendererArgs = ['baseline','paint'].includes(process.env.QUOTAPULSE_MOTION93_MODE??'verify') ? ['--disable-gpu', '--deterministic-mode', '--disable-skia-runtime-opts', '--force-color-profile=srgb'] : ['--force-color-profile=srgb'];
+const rendererArgs = motionRendererArgs({paint:['baseline','paint'].includes(process.env.QUOTAPULSE_MOTION93_MODE??'verify')});
 async function settled(page:Page,pending:Set<Request>) {
  const deadline=performance.now()+30_000;let idle=0;
  while(idle<12){assert.ok(performance.now()<deadline,`API did not settle: ${[...pending].map(r=>r.url()).join(', ')}`);idle=pending.size===0?idle+1:0;await page.waitForTimeout(25);}
@@ -175,7 +176,7 @@ try{
  await clear();await page.locator('.qp-runtime-options>summary').click();await page.locator('.qp-runtime-data>summary').click();const dataButton=page.locator('.qp-runtime-nodes tbody button').first();await dataButton.waitFor();await staticNow('runtime-data-native-disclosure-static');await arm();await dataButton.focus();await page.keyboard.press('Enter');await page.locator('.qp-dialog[open]').waitFor();await collect('runtime-native-data-button-and-actual-detail',[180,700,180,700]);await page.keyboard.press('Escape');assert.equal(await dataButton.evaluate(e=>document.activeElement===e),true,'RuntimeData Escape restores exact native button');await page.locator('.qp-runtime-data>summary').click();await page.locator('.qp-runtime-options>summary').click();
  await page.emulateMedia({reducedMotion:'reduce'});await clear();await node.click();await page.locator('.qp-dialog[open]').waitFor();await staticNow('runtime-reduced-inspection-static');await page.keyboard.press('Escape');await page.emulateMedia({reducedMotion:'no-preference'});await page.waitForTimeout(100);
  await clear();await node.click();await page.waitForFunction(()=>(window as any).__effects.some((e:any)=>e.animation.playState==='running'));await page.evaluate(()=>{location.hash='#overview?range=week'});await page.locator('.qp-dialog[open]').waitFor({state:'hidden'});const contextLoss=await page.evaluate(()=>(window as any).__effects.map((e:any)=>({state:e.animation.playState,key:e.key})));assert.ok(contextLoss.length>=2);assert.ok(contextLoss.every((e:any)=>e.state==='idle'));assert.equal(await page.locator('[data-runtime-inspector-detail]').count(),0,'Changed scope cannot retain old inspector body');stages.push({label:'runtime-context-change-closes-cancels-foreign-detail',effects:contextLoss});
- assert.deepEqual(errors,[]);assert.deepEqual(forbidden,[]);writeFileSync(resolve(output,'verification.json'),JSON.stringify({productionIndexSha256:sha(readFileSync(resolve(root,'packages/web/dist/index.html'))),browser:browser.version(),scope:'Actual compiled Projects/Providers/Runtime through isolated synthetic memory API/SSE; no native package claim',stages,errors,forbidden},null,2));
+ assert.deepEqual(errors,[]);assert.deepEqual(forbidden,[]);writeFileSync(resolve(output,'verification.json'),JSON.stringify({productionIndexSha256:sha(readFileSync(resolve(root,'packages/web/dist/index.html'))),browser:browser.version(),renderer:process.env.QP_MOTION_RENDERER??'default',rendererArgs,scope:'Actual compiled Projects/Providers/Runtime through isolated synthetic memory API/SSE; no native package claim',stages,errors,forbidden},null,2));
  }
  console.log('Projects/Runtime/Providers93 '+mode+' complete.');
 }catch(error){writeFileSync(resolve(output,'failure.json'),JSON.stringify({message:String(error),stack:(error as Error).stack,url:page?.url(),productionIndexSha256:sha(readFileSync(resolve(root,'packages/web/dist/index.html'))),stages,errors,forbidden},null,2));await page?.screenshot({path:resolve(output,'failure.png')}).catch(()=>{});throw error;

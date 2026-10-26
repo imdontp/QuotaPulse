@@ -1,3 +1,4 @@
+import { motionRendererArgs } from './motion-renderer.mjs';
 import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 /** Compiled aggregate presence regression using isolated API/SSE and a synthetic DB. */
 import assert from 'node:assert/strict';
@@ -14,7 +15,7 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
 process.env.TZ = 'Asia/Bangkok';
 const taskLang='en', taskTheme='dark';
-const output=resolve(root,'tmp/presence95-browser');
+const output=resolve(root,'tmp/presence95-browser'+(process.env.QP_MOTION_RENDERER==='software'?'-software':''));
 mkdirSync(output,{recursive:true});if((process.env.QUOTAPULSE_PRESENCE95_MODE??'verify')==='verify')rmSync(resolve(output,'verification.json'),{force:true});
 const fixedNow = Date.parse('2025-05-17T13:42:00.000Z');
 // Freeze Date only, keeping real timers/performance for HTTP, browser and cleanup.
@@ -118,7 +119,7 @@ const scheduler = new Scheduler(db, [], { pollMs: 1_000_000, detectMs: 1_000_000
 const daemon = buildServer(db, scheduler, { token: 'stable-capture-test', port: 7816, webRoot: resolve(root, 'packages/web/dist') });
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 const sha = (value: Buffer) => createHash('sha256').update(value).digest('hex');
-const rendererArgs = ['baseline','paint'].includes(process.env.QUOTAPULSE_PRESENCE95_MODE??'verify') ? ['--disable-gpu', '--deterministic-mode', '--disable-skia-runtime-opts', '--force-color-profile=srgb'] : ['--force-color-profile=srgb'];
+const rendererArgs = motionRendererArgs({paint:['baseline','paint'].includes(process.env.QUOTAPULSE_PRESENCE95_MODE??'verify')});
 async function settled(page:Page,pending:Set<Request>) {
  const deadline=performance.now()+30_000;let idle=0;
  while(idle<12){assert.ok(performance.now()<deadline,`API did not settle: ${[...pending].map(r=>r.url()).join(', ')}`);idle=pending.size===0?idle+1:0;await page.waitForTimeout(25);}
@@ -376,7 +377,7 @@ try {
     await collect('providers-new-owner-survives-actual-duplicate');
     assert.equal(await page.evaluate(() => (window as any).__effects.length), 2, 'Providers duplicate does not restart new owner animations');
     assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-    writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), browser: browser.version(), scope: 'Compiled synthetic aggregate API/SSE; new accepted group presence, not individual call or ingestion recency', finiteDurationAndSemanticsPassed:true, visualSamplingComplete:samplingGaps.length===0, samplingGaps, longTasks:await page.evaluate(()=>(window as any).__longTasks), stages, errors, forbidden }, null, 2));
+    writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), browser: browser.version(), renderer:process.env.QP_MOTION_RENDERER??'default', rendererArgs, scope: 'Compiled synthetic aggregate API/SSE; new accepted group presence, not individual call or ingestion recency', finiteDurationAndSemanticsPassed:true, visualSamplingComplete:samplingGaps.length===0, samplingGaps, longTasks:await page.evaluate(()=>(window as any).__longTasks), stages, errors, forbidden }, null, 2));
     console.log('Aggregate presence exact native durations/identity/lifecycle passed; unresolved visual sampling diagnostics: '+samplingGaps.length);
   }
 } catch (error) {

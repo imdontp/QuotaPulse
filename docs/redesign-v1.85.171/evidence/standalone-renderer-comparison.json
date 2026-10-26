@@ -1,0 +1,179 @@
+{
+  "default": {
+    "browser": "155.0.8059.80",
+    "rendererArgs": [
+      "--force-color-profile=srgb"
+    ],
+    "cases": [
+      {
+        "context": 0,
+        "frames": 19,
+        "firstFrameMs": 293.5,
+        "maximumFrameGapMs": 501.7000000476837,
+        "nearEnd180": false,
+        "nearEnd700": true,
+        "finishes": [
+          {
+            "index": 0,
+            "time": 180,
+            "at": 831.1999999284744
+          },
+          {
+            "index": 1,
+            "time": 700,
+            "at": 1004
+          }
+        ]
+      },
+      {
+        "context": 1,
+        "frames": 62,
+        "firstFrameMs": 3.600000023841858,
+        "maximumFrameGapMs": 60.299999952316284,
+        "nearEnd180": true,
+        "nearEnd700": true,
+        "finishes": [
+          {
+            "index": 0,
+            "time": 180,
+            "at": 198.89999997615814
+          },
+          {
+            "index": 1,
+            "time": 700,
+            "at": 719.7999999523163
+          }
+        ]
+      },
+      {
+        "context": 2,
+        "frames": 59,
+        "firstFrameMs": 24.5,
+        "maximumFrameGapMs": 72.10000002384186,
+        "nearEnd180": true,
+        "nearEnd700": true,
+        "finishes": [
+          {
+            "index": 0,
+            "time": 180,
+            "at": 220.89999997615814
+          },
+          {
+            "index": 1,
+            "time": 700,
+            "at": 735.1000000238419
+          }
+        ]
+      },
+      {
+        "context": 3,
+        "frames": 54,
+        "firstFrameMs": 132.30000007152557,
+        "maximumFrameGapMs": 63.300000071525574,
+        "nearEnd180": true,
+        "nearEnd700": true,
+        "finishes": [
+          {
+            "index": 0,
+            "time": 180,
+            "at": 327
+          },
+          {
+            "index": 1,
+            "time": 700,
+            "at": 844.7000000476837
+          }
+        ]
+      }
+    ]
+  },
+  "software": {
+    "browser": "155.0.8059.80",
+    "rendererArgs": [
+      "--force-color-profile=srgb",
+      "--disable-gpu"
+    ],
+    "cases": [
+      {
+        "context": 0,
+        "frames": 47,
+        "firstFrameMs": 301.8000000715256,
+        "maximumFrameGapMs": 60.199999928474426,
+        "nearEnd180": true,
+        "nearEnd700": true,
+        "finishes": [
+          {
+            "index": 0,
+            "time": 180,
+            "at": 483.60000002384186
+          },
+          {
+            "index": 1,
+            "time": 700,
+            "at": 1017.1000000238419
+          }
+        ]
+      },
+      {
+        "context": 1,
+        "frames": 66,
+        "firstFrameMs": 9.5,
+        "maximumFrameGapMs": 53.60000002384186,
+        "nearEnd180": true,
+        "nearEnd700": true,
+        "finishes": [
+          {
+            "index": 0,
+            "time": 180,
+            "at": 192.89999997615814
+          },
+          {
+            "index": 1,
+            "time": 700,
+            "at": 726.5
+          }
+        ]
+      },
+      {
+        "context": 2,
+        "frames": 64,
+        "firstFrameMs": 7.100000023841858,
+        "maximumFrameGapMs": 79.09999990463257,
+        "nearEnd180": true,
+        "nearEnd700": true,
+        "finishes": [
+          {
+            "index": 0,
+            "time": 180,
+            "at": 191.89999997615814
+          },
+          {
+            "index": 1,
+            "time": 700,
+            "at": 724.2000000476837
+          }
+        ]
+      },
+      {
+        "context": 3,
+        "frames": 65,
+        "firstFrameMs": 15.800000071525574,
+        "maximumFrameGapMs": 55.0,
+        "nearEnd180": true,
+        "nearEnd700": true,
+        "finishes": [
+          {
+            "index": 0,
+            "time": 180,
+            "at": 198.80000007152557
+          },
+          {
+            "index": 1,
+            "time": 700,
+            "at": 731.7000000476837
+          }
+        ]
+      }
+    ]
+  }
+}

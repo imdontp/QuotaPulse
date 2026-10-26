@@ -1,3 +1,4 @@
+import { motionRendererArgs } from './motion-renderer.mjs';
 import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 /** Compiled History/Alerts motion regression using isolated API/SSE and a synthetic DB. */
 import assert from 'node:assert/strict';
@@ -17,7 +18,7 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
 process.env.TZ = 'Asia/Bangkok';
 const taskLang='en', taskTheme='dark';
-const output=resolve(root,'tmp/history94-browser');
+const output=resolve(root,'tmp/history94-browser'+(process.env.QP_MOTION_RENDERER==='software'?'-software':''));
 mkdirSync(output,{recursive:true});rmSync(resolve(output,'verification.json'),{force:true});
 const fixedNow = Date.parse('2025-05-17T13:42:00.000Z');
 // Freeze Date only, keeping real timers/performance for HTTP, browser and cleanup.
@@ -121,7 +122,7 @@ const scheduler = new Scheduler(db, [], { pollMs: 1_000_000, detectMs: 1_000_000
 const daemon = buildServer(db, scheduler, { token: 'stable-capture-test', port: 7816, webRoot: resolve(root, 'packages/web/dist') });
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 const sha = (value: Buffer) => createHash('sha256').update(value).digest('hex');
-const rendererArgs = ['--force-color-profile=srgb'];
+const rendererArgs = motionRendererArgs();
 async function settled(page:Page,pending:Set<Request>) {
  const deadline=performance.now()+30_000;let idle=0;
  while(idle<12){assert.ok(performance.now()<deadline,`API did not settle: ${[...pending].map(r=>r.url()).join(', ')}`);idle=pending.size===0?idle+1:0;await page.waitForTimeout(25);}
@@ -156,5 +157,5 @@ try {
  const alertsLifecycle=await checkAlertsMotionLifecycle({page,db,notify,fixedNow,output});
  const historyLifecycle=await checkHistoryMotionLifecycle({page,db,notify,fixedNow,output});
  const railComposition=await checkHistoryRail(browser,output,fixedNow);
- await page.screenshot({path:resolve(output,'alerts-final.png')});assert.deepEqual(errors,[]);assert.deepEqual(forbidden,[]);writeFileSync(resolve(output,'verification.json'),JSON.stringify({productionIndexSha256:sha(readFileSync(resolve(root,'packages/web/dist/index.html'))),browser:browser.version(),scope:'Actual compiled memory API/SSE, synthetic facts; no native release claim',stages,first,late,restore,afterRestore,initialStatic:true,historyRailEscapeFocus:true,railComposition,reducedStatic:true,duplicateStatic:true,filterStatic:true,showMoreStatic:true,alertsLifecycle,historyLifecycle,errors,forbidden},null,2));console.log('History and Alerts actual native timelines, accepted snapshots, duplicate, selection/focus and static controls passed.');
+ await page.screenshot({path:resolve(output,'alerts-final.png')});assert.deepEqual(errors,[]);assert.deepEqual(forbidden,[]);writeFileSync(resolve(output,'verification.json'),JSON.stringify({productionIndexSha256:sha(readFileSync(resolve(root,'packages/web/dist/index.html'))),browser:browser.version(),renderer:process.env.QP_MOTION_RENDERER??'default',rendererArgs,scope:'Actual compiled memory API/SSE, synthetic facts; no native release claim',stages,first,late,restore,afterRestore,initialStatic:true,historyRailEscapeFocus:true,railComposition,reducedStatic:true,duplicateStatic:true,filterStatic:true,showMoreStatic:true,alertsLifecycle,historyLifecycle,errors,forbidden},null,2));console.log('History and Alerts actual native timelines, accepted snapshots, duplicate, selection/focus and static controls passed.');
 }catch(error){if(page&&!page.isClosed()){await page.screenshot({path:resolve(output,'failure.png')}).catch(()=>{});writeFileSync(resolve(output,'failure.json'),JSON.stringify({error:String((error as Error).stack??error),stages,probe:await page.evaluate(()=>(window as any).__probe).catch(()=>null),effects:await page.evaluate(()=>(window as any).__effects.map((e:any)=>({key:e.key,duration:e.duration,time:e.animation.currentTime,state:e.animation.playState}))).catch(()=>null)},null,2))}throw error}finally{await browser?.close();await daemon.close();db.close();globalThis.Date=realDate;process.env.TZ=priorTimezone;}
