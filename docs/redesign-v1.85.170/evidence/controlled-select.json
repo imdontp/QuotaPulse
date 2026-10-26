@@ -1,0 +1,141 @@
+{
+  "contexts": 8,
+  "roi": [
+    1096,
+    480,
+    1182,
+    500
+  ],
+  "onePixelEvidence": {
+    "beforePixels": 178,
+    "afterPixels": 178,
+    "samePositionIoU": 0.3433962264150943,
+    "afterDownOnePixelIoU": 1.0,
+    "rgbDifferenceAfterOnePixelShift": {
+      "changedPixels": 0,
+      "maxDelta": 0
+    }
+  },
+  "comparisons": [
+    {
+      "context": "controlled-1",
+      "nativeVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "styledVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "restoration": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      }
+    },
+    {
+      "context": "controlled-2",
+      "nativeVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "styledVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "restoration": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      }
+    },
+    {
+      "context": "controlled-3",
+      "nativeVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "styledVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "restoration": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      }
+    },
+    {
+      "context": "controlled-4",
+      "nativeVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "styledVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "restoration": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      }
+    },
+    {
+      "context": "controlled-5",
+      "nativeVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "styledVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "restoration": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      }
+    },
+    {
+      "context": "controlled-6",
+      "nativeVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "styledVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "restoration": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      }
+    },
+    {
+      "context": "controlled-7",
+      "nativeVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "styledVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "restoration": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      }
+    },
+    {
+      "context": "controlled-8",
+      "nativeVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "styledVsFirst": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "restoration": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      }
+    }
+  ]
+}

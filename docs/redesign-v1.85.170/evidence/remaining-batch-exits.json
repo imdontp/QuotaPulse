@@ -1,0 +1,14 @@
+[
+    {
+        "script":  "check-history-alerts-motion.mts",
+        "exitCode":  1
+    },
+    {
+        "script":  "check-live-minute-motion.mts",
+        "exitCode":  0
+    },
+    {
+        "script":  "check-aggregate-presence.mts",
+        "exitCode":  0
+    }
+]

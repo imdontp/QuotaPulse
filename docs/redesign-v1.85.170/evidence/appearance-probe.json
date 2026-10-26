@@ -1,0 +1,85 @@
+{
+  "roi": [
+    1096,
+    480,
+    1182,
+    500
+  ],
+  "comparisons": [
+    {
+      "phase": "appearance-a",
+      "nativeVsRestored": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "nativeVsNone": {
+        "changedPixels": 598,
+        "maxDelta": 231
+      }
+    },
+    {
+      "phase": "appearance-b",
+      "nativeVsRestored": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "nativeVsNone": {
+        "changedPixels": 598,
+        "maxDelta": 231
+      }
+    },
+    {
+      "phase": "appearance-c",
+      "nativeVsRestored": {
+        "changedPixels": 0,
+        "maxDelta": 0
+      },
+      "nativeVsNone": {
+        "changedPixels": 598,
+        "maxDelta": 231
+      }
+    },
+    {
+      "before": "appearance-a",
+      "after": "appearance-b",
+      "file": "native-before.png",
+      "changedPixels": 0,
+      "maxDelta": 0
+    },
+    {
+      "before": "appearance-a",
+      "after": "appearance-c",
+      "file": "native-before.png",
+      "changedPixels": 0,
+      "maxDelta": 0
+    },
+    {
+      "before": "appearance-a",
+      "after": "appearance-b",
+      "file": "appearance-none.png",
+      "changedPixels": 0,
+      "maxDelta": 0
+    },
+    {
+      "before": "appearance-a",
+      "after": "appearance-c",
+      "file": "appearance-none.png",
+      "changedPixels": 0,
+      "maxDelta": 0
+    },
+    {
+      "before": "appearance-a",
+      "after": "appearance-b",
+      "file": "native-restored.png",
+      "changedPixels": 0,
+      "maxDelta": 0
+    },
+    {
+      "before": "appearance-a",
+      "after": "appearance-c",
+      "file": "native-restored.png",
+      "changedPixels": 0,
+      "maxDelta": 0
+    }
+  ]
+}

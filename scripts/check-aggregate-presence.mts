@@ -203,73 +203,45 @@ async function visible(selector: string) {
   await page!.locator(selector).scrollIntoViewIfNeeded(); await page!.waitForTimeout(120);
 }
 async function checkSecondaryNavigation(activeLabel: string, siblingLabel: string) {
-  const selected = page!.getByRole('navigation').getByRole('link', { name: activeLabel, exact: true });
-  await selected.waitFor(); assert.equal(await selected.getAttribute('aria-current'), 'page', `${activeLabel} is a primary current page link`);
-  const topLevelOrder = await page!.evaluate(() => [...document.querySelector('nav[aria-label="Main navigation"]')!.children].flatMap(element => {
-    if (element.matches('.qp-nav-secondary')) return [element.querySelector(':scope > a span')!.textContent!.trim()];
-    if (element.tagName === 'A') return [element.querySelector('span')!.textContent!.trim()];
-    return [];
-  }));
-  if (activeLabel === 'Cost Analysis') {
-    assert.deepEqual(topLevelOrder, ['Overview', 'Live', 'Projects', 'Models', 'Cost Analysis', 'History', 'Alerts'], 'Cost Analysis occupies the concept slot between Models and History');
-  } else {
-    assert.deepEqual(topLevelOrder, ['Overview', 'Live', 'Projects', 'Models', 'History', 'Alerts', 'Providers'], 'Providers follows Alerts in the concept sidebar order');
-  }
+  // OVR-001/source166 keeps all nine destinations directly visible on every page.
+  const nav = page!.getByRole('navigation');
+  const selected = nav.getByRole('link', { name: activeLabel, exact: true });
+  await selected.waitFor(); assert.equal(await selected.getAttribute('aria-current'), 'page');
+  const expected = ['overview','live','projects','models','cost','history','alerts','providers','settings'];
+  assert.deepEqual(await nav.locator('[data-nav-id]').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('data-nav-id'))), expected);
+  assert.equal(await nav.locator('details').count(), 0, 'Direct destinations do not require a disclosure');
+  assert.equal(await nav.getByRole('link', { name: siblingLabel, exact: true }).isVisible(), true);
   const previousViewport = page!.viewportSize()!;
-  await page!.setViewportSize({ width: 1672, height: 941 }); await page!.waitForTimeout(100);
-  const initial = await page!.evaluate(() => {
-    const grid = document.querySelector('.qp-provider-grid');
-    const inspector = document.querySelector('.qp-provider-inspector');
-    const cards = [...(grid?.querySelectorAll<HTMLElement>('.qp-provider-card') ?? [])];
-    const lastCardBottom = cards.length > 0 ? Math.max(...cards.map(card => card.getBoundingClientRect().bottom)) : null;
-    const selected = document.querySelector('.qp-nav-secondary > a')!.getBoundingClientRect();
-    const primary = document.querySelector('.qp-sidebar nav > a')!.getBoundingClientRect();
-    const label = document.querySelector('.qp-nav-secondary > a > span')!.getBoundingClientRect();
-    const more = document.querySelector('.qp-nav-more summary')!.getBoundingClientRect();
-    return {
-      moreOpen: document.querySelector('.qp-nav-more')!.matches('[open]'),
-      quickStatsTop: document.querySelector('.qp-quick-stats')!.getBoundingClientRect().top,
-      providerContentGap: inspector && lastCardBottom !== null ? inspector.getBoundingClientRect().top - lastCardBottom : null,
-      selectedWidth: selected.width, primaryWidth: primary.width, moreLabelClearance: more.left - label.right,
-    };
+  const checks = [];
+  for (const width of [1672,390,900]) {
+    await page!.setViewportSize({ width, height:941 });
+    const links = nav.locator('[data-nav-id]');
+    const geometry = await links.evaluateAll(nodes=>nodes.map(n=>({id:n.getAttribute('data-nav-id'),rect:n.getBoundingClientRect().toJSON()})));
+    assert.ok(geometry.every((entry,index)=>index===0||entry.rect.top>=geometry[index-1].rect.bottom-1), `${activeLabel}/${width}: destination hit areas do not overlap`);
+    assert.ok(geometry.every(entry=>Math.abs(entry.rect.width-geometry[0].rect.width)<=1), `${activeLabel}/${width}: current plate retains the common width`);
+    assert.equal(await page!.evaluate(()=>document.documentElement.scrollWidth>innerWidth), false);
+    await links.first().focus();
+    for (let index=0; index<expected.length; index++) {
+      if(index) await page!.keyboard.press('Tab');
+      assert.equal(await links.nth(index).evaluate(el=>el===document.activeElement), true, `${activeLabel}/${width}: keyboard reaches ${expected[index]}`);
+      assert.equal(await links.nth(index).evaluate(el=>getComputedStyle(el).outlineStyle), 'solid');
+    }
+    checks.push({width,geometry,keyboardAllDestinations:true});
+  }
+  await page!.setViewportSize({width:1672,height:941});
+  const layout = await page!.evaluate(()=>{
+    const nav=document.querySelector('.qp-sidebar nav')!.getBoundingClientRect();
+    const stats=document.querySelector('.qp-quick-stats')!.getBoundingClientRect();
+    const grid=document.querySelector('.qp-provider-grid'), inspector=document.querySelector('.qp-provider-inspector');
+    const cards=[...(grid?.querySelectorAll('.qp-provider-card')??[])];
+    const bottom=cards.length?Math.max(...cards.map(card=>card.getBoundingClientRect().bottom)):null;
+    return {navBottom:nav.bottom,quickStatsTop:stats.top,providerContentGap:inspector&&bottom!==null?inspector.getBoundingClientRect().top-bottom:null};
   });
-  assert.equal(initial.moreOpen, false, `${activeLabel} opens with More collapsed`);
-  const referenceQuickStatsTop = activeLabel === 'Cost Analysis' ? 447 : 445;
-  assert.ok(Math.abs(initial.quickStatsTop - referenceQuickStatsTop) <= 2, `${activeLabel} quick stats geometry: ${initial.quickStatsTop}`);
-  assert.ok(Math.abs(initial.selectedWidth - initial.primaryWidth) <= 1, `${activeLabel} selected plate spans the source navigation width`);
-  assert.ok(initial.moreLabelClearance >= 4, `${activeLabel} More trigger does not cover the selected label`);
-  if (activeLabel === 'Cost Analysis') await page!.screenshot({ path: 'tmp/presence95-browser/cost-after-navigation.png' });
-  if (activeLabel === 'Providers') {
-    assert.ok(initial.providerContentGap !== null && initial.providerContentGap <= 24, `Providers grid does not reserve empty extra rows: ${initial.providerContentGap}px`);
-    await page!.screenshot({ path: 'tmp/presence95-browser/providers-after-layout.png' });
-  }
-  await page!.locator('.qp-nav-more summary').click();
-  await page!.getByRole('navigation').getByRole('link', { name: siblingLabel, exact: true }).waitFor();
-  const expanded = await page!.evaluate(() => ({ moreBottom: document.querySelector('.qp-nav-secondary .qp-nav-more')!.getBoundingClientRect().bottom, quickStatsTop: document.querySelector('.qp-quick-stats')!.getBoundingClientRect().top }));
-  assert.ok(expanded.quickStatsTop >= expanded.moreBottom - 1, `${activeLabel} expanded More does not cover Quick Stats: ${JSON.stringify(expanded)}`);
-  if (activeLabel === 'Providers') await page!.screenshot({ path: 'tmp/presence95-browser/providers-more-open.png' });
-  await page!.locator('.qp-nav-more summary').click();
-  assert.equal(await page!.locator('.qp-nav-more').getAttribute('open'), null, 'More closes after its toggle');
-  const narrow = [];
-  for (const width of [390, 900]) {
-    await page!.setViewportSize({ width, height: 941 }); await page!.waitForTimeout(80);
-    const geometry = await page!.evaluate(() => ({
-      selected: document.querySelector('.qp-nav-secondary > a')!.getBoundingClientRect().toJSON(),
-      more: document.querySelector('.qp-nav-more summary')!.getBoundingClientRect().toJSON(),
-      overflow: document.documentElement.scrollWidth > innerWidth,
-    }));
-    assert.equal(geometry.overflow, false, `${activeLabel}/${width}: no page overflow`);
-    assert.ok(geometry.more.top >= geometry.selected.bottom - 1, `${activeLabel}/${width}: selected route and More have separate hit areas`);
-    await page!.locator('.qp-nav-secondary > a').focus(); await page!.keyboard.press('Tab');
-    assert.equal(await page!.locator('.qp-nav-more summary').evaluate(element => element === document.activeElement), true);
-    await page!.keyboard.press('Enter');
-    await page!.getByRole('navigation').getByRole('link', { name: siblingLabel, exact: true }).waitFor();
-    await page!.locator('.qp-nav-more summary').focus(); await page!.keyboard.press('Enter');
-    await page!.waitForFunction(() => !document.querySelector('.qp-nav-more')!.hasAttribute('open'));
-    narrow.push({ width, ...geometry, keyboardMore: true });
-  }
+  assert.ok(layout.quickStatsTop>=layout.navBottom-1, 'Quick Stats does not cover navigation');
+  if(activeLabel==='Providers') assert.ok(layout.providerContentGap!==null&&layout.providerContentGap<=24, 'Providers does not reserve empty grid rows');
   await page!.setViewportSize(previousViewport);
-  stages.push({ label: `secondary-navigation-${activeLabel.toLowerCase().replace(/\s+/g, '-')}`, initial, expanded, topLevelOrder, narrow, siblingAccessibleWhileExpanded: siblingLabel });
+  await selected.evaluate(el=>(el as HTMLElement).blur());
+  stages.push({label:`shared-navigation-${activeLabel.toLowerCase().replace(/\s+/g,'-')}`,checks,layout,siblingDirectlyAccessible:siblingLabel});
 }
 try {
   if (mode === 'verify') for (let index = 0; index < 21; index++) addModel(`rank-${index}`, 'fixture', index + 1);

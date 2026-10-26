@@ -1,0 +1,14 @@
+{
+  "message": "AssertionError [ERR_ASSERTION]: projects-keyboard-card-and-accepted-overview actual native timeline 180",
+  "stack": "AssertionError [ERR_ASSERTION]: projects-keyboard-card-and-accepted-overview actual native timeline 180\n    at <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-projects-runtime-providers-motion.mts:132:913)\n    at Array.forEach (<anonymous>)\n    at collect (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-projects-runtime-providers-motion.mts:132:706)\n    at async <anonymous> (C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\scripts\\check-projects-runtime-providers-motion.mts:150:76)",
+  "url": "http://127.0.0.1:7816/#projects?range=month&project=Agent+Platform",
+  "productionIndexSha256": "de34ca584f371514b383e05a842fb91d2565af3f892fa1a8bbade43aab80cd6a",
+  "stages": [
+    {
+      "label": "projects-initial-static",
+      "static": true
+    }
+  ],
+  "errors": [],
+  "forbidden": []
+}

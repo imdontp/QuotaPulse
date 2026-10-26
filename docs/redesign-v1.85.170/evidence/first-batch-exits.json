@@ -1,0 +1,18 @@
+[
+    {
+        "script":  "check-runtime-motion.mts",
+        "exitCode":  0
+    },
+    {
+        "script":  "check-runway-motion.mts",
+        "exitCode":  0
+    },
+    {
+        "script":  "check-models-live-motion.mts",
+        "exitCode":  0
+    },
+    {
+        "script":  "check-projects-runtime-providers-motion.mts",
+        "exitCode":  1
+    }
+]
