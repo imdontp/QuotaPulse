@@ -278,7 +278,8 @@
   padding:6px;
 }
 .qp-tools button:first-child { width:36px; border-radius:50%; }
-.qp-tools button:last-child { width:36px; border:0; border-radius:50%; padding:0; color:#fff; background:linear-gradient(135deg,#5144df,#7d43ed); font-size:14px; font-weight:700; }
+.qp-tools .qp-language-toggle { width:36px; font-size:11px; font-weight:600; }
+.qp-avatar { display:grid; place-items:center; flex:none; width:36px; height:36px; border:1px solid #7556ff; border-radius:50%; color:#fff; background:linear-gradient(135deg,#2c16fa,#633fff); font-size:20px; font-weight:500; line-height:1; }
 .qp-redesign main {
   padding:12px;
   max-width:1600px;
@@ -1862,4 +1863,27 @@
 @media(min-width:1536px) {
  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-map-node .qp-node-share { width:50%; }
  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-node-track>span { background:linear-gradient(90deg,#4567fa,#866bff); }
+}
+
+
+/* OVR-001: one visible destination list, including Settings below the primary eight.
+   Keep the existing measured sidebar widths; let short sidebars scroll independently. */
+.qp-redesign[data-testid^=production-] .qp-sidebar {
+  position:sticky; top:0; align-self:start; height:calc(100dvh - 60px);
+  min-height:0; overflow-y:auto; gap:24px; padding-top:20px;
+}
+.qp-redesign[data-testid^=production-] .qp-sidebar nav { flex:none; min-height:0; align-content:start; gap:2px; }
+.qp-redesign[data-testid^=production-] .qp-sidebar nav>a { min-height:44px; }
+.qp-redesign[data-testid^=production-] .qp-sidebar nav>a[data-nav-id=settings] { position:relative; margin-top:6px; }
+.qp-redesign[data-testid^=production-] .qp-sidebar nav>a[data-nav-id=settings]::before { content:""; position:absolute; height:1px; top:-5px; left:10px; right:10px; background:var(--qp-border); }
+@media(min-width:1101px) {
+  .qp-redesign[data-testid^=production-] .qp-sidebar>.qp-quick-stats { margin-top:0; min-height:280px; }
+  .qp-redesign[data-testid^=production-] .qp-quick-stats dl { gap:18px; }
+  .qp-redesign[data-testid^=production-] .qp-sidebar-brand { min-height:64px; }
+}
+@media(max-width:730px) {
+  .qp-redesign[data-testid^=production-] .qp-topbar-context { flex:1; min-width:0; }
+  .qp-redesign[data-testid^=production-] .qp-preview-badge { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .qp-redesign[data-testid^=production-] .qp-topbar-actions { flex:none; gap:6px; }
+  .qp-redesign[data-testid^=production-] .qp-tools { flex:none; }
 }

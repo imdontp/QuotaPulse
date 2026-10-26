@@ -699,6 +699,10 @@ try {
       assert.equal(await screen.getAttribute('lang'), lang);
       assert.equal(await screen.getAttribute('data-theme'), theme);
       assert.equal(await screen.locator('.qp-sidebar nav a').count(), 9);
+      for (const destinationLink of await screen.locator('.qp-sidebar nav a').all()) assert.equal(await destinationLink.isVisible(), true, `${destination}/${lang}/${theme}/${width}: destination hidden in a submenu`);
+      assert.equal(await screen.locator('.qp-sidebar nav details').count(), 0);
+      assert.equal(await screen.locator('.qp-avatar').innerText(), 'Q');
+      assert.equal(await screen.locator('.qp-brand').evaluate(element => element.tagName), 'DIV');
       assert.equal(await screen.locator('.qp-sidebar nav a[aria-current="page"]').count(), 1);
       assert.equal(await screen.locator('main h1').count(), 1);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${destination}/${lang}/${theme}/${width} overflow`);
