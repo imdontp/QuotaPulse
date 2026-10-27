@@ -526,6 +526,16 @@
   .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-card[data-tone=blue] .qp-project-spark { --qp-project-spark-stroke:#49a1ff; }
   .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-card[data-tone=orange] .qp-project-spark { --qp-project-spark-stroke:#ffad4f; }
   .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-card[data-tone=neutral] .qp-project-spark { --qp-project-spark-stroke:#a6b9dc; }
+  /* The area and terminal marker follow the observed series and its card tone. */
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-spark linearGradient stop {
+    stop-color:var(--qp-project-spark-stroke,var(--qp-accent));
+  }
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-spark linearGradient stop:first-child { stop-opacity:.48; }
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-spark>circle:last-of-type {
+    r:8px;
+    fill:var(--qp-project-spark-stroke,var(--qp-accent));
+    filter:drop-shadow(0 0 2px var(--qp-project-spark-stroke,var(--qp-accent)));
+  }
   .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-spark>.qp-observed-line {
     stroke:var(--qp-project-spark-stroke,var(--qp-accent));
     stroke-width:1.15px;
