@@ -1,0 +1,94 @@
+{
+  "productionIndexSha256": "596d06afdca41130ee67b2904e355610c6f7c2a59d3a4d35d6681bf705e4a5e2",
+  "scope": "Actual local API/SSE and synthetic DB; Scheduler notification manually emitted; no adapter/native-minimize claim",
+  "records": [
+    {
+      "id": "19",
+      "kind": "node",
+      "state": null,
+      "from": null,
+      "to": null
+    },
+    {
+      "id": "44",
+      "kind": "edge",
+      "state": "running",
+      "from": "\"codex\"",
+      "to": "\"deepseek\"",
+      "repeat": "1",
+      "duration": ".7s"
+    },
+    {
+      "id": "45",
+      "kind": "edge",
+      "state": "static",
+      "from": "\"codex\"",
+      "to": "\"deepseek\""
+    },
+    {
+      "id": "46",
+      "kind": "node",
+      "state": null,
+      "from": null,
+      "to": null
+    },
+    {
+      "id": "46",
+      "kind": "node",
+      "state": null,
+      "from": null,
+      "to": null
+    },
+    {
+      "id": "48",
+      "kind": "edge",
+      "state": "running",
+      "from": "\"codex\"",
+      "to": "\"deepseek\"",
+      "repeat": "1",
+      "duration": ".7s"
+    },
+    {
+      "id": "50",
+      "kind": "edge",
+      "state": "running",
+      "from": "\"codex\"",
+      "to": "\"deepseek\"",
+      "repeat": "1",
+      "duration": ".7s"
+    },
+    {
+      "id": "52",
+      "kind": "edge",
+      "state": "running",
+      "from": "\"codex\"",
+      "to": "\"deepseek\"",
+      "repeat": "1",
+      "duration": ".7s"
+    },
+    {
+      "id": "53",
+      "kind": "edge",
+      "state": "running",
+      "from": "\"codex\"",
+      "to": "\"deepseek\"",
+      "repeat": "1",
+      "duration": ".7s"
+    }
+  ],
+  "offscreenId": 47,
+  "inFlightId": 49,
+  "pendingGraphId": 51,
+  "firstExpiryObservedMs": 730.1986000000015,
+  "expirySchedulingAllowanceMs": 600,
+  "sameDocumentUnmount": true,
+  "pulse": {
+    "durationSeconds": 6,
+    "idle": true,
+    "stale": true,
+    "unavailable": true,
+    "reduced": true,
+    "offscreen": true
+  },
+  "cleanup": true
+}
