@@ -57,6 +57,26 @@ export async function checkAlertsLayout(browser: Browser, db: DB, output: string
         });
         assert.ok(Math.abs(chart.width - chart.viewWidth) <= 1, `Quota chart uses stretched coordinates: ${JSON.stringify({ lang, theme, chart })}`);
         assert.equal(chart.points[0].y, 104, 'Zero quota was raised above baseline');
+        const fullForecastLabel = screen.locator('.qp-alert-forecast-label-full');
+        const shortForecastLabel = screen.locator('.qp-alert-forecast-label-short');
+        const forecastHeading = screen.locator('.qp-alert-forecast h2');
+        assert.equal((await forecastHeading.textContent())?.trim(), messages['redesign.alertForecastPanel']);
+        assert.equal(await forecastHeading.evaluate(node => node.scrollWidth <= node.clientWidth + 1), true, 'Forecast/risk heading overflows');
+        assert.equal(await fullForecastLabel.textContent(), messages['redesign.alertForecastDays']);
+        assert.equal(await fullForecastLabel.getAttribute('aria-hidden'), null, 'Full forecast context must remain available to assistive technology');
+        assert.equal(await shortForecastLabel.getAttribute('aria-hidden'), 'true', 'Decorative short label must not duplicate accessible copy');
+        const expectedShort = lang === 'en' && theme === 'dark';
+        assert.equal(await forecastHeading.locator('svg').isVisible(), !expectedShort, 'Forecast heading artwork should follow the desktop reference');
+        assert.equal(await shortForecastLabel.isVisible(), expectedShort);
+        assert.equal(await fullForecastLabel.evaluate(node => getComputedStyle(node).position === 'absolute'), expectedShort);
+        if (expectedShort) {
+          assert.equal((await shortForecastLabel.innerText()).replace(/\s+/g, ' ').trim().toLowerCase(), 'days to full');
+          const label = await shortForecastLabel.boundingBox();
+          const value = await screen.getByTestId('alert-forecast-days').boundingBox();
+          const orb = await screen.locator('.qp-alert-forecast-orb').boundingBox();
+          assert.ok(label && value && orb && value.y + value.height <= label.y + 1, 'Forecast number overlaps its label');
+          assert.ok(label && orb && label.x >= orb.x && label.x + label.width <= orb.x + orb.width && label.y + label.height <= orb.y + orb.height, 'Forecast label leaves orb');
+        }
         const regions = await screen.evaluate(node => Object.fromEntries(['.qp-alert-top', '.qp-alert-header', '.qp-alert-summary', '.qp-alert-chart', '.qp-alert-risk', '.qp-alert-rules', '.qp-alert-forecast', '.qp-alert-guidance', '.qp-alert-history'].map(selector => {
           const { x, y, width, height, bottom } = node.querySelector(selector)!.getBoundingClientRect(); return [selector, { x, y, width, height, bottom }];
         })));
@@ -72,6 +92,14 @@ export async function checkAlertsLayout(browser: Browser, db: DB, output: string
         const filename = `alerts-occupied-${lang}-${theme}.png`;
         await page.screenshot({ path: resolve(output, filename), animations: 'disabled' });
         captures.push({ lang, theme, filename, chart, regions });
+        if (expectedShort) {
+          await screen.locator('.qp-alert-chart select').selectOption(JSON.stringify(['quota:fixture-3', '5h']));
+          await page.waitForFunction(unknown => document.querySelector('[data-testid=alert-forecast-days]')?.textContent === unknown, messages['redesign.unknownValue']);
+          assert.equal(await shortForecastLabel.isVisible(), true, 'Unavailable forecast lost its visible unit');
+          assert.equal(await fullForecastLabel.textContent(), messages['redesign.alertForecastDays'], 'Unavailable forecast lost its accessible context');
+          await screen.locator('.qp-alert-chart select').selectOption(JSON.stringify(['quota:fixture-0', '5h']));
+          await screen.locator('.qp-quota-point').nth(2).waitFor();
+        }
         const riskList = screen.locator('.qp-alert-risk ul');
         assert.equal(await riskList.count(), 1, 'Risks and reader advisories must share one bounded list');
         await riskList.focus(); await page.keyboard.press('End');
@@ -88,6 +116,9 @@ export async function checkAlertsLayout(browser: Browser, db: DB, output: string
         for (const width of [390, 900, 1280]) {
           await page.setViewportSize({ width, height: 941 });
           assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${lang}/${theme}/${width}: Alerts overflow`);
+          assert.equal(await shortForecastLabel.isVisible(), false, `${lang}/${theme}/${width}: desktop-only short label leaked into fallback`);
+          assert.equal(await forecastHeading.locator('svg').isVisible(), true, `${lang}/${theme}/${width}: fallback forecast heading artwork missing`);
+          assert.equal(await fullForecastLabel.evaluate(node => getComputedStyle(node).position !== 'absolute'), true, `${lang}/${theme}/${width}: full forecast label missing`);
         }
         if (lang === 'en' && theme === 'dark') {
           const originalUrl = page.url();
