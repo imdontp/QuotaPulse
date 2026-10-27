@@ -27,7 +27,7 @@ test('only changed common real values provide a start; unchanged vertices stay a
   const changes = minuteFlowTransitions(before, next);
   assert.equal(changes.filter(change => change.attribute === 'cy').length, 3);
   assert.ok(changes.every(change => !change.selector.includes('data-at="60000"')));
-  const line = changes.find(change => change.selector === 'polyline[data-series="total"]')!;
+  const line = changes.find(change => change.selector === 'path[data-series="total"]')!;
   const x = liveTokenFlowX(120000, next.from, next.to);
   assert.ok(line.from.includes(`${x},${liveTokenFlowY(20, 100)}`));
   assert.ok(line.to.includes(`${x},${liveTokenFlowY(40, 100)}`));
@@ -52,18 +52,20 @@ test('new, removed, missing-to-recorded and unknown-to-known points do not inter
 test('rolling-window x reframe is immediate and only matching timestamp y values move', () => {
   const before = snapshot([row(60000, 100), row(120000, 20)]);
   const next = snapshot([row(60000, 100), row(120000, 40)], { from: 60001, to: 240001 });
-  const line = minuteFlowTransitions(before, next).find(change => change.selector === 'polyline[data-series="total"]')!;
-  assert.deepEqual(line.from.split(' ').map(point => point.split(',')[0]), line.to.split(' ').map(point => point.split(',')[0]));
+  const line = minuteFlowTransitions(before, next).find(change => change.selector === 'path[data-series="total"]')!;
+  const xs = (path: string) => [...path.matchAll(/(-?\d+(?:\.\d+)?(?:e[+-]?\d+)?),(-?\d+(?:\.\d+)?(?:e[+-]?\d+)?)/gi)].map(match => Number(match[1]));
+  assert.deepEqual(xs(line.from), xs(line.to));
   assert.ok(line.from.includes(`${liveTokenFlowX(120000, next.from, next.to)},`));
 });
 
 test('unknown component gaps retain their current segments and never connect across a gap', () => {
   const before = snapshot([row(60000, 100), row(120000, 20, { input_tokens: null }), row(180000, 20)]);
   const next = snapshot([row(60000, 100), row(120000, 20, { input_tokens: null }), row(180000, 30)]);
-  const inputLines = minuteFlowTransitions(before, next).filter(change => change.selector.includes('.qp-live-flow-input polyline'));
+  const inputLines = minuteFlowTransitions(before, next).filter(change => change.selector.includes('.qp-live-flow-input path'));
   assert.equal(inputLines.length, 1);
   assert.ok(inputLines[0]!.selector.endsWith('[data-segment="1"]'));
-  assert.equal(inputLines[0]!.from.split(' ').length, 1);
+  assert.ok(inputLines[0]!.from.startsWith('M '));
+  assert.ok(!inputLines[0]!.from.includes(' C '));
 });
 
 class FakeAnimation {
@@ -107,7 +109,7 @@ test('SMIL uses shared exact180ms/easing, indefinite trigger and one iteration w
 
 test('cancellation releases every active handle/listener once, including replacement and unmount callers', () => {
   const fixture = regionFixture();
-  const cancel = playMinuteFlowTransitions(fixture.region, [change, { ...change, selector: 'polyline', attribute: 'points' }], DURATION.fast);
+  const cancel = playMinuteFlowTransitions(fixture.region, [change, { ...change, selector: 'path', attribute: 'd' }], DURATION.fast);
   cancel(); cancel();
   assert.equal(fixture.animations.length, 2);
   for (const animation of fixture.animations) {

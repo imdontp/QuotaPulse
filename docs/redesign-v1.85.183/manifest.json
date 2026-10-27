@@ -1,0 +1,59 @@
+{
+  "parentCommit": "f4ae5c85d2f88ad024015b797fb665978aa9d810",
+  "productionIndexSha256": "bb29f6df2e800640b5ea1f151a57bf0dad7a3f3402fdbfd36654e987f35b15ef",
+  "rawSourceSha256": {
+    "packages/web/src/redesign/live-token-flow-data.ts": "9dfe3563f0cbad2259d16ca3f9b7ca8c86a9c0aa7740bafe2620ad4571bdca2d",
+    "packages/web/src/redesign/live-token-flow-motion.ts": "4d5c019bb6981d37304edc7b66e3127c228fd25307ae816c16634148c725dbaa",
+    "packages/web/src/redesign/live-token-flow.css": "4c29b11bd5a9bebb37cbd18f47453266cb925ae5121c2e6b0017e0fb4dfd5626",
+    "packages/web/src/redesign/live-token-flow.tsx": "b95c47a33de61772c139dc7cbd2365c4dc9cc44d1a70ca14b9e6882166a70a9d",
+    "packages/web/test/live-token-flow-data.test.ts": "003d8b3e03764f7770d3c4d96a23a1aca29311a98a0dbf007ea57db414224ce8",
+    "packages/web/test/live-token-flow-motion.test.ts": "dab41538a4c6130000a5567f197f512034c0de613d05aa1976a6ee3a66f56b2e",
+    "scripts/check-live-minute-motion.mts": "9eaeac1a471a062aac1b35cb9ecf4e56d2333fb31babb834e652e92e79b82864",
+    "scripts/check-live-token-flow.mts": "a350f5b7b38d87209bcb78b2c4228f36ee4d91cf687761bbcbb7b91ea1972aaa",
+    "scripts/check-section-marks.mts": "4a33caa70918d87d0ddab8b65c502cb2db1fc3f433c875d22833bff2fe665d7c",
+    "scripts/check-source91-visual.mts": "c786f22ade1dc9a0f9da04e7a975ccf46754497bb03544f4948d21289b574e38",
+    "scripts/check-stable-captures.mts": "e82ed9d82dd11cde9ca413fcca6ea4a1bbea5543aaa9e96544b942e2044c5858",
+    "scripts/history-timeline-helper.mjs": "24154c15ca0333c310f31c26fe8df8a4412a1e1456bcbb3c46d5197f04a37499"
+  },
+  "referenceSha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+  "baselineImageSha256": "6fac03c3eb22fc619fec81dd0b0f4c21c8297da3fe172e42f3f9e226248b4ef4",
+  "currentImageSha256": "c4e3c29305951a33baabfaf4a8b456c99a6b269edffa9c8a30212a5be860f604",
+  "changedPixels": 20569,
+  "changedPixelsOutsidePlotWithGlow": 0,
+  "plotComparisonRegion": [
+    270,
+    600,
+    1070,
+    745
+  ],
+  "fourLanguageThemeCases": [
+    "en-dark",
+    "en-light",
+    "th-dark",
+    "th-light"
+  ],
+  "liveScopedStableCapturePairs": 4,
+  "webTests": 376,
+  "responsiveCases": 144,
+  "actualBrowserMotion": true,
+  "galleryVerified": true,
+  "review181IncludesChange": false,
+  "indexSourceSha256": {
+    "packages/web/src/redesign/live-token-flow-data.ts": "9dfe3563f0cbad2259d16ca3f9b7ca8c86a9c0aa7740bafe2620ad4571bdca2d",
+    "packages/web/src/redesign/live-token-flow-motion.ts": "2b1a16e06f4e1eb6684142a4415c5edcae6e67f8016a7dbade9e6d8fd38ff4ee",
+    "packages/web/src/redesign/live-token-flow.css": "72cf528a5a35b5f7f651473b37045b9939a3756bd7c05d5ea1f7412af8fad112",
+    "packages/web/src/redesign/live-token-flow.tsx": "b746a40ae910c8d186a37f2f003bbd3fd2a6ae53fb87d6f85cb32eef791b2420",
+    "packages/web/test/live-token-flow-data.test.ts": "003d8b3e03764f7770d3c4d96a23a1aca29311a98a0dbf007ea57db414224ce8",
+    "packages/web/test/live-token-flow-motion.test.ts": "c9f7c8bf62eb084f088f407b24c43fc8cee9d41274a1d9957a77a0c2d7fb2e13",
+    "scripts/check-live-minute-motion.mts": "9efdcc598fc14c4c961c2cd1299b7d64ed34f89c1b63b8cdbf29c804064d5713",
+    "scripts/check-live-token-flow.mts": "a350f5b7b38d87209bcb78b2c4228f36ee4d91cf687761bbcbb7b91ea1972aaa",
+    "scripts/check-section-marks.mts": "4a33caa70918d87d0ddab8b65c502cb2db1fc3f433c875d22833bff2fe665d7c",
+    "scripts/check-source91-visual.mts": "bdb536ad5e8e22892994efd16f998dd715c370b041571f90f4a5041f8c20471d",
+    "scripts/check-stable-captures.mts": "e82ed9d82dd11cde9ca413fcca6ea4a1bbea5543aaa9e96544b942e2044c5858",
+    "scripts/history-timeline-helper.mjs": "24154c15ca0333c310f31c26fe8df8a4412a1e1456bcbb3c46d5197f04a37499"
+  },
+  "hashNote": "Raw tested working-tree and normalized Git index SHA256 values are both retained where line endings differ.",
+  "overviewStableCaptureCases": [
+    "en-dark"
+  ]
+}

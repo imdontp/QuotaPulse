@@ -3,7 +3,7 @@ import { useMotionPref } from '@/lib/motion';
 import { minuteFlowTransitions, playMinuteFlowTransitions, type MinuteFlowSnapshot } from './live-token-flow-motion';
 import type { MessageKey } from '@/i18n/en';
 import { tokens } from '@/format';
-import { liveTokenFlow, liveTokenFlowLatest, liveTokenFlowSegments, liveTokenFlowTicks, liveTokenFlowX, liveTokenFlowY, liveTokenFlowYTicks, type LiveTokenFlowPoint, type LiveTokenFlowResponse, type LiveTokenFlowSeries } from './live-token-flow-data';
+import { liveTokenFlow, liveTokenFlowArea, liveTokenFlowLatest, liveTokenFlowPath, liveTokenFlowSegments, liveTokenFlowTicks, liveTokenFlowX, liveTokenFlowY, liveTokenFlowYTicks, type LiveTokenFlowPoint, type LiveTokenFlowResponse, type LiveTokenFlowSeries } from './live-token-flow-data';
 import './live-token-flow.css';
 
 const summaryMedia = '(min-width:1536px)';
@@ -124,12 +124,12 @@ export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDe
       <svg className="qp-live-chart qp-live-flow-total" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
         <defs><linearGradient id={`${id}-area`} x1="0" y1="0" x2="0" y2="1"><stop stopColor="var(--qp-flow-total)" stopOpacity=".18"/><stop offset="1" stopColor="var(--qp-flow-total)" stopOpacity="0"/></linearGradient><filter id={`${id}-glow`} x="-5%" y="-50%" width="110%" height="200%"><feGaussianBlur stdDeviation="1"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
         {yTicks.map((value, index) => <line key={`${value}-${index}`} x1="8" x2="992" y1={y(value)} y2={y(value)} stroke="var(--qp-border)" strokeDasharray="2 4" vectorEffect="non-scaling-stroke"/>)}
-        {flow.points.length > 1 && <polygon points={`${x(flow.points[0]!.start)},94 ${flow.points.map(point => `${x(point.start)},${y(point.total)}`).join(' ')} ${x(flow.points[flow.points.length - 1]!.start)},94`} fill={`url(#${id}-area)`}/>}
-        <polyline className="qp-live-flow-line" data-series="total" points={flow.points.map(point => `${x(point.start)},${y(point.total)}`).join(' ')} fill="none" stroke="var(--qp-flow-total)" strokeWidth="2" vectorEffect="non-scaling-stroke" filter={`url(#${id}-glow)`}/>
+        {flow.points.length > 1 && <path className="qp-live-flow-area" d={liveTokenFlowArea(flow.points.map(point => ({ x:x(point.start), y:y(point.total) })))} fill={`url(#${id}-area)`}/>}
+        <path className="qp-live-flow-line" data-series="total" d={liveTokenFlowPath(flow.points.map(point => ({ x:x(point.start), y:y(point.total) })))} fill="none" stroke="var(--qp-flow-total)" strokeWidth="2" vectorEffect="non-scaling-stroke" filter={`url(#${id}-glow)`}/>
         {flow.points.map((point, index) => <circle key={point.at} data-series="total" data-at={point.at} data-value={point.total} data-state={point.state} data-partial={point.partial || undefined} cx={x(point.start)} cy={y(point.total)} r="2" fill="var(--qp-flow-total)"><title>{describe(point, 'total', index)}</title></circle>)}
       </svg>
       {(['input', 'output'] as const).map(key => <svg key={key} className={`qp-live-flow-component qp-live-flow-${key}`} viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
-        {liveTokenFlowSegments(flow.points, key).map((segment, index) => <polyline key={index} data-segment={index} className="qp-live-flow-line" data-series={key} points={segment.map(point => `${x(point.start)},${y(point.value)}`).join(' ')} fill="none" stroke={`var(--qp-flow-${key})`} strokeWidth="1.8" vectorEffect="non-scaling-stroke"/>)}
+        {liveTokenFlowSegments(flow.points, key).map((segment, index) => <path key={index} data-segment={index} className="qp-live-flow-line" data-series={key} d={liveTokenFlowPath(segment.map(point => ({ x:x(point.start), y:y(point.value) })))} fill="none" stroke={`var(--qp-flow-${key})`} strokeWidth="1.8" vectorEffect="non-scaling-stroke"/>)}
         {flow.points.map((point, index) => point[key] === null ? null : <circle key={point.at} data-series={key} data-at={point.at} data-value={point[key]} data-state={point.state} data-partial={point.partial || undefined} cx={x(point.start)} cy={y(point[key]!)} r="1.6" fill={`var(--qp-flow-${key})`}><title>{describe(point, key, index)}</title></circle>)}
       </svg>)}
       </div>

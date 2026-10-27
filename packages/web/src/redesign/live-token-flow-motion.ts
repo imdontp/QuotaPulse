@@ -1,5 +1,5 @@
 import { EASE } from '../lib/motion';
-import { liveTokenFlowX, liveTokenFlowY, liveTokenFlowSegments, type LiveTokenFlowPoint } from './live-token-flow-data';
+import { liveTokenFlowArea, liveTokenFlowPath, liveTokenFlowX, liveTokenFlowY, liveTokenFlowSegments, type LiveTokenFlowPoint } from './live-token-flow-data';
 
 export interface MinuteFlowSnapshot {
   scopeKey: string;
@@ -8,7 +8,7 @@ export interface MinuteFlowSnapshot {
   maximum: number;
   points: readonly LiveTokenFlowPoint[];
 }
-export interface MinuteFlowTransition { selector: string; attribute: 'points' | 'cy'; from: string; to: string }
+export interface MinuteFlowTransition { selector: string; attribute: 'd' | 'cy'; from: string; to: string }
 
 /** Only prior actual readings in the same numeric domain may provide a start value.
  * Rolling-window x positions snap to their newly accepted timestamps; axes never tween.
@@ -34,24 +34,23 @@ export function minuteFlowTransitions(previous: MinuteFlowSnapshot | undefined, 
     }
     if (!oldValues.size) continue;
     const coordinates = (points: readonly { at: number; start: number; value: number }[], old: boolean) => points
-      .map(point => `${x(point)},${y(old ? oldValues.get(point.at) ?? point.value : point.value)}`).join(' ');
+      .map(point => ({ x:x(point), y:y(old ? oldValues.get(point.at) ?? point.value : point.value) }));
     if (series === 'total') {
       const points = next.points.map(point => ({ ...point, value: point.total }));
       const from = coordinates(points, true), to = coordinates(points, false);
-      result.push({ selector: 'polyline[data-series="total"]', attribute: 'points', from, to });
-      if (points.length > 1) result.push({ selector: '.qp-live-flow-total polygon', attribute: 'points',
-        from: `${x(points[0]!)},94 ${from} ${x(points[points.length - 1]!)},94`,
-        to: `${x(points[0]!)},94 ${to} ${x(points[points.length - 1]!)},94` });
+      result.push({ selector: 'path[data-series="total"]', attribute: 'd', from:liveTokenFlowPath(from), to:liveTokenFlowPath(to) });
+      if (points.length > 1) result.push({ selector: '.qp-live-flow-total .qp-live-flow-area', attribute: 'd',
+        from:liveTokenFlowArea(from), to:liveTokenFlowArea(to) });
     } else liveTokenFlowSegments(next.points, series).forEach((segment, index) => {
-      if (segment.some(point => oldValues.has(point.at))) result.push({ selector: `.qp-live-flow-${series} polyline[data-segment="${index}"]`, attribute: 'points',
-        from: coordinates(segment, true), to: coordinates(segment, false) });
+      if (segment.some(point => oldValues.has(point.at))) result.push({ selector: `.qp-live-flow-${series} path[data-segment="${index}"]`, attribute: 'd',
+        from:liveTokenFlowPath(coordinates(segment, true)), to:liveTokenFlowPath(coordinates(segment, false)) });
     });
   }
   return result;
 }
 
 /** One bounded SVG batch. Base attributes always contain the accepted final facts.
- * SMIL interpolates SVG point lists directly; CSS/WAAPI cannot reliably do that.
+ * SMIL interpolates matching SVG path commands directly.
  * No fill, loop, timer, frame callback or replay queue survives completion/cancel.
  */
 export function playMinuteFlowTransitions(region: HTMLElement, changes: readonly MinuteFlowTransition[], duration: number) {

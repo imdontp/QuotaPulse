@@ -1,0 +1,11 @@
+# Live token-flow curves / source183
+
+[Eight-screen concept/current gallery](review.html): Live is a newly rendered compiled capture using the standard owned synthetic dataset. Seven other application images and all eight original references are reused; the application reads collected data.
+
+The three plotted traces use bounded cubic segments through the same actual per-minute samples. Each curve stays between its adjacent sample values and cannot create a local peak or dip. Unknown input/output values still split those series, while the complete accessible data table and actual sample markers retain their existing values and labels. The total area follows the same bounded curve. Changing a previously observed value animates matching SVG path commands; new, unknown or missing observations do not acquire invented prior values.
+
+Production build and 376 web tests passed. Independent API-driven browser checks covered en/th × dark/light, baseline, partial/unknown components, zero and empty data. An actual Chrome animation test sampled the curve geometry as well as its point while checking pause, reduced motion, offscreen, simulated hidden state, scope and unmount. Authenticated dashboard integration including 144 responsive cases passed. The visual capture repeated byte-for-byte; compared with the source178 Live capture, 20,569 pixels changed, all inside the documented plot/glow region. This is not a whole-screen likeness score.
+
+The Live scoped stable-capture harness previously selected a standalone test instead of its similarly named helper, and retained stale assertions for the pre-source166 More menu, language selector and pre-source173 feed icon color. The helper was given a unique name and those specific expectations were aligned with the existing direct navigation and source-derived icon; the tests continue checking actual controls and exact ink. The Live scope then passed four language/theme capture pairs, all byte-identical. The Overview English/dark scoped run also passed one byte-identical pair after updating its old navigation and heading selectors. This is not a full eight-screen stable-capture run.
+
+The gallery retains seven older current images without recapturing them. Review181 predates this change. Real provider setups, physical/native lifecycle and full concept approval remain open.

@@ -1,6 +1,26 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { liveTokenFlow, liveTokenFlowLatest, liveTokenFlowSegments, liveTokenFlowTicks, liveTokenFlowX, liveTokenFlowY, liveTokenFlowYTicks, type LiveTokenFlowResponse } from '../src/redesign/live-token-flow-data.ts';
+import { liveTokenFlow, liveTokenFlowArea, liveTokenFlowLatest, liveTokenFlowPath, liveTokenFlowSegments, liveTokenFlowTicks, liveTokenFlowX, liveTokenFlowY, liveTokenFlowYTicks, type LiveTokenFlowResponse } from '../src/redesign/live-token-flow-data.ts';
+
+test('smooth plot passes every sample without overshooting adjacent values', () => {
+  const points = [{x:8,y:94},{x:40,y:6},{x:76,y:70},{x:100,y:70},{x:130,y:94}];
+  const path = liveTokenFlowPath(points);
+  const pairs = [...path.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map(match => [Number(match[1]),Number(match[2])] as const);
+  assert.equal(pairs.length, 1 + 3 * (points.length - 1));
+  assert.deepEqual(pairs[0], [points[0]!.x,points[0]!.y]);
+  for (let i=0;i<points.length-1;i++) {
+    const a=points[i]!, b=points[i+1]!, [c1,c2,end]=pairs.slice(1+3*i,4+3*i);
+    assert.deepEqual(end,[b.x,b.y]);
+    for (let step=0;step<=100;step++) {
+      const t=step/100,u=1-t;
+      const y=u**3*a.y+3*u*u*t*c1![1]+3*u*t*t*c2![1]+t**3*b.y;
+      assert.ok(y>=Math.min(a.y,b.y)-1e-10 && y<=Math.max(a.y,b.y)+1e-10);
+    }
+  }
+  assert.equal(liveTokenFlowPath([]),'');
+  assert.equal(liveTokenFlowArea([points[0]!]),'');
+  assert.ok(liveTokenFlowArea(points).endsWith('L 130,94 L 8,94 Z'));
+});
 
 type Row = LiveTokenFlowResponse['rows'][number];
 const row = (bucket_ts: number, overrides: Partial<Row> = {}): Row => ({ bucket_ts, records: 1, calls: 1,

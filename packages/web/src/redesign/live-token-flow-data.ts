@@ -94,6 +94,23 @@ export function liveTokenFlowY(value: number, maximum: number) {
   return 94 - 88 * value / (maximum || 1);
 }
 
+/** Smooth only between adjacent samples. Each Bézier stays within its two
+ * endpoints, so it cannot add a local peak or dip between recorded buckets. */
+export function liveTokenFlowPath(points: readonly { x: number; y: number }[]) {
+  if (!points.length) return '';
+  let path = `M ${points[0]!.x},${points[0]!.y}`;
+  for (let index = 1; index < points.length; index++) {
+    const before = points[index - 1]!, after = points[index]!, third = (after.x - before.x) / 3;
+    path += ` C ${before.x + third},${before.y} ${after.x - third},${after.y} ${after.x},${after.y}`;
+  }
+  return path;
+}
+
+/** Close the same trace down to the zero axis; never connect separate runs. */
+export function liveTokenFlowArea(points: readonly { x: number; y: number }[]) {
+  return points.length > 1 ? `${liveTokenFlowPath(points)} L ${points[points.length - 1]!.x},94 L ${points[0]!.x},94 Z` : '';
+}
+
 /** Unknown components break their line; they never acquire a zero or a back-solved value. */
 export function liveTokenFlowSegments(points: readonly LiveTokenFlowPoint[], series: LiveTokenFlowSeries) {
   const segments: Array<Array<{ index: number; at: number; start: number; value: number }>> = [];

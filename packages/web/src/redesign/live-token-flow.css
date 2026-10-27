@@ -151,7 +151,7 @@
   [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-canvas>svg {
     overflow:visible;
   }
-  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-canvas>svg>:is(line,polygon,polyline,circle) {
+  [data-testid=production-live] .qp-live-trend:has(.qp-live-token-flow[data-panel-summary]) .qp-live-flow-canvas>svg>:is(line,path,circle) {
     transform:matrix(1,0,0,1.1363636364,0,-6.8181818182);
     transform-origin:0 0;
   }

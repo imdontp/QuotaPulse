@@ -146,7 +146,7 @@ try {
    const panels=[...document.querySelectorAll('.qp-panel')].map(e=>({class:e.className,box:box(e)}));
    const table=routeName==='live'?'.qp-live-table':'.qp-model-table-wrap';
    const values=routeName==='overview'?[...document.querySelectorAll('.qp-map-node')].map(e=>({key:e.getAttribute('data-key'),dim:e.getAttribute('data-dimension'),tokens:e.getAttribute('data-tokens'),sessions:e.getAttribute('data-sessions'),text:e.textContent,box:box(e)})):[...document.querySelectorAll(table+' tr')].map(e=>({text:e.textContent,box:box(e)}));
-   const paths=[...document.querySelectorAll(routeName==='overview'?'.qp-map-edges path':'.qp-model-row-trend polyline,.qp-live-flow-canvas polyline')].map(e=>({points:e.getAttribute('points'),d:e.getAttribute('d')}));
+   const paths=[...document.querySelectorAll(routeName==='overview'?'.qp-map-edges path':'.qp-model-row-trend polyline,.qp-live-flow-canvas path.qp-live-flow-line')].map(e=>({points:e.getAttribute('points'),d:e.getAttribute('d')}));
    const shares=[...document.querySelectorAll('.qp-node-share')].map(e=>({box:box(e),track:box(e.querySelector('.qp-node-track')!),fill:box(e.querySelector('.qp-node-track>span')!),value:e.textContent,inline:(e.querySelector('.qp-node-track>span') as HTMLElement).style.width,paint:getComputedStyle(e.querySelector('.qp-node-track>span')!).backgroundImage}));
    const headers=[...document.querySelectorAll(table+' th')].map(e=>({text:e.textContent,box:box(e),background:getComputedStyle(e).backgroundColor,shadow:getComputedStyle(e).boxShadow}));
    const strokes=[...document.querySelectorAll('.qp-model-row-trend .qp-observed-line')].map(e=>getComputedStyle(e).strokeWidth);

@@ -193,7 +193,7 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
       x: Number(element.getAttribute('cx')), y: Number(element.getAttribute('cy')), state: element.getAttribute('data-state'), partial: element.getAttribute('data-partial'),
       title: element.querySelector('title')?.textContent,
     }));
-    const lines = Array.from(root.querySelectorAll('polyline')).map(element => ({ series: element.getAttribute('data-series'), points: element.getAttribute('points') ?? '', stroke: getComputedStyle(element).stroke }));
+    const lines = Array.from(root.querySelectorAll('path.qp-live-flow-line')).map(element => ({ series: element.getAttribute('data-series'), path: element.getAttribute('d') ?? '', stroke: getComputedStyle(element).stroke }));
     return { maximum: Number(root.getAttribute('data-maximum')), points, lines,
       totalOnly: Array.from(root.querySelectorAll('.qp-live-chart>circle')).every(element => element.getAttribute('data-series') === 'total'),
       axis: Array.from(root.querySelectorAll('.qp-live-flow-axis>span')).map(element => ({ at: Number(element.getAttribute('data-at')), text: element.textContent, left: Number.parseFloat((element as HTMLElement).style.left) })),
@@ -240,7 +240,23 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
       if (point.partial) assert.ok(circle.title?.includes(partial(point, item.index)), 'Partial minute is unlabeled');
     }
     const lines = snapshot.lines.filter(line => line.series === series);
-    const actualSegments = lines.map(line => line.points.trim() ? line.points.trim().split(/\s+/).map(pair => pair.split(',').map(Number)) : []);
+    const actualSegments = lines.map(line => {
+      const commands = [...line.path.matchAll(/([MC])\s+([^MC]+)/g)];
+      const vertices: number[][] = [];
+      for (const command of commands) {
+        const pairs = command[2]!.trim().split(/\s+/).map(pair => pair.split(',').map(Number));
+        assert.equal(pairs.length, command[1] === 'M' ? 1 : 3, `${state}/${series}: unexpected curve command`);
+        if (command[1] === 'C') {
+          const previous=vertices.at(-1)!, end=pairs[2]!;
+          for(const control of pairs.slice(0,2)) {
+            assert.ok(control[0]!>=Math.min(previous[0]!,end[0]!)-1e-8 && control[0]!<=Math.max(previous[0]!,end[0]!)+1e-8);
+            assert.ok(control[1]!>=Math.min(previous[1]!,end[1]!)-1e-8 && control[1]!<=Math.max(previous[1]!,end[1]!)+1e-8, `${state}/${series}: curve overshoots samples`);
+          }
+        }
+        vertices.push(pairs.at(-1)!);
+      }
+      return vertices;
+    });
     const flattened = actualSegments.flat();
     assert.equal(flattened.length, known.length, `${state}/${series}: line invents or omits points`);
     for (const [index, coordinates] of flattened.entries()) {

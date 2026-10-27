@@ -25,7 +25,7 @@ import { checkLiveMinuteRefresh } from './check-live-minute-refresh.mjs';
 import { checkLiveTokenFlow } from './check-live-token-flow.mjs';
 import { checkSectionMarks } from './check-section-marks.mjs';
 import { installBrowserFixedDate } from './browser-fixed-date.mjs';
-import { checkHistoryTimeline } from './check-history-timeline.mjs';
+import { checkHistoryTimeline } from './history-timeline-helper.mjs';
 import { checkTrendInspection } from './check-trend-inspection.mjs';
 import { checkCostInspection } from './check-cost-inspection.mjs';
 
@@ -1419,8 +1419,9 @@ async function checkFontAccess(page: Page, destination: string, lang: string, th
   try {
     await cdp.send('DOM.enable'); await cdp.send('CSS.enable');
     const { root } = await cdp.send('DOM.getDocument');
-    const selector = lang === 'th' ? '.qp-sidebar nav a span' : '.qp-tools button:last-child';
+    const selector = lang === 'th' ? '.qp-sidebar nav a span' : '.qp-tools .qp-language-toggle';
     const { nodeId } = await cdp.send('DOM.querySelector', { nodeId: root.nodeId, selector });
+    assert.ok(nodeId, `${destination}/${lang}/${theme}: Thai font probe is missing`);
     const { fonts } = await cdp.send('CSS.getPlatformFontsForNode', { nodeId });
     const thai = fonts.find(font => font.familyName === 'Noto Sans Thai');
     assert.ok(thai && thai.isCustomFont && thai.glyphCount > 0, `${destination}/${lang}/${theme}: Thai glyphs did not use the bundled custom font`);
@@ -1466,15 +1467,10 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
   assert.equal(await statsCard.locator('h2').textContent(), 'Quick Stats');
   assert.equal(await statsCard.locator('p').count(), 0, 'Workspace scope is already shown in the header');
   assert.equal(await page.locator('.qp-sidebar nav a[href="#models"] > span').textContent(), lang === 'th' ? 'โมเดล' : 'Models');
-  const moreMenu = page.locator('.qp-nav-more');
-  const moreSummary = moreMenu.locator(':scope > summary');
-  assert.equal(await moreSummary.isVisible(), true, `${destination}: OVR-001 requires More on every screen`);
-  const moreWasOpen = await moreMenu.evaluate(element => (element as HTMLDetailsElement).open);
-  if (!moreWasOpen) await moreSummary.click();
+  assert.equal(await page.locator('.qp-nav-more').count(), 0, `${destination}: destinations must be directly visible`);
   for (const href of ['#overview', '#live', '#projects', '#models', '#history', '#alerts', '#providers', '#cost?range=month', '#settings']) {
     assert.equal(await page.locator(`.qp-sidebar nav a[href="${href}"]`).isVisible(), true, `${destination}: global destination ${href} must be reachable`);
   }
-  if (!moreWasOpen) await moreSummary.click();
   const statsNote = await statsCard.locator('#qp-quick-stats-note').boundingBox();
   assert.ok(statsNote && statsNote.width === 1 && statsNote.height === 1, 'The session-count caveat remains available to assistive technology without extending the reference card');
   const recentSessionLink = statsCard.locator('[data-stat=recentSessions]').locator('..').locator('dt a');
@@ -1551,7 +1547,7 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
       }
       assert.equal(await page.locator('.qp-topbar button[aria-haspopup=dialog]').getAttribute('aria-label'), lang === 'th' ? 'ค้นหาทุกอย่าง...' : 'Search anything...');
       assert.deepEqual(await page.locator('.qp-tools button').evaluateAll(elements => elements.map(element => element.getAttribute('aria-label'))), lang === 'th' ? ['เปลี่ยนธีมสี', 'เปลี่ยนภาษา'] : ['Switch color theme', 'Switch language']);
-      assert.equal(await page.locator('.qp-tools button:last-child').innerText(), lang === 'th' ? 'EN' : 'ไทย');
+      assert.equal(await page.locator('.qp-tools .qp-language-toggle').innerText(), lang === 'th' ? 'EN' : 'ไทย');
       if (width > 1400) {
         dateText = await page.locator('.qp-header-clock time').first().textContent();
         const expectedDate = lang === 'en' ? 'Sat, May 17, 2025' : await page.evaluate(now => new Intl.DateTimeFormat('th-TH', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'Asia/Bangkok' }).format(now), fixedNow);
@@ -1563,23 +1559,14 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
     }
     const navigation = page.locator('.qp-sidebar nav');
     assert.equal(await navigation.locator('a').count(), 9);
-    assert.equal(await navigation.locator(':scope > a').count(), 6, 'Six concept routes must remain in the primary sidebar');
-    const selectedSecondary = ['providers', 'cost', 'settings'].includes(destination);
-    assert.equal(await navigation.locator('.qp-nav-more > a').count(), selectedSecondary ? 2 : 3, 'Unselected additional routes must remain available in More');
-    assert.equal(await navigation.locator('.qp-nav-secondary > a[aria-current=page]').count(), selectedSecondary ? 1 : 0, 'Selected additional route must stay visible outside More');
-    assert.equal(await navigation.locator('.qp-nav-more').getAttribute('open'), null, 'More must start collapsed on each route');
-    if (width === 1280) {
-      const moreSummary = await navigation.locator('.qp-nav-more > summary').boundingBox();
-      assert.ok(moreSummary && moreSummary.height <= 32.1, 'More remains compact ahead of Quick Stats');
-    }
+    assert.equal(await navigation.locator(':scope > a').count(), 9, 'All nine destinations must remain directly reachable');
+    assert.equal(await navigation.locator('.qp-nav-more,.qp-nav-secondary').count(), 0, 'No destinations are hidden in a secondary menu');
     if (destination === 'overview' && width === originalViewport.width && width > 1500) {
-      const moreSummary = navigation.locator('.qp-nav-more > summary');
-      assert.equal(await moreSummary.isVisible(), true, 'OVR-001 keeps More visible on the Overview desktop');
       const menuCenters = await navigation.locator(':scope > a').evaluateAll(elements => elements.map(element => {
         const box = element.getBoundingClientRect(); return box.y + box.height / 2;
       }));
-      const menuSteps = menuCenters.slice(1).map((center, index) => center - menuCenters[index]!);
-      assert.equal(menuCenters.length, 6);
+      const menuSteps = menuCenters.slice(1, 8).map((center, index) => center - menuCenters[index]!);
+      assert.equal(menuCenters.length, 9);
       assert.ok(menuSteps.every(step => step >= 39 && step <= 47), `Overview navigation rhythm drifted from the concept: ${JSON.stringify(menuSteps)}`);
       await page.locator('.qp-topbar button[aria-haspopup=dialog]').click();
       const commandDialog = page.locator('.qp-command-dialog[open]');
@@ -1592,7 +1579,8 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
       await page.keyboard.press('Escape');
       await page.locator('.qp-command-dialog').waitFor({ state: 'hidden' });
       const quickStatsBox = await statsCard.boundingBox();
-      assert.ok(quickStatsBox && Math.abs(quickStatsBox.y - 421) <= 1, `Quick Stats must retain its reference-aligned y position: ${JSON.stringify(quickStatsBox)}`);
+      const navigationBox = await navigation.boundingBox();
+      assert.ok(quickStatsBox && navigationBox && quickStatsBox.y >= navigationBox.y + navigationBox.height, `Quick Stats must follow the full navigation: ${JSON.stringify({quickStatsBox,navigationBox})}`);
     }
     assert.equal(await page.locator('.qp-sidebar nav a[aria-current=page]').count(), 1);
     const shellBounds = await page.evaluate(() => {
@@ -2996,7 +2984,7 @@ try {
             referenceColumnChecks.push({ page: destination, lang, theme, headerTop: header.y, railTop: rail.y, summaryRight: summary.x + summary.width, railLeft: rail.x });
           }
           if (destination === 'overview') {
-            const activityHeading = await page.locator('.qp-activity h2').evaluate(element => Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE)?.textContent?.trim() ?? '');
+            const activityHeading = await page.locator('.qp-activity h2 .qp-activity-heading-title').innerText();
             const labels = await Promise.all([
               page.locator('.qp-quotas-heading h2').innerText(),
               page.locator('.qp-top-models h3').innerText(),
@@ -3180,8 +3168,8 @@ try {
               assert.ok(Math.abs(hero.x - 228) <= 2 && Math.abs(hero.y - 68) <= 2 && Math.abs(hero.width - 977) <= 2 && Math.abs(hero.height - 394) <= 2,
                 `Pulse Core bounds differ from the measured reference by more than 2px: ${JSON.stringify(hero)}`);
             }
-            assert.ok(Math.abs(quickStats.y - 423) <= 8 && Math.abs(quickStats.height - 288) <= 12,
-              `Quick Stats sidebar card differs from the reference placement: y=${quickStats.y}, height=${quickStats.height}`);
+            assert.ok(Math.abs(quickStats.y - 522) <= 8 && Math.abs(quickStats.height - 288) <= 12,
+              `Quick Stats sidebar card differs from the current nine-link layout: y=${quickStats.y}, height=${quickStats.height}`);
             const modelBar = await rail.locator('.qp-model-row .qp-bar>span').first().evaluate(element => getComputedStyle(element).backgroundImage);
             assert.match(modelBar, /rgb\(89, 108, 255\).*rgb\(154, 103, 237\)/, 'Top model token share uses the reference violet ramp');
             if (activity.y + activity.height > 992) console.log('Overview header geometry', await page.locator('.qp-topbar,.qp-brand,.qp-brand>svg,.qp-brand>span,.qp-brand small,.qp-topbar-body,.qp-daemon-status').evaluateAll(elements => elements.map(element => { const rect = element.getBoundingClientRect(), style = getComputedStyle(element); return { className: element.className, x: rect.x, y: rect.y, width: rect.width, height: rect.height, font: style.font, lineHeight: style.lineHeight }; })));
