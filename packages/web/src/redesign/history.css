@@ -60,6 +60,8 @@
 .qp-history-summary { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:10px 0; }
 .qp-history-summary article { min-width:0; border:1px solid var(--qp-border); border-radius:10px; padding:10px; display:grid; align-content:start; gap:4px; }
 .qp-history-summary span,.qp-history-summary small { font-size:11px; line-height:1.3; color:var(--qp-muted); }
+.qp-history-summary :is(.qp-history-full-copy,.qp-history-compact-copy) { font:inherit; color:inherit; }
+.qp-history-summary .qp-history-compact-copy { display:none; }
 .qp-history-summary strong { font-size:20px; line-height:1.2; }
 .qp-history-summary ul { font-size:12px; max-height:70px; overflow:auto; }
 .qp-history-summary article { grid-template-columns:40px minmax(0,1fr); column-gap:10px; background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 3%,var(--qp-panel)),var(--qp-panel)); }
@@ -230,6 +232,24 @@
  .qp-redesign[data-testid=production-history][data-theme=dark] .qp-history-heading-identity>i>svg { width:30px; height:30px; stroke-width:1.7; filter:drop-shadow(0 0 1px #159aff99); }
 }
 
+/* Reserve the compact reference strip for widths that keep its text readable. */
+@media(min-width:1660px) {
+  /* Match the reference's compact summary strip while retaining real values. */
+  .qp-redesign[data-testid=production-history][data-theme=dark][lang=en] .qp-history-summary {
+    width:87.3%; gap:14px;
+  }
+  .qp-redesign[data-testid=production-history][data-theme=dark][lang=en] .qp-history-summary article:nth-child(3) {
+    grid-template-columns:46px minmax(0,1fr) fit-content(72px);
+  }
+  .qp-redesign[data-testid=production-history][data-theme=dark][lang=en] .qp-history-summary :is(strong,small,.qp-history-compact-copy) {
+    min-width:0; white-space:normal; overflow-wrap:anywhere;
+  }
+  .qp-redesign[data-testid=production-history][data-theme=dark][lang=en] .qp-history-full-copy {
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  .qp-redesign[data-testid=production-history][data-theme=dark][lang=en] .qp-history-summary .qp-history-compact-copy { display:inline; }
+}
 /* Native dark History rows use the reference's restrained blue surface. */
 @media(min-width:1536px) {
   /* The truthful record/session sublabel fits its column without adding a row. */

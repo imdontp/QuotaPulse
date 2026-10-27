@@ -636,6 +636,26 @@ try {
       assert.ok(geometry.timelineHeight < 390, `History timeline too tall: ${geometry.timelineHeight}`);
       assert.ok(geometry.plotWidth > geometry.chartWidth * .9, 'History plot does not use available width');
       assert.ok(geometry.firstRowBottom < viewport.height, 'History first record is outside concept viewport');
+      const fullCopies = page.locator('.qp-history-summary .qp-history-full-copy');
+      const compactCopies = page.locator('.qp-history-summary .qp-history-compact-copy');
+      assert.equal(await fullCopies.count(), 3); assert.equal(await compactCopies.count(), 3);
+      for (const full of await fullCopies.all()) {
+        assert.equal(await full.getAttribute('aria-hidden'), null, 'Full History meaning must remain accessible');
+        assert.equal(await full.evaluate(node => getComputedStyle(node).position), 'absolute');
+      }
+      for (const compact of await compactCopies.all()) {
+        assert.equal(await compact.getAttribute('aria-hidden'), 'true', 'Compact History copy must not duplicate accessible text');
+        assert.equal(await compact.isVisible(), true);
+      }
+      const cards = await page.locator('.qp-history-summary article').evaluateAll(nodes => nodes.map(node => {
+        const box = node.getBoundingClientRect();
+        return { x:box.x, right:box.right, children:[...node.children].filter(child => child.tagName !== 'I').map(child => ({ rect:child.getBoundingClientRect().toJSON(), client:child.clientWidth, scroll:child.scrollWidth, tag:child.tagName })) };
+      }));
+      assert.equal(cards.length, 4);
+      for (const card of cards) for (const child of card.children) {
+        assert.ok(child.rect.left >= card.x - 1 && child.rect.right <= card.right + 1, 'History summary content leaves card');
+        if (child.tag !== 'UL') assert.ok(child.scroll <= child.client + 1, 'History summary value clips');
+      }
     }
     const densitySelectors: Record<string, string[]> = {
       overview: ['.qp-hero-grid', '.qp-bottom-grid', '.qp-activity', '.qp-activity-item'],
@@ -696,6 +716,10 @@ try {
       const screen = page.getByTestId(`production-${destination}`);
       await screen.locator(ready).first().waitFor();
       await page.evaluate(() => document.fonts.ready);
+      if (destination === 'history') {
+        for (const compact of await screen.locator('.qp-history-summary .qp-history-compact-copy').all()) assert.equal(await compact.isVisible(), false, `${lang}/${theme}/${width}: compact History copy leaked into fallback`);
+        for (const full of await screen.locator('.qp-history-summary .qp-history-full-copy').all()) assert.notEqual(await full.evaluate(node => getComputedStyle(node).position), 'absolute', `${lang}/${theme}/${width}: full History copy missing`);
+      }
       assert.equal(await screen.getAttribute('lang'), lang);
       assert.equal(await screen.getAttribute('data-theme'), theme);
       assert.equal(await screen.locator('.qp-sidebar nav a').count(), 9);

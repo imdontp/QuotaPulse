@@ -1,0 +1,35 @@
+{
+  "parentCommit": "2e55b8cda26430c5e91a247a2ad2fde0a3e846a1",
+  "productionIndexSha256": "596d06afdca41130ee67b2904e355610c6f7c2a59d3a4d35d6681bf705e4a5e2",
+  "sourceSha256": {
+    "packages/web/src/redesign/history-timeline.tsx": "0003fe42993fb0810d78c6b893721c20991b2d3447ec39d163448b64f8a485f3",
+    "packages/web/src/redesign/history.css": "44fa73d0c7c9c91a81030614e7509468a9be5ad087cbf73b9d4426f2e6288146",
+    "scripts/check-history.mts": "ba2928009a18a5ea7cf210ee5d13ac6c25529f7bbb6bf01d0acde43982c4c179"
+  },
+  "referenceSha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+  "baselineImageSha256": "fa3e4a5a958399434a28574ce381a10a7f0045bba4a30a605b018b8c885f3139",
+  "currentImageSha256": "001a9261d9205e9060ac8b59d82bab13ee11ea91e6adf22bc0a1c06d39c52468",
+  "comparison": {
+    "changedPixels": 66201,
+    "changedPixelsOutsideSummaryBand": 418,
+    "outsideBandBounds": [
+      1099,
+      485,
+      1176,
+      494
+    ],
+    "note": "Separate chart pixels vary between independent captures; no attribution or whole-screen parity claim."
+  },
+  "focusedMatrixCases": 20,
+  "responsiveCases": 144,
+  "stressTable": {
+    "clientWidth": 1124,
+    "scrollWidth": 1169,
+    "previousSame": true,
+    "keyboardScrollable": true
+  },
+  "galleryVerified": true,
+  "reviewZip179IncludesChange": false,
+  "rawWorkingTreeCssSha256": "c05982b137414f373693c70329aad827ac665bb8dbfeee9986ca2afda3fd75c0",
+  "cssHashNote": "Git normalizes mixed CRLF/LF to LF; both tested working-tree and committed source hashes are recorded."
+}
