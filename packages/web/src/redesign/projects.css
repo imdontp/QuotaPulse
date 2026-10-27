@@ -444,6 +444,18 @@
 }
 @media(min-width:1536px) {
   [data-testid=production-projects] main { padding-inline:17px; }
+  /* The concept separates the project header from its filters across the workspace. */
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-header { position:relative; }
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-header::after {
+    content:"";
+    position:absolute;
+    left:-17px;
+    right:-17px;
+    bottom:0;
+    height:1px;
+    background:#101d32;
+    pointer-events:none;
+  }
   .qp-project-cards { column-gap:8px; }
   [data-testid=production-projects] .qp-project-card { padding-inline:16px; }
   .qp-project-detail { padding-inline:16px; }

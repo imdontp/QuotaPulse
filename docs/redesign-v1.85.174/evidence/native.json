@@ -1,0 +1,908 @@
+{
+  "status": "passed",
+  "sourceCommit": "82909f76b73f28c991062e0c0482f846ec81ca9c",
+  "checkout": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation",
+  "bundle": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review-bundles\\QuotaPulse-v1.85.173-review174-iBJAh2",
+  "profile": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qpdash-zUOX1e",
+  "output": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\release174\\native-4a863f93-f92a-4ad0-8444-e3f948db0eef",
+  "productionIndexSha256": "3a7a6250d489750089ba1f1b311237aea84ad784e87a028f1dc4ce263beba4f6",
+  "buildReceiptSha256": "49673d337a29474b75017ed3d750e52f54b94ccff095680e04cbc4a15a5f712b",
+  "bundleFiles": 3161,
+  "served": {
+    "assets/index-DV-VTmix.css": "11c2f272e9fec304a08d11e31d74d084e2098b35de1aee390fdaa2175fdd06d2",
+    "assets/index-CXqLDsMe.js": "43212a8e4c10179e82fd2a27fdb3f524b742e4736cc0db726d9b39c0aa6746e3",
+    "assets/page-heading-VG1tKrzh.css": "f539d5b4d766840b808ce5ce27c1b6e5965ae8f77f5dce3079294b32066a0cfd",
+    "assets/section-mark-D9p1fSvH.css": "c08b2da031c71509e1e6821b0ac257b65e497676ada243a3be0eb5029ea63def",
+    "assets/live-DrX7LUeU.css": "1d52dff9c2e99c046a49c05d0db4618e9f20e98e40a967286cb7e94e44549d28",
+    "assets/live-DC5tQ5bQ.js": "a3f5e5f7403a13ee90637148e0ebad688e9898dde426067c9df6555f216220bb",
+    "assets/dashboard-marks-C3zBsRlc.js": "9009f1f742793db9619207ddeb3b1570bf0c56a62300b866f016ebd51d30c0c8",
+    "assets/vendor-icon-CPI07Jt-.js": "3a2c2cdc06825a8ee16d5f90e7abb79c1f7ca0d01324df3efd6a130830ba41bb",
+    "assets/provider-mark-DgoKPKdm.js": "ddd042276227d1584c424ebbd9756e0398143b53abbc23f61e0bbb96a1500aab",
+    "assets/page-heading-BPvh8eNO.js": "630e203f1a9e75d7e9a568b7d1873ec720c814cd7965e65fea506b2d50db548e",
+    "assets/heading-reference-icon-149E7d6c.js": "209d601c11dfb5c22b5d585208babd9206b4343318d80d33f44acd2460c504d2",
+    "assets/chart-column-Diy5rX6-.js": "756927d7e9d0ba505ac8687d1035a92719bec8142122c0c662ee8ebb51e1f742",
+    "assets/bell-ring-DKE8ZDR8.js": "2da7c357332b4b792f5eecd733c4cfc563a4ec9f447665a7ee528598f05ecec4",
+    "assets/section-mark-DnOpeoq7.js": "8a2073a9738bf4a71012e7b2a9c413b62145bd6d8ad727d7b651584ce9da06c2",
+    "assets/live-record-motion-BCtgcRyj.js": "55c9a84b5d1cd5fd643f3e48cdacd1dc4ed4389be1e0779a3cd9261f9d1f276e",
+    "assets/history-motion-Bj07aAiy.js": "41c2ebebf18c70a4214aeeb1a06c66482f0591a784d10a60b4ee3d3da61b96c2",
+    "assets/play-B12NXztM.js": "80ad079eec682cce6a7c90fd0fd3788f9f91b60ed5ebdce30a1cd8138827d74b",
+    "assets/pause-Dbk6N1zp.js": "bfda4d1753da39d76111863040dc5d3b03750e0954c1127a2899897199049bc0",
+    "assets/radio-DnTcQ1Dj.js": "1e91b5c6e4c5a2e7982d97f724c8a8dc7cf13d808c6d32873aeadf5cb892cd5a",
+    "assets/clock-3-BxrqyP-2.js": "9a3fa83ae021ce17a32fe6f3d16e017303c06a2385ee1089d8dd75642be1c221",
+    "assets/triangle-alert-DIMLqhec.js": "a2b9e646bf3aa89ab6a0b2b5507a4f160e211c69092d292c249ba8c3f824c4cb",
+    "assets/circle-question-mark-CqB6eDWg.js": "ecf992a8aa06e89f08a0ffaf48a1086f7c55d5756fa8040df4605ee03ebe6138",
+    "assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "assets/geist-mono-latin-wght-normal-XN7g48iV.woff2": "684ad5b531f81d43c1e8c7038262d5db7cdc1f68006e04d6c7769efa8d33c8cc",
+    "fonts/noto-sans-thai/NotoSansThai-variable.ttf": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+    "assets/chart-data-AgyWygLH.css": "e4bacbb935d7cb79ba192d904186580e342bac9586e2b92f70f5de17f6133231",
+    "assets/quota-chart-D8HC5jl7.css": "8cd814f625d04da0c30f19ad2c4b4882916d37af0106f42353050e44c1b78236",
+    "assets/production-I1A5b9Te.css": "b6aa22b50ae99221c5da7dd0528008019a979b8b4fab94ebdddcb410b36066bd",
+    "assets/production-Cw0nJePE.js": "63156f6ccb3e4ebda547140a79fa7a1e180e25e53421c7e00107e8fc743ac12e",
+    "assets/chart-data-Bq3pdhrv.js": "6dab8e97821a48883bd00027544f75b7144f113122b9da0ead8ec17914216d74",
+    "assets/quota-chart-DI0I4qpr.js": "6d71b830cd9144bbcda42a25a2730feb50bc9471dc84b2b983c6633c6b5d400e",
+    "assets/format-BQ0bABGj.js": "2e69ec915a310c0b58d6d501dc629fb7dc1f147bba48b54401ff93c87480b715",
+    "assets/flame-DcATqw2J.js": "fd37f144aaff3541f85129efb6bccf2bdfb9f56254b386a47ce68ef9a3e0e511",
+    "assets/coins-D3KBrZxa.js": "6dad0885f0be6bfff1a5d2b837a62a26989c93e675048d26805617d743045831",
+    "assets/database-DldcCFJd.js": "785d513d97c3bb0949dea3ca3b23d926f8444afc723d482c91d1c9d3cb04358a",
+    "assets/trending-up-Y_lINdx2.js": "c7ed2661e51369c6e312f599db6d9db6fafd408307f3aec4469f1e2d04932277",
+    "assets/lightbulb-BsxhSeo0.js": "d0e5e70b5b5a865eebb8209f374fb74b22d1d753dc6c8ac4878fcb03456d33ef",
+    "assets/sliders-horizontal-CeOTtWnP.js": "d82d8994608d4c6f14c04c89c50b776674ebe5f4c07ee0e5fc6272cbb5a7646c",
+    "redesign/pulse-earth-v4.png": "43680a68501609dd2e6b5d21c01495d7c5b239f9d92655c33f47625238597bf2",
+    "assets/projects-DqSCXsuK.js": "bbcda7487acbfab2a7dc25517cca3f93d165da5ca93a7b5804cae13c1232efed",
+    "assets/project-selection-motion-4W37oCye.js": "d9fa0f3a8fef04a1b8c06c274a8d8f28bdd2c10ec42f7f80a5d19585bdb3459a",
+    "assets/model-selection-motion-BA0vOghr.js": "205e51f871313ec7bafbee8dd57131268e5daa64ebf66f40f86086f31f48be84",
+    "assets/scope-notice-nYJwSE7d.js": "bcf89b473f213e06a00c131f9031ba4b40894d4fb2b07d8c2dc1fcde999b5451",
+    "assets/projects-B96hVPv9.css": "a09890d27a07cfa4a745776961a122b42e9b1cbe1a63242a653387dbd298c769",
+    "assets/scope-notice-SMVc0RpX.css": "07b85b64ca507753859209dec03dfb47ed3c8d40f0ac14d94e75de2cfdb33c94",
+    "assets/chart-data-glHAUIXJ.css": "42c34601dfff9d208631ade3a55b4c9db3cb2c5042908dddf00a68ba0fd6501e",
+    "assets/chart-data-Bz10XIoS.js": "3fc2dc5475b0bf5c3ae1bef2b7607b79c293dd922a4c51d80d373bcc3c417139",
+    "assets/models-Casa9FM9.js": "aa648084c09bb1620fcbd9f1ed45dfaed697d9a3cba89a953889ef14b3374093",
+    "assets/effort-pagination-Dk8dS0E2.js": "50a583197f938b46ee4f2a2d3b11896dc902c2870f80d54643436e5b4ba5498c",
+    "assets/models-Cdr0jXGP.css": "b007832c208ca2eaadee1c82bc527e6fae78add5d07e242912c5a4afd0eb5d83",
+    "assets/model-row-trends-C7SO78lQ.js": "71ed8844f447dee6aa5390ca9471f4b64f29d33ccd1da8c1066edc54c431cca5",
+    "assets/utility-pages-BTsOMIoc.js": "8c65342c6693aa2531f4218c987bed1012a5a747fb4b96e0e33153755260f8db",
+    "assets/history-range-picker-BUvnsmf4.js": "300eea44f631ddf01ae478cffc37b3a56ba7988c2e00a6d8ba02e7c56885456a",
+    "assets/settings-DU_fuIIE.js": "d79eece3709915f722075686123545304ee8294636458a1045bfbabd614ad8a1",
+    "assets/history-range-picker-B1QplnSF.css": "b023f6a74b1c4865ee3b93f16db583adfe2ccc2dadb1bf981fc70d762b8ddb1f",
+    "assets/settings-UlxJ3NSB.css": "5f7d94c53ad9d8f08a46eb08ad047ca5c2fcd38af3994c69a12c0efc99ef8507",
+    "assets/utility-pages-rQmk3yrA.css": "08e4afaf80b63623c64fa9a26d02e18ec4c4789673bed5e3139bf03ff5d40028",
+    "assets/alerts-C7E80ePI.js": "1642677f43c39b286cade9a863a1a8342e3979d5617f486e8b78690ad68e0c12",
+    "assets/shield-check-DuxAg1cJ.js": "a06a05d341ccc8cfd5598db65bc02ecac488ef554a1f914f462710c2b08eb485",
+    "assets/gauge-BDcC1JwU.js": "2cd49e1651bb274dfe3cc3c348b8ede85775f6d0354bfc04acfaf91e119a66c3",
+    "assets/alerts-B-rxFL9b.css": "872cba4e66fd695f8618331b97245127b847d215b54803b84ee706111f24b8f2",
+    "assets/providers-ffK-hFyr.js": "2d1f2108dc9726a10900c5990d8a573cc98e7c7abf07b9fbbc436fae17a42247",
+    "assets/providers-C9KjSKFE.css": "2a6037e81e9ddaec17b31c15eadbd92c2ae93c4a5a357ae273ccade7f4c47c32",
+    "assets/cost-DDsYLMj_.js": "f72d6df1942869c664b4e3bb5a3d71d2c2cffd86e6cd7cb11af1f41bd140c06a",
+    "assets/wallet-uR7lzVl1.js": "19ad78230d60e0a90d14c85406f3d730070b5f773ef3b1d89e7b118ca0edee7e",
+    "assets/cost-DOR_frir.css": "9442585c1f8d3aa349f38f08a171cdbb3783fef841a0f44f21404985fdca8464"
+  },
+  "captures": [
+    {
+      "phase": "initial",
+      "route": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "317608f887a8cc02d6f713a1722fbc34029952a70fe21818ed1bf48bac524388"
+    },
+    {
+      "phase": "initial",
+      "route": "live",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "6a74d725ffc3a28393c818a89992b37c9504c568c8d1a0ce4cf715f2601d3849"
+    },
+    {
+      "phase": "initial",
+      "route": "projects",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "2d13e397c2cec44b5e8242845cc8f82c70aa06bae0d653c132975336bc8666f9"
+    },
+    {
+      "phase": "initial",
+      "route": "models",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "513dd85301311954bbadf05c68df6a65b59aacf4e70e2e1d8cac6de668bba246"
+    },
+    {
+      "phase": "initial",
+      "route": "history",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "06cf9d816943569c4a0b1abeeac23f5bd0317aa211fba07377c7e74f4fb41ee4"
+    },
+    {
+      "phase": "initial",
+      "route": "alerts",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "2322e950b83eb75f55289b031b45058ba633d5f95968b52ba553d0e74532a016"
+    },
+    {
+      "phase": "initial",
+      "route": "providers",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "0d4e3159820fb023e0d4e7c5a399304d2f3f2b608a842c9319eba2a4ed92d222"
+    },
+    {
+      "phase": "initial",
+      "route": "cost",
+      "lang": "en",
+      "theme": "dark",
+      "prefs": {
+        "lang": "en",
+        "currency": "USD",
+        "rate": 1,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1688,
+        "height": 980,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1688,
+        "height": 980
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "21d66f88f705259b53c5be1a1c214fded93a6a04dc4357eea1127196bfcf22bb"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "overview",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "0ff35a531a15723b4b5b674a656cc8fa9d883e0bd757f5f3765180f180889580"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "live",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "de587741d5c172fc99009c51749647fce5058a30dc22d625b70b6852430c1b29"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "projects",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "ed478ee3cd444166628ba7320b0df5675d467b51d03bf07a3d12be41f3327a0a"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "models",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "e95c9409c396ed9f70628798b3e64a97d23e6d46fb8a2d2a35a0d79432ee32c7"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "history",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "c68c254f81cee5ef0e0b9d1e001d7a1856ba40470dbd881b69c6566fcc01b58f"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "alerts",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "19b45166a7951d5eebac451d747f08555b7354c260a7179c592c9fdc2a370695"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "providers",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "3f5a64410df32ca4d521e2be74bf4c844447e1ebec4deac4ec295260e408b890"
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "cost",
+      "lang": "th",
+      "theme": "light",
+      "prefs": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "hiddenSubscriptions": []
+      },
+      "overflow": false,
+      "viewport": {
+        "width": 1355,
+        "height": 822,
+        "dpr": 1
+      },
+      "nativeImageSize": {
+        "width": 1355,
+        "height": 822
+      },
+      "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+      "sha256": "fe88d2d00dda2cce5d8e2772d067bcef667d0acaaa2b4d58fe8488ef20cfc47b"
+    }
+  ],
+  "featureChecks": [
+    {
+      "phase": "initial",
+      "route": "overview",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true
+    },
+    {
+      "phase": "initial",
+      "route": "live",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true,
+      "sectionTitles": [
+        {
+          "text": "Observed sessions",
+          "size": "16px",
+          "weight": "500"
+        },
+        {
+          "text": "Recorded tokens per minute",
+          "size": "16px",
+          "weight": "600"
+        },
+        {
+          "text": "Usage record feed",
+          "size": "16px",
+          "weight": "500"
+        },
+        {
+          "text": "Source advisories",
+          "size": "16px",
+          "weight": "450"
+        },
+        {
+          "text": "Observed provider and model activity",
+          "size": "14px",
+          "weight": "400"
+        }
+      ],
+      "independentGradients": [
+        {
+          "id": "qp-heading-live-dot-r10",
+          "ownReferences": true
+        },
+        {
+          "id": "qp-heading-live-dot-r14",
+          "ownReferences": true
+        }
+      ]
+    },
+    {
+      "phase": "initial",
+      "route": "projects",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true,
+      "ranking": [
+        {
+          "key": "Native review project",
+          "apiValue": 0,
+          "pricedCalls": 0,
+          "allCalls": 2
+        },
+        {
+          "key": "Native review second project",
+          "apiValue": 0.0123,
+          "pricedCalls": 2,
+          "allCalls": 2
+        }
+      ]
+    },
+    {
+      "phase": "initial",
+      "route": "models",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true
+    },
+    {
+      "phase": "initial",
+      "route": "history",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true
+    },
+    {
+      "phase": "initial",
+      "route": "alerts",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true,
+      "confirmedDeliveryOff": true,
+      "accessibleDeliveryDescription": true
+    },
+    {
+      "phase": "initial",
+      "route": "providers",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true
+    },
+    {
+      "phase": "initial",
+      "route": "cost",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true,
+      "amountTicks": [
+        {
+          "value": 0.0123,
+          "label": "$0.012"
+        },
+        {
+          "value": 0.009225,
+          "label": "$0.009"
+        },
+        {
+          "value": 0.00615,
+          "label": "$0.006"
+        },
+        {
+          "value": 0.003075,
+          "label": "$0.003"
+        },
+        {
+          "value": 0,
+          "label": "$0.00"
+        }
+      ],
+      "dateLabelsDoNotOverlap": true,
+      "sectionTitles": [
+        {
+          "text": "Value by recorded provider",
+          "size": "17px",
+          "weight": "600"
+        },
+        {
+          "text": "Value and priced-token trend",
+          "size": "16px",
+          "weight": "550"
+        },
+        {
+          "text": "Value by model and route",
+          "size": "15.5px",
+          "weight": "500"
+        },
+        {
+          "text": "Value by project",
+          "size": "15.5px",
+          "weight": "550"
+        },
+        {
+          "text": "Most expensive recorded sessions",
+          "size": "14px",
+          "weight": "500"
+        },
+        {
+          "text": "Coverage insights",
+          "size": "13.5px",
+          "weight": "550"
+        }
+      ]
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "overview",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "live",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true,
+      "sectionTitles": [
+        {
+          "text": "\u0e40\u0e0b\u0e2a\u0e0a\u0e31\u0e19\u0e17\u0e35\u0e48\u0e15\u0e23\u0e27\u0e08\u0e1e\u0e1a",
+          "size": "16px",
+          "weight": "600"
+        },
+        {
+          "text": "\u0e42\u0e17\u0e40\u0e04\u0e19\u0e17\u0e35\u0e48\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e15\u0e48\u0e2d\u0e19\u0e32\u0e17\u0e35",
+          "size": "16px",
+          "weight": "600"
+        },
+        {
+          "text": "\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e43\u0e0a\u0e49\u0e07\u0e32\u0e19\u0e17\u0e35\u0e48\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01",
+          "size": "16px",
+          "weight": "600"
+        },
+        {
+          "text": "\u0e04\u0e33\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e02\u0e2d\u0e07\u0e41\u0e2b\u0e25\u0e48\u0e07\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25",
+          "size": "15px",
+          "weight": "600"
+        },
+        {
+          "text": "\u0e01\u0e34\u0e08\u0e01\u0e23\u0e23\u0e21\u0e1c\u0e39\u0e49\u0e43\u0e2b\u0e49\u0e1a\u0e23\u0e34\u0e01\u0e32\u0e23\u0e41\u0e25\u0e30\u0e42\u0e21\u0e40\u0e14\u0e25\u0e17\u0e35\u0e48\u0e15\u0e23\u0e27\u0e08\u0e1e\u0e1a",
+          "size": "15px",
+          "weight": "600"
+        }
+      ],
+      "independentGradients": [
+        {
+          "id": "qp-heading-live-dot-r13",
+          "ownReferences": true
+        },
+        {
+          "id": "qp-heading-live-dot-r17",
+          "ownReferences": true
+        }
+      ]
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "projects",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true,
+      "ranking": [
+        {
+          "key": "Native review project",
+          "apiValue": 0,
+          "pricedCalls": 0,
+          "allCalls": 2
+        },
+        {
+          "key": "Native review second project",
+          "apiValue": 0.0123,
+          "pricedCalls": 2,
+          "allCalls": 2
+        }
+      ]
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "models",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "history",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "alerts",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true,
+      "confirmedDeliveryOff": true,
+      "accessibleDeliveryDescription": true
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "providers",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true
+    },
+    {
+      "phase": "restored-th-light",
+      "route": "cost",
+      "visibleDestinations": 9,
+      "staticIdentity": true,
+      "separateLanguage": true,
+      "amountTicks": [
+        {
+          "value": 0.0123,
+          "label": "\u0e3f0.46"
+        },
+        {
+          "value": 0.009225,
+          "label": "\u0e3f0.34"
+        },
+        {
+          "value": 0.00615,
+          "label": "\u0e3f0.23"
+        },
+        {
+          "value": 0.003075,
+          "label": "\u0e3f0.11"
+        },
+        {
+          "value": 0,
+          "label": "\u0e3f0.00"
+        }
+      ],
+      "dateLabelsDoNotOverlap": true,
+      "sectionTitles": [
+        {
+          "text": "\u0e21\u0e39\u0e25\u0e04\u0e48\u0e32\u0e15\u0e32\u0e21\u0e1c\u0e39\u0e49\u0e43\u0e2b\u0e49\u0e1a\u0e23\u0e34\u0e01\u0e32\u0e23\u0e17\u0e35\u0e48\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01",
+          "size": "16px",
+          "weight": "600"
+        },
+        {
+          "text": "\u0e41\u0e19\u0e27\u0e42\u0e19\u0e49\u0e21\u0e21\u0e39\u0e25\u0e04\u0e48\u0e32\u0e41\u0e25\u0e30\u0e42\u0e17\u0e40\u0e04\u0e47\u0e19\u0e17\u0e35\u0e48\u0e21\u0e35\u0e23\u0e32\u0e04\u0e32",
+          "size": "16px",
+          "weight": "600"
+        },
+        {
+          "text": "\u0e21\u0e39\u0e25\u0e04\u0e48\u0e32\u0e15\u0e32\u0e21\u0e42\u0e21\u0e40\u0e14\u0e25\u0e41\u0e25\u0e30\u0e40\u0e2a\u0e49\u0e19\u0e17\u0e32\u0e07",
+          "size": "16px",
+          "weight": "600"
+        },
+        {
+          "text": "\u0e21\u0e39\u0e25\u0e04\u0e48\u0e32\u0e15\u0e32\u0e21\u0e42\u0e1b\u0e23\u0e40\u0e08\u0e01\u0e15\u0e4c",
+          "size": "16px",
+          "weight": "600"
+        },
+        {
+          "text": "\u0e40\u0e0b\u0e2a\u0e0a\u0e31\u0e19\u0e17\u0e35\u0e48\u0e21\u0e35\u0e21\u0e39\u0e25\u0e04\u0e48\u0e32\u0e2a\u0e39\u0e07\u0e2a\u0e38\u0e14",
+          "size": "16px",
+          "weight": "600"
+        },
+        {
+          "text": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e04\u0e27\u0e32\u0e21\u0e04\u0e23\u0e2d\u0e1a\u0e04\u0e25\u0e38\u0e21",
+          "size": "11px",
+          "weight": "600"
+        }
+      ]
+    }
+  ],
+  "cycles": [
+    {
+      "pid": 30772,
+      "id": 1,
+      "userData": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qpdash-zUOX1e\\data\\electron",
+      "sessionData": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qpdash-zUOX1e\\data\\electron",
+      "preferences": {
+        "allowRunningInsecureContent": false,
+        "contextIsolation": true,
+        "disableDialogs": false,
+        "disablePopups": false,
+        "enableBlinkFeatures": "",
+        "experimentalFeatures": false,
+        "javascript": true,
+        "nodeIntegration": false,
+        "nodeIntegrationInSubFrames": false,
+        "nodeIntegrationInWorker": false,
+        "safeDialogs": false,
+        "safeDialogsMessage": "",
+        "sandbox": true,
+        "webSecurity": true,
+        "webviewTag": false
+      },
+      "evidence": {
+        "ready": [
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          },
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          }
+        ],
+        "shown": [
+          1,
+          1
+        ],
+        "preloadErrors": [],
+        "placementErrors": []
+      },
+      "loadedPreload": {
+        "url": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review-bundles\\QuotaPulse-v1.85.173-review174-iBJAh2\\packages\\tray\\dist-preload\\dashboard-preload.js",
+        "scriptSourceSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "compiledPreloadSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "exactCompiledSourceContained": true
+      }
+    },
+    {
+      "pid": 47960,
+      "id": 1,
+      "userData": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qpdash-zUOX1e\\data\\electron",
+      "sessionData": "C:\\Users\\TH1236~1\\AppData\\Local\\Temp\\qpdash-zUOX1e\\data\\electron",
+      "preferences": {
+        "allowRunningInsecureContent": false,
+        "contextIsolation": true,
+        "disableDialogs": false,
+        "disablePopups": false,
+        "enableBlinkFeatures": "",
+        "experimentalFeatures": false,
+        "javascript": true,
+        "nodeIntegration": false,
+        "nodeIntegrationInSubFrames": false,
+        "nodeIntegrationInWorker": false,
+        "safeDialogs": false,
+        "safeDialogsMessage": "",
+        "sandbox": true,
+        "webSecurity": true,
+        "webviewTag": false
+      },
+      "evidence": {
+        "ready": [
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          },
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:7819/#live"
+          }
+        ],
+        "shown": [
+          1,
+          1
+        ],
+        "preloadErrors": [],
+        "placementErrors": []
+      },
+      "loadedPreload": {
+        "url": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review-bundles\\QuotaPulse-v1.85.173-review174-iBJAh2\\packages\\tray\\dist-preload\\dashboard-preload.js",
+        "scriptSourceSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "compiledPreloadSha256": "f13de35b84e0b248e15f858296e17f54941770bc026832f2a83122e6b9106c6f",
+        "exactCompiledSourceContained": true
+      }
+    }
+  ],
+  "errors": [],
+  "forbidden": [],
+  "writes": [],
+  "cleanup": [],
+  "daemonStopped": true,
+  "daemonExit": {
+    "pid": 18560,
+    "exitCode": null,
+    "signalCode": "SIGTERM"
+  },
+  "limitations": [
+    "actual production windows placed beyond all displays, nonfocusable and absent from taskbar; anti-occlusion flags/background-throttling override and reduced motion are test-only",
+    "initial content resized by test to1672x941; restored native size1371x887 tested through real Settings/preload/main",
+    "same-version Electron restart with explicit storage flush; no installer or two-version upgrade exercised here",
+    "two native language/theme combinations; not complete four-combination matrix",
+    "synthetic owned DB only; readers/account probes disabled; no physical tray-click/minimize/monitor or resource proof"
+  ]
+}
