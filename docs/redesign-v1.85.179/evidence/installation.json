@@ -1,0 +1,33 @@
+{
+  "checks": [
+    "actual delivered ZIP installed with identical file inventory and the current bundled installer",
+    "ZIP entry longer than 260 characters extracted into isolated installation",
+    "installed daemon and tray start with readers off and an independent review profile",
+    "scoped stop ends owned processes and retains the isolated database"
+  ],
+  "longEntryLength": 289,
+  "failure": null,
+  "fixture": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\installation-review179\\run-ab0fcf1173a14b2ba6931980ee5cfb21",
+  "sourceCommit": "96c7ded2d2a220b6b39c10ff94cb1a7d0e40e4d6",
+  "target": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\installation-review179\\run-ab0fcf1173a14b2ba6931980ee5cfb21\\review",
+  "limitations": [
+    "owned isolated profile, readers disabled",
+    "portable review installer, not a signed production release",
+    "no physical monitor or native dashboard UI verification"
+  ],
+  "runtime": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\installation-review179\\run-ab0fcf1173a14b2ba6931980ee5cfb21\\review\\releases\\release-125fa3dca472e84c706b0f5cad5cc3877cdea4671086526d3afb56e4f66f56bd",
+  "status": "passed",
+  "archiveSha256": "125fa3dca472e84c706b0f5cad5cc3877cdea4671086526d3afb56e4f66f56bd",
+  "processes": [
+    {
+      "created": "2026-10-27T02:44:57.0059620Z",
+      "pid": 16908,
+      "role": "daemon"
+    },
+    {
+      "created": "2026-10-27T02:44:59.0536050Z",
+      "pid": 9188,
+      "role": "tray"
+    }
+  ]
+}
