@@ -1,0 +1,12 @@
+{
+  "processesStarted": 0,
+  "checks": [
+    "validated archive with >260-character entry extracts correctly",
+    "overlong Electron executable path is rejected before creating a destination",
+    "traversal and review-data archive entries are rejected before creating destinations"
+  ],
+  "fixture": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-install-regression\\run-7ca392d3b48f4b49b8f4620afa73e0a1",
+  "syntheticOnly": true,
+  "status": "passed",
+  "longEntryPathLength": 351
+}

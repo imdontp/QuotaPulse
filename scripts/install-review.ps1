@@ -94,6 +94,9 @@ $hash=(Get-FileHash -LiteralPath $Archive -Algorithm SHA256).Hash.ToLowerInvaria
 if ($hash -ne $ExpectedSha256.ToLowerInvariant()) { throw 'Archive checksum mismatch.' }
 $release='release-'+$hash
 $published=Join-Path $releases $release
+if ([IO.Path]::Combine($published,'node_modules','electron','dist','electron.exe').Length -ge 260) {
+  throw 'Review destination is too long to launch Electron on Windows. Choose a shorter destination path.'
+}
 if (Test-Path -LiteralPath $published) { throw 'Release already exists; use rollback for a retained release or provide a new ZIP.' }
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 Add-Type -AssemblyName System.IO.Compression
@@ -151,7 +154,25 @@ foreach ($helper in @{'uninstall.ps1'='uninstall-review.ps1';'review-profile.ps1
 $stage=Join-Path $releases ('.stage-'+[guid]::NewGuid().ToString('N'))
 Assert-ReviewPlainPath $stage
 # Inert staging files remain available for diagnosis on failure. Never delete data.
-[IO.Compression.ZipFile]::ExtractToDirectory($Archive,$stage)
+# Windows PowerShell's ZipFile.ExtractToDirectory cannot extract to long paths
+# when the system-wide long-path policy is disabled. The input names were
+# validated above; stream each entry to the fresh stage using extended paths.
+[IO.Directory]::CreateDirectory('\\?\'+$stage) | Out-Null
+$extractor=[IO.Compression.ZipFile]::OpenRead($Archive)
+try {
+  foreach ($entry in $extractor.Entries) {
+    $name=$entry.FullName.Replace('/','\')
+    $destination=[IO.Path]::GetFullPath([IO.Path]::Combine($stage,$name))
+    if (-not $destination.StartsWith($stage+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Archive entry escapes its staging directory.' }
+    if (-not $entry.Name) { [IO.Directory]::CreateDirectory('\\?\'+$destination) | Out-Null; continue }
+    [IO.Directory]::CreateDirectory('\\?\'+[IO.Path]::GetDirectoryName($destination)) | Out-Null
+    $inputStream=$entry.Open()
+    try {
+      $outputStream=[IO.FileStream]::new(('\\?\'+$destination),[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+      try { $inputStream.CopyTo($outputStream) } finally { $outputStream.Dispose() }
+    } finally { $inputStream.Dispose() }
+  }
+} finally { $extractor.Dispose() }
 Move-ReviewDirectory $stage $published
 $owned=@(@($state.ownedReleases)+@($state.active,$state.previous,$release) | Where-Object { $_ } | Sort-Object -Unique)
 $next=[pscustomobject]@{schemaVersion=1;mode='isolated-review';active=$release;previous=$state.active;ownedReleases=$owned}
