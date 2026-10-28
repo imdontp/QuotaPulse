@@ -1,0 +1,542 @@
+{
+  "scope": "Six independent browser contexts per variant; isolated in-memory synthetic API; CSS overrides were applied only inside browser tests.",
+  "results": [
+    {
+      "variant": "original",
+      "header": {
+        "rect": {
+          "x": 904,
+          "y": 11,
+          "width": 408,
+          "height": 36,
+          "top": 11,
+          "right": 1312,
+          "bottom": 47,
+          "left": 904
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -0.5)",
+        "background": "linear-gradient(rgb(8, 16, 33), rgb(8, 16, 33)), linear-gradient(rgb(37, 51, 90), rgb(30, 44, 76))",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "rgb(22, 33, 68) 0px 1px 0px 0px inset, rgb(19, 28, 53) 0px -1px 0px 0px inset, rgb(5, 11, 27) 0px -2px 0px 0px inset, rgb(22, 33, 68) 1px 0px 0px 0px inset, rgb(22, 33, 68) -1px 0px 0px 0px inset",
+        "radius": "12px",
+        "font": "11.5px / 16px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "opacity": "1",
+        "dpr": 1
+      },
+      "headerInputsIdentical": true,
+      "firstVsRest": [
+        {
+          "pixels": 105,
+          "maxChannelDelta": 4,
+          "header": 105,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": [
+            904,
+            12,
+            1311,
+            46
+          ]
+        },
+        {
+          "pixels": 105,
+          "maxChannelDelta": 4,
+          "header": 105,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": [
+            904,
+            12,
+            1311,
+            46
+          ]
+        },
+        {
+          "pixels": 105,
+          "maxChannelDelta": 4,
+          "header": 105,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": [
+            904,
+            12,
+            1311,
+            46
+          ]
+        },
+        {
+          "pixels": 105,
+          "maxChannelDelta": 4,
+          "header": 105,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": [
+            904,
+            12,
+            1311,
+            46
+          ]
+        },
+        {
+          "pixels": 105,
+          "maxChannelDelta": 4,
+          "header": 105,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": [
+            904,
+            12,
+            1311,
+            46
+          ]
+        }
+      ],
+      "captureSha256": [
+        "00177edd146a03809b0cfe5ef0eae7a40e87c8e20446a4ea97c788845acb2d59",
+        "f2d76da85340760ea6f91a6538af96af2a5b18f0deaae87c802915f21f74f459",
+        "f2d76da85340760ea6f91a6538af96af2a5b18f0deaae87c802915f21f74f459",
+        "f2d76da85340760ea6f91a6538af96af2a5b18f0deaae87c802915f21f74f459",
+        "f2d76da85340760ea6f91a6538af96af2a5b18f0deaae87c802915f21f74f459",
+        "f2d76da85340760ea6f91a6538af96af2a5b18f0deaae87c802915f21f74f459"
+      ]
+    },
+    {
+      "variant": "original2",
+      "header": {
+        "rect": {
+          "x": 904,
+          "y": 11,
+          "width": 408,
+          "height": 36,
+          "top": 11,
+          "right": 1312,
+          "bottom": 47,
+          "left": 904
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -0.5)",
+        "background": "linear-gradient(rgb(8, 16, 33), rgb(8, 16, 33)), linear-gradient(rgb(37, 51, 90), rgb(30, 44, 76))",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "rgb(22, 33, 68) 0px 1px 0px 0px inset, rgb(19, 28, 53) 0px -1px 0px 0px inset, rgb(5, 11, 27) 0px -2px 0px 0px inset, rgb(22, 33, 68) 1px 0px 0px 0px inset, rgb(22, 33, 68) -1px 0px 0px 0px inset",
+        "radius": "12px",
+        "font": "11.5px / 16px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "opacity": "1",
+        "dpr": 1
+      },
+      "headerInputsIdentical": true,
+      "firstVsRest": [
+        {
+          "pixels": 105,
+          "maxChannelDelta": 4,
+          "header": 105,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": [
+            904,
+            12,
+            1311,
+            46
+          ]
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 105,
+          "maxChannelDelta": 4,
+          "header": 105,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": [
+            904,
+            12,
+            1311,
+            46
+          ]
+        },
+        {
+          "pixels": 105,
+          "maxChannelDelta": 4,
+          "header": 105,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": [
+            904,
+            12,
+            1311,
+            46
+          ]
+        },
+        {
+          "pixels": 105,
+          "maxChannelDelta": 4,
+          "header": 105,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": [
+            904,
+            12,
+            1311,
+            46
+          ]
+        }
+      ],
+      "captureSha256": [
+        "00177edd146a03809b0cfe5ef0eae7a40e87c8e20446a4ea97c788845acb2d59",
+        "f2d76da85340760ea6f91a6538af96af2a5b18f0deaae87c802915f21f74f459",
+        "00177edd146a03809b0cfe5ef0eae7a40e87c8e20446a4ea97c788845acb2d59",
+        "f2d76da85340760ea6f91a6538af96af2a5b18f0deaae87c802915f21f74f459",
+        "f2d76da85340760ea6f91a6538af96af2a5b18f0deaae87c802915f21f74f459",
+        "f2d76da85340760ea6f91a6538af96af2a5b18f0deaae87c802915f21f74f459"
+      ]
+    },
+    {
+      "variant": "aligned",
+      "header": {
+        "rect": {
+          "x": 904,
+          "y": 10.5,
+          "width": 408,
+          "height": 36,
+          "top": 10.5,
+          "right": 1312,
+          "bottom": 46.5,
+          "left": 904
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -1)",
+        "background": "linear-gradient(rgb(8, 16, 33), rgb(8, 16, 33)), linear-gradient(rgb(37, 51, 90), rgb(30, 44, 76))",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "rgb(22, 33, 68) 0px 1px 0px 0px inset, rgb(19, 28, 53) 0px -1px 0px 0px inset, rgb(5, 11, 27) 0px -2px 0px 0px inset, rgb(22, 33, 68) 1px 0px 0px 0px inset, rgb(22, 33, 68) -1px 0px 0px 0px inset",
+        "radius": "12px",
+        "font": "11.5px / 16px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "opacity": "1",
+        "dpr": 1
+      },
+      "headerInputsIdentical": true,
+      "firstVsRest": [
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        }
+      ],
+      "captureSha256": [
+        "e3cf1822cb9e30b76ce85f4ad4cce0a7fc186017fc837578cb2b2dd5c70dcc2c",
+        "e3cf1822cb9e30b76ce85f4ad4cce0a7fc186017fc837578cb2b2dd5c70dcc2c",
+        "e3cf1822cb9e30b76ce85f4ad4cce0a7fc186017fc837578cb2b2dd5c70dcc2c",
+        "e3cf1822cb9e30b76ce85f4ad4cce0a7fc186017fc837578cb2b2dd5c70dcc2c",
+        "e3cf1822cb9e30b76ce85f4ad4cce0a7fc186017fc837578cb2b2dd5c70dcc2c",
+        "e3cf1822cb9e30b76ce85f4ad4cce0a7fc186017fc837578cb2b2dd5c70dcc2c"
+      ]
+    },
+    {
+      "variant": "none",
+      "header": {
+        "rect": {
+          "x": 904,
+          "y": 11.5,
+          "width": 408,
+          "height": 36,
+          "top": 11.5,
+          "right": 1312,
+          "bottom": 47.5,
+          "left": 904
+        },
+        "transform": "none",
+        "background": "linear-gradient(rgb(8, 16, 33), rgb(8, 16, 33)), linear-gradient(rgb(37, 51, 90), rgb(30, 44, 76))",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "rgb(22, 33, 68) 0px 1px 0px 0px inset, rgb(19, 28, 53) 0px -1px 0px 0px inset, rgb(5, 11, 27) 0px -2px 0px 0px inset, rgb(22, 33, 68) 1px 0px 0px 0px inset, rgb(22, 33, 68) -1px 0px 0px 0px inset",
+        "radius": "12px",
+        "font": "11.5px / 16px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "opacity": "1",
+        "dpr": 1
+      },
+      "headerInputsIdentical": true,
+      "firstVsRest": [
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        }
+      ],
+      "captureSha256": [
+        "f72b98033c66569557d71bfc6ff7ce3a1f8295b3ab2e8b78b3f533fcffc4a518",
+        "f72b98033c66569557d71bfc6ff7ce3a1f8295b3ab2e8b78b3f533fcffc4a518",
+        "f72b98033c66569557d71bfc6ff7ce3a1f8295b3ab2e8b78b3f533fcffc4a518",
+        "f72b98033c66569557d71bfc6ff7ce3a1f8295b3ab2e8b78b3f533fcffc4a518",
+        "f72b98033c66569557d71bfc6ff7ce3a1f8295b3ab2e8b78b3f533fcffc4a518",
+        "f72b98033c66569557d71bfc6ff7ce3a1f8295b3ab2e8b78b3f533fcffc4a518"
+      ]
+    },
+    {
+      "variant": "layer",
+      "header": {
+        "rect": {
+          "x": 904,
+          "y": 11,
+          "width": 408,
+          "height": 36,
+          "top": 11,
+          "right": 1312,
+          "bottom": 47,
+          "left": 904
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -0.5)",
+        "background": "linear-gradient(rgb(8, 16, 33), rgb(8, 16, 33)), linear-gradient(rgb(37, 51, 90), rgb(30, 44, 76))",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "rgb(22, 33, 68) 0px 1px 0px 0px inset, rgb(19, 28, 53) 0px -1px 0px 0px inset, rgb(5, 11, 27) 0px -2px 0px 0px inset, rgb(22, 33, 68) 1px 0px 0px 0px inset, rgb(22, 33, 68) -1px 0px 0px 0px inset",
+        "radius": "12px",
+        "font": "11.5px / 16px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "opacity": "1",
+        "dpr": 1
+      },
+      "headerInputsIdentical": true,
+      "firstVsRest": [
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        }
+      ],
+      "captureSha256": [
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896"
+      ]
+    },
+    {
+      "variant": "layer2",
+      "header": {
+        "rect": {
+          "x": 904,
+          "y": 11,
+          "width": 408,
+          "height": 36,
+          "top": 11,
+          "right": 1312,
+          "bottom": 47,
+          "left": 904
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -0.5)",
+        "background": "linear-gradient(rgb(8, 16, 33), rgb(8, 16, 33)), linear-gradient(rgb(37, 51, 90), rgb(30, 44, 76))",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "boxShadow": "rgb(22, 33, 68) 0px 1px 0px 0px inset, rgb(19, 28, 53) 0px -1px 0px 0px inset, rgb(5, 11, 27) 0px -2px 0px 0px inset, rgb(22, 33, 68) 1px 0px 0px 0px inset, rgb(22, 33, 68) -1px 0px 0px 0px inset",
+        "radius": "12px",
+        "font": "11.5px / 16px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "opacity": "1",
+        "dpr": 1
+      },
+      "headerInputsIdentical": true,
+      "firstVsRest": [
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        },
+        {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "header": 0,
+          "sidebar": 0,
+          "workspace": 0,
+          "bounds": null
+        }
+      ],
+      "captureSha256": [
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+        "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896"
+      ]
+    }
+  ],
+  "originalVsLayer": {
+    "pixels": 906,
+    "maxChannelDelta": 74,
+    "header": 906,
+    "sidebar": 0,
+    "workspace": 0,
+    "bounds": [
+      948,
+      16,
+      1302,
+      42
+    ]
+  },
+  "originalStableGateFailures": [
+    {
+      "attempt": "initial",
+      "pixels": 206,
+      "maxChannelDelta": 3,
+      "header": 204,
+      "sidebar": 2,
+      "workspace": 0,
+      "bounds": [
+        208,
+        12,
+        1016,
+        526
+      ],
+      "beforeSha256": "922a382773e1c1011d31f1c4cd701ff2575c846e4e7f2875ff9e93e5f4120dae",
+      "repeatSha256": "d288963daf181c8a9cd89374a60591b5b7de83c46d9de959596d4bf48d726cb3"
+    },
+    {
+      "attempt": "retry",
+      "pixels": 198,
+      "maxChannelDelta": 7,
+      "header": 198,
+      "sidebar": 0,
+      "workspace": 0,
+      "bounds": [
+        283,
+        12,
+        1016,
+        46
+      ],
+      "beforeSha256": "d288963daf181c8a9cd89374a60591b5b7de83c46d9de959596d4bf48d726cb3",
+      "repeatSha256": "cd4ccc84814250623a3b6a6eb2bc50be7f662b568f87ae39d3aea8bc6acb5a67"
+    }
+  ],
+  "conclusion": "Rendering is sensitive to header transform/compositing in this probe, but a unique cause and safe production fix are not established. No screenshot pixels were masked and no threshold was changed."
+}
