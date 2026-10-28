@@ -1397,6 +1397,8 @@
   }
   .qp-redesign[data-testid^=production-][data-theme=dark] .qp-palette-action-mark { color:#e5eaff; background:linear-gradient(135deg,#1b214a,#151933); }
   .qp-redesign[data-testid^=production-][data-theme=dark] .qp-palette-action-mark>svg { filter:drop-shadow(0 0 2px #6476ff55); }
+  /* Preserve the measured position with a 3D transform for the layered plate. */
+  .qp-redesign[data-testid^=production-]:not([data-testid=production-overview])[data-theme=dark] .qp-topbar-actions>button[aria-haspopup=dialog] { transform:translate3d(0,-.5px,0); }
   .qp-redesign[data-testid^=production-] .qp-topbar-actions>button[aria-haspopup=dialog]:hover { border-color:color-mix(in srgb,var(--qp-series) 65%,var(--qp-border)); }
   .qp-redesign[data-testid^=production-] .qp-topbar-actions>button[aria-haspopup=dialog]:focus-visible { outline:2px solid var(--qp-accent); outline-offset:3px; }
   .qp-redesign[data-testid=production-overview] .qp-topbar-body { padding-right:20px; }
