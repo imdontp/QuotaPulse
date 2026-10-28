@@ -1,0 +1,80 @@
+{
+  "sourceCommit": "4c0afb80f2327d72b0d976daf33decd46271a98c",
+  "sha256": "44626a7f62b5823113828cf01b1054892b218c31e91a8443b4144df8ae211d99",
+  "bytes": 206510860,
+  "entries": 3161,
+  "productionIndexSha256": "117ff51476bfbd0e95fcee5b9a35a108f3c85a8d40a6aa0f309d2e5510a88a9d",
+  "repositoryTests": {
+    "daemon": 134,
+    "web": 376,
+    "tray": 198,
+    "failures": 0
+  },
+  "native": {
+    "status": "passed",
+    "captures": 16,
+    "phases": [
+      "initial",
+      "restored-th-light"
+    ],
+    "limitations": [
+      "actual production windows placed beyond all displays, nonfocusable and absent from taskbar; anti-occlusion flags/background-throttling override and reduced motion are test-only",
+      "initial content resized by test to1672x941; restored native size1371x887 tested through real Settings/preload/main",
+      "same-version Electron restart with explicit storage flush; no installer or two-version upgrade exercised here",
+      "two native language/theme combinations; not complete four-combination matrix",
+      "synthetic owned DB only; readers/account probes disabled; no physical tray-click/minimize/monitor or resource proof"
+    ]
+  },
+  "standaloneChecks": [
+    "actual ZIP extracted and all file bytes match unused source bundle",
+    "start WhatIf creates no review profile or processes",
+    "extracted bundle outside repository dependencies starts its real daemon/tray with readers off and isolated profile",
+    "stop WhatIf retains both recorded processes",
+    "scoped stop ends recorded processes and preserves database",
+    "restart tolerates retained review process records and stale daemon lock"
+  ],
+  "readerChecks": [
+    "both launch modes WhatIf create no profile/process state",
+    "default launch disables readers despite inherited on and leaves harness/original sentinels unchanged",
+    "explicit opt-in overrides inherited off and actual Codex adapter ingests150 tokens from owned home",
+    "incremental append and repeated manual refresh retain exactly190 tokens and one session; real Models page matches API and excludes prompt content",
+    "reader-enabled restart preserves cursor and does not duplicate events",
+    "default restart disables collection and retains already collected review data"
+  ],
+  "installationChecks": [
+    "actual delivered ZIP installed with identical file inventory and the current bundled installer",
+    "ZIP entry longer than 260 characters extracted into isolated installation",
+    "installed daemon and tray start with readers off and an independent review profile",
+    "scoped stop ends owned processes and retains the isolated database"
+  ],
+  "cleanup": [
+    {
+      "stage": "unused-build",
+      "status": "cleaned",
+      "beforeBytes": 453666057,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    },
+    {
+      "stage": "standalone",
+      "status": "cleaned",
+      "beforeBytes": 454024826,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    },
+    {
+      "stage": "reader",
+      "status": "cleaned",
+      "beforeBytes": 454164905,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    },
+    {
+      "stage": "installed",
+      "status": "cleaned",
+      "beforeBytes": 453666057,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    }
+  ]
+}
