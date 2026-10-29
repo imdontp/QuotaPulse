@@ -1,0 +1,28 @@
+{
+  "scope": "Fixed English dark forecast heading region; selected candidate tested on the same reference. Not a whole-page similarity metric.",
+  "beforeIndexSha256": "573c48580a0262b57dd9f8bb0d7ca22b0088b2d675bb75fbc4038943917037bd",
+  "afterIndexSha256": "c574c66df4cd4887ae2e351cb720e50c7a2243107a6f3e46592700b357ea2738",
+  "beforeImageSha256": "177a711e1eb933a3c9745c31485a8846e2df74c86bab8fe2c5de123c2cca10ae",
+  "afterImageSha256": "516d749136e07c46647d3b7e1cb126b8a06b51f56a6da9db00c68b8fb233aea7",
+  "chosenTrialPixelExact": true,
+  "repeatIdentical": true,
+  "mainRegionsEqual": true,
+  "changedPixels": 1611,
+  "changedBounds": [
+    1230,
+    90,
+    1401,
+    104
+  ],
+  "outsideTitlePixels": 0,
+  "outsideBounds": null,
+  "maxChannelDelta": 231,
+  "referenceRegionBefore": {
+    "mae": 34.066222551196645,
+    "mse": 5438.949814951888
+  },
+  "referenceRegionAfter": {
+    "mae": 18.239328892178634,
+    "mse": 2011.2174685418208
+  }
+}

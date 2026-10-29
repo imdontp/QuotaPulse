@@ -1,0 +1,194 @@
+{
+  "productionIndexSha256": "c574c66df4cd4887ae2e351cb720e50c7a2243107a6f3e46592700b357ea2738",
+  "browser": "156.0.8078.48",
+  "language": "en",
+  "theme": "dark",
+  "deviceScaleFactor": 1,
+  "reducedMotion": "reduce",
+  "rendererArgs": [],
+  "fixture": "same isolated in-memory synthetic fixture as v1.85.95",
+  "scope": "Current compiled application screenshots and geometry; unapproved concept parity",
+  "results": [
+    {
+      "route": "alerts",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "referenceSha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+      "sha256": "516d749136e07c46647d3b7e1cb126b8a06b51f56a6da9db00c68b8fb233aea7",
+      "repeatSha256": "516d749136e07c46647d3b7e1cb126b8a06b51f56a6da9db00c68b8fb233aea7",
+      "repeatIdentical": true,
+      "geometry": {
+        "viewport": {
+          "width": 1672,
+          "height": 941
+        },
+        "pageOverflow": false,
+        "main": {
+          "x": 226,
+          "y": 60,
+          "width": 1446,
+          "height": 890.875,
+          "top": 60,
+          "right": 1672,
+          "bottom": 950.875,
+          "left": 226
+        },
+        "sidebar": {
+          "x": 0,
+          "y": 60,
+          "width": 226,
+          "height": 881,
+          "top": 60,
+          "right": 226,
+          "bottom": 941,
+          "left": 0
+        },
+        "quickStats": {
+          "x": 12,
+          "y": 522,
+          "width": 201,
+          "height": 289,
+          "top": 522,
+          "right": 213,
+          "bottom": 811,
+          "left": 12
+        },
+        "moreOpen": false,
+        "visibleNavigation": [
+          "#overview",
+          "#live",
+          "#projects",
+          "#models",
+          "#cost?range=month",
+          "#history",
+          "#alerts",
+          "#providers",
+          "#settings"
+        ],
+        "mainRegions": [
+          {
+            "tag": "DIV",
+            "className": "qp-alert-layout",
+            "x": 239,
+            "y": 72,
+            "width": 1423,
+            "height": 866.875,
+            "top": 72,
+            "right": 1662,
+            "bottom": 938.875,
+            "left": 239
+          }
+        ],
+        "navigationOrder": [
+          "Overview",
+          "Live",
+          "Projects",
+          "Models",
+          "Cost Analysis",
+          "History",
+          "Alerts",
+          "Providers",
+          "Settings"
+        ],
+        "headings": [
+          {
+            "text": "Alerts & Quota Guard",
+            "x": 310,
+            "y": 87,
+            "width": 399.84375,
+            "height": 27.5,
+            "top": 87,
+            "right": 709.84375,
+            "bottom": 114.5,
+            "left": 310,
+            "fontSize": "24.5px",
+            "fontWeight": "375"
+          },
+          {
+            "text": "Observed quota history",
+            "x": 252,
+            "y": 263.28125,
+            "width": 199.125,
+            "height": 20.796875,
+            "top": 263.28125,
+            "right": 451.125,
+            "bottom": 284.078125,
+            "left": 252,
+            "fontSize": "15.5px",
+            "fontWeight": "550"
+          },
+          {
+            "text": "Current risk and reader advisories",
+            "x": 254,
+            "y": 474.78125,
+            "width": 262.3125,
+            "height": 20.796875,
+            "top": 474.78125,
+            "right": 516.3125,
+            "bottom": 495.578125,
+            "left": 254,
+            "fontSize": "14.5px",
+            "fontWeight": "600"
+          },
+          {
+            "text": "Read-only threshold rules",
+            "x": 248,
+            "y": 771.6875,
+            "width": 940.9375,
+            "height": 20.796875,
+            "top": 771.6875,
+            "right": 1188.9375,
+            "bottom": 792.484375,
+            "left": 248,
+            "fontSize": "14px",
+            "fontWeight": "550"
+          },
+          {
+            "text": "Usage Forecast & Risk",
+            "x": 1222.9375,
+            "y": 87,
+            "width": 424.0625,
+            "height": 20.796875,
+            "top": 87,
+            "right": 1647,
+            "bottom": 107.796875,
+            "left": 1222.9375,
+            "fontSize": "14.5px",
+            "fontWeight": "450"
+          },
+          {
+            "text": "Recommended actions",
+            "x": 1264.9375,
+            "y": 430,
+            "width": 214.4375,
+            "height": 20.796875,
+            "top": 430,
+            "right": 1479.375,
+            "bottom": 450.796875,
+            "left": 1264.9375,
+            "fontSize": "14px",
+            "fontWeight": "500"
+          },
+          {
+            "text": "Threshold event history",
+            "x": 1222.9375,
+            "y": 771,
+            "width": 164.265625,
+            "height": 24,
+            "top": 771,
+            "right": 1387.203125,
+            "bottom": 795,
+            "left": 1222.9375,
+            "fontSize": "12px",
+            "fontWeight": "500"
+          }
+        ]
+      },
+      "errors": [],
+      "forbidden": [],
+      "totalStreamRequests": 2
+    }
+  ]
+}

@@ -144,7 +144,7 @@
 .qp-alert-forecast-orb span { font-size:10px; line-height:1.4; color:var(--qp-accent); }
 .qp-alert-forecast-orb .qp-alert-forecast-label-short { display:none; }
 @media(min-width:1536px) {
-  .qp-redesign[data-testid=production-alerts][data-theme=dark][lang=en] .qp-alert-forecast>h2 { padding-inline-start:7px; }
+  .qp-redesign[data-testid=production-alerts][data-theme=dark][lang=en] .qp-alert-forecast>h2 { padding-inline-start:7px; padding-bottom:2px; font-size:14.5px; font-weight:450; line-height:18.8px; }
   .qp-redesign[data-testid=production-alerts][data-theme=dark][lang=en] .qp-alert-forecast>h2>svg { display:none; }
   .qp-redesign[data-testid=production-alerts][data-theme=dark][lang=en] .qp-alert-forecast-label-full {
     position:absolute; width:1px; height:1px; padding:0; margin:-1px;

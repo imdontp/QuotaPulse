@@ -1,0 +1,308 @@
+{
+  "scope": "Same literal English forecast heading in a fixed 193x35 reference region; no pixel mask or alignment translation. Region includes background; local diagnostic only.",
+  "referenceInkBounds": [
+    1230,
+    89,
+    1377,
+    103
+  ],
+  "candidates": [
+    {
+      "name": "current",
+      "font": "600 16px / 20.8px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "textBox": {
+        "x": 1229.9375,
+        "y": 86,
+        "width": 171.859375,
+        "height": 21,
+        "top": 86,
+        "right": 1401.796875,
+        "bottom": 107,
+        "left": 1229.9375
+      },
+      "lineBox": {
+        "x": 1222.9375,
+        "y": 87,
+        "width": 424.0625,
+        "height": 20.796875,
+        "top": 87,
+        "right": 1647,
+        "bottom": 107.796875,
+        "left": 1222.9375
+      },
+      "inkBounds": [
+        1231,
+        90,
+        1400,
+        104
+      ],
+      "unalignedInkIoU": 0.195475,
+      "regionMae": 34.066223,
+      "regionMse": 5438.949815
+    },
+    {
+      "name": "14.5-450",
+      "font": "450 14.5px / 20.8px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "textBox": {
+        "x": 1229.9375,
+        "y": 87,
+        "width": 150.515625,
+        "height": 19,
+        "top": 87,
+        "right": 1380.453125,
+        "bottom": 106,
+        "left": 1229.9375
+      },
+      "lineBox": {
+        "x": 1222.9375,
+        "y": 87,
+        "width": 424.0625,
+        "height": 20.796875,
+        "top": 87,
+        "right": 1647,
+        "bottom": 107.796875,
+        "left": 1222.9375
+      },
+      "inkBounds": [
+        1231,
+        91,
+        1378,
+        104
+      ],
+      "unalignedInkIoU": 0.25,
+      "regionMae": 24.621564,
+      "regionMse": 3371.119566
+    },
+    {
+      "name": "14.5-500",
+      "font": "500 14.5px / 20.8px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "textBox": {
+        "x": 1229.9375,
+        "y": 87,
+        "width": 152.296875,
+        "height": 19,
+        "top": 87,
+        "right": 1382.234375,
+        "bottom": 106,
+        "left": 1229.9375
+      },
+      "lineBox": {
+        "x": 1222.9375,
+        "y": 87,
+        "width": 424.0625,
+        "height": 20.796875,
+        "top": 87,
+        "right": 1647,
+        "bottom": 107.796875,
+        "left": 1222.9375
+      },
+      "inkBounds": [
+        1231,
+        91,
+        1380,
+        104
+      ],
+      "unalignedInkIoU": 0.220809,
+      "regionMae": 26.125882,
+      "regionMse": 3680.020183
+    },
+    {
+      "name": "14-600",
+      "font": "600 14px / 20.8px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "textBox": {
+        "x": 1229.9375,
+        "y": 88,
+        "width": 150.375,
+        "height": 18,
+        "top": 88,
+        "right": 1380.3125,
+        "bottom": 106,
+        "left": 1229.9375
+      },
+      "lineBox": {
+        "x": 1222.9375,
+        "y": 87,
+        "width": 424.0625,
+        "height": 20.796875,
+        "top": 87,
+        "right": 1647,
+        "bottom": 107.796875,
+        "left": 1222.9375
+      },
+      "inkBounds": [
+        1231,
+        92,
+        1378,
+        103
+      ],
+      "unalignedInkIoU": 0.273243,
+      "regionMae": 25.179472,
+      "regionMse": 3555.406168
+    },
+    {
+      "name": "15-450",
+      "font": "450 15px / 20.8px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "textBox": {
+        "x": 1229.9375,
+        "y": 87,
+        "width": 155.703125,
+        "height": 19,
+        "top": 87,
+        "right": 1385.640625,
+        "bottom": 106,
+        "left": 1229.9375
+      },
+      "lineBox": {
+        "x": 1222.9375,
+        "y": 87,
+        "width": 424.0625,
+        "height": 20.796875,
+        "top": 87,
+        "right": 1647,
+        "bottom": 107.796875,
+        "left": 1222.9375
+      },
+      "inkBounds": [
+        1231,
+        91,
+        1384,
+        104
+      ],
+      "unalignedInkIoU": 0.18427,
+      "regionMae": 27.641796,
+      "regionMse": 3968.775278
+    },
+    {
+      "name": "14.5-450-left1-up1",
+      "font": "450 14.5px / 20.8px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "textBox": {
+        "x": 1228.9375,
+        "y": 86,
+        "width": 150.515625,
+        "height": 19,
+        "top": 86,
+        "right": 1379.453125,
+        "bottom": 105,
+        "left": 1228.9375
+      },
+      "lineBox": {
+        "x": 1221.9375,
+        "y": 86,
+        "width": 424.0625,
+        "height": 20.796875,
+        "top": 86,
+        "right": 1646,
+        "bottom": 106.796875,
+        "left": 1221.9375
+      },
+      "inkBounds": [
+        1230,
+        90,
+        1378,
+        103
+      ],
+      "unalignedInkIoU": 0.417661,
+      "regionMae": 18.569307,
+      "regionMse": 1975.969356
+    },
+    {
+      "name": "14.5-450-left1-up2",
+      "font": "450 14.5px / 20.8px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "textBox": {
+        "x": 1228.9375,
+        "y": 85,
+        "width": 150.515625,
+        "height": 19,
+        "top": 85,
+        "right": 1379.453125,
+        "bottom": 104,
+        "left": 1228.9375
+      },
+      "lineBox": {
+        "x": 1221.9375,
+        "y": 85,
+        "width": 424.0625,
+        "height": 20.796875,
+        "top": 85,
+        "right": 1646,
+        "bottom": 105.796875,
+        "left": 1221.9375
+      },
+      "inkBounds": [
+        1230,
+        89,
+        1378,
+        102
+      ],
+      "unalignedInkIoU": 0.37341,
+      "regionMae": 20.621959,
+      "regionMse": 2419.337281
+    },
+    {
+      "name": "14.5-450-up1",
+      "font": "450 14.5px / 20.8px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "textBox": {
+        "x": 1229.9375,
+        "y": 86,
+        "width": 150.515625,
+        "height": 19,
+        "top": 86,
+        "right": 1380.453125,
+        "bottom": 105,
+        "left": 1229.9375
+      },
+      "lineBox": {
+        "x": 1222.9375,
+        "y": 86,
+        "width": 424.0625,
+        "height": 20.796875,
+        "top": 86,
+        "right": 1647,
+        "bottom": 106.796875,
+        "left": 1222.9375
+      },
+      "inkBounds": [
+        1231,
+        90,
+        1379,
+        103
+      ],
+      "unalignedInkIoU": 0.429603,
+      "regionMae": 17.798865,
+      "regionMse": 1799.328004
+    },
+    {
+      "name": "14.5-450-up2",
+      "font": "450 14.5px / 20.8px \"Geist Variable\", Geist, \"Noto Sans Thai\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "textBox": {
+        "x": 1229.9375,
+        "y": 85,
+        "width": 150.515625,
+        "height": 19,
+        "top": 85,
+        "right": 1380.453125,
+        "bottom": 104,
+        "left": 1229.9375
+      },
+      "lineBox": {
+        "x": 1222.9375,
+        "y": 85,
+        "width": 424.0625,
+        "height": 20.796875,
+        "top": 85,
+        "right": 1647,
+        "bottom": 105.796875,
+        "left": 1222.9375
+      },
+      "inkBounds": [
+        1231,
+        89,
+        1379,
+        102
+      ],
+      "unalignedInkIoU": 0.354618,
+      "regionMae": 21.147101,
+      "regionMse": 2456.386183
+    }
+  ]
+}
