@@ -6,13 +6,19 @@ export async function checkHistoryTimeline(page, getSummary) {
   const svg = panel.locator(':scope > svg');
   const tooltip = panel.locator('.qp-history-tooltip');
   const range = page.locator('.qp-history-heading select').first();
+  const picker = page.locator('.qp-history-range-picker');
+  const summary = picker.locator(':scope > summary');
+  async function selectRange(value) {
+    if (!await picker.evaluate(element => element.open)) await summary.click();
+    await range.selectOption(value);
+    if (await picker.evaluate(element => element.open)) await summary.click();
+  }
   const originalRange = await range.inputValue();
   const results = [];
   for (const rangeValue of [originalRange, 'today']) {
     if (await range.inputValue() !== rangeValue) {
       const oldScope = await panel.getAttribute('data-scope');
-      await range.focus();
-      await range.selectOption(rangeValue);
+      await selectRange(rangeValue);
       await page.waitForFunction(old => document.querySelector('[data-testid=history-timeline]')?.getAttribute('data-scope') !== old, oldScope);
       assert.equal(await tooltip.count(), 0, 'Scope changes dismiss the old bucket');
     }
@@ -73,8 +79,7 @@ export async function checkHistoryTimeline(page, getSummary) {
   await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   assert.equal(await tooltip.count(), 0, 'Restoring width must not revive an old bucket');
   const previousScope = await panel.getAttribute('data-scope');
-  await range.focus();
-  await range.selectOption(originalRange);
+  await selectRange(originalRange);
   if (originalRange !== 'today') await page.waitForFunction(old => document.querySelector('[data-testid=history-timeline]')?.getAttribute('data-scope') !== old, previousScope);
   await page.waitForFunction(() => !document.querySelector('.qp-history-tooltip'));
   await page.evaluate(() => document.activeElement?.blur());

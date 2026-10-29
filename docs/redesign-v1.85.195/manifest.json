@@ -1,0 +1,84 @@
+{
+  "parentCommit": "339d283a3f53593420d47cc6c3b14461334c3f78",
+  "productionIndexSha256": "e96b3de5486d2414f3bcc32ca12ba96ad37c0a31291f849b64516f6203577c74",
+  "sourceSha256": {
+    "packages/web/src/redesign/history.css": "d7aa5897cb61797c679832b2d9981860a46368d7089a8afdba60ce467e6644cf",
+    "packages/web/src/sections/history.tsx": "e62ddf97773d989f55423fcc33f8565f920972fdebbdc68de249da601d8367c3",
+    "scripts/history-timeline-helper.mjs": "e8c5bdb962528954739efac2cd5eefb925e33612a0c2a0cad68a15b1c922c6c1",
+    "scripts/check-stable-captures.mts": "c50096c648818fecb0bfb77d0d907631624672bc3835b1c2ce60c5f6f6094d1a"
+  },
+  "evidenceSha256": {
+    "stable-history.json.gz": "a77c2686ebaeeff67e62e6b1f24e5a780e2f2f45ad7ec70bf065d605dab704c1",
+    "baseline-failure.log.gz": "f9cd60e39d84a6a5a3be7a980562577eff7ff46d3061e75f32711cc17f4812f8",
+    "baseline-fixed.log.gz": "c7089e03d5fe53233c6b414b8fd56c64734c84333405afcf12f7a7b431b466e7",
+    "api-and-contrast.log.gz": "9e24cd72dcd48e27230e8c130104363cd1bdf24fa6a71755cd6946335a931685",
+    "api-and-contrast-driver.mts.gz": "0d96c41ab044f9f26e47f591b91cd6d16d5a2119f04822e6fa2a276835630c2d"
+  },
+  "historyImageSha256": "037fa96dc71b69da397ec497d66c6267edf951502644a1a0e27565c8fc69dc25",
+  "stablePairs": [
+    {
+      "page": "history",
+      "language": "en",
+      "theme": "dark",
+      "identical": false,
+      "changedPixels": 7,
+      "maxChannelDelta": 7
+    },
+    {
+      "page": "history-selected",
+      "language": "en",
+      "theme": "dark",
+      "identical": false,
+      "changedPixels": 7,
+      "maxChannelDelta": 7
+    },
+    {
+      "page": "history",
+      "language": "en",
+      "theme": "light",
+      "identical": true,
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history-selected",
+      "language": "en",
+      "theme": "light",
+      "identical": true,
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history",
+      "language": "th",
+      "theme": "dark",
+      "identical": false,
+      "changedPixels": 31,
+      "maxChannelDelta": 7
+    },
+    {
+      "page": "history-selected",
+      "language": "th",
+      "theme": "dark",
+      "identical": false,
+      "changedPixels": 31,
+      "maxChannelDelta": 7
+    },
+    {
+      "page": "history",
+      "language": "th",
+      "theme": "light",
+      "identical": true,
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "history-selected",
+      "language": "th",
+      "theme": "light",
+      "identical": true,
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    }
+  ]
+}

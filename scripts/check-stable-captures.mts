@@ -756,7 +756,24 @@ async function checkHistoryDetails(page: Page, lang: string, theme: string, pass
   await trigger.focus(); await page.keyboard.press('Enter');
   const response = await daemon.inject({ method: 'GET', url: `/api/usage-events?from=0&to=${fixedNow}&limit=50`, headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(response.statusCode, 200);
-  const row = response.json().rows.find((row: { event_id: number }) => row.event_id === eventId);
+  const records = response.json<UsageEventsResponse>().rows;
+  const badgeRows = await history.locator('tbody tr[data-history-record]').evaluateAll(elements => elements.map(element => {
+    const badge = element.querySelector('.qp-history-kind-badge');
+    const cell = badge?.closest('td');
+    const bounds = badge?.getBoundingClientRect(), cellBounds = cell?.getBoundingClientRect();
+    return { id: JSON.parse(element.getAttribute('data-history-record')!)[0] as number,
+      grain: badge?.getAttribute('data-grain'), text: badge?.textContent,
+      contained: !!bounds && !!cellBounds && bounds.right <= cellBounds.right + 1 && bounds.bottom <= cellBounds.bottom + 1 };
+  }));
+  const labels = lang === 'th' ? th : en;
+  for (const badge of badgeRows) {
+    const record = records.find(item => item.event_id === badge.id);
+    assert.ok(record, `Visible history record ${badge.id} must exist in the API response`);
+    assert.equal(badge.grain, record.grain, 'History badge must use the recorded grain');
+    assert.equal(badge.text, labels[`history.${record.grain}`], 'History badge text must describe the actual record type');
+    assert.ok(badge.contained, 'History badge must fit in its cell');
+  }
+  const row = records.find(item => item.event_id === eventId);
   assert.ok(row);
   const dialog = page.locator('[data-history-detail-rail]'); await dialog.waitFor();
   assert.equal(await history.locator('dialog').count(), 0, 'Redesign details use a nonmodal aside');
