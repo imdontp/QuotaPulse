@@ -1,0 +1,175 @@
+{
+  "status": "passed actual two-archive rollback",
+  "previousSource": "20ebfd4aa692249b1f85ba9751a901fe7a8d9ddd",
+  "currentSource": "f14d872f4acd28410c08868781ded98538ced64a",
+  "previousArchiveSha256": "b32c90621008db0c47ad6268a752bea9a70701c3a17477cc9b679fa9e891ed9c",
+  "currentArchiveSha256": "6597aad5e504056cef514ff8a35f739936fec6feb110b06f3139aa5197613e7d",
+  "fixtureSnapshotSha256": "abfc3a89b1349b2c3fb0a20e065b67195be5c990a5f1ad6333b1aaa21cec0200",
+  "stages": [
+    {
+      "name": "previous-seeded",
+      "source": "20ebfd4aa692249b1f85ba9751a901fe7a8d9ddd",
+      "native": {
+        "status": "passed",
+        "stage": "previous-seeded",
+        "release": "release-b32c90621008db0c47ad6268a752bea9a70701c3a17477cc9b679fa9e891ed9c",
+        "indexSha256": "c574c66df4cd4887ae2e351cb720e50c7a2243107a6f3e46592700b357ea2738",
+        "state": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "theme": "light",
+          "windowSize": {
+            "width": 1371,
+            "height": 887
+          },
+          "documentLanguage": "th",
+          "renderedTheme": "light"
+        },
+        "size": [
+          1371,
+          887
+        ],
+        "offscreen": true,
+        "readersDisabled": true,
+        "liveDataReady": true,
+        "observedMetrics": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "captureErrors": [],
+        "errors": [],
+        "forbidden": []
+      }
+    },
+    {
+      "name": "current-upgrade",
+      "source": "f14d872f4acd28410c08868781ded98538ced64a",
+      "native": {
+        "status": "passed",
+        "stage": "current-upgrade",
+        "release": "release-6597aad5e504056cef514ff8a35f739936fec6feb110b06f3139aa5197613e7d",
+        "indexSha256": "88e35437de251ef21b8e1fc656099a7779bbc2672e8d33b14d2e68040b1600ac",
+        "state": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "theme": "light",
+          "windowSize": {
+            "width": 1371,
+            "height": 887
+          },
+          "documentLanguage": "th",
+          "renderedTheme": "light"
+        },
+        "size": [
+          1371,
+          887
+        ],
+        "offscreen": true,
+        "readersDisabled": true,
+        "liveDataReady": true,
+        "observedMetrics": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "captureErrors": [],
+        "errors": [],
+        "forbidden": []
+      }
+    },
+    {
+      "name": "previous-rollback",
+      "source": "20ebfd4aa692249b1f85ba9751a901fe7a8d9ddd",
+      "native": {
+        "status": "passed",
+        "stage": "previous-rollback",
+        "release": "release-b32c90621008db0c47ad6268a752bea9a70701c3a17477cc9b679fa9e891ed9c",
+        "indexSha256": "c574c66df4cd4887ae2e351cb720e50c7a2243107a6f3e46592700b357ea2738",
+        "state": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "theme": "light",
+          "windowSize": {
+            "width": 1371,
+            "height": 887
+          },
+          "documentLanguage": "th",
+          "renderedTheme": "light"
+        },
+        "size": [
+          1371,
+          887
+        ],
+        "offscreen": true,
+        "readersDisabled": true,
+        "liveDataReady": true,
+        "observedMetrics": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "captureErrors": [],
+        "errors": [],
+        "forbidden": []
+      }
+    },
+    {
+      "name": "current-recovery",
+      "source": "f14d872f4acd28410c08868781ded98538ced64a",
+      "native": {
+        "status": "passed",
+        "stage": "current-recovery",
+        "release": "release-6597aad5e504056cef514ff8a35f739936fec6feb110b06f3139aa5197613e7d",
+        "indexSha256": "88e35437de251ef21b8e1fc656099a7779bbc2672e8d33b14d2e68040b1600ac",
+        "state": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "theme": "light",
+          "windowSize": {
+            "width": 1371,
+            "height": 887
+          },
+          "documentLanguage": "th",
+          "renderedTheme": "light"
+        },
+        "size": [
+          1371,
+          887
+        ],
+        "offscreen": true,
+        "readersDisabled": true,
+        "liveDataReady": true,
+        "observedMetrics": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "captureErrors": [],
+        "errors": [],
+        "forbidden": []
+      }
+    }
+  ],
+  "reclaimedBytes": 4082028492,
+  "cleanedRuntimeTrees": 9,
+  "evidenceSha256": {
+    "verification.json.gz": "508cb109aaeafd3fcd235c7aad4e83e7e9e6663627fc32185fb2568de8035b00",
+    "baseline.json.gz": "a6e60e50b2dade8fb3f712b962f9c6f24194746f2b20230f0df8b94299e3f3fb",
+    "previous-provenance.json.gz": "9d4aa38313659ae71b070b0fc4c76188142c4abb7f50f4db6917bac957566011",
+    "current-provenance.json.gz": "d19d598e4763017b864a564e15162e45fc31541f27361859ad02faff8f07f81d",
+    "rollback-orchestrator.ps1.gz": "567cea0800c5962b70fe1b8ef8c04ec0913d72dbcf96b08905c0ae2c77386ea0",
+    "rollback-helper.cjs.gz": "05010f8e86d356ba29992c2b3b26e2a494a11123e6520d436f0a3db5ad84414a",
+    "native-check.mts.gz": "de51b9e534f83718beaf38569575cb1b7fede406438beb4075e10ff4a4f9f564",
+    "current-upgrade.png": "8717a8fa407be6f80129e3aa844fe591c260e48ab76b38d27a99401a49525411",
+    "size-disagreement.png": "8242b1c380d4a0b028c3fd5fb96770d5c8935baa31f5eca469035a222315f69c"
+  }
+}

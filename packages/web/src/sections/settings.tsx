@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Activity, BellRing, Coins, Globe, Info, Layers, Monitor, RefreshCw } from 'lucide-react';
 import { api, type AppSettings, type NotificationSettings, type SubscriptionStatus } from '@/api';
 import { Button } from '@/components/ui/button';
@@ -56,6 +56,22 @@ export function SettingsSection({
   const [err, setErr] = useState<string | null>(null);
   const [windowSize, setWindowSize] = useState<WindowSize>(loadWindowSize());
   const [windowSizeMessage, setWindowSizeMessage] = useState<string | null>(null);
+  const windowSizeRevision = useRef(0);
+
+  useEffect(() => {
+    const getSize = window.qpDashboard?.getWindowSize;
+    if (!getSize) return;
+    let active = true;
+    const revision = windowSizeRevision.current;
+    void getSize().then(size => {
+      if (!active || revision !== windowSizeRevision.current || !size ||
+          !Number.isInteger(size.width) || !Number.isInteger(size.height) ||
+          size.width < 540 || size.width > 2560 || size.height < 640 || size.height > 1440) return;
+      setWindowSize(size);
+      saveWindowSize(size);
+    }).catch(() => { /* Older or unavailable bridges retain the browser preference. */ });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => setDraft(String(rate)), [rate]);
 
@@ -176,6 +192,7 @@ export function SettingsSection({
   };
 
   const handleWindowSizeChange = async (field: keyof WindowSize, value: string) => {
+    windowSizeRevision.current++;
     const num = Number(value);
     if (Number.isFinite(num) && num > 0) {
       const updated = { ...windowSize, [field]: num };
@@ -197,6 +214,7 @@ export function SettingsSection({
   };
 
   const handleResetWindowSize = async () => {
+    windowSizeRevision.current++;
     const defaults = resetWindowSize();
     setWindowSize(defaults);
     setWindowSizeMessage(null);

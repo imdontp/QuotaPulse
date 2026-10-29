@@ -2313,6 +2313,11 @@ function registerCompanionIpc(): void {
   ipcMain.on('qp-popup-hide-pet', () => setPetEnabled(false));
   ipcMain.on('qp-popup-show-pet', () => setPetEnabled(true));
   ipcMain.on('qp-popup-close', () => closeQuotaPopup());
+  ipcMain.handle('qp-dashboard-get-window-size', (event) => {
+    if (!popup || popup.isDestroyed() || event.sender !== popup.webContents) return null;
+    const [width, height] = popup.getSize();
+    return { width, height };
+  });
   ipcMain.handle('qp-dashboard-set-window-size', (_event, size: { width: number; height: number }) => {
     if (!size || typeof size.width !== 'number' || typeof size.height !== 'number') return false;
     const width = Math.max(PANEL_MIN_WIDTH, Math.min(2560, size.width));
