@@ -1,0 +1,11 @@
+# Source188 — Overview decorative orbital traces
+
+Four static dotted arcs and glints around Pulse Core restore elements visible in the supplied Overview image. They are decorative, hidden from assistive technology, do not receive pointer events, do not animate, and do not encode quota, usage, or activity. The actual quota and API data remain unchanged. The reference artwork is used in dark production Overview; the light theme and development preview do not receive these arcs.
+
+[View the eight-page comparison](review.html). The Overview image is a new compiled screenshot from source188 and an isolated synthetic API fixture; the other seven application screenshots are reused from source186 and were not recaptured. Real application values and graph shapes vary with collected data. The gallery is not an approved baseline or a whole-screen similarity score.
+
+At 1586×992, 1,564 changed pixels stayed within the bounding rectangle `[460,90,1000,360)`. Major region geometry and quota-row text, values, state, and bounds remained identical in the fixture. The screenshot repeated byte-for-byte within its browser context. Four manually chosen wing windows include background and pre-existing artwork. Mean squared RGB error versus the supplied reference decreased in all four; mean absolute error decreased in three and increased slightly in the lower-left window. The recorded measurements are local exploratory diagnostics, not independent whole-page acceptance. The test-only variants were selected using those same windows.
+
+The previous review187 ZIP does not contain this source change. The remaining cross-context header raster issue, physical desktop and provider acceptance, performance, and overall blueprint/concept review are still open.
+
+Validation: web build and all 376 web tests passed. The Overview gate passed all four English/Thai and dark/light pairs byte-for-byte without masks using the existing tolerance, including API-backed quota and navigation checks. The local gallery passed eight tabs, 16 local images and keyboard navigation. The compiled checkout also passed a 16-capture isolated-profile Electron probe (English/dark, then Thai/light after restart); the new art was verified decorative and static. The Electron probe used offscreen windows and is not a packaged-release, physical-display or full-theme acceptance test.

@@ -1,0 +1,69 @@
+{
+  "scope": "Four manually bounded wing regions include background and existing orbital paint; not whole-screen parity",
+  "fixture": "Same in-memory synthetic API data, 1586x992 Chrome reduced motion",
+  "beforeIndexSha256": "117ff51476bfbd0e95fcee5b9a35a108f3c85a8d40a6aa0f309d2e5510a88a9d",
+  "afterIndexSha256": "573c48580a0262b57dd9f8bb0d7ca22b0088b2d675bb75fbc4038943917037bd",
+  "beforeImageSha256": "590a29f59eaa6c60fbb4f15ee1d50b46ef34e809f4e54c174fff69e034bcc24b",
+  "afterImageSha256": "fe996f745993d154b2a88ba0f627b82a4adc5be3d20e7e2543bfb8d3000b8c27",
+  "changedPixels": 1564,
+  "changedBounds": [
+    479,
+    145,
+    987,
+    346
+  ],
+  "changedOutsideBoundingRegion": 0,
+  "mainRegionsEqual": true,
+  "quotaRowsEqual": true,
+  "repeatIdentical": true,
+  "windows": {
+    "left_upper": {
+      "bounds": [
+        490,
+        150,
+        580,
+        225
+      ],
+      "beforeMae": 8.990568,
+      "afterMae": 8.845926,
+      "beforeMse": 548.812099,
+      "afterMse": 446.515951
+    },
+    "left_lower": {
+      "bounds": [
+        490,
+        280,
+        580,
+        345
+      ],
+      "beforeMae": 9.069915,
+      "afterMae": 9.106667,
+      "beforeMse": 437.626952,
+      "afterMse": 424.298462
+    },
+    "right_upper": {
+      "bounds": [
+        875,
+        145,
+        955,
+        220
+      ],
+      "beforeMae": 12.384556,
+      "afterMae": 12.234778,
+      "beforeMse": 629.792222,
+      "afterMse": 577.526444
+    },
+    "right_lower": {
+      "bounds": [
+        875,
+        280,
+        955,
+        335
+      ],
+      "beforeMae": 18.271364,
+      "afterMae": 16.848409,
+      "beforeMse": 1287.824394,
+      "afterMse": 964.741742
+    }
+  }
+}

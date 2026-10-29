@@ -1,0 +1,27 @@
+{
+  "web": {
+    "tests": 376,
+    "passed": 376,
+    "failed": 0,
+    "command": "tsx --test --test-concurrency=2 test/*.test.ts"
+  },
+  "gallery": {
+    "tabs": 8,
+    "images": 16,
+    "keyboard": true,
+    "externalRequests": 0
+  },
+  "overviewGate": {
+    "language": [
+      "en",
+      "th"
+    ],
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "pairs": 4,
+    "byteIdentical": 4,
+    "masks": false
+  }
+}
