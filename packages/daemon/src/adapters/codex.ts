@@ -160,6 +160,7 @@ export const codexAdapter: Adapter = {
        */
       try {
         const res = await readJsonlDelta(file, cursor.byteOffset, (rec) => {
+          if (rec == null || typeof rec !== 'object' || Array.isArray(rec)) return;
           const r = rec as RolloutLine;
           const p = r.payload;
           if (!p) return;

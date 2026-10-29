@@ -63,13 +63,18 @@ export async function readJsonlDelta(
       if (text.trim() === '') continue;
 
       lines++;
+      let record: unknown;
       try {
-        onRecord(JSON.parse(text), consumed);
+        record = JSON.parse(text);
       } catch {
-        // A half-written final line is normal while a session is live; skip it and the
-        // next pass will re-read it from the retained offset.
+        // Malformed complete lines are counted and skipped. A trailing incomplete
+        // line is not consumed at all and will be retried on the next pass.
         parseErrors++;
+        continue;
       }
+      // Handler failures are not malformed JSON. Propagate them so adapters keep
+      // their persisted cursor and can retry the failed record on the next pass.
+      onRecord(record, consumed);
     }
     pending = searchFrom > 0 ? pending.subarray(searchFrom) : pending;
   }

@@ -1,0 +1,24 @@
+{
+  "scope": "JSONL handler failures and retry integrity using synthetic fixtures",
+  "baseline": {
+    "handlerFailurePropagated": false,
+    "cursorAfterFailedRecord": 1609,
+    "expectedCursor": 0,
+    "fixture": "injected handler failure, two focused tests failed"
+  },
+  "final": {
+    "focusedTests": 8,
+    "focusedPassed": 8,
+    "daemonTests": 139,
+    "daemonPassed": 139,
+    "daemonFailed": 0,
+    "failureInjection": "SQLite triggers reject Codex initial/incremental usage, Claude usage, and the second quota window",
+    "retry": "cursor retained, error recorded, missing data inserted once, model and session cost metadata preserved"
+  },
+  "limitations": [
+    "No automatic recovery of records skipped by older versions",
+    "Complete malformed JSON lines are still counted and skipped",
+    "Cost projection completeness and freshness remain unproven",
+    "No customer log or existing database was used"
+  ]
+}

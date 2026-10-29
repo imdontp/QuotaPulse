@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
-import { appendFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 
 import { openDb, upsertSource, type DB } from '../src/db/index.js';
 import { totalsSince } from '../src/api/queries.js';
@@ -483,4 +483,151 @@ test('jsonl reader survives a corrupt line without losing the rest', async () =>
   const res = await readJsonlDelta(file, 0, (r) => seen.push(r));
   assert.deepEqual(seen, [{ a: 1 }, { a: 3 }]);
   assert.equal(res.parseErrors, 1);
+});
+
+test('jsonl reader propagates a record handler failure and stops reading', async () => {
+  const dir = tmpRoot();
+  const file = join(dir, 'sink-failure.jsonl');
+  writeFileSync(file, '{"a":1}\n{"a":2}\n{"a":3}\n', 'utf8');
+  const failure = new Error('fixture sink failure');
+  const seen: number[] = [];
+  await assert.rejects(readJsonlDelta(file, 0, record => {
+    const value = (record as { a: number }).a;
+    seen.push(value);
+    if (value === 2) throw failure;
+  }), error => error === failure);
+  assert.deepEqual(seen, [1, 2], 'records after a failed handler must not be processed');
+});
+
+test('JSONL adapters ignore non-object envelopes and continue to valid records', async () => {
+  const dir = tmpRoot(), db = openDb(join(dir, 'invalid-envelopes.db'));
+  try {
+    for (const [harness, adapter, writeProfile] of [
+      ['codex', codexAdapter, writeCodexProfile],
+      ['claude-code', claudeCodeAdapter, writeClaudeProfile],
+    ] as const) {
+      const root = join(dir, harness);
+      const file = writeProfile(root);
+      writeFileSync(file, `null\n[]\n42\n${readFileSync(file, 'utf8')}`, 'utf8');
+      const profile: Profile = { profile: 't', rootPath: root, displayName: 't' };
+      const sourceId = upsertSource(db, { harness, profile: 't', rootPath: root, displayName: 't' });
+      await ingestOnce(db, adapter, profile, sourceId);
+      assert.equal(countEvents(db, sourceId), 2, `${harness} must reach valid usage after invalid envelopes`);
+      const state = db.prepare('SELECT last_error FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId, file) as { last_error: string | null };
+      assert.equal(state.last_error, null);
+    }
+    const events = join(dir, 'quota-events.jsonl');
+    writeFileSync(events, jsonl([null, [], 42, { schema: 1, source: 'codex', profile: 't', observed_at: '2026-09-11T07:20:00.000Z', windows: [null, { window_kind: '5h', used_percent: 42 }] }]), 'utf8');
+    const adapter = createQuotaEventsAdapter(events);
+    const profiles = await adapter.detect();
+    assert.equal(profiles.length, 1, 'invalid envelopes must not block profile discovery');
+    const profile = profiles[0]!;
+    const sourceId = upsertSource(db, { harness: 'quota-events', profile: profile.profile, rootPath: profile.rootPath, displayName: profile.displayName, sourceKind: profile.sourceKind });
+    await ingestOnce(db, adapter, profile, sourceId);
+    assert.equal((db.prepare('SELECT COUNT(*) AS n FROM limit_sample WHERE source_id = ?').get(sourceId) as { n: number }).n, 1);
+    const state = db.prepare('SELECT last_error FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId, events) as { last_error: string | null };
+    assert.equal(state.last_error, null);
+  } finally {
+    db.close();
+  }
+});
+
+test('codex retries a failed sink without advancing its cursor or duplicating earlier usage', async () => {
+  const dir = tmpRoot(), db = openDb(join(dir, 'sink-retry.db')), root = join(dir, '.codex');
+  const file = writeCodexProfile(root);
+  const profile: Profile = { profile: 't', rootPath: root, displayName: 't' };
+  const sourceId = upsertSource(db, { harness: 'codex', profile: 't', rootPath: root, displayName: 't' });
+  try {
+    db.exec("CREATE TRIGGER fixture_sink_failure BEFORE INSERT ON usage_event WHEN NEW.dedup_key LIKE '%:20' BEGIN SELECT RAISE(ABORT, 'fixture sink failure'); END");
+    await ingestOnce(db, codexAdapter, profile, sourceId);
+    assert.equal(countEvents(db, sourceId), 1, 'the first successful usage remains recorded');
+    const failed = db.prepare('SELECT byte_offset, last_error FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId, file) as { byte_offset: number; last_error: string | null };
+    assert.equal(failed.byte_offset, 0, 'the cursor must not advance past a failed record');
+    assert.match(failed.last_error ?? '', /fixture sink failure/);
+    db.exec('DROP TRIGGER fixture_sink_failure');
+    await ingestOnce(db, codexAdapter, profile, sourceId);
+    assert.equal(countEvents(db, sourceId), 2, 'retry must ingest the failed record exactly once');
+    const recovered = db.prepare('SELECT byte_offset, last_error FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId, file) as { byte_offset: number; last_error: string | null };
+    assert.ok(recovered.byte_offset > 0);
+    assert.equal(recovered.last_error, null);
+    await ingestOnce(db, codexAdapter, profile, sourceId);
+    assert.equal(countEvents(db, sourceId), 2, 'repeated retry must not duplicate usage');
+
+    appendFileSync(file, jsonl([101, 102].map(ordinal => ({
+      timestamp: '2026-09-01T09:05:00.000Z', ordinal, type: 'event_msg',
+      payload: { type: 'token_count', info: { last_token_usage: { input_tokens: 100, cached_input_tokens: 20, output_tokens: 10 } } },
+    }))), 'utf8');
+    db.exec("CREATE TRIGGER fixture_sink_failure BEFORE INSERT ON usage_event WHEN NEW.dedup_key LIKE '%:102' BEGIN SELECT RAISE(ABORT, 'fixture sink failure'); END");
+    await codexAdapter.ingest({ profile, sourceId, cursors: new DbCursorStore(db, sourceId), sink: new DbSink(db, sourceId, new PriceResolver(db)), backfill: false });
+    assert.equal(countEvents(db, sourceId), 3, 'the first newly appended event remains recorded');
+    const incremental = db.prepare('SELECT byte_offset, last_error FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId, file) as { byte_offset: number; last_error: string | null };
+    assert.equal(incremental.byte_offset, recovered.byte_offset, 'incremental failure must retain the previous cursor');
+    assert.match(incremental.last_error ?? '', /fixture sink failure/);
+    db.exec('DROP TRIGGER fixture_sink_failure');
+    await ingestOnce(db, codexAdapter, profile, sourceId);
+    assert.equal(countEvents(db, sourceId), 4, 'incremental retry must ingest the missing event without duplication');
+    const appended = db.prepare("SELECT model FROM usage_event WHERE source_id = ? AND (dedup_key LIKE '%:101' OR dedup_key LIKE '%:102') ORDER BY dedup_key").all(sourceId) as Array<{ model: string | null }>;
+    assert.deepEqual(appended.map(row => row.model), ['gpt-5.6-luna', 'gpt-5.6-luna'], 'retry must retain cursor metadata');
+    await ingestOnce(db, codexAdapter, profile, sourceId);
+    assert.equal(countEvents(db, sourceId), 4, 'later passes must not duplicate appended events');
+  } finally {
+    db.close();
+  }
+});
+
+test('quota event retry preserves the cursor and does not duplicate a window already stored', async () => {
+  const dir = tmpRoot(), db = openDb(join(dir, 'quota-sink-retry.db')), events = join(dir, 'quota-events.jsonl');
+  writeFileSync(events, jsonl([{ schema: 1, source: 'codex', profile: 't', observed_at: '2026-09-11T07:20:00.000Z', windows: [
+    { window_kind: '5h', used_percent: 42 }, { window_kind: 'weekly', used_percent: 31 },
+  ] }]), 'utf8');
+  const adapter = createQuotaEventsAdapter(events);
+  const [profile] = await adapter.detect();
+  assert.ok(profile);
+  const sourceId = upsertSource(db, { harness: 'quota-events', profile: profile.profile, rootPath: profile.rootPath, displayName: profile.displayName, sourceKind: profile.sourceKind });
+  const count = () => (db.prepare('SELECT COUNT(*) AS n FROM limit_sample WHERE source_id = ?').get(sourceId) as { n: number }).n;
+  try {
+    db.exec("CREATE TRIGGER fixture_quota_failure BEFORE INSERT ON limit_sample WHEN NEW.window_kind = 'weekly' BEGIN SELECT RAISE(ABORT, 'fixture quota failure'); END");
+    await ingestOnce(db, adapter, profile, sourceId);
+    assert.equal(count(), 1, 'the first quota window was already recorded');
+    const failed = db.prepare('SELECT byte_offset, last_error FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId, events) as { byte_offset: number; last_error: string | null };
+    assert.equal(failed.byte_offset, 0);
+    assert.match(failed.last_error ?? '', /fixture quota failure/);
+    db.exec('DROP TRIGGER fixture_quota_failure');
+    await ingestOnce(db, adapter, profile, sourceId);
+    assert.equal(count(), 2, 'retry must add the missing window without duplicating the first');
+    const recovered = db.prepare('SELECT byte_offset, last_error FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId, events) as { byte_offset: number; last_error: string | null };
+    assert.ok(recovered.byte_offset > 0);
+    assert.equal(recovered.last_error, null);
+    await ingestOnce(db, adapter, profile, sourceId);
+    assert.equal(count(), 2);
+  } finally {
+    db.close();
+  }
+});
+
+test('claude retries a failed usage insert and retains session cost metadata', async () => {
+  const dir = tmpRoot(), db = openDb(join(dir, 'claude-sink-retry.db')), root = join(dir, '.claude');
+  const file = writeClaudeProfile(root);
+  const profile: Profile = { profile: 't', rootPath: root, displayName: 't' };
+  const sourceId = upsertSource(db, { harness: 'claude-code', profile: 't', rootPath: root, displayName: 't' });
+  try {
+    db.exec("CREATE TRIGGER fixture_claude_failure BEFORE INSERT ON usage_event WHEN NEW.native_msg_id = 'msg_2' BEGIN SELECT RAISE(ABORT, 'fixture claude failure'); END");
+    await ingestOnce(db, claudeCodeAdapter, profile, sourceId);
+    assert.equal(countEvents(db, sourceId), 1);
+    const failed = db.prepare('SELECT byte_offset, last_error FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId, file) as { byte_offset: number; last_error: string | null };
+    assert.equal(failed.byte_offset, 0);
+    assert.match(failed.last_error ?? '', /fixture claude failure/);
+    db.exec('DROP TRIGGER fixture_claude_failure');
+    await ingestOnce(db, claudeCodeAdapter, profile, sourceId);
+    assert.equal(countEvents(db, sourceId), 2, 'retry must add the missing message without duplicating the first');
+    const session = db.prepare("SELECT native_cost_usd FROM session WHERE source_id = ? AND native_session_id = 'sess-1'").get(sourceId) as { native_cost_usd: number | null };
+    assert.equal(session.native_cost_usd, 1.2345, 'retry must process the later session cost-state record');
+    const recovered = db.prepare('SELECT byte_offset, last_error FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId, file) as { byte_offset: number; last_error: string | null };
+    assert.ok(recovered.byte_offset > 0);
+    assert.equal(recovered.last_error, null);
+    await ingestOnce(db, claudeCodeAdapter, profile, sourceId);
+    assert.equal(countEvents(db, sourceId), 2);
+  } finally {
+    db.close();
+  }
 });

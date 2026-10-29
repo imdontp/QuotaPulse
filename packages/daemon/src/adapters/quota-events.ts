@@ -103,12 +103,14 @@ function readProfiles(eventsPath: string): EventProfile[] {
   const found = new Map<string, EventProfile>();
   for (const line of text.split(/\r?\n/)) {
     if (!line.trim()) continue;
-    let event: QuotaEventEnvelope;
+    let raw: unknown;
     try {
-      event = JSON.parse(line) as QuotaEventEnvelope;
+      raw = JSON.parse(line);
     } catch {
       continue;
     }
+    if (raw == null || typeof raw !== 'object' || Array.isArray(raw)) continue;
+    const event = raw as QuotaEventEnvelope;
     const eventKey = eventKeyOf(event);
     if (!eventKey) continue;
     const [source, profile] = eventKey.split('/', 2);
@@ -169,6 +171,7 @@ export function createQuotaEventsAdapter(eventsPath = QUOTA_EVENTS_PATH): Adapte
 
       try {
         const result = await readJsonlDelta(eventsPath, cursor.byteOffset, (raw) => {
+          if (raw == null || typeof raw !== 'object' || Array.isArray(raw)) return;
           const event = raw as QuotaEventEnvelope;
           if (!eventForProfile(event, profile)) return;
           if (event.schema != null && event.schema !== 1) return;
@@ -181,6 +184,7 @@ export function createQuotaEventsAdapter(eventsPath = QUOTA_EVENTS_PATH): Adapte
           const origin = `${baseOrigin}:${mode}`;
 
           for (const window of event.windows) {
+            if (window == null || typeof window !== 'object' || Array.isArray(window)) continue;
             const windowKind = validWindow(window);
             if (!windowKind) continue;
             const usedPercent = validPercent(window.used_percent);
