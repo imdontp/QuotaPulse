@@ -19,12 +19,15 @@ const db = openDb(':memory:');
 const longHarness = 'future-reader-' + 'ข้อมูลเครื่องมือ長い名前'.repeat(12);
 const longModel = 'Actual recorded model ' + 'ชื่อยาว長い名前'.repeat(15);
 const source = db.prepare('INSERT INTO source(id,harness,profile,root_path,display_name,detected_at) VALUES (?, ?, ?, ?, ?, ?)');
-for (const [id, harness] of [[1, 'codex'], [2, 'hermes'], [3, longHarness]] as const)
+for (const [id, harness] of [[1, 'codex'], [2, 'hermes'], [3, longHarness], [4, 'claude-code']] as const)
   source.run(id, harness, 'synthetic', '/synthetic/nonexistent', `Feed fixture ${id}`, now);
-const add = db.prepare('INSERT INTO usage_event(source_id,dedup_key,ts,model,provider,total_tokens,call_count,cost_source) VALUES (?, ?, ?, ?, ?, ?, 1, ?)');
-add.run(1, 'feed-call', now - 3000, longModel, 'recorded-gateway', 123456789012345, 'unknown');
-add.run(2, 'feed-aggregate', now - 2000, '', '', 0, 'unknown');
-add.run(3, 'feed-unknown', now - 1000, null, null, 7, 'unknown');
+const session = db.prepare('INSERT INTO session(id,source_id,native_session_id,project,last_seen_at) VALUES (?, ?, ?, ?, ?)');
+for (let id = 1; id <= 4; id++) session.run(id, id, `feed-session-${id}`, 'Feed project', now - 1000);
+const add = db.prepare('INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,total_tokens,call_count,cost_source) VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)');
+add.run(1, 1, 'feed-call', now - 3000, longModel, 'recorded-gateway', 123456789012345, 'unknown');
+add.run(2, 2, 'feed-aggregate', now - 2000, '', '', 0, 'unknown');
+add.run(3, 3, 'feed-unknown', now - 1000, null, null, 7, 'unknown');
+add.run(4, 4, 'feed-known-vendor', now - 4000, 'claude-3-7-sonnet', 'openrouter', 42, 'unknown');
 const scheduler = new Scheduler(db, [], { pollMs: 1_000_000, detectMs: 1_000_000 });
 const daemon = buildServer(db, scheduler, { token: 'synthetic-live-feed', port: 7816, webRoot: resolve('packages/web/dist') });
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
@@ -55,8 +58,8 @@ try {
     const response = await daemon.inject({ method: 'GET', url: `/api/usage-events?from=${now - 30 * 60_000}&to=${now + 1}&limit=8&offset=0`, headers: { 'x-quotapulse-token': 'synthetic-live-feed' } });
     assert.equal(response.statusCode, 200);
     const rows = response.json<UsageEventsResponse>().rows;
-    assert.deepEqual(rows.map(row => row.grain), ['unknown', 'session_aggregate', 'call']);
-    assert.equal(await records.count(), 3);
+    assert.deepEqual(rows.map(row => row.grain), ['unknown', 'session_aggregate', 'call', 'call']);
+    assert.equal(await records.count(), 4);
     const format = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US');
     for (const [index, row] of rows.entries()) {
       const record = records.nth(index);
@@ -65,9 +68,22 @@ try {
       const kind = messages[row.grain === 'call' ? 'redesign.callRecord' : row.grain === 'session_aggregate' ? 'redesign.aggregateUpdate' : 'history.unknown'];
       assert.equal(await record.locator('.qp-live-feed-kind>span').textContent(), kind);
       assert.deepEqual(await record.locator('.qp-live-feed-identity>span:last-child').allTextContents(), [row.harness, row.provider ?? messages['redesign.unknownValue']]);
-      assert.equal(await record.locator('.qp-live-feed-model').textContent(), row.model ?? messages['redesign.unknownValue']);
+      assert.equal(await record.locator('.qp-live-feed-model>span').textContent(), row.model ?? messages['redesign.unknownValue']);
       assert.equal(await record.locator('.qp-live-feed-model').getAttribute('title'), row.model ?? messages['redesign.unknownValue']);
+      assert.equal(await record.locator('.qp-live-feed-model').getAttribute('data-vendor'), row.vendor);
+      assert.equal(await record.locator('.qp-live-feed-model>i').count(), row.model && row.vendor !== 'unknown' ? 1 : 0);
+      if (row.model && row.vendor !== 'unknown') assert.equal(await record.locator('.qp-live-feed-model>i').getAttribute('aria-hidden'), 'true');
       assert.equal(await record.locator('strong').textContent(), format.format(row.total_tokens));
+    }
+    assert.equal(rows[3]!.vendor, 'anthropic', 'Model maker is distinct from the openrouter route');
+    assert.equal(rows[3]!.provider, 'openrouter');
+    const harnesses = page.locator('.qp-live-session-harness');
+    await harnesses.first().waitFor();
+    assert.deepEqual(new Set(await harnesses.evaluateAll(nodes => nodes.map(node => node.getAttribute('data-harness')))), new Set(['codex', 'hermes', 'claude-code', longHarness]));
+    for (const harness of await harnesses.all()) assert.equal(await harness.locator('span:last-child').textContent(), await harness.getAttribute('data-harness'));
+    if (theme === 'dark') {
+      const colors = await harnesses.evaluateAll(nodes => nodes.map(node => ({ harness: node.getAttribute('data-harness'), color: getComputedStyle(node).color })));
+      assert.equal(new Set(colors.map(row => row.color)).size, 4, 'Known harnesses are distinguishable and unknown retains its neutral color');
     }
     assert.equal(await records.first().locator('.qp-live-feed-kind svg').getAttribute('aria-hidden'), 'true');
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'Feed never expands the page horizontally');

@@ -8,6 +8,7 @@ import type { UsageEventScope, UsageEventsResponse } from '@/lib/usage-events';
 import { RedesignShell } from './shell';
 import { DashboardHarnessIcon as HarnessIcon } from './dashboard-marks';
 import { ProviderMark as VendorIcon } from './provider-mark';
+import { VendorIcon as ModelVendorIcon } from '@/components/vendor-icon';
 import { LiveTokenFlow, LiveTokenFlowLegend } from './live-token-flow';
 import { PageHeading } from './page-heading';
 import { HeadingReferenceIcon } from './heading-reference-icon';
@@ -201,7 +202,7 @@ export function ProductionLive() {
             {!display ? <InitialRegion id="live-sessions" label={t('redesign.liveSessionTable')} heading={<></>} state={initialState} className="qp-live-initial-session-body" status slots={5}/> : display.sessions.rows.length === 0 ? <p>{t('redesign.liveNoSessions')}</p> : <div className="qp-live-table" tabIndex={0} role="region" aria-label={t('redesign.liveSessionTable')}><table><colgroup>{['session','project','harness','provider','model','split','total','time','calls'].map(column => <col key={column} className={'qp-live-col-'+column}/>)}</colgroup><thead><tr><th>{t('redesign.liveColumnSession')}</th><th>{t('redesign.liveColumnProject')}</th><th>{t('redesign.liveColumnHarness')}</th><th>{t('redesign.liveColumnProvider')}</th><th>{t('redesign.liveColumnModel')}</th><th title={t('redesign.liveInputIncludesCache')}>{t('redesign.liveTokenSplit')}</th><th>{t('redesign.liveColumnTotal')}</th><th>{t('redesign.liveColumnLastSeen')}</th><th>{t('redesign.liveColumnCalls')}</th></tr></thead><tbody>{display.sessions.rows.map(session => <tr key={session.sessionKey} data-live-session={liveSessionMotionKey(session.sessionKey)}>
               <td><button title={session.nativeSessionId + ' · ' + session.sourceName} onClick={event => { returnFocus.current = event.currentTarget; setSelectionSerial(value => value + 1); setSelectedSession(session); }}>{session.nativeSessionId}</button><small className="qp-live-session-source">{session.sourceName}</small></td>
               <td><span className="qp-live-session-project" title={session.project ?? t('redesign.unassigned')}>{session.project ?? t('redesign.unassigned')}</span></td>
-              <td><span className="qp-live-session-harness" title={session.harness}><HarnessIcon harness={session.harness} vendor={display.overview.harnesses.find(harness => harness.harness === session.harness)?.vendor} label={session.harness}/><span>{session.harness}</span></span></td>
+              <td><span className="qp-live-session-harness" data-harness={session.harness} title={session.harness}><HarnessIcon harness={session.harness} vendor={display.overview.harnesses.find(harness => harness.harness === session.harness)?.vendor} label={session.harness}/><span>{session.harness}</span></span></td>
               <td>{identity(session.provider, session.providerCount, session.unknownProviderRecords, 'provider')}</td>
               <td>{identity(session.model, session.modelCount, session.unknownModelRecords, 'model')}</td>
               <td className="qp-live-session-number">{compactTokens(session.inputTokens)} / {compactTokens(session.outputTokens)}</td>
@@ -227,7 +228,7 @@ export function ProductionLive() {
                 <span className="qp-live-feed-kind" title={kind}><KindIcon size={14} aria-hidden="true"/><span>{kind}</span></span>
                 <span className="qp-live-feed-identity" title={row.harness}><HarnessIcon harness={row.harness} vendor={display.overview.harnesses.find(harness => harness.harness === row.harness)?.vendor} label={row.harness}/><span>{row.harness}</span></span>
                 <span className="qp-live-feed-identity" title={provider}><VendorIcon vendor={row.provider ?? 'unknown'} aria-hidden="true"/><span>{provider}</span></span>
-                <span className="qp-live-feed-model" title={model}>{model}</span>
+                <span className="qp-live-feed-model" title={model} data-vendor={row.vendor}>{row.model && row.vendor !== 'unknown' ? <i aria-hidden="true"><ModelVendorIcon vendor={row.vendor}/></i> : null}<span>{model}</span></span>
                 <strong>{number(row.total_tokens)}</strong>
               </li>;
             })}</ol>}
