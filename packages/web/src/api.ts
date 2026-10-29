@@ -297,7 +297,7 @@ export interface LiveSessionsResponse {
     records: number; calls: number; tokens: number; lastObservedAt: number;
     inputTokens: number; outputTokens: number;
     provider: string | null; providerCount: number; unknownProviderRecords: number;
-    model: string | null; modelCount: number; unknownModelRecords: number;
+    model: string | null; modelCount: number; unknownModelRecords: number; modelVendor?: string;
   }>;
 }
 

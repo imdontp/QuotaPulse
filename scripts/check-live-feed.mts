@@ -85,6 +85,19 @@ try {
       const colors = await harnesses.evaluateAll(nodes => nodes.map(node => ({ harness: node.getAttribute('data-harness'), color: getComputedStyle(node).color })));
       assert.equal(new Set(colors.map(row => row.color)).size, 4, 'Known harnesses are distinguishable and unknown retains its neutral color');
     }
+    const sessionResponse = await daemon.inject({ method: 'GET', url: `/api/live-sessions?from=${now - 30 * 60_000}&to=${now + 1}&mode=recent&limit=10&offset=0`, headers: { 'x-quotapulse-token': 'synthetic-live-feed' } });
+    assert.equal(sessionResponse.statusCode, 200);
+    const sessions = sessionResponse.json().rows as Array<{ nativeSessionId: string; model: string | null; modelCount: number; modelVendor: string }>;
+    const sessionRows = page.locator('.qp-live-table tbody tr');
+    assert.equal(await sessionRows.count(), sessions.length);
+    for (const [index, session] of sessions.entries()) {
+      const row = sessionRows.nth(index), model = row.locator('td').nth(4).locator('.qp-live-session-identity');
+      assert.equal(await row.locator('td').first().locator('button').textContent(), session.nativeSessionId);
+      assert.equal(await model.getAttribute('data-model-vendor'), session.modelVendor);
+      assert.equal(await model.locator('i').count(), session.model && session.modelCount === 1 && session.modelVendor !== 'unknown' ? 1 : 0);
+      if (session.modelVendor !== 'unknown') assert.equal(await model.locator('i').getAttribute('aria-hidden'), 'true');
+    }
+    assert.equal(sessions.find(session => session.nativeSessionId === 'feed-session-4')!.modelVendor, 'anthropic');
     assert.equal(await records.first().locator('.qp-live-feed-kind svg').getAttribute('aria-hidden'), 'true');
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'Feed never expands the page horizontally');
     const feed = page.locator('.qp-live-feed'); await feed.scrollIntoViewIfNeeded(); await feed.focus();
@@ -95,6 +108,20 @@ try {
       await page.waitForFunction(() => document.querySelector('.qp-live-feed')!.scrollLeft > 0);
     }
     await page.screenshot({ path: resolve(output, `${lang}-${theme}-${width}.png`) });
+    if (lang === 'en' && theme === 'dark' && width === 390) {
+      await page.route('**/api/live-sessions?*', async route => {
+        const response = await route.fetch();
+        const body = await response.json();
+        for (const row of body.rows) delete row.modelVendor;
+        await route.fulfill({ response, json: body });
+      });
+      await page.reload();
+      const sessionModels = page.locator('.qp-live-table tbody tr td:nth-child(5) .qp-live-session-identity');
+      await sessionModels.first().waitFor();
+      assert.equal(await sessionModels.count(), sessions.length);
+      assert.equal(await sessionModels.locator('i').count(), 0, 'A previous API without modelVendor keeps the model labels and adds no maker mark');
+      assert.ok((await sessionModels.allTextContents()).some(value => value.includes('claude-3-7-sonnet')));
+    }
     cases.push({ lang, theme, width, grains: rows.map(row => row.grain), exactNullEmptyAndLongIdentities: true, exactLargeAndZeroTokens: true, keyboardNarrowScroll: width === 390 });
     await context.close();
   }

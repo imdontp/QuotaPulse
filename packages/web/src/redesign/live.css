@@ -429,6 +429,8 @@
 .qp-live-session-project { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .qp-live-session-identity { display:flex; align-items:center; gap:5px; min-width:0; }
 .qp-live-session-identity>svg { width:15px; height:15px; flex:none; }
+.qp-live-session-identity>i { display:grid; place-items:center; width:15px; height:15px; flex:none; font-size:15px; font-style:normal; }
+.qp-live-session-identity>i>svg { width:15px; height:15px; }
 .qp-live-session-identity>span:last-of-type,.qp-live-session-harness>span:last-child { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .qp-live-session-identity>abbr { flex:none; color:var(--qp-muted); font-size:10px; text-decoration:none; }
 .qp-live-session-number { font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }

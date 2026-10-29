@@ -1,0 +1,24 @@
+﻿18:44:41.271 INFO  [db] opened :memory:
+{
+  "syntheticEvents": 50000,
+  "syntheticSessions": 500,
+  "requestedPage": 10,
+  "repetitions": 20,
+  "plan": [
+    "SEARCH sess USING INTEGER PRIMARY KEY (rowid=?)",
+    "SEARCH u USING INDEX idx_usage_session (session_id=?)",
+    "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)",
+    "USE TEMP B-TREE FOR GROUP BY"
+  ],
+  "addedMakerQuery": {
+    "p50Ms": 0.4503999999997177,
+    "p95Ms": 0.5317999999999756,
+    "maxMs": 0.5317999999999756
+  },
+  "fullLiveSessions": {
+    "p50Ms": 92.34040000000005,
+    "p95Ms": 102.59220000000005,
+    "maxMs": 102.59220000000005
+  },
+  "limitation": "local in-memory synthetic benchmark; not production CPU or disk performance"
+}

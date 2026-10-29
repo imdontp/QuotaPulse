@@ -1,0 +1,13 @@
+# Live session model-maker presentation / checkpoint200
+
+[View the concept comparison](review.html). The Live image is a fresh capture of the compiled application with an isolated synthetic API fixture; the seven other images are retained from earlier checkpoints. This gallery is an interim comparison, not full visual approval.
+
+The Live sessions table now shows a model-maker mark when the scoped session contains exactly one nonempty model and all of its recorded model/provider pairs resolve to the same maker under the existing API classification rules. Missing models, multiple models, unknown classifications and conflicting makers do not produce a mark. A model with some missing-model records retains its existing `+ ?` indicator. The model-maker classification is derived, not a separate recorded field, and the provider route remains independently displayed. The new field is optional in the web client so an older daemon still shows labels without the mark.
+
+The additional lookup is restricted to the returned page and uses the same filters and transaction as the session aggregates. Daemon and web builds passed; 140 daemon and 376 web tests passed. Focused tests cover known models through a gateway, conflicting providers, unknown or absent model, multiple models, partial records, scoped filtering and pagination. Eight compiled API/browser cases cover English/Thai, dark/light, narrow and desktop layouts, identities, exact data, narrow keyboard scrolling, and an older API response without the new field. The Live capture gate passed four locale/theme pairs, each byte-identical without masks, including pause, refresh and chart behavior.
+
+The canonical English/dark screenshot and its repeat matched byte-for-byte; compared with checkpoint199, all 4,530 changed pixels were inside the session model cells. The gallery passed eight keyboard tab selections and loaded 16 local images.
+
+The [synthetic in-memory benchmark](performance.log) used 50,000 events, 500 sessions and a 10-row page; SQLite selected `idx_usage_session`. Across 20 measured repetitions, the separately prepared maker query had p50 0.45 ms and p95 0.53 ms; the full session function had p50 92.34 ms and p95 102.59 ms. Preparing the added query each time is included in the full-function measurement, not in the separately prepared query measurement. The 500-row API limit also returned successfully. These numbers are not a production disk, CPU, concurrency or latency guarantee. The reproducible driver is `scripts/check-live-session-vendor-performance.mts`.
+
+The latest runnable review198 ZIP predates this and checkpoint199. Full reference fidelity and physical desktop, real reader and production performance validation remain open.

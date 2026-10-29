@@ -1,4 +1,5 @@
 import type { DB } from '../db/index.js';
+import { vendorSqlCase } from '../util/vendor.js';
 import { usageWhere, type UsageScope } from './usage-scope.js';
 
 export type LiveSessionMode = 'recent' | 'all';
@@ -33,7 +34,27 @@ export function liveSessions(db: DB, scope: UsageScope, now: number, mode: LiveS
     const rows = db.prepare(`SELECT * FROM (${base})
       ${mode === 'recent' ? `WHERE ${recent}` : ''}
       ORDER BY lastObservedAt DESC, sessionKey DESC LIMIT @limit OFFSET @offset`)
-      .all({ ...(mode === 'recent' ? params : where.params), ...pagination });
-    return { mode, rows, ...counts, total: mode === 'recent' ? counts.recentCount : counts.allCount, ...pagination };
+      .all({ ...(mode === 'recent' ? params : where.params), ...pagination }) as Array<{ sessionKey: number; model: string | null; modelCount: number }>;
+    // Resolve only the returned page, using the same scoped model/provider pairs
+    // as the session aggregates. Conflicting or unknown classifications stay unknown.
+    const vendorSets = new Map<number, Set<string>>();
+    const sessionParams: Record<string, number> = {};
+    rows.forEach((row, index) => { sessionParams[`session${index}`] = row.sessionKey; });
+    if (rows.length) {
+      const placeholders = rows.map((_, index) => `@session${index}`).join(',');
+      const pairs = db.prepare(`SELECT u.session_id AS sessionKey, ${vendorSqlCase('u.model', 'u.provider')} AS vendor
+        FROM usage_event u JOIN source s ON s.id=u.source_id JOIN session sess ON sess.id=u.session_id
+        WHERE ${where.sql} AND u.session_id IN (${placeholders}) AND u.model IS NOT NULL AND TRIM(u.model) <> ''
+        GROUP BY u.session_id, u.model, u.provider`).all({ ...where.params, ...sessionParams }) as Array<{ sessionKey: number; vendor: string }>;
+      for (const pair of pairs) {
+        const vendors = vendorSets.get(pair.sessionKey) ?? new Set<string>();
+        vendors.add(pair.vendor); vendorSets.set(pair.sessionKey, vendors);
+      }
+    }
+    const decorated = rows.map(row => {
+      const vendors = vendorSets.get(row.sessionKey);
+      return { ...row, modelVendor: row.model && row.modelCount === 1 && vendors?.size === 1 ? [...vendors][0] : 'unknown' };
+    });
+    return { mode, rows: decorated, ...counts, total: mode === 'recent' ? counts.recentCount : counts.allCount, ...pagination };
   })();
 }

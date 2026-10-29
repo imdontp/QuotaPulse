@@ -76,3 +76,37 @@ test('live sessions count valid source timestamps and page exact scoped metadata
     assert.equal((await app.inject(url)).statusCode, 401);
   } finally { await app.close(); db.close(); }
 });
+
+test('live session model maker follows scoped classifications and never guesses across conflicts', () => {
+  const db = openDb(':memory:');
+  try {
+    db.exec(`INSERT INTO source(id,harness,profile,root_path,display_name,detected_at) VALUES (1,'codex','test','/fixture','Fixture',0);`);
+    const session = db.prepare('INSERT INTO session(id,source_id,native_session_id,last_seen_at) VALUES (?,1,?,900)');
+    for (let id = 1; id <= 6; id++) session.run(id, `model-${id}`);
+    const add = db.prepare('INSERT INTO usage_event(source_id,session_id,dedup_key,ts,provider,model,total_tokens,call_count) VALUES (1,?,?,?,?,?,1,1)');
+    add.run(1,'known-direct',800,'anthropic','claude-3-7-sonnet');
+    add.run(1,'known-gateway',801,'openrouter','claude-3-7-sonnet');
+    add.run(2,'unknown-via-gateway',802,'openrouter','mystery-model');
+    add.run(3,'conflict-openai',803,'openai','mystery-model');
+    add.run(3,'conflict-anthropic',804,'anthropic','mystery-model');
+    add.run(4,'multiple-one',805,'openai','gpt-4o');
+    add.run(4,'multiple-two',806,'openai','gpt-4.1');
+    add.run(5,'missing-model',807,'openai',null);
+    add.run(6,'known-partial',808,null,'gpt-4o');
+    add.run(6,'unknown-partial',809,'openai',null);
+    const scope = { from:700, to:1000 };
+    const rows = liveSessions(db, scope, 1000, 'all', {limit:10,offset:0}).rows;
+    const vendor = (id: number) => rows.find(row => row.sessionKey === id)!.modelVendor;
+    assert.equal(vendor(1), 'anthropic', 'Model family takes precedence over gateway route');
+    assert.equal(vendor(2), 'unknown');
+    assert.equal(vendor(3), 'unknown', 'Conflicting maker classifications remain unknown');
+    assert.equal(vendor(4), 'unknown', 'Multiple models do not receive a single maker');
+    assert.equal(vendor(5), 'unknown', 'A provider alone does not badge a missing model');
+    assert.equal(vendor(6), 'openai', 'A known model with additional missing records retains its maker and unknown count');
+    const partial = rows.find(row => row.sessionKey === 6)!;
+    assert.equal(partial.model, 'gpt-4o');
+    const filtered = liveSessions(db, {...scope, provider:'openai'}, 1000, 'all', {limit:10,offset:0}).rows;
+    assert.equal(filtered.find(row => row.sessionKey === 3)!.modelVendor, 'openai', 'Only records inside the requested scope determine the classification');
+    assert.equal(liveSessions(db, scope, 1000, 'all', {limit:2,offset:1}).rows.length, 2);
+  } finally { db.close(); }
+});

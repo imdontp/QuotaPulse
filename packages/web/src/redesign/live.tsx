@@ -151,10 +151,10 @@ export function ProductionLive() {
   const number = (value: number) => new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(value);
   const date = (value: number | null) => value === null ? '—' : new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(value);
   const compactTokens = (value: number) => <abbr title={number(value)} aria-label={number(value)}>{new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value)}</abbr>;
-  const identity = (value: string | null, count: number, unknown: number, kind: 'provider' | 'model') => {
+  const identity = (value: string | null, count: number, unknown: number, kind: 'provider' | 'model', modelVendor?: string) => {
     const label = count > 1 ? number(count) + ' ' + t(kind === 'provider' ? 'redesign.liveMultipleProviders' : 'redesign.liveMultipleModels') : value ?? t('redesign.unknownValue');
     const unknownLabel = number(unknown) + ' ' + t('redesign.liveIdentityUnknown');
-    return <span className="qp-live-session-identity" title={label + (unknown ? ' · ' + unknownLabel : '')}>{kind === 'provider' && count === 1 && value ? <VendorIcon vendor={value} aria-hidden="true"/> : null}<span>{label}</span>{unknown > 0 && count > 0 ? <abbr title={unknownLabel}>+ ?</abbr> : null}</span>;
+    return <span className="qp-live-session-identity" data-model-vendor={kind === 'model' ? modelVendor : undefined} title={label + (unknown ? ' · ' + unknownLabel : '')}>{kind === 'provider' && count === 1 && value ? <VendorIcon vendor={value} aria-hidden="true"/> : null}{kind === 'model' && count === 1 && value && modelVendor && modelVendor !== 'unknown' ? <i aria-hidden="true"><ModelVendorIcon vendor={modelVendor}/></i> : null}<span>{label}</span>{unknown > 0 && count > 0 ? <abbr title={unknownLabel}>+ ?</abbr> : null}</span>;
   };
   const recordTime = new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
   const recordDate = new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'medium' });
@@ -204,7 +204,7 @@ export function ProductionLive() {
               <td><span className="qp-live-session-project" title={session.project ?? t('redesign.unassigned')}>{session.project ?? t('redesign.unassigned')}</span></td>
               <td><span className="qp-live-session-harness" data-harness={session.harness} title={session.harness}><HarnessIcon harness={session.harness} vendor={display.overview.harnesses.find(harness => harness.harness === session.harness)?.vendor} label={session.harness}/><span>{session.harness}</span></span></td>
               <td>{identity(session.provider, session.providerCount, session.unknownProviderRecords, 'provider')}</td>
-              <td>{identity(session.model, session.modelCount, session.unknownModelRecords, 'model')}</td>
+              <td>{identity(session.model, session.modelCount, session.unknownModelRecords, 'model', session.modelVendor)}</td>
               <td className="qp-live-session-number">{compactTokens(session.inputTokens)} / {compactTokens(session.outputTokens)}</td>
               <td className="qp-live-session-number">{compactTokens(session.tokens)}</td>
               <td><time title={sourceDate(session.lastSeenAt)} dateTime={session.lastSeenAt !== null && session.lastSeenAt <= now ? new Date(session.lastSeenAt).toISOString() : undefined}>{session.lastSeenAt !== null && session.lastSeenAt <= now ? recordTime.format(session.lastSeenAt) : t('redesign.unknownValue')}</time></td>
