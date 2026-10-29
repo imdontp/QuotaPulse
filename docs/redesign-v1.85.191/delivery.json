@@ -1,0 +1,136 @@
+{
+  "sourceCommit": "20ebfd4aa692249b1f85ba9751a901fe7a8d9ddd",
+  "sha256": "b32c90621008db0c47ad6268a752bea9a70701c3a17477cc9b679fa9e891ed9c",
+  "bytes": 206511590,
+  "entries": 3161,
+  "productionIndexSha256": "c574c66df4cd4887ae2e351cb720e50c7a2243107a6f3e46592700b357ea2738",
+  "repositoryTests": {
+    "daemon": 139,
+    "web": 376,
+    "tray": 198,
+    "failures": 0
+  },
+  "compiledIngest": {
+    "status": "passed",
+    "sourceCommit": "20ebfd4aa692249b1f85ba9751a901fe7a8d9ddd",
+    "compiledParserSha256": "88236f50fa6c2a8f02808dee1c0635eae84e374850655050a84e9e9f84ec1254",
+    "checks": [
+      "actual compiled Codex adapter and SQLite reject the second insert",
+      "cursor retained and error recorded",
+      "retry ingests both calls once with 330 tokens",
+      "subsequent pass does not duplicate"
+    ],
+    "fixture": "owned synthetic rollout and in-memory SQLite"
+  },
+  "native": {
+    "status": "passed",
+    "captures": 16,
+    "overviewArt": [
+      {
+        "hidden": "true",
+        "pointerEvents": "none",
+        "animations": 0,
+        "paths": 4
+      },
+      {
+        "hidden": "true",
+        "pointerEvents": "none",
+        "animations": 0,
+        "paths": 0
+      }
+    ],
+    "alertsTitle": [
+      {
+        "fontSize": "14.5px",
+        "fontWeight": "450",
+        "lineHeight": "18.8px",
+        "transform": "none",
+        "rect": {
+          "x": 1233.796875,
+          "y": 87,
+          "width": 429.203125,
+          "height": 20.796875,
+          "top": 87,
+          "right": 1663,
+          "bottom": 107.796875,
+          "left": 1233.796875
+        }
+      },
+      {
+        "fontSize": "16px",
+        "fontWeight": "600",
+        "lineHeight": "20.8px",
+        "transform": "none",
+        "rect": {
+          "x": 992.03125,
+          "y": 87,
+          "width": 320.953125,
+          "height": 20.796875,
+          "top": 87,
+          "right": 1312.984375,
+          "bottom": 107.796875,
+          "left": 992.03125
+        }
+      }
+    ],
+    "limitations": [
+      "actual production windows placed beyond all displays, nonfocusable and absent from taskbar; anti-occlusion flags/background-throttling override and reduced motion are test-only",
+      "initial content resized by test to1672x941; restored native size1371x887 tested through real Settings/preload/main",
+      "same-version Electron restart with explicit storage flush; no installer or two-version upgrade exercised here",
+      "two native language/theme combinations; not complete four-combination matrix",
+      "synthetic owned DB only; readers/account probes disabled; no physical tray-click/minimize/monitor or resource proof"
+    ]
+  },
+  "standaloneChecks": [
+    "actual ZIP extracted and all file bytes match unused source bundle",
+    "start WhatIf creates no review profile or processes",
+    "extracted bundle outside repository dependencies starts its real daemon/tray with readers off and isolated profile",
+    "stop WhatIf retains both recorded processes",
+    "scoped stop ends recorded processes and preserves database",
+    "restart tolerates retained review process records and stale daemon lock"
+  ],
+  "readerChecks": [
+    "both launch modes WhatIf create no profile/process state",
+    "default launch disables readers despite inherited on and leaves harness/original sentinels unchanged",
+    "explicit opt-in overrides inherited off and actual Codex adapter ingests150 tokens from owned home",
+    "incremental append and repeated manual refresh retain exactly190 tokens and one session; real Models page matches API and excludes prompt content",
+    "reader-enabled restart preserves cursor and does not duplicate events",
+    "default restart disables collection and retains already collected review data"
+  ],
+  "installationChecks": [
+    "actual delivered ZIP installed with identical file inventory and the current bundled installer",
+    "ZIP entry longer than 260 characters extracted into isolated installation",
+    "installed daemon and tray start with readers off and an independent review profile",
+    "scoped stop ends owned processes and retains the isolated database"
+  ],
+  "cleanup": [
+    {
+      "stage": "unused-build",
+      "status": "cleaned",
+      "beforeBytes": 453669261,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    },
+    {
+      "stage": "standalone",
+      "status": "cleaned",
+      "beforeBytes": 454028030,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    },
+    {
+      "stage": "reader",
+      "status": "cleaned",
+      "beforeBytes": 454168110,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    },
+    {
+      "stage": "installed",
+      "status": "cleaned",
+      "beforeBytes": 453669261,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    }
+  ]
+}
