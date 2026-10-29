@@ -1,0 +1,529 @@
+{
+  "sourceCommit": "f14d872f4acd28410c08868781ded98538ced64a",
+  "archive": {
+    "sourceCommit": "f14d872f4acd28410c08868781ded98538ced64a",
+    "entries": 3161,
+    "productionIndexSha256": "88e35437de251ef21b8e1fc656099a7779bbc2672e8d33b14d2e68040b1600ac",
+    "builtArchivePath": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review-bundles\\QuotaPulse-v1.85.193-review194-iPC2H6.zip",
+    "archive": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\releases\\QuotaPulse-v1.85.193-review194.zip",
+    "allEntryBytesMatch": true,
+    "bytes": 206511785,
+    "sha256": "6597aad5e504056cef514ff8a35f739936fec6feb110b06f3139aa5197613e7d"
+  },
+  "repositoryTests": {
+    "daemon": 139,
+    "web": 376,
+    "tray": 198
+  },
+  "native": {
+    "status": "passed",
+    "captures": [
+      {
+        "phase": "initial",
+        "route": "overview",
+        "lang": "en",
+        "theme": "dark",
+        "prefs": {
+          "lang": "en",
+          "currency": "USD",
+          "rate": 1,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1688,
+          "height": 980,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1688,
+          "height": 980
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "ff0dd552b44f4fea13ba6940cf68907a3898388e0787dd4c01f8bd28d7ba476b"
+      },
+      {
+        "phase": "initial",
+        "route": "live",
+        "lang": "en",
+        "theme": "dark",
+        "prefs": {
+          "lang": "en",
+          "currency": "USD",
+          "rate": 1,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1688,
+          "height": 980,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1688,
+          "height": 980
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "b029ebbbc2996bc59dad635ffdedb87b35c4fee8224e9d40206c1eccbd24d7b5"
+      },
+      {
+        "phase": "initial",
+        "route": "projects",
+        "lang": "en",
+        "theme": "dark",
+        "prefs": {
+          "lang": "en",
+          "currency": "USD",
+          "rate": 1,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1688,
+          "height": 980,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1688,
+          "height": 980
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "6907b137a014d6ccbc98ffc6f9cda8adb4c2b5d4d7d2559d946458c951dbb450"
+      },
+      {
+        "phase": "initial",
+        "route": "models",
+        "lang": "en",
+        "theme": "dark",
+        "prefs": {
+          "lang": "en",
+          "currency": "USD",
+          "rate": 1,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1688,
+          "height": 980,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1688,
+          "height": 980
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "68fc448d024840a7e5c8b3211890c4a229ec0a40e44df3c865b3f04cf8b2adc7"
+      },
+      {
+        "phase": "initial",
+        "route": "history",
+        "lang": "en",
+        "theme": "dark",
+        "prefs": {
+          "lang": "en",
+          "currency": "USD",
+          "rate": 1,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1688,
+          "height": 980,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1688,
+          "height": 980
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "ee57ab9f5947ef877bed9661498f20fadf59bbbf21dec9119d3d18566f8c3d24"
+      },
+      {
+        "phase": "initial",
+        "route": "alerts",
+        "lang": "en",
+        "theme": "dark",
+        "prefs": {
+          "lang": "en",
+          "currency": "USD",
+          "rate": 1,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1688,
+          "height": 980,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1688,
+          "height": 980
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "8f579b209c596b5803d400690c2cf82a35b1f9dd2ff8331978f20bdb18f8bb3f"
+      },
+      {
+        "phase": "initial",
+        "route": "providers",
+        "lang": "en",
+        "theme": "dark",
+        "prefs": {
+          "lang": "en",
+          "currency": "USD",
+          "rate": 1,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1688,
+          "height": 980,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1688,
+          "height": 980
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "3f638e2cdf27d89ea2859f5b729137731538c1db53a2c3f4192b5337c2b19a95"
+      },
+      {
+        "phase": "initial",
+        "route": "cost",
+        "lang": "en",
+        "theme": "dark",
+        "prefs": {
+          "lang": "en",
+          "currency": "USD",
+          "rate": 1,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1688,
+          "height": 980,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1688,
+          "height": 980
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "938bfbf9c27f4e867efc747463adfa04995ff4415e5450c5e96a38b7542c14d8"
+      },
+      {
+        "phase": "restored-th-light",
+        "route": "overview",
+        "lang": "th",
+        "theme": "light",
+        "prefs": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1355,
+          "height": 822,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1355,
+          "height": 822
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "799c7de5c63bbe1941afba14aba9f7c206959cd92474e16c804dd6cf14c191f6"
+      },
+      {
+        "phase": "restored-th-light",
+        "route": "live",
+        "lang": "th",
+        "theme": "light",
+        "prefs": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1355,
+          "height": 822,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1355,
+          "height": 822
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "0f8fb6eac9bb967a632f553a6b10f829bcbe33822d34714ccf22a9c24eb866ee"
+      },
+      {
+        "phase": "restored-th-light",
+        "route": "projects",
+        "lang": "th",
+        "theme": "light",
+        "prefs": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1355,
+          "height": 822,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1355,
+          "height": 822
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "03f4e04acc05e315efbf099e12e5dd5a9b8c7d67413ddb4dae65957df3bc37ca"
+      },
+      {
+        "phase": "restored-th-light",
+        "route": "models",
+        "lang": "th",
+        "theme": "light",
+        "prefs": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1355,
+          "height": 822,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1355,
+          "height": 822
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "aabab7691bdba675f30aac8c2d693b4eb916866c899cf9dcb441ffcb235b3aef"
+      },
+      {
+        "phase": "restored-th-light",
+        "route": "history",
+        "lang": "th",
+        "theme": "light",
+        "prefs": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1355,
+          "height": 822,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1355,
+          "height": 822
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "dcbdb2a4a6c90cdbc5099154dfc1a31e2af82e9d347a5cda2872648e51fc0070"
+      },
+      {
+        "phase": "restored-th-light",
+        "route": "alerts",
+        "lang": "th",
+        "theme": "light",
+        "prefs": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1355,
+          "height": 822,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1355,
+          "height": 822
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "9894189e3f4235299b78cdf3e05d34031ca78ae4c86cd08c59193298b9acebe1"
+      },
+      {
+        "phase": "restored-th-light",
+        "route": "providers",
+        "lang": "th",
+        "theme": "light",
+        "prefs": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1355,
+          "height": 822,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1355,
+          "height": 822
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "8dd3149f5a3c327e6f077ba2fa0e10ab6dc79807abea11e1bb682bdcab5cf2bd"
+      },
+      {
+        "phase": "restored-th-light",
+        "route": "cost",
+        "lang": "th",
+        "theme": "light",
+        "prefs": {
+          "lang": "th",
+          "currency": "THB",
+          "rate": 37.25,
+          "hiddenSubscriptions": []
+        },
+        "overflow": false,
+        "viewport": {
+          "width": 1355,
+          "height": 822,
+          "dpr": 1
+        },
+        "nativeImageSize": {
+          "width": 1355,
+          "height": 822
+        },
+        "captureMethod": "webContents.capturePage stayHidden/stayAwake",
+        "sha256": "a8a91e0e02f463e672e8689028a0202a35285a68a0795ac541560dcd30a46491"
+      }
+    ],
+    "modelDetailPresentation": [
+      [
+        {
+          "known": null,
+          "color": "rgb(57, 224, 178)",
+          "valueTop": 258.296875,
+          "labelTop": 282.484375,
+          "text": "1"
+        },
+        {
+          "known": null,
+          "color": "rgb(104, 216, 236)",
+          "valueTop": 258.296875,
+          "labelTop": 282.484375,
+          "text": "1"
+        },
+        {
+          "known": "true",
+          "color": "rgb(105, 180, 255)",
+          "valueTop": 258.296875,
+          "labelTop": 282.484375,
+          "text": "100%"
+        },
+        {
+          "known": "false",
+          "color": "rgb(238, 243, 255)",
+          "valueTop": 258.296875,
+          "labelTop": 301.671875,
+          "text": "Unknown"
+        }
+      ],
+      [
+        {
+          "known": null,
+          "color": "rgb(21, 39, 65)",
+          "valueTop": 293.296875,
+          "labelTop": 258.296875,
+          "text": "1"
+        },
+        {
+          "known": null,
+          "color": "rgb(21, 39, 65)",
+          "valueTop": 293.296875,
+          "labelTop": 258.296875,
+          "text": "1"
+        },
+        {
+          "known": "true",
+          "color": "rgb(21, 39, 65)",
+          "valueTop": 308.296875,
+          "labelTop": 258.296875,
+          "text": "100%"
+        },
+        {
+          "known": "false",
+          "color": "rgb(21, 39, 65)",
+          "valueTop": 300.796875,
+          "labelTop": 258.296875,
+          "text": "\u0e44\u0e21\u0e48\u0e17\u0e23\u0e32\u0e1a"
+        }
+      ]
+    ],
+    "limitations": [
+      "actual production windows placed beyond all displays, nonfocusable and absent from taskbar; anti-occlusion flags/background-throttling override and reduced motion are test-only",
+      "initial content resized by test to1672x941; restored native size1371x887 tested through real Settings/preload/main",
+      "same-version Electron restart with explicit storage flush; no installer or two-version upgrade exercised here",
+      "two native language/theme combinations; not complete four-combination matrix",
+      "synthetic owned DB only; readers/account probes disabled; no physical tray-click/minimize/monitor or resource proof"
+    ]
+  },
+  "standaloneChecks": [
+    "actual ZIP extracted and all file bytes match unused source bundle",
+    "start WhatIf creates no review profile or processes",
+    "extracted bundle outside repository dependencies starts its real daemon/tray with readers off and isolated profile",
+    "stop WhatIf retains both recorded processes",
+    "scoped stop ends recorded processes and preserves database",
+    "restart tolerates retained review process records and stale daemon lock"
+  ],
+  "readerChecks": [
+    "both launch modes WhatIf create no profile/process state",
+    "default launch disables readers despite inherited on and leaves harness/original sentinels unchanged",
+    "explicit opt-in overrides inherited off and actual Codex adapter ingests150 tokens from owned home",
+    "incremental append and repeated manual refresh retain exactly190 tokens and one session; real Models page matches API and excludes prompt content",
+    "reader-enabled restart preserves cursor and does not duplicate events",
+    "default restart disables collection and retains already collected review data"
+  ],
+  "installationChecks": [
+    "actual delivered ZIP installed with identical file inventory and the current bundled installer",
+    "ZIP entry longer than 260 characters extracted into isolated installation",
+    "installed daemon and tray start with readers off and an independent review profile",
+    "scoped stop ends owned processes and retains the isolated database"
+  ],
+  "cleanup": [
+    {
+      "stage": "unused-build",
+      "status": "cleaned",
+      "beforeBytes": 453670461,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    },
+    {
+      "stage": "standalone",
+      "status": "cleaned",
+      "beforeBytes": 454029228,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    },
+    {
+      "stage": "reader",
+      "status": "cleaned",
+      "beforeBytes": 454169310,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    },
+    {
+      "stage": "installed",
+      "status": "cleaned",
+      "beforeBytes": 453670461,
+      "retainedBytes": 111073,
+      "retainedAsarFiles": 1
+    }
+  ],
+  "reclaimedBytes": 1815095168
+}
