@@ -25,6 +25,13 @@ async function chart(page:Page,data:any){
  const columns=page.locator('.qp-cost-column');await page.locator('.qp-cost-chart').waitFor();await columns.first().waitFor({state:'attached'});const count=await columns.count();assert.ok(count<=240,`Chart must not materialize more than240 slots; observed${count}`);
  assert.equal(count,Math.ceil((data.scope.to-data.scope.from)/data.bucketMs));assert.equal(data.resolution.maxBuckets,240);assert.equal(data.bucket,'hour');assert.equal(data.scope.sourceId,1);assert.equal(data.totals.allTokens,1100);assert.equal(data.totals.allCalls,15);
  assert.ok(count>60);assert.equal(await page.locator('.qp-cost-token-dot').count(),0,'Dense plots suppress overlapping decorative dots');
+ const offsets=await page.locator('.qp-cost-chart').evaluate(node=>{
+  const svg=node.querySelector<SVGSVGElement>('.qp-cost-token-line')!,bounds=svg.getBoundingClientRect();
+  const bars=[...node.querySelectorAll('.qp-cost-column')],points=[...svg.querySelectorAll<SVGCircleElement>('circle[data-at]')];
+  return {barCount:bars.length,offsets:points.map((point,index)=>{const bar=bars[index]?.getBoundingClientRect(),x=bounds.left+Number(point.getAttribute('cx'))/1000*bounds.width;return bar?Math.abs(x-bar.left-bar.width/2):Infinity})};
+ });
+ assert.equal(offsets.offsets.length,offsets.barCount);
+ assert.ok(offsets.offsets.every(offset=>offset<=.5),`Dense bars and token line buckets must align: ${Math.max(...offsets.offsets)}px`);
  const guides=await page.locator('.qp-cost-time-guide').evaluateAll(nodes=>nodes.map(node=>({at:Number((node as HTMLElement).dataset.at),left:(node as HTMLElement).style.left})));
  const dates=await page.locator('.qp-cost-plot-dates time').evaluateAll(nodes=>nodes.map(node=>({at:Date.parse((node as HTMLTimeElement).dateTime),left:(node as HTMLElement).style.left})));
  assert.deepEqual(guides,dates,'Dense plots retain guides at actual axis ticks');

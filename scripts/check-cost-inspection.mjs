@@ -28,6 +28,14 @@ export async function checkCostInspection(page, data, { locale, currency, rate, 
       assert.ok(Math.abs(dot.left - (index + .5) / expected.length * 100) < 1e-4);
       assert.ok(Math.abs(dot.top - (100 - 100 * expected[index].pricedTokens / (maximum || 1))) < 1e-4);
     });
+    const offsets = await plot.evaluate(node => {
+      const bars = [...node.querySelectorAll('.qp-cost-column')];
+      return [...node.querySelectorAll('.qp-cost-token-dot')].map((dot, index) => {
+        const point = dot.getBoundingClientRect(), bar = bars[index].getBoundingClientRect();
+        return Math.abs(point.left + point.width / 2 - bar.left - bar.width / 2);
+      });
+    });
+    assert.ok(offsets.every(offset => offset <= .5), `Cost bars and token marks for the same buckets must align: ${Math.max(...offsets)}px`);
   } else assert.equal(dots.length, 0, 'Dense charts do not accumulate overlapping markers');
   const table = page.locator('.qp-cost-chart-data');
   assert.deepEqual(await table.locator('tbody tr').evaluateAll(rows => rows.map(row => ({ start: Number(row.dataset.at), amount: Number(row.dataset.amount), pricedTokens: Number(row.dataset.pricedTokens), pricedCalls: Number(row.dataset.pricedCalls), allCalls: Number(row.dataset.allCalls) }))), expected.map(({ start, amount, pricedTokens, pricedCalls, allCalls }) => ({ start, amount, pricedTokens, pricedCalls, allCalls })), 'Complete Cost table matches the independent API');
