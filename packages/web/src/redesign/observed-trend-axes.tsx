@@ -46,6 +46,8 @@ export function ObservedTrendAxes({ points, bucketMs, language, label, valueLabe
   });
   const indices = points.length <= tickCount ? points.map((_, index) => index)
     : Array.from({ length: tickCount }, (_, index) => Math.round(index * (points.length - 1) / (tickCount - 1)));
+  const guideIndices = points.length <= 7 ? points.map((_, index) => index)
+    : Array.from({ length: 7 }, (_, index) => Math.round(index * (points.length - 1) / 6));
   return <div className={`qp-observed-trend-axes ${className}-axes`} data-trend-scope={scopeKey} data-value-label={valueLabel}>
     <div className="qp-trend-y" aria-hidden="true">
       {(maximum > 0 ? [1, .75, .5, .25, 0] : [0]).map(fraction => {
@@ -53,7 +55,7 @@ export function ObservedTrendAxes({ points, bucketMs, language, label, valueLabe
         return <span key={fraction} data-axis-value={value} title={fullNumber.format(value)} style={{ top: `${94 - 88 * fraction}%` }}>{number.format(value)}</span>;
       })}
     </div>
-    <ObservedTrend className={className} points={points} language={language} label={label} inspection={points.length ? {
+    <ObservedTrend className={className} points={points} language={language} label={label} guideIndices={guideIndices} inspection={points.length ? {
       index: current?.index ?? null, help: t('history.timelineHelp'),
       onFocus: event => activate(current?.index ?? 0, current?.kind ?? 'keyboard', event.currentTarget), onBlur: () => setActive(null),
       onKeyDown: event => {

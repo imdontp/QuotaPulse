@@ -10,6 +10,10 @@ export async function checkTrendInspection(page, expected, unit) {
   assert.equal(await svg.getAttribute('role'), 'group');
   assert.equal(await page.locator('svg[tabindex="0"]').count(), 1, 'Only the full chart adds a focus stop');
   assert.deepEqual(await svg.locator(':scope > circle[data-at]').evaluateAll(nodes => nodes.map(node => ({ at: Number(node.dataset.at), value: Number(node.dataset.value) }))), expected);
+  const guides = await svg.locator(':scope > .qp-observed-time-guide').evaluateAll(nodes => nodes.map(node => ({ index: Number(node.dataset.index), x1: Number(node.getAttribute('x1')), x2: Number(node.getAttribute('x2')) })));
+  const indices = expected.length <= 7 ? expected.map((_, index) => index) : Array.from({ length: 7 }, (_, index) => Math.round(index * (expected.length - 1) / 6));
+  assert.deepEqual(guides.map(guide => guide.index), indices);
+  guides.forEach(guide => { const x = 8 + 984 * guide.index / Math.max(1, expected.length - 1); assert.ok(Math.abs(guide.x1 - x) < 1e-6 && Math.abs(guide.x2 - x) < 1e-6, 'Guide aligns to the actual bucket coordinate'); });
   const table = axes.locator('..').locator('.qp-chart-data');
   assert.deepEqual(await table.locator('tbody tr').evaluateAll(nodes => nodes.map(node => ({ at: Number(node.dataset.at), value: Number(node.dataset.value) }))), expected, 'Full data table remains complete');
   const original = await svg.locator('polyline,polygon').evaluateAll(nodes => nodes.map(node => node.getAttribute('points')));
