@@ -5,6 +5,12 @@
 .qp-alert-segments text { font-size:10px; fill:var(--qp-muted); }
 .qp-quota-grid { stroke:var(--qp-border); stroke-dasharray:3 4; }
 .qp-quota-reset { stroke:var(--qp-muted); stroke-dasharray:3 4; }
+.qp-quota-area { pointer-events:none; }
+.qp-quota-area-top,.qp-quota-area-bottom { stop-color:var(--qp-accent); }
+.qp-quota-area-top { stop-opacity:.2; }
+.qp-quota-area-bottom { stop-opacity:.015; }
+.qp-redesign[data-theme=light] .qp-quota-area-top { stop-opacity:.12; }
+.qp-redesign[data-theme=light] .qp-quota-area-bottom { stop-opacity:.01; }
 .qp-quota-series { stroke:var(--qp-accent); stroke-width:2; }
 .qp-quota-point { fill:var(--qp-accent); }
 .qp-quota-samples { font-size:11px; color:var(--qp-muted); }

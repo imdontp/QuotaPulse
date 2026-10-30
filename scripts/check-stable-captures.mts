@@ -2826,6 +2826,32 @@ async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', 
   });
   const expectedLines = history.segments.reduce((total, segment) => total + segment.samples.filter((sample, index) => index > 0 && sample.usedPercent !== null && segment.samples[index - 1].usedPercent !== null).length, 0);
   assert.equal(await chart.locator('.qp-quota-series').count(), expectedLines, 'Unknown/reset intervals must break the series');
+  const expectedAreas = history.segments.flatMap(segment => {
+    const runs: Array<Array<{ observedAt: number; usedPercent: number }>> = [];
+    let run: Array<{ observedAt: number; usedPercent: number }> = [];
+    const finish = () => { if (run.length > 1) runs.push(run); run = []; };
+    for (const sample of segment.samples) {
+      if (sample.usedPercent === null) finish();
+      else run.push({ observedAt: sample.observedAt, usedPercent: sample.usedPercent });
+    }
+    finish();
+    return runs.map(samples => ({ samples, reset: String(segment.resetAt ?? 'unknown') }));
+  });
+  const areas = await chart.locator('.qp-quota-area').evaluateAll(elements => elements.map(element => {
+    const coordinates = (element.getAttribute('d')!.match(/-?\d+(?:\.\d+)?(?:e[+-]?\d+)?/gi) ?? []).map(Number);
+    return { from: Number(element.getAttribute('data-from')), to: Number(element.getAttribute('data-to')), count: Number(element.getAttribute('data-count')), reset: element.parentElement!.getAttribute('data-reset'), hidden: element.getAttribute('aria-hidden'), points: Array.from({length: coordinates.length / 2}, (_, index) => coordinates.slice(index * 2, index * 2 + 2)) };
+  }));
+  assert.equal(areas.length, expectedAreas.length, 'Area must not bridge unknown samples, resets or isolated points');
+  areas.forEach((area, index) => {
+    const expected = expectedAreas[index];
+    const firstSample = expected.samples[0], lastSample = expected.samples[expected.samples.length - 1];
+    assert.equal(area.from, firstSample.observedAt); assert.equal(area.to, lastSample.observedAt); assert.equal(area.count, expected.samples.length); assert.equal(area.reset, expected.reset); assert.equal(area.hidden, 'true');
+    const pointX = (at: number) => first === last ? (34 + viewBox[2] - 6) / 2 : 34 + (at - first) / (last - first) * (viewBox[2] - 40);
+    const pointY = (pct: number) => 6 + (100 - Math.min(100, Math.max(0, pct))) / 100 * 98;
+    const expectedPoints = [[pointX(firstSample.observedAt),104],...expected.samples.map(sample => [pointX(sample.observedAt),pointY(sample.usedPercent)]),[pointX(lastSample.observedAt),104]];
+    assert.equal(area.points.length, expectedPoints.length);
+    area.points.forEach((point, pointIndex) => point.forEach((value, axis) => assert.ok(Math.abs(value - expectedPoints[pointIndex][axis]) < .0001, 'Area vertex must align with real samples and the zero baseline')));
+  });
   await page.screenshot({ path: resolve(output, `quota-expanded-${destination}-${lang}-${theme}.png`), animations: 'disabled' });
   for (const width of [390, 900, 1280]) {
     await page.setViewportSize({ width, height: 941 });
@@ -2856,6 +2882,7 @@ async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', 
           assert.equal(await outer.locator('.qp-quota-point').count(), state === 'unknown' ? 0 : known.length);
           if (state === 'unknown') {
             assert.equal(await outer.locator('.qp-quota-series').count(), 0);
+            assert.equal(await outer.locator('.qp-quota-area').count(), 0, 'Unknown readings must not create a filled area');
             await outer.locator('.qp-quota-samples summary').focus(); await page.keyboard.press('Enter');
             await outer.locator('table').waitFor();
             assert.equal(await outer.locator('tr[data-value=unknown]').count(), samples.length);

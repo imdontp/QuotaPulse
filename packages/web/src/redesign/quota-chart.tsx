@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useId, useLayoutEffect, useRef, useState } from 'react';
 import type { QuotaHistoryResponse } from '@/api';
 import { useFormat } from '@/i18n/format';
 import type { RedesignTranslate } from './shell';
@@ -7,6 +7,7 @@ import './quota-chart.css';
 /** Observed values only. Reset boundaries and unknown samples break the series. */
 export function QuotaChart({ history, t, language, title = t('redesign.alertRiskChart') }: { history: QuotaHistoryResponse; t: RedesignTranslate; language: 'en' | 'th'; title?: string }) {
   const f = useFormat();
+  const gradientId = `qp-quota-area-${useId().replace(/:/g, '')}`;
   const container = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(600);
   const [samplesOpen, setSamplesOpen] = useState(false);
@@ -32,11 +33,28 @@ export function QuotaChart({ history, t, language, title = t('redesign.alertRisk
   const stamp = (at: number | null) => at === null ? t('redesign.unknownValue') : new Date(at).toLocaleString(language === 'th' ? 'th-TH' : 'en-US');
   const number = new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 20 });
   const value = (percent: number | null) => percent === null ? t('redesign.unknownValue') : `${number.format(percent)}%`;
+  const areaRuns = history.segments.map(segment => {
+    const runs: Array<Array<{ observedAt: number; usedPercent: number }>> = [];
+    let run: Array<{ observedAt: number; usedPercent: number }> = [];
+    const finish = () => { if (run.length > 1) runs.push(run); run = []; };
+    for (const sample of segment.samples) {
+      if (sample.usedPercent === null) finish();
+      else run.push({ observedAt: sample.observedAt, usedPercent: sample.usedPercent });
+    }
+    finish();
+    return runs;
+  });
   return <div className="qp-quota-chart" ref={container}>
     <div className="qp-quota-chart-label">{t('redesign.alertQuotaPercent')}</div>
     <svg className="qp-alert-segments" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${title}. 0–100%. ${stamp(first)} – ${stamp(last)}. ${number.format(samples.length)} ${t('redesign.readings')}, ${number.format(history.segments.length)} ${t('redesign.resetPeriods')}.`}>
+      <defs><linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="6" y2={height - 8}><stop className="qp-quota-area-top" offset="0"/><stop className="qp-quota-area-bottom" offset="1"/></linearGradient></defs>
       {[0, 25, 50, 75, 100].map(percent => <g key={percent}><line x1={left} x2={right} y1={y(percent)} y2={y(percent)} className="qp-quota-grid"/><text x={left - 5} y={y(percent)} textAnchor="end" dominantBaseline="middle">{percent}%</text></g>)}
       {history.segments.map((segment, index) => <g key={`${segment.resetAt}-${index}`} data-reset={segment.resetAt ?? 'unknown'}>
+        {areaRuns[index].map((run, i) => {
+          const firstPoint = run[0], lastPoint = run[run.length - 1];
+          const path = `M ${x(firstPoint.observedAt)} ${height - 8} ${run.map(sample => `L ${x(sample.observedAt)} ${y(sample.usedPercent)}`).join(' ')} L ${x(lastPoint.observedAt)} ${height - 8} Z`;
+          return <path key={`area-${i}`} className="qp-quota-area" aria-hidden="true" data-from={firstPoint.observedAt} data-to={lastPoint.observedAt} data-count={run.length} d={path} fill={`url(#${gradientId})`}/>;
+        })}
         {index > 0 && segment.samples[0] && <line x1={x(segment.samples[0].observedAt)} x2={x(segment.samples[0].observedAt)} y1={6} y2={height - 8} className="qp-quota-reset"/>}
         {segment.samples.map((sample, i) => {
           if (sample.usedPercent === null) return null;
