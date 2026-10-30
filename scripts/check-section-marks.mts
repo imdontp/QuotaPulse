@@ -142,7 +142,10 @@ async function measure(page: Page, definitions: Target[], lang: 'en' | 'th', the
     assert.deepEqual(mark.adjacentTextOverlaps, [], `${label}: frame overlaps adjacent paragraph/table text`);
     assert.ok(Math.abs(mark.footprint - 20) <= .1, `${label}: mark must preserve the existing 20px layout footprint`);
     const referenceLiveFeed = expected.selector === '.qp-live-records h2' && lang === 'en' && theme === 'dark' && (page.viewportSize()?.width ?? 0) >= 1536;
-    assert.equal(mark.svgColor, referenceLiveFeed ? 'rgb(39, 157, 255)' : mark.frameColor, `${label}: mark ink must retain its intended color`);
+    const referenceCostInk = lang === 'en' && theme === 'dark' && (page.viewportSize()?.width ?? 0) >= 1536
+      ? ({ '.qp-cost-projects h2': 'rgb(57, 166, 249)', '.qp-cost-insights h2': 'rgb(62, 176, 248)' } as Record<string, string>)[expected.selector]
+      : undefined;
+    assert.equal(mark.svgColor, referenceLiveFeed ? 'rgb(39, 157, 255)' : referenceCostInk ?? mark.frameColor, `${label}: mark ink must retain its intended color`);
     if (theme === 'dark' && !expected.warm) {
       assert.ok(mark.gradient.includes('rgb(0, 30, 99)') && mark.gradient.includes('rgb(0, 26, 81)'),
         `${label}: dark frame must retain the sampled blue palette (${mark.gradient})`);

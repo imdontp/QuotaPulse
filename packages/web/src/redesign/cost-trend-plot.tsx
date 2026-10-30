@@ -8,8 +8,9 @@ type PlotBounds = Pick<DOMRect, 'left' | 'top' | 'width' | 'height'>;
 const sameBounds = (a: PlotBounds, b: PlotBounds) => a.left === b.left && a.top === b.top && a.width === b.width && a.height === b.height;
 
 /** The two recorded scales remain fixed while inspecting a shared bucket. */
-export function CostTrendPlot({ points, scopeKey, label, help, basisLabel, language, money, t }: {
+export function CostTrendPlot({ points, timeTicks, scopeKey, label, help, basisLabel, language, money, t }: {
   points: CostAnalysisResponse['points']; scopeKey: string; label: string; help: string; basisLabel: string;
+  timeTicks: readonly { at: number; position: number }[];
   language: 'en' | 'th'; money: (amount: number) => string; t: RedesignTranslate;
 }) {
   const helpId = useId();
@@ -81,8 +82,10 @@ export function CostTrendPlot({ points, scopeKey, label, help, basisLabel, langu
       activate(Math.max(0, Math.min(points.length - 1, Math.floor((event.clientX - bounds.left) / bounds.width * points.length))), 'pointer');
     }} onPointerLeave={() => setActive(previous => previous?.kind === 'pointer' ? null : previous)}>
     <span id={helpId} className="qp-cost-inspection-help">{help}</span>
+    {timeTicks.map(tick => <span key={tick.at} className="qp-cost-time-guide" data-at={tick.at} style={{ left: `${tick.position}%` }} aria-hidden="true"/>)}
     {points.map(point => <div key={point.start}><span className="qp-cost-column" style={{ height: `${point.amount / (maximumAmount || 1) * 100}%` }}/></div>)}
     <ObservedTrend className="qp-cost-token-line" language={language} points={points.map(point => ({ at: point.start, value: point.pricedTokens }))} label={t('redesign.costPricedTokens')} area={false} grid={false} edgeToEdge bucketCenters nativeTitles={false}/>
+    {points.length <= 60 && points.map((point, index) => <span key={point.start} className="qp-cost-token-dot" data-at={point.start} data-value={point.pricedTokens} style={{ left: `${(index + .5) / points.length * 100}%`, top: `${100 - 100 * point.pricedTokens / (maximumTokens || 1)}%` }} aria-hidden="true"/>)}
     {selected && <svg className="qp-cost-inspection-marks" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
       <line x1={x * 1000} x2={x * 1000} y1="0" y2="100"/>
       <circle data-series="amount" cx={amountMark.x} cy={amountMark.y} r="3"/>

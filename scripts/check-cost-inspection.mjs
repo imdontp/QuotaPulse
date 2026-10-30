@@ -14,6 +14,21 @@ export async function checkCostInspection(page, data, { locale, currency, rate, 
     : money.format(point.amount * (currency === 'THB' ? rate : 1)) + (point.pricedCalls < point.allCalls ? '+' : '');
   assert.equal(await plot.getAttribute('role'), 'group');
   assert.equal(await plot.getAttribute('tabindex'), '0');
+  const guides = await plot.locator('.qp-cost-time-guide').evaluateAll(nodes => nodes.map(node => ({ at: Number(node.dataset.at), left: node.style.left })));
+  const dates = await page.locator('.qp-cost-plot-dates time').evaluateAll(nodes => nodes.map(node => ({ at: Date.parse(node.dateTime), left: node.style.left })));
+  assert.deepEqual(guides, dates, 'Time guides align with the actual scope axis');
+  const dots = await plot.locator('.qp-cost-token-dot').evaluateAll(nodes => nodes.map(node => ({ at: Number(node.dataset.at), value: Number(node.dataset.value), left: parseFloat(node.style.left), top: parseFloat(node.style.top) })));
+  if (expected.length <= 60) {
+    const maximum = Math.max(0, ...expected.map(point => point.pricedTokens));
+    assert.equal(dots.length, expected.length);
+    dots.forEach((dot, index) => {
+      assert.equal(dot.at, expected[index].start); assert.equal(dot.value, expected[index].pricedTokens);
+      // CSSOM serializes percentages at limited precision; bound the resulting
+      // position to less than a thousandth of a pixel at these test widths.
+      assert.ok(Math.abs(dot.left - (index + .5) / expected.length * 100) < 1e-4);
+      assert.ok(Math.abs(dot.top - (100 - 100 * expected[index].pricedTokens / (maximum || 1))) < 1e-4);
+    });
+  } else assert.equal(dots.length, 0, 'Dense charts do not accumulate overlapping markers');
   const table = page.locator('.qp-cost-chart-data');
   assert.deepEqual(await table.locator('tbody tr').evaluateAll(rows => rows.map(row => ({ start: Number(row.dataset.at), amount: Number(row.dataset.amount), pricedTokens: Number(row.dataset.pricedTokens), pricedCalls: Number(row.dataset.pricedCalls), allCalls: Number(row.dataset.allCalls) }))), expected.map(({ start, amount, pricedTokens, pricedCalls, allCalls }) => ({ start, amount, pricedTokens, pricedCalls, allCalls })), 'Complete Cost table matches the independent API');
   await plot.scrollIntoViewIfNeeded();

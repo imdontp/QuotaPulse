@@ -1313,7 +1313,11 @@ async function checkModelCostAccess(page: Page, destination: 'models' | 'cost', 
           const ticks = page.locator(`.qp-cost-axis[data-axis=${axis}]>span`);
           assert.equal(await ticks.count(), 5);
           assert.deepEqual(await ticks.evaluateAll(elements => elements.map(element => Number(element.getAttribute('data-value')))), [1, 0.75, 0.5, 0.25, 0].map(fraction => fraction * maximum));
-          if (axis === 'amount') assert.deepEqual(await ticks.allTextContents(), [1, 0.75, 0.5, 0.25, 0].map(fraction => money.format(fraction * maximum)));
+          if (axis === 'amount') {
+            const digits = maximum > 0 ? Math.max(2, Math.ceil(-Math.log10(maximum / 4))) : 2;
+            const axisMoney = new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD', maximumFractionDigits: digits > 6 ? 2 : digits, ...(digits > 6 ? { notation: 'scientific' as const } : {}) });
+            assert.deepEqual(await ticks.allTextContents(), [1, 0.75, 0.5, 0.25, 0].map(fraction => fraction === 0 ? money.format(0) : axisMoney.format(fraction * maximum)), 'Monetary axis labels retain the precision of their quarter-step');
+          }
         }
         const times = page.locator('.qp-cost-plot-dates time');
         assert.equal(await times.nth(0).getAttribute('datetime'), new Date(cost.scope.from).toISOString());

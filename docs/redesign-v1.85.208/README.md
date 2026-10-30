@@ -1,0 +1,11 @@
+# Cost trend time guides and recorded markers
+
+[Compare the Cost screen with the concept](review.html). The new capture is compiled web output, English/dark at 1672 × 941, with a fixed synthetic database and reduced motion. Values and graph shape vary with real usage. Other screens remain available in the [previous eight-screen gallery](../redesign-v1.85.205/review.html), whose captures predate this change.
+
+The Cost plot now draws subtle vertical guides at its actual date-axis ticks, and shows circular markers centered on the existing priced-token buckets when there are at most 60 buckets. As before, a bucket with no recorded calls is plotted as zero. Dense plots suppress the decorative markers while retaining the line, complete data table and keyboard/pointer inspection. No values or series are added. The marker coordinates are independent of the SVG aspect ratio and retain the existing chart scales.
+
+The web build and all 376 web tests passed. Cost's browser suite passed four language/theme pairs with byte-identical repeated screenshots; checks include API-derived marks, guide/axis alignment, tooltip, keyboard, responsive widths and complete chart data. A separate 32-case compiled-browser run covered dense plots, source/basis, long and extreme ranges, disclosure and keyboard navigation; it verifies no decorative markers for more than 60 buckets and guides against axis ticks. The concept capture repeated byte-identically. These are browser tests using synthetic data, not physical Electron or visual acceptance.
+
+The initial Cost capture exposed stale section-mark color and monetary-axis assertions after earlier reference-art and precision changes. The checks were updated to assert the existing specific reference colors and quarter-step precision. A first marker assertion also exceeded CSSOM's percentage serialization precision; its subsequent tolerance is 0.0001 percentage point. The failed run logs and final verification are retained in `evidence.tar.gz`.
+
+The current runnable [review206 package](../redesign-v1.85.206/README.md) predates this change. Whole-dashboard 99–100% concept fidelity, real-provider behavior, physical monitor and tray checks, production performance, cross-schema migration and the intermittent Runtime Map inspector issue remain open.
