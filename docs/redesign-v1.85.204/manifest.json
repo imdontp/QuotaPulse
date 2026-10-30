@@ -1,0 +1,73 @@
+{
+  "applicationCommit": "09547334d94ed2db4000dbf418702725291d4ed8",
+  "webIndexSha256": "6710626664894cec8525ef69fd09ff838c06943555c1c043819b69be5687d363",
+  "routes": [
+    {
+      "route": "overview",
+      "sha256": "abb5a6f719fb824d49b86463708d692b71d14b96dd9ab361ff55ab882c4e0dcc",
+      "reusedPriorImage": true,
+      "prior": "../redesign-v1.85.193/overview.png",
+      "current": "../redesign-v1.85.193/overview.png"
+    },
+    {
+      "route": "live",
+      "sha256": "f0f8b4c45e6feff18a3c1f9f2ac381bf9c7ef7d92818d7825ce1e19f793f67d1",
+      "reusedPriorImage": true,
+      "prior": "../redesign-v1.85.200/live.png",
+      "current": "../redesign-v1.85.200/live.png"
+    },
+    {
+      "route": "projects",
+      "sha256": "04cd8fcf3cbbfb945c86573fd59c88536fa15d1eeb6afb9dba413c548d989a0e",
+      "reusedPriorImage": true,
+      "prior": "../redesign-v1.85.186/images/projects.png",
+      "current": "../redesign-v1.85.186/images/projects.png"
+    },
+    {
+      "route": "models",
+      "sha256": "eb86c850a8f483383bcc3f6df22175a9a3d841d47c19cce7deb6a738c541710c",
+      "reusedPriorImage": true,
+      "prior": "../redesign-v1.85.193/models.png",
+      "current": "../redesign-v1.85.193/models.png"
+    },
+    {
+      "route": "history",
+      "sha256": "56f0fc8b859e71d84e1d4f5b3441a939d8b79ba5deed746592a7544d987e6ea8",
+      "reusedPriorImage": false,
+      "prior": "../redesign-v1.85.195/history.png",
+      "current": "history.png"
+    },
+    {
+      "route": "alerts",
+      "sha256": "c545584c0c9d124d6f8e2754309c4734bbc66e6aed94d5057eff7152289c2120",
+      "reusedPriorImage": true,
+      "prior": "../redesign-v1.85.203/alerts.png",
+      "current": "../redesign-v1.85.203/alerts.png"
+    },
+    {
+      "route": "providers",
+      "sha256": "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+      "reusedPriorImage": true,
+      "prior": "../redesign-v1.85.186/images/providers.png",
+      "current": "../redesign-v1.85.186/images/providers.png"
+    },
+    {
+      "route": "cost",
+      "sha256": "d69ab3189f30f933658faddee756a806d352f3c8300ed085ceaf791751100bc6",
+      "reusedPriorImage": true,
+      "prior": "../redesign-v1.85.186/images/cost.png",
+      "current": "../redesign-v1.85.186/images/cost.png"
+    }
+  ],
+  "historyPreviousContextDifference": {
+    "boundingBox": [
+      1099,
+      485,
+      1177,
+      495
+    ],
+    "changedPixels": 418,
+    "maxChannelDifference": 231
+  },
+  "scope": "same in-memory synthetic fixture, fixed time, reduced motion, eight fresh captures; not whole-page acceptance"
+}

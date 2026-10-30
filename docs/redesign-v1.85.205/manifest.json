@@ -1,0 +1,36 @@
+{
+  "sourceParent": "09547334d94ed2db4000dbf418702725291d4ed8",
+  "sourceSha256": {
+    "packages/web/src/redesign/quota-chart.tsx": "aec197580243f66ddc1cfb6a924b6923c935aaf7600ae58f5cca900ce2a08295",
+    "packages/web/src/redesign/quota-chart.css": "afd79d293ec25bba581f6339e9a8ec5417b849e1d10e748bbe553dc726456d19",
+    "scripts/check-stable-captures.mts": "4aa6c4ef510cd0e1258d327e5b40a6e4ecf5db82ee4d09abc079aa6ad1f69891"
+  },
+  "webIndexSha256": "05ceb84037bf3f7eb20357d159227a16ee33c1685e0ac22311351c0dbfcc3c15",
+  "freshCaptures": [
+    "overview",
+    "live",
+    "projects",
+    "models",
+    "history",
+    "alerts",
+    "providers",
+    "cost"
+  ],
+  "reusedAfterByteComparison": [
+    "overview",
+    "live",
+    "projects",
+    "models",
+    "history",
+    "providers",
+    "cost"
+  ],
+  "changedAlertsPixels": 269,
+  "chartRect": [
+    280,
+    298,
+    1185,
+    402
+  ],
+  "scope": "Fixed synthetic local API, reduced motion; no whole-dashboard approval"
+}

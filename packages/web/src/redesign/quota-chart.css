@@ -4,6 +4,7 @@
 .qp-alert-segments { display:block; width:100%; height:112px; overflow:visible; }
 .qp-alert-segments text { font-size:10px; fill:var(--qp-muted); }
 .qp-quota-grid { stroke:var(--qp-border); stroke-dasharray:3 4; }
+.qp-quota-time-grid { stroke:var(--qp-border); stroke-dasharray:2 5; opacity:.7; pointer-events:none; }
 .qp-quota-reset { stroke:var(--qp-muted); stroke-dasharray:3 4; }
 .qp-quota-area { pointer-events:none; }
 .qp-quota-area-top,.qp-quota-area-bottom { stop-color:var(--qp-accent); }

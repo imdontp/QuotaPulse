@@ -2819,6 +2819,13 @@ async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', 
   assert.equal(points.length, known.length);
   const viewBox = (await chart.locator('svg').getAttribute('viewBox'))!.split(' ').map(Number);
   const first = Math.min(...samples.map(sample => sample.observedAt)); const last = Math.max(...samples.map(sample => sample.observedAt));
+  const guides = await chart.locator('.qp-quota-time-grid').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), x: Number(element.getAttribute('x1')), endX: Number(element.getAttribute('x2')), hidden: element.getAttribute('aria-hidden') })));
+  assert.equal(guides.length, first === last ? 1 : 5);
+  guides.forEach((guide, index) => {
+    const expectedTime = first === last ? first : first + (last - first) * index / 4;
+    const expectedX = first === last ? (34 + viewBox[2] - 6) / 2 : 34 + (expectedTime - first) / (last - first) * (viewBox[2] - 40);
+    assert.equal(guide.at, expectedTime); assert.ok(Math.abs(guide.x - expectedX) < .0001); assert.equal(guide.x, guide.endX); assert.equal(guide.hidden, 'true');
+  });
   points.forEach((point, index) => {
     const sample = known[index]; assert.equal(point.at, sample.observedAt); assert.equal(point.value, sample.usedPercent);
     assert.ok(Math.abs(point.y - (6 + (100 - sample.usedPercent!) / 100 * 98)) < 0.0001, 'Incorrect percentage ordinate');
@@ -2863,8 +2870,8 @@ async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', 
   quotaChecks.push({ page: destination, lang, theme, segments: history.segments.length, samples: samples.length, unknown: samples.filter(sample => sample.usedPercent === null).length });
   if (destination === 'overview') {
     const pattern = '**/api/quota-history?**';
-    for (const state of ['unknown', 'empty', 'recovered']) {
-      if (state !== 'recovered') await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ...history, segments: state === 'empty' ? [{ resetAt: history.reader!.resetAt, samples: [] }] : history.segments.map(segment => ({ ...segment, samples: segment.samples.map(sample => ({ ...sample, usedPercent: null })) })) }) }));
+    for (const state of ['unknown', 'empty', 'single', 'recovered']) {
+      if (state !== 'recovered') await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ...history, segments: state === 'empty' ? [{ resetAt: history.reader!.resetAt, samples: [] }] : state === 'single' ? [{ resetAt: history.reader!.resetAt, samples: [known[0]] }] : history.segments.map(segment => ({ ...segment, samples: segment.samples.map(sample => ({ ...sample, usedPercent: null })) })) }) }));
       try {
         await page.goto(`http://127.0.0.1:7804/?quota-state=${state}#overview`, { waitUntil: 'domcontentloaded' });
         const outer = page.getByTestId('quota-history');
@@ -2879,7 +2886,14 @@ async function checkQuotaAccess(page: Page, destination: 'overview' | 'alerts', 
           assert.equal(await outer.locator('svg.qp-alert-segments').count(), 0, 'Empty history must not create an invalid time axis');
         } else {
           await outer.locator('.qp-quota-samples').waitFor();
-          assert.equal(await outer.locator('.qp-quota-point').count(), state === 'unknown' ? 0 : known.length);
+          assert.equal(await outer.locator('.qp-quota-point').count(), state === 'unknown' ? 0 : state === 'single' ? 1 : known.length);
+          if (state === 'single') {
+            assert.equal(await outer.locator('.qp-quota-area').count(), 0);
+            const guide = outer.locator('.qp-quota-time-grid'); assert.equal(await guide.count(), 1);
+            const dimensions = await outer.locator('svg.qp-alert-segments').getAttribute('viewBox');
+            const chartWidth = Number(dimensions!.split(' ')[2]);
+            assert.ok(Math.abs(Number(await guide.getAttribute('x1')) - (34 + chartWidth - 6) / 2) < .0001);
+          }
           if (state === 'unknown') {
             assert.equal(await outer.locator('.qp-quota-series').count(), 0);
             assert.equal(await outer.locator('.qp-quota-area').count(), 0, 'Unknown readings must not create a filled area');

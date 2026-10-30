@@ -1,0 +1,12 @@
+Command: QUOTAPULSE_CAPTURE_SCOPE=overview npm run test:stable
+Result: exit code 1 during first-pass th/light Runtime Map inspector validation.
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'ไม่ระบุโปรเจกต์'
+- 'ชื่อว่าง'
+
+at checkRuntimeAccess (scripts/check-stable-captures.mts:1901:14)
+
+The earlier en/dark, en/light and th/dark cases passed. A separate th/light rerun passed. Focused null/empty keyboard probes passed, but those observations do not establish a cause or fix.
