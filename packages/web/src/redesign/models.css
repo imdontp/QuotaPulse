@@ -362,6 +362,11 @@
 
 /* Keep the unknown-provider qualifier together when the summary wraps. */
 .qp-model-summary [data-testid=models-provider-count] abbr { display:inline-block; white-space:nowrap; }
+/* Give the recorded figure its natural width before allocating remaining space to the sparkline. */
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true] { grid-template-columns:46px max-content minmax(0,1fr); }
+  .qp-redesign[data-testid=production-models][data-theme=dark] .qp-model-summary article[data-history=true] { grid-template-columns:50px max-content minmax(0,1fr); }
+}
 @media(min-width:731px) and (max-width:1535px) {
   .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true] { grid-template-columns:46px max-content minmax(0,1fr); }
   .qp-redesign[data-testid=production-models] .qp-model-summary article[data-history=true][data-wide=true]>.qp-model-summary-icon { grid-row:1; }
