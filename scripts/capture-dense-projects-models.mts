@@ -44,7 +44,7 @@ for (const [p, project] of projects.entries()) for (const [m, [model, provider, 
   }
 }
 const app = buildServer(db, new Scheduler(db, []), { token, port: 7843, webRoot });
-const errors: string[] = [], forbidden: string[] = [], captures: object[] = [], layouts: object[] = [];
+const errors: string[] = [], forbidden: string[] = [], captures: object[] = [], layouts: object[] = [], headingCases: object[] = [];
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 const sha = (data: Buffer) => createHash('sha256').update(data).digest('hex');
 try {
@@ -70,7 +70,7 @@ try {
     const deadline = performance.now() + 30000; let idle = 0;
     while (idle < 12) { assert.ok(performance.now() < deadline, `${name} API did not settle`); await page.waitForTimeout(40); idle = pending.size ? 0 : idle + 1; }
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
-    let valueGeometry: object | null = null;
+    let valueGeometry: object | null = null, tableGeometry: object | null = null;
     if (name === 'models') {
       const value = page.locator('.qp-model-summary article').last().locator('strong .qp-cost-value > span').first();
       const geometry = await value.evaluate(node => { const range = document.createRange(); range.selectNodeContents(node); return { text: node.textContent, lines: [...range.getClientRects()].map(rect => ({ x: rect.x, y: rect.y, right: rect.right })) }; });
@@ -87,6 +87,17 @@ try {
       assert.ok(points.lines.every(count => count === 1), 'Unknown buckets must continue to break the line');
       assert.ok(points.dots.every(dot => dot.stroke === 'var(--qp-accent)' && dot.strokeWidth === '3' && dot.vectorEffect === 'non-scaling-stroke'), 'Every isolated value needs a visible screen-space marker');
       valueGeometry = { geometry, spark, points };
+      tableGeometry = await page.locator('.qp-model-comparison').evaluate(panel => {
+        const wrap = panel.querySelector('.qp-model-table-wrap')!;
+        const rows = [...wrap.querySelectorAll('tbody tr')];
+        const panelBox = panel.getBoundingClientRect(), wrapBox = wrap.getBoundingClientRect(), headBox = wrap.querySelector('thead')!.getBoundingClientRect();
+        return { panel: { top: panelBox.top, bottom: panelBox.bottom, height: panelBox.height }, wrap: { top: wrapBox.top, bottom: wrapBox.bottom, height: wrapBox.height }, head: { top: headBox.top, bottom: headBox.bottom, height: headBox.height }, rows: rows.map(row => { const rect = row.getBoundingClientRect(); return { top: rect.top, bottom: rect.bottom, height: rect.height }; }), children: [...panel.children].map(element => { const rect = element.getBoundingClientRect(); return { className: element.className, top: rect.top, bottom: rect.bottom, height: rect.height }; }), scrollHeight: wrap.scrollHeight, clientHeight: wrap.clientHeight };
+      });
+      const actual = tableGeometry as { wrap: { top: number; bottom: number }; rows: Array<{ top: number; bottom: number }>; scrollHeight: number; clientHeight: number };
+      assert.equal(actual.rows.length, 12);
+      assert.ok(actual.rows[0]!.top >= actual.wrap.top && actual.rows.at(-1)!.bottom <= actual.wrap.bottom + 1, `All 12 model rows must be visible at the concept viewport: ${JSON.stringify(actual)}`);
+      assert.ok(actual.scrollHeight <= actual.clientHeight + 1, 'The 12-row fixture must not require vertical table scrolling');
+      assert.ok((await page.locator('.qp-model-comparison-meta [data-testid=scope-notice]').innerText()).includes('May'));
     }
     await page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); window.scrollTo(0, 0); });
     await page.addStyleTag({ content: '*,*::before,*::after { transition: none !important; caret-color: transparent !important; }' });
@@ -94,10 +105,26 @@ try {
     const screenshot = await page.screenshot({ path: resolve(output, `${name}.png`), animations: 'disabled' });
     const repeated = await page.screenshot({ path: resolve(output, `${name}-repeat.png`), animations: 'disabled' });
     assert.equal(sha(screenshot), sha(repeated), `${name} capture must repeat exactly`);
-    captures.push({ page: name, count: await rows.count(), sha256: sha(screenshot), repeated: true, valueGeometry });
+    if (name === 'models') {
+      const history = page.locator('.qp-model-comparison-meta .qp-model-history');
+      const summary = history.locator('summary');
+      await summary.focus(); await page.keyboard.press('Enter');
+      assert.equal(await history.getAttribute('open'), '');
+      const chartData = history.locator('[role=region]');
+      await chartData.focus();
+      assert.equal(await chartData.evaluate(node => document.activeElement === node), true);
+      assert.equal(await chartData.locator('tbody tr').count(), 30);
+      await summary.focus(); await page.keyboard.press('Enter');
+      assert.equal(await history.getAttribute('open'), null);
+      const last = rows.last().locator('button');
+      await last.focus(); await page.keyboard.press('Enter');
+      await page.locator('.qp-model-detail h3').filter({ hasText: 'Command R+' }).waitFor();
+      assert.equal(await last.getAttribute('aria-pressed'), 'true');
+    }
+    captures.push({ page: name, count: await rows.count(), sha256: sha(screenshot), repeated: true, valueGeometry, tableGeometry });
     await context.close();
   }
-  if (!process.env.QP_DENSE_CAPTURE_ONLY) for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const currency of ['USD', 'THB']) for (const width of [390, 900, 1280, 1536, 1672]) {
+  if (!process.env.QP_DENSE_CAPTURE_ONLY && !process.env.QP_DENSE_HEADING_ONLY) for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const currency of ['USD', 'THB']) for (const width of [390, 900, 1280, 1536, 1672]) {
     const context = await browser.newContext({ viewport: { width, height: 941 }, reducedMotion: 'reduce' });
     const page = await context.newPage();
     page.on('pageerror', error => errors.push(error.message));
@@ -122,8 +149,47 @@ try {
     layouts.push({ lang, theme, currency, width, text: result.text, sparkWidth: result.spark.right - result.spark.x, singleLine: true, contained: true, nonOverlapping: true });
     await context.close();
   }
-  assert.equal(layouts.length, process.env.QP_DENSE_CAPTURE_ONLY ? 0 : 40);
+  assert.equal(layouts.length, process.env.QP_DENSE_CAPTURE_ONLY || process.env.QP_DENSE_HEADING_ONLY ? 0 : 40);
+  if (!process.env.QP_DENSE_CAPTURE_ONLY) {
+    db.prepare("UPDATE usage_event SET cost_usd=NULL,cost_source='unknown' WHERE dedup_key='fixture-1-6'").run();
+    for (const lang of ['en', 'th']) for (const theme of ['dark', 'light']) for (const width of [390, 900, 1280, 1672]) {
+      const context = await browser.newContext({ viewport: { width, height: 941 }, reducedMotion: 'reduce' });
+      const page = await context.newPage();
+      page.on('pageerror', error => errors.push(error.message));
+      await page.route('**/*', route => { const req = route.request(), url = new URL(req.url()); const readPost = req.method() === 'POST' && url.pathname === '/api/model-row-trends'; if (url.origin !== base || url.pathname.startsWith('/api/') && req.method() !== 'GET' && !readPost) { forbidden.push(`${req.method()} ${url.pathname}`); return route.abort(); } return route.continue(); });
+      await page.addInitScript(({ token, lang, theme }) => { (window as any).__QUOTAPULSE_TOKEN__ = token; localStorage.setItem('quotapulse-prefs', JSON.stringify({ lang, currency: 'USD', rate: 1, hiddenSubscriptions: [] })); localStorage.setItem('quotapulse-theme', theme); }, { token, lang, theme });
+      await installBrowserFixedDate(page, now);
+      await page.goto(`${base}/#models?range=custom&from=${now - 7 * 86_400_000}&to=${now + 1}&source=1`);
+      const heading = page.locator('.qp-model-comparison-heading');
+      const scope = heading.getByTestId('scope-notice'), warning = heading.locator('.qp-footnote:not([data-testid=scope-notice])');
+      const history = heading.locator('.qp-model-history'), summary = history.locator('summary');
+      await warning.waitFor(); await scope.waitFor(); await summary.waitFor();
+      assert.ok((await scope.innerText()).includes('#1'));
+      assert.ok((await warning.innerText()).includes('1'));
+      const boxes = await Promise.all([heading.locator('h2').boundingBox(), scope.boundingBox(), warning.boundingBox(), summary.boundingBox()]);
+      assert.ok(boxes.every(Boolean));
+      for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+        const a = boxes[i]!, b = boxes[j]!;
+        const x = Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x);
+        const y = Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y);
+        assert.ok(x <= 1 || y <= 1, `Heading content overlaps: ${JSON.stringify({ lang, theme, width, i, j, a, b })}`);
+      }
+      await summary.focus(); await page.keyboard.press('Enter');
+      assert.equal(await history.getAttribute('open'), '');
+      const chartData = history.locator('[role=region]');
+      await chartData.focus(); assert.equal(await chartData.evaluate(node => document.activeElement === node), true);
+      assert.equal(await chartData.locator('tbody tr').count(), 30);
+      await page.keyboard.press('End');
+      await page.waitForFunction(() => (document.querySelector('.qp-model-history[open] [role=region]')?.scrollTop ?? 0) > 0, undefined, { timeout: 5000 });
+      await summary.focus(); await page.keyboard.press('Enter');
+      assert.equal(await history.getAttribute('open'), null);
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+      headingCases.push({ lang, theme, width, customAndSourceScope: true, partialPriceWarning: true, noHeadingOverlap: true, chartKeyboardScroll: true });
+      await context.close();
+    }
+  }
+  assert.equal(headingCases.length, process.env.QP_DENSE_CAPTURE_ONLY ? 0 : 16);
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ synthetic: true, records, projects: projects.length, modelProviderPairs: models.length, days: dayFactors.length, layoutComplete: layouts.length === 40, productionIndexSha256: sha(readFileSync(resolve(webRoot, 'index.html'))), captures, layouts, errors, forbidden }, null, 2) + '\n');
-  console.log(`PASS dense comparison: ${records} synthetic records, 6 projects, 12 model/provider pairs, 7 days; two repeat-identical captures and ${layouts.length} currency/layout cases.`);
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ synthetic: true, records, projects: projects.length, modelProviderPairs: models.length, days: dayFactors.length, layoutComplete: layouts.length === 40 && headingCases.length === 16, productionIndexSha256: sha(readFileSync(resolve(webRoot, 'index.html'))), captures, layouts, headingCases, errors, forbidden }, null, 2) + '\n');
+  console.log(`PASS dense comparison: ${records} synthetic records, 6 projects, 12 model/provider pairs, 7 days; two repeat-identical captures, ${layouts.length} currency/layout cases and ${headingCases.length} scope/heading cases.`);
 } finally { await browser?.close(); await app.close(); db.close(); globalThis.Date = realDate; }
