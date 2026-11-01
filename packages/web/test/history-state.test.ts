@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { usageRouteHash } from '../src/lib/usage-route.ts';
-import { refreshedHistorySelection, historyRelatedSessionHref } from '../src/redesign/history-selection.ts';
+import { refreshedHistorySelection, historyRelatedSessionHref, historySelectionOutsidePage } from '../src/redesign/history-selection.ts';
 import type { UsageEventRow, UsageEventScope, UsageEventsResponse } from '../src/lib/usage-events.ts';
 
 const params = (hash: string) => new URLSearchParams(hash.split('?')[1]);
@@ -50,6 +50,16 @@ test('retained selection keeps its original related-record scope when absent fro
   assert.equal(retained, selected);
   assert.deepEqual(retained?.scope, origin);
   assert.equal(refreshedHistorySelection(selected, snapshot([], newScope)), selected);
+});
+
+test('outside-page notice follows the displayed snapshot and stable event identity', () => {
+  const selected = { row: record(19, 100, null), scope: origin };
+  assert.equal(historySelectionOutsidePage(null, snapshot([])), false);
+  assert.equal(historySelectionOutsidePage(selected, null), false);
+  assert.equal(historySelectionOutsidePage(selected, snapshot([])), true);
+  assert.equal(historySelectionOutsidePage(selected, snapshot([record(20, 900, 4)])), true);
+  assert.equal(historySelectionOutsidePage(selected, snapshot([record(20, 900, 4), record(19, 250, 1)])), false);
+  assert.equal(selected.scope, origin);
 });
 
 test('live snapshots never reopen a closed detail rail or replace its selection with another event', () => {

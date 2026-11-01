@@ -80,6 +80,7 @@ export const en = {
   'history.empty': "No matching usage records",
   'history.range': "{from}–{to} of {total} records",
   'history.detail': "Record details",
+  'history.selectionOutsidePage': 'This record is not on the displayed page. Related records use the scope retained with it.',
   'history.tokenComparison': "Relative to the largest token record on this page: {value}",
   'history.close': "Close",
   'history.basis': "Cost basis",

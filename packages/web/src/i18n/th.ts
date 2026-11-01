@@ -86,6 +86,7 @@ export const th: Record<MessageKey, string> = {
   'history.empty': "ไม่มีรายการตรงกับตัวกรอง",
   'history.range': "{from}–{to} จาก {total} รายการ",
   'history.detail': "รายละเอียดรายการ",
+  'history.selectionOutsidePage': 'รายการนี้ไม่ได้อยู่ในหน้าที่แสดง รายการที่เกี่ยวข้องจะใช้ขอบเขตที่เก็บไว้กับรายการนี้',
   'history.tokenComparison': "เทียบกับจำนวนโทเคนสูงสุดของรายการในหน้านี้: {value}",
   'history.close': "ปิด",
   'history.basis': "ฐานค่าใช้จ่าย",

@@ -13,6 +13,11 @@ export function refreshedHistorySelection(selected: HistorySelection | null, sna
   return row ? { row, scope: snapshot.scope } : selected;
 }
 
+/** Compare against the page actually displayed, including a retained snapshot. */
+export function historySelectionOutsidePage(selected: HistorySelection | null, snapshot: UsageEventsResponse | null): boolean {
+  return !!selected && !!snapshot && !snapshot.rows.some(row => row.event_id === selected.row.event_id);
+}
+
 /** Related records use the selected snapshot, not an unrelated replacement page. */
 export function historyRelatedSessionHref(selection: HistorySelection | null): string | null {
   if (!selection?.row.session_key) return null;
