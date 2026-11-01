@@ -1,0 +1,13 @@
+# Desktop review218
+
+Portable Windows ZIP: `C:/Users/TH12367283/Projects/QuotaPulse/tmp/releases/QuotaPulse-v1.85.217-review218.zip`. SHA-256: `6df7a31468db1b9fe1eae06e044dc516396787a13d9ce178b931b21aa71cbd75`. Application source: `18e3c777b02d1c4dcc00f4db78fb6129ee081f94`; tag `redesign-native-review-v1.85.218` points to that source.
+
+This review includes checkpoints213–217: History identity truncation, truthful chart scales and retained-selection notice, plus more legible Models values and isolated trend points and the denser twelve-row comparison. [Models before/after and concept](../redesign-v1.85.217/review.html) and [Projects/Models with varied synthetic data](../redesign-v1.85.216/review.html) show the web layouts; actual records determine the displayed content and graphs.
+
+Fresh daemon, web and tray builds passed, as did 718 repository tests (140 daemon, 380 web, 198 tray). The ZIP's 3,161 entries were individually decompressed and SHA-256 compared with the unused build. Actual Electron passed 16 captures covering eight pages in English/dark and Thai/light, with an isolated synthetic profile and same-version restart. Native windows were offscreen and nonfocusable with test-only anti-occlusion settings and reduced motion.
+
+The delivered ZIP passed six standalone extraction/start/stop checks, six reader lifecycle checks using an owned fake home and synthetic log, and four isolated installer checks. Four duplicate test runtime trees were byte-verified against the retained ZIP and cleaned, reclaiming 1,814,283,580 bytes; isolated profiles and small ASAR residues remain. The delivered ZIP was rehashed after cleanup.
+
+On Windows x64, extract the ZIP to a new dedicated folder. Node 22.13.1 (ABI 127) was used for verification and must be available on `PATH`. In PowerShell in that folder, run `./scripts/start-review.ps1` to start with readers disabled; open the dashboard from the review tray icon. This mode starts with an empty database. The app keeps its own `review-data`; it does not automatically import an existing QuotaPulse database. To read actual local harness logs, stop first and run `./scripts/start-review.ps1 -EnableReaders`; the initial scan can take several minutes. Stop this review instance with `./scripts/stop-review.ps1`. No scheduled task is installed by these commands.
+
+This is an unsigned review, not final visual or production acceptance. The twelve-row check uses browser-based synthetic data, not a twelve-row native fixture. Physical monitor/tray behavior, real provider setups, performance, cross-schema migration, upgrade/rollback involving review218 and full concept fidelity remain open. The intermittent Runtime Map inspector issue in [checkpoint205](../redesign-v1.85.205) remains unresolved.
