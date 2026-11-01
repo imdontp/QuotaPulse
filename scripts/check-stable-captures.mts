@@ -893,6 +893,11 @@ async function checkHistoryDensity(page: Page, lang: string, theme: string) {
   for (const row of response.json<UsageEventsResponse>().rows) {
     const rendered = region.locator('tbody tr').filter({ has: page.locator('button').filter({ hasText: new RegExp(`^#${row.event_id}$`) }) });
     assert.equal(await rendered.count(), 1, `Missing History record #${row.event_id}`);
+    assert.equal(await rendered.locator('.qp-history-harness .qp-history-identity-label').textContent(), row.source_name, 'History keeps the complete source name');
+    assert.equal(await rendered.locator('.qp-history-harness').getAttribute('title'), row.source_name, 'History keeps the source tooltip');
+    assert.equal(await rendered.locator('.qp-history-project .qp-history-identity-label').textContent(), row.project ?? (lang === 'th' ? th : en)['redesign.unassigned'], 'History keeps the complete project identity');
+    assert.equal(await rendered.locator('.qp-history-project').getAttribute('title'), row.project ?? (lang === 'th' ? th : en)['redesign.unassigned'], 'History keeps the project tooltip');
+    for (const label of await rendered.locator('.qp-history-identity-label').all()) assert.equal(await label.evaluate(element => getComputedStyle(element).textOverflow), 'ellipsis');
     assert.equal(await rendered.locator('.qp-history-model-name').textContent(), row.model ?? '—', 'History preserves the raw API model name');
     assert.equal(await rendered.locator('.qp-history-model').getAttribute('title'), row.model, 'History preserves the complete model tooltip');
     assert.equal(await rendered.locator('.qp-history-model-maker').getAttribute('data-vendor'), row.vendor, 'History maker comes from vendor metadata independently of provider');

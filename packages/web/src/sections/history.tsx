@@ -258,8 +258,8 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
           {redesign && <TableHead>{t('history.kind')}</TableHead>}<TableHead>{t('history.detail')}</TableHead>
         </TableRow></TableHeader>
         <TableBody>{snapshot.rows.map(row => {
-          const projectCell = <TableCell key="project" className="max-w-48 break-all">{redesign ? <span className="qp-history-project" title={row.project ?? t('redesign.unassigned')}><Folder size={16} aria-hidden="true"/>{row.project ?? t('redesign.unassigned')}</span> : row.project ?? t('redesign.unassigned')}</TableCell>;
-          const harnessCell = <TableCell key="harness">{redesign ? <span className="qp-history-harness" data-harness={row.harness} title={row.source_name}><HarnessIcon harness={row.harness} vendor={harnessVendor(row)} label={row.harness}/>{row.source_name}</span> : row.source_name}</TableCell>;
+          const projectCell = <TableCell key="project" className="max-w-48 break-all">{redesign ? <span className="qp-history-project" title={row.project ?? t('redesign.unassigned')}><Folder size={16} aria-hidden="true"/><span className="qp-history-identity-label">{row.project ?? t('redesign.unassigned')}</span></span> : row.project ?? t('redesign.unassigned')}</TableCell>;
+          const harnessCell = <TableCell key="harness">{redesign ? <span className="qp-history-harness" data-harness={row.harness} title={row.source_name}><HarnessIcon harness={row.harness} vendor={harnessVendor(row)} label={row.harness}/><span className="qp-history-identity-label">{row.source_name}</span></span> : row.source_name}</TableCell>;
           const kindCell = <TableCell key="kind">{redesign ? <span className="qp-history-kind-badge" data-grain={row.grain}>{t(`history.${row.grain}`)}</span> : t(`history.${row.grain}`)}</TableCell>;
           return <TableRow key={row.event_id} data-history-record={redesign ? historyRecordMotionKey(row) : undefined} data-selected={redesign && selected?.event_id === row.event_id ? 'true' : undefined}>
             <TableCell className="whitespace-nowrap">{date(row.timestamp_ms)}</TableCell>
