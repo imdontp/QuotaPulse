@@ -5,6 +5,7 @@ import { useI18n, useT } from '@/i18n';
 import { useFormat } from '@/i18n/format';
 import './history.css';
 import { EffortPagination, useEffortPage } from './effort-pagination';
+import { historyAxis } from './history-axis';
 
 export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
   const t = useT();
@@ -36,7 +37,8 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
     const at = timelineRange.from + index * data.bucketMs;
     return { at, inputTokens: entries.get(at)?.inputTokens ?? 0, outputTokens: entries.get(at)?.outputTokens ?? 0 };
   });
-  const max = Math.max(1, ...buckets.flatMap(row => [row.inputTokens, row.outputTokens]));
+  const axis = historyAxis(Math.max(0, ...buckets.flatMap(row => [row.inputTokens, row.outputTokens])), lang);
+  const max = axis.scaleMaximum;
   const left = 44;
   const right = width - 12;
   const x = (index: number) => left + (right - left) * index / Math.max(1, buckets.length - 1);
@@ -94,7 +96,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
       }} onPointerLeave={() => setActive(previous => previous?.kind === 'pointer' ? null : previous)}>
       <desc id={`${id}-help`}>{t('history.timelineHelp')} {date(timelineRange.from)} — {date(timelineRange.to)}</desc>
       <defs>{(['input', 'output'] as const).map(series => <linearGradient key={series} id={`${id}-${series}`} x1="0" y1="0" x2="0" y2="1"><stop stopColor={`var(--history-${series})`} stopOpacity=".22"/><stop offset="1" stopColor={`var(--history-${series})`} stopOpacity="0"/></linearGradient>)}<filter id={`${id}-glow`} x="-10%" y="-50%" width="120%" height="200%"><feGaussianBlur stdDeviation="1.5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-      {[0, .25, .5, .75, 1].map(fraction => <g key={fraction} className={fraction === .25 || fraction === .75 ? 'qp-history-grid-secondary' : undefined}><line className="qp-history-grid-line" x1={left} x2={right} y1={y(max * fraction)} y2={y(max * fraction)}/><text x="0" y={y(max * fraction)} fill="currentColor" fontSize="11">{f.tokens(max * fraction)}</text></g>)}
+      {[0, .25, .5, .75, 1].map(fraction => <g key={fraction} className={fraction === .25 || fraction === .75 ? 'qp-history-grid-secondary' : undefined}><line className="qp-history-grid-line" x1={left} x2={right} y1={y(max * fraction)} y2={y(max * fraction)}/>{axis.ticks.filter(tick => tick.fraction === fraction).map(tick => <text key={tick.fraction} data-axis-value={tick.value} x="0" y={y(max * fraction)} fill="currentColor" fontSize="11">{tick.label}</text>)}</g>)}
       <g className="qp-history-grid-vertical" aria-hidden="true">{buckets.map((row, index) => index % gridStride === 0 || index === buckets.length - 1 ? <line key={row.at} className="qp-history-grid-line" x1={x(index)} x2={x(index)} y1={y(max)} y2={y(0)}/> : null)}</g>
       {buckets.length > 1 && <>
         <polygon points={`${left},118 ${points('inputTokens')} ${right},118`} fill={`url(#${id}-input)`}/>
