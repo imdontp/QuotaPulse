@@ -1,0 +1,9 @@
+# Project identity styling
+
+[Compare the concept and before/after captures](review.html). The Projects concept uses several colored icons, while the prior identity hash assigned neutral gray to many unrelated names and used the same folder mark for all but QuotaPulse. Named identities now receive a stable cyan, violet, blue or orange tone and a corresponding generic geometric mark. QuotaPulse retains its cube; null and empty project identities remain distinct neutral folders. These marks are decorative and hidden from assistive technology: they do not imply an activity state, project type, budget or authored metadata. The new mapping changes the existing decorative colors for some projects once; subsequently a given identity retains its mapping across sort, search, selection and data refresh.
+
+The before and after captures use the same isolated synthetic dataset, fixed seven-day scope, 1672 × 941 viewport, English/dark, DPR 1 and reduced motion. Both after captures repeated byte-for-byte. Data, icons and text still differ from the concept, and this comparison is not a visual-fidelity score or approval.
+
+The production web build and 380 web tests passed. A browser check confirmed six named cards use varied marks, that the top-project list and selected detail match their cards, and that search preserves identity styling. Sixteen English/Thai, dark/light and 390/900/1280/1672px filter cases verified that null and empty project values stay separate and neutral, plus existing filter, loading and retry behaviors. Four Projects capture pairs across language and theme were byte-identical; the existing stable check also verified that sorting preserves each project's tint and selection uses the matching detail.
+
+Review218 predates this source change. Whole-dashboard concept fidelity, real provider setups, physical tray/display behavior, cross-schema migration, production performance and the intermittent Runtime Map issue remain open.

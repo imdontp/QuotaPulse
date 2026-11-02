@@ -42,6 +42,8 @@ try{
    for(let index=0;index<3;index++){const button=tabs.nth(index);assert.equal(await button.locator('.qp-project-tab-count').getAttribute('aria-hidden'),'true');assert.equal(await button.getAttribute('aria-busy'),null);const description=await button.getAttribute('aria-describedby');assert.ok(description);assert.equal(await page.locator('body').evaluate((_,id)=>document.getElementById(id!)?.textContent,description),await button.getAttribute('title'));}
   };
   await counts([6,3,1]);assert.equal(await cards.count(),6,'project groups, not seven usage records');
+  const missing=await cards.evaluateAll(nodes=>nodes.map(node=>({key:node.getAttribute('data-project-selection-opener'),tone:node.getAttribute('data-tone'),name:node.querySelector('.qp-project-card-identity>strong')?.textContent,mark:node.querySelector('.qp-project-icon svg')?.getAttribute('class'),decorative:node.querySelector('.qp-project-icon')?.getAttribute('aria-hidden')})));
+  for(const [key,label] of [['null',messages['redesign.unassigned']],['""',messages['redesign.emptyProject']]] as const){const row=missing.find(item=>item.key===key);assert.ok(row,`Missing distinct project identity ${key}`);assert.equal(row.name,label);assert.equal(row.tone,'neutral');assert.match(row.mark??'',/lucide-folder/);assert.equal(row.decorative,'true');}
   const initial=await tabs.evaluateAll(nodes=>nodes.map(node=>({name:node.getAttribute('aria-label'),count:node.getAttribute('data-count'),description:node.getAttribute('title')})));
   assert.deepEqual(initial.map(row=>row.name),[messages['redesign.allProjects'],messages['redesign.recentProjects'],messages['redesign.unassignedProjects']]);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);

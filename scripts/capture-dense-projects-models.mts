@@ -105,6 +105,26 @@ try {
     const screenshot = await page.screenshot({ path: resolve(output, `${name}.png`), animations: 'disabled' });
     const repeated = await page.screenshot({ path: resolve(output, `${name}-repeat.png`), animations: 'disabled' });
     assert.equal(sha(screenshot), sha(repeated), `${name} capture must repeat exactly`);
+    if (name === 'projects') {
+      const identities = await rows.evaluateAll(nodes => nodes.map(node => ({ name: node.querySelector('.qp-project-card-identity>strong')?.textContent, tone: node.getAttribute('data-tone'), mark: node.querySelector('.qp-project-icon svg')?.getAttribute('class'), decorative: node.querySelector('.qp-project-icon')?.getAttribute('aria-hidden') })));
+      assert.equal(identities.length, 6);
+      assert.ok(new Set(identities.map(identity => identity.tone)).size >= 3, 'Named projects use a varied decorative palette');
+      assert.ok(new Set(identities.map(identity => identity.mark)).size >= 3, 'Named projects use varied generic marks');
+      assert.ok(identities.every(identity => identity.decorative === 'true' && identity.tone !== 'neutral'));
+      const ranked = await page.locator('.qp-project-top li').evaluateAll(nodes => nodes.map(node => ({ name: JSON.parse(node.getAttribute('data-project-key')!), tone: node.getAttribute('data-tone'), mark: node.querySelector('.qp-project-rank-icon svg')?.getAttribute('class') })));
+      for (const item of ranked) { const card = identities.find(identity => identity.name === item.name); assert.ok(card); assert.equal(item.tone, card.tone); assert.equal(item.mark, card.mark); }
+      const last = rows.last(), selected = identities.at(-1)!;
+      await last.focus(); await page.keyboard.press('Enter');
+      await page.locator('.qp-project-detail h2').filter({ hasText: selected.name! }).waitFor();
+      assert.equal(await page.locator('.qp-project-detail').getAttribute('data-tone'), selected.tone);
+      assert.equal(await page.locator('.qp-project-detail h2 .qp-project-icon svg').getAttribute('class'), selected.mark);
+      const search = page.locator('.qp-project-search input');
+      await search.fill('Research Lab'); await page.waitForFunction(() => document.querySelectorAll('.qp-project-card').length === 1);
+      const matching = identities.find(identity => identity.name === 'Research Lab')!;
+      assert.equal(await rows.first().getAttribute('data-tone'), matching.tone);
+      assert.equal(await rows.first().locator('.qp-project-icon svg').getAttribute('class'), matching.mark);
+      await search.fill(''); await page.waitForFunction(() => document.querySelectorAll('.qp-project-card').length === 6);
+    }
     if (name === 'models') {
       const history = page.locator('.qp-model-comparison-meta .qp-model-history');
       const summary = history.locator('summary');

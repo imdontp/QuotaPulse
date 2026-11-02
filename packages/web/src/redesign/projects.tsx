@@ -4,7 +4,7 @@ import { useAggregatePresenceMotion } from './use-aggregate-presence-motion';
 import type { LiveRecordBatch } from './live-record-motion';
 import { projectMotionKey, projectDetailMotionKey, type ProjectSelectionIntent } from './project-selection-motion';
 import { useProjectSelectionMotion } from './use-project-selection-motion';
-import { ArrowDownUp, BarChart3, Box, Clock3, Coins, Flame, Folder, Headphones, Layers, SquareCheckBig, RefreshCw, Search, Settings, Users } from 'lucide-react';
+import { ArrowDownUp, BarChart3, Box, CircleDot, Clock3, Coins, Flame, Folder, Headphones, Hexagon, Layers, SquareCheckBig, RefreshCw, Search, Settings, Users } from 'lucide-react';
 import { api, type DetailedProjectResponse, type Overview as OverviewData, type ProjectDetailResponse } from '@/api';
 import { useI18n, useT } from '@/i18n';
 import { useLiveRefresh, useRefreshStatus } from '@/lib/use-live';
@@ -23,6 +23,7 @@ import './projects.css';
 import './project-reference-summary.css';
 import { CostValue } from './cost-value';
 import { projectObservedIdentities } from './project-observed-identities';
+import { projectTone } from './project-appearance';
 
 type Range = ScopeRange;
 type Tab = 'all' | 'recent' | 'unassigned';
@@ -30,18 +31,10 @@ type Sort = 'tokens' | 'recent' | 'value';
 type DetailTab = 'overview' | 'sessions' | 'usage' | 'details';
 interface Route extends ScopeSelection { tab: Tab; sort: Sort; harness: string | null; project: string | null | undefined; detail: DetailTab; offset: number }
 
-type ProjectTone = 'cyan' | 'violet' | 'blue' | 'orange' | 'neutral';
-
-function projectTone(key: string | null): ProjectTone {
-  if (key === 'QuotaPulse') return 'cyan';
-  if (key === null) return 'neutral';
-  const identity = key;
-  let hash = 0x811c9dc5;
-  for (let index = 0; index < identity.length; index++) {
-    hash = Math.imul(hash ^ identity.charCodeAt(index), 0x01000193) >>> 0;
-  }
-  const tones: Exclude<ProjectTone, 'cyan'>[] = ['violet', 'blue', 'orange', 'neutral'];
-  return tones[hash % tones.length];
+function ProjectMark({ project, size }: { project: string | null; size: number }) {
+  const tone = projectTone(project);
+  const Mark = project === 'QuotaPulse' ? Box : tone === 'cyan' ? CircleDot : tone === 'violet' ? Layers : tone === 'orange' ? Hexagon : Folder;
+  return <Mark size={size}/>;
 }
 
 function readRoute(): Route {
@@ -254,7 +247,7 @@ export function ProductionProjects() {
           const rows = data?.rows.filter(row => row.project === group.key) ?? [];
           const identities = projectObservedIdentities(rows);
           return <button key={JSON.stringify(group.key)} className="qp-project-card qp-panel" data-project-selection-opener={projectMotionKey(group.key)} data-project-selection-role="card" data-tone={projectTone(group.key)} aria-pressed={selected?.key === group.key} onClick={event => selectProject(group.key, event.currentTarget)}>
-            <span className="qp-project-card-heading"><span className="qp-project-icon" aria-hidden="true">{group.key === 'QuotaPulse' ? <Box size={21}/> : <Folder size={21}/>}</span><span className="qp-project-card-identity"><strong>{projectName(group.key)}</strong><span className="qp-project-card-meta">{t('redesign.sortRecent')} · {date(group.lastObservedAt)}<span className="qp-project-card-calls">{number(group.calls)} {t('redesign.modelsCalls')}</span></span></span></span>
+            <span className="qp-project-card-heading"><span className="qp-project-icon" aria-hidden="true"><ProjectMark project={group.key} size={21}/></span><span className="qp-project-card-identity"><strong>{projectName(group.key)}</strong><span className="qp-project-card-meta">{t('redesign.sortRecent')} · {date(group.lastObservedAt)}<span className="qp-project-card-calls">{number(group.calls)} {t('redesign.modelsCalls')}</span></span></span></span>
             <span className="qp-project-card-summary"><span className="qp-project-card-usage"><span className="qp-project-card-tokens"><strong title={number(group.tokens)} aria-label={`${t('redesign.tokens')}: ${number(group.tokens)}`} data-value={group.tokens}>{compactTokens(group.tokens)}</strong><small title={t('redesign.projectShare')} aria-label={`${number(share)}% ${t('redesign.projectShare')}`}>{number(share)}%</small></span><span className="qp-bar"><span style={{ width: `${share}%` }}/></span><small>{t('redesign.tokens')}</small><span className="qp-project-card-share-label">{t('redesign.projectShare')}</span></span>
             <span className="qp-project-card-money"><span><strong><CostValue amount={group.reported_native_usd} priced={group.native_calls} total={group.calls} money={money} t={t}/></strong><small>{t('redesign.reported')}</small></span><span><strong><CostValue amount={group.api_value_usd} priced={group.computed_calls + group.estimated_calls} total={group.calls} money={money} t={t}/></strong><small>{t('redesign.value')}</small></span></span></span>
             {data?.trends && <ObservedTrend className="qp-project-spark" language={lang} label={`${t('redesign.projectTrend')}: ${projectName(group.key)}`} points={Array.from({ length: Math.ceil((data.scope.to - data.scope.from) / data.trends.bucketMs) }, (_, index) => { const at = data.scope.from + index * data.trends!.bucketMs; return { at, value: trendLookup.get(group.key)?.get(at) ?? 0 }; })}/>}
@@ -268,7 +261,7 @@ export function ProductionProjects() {
       </section>
       <div className="qp-project-rail"><aside ref={selectionDetail} className="qp-panel qp-project-detail" data-project-selection-detail={selectedMotionKey ?? undefined} data-tone={selected ? projectTone(selected.key) : undefined} aria-label={t('redesign.projectDetails')}>
         {selected ? <>
-          <h2><span className="qp-project-icon" aria-hidden="true">{selected.key === 'QuotaPulse' ? <Box size={26}/> : <Folder size={26}/>}</span>{projectName(selected.key)}</h2>
+          <h2><span className="qp-project-icon" aria-hidden="true"><ProjectMark project={selected.key} size={26}/></span>{projectName(selected.key)}</h2>
           <div className="qp-project-detail-facts"><span data-project-fact="sessions"><strong>{number(selected.sessions)}</strong> <small>{t('redesign.sessions')}</small></span><span data-project-fact="calls"><strong>{number(selected.calls)}</strong> <small>{t('redesign.modelsCalls')}</small></span><span data-project-fact="harnesses"><strong>{number(observedHarnesses.length)}</strong> <small>{t('redesign.harnessesUsed')}</small></span><span data-project-fact="providers"><strong>{providerCount(observedProviders.length, observed.hasMissingProvider)}</strong> <small>{t('redesign.providersUsed')}</small></span></div>
           <nav className="qp-project-detail-tabs" aria-label={t('redesign.projectDetails')}>{(['overview', 'sessions', 'usage', 'details'] as const).map(tab =>
             <button key={tab} data-project-detail-tab={tab} aria-current={route.detail === tab ? 'page' : undefined} onClick={() => selectDetail(tab)}>{tab === 'overview' ? <Layers size={15} aria-hidden="true"/> : tab === 'sessions' ? <Users size={15} aria-hidden="true"/> : tab === 'usage' ? <BarChart3 size={15} aria-hidden="true"/> : <Settings size={15} aria-hidden="true"/>}{t(tab === 'overview' ? 'redesign.projectOverviewTab' : tab === 'sessions' ? 'redesign.projectSessionsTab' : tab === 'usage' ? 'redesign.projectUsageTab' : 'redesign.projectMetadataTab')}</button>)}</nav>
@@ -311,7 +304,7 @@ export function ProductionProjects() {
         </> : <p>{t('redesign.noProjects')}</p>}
       </aside>
         {visible.length > 0 && <div className="qp-panel qp-project-top"><header className="qp-project-rank-heading"><h3><Flame className="qp-project-top-mark" size={18} aria-hidden="true"/>{t('redesign.projectTop')}</h3><p>{t('redesign.value')}</p></header><ol>{[...visible].sort((a, b) => b.tokens - a.tokens).slice(0, 5).map((group, index) =>
-          <li key={JSON.stringify(group.key)} data-project-key={JSON.stringify(group.key)} data-tone={projectTone(group.key)}><button data-project-selection-opener={projectMotionKey(group.key)} data-project-selection-role="rank" aria-pressed={selected?.key === group.key} onClick={event => selectProject(group.key, event.currentTarget)}><span className="qp-project-rank" aria-hidden="true">{index + 1}</span><span className="qp-project-rank-icon" aria-hidden="true">{group.key === 'QuotaPulse' ? <Box size={16}/> : <Folder size={16}/>}</span>{projectName(group.key)}</button><span className="qp-project-rank-usage"><span><strong title={number(group.tokens)} aria-label={`${t('redesign.tokens')}: ${number(group.tokens)}`} data-value={group.tokens}>{compactTokens(group.tokens)}</strong><span className="qp-project-rank-share" title={t('redesign.projectShare')} aria-label={`${t('redesign.projectShare')}: ${percent(data?.totals.tokens ? group.tokens / data.totals.tokens : 0)}`} data-share={data?.totals.tokens ? group.tokens / data.totals.tokens : 0}>{percent(data?.totals.tokens ? group.tokens / data.totals.tokens : 0)}</span></span><span className="qp-bar" aria-hidden="true"><span style={{ width: `${data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0}%` }}/></span></span><strong className="qp-project-rank-value" title={t('redesign.value')} data-api-value={group.api_value_usd} data-priced-calls={group.computed_calls + group.estimated_calls} data-all-calls={group.calls}><CostValue amount={group.api_value_usd} priced={group.computed_calls + group.estimated_calls} total={group.calls} money={money} t={t}/></strong></li>)}</ol></div>}
+          <li key={JSON.stringify(group.key)} data-project-key={JSON.stringify(group.key)} data-tone={projectTone(group.key)}><button data-project-selection-opener={projectMotionKey(group.key)} data-project-selection-role="rank" aria-pressed={selected?.key === group.key} onClick={event => selectProject(group.key, event.currentTarget)}><span className="qp-project-rank" aria-hidden="true">{index + 1}</span><span className="qp-project-rank-icon" aria-hidden="true"><ProjectMark project={group.key} size={16}/></span>{projectName(group.key)}</button><span className="qp-project-rank-usage"><span><strong title={number(group.tokens)} aria-label={`${t('redesign.tokens')}: ${number(group.tokens)}`} data-value={group.tokens}>{compactTokens(group.tokens)}</strong><span className="qp-project-rank-share" title={t('redesign.projectShare')} aria-label={`${t('redesign.projectShare')}: ${percent(data?.totals.tokens ? group.tokens / data.totals.tokens : 0)}`} data-share={data?.totals.tokens ? group.tokens / data.totals.tokens : 0}>{percent(data?.totals.tokens ? group.tokens / data.totals.tokens : 0)}</span></span><span className="qp-bar" aria-hidden="true"><span style={{ width: `${data?.totals.tokens ? group.tokens / data.totals.tokens * 100 : 0}%` }}/></span></span><strong className="qp-project-rank-value" title={t('redesign.value')} data-api-value={group.api_value_usd} data-priced-calls={group.computed_calls + group.estimated_calls} data-all-calls={group.calls}><CostValue amount={group.api_value_usd} priced={group.computed_calls + group.estimated_calls} total={group.calls} money={money} t={t}/></strong></li>)}</ol></div>}
       </div>
     </div>}
   </RedesignShell>;
