@@ -558,3 +558,15 @@
   }
   .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-card .qp-project-spark>line { opacity:0; }
 }
+
+/* Static atmosphere beneath the selected card's real usage and sparkline. */
+@media (min-width:1536px) {
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-card[aria-pressed=true] .qp-project-card-usage { position:relative; isolation:isolate; }
+  .qp-redesign[data-testid=production-projects][data-theme=dark] .qp-project-card[aria-pressed=true] .qp-project-card-usage::before {
+    content:""; position:absolute; z-index:-1; pointer-events:none;
+    left:0; right:0; top:38px; height:80px;
+    background:
+      radial-gradient(ellipse at 50% 100%,color-mix(in srgb,var(--qp-accent) 19%,transparent),transparent 72%),
+      repeating-linear-gradient(90deg,transparent 0 15px,color-mix(in srgb,var(--qp-accent) 4%,transparent) 15px 16px);
+  }
+}
