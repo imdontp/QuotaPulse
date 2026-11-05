@@ -1,0 +1,7 @@
+# Account reader detection diagnostics
+
+Checkpoint222 retained previously detected sources when discovery fails, but the existing harness-only health view did not expose detection errors for account-only readers. The health API now includes a separate account-reader detection list; Settings → Diagnostics shows the reader identity and consecutive failure count, explains that its last known status may be out of date, and removes the notice when detection succeeds. It does not change subscription state, invent quota data, expose source paths or pass through the detection exception. The existing harness error list remains separate.
+
+The field is optional for compatibility with an older daemon. In that case the page explicitly says the diagnostic is unavailable; its absence is not proof that account-reader detection succeeded. Detection failures before a reader has ever been registered, and detectors that suppress errors and return an empty list, still cannot be identified by this mechanism. A reader shared with another source does not cause that other source's valid data to be invalidated.
+
+The isolated source tests cover repeated failure, the count, filtering, privacy and recovery. Daemon and web builds passed. Twelve compiled browser/API cases cover English/Thai, dark/light, 390/1440px layouts, recovery and an older-daemon response without the field. They use a synthetic account profile, not customer credentials or a real provider. Review218 predates this change.

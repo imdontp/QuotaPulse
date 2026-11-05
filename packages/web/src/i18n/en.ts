@@ -1012,6 +1012,9 @@ export const en = {
   'health.unpricedBlurb':
     'Models we saw in use that carry no published price, so their calls cannot be valued. Those calls are excluded from every money figure in this app — never counted as zero — which is why a total that leaves some out is marked with a trailing +. A harness’s internal pseudo-models (Codex writes codex-auto-review for its own review runs) and locally-run models will never appear in a price catalog, so they stay here permanently.',
   'health.ingestErrors': 'Ingest errors',
+  'health.accountDetectionErrors': 'Account reader detection',
+  'health.accountDetectionErrorsBlurb': 'These previously detected account readers could not be checked. Their last known status may be out of date; detection will retry.',
+  'health.accountDetectionUnsupported': 'This daemon does not report account reader detection status.',
   'health.clear': 'Nothing to flag',
   'health.clearBlurb':
     'Every observed model has a published price, and no reader has reported an error. These two lists replace a pair of cards that used to render whether or not they had anything to say.',

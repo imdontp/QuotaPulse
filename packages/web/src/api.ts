@@ -637,6 +637,8 @@ export interface Health {
     our_cost: number;
   }>;
   errors: Array<Record<string, unknown>>;
+  /** Optional for compatibility with older local daemons. */
+  accountDetectionErrors?: Array<{ source_id: number; display_name: string; harness: string; profile: string; error_count: number }>;
   unpriced: Array<{ model: string; calls: number; vendor: string }>;
   /** Calls priced from a provider we picked rather than the one they went through. */
   estimated: Array<{

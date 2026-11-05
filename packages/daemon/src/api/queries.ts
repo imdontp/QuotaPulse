@@ -3,7 +3,7 @@ import { harnessVendorSqlCase, vendorSqlCase } from '../util/vendor.js';
 import { statSync } from 'node:fs';
 import { findCatalog } from '../pricing/loader.js';
 import { DATA_DIR } from '../util/paths.js';
-import type { AccountState } from '../adapters/types.js';
+import { DETECTION_TARGET, type AccountState } from '../adapters/types.js';
 import {
   HARNESS_CATALOG,
   SUBSCRIPTION_CATALOG,
@@ -1634,6 +1634,16 @@ export const health = (db: DB) => {
     )
     .all();
 
+  // Account-only readers are intentionally absent from the harness table above.
+  // Expose their discovery failure separately without paths or error text.
+  const accountDetectionErrors = db.prepare(
+    `SELECT s.id AS source_id, s.display_name, s.harness, s.profile, i.error_count
+       FROM ingest_state i JOIN source s ON s.id = i.source_id
+      WHERE s.enabled = 1 AND s.source_kind = 'account'
+        AND i.target_key = ? AND i.last_error IS NOT NULL
+      ORDER BY s.display_name, s.harness, s.profile`,
+  ).all(DETECTION_TARGET) as Array<{ source_id: number; display_name: string; harness: string; profile: string; error_count: number }>;
+
   const priced = db.prepare(`SELECT COUNT(*) AS n FROM price`).get() as { n: number };
   const unpriced = db
     .prepare(
@@ -1673,6 +1683,7 @@ export const health = (db: DB) => {
     sources,
     coverage,
     errors,
+    accountDetectionErrors,
     pricedModels: priced.n,
     unpriced,
     estimated,

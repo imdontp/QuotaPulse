@@ -65,6 +65,7 @@ export function HealthSection() {
     );
   }
 
+  const accountDetectionErrors = h.accountDetectionErrors ?? [];
   return (
     <div className="flex flex-col gap-3.5">
       <Card>
@@ -182,6 +183,15 @@ export function HealthSection() {
         )}
       </Card>
 
+      {h.accountDetectionErrors === undefined && (
+        <Card>
+          <CardHeader className="flex-col items-start gap-1">
+            <CardTitle as="h3">{t('health.accountDetectionErrors')}</CardTitle>
+            <CardDescription className="note">{t('health.accountDetectionUnsupported')}</CardDescription>
+          </CardHeader>
+        </Card>
+      )}
+
       {/*
         Diagnostics, in ONE card.
 
@@ -200,7 +210,7 @@ export function HealthSection() {
         No information is lost -- the empty branches said "all priced" and "no errors", which
         the clear line also says.
       */}
-      {(h.unpriced.length > 0 || h.errors.length > 0) ? (
+      {(h.unpriced.length > 0 || h.errors.length > 0 || accountDetectionErrors.length > 0) ? (
         <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-2">
           {h.unpriced.length > 0 && (
             <Card>
@@ -263,6 +273,30 @@ export function HealthSection() {
                       <TableCell className="tabular text-right font-mono">
                         {Number(e.error_count)}
                       </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Card>
+          )}
+          {accountDetectionErrors.length > 0 && (
+            <Card>
+              <CardHeader className="flex-col items-start gap-1">
+                <CardTitle as="h3">{t('health.accountDetectionErrors')}</CardTitle>
+                <CardDescription className="note">{t('health.accountDetectionErrorsBlurb')}</CardDescription>
+              </CardHeader>
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead>{t('col.source')}</TableHead>
+                    <TableHead className="text-right">{t('health.count')}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {accountDetectionErrors.map(reader => (
+                    <TableRow key={reader.source_id}>
+                      <TableCell>{reader.display_name} <span className="text-muted-foreground">({reader.harness}/{reader.profile})</span></TableCell>
+                      <TableCell className="tabular text-right font-mono">{reader.error_count}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

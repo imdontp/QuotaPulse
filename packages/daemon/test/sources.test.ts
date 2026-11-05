@@ -123,6 +123,32 @@ test('detecting only a subset does not disable sources belonging to other adapte
   } finally { d.close(); }
 });
 
+test('account reader detection failures are visible separately and clear on recovery', async () => {
+  const d = db();
+  let failed = false;
+  const accountProfile: Profile = { ...profile('account'), sourceKind: 'account', displayName: 'Example subscription reader' };
+  const account = fakeAdapter('account-reader', () => {
+    if (failed) throw new Error('private path from fixture');
+    return [accountProfile];
+  });
+  try {
+    const [source] = await resolveSources(d, [account]);
+    failed = true;
+    await resolveSources(d, [account]);
+    await resolveSources(d, [account]);
+    const diagnostics = health(d);
+    assert.deepEqual(diagnostics.errors, [], 'account readers do not masquerade as harness errors');
+    assert.deepEqual(diagnostics.accountDetectionErrors, [{
+      source_id: source!.sourceId, display_name: 'Example subscription reader',
+      harness: 'account-reader', profile: 'account', error_count: 2,
+    }]);
+    assert.ok(!JSON.stringify(diagnostics.accountDetectionErrors).includes('private path'));
+    failed = false;
+    await resolveSources(d, [account]);
+    assert.deepEqual(health(d).accountDetectionErrors, []);
+  } finally { d.close(); }
+});
+
 /**
  * The Live page asks for this list. A harness that is gone but whose tokens are still
  * inside every total on Trend and Cost has to stay visible there, or those totals look
