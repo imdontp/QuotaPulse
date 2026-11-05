@@ -1,7 +1,8 @@
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import { basename, join } from 'node:path';
-import type { Adapter, IngestCtx, Profile, WatchTarget } from './types.js';
+import { DISCOVERY_TARGET, type Adapter, type IngestCtx, type Profile, type WatchTarget } from './types.js';
 import { readJsonlDelta, readJsonFile } from '../ingest/jsonl.js';
+import { discoverFiles } from '../ingest/discover-files.js';
 import { fromEpochAuto, fromIso, type Millis } from '../util/time.js';
 import { HOME, home, projectOf } from '../util/paths.js';
 import { logger } from '../util/log.js';
@@ -82,27 +83,6 @@ interface CostStateRecord {
   totalLinesRemoved?: number;
 }
 
-/** Every *.jsonl under projects/, including the subagents/ subfolders. */
-function walkTranscripts(projectsDir: string): string[] {
-  const out: string[] = [];
-  const visit = (dir: string, depth: number) => {
-    if (depth > 4) return;
-    let entries;
-    try {
-      entries = readdirSync(dir, { withFileTypes: true });
-    } catch {
-      return;
-    }
-    for (const e of entries) {
-      const p = join(dir, e.name);
-      if (e.isDirectory()) visit(p, depth + 1);
-      else if (e.isFile() && e.name.endsWith('.jsonl')) out.push(p);
-    }
-  };
-  visit(projectsDir, 0);
-  return out;
-}
-
 export const claudeCodeAdapter: Adapter = {
   id: 'claude-code',
   displayName: 'Claude Code',
@@ -153,13 +133,14 @@ function configPathFor(p: Profile): string {
 
 async function ingestTranscripts(ctx: IngestCtx): Promise<void> {
   const projectsDir = join(ctx.profile.rootPath, 'projects');
-  const files = walkTranscripts(projectsDir);
+  const scan = discoverFiles(projectsDir, name => name.endsWith('.jsonl'), true);
 
-  for (const file of files) {
+  for (const file of scan.files) {
     let st;
     try {
       st = statSync(file);
     } catch {
+      scan.incomplete = true;
       continue;
     }
     const cursor = ctx.cursors.get(file);
@@ -300,6 +281,8 @@ async function ingestTranscripts(ctx: IngestCtx): Promise<void> {
       ctx.cursors.recordError(file, message);
     }
   }
+  if (scan.incomplete) ctx.cursors.recordError(DISCOVERY_TARGET, 'Transcript discovery incomplete; retrying.');
+  else ctx.cursors.clearError(DISCOVERY_TARGET);
 }
 
 /** Cursor meta is JSON from disk, so nothing about its shape is guaranteed. */

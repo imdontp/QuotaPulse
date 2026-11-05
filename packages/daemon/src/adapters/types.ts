@@ -164,6 +164,9 @@ export const ADAPTER_TARGET = '(adapter)';
 /** A detection failure is distinct from a read failure within an ingest pass. */
 export const DETECTION_TARGET = '(detection)';
 
+/** A discovery failure is separate from a failure to read an identified target. */
+export const DISCOVERY_TARGET = '(discovery)';
+
 export interface WatchTarget {
   kind: 'dir' | 'file' | 'sqlite';
   path: string;

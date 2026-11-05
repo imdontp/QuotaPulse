@@ -1,7 +1,8 @@
-import { existsSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, statSync } from 'node:fs';
 import { basename, join } from 'node:path';
-import type { Adapter, IngestCtx, Profile, WatchTarget } from './types.js';
+import { DISCOVERY_TARGET, type Adapter, type IngestCtx, type Profile, type WatchTarget } from './types.js';
 import { readJsonlDelta } from '../ingest/jsonl.js';
+import { discoverFiles } from '../ingest/discover-files.js';
 import { fromEpochSeconds, fromIso, type Millis } from '../util/time.js';
 import { home, projectOf } from '../util/paths.js';
 import { logger } from '../util/log.js';
@@ -59,27 +60,6 @@ interface RolloutLine {
   };
 }
 
-/** sessions/YYYY/MM/DD/rollout-<iso>-<uuid>.jsonl */
-function walkRollouts(sessionsDir: string): string[] {
-  const out: string[] = [];
-  const visit = (dir: string, depth: number) => {
-    if (depth > 4) return;
-    let entries;
-    try {
-      entries = readdirSync(dir, { withFileTypes: true });
-    } catch {
-      return;
-    }
-    for (const e of entries) {
-      const p = join(dir, e.name);
-      if (e.isDirectory()) visit(p, depth + 1);
-      else if (e.isFile() && e.name.startsWith('rollout-') && e.name.endsWith('.jsonl')) out.push(p);
-    }
-  };
-  visit(sessionsDir, 0);
-  return out;
-}
-
 /** The uuid tail of a rollout filename, used when a session_meta has not been seen yet. */
 function sessionIdFromName(file: string): string {
   const m = /rollout-.*?-([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\.jsonl$/i.exec(
@@ -119,13 +99,14 @@ export const codexAdapter: Adapter = {
 
   async ingest(ctx: IngestCtx): Promise<void> {
     const sessionsDir = join(ctx.profile.rootPath, 'sessions');
-    const files = walkRollouts(sessionsDir);
+    const scan = discoverFiles(sessionsDir, name => name.startsWith('rollout-') && name.endsWith('.jsonl'), false);
 
-    for (const file of files) {
+    for (const file of scan.files) {
       let st;
       try {
         st = statSync(file);
       } catch {
+        scan.incomplete = true;
         continue;
       }
       const cursor = ctx.cursors.get(file);
@@ -267,5 +248,7 @@ export const codexAdapter: Adapter = {
         ctx.cursors.recordError(file, message);
       }
     }
+    if (scan.incomplete) ctx.cursors.recordError(DISCOVERY_TARGET, 'Transcript discovery incomplete; retrying.');
+    else ctx.cursors.clearError(DISCOVERY_TARGET);
   },
 };

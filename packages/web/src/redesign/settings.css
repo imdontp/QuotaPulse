@@ -1,4 +1,4 @@
-[data-testid=production-settings] main { padding:12px; gap:12px; }
+[data-testid=production-settings] main { padding:12px; gap:12px; grid-template-columns:minmax(0,1fr); }
 .qp-settings-heading { display:flex; align-items:center; gap:12px; }
 .qp-settings-heading>i { display:grid; place-items:center; flex:none; width:44px; height:44px; border-radius:12px; color:var(--qp-accent); background:linear-gradient(135deg,color-mix(in srgb,var(--qp-accent) 16%,var(--qp-panel)),var(--qp-panel)); }
 .qp-settings-heading h1 { font-size:22px; font-weight:600; }

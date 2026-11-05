@@ -1019,7 +1019,7 @@ export const en = {
   'health.clearBlurb':
     'Every observed model has a published price, and no reader has reported an error. These two lists replace a pair of cards that used to render whether or not they had anything to say.',
   'health.errorsBlurb':
-    'Reads that failed, one row per target. The count is how many passes in a row it has failed, not a lifetime total: it clears itself the moment the target reads cleanly again. A failure filed under (adapter) escaped before any single file could be blamed.',
+    'Failures are listed per target and counts show consecutive attempts. (adapter) is a source-level read failure; (detection) means source detection failed; (discovery) means the transcript search could not inspect every entry. A warning clears when that operation succeeds.',
   'health.target': 'Target',
   'health.count': 'Count',
   'health.callsN': '{n} calls',

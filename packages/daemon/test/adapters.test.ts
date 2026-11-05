@@ -1,10 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
-import { appendFileSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync, mkdirSync, rmdirSync, unlinkSync } from 'node:fs';
 
 import { openDb, upsertSource, type DB } from '../src/db/index.js';
-import { totalsSince } from '../src/api/queries.js';
+import { health, totalsSince } from '../src/api/queries.js';
 import { DbCursorStore } from '../src/ingest/cursor.js';
 import { DbSink } from '../src/ingest/sink.js';
 import { PriceResolver } from '../src/pricing/resolve.js';
@@ -36,6 +36,62 @@ const sum = (db: DB, sourceId: number, col: string) =>
       v: number;
     }).v,
   );
+
+test('transcript discovery failures reach health and recover without losing readable usage', async () => {
+  for (const [harness, adapter, folder, writeProfile] of [
+    ['codex', codexAdapter, 'sessions', writeCodexProfile],
+    ['claude-code', claudeCodeAdapter, 'projects', writeClaudeProfile],
+  ] as const) {
+    const dir = tmpRoot(), root = join(dir, 'profile');
+    mkdirSync(root);
+    const blocked = join(root, folder);
+    writeFileSync(blocked, 'not a directory', 'utf8');
+    const database = openDb(join(dir, 'usage.db'));
+    const profile: Profile = { profile: 'test', rootPath: root, displayName: `test ${harness}` };
+    const sourceId = upsertSource(database, { harness, profile: profile.profile, rootPath: root, displayName: profile.displayName });
+    try {
+      await ingestOnce(database, adapter, profile, sourceId);
+      const errors = health(database).errors as Array<{ target_key: string; error_count: number }>;
+      assert.equal(errors.find(error => error.target_key === '(discovery)')?.error_count, 1, `${harness}: failed enumeration must be visible`);
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.equal((health(database).errors as Array<{ target_key: string; error_count: number }>).find(error => error.target_key === '(discovery)')?.error_count, 2);
+      unlinkSync(blocked);
+      if (harness === 'claude-code') {
+        await ingestOnce(database, adapter, profile, sourceId);
+        assert.equal(health(database).errors.length, 0, 'an absent Claude projects directory is a valid empty profile');
+      }
+      writeProfile(root);
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.equal(health(database).errors.length, 0, `${harness}: successful discovery clears the error`);
+      assert.ok(countEvents(database, sourceId) > 0, `${harness}: available records are ingested after recovery`);
+    } finally { database.close(); }
+  }
+});
+
+test('an uninspected deep subtree reports partial discovery while accessible records still ingest', async () => {
+  for (const [harness, adapter, folder, writeProfile] of [
+    ['codex', codexAdapter, 'sessions', writeCodexProfile],
+    ['claude-code', claudeCodeAdapter, 'projects', writeClaudeProfile],
+  ] as const) {
+    const dir = tmpRoot(), root = join(dir, 'profile');
+    writeProfile(root);
+    const deep = join(root, folder, 'scan', 'one', 'two', 'three', 'four');
+    mkdirSync(deep, { recursive: true });
+    const database = openDb(join(dir, 'usage.db'));
+    const profile: Profile = { profile: 'test', rootPath: root, displayName: `test ${harness}` };
+    const sourceId = upsertSource(database, { harness, profile: profile.profile, rootPath: root, displayName: profile.displayName });
+    try {
+      await ingestOnce(database, adapter, profile, sourceId);
+      const count = countEvents(database, sourceId);
+      assert.ok(count > 0, `${harness}: accessible records remain usable`);
+      assert.ok((health(database).errors as Array<{ target_key: string }>).some(error => error.target_key === '(discovery)'), `${harness}: uninspected subtree is reported`);
+      rmdirSync(deep);
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.equal(countEvents(database, sourceId), count, `${harness}: retry does not duplicate usage`);
+      assert.equal(health(database).errors.length, 0, `${harness}: complete traversal clears the warning`);
+    } finally { database.close(); }
+  }
+});
 
 /* ------------------------------------------------------------------ Claude */
 
