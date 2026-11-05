@@ -4,9 +4,9 @@ import { ObservedTrend } from './observed-trend';
 import './observed-trend-axes.css';
 
 /** Axes use the same bucket indices and scale as the shared recorded-value plot. */
-export function ObservedTrendAxes({ points, bucketMs, language, label, valueLabel, className, tickCount = 5 }: {
+export function ObservedTrendAxes({ points, bucketMs, language, label, valueLabel, className, tickCount = 5, spectrum = false }: {
   points: Array<{ at: number; value: number }>; bucketMs: number;
-  language: 'en' | 'th'; label: string; valueLabel: string; className: string; tickCount?: 3 | 5;
+  language: 'en' | 'th'; label: string; valueLabel: string; className: string; tickCount?: 3 | 5; spectrum?: boolean;
 }) {
   const t = useT();
   const [active, setActive] = useState<{ key: string; index: number; kind: 'pointer' | 'keyboard'; left: number; top: number } | null>(null);
@@ -55,7 +55,7 @@ export function ObservedTrendAxes({ points, bucketMs, language, label, valueLabe
         return <span key={fraction} data-axis-value={value} title={fullNumber.format(value)} style={{ top: `${94 - 88 * fraction}%` }}>{number.format(value)}</span>;
       })}
     </div>
-    <ObservedTrend className={className} points={points} language={language} label={label} guideIndices={guideIndices} inspection={points.length ? {
+    <ObservedTrend className={className} points={points} language={language} label={label} guideIndices={guideIndices} spectrum={spectrum} inspection={points.length ? {
       index: current?.index ?? null, help: t('history.timelineHelp'),
       onFocus: event => activate(current?.index ?? 0, current?.kind ?? 'keyboard', event.currentTarget), onBlur: () => setActive(null),
       onKeyDown: event => {

@@ -274,7 +274,7 @@ export function ProductionProjects() {
           </div>
           <section className="qp-project-trend-panel" aria-label={t('redesign.projectTrend')}>
           <h3>{t('redesign.projectTrend')}</h3>
-          {detail ? detail.points.length ? <><ObservedTrendAxes valueLabel={t('redesign.tokens')} className="qp-project-trend" points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} bucketMs={detail.bucketMs} language={lang} label={`${t('redesign.projectTrend')}: ${t('redesign.tokens')} 0 – ${number(trendMaximum)}`}/><ChartData title={t('redesign.projectTrend')} points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} language={lang} t={t}/></>
+          {detail ? detail.points.length ? <><ObservedTrendAxes valueLabel={t('redesign.tokens')} className="qp-project-trend" points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} bucketMs={detail.bucketMs} language={lang} spectrum={theme === 'dark'} label={`${t('redesign.projectTrend')}: ${t('redesign.tokens')} 0 – ${number(trendMaximum)}`}/><ChartData title={t('redesign.projectTrend')} points={trendBins.map(bin => ({ at: bin.start, value: bin.tokens }))} language={lang} t={t}/></>
             : <p>{t('redesign.projectNoTrend')}</p> : <InitialRegion id="project-trend" label={t('redesign.projectTrend')} state={detailState} className="qp-project-initial-trend" status slots={3}/>}
           {(selected.unknown_calls > 0 || selected.estimated_calls > 0) && <p className="qp-footnote">{number(selected.unknown_calls)} {t('redesign.projectUnpriced')} · {number(selected.estimated_calls)} {t('redesign.projectEstimated')}</p>}
           </section>

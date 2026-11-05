@@ -1229,6 +1229,16 @@ async function checkChartAccess(page: Page, destination: 'live' | 'projects', la
   const points = await page.locator('.qp-project-trend>circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), tokens: Number(element.getAttribute('data-value')), cy: Number(element.getAttribute('cy')) })));
   assert.deepEqual(points.map(({ at, tokens }) => ({ at, tokens })), expected);
   points.forEach((point, index) => assert.ok(Math.abs(point.cy - (94 - 88 * expected[index].tokens / (maximum || 1))) < 0.0001, 'Project line point is not proportional to the API value'));
+  if (theme === 'dark') {
+    const accented = await page.locator('.qp-project-trend>circle[vector-effect="non-scaling-stroke"]').evaluateAll(elements => elements.map(element => ({
+      at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')),
+      paint: element.getAttribute('stroke'), width: element.getAttribute('stroke-width'),
+      gradientExists: !!document.getElementById((element.getAttribute('stroke') ?? '').match(/^url\(#(.+)\)$/)?.[1] ?? ''),
+    })));
+    const indices = expected.length <= 7 ? expected.map((_, index) => index) : Array.from({ length: 7 }, (_, index) => Math.round(index * (expected.length - 1) / 6));
+    assert.deepEqual(accented.map(({ at, value }) => ({ at, tokens: value })), indices.map(index => expected[index]), 'Visible marker accents must identify real API buckets');
+    assert.ok(accented.every(point => point.gradientExists && point.width === '3'), 'Marker accents use a real gradient and screen-space stroke');
+  }
   const axisValues = await page.locator('.qp-project-trend-axes .qp-trend-y>span').evaluateAll(elements => elements.map(element => ({ value: Number(element.getAttribute('data-axis-value')), label: element.textContent })));
   assert.deepEqual(axisValues.map(tick => tick.value), [maximum, maximum * .75, maximum * .5, maximum * .25, 0]);
   const axisNumber = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 });
