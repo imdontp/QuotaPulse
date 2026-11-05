@@ -17,8 +17,12 @@ export function runtimeInspectorDecision(previous: RuntimeInspectorMotionState, 
   };
 }
 
-/** Native close/focus is independent of effect completion. Never focus a detached/hidden opener. */
-export function restoreRuntimeInspectorFocus(opener: HTMLElement | null, fallback: HTMLElement | null) {
+/** Preserve a new focus target if it was chosen before the queued close event. */
+export function restoreRuntimeInspectorFocus(opener: HTMLElement | null, fallback: HTMLElement | null, dialog?: HTMLDialogElement | null) {
+  if (dialog) {
+    const { activeElement, body, documentElement } = dialog.ownerDocument;
+    if (activeElement && activeElement !== body && activeElement !== documentElement && !dialog.contains(activeElement)) return;
+  }
   const target = opener?.isConnected && opener.getClientRects().length > 0 ? opener : fallback;
   if (target?.isConnected) target.focus({ preventScroll: true });
 }

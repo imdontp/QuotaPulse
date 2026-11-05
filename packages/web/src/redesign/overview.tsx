@@ -485,7 +485,7 @@ export function Overview({ initialState, quickStatsScope, runwayScopeKey, record
   };
   const restoreInspectionFocus = () => {
     const fallback = shell.current?.querySelector<HTMLElement>('#runtime .qp-runtime-options>summary') ?? shell.current?.querySelector<HTMLElement>('main') ?? null;
-    restoreRuntimeInspectorFocus(selection?.contextKey === inspectionContext ? inspectionOpener.current : null, fallback);
+    restoreRuntimeInspectorFocus(selection?.contextKey === inspectionContext ? inspectionOpener.current : null, fallback, dialog.current);
   };
   const number = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { maximumFractionDigits: 0 }).format(value);
   const compactNumber = (value: number) => new Intl.NumberFormat(language === 'th' ? 'th-TH' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value);

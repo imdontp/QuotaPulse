@@ -73,3 +73,18 @@ test('native focus restoration chooses exact visible opener or connected fallbac
   restoreRuntimeInspectorFocus(null, node('also-detached', false));
   assert.deepEqual(calls, ['exact', 'fallback', 'fallback']);
 });
+
+test('a queued close preserves focus deliberately moved outside the inspector', () => {
+  const calls: string[] = [];
+  const opener = { isConnected: true, getClientRects: () => [{}], focus: () => calls.push('opener') } as unknown as HTMLElement;
+  const body = {}, documentElement = {}, next = {}, inside = {};
+  const ownerDocument = { body, documentElement, activeElement: next };
+  const dialog = { ownerDocument, contains: (element: unknown) => element === inside } as unknown as HTMLDialogElement;
+  restoreRuntimeInspectorFocus(opener, null, dialog);
+  assert.deepEqual(calls, []);
+  ownerDocument.activeElement = body;
+  restoreRuntimeInspectorFocus(opener, null, dialog);
+  ownerDocument.activeElement = inside;
+  restoreRuntimeInspectorFocus(opener, null, dialog);
+  assert.deepEqual(calls, ['opener', 'opener']);
+});
