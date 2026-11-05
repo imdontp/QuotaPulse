@@ -66,6 +66,7 @@ export function HealthSection() {
   }
 
   const accountDetectionErrors = h.accountDetectionErrors ?? [];
+  const transcriptParseWarnings = h.transcriptParseWarnings ?? [];
   return (
     <div className="flex flex-col gap-3.5">
       <Card>
@@ -191,6 +192,14 @@ export function HealthSection() {
           </CardHeader>
         </Card>
       )}
+      {h.transcriptParseWarnings === undefined && (
+        <Card>
+          <CardHeader className="flex-col items-start gap-1">
+            <CardTitle as="h3">{t('health.transcriptParseWarnings')}</CardTitle>
+            <CardDescription className="note">{t('health.transcriptParseUnsupported')}</CardDescription>
+          </CardHeader>
+        </Card>
+      )}
 
       {/*
         Diagnostics, in ONE card.
@@ -210,7 +219,7 @@ export function HealthSection() {
         No information is lost -- the empty branches said "all priced" and "no errors", which
         the clear line also says.
       */}
-      {(h.unpriced.length > 0 || h.errors.length > 0 || accountDetectionErrors.length > 0) ? (
+      {(h.unpriced.length > 0 || h.errors.length > 0 || accountDetectionErrors.length > 0 || transcriptParseWarnings.length > 0) ? (
         <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-2">
           {h.unpriced.length > 0 && (
             <Card>
@@ -300,6 +309,30 @@ export function HealthSection() {
                     </TableRow>
                   ))}
                 </TableBody>
+              </Table>
+            </Card>
+          )}
+          {transcriptParseWarnings.length > 0 && (
+            <Card data-testid="transcript-parse-warnings">
+              <CardHeader className="flex-col items-start gap-1">
+                <CardTitle as="h3">{t('health.transcriptParseWarnings')}</CardTitle>
+                <CardDescription className="note">{t('health.transcriptParseBlurb')}</CardDescription>
+              </CardHeader>
+              <Table>
+                <TableHeader><TableRow className="hover:bg-transparent">
+                  <TableHead>{t('col.source')}</TableHead>
+                  <TableHead className="text-right">{t('health.transcriptAffectedFiles')}</TableHead>
+                  <TableHead className="text-right">{t('health.transcriptMalformedLines')}</TableHead>
+                  <TableHead className="text-right">{t('health.transcriptUnverifiedFiles')}</TableHead>
+                </TableRow></TableHeader>
+                <TableBody>{transcriptParseWarnings.map(source => (
+                  <TableRow key={source.sourceId}>
+                    <TableCell>{source.displayName} <span className="text-muted-foreground">({source.harness}/{source.profile})</span>{!source.enabled && <div className="text-muted-foreground">{t('health.transcriptInactive')}</div>}</TableCell>
+                    <TableCell className="tabular text-right font-mono">{source.affectedFiles.toLocaleString()}</TableCell>
+                    <TableCell className="tabular text-right font-mono">{source.malformedLines.toLocaleString()}</TableCell>
+                    <TableCell className="tabular text-right font-mono">{source.unverifiedFiles.toLocaleString()}</TableCell>
+                  </TableRow>
+                ))}</TableBody>
               </Table>
             </Card>
           )}

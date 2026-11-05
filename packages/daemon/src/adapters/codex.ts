@@ -3,6 +3,7 @@ import { basename, join } from 'node:path';
 import { DISCOVERY_TARGET, type Adapter, type IngestCtx, type Profile, type WatchTarget } from './types.js';
 import { readJsonlDelta } from '../ingest/jsonl.js';
 import { discoverFiles } from '../ingest/discover-files.js';
+import { transcriptParseMeta } from '../ingest/jsonl-integrity.js';
 import { fromEpochSeconds, fromIso, type Millis } from '../util/time.js';
 import { home, projectOf } from '../util/paths.js';
 import { logger } from '../util/log.js';
@@ -239,7 +240,7 @@ export const codexAdapter: Adapter = {
           fileSize: res.fileSize,
           fileMtime: res.fileMtime,
           // What is in force at nextOffset, so the next pass resumes knowing it.
-          meta: { model, effort, sid, cwd, gitBranch },
+          meta: { model, effort, sid, cwd, gitBranch, ...transcriptParseMeta(cursor, res.parseErrors) },
         });
         if (res.restarted) log.warn(`file shrank, re-read from start: ${basename(file)}`);
       } catch (err) {

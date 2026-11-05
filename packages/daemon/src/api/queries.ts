@@ -4,6 +4,7 @@ import { statSync } from 'node:fs';
 import { findCatalog } from '../pricing/loader.js';
 import { DATA_DIR } from '../util/paths.js';
 import { DETECTION_TARGET, type AccountState } from '../adapters/types.js';
+import { transcriptParseHistory } from '../ingest/jsonl-integrity.js';
 import {
   HARNESS_CATALOG,
   SUBSCRIPTION_CATALOG,
@@ -1644,6 +1645,28 @@ export const health = (db: DB) => {
       ORDER BY s.display_name, s.harness, s.profile`,
   ).all(DETECTION_TARGET) as Array<{ source_id: number; display_name: string; harness: string; profile: string; error_count: number }>;
 
+  // Old cursors predate parse-error tracking. Keep their history explicitly unknown,
+  // including disabled sources: a skipped file can have produced no events at all.
+  // Aggregate per source without returning transcript paths or raw JSONL content.
+  const parseWarnings = new Map<number, { sourceId: number; displayName: string; harness: string; profile: string; enabled: boolean; affectedFiles: number; malformedLines: number; unverifiedFiles: number }>();
+  const transcriptCursors = db.prepare(`SELECT s.id, s.display_name, s.harness, s.profile, s.enabled, i.byte_offset, i.meta
+    FROM ingest_state i JOIN source s ON s.id = i.source_id
+    WHERE s.source_kind = 'harness' AND s.harness IN ('codex', 'claude-code')
+      AND i.kind = 'file' AND i.target_key LIKE '%.jsonl'
+    ORDER BY s.harness, s.profile`).iterate() as Iterable<{ id: number; display_name: string; harness: string; profile: string; enabled: number; byte_offset: number; meta: string | null }>;
+  for (const row of transcriptCursors) {
+    let meta: unknown = null;
+    try { if (row.meta) meta = JSON.parse(row.meta); } catch { /* malformed stored metadata is unverified */ }
+    const history = transcriptParseHistory(meta, row.byte_offset);
+    if (!history.malformedLines && !history.unverified) continue;
+    const current = parseWarnings.get(row.id) ?? { sourceId: row.id, displayName: row.display_name, harness: row.harness, profile: row.profile, enabled: row.enabled === 1, affectedFiles: 0, malformedLines: 0, unverifiedFiles: 0 };
+    current.affectedFiles++;
+    current.malformedLines += history.malformedLines;
+    if (history.unverified) current.unverifiedFiles++;
+    parseWarnings.set(row.id, current);
+  }
+  const transcriptParseWarnings = [...parseWarnings.values()];
+
   const priced = db.prepare(`SELECT COUNT(*) AS n FROM price`).get() as { n: number };
   const unpriced = db
     .prepare(
@@ -1684,6 +1707,7 @@ export const health = (db: DB) => {
     coverage,
     errors,
     accountDetectionErrors,
+    transcriptParseWarnings,
     pricedModels: priced.n,
     unpriced,
     estimated,

@@ -3,6 +3,7 @@ import { basename, join } from 'node:path';
 import { DISCOVERY_TARGET, type Adapter, type IngestCtx, type Profile, type WatchTarget } from './types.js';
 import { readJsonlDelta, readJsonFile } from '../ingest/jsonl.js';
 import { discoverFiles } from '../ingest/discover-files.js';
+import { transcriptParseMeta } from '../ingest/jsonl-integrity.js';
 import { fromEpochAuto, fromIso, type Millis } from '../util/time.js';
 import { HOME, home, projectOf } from '../util/paths.js';
 import { logger } from '../util/log.js';
@@ -269,7 +270,7 @@ async function ingestTranscripts(ctx: IngestCtx): Promise<void> {
       }
 
       ctx.cursors.set(file, {
-        meta: { cwd, gitBranch, modelDefault },
+        meta: { cwd, gitBranch, modelDefault, ...transcriptParseMeta(cursor, res.parseErrors) },
         byteOffset: res.nextOffset,
         fileSize: res.fileSize,
         fileMtime: res.fileMtime,

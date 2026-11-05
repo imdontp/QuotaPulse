@@ -37,6 +37,125 @@ const sum = (db: DB, sourceId: number, col: string) =>
     }).v,
   );
 
+test('malformed transcript lines remain visible after later successful passes and truncation', async () => {
+  for (const [harness, adapter, writeProfile] of [
+    ['codex', codexAdapter, writeCodexProfile],
+    ['claude-code', claudeCodeAdapter, writeClaudeProfile],
+  ] as const) {
+    const root = join(tmpRoot(), 'profile');
+    const file = writeProfile(root);
+    appendFileSync(file, '{not-json}\n{}\n');
+    const database = openDb(':memory:');
+    const profile: Profile = { profile: 'test', rootPath: root, displayName: `test ${harness}` };
+    const sourceId = upsertSource(database, { harness, profile: profile.profile, rootPath: root, displayName: profile.displayName });
+    const warning = () => (health(database) as unknown as { transcriptParseWarnings: Array<{ sourceId: number; malformedLines: number; unverifiedFiles: number }> }).transcriptParseWarnings.find(item => item.sourceId === sourceId);
+    try {
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.ok(countEvents(database, sourceId) > 0, `${harness}: valid usage remains available`);
+      assert.deepEqual([warning()?.malformedLines, warning()?.unverifiedFiles], [1, 0]);
+      appendFileSync(file, '{}\n');
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.deepEqual([warning()?.malformedLines, warning()?.unverifiedFiles], [1, 0], `${harness}: clean delta must not erase skipped data`);
+      writeFileSync(file, '{}\n');
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.deepEqual([warning()?.malformedLines, warning()?.unverifiedFiles], [1, 0], `${harness}: a replacement file cannot repair previous stored data`);
+      assert.ok(!JSON.stringify(warning()).includes(root), 'the warning does not expose local transcript paths');
+    } finally { database.close(); }
+  }
+});
+
+test('legacy transcript cursor has unverified parse history even after a clean delta', async () => {
+  for (const [harness, adapter, writeProfile] of [
+    ['codex', codexAdapter, writeCodexProfile],
+    ['claude-code', claudeCodeAdapter, writeClaudeProfile],
+  ] as const) {
+    const root = join(tmpRoot(), 'profile'), file = writeProfile(root);
+    const database = openDb(':memory:');
+    const profile: Profile = { profile: 'legacy', rootPath: root, displayName: `legacy ${harness}` };
+    const sourceId = upsertSource(database, { harness, profile: profile.profile, rootPath: root, displayName: profile.displayName });
+    try {
+      await ingestOnce(database, adapter, profile, sourceId);
+      database.prepare('UPDATE ingest_state SET meta = ? WHERE source_id = ? AND target_key = ?').run('{}', sourceId, file);
+      const warning = () => (health(database) as unknown as { transcriptParseWarnings: Array<{ sourceId: number; malformedLines: number; unverifiedFiles: number }> }).transcriptParseWarnings.find(item => item.sourceId === sourceId);
+      assert.deepEqual([warning()?.malformedLines, warning()?.unverifiedFiles], [0, 1], `${harness}: old cursors have no historical parse evidence`);
+      database.prepare('UPDATE ingest_state SET meta = ? WHERE source_id = ? AND target_key = ?').run('{', sourceId, file);
+      assert.deepEqual([warning()?.malformedLines, warning()?.unverifiedFiles], [0, 1], `${harness}: damaged cursor metadata stays unverified`);
+      appendFileSync(file, '{}\n');
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.deepEqual([warning()?.malformedLines, warning()?.unverifiedFiles], [0, 1], `${harness}: a clean delta cannot verify previously consumed bytes`);
+      database.prepare('UPDATE source SET enabled = 0 WHERE id = ?').run(sourceId);
+      assert.ok(warning(), `${harness}: retained historical usage still needs the warning when its source is disabled`);
+    } finally { database.close(); }
+  }
+});
+
+test('incomplete trailing JSONL records are retried without a malformed warning', async () => {
+  for (const [harness, adapter, writeProfile] of [
+    ['codex', codexAdapter, writeCodexProfile],
+    ['claude-code', claudeCodeAdapter, writeClaudeProfile],
+  ] as const) {
+    const root = join(tmpRoot(), 'profile'), file = writeProfile(root);
+    const database = openDb(':memory:');
+    const profile: Profile = { profile: 'partial', rootPath: root, displayName: `partial ${harness}` };
+    const sourceId = upsertSource(database, { harness, profile: profile.profile, rootPath: root, displayName: profile.displayName });
+    try {
+      await ingestOnce(database, adapter, profile, sourceId);
+      const originalCount = countEvents(database, sourceId);
+      appendFileSync(file, '{"partial"');
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.deepEqual((health(database) as unknown as { transcriptParseWarnings: unknown[] }).transcriptParseWarnings, []);
+      appendFileSync(file, ':true}\n');
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.deepEqual((health(database) as unknown as { transcriptParseWarnings: unknown[] }).transcriptParseWarnings, []);
+      assert.equal(countEvents(database, sourceId), originalCount);
+    } finally { database.close(); }
+  }
+});
+
+test('disabled sources retain parse warnings even when no valid event was ingested', async () => {
+  for (const [harness, adapter, writeProfile] of [
+    ['codex', codexAdapter, writeCodexProfile],
+    ['claude-code', claudeCodeAdapter, writeClaudeProfile],
+  ] as const) {
+    const root = join(tmpRoot(), 'profile'), file = writeProfile(root);
+    writeFileSync(file, '{broken}\n');
+    const database = openDb(':memory:');
+    const profile: Profile = { profile: 'bad', rootPath: root, displayName: `bad ${harness}` };
+    const sourceId = upsertSource(database, { harness, profile: profile.profile, rootPath: root, displayName: profile.displayName });
+    try {
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.equal(countEvents(database, sourceId), 0);
+      database.prepare('UPDATE source SET enabled = 0 WHERE id = ?').run(sourceId);
+      const warnings = (health(database) as unknown as { transcriptParseWarnings: Array<{ sourceId: number; enabled: boolean; malformedLines: number }> }).transcriptParseWarnings;
+      assert.deepEqual(warnings.map(({ sourceId, enabled, malformedLines }) => ({ sourceId, enabled, malformedLines })), [{ sourceId, enabled: false, malformedLines: 1 }]);
+    } finally { database.close(); }
+  }
+});
+
+test('malformed transcript history survives a database reopen and clean delta', async () => {
+  for (const [harness, adapter, writeProfile] of [
+    ['codex', codexAdapter, writeCodexProfile],
+    ['claude-code', claudeCodeAdapter, writeClaudeProfile],
+  ] as const) {
+    const dir = tmpRoot(), root = join(dir, 'profile'), file = writeProfile(root), dbPath = join(dir, 'usage.db');
+    appendFileSync(file, '{broken}\n');
+    const profile: Profile = { profile: 'restart', rootPath: root, displayName: `restart ${harness}` };
+    let database = openDb(dbPath);
+    const sourceId = upsertSource(database, { harness, profile: profile.profile, rootPath: root, displayName: profile.displayName });
+    await ingestOnce(database, adapter, profile, sourceId);
+    const originalCount = countEvents(database, sourceId);
+    database.close();
+    database = openDb(dbPath);
+    try {
+      appendFileSync(file, '{}\n');
+      await ingestOnce(database, adapter, profile, sourceId);
+      const warnings = (health(database) as unknown as { transcriptParseWarnings: Array<{ sourceId: number; malformedLines: number; unverifiedFiles: number }> }).transcriptParseWarnings;
+      assert.deepEqual(warnings.map(({ sourceId, malformedLines, unverifiedFiles }) => ({ sourceId, malformedLines, unverifiedFiles })), [{ sourceId, malformedLines: 1, unverifiedFiles: 0 }]);
+      assert.equal(countEvents(database, sourceId), originalCount, 'restart does not duplicate valid events');
+    } finally { database.close(); }
+  }
+});
+
 test('transcript discovery failures reach health and recover without losing readable usage', async () => {
   for (const [harness, adapter, folder, writeProfile] of [
     ['codex', codexAdapter, 'sessions', writeCodexProfile],

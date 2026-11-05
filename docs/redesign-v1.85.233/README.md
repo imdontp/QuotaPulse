@@ -1,0 +1,13 @@
+# Transcript parse history
+
+Codex and Claude Code already continued past malformed complete JSONL lines, but discarded the parser's error count. Each newly processed transcript cursor now persists its malformed-line encounters and whether earlier consumed bytes predate tracking. Settings → Diagnostics aggregates these warnings by source without returning transcript paths or raw lines. A source that is now disabled remains visible even if it produced no valid event. A partial trailing line remains eligible for retry and is not counted as malformed.
+
+The count records encounters since tracking began, not unique lost calls: a file re-read can count the same malformed line again, and a malformed line is not necessarily a usage record. A later clean delta, file truncation or restart cannot prove earlier stored data complete, so those do not erase the recorded warning. Older cursors with consumed bytes and missing or damaged tracking metadata are marked unverified; an old daemon response without the new field explicitly shows that diagnostics are unavailable. Changes to previously consumed bytes, including same-size replacement, are not detected by this mechanism. It does not rescan or repair previously skipped data, certify the completeness of any source or other adapter, or enable Cost projection.
+
+Daemon and web builds passed. The daemon suite passed 151 tests, including malformed lines followed by valid data, clean deltas, truncation, database reopen, old or damaged metadata, disabled sources with zero events, and partial lines. The web suite passed 381 tests. Ten compiled browser cases cover English/Thai, dark/light, 390/1440px, source status, counts, privacy and older-daemon fallback; the existing discovery regression passed ten cases. `test:ui` passed on rerun, including navigation, responsive views and the existing popup.
+
+The first `test:ui` run timed out waiting for a Thai pricing control while Vite was reloading source changes. The run after edits stopped passed; the failure's exact cause is not established, and both logs are retained. The initial two new daemon tests failed before implementation because the new warning field did not exist; that log is also retained.
+
+An in-memory benchmark on this machine measured five `health` calls per fixture: median 0.88 ms at zero cursors, 34.08 ms at 10,000, and 165.15 ms at 50,000. Half the synthetic cursors had old unverified metadata. This is a limited single-machine measurement, not a production performance or completeness certification.
+
+Review230 predates this change. Cost monthly projection remains unavailable, and overall visual, motion, actual-provider and release acceptance remain open.

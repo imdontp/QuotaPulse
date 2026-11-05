@@ -639,6 +639,8 @@ export interface Health {
   errors: Array<Record<string, unknown>>;
   /** Optional for compatibility with older local daemons. */
   accountDetectionErrors?: Array<{ source_id: number; display_name: string; harness: string; profile: string; error_count: number }>;
+  /** Optional for older daemons; this is parse evidence, not source completeness. */
+  transcriptParseWarnings?: Array<{ sourceId: number; displayName: string; harness: string; profile: string; enabled: boolean; affectedFiles: number; malformedLines: number; unverifiedFiles: number }>;
   unpriced: Array<{ model: string; calls: number; vendor: string }>;
   /** Calls priced from a provider we picked rather than the one they went through. */
   estimated: Array<{
