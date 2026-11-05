@@ -161,6 +161,9 @@ export interface CursorStore {
  */
 export const ADAPTER_TARGET = '(adapter)';
 
+/** A detection failure is distinct from a read failure within an ingest pass. */
+export const DETECTION_TARGET = '(detection)';
+
 export interface WatchTarget {
   kind: 'dir' | 'file' | 'sqlite';
   path: string;

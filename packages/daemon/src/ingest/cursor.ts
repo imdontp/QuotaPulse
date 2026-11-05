@@ -1,5 +1,5 @@
 import type { DB } from '../db/index.js';
-import { ADAPTER_TARGET, EMPTY_CURSOR, type Cursor, type CursorStore } from '../adapters/types.js';
+import { ADAPTER_TARGET, DETECTION_TARGET, EMPTY_CURSOR, type Cursor, type CursorStore } from '../adapters/types.js';
 
 /**
  * Malformed stored state must never stop ingestion: the cursor is a cache of what the
@@ -8,7 +8,7 @@ import { ADAPTER_TARGET, EMPTY_CURSOR, type Cursor, type CursorStore } from '../
  */
 /** A target is a file path, a `table:` name inside a foreign database, or the source itself. */
 function kindOf(targetKey: string): string {
-  if (targetKey === ADAPTER_TARGET) return 'adapter';
+  if (targetKey === ADAPTER_TARGET || targetKey === DETECTION_TARGET) return 'adapter';
   return targetKey.includes('://') || targetKey.startsWith('table:') ? 'sqlite' : 'file';
 }
 

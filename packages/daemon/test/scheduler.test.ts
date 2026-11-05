@@ -44,6 +44,30 @@ test('runNow performs an immediate incremental pass when idle', async () => {
   scheduler.stop();
 });
 
+test('manual refresh pauses a source on detection failure and resumes after recovery', async () => {
+  const database = db();
+  let failed = false;
+  let passes = 0;
+  const adapter = fakeAdapter(async () => void passes++);
+  adapter.detect = async () => {
+    if (failed) throw new Error('synthetic detection failure');
+    return [profile];
+  };
+  const scheduler = new Scheduler(database, [adapter], schedulerOptions);
+  try {
+    await scheduler.start();
+    failed = true;
+    const failedPass = await scheduler.runNow();
+    assert.equal(failedPass.results.length, 0);
+    assert.equal(passes, 1, 'do not ingest a profile that could not be verified');
+    assert.equal((database.prepare('SELECT enabled FROM source WHERE harness = ?').get('fake') as { enabled: number }).enabled, 1);
+    failed = false;
+    const recovered = await scheduler.runNow();
+    assert.equal(recovered.results.length, 1);
+    assert.equal(passes, 2, 'the known source is read after successful redetection');
+  } finally { scheduler.stop(); database.close(); }
+});
+
 test('concurrent runNow callers share one queued follow-up pass', async () => {
   let passes = 0;
   let entered!: () => void;

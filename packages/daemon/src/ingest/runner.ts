@@ -1,6 +1,6 @@
 import type { DB } from '../db/index.js';
 import { upsertSource } from '../db/index.js';
-import { ADAPTER_TARGET, type Adapter, type Profile } from '../adapters/types.js';
+import { ADAPTER_TARGET, DETECTION_TARGET, type Adapter, type Profile } from '../adapters/types.js';
 import { DbCursorStore } from './cursor.js';
 import { DbSink, type SinkStats } from './sink.js';
 import { PriceResolver } from '../pricing/resolve.js';
@@ -27,14 +27,23 @@ export interface ResolvedSource {
 /** Detect every profile of every adapter and register it as a source. */
 export async function resolveSources(db: DB, adapters: Adapter[]): Promise<ResolvedSource[]> {
   const out: ResolvedSource[] = [];
+  const detectedAdapters = new Set<string>();
   for (const adapter of adapters) {
     let profiles: Profile[] = [];
     try {
       profiles = await adapter.detect();
     } catch (err) {
       log.warn(`${adapter.id}: detect failed`, (err as Error).message);
+      const known = db.prepare('SELECT id FROM source WHERE harness = ? AND enabled = 1').all(adapter.id) as Array<{ id: number }>;
+      for (const source of known) {
+        new DbCursorStore(db, source.id).recordError(DETECTION_TARGET, 'Source detection failed; retrying.');
+      }
       continue;
     }
+    detectedAdapters.add(adapter.id);
+    // This reserved target carries only detection errors, never a file cursor.
+    db.prepare(`DELETE FROM ingest_state WHERE target_key = ? AND source_id IN
+      (SELECT id FROM source WHERE harness = ?)`).run(DETECTION_TARGET, adapter.id);
     if (profiles.length === 0) {
       log.debug(`${adapter.id}: not installed`);
       continue;
@@ -52,7 +61,7 @@ export async function resolveSources(db: DB, adapters: Adapter[]): Promise<Resol
       log.info(`${adapter.id}/${profile.profile} -> ${profile.rootPath}`);
     }
   }
-  disableMissingSources(db, out);
+  disableMissingSources(db, out, detectedAdapters);
   return out;
 }
 
@@ -66,12 +75,14 @@ export async function resolveSources(db: DB, adapters: Adapter[]): Promise<Resol
  * source that has usage for the same reason; only one with nothing recorded disappears
  * completely, because there is nothing about it to report.
  */
-function disableMissingSources(db: DB, present: ResolvedSource[]): void {
+function disableMissingSources(db: DB, present: ResolvedSource[], detectedAdapters: Set<string>): void {
   const keep = new Set(present.map((p) => p.sourceId));
   const rows = db.prepare(`SELECT id, harness, profile FROM source WHERE enabled = 1`).all() as
     Array<{ id: number; harness: string; profile: string }>;
   const disable = db.prepare(`UPDATE source SET enabled = 0 WHERE id = ?`);
   for (const row of rows) {
+    // A failed or unattempted detector cannot establish that a source is absent.
+    if (!detectedAdapters.has(row.harness)) continue;
     if (keep.has(row.id)) continue;
     disable.run(row.id);
     log.info(`${row.harness}/${row.profile} is gone; its history is kept`);

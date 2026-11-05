@@ -14,7 +14,7 @@ import {
   sourceStatus,
   subscriptionStatus,
 } from '../src/api/queries.js';
-import { ADAPTER_TARGET, type Adapter, type Profile } from '../src/adapters/types.js';
+import { ADAPTER_TARGET, DETECTION_TARGET, type Adapter, type Profile } from '../src/adapters/types.js';
 import { tmpRoot } from './fixtures.js';
 import { DbSink } from '../src/ingest/sink.js';
 import { PriceResolver } from '../src/pricing/resolve.js';
@@ -83,6 +83,44 @@ test('a source that comes back is picked up again without a restart', async () =
     ['a'],
     'detecting a source again must re-enable it, not leave it disabled forever',
   );
+});
+
+test('a failed detection does not declare previously known sources uninstalled', async () => {
+  const d = db();
+  let failed = false;
+  let otherPresent = true;
+  const affected = fakeAdapter('affected', () => {
+    if (failed) throw new Error('synthetic detection failure');
+    return [profile('a')];
+  });
+  const other = fakeAdapter('other', () => otherPresent ? [profile('b')] : []);
+  try {
+    await resolveSources(d, [affected, other]);
+    failed = true;
+    otherPresent = false;
+    const duringFailure = await resolveSources(d, [affected, other]);
+    assert.equal(duringFailure.length, 0, 'an unverified profile is not read on this pass');
+    assert.deepEqual(listSources(d).map(s => s.harness), ['affected'],
+      'a failed detector cannot prove absence, while a successful empty result can');
+    const errors = health(d).errors as Array<{ harness: string; target_key: string; last_error: string }>;
+    assert.deepEqual(errors.map(e => [e.harness, e.target_key, e.last_error]),
+      [['affected', DETECTION_TARGET, 'Source detection failed; retrying.']]);
+    failed = false;
+    assert.equal((await resolveSources(d, [affected, other])).length, 1,
+      'subsequent successful detection recovers normally');
+    assert.equal(health(d).errors.length, 0, 'successful detection clears its diagnostic');
+  } finally { d.close(); }
+});
+
+test('detecting only a subset does not disable sources belonging to other adapters', async () => {
+  const d = db();
+  const first = fakeAdapter('first', () => [profile('a')]);
+  const second = fakeAdapter('second', () => [profile('b')]);
+  try {
+    await resolveSources(d, [first, second]);
+    await resolveSources(d, [first]);
+    assert.deepEqual(listSources(d).map(s => s.harness).sort(), ['first', 'second']);
+  } finally { d.close(); }
 });
 
 /**
