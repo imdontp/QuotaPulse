@@ -550,6 +550,7 @@ export const en = {
   'redesign.alertSeverity': 'Severity',
   'redesign.alertNoMatch': 'No quota risk matches these filters',
   'redesign.alertHistoryNotLoaded': 'Open details for history',
+  'redesign.alertReaderChanged': 'The selected quota reader changed; refresh its history.',
   'redesign.alertInfo': 'Notice',
   'redesign.alertStale': 'Reading is stale or expired; current risk is unknown',
   'redesign.alertForecast': 'Forecast reaches full use before reset',

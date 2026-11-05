@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import type { Limit, QuotaHistoryResponse } from '../src/api.js';
-import { AlertHistoryCache, currentQuotaForecast, observedQuotaSeries } from '../src/redesign/alert-history.js';
+import { AlertHistoryCache, currentQuotaForecast, historyMatchesReading, observedQuotaSeries } from '../src/redesign/alert-history.js';
 
 const reading = (owner: string, value = 80) => ({ subscription_key: owner, window_kind: '5h', source_id: 1, origin: 'fixture', last_seen_at: 1000, resets_at: 9000, used_percent: value }) as Limit;
 const response = (owner: string): QuotaHistoryResponse => ({ now: 1000, from: 0, to: 1001, subscriptionKey: owner, windowKind: '5h', available: false, reader: null, segments: [] });
@@ -82,6 +82,25 @@ test('cached ready forecasts require a current fresh reading and matching reader
   assert.equal(currentQuotaForecast(history, { ...reading('a'), last_seen_at: 2000 }, 8999), null);
   history.reader.freshness = 'stale';
   assert.equal(currentQuotaForecast(history, reading('a'), 8999), null);
+});
+
+test('history belongs to the selected owner, window, reader and reset period', () => {
+  const history = response('a');
+  const current = reading('a');
+  history.available = true;
+  history.reader = { sourceId: 1, origin: 'fixture', observedAt: 1000, lastSeenAt: 1000, sourceFetchedAt: 1000, resetAt: 9000, ageSeconds: 0, freshness: 'live', forecast: { status: 'insufficient', samples: 1, fromAt: 1000, toAt: 1000, percentPerHour: null, projectedFullAt: null } };
+  assert.equal(historyMatchesReading(history, current), true);
+  assert.equal(historyMatchesReading(history, { ...current, source_id: 2 }), false);
+  assert.equal(historyMatchesReading(history, { ...current, origin: 'other' }), false);
+  assert.equal(historyMatchesReading(history, { ...current, window_kind: 'monthly' }), false);
+  assert.equal(historyMatchesReading(history, { ...current, subscription_key: 'other' }), false);
+  assert.equal(historyMatchesReading(history, { ...current, resets_at: 11000 }), true, 'two-second reset jitter belongs to the same period');
+  assert.equal(historyMatchesReading(history, { ...current, resets_at: 11001 }), false);
+  assert.equal(historyMatchesReading(history, { ...current, resets_at: null }), false);
+  history.reader = null; history.available = false; history.segments = [];
+  assert.equal(historyMatchesReading(history, current), true, 'a genuinely unavailable response contains no other reader data');
+  history.segments = [{ resetAt: null, samples: [] }];
+  assert.equal(historyMatchesReading(history, current), false, 'a readerless response with segments is not assumed safe');
 });
 
 test('large observed histories render at most256 actual latest samples without bridging omitted/reset/null gaps', () => {

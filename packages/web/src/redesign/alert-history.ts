@@ -65,6 +65,16 @@ export function observedQuotaSeries(history: QuotaHistoryResponse) {
   return { points, lines, first, last, totalSamples, displayedSamples: samples.length };
 }
 
+/** A cached owner/window response cannot be shown under a different active reader. */
+export function historyMatchesReading(history: QuotaHistoryResponse, reading: Limit) {
+  if (history.subscriptionKey !== quotaOwnerKey(reading) || history.windowKind !== reading.window_kind) return false;
+  const reader = history.reader;
+  if (!reader) return !history.available && history.segments.length === 0;
+  const resetMatches = reader.resetAt === null || reading.resets_at === null
+    ? reader.resetAt === reading.resets_at : Math.abs(reader.resetAt - reading.resets_at) <= 2_000;
+  return reader.sourceId === reading.source_id && reader.origin === reading.origin && resetMatches;
+}
+
 export function currentQuotaForecast(history: QuotaHistoryResponse | null, reading: Limit | undefined, now: number) {
   const reader = history?.reader;
   return reading && reader && isQuotaReadingFresh(reading, now) && reader.sourceId === reading.source_id &&

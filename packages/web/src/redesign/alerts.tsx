@@ -13,7 +13,7 @@ import { QuotaChart } from './quota-chart';
 import { PageHeading } from './page-heading';
 import { HeadingReferenceIcon } from './heading-reference-icon';
 import { getQuotaRiskModel, isQuotaReadingFresh, quotaOwnerKey as ownerKey, quotaWindowKey as windowKey, type QuotaRisk as Risk } from './alert-risks';
-import { AlertHistoryCache, currentQuotaForecast, observedQuotaSeries, type AlertHistoryResult } from './alert-history';
+import { AlertHistoryCache, currentQuotaForecast, historyMatchesReading, observedQuotaSeries, type AlertHistoryResult } from './alert-history';
 import { InitialRegion, type InitialRegionState } from './initial-region';
 import { AlertsEntranceLedger, alertRiskMotionKey, alertHistoryMotionKey, type AlertsEntranceBatch } from './alerts-entrance';
 import { useAlertsEntrance } from './use-alerts-entrance';
@@ -120,8 +120,10 @@ export function ProductionAlerts() {
       return [key, result.error && prior && sameReader ? { ...result, data: prior } : result];
     })));
   }, [historySignature, historyRetry]);
-  const history = histories.get(selectionKey)?.data ?? null;
-  const quotaError = histories.get(selectionKey)?.error ?? null;
+  const selectedHistory = histories.get(selectionKey);
+  const historyMismatch = !!selected && !!selectedHistory?.data && !historyMatchesReading(selectedHistory.data, selected.primary);
+  const history = historyMismatch ? null : selectedHistory?.data ?? null;
+  const quotaError = historyMismatch ? t('redesign.alertReaderChanged') : selectedHistory?.error ?? null;
   const forecast = currentQuotaForecast(history, selected?.primary, now);
   const resetAt = history?.reader?.resetAt;
   const forecastGap = forecast?.status === 'ready' && forecast.projectedFullAt != null && resetAt != null && forecast.projectedFullAt < resetAt
@@ -165,7 +167,7 @@ export function ProductionAlerts() {
   ].join(' · ') : t('redesign.providerUnavailable');
 
   const initialState: InitialRegionState = { kind: error ? 'error' : 'loading', label: error ? t('app.couldNotLoad') : t('app.loading'), detail: error ?? undefined, retryLabel: t('app.retry'), retrying: false, onRetry: () => { document.querySelector<HTMLElement>('[data-testid=production-alerts] main')?.focus(); primaryEpoch.current++; setError(null); setRetry(value => value + 1); } };
-  const historyState: InitialRegionState = { kind: quotaError ? 'error' : 'loading', label: quotaError ? t('app.couldNotLoad') : t('app.loading'), detail: quotaError ?? undefined, retryLabel: t('app.retry'), retrying: false, onRetry: () => {
+  const historyState: InitialRegionState = { kind: quotaError ? 'error' : 'loading', label: historyMismatch ? t('redesign.alertReaderChanged') : quotaError ? t('app.couldNotLoad') : t('app.loading'), detail: quotaError ?? undefined, retryLabel: t('app.retry'), retrying: false, onRetry: () => {
     document.querySelector<HTMLElement>('[data-testid=production-alerts] main')?.focus();
     historyGeneration.current++; forceHistoryRetry.current = true;
     setHistories(previous => { const next = new Map(previous); const entry = next.get(selectionKey); if (entry) next.set(selectionKey, { ...entry, error: null }); return next; });
@@ -242,9 +244,10 @@ function historyReplace(hash: string) {
 
 function RiskSparkline({ risk, result, t, now }: { risk: Risk; result?: AlertHistoryResult; t: ReturnType<typeof useT>; now: number }) {
   const f = useFormat();
-  const history = result?.data;
+  const historyMismatch = !!result?.data && !historyMatchesReading(result.data, risk.reading);
+  const history = historyMismatch ? null : result?.data;
   const series = useMemo(() => history ? observedQuotaSeries(history) : null, [history]);
-  const missing = !result ? 'redesign.alertHistoryNotLoaded' : result.error ? 'redesign.providerUnavailable' : 'redesign.alertNoHistory';
+  const missing = !result ? 'redesign.alertHistoryNotLoaded' : historyMismatch || result.error ? 'redesign.providerUnavailable' : 'redesign.alertNoHistory';
   if (!history?.available || !history.reader || !series?.displayedSamples) return <span className="qp-alert-risk-spark qp-alert-risk-spark-empty">{t(missing)}</span>;
   const freshness = !isQuotaReadingFresh(risk.reading, now) || risk.level === 'stale' ? 'stale' : history.reader.freshness;
   const age = Math.round((now - Math.max(history.reader.lastSeenAt, history.reader.sourceFetchedAt ?? 0)) / 1000);

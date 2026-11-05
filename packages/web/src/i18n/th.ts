@@ -554,6 +554,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.alertSeverity': 'ระดับความรุนแรง',
   'redesign.alertNoMatch': 'ไม่มีความเสี่ยงโควตาตรงกับตัวกรองนี้',
   'redesign.alertHistoryNotLoaded': 'เปิดรายละเอียดเพื่อดูประวัติ',
+  'redesign.alertReaderChanged': 'ตัวอ่านโควตาที่เลือกเปลี่ยนไป โปรดรีเฟรชประวัติ',
   'redesign.alertInfo': 'แจ้งทราบ',
   'redesign.alertStale': 'ค่าที่อ่านเก่าหรือหมดอายุ จึงไม่ทราบความเสี่ยงปัจจุบัน',
   'redesign.alertForecast': 'คาดว่าใช้เต็มก่อนรีเซ็ต',
