@@ -1,0 +1,7 @@
+# Current eight-page concept comparison
+
+[Open the comparison](review.html). The eight application images were freshly captured from source `3b279d4` and one compiled web build, with an isolated in-memory synthetic dataset, fixed clock, English/dark, DPR 1, reduced motion and each original reference viewport. All captures repeated byte-for-byte in their browser contexts. Original reference hashes match the blueprint manifest. Seven retained application images are reused only after matching the fresh captures byte-for-byte; the Projects image is newly saved. All eight tabs, 16 image loads and keyboard navigation passed.
+
+The synthetic dataset differs from the concept in owner, model and alert counts and in the distribution of recorded observations. Production uses collected data. The [denser Projects comparison](../redesign-v1.85.226/review.html) makes the changed trend paint and its real-data-dependent shape easier to inspect. These static comparisons are review aids, not approval of 99–100% visual fidelity or a substitute for motion, live provider, other viewport and physical desktop checks.
+
+The [earlier audit](../redesign-v1.85.212/README.md) records substantive blueprint and data-semantic gaps. Cost projection remains unavailable because source completeness and freshness cannot yet be certified. The [current motion evidence](../redesign-v1.85.227/README.md) includes both passing and failed sampling runs and does not close hardware performance acceptance. Review224 predates the updated Projects trend.
