@@ -1,0 +1,7 @@
+# Review218 to review224 upgrade and rollback
+
+The actual review218 and review224 Windows ZIPs passed previous install, current upgrade, previous rollback and current recovery on one newly created synthetic profile with readers disabled. Their SHA-256 values were `6df7a31468db1b9fe1eae06e044dc516396787a13d9ce178b931b21aa71cbd75` and `cb86bf39c6afb5e75733538aa960b9fb0dcad41ccae823799c5637b928efb6cb`. [Current package and launch instructions](../redesign-v1.85.224/README.md).
+
+At each stage, installed runtime and served assets were checked against the corresponding archive; daemon and tray started and stopped with process identity checks. A separate Electron dashboard launch checked the shared profile's Thai language, light theme, THB currency, exchange rate and window size. Schema 7 snapshots, including synthetic usage, null and empty project values, pricing, notification and application settings, remained identical. The windows were offscreen, with test-only anti-occlusion flags.
+
+The two extracted runtime trees were verified byte-for-byte against retained ZIPs and cleaned after owned processes stopped; the synthetic profile, evidence and small ASAR residues remain. The retained test installation is no longer runnable until its runtime is restored from the ZIPs. This covers schema 7 and the stated synthetic profile only; it does not prove cross-schema migration, actual provider behavior, production performance, physical tray/display behavior or visual acceptance.
