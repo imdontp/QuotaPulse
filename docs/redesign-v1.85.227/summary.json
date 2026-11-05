@@ -1,0 +1,111 @@
+{
+  "sourceCommit": "3b279d4",
+  "webIndexSha256": "b2438dd1657f575acc5d5a0b56aaccf238d6c2bada0852daa3dd062e83035656",
+  "defaultInitialFailure": {
+    "samples": 14,
+    "maxFrameGapMs": 796.2000000476837,
+    "effects": [
+      {
+        "duration": 180,
+        "finishedTime": 180,
+        "state": "idle"
+      },
+      {
+        "duration": 700,
+        "finishedTime": 700,
+        "state": "idle"
+      },
+      {
+        "duration": 180,
+        "finishedTime": 180,
+        "state": "idle"
+      },
+      {
+        "duration": 700,
+        "finishedTime": 700,
+        "state": "idle"
+      }
+    ]
+  },
+  "softwareFailure": {
+    "samples": 14,
+    "maxFrameGapMs": 94.10000002384186,
+    "effects": [
+      {
+        "duration": 180,
+        "finishedTime": 180,
+        "state": "idle"
+      },
+      {
+        "duration": 700,
+        "finishedTime": 700,
+        "state": "idle"
+      },
+      {
+        "duration": 180,
+        "finishedTime": 180,
+        "state": "idle"
+      },
+      {
+        "duration": 700,
+        "finishedTime": 700,
+        "state": "idle"
+      }
+    ]
+  },
+  "defaultStandalone": [
+    {
+      "context": 0,
+      "maxFrameGapMs": 508.19999998807907,
+      "nearEnd180": false
+    },
+    {
+      "context": 1,
+      "maxFrameGapMs": 115.80000001192093,
+      "nearEnd180": true
+    },
+    {
+      "context": 2,
+      "maxFrameGapMs": 145.5,
+      "nearEnd180": true
+    },
+    {
+      "context": 3,
+      "maxFrameGapMs": 130.5,
+      "nearEnd180": true
+    }
+  ],
+  "softwareStandalone": [
+    {
+      "context": 0,
+      "maxFrameGapMs": 18.400000035762787,
+      "nearEnd180": true
+    },
+    {
+      "context": 1,
+      "maxFrameGapMs": 108.5,
+      "nearEnd180": true
+    },
+    {
+      "context": 2,
+      "maxFrameGapMs": 119.39999997615814,
+      "nearEnd180": true
+    },
+    {
+      "context": 3,
+      "maxFrameGapMs": 106.5,
+      "nearEnd180": true
+    }
+  ],
+  "defaultRepeatStages": 27,
+  "tracedStages": 27,
+  "tracedLongEvents": [
+    {
+      "name": "RunTask",
+      "durationMs": 108.632,
+      "thread": "CrGpuMain"
+    }
+  ],
+  "aggregateStages": 28,
+  "aggregateSamplingComplete": true
+}

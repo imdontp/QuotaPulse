@@ -1,0 +1,11 @@
+# Motion sampling on the current dashboard
+
+Status: **partially validated**. These are synthetic local API/browser tests of application source `3b279d4` and web index SHA-256 `b2438dd1657f575acc5d5a0b56aaccf238d6c2bada0852daa3dd062e83035656`; they do not prove physical display smoothness or full concept acceptance. No production animation, timing threshold or screenshot mask was changed for this investigation.
+
+The first default-renderer Projects/Runtime/Providers run failed the existing near-end sample for a 180 ms selection animation. Its effects did reach their native finish times, but the recorded frames had a maximum 796.2 ms gap. A later unprofiled default run passed all 27 stages. A separate traced default run also passed 27 stages; its first selection had a 133.8 ms maximum recorded gap, and the trace covering that selection contained a 108.6 ms `CrGpuMain` task. The traced run passed, so that task does not establish the cause of the earlier failure.
+
+The software-renderer run failed the same near-end sampling requirement in a Runtime Map selection, with a maximum 94.1 ms gap; all four native effects still reached their stated finish times. A standalone page without QuotaPulse reproduced a missed 180 ms near-end sample in the first of four default-renderer contexts, with a 508.2 ms maximum gap. Its four software contexts captured the near-end sample, though three had maximum gaps over 100 ms. These controls demonstrate scheduling variability in this test environment, but they do not rule out application-specific rendering costs or prove acceptable performance.
+
+The default History/Alerts motion run passed its actual timeline, accepted-snapshot, selection and lifecycle checks. Aggregate-presence passed 28 stages with `visualSamplingComplete: true` and no sampling gaps. Both results cover the explicitly documented synthetic browser conditions only. Full hardware/native performance and physical minimize/tray behavior remain open; a passing repeat does not erase the original failure.
+
+The compressed evidence includes the unprofiled failure and repeat, software failure, standalone controls, traced run, verification records, driver sources and trace. Review224 predates source226's project chart styling.
