@@ -1,0 +1,73 @@
+{
+  "applicationSource": "01378b2",
+  "webIndexSha256": "2b98534f24a868842850c6f6c39c0d50cb623910e3d799f2558c8497fb52a24a",
+  "reference": "original PNGs checked against blueprint manifest",
+  "fixture": "one isolated fixed synthetic database",
+  "capture": "English/dark, reference viewport, DPR1, reduced motion",
+  "pages": [
+    {
+      "page": "overview",
+      "sha256": "abb5a6f719fb824d49b86463708d692b71d14b96dd9ab361ff55ab882c4e0dcc",
+      "referenceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+      "repeatIdentical": true,
+      "image": "../redesign-v1.85.193/overview.png",
+      "reusedAfterByteMatch": true
+    },
+    {
+      "page": "live",
+      "sha256": "f0f8b4c45e6feff18a3c1f9f2ac381bf9c7ef7d92818d7825ce1e19f793f67d1",
+      "referenceSha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+      "repeatIdentical": true,
+      "image": "../redesign-v1.85.200/live.png",
+      "reusedAfterByteMatch": true
+    },
+    {
+      "page": "projects",
+      "sha256": "41640de1dd4624e00d1ac19b3871eaf48f71b1879a38d120707bf053fa083d62",
+      "referenceSha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "repeatIdentical": true,
+      "image": "projects.png",
+      "reusedAfterByteMatch": false
+    },
+    {
+      "page": "models",
+      "sha256": "306bdae68da1d2eed9d35d0f00878c1f3d3e6bf35c00a77acb0f9edf9019b2a4",
+      "referenceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "repeatIdentical": true,
+      "image": "models.png",
+      "reusedAfterByteMatch": false
+    },
+    {
+      "page": "history",
+      "sha256": "965f6bf774f7c17e39ad92b96fd88fc0e25a5428fd3b2eaa4486651b4ce3ce84",
+      "referenceSha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+      "repeatIdentical": true,
+      "image": "history.png",
+      "reusedAfterByteMatch": false
+    },
+    {
+      "page": "alerts",
+      "sha256": "eebf2b85e07906c28a7d58a968a42e1a57934d5d1792576eac4babaed42ac780",
+      "referenceSha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+      "repeatIdentical": true,
+      "image": "../redesign-v1.85.205/alerts.png",
+      "reusedAfterByteMatch": true
+    },
+    {
+      "page": "providers",
+      "sha256": "e8376f5f8ef4cdd4c00116369aa867d93668fdac6b6b167aa0caf5b97c134896",
+      "referenceSha256": "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6",
+      "repeatIdentical": true,
+      "image": "../redesign-v1.85.186/images/providers.png",
+      "reusedAfterByteMatch": true
+    },
+    {
+      "page": "cost",
+      "sha256": "679e803dc7a0346d0f37427b2f6ea4abf28bd5ffb164a678752decd5f7746345",
+      "referenceSha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+      "repeatIdentical": true,
+      "image": "../redesign-v1.85.212/cost.png",
+      "reusedAfterByteMatch": true
+    }
+  ]
+}
