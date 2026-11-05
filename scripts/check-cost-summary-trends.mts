@@ -11,6 +11,8 @@ import {Scheduler} from '../packages/daemon/src/ingest/scheduler.js';
 import {installBrowserFixedDate} from './browser-fixed-date.mjs';
 import {en} from '../packages/web/src/i18n/en.ts';
 import {th} from '../packages/web/src/i18n/th.ts';
+import {costDisplayTimeline} from '../packages/web/src/redesign/cost-display-timeline.ts';
+import {costSummaryTrends} from '../packages/web/src/redesign/cost-summary-trends.ts';
 
 const root=fileURLToPath(new URL('..',import.meta.url)),output=resolve(root,'screens/cost-summary-trends');mkdirSync(output,{recursive:true});
 const day=86400000,from=Date.parse('2025-05-13T00:00:00+07:00'),to=from+3.5*day,RealDate=globalThis.Date;
@@ -19,7 +21,7 @@ const db=openDb(':memory:');db.exec(`INSERT INTO source(id,harness,profile,root_
 const insert=db.prepare('INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,total_tokens,call_count,cost_usd,cost_source) VALUES(1,1,?,?,\'A\',\'openai\',?,?,?,?)');
 insert.run('first-api',from+.5*day,100,2,2,'computed');insert.run('unpriced',from+1.5*day,200,5,null,'unknown');insert.run('next-api',from+2.5*day,300,3,6,'computed');insert.run('native',from+2.5*day,400,4,4,'native');insert.run('priced-zero',from+3.25*day,100,1,0,'computed');
 const app=buildServer(db,new Scheduler(db,[]),{token:'owned-summary-fixture',port:7836,webRoot:resolve(root,'packages/web/dist')}),base='http://127.0.0.1:7836';
-let browser:Awaited<ReturnType<typeof chromium.launch>>|undefined,current:Page|undefined;const errors:string[]=[],external:string[]=[],cases:object[]=[],futureCases:object[]=[],emptyCases:object[]=[];
+let browser:Awaited<ReturnType<typeof chromium.launch>>|undefined,current:Page|undefined;const errors:string[]=[],external:string[]=[],cases:object[]=[],futureCases:object[]=[],emptyCases:object[]=[],densityCases:object[]=[];
 async function series(page:Page,index:number){
  const svg=page.locator('.qp-cost-summary article').nth(index).locator('.qp-cost-summary-trend');assert.equal(await svg.count(),1);
  const description=await svg.locator('desc').textContent();assert.ok(description);assert.equal(await svg.getAttribute('aria-describedby'),await svg.locator('desc').getAttribute('id'));
@@ -56,9 +58,25 @@ try{
    const futureAverage=page.locator('.qp-cost-summary article').nth(1);await futureAverage.getByText(messages['redesign.costFutureAverage'],{exact:true}).waitFor();assert.equal(await futureAverage.locator('strong').innerText(),messages['redesign.unknownValue']);assert.equal(await futureAverage.locator('.qp-cost-summary-trend').count(),0);const futureUnit=await series(page,3);assert.equal(futureUnit.points.at(-1)!.value,10*rate);futureCases.push({name,to:futureTo,asOf:future.now,averageUnavailable:true,pricedUnitPreserved:true});
    const emptyFrom=from-10*day,emptyTo=emptyFrom+3.5*day;ready=page.waitForResponse(r=>r.url().includes('/api/cost-analysis?')&&new URL(r.url()).searchParams.get('from')===String(emptyFrom)&&r.ok());await page.goto(base+`/#cost?range=custom&from=${emptyFrom}&to=${emptyTo}&source=1&bucket=day&basis=api`);const empty=await(await ready).json();assert.equal(empty.totals.allCalls,0);assert.equal(empty.totals.amount,0);
    const emptyAverage=page.locator('.qp-cost-summary article').nth(1);await emptyAverage.locator('.qp-cost-summary-trend circle').first().waitFor();const zero=await series(page,1);assert.deepEqual(zero.points.map(p=>p.value),[0,0,0,0]);const money=new Intl.NumberFormat(lang==='th'?'th-TH':'en-US',{style:'currency',currency}).format(0);assert.equal(await emptyAverage.locator('.qp-cost-value>span').first().innerText(),money);assert.equal(await page.locator('.qp-cost-summary article').nth(3).locator('strong').innerText(),messages['redesign.unknownValue']);emptyCases.push({name,scope:empty.scope,averageZero:true,unitUnknown:true});
+   for(const [extraDays,marked] of [[32,true],[33,false]] as const){
+    const densityFrom=from-extraDays*day;ready=page.waitForResponse(r=>r.url().includes('/api/cost-analysis?')&&new URL(r.url()).searchParams.get('from')===String(densityFrom)&&r.ok());
+    await page.goto(base+`/#cost?range=custom&from=${densityFrom}&to=${to}&source=1&bucket=day&basis=api`);const density=await(await ready).json();
+    const svg=page.locator('.qp-cost-summary article').first().locator('.qp-cost-summary-trend');await svg.locator('circle.qp-observed-recorded:not([stroke])').first().waitFor();
+    const paint=await svg.locator('circle.qp-observed-recorded:not([stroke])').first().evaluate(node=>({vectorEffect:getComputedStyle(node).vectorEffect,stroke:getComputedStyle(node).stroke,strokeWidth:getComputedStyle(node).strokeWidth}));
+    assert.equal(await svg.evaluate(node=>node.classList.contains('qp-cost-summary-sampled')),marked);
+    assert.equal(paint.vectorEffect,marked?'non-scaling-stroke':'none');
+    const timeline=costDisplayTimeline(density),expected=costSummaryTrends(timeline.points,density.scope,timeline.bucketMs,density.now).amount;
+    assert.equal(timeline.points.length,marked?36:37);
+    const amountDensity=await series(page,0);
+    assert.deepEqual(amountDensity.points.map(({at,value})=>({at,value})),expected.filter(point=>point.value!==null).map(({at,value})=>({at,value:value!*rate})),'Markers must correspond to the displayed recorded-value buckets');
+    assert.deepEqual(await svg.locator('circle.qp-observed-recorded').evaluateAll(nodes=>nodes.map(node=>Number(node.getAttribute('data-at')))),expected.filter((point,index)=>point.value!==null&&timeline.points[index]!.allCalls>0).map(point=>point.at),'Only buckets with recorded calls gain the visual emphasis');
+    assert.equal(await svg.locator('circle:not(.qp-observed-recorded):not([stroke])').first().evaluate(node=>getComputedStyle(node).stroke),'none','Empty buckets do not gain an activity marker');
+    assert.equal(amountDensity.runs,2,'Unpriced interval remains a gap at both densities');
+    densityCases.push({name,extraDays,buckets:timeline.points.length,marked,paint});
+   }
   }
   await context.close();current=undefined;
  }
- assert.equal(cases.length,16);assert.equal(futureCases.length,4);assert.equal(emptyCases.length,4);assert.deepEqual(errors,[]);assert.deepEqual(external,[]);writeFileSync(resolve(output,'verification.json'),JSON.stringify({productionIndexSha256:createHash('sha256').update(readFileSync(resolve(root,'packages/web/dist/index.html'))).digest('hex'),cases,futureCases,emptyCases,errors,external},null,2)+'\n');console.log('PASS24 compiled Cost summary cases: unknown gaps, cumulative averages/units, partial interval, weighted coverage, native/API, currency, future/empty ranges and responsive locales');
+ assert.equal(cases.length,16);assert.equal(futureCases.length,4);assert.equal(emptyCases.length,4);assert.equal(densityCases.length,8);assert.deepEqual(errors,[]);assert.deepEqual(external,[]);writeFileSync(resolve(output,'verification.json'),JSON.stringify({productionIndexSha256:createHash('sha256').update(readFileSync(resolve(root,'packages/web/dist/index.html'))).digest('hex'),cases,futureCases,emptyCases,densityCases,errors,external},null,2)+'\n');console.log('PASS32 compiled Cost summary cases: unknown gaps, cumulative averages/units, partial interval, coverage, native/API, density, currency, future/empty ranges and responsive locales');
 }catch(error){if(current&&!current.isClosed()){await current.screenshot({path:resolve(output,'failure.png'),animations:'disabled'}).catch(()=>{});writeFileSync(resolve(output,'failure.json'),JSON.stringify({url:current.url(),error:String(error),completed:cases},null,2)+'\n');}throw error;}
 finally{await browser?.close();await app.close();db.close();globalThis.Date=RealDate;}

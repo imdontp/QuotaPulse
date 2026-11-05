@@ -3,7 +3,7 @@ import { observedTrendRuns, type ObservedPoint } from './observed-trend-runs';
 import './observed-trend.css';
 
 /** Straight segments retain bucket values; the complete data table is rendered by the caller. */
-export function ObservedTrend({ points, label, className, language, area = true, grid = true, edgeToEdge = false, bucketCenters = false, nativeTitles = true, pointTitle, inspection, guideIndices = [], spectrum = false }: {
+export function ObservedTrend({ points, label, className, language, area = true, grid = true, edgeToEdge = false, bucketCenters = false, nativeTitles = true, pointTitle, inspection, guideIndices = [], markerIndices = [], spectrum = false }: {
   points: readonly ObservedPoint[];
   label: string;
   className: string;
@@ -14,6 +14,7 @@ export function ObservedTrend({ points, label, className, language, area = true,
   bucketCenters?: boolean;
   nativeTitles?: boolean;
   guideIndices?: readonly number[];
+  markerIndices?: readonly number[];
   spectrum?: boolean;
   pointTitle?: (point: { at: number; value: number; index: number }) => string;
   inspection?: { index: number | null; help: string } & Pick<SVGProps<SVGSVGElement>, 'onFocus' | 'onBlur' | 'onKeyDown' | 'onPointerMove' | 'onPointerLeave'>;
@@ -26,6 +27,7 @@ export function ObservedTrend({ points, label, className, language, area = true,
   const line = (run: (typeof runs)[number]) => run.map(point => `${x(point.index)},${y(point.value)}`).join(' ');
   const locale = language === 'th' ? 'th-TH' : 'en-US';
   const selected = inspection?.index !== null && inspection?.index !== undefined ? points[inspection.index] : null;
+  const marked = new Set(markerIndices);
   const pointDescriptions = pointTitle ? runs.flatMap(run => run.map(pointTitle)).join('; ') : '';
   const seriesColor = spectrum ? `url(#${id}-series)` : 'var(--qp-accent)';
   return <svg className={`qp-observed-trend ${className}`} viewBox="0 0 1000 100" preserveAspectRatio="none" role={inspection ? 'group' : 'img'} tabIndex={inspection ? 0 : undefined} aria-label={label} aria-describedby={inspection ? `${id}-help` : pointDescriptions ? `${id}-data` : undefined}
@@ -49,7 +51,7 @@ export function ObservedTrend({ points, label, className, language, area = true,
       // A subset of actual bucket points is accented in the full project chart.
       // The other points remain available to inspection and the complete data table.
       const emphasized = run.length === 1 || spectrum && guideIndices.includes(point.index);
-      return <circle key={point.at} data-at={point.at} data-value={point.value} cx={x(point.index)} cy={y(point.value)} r="2" fill={seriesColor} stroke={emphasized ? seriesColor : undefined} strokeWidth={emphasized ? 3 : undefined} vectorEffect={emphasized ? 'non-scaling-stroke' : undefined} aria-hidden={inspection ? true : undefined}>{!inspection && nativeTitles && <title>{pointTitle ? pointTitle(point) : <>{new Date(point.at).toLocaleString(locale)} · {point.value.toLocaleString(locale)}</>}</title>}</circle>;
+      return <circle key={point.at} className={marked.has(point.index) ? 'qp-observed-recorded' : undefined} data-at={point.at} data-value={point.value} cx={x(point.index)} cy={y(point.value)} r="2" fill={seriesColor} stroke={emphasized ? seriesColor : undefined} strokeWidth={emphasized ? 3 : undefined} vectorEffect={emphasized ? 'non-scaling-stroke' : undefined} aria-hidden={inspection ? true : undefined}>{!inspection && nativeTitles && <title>{pointTitle ? pointTitle(point) : <>{new Date(point.at).toLocaleString(locale)} · {point.value.toLocaleString(locale)}</>}</title>}</circle>;
     }))}
     {selected && selected.value !== null && Number.isFinite(selected.value) && <g className="qp-observed-inspection" aria-hidden="true"><line x1={x(inspection!.index!)} x2={x(inspection!.index!)} y1="6" y2="94" vectorEffect="non-scaling-stroke"/><circle cx={x(inspection!.index!)} cy={y(selected.value)} r="3" vectorEffect="non-scaling-stroke"/></g>}
   </svg>;

@@ -165,7 +165,7 @@ export function ProductionCost() {
   const date = (at: number) => new Date(at).toLocaleString(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' });
   const summaryChart = (kind: 'amount' | 'average' | 'perThousand', label: string) => {
     const points: CostSummaryPoint[] = summaryTrends?.[kind] ?? [];
-    return <ObservedTrend className="qp-cost-summary-trend" points={points.map(point => ({ ...point, value: point.value === null ? null : currency === 'THB' ? point.value * rate : point.value }))}
+    return <ObservedTrend className={`qp-cost-summary-trend${points.length <= 36 ? ' qp-cost-summary-sampled' : ''}`} points={points.map(point => ({ ...point, value: point.value === null ? null : currency === 'THB' ? point.value * rate : point.value }))} markerIndices={timeline!.points.flatMap((point,index) => point.allCalls > 0 ? [index] : [])}
       language={lang} label={`${label} (${currency})`} pointTitle={({ at, index }) => {
         const point = points[index]!;
         const value = kind === 'perThousand' ? unitMoney(point.value!) : costValue(point.value!, point.pricedCalls, point.allCalls, money, t('redesign.unknownValue'));
