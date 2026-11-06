@@ -1,0 +1,32 @@
+02:52:13.338 INFO  [db] opened :memory:
+{"language":"en","theme":"dark","width":1440,"blockedRequests":1,"selectedValue":97,"newReset":1793955133340,"displayed":[60,70,80]}
+node : node:internal/modules/run_main:122
+At line:2 char:1
++ node --import tsx scripts/check-overview-quota-reset.mts *> tmp/overv ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Previous reset history must not be presented as current during a reset switch
++ actual - expected
+
++ [
++   60,
++   70,
++   80
++ ]
+- []
+
+    at <anonymous> (C:\Users\TH12367283\Projects\QuotaPulse\tmp\worktrees\redesign-foundation\scripts\check-overview-qu
+ota-reset.mts:63:12) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [ 60, 70, 80 ],
+  expected: [],
+  operator: 'deepStrictEqual'
+}
+
+Node.js v22.13.1

@@ -23,6 +23,7 @@ export interface QuotaWindow {
   usedPercent: number | null;
   observedAt: number;
   resetAt: number;
+  historyResetAt?: number | null;
   confirmedAt?: number;
   freshness?: 'live' | 'recent' | 'stale' | 'unknown' | 'expired' | 'mixed';
   projectedFullAt?: number | null;

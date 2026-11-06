@@ -13,6 +13,7 @@ import { usageEventParams } from '@/lib/usage-events';
 import { RuntimeMotionEligibility, type RuntimeMotionBatch } from './runtime-motion';
 import { supportedForecastPace } from './insight-model';
 import { readRuntimeObservations, runtimeObservationContext } from './runtime-observations';
+import { quotaHistoryMatches } from './quota-history-identity';
 
 const AUTO_RUNTIME_PROJECT = Symbol('initial runtime project');
 
@@ -152,6 +153,7 @@ export function ProductionOverview() {
       observedAt: limit.observed_at,
       confirmedAt: limit.last_seen_at,
       resetAt: limit.resets_at ?? 0,
+      historyResetAt: limit.resets_at,
       freshness,
       projectedFullAt: limit.forecast?.status === 'ready' ? limit.forecast.projectedFullAt : null,
       forecastStatus: limit.forecast?.status,
@@ -163,6 +165,8 @@ export function ProductionOverview() {
     ...(overview?.sourceStatus ?? []).filter(source => source.account_key === null).map(source => [`source:${source.source_id}`, source.account_state] as const),
   ]);
   const activeQuota = quotas.find(quota => quota.id === selectedQuotaId) ?? defaultQuota(quotas, Date.now(), 3600000);
+  const historyIdentity = activeQuota?.ownerKey ? { owner: activeQuota.ownerKey, window: activeQuota.window,
+    sourceId: activeQuota.sourceId, origin: activeQuota.origin, resetAt: activeQuota.historyResetAt ?? null } : null;
   useEffect(() => {
     const ownerKey = activeQuota?.ownerKey;
     const windowKind = activeQuota?.window;
@@ -171,10 +175,10 @@ export function ProductionOverview() {
     setHistory(previous => previous && previous.subscriptionKey === ownerKey && previous.windowKind === windowKind ? previous : null);
     setHistoryError(false);
     void api.quotaHistory({ subscriptionKey: ownerKey, windowKind }).then(result => {
-      if (current) setHistory(result);
+      if (current) { setHistory(result); if (historyIdentity && !quotaHistoryMatches(result, historyIdentity)) setHistoryError(true); }
     }).catch(() => { if (current) setHistoryError(true); });
     return () => { current = false; };
-  }, [activeQuota?.id, overview?.now]);
+  }, [activeQuota?.id, activeQuota?.sourceId, activeQuota?.origin, activeQuota?.historyResetAt, overview?.now]);
   const graph = current?.graph;
   const recent = current?.recent;
   const metricUsage = current?.metricUsage;
@@ -227,6 +231,6 @@ export function ProductionOverview() {
   const mapMotion = current && mapGraphSnapshot?.context === mapContext ? mapGraphSnapshot.motion : undefined;
   return <>
     {current && (error || scopedMapError) && <p role="status" className="bg-warn/10 p-2 text-center text-xs text-warn">{t('redesign.staleSnapshot')}</p>}
-    <Overview runwayScopeKey={routeKey} initialState={initialState} quickStatsScope={current ? selectedScope(route, current.overview.now) : null} graph={graph} runtimeMotion={mapMotion} runtimeMotionEligibility={motionEligibility.current} runtimeMotionGraphReady={mapGraphReady} runtimeGraph={mapGraph} runtimeGraphPending={runtimeGraphPending} runtimeGraphStatus={matchingMapContext && !mapGraphReady ? scopedMapError ? 'stale' : 'refreshing' : undefined} runtimeHarnesses={[...new Set((overview?.sources ?? []).map(source => source.harness))]} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} metricComparison={metricComparison} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && history.subscriptionKey === activeQuota?.ownerKey && history.windowKind === activeQuota.window && (!history.reader || (history.reader.sourceId === activeQuota.sourceId && history.reader.origin === activeQuota.origin)) ? history : null} quotaHistoryError={historyError}/>
+    <Overview runwayScopeKey={routeKey} initialState={initialState} quickStatsScope={current ? selectedScope(route, current.overview.now) : null} graph={graph} runtimeMotion={mapMotion} runtimeMotionEligibility={motionEligibility.current} runtimeMotionGraphReady={mapGraphReady} runtimeGraph={mapGraph} runtimeGraphPending={runtimeGraphPending} runtimeGraphStatus={matchingMapContext && !mapGraphReady ? scopedMapError ? 'stale' : 'refreshing' : undefined} runtimeHarnesses={[...new Set((overview?.sources ?? []).map(source => source.harness))]} runtimeProjects={projectNames} selectedRuntimeProject={selectedRuntimeProject} onRuntimeProjectChange={setMapProject} harnessVendors={Object.fromEntries((overview?.harnesses ?? []).map(harness => [harness.harness, harness.vendor]))} quotas={quotas} quotaAccountStates={quotaAccountStates} recent={recent} activityTrend={current?.recentTrend} metricUsage={metricUsage} metricComparison={metricComparison} now={Date.now()} t={t} language={lang} onLanguage={() => setLang(lang === 'en' ? 'th' : 'en')} theme={theme} onTheme={toggleTheme} currency={currency} rate={rate} period={scopeLabel} periodControl={periodControl} selectedQuotaId={selectedQuotaId} historyHref={`#history?${historyParams}`} onQuotaSelect={setSelectedQuotaId} quotaHistory={history && historyIdentity && quotaHistoryMatches(history, historyIdentity) ? history : null} quotaHistoryError={historyError}/>
   </>;
 }
