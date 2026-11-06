@@ -35,7 +35,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
   const entries = new Map(data.timeline.map(row => [row.at, row]));
   const buckets = Array.from({ length: Math.ceil((timelineRange.to - timelineRange.from) / data.bucketMs) }, (_, index) => {
     const at = timelineRange.from + index * data.bucketMs;
-    return { at, inputTokens: entries.get(at)?.inputTokens ?? 0, outputTokens: entries.get(at)?.outputTokens ?? 0 };
+    return { at, records: entries.get(at)?.records ?? 0, inputTokens: entries.get(at)?.inputTokens ?? 0, outputTokens: entries.get(at)?.outputTokens ?? 0 };
   });
   const axis = historyAxis(Math.max(0, ...buckets.flatMap(row => [row.inputTokens, row.outputTokens])), lang);
   const max = axis.scaleMaximum;
@@ -80,7 +80,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
       <article><i aria-hidden="true"><Zap size={24}/></i><span>{t('history.effortDistribution')}</span><ul>{effort.rows.map(row => <li key={JSON.stringify(row.effort)}>{row.effort ?? t('redesign.unknownValue')}: {count(row.calls)}</li>)}</ul><EffortPagination {...effort}/>{!data.effort.length && <strong>—</strong>}</article>
     </div>
     <div className="qp-history-legend"><span>{t('history.inputCombined')}</span><span>{t('col.output')}</span></div>
-    <svg ref={chart} viewBox={`0 0 ${width} 144`} preserveAspectRatio="none" role="group" tabIndex={buckets.length ? 0 : -1} aria-label={`${t('history.timeline')}: ${count(totals.tokens)}`} aria-describedby={`${id}-help`}
+    <svg ref={chart} viewBox={`0 0 ${width} 144`} preserveAspectRatio="none" role="group" tabIndex={buckets.length ? 0 : -1} aria-label={`${t('history.timeline')}: ${count(totals.tokens)}`} aria-describedby={`${id}-help`} data-sampled={buckets.length <= 36}
       onFocus={() => activate(current?.index ?? 0, current?.kind ?? 'keyboard')} onBlur={() => setActive(null)}
       onKeyDown={event => {
         if (!['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Escape'].includes(event.key)) return;
@@ -104,7 +104,7 @@ export function HistoryTimeline({ data }: { data: HistorySummaryResponse }) {
       </>}
       <polyline points={points('inputTokens')} fill="none" stroke="var(--history-input)" strokeWidth="2" filter={`url(#${id}-glow)`}/>
       <polyline points={points('outputTokens')} fill="none" stroke="var(--history-output)" strokeWidth="2" filter={`url(#${id}-glow)`}/>
-      {buckets.map((row, index) => <g key={row.at} data-bucket-at={row.at} data-input={row.inputTokens} data-output={row.outputTokens} aria-hidden="true"><circle cx={x(index)} cy={y(row.inputTokens)} r="2" fill="var(--history-input)"/><circle cx={x(index)} cy={y(row.outputTokens)} r="2" fill="var(--history-output)"/></g>)}
+      {buckets.map((row, index) => <g key={row.at} data-bucket-at={row.at} data-records={row.records} data-input={row.inputTokens} data-output={row.outputTokens} aria-hidden="true"><circle cx={x(index)} cy={y(row.inputTokens)} r="2" fill="var(--history-input)"/><circle cx={x(index)} cy={y(row.outputTokens)} r="2" fill="var(--history-output)"/></g>)}
       {current && selected && <g className="qp-history-cursor" aria-hidden="true"><line x1={x(current.index)} x2={x(current.index)} y1="18" y2="118"/><circle cx={x(current.index)} cy={y(selected.inputTokens)} r="4"/><circle cx={x(current.index)} cy={y(selected.outputTokens)} r="4"/></g>}
       {dateIndices.map((index, order) => <text key={buckets[index].at} x={x(index)} y="140" data-axis-at={buckets[index].at} data-axis-index={index} textAnchor={order === 0 ? 'start' : order === dateIndices.length - 1 ? 'end' : 'middle'} fill="currentColor" fontSize="11"><title>{date(buckets[index].at)}</title>{dateLabel.format(buckets[index].at)}</text>)}
     </svg>

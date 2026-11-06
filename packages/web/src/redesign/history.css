@@ -14,6 +14,16 @@
 .qp-history-tooltip i[data-series=output] { background:var(--history-output); box-shadow:0 0 5px var(--history-output); }
 .qp-redesign[data-theme=light] .qp-history-timeline { --history-input:#06658b; --history-output:#7046b0; }
 .qp-redesign[data-theme=dark] .qp-history-timeline { --history-input:#009dff; --history-output:#9345ff; }
+/* Emphasize actual recorded buckets only when the timeline is not too dense. */
+.qp-redesign[data-theme=dark] .qp-history-timeline>svg[data-sampled=true]>g[data-bucket-at]:not([data-records="0"])>circle {
+  r:3px;
+  stroke:#b8eaff;
+  stroke-width:.65px;
+  paint-order:stroke;
+  filter:drop-shadow(0 0 2px currentColor);
+}
+.qp-redesign[data-theme=dark] .qp-history-timeline>svg[data-sampled=true]>g[data-bucket-at]:not([data-records="0"])>circle:first-child { color:var(--history-input); }
+.qp-redesign[data-theme=dark] .qp-history-timeline>svg[data-sampled=true]>g[data-bucket-at]:not([data-records="0"])>circle:last-child { color:var(--history-output); }
 .qp-history-grid-line { stroke:currentColor; opacity:.15; }
 .qp-history-grid-vertical,.qp-history-grid-secondary { display:none; }
 .qp-redesign[data-theme=dark] :is(.qp-history-grid-vertical,.qp-history-grid-secondary) { display:block; }

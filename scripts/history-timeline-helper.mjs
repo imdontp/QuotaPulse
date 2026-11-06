@@ -27,12 +27,15 @@ export async function checkHistoryTimeline(page, getSummary) {
     assert.deepEqual(data.scope, scope);
     const expected = Array.from({ length: Math.ceil((scope.to - scope.from) / data.bucketMs) }, (_, index) => {
       const at = scope.from + index * data.bucketMs, row = data.timeline.find(row => row.at === at);
-      return { at, input: row?.inputTokens ?? 0, output: row?.outputTokens ?? 0 };
+      return { at, records: row?.records ?? 0, input: row?.inputTokens ?? 0, output: row?.outputTokens ?? 0 };
     });
     const actual = await svg.locator(':scope > g[data-bucket-at]').evaluateAll(nodes => nodes.map(node => ({
-      at: Number(node.dataset.bucketAt), input: Number(node.dataset.input), output: Number(node.dataset.output),
+      at: Number(node.dataset.bucketAt), records: Number(node.dataset.records), input: Number(node.dataset.input), output: Number(node.dataset.output),
     })));
     assert.deepEqual(actual, expected, 'Every plotted bucket matches the real API, including empty intervals');
+    const dark = await page.locator('.qp-redesign').getAttribute('data-theme') === 'dark';
+    const radii = await svg.locator(':scope > g[data-bucket-at] > circle:first-child').evaluateAll(nodes => nodes.map(node => Number.parseFloat(getComputedStyle(node).r)));
+    assert.deepEqual(radii, expected.map(row => dark && expected.length <= 36 && row.records > 0 ? 3 : 2), 'Only recorded buckets receive emphasis on non-dense dark timelines');
     const ticks = await svg.locator('[data-axis-at]').evaluateAll(nodes => nodes.map(node => ({
       at: Number(node.getAttribute('data-axis-at')), index: Number(node.getAttribute('data-axis-index')),
       rect: node.getBoundingClientRect().toJSON(),

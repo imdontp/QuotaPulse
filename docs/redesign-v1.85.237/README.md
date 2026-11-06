@@ -1,0 +1,11 @@
+# Recorded History timeline markers
+
+History now emphasizes the input and output markers of buckets that contain recorded usage when the dark timeline has at most 36 buckets. The API's `records` count decides which buckets receive emphasis, including an actual recorded zero; empty intervals retain the existing smaller zero marker. Dense timelines and the light theme keep the earlier marker style. The underlying bucket values, line, area, tooltip and keyboard selection remain unchanged; the markers do not imply a new activity event.
+
+The [comparison](review.html) shows the original reference and unmasked fixture captures before and after. The captures use the same synthetic SQLite fixture, clock, English/dark theme, 1672×941 viewport, device scale 1 and reduced motion; reference and fixture values differ. The full before/after comparison changes 7,698 pixels within the chart region (bounding box x=754–1347, y=282–418). The compiled after capture repeats byte-for-byte. This documents one chart treatment, not whole-page likeness or approval.
+
+Web build and 382 web tests passed. The History stable suite passed eight byte-identical unmasked capture pairs (English/Thai, dark/light, with and without selected detail). Its compiled browser checks compare bucket values and record counts to the isolated API, verify marker emphasis for the fixture ranges, and exercise pointer and keyboard inspection. A separate compiled browser test passed 16 cases covering a recorded zero, an empty interval and the 36/37-bucket boundary in English/Thai, dark/light and 390/1440px. The build retains the existing Vite large-chunk warning. `capture-verification.json`, `stable-verification.json` and `marker-boundary-verification.json` record the evidence.
+
+[Compare all eight pages](all8.html): the captures were made from this same compiled build and each repeated byte-for-byte, using the same isolated fixture and unmasked source images. The Projects and History images are reused by their byte-identical hashes; other current images are retained here. This is a static English/dark comparison for review, not acceptance of other states or a 99–100% likeness score.
+
+Review236 predates this change. Overall visual fidelity, motion and release acceptance remain open.
