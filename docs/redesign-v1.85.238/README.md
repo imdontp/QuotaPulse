@@ -1,0 +1,9 @@
+# Recent activity labels
+
+The sidebar's session count is based on the source's `last_seen_at` in the previous five minutes; the Runtime Map uses recorded usage timestamps in its activity window. Those facts do not establish whether a process is running or idle. English labels now say **Recent Sessions**, **recent sessions**, **Recent** and **Earlier**; Thai uses **เซสชันล่าสุด**, **ล่าสุด** and **ก่อนหน้า**. The existing explanations retain the five-minute window and its limitation. This follows blueprint `02_DATA_SEMANTICS.md`'s recent-activity rule without altering the count, API, graph edges, timestamps, state, motion or filters. Subscription state labels are separate and unchanged.
+
+The [comparison](review.html) uses the same isolated synthetic fixture as checkpoint237, fixed time, English/dark, 1586×992, DPR 1 and reduced motion. The unmasked before/after captures differ at 5,373 pixels within x=65–1541, y=492–784, covering the sidebar and Runtime Map labels. The after capture repeated byte-for-byte. This is not an all-eight visual acceptance or an assertion about actual running processes.
+
+The web build and 382 web tests passed. The compiled Overview suite passed four byte-identical unmasked English/Thai and dark/light capture pairs, plus its real API-backed Runtime Map, sidebar, keyboard, responsive and scope checks. The separate Quick Stats workflow passed scoped data, delayed response, navigation and pause/resume checks. `stable-verification.json`, `scope-verification.json` and `capture-verification.json` retain the results. After correcting mixed line endings on the edited source lines, a fresh web build passed and its index SHA-256 matched the tested index `9d57817c43a4abdd0a275735bb6ce5ee5d646253b0a48daa4962b81167f51b09`. The existing Vite large-chunk warning remains.
+
+Review236 predates this change. Actual provider behavior, performance, full concept fidelity and release acceptance remain open.

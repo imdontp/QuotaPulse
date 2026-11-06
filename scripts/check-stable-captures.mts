@@ -1510,11 +1510,11 @@ async function checkShellAccess(page: Page, destination: string, lang: string, t
   const statsNote = await statsCard.locator('#qp-quick-stats-note').boundingBox();
   assert.ok(statsNote && statsNote.width === 1 && statsNote.height === 1, 'The session-count caveat remains available to assistive technology without extending the reference card');
   const recentSessionLink = statsCard.locator('[data-stat=recentSessions]').locator('..').locator('dt a');
-  const quickSessionsLabel = lang === 'th' ? th['redesign.quickSessions'] : en['redesign.quickSessions'];
+  const quickSessionsLabel = lang === 'th' ? 'เซสชันล่าสุด' : 'Recent Sessions';
   const noteKey = scopedPage ? 'redesign.quickStatsScopedNote' : 'redesign.quickStatsNote';
   const quickStatsNote = lang === 'th' ? th[noteKey] : en[noteKey];
   assert.equal(await recentSessionLink.locator('span').textContent(), quickSessionsLabel);
-  assert.equal(await recentSessionLink.getAttribute('title'), quickStatsNote, 'Active-session label must disclose its observation window and limitation');
+  assert.equal(await recentSessionLink.getAttribute('title'), quickStatsNote, 'Recent-session label must disclose its observation window and limitation');
   for (const key of ['namedProjects', 'models', 'providers', 'recentSessions']) {
     const value = statsCard.locator(`[data-stat=${key}]`);
     assert.equal(await value.textContent(), new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(stats[key]));
@@ -1761,6 +1761,8 @@ async function checkRuntimeGeometry(page: Page, graph: RuntimeGraph, lang: strin
     active: copy['redesign.runtimeActivityActive'],
     idle: copy['redesign.runtimeActivityIdle'],
   });
+  assert.equal(activityView.legend.active, lang === 'th' ? 'ล่าสุด' : 'Recent');
+  assert.equal(activityView.legend.idle, lang === 'th' ? 'ก่อนหน้า' : 'Earlier');
   assert.deepEqual(activityView.edgeStates, expectedEdges.map(edge => runtimeActivityState(edge.lastActivityAt, graph.now, graph.activityWindowMs)));
   assert.deepEqual(activityView.nodes, dimensions.flatMap(dimension => graph.nodes[dimension].slice(0, 8).map(node => {
     const state = runtimeActivityState(node.lastActivityAt, graph.now, graph.activityWindowMs);
@@ -1862,7 +1864,7 @@ async function checkRuntimeAccess(page: Page, lang: string, theme: string, pendi
         if (dimension !== 'provider') {
           const activeDimension = dimension === 'project' || dimension === 'harness';
           const value = activeDimension ? node.activeSessions : node.sessions;
-          const label = activeDimension ? (lang === 'th' ? 'เซสชันที่ใช้งานล่าสุด' : 'active sessions') : (lang === 'th' ? 'เซสชัน' : 'sessions');
+          const label = activeDimension ? (lang === 'th' ? 'เซสชันล่าสุด' : 'recent sessions') : (lang === 'th' ? 'เซสชัน' : 'sessions');
           assert.equal(await card.locator('[data-testid=runtime-node-sessions]').textContent(), `${sessionNumber.format(value)} ${label}`);
         }
       }
@@ -3200,7 +3202,7 @@ try {
             const openCodeCard = page.locator('.qp-runtime .qp-map-node[data-dimension=harness][data-runtime-name=opencode]');
             assert.equal(await openCodeCard.getAttribute('data-sessions'), '1');
             assert.equal(await openCodeCard.getAttribute('data-active-sessions'), '0');
-            assert.equal(await openCodeCard.locator('[data-testid=runtime-node-sessions]').textContent(), `${new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(0)} ${lang === 'th' ? 'เซสชันที่ใช้งานล่าสุด' : 'active sessions'}`);
+            assert.equal(await openCodeCard.locator('[data-testid=runtime-node-sessions]').textContent(), `${new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(0)} ${lang === 'th' ? 'เซสชันล่าสุด' : 'recent sessions'}`);
             const visibleProjectNodes = page.locator('.qp-runtime .qp-map-node[data-dimension=project]');
             assert.equal(await visibleProjectNodes.count(), 1);
             assert.equal(await visibleProjectNodes.first().getAttribute('data-key'), JSON.stringify('QuotaPulse'));
