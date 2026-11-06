@@ -27,7 +27,7 @@
     "shoot:real": "node scripts/shoot-real.mjs",
     "shoot:motion": "node scripts/shoot-motion.mjs",
     "test:ui": "node scripts/check-ui.mjs",
-    "test:visual": "node scripts/check-redesign.mjs",
+    "test:visual": "node scripts/check-redesign.mjs && node --import tsx scripts/check-runtime-motion.mts",
     "test:history": "node --import tsx scripts/check-history.mts",
     "test:runtime": "node --import tsx scripts/check-production-runtime.mts",
     "test:desktop": "node --import tsx scripts/check-desktop-runtime.mts",

@@ -2,7 +2,7 @@ import { installBrowserFixedDate } from './browser-fixed-date.mjs';
 /** Compiled Overview motion regression using real isolated API/SSE and synthetic DB. */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium, type Page, type Request } from 'playwright';
@@ -14,8 +14,8 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const priorTimezone = process.env.TZ;
 process.env.TZ = 'Asia/Bangkok';
 const taskLang='en', taskTheme='dark';
-const output=resolve(root,'tmp/motion81-browser');
-mkdirSync(output,{recursive:true});rmSync(resolve(output,'verification.json'),{force:true});
+mkdirSync(resolve(root,'tmp'),{recursive:true});
+const output=mkdtempSync(resolve(root,'tmp/runtime-motion-'));
 const fixedNow = Date.parse('2025-05-17T13:42:00.000Z');
 // Freeze Date only, keeping real timers/performance for HTTP, browser and cleanup.
 // This applies to internal query helpers too, without changing production clocks.
@@ -182,10 +182,10 @@ try {
  const postGraph=insert('motion81-post-selected-graph');assert.equal((await observe(postGraph)).state,'running');await dots.waitFor({state:'detached'});
  console.log('Held selected graph canceled across eligibility change; next fresh call passed.');
 
- await pulse.evaluate(e=>{(e as HTMLElement).style.transform='translateY(2500px)'});await page.waitForFunction(()=>document.querySelector('.qp-redesign')?.getAttribute('data-paused')==='true');assert.equal(await orbit.evaluate(e=>getComputedStyle(e).animationPlayState),'paused');await pulse.evaluate(e=>{(e as HTMLElement).style.transform=''});await page.waitForFunction(()=>document.querySelector('.qp-redesign')?.getAttribute('data-paused')==='false');
+ assert.equal(await pulse.getAttribute('data-idle'),'false');assert.equal(await orbit.evaluate(e=>getComputedStyle(e).animationPlayState),'running','Recent visible activity starts running');await pulse.evaluate(e=>{(e as HTMLElement).style.transform='translateY(2500px)'});await page.waitForFunction(()=>document.querySelector('.qp-redesign')?.getAttribute('data-paused')==='true');assert.equal(await pulse.getAttribute('data-idle'),'false','The offscreen pause is tested while recent activity remains');assert.equal(await orbit.evaluate(e=>getComputedStyle(e).animationPlayState),'paused');await pulse.evaluate(e=>{(e as HTMLElement).style.transform=''});await page.waitForFunction(()=>document.querySelector('.qp-redesign')?.getAttribute('data-paused')==='false');assert.equal(await pulse.getAttribute('data-idle'),'false');assert.equal(await orbit.evaluate(e=>getComputedStyle(e).animationPlayState),'running','Visible recent activity resumes after offscreen pause');
  db.prepare('UPDATE usage_event SET ts=?').run(fixedNow-31*60_000);notify();await page.waitForFunction(()=>document.querySelector('.qp-pulse')?.getAttribute('data-idle')==='true');assert.equal(await orbit.evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
  db.prepare('UPDATE limit_sample SET last_seen_at=last_seen_at-?,observed_at=observed_at-?,source_fetched_at=source_fetched_at-?').run(2*3_600_000+1234,2*3_600_000+1234,2*3_600_000+1234);const staleCall=insert('motion81-stale-quota');await observe(staleCall);await page.waitForFunction(()=>document.querySelector('.qp-pulse')?.getAttribute('data-stale')==='true');assert.equal(await pulse.getAttribute('data-runtime-activity'),'recent-observation');assert.equal(await orbit.evaluate(e=>getComputedStyle(e).animationPlayState),'paused');await dots.waitFor({state:'detached'});
  db.prepare('UPDATE limit_sample SET used_percent=NULL').run();const beforeUnknown=await runtime.getAttribute('data-observation-batch');notify();await page.waitForFunction(serial=>Number(document.querySelector('#runtime')?.getAttribute('data-observation-batch'))>Number(serial),beforeUnknown,{timeout:10_000});await page.waitForFunction(()=>document.querySelector('.qp-pulse')?.getAttribute('data-idle')==='true');assert.equal(await orbit.evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
  await page.evaluate(()=>{(window as any).__motionDocumentSentinel='same-document-motion81';location.hash='models'});await page.getByTestId('production-models').waitFor();assert.equal(await page.evaluate(()=>(window as any).__motionDocumentSentinel),'same-document-motion81','Unmount must retain the document');assert.equal(await page.locator('#runtime').count(),0);insert('motion81-unmounted');await page.waitForTimeout(1600);assert.equal(await dots.count(),0);
- writeFileSync(resolve(output,'verification.json'),JSON.stringify({productionIndexSha256:sha(readFileSync(resolve(root,'packages/web/dist/index.html'))),scope:'Actual local API/SSE and synthetic DB; Scheduler notification manually emitted; no adapter/native-minimize claim',records,offscreenId,inFlightId,pendingGraphId,firstExpiryObservedMs,expirySchedulingAllowanceMs:600,sameDocumentUnmount:true,pulse:{durationSeconds:6,idle:true,stale:true,unavailable:true,reduced:true,offscreen:true},cleanup:true},null,2));console.log('Actual-observation motion, 700ms expiry, reduced, aggregate, duplicate, offscreen and unmount passed.');
+ writeFileSync(resolve(output,'verification.json'),JSON.stringify({productionIndexSha256:sha(readFileSync(resolve(root,'packages/web/dist/index.html'))),scope:'Actual local API/SSE and synthetic DB; Scheduler notification manually emitted; no adapter/native-minimize claim',records,offscreenId,inFlightId,pendingGraphId,firstExpiryObservedMs,expirySchedulingAllowanceMs:600,sameDocumentUnmount:true,pulse:{durationSeconds:6,idle:true,stale:true,unavailable:true,reduced:true,offscreen:true,resumedWhileRecent:true},cleanup:true},null,2));console.log(`Actual-observation motion, 700ms expiry, reduced, aggregate, duplicate, offscreen and unmount passed: ${output}`);
 }finally{await browser?.close();await daemon.close();db.close();globalThis.Date=realDate;process.env.TZ=priorTimezone;}

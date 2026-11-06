@@ -96,17 +96,21 @@ try {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.locator('.qp-pulse').scrollIntoViewIfNeeded();
   await page.waitForFunction(() => document.querySelector('.qp-redesign')?.getAttribute('data-paused') === 'false');
-  assert.equal(await page.locator('.qp-orbit').evaluate(element => getComputedStyle(element).animationPlayState), 'running');
+  // This daemon-free fixture has no recent observed event, so it must not invent motion.
+  assert.equal(await page.locator('.qp-pulse').getAttribute('data-runtime-activity'), 'idle-or-unknown');
+  assert.equal(await page.locator('.qp-pulse').getAttribute('data-idle'), 'true');
+  assert.equal(await page.locator('.qp-orbit').evaluate(element => getComputedStyle(element).animationPlayState), 'paused', 'Idle preview must not animate');
   await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
   await page.waitForFunction(() => document.querySelector('.qp-redesign')?.getAttribute('data-paused') === 'true');
   assert.equal(await page.locator('.qp-orbit').evaluate(element => getComputedStyle(element).animationPlayState), 'paused', 'offscreen core kept animating');
   await page.locator('.qp-pulse').scrollIntoViewIfNeeded();
   await page.waitForFunction(() => document.querySelector('.qp-redesign')?.getAttribute('data-paused') === 'false');
+  assert.equal(await page.locator('.qp-orbit').evaluate(element => getComputedStyle(element).animationPlayState), 'paused', 'Returning an idle preview must not invent activity');
   assert.deepEqual(forbidden, [], 'scenario daemon or external requests');
   const assets = resolve(repo, 'packages/web/dist/assets');
   const productionJs = readdirSync(assets).filter(name => name.endsWith('.js')).map(name => readFileSync(resolve(assets, name), 'utf8')).join('\n');
   for (const marker of ['sample-1', 'openai-primary', 'anthropic-weekly']) assert.equal(productionJs.includes(marker), false, `preview fixture leaked into production: ${marker}`);
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ checks: ['quota selection', 'node details', 'dialog focus restore', 'en/th × dark/light × 4 widths', 'no page overflow', 'reduced motion', 'no preference writes', 'no daemon/external requests', 'no browser errors', 'production preview exclusion', 'empty/stale/critical/long-name scenarios'], profile: { initialReadyMs, initialRequests, mode: 'Vite development, headless Chrome; not a production performance score' }, measurements, screenshots, visualApproval: 'pending' }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ checks: ['quota selection', 'node details', 'dialog focus restore', 'en/th × dark/light × 4 widths', 'no page overflow', 'reduced motion', 'idle preview remains static when visible or offscreen', 'no preference writes', 'no daemon/external requests', 'no browser errors', 'three preview fixture markers absent from production JS', 'empty/stale/critical/long-name scenarios'], profile: { initialReadyMs, initialRequests, mode: 'Vite development, headless Chrome; not a production performance score' }, measurements, screenshots, visualApproval: 'pending' }, null, 2));
   console.log(`Redesign pilot: all checks passed; ${screenshots.length} screenshots saved to screens/redesign-foundation.`);
 } finally {
   await browser?.close();

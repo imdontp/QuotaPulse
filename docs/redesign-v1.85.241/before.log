@@ -1,0 +1,27 @@
+idle-diagnostic {"idle":"true","stale":"false","activity":"idle-or-unknown","paused":"false","reduced":false,"animation":"paused"}
+node : node:internal/modules/run_main:122
+At line:2 char:83
++ ... EXITCODE }; node tmp/check-redesign241.mjs *> tmp/visual241-before.lo ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:122:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'paused'
+- 'running'
+
+    at
+file:///C:/Users/TH12367283/Projects/QuotaPulse/tmp/worktrees/redesign-foundation/tmp/check-redesign241.mjs:100:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'paused',
+  expected: 'running',
+  operator: 'strictEqual'
+}
+
+Node.js v22.13.1
