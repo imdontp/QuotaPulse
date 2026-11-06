@@ -65,7 +65,24 @@ try {
     assert.equal(await dialog.locator('.qp-detail-grid strong').first().textContent(), '22');
     await page.keyboard.press('Escape'); await dialog.waitFor({ state: 'hidden' });
     assert.equal(await empty.evaluate(node => document.activeElement === node), true, 'The new opener also regains focus on normal close');
-    cases.push({ lang, theme, width, normalClose: true, queuedClosePreservesNewFocus: true, subsequentSelectionCorrect: true });
+    // close() queues a native event; choose a different node in the same task.
+    await missing.focus(); await page.keyboard.press('Enter'); await dialog.waitFor({ state: 'visible' });
+    const closeQueued = await page.evaluate(index => {
+      const modal = document.querySelector<HTMLDialogElement>('.qp-dialog')!;
+      const target = document.querySelectorAll('.qp-runtime-nodes tbody tr')[index]!.querySelector<HTMLButtonElement>('button')!;
+      const before = (window as any).__inspectorCloses;
+      modal.close(); target.click();
+      return { before, after: (window as any).__inspectorCloses };
+    }, emptyIndex);
+    assert.equal(closeQueued.after, closeQueued.before, 'The previous close event must still be queued when the new target is selected');
+    await dialog.waitFor({ state: 'visible', timeout: 10_000 });
+    await page.waitForFunction(expected => document.querySelector('.qp-dialog[open] h2')?.textContent === expected, await empty.textContent(), { timeout: 10_000 });
+    assert.equal(await dialog.locator('.qp-detail-grid strong').first().textContent(), '22', 'Immediately selected identity must keep its own facts');
+    await page.waitForTimeout(150);
+    assert.equal(await dialog.isVisible(), true, 'A queued close from the previous selection must not close the new dialog');
+    assert.equal(await dialog.locator('h2').textContent(), await empty.textContent());
+    await page.keyboard.press('Escape'); await dialog.waitFor({ state: 'hidden' });
+    cases.push({ lang, theme, width, normalClose: true, queuedClosePreservesNewFocus: true, subsequentSelectionCorrect: true, immediateSelectionRetainsDialogAndFacts: true });
     await context.close();
   }
   assert.equal(cases.length, 8); assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);

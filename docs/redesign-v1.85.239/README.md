@@ -1,0 +1,7 @@
+# Runtime Map inspector: immediate reselection
+
+The [earlier intermittent failure](../redesign-v1.85.205/README.md) displayed the previous null-project title when the empty-project title was expected. A [later fix](../redesign-v1.85.220/README.md) addressed a demonstrated queued-close focus race that could explain the symptom; it did not prove the precise historical cause.
+
+The existing compiled-browser regression now also closes the native dialog and programmatically clicks the distinct empty-project button in the same task, before the previous native `close` event is delivered. It checks the new title and actual fixture value, confirms that the new dialog stays open after 150 ms, and closes it. This stronger ordering is in addition to normal Escape/focus restoration and queued-close focus preservation. All eight English/Thai, dark/light and 390/1586px cases passed against a real local API backed by an isolated synthetic in-memory database; no browser errors or external/write requests were reported. `verification.json` records the compiled index hash and cases.
+
+The new probe passed before it was added to the permanent regression; this checkpoint changes only that regression and its evidence. The immediate programmatic click is a controlled scheduling case, not evidence that the original intermittent failure was reproduced or that every native-dialog race is impossible. Physical input, actual customer data, full visual fidelity and release acceptance remain outside these checks.
