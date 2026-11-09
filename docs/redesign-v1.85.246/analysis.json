@@ -1,0 +1,67 @@
+{
+  "scope": "unmasked before/after full frames; sample colors are 3x3 medians and are not a likeness score",
+  "productionIndexSha256": "b11b7a14d2c51a8f4bea53f33946e1f42e920479748ce0be5b04528f7c6f83c8",
+  "changedPixels": 9716,
+  "changedInsideRingRegion": 9713,
+  "changedOutsideRingRegion": 3,
+  "changedBounds": [
+    246,
+    353,
+    1648,
+    525
+  ],
+  "ringRegion": [
+    1485,
+    375,
+    1655,
+    530
+  ],
+  "sampleCoordinates": {
+    "upper_right": [
+      1609,
+      418
+    ],
+    "lower_left": [
+      1536,
+      486
+    ]
+  },
+  "samplesRgb": {
+    "reference": {
+      "upper_right": [
+        0,
+        182,
+        246
+      ],
+      "lower_left": [
+        61,
+        126,
+        252
+      ]
+    },
+    "before": {
+      "upper_right": [
+        9,
+        119,
+        255
+      ],
+      "lower_left": [
+        5,
+        189,
+        255
+      ]
+    },
+    "after": {
+      "upper_right": [
+        5,
+        188,
+        255
+      ],
+      "lower_left": [
+        8,
+        117,
+        255
+      ]
+    }
+  }
+}

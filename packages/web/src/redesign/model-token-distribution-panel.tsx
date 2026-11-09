@@ -21,7 +21,7 @@ export function ModelTokenDistribution({ facts, contextKey, pairKey, intent }: {
       <div ref={ring} className="qp-model-donut" aria-hidden="true">
         <svg viewBox="0 0 124 124" focusable="false" aria-hidden="true">
           <defs>
-            <linearGradient id={`${id}-input`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#04ceff"/><stop offset="1" stopColor="#0965ff"/></linearGradient>
+            <linearGradient id={`${id}-input`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#0965ff"/><stop offset="1" stopColor="#04ceff"/></linearGradient>
             <linearGradient id={`${id}-output`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#a44cff"/><stop offset="1" stopColor="#6426e4"/></linearGradient>
           </defs>
           <circle className="qp-model-ring-rim" cx="62" cy="62" r="60" fill="none" strokeWidth=".8"/>
