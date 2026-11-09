@@ -47,7 +47,7 @@ const captureLanguages = process.env.QUOTAPULSE_CAPTURE_LANGUAGE ? [process.env.
 const captureThemes = process.env.QUOTAPULSE_CAPTURE_THEME ? [process.env.QUOTAPULSE_CAPTURE_THEME] : ['dark', 'light'];
 assert.ok(captureLanguages.every(language => language === 'en' || language === 'th'), 'Capture language must be en or th');
 assert.ok(captureThemes.every(theme => theme === 'dark' || theme === 'light'), 'Capture theme must be dark or light');
-const output = resolve(root, runtimeLayoutOnly ? 'screens/runtime-layout' : liveOnly ? 'screens/live-density' : compositionOnly ? 'screens/reference-composition' : overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : modelsOnly ? 'screens/models-comparison' : costOnly ? 'screens/cost-axes' : historyOnly ? 'screens/history-details' : alertsOnly ? 'screens/alerts-refinement' : settingsOnly ? 'screens/settings-composition' : 'screens/stable-captures');
+const output = resolve(root, process.env.QUOTAPULSE_CAPTURE_OUTPUT ?? (runtimeLayoutOnly ? 'screens/runtime-layout' : liveOnly ? 'screens/live-density' : compositionOnly ? 'screens/reference-composition' : overviewOnly ? 'screens/overview-layout' : projectsOnly ? 'screens/projects-cards' : providersOnly ? 'screens/providers-comparison' : modelsOnly ? 'screens/models-comparison' : costOnly ? 'screens/cost-axes' : historyOnly ? 'screens/history-details' : alertsOnly ? 'screens/alerts-refinement' : settingsOnly ? 'screens/settings-composition' : 'screens/stable-captures'));
 mkdirSync(output, { recursive: true });
 // A failed attempt must never leave a previous success manifest in this folder.
 rmSync(resolve(output, 'verification.json'), { force: true });
@@ -946,6 +946,16 @@ async function checkProviders(page: Page, lang: string, theme: string, pending: 
   const bottom = await page.locator('.qp-provider-bottom').evaluate(element => element.getBoundingClientRect().bottom);
   const geometry = await page.evaluate(() => ({ scrollY, documentHeight: document.documentElement.scrollHeight, viewport: { width: innerWidth, height: innerHeight }, cards: Array.from(document.querySelectorAll<HTMLElement>('.qp-provider-card')).map(element => ({ title: element.querySelector('.qp-provider-card-head button')?.textContent, hasQuota: element.dataset.hasQuota, top: element.getBoundingClientRect().top, bottom: element.getBoundingClientRect().bottom, height: element.getBoundingClientRect().height })), gridColumns: getComputedStyle(document.querySelector('.qp-provider-grid')!).gridTemplateColumns, panels: ['.qp-provider-header', '.qp-provider-grid', '.qp-provider-inspector', '.qp-provider-bottom'].map(selector => { const element = document.querySelector<HTMLElement>(selector); const rect = element?.getBoundingClientRect(); return { selector, exists: !!element, top: rect?.top, bottom: rect?.bottom, height: rect?.height, open: element instanceof HTMLDetailsElement ? element.open : undefined }; }) }));
   assert.ok(bottom <= 941, `Provider comparison/reader panels exceed viewport: ${JSON.stringify(geometry)}`);
+  const withQuota = geometry.cards.filter(card => card.hasQuota === 'true');
+  const withoutQuota = geometry.cards.filter(card => card.hasQuota === 'false');
+  assert.equal(withQuota.length, 2);
+  assert.equal(withoutQuota.length, 2);
+  assert.ok(withoutQuota.every(card => card.height < Math.min(...withQuota.map(item => item.height))), 'Cards without a quota must not stretch to the height of adjacent quota cards');
+  for (const card of await page.locator('.qp-provider-card[data-has-quota=false]').all()) {
+    const bounds = await card.boundingBox();
+    const footer = await card.locator('footer').boundingBox();
+    assert.ok(bounds && footer && footer.y >= bounds.y && footer.y + footer.height <= bounds.y + bounds.height + 0.5, 'Compact cards retain their footer and controls');
+  }
   referenceDetailRegions.push({ page: 'providers', lang, theme, regions: geometry });
   const result = await daemon.inject({ method: 'GET', url: '/api/overview', headers: { 'x-quotapulse-token': 'stable-capture-test' } });
   assert.equal(result.statusCode, 200);
@@ -968,6 +978,12 @@ async function checkProviders(page: Page, lang: string, theme: string, pending: 
     const barBox = await bar.boundingBox(); const nameBox = await rows.nth(index).locator('button').boundingBox();
     assert.ok(valueBox && barBox && nameBox && valueBox.y + valueBox.height <= barBox.y + barBox.height - heights.inner + 1 && nameBox.y >= barBox.y + barBox.height, 'Percent must sit above the observed bar and owner below its plot');
   }
+  const emptyOwner = page.locator('.qp-provider-card[data-has-quota=false]').first().locator('.qp-provider-card-head button');
+  const emptyTitle = await emptyOwner.textContent();
+  await emptyOwner.focus(); await page.keyboard.press('Enter');
+  assert.equal(await emptyOwner.getAttribute('aria-pressed'), 'true');
+  assert.ok((await page.locator('.qp-provider-detail h2').textContent())!.includes(emptyTitle!));
+  assert.ok((await page.locator('.qp-provider-detail').textContent())!.includes(providerMessages['redesign.providerNoQuota']));
   const last = rows.last().locator('button'); const owner = await last.locator('.qp-provider-comparison-name').textContent();
   await last.focus(); await page.keyboard.press('Enter');
   assert.equal(await last.getAttribute('aria-pressed'), 'true');
@@ -989,8 +1005,9 @@ async function checkProviders(page: Page, lang: string, theme: string, pending: 
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Provider horizontal overflow at ${lang}/${theme}/${width}px`);
   }
   const pattern = '**/api/overview';
-  for (const state of ['unknown', 'expired', 'tiny'] as const) {
+  for (const state of ['unknown', 'expired', 'tiny', 'no-readings'] as const) {
     const fixture = structuredClone(data);
+    if (state === 'no-readings') fixture.limits = [];
     for (const reading of fixture.limits) {
       if (state === 'unknown') reading.used_percent = null;
       else if (state === 'expired') reading.resets_at = fixedNow - 1;
@@ -1001,6 +1018,12 @@ async function checkProviders(page: Page, lang: string, theme: string, pending: 
       await page.setViewportSize({ width: 1672, height: 941 });
       await page.goto(`http://127.0.0.1:7804/?provider-check=${state}#providers`, { waitUntil: 'domcontentloaded' });
       await page.locator('.qp-provider-health').waitFor(); await settled(page, pending);
+      if (state === 'no-readings') {
+        assert.equal(await page.locator('.qp-provider-card[data-has-quota=false]').count(), data.subscriptions.length + data.sourceStatus.filter(source => source.account_key === null).length);
+        const grid = await page.locator('.qp-provider-grid').boundingBox();
+        assert.ok(grid && grid.height < 360, 'An entirely empty quota grid must not reserve the tall-card height');
+        assert.equal(await page.locator('.qp-provider-card footer a').count(), await page.locator('.qp-provider-card').count());
+      }
       if (state !== 'tiny') { assert.equal(await page.locator('.qp-provider-comparison li').count(), 0); assert.equal(await page.locator('.qp-provider-comparison-chart').count(), 0); }
       else {
         const heights = await page.locator('.qp-provider-comparison li .qp-bar').evaluateAll(elements => elements.map(element => element.firstElementChild!.getBoundingClientRect().height));
