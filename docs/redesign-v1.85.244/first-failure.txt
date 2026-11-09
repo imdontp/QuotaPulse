@@ -1,0 +1,8 @@
+Transcribed from the first rollback test's console output:
+
+electronApplication.waitForEvent: Timeout 15000ms exceeded while waiting for event "close"
+    at tmp/check-rollback-native243.mts:93:50
+
+Native isolated profile check failed: current-recovery
+
+The result manifest for that run records the failed/incomplete status. This transcript does not establish why the close event did not arrive within the deadline.
