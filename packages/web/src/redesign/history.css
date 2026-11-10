@@ -182,7 +182,7 @@
   .qp-redesign .qp-history-timeline>h2 { grid-column:1; grid-row:1; }
   .qp-redesign .qp-history-timeline>h2+.qp-footnote { grid-column:2; grid-row:1; align-self:center; line-height:1.4; }
   .qp-redesign .qp-history-timeline>.qp-history-summary { grid-column:1/-1; grid-row:2; }
-  .qp-redesign .qp-history-timeline>.qp-history-legend { grid-column:1/-1; grid-row:3; align-self:start; padding-top:8px; z-index:1; pointer-events:none; }
+  .qp-redesign .qp-history-timeline>.qp-history-legend { grid-column:1/-1; grid-row:3; align-self:start; transform:translateY(-4px); z-index:1; pointer-events:none; }
   .qp-redesign .qp-history-timeline>svg { grid-column:1/-1; grid-row:3; height:168px; }
   .qp-redesign .qp-history-timeline>svg+.qp-footnote { grid-column:1/-1; }
   .qp-redesign .qp-history-summary { margin:0; gap:8px; }

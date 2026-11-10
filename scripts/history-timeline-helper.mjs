@@ -33,6 +33,25 @@ export async function checkHistoryTimeline(page, getSummary) {
       at: Number(node.dataset.bucketAt), records: Number(node.dataset.records), input: Number(node.dataset.input), output: Number(node.dataset.output),
     })));
     assert.deepEqual(actual, expected, 'Every plotted bucket matches the real API, including empty intervals');
+    const startingViewport = page.viewportSize();
+    for (const width of [390, 900, 1280, 1440, startingViewport.width]) {
+      await page.setViewportSize({ ...startingViewport, width });
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      const layout = await panel.evaluate(element => {
+        const plot = element.querySelector(':scope > svg');
+        const matrix = plot.getScreenCTM();
+        const plotTop = new DOMPoint(0, 18).matrixTransform(matrix).y;
+        const legend = [...element.querySelectorAll('.qp-history-legend span')].map(span => span.getBoundingClientRect().toJSON());
+        return { plotTop, markerRadius: 3 * Math.abs(matrix.d), legend,
+          summaryBottom: element.querySelector('.qp-history-summary').getBoundingClientRect().bottom,
+          overflow: document.documentElement.scrollWidth > innerWidth };
+      });
+      assert.equal(layout.overflow, false, `History must not overflow at ${width}px`);
+      assert.ok(layout.legend.every(span => span.top >= layout.summaryBottom), `Legend overlaps summary at ${width}px: ${JSON.stringify(layout)}`);
+      assert.ok(layout.legend.every(span => span.bottom <= layout.plotTop - layout.markerRadius), `Legend overlaps chart data at ${width}px: ${JSON.stringify(layout)}`);
+    }
+    await page.setViewportSize(startingViewport);
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     const dark = await page.locator('.qp-redesign').getAttribute('data-theme') === 'dark';
     const radii = await svg.locator(':scope > g[data-bucket-at] > circle:first-child').evaluateAll(nodes => nodes.map(node => Number.parseFloat(getComputedStyle(node).r)));
     assert.deepEqual(radii, expected.map(row => dark && expected.length <= 36 && row.records > 0 ? 3 : 2), 'Only recorded buckets receive emphasis on non-dense dark timelines');
