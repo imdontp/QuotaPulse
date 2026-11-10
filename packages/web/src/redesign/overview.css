@@ -1734,7 +1734,7 @@
 /* Reference globe percentage: retain the readable value with a smaller suffix. */
 .qp-pulse-label strong>.qp-pulse-percent { font-size:inherit; color:inherit; max-width:none; }
 @media(min-width:1536px) {
- .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-pulse-label strong { font-style:italic; font-weight:500; }
+ .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-pulse-label strong { font-style:normal; font-weight:650; }
  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-pulse-label strong>.qp-pulse-percent { font-size:.7em; }
 }
 

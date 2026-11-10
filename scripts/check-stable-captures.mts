@@ -2287,6 +2287,19 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
       await page.goto(`http://127.0.0.1:7804/?pulse-core=${used ?? 'unknown'}#overview`, { waitUntil: 'domcontentloaded' });
       await page.locator('.qp-core-grid').waitFor(); await settled(page, pending);
       assert.equal(await page.locator('.qp-pulse-label strong').textContent(), used === null ? '—' : `${used}%`);
+      const labelGeometry = await page.locator('.qp-pulse').evaluate(element => {
+        const art = element.querySelector('.qp-pulse-art')!.getBoundingClientRect();
+        const value = element.querySelector('.qp-pulse-label strong')!;
+        const number = value.getBoundingClientRect();
+        const caption = element.querySelector('.qp-pulse-state')!.getBoundingClientRect();
+        return { left: number.left, right: number.right, bottom: number.bottom, captionTop: caption.top,
+          globeLeft: art.left + art.width * 66 / 360, globeRight: art.left + art.width * 294 / 360,
+          fontStyle: getComputedStyle(value).fontStyle };
+      });
+      assert.ok(labelGeometry.left >= labelGeometry.globeLeft && labelGeometry.right <= labelGeometry.globeRight,
+        `Quota label must fit the globe at ${lang}/${theme}/${used}: ${JSON.stringify(labelGeometry)}`);
+      assert.ok(labelGeometry.bottom <= labelGeometry.captionTop + 0.5, `Quota label overlaps its caption at ${lang}/${theme}/${used}`);
+      if (theme === 'dark' && page.viewportSize()!.width >= 1536) assert.equal(labelGeometry.fontStyle, 'normal');
       const progress = page.getByTestId('pulse-progress');
       if (used === null) {
         assert.equal(await progress.count(), 0, 'Unknown quota must not render an invented progress arc');
