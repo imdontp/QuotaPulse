@@ -2281,25 +2281,32 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
     selectedUsed.push(used);
   }
   const pattern = '**/api/overview*';
-  for (const used of [100, 0, 125, null]) {
+  for (const used of [100, 0, 125, 83.123456789, 99.99999999999999, 0.0000001, null]) {
     await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ...data, limits: data.limits.map(limit => ({ ...limit, used_percent: used })) }) }));
     try {
       await page.goto(`http://127.0.0.1:7804/?pulse-core=${used ?? 'unknown'}#overview`, { waitUntil: 'domcontentloaded' });
       await page.locator('.qp-core-grid').waitFor(); await settled(page, pending);
       assert.equal(await page.locator('.qp-pulse-label strong').textContent(), used === null ? '—' : `${used}%`);
-      const labelGeometry = await page.locator('.qp-pulse').evaluate(element => {
-        const art = element.querySelector('.qp-pulse-art')!.getBoundingClientRect();
-        const value = element.querySelector('.qp-pulse-label strong')!;
-        const number = value.getBoundingClientRect();
-        const caption = element.querySelector('.qp-pulse-state')!.getBoundingClientRect();
-        return { left: number.left, right: number.right, bottom: number.bottom, captionTop: caption.top,
-          globeLeft: art.left + art.width * 66 / 360, globeRight: art.left + art.width * 294 / 360,
-          fontStyle: getComputedStyle(value).fontStyle };
-      });
-      assert.ok(labelGeometry.left >= labelGeometry.globeLeft && labelGeometry.right <= labelGeometry.globeRight,
-        `Quota label must fit the globe at ${lang}/${theme}/${used}: ${JSON.stringify(labelGeometry)}`);
-      assert.ok(labelGeometry.bottom <= labelGeometry.captionTop + 0.5, `Quota label overlaps its caption at ${lang}/${theme}/${used}`);
-      if (theme === 'dark' && page.viewportSize()!.width >= 1536) assert.equal(labelGeometry.fontStyle, 'normal');
+      const originalViewport = page.viewportSize()!;
+      const widths = used !== null && !Number.isInteger(used) ? [390, 900, 1280, originalViewport.width] : [originalViewport.width];
+      for (const width of widths) {
+        await page.setViewportSize({ width, height: originalViewport.height });
+        const labelGeometry = await page.locator('.qp-pulse').evaluate(element => {
+          const art = element.querySelector('.qp-pulse-art')!.getBoundingClientRect();
+          const value = element.querySelector('.qp-pulse-label strong')!;
+          const number = value.getBoundingClientRect();
+          const caption = element.querySelector('.qp-pulse-state')!.getBoundingClientRect();
+          return { left: number.left, right: number.right, bottom: number.bottom, captionTop: caption.top,
+            globeLeft: art.left + art.width * 66 / 360, globeRight: art.left + art.width * 294 / 360,
+            fontStyle: getComputedStyle(value).fontStyle, pageOverflow: document.documentElement.scrollWidth > innerWidth };
+        });
+        assert.ok(labelGeometry.left >= labelGeometry.globeLeft && labelGeometry.right <= labelGeometry.globeRight,
+          `Quota label must fit the globe at ${lang}/${theme}/${width}/${used}: ${JSON.stringify(labelGeometry)}`);
+        assert.ok(labelGeometry.bottom <= labelGeometry.captionTop + 0.5, `Quota label overlaps its caption at ${lang}/${theme}/${width}/${used}`);
+        assert.equal(labelGeometry.pageOverflow, false, `Quota label causes page overflow at ${lang}/${theme}/${width}/${used}`);
+        if (theme === 'dark' && width >= 1536) assert.equal(labelGeometry.fontStyle, 'normal');
+      }
+      await page.setViewportSize(originalViewport);
       const progress = page.getByTestId('pulse-progress');
       if (used === null) {
         assert.equal(await progress.count(), 0, 'Unknown quota must not render an invented progress arc');
@@ -2367,7 +2374,7 @@ async function checkPulseCore(page: Page, lang: string, theme: string, pending: 
     } finally { await page.unroute(pattern); }
   }
   await page.goto(home, { waitUntil: 'domcontentloaded' }); await page.locator('.qp-overview-period select').waitFor(); await settled(page, pending);
-  pulseCoreChecks.push({ lang, theme, assetSha256, imageWidth, selectedUsed, boundaries: [0, 100, 125], unknown: true, reducedMotion: true });
+  pulseCoreChecks.push({ lang, theme, assetSha256, imageWidth, selectedUsed, boundaries: [0, 100, 125, 83.123456789, 99.99999999999999, 0.0000001], unknown: true, reducedMotion: true });
 }
 
 async function checkRecentActivity(page: Page, lang: string, theme: string, pending: Set<Request>) {
