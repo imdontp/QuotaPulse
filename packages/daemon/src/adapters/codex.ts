@@ -3,7 +3,7 @@ import { basename, join } from 'node:path';
 import { DISCOVERY_TARGET, type Adapter, type IngestCtx, type Profile, type WatchTarget } from './types.js';
 import { readJsonlDelta } from '../ingest/jsonl.js';
 import { discoverFiles } from '../ingest/discover-files.js';
-import { transcriptParseMeta } from '../ingest/jsonl-integrity.js';
+import { sameSizeTranscriptChangeMeta, transcriptParseMeta } from '../ingest/jsonl-integrity.js';
 import { fromEpochSeconds, fromIso, type Millis } from '../util/time.js';
 import { home, projectOf } from '../util/paths.js';
 import { logger } from '../util/log.js';
@@ -111,7 +111,11 @@ export const codexAdapter: Adapter = {
         continue;
       }
       const cursor = ctx.cursors.get(file);
-      if (st.size === cursor.fileSize && st.size === cursor.byteOffset) continue;
+      if (st.size === cursor.fileSize && st.size === cursor.byteOffset) {
+        const unverified = sameSizeTranscriptChangeMeta(cursor, st.size, st.mtimeMs);
+        if (unverified) ctx.cursors.updateMeta(file, unverified);
+        continue;
+      }
 
       const fallbackSid = sessionIdFromName(file);
       // Delta passes may not contain session_meta again. Keep its authoritative

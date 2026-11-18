@@ -97,6 +97,14 @@ export class DbCursorStore implements CursorStore {
     });
   }
 
+  updateMeta(targetKey: string, meta: NonNullable<Cursor['meta']>): void {
+    const cursor = this.get(targetKey);
+    const result = this.db.prepare('UPDATE ingest_state SET meta = ? WHERE source_id = ? AND target_key = ?')
+      .run(Object.keys(meta).length ? JSON.stringify(meta) : null, this.sourceId, targetKey);
+    if (result.changes !== 1) throw new Error('Cannot update metadata for a missing ingest cursor');
+    this.cache.set(targetKey, { ...cursor, meta });
+  }
+
   recordError(targetKey: string, message: string): void {
     this.db
       .prepare(

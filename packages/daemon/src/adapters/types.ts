@@ -140,6 +140,8 @@ export interface Cursor {
 export interface CursorStore {
   get(targetKey: string): Cursor;
   set(targetKey: string, c: Partial<Cursor>): void;
+  /** Update an existing cursor's metadata without implying a successful read. */
+  updateMeta(targetKey: string, meta: NonNullable<Cursor['meta']>): void;
   /**
    * Record that this target could not be read.
    *

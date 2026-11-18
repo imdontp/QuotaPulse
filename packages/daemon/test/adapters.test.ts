@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
-import { appendFileSync, readFileSync, writeFileSync, mkdirSync, rmdirSync, unlinkSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync, mkdirSync, rmdirSync, unlinkSync, utimesSync } from 'node:fs';
 
 import { openDb, upsertSource, type DB } from '../src/db/index.js';
 import { health, totalsSince } from '../src/api/queries.js';
@@ -36,6 +36,74 @@ const sum = (db: DB, sourceId: number, col: string) =>
       v: number;
     }).v,
   );
+
+for (const [harness, adapter, writeProfile] of [
+  ['codex', codexAdapter, writeCodexProfile],
+  ['claude-code', claudeCodeAdapter, writeClaudeProfile],
+] as const) {
+  test(`${harness} marks same-size transcript modification as unverified`, async () => {
+    const dir = tmpRoot(), root = join(dir, 'profile'), file = writeProfile(root), dbPath = join(dir, 'usage.db');
+    const initialTime = new Date('2025-01-01T00:00:00Z');
+    utimesSync(file, initialTime, initialTime);
+    const profile: Profile = { profile: 'rewrite', rootPath: root, displayName: `rewrite ${harness}` };
+    let database = openDb(dbPath);
+    const sourceId = upsertSource(database, { harness, profile: profile.profile, rootPath: root, displayName: profile.displayName });
+    const warnings = () => (health(database) as unknown as { transcriptParseWarnings: Array<{ sourceId: number; malformedLines: number; unverifiedFiles: number }> }).transcriptParseWarnings;
+    try {
+      await ingestOnce(database, adapter, profile, sourceId);
+      const originalCount = countEvents(database, sourceId);
+      const originalInput = sum(database, sourceId, 'input_tokens');
+      assert.ok(originalCount > 0);
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.deepEqual(warnings(), [], 'an unchanged transcript does not produce a warning');
+      new DbCursorStore(database, sourceId).recordError(file, 'synthetic read failure');
+      const cursorState = () => database.prepare('SELECT last_ok_at, last_error, error_count, byte_offset FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId, file);
+      const beforeRewrite = cursorState();
+      const previous = readFileSync(file, 'utf8');
+      const modified = harness === 'codex' ? previous.replace('"input_tokens":10000', '"input_tokens":90000') : previous.replace('"input_tokens":12', '"input_tokens":92');
+      assert.notEqual(modified, previous);
+      assert.equal(Buffer.byteLength(modified), Buffer.byteLength(previous));
+      writeFileSync(file, modified, 'utf8');
+      const changedTime = new Date('2025-01-02T00:00:00Z');
+      utimesSync(file, changedTime, changedTime);
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.deepEqual(warnings().map(({ sourceId, malformedLines, unverifiedFiles }) => ({ sourceId, malformedLines, unverifiedFiles })), [{ sourceId, malformedLines: 0, unverifiedFiles: 1 }]);
+      assert.deepEqual(cursorState(), beforeRewrite, 'recording uncertainty does not claim a read or clear an existing error');
+      assert.equal(countEvents(database, sourceId), originalCount, 'a changed timestamp alone must not rewrite previously retained usage');
+      assert.equal(sum(database, sourceId, 'input_tokens'), originalInput, 'unverified changes must not silently replace retained usage values');
+      assert.ok(!JSON.stringify(warnings()).includes(root), 'the warning does not expose transcript paths');
+      database.close();
+      database = openDb(dbPath);
+      appendFileSync(file, '{}\n');
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.equal(warnings()[0]?.unverifiedFiles, 1, 'a later clean append and restart cannot prove earlier bytes unchanged');
+    } finally { database.close(); }
+  });
+}
+
+for (const [harness, adapter, writeProfile] of [
+  ['codex', codexAdapter, writeCodexProfile],
+  ['claude-code', claudeCodeAdapter, writeClaudeProfile],
+] as const) {
+  test(`${harness} treats timestamp-only changes as uncertainty, not proven data loss`, async () => {
+    const root = join(tmpRoot(), 'profile'), file = writeProfile(root);
+    const initialTime = new Date('2025-01-01T00:00:00Z');
+    utimesSync(file, initialTime, initialTime);
+    const database = openDb(':memory:');
+    const profile: Profile = { profile: 'touch', rootPath: root, displayName: `touch ${harness}` };
+    const sourceId = upsertSource(database, { harness, profile: profile.profile, rootPath: root, displayName: profile.displayName });
+    try {
+      await ingestOnce(database, adapter, profile, sourceId);
+      const bytes = readFileSync(file);
+      const changedTime = new Date('2025-01-02T00:00:00Z');
+      utimesSync(file, changedTime, changedTime);
+      await ingestOnce(database, adapter, profile, sourceId);
+      assert.deepEqual(readFileSync(file), bytes);
+      const warning = (health(database) as unknown as { transcriptParseWarnings: Array<{ malformedLines: number; unverifiedFiles: number }> }).transcriptParseWarnings[0];
+      assert.deepEqual([warning?.malformedLines, warning?.unverifiedFiles], [0, 1]);
+    } finally { database.close(); }
+  });
+}
 
 test('malformed transcript lines remain visible after later successful passes and truncation', async () => {
   for (const [harness, adapter, writeProfile] of [

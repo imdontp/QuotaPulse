@@ -3,7 +3,7 @@ import { basename, join } from 'node:path';
 import { DISCOVERY_TARGET, type Adapter, type IngestCtx, type Profile, type WatchTarget } from './types.js';
 import { readJsonlDelta, readJsonFile } from '../ingest/jsonl.js';
 import { discoverFiles } from '../ingest/discover-files.js';
-import { transcriptParseMeta } from '../ingest/jsonl-integrity.js';
+import { sameSizeTranscriptChangeMeta, transcriptParseMeta } from '../ingest/jsonl-integrity.js';
 import { fromEpochAuto, fromIso, type Millis } from '../util/time.js';
 import { HOME, home, projectOf } from '../util/paths.js';
 import { logger } from '../util/log.js';
@@ -145,8 +145,12 @@ async function ingestTranscripts(ctx: IngestCtx): Promise<void> {
       continue;
     }
     const cursor = ctx.cursors.get(file);
-    // Nothing appended since last pass, and the file did not shrink.
-    if (st.size === cursor.fileSize && st.size === cursor.byteOffset) continue;
+    // Nothing appended since last pass; a changed timestamp still leaves prior bytes uncertain.
+    if (st.size === cursor.fileSize && st.size === cursor.byteOffset) {
+      const unverified = sameSizeTranscriptChangeMeta(cursor, st.size, st.mtimeMs);
+      if (unverified) ctx.cursors.updateMeta(file, unverified);
+      continue;
+    }
 
     const isSubagent = file.includes(`${'subagents'}`);
     // A session's last cost-state record wins; keep only the latest per file.

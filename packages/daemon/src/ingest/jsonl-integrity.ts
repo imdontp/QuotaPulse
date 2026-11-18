@@ -19,3 +19,10 @@ export function transcriptParseMeta(cursor: Cursor, newMalformedLines: number) {
     jsonlPriorUnverified: previous.unverified ? 1 : 0,
   };
 }
+
+/** A timestamp change without a size change cannot prove consumed bytes are unchanged. */
+export function sameSizeTranscriptChangeMeta(cursor: Cursor, size: number, mtime: number) {
+  if (cursor.byteOffset <= 0 || cursor.byteOffset !== size || cursor.fileSize !== size || cursor.fileMtime === mtime) return null;
+  if (transcriptParseHistory(cursor.meta, cursor.byteOffset).unverified) return null;
+  return { ...cursor.meta, ...transcriptParseMeta(cursor, 0), jsonlPriorUnverified: 1 };
+}

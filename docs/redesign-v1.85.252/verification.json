@@ -1,0 +1,20 @@
+{
+  "baseCommit": "b70c934a5d72a493129616f1b4abaad9ce4803a4",
+  "sourceSha256": {
+    "packages/daemon/src/adapters/claude-code.ts": "4c1e94c8864f831b515ce88b25eb235ff6d3d3d8ae9712101735ad43c59990f6",
+    "packages/daemon/src/adapters/codex.ts": "52156d3252201ac0d637ca95a69126df75db5217c5765b20c7ff54828b19a824",
+    "packages/daemon/src/adapters/types.ts": "196265e0619e95927c344c9c24cee9b2acf075c362f45e8f3354de28e15f68b5",
+    "packages/daemon/src/ingest/cursor.ts": "eecf7073ae5d5783d08ff44b39518b576f8d1f98c2b7de3a871aad74485e5ca3",
+    "packages/daemon/src/ingest/jsonl-integrity.ts": "25fbe35a41263b66faa1831db85927d6caaa6c1af3c1005d96707fbf2c3bbb75",
+    "packages/daemon/test/adapters.test.ts": "5a09f33dba572fa1f740a2056b7ecfe7921dc68f5d0c09abf84a2f7be67e6a54",
+    "packages/web/src/i18n/en.ts": "73ddc3017ed79c193cdd5d65c3982e1b96706660c5ed87ddca9a6a977f59e522",
+    "packages/web/src/i18n/th.ts": "70b688139d5b2657d03277d33b240ee9a3af26fc6068efee1e6d7a7915af660d",
+    "scripts/check-transcript-parse-history.mts": "a1b69e9e352a8dea4b2d60c5a1bb67d7504bff55fce01ff0af186e2b348aaafa"
+  },
+  "productionIndexSha256": "346b1d799788c74ef87a1903166e09c41f0916032e70c3c4c728262c234faf21",
+  "daemonTests": 155,
+  "webTests": 382,
+  "targetedTests": 4,
+  "compiledBrowserCases": 10,
+  "fixtures": "owned temporary files and in-memory SQLite"
+}

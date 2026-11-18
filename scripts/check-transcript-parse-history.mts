@@ -1,6 +1,6 @@
 /** Compiled Diagnostics against real adapters and isolated synthetic transcript files. */
 import assert from 'node:assert/strict';
-import { appendFileSync, mkdirSync } from 'node:fs';
+import { appendFileSync, mkdirSync, readFileSync, writeFileSync, utimesSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { chromium } from 'playwright';
 import { openDb, upsertSource } from '../packages/daemon/src/db/index.js';
@@ -14,16 +14,19 @@ import { en } from '../packages/web/src/i18n/en.js';
 import { th } from '../packages/web/src/i18n/th.js';
 
 const home = tmpRoot('quotapulse-parse-');
-const codexRoot = join(home, 'codex'), claudeRoot = join(home, 'claude');
-mkdirSync(codexRoot); mkdirSync(claudeRoot);
-const codexFile = writeCodexProfile(codexRoot), claudeFile = writeClaudeProfile(claudeRoot);
+const codexRoot = join(home, 'codex'), claudeRoot = join(home, 'claude'), rewriteRoot = join(home, 'rewrite');
+mkdirSync(codexRoot); mkdirSync(claudeRoot); mkdirSync(rewriteRoot);
+const codexFile = writeCodexProfile(codexRoot), claudeFile = writeClaudeProfile(claudeRoot), rewriteFile = writeCodexProfile(rewriteRoot);
+utimesSync(rewriteFile, new Date('2025-01-01T00:00:00Z'), new Date('2025-01-01T00:00:00Z'));
 appendFileSync(codexFile, '{invalid-private-fixture}\n{}\n');
 const db = openDb(':memory:');
 const codex = { profile: 'fixture-codex', rootPath: codexRoot, displayName: 'Fixture Codex' };
 const claude = { profile: 'fixture-claude', rootPath: claudeRoot, displayName: 'Fixture Claude' };
+const rewrite = { profile: 'fixture-rewrite', rootPath: rewriteRoot, displayName: 'Fixture Rewrite' };
 const codexId = upsertSource(db, { harness: 'codex', ...codex });
 const claudeId = upsertSource(db, { harness: 'claude-code', ...claude });
-const sources = [{ adapter: codexAdapter, profile: codex, sourceId: codexId }, { adapter: claudeCodeAdapter, profile: claude, sourceId: claudeId }];
+const rewriteId = upsertSource(db, { harness: 'codex', ...rewrite });
+const sources = [{ adapter: codexAdapter, profile: codex, sourceId: codexId }, { adapter: claudeCodeAdapter, profile: claude, sourceId: claudeId }, { adapter: codexAdapter, profile: rewrite, sourceId: rewriteId }];
 const daemon = buildServer(db, new Scheduler(db, []), { token: 'parse-history-test', port: 0, webRoot: resolve('packages/web/dist') });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 let cases = 0;
@@ -34,12 +37,18 @@ try {
   db.prepare('UPDATE source SET enabled = 0 WHERE id = ?').run(claudeId);
   appendFileSync(codexFile, '{}\n');
   await runPass(db, [sources[0]!]);
+  const original = readFileSync(rewriteFile, 'utf8'), changed = original.replace('"input_tokens":10000', '"input_tokens":90000');
+  assert.notEqual(changed, original); assert.equal(Buffer.byteLength(changed), Buffer.byteLength(original));
+  writeFileSync(rewriteFile, changed, 'utf8');
+  utimesSync(rewriteFile, new Date('2025-01-02T00:00:00Z'), new Date('2025-01-02T00:00:00Z'));
+  await runPass(db, [sources[2]!]);
   const response = await daemon.inject({ method: 'GET', url: '/api/health', headers: { 'x-quotapulse-token': 'parse-history-test' } });
   assert.equal(response.statusCode, 200);
   const warnings = response.json().transcriptParseWarnings;
   assert.deepEqual(warnings.map(({ sourceId, malformedLines, unverifiedFiles, enabled }: any) => ({ sourceId, malformedLines, unverifiedFiles, enabled })), [
     { sourceId: claudeId, malformedLines: 0, unverifiedFiles: 1, enabled: false },
     { sourceId: codexId, malformedLines: 1, unverifiedFiles: 0, enabled: true },
+    { sourceId: rewriteId, malformedLines: 0, unverifiedFiles: 1, enabled: true },
   ]);
   assert.doesNotMatch(JSON.stringify(warnings), /quotapulse-parse-|invalid-private-fixture/);
   await daemon.listen({ host: '127.0.0.1', port: 0 });
@@ -65,6 +74,7 @@ try {
       const card = page.getByTestId('transcript-parse-warnings'); await card.waitFor();
       assert.ok((await card.innerText()).includes(messages['health.transcriptParseBlurb']));
       assert.deepEqual((await card.locator('tbody tr').filter({ hasText: 'Fixture Codex' }).locator('td').allInnerTexts()).slice(1), ['1', '1', '0']);
+      assert.deepEqual((await card.locator('tbody tr').filter({ hasText: 'Fixture Rewrite' }).locator('td').allInnerTexts()).slice(1), ['1', '0', '1']);
       const legacy = card.locator('tbody tr').filter({ hasText: 'Fixture Claude' });
       assert.ok((await legacy.innerText()).includes(messages['health.transcriptInactive']));
       assert.deepEqual((await legacy.locator('td').allInnerTexts()).slice(1), ['1', '0', '1']);

@@ -1015,7 +1015,7 @@ export const en = {
   'health.ingestErrors': 'Ingest errors',
   'health.accountDetectionErrors': 'Account reader detection',
   'health.transcriptParseWarnings': 'Transcript parse history',
-  'health.transcriptParseBlurb': 'Malformed complete lines were skipped, or older consumed bytes have no parse history. Counts record encounters and may include rereads. A clean later pass cannot prove earlier data was complete.',
+  'health.transcriptParseBlurb': 'Malformed complete lines were skipped, older bytes lack parse history, or a fully read file changed timestamp without changing size. A timestamp change alone does not prove data loss. Counts may include rereads; a clean later pass cannot prove earlier data was complete.',
   'health.transcriptParseUnsupported': 'This daemon does not report transcript parse history; earlier data cannot be verified here.',
   'health.transcriptAffectedFiles': 'Affected files',
   'health.transcriptMalformedLines': 'Malformed encounters',
