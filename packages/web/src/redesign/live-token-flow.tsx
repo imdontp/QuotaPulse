@@ -123,6 +123,7 @@ export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDe
       {/* The total SVG retains the existing total-point selector; the other traces use separate SVGs. */}
       <svg className="qp-live-chart qp-live-flow-total" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
         <defs><linearGradient id={`${id}-area`} x1="0" y1="0" x2="0" y2="1"><stop stopColor="var(--qp-flow-total)" stopOpacity=".18"/><stop offset="1" stopColor="var(--qp-flow-total)" stopOpacity="0"/></linearGradient><filter id={`${id}-glow`} x="-5%" y="-50%" width="110%" height="200%"><feGaussianBlur stdDeviation="1"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+        {xTicks.map((at, index) => <line key={`${at}-${index}`} className="qp-live-flow-time-guide" data-at={at} x1={x(at)} x2={x(at)} y1="6" y2="94" stroke="var(--qp-border)" strokeDasharray="2 4" vectorEffect="non-scaling-stroke"/>)}
         {yTicks.map((value, index) => <line key={`${value}-${index}`} x1="8" x2="992" y1={y(value)} y2={y(value)} stroke="var(--qp-border)" strokeDasharray="2 4" vectorEffect="non-scaling-stroke"/>)}
         {flow.points.length > 1 && <path className="qp-live-flow-area" d={liveTokenFlowArea(flow.points.map(point => ({ x:x(point.start), y:y(point.total) })))} fill={`url(#${id}-area)`}/>}
         <path className="qp-live-flow-line" data-series="total" d={liveTokenFlowPath(flow.points.map(point => ({ x:x(point.start), y:y(point.total) })))} fill="none" stroke="var(--qp-flow-total)" strokeWidth="2" vectorEffect="non-scaling-stroke" filter={`url(#${id}-glow)`}/>
@@ -133,7 +134,7 @@ export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDe
         {flow.points.map((point, index) => point[key] === null ? null : <circle key={point.at} data-series={key} data-at={point.at} data-value={point[key]} data-state={point.state} data-partial={point.partial || undefined} cx={x(point.start)} cy={y(point[key]!)} r="1.6" fill={`var(--qp-flow-${key})`}><title>{describe(point, key, index)}</title></circle>)}
       </svg>)}
       </div>
-      {!!xTicks.length && <div className="qp-live-flow-axis" role="group" aria-label={t('redesign.liveChart')}>{xTicks.map((at, index) => <span key={`${at}-${index}`} data-at={at} title={date.format(at)} style={{ left: `${(x(at) - 8) / 984 * 100}%`, transform: index === 0 ? 'translateX(0)' : index === xTicks.length - 1 ? 'translateX(-100%)' : 'translateX(-50%)' }}>{clock.format(at)}</span>)}</div>}
+      {!!xTicks.length && <div className="qp-live-flow-axis" role="group" aria-label={t('redesign.liveChart')}>{xTicks.map((at, index) => <span key={`${at}-${index}`} data-at={at} title={date.format(at)} style={{ left: `${x(at) / 10}%`, transform: index === 0 ? 'translateX(0)' : index === xTicks.length - 1 ? 'translateX(-100%)' : 'translateX(-50%)' }}>{clock.format(at)}</span>)}</div>}
       {!summaryInPanel && latestSummary}
     </div>
     {summaryInPanel && latestSummary}

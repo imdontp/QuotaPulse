@@ -197,6 +197,7 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
     return { maximum: Number(root.getAttribute('data-maximum')), points, lines,
       totalOnly: Array.from(root.querySelectorAll('.qp-live-chart>circle')).every(element => element.getAttribute('data-series') === 'total'),
       axis: Array.from(root.querySelectorAll('.qp-live-flow-axis>span')).map(element => ({ at: Number(element.getAttribute('data-at')), text: element.textContent, left: Number.parseFloat((element as HTMLElement).style.left) })),
+      guides: Array.from(root.querySelectorAll('.qp-live-flow-time-guide')).map(element => ({ at: Number(element.getAttribute('data-at')), x1: Number(element.getAttribute('x1')), x2: Number(element.getAttribute('x2')), y1: Number(element.getAttribute('y1')), y2: Number(element.getAttribute('y2')) })),
       yAxis: Array.from(root.querySelectorAll('.qp-live-flow-y-axis>span')).map(element => ({ value: element.textContent, exact: Number(element.getAttribute('data-value')), title: element.getAttribute('title'), top: Number.parseFloat((element as HTMLElement).style.top) })),
       latest: (() => {
         const element = root.querySelector('.qp-live-flow-latest')!;
@@ -275,7 +276,10 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
   }
   const expectedTicks = Array.from({ length: 7 }, (_, index) => Math.round(data.from + (data.to - 1 - data.from) * index / 6));
   assert.deepEqual(snapshot.axis.map(({ at, text }) => ({ at, text })), expectedTicks.map(at => ({ at, text: clock.format(at) })), `${state}: time axis must show seven timestamps across the requested window`);
-  assert.ok(snapshot.axis.every((item, index) => Math.abs(item.left - 100 * index / 6) < .0001), `${state}: axis timestamps must be evenly spaced`);
+  const tickX = (at: number) => 8 + 984 * (at - data.from) / Math.max(1, data.to - 1 - data.from);
+  assert.ok(snapshot.axis.every(item => Math.abs(item.left - tickX(item.at) / 10) < .0001), `${state}: axis timestamps must align with the plot scale`);
+  assert.deepEqual(snapshot.guides.map(item => item.at), expectedTicks, `${state}: time guides must use the displayed timestamps`);
+  assert.ok(snapshot.guides.every(item => Math.abs(item.x1 - tickX(item.at)) < .0001 && item.x1 === item.x2 && item.y1 === 6 && item.y2 === 94), `${state}: time guides must span the plotted scale`);
   const latestIndex = expected.map(point => point.records > 0).lastIndexOf(true);
   const latest = latestIndex < 0 ? null : expected[latestIndex]!;
   assert.deepEqual(snapshot.latest.attrs, latest ? [latest.at, latest.start, latest.end, latest.partial ? 'true' : null, latest.input, latest.output, latest.total].map(value => value === null ? null : String(value)) : [null, null, null, null, null, null, null], `${state}: latest rail metadata must belong to one actual recorded minute`);
@@ -317,7 +321,7 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
     nativeSourceGeometry = painted;
   }
   const tickAlignment = await page.locator('.qp-live-flow-total').evaluate(svg => {
-    const grid = Array.from(svg.querySelectorAll(':scope>line')) as SVGLineElement[];
+    const grid = Array.from(svg.querySelectorAll(':scope>line:not(.qp-live-flow-time-guide)')) as SVGLineElement[];
     const labels = Array.from(document.querySelectorAll('.qp-live-flow-y-axis>span'));
     return grid.map((line, index) => {
       const painted = new DOMPoint(line.x1.baseVal.value, line.y1.baseVal.value).matrixTransform(line.getScreenCTM()!);
@@ -377,6 +381,15 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
   const widths: Array<{ width: number; plotHeight: number; tableWidth: number; horizontalKeyboardScroll: boolean }> = [];
   for (const width of [390, 900, 1280]) {
     await page.setViewportSize({ width, height: 941 }); await page.waitForTimeout(75);
+    const alignment = await page.locator('.qp-live-token-flow').evaluate(root => {
+      const guides = Array.from(root.querySelectorAll('.qp-live-flow-time-guide'));
+      return Array.from(root.querySelectorAll<HTMLElement>('.qp-live-flow-axis>span')).map((label, index, labels) => {
+        if (getComputedStyle(label).display === 'none') return null;
+        const box = label.getBoundingClientRect(), guide = guides[index]!.getBoundingClientRect();
+        return Math.abs((index === 0 ? box.left : index === labels.length - 1 ? box.right : (box.left + box.right) / 2) - guide.x);
+      }).filter((distance): distance is number => distance !== null);
+    });
+    assert.ok(alignment.length >= 3 && alignment.every(distance => distance < 1), `Time labels and guides must align at ${width}px: ${JSON.stringify(alignment)}`);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Expanded token-flow table overflows ${lang}/${theme}/${width}`);
     const bounds = await page.evaluate(() => {
       const plot = document.querySelector('.qp-live-flow-plot')!.getBoundingClientRect();

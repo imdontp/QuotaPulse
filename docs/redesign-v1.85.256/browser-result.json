@@ -1,0 +1,1122 @@
+{
+  "status": "repeatable within recorded raster tolerance; review candidates, not approved visual baselines",
+  "scope": "live",
+  "productionIndexSha256": "ca16be89696ce45481f4e0c56f4840012bf745aee29fcf0de1259e33d172124a",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "sessions": 12,
+    "runtimeMapProject": "QuotaPulse",
+    "runtimeMapSessions": 12,
+    "runtimeMapRecords": 39,
+    "allRangeProjects": 5,
+    "allRangeRecords": 43,
+    "namedProjects": 5,
+    "projectNames": [
+      "QuotaPulse",
+      "Agent Platform",
+      "Edge Services",
+      "Developer Tools",
+      "Research Lab"
+    ],
+    "models": 6,
+    "modelNames": [
+      "DeepSeek V4.1",
+      "GPT-5.x",
+      "Claude 3.7",
+      "Claude 3.5",
+      "Others",
+      "GPT-4.1 mini"
+    ],
+    "modelShares": [
+      38,
+      24,
+      18,
+      11,
+      9,
+      0
+    ],
+    "providers": 4,
+    "records": 39,
+    "quotaOwners": [
+      "OpenAI Subscription",
+      "OpenCode Go Subscription"
+    ],
+    "cacheSharePercent": 42,
+    "monthlySelection": "OpenAI Subscription · monthly"
+  },
+  "checks": [
+    "frozen daemon and browser Date",
+    "source-matched date on the screenshot clock",
+    "reference-matched Overview section labels and model rail accessible name",
+    "reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection",
+    "8 screenshots / 4 pairs within raster tolerance",
+    "independent browser process per language/theme set",
+    "fresh document per route",
+    "production web without Vite",
+    "fonts ready and API settled",
+    "no page overflow",
+    "no external or write requests",
+    "no browser errors",
+    "API-matched complete chart tables, keyboard and 390/900/1280 overflow",
+    "proportional one-token and zero bars/line points"
+  ],
+  "chartChecks": [
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "buckets": 31,
+      "tokens": 360500008.00000006,
+      "flowEvidence": [
+        {
+          "lang": "en",
+          "theme": "dark",
+          "state": "baseline",
+          "synthetic": false,
+          "latestRailEmpty": false,
+          "latestMinuteAt": 1747489260000,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 15,
+          "missingMinutes": 16,
+          "zeroMinutes": 0,
+          "unknownInputMinutes": 0,
+          "unknownOutputMinutes": 0,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 5,
+          "sharedMaximum": 96133333.33333334,
+          "recordedTotalTokens": 360500008.00000006,
+          "pointCounts": {
+            "input": 31,
+            "output": 31,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 1,
+            "output": 1,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": {
+            "left": 277.33925,
+            "top": 621.750000000208,
+            "right": 1057.067,
+            "bottom": 725.750000003536,
+            "divider": 1082.40625,
+            "scrollX": 0,
+            "scrollY": 3
+          },
+          "tickAlignment": [
+            2.0804691303055733e-10,
+            0.010415165224458178,
+            0.00520533024098313,
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true
+        },
+        {
+          "lang": "en",
+          "theme": "dark",
+          "state": "diagnostic",
+          "synthetic": true,
+          "latestRailEmpty": false,
+          "latestMinuteAt": 1747489260000,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 14,
+          "missingMinutes": 16,
+          "zeroMinutes": 1,
+          "unknownInputMinutes": 1,
+          "unknownOutputMinutes": 1,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 6,
+          "sharedMaximum": 96133333.33333334,
+          "recordedTotalTokens": 360500013.00000006,
+          "pointCounts": {
+            "input": 30,
+            "output": 30,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 2,
+            "output": 2,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": null,
+          "tickAlignment": [
+            2.0804691303055733e-10,
+            0.010415165224458178,
+            0.00520533024098313,
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true,
+          "diagnosticGetInterceptions": 2,
+          "persistedDataChanged": false,
+          "writeRequests": 0,
+          "capture": {
+            "filename": "live-flow-states-en-dark.png",
+            "sha256": "ed1b4ae2c0d2438e6b0577d75917c80bc3e7c7963e8b4995d8aa383890e276c4",
+            "synthetic": true,
+            "approvedVisualBaseline": false
+          }
+        },
+        {
+          "lang": "en",
+          "theme": "dark",
+          "state": "empty",
+          "synthetic": true,
+          "latestRailEmpty": true,
+          "latestMinuteAt": null,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 0,
+          "missingMinutes": 31,
+          "zeroMinutes": 0,
+          "unknownInputMinutes": 0,
+          "unknownOutputMinutes": 0,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 0,
+          "sharedMaximum": 0,
+          "recordedTotalTokens": 0,
+          "pointCounts": {
+            "input": 31,
+            "output": 31,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 1,
+            "output": 1,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": null,
+          "tickAlignment": [
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true,
+          "diagnosticGetInterceptions": 2,
+          "persistedDataChanged": false,
+          "writeRequests": 0
+        }
+      ]
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "buckets": 31,
+      "tokens": 360500008.00000006,
+      "flowEvidence": [
+        {
+          "lang": "en",
+          "theme": "light",
+          "state": "baseline",
+          "synthetic": false,
+          "latestRailEmpty": false,
+          "latestMinuteAt": 1747489260000,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 15,
+          "missingMinutes": 16,
+          "zeroMinutes": 0,
+          "unknownInputMinutes": 0,
+          "unknownOutputMinutes": 0,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 5,
+          "sharedMaximum": 96133333.33333334,
+          "recordedTotalTokens": 360500008.00000006,
+          "pointCounts": {
+            "input": 31,
+            "output": 31,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 1,
+            "output": 1,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": {
+            "left": 277.33925,
+            "top": 621.750000000208,
+            "right": 1057.067,
+            "bottom": 725.750000003536,
+            "divider": 1082.40625,
+            "scrollX": 0,
+            "scrollY": 3
+          },
+          "tickAlignment": [
+            2.0804691303055733e-10,
+            0.010415165224458178,
+            0.00520533024098313,
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true
+        },
+        {
+          "lang": "en",
+          "theme": "light",
+          "state": "diagnostic",
+          "synthetic": true,
+          "latestRailEmpty": false,
+          "latestMinuteAt": 1747489260000,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 14,
+          "missingMinutes": 16,
+          "zeroMinutes": 1,
+          "unknownInputMinutes": 1,
+          "unknownOutputMinutes": 1,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 6,
+          "sharedMaximum": 96133333.33333334,
+          "recordedTotalTokens": 360500013.00000006,
+          "pointCounts": {
+            "input": 30,
+            "output": 30,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 2,
+            "output": 2,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": null,
+          "tickAlignment": [
+            2.0804691303055733e-10,
+            0.010415165224458178,
+            0.00520533024098313,
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true,
+          "diagnosticGetInterceptions": 2,
+          "persistedDataChanged": false,
+          "writeRequests": 0,
+          "capture": {
+            "filename": "live-flow-states-en-light.png",
+            "sha256": "9617def4a4b2f9fa2b1e30be83b3d40c1939529fd270251f8281a87ba71dacca",
+            "synthetic": true,
+            "approvedVisualBaseline": false
+          }
+        },
+        {
+          "lang": "en",
+          "theme": "light",
+          "state": "empty",
+          "synthetic": true,
+          "latestRailEmpty": true,
+          "latestMinuteAt": null,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 0,
+          "missingMinutes": 31,
+          "zeroMinutes": 0,
+          "unknownInputMinutes": 0,
+          "unknownOutputMinutes": 0,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 0,
+          "sharedMaximum": 0,
+          "recordedTotalTokens": 0,
+          "pointCounts": {
+            "input": 31,
+            "output": 31,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 1,
+            "output": 1,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": null,
+          "tickAlignment": [
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true,
+          "diagnosticGetInterceptions": 2,
+          "persistedDataChanged": false,
+          "writeRequests": 0
+        }
+      ]
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "buckets": 31,
+      "tokens": 360500008.00000006,
+      "flowEvidence": [
+        {
+          "lang": "th",
+          "theme": "dark",
+          "state": "baseline",
+          "synthetic": false,
+          "latestRailEmpty": false,
+          "latestMinuteAt": 1747489260000,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 15,
+          "missingMinutes": 16,
+          "zeroMinutes": 0,
+          "unknownInputMinutes": 0,
+          "unknownOutputMinutes": 0,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 5,
+          "sharedMaximum": 96133333.33333334,
+          "recordedTotalTokens": 360500008.00000006,
+          "pointCounts": {
+            "input": 31,
+            "output": 31,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 1,
+            "output": 1,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": null,
+          "tickAlignment": [
+            2.0804691303055733e-10,
+            0.010415165224458178,
+            0.00520533024098313,
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true
+        },
+        {
+          "lang": "th",
+          "theme": "dark",
+          "state": "diagnostic",
+          "synthetic": true,
+          "latestRailEmpty": false,
+          "latestMinuteAt": 1747489260000,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 14,
+          "missingMinutes": 16,
+          "zeroMinutes": 1,
+          "unknownInputMinutes": 1,
+          "unknownOutputMinutes": 1,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 6,
+          "sharedMaximum": 96133333.33333334,
+          "recordedTotalTokens": 360500013.00000006,
+          "pointCounts": {
+            "input": 30,
+            "output": 30,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 2,
+            "output": 2,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": null,
+          "tickAlignment": [
+            2.0804691303055733e-10,
+            0.010415165224458178,
+            0.00520533024098313,
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true,
+          "diagnosticGetInterceptions": 2,
+          "persistedDataChanged": false,
+          "writeRequests": 0,
+          "capture": {
+            "filename": "live-flow-states-th-dark.png",
+            "sha256": "8d89482adb33ed30e70d274d0c561f64f898af068333a201cd298405f6c8583b",
+            "synthetic": true,
+            "approvedVisualBaseline": false
+          }
+        },
+        {
+          "lang": "th",
+          "theme": "dark",
+          "state": "empty",
+          "synthetic": true,
+          "latestRailEmpty": true,
+          "latestMinuteAt": null,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 0,
+          "missingMinutes": 31,
+          "zeroMinutes": 0,
+          "unknownInputMinutes": 0,
+          "unknownOutputMinutes": 0,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 0,
+          "sharedMaximum": 0,
+          "recordedTotalTokens": 0,
+          "pointCounts": {
+            "input": 31,
+            "output": 31,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 1,
+            "output": 1,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": null,
+          "tickAlignment": [
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true,
+          "diagnosticGetInterceptions": 2,
+          "persistedDataChanged": false,
+          "writeRequests": 0
+        }
+      ]
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "buckets": 31,
+      "tokens": 360500008.00000006,
+      "flowEvidence": [
+        {
+          "lang": "th",
+          "theme": "light",
+          "state": "baseline",
+          "synthetic": false,
+          "latestRailEmpty": false,
+          "latestMinuteAt": 1747489260000,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 15,
+          "missingMinutes": 16,
+          "zeroMinutes": 0,
+          "unknownInputMinutes": 0,
+          "unknownOutputMinutes": 0,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 5,
+          "sharedMaximum": 96133333.33333334,
+          "recordedTotalTokens": 360500008.00000006,
+          "pointCounts": {
+            "input": 31,
+            "output": 31,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 1,
+            "output": 1,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": null,
+          "tickAlignment": [
+            2.0804691303055733e-10,
+            0.010415165224458178,
+            0.00520533024098313,
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true
+        },
+        {
+          "lang": "th",
+          "theme": "light",
+          "state": "diagnostic",
+          "synthetic": true,
+          "latestRailEmpty": false,
+          "latestMinuteAt": 1747489260000,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 14,
+          "missingMinutes": 16,
+          "zeroMinutes": 1,
+          "unknownInputMinutes": 1,
+          "unknownOutputMinutes": 1,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 6,
+          "sharedMaximum": 96133333.33333334,
+          "recordedTotalTokens": 360500013.00000006,
+          "pointCounts": {
+            "input": 30,
+            "output": 30,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 2,
+            "output": 2,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": null,
+          "tickAlignment": [
+            2.0804691303055733e-10,
+            0.010415165224458178,
+            0.00520533024098313,
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true,
+          "diagnosticGetInterceptions": 2,
+          "persistedDataChanged": false,
+          "writeRequests": 0,
+          "capture": {
+            "filename": "live-flow-states-th-light.png",
+            "sha256": "6958f64a841157af2ac9805d6795587cd8da058168213592f498114bbe3c63b6",
+            "synthetic": true,
+            "approvedVisualBaseline": false
+          }
+        },
+        {
+          "lang": "th",
+          "theme": "light",
+          "state": "empty",
+          "synthetic": true,
+          "latestRailEmpty": true,
+          "latestMinuteAt": null,
+          "scope": {
+            "from": 1747487520000,
+            "to": 1747489320001
+          },
+          "buckets": 31,
+          "recordedMinutes": 0,
+          "missingMinutes": 31,
+          "zeroMinutes": 0,
+          "unknownInputMinutes": 0,
+          "unknownOutputMinutes": 0,
+          "partialMinutes": 1,
+          "mismatchedMinutes": 0,
+          "sharedMaximum": 0,
+          "recordedTotalTokens": 0,
+          "pointCounts": {
+            "input": 31,
+            "output": 31,
+            "total": 31
+          },
+          "segmentCounts": {
+            "input": 1,
+            "output": 1,
+            "total": 1
+          },
+          "exactApiValues": true,
+          "unknownLineGaps": true,
+          "totalSelectorPreserved": true,
+          "clippedIntervals": true,
+          "tableColumns": 9,
+          "keyboardOpenedAndClosed": true,
+          "keyboardFinalMinute": true,
+          "widths": [
+            {
+              "width": 390,
+              "plotHeight": 132,
+              "tableWidth": 288,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 900,
+              "plotHeight": 124,
+              "tableWidth": 760,
+              "horizontalKeyboardScroll": true
+            },
+            {
+              "width": 1280,
+              "plotHeight": 118,
+              "tableWidth": 686,
+              "horizontalKeyboardScroll": true
+            }
+          ],
+          "nativeSourceGeometry": null,
+          "tickAlignment": [
+            3.5360017136554234e-09
+          ],
+          "nativeSummaryContained": true,
+          "diagnosticGetInterceptions": 2,
+          "persistedDataChanged": false,
+          "writeRequests": 0
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "live-en-dark.png",
+      "sha256": "1e7986467fdeafb75e9b8c9fab5b0ad2084dca1ed8328b023da2106b38f568b3",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.908033471113596
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 10.285557832200997
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.885453812610461
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 10.197384625219907
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.61472249279132
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "1e7986467fdeafb75e9b8c9fab5b0ad2084dca1ed8328b023da2106b38f568b3",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "en",
+      "theme": "light",
+      "filename": "live-en-light.png",
+      "sha256": "acff9bb3d1b7c699ec005a7622f8c6c1389bd3e83a495adf07474a00a77dac2a",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "acff9bb3d1b7c699ec005a7622f8c6c1389bd3e83a495adf07474a00a77dac2a",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "live-th-dark.png",
+      "sha256": "9d15fd2fbd1169fe0cdf5618d2ab399786f68a8f65ee01c4bb217c99dad0ca34",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.908033471113596
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 10.285557832200997
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.885453812610461
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 10.197384625219907
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.61472249279132
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "9d15fd2fbd1169fe0cdf5618d2ab399786f68a8f65ee01c4bb217c99dad0ca34",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "live",
+      "lang": "th",
+      "theme": "light",
+      "filename": "live-th-light.png",
+      "sha256": "59c2959f7c2567ec32b1c34de24af24e7893dc5ea9846ccfc965ece24f191b2c",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "59c2959f7c2567ec32b1c34de24af24e7893dc5ea9846ccfc965ece24f191b2c",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    }
+  ],
+  "exitCode": 0,
+  "command": "QUOTAPULSE_CAPTURE_SCOPE=live node --import tsx scripts/check-stable-captures.mts",
+  "omittedEvidence": "Color and background candidate detail omitted from this compact report; the complete raw output is in tmp/live256-stable-r2/verification.json."
+}
