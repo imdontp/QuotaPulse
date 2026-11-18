@@ -1,0 +1,285 @@
+{
+  "status": "repeatable within recorded raster tolerance; review candidates, not approved visual baselines",
+  "scope": "overview",
+  "productionIndexSha256": "fcdbf878aec47364344ec367659f55510542ba26dcda4418ecdd7ae1ccdd4142",
+  "fixture": {
+    "database": "in-memory synthetic",
+    "sessions": 12,
+    "runtimeMapProject": "QuotaPulse",
+    "runtimeMapSessions": 12,
+    "runtimeMapRecords": 39,
+    "allRangeProjects": 5,
+    "allRangeRecords": 43,
+    "namedProjects": 5,
+    "projectNames": [
+      "QuotaPulse",
+      "Agent Platform",
+      "Edge Services",
+      "Developer Tools",
+      "Research Lab"
+    ],
+    "models": 6,
+    "modelNames": [
+      "DeepSeek V4.1",
+      "GPT-5.x",
+      "Claude 3.7",
+      "Claude 3.5",
+      "Others",
+      "GPT-4.1 mini"
+    ],
+    "modelShares": [
+      38,
+      24,
+      18,
+      11,
+      9,
+      0
+    ],
+    "providers": 4,
+    "records": 39,
+    "quotaOwners": [
+      "OpenAI Subscription",
+      "OpenCode Go Subscription"
+    ],
+    "cacheSharePercent": 42,
+    "monthlySelection": "OpenAI Subscription · monthly"
+  },
+  "checks": [
+    "frozen daemon and browser Date",
+    "source-matched date on the screenshot clock",
+    "reference-matched Overview section labels and model rail accessible name",
+    "reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection",
+    "8 screenshots / 4 pairs within raster tolerance",
+    "independent browser process per language/theme set",
+    "fresh document per route",
+    "production web without Vite",
+    "fonts ready and API settled",
+    "no page overflow",
+    "no external or write requests",
+    "no browser errors",
+    "Overview model rail geometry and keyboard navigation to Models with the same period/source",
+    "complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow"
+  ],
+  "overviewInsightChecks": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "cards": 4,
+      "cacheShare": 41.999999462285295,
+      "pricedCalls": 77,
+      "totalCalls": 78,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "dense-cache-support",
+        "empty"
+      ]
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "cards": 4,
+      "cacheShare": 41.999999462285295,
+      "pricedCalls": 77,
+      "totalCalls": 78,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "dense-cache-support",
+        "empty"
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "dark",
+      "cards": 4,
+      "cacheShare": 41.999999462285295,
+      "pricedCalls": 77,
+      "totalCalls": 78,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "dense-cache-support",
+        "empty"
+      ]
+    },
+    {
+      "lang": "th",
+      "theme": "light",
+      "cards": 4,
+      "cacheShare": 41.999999462285295,
+      "pricedCalls": 77,
+      "totalCalls": 78,
+      "states": [
+        "zero-cache-price",
+        "large-known-price",
+        "dense-cache-support",
+        "empty"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "dark",
+      "filename": "overview-en-dark.png",
+      "sha256": "2cbe855fc802e7b1dcbb84b565496e005867260c045f4b687800cd47512ffa25",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.908033471113596
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 10.285557832200997
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.885453812610461
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 10.197384625219907
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.61472249279132
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "2cbe855fc802e7b1dcbb84b565496e005867260c045f4b687800cd47512ffa25",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "en",
+      "theme": "light",
+      "filename": "overview-en-light.png",
+      "sha256": "61f12ddfc3da76633e1d9255dfab628edfc21d600fb2dce5f4dc1c62bfd869b0",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "cceca3d3960ff6777c6410d49bdae5cb0649b829a9c96017a7718d48db291737",
+      "changedPixels": 10,
+      "maxChannelDelta": 1
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "dark",
+      "filename": "overview-th-dark.png",
+      "sha256": "2a32ea57f601af29778431b3220bb09b356e9831dbb41ed9b9d4cf667ed08401",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#ff6b75",
+          "minimumRatio": 6.908033471113596
+        },
+        {
+          "role": "warning",
+          "color": "#f3b25c",
+          "minimumRatio": 10.285557832200997
+        },
+        {
+          "role": "series",
+          "color": "#a873f9",
+          "minimumRatio": 5.885453812610461
+        },
+        {
+          "role": "success",
+          "color": "#38d4b3",
+          "minimumRatio": 10.197384625219907
+        },
+        {
+          "role": "muted",
+          "color": "#a6b9dc",
+          "minimumRatio": 9.61472249279132
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "2a32ea57f601af29778431b3220bb09b356e9831dbb41ed9b9d4cf667ed08401",
+      "changedPixels": 0,
+      "maxChannelDelta": 0
+    },
+    {
+      "page": "overview",
+      "lang": "th",
+      "theme": "light",
+      "filename": "overview-th-light.png",
+      "sha256": "c8d9ab39ab8273b97a6a64f5e415f5880a4d0cce7f0e1a371eb12e96437b6480",
+      "semanticContrasts": [
+        {
+          "role": "danger",
+          "color": "#b42335",
+          "minimumRatio": 5.303262686629763
+        },
+        {
+          "role": "warning",
+          "color": "#875000",
+          "minimumRatio": 5.394781813745665
+        },
+        {
+          "role": "series",
+          "color": "#7040bb",
+          "minimumRatio": 5.459668018288356
+        },
+        {
+          "role": "success",
+          "color": "#006b57",
+          "minimumRatio": 5.289808851177433
+        },
+        {
+          "role": "muted",
+          "color": "#52657c",
+          "minimumRatio": 4.882168252171452
+        }
+      ],
+      "checkedElements": [
+        ".qp-daemon-badge[data-state=live]"
+      ],
+      "repeatSha256": "e7238a02b7ec56707b515cf1cc10011453ee7442268fb56f4914b039cedf680b",
+      "changedPixels": 4,
+      "maxChannelDelta": 1
+    }
+  ],
+  "exitCode": 0,
+  "command": "QUOTAPULSE_CAPTURE_SCOPE=overview node --import tsx scripts/check-stable-captures.mts"
+}

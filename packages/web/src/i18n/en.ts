@@ -230,7 +230,7 @@ export const en = {
   'redesign.pricingCoverage': 'Call pricing coverage',
   'redesign.reportedPricingCoverage': 'Reported pricing coverage',
   'redesign.pricingCallCountNote': 'Coverage uses reported call counts, including aggregate reports.',
-  'redesign.knownCalls': 'calls with known cache pricing',
+  'redesign.knownCalls': 'cache-priced calls',
   'redesign.noInput': 'No input tokens recorded',
   'redesign.noCachePrice': 'No cache price components recorded',
   'redesign.observedHistory': 'Observed quota readings',

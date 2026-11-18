@@ -2734,15 +2734,21 @@ async function checkOverviewInsights(page: Page, lang: string, theme: string, pe
   const boxes = await panel.locator('.qp-insight-card').evaluateAll(elements => elements.map(element => { const box = element.getBoundingClientRect(); return { x: box.x, y: box.y, right: box.right, bottom: box.bottom }; }));
   assert.equal(boxes.length, 4); assert.equal(boxes[0].y, boxes[1].y); assert.equal(boxes[2].y, boxes[3].y);
   assert.ok(boxes[1].x > boxes[0].right && boxes[2].y > boxes[0].bottom, 'Insights must form the source two-column/two-row card arrangement');
-  const pattern = '**/api/runtime-map?**', states = ['zero-cache-price', 'large-known-price', 'empty'];
+  const pattern = '**/api/runtime-map?**', states = ['zero-cache-price', 'large-known-price', 'dense-cache-support', 'empty'];
   for (const state of states) {
     const totals = state === 'empty' ? Object.fromEntries(Object.keys(graph.totals).map(key => [key, 0])) as RuntimeGraph['totals'] : { ...graph.totals, cacheSavingKnownCalls: 3, cacheSavingKnownUsd: state === 'zero-cache-price' ? 0 : 1_234_567.89,
-      ...(state === 'zero-cache-price' ? { inputTokens: graph.totals.inputTokens + graph.totals.cachedInputTokens + graph.totals.cacheWriteTokens, cachedInputTokens: 0, cacheWriteTokens: 0 } : { unknownCostRecords: 2 }) };
+      ...(state === 'zero-cache-price' ? { inputTokens: graph.totals.inputTokens + graph.totals.cachedInputTokens + graph.totals.cacheWriteTokens, cachedInputTokens: 0, cacheWriteTokens: 0 } : state === 'dense-cache-support' ? { inputTokens: 271_900_000, cachedInputTokens: 196_800_000, cacheWriteTokens: 0, cacheSavingKnownCalls: 70, cacheSavingKnownUsd: 8.83, nativeCalls: 0, computedCalls: 70, estimatedCalls: 0, unknownCalls: 0, unknownCostRecords: 0 } : { unknownCostRecords: 2 }) };
     const fixture = { ...graph, totals, ...(state === 'empty' ? { nodes: Object.fromEntries(dimensions.map(dimension => [dimension, []])), edges: [] } : {}) };
     await page.route(pattern, route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixture) }));
     try {
       await page.goto(`http://127.0.0.1:7804/?overview-insights=${state}#overview`, { waitUntil: 'domcontentloaded' });
       await panel.locator('.qp-insight-card').first().waitFor(); await settled(page, pending); await values(totals);
+      if (state === 'dense-cache-support' && lang === 'en') {
+        const support = panel.locator('[data-insight=cache] p');
+        assert.equal(await support.textContent(), '196.8M / 468.7M · $8.83 · 70 cache-priced calls');
+        const geometry = await support.evaluate(element => ({ height: element.getBoundingClientRect().height, lineHeight: Number.parseFloat(getComputedStyle(element).lineHeight) }));
+        assert.ok(geometry.height <= geometry.lineHeight + 0.5, `Cache support should fit one line at the reference viewport: ${JSON.stringify(geometry)}`);
+      }
       const cacheMetric = page.locator('.qp-metric-rail[data-metric=cache]');
       const expectedSavings = totals.cacheSavingKnownCalls > 0 ? totals.cacheSavingKnownUsd : null;
       assert.equal(await cacheMetric.getAttribute('data-value'), expectedSavings === null ? null : String(expectedSavings), 'Cache savings remain unavailable without priced cache components, while a known zero remains measurable');

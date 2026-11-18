@@ -1,0 +1,9 @@
+# Overview cache support and Live Activity
+
+[Compare the reference, previous build, and updated build](review.html). The images use an isolated synthetic fixture, fixed time, English/dark, reduced motion, DPR 1, Chrome 157.0.8103.79, and the original 1586 × 992 reference viewport. They are not a visual parity certification or the user's real data.
+
+In this fixture, “calls with known cache pricing” wrapped to two lines in the Cache efficiency card, raising the Insights row and leaving Live Activity's bottom at y=1002.56, below the 992px viewport. The shorter “cache-priced calls” preserves the known-pricing meaning and the displayed numbers. After the change that paragraph fits one line, and Live Activity ends at y=989.56. The cache percentage, token counts, savings, call count, percentage-point change and activity text remain the same. Other values or viewports can still require scrolling.
+
+Before and after were each captured twice with identical PNG bytes within each pair. The before PNG is byte-identical to `../redesign-v1.85.254/overview.png`; the after PNG is `overview.png` (SHA-256 `e830cc1ceb872c7ebd625c40e8b60feedd1f079698eb94fca3b884961e85194f`). The original reference SHA-256 is `924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce`. The built web index changed from `43327473d2b6883234a5d11250799dbe64964e0bf548493f232efdeb04fa991f` to `fcdbf878aec47364344ec367659f55510542ba26dcda4418ecdd7ae1ccdd4142`. A direct unmasked RGB comparison changes pixels across the full image bounds; this does not establish that all changes are caused solely by the label. `evidence.json` records the geometry and comparison checks.
+
+The web build and 382 web tests passed. The browser regression result and scope are recorded separately in `browser-result.json`. Review249 predates this change; no newer native review ZIP is supplied by this checkpoint. Full concept acceptance, real-provider validation and other release gates remain open.
