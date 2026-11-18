@@ -1,6 +1,6 @@
 /** Compiled Diagnostics against real adapters and isolated synthetic transcript files. */
 import assert from 'node:assert/strict';
-import { appendFileSync, mkdirSync, readFileSync, writeFileSync, utimesSync } from 'node:fs';
+import { appendFileSync, mkdirSync, readFileSync, writeFileSync, utimesSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { chromium } from 'playwright';
 import { openDb, upsertSource } from '../packages/daemon/src/db/index.js';
@@ -39,8 +39,16 @@ try {
   await runPass(db, [sources[0]!]);
   const original = readFileSync(rewriteFile, 'utf8'), changed = original.replace('"input_tokens":10000', '"input_tokens":90000');
   assert.notEqual(changed, original); assert.equal(Buffer.byteLength(changed), Buffer.byteLength(original));
+  const before = statSync(rewriteFile), restoredMtime = process.env.QUOTAPULSE_TEST_RESTORED_MTIME === '1';
+  if (restoredMtime) await new Promise(resolve => setTimeout(resolve, 40));
   writeFileSync(rewriteFile, changed, 'utf8');
-  utimesSync(rewriteFile, new Date('2025-01-02T00:00:00Z'), new Date('2025-01-02T00:00:00Z'));
+  const timestamp = new Date(restoredMtime ? '2025-01-01T00:00:00Z' : '2025-01-02T00:00:00Z');
+  utimesSync(rewriteFile, timestamp, timestamp);
+  if (restoredMtime) {
+    const after = statSync(rewriteFile);
+    assert.equal(after.size, before.size); assert.equal(after.mtimeMs, before.mtimeMs);
+    assert.notEqual(after.ctimeMs, before.ctimeMs, 'test requires filesystem change-time resolution');
+  }
   await runPass(db, [sources[2]!]);
   const response = await daemon.inject({ method: 'GET', url: '/api/health', headers: { 'x-quotapulse-token': 'parse-history-test' } });
   assert.equal(response.statusCode, 200);

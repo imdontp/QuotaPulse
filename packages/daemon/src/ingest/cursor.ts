@@ -30,8 +30,10 @@ function parseMeta(raw: string | null): Record<string, string | number | null> {
  */
 export class DbCursorStore implements CursorStore {
   private cache = new Map<string, Cursor>();
+  private rawMeta = new Map<string, string | null>();
   private select;
   private upsert;
+  private updateMetadata;
 
   constructor(
     private db: DB,
@@ -41,6 +43,8 @@ export class DbCursorStore implements CursorStore {
       `SELECT byte_offset, file_size, file_mtime, watermark, meta
          FROM ingest_state WHERE source_id = ? AND target_key = ?`,
     );
+    this.updateMetadata = db.prepare(`UPDATE ingest_state SET meta = ? WHERE source_id = ? AND target_key = ?
+      AND byte_offset = ? AND file_size = ? AND file_mtime = ? AND watermark = ? AND meta IS ?`);
     this.upsert = db.prepare(
       `INSERT INTO ingest_state (source_id, target_key, kind, byte_offset, file_size, file_mtime, watermark, meta, last_ok_at)
        VALUES (@sourceId, @targetKey, @kind, @byteOffset, @fileSize, @fileMtime, @watermark, @meta, @lastOkAt)
@@ -78,12 +82,13 @@ export class DbCursorStore implements CursorStore {
         }
       : { ...EMPTY_CURSOR, meta: {} };
     this.cache.set(targetKey, cursor);
+    this.rawMeta.set(targetKey, row?.meta ?? null);
     return cursor;
   }
 
   set(targetKey: string, patch: Partial<Cursor>): void {
     const next = { ...this.get(targetKey), ...patch };
-    this.cache.set(targetKey, next);
+    const raw = next.meta && Object.keys(next.meta).length > 0 ? JSON.stringify(next.meta) : null;
     this.upsert.run({
       sourceId: this.sourceId,
       targetKey,
@@ -92,17 +97,26 @@ export class DbCursorStore implements CursorStore {
       fileSize: next.fileSize,
       fileMtime: next.fileMtime,
       watermark: next.watermark,
-      meta: next.meta && Object.keys(next.meta).length > 0 ? JSON.stringify(next.meta) : null,
+      meta: raw,
       lastOkAt: Date.now(),
     });
+    this.cache.set(targetKey, next);
+    this.rawMeta.set(targetKey, raw);
   }
 
-  updateMeta(targetKey: string, meta: NonNullable<Cursor['meta']>): void {
+  updateMeta(targetKey: string, meta: NonNullable<Cursor['meta']>): boolean {
     const cursor = this.get(targetKey);
-    const result = this.db.prepare('UPDATE ingest_state SET meta = ? WHERE source_id = ? AND target_key = ?')
-      .run(Object.keys(meta).length ? JSON.stringify(meta) : null, this.sourceId, targetKey);
-    if (result.changes !== 1) throw new Error('Cannot update metadata for a missing ingest cursor');
+    const raw = Object.keys(meta).length ? JSON.stringify(meta) : null;
+    const result = this.updateMetadata.run(raw, this.sourceId, targetKey, cursor.byteOffset, cursor.fileSize,
+      cursor.fileMtime, cursor.watermark, this.rawMeta.get(targetKey) ?? null);
+    if (result.changes !== 1) {
+      this.cache.delete(targetKey);
+      this.rawMeta.delete(targetKey);
+      return false;
+    }
     this.cache.set(targetKey, { ...cursor, meta });
+    this.rawMeta.set(targetKey, raw);
+    return true;
   }
 
   recordError(targetKey: string, message: string): void {

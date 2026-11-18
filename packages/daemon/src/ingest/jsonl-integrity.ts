@@ -20,9 +20,16 @@ export function transcriptParseMeta(cursor: Cursor, newMalformedLines: number) {
   };
 }
 
-/** A timestamp change without a size change cannot prove consumed bytes are unchanged. */
-export function sameSizeTranscriptChangeMeta(cursor: Cursor, size: number, mtime: number) {
-  if (cursor.byteOffset <= 0 || cursor.byteOffset !== size || cursor.fileSize !== size || cursor.fileMtime === mtime) return null;
-  if (transcriptParseHistory(cursor.meta, cursor.byteOffset).unverified) return null;
-  return { ...cursor.meta, ...transcriptParseMeta(cursor, 0), jsonlPriorUnverified: 1 };
+/** Metadata-only changes cannot prove consumed bytes are unchanged; a legacy cursor starts a new change-time baseline. */
+export function sameSizeTranscriptChangeMeta(cursor: Cursor, size: number, mtime: number, ctime: number) {
+  if (cursor.byteOffset <= 0 || cursor.byteOffset !== size || cursor.fileSize !== size) return null;
+  const previousCtime = cursor.meta?.jsonlObservedCtimeMs;
+  const knownCtime = typeof previousCtime === 'number' && Number.isFinite(previousCtime) && previousCtime >= 0;
+  const currentCtime = Number.isFinite(ctime) && ctime >= 0 ? ctime : null;
+  const changed = cursor.fileMtime !== mtime || (knownCtime && currentCtime !== null && previousCtime !== currentCtime);
+  const needsBaseline = currentCtime !== null && (!knownCtime || previousCtime !== currentCtime);
+  const markUnverified = changed && !transcriptParseHistory(cursor.meta, cursor.byteOffset).unverified;
+  if (!needsBaseline && !markUnverified) return null;
+  return { ...cursor.meta, ...(markUnverified ? { ...transcriptParseMeta(cursor, 0), jsonlPriorUnverified: 1 } : {}),
+    ...(currentCtime === null ? {} : { jsonlObservedCtimeMs: currentCtime }) };
 }

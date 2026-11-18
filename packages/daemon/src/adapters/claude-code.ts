@@ -145,10 +145,10 @@ async function ingestTranscripts(ctx: IngestCtx): Promise<void> {
       continue;
     }
     const cursor = ctx.cursors.get(file);
-    // Nothing appended since last pass; a changed timestamp still leaves prior bytes uncertain.
+    // Nothing appended since last pass; changed metadata still leaves prior bytes uncertain.
     if (st.size === cursor.fileSize && st.size === cursor.byteOffset) {
-      const unverified = sameSizeTranscriptChangeMeta(cursor, st.size, st.mtimeMs);
-      if (unverified) ctx.cursors.updateMeta(file, unverified);
+      const observation = sameSizeTranscriptChangeMeta(cursor, st.size, st.mtimeMs, st.ctimeMs);
+      if (observation) ctx.cursors.updateMeta(file, observation);
       continue;
     }
 
@@ -274,7 +274,7 @@ async function ingestTranscripts(ctx: IngestCtx): Promise<void> {
       }
 
       ctx.cursors.set(file, {
-        meta: { cwd, gitBranch, modelDefault, ...transcriptParseMeta(cursor, res.parseErrors) },
+        meta: { cwd, gitBranch, modelDefault, ...transcriptParseMeta(cursor, res.parseErrors), jsonlObservedCtimeMs: res.fileCtime },
         byteOffset: res.nextOffset,
         fileSize: res.fileSize,
         fileMtime: res.fileMtime,

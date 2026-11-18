@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
-import { appendFileSync, readFileSync, writeFileSync, mkdirSync, rmdirSync, unlinkSync, utimesSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync, mkdirSync, rmdirSync, unlinkSync, utimesSync, statSync } from 'node:fs';
 
 import { openDb, upsertSource, type DB } from '../src/db/index.js';
 import { health, totalsSince } from '../src/api/queries.js';
@@ -36,6 +36,77 @@ const sum = (db: DB, sourceId: number, col: string) =>
       v: number;
     }).v,
   );
+
+test('stale metadata observation cannot overwrite a newer cursor', () => {
+  const database = openDb(':memory:');
+  try {
+    const sourceId = upsertSource(database, { harness:'codex', profile:'concurrent', rootPath:'/synthetic', displayName:'Concurrent fixture' });
+    const file = '/synthetic/concurrent.jsonl';
+    const oldStore = new DbCursorStore(database, sourceId);
+    oldStore.set(file, { byteOffset:100, fileSize:100, fileMtime:1, meta:{ model:'old', jsonlObservedCtimeMs:1 } });
+    const observed = oldStore.get(file);
+    const otherStore = new DbCursorStore(database, sourceId);
+    otherStore.set(file, { byteOffset:200, fileSize:200, fileMtime:2, meta:{ model:'new', jsonlObservedCtimeMs:2 } });
+    assert.equal(oldStore.updateMeta(file, { ...observed.meta, jsonlPriorUnverified:1 }), false);
+    const current = oldStore.get(file);
+    assert.equal(current.byteOffset,200);
+    assert.deepEqual(current.meta,{ model:'new', jsonlObservedCtimeMs:2 });
+    assert.deepEqual(new DbCursorStore(database,sourceId).get(file), current);
+    const stale = new DbCursorStore(database,sourceId), staleCursor = stale.get(file);
+    const writer = new DbCursorStore(database,sourceId), writerCursor = writer.get(file);
+    assert.equal(writer.updateMeta(file,{ ...writerCursor.meta, model:'newest' }),true);
+    assert.equal(stale.updateMeta(file,{ ...staleCursor.meta, jsonlPriorUnverified:1 }),false);
+    assert.equal(stale.get(file).meta?.model,'newest', 'metadata-only concurrent changes are preserved too');
+  } finally { database.close(); }
+});
+
+for (const [harness, adapter, writeProfile] of [
+  ['codex', codexAdapter, writeCodexProfile],
+  ['claude-code', claudeCodeAdapter, writeClaudeProfile],
+] as const) {
+  test(`${harness} detects a same-size rewrite with restored modification time when change time differs`, async t => {
+    const root = join(tmpRoot(), 'profile'), file = writeProfile(root), stamp = new Date('2025-01-01T00:00:00Z');
+    utimesSync(file, stamp, stamp);
+    const database = openDb(':memory:');
+    const profile: Profile = { profile: 'ctime', rootPath: root, displayName: `ctime ${harness}` };
+    const sourceId = upsertSource(database, { harness, profile: profile.profile, rootPath: root, displayName: profile.displayName });
+    try {
+      await ingestOnce(database, adapter, profile, sourceId);
+      const before = statSync(file), original = readFileSync(file, 'utf8');
+      const changed = harness === 'codex' ? original.replace('"input_tokens":10000', '"input_tokens":90000') : original.replace('"input_tokens":12', '"input_tokens":92');
+      assert.notEqual(changed, original); assert.equal(Buffer.byteLength(changed), Buffer.byteLength(original));
+      await new Promise(resolve => setTimeout(resolve, 40));
+      writeFileSync(file, changed, 'utf8'); utimesSync(file, stamp, stamp);
+      const after = statSync(file);
+      assert.equal(after.size, before.size); assert.equal(after.mtimeMs, before.mtimeMs);
+      if (after.ctimeMs === before.ctimeMs) { t.skip('Filesystem did not expose a distinct change time for this fixture'); return; }
+      await ingestOnce(database, adapter, profile, sourceId);
+      const warnings = (health(database) as unknown as { transcriptParseWarnings: Array<{unverifiedFiles:number}> }).transcriptParseWarnings;
+      assert.equal(warnings[0]?.unverifiedFiles, 1);
+    } finally { database.close(); }
+  });
+
+  test(`${harness} establishes a change-time baseline for an existing cursor without claiming a read`, async () => {
+    const root = join(tmpRoot(), 'profile'), file = writeProfile(root);
+    const database = openDb(':memory:');
+    const profile: Profile = { profile: 'ctime-legacy', rootPath: root, displayName: `ctime legacy ${harness}` };
+    const sourceId = upsertSource(database, { harness, profile: profile.profile, rootPath: root, displayName: profile.displayName });
+    try {
+      await ingestOnce(database, adapter, profile, sourceId);
+      const row = database.prepare('SELECT meta FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId,file) as {meta:string};
+      const meta = JSON.parse(row.meta); delete meta.jsonlObservedCtimeMs;
+      database.prepare('UPDATE ingest_state SET meta = ? WHERE source_id = ? AND target_key = ?').run(JSON.stringify(meta),sourceId,file);
+      new DbCursorStore(database,sourceId).recordError(file,'synthetic read failure');
+      const state = () => database.prepare('SELECT byte_offset,last_ok_at,last_error,error_count FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId,file);
+      const before = state();
+      await ingestOnce(database, adapter, profile, sourceId);
+      const updated = database.prepare('SELECT meta FROM ingest_state WHERE source_id = ? AND target_key = ?').get(sourceId,file) as {meta:string};
+      assert.equal(JSON.parse(updated.meta).jsonlObservedCtimeMs, statSync(file).ctimeMs);
+      assert.deepEqual(state(),before, 'baseline recording must not clear errors or claim a successful read');
+      assert.deepEqual((health(database) as unknown as {transcriptParseWarnings:unknown[]}).transcriptParseWarnings,[]);
+    } finally { database.close(); }
+  });
+}
 
 for (const [harness, adapter, writeProfile] of [
   ['codex', codexAdapter, writeCodexProfile],

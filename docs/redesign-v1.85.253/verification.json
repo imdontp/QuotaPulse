@@ -1,0 +1,27 @@
+{
+  "baseCommit": "0fba66e476264d3a71e89bc12c67c5fcc33be238",
+  "sourceSha256": {
+    "packages/daemon/src/adapters/claude-code.ts": "3db45c2450bfdf04bab71fcb7fb66c2a04cbf30e4b82f55ac365e44c97885f86",
+    "packages/daemon/src/adapters/codex.ts": "11b73760a5907426e5cb9c45434c4c09dbd28ab4cb86fb6935fbe666e97343de",
+    "packages/daemon/src/adapters/types.ts": "335bb39982d5d1899dfe2184a84fa94ad648bf1fcaee008bb369508a751e3b66",
+    "packages/daemon/src/ingest/cursor.ts": "5c45aadfa11b1bb8e02d8e1d1085b1e88d6520488fff575ccb38186044062296",
+    "packages/daemon/src/ingest/jsonl-integrity.ts": "d2430c62935d605b74452e901630845c8eccdb0383a0ee1e8939572f2b189ad7",
+    "packages/daemon/src/ingest/jsonl.ts": "456cf2f992bf0044074ca4502d39a0357c73d9abe80fe61f5fd9e0239c70a6af",
+    "packages/daemon/test/adapters.test.ts": "7de3f711327b3b52486e95ecb2c84f4c8a252e48a134bcc3cdf7c6c4df870b15",
+    "packages/web/src/i18n/en.ts": "29990d841e0de7b4d519093621a8101bc59915b088172629beeba4395b8005e8",
+    "packages/web/src/i18n/th.ts": "9c81c658a44f19b0df8d749383bdf3b875e3b127c77002a5a7e5d5b7229ca95d",
+    "scripts/check-transcript-parse-history.mts": "0095f079046dfa09ab567add02b9fbfb4631ab1b5e55088d793e7d4d2a8320b4"
+  },
+  "productionIndexSha256": "43327473d2b6883234a5d11250799dbe64964e0bf548493f232efdeb04fa991f",
+  "daemonTests": 160,
+  "webTests": 382,
+  "targetedTests": 9,
+  "compiledBrowserCases": 10,
+  "baselineBenchmark": {
+    "fixture": "synthetic local SQLite WAL; no filesystem scan",
+    "count": 5000,
+    "durationMs": 198.48589999999996,
+    "perSecond": 25190.706241602053
+  },
+  "fixtures": "owned temporary files and local synthetic SQLite"
+}

@@ -112,8 +112,8 @@ export const codexAdapter: Adapter = {
       }
       const cursor = ctx.cursors.get(file);
       if (st.size === cursor.fileSize && st.size === cursor.byteOffset) {
-        const unverified = sameSizeTranscriptChangeMeta(cursor, st.size, st.mtimeMs);
-        if (unverified) ctx.cursors.updateMeta(file, unverified);
+        const observation = sameSizeTranscriptChangeMeta(cursor, st.size, st.mtimeMs, st.ctimeMs);
+        if (observation) ctx.cursors.updateMeta(file, observation);
         continue;
       }
 
@@ -244,7 +244,7 @@ export const codexAdapter: Adapter = {
           fileSize: res.fileSize,
           fileMtime: res.fileMtime,
           // What is in force at nextOffset, so the next pass resumes knowing it.
-          meta: { model, effort, sid, cwd, gitBranch, ...transcriptParseMeta(cursor, res.parseErrors) },
+          meta: { model, effort, sid, cwd, gitBranch, ...transcriptParseMeta(cursor, res.parseErrors), jsonlObservedCtimeMs: res.fileCtime },
         });
         if (res.restarted) log.warn(`file shrank, re-read from start: ${basename(file)}`);
       } catch (err) {

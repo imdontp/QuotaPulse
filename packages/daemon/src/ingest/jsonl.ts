@@ -5,6 +5,7 @@ export interface JsonlChunkResult {
   nextOffset: number;
   fileSize: number;
   fileMtime: number;
+  fileCtime: number;
   /** True when the file shrank (rotation/truncation) and we restarted from zero. */
   restarted: boolean;
   lines: number;
@@ -27,6 +28,7 @@ export async function readJsonlDelta(
   const st = statSync(path);
   const fileSize = st.size;
   const fileMtime = st.mtimeMs;
+  const fileCtime = st.ctimeMs;
 
   let start = fromOffset;
   let restarted = false;
@@ -36,7 +38,7 @@ export async function readJsonlDelta(
     restarted = true;
   }
   if (start === fileSize) {
-    return { nextOffset: start, fileSize, fileMtime, restarted, lines: 0, parseErrors: 0 };
+    return { nextOffset: start, fileSize, fileMtime, fileCtime, restarted, lines: 0, parseErrors: 0 };
   }
 
   let consumed = start;
@@ -79,7 +81,7 @@ export async function readJsonlDelta(
     pending = searchFrom > 0 ? pending.subarray(searchFrom) : pending;
   }
 
-  return { nextOffset: consumed, fileSize, fileMtime, restarted, lines, parseErrors };
+  return { nextOffset: consumed, fileSize, fileMtime, fileCtime, restarted, lines, parseErrors };
 }
 
 /** Read a whole JSON file as UTF-8. Windows' default codepage corrupts these catalogs. */
