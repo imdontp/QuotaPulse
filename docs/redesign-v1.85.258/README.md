@@ -1,0 +1,9 @@
+# Review249 ↔ review257 upgrade and rollback
+
+The delivered [review249](../redesign-v1.85.249/README.md) and [review257](../redesign-v1.85.257/README.md) archives were verified against their committed delivery evidence and SHA-256. Their application source commits are `0976caf04664cd27b19b2d1abedf1a1ea5e5874f` and `b9d66e9c5e5853c02617ae86babd476c8d8d6fe4`. The review257 README used for provenance is its version at commit `e879fb6`, before the cleanup note and follow-up link were added. Testing used one newly created isolated installation and synthetic schema 7 profile with readers disabled.
+
+All four stages passed in sequence: review249, upgrade to review257, rollback to review249, and return to review257. At each stage the runtime matched the archive-derived inventory; daemon and tray started with readers off and stopped; and an offscreen native Dashboard verified Thai language, light theme, THB currency, exchange rate 37.25 and window size 1371×887. Native checks used test-only anti-occlusion settings and reduced motion.
+
+The baseline and four durable snapshots of schema, sources, sessions, usage, pricing and settings have identical SHA-256 `abfc3a89b1349b2c3fb0a20e065b67195be5c990a5f1ad6333b1aaa21cec0200`. These are synthetic records. Both installed runtime copies were byte-verified against the retained ZIPs and checked for live fixture processes before cleanup; cleanup reclaimed 907,186,761 bytes. The synthetic profile and two small ASAR residues remain, so the test installation requires runtime restoration from the ZIPs before reuse. Receipts, provenance, four screenshots and verification drivers are in `evidence.tar.gz`.
+
+This validates the stated path for one synthetic schema 7 profile, not cross-schema migration, real provider accounts, physical tray interaction, production performance or complete dashboard visual acceptance. The overall redesign goal remains open.
