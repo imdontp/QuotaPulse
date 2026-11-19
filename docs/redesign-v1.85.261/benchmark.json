@@ -1,0 +1,26 @@
+{
+  "scope": "50,000 synthetic rows, in-memory SQLite; complete modelTrends query, alternating five runs after warm-up",
+  "rows": 50000,
+  "elapsed": {
+    "before": [
+      64.80259999999998,
+      62.615800000000036,
+      63.39580000000001,
+      64.15049999999997,
+      62.31529999999998
+    ],
+    "after": [
+      110.56259999999997,
+      103.10159999999996,
+      99.9389000000001,
+      99.87290000000007,
+      97.74030000000016
+    ]
+  },
+  "medianMs": {
+    "before": 63.39580000000001,
+    "after": 99.9389000000001
+  },
+  "vendorHistoryRows": 120,
+  "valuesReconciled": true
+}

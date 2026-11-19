@@ -19,7 +19,7 @@ import { ModelTokenDistribution } from './model-token-distribution-panel';
 import { ChartData } from './chart-data';
 import { ObservedTrend } from './observed-trend';
 import { ObservedTrendAxes } from './observed-trend-axes';
-import { modelProviderTrends, modelTrendBuckets } from './model-trends';
+import { modelProviderTrends, modelTrendBuckets, modelVendorTrends } from './model-trends';
 import { VendorIcon } from '@/components/vendor-icon';
 import { ProviderMark } from './provider-mark';
 import { PageHeading } from './page-heading';
@@ -66,6 +66,9 @@ export function ProductionModels() {
   const [theme, toggleTheme] = useTheme();
   const [route, setRoute] = useState(readRoute);
   const [search, setSearch] = useState('');
+  const [distributionMode, setDistributionMode] = useState<'provider' | 'vendor'>('provider');
+  const distributionList = useRef<HTMLDivElement>(null);
+  const distributionFocus = useRef<{ mode: 'provider' | 'vendor'; identity: string; expected: string | null } | null>(null);
   const [snapshot, setSnapshot] = useState<{ key: string; data: ModelSummaryResponse; base: ModelSummaryResponse; motion: LiveRecordBatch } | null>(null);
   const [detailSnapshot, setDetailSnapshot] = useState<{ key: string; data: ModelDetailResponse } | null>(null);
   const [failure, setFailure] = useState<{ key: string; epoch: number; message: string } | null>(null);
@@ -97,6 +100,11 @@ export function ProductionModels() {
     addEventListener('hashchange', sync);
     return () => { mounted.current = false; scopeEpoch.current++; removeEventListener('hashchange', sync); };
   }, []);
+  useEffect(() => {
+    const cancel = (event: FocusEvent) => { if (event.target !== document.body) distributionFocus.current = null; };
+    document.addEventListener('focusin', cancel, true);
+    return () => document.removeEventListener('focusin', cancel, true);
+  }, []);
   const update = (patch: Partial<Route>) => {
     const next = { ...route, ...patch };
     history.replaceState(null, '', `${location.pathname}${location.search}${routeHash(next)}`);
@@ -119,6 +127,15 @@ export function ProductionModels() {
   }, [requestKey, queryRetry]);
 
   const current = snapshot?.key === requestKey ? snapshot : null;
+  useEffect(() => {
+    const intent = distributionFocus.current;
+    if (!current || !intent) return;
+    distributionFocus.current = null;
+    if (intent.mode !== distributionMode || (intent.mode === 'provider' ? route.provider : route.vendor) !== intent.expected || document.activeElement !== document.body) return;
+    const button = Array.from(distributionList.current?.querySelectorAll<HTMLButtonElement>('button') ?? [])
+      .find(element => element.dataset[intent.mode] === intent.identity && !element.disabled);
+    (button ?? distributionList.current?.closest('.qp-model-providers')?.querySelector<HTMLButtonElement>('.qp-model-provider-mode button[aria-pressed=true]'))?.focus();
+  }, [current, distributionMode, route.provider, route.vendor]);
   const error = failure?.key === requestKey && failure.epoch === scopeEpoch.current ? failure.message : null;
   const data = current?.data;
   const groups = data?.groups ?? [];
@@ -187,6 +204,10 @@ export function ProductionModels() {
   const trendMax = Math.max(0, ...trend.map(point => route.metric === 'calls' ? point.calls : point.tokens));
   const summaryBuckets = data ? modelTrendBuckets(data) : [];
   const providerRows = data ? modelProviderTrends(data) : [];
+  const vendorRows = data ? modelVendorTrends(data) : [];
+  const distributionRows = distributionMode === 'provider'
+    ? providerRows.map(({ provider, ...row }) => ({ identity: provider, ...row }))
+    : vendorRows.map(({ vendor, ...row }) => ({ identity: vendor, ...row }));
   const recordedProviders = new Set(groups.map(group => group.provider).filter(provider => provider !== null && provider.trim() !== ''));
   const missingProviderPairs = groups.filter(group => group.provider === null || group.provider.trim() === '').length;
   const inputTokens = data ? data.totals.inputTokens + data.totals.cachedInputTokens + data.totals.cacheWriteTokens : 0;
@@ -251,7 +272,38 @@ export function ProductionModels() {
           {current && (comparison.hasPrevious || comparison.hasNext) && <nav className="qp-model-comparison-pagination" data-testid="model-comparison-pagination" aria-label={t('redesign.modelsComparePages')}><small role="status" aria-live="polite">{t('redesign.modelsCompareRange', { from: number(comparison.from), to: number(comparison.to), total: number(comparison.total) })}</small><button type="button" disabled={!comparison.hasPrevious} onClick={() => setComparisonSelection({ ...comparisonCurrent, page: comparison.page - 1 })}>{t('history.previous')}</button><button type="button" disabled={!comparison.hasNext} onClick={() => setComparisonSelection({ ...comparisonCurrent, page: comparison.page + 1 })}>{t('history.next')}</button></nav>}
           {current && rowTrendError && <p className="qp-model-row-trend-error" role="status">{t(rowTrends ? 'redesign.staleSnapshot' : 'redesign.modelsRowTrendUnavailable')} <button type="button" disabled={rowTrendBusy} onClick={() => setRowTrendRetry(value => value + 1)}>{t('app.retry')}</button></p>}
           </section>
-          <section className="qp-panel qp-model-providers"><header className="qp-model-providers-heading"><h2><SectionMark icon={<Box/>} size={20}/>{t('redesign.modelsProviderDistribution')}</h2><small className="qp-model-provider-caption" aria-hidden="true">{t('redesign.modelsPairs')}</small></header><div className="qp-model-provider-list" tabIndex={0} role="region" aria-label={t('redesign.modelsProviderDistribution')}>{!current ? <InitialRegion id="models-providers" label={t('redesign.modelsProviderDistribution')} heading={<></>} state={initialState} className="qp-model-providers-pending" slots={2}/> : providerRows.map(value => <button key={JSON.stringify(value.provider)} data-provider={value.provider ?? undefined} data-provider-missing={value.provider === null ? true : undefined} disabled={!value.provider} aria-pressed={value.provider !== null && route.provider === value.provider} onClick={() => update({ provider: route.provider === value.provider ? null : value.provider, model: undefined, selectedProvider: undefined })}><span className="qp-model-provider-mark" aria-hidden="true"><ProviderMark vendor={value.provider || 'unknown'}/></span><strong>{name(value.provider)}</strong><span className="qp-model-provider-facts" title={`${f.tokens(value.tokens)} · ${number(value.pairs)} ${pairUnit(value.pairs)}`}><span aria-hidden="true">{f.tokens(value.tokens)} · {number(value.pairs)} {t(value.pairs === 1 ? 'redesign.modelsPairShort' : 'redesign.modelsPairsShort')}</span><span className="qp-visually-hidden">{f.tokens(value.tokens)} · {number(value.pairs)} {pairUnit(value.pairs)}</span></span><span className="qp-model-provider-share">{data!.totals.tokens > 0 ? f.pct(value.tokens / data!.totals.tokens * 100) : t('redesign.unknownValue')}</span>{value.points.length > 0 ? <ObservedTrend className="qp-model-provider-spark" points={value.points} language={lang} label={`${name(value.provider)} · ${t('redesign.modelsTokens')}`} grid={false}/> : <span className="qp-bar"><span style={{ width: `${data!.totals.tokens ? value.tokens / data!.totals.tokens * 100 : 0}%` }}/></span>}</button>)}</div></section>
+          <section className="qp-panel qp-model-providers">
+            <header className="qp-model-providers-heading">
+              <h2><SectionMark icon={<Box/>} size={20}/>{t(distributionMode === 'provider' ? 'redesign.modelsProviderDistribution' : 'redesign.modelsVendorDistribution')}</h2>
+              <small className="qp-model-provider-caption" aria-hidden="true">{t('redesign.modelsPairs')}</small>
+              <div className="qp-model-provider-mode" role="group" aria-label={t('redesign.modelsGroupBy')}>
+                <button type="button" aria-pressed={distributionMode === 'provider'} onClick={() => setDistributionMode('provider')}>{t('redesign.modelsProvider')}</button>
+                <button type="button" aria-pressed={distributionMode === 'vendor'} onClick={() => setDistributionMode('vendor')}>{t('redesign.modelsVendor')}</button>
+              </div>
+            </header>
+            <div ref={distributionList} className="qp-model-provider-list" data-group-mode={distributionMode} tabIndex={0} role="region" aria-label={t(distributionMode === 'provider' ? 'redesign.modelsProviderDistribution' : 'redesign.modelsVendorDistribution')}>
+              {!current ? <InitialRegion id="models-providers" label={t(distributionMode === 'provider' ? 'redesign.modelsProviderDistribution' : 'redesign.modelsVendorDistribution')} heading={<></>} state={initialState} className="qp-model-providers-pending" slots={2}/> : distributionRows.map(value => <button
+                key={JSON.stringify(value.identity)}
+                data-provider={distributionMode === 'provider' ? value.identity ?? undefined : undefined}
+                data-provider-missing={distributionMode === 'provider' && value.identity === null ? true : undefined}
+                data-vendor={distributionMode === 'vendor' ? value.identity ?? undefined : undefined}
+                disabled={!value.identity}
+                aria-pressed={value.identity !== null && (distributionMode === 'provider' ? route.provider : route.vendor) === value.identity}
+                onClick={event => {
+                  if (!value.identity) return;
+                  const filter = distributionMode === 'provider' ? route.provider : route.vendor;
+                  const expected = filter === value.identity ? null : value.identity;
+                  distributionFocus.current = event.currentTarget === document.activeElement ? { mode:distributionMode, identity:value.identity, expected } : null;
+                  update(distributionMode === 'provider' ? { provider:expected, model:undefined, selectedProvider:undefined } : { vendor:expected, model:undefined, selectedProvider:undefined });
+                }}>
+                <span className="qp-model-provider-mark" aria-hidden="true">{distributionMode === 'provider' ? <ProviderMark vendor={value.identity || 'unknown'}/> : <VendorIcon vendor={value.identity || 'unknown'}/>}</span>
+                <strong>{name(value.identity)}</strong>
+                <span className="qp-model-provider-facts" title={`${f.tokens(value.tokens)} · ${number(value.pairs)} ${pairUnit(value.pairs)}`}><span aria-hidden="true">{f.tokens(value.tokens)} · {number(value.pairs)} {t(value.pairs === 1 ? 'redesign.modelsPairShort' : 'redesign.modelsPairsShort')}</span><span className="qp-visually-hidden">{f.tokens(value.tokens)} · {number(value.pairs)} {pairUnit(value.pairs)}</span></span>
+                <span className="qp-model-provider-share">{data!.totals.tokens > 0 ? f.pct(value.tokens / data!.totals.tokens * 100) : t('redesign.unknownValue')}</span>
+                {value.points.length > 0 ? <ObservedTrend className="qp-model-provider-spark" points={value.points} language={lang} label={`${name(value.identity)} · ${t('redesign.modelsTokens')}`} grid={false}/> : <span className="qp-bar"><span style={{ width: `${data!.totals.tokens ? value.tokens / data!.totals.tokens * 100 : 0}%` }}/></span>}
+              </button>)}
+            </div>
+          </section>
         </>
       </div>
       <aside ref={motionDetail} className="qp-model-detail" data-model-selection-detail={selectedMotionKey ?? undefined}>{!current ? <>{(['redesign.modelsDetails', 'redesign.modelsDistribution', 'redesign.modelsTrend', 'redesign.modelsEffort'] as const).map((label, index) => <InitialRegion key={label} id={`models-detail-${index}`} label={t(label)} state={initialState} className={`qp-model-detail-pending qp-model-detail-pending-${index}`}/>)}</> : selected && <><section className="qp-panel"><h2>{t('redesign.modelsDetails')}</h2><div className="qp-model-detail-identity"><svg className="qp-model-detail-mark-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id={detailMarkGradient} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#2585ff"/><stop offset=".45" stopColor="#2166ff"/><stop offset="1" stopColor="#1747eb"/></linearGradient></defs></svg><span className="qp-model-detail-provider" data-vendor={selected.provider ?? selected.vendor ?? 'unknown'} aria-hidden="true"><VendorIcon vendor={selected.provider ?? selected.vendor ?? 'unknown'} mono={(selected.provider ?? selected.vendor ?? 'unknown') === 'deepseek'} style={(selected.provider ?? selected.vendor ?? 'unknown') === 'deepseek' ? { fill: `url(#${detailMarkGradient})` } : undefined}/></span><div><h3>{name(selected.model)}</h3><p>{t('redesign.modelsProvider')}: {name(selected.provider)} · {t('redesign.modelsVendor')}: {name(selected.vendor)}</p></div></div><div className="qp-model-recorded-facts"><span>{t('redesign.modelsFreshInput')} <strong>{f.tokens(selected.inputTokens)}</strong></span><span>{t('redesign.modelsOutput')} <strong>{f.tokens(selected.outputTokens)}</strong></span><span>{t('redesign.modelsCache')} <strong>{cacheShare(selected) === null ? t('redesign.unknownValue') : ratioLabel(cacheShare(selected)!)}</strong></span><p>{t('redesign.modelsNative')}: <CostValue amount={selected.reported_native_usd} priced={selected.native_calls} total={selected.calls} money={money} t={t}/></p></div><div className="qp-model-detail-stats"><div><span>{t('redesign.modelsCalls')}</span><strong>{number(selected.calls)}</strong></div><div><span>{t('redesign.modelsSessions')}</span><strong>{number(selected.sessions)}</strong></div><div data-known={coverage(selected) !== null}><span title={t('redesign.modelsCoverageNote')}>{t('redesign.modelsCoverage')}</span><strong>{coverage(selected) === null ? '—' : ratioLabel(coverage(selected)!)}</strong></div><div data-known={selected.calls === 0 || selected.computed_calls + selected.estimated_calls > 0}><span>{t('redesign.modelsValue')}</span><strong>{apiValue(selected)}</strong></div></div>{historyHref ? <a href={historyHref}>{t('redesign.modelsHistory')}</a> : <small>{t('redesign.modelsNoExactHistory')}</small>}</section>

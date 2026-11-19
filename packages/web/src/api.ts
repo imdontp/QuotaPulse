@@ -224,6 +224,8 @@ export interface DetailedModelResponse {
     /** Distinct sessions per bin are not additive across the range. */
     points: Array<{ start: number; tokens: number; calls: number; sessions: number; pairs: number; api_value_usd: number; api_priced_calls: number }>;
     providers: Array<{ provider: string | null; start: number; tokens: number }>;
+    /** Absent on daemon versions before maker-level histories were introduced. */
+    vendors?: Array<{ vendor: string; start: number; tokens: number }>;
   };
   groups: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string }>;
   rows: Array<DetailedFacts & { model: string | null; provider: string | null; vendor: string; sourceId: number; harness: string; sourceName: string; effort: string | null }>;

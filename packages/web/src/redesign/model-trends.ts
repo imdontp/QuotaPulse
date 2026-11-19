@@ -28,3 +28,21 @@ export function modelProviderTrends(data: Pick<DetailedModelResponse, 'scope' | 
       return { provider, ...facts, points: buckets.map(point => ({ at: point.start, value: recorded.get(point.start) ?? 0 })) };
     });
 }
+
+/** Model makers are distinct from the routes used to access their models. */
+export function modelVendorTrends(data: Pick<DetailedModelResponse, 'scope' | 'trends'> & { groups: ReadonlyArray<Pick<DetailedModelResponse['groups'][number], 'vendor' | 'tokens'>> }) {
+  const usage = new Map<string, { tokens: number; pairs: number }>();
+  for (const group of data.groups) {
+    const value = usage.get(group.vendor) ?? { tokens: 0, pairs: 0 };
+    value.tokens += group.tokens;
+    value.pairs++;
+    usage.set(group.vendor, value);
+  }
+  const buckets = modelTrendBuckets(data);
+  return [...usage.entries()].sort((a, b) => b[1].tokens - a[1].tokens || a[0].localeCompare(b[0]))
+    .map(([vendor, facts]) => {
+      const history = data.trends?.vendors;
+      const recorded = new Map(history?.filter(point => point.vendor === vendor).map(point => [point.start, point.tokens]) ?? []);
+      return { vendor, ...facts, points: history ? buckets.map(point => ({ at: point.start, value: recorded.get(point.start) ?? 0 })) : [] };
+    });
+}

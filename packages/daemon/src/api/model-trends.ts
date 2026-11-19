@@ -1,4 +1,5 @@
 import type { DB } from '../db/index.js';
+import { vendorSqlCase } from '../util/vendor.js';
 import { usageWhere, type UsageScope } from './usage-scope.js';
 
 /** Recorded, full-grain histories for the summary and every routed provider. */
@@ -23,10 +24,20 @@ export function modelTrends(db: DB, scope: UsageScope) {
     ${from} GROUP BY u.provider, bin ORDER BY u.provider, bin`).all(params) as Array<{
       provider: string | null; bin: number; tokens: number;
     }>;
+  const vendor = vendorSqlCase('u.model', 'u.provider');
+  // Classify once per exact model/provider/bin group, not for every usage row.
+  const vendors = db.prepare(`SELECT vendor, bin, SUM(tokens) AS tokens FROM (
+    SELECT ${vendor} AS vendor, CAST((u.ts - @from) / @bucketMs AS INTEGER) AS bin,
+      COALESCE(SUM(u.total_tokens),0) AS tokens
+      ${from} GROUP BY u.model, u.provider, bin
+    ) GROUP BY vendor, bin ORDER BY vendor, bin`).all(params) as Array<{
+      vendor: string; bin: number; tokens: number;
+    }>;
   return {
     bucketMs,
     // A session can appear in several bins; these counts must not be summed as range sessions.
     points: points.map(({ bin, ...point }) => ({ start: scope.from + bin * bucketMs, ...point })),
     providers: providers.map(({ bin, ...point }) => ({ start: scope.from + bin * bucketMs, ...point })),
+    vendors: vendors.map(({ bin, ...point }) => ({ start: scope.from + bin * bucketMs, ...point })),
   };
 }

@@ -40,6 +40,11 @@ test('model histories reconcile full-grain filtered facts without merging provid
       assert.equal(sum(data.trends.providers.filter((point: { provider: string | null }) => point.provider === provider), 'tokens'),
         sum(data.groups.filter((group: { provider: string | null }) => group.provider === provider), 'tokens'));
     }
+    assert.equal(sum(data.trends.vendors, 'tokens'), data.totals.tokens);
+    for (const vendor of new Set(data.groups.map((group: { vendor: string }) => group.vendor))) {
+      assert.equal(sum(data.trends.vendors.filter((point: { vendor: string }) => point.vendor === vendor), 'tokens'),
+        sum(data.groups.filter((group: { vendor: string }) => group.vendor === vendor), 'tokens'));
+    }
   };
   try {
     const original = await get();
@@ -58,6 +63,11 @@ test('model histories reconcile full-grain filtered facts without merging provid
     assert.equal(sum(enriched.trends.points, 'pairs'), 6); // Pairs also recur across bins.
     assert.deepEqual(enriched.trends.providers.filter((point: { provider: unknown }) => point.provider === null), [{ start: 60_100, provider: null, tokens: 50 }]);
     assert.deepEqual(enriched.trends.providers.filter((point: { provider: unknown }) => point.provider === ''), [{ start: 60_100, provider: '', tokens: 30 }]);
+    assert.deepEqual(enriched.trends.vendors.filter((point: { vendor: string }) => point.vendor === 'openai'), [
+      { start: 100, vendor: 'openai', tokens: 10 },
+      { start: 60_100, vendor: 'openai', tokens: 70 },
+      { start: 120_100, vendor: 'openai', tokens: 60 },
+    ], 'Maker history must combine the same model across recorded routes without assigning a gateway as its maker');
     reconcile(enriched);
     for (const [filter, tokens] of [
       ['&source_id=1',120], ['&provider=openrouter',110], ['&vendor=openai',140],
@@ -77,6 +87,7 @@ test('model histories reconcile full-grain filtered facts without merging provid
     const none = await get('&trends=1', 180_101, 180_102);
     assert.deepEqual(none.trends.points, []);
     assert.deepEqual(none.trends.providers, []);
+    assert.deepEqual(none.trends.vendors, []);
     reconcile(none);
     const zero = await get('&trends=1', 120_110, 120_111);
     assert.equal(zero.trends.points[0].tokens, 0);

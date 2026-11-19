@@ -196,6 +196,7 @@ const projectCardChecks: Array<{ lang: string; theme: string; cards: number; bot
 const providerChecks: Array<{ lang: string; theme: string; bottom: number; compared: number; unavailable: boolean; expired: boolean; proportional: boolean }> = [];
 const referenceDetailRegions: Array<{ page: string; lang: string; theme: string; regions: unknown }> = [];
 const modelComparisonChecks: Array<{ lang: string; theme: string; bottom: number; rows: number; ratios: number; boundaryRatios: boolean }> = [];
+const modelMakerChecks: Array<{ lang: string; theme: string; routes: string[]; maker: string; keyboard: boolean; responsive: number[]; intersection: boolean; legacyFallback: boolean; focusRestore: boolean; focusMovePreserved: boolean }> = [];
 const costAxisChecks: Array<{ route: string; lang: string; theme: string; priced: boolean; maxAmount: number; maxTokens: number }> = [];
 const costReferenceRegions: Array<{ lang: string; theme: string; pass: number; regions: Record<string, { x: number; y: number; width: number; height: number; bottom: number }> }> = [];
 const historyChecks: Array<{ lang: string; theme: string; eventId: number; widths: number[]; modal: boolean; focusRestored: boolean }> = [];
@@ -594,6 +595,114 @@ async function checkModelComparison(page: Page, lang: string, theme: string, pen
     for (const width of [390, 900, 1280]) { await page.setViewportSize({ width, height: 941 }); assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true); }
   } finally { await page.unroute(pattern); }
   modelComparisonChecks.push({ lang, theme, bottom, rows: data.groups.length, ratios: data.groups.length * 2, boundaryRatios: true });
+}
+
+async function checkModelMakerFooter(page: Page, lang: string, theme: string, pending: Set<Request>) {
+  const key = 'maker-footer-cross-route-fixture';
+  db.prepare(`INSERT INTO usage_event(source_id,session_id,dedup_key,ts,model,provider,input_tokens,cached_input_tokens,output_tokens,total_tokens,call_count,cost_usd,cost_source)
+    VALUES (1,1,?,?,'GPT-5.x','openrouter',60,0,40,100,1,NULL,'unknown')`).run(key, fixedNow - 45_000);
+  const home = 'http://127.0.0.1:7804/?maker-footer=fixture#models';
+  const messages = lang === 'th' ? th : en;
+  const list = page.locator('.qp-model-provider-list');
+  const mode = page.getByRole('group', { name: messages['redesign.modelsGroupBy'] });
+  try {
+    await page.setViewportSize({ width: 1672, height: 941 });
+    await page.goto(home, { waitUntil: 'domcontentloaded' });
+    await page.locator('.qp-model-table-wrap tbody tr').first().waitFor(); await settled(page, pending);
+    const month = new Date(fixedNow); month.setDate(1); month.setHours(0, 0, 0, 0);
+    const params = new URLSearchParams({ detailed:'1', trends:'1', breakdown:'0', from:String(month.getTime()), to:String(fixedNow + 1) });
+    const response = await daemon.inject({ method:'GET', url:`/api/models?${params}`, headers:{ 'x-quotapulse-token':'stable-capture-test' } });
+    assert.equal(response.statusCode, 200);
+    const facts = response.json<DetailedModelResponse>();
+    assert.ok(facts.trends?.vendors, 'Maker histories must be supplied by the current daemon');
+    const openai = facts.groups.filter(group => group.vendor === 'openai');
+    assert.ok(openai.some(group => group.provider === 'openai') && openai.some(group => group.provider === 'openrouter'), 'Fixture must cross routed-provider boundaries');
+    const switcher = mode.getByRole('button', { name:messages['redesign.modelsVendor'], exact:true });
+    await switcher.focus(); await page.keyboard.press('Enter');
+    assert.equal(await switcher.getAttribute('aria-pressed'), 'true');
+    assert.equal(await list.getAttribute('data-group-mode'), 'vendor');
+    assert.equal(await page.locator('.qp-model-providers h2').textContent(), messages['redesign.modelsVendorDistribution']);
+    const maker = list.locator('[data-vendor="openai"]');
+    assert.equal(await maker.count(), 1);
+    const total = openai.reduce((sum, group) => sum + group.tokens, 0), number = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US');
+    const full = `${formatTokens(total)} · ${number.format(openai.length)} ${messages[openai.length === 1 ? 'redesign.modelsPair' : 'redesign.modelsPairs']}`;
+    assert.ok((await maker.ariaSnapshot()).includes(full));
+    const expectedPoints = Array.from({ length:Math.ceil((facts.scope.to-facts.scope.from)/facts.trends.bucketMs) }, (_, index) => {
+      const at = facts.scope.from + index * facts.trends!.bucketMs;
+      return { at, value:facts.trends!.vendors!.find(row => row.vendor === 'openai' && row.start === at)?.tokens ?? 0 };
+    });
+    const points = await maker.locator('.qp-model-provider-spark circle').evaluateAll(nodes => nodes.map(node => ({at:Number(node.getAttribute('data-at')),value:Number(node.getAttribute('data-value'))})));
+    assert.deepEqual(points, expectedPoints, 'Maker sparkline must use maker history rather than the matching-named provider route');
+    for (const width of [390, 900, 1280, 1672]) {
+      await page.setViewportSize({ width, height:941 });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Maker footer overflow at ${width}px`);
+    }
+    await maker.focus(); await page.keyboard.press('Enter'); await settled(page, pending);
+    let route = new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
+    assert.equal(route.get('vendor'), 'openai'); assert.equal(route.get('provider'), null);
+    await page.waitForFunction(count => document.querySelectorAll('.qp-model-table-wrap tr[data-model-pair-key]').length === count, openai.length);
+    const pairs = await page.locator('.qp-model-table-wrap tr[data-model-pair-key]').evaluateAll(rows => rows.map(row => JSON.parse(row.getAttribute('data-model-pair-key')!)));
+    assert.ok(pairs.some(pair => pair[1] === 'openai') && pairs.some(pair => pair[1] === 'openrouter'), 'Maker filter must retain both routes');
+    const selected = list.locator('[data-vendor="openai"]'); assert.equal(await selected.getAttribute('aria-pressed'), 'true');
+    assert.equal(await selected.evaluate(element => element === document.activeElement), true, 'Keyboard maker selection must restore focus after filtered data loads');
+    await selected.focus(); await page.keyboard.press('Enter'); await settled(page, pending);
+    route = new URLSearchParams(new URL(page.url()).hash.split('?')[1]); assert.equal(route.get('vendor'), null);
+    assert.equal(await list.getAttribute('data-group-mode'), 'vendor');
+    assert.equal(await list.locator('[data-vendor="openai"]').evaluate(element => element === document.activeElement), true, 'Clearing a maker filter must restore focus to its card');
+    const providerReply = page.waitForResponse(response => { const url = new URL(response.url()); return url.pathname === '/api/models' && url.searchParams.get('provider') === 'openrouter' && !url.searchParams.has('vendor'); });
+    await page.locator('.qp-model-toolbar select').first().selectOption('openrouter');
+    await providerReply; await settled(page, pending);
+    const makerWithinRoute = list.locator('[data-vendor="openai"]');
+    await makerWithinRoute.waitFor();
+    const intersectionReply = page.waitForResponse(response => { const url = new URL(response.url()); return url.pathname === '/api/models' && url.searchParams.get('provider') === 'openrouter' && url.searchParams.get('vendor') === 'openai'; });
+    await makerWithinRoute.click(); await intersectionReply; await settled(page, pending);
+    route = new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
+    assert.equal(route.get('vendor'), 'openai'); assert.equal(route.get('provider'), 'openrouter');
+    const intersectedPairs = await page.locator('.qp-model-table-wrap tr[data-model-pair-key]').evaluateAll(rows => rows.map(row => JSON.parse(row.getAttribute('data-model-pair-key')!)));
+    assert.deepEqual(intersectedPairs, [['GPT-5.x','openrouter']], 'Combined filters must retain the exact routed maker intersection');
+    const clearReply = page.waitForResponse(response => { const url = new URL(response.url()); return url.pathname === '/api/models' && url.searchParams.get('provider') === 'openrouter' && !url.searchParams.has('vendor'); });
+    await list.locator('[data-vendor="openai"]').click(); await clearReply; await settled(page, pending);
+    route = new URLSearchParams(new URL(page.url()).hash.split('?')[1]); assert.equal(route.get('vendor'), null); assert.equal(route.get('provider'), 'openrouter');
+    await mode.getByRole('button', { name:messages['redesign.modelsProvider'], exact:true }).click();
+    assert.equal(await list.getAttribute('data-group-mode'), 'provider');
+    const providerCard = list.locator('[data-provider="openrouter"]'); assert.equal(await providerCard.getAttribute('aria-pressed'), 'true');
+    await providerCard.focus(); await page.keyboard.press('Enter'); await settled(page, pending);
+    assert.equal(await list.locator('[data-provider="openrouter"]').evaluate(element => element === document.activeElement), true, 'Clearing the provider filter must restore focus to its card');
+    const legacyPattern = '**/api/models?*';
+    await page.route(legacyPattern, async intercepted => {
+      const response = await intercepted.fetch(), body = await response.json();
+      if (body.trends) delete body.trends.vendors;
+      await intercepted.fulfill({ response, json:body });
+    });
+    try {
+      await page.goto(home, { waitUntil:'domcontentloaded' });
+      await page.reload({ waitUntil:'domcontentloaded' });
+      await page.locator('.qp-model-table-wrap tbody tr').first().waitFor(); await settled(page, pending);
+      await mode.getByRole('button', { name:messages['redesign.modelsVendor'], exact:true }).click();
+      const legacyMaker = list.locator('[data-vendor="openai"]'); await legacyMaker.waitFor();
+      assert.equal(await legacyMaker.locator('.qp-model-provider-spark').count(), 0, 'Older daemon without maker history must not invent a sparkline');
+      assert.equal(await legacyMaker.locator('.qp-bar').count(), 1, 'Older daemon retains the known scoped share');
+    } finally { await page.unroute(legacyPattern); }
+    let release!: () => void, entered!: () => void;
+    const gate = new Promise<void>(resolve => { release = resolve; });
+    const held = new Promise<void>(resolve => { entered = resolve; });
+    await page.route(legacyPattern, async intercepted => {
+      const url = new URL(intercepted.request().url());
+      if (url.searchParams.get('vendor') === 'openai') { entered(); await gate; }
+      await intercepted.continue();
+    });
+    try {
+      await list.locator('[data-vendor="openai"]').focus(); await page.keyboard.press('Enter');
+      await Promise.race([held, new Promise<never>((_resolve, reject) => setTimeout(() => reject(new Error('Maker response was not held')), 10000))]);
+      const search = page.locator('.qp-model-search input'); await search.focus();
+      release(); await settled(page, pending);
+      await list.locator('[data-vendor="openai"]').waitFor();
+      assert.equal(await search.evaluate(element => element === document.activeElement), true, 'A later user focus move must not be stolen by a delayed maker response');
+    } finally { release(); await page.unroute(legacyPattern); }
+    modelMakerChecks.push({ lang, theme, routes:['openai','openrouter'], maker:'openai', keyboard:true, responsive:[390,900,1280,1672], intersection:true, legacyFallback:true, focusRestore:true, focusMovePreserved:true });
+  } finally {
+    db.prepare('DELETE FROM usage_event WHERE dedup_key=?').run(key);
+  }
 }
 
 async function checkAlerts(page: Page, lang: string, theme: string, pending: Set<Request>) {
@@ -3459,6 +3568,7 @@ try {
           if (pass === 0 && destination === 'live') await checkLiveDensity(page, lang, theme, pending);
           if (pass === 0 && (destination === 'live' || destination === 'projects')) await checkChartAccess(page, destination, lang, theme, pending);
           if (pass === 0 && (destination === 'models' || destination === 'cost')) await checkModelCostAccess(page, destination, lang, theme, pending);
+          if (pass === 0 && destination === 'models') await checkModelMakerFooter(page, lang, theme, pending);
           if (pass === 0 && destination === 'overview') { await checkRuntimeAccess(page, lang, theme, pending); await checkSingleProjectRuntime(page, lang, theme, pending); await checkRuntimeProjectIdentities(page, lang, theme, pending); }
           if (pass === 0 && !runtimeLayoutOnly && destination === 'overview') { await checkModelMarks(page, lang, theme, pending); await checkTopModelProjectScope(page, lang, theme, pending); }
           if (pass === 0 && !runtimeLayoutOnly && (destination === 'overview' || destination === 'alerts')) await checkQuotaAccess(page, destination, lang, theme, pending);
@@ -3488,7 +3598,7 @@ try {
   assert.deepEqual(errors, []); assert.deepEqual(forbidden, []);
   if (referenceDetailRegions.length) writeFileSync(resolve(output, 'reference-detail-regions.json'), JSON.stringify({ evidence: 'measured application regions for source review; not whole-image similarity or acceptance', captures: referenceDetailRegions }, null, 2));
   if (costReferenceRegions.length) writeFileSync(resolve(output, 'cost-reference-layout.json'), JSON.stringify({ source: 'quotapulse_build_blueprint/refs/cost.png', evidence: 'region estimates within 3px, not whole-image similarity or visual acceptance', captures: costReferenceRegions }, null, 2));
-  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', captureMatrix: { languages: captureLanguages, themes: captureThemes, complete: captureLanguages.length === 2 && captureThemes.length === 2 }, clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 10, maxChangedPixelFraction: 0.00005, masks: false }, captureNormalization: ['CSS transitions disabled and caret hidden before screenshot only', 'Playwright animations disabled during screenshot'], productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, runtimeMapProject: 'QuotaPulse', runtimeMapSessions: 12, runtimeMapRecords: 39, allRangeProjects: 5, allRangeRecords: 43, namedProjects: referenceProjects.length, projectNames: referenceProjects, models: referenceModels.length, modelNames: referenceModels.map(model => model.name), modelShares: referenceModels.map(model => model.share), providers: 4, records: 39, quotaOwners: ['OpenAI Subscription', 'OpenCode Go Subscription'], cacheSharePercent: 42, monthlySelection: 'OpenAI Subscription · monthly' }, checks: ['frozen daemon and browser Date', 'source-matched date on the screenshot clock', 'reference-matched Overview section labels and model rail accessible name', 'reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 2px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, nonmodal detail rail, background focus, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry and keyboard navigation to Models with the same period/source', 'complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, overviewReferenceLabelChecks, overviewConceptDataChecks, projectCardChecks, providerChecks, modelComparisonChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, trendInspectionChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, topModelScopeChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeProjectIdentityChecks, runtimeGeometryChecks, shellChecks, headerChecks, workspaceChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
+  writeFileSync(resolve(output, 'verification.json'), JSON.stringify({ status: 'repeatable within recorded raster tolerance; review candidates, not approved visual baselines', scope: runtimeLayoutOnly ? 'runtime-layout' : liveOnly ? 'live' : compositionOnly ? 'composition' : overviewOnly ? 'overview' : projectsOnly ? 'projects' : providersOnly ? 'providers' : modelsOnly ? 'models' : costOnly ? 'cost' : historyOnly ? 'history' : alertsOnly ? 'alerts' : settingsOnly ? 'settings' : 'all', captureMatrix: { languages: captureLanguages, themes: captureThemes, complete: captureLanguages.length === 2 && captureThemes.length === 2 }, clock: fixedNow, isoClock: new realDate(fixedNow).toISOString(), browser: browser.version(), rendererArgs, timezone: 'Asia/Bangkok', dpr: 1, reducedMotion: true, tolerance: { maxChannelDelta: 10, maxChangedPixelFraction: 0.00005, masks: false }, captureNormalization: ['CSS transitions disabled and caret hidden before screenshot only', 'Playwright animations disabled during screenshot'], productionIndexSha256: sha(readFileSync(resolve(root, 'packages/web/dist/index.html'))), fixture: { database: 'in-memory synthetic', sessions: 12, runtimeMapProject: 'QuotaPulse', runtimeMapSessions: 12, runtimeMapRecords: 39, allRangeProjects: 5, allRangeRecords: 43, namedProjects: referenceProjects.length, projectNames: referenceProjects, models: referenceModels.length, modelNames: referenceModels.map(model => model.name), modelShares: referenceModels.map(model => model.share), providers: 4, records: 39, quotaOwners: ['OpenAI Subscription', 'OpenCode Go Subscription'], cacheSharePercent: 42, monthlySelection: 'OpenAI Subscription · monthly' }, checks: ['frozen daemon and browser Date', 'source-matched date on the screenshot clock', 'reference-matched Overview section labels and model rail accessible name', 'reference-matched synthetic project/model names, model shares, quota owners/windows and monthly runway selection', `${cases.length * 2} screenshots / ${cases.length} pairs within raster tolerance`, 'independent browser process per language/theme set', 'fresh document per route', 'production web without Vite', 'fonts ready and API settled', 'no page overflow', 'no external or write requests', 'no browser errors', ...(runtimeLayoutOnly ? ['Nonempty API edge identities/count on both canonical passes', 'Independent screen-space endpoints after resize and actual internal scrolling', 'Single-project keyboard detail/focus and same-document empty/restore', 'Four source-estimated card x/width boxes within 2px; not whole-image similarity'] : settingsOnly ? ['Settings local language/currency/rate controls, six preserved sections and 390/900/1280 overflow', 'No daemon writes or pricing-refresh requests'] : alertsOnly ? ['Alerts occupied panels, API-matched thresholds, show-more scope, complete 60-event keyboard scrolling and empty history', 'Complete quota sample table, null/reset gaps and 390/900/1280 overflow'] : historyOnly ? ['History recorded metadata matches API, nonmodal detail rail, background focus, selected row, Escape restoration and 390/900/1280 overflow'] : providersOnly ? ['Provider comparison API values, keyboard selection, 390/900/1280 overflow, unknown/expired/tiny/zero readings'] : overviewOnly ? ['Overview model rail geometry and keyboard navigation to Models with the same period/source', 'complete Runtime Map table and quota-history access, most-active project selector/API filtering, keyboard and 390/900/1280 overflow'] : ['API-matched complete chart tables, keyboard and 390/900/1280 overflow', 'proportional one-token and zero bars/line points'])], referenceColumnChecks, liveDensityChecks, liveMinuteChecks, liveRefreshChecks, overviewLayouts, overviewReferenceLabelChecks, overviewConceptDataChecks, projectCardChecks, providerChecks, modelComparisonChecks, modelMakerChecks, costAxisChecks, historyChecks, historyRailChecks, pageHeadingChecks, sectionMarkChecks, historyDensityChecks, alertChecks, chartChecks, modelCostChecks, trendInspectionChecks, quotaChecks, pulseCoreChecks, pulseAmbientChecks, modelMarkChecks, topModelScopeChecks, overviewPeriodChecks, overviewInsightChecks, quotaGroupChecks, recentActivityChecks, activityBitmapChecks, activityRendererChecks, runtimeChecks, runtimeProjectIdentityChecks, runtimeGeometryChecks, shellChecks, headerChecks, workspaceChecks, fontProvenance, fontChecks, settingsChecks, cases }, null, 2));
   console.log(`Stable captures passed: ${cases.length} pairs, ${cases.filter(item => item.sha256 === item.repeatSha256).length} byte-identical, remaining pairs within recorded raster tolerance; no masks.`);
 } finally {
   await browser?.close(); await daemon.close(); db.close(); globalThis.Date = realDate;
