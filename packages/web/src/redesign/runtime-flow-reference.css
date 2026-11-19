@@ -4,6 +4,25 @@
  * Compact, light and standalone preview keep the original presentation width.
  */
 @media (min-width:1536px) {
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime-controls {
+    gap:22px;
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime-controls :is(.qp-runtime-legend,.qp-runtime-activity-legend) {
+    font-size:12px;
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime-activity-legend {
+    gap:22px;
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime-activity-legend>span {
+    gap:7px;
+  }
+  .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime-legend>i {
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#29d9ff;
+    box-shadow:0 0 3px #14caff,0 0 9px #078dff;
+  }
   .qp-redesign[data-testid=production-overview][data-theme=dark] .qp-runtime .qp-map-edges>path {
     stroke-width:var(--qp-reference-flow-width);
     stroke-linecap:round;
