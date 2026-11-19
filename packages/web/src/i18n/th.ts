@@ -445,6 +445,8 @@ export const th: Record<MessageKey, string> = {
   'redesign.modelsCoverageNote': 'สัดส่วนคำขอที่มีต้นทุนจากต้นทาง หรือมูลค่า API ที่คำนวณ/ประมาณได้',
   'redesign.modelsPair': 'คู่โมเดล/ผู้ให้บริการ',
   'redesign.modelsPairs': 'คู่โมเดล/ผู้ให้บริการ',
+  'redesign.modelsPairShort': 'คู่',
+  'redesign.modelsPairsShort': 'คู่',
   'redesign.modelsDetails': 'รายละเอียดโมเดล',
   'redesign.modelsDistribution': 'การกระจายโทเคน',
   'redesign.modelsInputTokens': 'โทเคนขาเข้า',

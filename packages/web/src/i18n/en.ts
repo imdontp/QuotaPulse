@@ -441,6 +441,8 @@ export const en = {
   'redesign.modelsCoverageNote': 'Share of calls with reported native cost or calculated/estimated API value.',
   'redesign.modelsPair': 'model/provider pair',
   'redesign.modelsPairs': 'model/provider pairs',
+  'redesign.modelsPairShort': 'pair',
+  'redesign.modelsPairsShort': 'pairs',
   'redesign.modelsDetails': 'Model Details',
   'redesign.modelsDistribution': 'Token Distribution',
   'redesign.modelsInputTokens': 'Input Tokens',

@@ -525,8 +525,19 @@ async function checkModelComparison(page: Page, lang: string, theme: string, pen
   }
   const providerCharts = page.locator('.qp-model-provider-list button');
   assert.equal(await providerCharts.count(), new Set(data.groups.map(group => group.provider)).size);
+  assert.equal(await page.locator('.qp-model-provider-caption').textContent(), (lang === 'th' ? th : en)['redesign.modelsPairs']);
   for (const button of await providerCharts.all()) {
     const provider = await button.getAttribute('data-provider-missing') === 'true' ? null : await button.getAttribute('data-provider');
+    const groups = data.groups.filter(group => group.provider === provider);
+    const total = groups.reduce((sum, group) => sum + group.tokens, 0), count = groups.length;
+    const messages = lang === 'th' ? th : en, number = new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US');
+    const full = `${formatTokens(total)} · ${number.format(count)} ${messages[count === 1 ? 'redesign.modelsPair' : 'redesign.modelsPairs']}`;
+    const short = `${formatTokens(total)} · ${number.format(count)} ${messages[count === 1 ? 'redesign.modelsPairShort' : 'redesign.modelsPairsShort']}`;
+    const facts = button.locator('.qp-model-provider-facts');
+    assert.equal(await facts.getAttribute('title'), full);
+    assert.equal(await facts.locator('[aria-hidden=true]').textContent(), short);
+    assert.equal(await facts.locator('.qp-visually-hidden').textContent(), full);
+    assert.ok((await button.ariaSnapshot()).includes(full), 'Provider button must expose its full pair meaning to assistive technology');
     const expected = Array.from({ length: bucketCount }, (_, bucket) => {
       const at = data.scope.from + bucket * data.trends!.bucketMs;
       return { at, value: data.trends!.providers.find(point => point.provider === provider && point.start === at)?.tokens ?? 0 };
@@ -534,6 +545,8 @@ async function checkModelComparison(page: Page, lang: string, theme: string, pen
     const rendered = await button.locator('.qp-model-provider-spark circle').evaluateAll(elements => elements.map(element => ({ at: Number(element.getAttribute('data-at')), value: Number(element.getAttribute('data-value')) })));
     assert.deepEqual(rendered, expected, `Provider ${JSON.stringify(provider)} sparkline differs from its exact scoped API history`);
   }
+  const providerGeometry = await page.locator('.qp-model-provider-list').evaluate(list => ({ clientHeight: list.clientHeight, scrollHeight: list.scrollHeight }));
+  assert.ok(providerGeometry.scrollHeight <= providerGeometry.clientHeight, `Canonical provider facts must remain fully visible: ${lang}/${theme} ${JSON.stringify(providerGeometry)}`);
   const historyDisclosure = page.locator('.qp-model-history');
   await historyDisclosure.locator('summary').focus(); await page.keyboard.press('Enter');
   assert.equal(await historyDisclosure.locator('tbody tr').count(), bucketCount, 'All Models summary/provider buckets must remain available');
