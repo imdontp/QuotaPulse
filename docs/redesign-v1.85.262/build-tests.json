@@ -1,0 +1,84 @@
+{
+    "status":  "passed",
+    "sourceCommit":  "2e7c910723b78c92474692b44be64c1141b62998",
+    "steps":  [
+                  {
+                      "name":  "daemon-build",
+                      "arguments":  [
+                                        "run",
+                                        "build",
+                                        "-w",
+                                        "@quotapulse/daemon"
+                                    ],
+                      "exitCode":  0,
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\daemon-build.log",
+                      "stderr":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\daemon-build.err.log",
+                      "started":  "2026-11-19T07:43:58.6705289+00:00"
+                  },
+                  {
+                      "name":  "web-build",
+                      "arguments":  [
+                                        "run",
+                                        "build",
+                                        "-w",
+                                        "@quotapulse/web"
+                                    ],
+                      "exitCode":  0,
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\web-build.log",
+                      "stderr":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\web-build.err.log",
+                      "started":  "2026-11-19T07:44:07.9066231+00:00"
+                  },
+                  {
+                      "name":  "tray-build",
+                      "arguments":  [
+                                        "run",
+                                        "build",
+                                        "-w",
+                                        "@quotapulse/tray"
+                                    ],
+                      "exitCode":  0,
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\tray-build.log",
+                      "stderr":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\tray-build.err.log",
+                      "started":  "2026-11-19T07:44:58.5474705+00:00"
+                  },
+                  {
+                      "name":  "daemon-test",
+                      "arguments":  [
+                                        "run",
+                                        "test",
+                                        "-w",
+                                        "@quotapulse/daemon"
+                                    ],
+                      "exitCode":  0,
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\daemon-test.log",
+                      "stderr":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\daemon-test.err.log",
+                      "started":  "2026-11-19T07:45:09.7877753+00:00"
+                  },
+                  {
+                      "name":  "web-test",
+                      "arguments":  [
+                                        "run",
+                                        "test",
+                                        "-w",
+                                        "@quotapulse/web"
+                                    ],
+                      "exitCode":  0,
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\web-test.log",
+                      "stderr":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\web-test.err.log",
+                      "started":  "2026-11-19T07:45:49.3854023+00:00"
+                  },
+                  {
+                      "name":  "tray-test",
+                      "arguments":  [
+                                        "run",
+                                        "test",
+                                        "-w",
+                                        "@quotapulse/tray"
+                                    ],
+                      "exitCode":  0,
+                      "log":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\tray-test.log",
+                      "stderr":  "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\worktrees\\redesign-foundation\\tmp\\review262-build\\tray-test.err.log",
+                      "started":  "2026-11-19T07:46:31.8960371+00:00"
+                  }
+              ]
+}

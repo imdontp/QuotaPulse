@@ -1,0 +1,11 @@
+﻿# Windows review262
+
+Review262 packages the Models provider and model maker controls from commit `2e7c910723b78c92474692b44be64c1141b62998`, tagged `redesign-native-review-v1.85.262`. The [Models comparison](../redesign-v1.85.261/review.html) shows both views alongside the original concept.
+
+The local review ZIP is `tmp/releases/QuotaPulse-v1.85.261-review262.zip` in the main checkout. Its SHA-256 is `1eba6ca9e13e7ba843ef79d82d25603226b18cb3e1ca63312c74b4b941a317a4`. All 3,165 files were decompressed and checked against the source bundle. The Windows installer extracted the ZIP into a new test directory. The daemon answered its health check, the launcher stopped the review, and the isolated database remained available. Readers were disabled during this installation test. See [archive verification](archive.json) and [installation result](installation.json).
+
+Use Windows x64 with Node 22.13.1 on PATH. Extract the ZIP into a dedicated folder and run `./scripts/start-review.ps1` in PowerShell. Open the dashboard from the QuotaPulse review tray icon. Stop with `./scripts/stop-review.ps1`. To collect local harness logs, start again with `./scripts/start-review.ps1 -EnableReaders`. The portable launcher keeps its database in the extracted folder under `review-data`.
+
+This unsigned review remains under visual and release evaluation. The installation smoke test covers a fresh profile. Different-version rollback, physical display behavior and production workload performance require separate evidence.
+The portable launcher from the delivered ZIP also passed [six reader checks](readers.json) in a fake home. The actual Codex adapter read 150 fixture tokens, reached 190 after an append, and retained one session after repeated refresh and restart. The Models screen matched the API totals. Default launch disabled collection and preserved previously collected records. Account quota probes were disabled.
+The [native gallery](review.html) presents the original concepts with 16 Electron captures across the eight dashboard routes. The English dark and restored Thai light runs used a synthetic database and reduced motion. See the [native report](native.json) and [six build and test results](build-tests.json).
