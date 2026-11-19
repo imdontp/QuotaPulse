@@ -667,15 +667,18 @@ function Metric({ label, value, icon }: { label: string; value: React.ReactNode;
 
 function MetricTrace({ values, label, scale = 'amount' }: { values: readonly (number | null)[]; label: string; scale?: 'amount' | 'percent' }) {
   const finite = values.filter((value): value is number => value !== null && Number.isFinite(value));
-  if (finite.length < 2 || values.length < 2) return null;
+  if (!finite.length) return null;
   const max = scale === 'percent' ? 100 : Math.max(1, ...finite);
   let drawing = false;
   const path = values.map((value, index) => {
     if (value === null || !Number.isFinite(value)) { drawing = false; return ''; }
-    const x = index / (values.length - 1) * 56;
+    const x = values.length === 1 ? 28 : index / (values.length - 1) * 56;
     const y = 20 - Math.max(0, Math.min(max, value)) / max * 16;
-    const command = drawing ? 'L' : 'M'; drawing = true;
-    return `${command}${x.toFixed(2)},${y.toFixed(2)}`;
+    const command = drawing ? 'L' : 'M';
+    // A round-capped zero-length segment shows an isolated observation across gaps.
+    const isolated = !drawing && !Number.isFinite(values[index + 1]);
+    drawing = true;
+    return `${command}${x.toFixed(2)},${y.toFixed(2)}${isolated ? 'l0,0' : ''}`;
   }).filter(Boolean).join(' ');
   return <svg className="qp-metric-trace" viewBox="0 0 56 22" preserveAspectRatio="none" role="img" aria-label={label} data-values={values.map(value => value === null ? '' : String(value)).join(',')}><path d={path} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke"/></svg>;
 }
