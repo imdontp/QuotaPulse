@@ -234,7 +234,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
     {summary ? <HistoryTimeline data={summary}/> : redesign && <section className="qp-panel qp-history-timeline qp-history-initial-timeline" aria-label={t('history.timeline')}>
       <h2><i aria-hidden="true"><History size={19}/></i>{t('history.timeline')}</h2>
       <p className="qp-footnote">{t('history.timelineNote')}</p>
-      <div className="qp-history-summary">{(['col.total', 'col.calls', 'history.apiTotal', 'history.effortDistribution'] as const).map((label, index) => <InitialRegion key={label} id={`history-summary-${index}`} label={t(label)} state={initialState} slots={1}/>)}</div>
+      <div className="qp-history-summary">{(['usage.totalTokens', 'col.calls', 'history.apiTotal', 'history.effortDistribution'] as const).map((label, index) => <InitialRegion key={label} id={`history-summary-${index}`} label={t(label)} state={initialState} slots={1}/>)}</div>
       <InitialRegion id="history-timeline" label={t('history.timeline')} state={initialState} className="qp-history-initial-plot" heading={<span className="sr-only">{t('history.timeline')}</span>} status/>
     </section>}
     {redesign ? <HistoryFilters draft={draft} disabled={paused} onChange={setDraft} onApply={() => { setOffset(0); setFilters({ ...draft, project: draft.projectMissing ? undefined : draft.project }); }} onClear={() => { setOffset(0); setDraft({ grain: 'all' }); setFilters({ grain: 'all' }); }}/> : <form onSubmit={event => { event.preventDefault(); setOffset(0); setFilters({ ...draft, project: draft.projectMissing ? undefined : draft.project }); }}>
