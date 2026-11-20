@@ -179,6 +179,11 @@
 
 /* Native published-window bars follow the reference fill and restrained halo. */
 @media(min-width:1536px) {
+  .qp-provider-windows { row-gap:1px; }
+  .qp-provider-windows>div { padding-block:4px 12px; }
+  .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-card[data-vendor=openai] [data-window-kind=weekly] .qp-bar>span {
+    background:linear-gradient(90deg,#32d0f8,#23b9fd 24%,#2c9afd 50%,#3d6cfc 75%,#5870fd);
+  }
   .qp-redesign[data-testid=production-providers][data-theme=dark] .qp-provider-windows .qp-bar {
     overflow:visible;
   }
