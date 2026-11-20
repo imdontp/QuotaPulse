@@ -305,6 +305,7 @@ export const en = {
   'redesign.livePause': 'Pause view',
   'redesign.liveResume': 'Resume latest',
   'redesign.livePaused': 'Snapshot paused',
+  'redesign.liveMetricSamples': 'Observed refresh samples in the last five minutes',
   'redesign.liveRecentSessions': 'Recent sessions',
   'redesign.liveReportingSources': 'Reporting sources',
   'redesign.liveStaleSources': 'Stale sources',

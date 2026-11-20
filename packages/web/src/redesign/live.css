@@ -507,3 +507,16 @@
   .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-matrix-heading { position:relative; top:-6px; }
   .qp-redesign[data-testid=production-live][data-theme=dark][lang=en] .qp-live-matrix-section .qp-section-heading-title { transform:translateX(-3px); }
 }
+
+.qp-live-metric-samples { display:none; }
+@media(min-width:1536px) {
+  .qp-live-metrics>div:has(.qp-live-metric-samples) { grid-template-columns:44px minmax(0,1fr) 60px; }
+  .qp-live-metrics>div:has(.qp-live-metric-samples) small { grid-column:2 / -1; }
+  .qp-live-metric-samples { display:block; grid-column:3; grid-row:1; align-self:center; width:60px; height:22px; fill:var(--qp-live-metric-tone); }
+}
+
+@media(max-width:389px) {
+  .qp-live-metrics>div:has(.qp-live-metric-samples) { align-items:center; }
+  .qp-live-metrics .qp-live-metric-icon { grid-row:1; }
+  .qp-live-metrics>div:has(.qp-live-metric-samples) small { grid-column:1 / -1; overflow-wrap:anywhere; }
+}

@@ -1,0 +1,348 @@
+{
+  "build": "6545c87bc56345cda89a7ffec9a964ad1041c7eab5d9fca65ca9dad223769acc",
+  "fixture": "synthetic local records and controlled daemon clock",
+  "capture": "1fc56ffe48fdf86accf46f851ddcacc20a9303a0d2c8550f02cb57670571bef0",
+  "ref": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+  "repeatIdentical": true,
+  "checks": [
+    {
+      "label": "initial",
+      "points": [
+        [
+          [
+            "58",
+            "2"
+          ]
+        ],
+        [
+          [
+            "58",
+            "2"
+          ]
+        ],
+        [
+          [
+            "58",
+            "20"
+          ]
+        ],
+        [
+          [
+            "58",
+            "20"
+          ]
+        ]
+      ]
+    },
+    {
+      "label": "second observation",
+      "points": [
+        [
+          [
+            "46.8",
+            "2"
+          ],
+          [
+            "58",
+            "2"
+          ]
+        ],
+        [
+          [
+            "46.8",
+            "2"
+          ],
+          [
+            "58",
+            "2"
+          ]
+        ],
+        [
+          [
+            "46.8",
+            "20"
+          ],
+          [
+            "58",
+            "20"
+          ]
+        ],
+        [
+          [
+            "46.8",
+            "20"
+          ],
+          [
+            "58",
+            "20"
+          ]
+        ]
+      ]
+    },
+    {
+      "label": "paused",
+      "points": [
+        [
+          [
+            "46.8",
+            "2"
+          ],
+          [
+            "58",
+            "2"
+          ]
+        ],
+        [
+          [
+            "46.8",
+            "2"
+          ],
+          [
+            "58",
+            "2"
+          ]
+        ],
+        [
+          [
+            "46.8",
+            "20"
+          ],
+          [
+            "58",
+            "20"
+          ]
+        ],
+        [
+          [
+            "46.8",
+            "20"
+          ],
+          [
+            "58",
+            "20"
+          ]
+        ]
+      ]
+    },
+    {
+      "label": "expired observations",
+      "points": [
+        [
+          [
+            "58",
+            "20"
+          ]
+        ],
+        [
+          [
+            "58",
+            "20"
+          ]
+        ],
+        [
+          [
+            "58",
+            "20"
+          ]
+        ],
+        [
+          [
+            "58",
+            "20"
+          ]
+        ]
+      ]
+    },
+    {
+      "label": "new filter",
+      "points": [
+        [
+          [
+            "58",
+            "20"
+          ]
+        ],
+        [
+          [
+            "58",
+            "20"
+          ]
+        ],
+        [
+          [
+            "58",
+            "20"
+          ]
+        ],
+        [
+          [
+            "58",
+            "20"
+          ]
+        ]
+      ]
+    }
+  ],
+  "layoutChecks": [
+    {
+      "language": "th",
+      "theme": "light",
+      "width": 1672,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 4
+    },
+    {
+      "language": "th",
+      "theme": "light",
+      "width": 1024,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "th",
+      "theme": "light",
+      "width": 768,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "th",
+      "theme": "light",
+      "width": 390,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "th",
+      "theme": "light",
+      "width": 320,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "th",
+      "theme": "dark",
+      "width": 1672,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 4
+    },
+    {
+      "language": "th",
+      "theme": "dark",
+      "width": 1024,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "th",
+      "theme": "dark",
+      "width": 768,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "th",
+      "theme": "dark",
+      "width": 390,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "th",
+      "theme": "dark",
+      "width": 320,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "width": 1672,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 4
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "width": 1024,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "width": 768,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "width": 390,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "width": 320,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "width": 1672,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 4
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "width": 1024,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "width": 768,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "width": 390,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "width": 320,
+      "containedLabels": 4,
+      "overlaps": 0,
+      "visibleCharts": 0
+    }
+  ]
+}

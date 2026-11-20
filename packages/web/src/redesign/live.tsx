@@ -39,7 +39,31 @@ function routeHash(route: LiveRoute) {
   if (route.feedOffset) p.set('feed_offset', String(route.feedOffset));
   return `#live${p.size ? `?${p}` : ''}`;
 }
-interface Snapshot { key: string; route: LiveRoute; overview: Overview; scope: UsageEventScope; trend: MinuteTrendResponse;
+interface MetricObservation { at: number; counts: readonly number[] }
+
+function metricObservation(overview: Overview, sessions: LiveSessionsResponse): MetricObservation {
+  const now = overview.now;
+  const sources = overview.sourceStatus;
+  const validRecent = (at: number | null) => at !== null && at <= now && now - at <= 300_000;
+  const reporting = sources.filter(source => source.enabled && validRecent(source.last_event_ts)).length;
+  const stale = sources.filter(source => source.enabled && source.limit_samples > 0 && source.last_limit_source_fetched_at !== null
+    && source.last_limit_source_fetched_at <= now && now - source.last_limit_source_fetched_at > 3_600_000).length;
+  const readerErrors = sources.filter(source => source.enabled && source.telemetry.reason === 'reader_error').length;
+  return { at: now, counts: [sessions.recentCount, reporting, stale, readerErrors] };
+}
+
+function MetricSamples({ samples, index, label }: { samples: MetricObservation[]; index: number; label: string }) {
+  const latest = samples[samples.length - 1]!;
+  const peak = Math.max(1, ...samples.map(sample => sample.counts[index]!));
+  return <svg className="qp-live-metric-samples" viewBox="0 0 60 22" role="img" aria-label={label}>
+    <title>{label}</title>
+    {samples.map(sample => <circle key={sample.at}
+      cx={58 - (latest.at - sample.at) / 300_000 * 56}
+      cy={20 - sample.counts[index]! / peak * 18} r="1.6" />)}
+  </svg>;
+}
+
+interface Snapshot { samples: MetricObservation[]; key: string; route: LiveRoute; overview: Overview; scope: UsageEventScope; trend: MinuteTrendResponse;
   feed: UsageEventsResponse; matrix: ProviderModelMinuteResponse; sessions: LiveSessionsResponse; sessionsMotion: LiveRecordBatch; feedMotion: LiveRecordBatch }
 
 export function ProductionLive() {
@@ -113,9 +137,15 @@ export function ProductionLive() {
       ]);
       if (isCurrent()) {
         const serial = ++acceptedSerial.current;
-        setSnapshot({ key: requestedKey, route, overview, scope, trend, feed, matrix, sessions,
+        const observation = metricObservation(overview, sessions);
+        setSnapshot(previous => {
+          const recent = previous?.key === requestedKey && previous.overview.now <= observation.at
+            ? previous.samples.filter(sample => sample.at >= observation.at - 300_000 && sample.at < observation.at).slice(-59)
+            : [];
+          return { samples: [...recent, observation], key: requestedKey, route, overview, scope, trend, feed, matrix, sessions,
           sessionsMotion: { serial, reason: context.reason, requestEligibility: sessionsEligibility },
-          feedMotion: { serial, reason: context.reason, requestEligibility: feedEligibility } });
+          feedMotion: { serial, reason: context.reason, requestEligibility: feedEligibility } };
+        });
         setError(null);
       }
     } catch (cause) {
@@ -142,11 +172,6 @@ export function ProductionLive() {
   useLiveSelectionMotion(sessionsRegion, dialog, selectedSession ? liveSessionMotionKey(selectedSession.sessionKey) : null, selectionSerial, dataKey, motionEnabled);
   const now = display?.overview.now ?? Date.now();
   const sources = display?.overview.sourceStatus ?? [];
-  const validRecent = (at: number | null) => at !== null && at <= now && now - at <= 300_000;
-  const reporting = sources.filter(source => source.enabled && validRecent(source.last_event_ts)).length;
-  const stale = sources.filter(source => source.enabled && source.limit_samples > 0 && source.last_limit_source_fetched_at !== null
-    && source.last_limit_source_fetched_at <= now && now - source.last_limit_source_fetched_at > 3_600_000).length;
-  const readerErrors = sources.filter(source => source.enabled && source.telemetry.reason === 'reader_error').length;
   const advisories = sources.filter(source => source.enabled && (source.telemetry.gap || source.telemetry.reason === 'reader_error'));
   const number = (value: number) => new Intl.NumberFormat(lang === 'th' ? 'th-TH' : 'en-US').format(value);
   const date = (value: number | null) => value === null ? '—' : new Intl.DateTimeFormat(lang === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }).format(value);
@@ -177,12 +202,8 @@ export function ProductionLive() {
     {error && display && <p className="qp-live-error" role="status">{t('redesign.staleSnapshot')} · {error}</p>}
     {!display ? <section className="qp-live-metrics qp-live-initial-metrics" aria-label={t('redesign.liveHeading')}>{(['redesign.liveRecentSessions', 'redesign.liveReportingSources', 'redesign.liveStaleSources', 'redesign.liveReaderErrors'] as const).map((label, index) => <InitialRegion key={label} id={`live-metric-${index}`} label={t(label)} state={initialState} slots={1}/>)}</section> :
       <section className="qp-live-metrics" aria-label={t('redesign.liveHeading')}>
-        {[
-          [t('redesign.liveRecentSessions'), display.sessions.recentCount],
-          [t('redesign.liveReportingSources'), reporting],
-          [t('redesign.liveStaleSources'), stale],
-          [t('redesign.liveReaderErrors'), readerErrors],
-        ].map(([label, value], index) => <div className="qp-panel" key={label}><i className="qp-live-metric-icon" aria-hidden="true">{index === 0 ? <Activity size={20}/> : index === 1 ? <Radio size={20}/> : index === 2 ? <Clock3 size={20}/> : <AlertTriangle size={20}/>}</i><small>{label}</small><strong>{number(value as number)}</strong></div>)}
+        {(['redesign.liveRecentSessions', 'redesign.liveReportingSources', 'redesign.liveStaleSources', 'redesign.liveReaderErrors'] as const).map((key, index) => <div className="qp-panel" key={key}><i className="qp-live-metric-icon" aria-hidden="true">{index === 0 ? <Activity size={20}/> : index === 1 ? <Radio size={20}/> : index === 2 ? <Clock3 size={20}/> : <AlertTriangle size={20}/>}</i><small>{t(key)}</small><strong>{number(display.samples[display.samples.length - 1]!.counts[index]!)}</strong>
+          <MetricSamples samples={display.samples} index={index} label={t(key) + ' · ' + t('redesign.liveMetricSamples')}/></div>)}
       </section>}
     </section>
     <div className="qp-live-layout">

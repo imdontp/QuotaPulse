@@ -311,6 +311,7 @@ export const th: Record<MessageKey, string> = {
   'redesign.livePause': 'หยุดภาพชั่วคราว',
   'redesign.liveResume': 'กลับสู่ข้อมูลล่าสุด',
   'redesign.livePaused': 'หยุดภาพข้อมูลไว้',
+  'redesign.liveMetricSamples': 'ค่าที่อ่านได้ตอนรีเฟรชในช่วงห้านาทีล่าสุด',
   'redesign.liveRecentSessions': 'เซสชันล่าสุด',
   'redesign.liveReportingSources': 'แหล่งข้อมูลที่รายงาน',
   'redesign.liveStaleSources': 'แหล่งข้อมูลที่ล้าสมัย',
