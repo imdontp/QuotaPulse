@@ -8,4 +8,6 @@ Extract to a dedicated folder on Windows x64 with Node 22.13.1 on PATH. Run ./sc
 
 The [comparison gallery](comparison.html) pairs all eight original concepts with English dark captures at matching viewports using an isolated fixture and reduced motion. Each capture repeated identically. [Capture details](captures.json), [reader checks](readers.json) and [native visibility checks](native.json) are bound to the same ZIP web entry point. The reader test uses synthetic local logs. The native check exercises show, hide, minimize and restore on Windows.
 
-This unsigned review still needs full visual acceptance, production performance evidence, real-account validation and a review277 cross-version rollback check.
+The delivered ZIPs passed upgrade from review271, rollback to review271 and recovery to review277 in one isolated schema 7 profile. Two sessions, three synthetic usage records, pricing, notifications and window settings matched the baseline after every transition. The native dashboard restored Thai, light theme and THB at 37.25. See the [four-stage results](../redesign-v1.85.278/result.json), [verification evidence](../redesign-v1.85.278/evidence.tar.gz) and [temporary runtime cleanup](../redesign-v1.85.278/cleanup.json).
+
+This unsigned review still needs full visual acceptance, production performance evidence and real-account validation.
