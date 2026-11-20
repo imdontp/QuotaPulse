@@ -1,0 +1,131 @@
+{
+  "productionIndexSha256": "b925a4d3feed52ef6b2f52ea9219241fba85be122e699a21d468a35747fbc1d3",
+  "reports": {
+    "minute": {
+      "checks": [
+        "changed-common-bucket",
+        "duplicate-snapshot",
+        "pause-cancels-active",
+        "resume-no-backlog",
+        "fresh-after-resume",
+        "reduced-immediate",
+        "preference-return-no-replay",
+        "fresh-after-preference",
+        "offscreen-immediate",
+        "intersection-return-no-replay",
+        "fresh-after-intersection",
+        "visibility-return-no-replay",
+        "fresh-after-visibility",
+        "changed-maximum-snaps-domain",
+        "scope-change-does-not-borrow"
+      ],
+      "reportSha256": "2c35b7b5f0e64e2f46aaf7640b2bb9242b1f7a0794b953bc5ced6c6df8600e19"
+    },
+    "models-live": {
+      "checks": [
+        "models-initial-static",
+        "models-explicit-row-then-accepted-detail",
+        "models-repeat-current-selection-static",
+        "models-duplicate-refresh-static",
+        "models-reduced-selection-static",
+        "models-search-fallback-static",
+        "models-held-detail-crosses-real-offscreen-return",
+        "models-active-unmount-cancels-native-effects",
+        "live-initial-static",
+        "live-observed-session-and-feed",
+        "live-duplicate-refresh-static",
+        "live-explicit-session-and-native-detail",
+        "live-paused-static",
+        "live-resume-seeds-static",
+        "live-reduced-new-record-static",
+        "live-fresh-after-restoration"
+      ],
+      "reportSha256": "3bbfe9504420b34b3b5f924006e48a8532a8a9faa40e96cf0a1417a00e44ccbb"
+    },
+    "history-alerts": {
+      "checks": [
+        "history-new-observed-presence",
+        "history-selection-survives-duplicate",
+        "history-fresh-after-preference",
+        "alerts-new-risk-and-history"
+      ],
+      "reportSha256": "b4c2a8da32fd4adf2f47ca17ced6e6360c7b368fca11a2d1d5dae757527239e2"
+    },
+    "projects-runtime-providers": {
+      "checks": [
+        "projects-initial-static",
+        "projects-keyboard-card-and-accepted-overview",
+        "projects-existing-accepted-sessions-tab",
+        "projects-real-session-detail-waits-for-accepted-response",
+        "projects-current-card-tab-noop-static",
+        "projects-top-ranking-selects-actual-project",
+        "projects-return-to-overview",
+        "projects-breakdown-selects-existing-metadata",
+        "projects-duplicate-refresh-static",
+        "projects-reduced-selection-static",
+        "providers-initial-static",
+        "providers-keyboard-owner-opens-real-inspector",
+        "providers-same-open-owner-noop-static",
+        "providers-native-summary-reopen-no-selection-replay",
+        "providers-default-owner-closed-to-explicit-open",
+        "providers-comparison-selects-exact-owner",
+        "providers-duplicate-overview-static",
+        "providers-reduced-owner-static",
+        "providers-visible-card-offscreen-detail-not-queued",
+        "providers-offscreen-return-no-replay",
+        "providers-active-unmount-cancels",
+        "runtime-inspector-initial-static",
+        "runtime-keyboard-node-and-actual-detail",
+        "runtime-data-native-disclosure-static",
+        "runtime-native-data-button-and-actual-detail",
+        "runtime-reduced-inspection-static",
+        "runtime-context-change-closes-cancels-foreign-detail"
+      ],
+      "reportSha256": "2ef24cecaa47f90a297d73d6aec7f8fed0d44c687e2e46eb982d89e240122564"
+    },
+    "aggregate": {
+      "checks": [
+        "models-initial-static",
+        "models-new-group-survives-actual-duplicate",
+        "models-existing-offpage-rank-promotion-static",
+        "models-local-filter-restoration-static",
+        "models-exact-new-pair",
+        "models-same-model-distinct-recorded-provider",
+        "models-held-response-crossing-offscreen-epoch-static",
+        "models-first-restored-response-seeds",
+        "models-fresh-after-restoration",
+        "models-reduced-static",
+        "models-preference-restoration-seeds",
+        "models-active-unmount",
+        "projects-initial-static",
+        "projects-new-group-survives-actual-duplicate",
+        "projects-existing-metric-reorder-static",
+        "projects-search-restoration-static",
+        "projects-empty-string-exact-identity",
+        "projects-null-distinct-from-empty",
+        "projects-reduced-static",
+        "projects-preference-restoration-seeds",
+        "projects-explicit-selection-owns-target",
+        "cost-initial-static",
+        "shared-navigation-cost-analysis",
+        "cost-new-model-and-project-survive-actual-duplicate",
+        "cost-existing-offpage-rank-promotion-static",
+        "providers-initial-static",
+        "shared-navigation-providers",
+        "providers-new-owner-survives-actual-duplicate"
+      ],
+      "reportSha256": "44f3937d30360d9d1e5146ee94555baff59915d6b74f04910a35225eb5fe6a7b",
+      "finiteDurationAndSemanticsPassed": true,
+      "visualSamplingComplete": false,
+      "samplingGaps": [
+        {
+          "label": "models-same-model-distinct-recorded-provider",
+          "key": "[\"presence-provider\",\"two\"]",
+          "duration": 180,
+          "kind": "no-near-full-running-RAF-sample",
+          "exactNativeFinish": 180
+        }
+      ]
+    }
+  }
+}
