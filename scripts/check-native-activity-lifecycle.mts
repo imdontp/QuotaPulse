@@ -69,9 +69,14 @@ try{
  const resumed=await snap('actual-native-show-latest-api');assert.ok(resumed.clear>hiddenUpdated.clear);assert.notEqual(resumed.canvas!.pixels,visible.canvas!.pixels);
  await delay(1000);const idleAfterShow=await snap('show-latest-settled-no-replay');assert.equal(idleAfterShow.clear,resumed.clear,'no replay paints after latest settled');assert.ok(idleAfterShow.values.includes(800));
  const nativeMinimized=await windowAction('minimize');assert.equal(nativeMinimized.minimized,true,'OS native minimize independently verified');await wait(()=>document.documentElement.hasAttribute('data-qp-native-hidden'),'native minimize delivered to canvas');const minimized=await snap('actual-native-minimize');
+ const runtimeQueries = () => requests.filter(path => path === '/api/runtime-map').length;
+ const queriesBeforeMinimizedUpdate = runtimeQueries();
  insert.run('minimized-new-call',now,450,450,900);scheduler.emit('data',{newEvents:1,newLimits:0,trigger:'isolated-native-electron-minimize'});
  await evaluate(()=>{(document.querySelector('.qp-tools button') as HTMLElement).click()});await windowAction('resize',1450);const minimizedUpdated=await snap('minimized-actual-SSE-theme-resize');assert.equal(minimizedUpdated.clear,minimized.clear);assert.equal(minimizedUpdated.stroke,minimized.stroke);
+ await delay(1800);
+ assert.equal(runtimeQueries(),queriesBeforeMinimizedUpdate,'Minimized update must defer the Runtime Map query');
  await windowAction('restore');await wait(()=>!document.hidden&&!document.documentElement.hasAttribute('data-qp-native-hidden'),'native restore delivered to canvas');await wait(()=>[...document.querySelectorAll('canvas.qp-activity-sparkline+ol li')].some(e=>Number(e.getAttribute('data-value'))>=1700),'latest1700 actual API bucket');const restored=await snap('actual-native-restore-latest-api');assert.ok(restored.clear>minimizedUpdated.clear);
+ assert.ok(runtimeQueries()>queriesBeforeMinimizedUpdate,'Restoring must refresh the deferred Runtime Map');
  await delay(1000);const idleAfterRestore=await snap('restore-latest-settled-no-replay');assert.equal(idleAfterRestore.clear,restored.clear,'no replay paints after latest settled');assert.ok(idleAfterRestore.values.includes(1700));
  await evaluate(()=>{location.hash='live'});await wait(()=>Boolean(document.querySelector('[data-testid=production-live]')),'actual navigation Live');const navigated=await snap('actual-navigation-unmounted');
  await evaluate(()=>{(document.querySelector('.qp-tools button') as HTMLElement).click()});await windowAction('resize',1400);const cleanup=await snap('post-navigation-theme-resize');assert.equal(cleanup.clear,navigated.clear);assert.equal(cleanup.stroke,navigated.stroke);assert.equal(cleanup.canvas,null,'Activity route must really unmount');

@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from './dashboard-visibility';
 import {
   useEffect,
   useRef,
@@ -89,12 +90,8 @@ interface BatchJob {
 function browserRuntime(): Runtime {
   return {
     now: () => Date.now(),
-    isVisible: () => typeof document === 'undefined' || document.visibilityState !== 'hidden',
-    onVisibility: (listener) => {
-      if (typeof document === 'undefined') return () => undefined;
-      document.addEventListener('visibilitychange', listener);
-      return () => document.removeEventListener('visibilitychange', listener);
-    },
+    isVisible: () => !dashboardHidden(),
+    onVisibility: onDashboardVisibilityChange,
     onOnline: (listener) => {
       if (typeof window === 'undefined') return () => undefined;
       window.addEventListener('online', listener);

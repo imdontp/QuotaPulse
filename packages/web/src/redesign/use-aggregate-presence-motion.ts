@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useLayoutEffect, useRef, type RefObject } from 'react';
 import { AggregatePresenceLedger } from './aggregate-presence-motion';
 import type { LiveRecordBatch } from './live-record-motion';
@@ -32,19 +33,19 @@ export function useAggregatePresenceMotion(region: RefObject<HTMLElement>, ledge
     if (priorContext.current !== options.context) { ledger.suspend(); cancelAll(); }
     priorContext.current = options.context;
     const update = () => {
-      const eligible = options.enabled && !document.hidden && !media.matches && intersection.current === true && !!node && visibleRegion(node);
-      const blocked = document.hidden || media.matches || intersection.current === false
+      const eligible = options.enabled && !dashboardHidden() && !media.matches && intersection.current === true && !!node && visibleRegion(node);
+      const blocked = dashboardHidden() || media.matches || intersection.current === false
         || options.hasSnapshot && !options.enabled || !!node && !visibleRegion(node);
       if (blocked) ledger.suspend(); else ledger.setEligible(eligible);
       if (!eligible) cancelAll();
     };
     const observer = node && typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(([entry]) => { intersection.current = entry.isIntersecting; update(); }) : null;
     if (observer && node) observer.observe(node); else if (node) intersection.current = true;
-    document.addEventListener('visibilitychange', update); media.addEventListener('change', update);
+    const stopVisibility = onDashboardVisibilityChange(update); media.addEventListener('change', update);
     window.addEventListener('scroll', update, true); window.addEventListener('resize', update); update();
     return () => {
       ledger.setEligible(false); cancelAll(); observer?.disconnect();
-      document.removeEventListener('visibilitychange', update); media.removeEventListener('change', update);
+      stopVisibility(); media.removeEventListener('change', update);
       window.removeEventListener('scroll', update, true); window.removeEventListener('resize', update);
     };
   }, [region, ledger, options.enabled, options.hasSnapshot, options.mounted, options.context]);
@@ -54,7 +55,7 @@ export function useAggregatePresenceMotion(region: RefObject<HTMLElement>, ledge
     const node = region.current;
     const explicitKey = options.selectionSerial > consumedSelection.current ? options.selectionKey : null;
     consumedSelection.current = Math.max(consumedSelection.current, options.selectionSerial);
-    const initialVisible = options.enabled && !document.hidden && !matchMedia('(prefers-reduced-motion: reduce)').matches
+    const initialVisible = options.enabled && !dashboardHidden() && !matchMedia('(prefers-reduced-motion: reduce)').matches
       && intersection.current !== false && !!node && visibleRegion(node);
     if (options.batch && !initialVisible) { ledger.suspend(); cancelAll(); }
     if (!options.batch) return;

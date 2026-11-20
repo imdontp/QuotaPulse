@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { RUNTIME_ACTIVITY_WINDOW_MS, type RuntimeGraph } from './model';
 import { RuntimeMotionGate, motionContextKey, type MotionScope, type MotionSignal, type RuntimeMotionBatch, type RuntimeMotionEligibility } from './runtime-motion';
@@ -8,7 +9,7 @@ export function useRuntimeMotion(element: RefObject<HTMLElement>, batch: Runtime
   const timer = useRef<ReturnType<typeof setTimeout>>();
   const context = useRef<string>();
   const [signals, setSignals] = useState<MotionSignal[]>([]);
-  const [conditions, setConditions] = useState({ visible: !document.hidden, intersecting: null as boolean | null, reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches });
+  const [conditions, setConditions] = useState({ visible: !dashboardHidden(), intersecting: null as boolean | null, reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches });
   const cancel = () => { if (timer.current !== undefined) clearTimeout(timer.current); timer.current = undefined; setSignals([]); };
 
   useEffect(() => {
@@ -16,17 +17,17 @@ export function useRuntimeMotion(element: RefObject<HTMLElement>, batch: Runtime
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     let intersecting: boolean | null = node ? null : false;
     const update = () => {
-      eligibility?.update(!document.hidden && intersecting === true, Date.now());
-      if (document.hidden || intersecting === false) cancel();
-      setConditions({ visible: !document.hidden, intersecting, reduced: reduced.matches });
+      eligibility?.update(!dashboardHidden() && intersecting === true, Date.now());
+      if (dashboardHidden() || intersecting === false) cancel();
+      setConditions({ visible: !dashboardHidden(), intersecting, reduced: reduced.matches });
     };
     const observer = node && typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(([entry]) => { intersecting = entry.isIntersecting; update(); }) : null;
     if (observer && node) observer.observe(node);
     else if (node) intersecting = true;
-    document.addEventListener('visibilitychange', update);
+    const stopVisibility = onDashboardVisibilityChange(update);
     reduced.addEventListener('change', update);
     update();
-    return () => { eligibility?.update(false, Date.now()); observer?.disconnect(); document.removeEventListener('visibilitychange', update); reduced.removeEventListener('change', update); if (timer.current !== undefined) clearTimeout(timer.current); timer.current = undefined; gate.current.reset(); };
+    return () => { eligibility?.update(false, Date.now()); observer?.disconnect(); stopVisibility(); reduced.removeEventListener('change', update); if (timer.current !== undefined) clearTimeout(timer.current); timer.current = undefined; gate.current.reset(); };
   }, [element, eligibility]);
 
   useEffect(() => {

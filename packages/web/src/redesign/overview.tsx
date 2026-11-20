@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { Activity, ArrowRight, ArrowUpRight, Box, CircleGauge, Coins, Database, Flame, Folder, GitBranch, History, Layers, Lightbulb, SlidersHorizontal, Sparkles, Star, TrendingUp, X } from 'lucide-react';
 import { VendorIcon } from '@/components/vendor-icon';
@@ -573,12 +574,12 @@ export function Overview({ initialState, quickStatsScope, runwayScopeKey, record
     const node = shell.current;
     if (!node) return;
     let intersecting = false;
-    const update = () => { const visible = !document.hidden && intersecting; node.dataset.paused = String(!visible); setPulseVisible(visible); };
+    const update = () => { const visible = !dashboardHidden() && intersecting; node.dataset.paused = String(!visible); setPulseVisible(visible); };
     const observer = new IntersectionObserver(([entry]) => { intersecting = entry.isIntersecting; update(); });
     observer.observe(node.querySelector('.qp-pulse') ?? node);
-    document.addEventListener('visibilitychange', update);
+    const stopVisibility = onDashboardVisibilityChange(update);
     update();
-    return () => { observer.disconnect(); document.removeEventListener('visibilitychange', update); };
+    return () => { observer.disconnect(); stopVisibility(); };
   }, [initialState?.kind]);
   return <RedesignShell quickStatsScope={initialState ? null : quickStatsScope} active="overview" rootRef={shell} theme={theme} language={language} onLanguage={onLanguage} onTheme={() => onTheme ? onTheme() : setLocalTheme(theme === 'dark' ? 'light' : 'dark')} t={t} preview={preview} testId={preview ? 'redesign-preview' : 'production-overview'}>
         <div className="qp-page-heading"><h1>{t('redesign.title')}</h1><span className="qp-chip">{period ?? new Intl.DateTimeFormat(language === 'th' ? 'th-TH' : 'en-US', { dateStyle: 'medium' }).format(now)}</span></div>

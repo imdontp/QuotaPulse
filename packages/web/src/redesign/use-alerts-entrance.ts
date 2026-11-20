@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useLayoutEffect, useRef, type RefObject } from 'react';
 import { AlertsEntranceLedger, AlertsEntranceAnimations, type AlertsEntranceBatch } from './alerts-entrance';
 
@@ -31,7 +32,7 @@ export function useAlertsEntrance(region: RefObject<HTMLElement>, ledger: Alerts
     const media = matchMedia('(prefers-reduced-motion: reduce)');
     intersecting.current = false;
     const update = () => {
-      const eligible = Boolean(node && intersecting.current && !document.hidden && !media.matches && rowVisible(node));
+      const eligible = Boolean(node && intersecting.current && !dashboardHidden() && !media.matches && rowVisible(node));
       ledger.setEligible(eligible);
       if (!eligible) cancelAll();
       else active.current.prune(rowVisible);
@@ -40,14 +41,14 @@ export function useAlertsEntrance(region: RefObject<HTMLElement>, ledger: Alerts
       ? new IntersectionObserver(([entry]) => { intersecting.current = entry.isIntersecting; update(); }) : null;
     if (node && observer) observer.observe(node);
     else if (node) intersecting.current = true;
-    document.addEventListener('visibilitychange', update);
+    const stopVisibility = onDashboardVisibilityChange(update);
     media.addEventListener('change', update);
     window.addEventListener('scroll', update, true);
     window.addEventListener('resize', update);
     update();
     return () => {
       ledger.setEligible(false); cancelAll(); observer?.disconnect();
-      document.removeEventListener('visibilitychange', update); media.removeEventListener('change', update);
+      stopVisibility(); media.removeEventListener('change', update);
       window.removeEventListener('scroll', update, true); window.removeEventListener('resize', update);
     };
   }, [region, ledger, ready]);
@@ -55,7 +56,7 @@ export function useAlertsEntrance(region: RefObject<HTMLElement>, ledger: Alerts
   useLayoutEffect(() => {
     active.current.prune(rowVisible);
     if (!batch) return;
-    if (document.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches || !region.current || !rowVisible(region.current)) {
+    if (dashboardHidden() || matchMedia('(prefers-reduced-motion: reduce)').matches || !region.current || !rowVisible(region.current)) {
       ledger.setEligible(false); cancelAll();
     }
     const candidates = new Set(ledger.accept(batch, identities));

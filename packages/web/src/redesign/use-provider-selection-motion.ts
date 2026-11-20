@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useLayoutEffect, useRef, type RefObject } from 'react';
 import { useMotionPref } from '../lib/motion';
 import { historyElementVisible, playHistoryTransitions } from './history-motion';
@@ -15,13 +16,13 @@ export function useProviderSelectionMotion(opener: RefObject<HTMLElement | null>
   useLayoutEffect(() => {
     const media = matchMedia('(prefers-reduced-motion: reduce)');
     const update = () => {
-      suspended.current = document.hidden || media.matches;
+      suspended.current = dashboardHidden() || media.matches;
       if (suspended.current) { state.current = cancelModelSelectionMotion(state.current, serial.current); cancel.current(); }
     };
-    document.addEventListener('visibilitychange', update); media.addEventListener('change', update); update();
+    const stopVisibility = onDashboardVisibilityChange(update); media.addEventListener('change', update); update();
     return () => {
       cancel.current(); state.current = cancelModelSelectionMotion(state.current, serial.current);
-      document.removeEventListener('visibilitychange', update); media.removeEventListener('change', update);
+      stopVisibility(); media.removeEventListener('change', update);
     };
   }, []);
   useLayoutEffect(() => {
@@ -30,7 +31,7 @@ export function useProviderSelectionMotion(opener: RefObject<HTMLElement | null>
     const panel = detail.current;
     const decision = observeModelSelectionMotion(state.current, {
       contextKey: context, selectedKey: key, detailKey: open ? key : null, acceptedDetailKey: open && enabled ? key : null,
-      intent, enabled: enabled && !preference.reduced && !suspended.current && !document.hidden, failed: false,
+      intent, enabled: enabled && !preference.reduced && !suspended.current && !dashboardHidden(), failed: false,
       rowVisible: !!trigger && historyElementVisible(trigger, trigger.closest('main')),
       detailVisible: open && !!panel && historyElementVisible(panel, panel.closest('main')),
     });

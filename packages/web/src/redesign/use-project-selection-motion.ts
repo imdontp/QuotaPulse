@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useLayoutEffect, useRef, type RefObject } from 'react';
 import { useMotionPref } from '../lib/motion';
 import { historyElementVisible, playHistoryTransitions } from './history-motion';
@@ -19,17 +20,17 @@ export function useProjectSelectionMotion(opener: RefObject<HTMLButtonElement>, 
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     const consume = () => { state.current = { ...cancelModelSelectionMotion(state.current, latestSerial.current), offset: state.current.offset }; };
     const update = () => {
-      suspended.current = document.hidden || media.matches;
+      suspended.current = dashboardHidden() || media.matches;
       if (suspended.current) { consume(); cancelOpener.current(); cancelDetail.current(); }
     };
     const observer = detail.current && typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) { consume(); cancelDetail.current(); }
     }) : null;
     if (observer && detail.current) observer.observe(detail.current);
-    document.addEventListener('visibilitychange', update); media.addEventListener('change', update); update();
+    const stopVisibility = onDashboardVisibilityChange(update); media.addEventListener('change', update); update();
     return () => {
       consume(); cancelOpener.current(); cancelDetail.current(); observer?.disconnect();
-      document.removeEventListener('visibilitychange', update); media.removeEventListener('change', update);
+      stopVisibility(); media.removeEventListener('change', update);
     };
   }, [detail, options.detailMounted]);
 
@@ -38,7 +39,7 @@ export function useProjectSelectionMotion(opener: RefObject<HTMLButtonElement>, 
     const actualOpener = options.intent?.kind === 'project' && target?.isConnected
       && target.dataset.projectSelectionOpener === options.intent.openerKey ? target : null;
     const decision = observeProjectSelectionMotion(state.current, { ...options,
-      enabled: options.enabled && !preference.reduced && !suspended.current && !document.hidden,
+      enabled: options.enabled && !preference.reduced && !suspended.current && !dashboardHidden(),
       rowVisible: !!actualOpener && historyElementVisible(actualOpener),
       detailVisible: !!detail.current && historyElementVisible(detail.current) });
     state.current = decision.state;

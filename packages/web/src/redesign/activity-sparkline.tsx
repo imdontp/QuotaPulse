@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useId, useLayoutEffect, useRef, type PointerEvent } from 'react';
 
 interface ActivityPoint {
@@ -28,7 +29,7 @@ export function ActivitySparkline({ points, label, language }: {
     let intersecting = true;
 
     const draw = () => {
-      if (disposed || !canvas.isConnected || document.hidden || document.documentElement.hasAttribute('data-qp-native-hidden') || !intersecting) return;
+      if (disposed || !canvas.isConnected || dashboardHidden() || !intersecting) return;
       const rectangle = canvas.getBoundingClientRect();
       if (rectangle.width <= 0 || rectangle.height <= 0 || rectangle.bottom <= 0 || rectangle.top >= window.innerHeight || rectangle.right <= 0 || rectangle.left >= window.innerWidth) return;
       const width = rectangle.width;
@@ -113,8 +114,7 @@ export function ActivitySparkline({ points, label, language }: {
       if (intersecting) draw();
     });
     intersectionObserver?.observe(canvas);
-    document.addEventListener('visibilitychange', draw);
-    document.addEventListener('qp-dashboard-visibility', draw);
+    const stopVisibility = onDashboardVisibilityChange(draw);
     // Older embedded browsers still resume charts when scrolling back into view.
     if (!intersectionObserver) window.addEventListener('scroll', draw, true);
     const resizeObserver = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(draw);
@@ -141,8 +141,7 @@ export function ActivitySparkline({ points, label, language }: {
     return () => {
       disposed = true;
       intersectionObserver?.disconnect();
-      document.removeEventListener('visibilitychange', draw);
-      document.removeEventListener('qp-dashboard-visibility', draw);
+      stopVisibility();
       if (!intersectionObserver) window.removeEventListener('scroll', draw, true);
       resizeObserver?.disconnect();
       themeObserver?.disconnect();

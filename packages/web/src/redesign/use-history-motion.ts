@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useEffect, useLayoutEffect, useRef, type RefObject } from 'react';
 import { useMotionPref } from '../lib/motion';
 import type { UsageEventsResponse } from '../lib/usage-events';
@@ -19,19 +20,19 @@ export function useHistoryMotion(table: RefObject<HTMLDivElement>, detailRegion:
   useLayoutEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     const update = () => {
-      suspended.current = document.hidden || media.matches;
+      suspended.current = dashboardHidden() || media.matches;
       if (suspended.current) { cancelRows.current(); cancelDetail.current(); skipNextSnapshot.current = true; }
     };
     const observer = table.current && typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) { cancelRows.current(); skipNextSnapshot.current = true; }
     }) : null;
     if (observer && table.current) observer.observe(table.current);
-    document.addEventListener('visibilitychange', update);
+    const stopVisibility = onDashboardVisibilityChange(update);
     media.addEventListener('change', update);
     update();
     return () => {
       cancelRows.current(); cancelDetail.current(); observer?.disconnect();
-      document.removeEventListener('visibilitychange', update);
+      stopVisibility();
       media.removeEventListener('change', update);
     };
   }, [table, detailRegion, hasSnapshot, hasSelection]);
@@ -40,7 +41,7 @@ export function useHistoryMotion(table: RefObject<HTMLDivElement>, detailRegion:
   useEffect(() => {
     const contextChanged = previous.current !== undefined && previous.current.context !== context;
     const fresh = accepted.current !== snapshot;
-    const ready = enabled && !preference.reduced && !suspended.current && !document.hidden;
+    const ready = enabled && !preference.reduced && !suspended.current && !dashboardHidden();
     if (!ready || contextChanged || context !== acceptedContext) {
       cancelRows.current(); cancelDetail.current();
       if (!ready) skipNextSnapshot.current = true;

@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useId, useLayoutEffect, useMemo, useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react';
 import { useMotionPref } from '@/lib/motion';
 import { minuteFlowTransitions, playMinuteFlowTransitions, type MinuteFlowSnapshot } from './live-token-flow-motion';
@@ -55,24 +56,24 @@ export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDe
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     intersection.current = null;
     const update = () => {
-      visible.current = !document.hidden && intersection.current === true && !media.matches;
+      visible.current = !dashboardHidden() && intersection.current === true && !media.matches;
       if (!visible.current) {
         cancel.current();
-        if (document.hidden || media.matches || intersection.current === false) skipNextSnapshot.current = true;
+        if (dashboardHidden() || media.matches || intersection.current === false) skipNextSnapshot.current = true;
       }
     };
     const observer = node && typeof IntersectionObserver !== 'undefined'
       ? new IntersectionObserver(([entry]) => { intersection.current = entry.isIntersecting; update(); }) : null;
     if (observer && node) observer.observe(node);
     else if (node) intersection.current = true;
-    document.addEventListener('visibilitychange', update);
+    const stopVisibility = onDashboardVisibilityChange(update);
     media.addEventListener('change', update);
     update();
     return () => {
       visible.current = false;
       cancel.current();
       observer?.disconnect();
-      document.removeEventListener('visibilitychange', update);
+      stopVisibility();
       media.removeEventListener('change', update);
     };
   }, []);
@@ -82,7 +83,7 @@ export function LiveTokenFlow({ data, language, t, showLegend = true, excludedDe
     // Preference, locale and pause changes can cancel but cannot start a prior snapshot.
     const fresh = accepted.current !== data;
     const enabled = !frozen && visible.current && !motion.reduced;
-    if (frozen || motion.reduced || document.hidden || intersection.current === false) skipNextSnapshot.current = true;
+    if (frozen || motion.reduced || dashboardHidden() || intersection.current === false) skipNextSnapshot.current = true;
     const changes = fresh && enabled && !skipNextSnapshot.current ? minuteFlowTransitions(previous.current, next) : [];
     if (fresh && enabled) skipNextSnapshot.current = false;
     accepted.current = data;

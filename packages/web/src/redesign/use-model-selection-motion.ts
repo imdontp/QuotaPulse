@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useLayoutEffect, useRef, type RefObject } from 'react';
 import { useMotionPref } from '../lib/motion';
 import { historyElementVisible, playHistoryTransitions } from './history-motion';
@@ -18,7 +19,7 @@ export function useModelSelectionMotion(rows: RefObject<HTMLDivElement>, detail:
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     const consume = () => { state.current = cancelModelSelectionMotion(state.current, latestSerial.current); };
     const update = () => {
-      suspended.current = document.hidden || media.matches;
+      suspended.current = dashboardHidden() || media.matches;
       if (suspended.current) { consume(); cancelRows.current(); cancelDetail.current(); }
     };
     const observer = typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(entries => {
@@ -29,12 +30,12 @@ export function useModelSelectionMotion(rows: RefObject<HTMLDivElement>, detail:
     }) : null;
     if (rows.current) observer?.observe(rows.current);
     if (detail.current) observer?.observe(detail.current);
-    document.addEventListener('visibilitychange', update);
+    const stopVisibility = onDashboardVisibilityChange(update);
     media.addEventListener('change', update);
     update();
     return () => {
       consume(); cancelRows.current(); cancelDetail.current(); observer?.disconnect();
-      document.removeEventListener('visibilitychange', update);
+      stopVisibility();
       media.removeEventListener('change', update);
     };
   }, [rows, detail, options.rowsMounted]);
@@ -43,7 +44,7 @@ export function useModelSelectionMotion(rows: RefObject<HTMLDivElement>, detail:
     const row = Array.from(rows.current?.querySelectorAll<HTMLElement>('[data-model-pair-key]') ?? [])
       .find(element => element.dataset.modelPairKey === options.selectedKey);
     const decision = observeModelSelectionMotion(state.current, { ...options,
-      enabled: options.enabled && !preference.reduced && !suspended.current && !document.hidden,
+      enabled: options.enabled && !preference.reduced && !suspended.current && !dashboardHidden(),
       rowVisible: !!row && historyElementVisible(row, rows.current),
       detailVisible: !!detail.current && historyElementVisible(detail.current) });
     state.current = decision.state;

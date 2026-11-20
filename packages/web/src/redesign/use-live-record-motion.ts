@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useEffect, useLayoutEffect, useRef, type RefObject } from 'react';
 import { historyElementVisible, playHistoryTransitions } from './history-motion';
 import { LivePresenceLedger, changedLiveSelection, type LiveRecordBatch, type LiveSelection } from './live-record-motion';
@@ -23,23 +24,23 @@ export function useLivePresenceMotion(region: RefObject<HTMLElement>, ledger: Li
     const media = matchMedia('(prefers-reduced-motion: reduce)');
     intersection.current = null;
     const update = () => {
-      const eligible = enabled && !document.hidden && !media.matches && intersection.current === true && !!node && visibleRegion(node);
-      const blocked = document.hidden || media.matches || intersection.current === false || hasSnapshot && !enabled || !!node && !visibleRegion(node);
+      const eligible = enabled && !dashboardHidden() && !media.matches && intersection.current === true && !!node && visibleRegion(node);
+      const blocked = dashboardHidden() || media.matches || intersection.current === false || hasSnapshot && !enabled || !!node && !visibleRegion(node);
       if (blocked) ledger.suspend(); else ledger.setEligible(eligible);
       if (!eligible) cancel.current();
     };
     const observer = node && typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(([entry]) => { intersection.current = entry.isIntersecting; update(); }) : null;
     if (observer && node) observer.observe(node); else if (node) intersection.current = true;
-    document.addEventListener('visibilitychange', update); media.addEventListener('change', update);
+    const stopVisibility = onDashboardVisibilityChange(update); media.addEventListener('change', update);
     window.addEventListener('scroll', update, true); window.addEventListener('resize', update); update();
     return () => {
       ledger.setEligible(false); cancel.current(); observer?.disconnect();
-      document.removeEventListener('visibilitychange', update); media.removeEventListener('change', update);
+      stopVisibility(); media.removeEventListener('change', update);
       window.removeEventListener('scroll', update, true); window.removeEventListener('resize', update);
     };
   }, [region, ledger, enabled, hasSnapshot]);
   useEffect(() => {
-    const initialVisible = enabled && !document.hidden && !matchMedia('(prefers-reduced-motion: reduce)').matches
+    const initialVisible = enabled && !dashboardHidden() && !matchMedia('(prefers-reduced-motion: reduce)').matches
       && intersection.current !== false && !!region.current && visibleRegion(region.current);
     if (batch && !initialVisible) {
       ledger.suspend(); cancel.current();
@@ -60,14 +61,14 @@ export function useLiveSelectionMotion(region: RefObject<HTMLElement>, dialog: R
   const cancel = useRef<() => void>(() => {});
   useLayoutEffect(() => {
     const media = matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => { if (document.hidden || media.matches) cancel.current(); };
-    document.addEventListener('visibilitychange', update); media.addEventListener('change', update);
-    return () => { cancel.current(); document.removeEventListener('visibilitychange', update); media.removeEventListener('change', update); };
+    const update = () => { if (dashboardHidden() || media.matches) cancel.current(); };
+    const stopVisibility = onDashboardVisibilityChange(update); media.addEventListener('change', update);
+    return () => { cancel.current(); stopVisibility(); media.removeEventListener('change', update); };
   }, []);
   useEffect(() => {
     const before = previous.current;
     previous.current = { key: selectedKey, serial: selectionSerial, context };
-    if (!enabled || !selectedKey || context !== before.context || document.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches) { cancel.current(); return; }
+    if (!enabled || !selectedKey || context !== before.context || dashboardHidden() || matchMedia('(prefers-reduced-motion: reduce)').matches) { cancel.current(); return; }
     if (!changedLiveSelection(before, previous.current)) return;
     const clip = region.current?.querySelector<HTMLElement>('.qp-live-table');
     const row = Array.from(region.current?.querySelectorAll<HTMLElement>('[data-live-session]') ?? []).find(node => node.getAttribute('data-live-session') === selectedKey);

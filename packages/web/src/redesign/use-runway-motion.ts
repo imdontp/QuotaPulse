@@ -1,3 +1,4 @@
+import { dashboardHidden, onDashboardVisibilityChange } from '../lib/dashboard-visibility';
 import { useLayoutEffect, useRef, type RefObject } from 'react';
 import { useMotionPref } from '../lib/motion';
 import type { QuotaWindow } from './model';
@@ -23,24 +24,24 @@ export function useRunwayMotion(region: RefObject<HTMLElement>, quota: QuotaWind
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     intersection.current = null;
     const update = () => {
-      visible.current = !document.hidden && intersection.current === true && !media.matches;
+      visible.current = !dashboardHidden() && intersection.current === true && !media.matches;
       if (!visible.current) {
         cancel.current();
-        if (document.hidden || media.matches || intersection.current === false) skipNextSample.current = true;
+        if (dashboardHidden() || media.matches || intersection.current === false) skipNextSample.current = true;
       }
     };
     const observer = node && typeof IntersectionObserver !== 'undefined'
       ? new IntersectionObserver(([entry]) => { intersection.current = entry.isIntersecting; update(); }) : null;
     if (observer && node) observer.observe(node);
     else if (node) intersection.current = true;
-    document.addEventListener('visibilitychange', update);
+    const stopVisibility = onDashboardVisibilityChange(update);
     media.addEventListener('change', update);
     update();
     return () => {
       visible.current = false;
       cancel.current();
       observer?.disconnect();
-      document.removeEventListener('visibilitychange', update);
+      stopVisibility();
       media.removeEventListener('change', update);
     };
   }, [region]);
@@ -52,7 +53,7 @@ export function useRunwayMotion(region: RefObject<HTMLElement>, quota: QuotaWind
     const freshSample = presentation.kind === 'fresh' && (previous?.kind !== 'fresh'
       || previous.contextKey !== presentation.contextKey || previous.sampleKey !== presentation.sampleKey);
     const enabled = !frozen && visible.current && !preference.reduced;
-    if (frozen || preference.reduced || document.hidden || intersection.current === false) skipNextSample.current = true;
+    if (frozen || preference.reduced || dashboardHidden() || intersection.current === false) skipNextSample.current = true;
     const change = enabled && !skipNextSample.current ? runwayTransition(previous, presentation) : null;
     if (freshSample && enabled) skipNextSample.current = false;
     committed.current = presentation;
