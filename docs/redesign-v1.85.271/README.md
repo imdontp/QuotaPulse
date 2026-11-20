@@ -1,4 +1,4 @@
-﻿# Windows review271
+# Windows review271
 
 Review271 includes the Overview single-observation marker, desktop Runtime Map legend and native dashboard visibility changes through commit 118a4b3a882ddb0c52ca31458800dab3a72c879c. The version tag is redesign-native-review-v1.85.271. The [comparison gallery](comparison.html) pairs all eight English dark dashboard screens with their original concepts at matching viewport sizes. The fixture data and reduced motion are specific to those captures.
 
@@ -6,5 +6,5 @@ The delivered ZIP is tmp/releases/QuotaPulse-v1.85.270-review271.zip in the main
 
 Extract into a dedicated folder on Windows x64 with Node 22.13.1 on PATH. Open PowerShell there and run ./scripts/start-review.ps1, then open the dashboard from the review tray icon. Stop with ./scripts/stop-review.ps1. To collect actual local harness logs, start again with ./scripts/start-review.ps1 -EnableReaders. The portable launcher stores data in review-data under the extracted folder.
 
-This unsigned review remains under evaluation. Cross-version rollback to review262, real-account behavior, production performance and full concept acceptance require separate evidence.
+This unsigned review remains under evaluation. Upgrade from review262, rollback and recovery passed in one isolated schema 7 profile. All four stages preserved the synthetic records and settings. See the [stage results](../redesign-v1.85.272/result.json) and [verification receipts](../redesign-v1.85.272/evidence.tar.gz). Real-account behavior, production performance and full concept acceptance remain open. See the [visual comparison findings](visual-triage.md).
 The [native lifecycle test](native.json) used Electron, main, preload and web assets from the same ZIP extraction. Activity painting and the Runtime Map refresh stayed suspended during minimization. Restore displayed the latest synthetic data and the owned process terminated successfully.
