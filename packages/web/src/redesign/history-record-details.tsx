@@ -7,10 +7,11 @@ import { VendorIcon } from '@/components/vendor-icon';
 import { ProviderMark } from './provider-mark';
 
 /** Render recorded, allowlisted metadata; never request prompt or source payloads. */
-export function HistoryRecordDetails({ row, harnessVendor, basis, date }: { row: UsageEventRow; harnessVendor?: string; basis: string; date: string }) {
+export function HistoryRecordDetails({ row, harnessVendor, basis, date, asOf }: { asOf?: number; row: UsageEventRow; harnessVendor?: string; basis: string; date: string }) {
   const t = useT();
   const f = useFormat();
   const { lang } = useI18n();
+  const ageSeconds = asOf !== undefined && asOf >= row.timestamp_ms ? (asOf - row.timestamp_ms) / 1000 : null;
   const unknown = t('redesign.unknownValue');
   const count = (value: number) => value.toLocaleString(lang, { maximumFractionDigits: 20 });
   const groups = [
@@ -38,7 +39,7 @@ export function HistoryRecordDetails({ row, harnessVendor, basis, date }: { row:
       <dl className="qp-history-detail-record-meta">
         <div data-field="1"><dt>{t('history.kind')}</dt><dd className="qp-history-record-kind">{t(`history.${row.grain}`)}</dd></div>
         <div data-field="7"><dt>{t('col.calls')}</dt><dd title={count(row.call_count)} aria-label={String(row.call_count)}>{count(row.call_count)}</dd></div>
-        <div data-field="0"><dt>{t('history.recordedAt')}</dt><dd><time dateTime={new Date(row.timestamp_ms).toISOString()}>{date}</time></dd></div>
+        <div data-field="0"><dt>{t('history.recordedAt')}</dt><dd><time dateTime={new Date(row.timestamp_ms).toISOString()}>{date}</time>{ageSeconds !== null && <small>{t('health.ago', { age: f.age(ageSeconds) })}</small>}</dd></div>
       </dl>
       <dl className="qp-history-detail-identities">
         <div data-field="2" className="qp-history-detail-identity"><i aria-hidden="true"><Folder size={21}/></i><dt>{t('col.project')}</dt><dd>{row.project ?? t('redesign.unassigned')}</dd></div>

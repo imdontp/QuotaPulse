@@ -138,6 +138,8 @@
 .qp-history-detail-record-meta [data-field="7"] { display:flex; align-items:center; justify-content:flex-end; gap:6px; }
 .qp-history-detail-record-meta [data-field="7"] dd { font-variant-numeric:tabular-nums; }
 .qp-history-detail-record-meta [data-field="0"] { grid-column:1/-1; }
+.qp-history-detail-record-meta [data-field="0"] dd { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:2px 8px; }
+.qp-history-detail-record-meta [data-field="0"] small { color:var(--qp-muted); font-size:11px; font-weight:400; }
 .qp-history-detail-groups .qp-history-detail-identities { grid-template-columns:minmax(0,1fr); gap:10px; margin-top:12px; }
 .qp-history-detail-identity { display:grid; grid-template-columns:38px minmax(0,1fr); column-gap:10px; align-items:center; }
 .qp-history-detail-identity>i { grid-column:1; grid-row:1/3; display:grid; place-items:center; width:38px; height:38px; border:1px solid var(--qp-border); border-radius:10px; color:var(--qp-accent); background:color-mix(in srgb,var(--qp-accent) 6%,var(--qp-panel)); }

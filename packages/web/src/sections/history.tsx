@@ -286,7 +286,7 @@ export function HistorySection({ sources, harnesses = [], redesign = false, onSc
     }}>
       <div className="qp-history-detail-heading"><h2 id="history-detail-title">{t('history.detail')} <span>#{selected.event_id}</span></h2><Button className="qp-history-detail-close" variant="ghost" size="icon" aria-label={t('history.close')} title={t('history.close')} onClick={closeRail}><X size={16} aria-hidden="true"/></Button></div>
       {historySelectionOutsidePage(selection, snapshot) && <p className="qp-history-detail-outside" data-testid="history-selection-outside-page" role="status">{t('history.selectionOutsidePage')}</p>}
-      <HistoryRecordDetails row={selected} harnessVendor={harnessVendor(selected)} basis={basis(selected)} date={date(selected.timestamp_ms)}/>
+      <HistoryRecordDetails asOf={snapshot?.now} row={selected} harnessVendor={harnessVendor(selected)} basis={basis(selected)} date={date(selected.timestamp_ms)}/>
       <section className="qp-history-detail-actions" aria-label={t('history.relatedRecords')}><h3>{t('history.relatedRecords')}</h3><Button onClick={() => void copyMetadata()}>{t('history.copyMetadata')}</Button>{copyState !== 'idle' && <span role="status">{t(copyState === 'copied' ? 'history.copied' : 'history.copyFailed')}</span>}{relatedSession && <a className="underline" href={relatedSession} onClick={() => setSelection(null)}>{t('history.relatedSession')}</a>}</section>
     </aside>}
     {!redesign && <dialog ref={dialog} onClose={() => { setSelection(null); returnFocus.current?.focus(); }} aria-labelledby="history-detail-title" className="m-auto max-h-[85vh] w-[min(640px,92vw)] overflow-auto rounded-xl border bg-background p-5 text-foreground backdrop:bg-black/60">
