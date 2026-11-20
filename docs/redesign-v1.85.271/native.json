@@ -1,0 +1,113 @@
+﻿{
+    "status":  "passed",
+    "visibilityMode":  "actual native BrowserWindow show/hide/minimize/restore; no Playwright/CDP/visibility emulation/background flags",
+    "indexSha256":  "fcb7b15213b0153f21f0aef029f54dd4aaa91e5529c97ee1373699c376de48bd",
+    "dashboardPreloadSha256":  "1f8e90246390539b19c41576e416aadf159cb64d740d4ac0437b6b79875fbf62",
+    "mainSha256":  "3930479767fbe3958fc4cd63728dde89864cc8832de79e8a34f646a0211e146c",
+    "processTerminal":  {
+                            "pid":  36284,
+                            "code":  0,
+                            "signal":  null
+                        },
+    "limitations":  [
+                        "actual compiled production main/preload/web; native window visible on current desktop during this test",
+                        "synthetic in-memory daemon, adapters disabled, isolated profile; not physical tray input",
+                        "paint operations and accepted buckets; not CPU benchmark or exhaustive listener/timer leak coverage",
+                        "hidden refresh may defer by production coordinator; latest asserted after real resume API completion; no replay means settled latest has no further paints during observed idle window",
+                        "taskbar option remains actual unmodified production main; Electron has no skipTaskbar getter",
+                        "theme click and navigation use renderer DOM; native state uses BrowserWindow directly"
+                    ],
+    "stages":  {
+                   "value":  [
+                                 {
+                                     "name":  "visible-actual-theme",
+                                     "requests":  75,
+                                     "clear":  7,
+                                     "stroke":  7,
+                                     "minimized":  false,
+                                     "hidden":  false
+                                 },
+                                 {
+                                     "name":  "actual-native-hide",
+                                     "requests":  75,
+                                     "clear":  8,
+                                     "stroke":  8,
+                                     "minimized":  false,
+                                     "hidden":  true
+                                 },
+                                 {
+                                     "name":  "hidden-actual-SSE-theme-resize",
+                                     "requests":  76,
+                                     "clear":  8,
+                                     "stroke":  8,
+                                     "minimized":  false,
+                                     "hidden":  true
+                                 },
+                                 {
+                                     "name":  "actual-native-show-latest-api",
+                                     "requests":  88,
+                                     "clear":  19,
+                                     "stroke":  19,
+                                     "minimized":  false,
+                                     "hidden":  false
+                                 },
+                                 {
+                                     "name":  "show-latest-settled-no-replay",
+                                     "requests":  88,
+                                     "clear":  19,
+                                     "stroke":  19,
+                                     "minimized":  false,
+                                     "hidden":  false
+                                 },
+                                 {
+                                     "name":  "actual-native-minimize",
+                                     "requests":  88,
+                                     "clear":  19,
+                                     "stroke":  19,
+                                     "minimized":  true,
+                                     "hidden":  true
+                                 },
+                                 {
+                                     "name":  "minimized-actual-SSE-theme-resize",
+                                     "requests":  88,
+                                     "clear":  19,
+                                     "stroke":  19,
+                                     "minimized":  true,
+                                     "hidden":  true
+                                 },
+                                 {
+                                     "name":  "actual-native-restore-latest-api",
+                                     "requests":  100,
+                                     "clear":  31,
+                                     "stroke":  31,
+                                     "minimized":  false,
+                                     "hidden":  false
+                                 },
+                                 {
+                                     "name":  "restore-latest-settled-no-replay",
+                                     "requests":  100,
+                                     "clear":  31,
+                                     "stroke":  31,
+                                     "minimized":  false,
+                                     "hidden":  false
+                                 },
+                                 {
+                                     "name":  "actual-navigation-unmounted",
+                                     "requests":  108,
+                                     "clear":  31,
+                                     "stroke":  31,
+                                     "minimized":  false,
+                                     "hidden":  false
+                                 },
+                                 {
+                                     "name":  "post-navigation-theme-resize",
+                                     "requests":  108,
+                                     "clear":  31,
+                                     "stroke":  31,
+                                     "minimized":  false,
+                                     "hidden":  false
+                                 }
+                             ],
+                   "Count":  11
+               }
+}
