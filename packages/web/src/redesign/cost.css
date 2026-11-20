@@ -376,3 +376,34 @@
   .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-sessions .qp-section-heading-title { transform:translate(4px,-5px); }
   .qp-redesign[data-testid=production-cost][data-theme=dark][lang=en] .qp-cost-insights .qp-section-heading-title { transform:translate(11px,-3px); }
 }
+
+.qp-cost-currency-mark {
+  display:grid;
+  place-items:center;
+  width:21px;
+  height:21px;
+  border-radius:50%;
+  background:var(--qp-success);
+  color:var(--qp-panel);
+  font:700 16px/1 var(--font-sans, sans-serif);
+}
+
+@media(min-width:1536px) {
+  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-currency-mark {
+    transform:translate(-3px,-1px);
+    background:#02ecb1;
+    color:#053832;
+  }
+  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-summary article:nth-child(2) .qp-cost-metric-icon svg {
+    transform:translate(-2px,-1px);
+    color:#31aff4;
+  }
+  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-summary article:nth-child(3) .qp-cost-metric-icon svg {
+    transform:translate(1px,-1px);
+    color:#bc65f5;
+  }
+  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-summary article:nth-child(4) .qp-cost-metric-icon svg {
+    transform:translate(2px,-1px);
+    color:#e9a755;
+  }
+}
