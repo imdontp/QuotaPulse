@@ -2680,6 +2680,17 @@ function createDashboardWindow(): void {
   dashboardRecoveryAttempts = 0;
   dashboardRecoveryInFlight = false;
   dashboardRendererReady = false;
+  const dashboard = popup;
+  const publishVisibility = () => {
+    if (!dashboard.isDestroyed() && !dashboard.webContents.isDestroyed()) {
+      dashboard.webContents.send('qp-dashboard-visibility', dashboard.isVisible() && !dashboard.isMinimized());
+    }
+  };
+  dashboard.on('show', publishVisibility);
+  dashboard.on('hide', publishVisibility);
+  dashboard.on('minimize', publishVisibility);
+  dashboard.on('restore', publishVisibility);
+  dashboard.webContents.on('dom-ready', publishVisibility);
   popup.webContents.on('did-fail-load', (_event, errorCode, description, _url, isMainFrame) => {
     if (!isMainFrame || errorCode === -3) return;
     dashboardRecoveryInFlight = false;
