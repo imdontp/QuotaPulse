@@ -1,0 +1,441 @@
+{
+  "productionIndexSha256": "b925a4d3feed52ef6b2f52ea9219241fba85be122e699a21d468a35747fbc1d3",
+  "browser": "157.0.8103.79",
+  "fixture": "Synthetic memory DB with actual compiled API/SSE, no native lifecycle claim",
+  "stages": [
+    {
+      "label": "same-period420",
+      "before": {
+        "left": "5.38321%",
+        "x": 38.875,
+        "width": 724.1875,
+        "projected": "1747489762500",
+        "reset": "1747497540000"
+      },
+      "samples": [
+        {
+          "ms": 1.7000000178813934,
+          "x": 38.875,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": 0,
+              "state": "running"
+            },
+            {
+              "time": 0,
+              "state": "running"
+            },
+            {
+              "time": 0,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 23.80000001192093,
+          "x": 36.9375,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": 33.40000000000032,
+              "state": "running"
+            },
+            {
+              "time": 33.40000000000032,
+              "state": "running"
+            },
+            {
+              "time": 33.40000000000032,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 110.5,
+          "x": 34.125,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": 116.80000000000047,
+              "state": "running"
+            },
+            {
+              "time": 116.80000000000047,
+              "state": "running"
+            },
+            {
+              "time": 116.80000000000047,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 161.2000000178814,
+          "x": 33.4844,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": 166.8000000000003,
+              "state": "running"
+            },
+            {
+              "time": 166.8000000000003,
+              "state": "running"
+            },
+            {
+              "time": 166.8000000000003,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 228.59999999403954,
+          "x": 33.125,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": 233.30000000000072,
+              "state": "running"
+            },
+            {
+              "time": 233.30000000000072,
+              "state": "running"
+            },
+            {
+              "time": 233.30000000000072,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 284,
+          "x": 33.0312,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": 283.4000000000003,
+              "state": "running"
+            },
+            {
+              "time": 283.4000000000003,
+              "state": "running"
+            },
+            {
+              "time": 283.4000000000003,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 339,
+          "x": 32.9844,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": 333.40000000000015,
+              "state": "running"
+            },
+            {
+              "time": 333.40000000000015,
+              "state": "running"
+            },
+            {
+              "time": 333.40000000000015,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 406.90000000596046,
+          "x": 32.9844,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": 400.10000000000014,
+              "state": "running"
+            },
+            {
+              "time": 400.10000000000014,
+              "state": "running"
+            },
+            {
+              "time": 400.10000000000014,
+              "state": "running"
+            }
+          ]
+        },
+        {
+          "ms": 468.59999999403954,
+          "x": 32.9844,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 518.2000000178814,
+          "x": 32.9844,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 574.5,
+          "x": 32.9844,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 590,
+          "x": 32.9844,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 607.0999999940395,
+          "x": 32.9844,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 624.0999999940395,
+          "x": 32.9844,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 640.5999999940395,
+          "x": 32.9844,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        },
+        {
+          "ms": 657.9000000059605,
+          "x": 32.9844,
+          "base": "4.56757%",
+          "width": 724.1875,
+          "timelines": [
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            },
+            {
+              "time": null,
+              "state": "idle"
+            }
+          ]
+        }
+      ],
+      "animations": [
+        {
+          "element": "qp-runway-fill",
+          "keyframes": [
+            {
+              "width": "5.383211678832116%"
+            },
+            {
+              "width": "4.567573545135721%"
+            }
+          ],
+          "options": {
+            "duration": 420,
+            "easing": "cubic-bezier(0.22,1,0.36,1)",
+            "iterations": 1,
+            "fill": "none"
+          },
+          "state": "idle"
+        },
+        {
+          "element": "qp-runway-risk",
+          "keyframes": [
+            {
+              "left": "5.383211678832116%"
+            },
+            {
+              "left": "4.567573545135721%"
+            }
+          ],
+          "options": {
+            "duration": 420,
+            "easing": "cubic-bezier(0.22,1,0.36,1)",
+            "iterations": 1,
+            "fill": "none"
+          },
+          "state": "idle"
+        },
+        {
+          "element": "qp-runway-marker",
+          "keyframes": [
+            {
+              "left": "5.383211678832116%"
+            },
+            {
+              "left": "4.567573545135721%"
+            }
+          ],
+          "options": {
+            "duration": 420,
+            "easing": "cubic-bezier(0.22,1,0.36,1)",
+            "iterations": 1,
+            "fill": "none"
+          },
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "label": "automatic-default-loss-stale-frozen",
+      "frozen": {
+        "left": "4.16636%",
+        "x": 30.0781,
+        "width": 724.1875,
+        "projected": "1747489663432.836",
+        "reset": "1747497540000"
+      }
+    },
+    {
+      "label": "stale-survives-language-change"
+    },
+    {
+      "label": "new-reset-replaces",
+      "value": {
+        "left": "2.89731%",
+        "x": 20.9219,
+        "width": 724.1875,
+        "projected": "1747489663432.836",
+        "reset": "1747501140000"
+      }
+    },
+    {
+      "label": "explicit-reader-stale-frozen",
+      "value": {
+        "left": "2.89731%",
+        "x": 20.9219,
+        "width": 724.1875,
+        "projected": "1747489663432.836",
+        "reset": "1747501140000"
+      }
+    },
+    {
+      "label": "removed-reader-clears"
+    }
+  ],
+  "initialNoReplay": true,
+  "clockOnlyNoReplay": true,
+  "reducedImmediate": true,
+  "staleFreeze": true,
+  "automaticDefaultLoss": true,
+  "localeRetention": true,
+  "resetReplaces": true,
+  "explicitStale": true,
+  "removedReaderClears": true,
+  "errors": []
+}
