@@ -1,0 +1,109 @@
+{
+  "fixture": "Isolated synthetic usage records; skew cases set the snapshot clock 25 seconds earlier.",
+  "results": [
+    {
+      "productionIndexSha256": "2f4b778958836e3b137154f832a4205864f85ddd413e3362d26154e77d628e7c",
+      "fixtureNow": 1747489320000,
+      "language": "th",
+      "skewSeconds": 0,
+      "checks": [
+        {
+          "index": 0,
+          "iso": "2025-05-17T13:41:45.000Z",
+          "seconds": 15,
+          "label": "15 วินาทีที่แล้ว"
+        },
+        {
+          "index": 1,
+          "iso": "2025-05-17T13:41:25.000Z",
+          "seconds": 35,
+          "label": "35 วินาทีที่แล้ว"
+        },
+        {
+          "index": 4,
+          "iso": "2025-05-17T13:40:25.000Z",
+          "seconds": 95,
+          "label": "2 นาทีที่แล้ว"
+        }
+      ]
+    },
+    {
+      "productionIndexSha256": "2f4b778958836e3b137154f832a4205864f85ddd413e3362d26154e77d628e7c",
+      "fixtureNow": 1747489320000,
+      "language": "th",
+      "skewSeconds": 25,
+      "checks": [
+        {
+          "index": 0,
+          "iso": "2025-05-17T13:41:45.000Z",
+          "seconds": -10,
+          "label": null
+        },
+        {
+          "index": 1,
+          "iso": "2025-05-17T13:41:25.000Z",
+          "seconds": 10,
+          "label": "10 วินาทีที่แล้ว"
+        },
+        {
+          "index": 4,
+          "iso": "2025-05-17T13:40:25.000Z",
+          "seconds": 70,
+          "label": "70 วินาทีที่แล้ว"
+        }
+      ]
+    },
+    {
+      "productionIndexSha256": "2f4b778958836e3b137154f832a4205864f85ddd413e3362d26154e77d628e7c",
+      "fixtureNow": 1747489320000,
+      "language": "en",
+      "skewSeconds": 0,
+      "checks": [
+        {
+          "index": 0,
+          "iso": "2025-05-17T13:41:45.000Z",
+          "seconds": 15,
+          "label": "15s ago"
+        },
+        {
+          "index": 1,
+          "iso": "2025-05-17T13:41:25.000Z",
+          "seconds": 35,
+          "label": "35s ago"
+        },
+        {
+          "index": 4,
+          "iso": "2025-05-17T13:40:25.000Z",
+          "seconds": 95,
+          "label": "2m ago"
+        }
+      ]
+    },
+    {
+      "productionIndexSha256": "2f4b778958836e3b137154f832a4205864f85ddd413e3362d26154e77d628e7c",
+      "fixtureNow": 1747489320000,
+      "language": "en",
+      "skewSeconds": 25,
+      "checks": [
+        {
+          "index": 0,
+          "iso": "2025-05-17T13:41:45.000Z",
+          "seconds": -10,
+          "label": null
+        },
+        {
+          "index": 1,
+          "iso": "2025-05-17T13:41:25.000Z",
+          "seconds": 10,
+          "label": "10s ago"
+        },
+        {
+          "index": 4,
+          "iso": "2025-05-17T13:40:25.000Z",
+          "seconds": 70,
+          "label": "70s ago"
+        }
+      ]
+    }
+  ]
+}
