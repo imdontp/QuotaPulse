@@ -1,0 +1,56 @@
+{
+  "before": {
+    "productionIndexSha256": "373ef58d31ec730293c898d84285d2a526052bb304be7ba52c74dfb6abc1cb3e",
+    "rows": [
+      {
+        "window": "5h",
+        "label": "125%",
+        "width": 146,
+        "fill": 182.5
+      },
+      {
+        "window": "weekly",
+        "label": "0%",
+        "width": 146,
+        "fill": 0
+      },
+      {
+        "window": "monthly",
+        "label": "Unavailable",
+        "width": 146,
+        "fill": 0
+      }
+    ],
+    "fixture": "isolated database with 125%, zero and missing observations"
+  },
+  "after": {
+    "productionIndexSha256": "c5b2edde48aa93aa4fa4c14824994798cd8d89f6bffefb5416a6e7dadf9c6542",
+    "rows": [
+      {
+        "window": "5h",
+        "label": "125%",
+        "width": 146,
+        "fill": 146
+      },
+      {
+        "window": "weekly",
+        "label": "0%",
+        "width": 146,
+        "fill": 0
+      },
+      {
+        "window": "monthly",
+        "label": "Unavailable",
+        "width": 146,
+        "fill": 0
+      }
+    ],
+    "fixture": "isolated database with 125%, zero and missing observations"
+  },
+  "normalFixtureImageSha256": "85f95d22762d4aec709ba8d48b8baef5c9b41424a8997f9597ed29901a0b022e",
+  "normalFixtureMatchesPrevious": true,
+  "viewport": {
+    "width": 1672,
+    "height": 941
+  }
+}
