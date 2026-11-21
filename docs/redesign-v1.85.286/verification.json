@@ -1,0 +1,67 @@
+{
+  "fixture": "isolated synthetic fixture with sixteen additional historical cost records",
+  "diagnostic": "One recorded minute set to zero in a synthetic trend response",
+  "viewport": {
+    "width": 1672,
+    "height": 941
+  },
+  "image": "a5f57a976fdc1eecfc909fc46f30a9b141de84c64917c5f346ca8a527c7aa95a",
+  "reference": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+  "repeatIdentical": true,
+  "checks": [
+    {
+      "productionIndexSha256": "19e597e2d41e4dc16c75e37f7879d5b69a8e82e3e6e42f30a03bb1a6e4071564",
+      "theme": "dark",
+      "checks": [
+        {
+          "state": "missing",
+          "at": "1747487520000",
+          "fill": "rgb(7, 16, 28)",
+          "stroke": "rgb(166, 185, 220)",
+          "value": "0"
+        },
+        {
+          "state": "zero",
+          "at": "1747487700000",
+          "fill": "rgb(0, 223, 255)",
+          "stroke": "none",
+          "value": "0"
+        },
+        {
+          "state": "recorded",
+          "at": "1747487820000",
+          "fill": "rgb(0, 223, 255)",
+          "stroke": "none",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "productionIndexSha256": "19e597e2d41e4dc16c75e37f7879d5b69a8e82e3e6e42f30a03bb1a6e4071564",
+      "theme": "light",
+      "checks": [
+        {
+          "state": "missing",
+          "at": "1747487520000",
+          "fill": "rgb(255, 255, 255)",
+          "stroke": "rgb(82, 101, 124)",
+          "value": "0"
+        },
+        {
+          "state": "zero",
+          "at": "1747487700000",
+          "fill": "rgb(5, 126, 149)",
+          "stroke": "none",
+          "value": "0"
+        },
+        {
+          "state": "recorded",
+          "at": "1747487820000",
+          "fill": "rgb(5, 126, 149)",
+          "stroke": "none",
+          "value": "1"
+        }
+      ]
+    }
+  ]
+}
