@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "fixture": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\qp-readers-puZPDy",
+  "bundle": "C:\\Users\\TH12367283\\AppData\\Local\\Temp\\QuotaPulse-review-375bbe76",
+  "sourceLogHash": "773cedeb3793842840f45b3755193b5f8dc1c0ea306df7e4b77f0f611c0b3003",
+  "originalSentinelHash": "e336aa23b64836300567ad7f2e85bccea6e5717b5db0fcc8e9325fbadc0e58e7",
+  "productionIndexSha256": "f5161d326c9aeba8a01a4b635360db3c87b9561659c827dc267db1b14bf4202d",
+  "checks": [
+    "both launch modes WhatIf create no profile/process state",
+    "default launch disables readers despite inherited on and leaves harness/original sentinels unchanged",
+    "explicit opt-in overrides inherited off and actual Codex adapter ingests150 tokens from owned home",
+    "incremental append and repeated manual refresh retain exactly190 tokens and one session; real Models page matches API and excludes prompt content",
+    "reader-enabled restart preserves cursor and does not duplicate events",
+    "default restart disables collection and retains already collected review data"
+  ],
+  "limitations": [
+    "owned synthetic log and fake home; no customer data or credentials accessed",
+    "account quota probes disabled for this check",
+    "portable launcher only; installed wrapper opt-in is not exercised"
+  ]
+}
