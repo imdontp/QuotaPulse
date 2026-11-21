@@ -316,7 +316,13 @@
 @media(min-width:1536px) {
  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table tbody td.qp-cost-name a { color:var(--qp-text); }
  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-table tbody td.qp-cost-name a:hover { color:var(--qp-accent); }
- .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-project-link svg { color:var(--qp-accent); }
+ .qp-cost-projects tbody tr { --badge-ink:#8ecbff; --badge-fill:#112942; --rank-bar:#8393a8; }
+ .qp-cost-projects tbody tr:nth-child(1) { --badge-ink:#ebeaff; --badge-fill:#3824e7; --rank-bar:#1385fa; }
+ .qp-cost-projects tbody tr:nth-child(2) { --badge-ink:#12dfb2; --badge-fill:#06342e; --rank-bar:#723af2; }
+ .qp-cost-projects tbody tr:nth-child(3) { --badge-ink:#17ebc0; --badge-fill:#064b3c; --rank-bar:#05bffa; }
+ .qp-cost-projects tbody tr:nth-child(4) { --badge-ink:#ffba67; --badge-fill:#392715; --rank-bar:#ff8940; }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-project-link svg { color:var(--badge-ink); background:var(--badge-fill); padding:5px; border-radius:6px; }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-projects .qp-cost-share b { background:var(--rank-bar); }
 }
 
 .qp-cost-table .qp-cost-rank { width:32px; box-sizing:border-box; color:var(--qp-muted); font-variant-numeric:tabular-nums; }
