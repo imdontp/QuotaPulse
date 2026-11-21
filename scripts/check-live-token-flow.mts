@@ -222,8 +222,8 @@ async function checkValues(page: Page, data: MinuteTrendResponse, lang: string, 
   assert.deepEqual(snapshot.yAxis.map(item => item.exact), expectedYTicks, `${state}: compact y-axis labels must retain the exact shared scale`);
   assert.deepEqual(snapshot.yAxis.map(item => item.title), expectedYTicks.map(value => number.format(value)), `${state}: y-axis titles must retain full localized values`);
   assert.deepEqual(snapshot.yAxis.map(item => item.value), expectedYTicks.map(value => {
-    const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumSignificantDigits: 2 }).format(value);
-    return compact.length > 4 ? value.toExponential(0).replace('e+', 'e') : compact;
+    const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumSignificantDigits: 2, useGrouping: false }).format(value);
+    return compact;
   }), `${state}: approximate tick labels must fit the source axis while raw scale values remain exact`);
   assert.ok(snapshot.yAxis.every((item, index) => Math.abs(item.top - (94 - 88 * expectedYTicks[index]! / (maximum || 1))) < .0001), `${state}: y-axis labels must align to the actual gridlines`);
   const pointCounts: Record<Series, number> = { input: 0, output: 0, total: 0 };

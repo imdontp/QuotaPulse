@@ -27,6 +27,7 @@
 .qp-live-flow-y-axis>span { position:absolute; right:0; white-space:nowrap; transform:translateY(-50%); }
 .qp-live-flow-canvas { position:relative; grid-column:2; grid-row:1; min-width:0; min-height:0; overflow:hidden; }
 .qp-live-flow-canvas>svg { position:absolute; inset:0; display:block; width:100%; height:100%; overflow:hidden; border:0; }
+.qp-live-flow-y-axis::before { content:attr(data-widest-label); visibility:hidden; white-space:nowrap; }
 .qp-live-flow-component { pointer-events:none; }
 .qp-live-flow-canvas circle[data-series=total][data-state=missing] {
   fill:var(--qp-panel);
@@ -117,7 +118,7 @@
   .qp-live-flow-latest-values strong,.qp-live-flow-latest-values [data-series=total] strong { font-size:10px; line-height:11px; text-align:center; }
 }
 @media(min-width:1280px) {
-  .qp-live-flow-plot { grid-template-columns:15px minmax(0,1fr) 197px; height:118px; }
+  .qp-live-flow-plot { grid-template-columns:minmax(15px,max-content) minmax(0,1fr) 197px; height:118px; }
   .qp-live-flow-latest { margin-left:12px; }
 }
 @media(min-width:1280px) {
