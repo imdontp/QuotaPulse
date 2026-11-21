@@ -321,7 +321,7 @@
  .qp-cost-projects tbody tr:nth-child(2) { --badge-ink:#12dfb2; --badge-fill:#06342e; --rank-bar:#723af2; }
  .qp-cost-projects tbody tr:nth-child(3) { --badge-ink:#17ebc0; --badge-fill:#064b3c; --rank-bar:#05bffa; }
  .qp-cost-projects tbody tr:nth-child(4) { --badge-ink:#ffba67; --badge-fill:#392715; --rank-bar:#ff8940; }
- .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-project-link svg { color:var(--badge-ink); background:var(--badge-fill); padding:5px; border-radius:6px; }
+ .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-project-link svg { color:var(--badge-ink); background:var(--badge-fill); padding:3px; border-radius:6px; }
  .qp-redesign[data-testid=production-cost][data-theme=dark] .qp-cost-projects .qp-cost-share b { background:var(--rank-bar); }
 }
 
