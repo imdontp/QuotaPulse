@@ -1,0 +1,138 @@
+{
+  "source": "7390e4e",
+  "build": "2f4b778958836e3b137154f832a4205864f85ddd413e3362d26154e77d628e7c",
+  "fixture": "isolated synthetic fixture with sixteen additional historical cost records",
+  "scope": "Full unmasked RGB mean absolute channel difference (0-255), English dark, scale 1, reduced motion. Includes data-dependent and approved content differences.",
+  "rows": [
+    {
+      "route": "overview",
+      "changed": false,
+      "before": 14.678,
+      "after": 14.678
+    },
+    {
+      "route": "live",
+      "changed": false,
+      "before": 16.916,
+      "after": 16.916
+    },
+    {
+      "route": "projects",
+      "changed": false,
+      "before": 15.194,
+      "after": 15.194
+    },
+    {
+      "route": "models",
+      "changed": true,
+      "before": 14.138,
+      "after": 14.138
+    },
+    {
+      "route": "history",
+      "changed": true,
+      "before": 16.36,
+      "after": 16.323
+    },
+    {
+      "route": "alerts",
+      "changed": true,
+      "before": 15.526,
+      "after": 15.526
+    },
+    {
+      "route": "providers",
+      "changed": true,
+      "before": 16.646,
+      "after": 16.258
+    },
+    {
+      "route": "cost",
+      "changed": false,
+      "before": 16.83,
+      "after": 16.83
+    }
+  ],
+  "captures": [
+    {
+      "route": "overview",
+      "viewport": {
+        "width": 1586,
+        "height": 992
+      },
+      "sha256": "cd6967a2f25776c18b3a3f1506e3272b3ed91cc5839baf5a678292286d484b03",
+      "referenceSha256": "924849d96af48d5f0aae3ab330e01df929485020ef91e9c0516f1fd7cc0d96ce",
+      "repeatIdentical": true
+    },
+    {
+      "route": "live",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "sha256": "1fc56ffe48fdf86accf46f851ddcacc20a9303a0d2c8550f02cb57670571bef0",
+      "referenceSha256": "35f1e735c0d020824f666285038475a6be4af6413c02b3a20f9af75a54e46db6",
+      "repeatIdentical": true
+    },
+    {
+      "route": "projects",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "sha256": "b9d72440d7ff05dffce6fa53325c062b8293887d5d00a32aea46bd175f3554ab",
+      "referenceSha256": "279a3d044139bac6d8bf2f0abc0d4ddbc7dfcf82a67d3378992cca19bff74e75",
+      "repeatIdentical": true
+    },
+    {
+      "route": "models",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "sha256": "775f5bb8b9434e7332fbebd3c5dcd5e4d8cfd1462860473fcbe88a5b4871656e",
+      "referenceSha256": "b055379b1469f65bcf85819a1b1e32ff431e72f4f0c7d4b23192d53212f83d2c",
+      "repeatIdentical": true
+    },
+    {
+      "route": "history",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "sha256": "968e51c850e0591ed311f09898db37174ad6a37245512c2b67d0076916f7dfaa",
+      "referenceSha256": "c1955ddc3343731812a4995223f0134cdba9dfa5932a7d25b6fa2e7f7eab5edf",
+      "repeatIdentical": true
+    },
+    {
+      "route": "alerts",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "sha256": "4d5aaa9389acdcd398d312e615094d6b11529bfb8826717db54659a996380d42",
+      "referenceSha256": "f2d05a17e7613035e2a41302baf6a8792ed519de66af0ab159dd56842062f104",
+      "repeatIdentical": true
+    },
+    {
+      "route": "providers",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "sha256": "85f95d22762d4aec709ba8d48b8baef5c9b41424a8997f9597ed29901a0b022e",
+      "referenceSha256": "12b01fc5549c79cb3043619401b993d8ae265e3bcbde9ef8cf4efe0f3d2210a6",
+      "repeatIdentical": true
+    },
+    {
+      "route": "cost",
+      "viewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "sha256": "c5e965ec8ac9d706487b34d370ab19f0e2930177c3d142d099f88baf8f484707",
+      "referenceSha256": "f90cf0c904c8dcc7872032207ba4aebf849d9f891809e66884c4c7bf5689f88a",
+      "repeatIdentical": true
+    }
+  ]
+}
