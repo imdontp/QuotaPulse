@@ -1,0 +1,77 @@
+{
+  "fixture": "Isolated usage records; the sessions API clock is two seconds ahead of overview.",
+  "before": {
+    "productionIndexSha256": "2757e5cf19b1db44be3e968dd6596a10c71bb81578bbd95fa9533a269428185d",
+    "overviewNow": 1747489320000,
+    "sessionsNow": 1747489322000,
+    "checks": [
+      {
+        "recent": true,
+        "description": "Recent (5 min)",
+        "dotContent": "\"\""
+      },
+      {
+        "recent": true,
+        "description": "Recent (5 min)",
+        "dotContent": "\"\""
+      },
+      {
+        "recent": false,
+        "description": null,
+        "dotContent": "none"
+      },
+      {
+        "recent": false,
+        "description": null,
+        "dotContent": "none"
+      },
+      {
+        "recent": false,
+        "description": null,
+        "dotContent": "none"
+      }
+    ],
+    "reading": {
+      "iso": null,
+      "table": "Unknown",
+      "detail": "Unknown"
+    }
+  },
+  "after": {
+    "productionIndexSha256": "f5161d326c9aeba8a01a4b635360db3c87b9561659c827dc267db1b14bf4202d",
+    "overviewNow": 1747489320000,
+    "sessionsNow": 1747489322000,
+    "checks": [
+      {
+        "recent": true,
+        "description": "Recent (5 min)",
+        "dotContent": "\"\""
+      },
+      {
+        "recent": true,
+        "description": "Recent (5 min)",
+        "dotContent": "\"\""
+      },
+      {
+        "recent": false,
+        "description": null,
+        "dotContent": "none"
+      },
+      {
+        "recent": false,
+        "description": null,
+        "dotContent": "none"
+      },
+      {
+        "recent": false,
+        "description": null,
+        "dotContent": "none"
+      }
+    ],
+    "reading": {
+      "iso": "2025-05-17T13:42:02.000Z",
+      "table": "20:42:02",
+      "detail": "5/17/25, 8:42 PM"
+    }
+  }
+}
