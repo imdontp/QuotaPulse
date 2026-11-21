@@ -1,0 +1,95 @@
+{
+  "schema": "7",
+  "archives": {
+    "previous": {
+      "sha256": "4f4e2a2768ea3de5c8141abb33f58908ed0c4ff725e6254d9325c2d19a484be0",
+      "path": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\releases\\QuotaPulse-v1.85.276-review277.zip"
+    },
+    "current": {
+      "sha256": "17427c7d6f3ba790c0afa5443183ce0b065f622f0fc7c431fc76608fac53d373",
+      "path": "C:\\Users\\TH12367283\\Projects\\QuotaPulse\\tmp\\releases\\QuotaPulse-v1.85.289-review290.zip"
+    }
+  },
+  "stages": [
+    {
+      "stage": "previous-seeded",
+      "sourceCommit": "a1ef7b24326defd33fb3114f7b4fd8290d6105be",
+      "release": "release-4f4e2a2768ea3de5c8141abb33f58908ed0c4ff725e6254d9325c2d19a484be0",
+      "nativeState": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "theme": "light",
+        "windowSize": {
+          "width": 1371,
+          "height": 887
+        },
+        "documentLanguage": "th",
+        "renderedTheme": "light"
+      },
+      "snapshotSha256": "abfc3a89b1349b2c3fb0a20e065b67195be5c990a5f1ad6333b1aaa21cec0200"
+    },
+    {
+      "stage": "current-upgrade",
+      "sourceCommit": "6d778751b5cc2bcdd329c8fc201493d09908942b",
+      "release": "release-17427c7d6f3ba790c0afa5443183ce0b065f622f0fc7c431fc76608fac53d373",
+      "nativeState": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "theme": "light",
+        "windowSize": {
+          "width": 1371,
+          "height": 887
+        },
+        "documentLanguage": "th",
+        "renderedTheme": "light"
+      },
+      "snapshotSha256": "abfc3a89b1349b2c3fb0a20e065b67195be5c990a5f1ad6333b1aaa21cec0200"
+    },
+    {
+      "stage": "previous-rollback",
+      "sourceCommit": "a1ef7b24326defd33fb3114f7b4fd8290d6105be",
+      "release": "release-4f4e2a2768ea3de5c8141abb33f58908ed0c4ff725e6254d9325c2d19a484be0",
+      "nativeState": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "theme": "light",
+        "windowSize": {
+          "width": 1371,
+          "height": 887
+        },
+        "documentLanguage": "th",
+        "renderedTheme": "light"
+      },
+      "snapshotSha256": "abfc3a89b1349b2c3fb0a20e065b67195be5c990a5f1ad6333b1aaa21cec0200"
+    },
+    {
+      "stage": "current-recovery",
+      "sourceCommit": "6d778751b5cc2bcdd329c8fc201493d09908942b",
+      "release": "release-17427c7d6f3ba790c0afa5443183ce0b065f622f0fc7c431fc76608fac53d373",
+      "nativeState": {
+        "lang": "th",
+        "currency": "THB",
+        "rate": 37.25,
+        "theme": "light",
+        "windowSize": {
+          "width": 1371,
+          "height": 887
+        },
+        "documentLanguage": "th",
+        "renderedTheme": "light"
+      },
+      "snapshotSha256": "abfc3a89b1349b2c3fb0a20e065b67195be5c990a5f1ad6333b1aaa21cec0200"
+    }
+  ],
+  "limitations": [
+    "unsigned review bundle with host Node prerequisite; no production install or tasks",
+    "actual installed daemon and tray processes checked; native dashboard separately launched from the active release after wrapper processes stop",
+    "DB app/notification/window settings and native Electron language/theme/currency/rate covered in one isolated shared profile",
+    "pet/tray animation disabled by existing review start helper; no pet appearance preference preservation claim",
+    "stored schema and usage/pricing invariants; no supported migration to a different schema is claimed",
+    "no signed artifact, user visual acceptance, CPU budget or whole RC claim"
+  ]
+}
