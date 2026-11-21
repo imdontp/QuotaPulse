@@ -520,3 +520,17 @@
   .qp-live-metrics .qp-live-metric-icon { grid-row:1; }
   .qp-live-metrics>div:has(.qp-live-metric-samples) small { grid-column:1 / -1; overflow-wrap:anywhere; }
 }
+
+.qp-live-table .qp-live-session-name { position:relative; padding-inline-start:14px; }
+.qp-live-session-name[data-recent]::before {
+  content:'';
+  position:absolute;
+  inset-inline-start:2px;
+  top:50%;
+  width:6px;
+  height:6px;
+  transform:translateY(-50%);
+  border-radius:50%;
+  background:var(--qp-success);
+  box-shadow:0 0 5px color-mix(in srgb,var(--qp-success) 45%,transparent);
+}

@@ -41,11 +41,14 @@ function routeHash(route: LiveRoute) {
 }
 interface MetricObservation { at: number; counts: readonly number[] }
 
+function isRecentObservation(at: number | null, now: number) {
+  return at !== null && at <= now && now - at <= 300_000;
+}
+
 function metricObservation(overview: Overview, sessions: LiveSessionsResponse): MetricObservation {
   const now = overview.now;
   const sources = overview.sourceStatus;
-  const validRecent = (at: number | null) => at !== null && at <= now && now - at <= 300_000;
-  const reporting = sources.filter(source => source.enabled && validRecent(source.last_event_ts)).length;
+  const reporting = sources.filter(source => source.enabled && isRecentObservation(source.last_event_ts, now)).length;
   const stale = sources.filter(source => source.enabled && source.limit_samples > 0 && source.last_limit_source_fetched_at !== null
     && source.last_limit_source_fetched_at <= now && now - source.last_limit_source_fetched_at > 3_600_000).length;
   const readerErrors = sources.filter(source => source.enabled && source.telemetry.reason === 'reader_error').length;
@@ -221,7 +224,7 @@ export function ProductionLive() {
             </div>
           </div>
             {!display ? <InitialRegion id="live-sessions" label={t('redesign.liveSessionTable')} heading={<></>} state={initialState} className="qp-live-initial-session-body" status slots={5}/> : display.sessions.rows.length === 0 ? <p>{t('redesign.liveNoSessions')}</p> : <div className="qp-live-table" tabIndex={0} role="region" aria-label={t('redesign.liveSessionTable')}><table><colgroup>{['session','project','harness','provider','model','split','total','time','calls'].map(column => <col key={column} className={'qp-live-col-'+column}/>)}</colgroup><thead><tr><th>{t('redesign.liveColumnSession')}</th><th>{t('redesign.liveColumnProject')}</th><th>{t('redesign.liveColumnHarness')}</th><th>{t('redesign.liveColumnProvider')}</th><th>{t('redesign.liveColumnModel')}</th><th title={t('redesign.liveInputIncludesCache')}>{t('redesign.liveTokenSplit')}</th><th>{t('redesign.liveColumnTotal')}</th><th>{t('redesign.liveColumnLastSeen')}</th><th>{t('redesign.liveColumnCalls')}</th></tr></thead><tbody>{display.sessions.rows.map(session => <tr key={session.sessionKey} data-live-session={liveSessionMotionKey(session.sessionKey)}>
-              <td><button title={session.nativeSessionId + ' · ' + session.sourceName} onClick={event => { returnFocus.current = event.currentTarget; setSelectionSerial(value => value + 1); setSelectedSession(session); }}>{session.nativeSessionId}</button><small className="qp-live-session-source">{session.sourceName}</small></td>
+              <td><button className="qp-live-session-name" data-recent={isRecentObservation(session.lastSeenAt, display.sessions.now) || undefined} aria-description={isRecentObservation(session.lastSeenAt, display.sessions.now) ? t('redesign.liveRecentFilter') : undefined} title={session.nativeSessionId + ' · ' + session.sourceName} onClick={event => { returnFocus.current = event.currentTarget; setSelectionSerial(value => value + 1); setSelectedSession(session); }}>{session.nativeSessionId}</button><small className="qp-live-session-source">{session.sourceName}</small></td>
               <td><span className="qp-live-session-project" title={session.project ?? t('redesign.unassigned')}>{session.project ?? t('redesign.unassigned')}</span></td>
               <td><span className="qp-live-session-harness" data-harness={session.harness} title={session.harness}><HarnessIcon harness={session.harness} vendor={display.overview.harnesses.find(harness => harness.harness === session.harness)?.vendor} label={session.harness}/><span>{session.harness}</span></span></td>
               <td>{identity(session.provider, session.providerCount, session.unknownProviderRecords, 'provider')}</td>
